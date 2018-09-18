@@ -54,7 +54,7 @@ class SuspiciousChildrenHandler
      */
     public function sendReport($suspiciousChildren)
     {
-        $message = $this->twig->render('@App/Email/suspicious_children.twig', ['suspiciousChildren' => $suspiciousChildren]);
+        $message = $this->twig->render('Email/suspicious_children.twig', ['suspiciousChildren' => $suspiciousChildren]);
         $this->handler->send($this->to, $message, 'Suspicious users invited more users');
     }
 }

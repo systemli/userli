@@ -42,6 +42,6 @@ class VoucherUnlinkCommandTest extends WebTestCase
 
         // re-run test
         $this->display = $this->runCommand('usrmgmt:voucher:unlink');
-        $this->assertContains('suspicious@systemli.org', $this->display);
+        $this->assertContains('suspicious@example.org', $this->display);
     }
 }
