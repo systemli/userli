@@ -1,0 +1,22 @@
+language: php
+php:
+  - '5.6'
+  #- '7.1'
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+services:
+  - mysql
+
+before_install:
+  - mysql -e 'CREATE DATABASE mail_test;'
+  - mysql -e "CREATE USER 'mail_test'@'localhost' IDENTIFIED BY 'password';"
+  - mysql -e "GRANT ALL PRIVILEGES on mail_test.* to mail_test@localhost;"
+
+install:
+  - composer install
+  - cp app/config/parameters.yml.dist app/config/parameters.yml

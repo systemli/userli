@@ -1,5 +1,7 @@
 # Systemli User Management
 
+[![Build Status](https://travis-ci.org/systemli/user-management.svg?branch=master)](https://travis-ci.org/systemli/user-management)
+
 ## Installation
 
 Requirements: Vagrant (VirtualBox)
