@@ -19,9 +19,10 @@
         </testsuite>
     </testsuites>
 
+<!-- Define where our source code is to determine code coverage. -->
     <filter>
         <whitelist>
-
+            <directory suffix=".php">src</directory>
         </whitelist>
     </filter>
 </phpunit>
