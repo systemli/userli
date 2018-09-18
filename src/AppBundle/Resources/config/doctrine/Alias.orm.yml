@@ -1,0 +1,32 @@
+AppBundle\Entity\Alias:
+  type: entity
+  repositoryClass: AppBundle\Repository\AliasRepository
+  table: virtual_aliases
+  id:
+    id:
+      type: integer
+      generator: { strategy: AUTO }
+  fields:
+    creationTime:
+      #name: creation_time
+      type: datetime
+      nullable: false
+    updatedTime:
+      #name: updated_time
+      type: datetime
+      nullable: false
+    source:
+      type: string
+      nullable: false
+    destination:
+      type: string
+      nullable: false
+  manyToOne:
+    domain:
+      targetEntity: Domain
+      mappedBy: domain_id
+      joinColumn:
+        name: domain_id
+        referencedColumnName: id
+  lifecycleCallbacks:
+    prePersist: [updateCreationTime, updateUpdatedTime]

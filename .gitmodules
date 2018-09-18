@@ -1,0 +1,12 @@
+[submodule "vagrant/ansible/roles/geerlingguy.composer"]
+	path = vagrant/ansible/roles/geerlingguy.composer
+	url = https://github.com/geerlingguy/ansible-role-composer.git
+[submodule "vagrant/ansible/roles/geerlingguy.nodejs"]
+	path = vagrant/ansible/roles/geerlingguy.nodejs
+	url = https://github.com/geerlingguy/ansible-role-nodejs.git
+[submodule "vagrant/ansible/roles/oefenweb.yarn"]
+	path = vagrant/ansible/roles/oefenweb.yarn
+	url = https://github.com/Oefenweb/ansible-yarn.git
+[submodule "vagrant/ansible/roles/andyceo.phpcsfixer"]
+	path = vagrant/ansible/roles/andyceo.phpcsfixer
+	url = https://github.com/andyceo/ansible-role-php-cs-fixer.git

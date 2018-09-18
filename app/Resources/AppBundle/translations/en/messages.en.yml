@@ -1,0 +1,106 @@
+start:
+  title: Welcome to %domain%
+  intro: Here you can set up and manage your email-account.
+  registration-header: Registration
+  registration-text: You don't have an email-account with %domain% yet? No problem! If one of your friends already has an account, you can get an invite code from them and immediately set up your own account.
+  registration-button: Create account
+
+index:
+  title: Manage your email-account
+  voucher-headline: Your invite codes
+  voucher-disable: At %date% you will receive three invite codes. This is to avoid mass registrations and spam.
+  delete-headline: Delete account
+  delete-description: >
+    You can delete your %project_name% email account. This will delete all your emails. <strong>A recovery at a later date is not possible.</strong>
+    <br /><br />
+    To delete your account you need to submit your actual password.
+  delete-button: Delete account
+  logged_in_as: You are logged in as %user%.
+
+form:
+  title: Register
+  signin-header: Sign in
+  register-header: Create account
+  email: E-Mail
+  password: Password
+  password_confirmation: Confirm password
+  remember-me: Stay logged in
+  signin: Sign in
+  roles: Roles
+  submit: Submit
+  voucher: Invite code
+  voucher-redeemed-on: Redeemed on
+  oclock-by: by
+  actual-password: Current password
+  new-password: New password
+  new-password_confirmation: Confirm new password
+  change-password: Change your password
+  delete-account: Delete account
+  delete-password: Password
+  create-voucher: Create voucher
+
+navbar_right:
+  login: Login
+  logout: Logout
+  register: Registration
+  password-change: Change password
+  admin: Admin
+
+registration:
+  title: Registering with %project_name%
+  information: Information
+  information-intro: You would like to register an email-account with <a href="%project_url%">%project_name%</a>. We only allow a registration if a friend invites you via an invite code to our services.
+  information-password-policy: <strong>Important:</strong> You need a password with at least 12 characters.
+  label-email: Your preferred email-address
+
+welcome:
+  headline: Welcome to %project_name%!
+  lead: You have set up an account with us successfully. What are the next steps?
+  next-button: To the overview
+  text: >
+    <h3>Ready to go</h3>
+    <p>In the web you can find guides for settting up your email-account with several client programs.</p>
+    <p>In one week you will receive three invite codes, which you can collect at <a href="%app_url%">%app_url%</a>. You can pass these on to friends and invite them to register with %project_name%.</p>
+  email: |
+    Hello new user, welcome on board.
+
+    In the web you can find guides for setting up your email-account with several client programs.
+
+    You get a mailbox with 1GB quota. If you exceed your quota limit, your email-account may not function properly.
+
+    In one week you will receive three invite codes, which you can collect at %app_url%. You can pass these on to friends and invite them to register with %project_name%.
+
+
+    Sincerly your %project_name% admin team
+
+closed:
+  title: Registration closed
+  headline: Registration closed
+  lead: Due to paragraph three TKÜV we decided to close our Registration. Sorry for that.
+  text: >
+    <p>Due <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">to paragraph three of "Verordnung über die technische und organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (short: telecommuicationen-surveillance-decree - "TKÜV") email providers with more than 10.000 users are forced to implement an surveillance interface for the authorities. That's why we decided to lock down the registration and do not allow any creation of new accounts.<p>
+
+    <p><strong>Existing accounts aren't effected</strong></p>
+
+delete:
+  headline: Delete account
+  lead: We need to verify your password to delete your account.
+  wrong-password: Wrong Password
+  cancel: Cancel
+
+flashes:
+  logout-successful: You have been successfully logged out!
+  password-change-successful: Your new password is now active!
+  registration-successful: You have been successfully registered!
+  voucher-creation-successful: You got a new voucher created!
+
+flash_batch_remove_vouchers_success: Successfully deleted unredeemed vouchers
+
+error:
+  title: Oops, an error occured.
+  back_link: Back to home
+  page_not_found: The page you requested does not exist.
+  generic_error: An error occured. We're sorry.
+
+# internal translations
+Bad credentials.: Wrong login details

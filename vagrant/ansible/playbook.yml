@@ -1,0 +1,28 @@
+- hosts: all
+  become: yes
+  pre_tasks:
+    - name: ensure apt is updated
+      apt:
+        update_cache: yes
+      changed_when: False
+    - name: ensure git is installed
+      apt:
+        pkg: git
+  roles:
+    - nginx
+    - php
+    - mysql
+    - geerlingguy.composer
+    - geerlingguy.nodejs
+    - oefenweb.yarn
+    - andyceo.phpcsfixer
+  vars:
+    nodejs_version: "8.x"
+  tasks:
+    - name: composer install
+      composer:
+        command: install
+        working_dir: /vagrant
+        no_dev: False
+      become: true
+      become_user: vagrant

@@ -1,0 +1,32 @@
+parameters:
+    database_driver:   pdo_mysql
+    database_host:     127.0.0.1
+    database_port:     ~
+    database_name:     mail
+    database_user:     mail
+    database_password: password
+
+    mailer_transport:  smtp
+    mailer_host:       127.0.0.1
+    mailer_user:       ~
+    mailer_password:   ~
+    mailer_encryption: ~
+    mailer_delivery_address: admin@example.org
+
+    app_name:          User Management
+    app_url:           https://users.example.org/
+    project_name:      example.org
+    project_url:       https://www.example.org/
+    domain:            example.org
+    sender_address:    admin@example.org
+    notification_address: monitoring@example.org
+    send_welcome_mail: true
+    locale:            de
+    secret:            qkp8(lk&atb$d-yyt2qc8ntb9o4#3(t-7^z0ny38*ct!xq%xz@
+    has_sina_box:      false
+    navbar_left:
+      - name: About us
+        url:  https://www.example.org/about
+
+    debug_toolbar:          true
+    debug_redirects:        false

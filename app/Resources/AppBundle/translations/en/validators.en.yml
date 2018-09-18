@@ -1,0 +1,19 @@
+form:
+  weak_password: "The password comply not with our security policy."
+  forbidden_char: "The password contains non valid characters."
+  different-password: "Password and confirmation does not match."
+  invalid-email: "The email is not valid."
+  password-change:
+    wrong-password: "Wrong password"
+    identical-passwords: "The new password is identical with the old one."
+  missing-domain: "The domain is not under management in this system."
+
+registration:
+  voucher-invalid: "The invite code is invalid."
+  email-domain-not-exists: "The email is invalid."
+  voucher-already-redeemed: "The invite code has already been used."
+  email-domain-invalid: "The email is invalid."
+  email-already-taken: "The email address is already taken."
+  email-too-short: "The username must contain at least %min% characters."
+  email-too-long: "The username must contain at most %max% characters."
+  email-unexpected-characters: "The username contains unexpected characters. Only valid: Letters and numbers, as well as -, _ and ."

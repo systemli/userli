@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#%# family=auto
+#%# capabilities=autoconf
+
+SCRIPT="$(readlink -f $0)"
+COMMAND="php $(dirname ${SCRIPT})/../bin/console usrmgmt:munin:voucher --env prod"
+
+if [ "$1" = "autoconf" ]; then
+    ${COMMAND} --autoconf
+
+    exit 0
+fi
+
+if [ "$1" = "config" ]; then
+    ${COMMAND} --config
+
+    exit 0
+fi
+
+${COMMAND}
+
+exit 0

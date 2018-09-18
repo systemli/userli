@@ -1,0 +1,10 @@
+{{ users|length }} registrations since last week
+
+┌────────────────────────────────┬─────────────────────┐
+│ {{ '%-30.30s'|format('Account') }} │ {{ '%-19.19s'|format('Date') }} │
+├────────────────────────────────┼─────────────────────┤
+{% for user in users %}
+│ {{ '%-30.30s'|format(user.email) }} │ {{ user.creationTime|date('d.m.Y H:i:s') }} │
+{% endfor %}
+└────────────────────────────────┴─────────────────────┘
+

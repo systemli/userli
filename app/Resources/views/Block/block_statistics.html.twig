@@ -1,0 +1,23 @@
+{% extends sonata_block.templates.block_base %}
+
+{% block block %}
+    <div class="cms-block cms-block-element">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">{{ settings.title }}</h3>
+            </div>
+            <div class="box-body">
+                <dl>
+                    <dt>Registered accounts</dt>
+                    <dd>{{ users_count }}</dd>
+                    <dt>Registered accounts in last 7 days</dt>
+                    <dd>{{ users_since }}</dd>
+                    <dt>Existing Voucher</dt>
+                    <dd>{{ vouchers_count }}</dd>
+                    <dt>Redeemed Voucher</dt>
+                    <dd>{{ vouchers_redeemed }} (Ratio: {{ vouchers_ratio }})</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,25 @@
+login:
+    path:     /login
+    defaults: { _controller: AppBundle:Security:login }
+
+login_check:
+    path:     /login_check
+
+logout:
+    path:     /logout
+
+index:
+    path:     /
+    defaults: { _controller: AppBundle:Start:index }
+
+register:
+    path:     /register
+    defaults: { _controller: AppBundle:Registration:register }
+
+welcome:
+    path:     /welcome
+    defaults: { _controller: AppBundle:Registration:welcome }
+
+delete:
+    path:     /delete
+    defaults: { _controller: AppBundle:Delete:delete }

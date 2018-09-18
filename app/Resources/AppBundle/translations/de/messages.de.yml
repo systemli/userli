@@ -1,0 +1,106 @@
+start:
+  title: Willkommen bei %domain%
+  intro: Wir bieten dir hier die Möglichkeit einen E-Mail Account zu erstellen bzw. zu verwalten.
+  registration-header: Registrierung
+  registration-text: Du hast noch keinen E-Mail Account bei %domain%? Kein Problem! Wenn eine Freundin oder ein Freund einen Account besitzt, kann diese dir einen Einladungscode zukommen lassen. Mit diesem kannst du dir sofort einen Account registrieren.
+  registration-button: Account anlegen
+
+index:
+  title: Verwalte deinen E-Mail Account
+  voucher-headline: Deine Einladungscodes
+  voucher-disable: Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben. Dies dient der Vermeidung von Massenregistrierungen und Spam.
+  delete-headline: Account löschen
+  delete-description: >
+    Du kannst deinen Account bei %project_name% löschen. Dadurch werden deine E-Mails unwiderruflich gelöscht. Eine <strong>spätere Wiederherstellung ist nicht möglich.</strong>
+    <br /><br />
+    Um deinen Account zu löschen wirst du aufgefordert dein Passwort einzugeben.
+  delete-button: Account löschen
+  logged_in_as: Du bist angemeldet als %user%.
+
+form:
+  title: Anmelden
+  signin-header: Login
+  register-header: Account erstellen
+  email: E-Mail
+  password: Passwort
+  password_confirmation: Passwort bestätigen
+  remember-me: Angemeldet bleiben
+  signin: Anmelden
+  roles: Rollen
+  submit: Senden
+  voucher: Einladungscode
+  voucher-redeemed-on: Eingelöst am
+  oclock-by: Uhr von
+  actual-password: Aktuelles Passwort
+  new-password: Neues Passwort
+  new-password_confirmation: Neues Passwort bestätigen
+  change-password: Passwort ändern
+  delete-account: Account löschen
+  delete-password: Passwort
+  create-voucher: Erstelle Voucher
+
+navbar_right:
+  login: Anmelden
+  logout: Abmelden
+  register: Registrieren
+  password-change: Passwort ändern
+  admin: Admin
+
+registration:
+  title: Bei %project_name% registrieren
+  information: Hinweis
+  information-intro: Du möchtest ein E-Mail Account bei <a href="%project_url%">%project_name%</a> registrieren. Eine Registrierung ist nur möglich, wenn dich eine Freundin oder ein Freund zu unserem Dienst einlädt, sprich, dir einen Einladungscode übergibt.
+  information-password-policy: <strong>Wichtig:</strong> Du benötigst ein Passwort, dass aus einer Kombination von 12 Zeichen besteht.
+  label-email: Deine Wunsch E-Mail Adresse
+
+welcome:
+  headline: Willkommen bei %project_name%!
+  lead: Du hast erfolgreich einen E-Mail Account bei uns erstellt! Wie geht es weiter?
+  next-button: Zur Übersicht
+  text: >
+    <h3>Los geht's</h3>
+    <p>Im Web findest du Anleitungen zur Einrichtung deines E-Mail Accounts mit verschiedenen Client Programmen.</p>
+    <p>In einer Woche bekommst du drei Einladungscodes gutgeschrieben, die du unter <a href="%app_url%">%app_url%</a> abrufen kannst. Diese kannst du an Freundinnen und Freunde weiterleiten und sie so zu %project_name% einladen.</p>
+  email: |
+    Lieber User, liebe Userin, willkommen an Bord.
+
+    Im Web findest du Anleitungen zur Einrichtung deines E-Mail Accounts mit verschiedenen Client Programmen.
+
+    Dein Postfachgröße beträgt 1GB. Sollte dein Postfach diese Größe überschreiten, kann es zu Einschränkungen der Funktionalität deines E-Mail Accounts kommen.
+
+    In einer Woche bekommst du drei Einladungscodes gutgeschrieben, die du unter %app_url% abrufen kannst. Diese kannst du an Freundinnen und Freunde weiterleiten und sie so zu %project_name% einladen.
+
+
+    Viel Spaß mit deinem Mailaccount, wünscht dir dein %project_name% Admin Team.
+
+closed:
+  title: Registrierung deaktiviert
+  headline: Registrierung deaktiviert
+  lead: Aufgrund des §3 TKÜV haben wir die Registrierung weiterer E-Mail Konten deaktiviert. Das tut uns Leid.
+  text: >
+    <p>Der <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">Paragraph 3 der "Verordnung über die technische und organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (kurz: Telekommunikations-Überwachungsverordnung - TKÜV) zwingt Anbieter ab 10.000 Accounts eine Schnittstelle zur Überwachung der Kommunikation einzubauen. Daher haben wir uns entschieden keine weiteren Accounts mehr anzulegen.<p>
+
+    <p><strong>Für bestehende Accounts ändert sich nichts.</strong></p>
+
+delete:
+  headline: Account löschen
+  lead: Mit der Bestätigung deines Passworts kannst du deinen Account unwiderruflich löschen.
+  wrong-password: Falsches Passwort
+  cancel: Abbrechen
+
+flashes:
+  logout-successful: Du hast dich erfolgreich abgemeldet!
+  password-change-successful: Dein neues Passwort ist ab sofort aktiv!
+  registration-successful: Du hast dich erfolgreich registriert!
+  voucher-creation-successful: Dir wurde ein Voucher erstellt!
+
+flash_batch_remove_vouchers_success: Nicht eingelöste Vouchers erfolgreich gelöscht
+
+error:
+  title: Oops, es ist ein Fehler passiert.
+  back_link: Zurück zur Startseite
+  page_not_found: Die Seite die du aufgerufen hast, existiert nicht.
+  generic_error: Es ist ein Fehler passiert. Das tut uns leid.
+
+# internal translations
+Bad credentials.: Fehlerhafte Zugangsdaten
