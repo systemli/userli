@@ -29,6 +29,7 @@ build:
                       coverage:
                           file: 'coverage.xml'
                           format: 'clover'
+                      idle_timeout: 300
 
 filter:
     excluded_paths:
