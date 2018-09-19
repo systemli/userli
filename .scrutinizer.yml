@@ -1,0 +1,44 @@
+checks:
+    php:
+        code_rating: true
+        duplication: true
+
+build:
+    environment:
+        mysql: 5.5
+    dependencies:
+        override:
+            - git submodule update --init --recursive 
+            - composer install
+    project_setup:
+        override:
+            - cp app/config/parameters.yml.dist app/config/parameters.yml
+            - mysql -uroot -e 'CREATE DATABASE mail_test;'
+            - mysql -uroot -e "CREATE USER 'mail_test'@'localhost' IDENTIFIED BY 'password';"
+            - mysql -uroot -e "GRANT ALL PRIVILEGES on mail_test.* to mail_test@localhost;"
+
+    nodes:
+        analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run
+        coverage:
+            tests:
+                override:
+                    - command: 'bin/phpunit --coverage-clover=coverage.xml'
+                      coverage:
+                          file: 'coverage.xml'
+                          format: 'clover'
+
+filter:
+    excluded_paths:
+        - app/*
+        - assets/*
+        - bin/*
+        - features/*
+        - src/AppBundle/DataFixtures/*
+        - src/AppBundle/Resources/*
+        - tests/*
+        - vagrant/*
+        - vendor/*
+        - web/*
