@@ -33,6 +33,7 @@ If you want to see more details about how the users are created, see
     cd /vagrant
     bin/phpunit
     bin/behat -f progress
+    das ist ein test
 
 ## Update assets
 
