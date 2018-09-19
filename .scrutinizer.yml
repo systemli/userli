@@ -8,7 +8,7 @@ build:
         mysql: 5.5
     dependencies:
         override:
-            - git submodule update --init --recursive 
+            #- git submodule update --init --recursive 
             - composer install
     project_setup:
         override:
@@ -16,12 +16,13 @@ build:
             - mysql -uroot -e 'CREATE DATABASE mail_test;'
             - mysql -uroot -e "CREATE USER 'mail_test'@'localhost' IDENTIFIED BY 'password';"
             - mysql -uroot -e "GRANT ALL PRIVILEGES on mail_test.* to mail_test@localhost;"
-
     nodes:
         analysis:
             tests:
                 override:
+                    - bin/behat -f progress
                     - php-scrutinizer-run
+                    #- phpcs-run
         coverage:
             tests:
                 override:

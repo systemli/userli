@@ -11,22 +11,22 @@ parameters:
     mailer_user:       ~
     mailer_password:   ~
     mailer_encryption: ~
-    mailer_delivery_address: admin@example.org
+    mailer_delivery_address: admin@systemli.org
 
     app_name:          User Management
-    app_url:           https://users.example.org/
-    project_name:      example.org
-    project_url:       https://www.example.org/
-    domain:            example.org
-    sender_address:    admin@example.org
-    notification_address: monitoring@example.org
+    app_url:           https://users.systemli.org.org/
+    project_name:      systemli.org
+    project_url:       https://www.systemli.org/
+    domain:            systemli.org
+    sender_address:    admin@systemli.org
+    notification_address: monitoring@systemli.org
     send_welcome_mail: true
     locale:            de
     secret:            qkp8(lk&atb$d-yyt2qc8ntb9o4#3(t-7^z0ny38*ct!xq%xz@
     has_sina_box:      false
     navbar_left:
       - name: About us
-        url:  https://www.example.org/about
+        url:  https://www.systemli.org/about
 
     debug_toolbar:          true
     debug_redirects:        false
