@@ -1,11 +1,16 @@
 default:
-  suites:
-    default:
-      contexts:
-        - FeatureContext
-  extensions:
-    Behat\Symfony2Extension: ~
-    Behat\MinkExtension:
-      sessions:
+    suites:
         default:
-          symfony2: ~
+            contexts:
+                - FeatureContext:
+
+    extensions:
+        Behat\Symfony2Extension:
+            kernel:
+                bootstrap: features/bootstrap/bootstrap.php
+                class: App\Kernel
+        Behat\MinkExtension:
+            base_url: "http://example.org/"
+            sessions:
+                default:
+                    symfony2: ~

@@ -1,0 +1,216 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: 'en'
+    navbar_left:
+        -
+            name: 'About us'
+            url: 'https://www.example.org/about'
+
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        public: false       # Allows optimizing the container by removing unused services; this also means
+                            # fetching services directly from the container via $container->get() won't work.
+                            # The best practice is to be explicit about your dependencies anyway.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    App\Builder\WelcomeMessageBuilder:
+        arguments:
+            $appUrl:       "%env(APP_URL)%"
+            $projectName:  "%env(PROJECT_NAME)%"
+            $domain:       "%env(DOMAIN)%"
+
+    App\EventListener\:
+        resource: '../src/EventListener/*'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    App\Handler\:
+        resource: '../src/Handler/*'
+        public: true
+
+    App\Controller\ExceptionController:
+        public: true
+        arguments:
+            $debug: '%kernel.debug%'
+
+    App\Form\PasswordChangeType:
+        tags:
+            - { name: form.type, alias: password_change }
+
+    App\Form\RegistrationType:
+        arguments:
+            $domain: '%env(DOMAIN)%'
+        tags:
+            - { name: form.type, alias: registration }
+
+    App\Form\DeleteType:
+        tags:
+            - { name: form.type, alias: delete }
+
+    App\Handler\LogoutSuccessHandler:
+        arguments:
+            $targetUrl: '/'
+
+    App\Handler\MailHandler:
+        arguments:
+            $from: "%env(SENDER_ADDRESS)%"
+            $name: "%env(APP_NAME)%"
+
+    App\Handler\UserRegistrationInfoHandler:
+        arguments:
+            $to: "%env(NOTIFICATION_ADDRESS)%"
+
+    App\Handler\RegistrationHandler:
+        public: true
+        arguments:
+            $hasSinaBox: "%env(HAS_SINA_BOX)%"
+
+    App\Handler\SuspiciousChildrenHandler:
+        arguments:
+            $to: "%env(NOTIFICATION_ADDRESS)%"
+
+    App\Helper\PasswordUpdater:
+        public: true
+
+    App\EventListener\RegistrationListener:
+        arguments:
+            $sendMail:     "%env(SEND_WELCOME_MAIL)%"
+
+    App\Menu\MenuBuilder:
+        arguments:
+            $navbarLeft: '%navbar_left%'
+
+    App\Security\UserProvider:
+        arguments:
+            $defaultDomain: "%env(DOMAIN)%"
+
+    App\Sender\WelcomeMessageSender:
+        public: true
+        arguments:
+            $domain:       "%env(DOMAIN)%"
+
+    App\Validator\PasswordPolicyValidator:
+        tags:
+            - { name: validator.constraint_validator, alias: password_policy }
+
+    App\Validator\RegistrationValidator:
+        arguments:
+            $domain: "%env(DOMAIN)%"
+        tags:
+            - { name: validator.constraint_validator, alias: registration }
+
+    App\Validator\PasswordChangeValidator:
+        tags:
+            - { name: validator.constraint_validator, alias: password_change }
+
+    App\Validator\Constraints\EmailDomainValidator:
+        tags:
+            - { name: validator.constraint_validator }
+
+    usrmgmt.admin.user:
+        class: App\Admin\UserAdmin
+        public: true
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Mail", label: "User" }
+        arguments:
+            - ~
+            - App\Entity\User
+            - App\Controller\UserCRUDController
+        calls:
+            - [setPasswordUpdater, ['@App\Helper\PasswordUpdater']]
+            - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
+            - [setDeleteHandler, ['@App\Handler\DeleteHandler']]
+
+    usrmgmt.admin.domain:
+        class: App\Admin\DomainAdmin
+        public: true
+        tags:
+           - { name: sonata.admin, manager_type: orm, group: "Mail", label: "Domain" }
+        arguments:
+            - ~
+            - App\Entity\Domain
+            - ~
+
+    usrmgmt.admin.alias:
+        class: App\Admin\AliasAdmin
+        public: true
+        tags:
+           - { name: sonata.admin, manager_type: orm, group: "Mail", label: "Alias" }
+        arguments:
+            - ~
+            - App\Entity\Alias
+            - ~
+        calls:
+            - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
+
+    usrmgmt.admin.voucher:
+        class: App\Admin\VoucherAdmin
+        public: true
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Mail", label: "Voucher" }
+        arguments:
+            - ~
+            - App\Entity\Voucher
+            - ~
+            - '@Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface'
+
+    usrmgmt.admin.block.statistics:
+        class: App\Block\StatisticsBlockService
+        public: true
+        tags:
+            - { name: sonata.block }
+        arguments:
+            - usrmgmt.admin.block.statistics
+            - '@Symfony\Component\Templating\EngineInterface'
+            - '@Doctrine\Common\Persistence\ObjectManager'
+            - '@App\Counter\UserCounter'
+            - '@App\Counter\VoucherCounter'
+
+    usrmgmt.admin.reservedname:
+        class: App\Admin\ReservedNameAdmin
+        public: true
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Mail", label: "Reserved Name" }
+        arguments:
+            - ~
+            - App\Entity\ReservedName
+            - ~
+
+    usrmgmt.menu.navbar_left:
+        class: Knp\Menu\MenuItem
+        public: true
+        factory: ['@App\Menu\MenuBuilder', createNavbarLeft]
+        tags:
+            - { name: knp_menu.menu, alias: navbar-left }
+
+    usrmgmt.menu.navbar_right:
+        class: Knp\Menu\MenuItem
+        public: true
+        factory: ['@App\Menu\MenuBuilder', createNavbarRight]
+        tags:
+            - { name: knp_menu.menu, alias: navbar-right }
+
+    Symfony\Component\Security\Http\HttpUtils:
+        alias: security.http_utils
+
+    Knp\Menu\FactoryInterface:
+        alias: knp_menu.factory

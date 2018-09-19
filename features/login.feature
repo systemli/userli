@@ -4,18 +4,18 @@ Feature: Login
     Given the database is clean
     And the following Domain exists:
       | name         |
-      | systemli.org |
+      | example.org |
     And the following User exists:
       | email                | password | roles        |
-      | louis@systemli.org   | asdasd   | ROLE_ADMIN   |
-      | support@systemli.org | asdasd   | ROLE_SUPPORT |
-      | user@systemli.org    | asdasd   | ROLE_USER    |
+      | louis@example.org   | asdasd   | ROLE_ADMIN   |
+      | support@example.org | asdasd   | ROLE_SUPPORT |
+      | user@example.org    | asdasd   | ROLE_USER    |
 
   @login
   Scenario: Login as User
     When I am on "/login"
     And I fill in the following:
-      | username | louis@systemli.org |
+      | username | louis@example.org |
       | password | asdasd             |
     And I press "Sign in"
 
@@ -27,7 +27,7 @@ Feature: Login
   Scenario: Login as User
     When I am on "/"
     And I fill in the following:
-      | username | louis@systemli.org |
+      | username | louis@example.org |
       | password | asdasd             |
     And I press "Sign in"
 
@@ -39,7 +39,7 @@ Feature: Login
   Scenario: Login failures
     When I am on "/login"
     And I fill in the following:
-      | username | louis@systemli.org |
+      | username | louis@example.org |
       | password | test123            |
     And I press "Sign in"
 
@@ -49,7 +49,7 @@ Feature: Login
   Scenario: Login as Admin
     When I am on "/login"
     When I fill in the following:
-      | username | user@systemli.org |
+      | username | user@example.org |
       | password | asdasd            |
     And I press "Sign in"
 
@@ -60,7 +60,7 @@ Feature: Login
   Scenario: Login as Support
     When I am on "/login"
     When I fill in the following:
-      | username | support@systemli.org |
+      | username | support@example.org |
       | password | asdasd               |
     And I press "Sign in"
 
@@ -82,10 +82,10 @@ Feature: Login
   Scenario: Login with special characters in password
     When the following User exists:
       | email                | password | roles     |
-      | special@systemli.org | paßwort  | ROLE_USER |
+      | special@example.org | paßwort  | ROLE_USER |
     And I am on "/login"
     And I fill in the following:
-      | username | special@systemli.org |
+      | username | special@example.org |
       | password | paßwort              |
     And I press "Sign in"
 
@@ -94,7 +94,7 @@ Feature: Login
 
   @logout
   Scenario: Logout
-    When I am authenticated as "louis@systemli.org"
+    When I am authenticated as "louis@example.org"
     And I am on "/logout"
 
     When I am on "/admin/dashboard"
@@ -102,7 +102,7 @@ Feature: Login
 
   @logout
   Scenario: Logout
-    When I am authenticated as "louis@systemli.org"
+    When I am authenticated as "louis@example.org"
     And I am on "/logout"
 
     Then I should see text matching "You have been successfully logged out!"

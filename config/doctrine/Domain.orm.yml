@@ -1,0 +1,21 @@
+App\Entity\Domain:
+  type: entity
+  repositoryClass: App\Repository\DomainRepository
+  table: virtual_domains
+  id:
+    id:
+      type: integer
+      generator: { strategy: AUTO }
+  fields:
+    creationTime:
+      #name: creation_time
+      type: datetime
+      nullable: false
+    updatedTime:
+      #name: updated_time
+      type: datetime
+      nullable: false
+    name:
+      type: string
+  lifecycleCallbacks:
+    prePersist: [updateCreationTime, updateUpdatedTime]

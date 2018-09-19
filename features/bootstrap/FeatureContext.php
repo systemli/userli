@@ -1,7 +1,8 @@
 <?php
 
-use AppBundle\Entity\Alias;
-use AppBundle\Guesser\DomainGuesser;
+use App\Entity\Alias;
+use App\Entity\User;
+use App\Guesser\DomainGuesser;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
@@ -44,8 +45,8 @@ class FeatureContext extends MinkContext
     public function theFollowingDomainExists(TableNode $table)
     {
         foreach ($table->getColumnsHash() as $data) {
-            /** @var $domain \AppBundle\Entity\Domain */
-            $domain = new \AppBundle\Entity\Domain();
+            /** @var $domain \App\Entity\Domain */
+            $domain = new \App\Entity\Domain();
 
             foreach ($data as $key => $value) {
                 switch ($key) {
@@ -65,8 +66,8 @@ class FeatureContext extends MinkContext
     public function theFollowingUserExists(TableNode $table)
     {
         foreach ($table->getColumnsHash() as $data) {
-            /** @var $user \AppBundle\Entity\User */
-            $user = new \AppBundle\Entity\User();
+            /** @var $user \App\Entity\User */
+            $user = new User();
 
             foreach ($data as $key => $value) {
                 if (empty($value)) {
@@ -84,7 +85,7 @@ class FeatureContext extends MinkContext
                         break;
                     case 'password':
                         $user->setPlainPassword($value);
-                        $this->getContainer()->get('AppBundle\Helper\PasswordUpdater')->updatePassword($user);
+                        $this->getContainer()->get('App\Helper\PasswordUpdater')->updatePassword($user);
                         break;
                     case 'roles':
                         $roles = explode(',', $value);
@@ -108,8 +109,8 @@ class FeatureContext extends MinkContext
     public function theFollowingVoucherExists(TableNode $table)
     {
         foreach ($table->getColumnsHash() as $data) {
-            /** @var $voucher \AppBundle\Entity\Voucher */
-            $voucher = new \AppBundle\Entity\Voucher();
+            /** @var $voucher \App\Entity\Voucher */
+            $voucher = new \App\Entity\Voucher();
 
             foreach ($data as $key => $value) {
                 if (empty($value)) {
@@ -176,8 +177,8 @@ class FeatureContext extends MinkContext
     public function theFollowingReservedNameExists(TableNode $table)
     {
         foreach ($table->getColumnsHash() as $data) {
-            /** @var $reservedName \AppBundle\Entity\ReservedName */
-            $reservedName = new \AppBundle\Entity\ReservedName();
+            /** @var $reservedName \App\Entity\ReservedName */
+            $reservedName = new \App\Entity\ReservedName();
 
             foreach ($data as $key => $value) {
                 switch ($key) {
@@ -312,11 +313,11 @@ class FeatureContext extends MinkContext
     }
 
     /**
-     * @return \AppBundle\Repository\UserRepository
+     * @return \App\Repository\UserRepository
      */
     private function getUserRepository()
     {
-        return $this->getContainer()->get('doctrine')->getRepository('AppBundle:User');
+        return $this->getContainer()->get('doctrine')->getRepository('App:User');
     }
 
     /**
@@ -324,7 +325,7 @@ class FeatureContext extends MinkContext
      */
     private function getDomainGuesser()
     {
-        return $this->getContainer()->get('AppBundle\Guesser\DomainGuesser');
+        return new DomainGuesser($this->getManager());
     }
 
     /**

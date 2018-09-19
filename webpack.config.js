@@ -1,8 +1,9 @@
 var Encore = require('@symfony/webpack-encore');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 Encore
     // directory where compiled assets will be stored
-    .setOutputPath('web/build/')
+    .setOutputPath('public/build/')
     // public path used by the web server to access the output path
     .setPublicPath('/build')
     // only needed for CDN's or sub-directory deploy
@@ -19,6 +20,9 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
 
+    // impossible, because webpack tries to find the included images
+    //.addStyleEntry('AdminLTE.min.css', './assets/css/AdminLTE.min.css')
+
     .cleanupOutputBeforeBuild()
     .enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
@@ -32,6 +36,10 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     .autoProvidejQuery()
+
+    .addPlugin(new CopyWebpackPlugin([
+        { from: './assets/images', to: 'images' }
+    ]))
 ;
 
 module.exports = Encore.getWebpackConfig();

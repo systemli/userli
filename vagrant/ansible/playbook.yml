@@ -1,22 +1,43 @@
 - hosts: all
   become: yes
   pre_tasks:
-    - name: ensure apt is updated
-      apt:
-        update_cache: yes
-      changed_when: False
-    - name: ensure git is installed
-      apt:
-        pkg: git
   roles:
+    - manala.apt
     - nginx
-    - php
+    - manala.php
     - mysql
     - geerlingguy.composer
     - geerlingguy.nodejs
     - oefenweb.yarn
     - andyceo.phpcsfixer
   vars:
+    manala_apt_repositories:
+      - sury_php
+    manala_apt_repositories_exclusive: false
+    manala_apt_preferences:
+      - php@sury_php
+    manala_apt_packages:
+      - git
+      - unzip
+      - zip
+    manala_php_version: 7.1
+    manala_php_extensions:
+      # necessary
+      - apcu
+      - curl
+      - gd
+      - mbstring
+#      - mcrypt
+      - mysql
+      - xml
+      - zip
+      # performance
+      - ctype
+      - intl
+    manala_php_extensions_exclusive: false
+    manala_php_sapis:
+      - cli
+      - fpm
     nodejs_version: "8.x"
   tasks:
     - name: composer install

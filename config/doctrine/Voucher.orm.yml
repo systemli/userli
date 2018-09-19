@@ -1,0 +1,34 @@
+App\Entity\Voucher:
+  type: entity
+  repositoryClass: App\Repository\VoucherRepository
+  table: virtual_voucher
+  id:
+    id:
+      type: integer
+      generator: { strategy: AUTO }
+  fields:
+    creationTime:
+      #name: creation_time
+      type: datetime
+      nullable: false
+    redeemedTime:
+      #name: redeemed_time
+      type: datetime
+      nullable: true
+    code:
+      type: string
+      nullable: false
+      unique: true
+  manyToOne:
+    user:
+      targetEntity: User
+      mappedBy: user_id
+  oneToOne:
+    invitedUser:
+      targetEntity: User
+      mappedBy: invitationVoucher
+  indexes:
+    code_idx:
+      columns: ["code"]
+  lifecycleCallbacks:
+    prePersist: [updateCreationTime]

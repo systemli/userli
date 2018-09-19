@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}{{ "form.title"|trans }}{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+            <form class="form-signin" role="form" action="{{ path('login_check') }}" method="post">
+                <h2 class="form-signin-heading">{{ "form.signin-header"|trans }}</h2>
+                {% if error %}
+                    <div class="alert alert-danger" role="alert">{{ error.message|trans }}</div>
+                {% endif %}
+                <input type="text" id="username" class="form-control" name="_username" placeholder="{{ "form.email"|trans }}" value="{{ last_username }}" required="" autofocus="" />
+                <input type="password" id="password" class="form-control" name="_password" placeholder="{{ "form.password"|trans }}" required="">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">{{ "form.signin"|trans }}</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

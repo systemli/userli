@@ -1,0 +1,27 @@
+sonata_admin:
+    title: Management
+    title_logo: 'build/images/logo_small.png'
+    dashboard:
+        blocks:
+          - position: left
+            type: sonata.admin.block.admin_list
+          - position: right
+            type: usrmgmt.admin.block.statistics
+    templates:
+        layout: 'Admin/standard_layout.html.twig'
+        user_block: 'Admin/user_block.html.twig'
+    assets:
+        # overwrite to remove google fonts
+        remove_stylesheets:
+          - 'bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css'
+        extra_stylesheets:
+          - 'assets/AdminLTE.min.css'
+    security:
+        handler: sonata.admin.security.handler.role
+
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+        usrmgmt.admin.block.statistics: ~

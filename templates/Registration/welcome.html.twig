@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}{{ "welcome.headline"|trans({'%domain%': domain, '%project_name%': project_name}) }}{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>{{ "welcome.headline"|trans({'%domain%': domain, '%project_name%': project_name}) }}</h2>
+
+            <p class="lead">{{ "welcome.lead"|trans }}</p>
+
+            {{ "welcome.text"|trans({'%project_name%': project_name, '%app_url%': app_url})|raw }}
+
+            <p><a href="{{ path('index') }}" class="btn btn-lg btn-primary pull-right">{{ "welcome.next-button"|trans }}</a></p>
+        </div>
+    </div>
+
+{% endblock %}

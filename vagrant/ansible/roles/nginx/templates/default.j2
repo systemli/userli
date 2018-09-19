@@ -1,11 +1,11 @@
 server {
     listen  80;
 
-    root /vagrant/web;
-    index index.html app_dev.php;
+    root /vagrant/public;
+    index index.php;
 
     location / {
-        try_files $uri /app_dev.php$is_args$args;
+        try_files $uri /index.php$is_args$args;
     }
 
     error_page 404 /404.html;
@@ -15,9 +15,9 @@ server {
         root /usr/share/nginx/www;
     }
 
-    location ~ ^/(app|app_dev|app_test|config)\.php(/|$) {
+    location ~ ^/index\.php(/|$) {
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
-        fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+        fastcgi_pass unix:/var/run/php/php{{ manala_php_version }}-fpm.sock;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param HTTPS off;

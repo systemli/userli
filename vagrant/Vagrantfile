@@ -1,3 +1,10 @@
+$script = <<-SCRIPT
+# Change directory automatically on ssh login
+if ! grep -qF "cd /vagrant" /home/vagrant/.bashrc ;
+then echo "cd /vagrant" >> /home/vagrant/.bashrc ; fi
+chown vagrant. /home/vagrant/.bashrc
+SCRIPT
+
 Vagrant.configure("2") do |config|
 
     config.vm.provider :virtualbox do |v|
@@ -7,11 +14,13 @@ Vagrant.configure("2") do |config|
 
     config.vm.box = "debian/stretch64"
     config.vm.network :private_network, ip: "192.168.33.99"
+    config.vm.synced_folder "../", "/vagrant", id: "vagrant-root", :nfs => true
     config.ssh.forward_agent = true
+
     config.vm.provision "ansible" do |ansible|
         ansible.playbook = "ansible/playbook.yml"
         ansible.compatibility_mode = "2.0"
     end
 
-    config.vm.synced_folder "../", "/vagrant", id: "vagrant-root", :nfs => true
+    config.vm.provision "shell", inline: $script
 end

@@ -1,0 +1,42 @@
+App\Entity\User:
+    properties:
+        email:
+            - NotNull: ~
+            - Email: ~
+        roles:
+            - NotNull: ~
+            - NotBlank: ~
+        plainPassword:
+            - App\Validator\Constraints\PasswordPolicy: ~
+        domain:
+            - Valid: ~
+    constraints:
+        - App\Validator\Constraints\EmailDomain: ~
+
+App\Form\Model\Registration:
+    properties:
+        email:
+            - Email:
+                strict: true
+                message: form.invalid-email
+        plainPassword:
+            - App\Validator\Constraints\PasswordPolicy: ~
+
+    constraints:
+        - App\Validator\Constraints\RegistrationConstraint:
+              minLength: 3
+              maxLength: 32
+
+App\Form\Model\PasswordChange:
+    properties:
+        newPassword:
+            - App\Validator\Constraints\PasswordPolicy: ~
+
+    constraints:
+        - App\Validator\Constraints\PasswordChangeConstraint: ~
+
+App\Form\Model\Delete:
+    properties:
+        password:
+            - Symfony\Component\Security\Core\Validator\Constraints\UserPassword:
+                message: delete.wrong-password
