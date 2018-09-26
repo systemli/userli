@@ -3,10 +3,10 @@ Feature: User
   Background:
     Given the database is clean
     And the following Domain exists:
-      | name         |
+      | name        |
       | example.org |
     And the following User exists:
-      | email                | password | roles        |
+      | email               | password | roles        |
       | admin@example.org   | asdasd   | ROLE_ADMIN   |
       | user@example.org    | asdasd   | ROLE_USER    |
       | support@example.org | asdasd   | ROLE_SUPPORT |
@@ -37,7 +37,7 @@ Feature: User
 
     And I fill in the following:
       | username | user@example.org |
-      | password | asdasd            |
+      | password | asdasd           |
     And I press "Sign in"
 
     Then I should be on "/login"

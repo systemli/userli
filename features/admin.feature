@@ -3,18 +3,18 @@ Feature: Admin
   Background:
     Given the database is clean
     And the following Domain exists:
-      | name         |
+      | name        |
       | example.org |
     And the following User exists:
-      | email                | password | roles        |
+      | email               | password | roles        |
       | louis@example.org   | asdasd   | ROLE_ADMIN   |
       | support@example.org | asdasd   | ROLE_SUPPORT |
       | user@example.org    | asdasd   | ROLE_USER    |
     And the following Voucher exists:
-      | code | user              |
+      | code | user             |
       | TEST | adminexample.org |
     And the following Alias exists:
-      | source             | destination        |
+      | source            | destination       |
       | admin@example.org | louis@example.org |
     And the following ReservedName exists:
       | name      |

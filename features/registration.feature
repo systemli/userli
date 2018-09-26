@@ -3,16 +3,16 @@ Feature: registration
   Background:
     Given the database is clean
     And the following Domain exists:
-      | name         |
+      | name        |
       | example.org |
     And the following User exists:
-      | email              | password | roles      |
+      | email             | password | roles      |
       | louis@example.org | asdasd   | ROLE_ADMIN |
     And the following Voucher exists:
-      | code | user               |
+      | code | user              |
       | TEST | louis@example.org |
     And the following Alias exists:
-      | source             | destination       |
+      | source            | destination       |
       | alias@example.org | goto@example.org |
     And the following ReservedName exists:
       | name      |
@@ -37,7 +37,7 @@ Feature: registration
     When I am on "/login"
     And I fill in the following:
       | username | user1@example.org |
-      | password | P4ssW0rt!!!1       |
+      | password | P4ssW0rt!!!1      |
     And I press "Sign in"
 
     Then I should be on "/"
@@ -61,7 +61,7 @@ Feature: registration
     When I am on "/register"
     And I fill in the following:
       | registration[voucher]               | TEST                 |
-      | registration[email]                 | user@gibtesnicht.org |
+      | registration[email]                 | user@nonexistant.org |
       | registration[plainPassword][first]  | P4ssW0rt!!!1         |
       | registration[plainPassword][second] | P4ssW0rt!!!1         |
     And I press "Submit"

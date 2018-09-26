@@ -3,10 +3,10 @@ Feature: Login
   Background:
     Given the database is clean
     And the following Domain exists:
-      | name         |
+      | name        |
       | example.org |
     And the following User exists:
-      | email                | password | roles        |
+      | email               | password | roles        |
       | louis@example.org   | asdasd   | ROLE_ADMIN   |
       | support@example.org | asdasd   | ROLE_SUPPORT |
       | user@example.org    | asdasd   | ROLE_USER    |
@@ -16,7 +16,7 @@ Feature: Login
     When I am on "/login"
     And I fill in the following:
       | username | louis@example.org |
-      | password | asdasd             |
+      | password | asdasd            |
     And I press "Sign in"
 
     Then I should be on "/"
@@ -28,7 +28,7 @@ Feature: Login
     When I am on "/"
     And I fill in the following:
       | username | louis@example.org |
-      | password | asdasd             |
+      | password | asdasd            |
     And I press "Sign in"
 
     Then I should be on "/"
@@ -40,7 +40,7 @@ Feature: Login
     When I am on "/login"
     And I fill in the following:
       | username | louis@example.org |
-      | password | test123            |
+      | password | test123           |
     And I press "Sign in"
 
     Then I should see text matching "Wrong login details"
@@ -50,7 +50,7 @@ Feature: Login
     When I am on "/login"
     When I fill in the following:
       | username | user@example.org |
-      | password | asdasd            |
+      | password | asdasd           |
     And I press "Sign in"
 
     Then I should be on "/"
@@ -61,7 +61,7 @@ Feature: Login
     When I am on "/login"
     When I fill in the following:
       | username | support@example.org |
-      | password | asdasd               |
+      | password | asdasd              |
     And I press "Sign in"
 
     Then I should be on "/"
@@ -81,12 +81,12 @@ Feature: Login
   @login
   Scenario: Login with special characters in password
     When the following User exists:
-      | email                | password | roles     |
+      | email               | password | roles     |
       | special@example.org | paßwort  | ROLE_USER |
     And I am on "/login"
     And I fill in the following:
       | username | special@example.org |
-      | password | paßwort              |
+      | password | paßwort             |
     And I press "Sign in"
 
     Then I should be on "/"
