@@ -185,10 +185,6 @@ class UserAdmin extends Admin
      */
     public function delete($user)
     {
-        if (!$user instanceof User) {
-            throw new RuntimeException('The object is not a User');
-        }
-
         $this->deleteHandler->deleteUser($user);
     }
 
