@@ -4,16 +4,16 @@ Feature: User
     Given the database is clean
     And the following Domain exists:
       | name         |
-      | systemli.org |
+      | example.org |
     And the following User exists:
       | email                | password | roles        |
-      | admin@systemli.org   | asdasd   | ROLE_ADMIN   |
-      | user@systemli.org    | asdasd   | ROLE_USER    |
-      | support@systemli.org | asdasd   | ROLE_SUPPORT |
+      | admin@example.org   | asdasd   | ROLE_ADMIN   |
+      | user@example.org    | asdasd   | ROLE_USER    |
+      | support@example.org | asdasd   | ROLE_SUPPORT |
 
   @password-change
   Scenario: Change password
-    When I am authenticated as "user@systemli.org"
+    When I am authenticated as "user@example.org"
     And I am on "/"
     And I fill in the following:
       | password_change_password           | asdasd       |
@@ -26,7 +26,7 @@ Feature: User
     And the response status code should not be 403
 
   Scenario: Delete Account
-    When I am authenticated as "user@systemli.org"
+    When I am authenticated as "user@example.org"
     And I am on "/delete"
     And I fill in the following:
       | delete_password | asdasd |
@@ -36,7 +36,7 @@ Feature: User
     And the response status code should not be 403
 
     And I fill in the following:
-      | username | user@systemli.org |
+      | username | user@example.org |
       | password | asdasd            |
     And I press "Sign in"
 
@@ -45,7 +45,7 @@ Feature: User
     And the response status code should not be 403
 
   Scenario: Create voucher as Admin
-    When I am authenticated as "admin@systemli.org"
+    When I am authenticated as "admin@example.org"
     And I am on "/"
     And I press "Create voucher"
 
@@ -54,7 +54,7 @@ Feature: User
     And the response status code should be 200
 
   Scenario: Create voucher as Support
-    When I am authenticated as "support@systemli.org"
+    When I am authenticated as "support@example.org"
     And I am on "/"
     And I press "Create voucher"
 
@@ -63,13 +63,13 @@ Feature: User
     And the response status code should be 200
 
   Scenario: Voucher button as Support
-    When I am authenticated as "support@systemli.org"
+    When I am authenticated as "support@example.org"
     And I am on "/"
 
     Then I should see text matching "Create voucher"
 
   Scenario: Voucher button as User
-    When I am authenticated as "user@systemli.org"
+    When I am authenticated as "user@example.org"
     And I am on "/"
 
     Then I should not see text matching "Create voucher"

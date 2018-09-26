@@ -1,19 +1,24 @@
-app/bootstrap.php.cache
-app/config/parameters.yml
-app/data.sqlite
-app/logs/*
-bin/*
-!bin/user-accounts
-!bin/user-vouchers
+/bin/*
 !/bin/console
+!/bin/phpunit
+!/bin/user-accounts
+!/bin/user-vouchers
 node_modules
+public/build
+public/components/*
 vagrant/.vagrant/
 vagrant/ansible/playbook.retry
-var/bootstrap.php.cache
-var/logs
-vendor/*
-web/build
-web/bundles
-web/components/*
 translations/
 .php_cs.cache
+
+###> symfony/phpunit-bridge ###
+.phpunit
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> symfony/framework-bundle ###
+/.env
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###

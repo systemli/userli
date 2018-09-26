@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'Form/fields.html.twig' %}
+
+{% block subtitle %}{{ "registration.title"|trans({'%domain%': domain}) }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-2 col-md-3 alert alert-info"
+             style="padding-top:0;margin-top:15px;">
+            <h3>{{ "registration.information"|trans }}</h3>
+
+            <p>{{ "registration.information-intro"|trans({'%domain%': domain, '%project_name%': project_name, '%project_url%': project_url})|raw }}</p>
+
+            <p>{{ "registration.information-password-policy"|trans|raw }}</p>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            {{ form_start(form) }}
+
+            <h2 class="form-signin-heading">{{ "form.register-header"|trans }}</h2>
+
+            {{ form_errors(form) }}
+
+            <div class="form-group">
+                {{ form_label(form.voucher) }}
+                {{ form_errors(form.voucher) }}
+                {{ form_widget(form.voucher, {'attr': {'class': 'form-control input-lg', 'autofocus': '' }}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.email) }}
+                {{ form_errors(form.email) }}
+                <div class="input-group">
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control input-lg' }}) }}
+                    <div class="input-group-addon input-lg">@{{ domain }}</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.plainPassword.first) }}
+                {{ form_errors(form.plainPassword.first) }}
+                {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control input-lg' }}) }}
+
+                {{ form_label(form.plainPassword.second) }}
+                {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control input-lg' }}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_widget(form.submit, {'attr': {'class': 'btn btn-lg btn-primary btn-block' }}) }}
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

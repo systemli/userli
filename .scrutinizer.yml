@@ -6,21 +6,20 @@ checks:
 build:
     environment:
         mysql: 5.5
+        php: 7.1
     dependencies:
         override:
             #- git submodule update --init --recursive 
             - composer install
     project_setup:
         override:
-            - cp app/config/parameters.yml.dist app/config/parameters.yml
-            - mysql -uroot -e 'CREATE DATABASE mail_test;'
-            - mysql -uroot -e "CREATE USER 'mail_test'@'localhost' IDENTIFIED BY 'password';"
-            - mysql -uroot -e "GRANT ALL PRIVILEGES on mail_test.* to mail_test@localhost;"
+            - mysql -uroot -e 'CREATE DATABASE mail;'
+            - mysql -uroot -e "CREATE USER 'mail'@'localhost' IDENTIFIED BY 'password';"
+            - mysql -uroot -e "GRANT ALL PRIVILEGES on mail.* to mail@localhost;"
     nodes:
         analysis:
             tests:
                 override:
-                    - bin/behat -f progress
                     - php-scrutinizer-run
                     #- phpcs-run
         coverage:
@@ -34,13 +33,14 @@ build:
 
 filter:
     excluded_paths:
-        - app/*
         - assets/*
+        - config/*
         - bin/*
         - features/*
-        - src/AppBundle/DataFixtures/*
-        - src/AppBundle/Resources/*
+        - public/*
+        - src/DataFixtures/*
         - tests/*
+        - templates/*
         - vagrant/*
+        - var/*
         - vendor/*
-        - web/*

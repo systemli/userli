@@ -1,0 +1,26 @@
+login:
+    path:     /login
+    controller: App\Controller\SecurityController::loginAction
+
+login_check:
+    path:     /login_check
+
+logout:
+    path:     /logout
+
+index:
+    path:     /
+    controller: App\Controller\StartController::indexAction
+
+register:
+    path:     /register
+    controller: App\Controller\RegistrationController::registerAction
+
+welcome:
+    path:     /welcome
+    controller: App\Controller\RegistrationController::welcomeAction
+
+delete:
+    path:     /delete
+    controller: App\Controller\DeleteController::deleteAction
+

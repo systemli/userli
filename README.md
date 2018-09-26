@@ -4,20 +4,24 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/systemli/user-management/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/systemli/user-management/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/systemli/user-management/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/systemli/user-management/?branch=master)
 
-## Installation
+## Set up Dev Environment
 
 Requirements: Vagrant (VirtualBox)
 
     git submodule update --init
     cd vagrant && vagrant up && vagrant ssh
 
-    cd /vagrant
-    
     # create database and schema
-    bin/console doctrine:schema:create --env dev
+    bin/console doctrine:schema:create
     
     # load sample data
     bin/console doctrine:fixtures:load
+
+    # get node modules
+    yarn
+
+    # update assets
+    yarn encore dev
 
 The `doctrine:fixtures:load` command will create four new accounts with
 corresponding roles (`admin`, `user`, `support`, `suspicious`) as well
@@ -25,21 +29,14 @@ as some random aliases and vouchers. The domain for all accounts is
 "example.org" and the password is "password".
 
 If you want to see more details about how the users are created, see
-`src/AppBundle/DataFixtures`.
+`src/DataFixtures`.
+
+Visit you local instance at http://192.168.33.99/.
 
 ## Tests
 
     cd vagrant && vagrant up && vagrant ssh
-    cd /vagrant
-    bin/phpunit
-    bin/behat -f progress
-
-## Update assets
-
-    cd vagrant && vagrant up && vagrant ssh
-    cd /vagrant
-    yarn  # if you don't already have node_modules
-    yarn encore dev
+    composer test
 
 ## Commands
 

@@ -1,78 +1,106 @@
 {
     "name": "systemli/management",
     "type": "project",
-    "autoload": {
-        "psr-4": { "": "src/" },
-        "files": ["app/AppKernel.php", "app/AppCache.php"]
-    },
-    "autoload-dev": {
-        "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
-    },
+    "license": "AGPL",
+    "description": "Symfony-based webapp to manage mail users and their interactions",
     "require": {
-        "php": ">=5.6",
+        "php": "^7.1.3",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
         "doctrine/doctrine-fixtures-bundle": "~2.3",
         "doctrine/orm": "^2.5",
-        "egulias/email-validator": "~1.2",
-        "incenteev/composer-parameter-handler": "^2.0",
         "ircmaxell/password-compat": "~1.0.3",
         "knplabs/knp-menu-bundle": "~2.0",
         "mopa/bootstrap-bundle": "~3.0",
         "nelmio/security-bundle": "^2.5",
         "robloach/component-installer": "*",
-        "sensio/distribution-bundle": "^5.0.19",
         "sensio/framework-extra-bundle": "^5.0.0",
         "sonata-project/admin-bundle": "~3.16",
         "sonata-project/doctrine-orm-admin-bundle": "~3.1",
+        "symfony/console": "*",
+        "symfony/flex": "^1.1",
+        "symfony/form": "*",
+        "symfony/framework-bundle": "*",
         "symfony/monolog-bundle": "^3.1.0",
         "symfony/polyfill-apcu": "^1.0",
-        "symfony/swiftmailer-bundle": "^2.6.4",
-        "symfony/symfony": "3.4.*",
+        "symfony/security-bundle": "*",
+        "symfony/security-csrf": "*",
+        "symfony/swiftmailer-bundle": "3.1.*",
+        "symfony/templating": "*",
+        "symfony/translation": "*",
+        "symfony/validator": "*",
+        "symfony/yaml": "*",
         "twbs/bootstrap": "~3.3.0",
         "twig/twig": "^1.0||^2.0"
     },
     "require-dev": {
-        "behat/mink-extension": "dev-master",
-        "behat/mink-goutte-driver": "*",
-        "behat/symfony2-extension": "dev-master",
-        "liip/functional-test-bundle": "~1.10",
-        "phpunit/phpunit": "~4.5",
-        "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0"
-    },
-    "scripts": {
-        "symfony-scripts": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
-            "Mopa\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::postInstallSymlinkTwitterBootstrap",
-            "ComponentInstaller\\Installer::postAutoloadDump"
-        ],
-        "post-install-cmd": [
-            "@symfony-scripts"
-        ],
-        "post-update-cmd": [
-            "@symfony-scripts"
-        ]
+        "behat/behat": "^3.5",
+        "behat/mink": "dev-master",
+        "behat/mink-browserkit-driver": "^1.3",
+        "behat/mink-extension": "^2.3",
+        "behat/symfony2-extension": "^2.1",
+        "symfony/debug-bundle": "*",
+        "symfony/dotenv": "*",
+        "symfony/phpunit-bridge": "*",
+        "symfony/web-profiler-bundle": "*"
     },
     "config": {
         "bin-dir": "bin",
-        "platform": {
-            "php": "5.6"
+        "component-dir": "public/components",
+        "component-baseurl": "/components",
+        "preferred-install": {
+            "*": "dist"
         },
-        "sort-packages": true,
-        "component-dir": "web/components",
-        "component-baseurl": "/components"
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "replace": {
+        "paragonie/random_compat": "2.*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php71": "*",
+        "symfony/polyfill-php70": "*",
+        "symfony/polyfill-php56": "*"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ],
+        "test": {
+            "phpunit": "bin/phpunit",
+            "behat": "DATABASE_URL=mysql://mail_test:password@127.0.0.1:3306/mail_test bin/behat -f progress"
+        }
+    },
+    "conflict": {
+        "symfony/symfony": "*"
     },
     "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "4.1.*"
+        },
         "symfony-app-dir": "app",
         "symfony-bin-dir": "bin",
         "symfony-var-dir": "var",
-        "symfony-web-dir": "web",
+        "symfony-web-dir": "public",
         "symfony-assets-install": "relative",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"

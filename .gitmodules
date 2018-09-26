@@ -10,3 +10,9 @@
 [submodule "vagrant/ansible/roles/andyceo.phpcsfixer"]
 	path = vagrant/ansible/roles/andyceo.phpcsfixer
 	url = https://github.com/andyceo/ansible-role-php-cs-fixer.git
+[submodule "vagrant/ansible/roles/manala.php"]
+	path = vagrant/ansible/roles/manala.php
+	url = https://github.com/manala/ansible-role-php.git
+[submodule "vagrant/ansible/roles/manala.apt"]
+	path = vagrant/ansible/roles/manala.apt
+	url = https://github.com/manala/ansible-role-apt.git

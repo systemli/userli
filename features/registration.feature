@@ -4,16 +4,16 @@ Feature: registration
     Given the database is clean
     And the following Domain exists:
       | name         |
-      | systemli.org |
+      | example.org |
     And the following User exists:
       | email              | password | roles      |
-      | louis@systemli.org | asdasd   | ROLE_ADMIN |
+      | louis@example.org | asdasd   | ROLE_ADMIN |
     And the following Voucher exists:
       | code | user               |
-      | TEST | louis@systemli.org |
+      | TEST | louis@example.org |
     And the following Alias exists:
       | source             | destination       |
-      | alias@systemli.org | goto@systemli.org |
+      | alias@example.org | goto@example.org |
     And the following ReservedName exists:
       | name      |
       | webmaster |
@@ -36,7 +36,7 @@ Feature: registration
 
     When I am on "/login"
     And I fill in the following:
-      | username | user1@systemli.org |
+      | username | user1@example.org |
       | password | P4ssW0rt!!!1       |
     And I press "Sign in"
 

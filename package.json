@@ -1,6 +1,7 @@
 {
   "devDependencies": {
     "@symfony/webpack-encore": "^0.20.1",
+    "copy-webpack-plugin": "^4.5.2",
     "jquery": "^3.3.1"
   }
 }
