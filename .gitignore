@@ -3,6 +3,9 @@
 !/bin/phpunit
 !/bin/user-accounts
 !/bin/user-vouchers
+config/services_dev.yaml
+config/services_prod.yaml
+config/services_test.yaml
 node_modules
 public/build
 public/components/*
