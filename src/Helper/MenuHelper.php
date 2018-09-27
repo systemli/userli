@@ -10,7 +10,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  *
  * @author doobry <doobry@systemli.org>
  */
-final class MenuHelper
+class MenuHelper
 {
     /**
      * @var TranslatorInterface
