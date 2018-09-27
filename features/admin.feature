@@ -30,6 +30,8 @@ Feature: Admin
     And I am on "/admin/dashboard"
     Then I should be on "/admin/dashboard"
     And the response status code should be 200
+    And I should see text matching "Logout"
+    And I should see text matching "Return to Index"
 
     When I am authenticated as "support@example.org"
     And I am on "/admin/dashboard"
@@ -140,10 +142,3 @@ Feature: Admin
 
     When I am on "/admin/user/1/delete"
     Then the response status code should be 404
-
-  @admin
-  Scenario: Logout as admin
-    When I am authenticated as "louis@example.org"
-    And I am on "/admin/dashboard"
-    And I should see text matching "Logout"
-    And I should see text matching "Return to Index"
