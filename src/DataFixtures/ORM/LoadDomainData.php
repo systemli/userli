@@ -12,7 +12,6 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class LoadDomainData extends AbstractFixture implements OrderedFixtureInterface
 {
-
     private $domains = [
         'example.com',
         'example.org',

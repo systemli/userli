@@ -37,8 +37,8 @@ class LoadAliasData extends AbstractFixture implements OrderedFixtureInterface, 
 
         for ($i = 1; $i < 5; ++$i) {
             $alias = new Alias();
-            $alias->setSource(sprintf('alias%d@' . $domain, $i));
-            $alias->setDestination('admin@' . $domain);
+            $alias->setSource(sprintf('alias%d@'.$domain, $i));
+            $alias->setDestination('admin@'.$domain);
             $alias->setDomain($domain);
 
             $manager->persist($alias);
