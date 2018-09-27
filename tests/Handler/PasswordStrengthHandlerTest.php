@@ -9,6 +9,7 @@ class PasswordStrengthHandlerTest extends TestCase
 {
     /**
      * @dataProvider dataProvider
+     *
      * @param $input
      * @param $expected
      */
