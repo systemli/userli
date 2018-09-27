@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
- * @author louis <louis@systemli.org>
+ * Class UserProvider
  */
 class UserProvider implements UserProviderInterface
 {
@@ -24,10 +24,10 @@ class UserProvider implements UserProviderInterface
     private $manager;
 
     /**
-     * Constructor.
+     * UserProvider constructor.
      *
      * @param ObjectManager $manager
-     * @param string        $defaultDomain
+     * @param $defaultDomain
      */
     public function __construct(ObjectManager $manager, $defaultDomain)
     {
@@ -61,12 +61,6 @@ class UserProvider implements UserProviderInterface
         if (!$user instanceof User) {
             throw new UnsupportedUserException(
                 sprintf('Expected an instance of App\Entity\User, but got "%s".', get_class($user))
-            );
-        }
-
-        if (!$this->supportsClass(get_class($user))) {
-            throw new UnsupportedUserException(
-                sprintf('Expected an instance of %s, but got "%s".', User::class, get_class($user))
             );
         }
 
