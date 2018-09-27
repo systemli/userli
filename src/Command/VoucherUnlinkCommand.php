@@ -54,7 +54,7 @@ class VoucherUnlinkCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $vouchers = $this->getVouchers();
+        $vouchers = $this->manager->getRepository(Voucher::class)->getOldVouchers();
         $suspiciousChildren = [];
 
         $output->writeln(
@@ -105,20 +105,5 @@ class VoucherUnlinkCommand extends Command
         if (false === $input->getOption('dry-run')) {
             $this->manager->flush();
         }
-    }
-
-    /**
-     * @return Voucher[]|array
-     */
-    private function getVouchers()
-    {
-        return $this->manager->getRepository('App:Voucher')
-            ->createQueryBuilder('voucher')
-            ->join('voucher.invitedUser', 'invitedUser')
-            ->where('voucher.redeemedTime < :date')
-            ->setParameter('date', new \DateTime('-3 months'))
-            ->orderBy('voucher.redeemedTime')
-            ->getQuery()
-            ->getResult();
     }
 }

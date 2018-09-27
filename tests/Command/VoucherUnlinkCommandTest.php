@@ -45,49 +45,16 @@ class VoucherUnlinkCommandTest extends KernelTestCase
 
     public function getManager()
     {
+        $manager = $this->getMockBuilder(ObjectManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $repository = $this->getMockBuilder(VoucherRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $queryBuilder = $this->getMockBuilder(QueryBuilder::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $repository->method('createQueryBuilder')
-            ->with('voucher')
-            ->will($this->returnValue($queryBuilder));
-
-        // We use QueryBuilder as Fluent Interface
-        // several times, so we need to make it sequence
-        $queryBuilder->expects($this->at(0))
-            ->method('join')
-            ->will($this->returnValue($queryBuilder));
-        $queryBuilder->expects($this->at(1))
-            ->method('where')
-            ->will($this->returnValue($queryBuilder));
-        $queryBuilder->expects($this->at(2))
-            ->method('setParameter')
-            ->will($this->returnValue($queryBuilder));
-        $queryBuilder->expects($this->at(3))
-            ->method('orderBy')
-            ->will($this->returnValue($queryBuilder));
-
-        // We use AbstractQuery
-        $getQuery = $this->getMockBuilder(AbstractQuery::class)
-            ->setMethods(array('getResult'))
-            ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
-        $queryBuilder->expects($this->at(4))
-            ->method('getQuery')
-            ->will($this->returnValue($getQuery));
-
-        $getQuery->expects($this->once())
-            ->method('getResult')
+        $repository->method('getOldVouchers')
             ->will($this->returnValue($this->getResult()));
-
-        $manager = $this->getMockBuilder(ObjectManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $manager->expects($this->any())->method('getRepository')->willReturn($repository);
 
