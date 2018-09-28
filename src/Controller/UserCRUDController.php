@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Remover\VoucherRemover;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,17 +21,17 @@ class UserCRUDController extends CRUDController
      *
      * @throws \Doctrine\ORM\Query\QueryException
      */
-    public function batchActionRemoveVouchers(ProxyQueryInterface $selectedModelQuery, Request $request)
+    public function batchActionRemoveVouchers(ProxyQueryInterface $selectedModelQuery, Request $request = null)
     {
         $this->admin->checkAccess('edit');
 
         $users = $selectedModelQuery->execute();
 
-        $this->get('App\Remover\VoucherRemover')->removeUnredeemedVouchersByUsers($users);
+        $this->get(VoucherRemover::class)->removeUnredeemedVouchersByUsers($users);
 
         $this->addFlash(
             'sonata_flash_success',
-            'flash_batch_remove_vouchers_success'
+            $this->admin->trans('flash_batch_remove_vouchers_success')
         );
 
         return new RedirectResponse(

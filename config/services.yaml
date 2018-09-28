@@ -99,6 +99,11 @@ services:
         arguments:
             $navbarLeft: '%navbar_left%'
 
+    App\Remover\VoucherRemover:
+        arguments:
+            - '@Doctrine\Common\Persistence\ObjectManager'
+        public: true
+
     App\Security\UserProvider:
         arguments:
             $defaultDomain: "%env(DOMAIN)%"
