@@ -60,6 +60,7 @@ security:
         ROLE_SUPPORT:
             - ROLE_USER
         ROLE_ADMIN:
+            - ROLE_SONATA_ADMIN
             - ROLE_USRMGMT_ADMIN_USER_ADMIN
             - ROLE_USRMGMT_ADMIN_ALIAS_ADMIN
             - ROLE_USRMGMT_ADMIN_DOMAIN_ADMIN

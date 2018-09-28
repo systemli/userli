@@ -13,7 +13,6 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
-use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -185,10 +184,6 @@ class UserAdmin extends Admin
      */
     public function delete($user)
     {
-        if (!$user instanceof User) {
-            throw new RuntimeException('The object is not a User');
-        }
-
         $this->deleteHandler->deleteUser($user);
     }
 

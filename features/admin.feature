@@ -30,6 +30,8 @@ Feature: Admin
     And I am on "/admin/dashboard"
     Then I should be on "/admin/dashboard"
     And the response status code should be 200
+    And I should see text matching "Logout"
+    And I should see text matching "Return to Index"
 
     When I am authenticated as "support@example.org"
     And I am on "/admin/dashboard"

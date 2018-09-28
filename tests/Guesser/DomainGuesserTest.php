@@ -40,7 +40,7 @@ class DomainGuesserTest extends TestCase
 
         $repository->expects($this->any())->method('findByName')->willReturnCallback(
             function ($domain) {
-                if ($domain === 'systemli.org') {
+                if ('systemli.org' === $domain) {
                     $domain = new Domain();
                     $domain->setName('systemli.org');
 

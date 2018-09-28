@@ -58,3 +58,9 @@ Get more information about each command by running:
 
 You can override translation strings individually by putting them into
 override localization files at `translations/<lang>/messages.<lang>.yml`.
+
+## Coding Style
+
+Adjust coding style by
+
+    php-cs-fixer fix src --rules=@Symfony
