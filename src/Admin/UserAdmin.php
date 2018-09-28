@@ -72,7 +72,9 @@ class UserAdmin extends Admin
                 'expanded' => true,
                 'label' => 'form.roles',
             ))
-            ->add('quota')
+            ->add('quota', null, [
+                'help' => 'Custom mailbox quota in MB'
+            ])
             ->add('deleted');
     }
 
