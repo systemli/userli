@@ -51,7 +51,7 @@ class User implements UserInterface
      */
     public function getRoles()
     {
-        return !empty($this->roles) ? $this->roles : Roles::USER;
+        return !empty($this->roles) ? $this->roles : [Roles::USER];
     }
 
     /**
