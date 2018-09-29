@@ -39,6 +39,11 @@ form:
   delete-password: Password
   create-voucher: Create voucher
 
+navbar_left:
+  about-us:
+    text: About us
+    link: https://www.example.org/en/about-us
+
 navbar_right:
   login: Login
   logout: Logout

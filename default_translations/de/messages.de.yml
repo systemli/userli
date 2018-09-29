@@ -39,6 +39,11 @@ form:
   delete-password: Passwort
   create-voucher: Erstelle Voucher
 
+navbar_left:
+  about-us:
+    text: Über uns
+    link: https://www.example.org/de/about-us
+
 navbar_right:
   login: Anmelden
   logout: Abmelden

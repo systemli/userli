@@ -42,8 +42,8 @@ class StatisticsBlockService extends AbstractBlockService
      * @param VoucherCounter  $voucherCounter
      */
     public function __construct(
-        $name = null,
-        EngineInterface $templating = null,
+        $name,
+        EngineInterface $templating,
         ObjectManager $manager,
         UserCounter $userCounter,
         VoucherCounter $voucherCounter

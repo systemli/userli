@@ -7,8 +7,8 @@ parameters:
     locale: 'en'
     navbar_left:
         -
-            name: 'About us'
-            url: 'https://www.example.org/about'
+            name: 'navbar_left.about-us.text'
+            url: 'navbar_left.about-us.link'
 
 
 services:
@@ -98,6 +98,11 @@ services:
     App\Menu\MenuBuilder:
         arguments:
             $navbarLeft: '%navbar_left%'
+
+    App\Remover\VoucherRemover:
+        arguments:
+            - '@Doctrine\Common\Persistence\ObjectManager'
+        public: true
 
     App\Security\UserProvider:
         arguments:
