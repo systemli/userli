@@ -9,25 +9,21 @@ use App\Enum\Roles;
 use App\Handler\SuspiciousChildrenHandler;
 use App\Repository\VoucherRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\QueryBuilder;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class VoucherUnlinkCommandTest extends KernelTestCase
+class VoucherUnlinkCommandTest extends TestCase
 {
     public function testExecute()
     {
-        $kernel = self::bootKernel();
-        $application = new Application($kernel);
-
         $manager = $this->getManager();
         $handler = $this->getMockBuilder(SuspiciousChildrenHandler::class)
             ->disableOriginalConstructor()
             ->getMock();
 
+        $application = new Application();
         $application->add(new VoucherUnlinkCommand($manager, $handler));
 
         $command = $application->find('usrmgmt:voucher:unlink');
