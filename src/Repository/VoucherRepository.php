@@ -86,4 +86,18 @@ class VoucherRepository extends EntityRepository
     {
         return $this->findBy(['user' => $user]);
     }
+
+    /**
+     * @return Voucher[]|array
+     */
+    public function getOldVouchers()
+    {
+        return $this->createQueryBuilder('voucher')
+            ->join('voucher.invitedUser', 'invitedUser')
+            ->where('voucher.redeemedTime < :date')
+            ->setParameter('date', new \DateTime('-3 months'))
+            ->orderBy('voucher.redeemedTime')
+            ->getQuery()
+            ->getResult();
+    }
 }
