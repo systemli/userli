@@ -314,6 +314,8 @@ reservedNames:
   - random
   - register
   - registration
+  - report
+  - reports
   - robot
   - robots
   - root
