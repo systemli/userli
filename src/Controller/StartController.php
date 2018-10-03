@@ -42,16 +42,16 @@ class StartController extends Controller
         $voucherRepository = $this->get('doctrine')->getRepository('App:Voucher');
         $vouchers = $voucherRepository->findOrCreateByUser($user);
 
+        $voucherCreateForm = $this->getVoucherCreateForm();
+
         $passwordChange = new PasswordChange();
         $passwordChangeForm = $this->getPasswordChangeForm($passwordChange);
-
-        $voucherCreateForm = $this->getVoucherCreateForm();
 
         return $this->render('Start/index.html.twig', array(
             'user' => $user,
             'vouchers' => $vouchers,
-            'form' => $passwordChangeForm->createView(),
             'voucher_form' => $voucherCreateForm->createView(),
+            'password_form' => $passwordChangeForm->createView(),
         ));
     }
 
@@ -77,12 +77,11 @@ class StartController extends Controller
                         $request->getSession()->getFlashBag()->add('success', 'flashes.voucher-creation-successful');
                     }
                 }
-
                 return $this->redirect($this->generateUrl('index'));
             }
-        } else {
-            return $this->redirect($this->generateUrl('index'));
         }
+
+        return $this->redirect($this->generateUrl('index'));
     }
 
     /**
@@ -115,21 +114,22 @@ class StartController extends Controller
                 );
 
                 $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
-
-                return $this->redirect($this->generateUrl('index'));
             }
-        } else {
-            return $this->redirect($this->generateUrl('index'));
         }
+
+        return $this->redirect($this->generateUrl('index'));
     }
 
+    /**
+     * @return \Symfony\Component\Form\FormInterface
+     */
     private function getVoucherCreateForm()
     {
         $form = $this->createForm(
             VoucherCreateType::class,
             new VoucherCreate(),
             [
-                'action' => $this->generateUrl('voucher_create'),
+                'action' => $this->generateUrl('voucher_new'),
                 'method' => 'post',
             ]
         );
