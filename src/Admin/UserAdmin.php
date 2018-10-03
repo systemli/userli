@@ -13,6 +13,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -30,7 +31,6 @@ class UserAdmin extends Admin
      * {@inheritdoc}
      */
     protected $baseRoutePattern = 'user';
-
     /**
      * {@inheritdoc}
      */
@@ -39,10 +39,13 @@ class UserAdmin extends Admin
         '_sort_order' => 'DESC',
         '_sort_by' => 'creationTime',
     );
-
-    /** @var PasswordUpdater */
+    /**
+     * @var PasswordUpdater
+     */
     private $passwordUpdater;
-    /** @var DeleteHandler */
+    /**
+     * @var DeleteHandler
+     */
     private $deleteHandler;
 
     /**
@@ -65,7 +68,8 @@ class UserAdmin extends Admin
     {
         $formMapper
             ->add('email', EmailType::class, array('disabled' => !$this->isNewObject()))
-            ->add('plainPassword', PasswordType::class, array('label' => 'form.password', 'required' => $this->isNewObject()))
+            ->add('plainPassword', PasswordType::class,
+                array('label' => 'form.password', 'required' => $this->isNewObject()))
             ->add('roles', ChoiceType::class, array(
                 'choices' => [Roles::getAll()],
                 'multiple' => true,
@@ -75,7 +79,7 @@ class UserAdmin extends Admin
             ->add('quota', null, [
                 'help' => 'Custom mailbox quota in MB'
             ])
-            ->add('deleted');
+            ->add('deleted', CheckboxType::class, ['disabled' => true]);
     }
 
     /**
@@ -135,14 +139,6 @@ class UserAdmin extends Admin
             ->add('creationTime')
             ->add('updatedTime')
             ->add('deleted');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function configureRoutes(RouteCollection $collection)
-    {
-        $collection->remove('delete');
     }
 
     /**

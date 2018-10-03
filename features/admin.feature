@@ -54,7 +54,7 @@ Feature: Admin
   Scenario: Access User List and able to create a User as Support
     When I am authenticated as "support@example.org"
     And I am on "/admin/user/list"
-    Then the response status code should be 403 
+    Then the response status code should be 403
 
     When I am on "/admin/user/create"
     Then the response status code should be 403
@@ -135,19 +135,23 @@ Feature: Admin
     Then the response status code should be 200
 
   @admin
-  Scenario: Admin can't remove Domains and Vouchers
+  Scenario: Admin can't remove Domains
     When I am authenticated as "louis@example.org"
     And I am on "/admin/domain/1/delete"
     Then the response status code should be 404
 
-    When I am on "/admin/user/1/delete"
-    Then the response status code should be 404
+  @admin
+  Scenario: Admin can remove Users
+    When I am authenticated as "louis@example.org"
+    And I am on "/admin/user/1/delete"
+    Then the response status code should be 200
 
   @admin
   Scenario: Remove unused vouchers
     When I am authenticated as "louis@example.org"
     And I am on "/admin/user/list"
     And I check "all_elements"
+    And I select "remove_vouchers" from "action"
     And I press "OK"
     Then I should be on "/admin/user/batch"
     And I press "Yes, execute"
