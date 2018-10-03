@@ -2,30 +2,53 @@
 
 namespace App\Controller;
 
+use App\Creator\VoucherCreator;
 use App\Entity\User;
-use App\Entity\Voucher;
-use App\Event\Events;
-use App\Event\UserEvent;
+use App\Exception\ValidationException;
 use App\Form\Model\PasswordChange;
 use App\Form\Model\VoucherCreate;
 use App\Form\PasswordChangeType;
 use App\Form\VoucherCreateType;
+use App\Handler\VoucherHandler;
 use App\Helper\PasswordUpdater;
-use App\Repository\VoucherRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @author louis <louis@systemli.org>
+ * Class StartController
  */
 class StartController extends Controller
 {
     /**
+     * @var PasswordUpdater
+     */
+    private $passwordUpdater;
+    /**
+     * @var VoucherHandler
+     */
+    private $voucherHandler;
+    /**
+     * @var VoucherCreator
+     */
+    private $voucherCreator;
+
+    /**
+     * StartController constructor.
+     *
+     * @param PasswordUpdater $passwordUpdater
+     * @param VoucherHandler $voucherHandler
+     * @param VoucherCreator $voucherCreator
+     */
+    public function __construct(PasswordUpdater $passwordUpdater, VoucherHandler $voucherHandler, VoucherCreator $voucherCreator) {
+        $this->passwordUpdater = $passwordUpdater;
+        $this->voucherHandler = $voucherHandler;
+        $this->voucherCreator = $voucherCreator;
+    }
+
+    /**
      * @param Request $request
      * @return Response
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function indexAction(Request $request)
     {
@@ -35,9 +58,6 @@ class StartController extends Controller
 
         /** @var User $user */
         $user = $this->getUser();
-
-        $voucherRepository = $this->get('doctrine')->getRepository('App:Voucher');
-        $vouchers = $voucherRepository->findOrCreateByUser($user);
 
         $voucherCreateForm = $this->createForm(
             VoucherCreateType::class,
@@ -63,56 +83,53 @@ class StartController extends Controller
             $passwordChangeForm->handleRequest($request);
 
             if ($voucherCreateForm->isSubmitted() && $voucherCreateForm->isValid()) {
-                $this->voucherCreateAction($request, $user, $voucherRepository);
+                $this->createVoucher($request, $user);
             } elseif ($passwordChangeForm->isSubmitted() && $passwordChangeForm->isValid()) {
-                $this->passwordChangeAction($request, $user, $passwordChange);
+                $this->changePassword($request, $user, $passwordChange->newPassword);
             }
         }
 
-        return $this->render('Start/index.html.twig', array(
-            'user' => $user,
-            'vouchers' => $vouchers,
-            'voucher_form' => $voucherCreateForm->createView(),
-            'password_form' => $passwordChangeForm->createView(),
-        ));
+        $vouchers = $this->voucherHandler->getVouchersByUser($user);
+
+        return $this->render(
+            'Start/index.html.twig', [
+                'user' => $user,
+                'vouchers' => $vouchers,
+                'voucher_form' => $voucherCreateForm->createView(),
+                'password_form' => $passwordChangeForm->createView(),
+            ]
+        );
     }
 
     /**
      * @param Request $request
      * @param User $user
-     * @param VoucherRepository $voucherRepository
-     * @return RedirectResponse
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    private function voucherCreateAction(Request $request, User $user, VoucherRepository $voucherRepository)
+    private function createVoucher(Request $request, User $user)
     {
         if ($this->isGranted('ROLE_SUPPORT')) {
-            $voucher = $voucherRepository->createByUser($user);
+            try {
+                $this->voucherCreator->create($user);
 
-            if ($voucher instanceof Voucher) {
                 $request->getSession()->getFlashBag()->add('success', 'flashes.voucher-creation-successful');
+            } catch (ValidationException $e) {
+                // Should not thrown
             }
         }
-        return $this->redirect($this->generateUrl('index'));
     }
 
     /**
      * @param Request $request
      * @param User $user
-     * @param PasswordChange $passwordChange
+     * @param string $password
      */
-    private function passwordChangeAction(Request $request, User $user, PasswordChange $passwordChange)
+    private function changePassword(Request $request, User $user, string $password)
     {
-        $user->setPlainPassword($passwordChange->newPassword);
+        $user->setPlainPassword($password);
 
-        $this->get(PasswordUpdater::class)->updatePassword($user);
+        $this->passwordUpdater->updatePassword($user);
 
         $this->getDoctrine()->getManager()->flush();
-
-        $this->get('event_dispatcher')->dispatch(
-            Events::MAIL_ACCOUNT_PASSWORD_CHANGED,
-            new UserEvent($user)
-        );
 
         $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
     }
