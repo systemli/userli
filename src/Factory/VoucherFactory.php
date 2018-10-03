@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Creator;
+namespace App\Factory;
 
+use App\Creator\VoucherCodeCreator;
 use App\Entity\User;
 use App\Entity\Voucher;
 
 /**
- * Class VoucherCreator.
+ * Interface VoucherFactory
  */
-class VoucherCreator
+class VoucherFactory
 {
     /**
      * @param User $user
-     *
      * @return Voucher
      */
-    public static function create(User $user)
+    public static function create(User $user): Voucher
     {
         $voucher = new Voucher();
         $voucher->setUser($user);

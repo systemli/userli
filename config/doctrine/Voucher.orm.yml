@@ -30,5 +30,3 @@ App\Entity\Voucher:
   indexes:
     code_idx:
       columns: ["code"]
-  lifecycleCallbacks:
-    prePersist: [updateCreationTime]

@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Creator\VoucherCreator;
+use App\Factory\VoucherFactory;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -35,7 +36,7 @@ class VoucherCreationCommand extends ContainerAwareCommand
         $manager = $this->getContainer()->get('doctrine')->getManager();
 
         for ($i = 1; $i <= $input->getOption('count'); ++$i) {
-            $voucher = VoucherCreator::create($user);
+            $voucher = VoucherFactory::create($user);
 
             $manager->persist($voucher);
         }

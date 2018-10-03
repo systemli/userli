@@ -6,6 +6,7 @@ use App\Creator\VoucherCreator;
 use App\Entity\User;
 use App\Entity\Voucher;
 use App\Enum\Roles;
+use App\Factory\VoucherFactory;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 
@@ -48,7 +49,7 @@ class VoucherRepository extends EntityRepository
 
         if ((($vouchersCount = count($vouchers = $this->findByUser($user))) < $limit) && ($user->getCreationTime() < new \DateTime('-7 days'))) {
             for ($i = 0; $i < ($limit - $vouchersCount); ++$i) {
-                $voucher = VoucherCreator::create($user);
+                $voucher = VoucherFactory::create($user);
 
                 $this->_em->persist($voucher);
                 $this->_em->flush();
@@ -69,7 +70,7 @@ class VoucherRepository extends EntityRepository
      */
     public function createByUser(User $user)
     {
-        $voucher = VoucherCreator::create($user);
+        $voucher = VoucherFactory::create($user);
 
         $this->_em->persist($voucher);
         $this->_em->flush();
