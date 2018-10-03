@@ -4,14 +4,6 @@ index:
     path:     /
     controller: App\Controller\StartController::indexAction
 
-password_change:
-    path:     /password/change
-    controller: App\Controller\StartController::passwordChangeAction
-
-voucher_new:
-    path:     /voucher/new
-    controller: App\Controller\StartController::voucherCreateAction
-
 # DeleteController
 
 user_delete:

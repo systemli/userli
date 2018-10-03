@@ -11,6 +11,7 @@ use App\Form\Model\VoucherCreate;
 use App\Form\PasswordChangeType;
 use App\Form\VoucherCreateType;
 use App\Helper\PasswordUpdater;
+use App\Repository\VoucherRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,9 +24,7 @@ class StartController extends Controller
 {
     /**
      * @param Request $request
-     *
-     * @return RedirectResponse|Response
-     *
+     * @return Response
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function indexAction(Request $request)
@@ -34,18 +33,41 @@ class StartController extends Controller
             return $this->render('Start/index_anonymous.html.twig');
         }
 
-        /**
-         * @var User $user
-         */
+        /** @var User $user */
         $user = $this->getUser();
 
         $voucherRepository = $this->get('doctrine')->getRepository('App:Voucher');
         $vouchers = $voucherRepository->findOrCreateByUser($user);
 
-        $voucherCreateForm = $this->getVoucherCreateForm();
+        $voucherCreateForm = $this->createForm(
+            VoucherCreateType::class,
+            new VoucherCreate(),
+            [
+                'action' => $this->generateUrl('index'),
+                'method' => 'post',
+            ]
+        );
 
         $passwordChange = new PasswordChange();
-        $passwordChangeForm = $this->getPasswordChangeForm($passwordChange);
+        $passwordChangeForm = $this->createForm(
+            PasswordChangeType::class,
+            $passwordChange,
+            [
+                'action' => $this->generateUrl('index'),
+                'method' => 'post',
+            ]
+        );
+
+        if ('POST' === $request->getMethod()) {
+            $voucherCreateForm->handleRequest($request);
+            $passwordChangeForm->handleRequest($request);
+
+            if ($voucherCreateForm->isSubmitted() && $voucherCreateForm->isValid()) {
+                $this->voucherCreateAction($request, $user, $voucherRepository);
+            } elseif ($passwordChangeForm->isSubmitted() && $passwordChangeForm->isValid()) {
+                $this->passwordChangeAction($request, $user, $passwordChange);
+            }
+        }
 
         return $this->render('Start/index.html.twig', array(
             'user' => $user,
@@ -55,101 +77,43 @@ class StartController extends Controller
         ));
     }
 
-    public function voucherCreateAction(Request $request)
+    /**
+     * @param Request $request
+     * @param User $user
+     * @param VoucherRepository $voucherRepository
+     * @return RedirectResponse
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    private function voucherCreateAction(Request $request, User $user, VoucherRepository $voucherRepository)
     {
-        if ('POST' === $request->getMethod()) {
-            /**
-             * @var User $user
-             */
-            $user = $this->getUser();
+        if ($this->isGranted('ROLE_SUPPORT')) {
+            $voucher = $voucherRepository->createByUser($user);
 
-            $voucherCreateForm = $this->getVoucherCreateForm();
-
-            $voucherRepository = $this->get('doctrine')->getRepository('App:Voucher');
-
-            $voucherCreateForm->handleRequest($request);
-
-            if ($voucherCreateForm->isSubmitted() && $voucherCreateForm->isValid()) {
-                if ($this->isGranted('ROLE_SUPPORT')) {
-                    $voucher = $voucherRepository->createByUser($user);
-
-                    if ($voucher instanceof Voucher) {
-                        $request->getSession()->getFlashBag()->add('success', 'flashes.voucher-creation-successful');
-                    }
-                }
-                return $this->redirect($this->generateUrl('index'));
+            if ($voucher instanceof Voucher) {
+                $request->getSession()->getFlashBag()->add('success', 'flashes.voucher-creation-successful');
             }
         }
-
         return $this->redirect($this->generateUrl('index'));
     }
 
     /**
      * @param Request $request
-     * @return RedirectResponse
-     */
-    public function passwordChangeAction(Request $request)
-    {
-        if ('POST' === $request->getMethod()) {
-            /**
-             * @var User $user
-             */
-            $user = $this->getUser();
-
-            $passwordChange = new PasswordChange();
-            $passwordChangeForm = $this->getPasswordChangeForm($passwordChange);
-
-            $passwordChangeForm->handleRequest($request);
-
-            if ($passwordChangeForm->isSubmitted() && $passwordChangeForm->isValid()) {
-                $user->setPlainPassword($passwordChange->newPassword);
-
-                $this->get(PasswordUpdater::class)->updatePassword($user);
-
-                $this->getDoctrine()->getManager()->flush();
-
-                $this->get('event_dispatcher')->dispatch(
-                    Events::MAIL_ACCOUNT_PASSWORD_CHANGED,
-                    new UserEvent($user)
-                );
-
-                $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
-            }
-        }
-
-        return $this->redirect($this->generateUrl('index'));
-    }
-
-    /**
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    private function getVoucherCreateForm()
-    {
-        $form = $this->createForm(
-            VoucherCreateType::class,
-            new VoucherCreate(),
-            [
-                'action' => $this->generateUrl('voucher_new'),
-                'method' => 'post',
-            ]
-        );
-        return $form;
-    }
-
-    /**
+     * @param User $user
      * @param PasswordChange $passwordChange
-     * @return \Symfony\Component\Form\FormInterface
      */
-    private function getPasswordChangeForm(PasswordChange $passwordChange)
+    private function passwordChangeAction(Request $request, User $user, PasswordChange $passwordChange)
     {
-        $form = $this->createForm(
-            PasswordChangeType::class,
-            $passwordChange,
-            [
-                'action' => $this->generateUrl('password_change'),
-                'method' => 'post',
-            ]
+        $user->setPlainPassword($passwordChange->newPassword);
+
+        $this->get(PasswordUpdater::class)->updatePassword($user);
+
+        $this->getDoctrine()->getManager()->flush();
+
+        $this->get('event_dispatcher')->dispatch(
+            Events::MAIL_ACCOUNT_PASSWORD_CHANGED,
+            new UserEvent($user)
         );
-        return $form;
+
+        $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
     }
 }
