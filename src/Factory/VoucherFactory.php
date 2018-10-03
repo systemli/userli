@@ -7,12 +7,13 @@ use App\Entity\Voucher;
 use App\Helper\VoucherCodeGenerator;
 
 /**
- * Interface VoucherFactory
+ * Interface VoucherFactory.
  */
 class VoucherFactory
 {
     /**
      * @param User $user
+     *
      * @return Voucher
      */
     public static function create(User $user): Voucher

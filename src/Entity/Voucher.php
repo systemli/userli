@@ -7,7 +7,7 @@ use App\Traits\IdTrait;
 use App\Traits\UserAwareTrait;
 
 /**
- * Class Voucher
+ * Class Voucher.
  */
 class Voucher
 {

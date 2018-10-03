@@ -7,13 +7,15 @@ use App\Entity\Voucher;
 use App\Factory\VoucherFactory;
 
 /**
- * Class VoucherCreator
+ * Class VoucherCreator.
  */
 class VoucherCreator extends AbstractCreator
 {
     /**
      * @param User $user
+     *
      * @return Voucher
+     *
      * @throws \App\Exception\ValidationException
      */
     public function create(User $user): Voucher

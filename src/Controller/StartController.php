@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class StartController
+ * Class StartController.
  */
 class StartController extends Controller
 {
@@ -37,10 +37,11 @@ class StartController extends Controller
      * StartController constructor.
      *
      * @param PasswordUpdater $passwordUpdater
-     * @param VoucherHandler $voucherHandler
-     * @param VoucherCreator $voucherCreator
+     * @param VoucherHandler  $voucherHandler
+     * @param VoucherCreator  $voucherCreator
      */
-    public function __construct(PasswordUpdater $passwordUpdater, VoucherHandler $voucherHandler, VoucherCreator $voucherCreator) {
+    public function __construct(PasswordUpdater $passwordUpdater, VoucherHandler $voucherHandler, VoucherCreator $voucherCreator)
+    {
         $this->passwordUpdater = $passwordUpdater;
         $this->voucherHandler = $voucherHandler;
         $this->voucherCreator = $voucherCreator;
@@ -48,6 +49,7 @@ class StartController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function indexAction(Request $request)
@@ -103,7 +105,7 @@ class StartController extends Controller
 
     /**
      * @param Request $request
-     * @param User $user
+     * @param User    $user
      */
     private function createVoucher(Request $request, User $user)
     {
@@ -120,8 +122,8 @@ class StartController extends Controller
 
     /**
      * @param Request $request
-     * @param User $user
-     * @param string $password
+     * @param User    $user
+     * @param string  $password
      */
     private function changePassword(Request $request, User $user, string $password)
     {

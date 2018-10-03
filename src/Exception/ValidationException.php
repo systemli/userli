@@ -6,7 +6,7 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
- * Class ValidationException
+ * Class ValidationException.
  */
 class ValidationException extends \Exception
 {

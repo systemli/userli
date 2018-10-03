@@ -11,7 +11,7 @@ use App\Repository\VoucherRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
- * Class VoucherHandler
+ * Class VoucherHandler.
  */
 class VoucherHandler
 {
@@ -29,7 +29,7 @@ class VoucherHandler
     /**
      * VoucherHandler constructor.
      *
-     * @param ObjectManager $manager
+     * @param ObjectManager  $manager
      * @param VoucherCreator $creator
      */
     public function __construct(ObjectManager $manager, VoucherCreator $creator)
@@ -40,6 +40,7 @@ class VoucherHandler
 
     /**
      * @param User $user
+     *
      * @return Voucher[]
      */
     public function getVouchersByUser(User $user): array

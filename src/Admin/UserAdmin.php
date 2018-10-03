@@ -11,7 +11,6 @@ use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -77,7 +76,7 @@ class UserAdmin extends Admin
                 'label' => 'form.roles',
             ))
             ->add('quota', null, [
-                'help' => 'Custom mailbox quota in MB'
+                'help' => 'Custom mailbox quota in MB',
             ])
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
     }

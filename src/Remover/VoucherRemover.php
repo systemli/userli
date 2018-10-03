@@ -3,7 +3,6 @@
 namespace App\Remover;
 
 use App\Entity\User;
-use App\Entity\Voucher;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Persistence\ObjectManager;
 

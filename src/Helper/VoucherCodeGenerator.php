@@ -3,7 +3,7 @@
 namespace App\Helper;
 
 /**
- * Class VoucherCodeGenerator
+ * Class VoucherCodeGenerator.
  */
 class VoucherCodeGenerator
 {

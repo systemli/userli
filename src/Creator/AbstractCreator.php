@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Class AbstractCreator
+ * Class AbstractCreator.
  */
 abstract class AbstractCreator
 {
@@ -28,12 +28,12 @@ abstract class AbstractCreator
     /**
      * AbstractCreator constructor.
      *
-     * @param ObjectManager $manager
-     * @param ValidatorInterface $validator
+     * @param ObjectManager            $manager
+     * @param ValidatorInterface       $validator
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(ObjectManager $manager, ValidatorInterface $validator, EventDispatcherInterface $eventDispatcher) {
-
+    public function __construct(ObjectManager $manager, ValidatorInterface $validator, EventDispatcherInterface $eventDispatcher)
+    {
         $this->manager = $manager;
         $this->validator = $validator;
         $this->eventDispatcher = $eventDispatcher;
@@ -41,6 +41,7 @@ abstract class AbstractCreator
 
     /**
      * @param $entity
+     *
      * @throws ValidationException
      */
     protected function validate($entity): void
