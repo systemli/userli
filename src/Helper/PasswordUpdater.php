@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 /**
  * Class PasswordUpdater.
  */
-final class PasswordUpdater
+class PasswordUpdater
 {
     /**
      * @var EncoderFactoryInterface
