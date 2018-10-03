@@ -4,11 +4,34 @@ namespace App\Controller;
 
 use App\Form\DeleteType;
 use App\Form\Model\Delete;
+use App\Handler\DeleteHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class DeleteController
+ */
 class DeleteController extends Controller
 {
+    /**
+     * @var DeleteHandler
+     */
+    private $deleteHandler;
+
+    /**
+     * DeleteController constructor.
+     *
+     * @param DeleteHandler $deleteHandler
+     */
+    public function __construct(DeleteHandler $deleteHandler)
+    {
+        $this->deleteHandler = $deleteHandler;
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function deleteAction(Request $request)
     {
         $form = $this->createForm(DeleteType::class, new Delete());
@@ -17,16 +40,18 @@ class DeleteController extends Controller
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $user = $this->get('security.token_storage')->getToken()->getUser();
+                $user = $this->getUser();
 
-                $this->get('App\Handler\DeleteHandler')->deleteUser($user);
+                $this->deleteHandler->deleteUser($user);
 
-                return $this->redirect('logout');
+                return $this->redirect($this->generateUrl('logout'));
             }
         }
 
-        return $this->render('Delete/delete.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        return $this->render(
+            'Delete/delete.html.twig', [
+                'form' => $form->createView(),
+            ]
+        );
     }
 }

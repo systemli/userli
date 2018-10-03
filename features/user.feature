@@ -25,9 +25,10 @@ Feature: User
     And I should see text matching "Your new password is now active!"
     And the response status code should not be 403
 
+  @delete-user
   Scenario: Delete Account
     When I am authenticated as "user@example.org"
-    And I am on "/delete"
+    And I am on "/user/delete"
     And I fill in the following:
       | delete_password | asdasd |
     And I press "Delete account"

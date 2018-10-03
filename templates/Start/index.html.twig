@@ -1,6 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% form_theme form 'Form/fields.html.twig' %}
+{% if form is defined %}
+    {% form_theme form 'Form/fields.html.twig' %}
+{% endif %}
+{% if password_form is defined %}
+    {% form_theme password_form 'Form/fields.html.twig' %}
+{% endif %}
 
 {% block content %}
 
@@ -13,68 +18,14 @@
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-4">
-            <h3>{{ "index.voucher-headline"|trans }}</h3>
-            {% if is_granted('ROLE_SUPPORT') %}
-                {{ form_start(voucher_form) }}
-                {{ form_errors(voucher_form) }}
-                <div class="form-group">
-                    {{ form_widget(voucher_form.submit, {'attr': {'class': 'btn btn-primary' } }) }}
-                </div>
-                {{ form_end(voucher_form) }}
-            {%  endif %}
-            {% if codes is defined and codes|length > 0 %}
-                {% for code in codes|reverse %}
-                    {% if code.redeemed %}
-                        <div class="alert alert-warning">
-                            <p class="vocher-box"><s>{{ code.code }}</s></p>
-
-                            <p class="small">{{ "form.voucher-redeemed-on"|trans }} {{ code.redeemedTime|date("d.m.Y") }}</p>
-                        </div>
-                    {% else %}
-                        <div class="alert alert-success">
-                            <p class="vocher-box">{{ code.code }}</p>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                <p class="alert alert-info">{{ "index.voucher-disable"|trans({'%date%': user.creationTime|date_modify("+7 days")|date("d. F Y, H:i")}) }}</p>
-            {% endif %}
+            {% include 'Start/vouchers.html.twig' %}
             <hr />
             <p class="text-muted"><small>{{ "index.logged_in_as"|trans({'%user%': user.email}) }} </small></p>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4">
-
-            {{ form_start(form) }}
-
-            <h3>{{ "form.change-password"|trans }}</h3>
-
-            {{ form_errors(form) }}
-
-            <div class="form-group">
-                {{ form_label(form.password) }}
-                {{ form_errors(form.password) }}
-                {{ form_widget(form.password, {'attr': {'class': 'form-control' }}) }}
-            </div>
-
-            <div class="form-group">
-                {{ form_label(form.newPassword.first) }}
-                {{ form_errors(form.newPassword.first) }}
-                {{ form_widget(form.newPassword.first, {'attr': {'class': 'form-control' }}) }}
-
-                {{ form_label(form.newPassword.second) }}
-                {{ form_widget(form.newPassword.second, {'attr': {'class': 'form-control' }}) }}
-            </div>
-
-            <div class="form-group">
-                {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary' }}) }}
-            </div>
-
-            {{ form_end(form) }}
-
+            {% include 'Start/change_password.html.twig' %}
             <hr />
-            <h3>{{ "index.delete-headline"|trans }}</h3>
-            <p>{{ "index.delete-description"|trans({'%project_name%': project_name})|raw }}</p>
-            <p><a class="btn btn-danger btn-sm" href="{{ url('delete') }}">{{ "index.delete-button"|trans }}</a></p>
+            {% include 'Start/delete_account.html.twig' %}
         </div>
     </div>
 

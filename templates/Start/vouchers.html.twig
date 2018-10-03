@@ -1,0 +1,25 @@
+<h3>{{ "index.voucher-headline"|trans }}</h3>
+{% if is_granted('ROLE_SUPPORT') %}
+    {{ form_start(voucher_form) }}
+    {{ form_errors(voucher_form) }}
+    <div class="form-group">
+        {{ form_widget(voucher_form.submit, {'attr': {'class': 'btn btn-primary' } }) }}
+    </div>
+    {{ form_end(voucher_form) }}
+{%  endif %}
+{% if vouchers is defined and vouchers|length > 0 %}
+    {% for voucher in vouchers|reverse %}
+        {% if voucher.redeemed %}
+            <div class="alert alert-warning">
+                <p class="vocher-box"><s>{{ voucher.code }}</s></p>
+                <p class="small">{{ "form.voucher-redeemed-on"|trans }} {{ voucher.redeemedTime|date("d.m.Y") }}</p>
+            </div>
+        {% else %}
+            <div class="alert alert-success">
+                <p class="vocher-box">{{ voucher.code }}</p>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% else %}
+    <p class="alert alert-info">{{ "index.voucher-disable"|trans({'%date%': user.creationTime|date_modify("+7 days")|date("d. F Y, H:i")}) }}</p>
+{% endif %}
