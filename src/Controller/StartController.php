@@ -30,9 +30,7 @@ class StartController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $authChecker = $this->container->get('security.authorization_checker');
-
-        if ($authChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             /** @var User $user */
             $user = $this->get('security.token_storage')->getToken()->getUser();
             $voucherRepository = $this->get('doctrine')->getRepository('App:Voucher');
@@ -63,7 +61,7 @@ class StartController extends Controller
                     $voucherForm->handleRequest($request);
 
                     if ($voucherForm->isSubmitted() && $voucherForm->isValid()) {
-                        if ($authChecker->isGranted('ROLE_SUPPORT')) {
+                        if ($this->isGranted('ROLE_SUPPORT')) {
                             $voucher = $voucherRepository->createByUser($user);
 
                             if ($voucher instanceof Voucher) {
