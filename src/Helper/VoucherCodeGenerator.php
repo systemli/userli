@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Creator;
+namespace App\Helper;
 
 /**
- * @author louis <louis@systemli.org>
+ * Class VoucherCodeGenerator
  */
-class VoucherCodeCreator
+class VoucherCodeGenerator
 {
     const LENGTH = 6;
 
-    public static function create($length = self::LENGTH)
+    public static function generate($length = self::LENGTH)
     {
         $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $code = '';

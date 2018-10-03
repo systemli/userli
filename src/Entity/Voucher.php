@@ -7,7 +7,7 @@ use App\Traits\IdTrait;
 use App\Traits\UserAwareTrait;
 
 /**
- * @author louis <louis@systemli.org>
+ * Class Voucher
  */
 class Voucher
 {
@@ -26,6 +26,11 @@ class Voucher
      * @var User|null
      */
     protected $invitedUser = null;
+
+    public function __construct()
+    {
+        $this->creationTime = new \DateTime();
+    }
 
     /**
      * {@inheritdoc}
