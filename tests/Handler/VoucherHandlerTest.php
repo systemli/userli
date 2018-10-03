@@ -30,7 +30,12 @@ class VoucherHandlerTest extends TestCase
 
     public function testNewUser()
     {
+        $repository = $this->getMockBuilder(VoucherRepository::class)->disableOriginalConstructor()->getMock();
+        $repository->expects($this->any())->method('findByUser')->willReturn([]);
+
         $manager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
+        $manager->expects($this->any())->method('getRepository')->willReturn($repository);
+
         $creator = $this->getMockBuilder(VoucherCreator::class)->disableOriginalConstructor()->getMock();
 
         $handler = new VoucherHandler($manager, $creator);
