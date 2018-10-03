@@ -54,9 +54,7 @@ class MenuBuilderTest extends TestCase
 
         $builder = new MenuBuilder($this->factory, $authChecker, $this->menuHelper, []);
 
-        $builtMenu = $builder->createNavbarLeft();
-
-        dump($this->childs);
+        $builder->createNavbarLeft();
 
         self::assertCount(0, $this->childs);
     }
@@ -69,9 +67,7 @@ class MenuBuilderTest extends TestCase
 
         $builder = new MenuBuilder($this->factory, $authChecker, $this->menuHelper, ['example', 'test']);
 
-        $builtMenu = $builder->createNavbarLeft();
-
-        dump($this->childs);
+        $builder->createNavbarLeft();
 
         self::assertCount(2, $this->childs);
     }

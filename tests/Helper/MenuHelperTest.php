@@ -56,7 +56,6 @@ class MenuHelperTest extends TestCase
         ];
 
         $helper->build($elements, $menu);
-        dump($this->childs);
 
         self::assertCount(3, $this->childs);
         self::assertArrayHasKey('caret', $this->childs['test_example_submenu']);
