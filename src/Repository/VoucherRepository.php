@@ -4,8 +4,6 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Entity\Voucher;
-use App\Enum\Roles;
-use App\Factory\VoucherFactory;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 
@@ -30,51 +28,6 @@ class VoucherRepository extends EntityRepository
     public function findAllRedeemedVouchers()
     {
         return $this->matching(Criteria::create()->where(Criteria::expr()->neq('redeemedTime', null)));
-    }
-
-    /**
-     * @param User $user
-     * @param int  $limit
-     *
-     * @return Voucher[]|array|null
-     *
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function findOrCreateByUser(User $user, $limit = 3)
-    {
-        if ($user->hasRole(Roles::SUSPICIOUS)) {
-            return null;
-        }
-
-        if ((($vouchersCount = count($vouchers = $this->findByUser($user))) < $limit) && ($user->getCreationTime() < new \DateTime('-7 days'))) {
-            for ($i = 0; $i < ($limit - $vouchersCount); ++$i) {
-                $voucher = VoucherFactory::create($user);
-
-                $this->_em->persist($voucher);
-                $this->_em->flush();
-
-                $vouchers[] = $voucher;
-            }
-        }
-
-        return $vouchers;
-    }
-
-    /**
-     * @param User $user
-     *
-     * @return null|Voucher|object
-     *
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function createByUser(User $user)
-    {
-        $voucher = VoucherFactory::create($user);
-
-        $this->_em->persist($voucher);
-        $this->_em->flush();
-
-        return $voucher;
     }
 
     /**
