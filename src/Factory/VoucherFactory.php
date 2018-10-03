@@ -2,9 +2,9 @@
 
 namespace App\Factory;
 
-use App\Creator\VoucherCodeCreator;
 use App\Entity\User;
 use App\Entity\Voucher;
+use App\Helper\VoucherCodeGenerator;
 
 /**
  * Interface VoucherFactory
@@ -19,7 +19,7 @@ class VoucherFactory
     {
         $voucher = new Voucher();
         $voucher->setUser($user);
-        $voucher->setCode(VoucherCodeCreator::create());
+        $voucher->setCode(VoucherCodeGenerator::generate());
 
         return $voucher;
     }

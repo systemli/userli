@@ -2,8 +2,8 @@
 
 namespace App\Admin;
 
-use App\Creator\VoucherCodeCreator;
-use App\Entity\Voucher;
+use App\Entity\User;
+use App\Factory\VoucherFactory;
 use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -54,11 +54,9 @@ class VoucherAdmin extends Admin
      */
     public function getNewInstance()
     {
-        /** @var Voucher $instance */
-        $instance = parent::getNewInstance();
-        $instance->setCode(VoucherCodeCreator::create());
+        /** @var User $user */
         $user = $this->storage->getToken()->getUser();
-        $instance->setUser($user);
+        $instance = VoucherFactory::create($user);
 
         return $instance;
     }

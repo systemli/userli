@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Creator\VoucherCreator;
 use App\Factory\VoucherFactory;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
