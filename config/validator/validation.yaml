@@ -24,7 +24,7 @@ App\Form\Model\Registration:
                 maxLength: 32
         voucher:
             - App\Validator\Constraints\Voucher:
-                exists: false
+                exists: true
         plainPassword:
             - App\Validator\Constraints\PasswordPolicy: ~
 

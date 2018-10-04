@@ -26,13 +26,13 @@ class EmailAddressValidator extends ConstraintValidator
      */
     private $domainRepository;
     /**
-     * @var UserRepository
-     */
-    private $userRepository;
-    /**
      * @var ReservedNameRepository
      */
     private $reservedNameRepository;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
     /**
      * @var string
      */
@@ -47,8 +47,8 @@ class EmailAddressValidator extends ConstraintValidator
     {
         $this->aliasRepository = $manager->getRepository('App:Alias');
         $this->domainRepository = $manager->getRepository('App:Domain');
-        $this->userRepository = $manager->getRepository('App:User');
         $this->reservedNameRepository = $manager->getRepository('App:ReservedName');
+        $this->userRepository = $manager->getRepository('App:User');
         $this->domain = $domain;
     }
 
@@ -103,9 +103,7 @@ class EmailAddressValidator extends ConstraintValidator
 
         if (null === $this->domainRepository->findByName($domain)) {
             $this->context->addViolation('registration.email-domain-not-exists');
-        }
-
-        if ($domain !== $this->domain) {
+        } elseif ($domain !== $this->domain) {
             $this->context->addViolation('registration.email-domain-invalid');
         }
     }

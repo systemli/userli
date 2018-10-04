@@ -26,13 +26,6 @@ class EmailAddress extends Constraint
      */
     public function __construct($options = null)
     {
-        if (null !== $options && !\is_array($options)) {
-            $options = array(
-                'minLength' => $options,
-                'maxLength' => $options,
-            );
-        }
-
         parent::__construct($options);
 
         if (null === $this->minLength && null === $this->maxLength) {
