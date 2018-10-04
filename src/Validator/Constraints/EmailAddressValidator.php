@@ -1,0 +1,112 @@
+<?php
+
+namespace App\Validator\Constraints;
+
+use App\Repository\AliasRepository;
+use App\Repository\DomainRepository;
+use App\Repository\UserRepository;
+use App\Repository\ReservedNameRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+
+/**
+ * Class EmailAddressValidator.
+ * @author doobry <doobry@systemli.org>
+ */
+class EmailAddressValidator extends ConstraintValidator
+{
+    /**
+     * @var AliasRepository
+     */
+    private $aliasRepository;
+    /**
+     * @var DomainRepository
+     */
+    private $domainRepository;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+    /**
+     * @var ReservedNameRepository
+     */
+    private $reservedNameRepository;
+    /**
+     * @var string
+     */
+    private $domain;
+
+    /**
+     * EmailAddressValidator constructor.
+     * @param ObjectManager $manager
+     * @param string $domain
+     */
+    public function __construct(ObjectManager $manager, string $domain)
+    {
+        $this->aliasRepository = $manager->getRepository('App:Alias');
+        $this->domainRepository = $manager->getRepository('App:Domain');
+        $this->userRepository = $manager->getRepository('App:User');
+        $this->reservedNameRepository = $manager->getRepository('App:ReservedName');
+        $this->domain = $domain;
+    }
+
+    /**
+     * Checks if the passed value is valid.
+     *
+     * @param string     $value      The value that should be validated
+     * @param Constraint $constraint The constraint for the validation
+     */
+    public function validate($value, Constraint $constraint)
+    {
+        if (!$constraint instanceof EmailAddress) {
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\EmailAddress');
+        }
+
+        if (null === $value || '' === $value) {
+            return;
+        }
+
+        if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
+            throw new UnexpectedTypeException($value, 'string');
+        }
+
+        $stringValue = (string) $value;
+
+        $localPart = explode('@', $stringValue)[0];
+        $domain = explode('@', $stringValue)[1];
+
+        if (null !== $this->userRepository->findByEmail($stringValue)) {
+            $this->context->addViolation('registration.email-already-taken');
+        } elseif (null !== $this->aliasRepository->findBySource($stringValue)) {
+            $this->context->addViolation('registration.email-already-taken');
+        } elseif (null !== $this->reservedNameRepository->findByName($localPart)) {
+            $this->context->addViolation('registration.email-already-taken');
+        }
+
+        if (1 !== preg_match('/^[a-z0-9\-\_\.]*$/ui', $localPart)) {
+            $this->context->addViolation('registration.email-unexpected-characters');
+        }
+
+        if (is_numeric($minLength = $constraint->minLength)) {
+            if (strlen($localPart) < $minLength) {
+                $this->context->addViolation('registration.email-too-short', array('%min%' => $constraint->minLength));
+            }
+        }
+
+        if (is_numeric($maxLength = $constraint->maxLength)) {
+            if (strlen($localPart) > $maxLength) {
+                $this->context->addViolation('registration.email-too-long', array('%max%' => $constraint->maxLength));
+            }
+        }
+
+        if (null === $this->domainRepository->findByName($domain)) {
+            $this->context->addViolation('registration.email-domain-not-exists');
+        }
+
+        if ($domain !== $this->domain) {
+            $this->context->addViolation('registration.email-domain-invalid');
+        }
+    }
+}
