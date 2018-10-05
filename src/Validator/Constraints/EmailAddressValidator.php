@@ -68,11 +68,9 @@ class EmailAddressValidator extends ConstraintValidator
             return;
         }
 
-        if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
+        if (!is_string($value) {
             throw new UnexpectedTypeException($value, 'string');
         }
-
-        $stringValue = (string) $value;
 
         $localPart = explode('@', $stringValue)[0];
         $domain = explode('@', $stringValue)[1];
