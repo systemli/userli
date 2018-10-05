@@ -8,9 +8,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DeleteType extends AbstractType
+class UserDeleteType extends AbstractType
 {
-    const NAME = 'delete';
+    const NAME = 'delete_user';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

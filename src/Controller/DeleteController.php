@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Form\DeleteType;
+use App\Form\UserDeleteType;
 use App\Form\Model\Delete;
 use App\Handler\DeleteHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -33,9 +33,9 @@ class DeleteController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function deleteAction(Request $request)
+    public function deleteUserAction(Request $request)
     {
-        $form = $this->createForm(DeleteType::class, new Delete());
+        $form = $this->createForm(UserDeleteType::class, new Delete());
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -50,7 +50,7 @@ class DeleteController extends Controller
         }
 
         return $this->render(
-            'Delete/delete.html.twig', [
+            'User/delete.html.twig', [
                 'form' => $form->createView(),
             ]
         );

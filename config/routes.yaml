@@ -8,7 +8,7 @@ index:
 
 user_delete:
     path:     /user/delete
-    controller: App\Controller\DeleteController::deleteAction
+    controller: App\Controller\DeleteController::deleteUserAction
 
 # SecurityController
 
