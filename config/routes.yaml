@@ -6,6 +6,10 @@ index:
 
 # DeleteController
 
+alias_delete:
+    path:     /alias/delete/{aliasId}
+    controller: App\Controller\DeleteController::deleteAliasAction
+
 user_delete:
     path:     /user/delete
     controller: App\Controller\DeleteController::deleteUserAction

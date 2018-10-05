@@ -9,6 +9,8 @@ index:
   title: Verwalte deinen E-Mail Account
   voucher-headline: Deine Einladungscodes
   voucher-disable: Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben. Dies dient der Vermeidung von Massenregistrierungen und Spam.
+  alias-headline: Deine Aliase
+  alias-empty: Du hast noch keine Aliase definiert.
   delete-headline: Account löschen
   delete-description: >
     Du kannst deinen Account bei %project_name% löschen. Dadurch werden deine E-Mails unwiderruflich gelöscht. Eine <strong>spätere Wiederherstellung ist nicht möglich.</strong>
@@ -38,6 +40,7 @@ form:
   delete-account: Account löschen
   delete-password: Passwort
   create-voucher: Erstelle Voucher
+  delete-alias: Alias löschen
 
 navbar_left:
   about-us:
@@ -88,8 +91,12 @@ closed:
     <p><strong>Für bestehende Accounts ändert sich nichts.</strong></p>
 
 delete:
-  headline: Account löschen
-  lead: Mit der Bestätigung deines Passworts kannst du deinen Account unwiderruflich löschen.
+  alias:
+    headline: Alias %alias% löschen
+    lead: Mit der Bestätigung deines Passworts kannst du dein Alias unwiderruflich löschen.
+  user:
+    headline: Account löschen
+    lead: Mit der Bestätigung deines Passworts kannst du deinen Account unwiderruflich löschen.
   wrong-password: Falsches Passwort
   cancel: Abbrechen
 
@@ -98,6 +105,7 @@ flashes:
   password-change-successful: Dein neues Passwort ist ab sofort aktiv!
   registration-successful: Du hast dich erfolgreich registriert!
   voucher-creation-successful: Dir wurde ein Voucher erstellt!
+  alias-deletion-successful: Dein Alias wurde erfolgreich gelöscht!
 
 flash_batch_remove_vouchers_success: Nicht eingelöste Vouchers erfolgreich gelöscht
 

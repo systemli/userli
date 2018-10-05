@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\AliasDeleteType;
 use App\Form\UserDeleteType;
 use App\Form\Model\Delete;
 use App\Handler\DeleteHandler;
@@ -26,6 +27,43 @@ class DeleteController extends Controller
     public function __construct(DeleteHandler $deleteHandler)
     {
         $this->deleteHandler = $deleteHandler;
+    }
+
+    /**
+     * @param Request $request
+     * @param $aliasId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteAliasAction(Request $request, $aliasId)
+    {
+        $user = $this->getUser();
+        $aliasRepository = $this->get('doctrine')->getRepository('App:Alias');
+        $alias = $aliasRepository->find($aliasId);
+
+        if (null === $alias || $user !== $alias->getUser()) {
+            return $this->redirect($this->generateUrl('index'));
+        }
+
+        $form = $this->createForm(AliasDeleteType::class, new Delete());
+
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $this->deleteHandler->deleteAlias($alias, $user);
+
+                $request->getSession()->getFlashBag()->add('success', 'flashes.alias-deletion-successful');
+
+                return $this->redirect($this->generateUrl('index'));
+            }
+        }
+
+        return $this->render(
+            'Alias/delete.html.twig', [
+                'alias' => $alias,
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**

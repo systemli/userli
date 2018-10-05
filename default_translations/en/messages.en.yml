@@ -9,6 +9,8 @@ index:
   title: Manage your email-account
   voucher-headline: Your invite codes
   voucher-disable: At %date% you will receive three invite codes. This is to avoid mass registrations and spam.
+  alias-headline: Your aliases
+  alias-empty: You don't have any aliases defined.
   delete-headline: Delete account
   delete-description: >
     You can delete your %project_name% email account. This will delete all your emails. <strong>A recovery at a later date is not possible.</strong>
@@ -38,6 +40,7 @@ form:
   delete-account: Delete account
   delete-password: Password
   create-voucher: Create voucher
+  delete-alias: Delete alias
 
 navbar_left:
   about-us:
@@ -88,8 +91,12 @@ closed:
     <p><strong>Existing accounts aren't effected</strong></p>
 
 delete:
-  headline: Delete account
-  lead: We need to verify your password to delete your account.
+  alias:
+    headline: Delete alias %alias%
+    lead: We need to verify your password to delete your alias.
+  user:
+    headline: Delete account
+    lead: We need to verify your password to delete your account.
   wrong-password: Wrong Password
   cancel: Cancel
 
@@ -98,6 +105,7 @@ flashes:
   password-change-successful: Your new password is now active!
   registration-successful: You have been successfully registered!
   voucher-creation-successful: You got a new voucher created!
+  alias-deletion-successful: Your alias successfully got deleted!
 
 flash_batch_remove_vouchers_success: Successfully deleted unredeemed vouchers
 

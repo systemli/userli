@@ -1,0 +1,15 @@
+<h3>{{ "index.alias-headline"|trans }}</h3>
+{% if aliases is defined and aliases|length > 0 %}
+    <ul class="list-group">
+        {% for alias in aliases %}
+            <li class="list-group-item list-group-item-primary">
+                {{ alias.source }}
+                <span class="pull-right">
+                    <a class="btn btn-danger btn-xs" href="{{ url('alias_delete', {'aliasId': alias.id}) }}">x</a>
+                </span>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p class="alert alert-info">{{ "index.alias-empty"|trans() }}</p>
+{% endif %}

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Alias;
+use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -28,5 +29,15 @@ class AliasRepository extends EntityRepository
     public function findByDestination($email)
     {
         return $this->findOneBy(array('destination' => $email));
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return array|Alias[]
+     */
+    public function findByUser(User $user)
+    {
+        return $this->findBy(['user' => $user]);
     }
 }

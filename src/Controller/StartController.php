@@ -91,11 +91,14 @@ class StartController extends Controller
             }
         }
 
+        $aliasRepository = $this->get('doctrine')->getRepository('App:Alias');
+        $aliases = $aliasRepository->findByUser($user);
         $vouchers = $this->voucherHandler->getVouchersByUser($user);
 
         return $this->render(
             'Start/index.html.twig', [
                 'user' => $user,
+                'aliases' => $aliases,
                 'vouchers' => $vouchers,
                 'voucher_form' => $voucherCreateForm->createView(),
                 'password_form' => $passwordChangeForm->createView(),

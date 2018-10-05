@@ -33,9 +33,16 @@ class DeleteHandler
 
     /**
      * @param Alias $alias
+     * @param User $user
      */
-    public function deleteAlias(Alias $alias)
+    public function deleteAlias(Alias $alias, User $user = null)
     {
+        if (null !== $user) {
+            if ($alias->getUser() !== $user) {
+                return;
+            }
+        }
+
         $alias->setDeleted(true);
         $alias->setEmptyUser();
         $this->manager->flush();
