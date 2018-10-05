@@ -21,7 +21,14 @@ App\Entity\Alias:
     destination:
       type: string
       nullable: false
+    deleted:
+      type: boolean
+      options:
+        default: 0
   manyToOne:
+    user:
+      targetEntity: User
+      mappedBy: user_id
     domain:
       targetEntity: Domain
       mappedBy: domain_id
