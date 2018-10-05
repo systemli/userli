@@ -65,4 +65,9 @@ class Alias
     {
         $this->destination = $destination;
     }
+
+    public function setEmptyUser()
+    {
+        $this->user = null;
+    }
 }

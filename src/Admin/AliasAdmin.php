@@ -3,10 +3,15 @@
 namespace App\Admin;
 
 use App\Entity\Alias;
+use App\Entity\User;
+use App\Handler\DeleteHandler;
 use App\Traits\DomainGuesserAwareTrait;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 /**
@@ -22,13 +27,19 @@ class AliasAdmin extends Admin
     protected $baseRoutePattern = 'alias';
 
     /**
+     * @var DeleteHandler
+     */
+    private $deleteHandler;
+
+    /**
      * {@inheritdoc}
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+            ->add('user', EntityType::class, ['class' => User::class])
             ->add('source', EmailType::class)
-            ->add('destination', EmailType::class);
+            ->add('deleted', CheckboxType::class, ['disabled' => true]);
     }
 
     /**
@@ -37,15 +48,23 @@ class AliasAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('source', null, array(
+            ->add('user', null, [
                 'show_filter' => true,
-            ))
-            ->add('destination', null, array(
+            ])
+            ->add('source', null, [
                 'show_filter' => true,
-            ))
-            ->add('domain', null, array(
-                'show_filter' => false,
-            ));
+            ])
+            ->add('domain', null, [
+                'show_filter' => true,
+            ])
+            ->add('deleted', 'doctrine_orm_choice', [
+                'field_options' => [
+                    'required' => false,
+                    'choices' => [0 => 'No', 1 => 'Yes'],
+                ],
+                'field_type' => ChoiceType::class,
+                'show_filter' => true,
+            ]);
     }
 
     /**
@@ -55,10 +74,12 @@ class AliasAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('id')
-            ->add('source')
-            ->add('destination')
+            ->addIdentifier('source')
+            ->addIdentifier('user')
+            ->add('domain')
             ->add('creationTime')
-            ->add('updatedTime');
+            ->add('updatedTime')
+            ->add('deleted');
     }
 
     /**
@@ -66,7 +87,19 @@ class AliasAdmin extends Admin
      */
     protected function configureBatchActions($actions)
     {
-        return array();
+        return [];
+    }
+
+    /**
+     * @param Alias $alias
+     */
+    public function prePersist($alias)
+    {
+        $alias->setDestination($alias->getUser());
+
+        if (null !== $domain = $this->getDomainGuesser()->guess($alias->getSource())) {
+            $alias->setDomain($domain);
+        }
     }
 
     /**
@@ -74,8 +107,27 @@ class AliasAdmin extends Admin
      */
     public function preUpdate($alias)
     {
+        $alias->setUpdatedTime(new \DateTime);
+        $alias->setDestination($alias->getUser());
+
         if (null !== $domain = $this->getDomainGuesser()->guess($alias->getSource())) {
             $alias->setDomain($domain);
         }
+    }
+
+    /**
+     * @param Alias $alias
+     */
+    public function delete($alias)
+    {
+        $this->deleteHandler->deleteAlias($alias);
+    }
+
+    /**
+     * @param DeleteHandler $deleteHandler
+     */
+    public function setDeleteHandler(DeleteHandler $deleteHandler)
+    {
+        $this->deleteHandler = $deleteHandler;
     }
 }
