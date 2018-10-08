@@ -50,7 +50,8 @@ class DeleteController extends Controller
         }
 
         return $this->render(
-            'Delete/delete.html.twig', [
+            'Delete/delete.html.twig',
+            [
                 'form' => $form->createView(),
             ]
         );

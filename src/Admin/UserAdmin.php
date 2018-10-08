@@ -67,8 +67,11 @@ class UserAdmin extends Admin
     {
         $formMapper
             ->add('email', EmailType::class, array('disabled' => !$this->isNewObject()))
-            ->add('plainPassword', PasswordType::class,
-                array('label' => 'form.password', 'required' => $this->isNewObject()))
+            ->add(
+                'plainPassword',
+                PasswordType::class,
+                array('label' => 'form.password', 'required' => $this->isNewObject())
+            )
             ->add('roles', ChoiceType::class, array(
                 'choices' => [Roles::getAll()],
                 'multiple' => true,
