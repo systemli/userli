@@ -1,4 +1,10 @@
 <h3>{{ "index.alias-headline"|trans }}</h3>
+{{ form_start(random_alias_form) }}
+{{ form_errors(random_alias_form) }}
+<div class="form-group">
+    {{ form_widget(random_alias_form.submit, {'attr': {'class': 'btn btn-primary' } }) }}
+</div>
+{{ form_end(random_alias_form) }}
 {% if aliases is defined and aliases|length > 0 %}
     <ul class="list-group">
         {% for alias in aliases %}

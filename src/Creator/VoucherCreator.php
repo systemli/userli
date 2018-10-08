@@ -22,7 +22,7 @@ class VoucherCreator extends AbstractCreator
     {
         $voucher = VoucherFactory::create($user);
 
-        $this->validate($voucher);
+        $this->validate($voucher, null);
         $this->save($voucher);
 
         return $voucher;

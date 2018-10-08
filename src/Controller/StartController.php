@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Creator\AliasCreator;
 use App\Creator\VoucherCreator;
 use App\Entity\User;
 use App\Exception\ValidationException;
+use App\Form\Model\AliasCreate;
 use App\Form\Model\PasswordChange;
 use App\Form\Model\VoucherCreate;
+use App\Form\RandomAliasCreateType;
 use App\Form\PasswordChangeType;
 use App\Form\VoucherCreateType;
 use App\Handler\VoucherHandler;
@@ -20,6 +23,10 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class StartController extends Controller
 {
+    /**
+     * @var AliasCreator
+     */
+    private $aliasCreator;
     /**
      * @var PasswordUpdater
      */
@@ -40,8 +47,9 @@ class StartController extends Controller
      * @param VoucherHandler  $voucherHandler
      * @param VoucherCreator  $voucherCreator
      */
-    public function __construct(PasswordUpdater $passwordUpdater, VoucherHandler $voucherHandler, VoucherCreator $voucherCreator)
+    public function __construct(AliasCreator $aliasCreator, PasswordUpdater $passwordUpdater, VoucherHandler $voucherHandler, VoucherCreator $voucherCreator)
     {
+        $this->aliasCreator = $aliasCreator;
         $this->passwordUpdater = $passwordUpdater;
         $this->voucherHandler = $voucherHandler;
         $this->voucherCreator = $voucherCreator;
@@ -70,6 +78,15 @@ class StartController extends Controller
             ]
         );
 
+        $randomAliasCreateForm = $this->createForm(
+            RandomAliasCreateType::class,
+            new AliasCreate(),
+            [
+                'action' => $this->generateUrl('index'),
+                'method' => 'post',
+            ]
+        );
+
         $passwordChange = new PasswordChange();
         $passwordChangeForm = $this->createForm(
             PasswordChangeType::class,
@@ -82,10 +99,13 @@ class StartController extends Controller
 
         if ('POST' === $request->getMethod()) {
             $voucherCreateForm->handleRequest($request);
+            $randomAliasCreateForm->handleRequest($request);
             $passwordChangeForm->handleRequest($request);
 
             if ($voucherCreateForm->isSubmitted() && $voucherCreateForm->isValid()) {
                 $this->createVoucher($request, $user);
+            } elseif ($randomAliasCreateForm->isSubmitted() && $randomAliasCreateForm->isValid()) {
+                $this->createRandomAlias($request, $user);
             } elseif ($passwordChangeForm->isSubmitted() && $passwordChangeForm->isValid()) {
                 $this->changePassword($request, $user, $passwordChange->newPassword);
             }
@@ -102,6 +122,7 @@ class StartController extends Controller
                 'aliases' => $aliases,
                 'vouchers' => $vouchers,
                 'voucher_form' => $voucherCreateForm->createView(),
+                'random_alias_form' => $randomAliasCreateForm->createView(),
                 'password_form' => $passwordChangeForm->createView(),
             ]
         );
@@ -121,6 +142,21 @@ class StartController extends Controller
             } catch (ValidationException $e) {
                 // Should not thrown
             }
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param User    $user
+     */
+    private function createRandomAlias(Request $request, User $user)
+    {
+        try {
+            $this->aliasCreator->create($user, null);
+
+            $request->getSession()->getFlashBag()->add('success', 'flashes.random-alias-creation-successful');
+        } catch (ValidationException $e) {
+            // Should not thrown
         }
     }
 

@@ -40,6 +40,7 @@ form:
   delete-account: Account löschen
   delete-password: Passwort
   create-voucher: Erstelle Voucher
+  create-random-alias: Generiere Zufalls-Alias
   delete-alias: Alias löschen
 
 navbar_left:
@@ -105,6 +106,7 @@ flashes:
   password-change-successful: Dein neues Passwort ist ab sofort aktiv!
   registration-successful: Du hast dich erfolgreich registriert!
   voucher-creation-successful: Dir wurde ein Voucher erstellt!
+  random-alias-creation-successful: Dir wurde ein neues Zufalls-Alias erstellt!
   alias-deletion-successful: Dein Alias wurde erfolgreich gelöscht!
 
 flash_batch_remove_vouchers_success: Nicht eingelöste Vouchers erfolgreich gelöscht

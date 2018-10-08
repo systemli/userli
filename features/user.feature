@@ -30,6 +30,16 @@ Feature: User
     And I should see text matching "Your new password is now active!"
     And the response status code should not be 403
 
+  @create-random-alias
+  Scenario: Create random alias
+    When I am authenticated as "user@example.org"
+    And I am on "/"
+    And I press "Generate random alias"
+
+    Then I should be on "/"
+    And I should see text matching "You got a new random alias created!"
+    And the response status code should be 200
+
   @delete-alias
   Scenario: Delete alias
     When I am authenticated as "user@example.org"

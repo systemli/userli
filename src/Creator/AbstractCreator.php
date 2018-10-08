@@ -23,7 +23,7 @@ abstract class AbstractCreator
     /**
      * @var EventDispatcherInterface
      */
-    private $eventDispatcher;
+    protected $eventDispatcher;
 
     /**
      * AbstractCreator constructor.
@@ -41,12 +41,12 @@ abstract class AbstractCreator
 
     /**
      * @param $entity
-     *
+     * @param array $validationGroups
      * @throws ValidationException
      */
-    protected function validate($entity): void
+    protected function validate($entity, ?array $validationGroups = null): void
     {
-        $violations = $this->validator->validate($entity);
+        $violations = $this->validator->validate($entity, null, $validationGroups);
 
         if ($violations->count() > 0) {
             throw new ValidationException($violations);

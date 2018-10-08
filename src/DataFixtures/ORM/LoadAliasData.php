@@ -3,7 +3,9 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Alias;
+use App\Factory\AliasFactory;
 use App\Repository\DomainRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -33,13 +35,18 @@ class LoadAliasData extends AbstractFixture implements OrderedFixtureInterface, 
      */
     public function load(ObjectManager $manager)
     {
+        $user = $manager->getRepository('App:User')->findByEmail('admin@example.org');
         $domain = $this->getRepository()->findByName('example.org');
 
         for ($i = 1; $i < 5; ++$i) {
-            $alias = new Alias();
-            $alias->setSource(sprintf('alias%d@'.$domain, $i));
-            $alias->setDestination('admin@'.$domain);
-            $alias->setDomain($domain);
+            $alias = AliasFactory::create($user, sprintf('alias%d@'.$domain, $i));
+
+            $manager->persist($alias);
+            $manager->flush();
+        }
+
+        for ($i = 1; $i < 5; ++$i) {
+            $alias = AliasFactory::create($user, null);
 
             $manager->persist($alias);
             $manager->flush();
