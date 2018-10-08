@@ -72,8 +72,6 @@ class EmailAddressValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, 'string');
         }
 
-        $value = (string) $value;
-
         $localPart = explode('@', $value)[0];
         $domain = explode('@', $value)[1];
 
