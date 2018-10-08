@@ -68,18 +68,18 @@ class EmailAddressValidator extends ConstraintValidator
             return;
         }
 
-        if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
+        if (!is_string($value)) {
             throw new UnexpectedTypeException($value, 'string');
         }
 
-        $stringValue = (string) $value;
+        $value = (string) $value;
 
-        $localPart = explode('@', $stringValue)[0];
-        $domain = explode('@', $stringValue)[1];
+        $localPart = explode('@', $value)[0];
+        $domain = explode('@', $value)[1];
 
-        if (null !== $this->userRepository->findByEmail($stringValue)) {
+        if (null !== $this->userRepository->findByEmail($value)) {
             $this->context->addViolation('registration.email-already-taken');
-        } elseif (null !== $this->aliasRepository->findBySource($stringValue)) {
+        } elseif (null !== $this->aliasRepository->findBySource($value)) {
             $this->context->addViolation('registration.email-already-taken');
         } elseif (null !== $this->reservedNameRepository->findByName($localPart)) {
             $this->context->addViolation('registration.email-already-taken');
@@ -87,18 +87,6 @@ class EmailAddressValidator extends ConstraintValidator
 
         if (1 !== preg_match('/^[a-z0-9\-\_\.]*$/ui', $localPart)) {
             $this->context->addViolation('registration.email-unexpected-characters');
-        }
-
-        if (is_numeric($minLength = $constraint->minLength)) {
-            if (strlen($localPart) < $minLength) {
-                $this->context->addViolation('registration.email-too-short', array('%min%' => $constraint->minLength));
-            }
-        }
-
-        if (is_numeric($maxLength = $constraint->maxLength)) {
-            if (strlen($localPart) > $maxLength) {
-                $this->context->addViolation('registration.email-too-long', array('%max%' => $constraint->maxLength));
-            }
         }
 
         if (null === $this->domainRepository->findByName($domain)) {

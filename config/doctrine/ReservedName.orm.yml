@@ -1,7 +1,7 @@
 App\Entity\ReservedName:
   type: entity
   repositoryClass: App\Repository\ReservedNameRepository
-  table: virtual_reserved_name
+  table: virtual_reserved_names
   id:
     id:
       type: integer

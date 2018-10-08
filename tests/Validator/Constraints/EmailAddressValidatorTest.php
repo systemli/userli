@@ -14,12 +14,6 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class EmailAddressValidatorTest extends ConstraintValidatorTestCase
 {
-    private $minLength = 3;
-    private $maxLength = 10;
-    private $emailAddressOptions = [
-        'minLength' => 3,
-        'maxLength' => 10,
-    ];
     private $domain = 'example.org';
     private $addressNew = 'new@example.org';
     private $aliasUsed = 'alias@example.org';
@@ -74,14 +68,14 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
 
     public function testNullIsValid()
     {
-        $this->validator->validate(null, new EmailAddress($this->emailAddressOptions));
+        $this->validator->validate(null, new EmailAddress());
 
         $this->assertNoViolation();
     }
 
     public function testEmptyStringIsValid()
     {
-        $this->validator->validate('', new EmailAddress($this->emailAddressOptions));
+        $this->validator->validate('', new EmailAddress());
 
         $this->assertNoViolation();
     }
@@ -91,22 +85,7 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
      */
     public function testExpectsStringCompatibleType()
     {
-        $this->validator->validate(new \stdClass(), new EmailAddress($this->emailAddressOptions));
-    }
-
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\MissingOptionsException
-     */
-    public function testConstraintMissingOptions()
-    {
-        new EmailAddress();
-    }
-
-    public function testConstraintGetDefaultOption()
-    {
-        $constraint = new EmailAddress($this->emailAddressOptions);
-        $this->assertEquals($this->minLength, $constraint->minLength);
-        $this->assertEquals($this->maxLength, $constraint->maxLength);
+        $this->validator->validate(new \stdClass(), new EmailAddress());
     }
 
     /**
@@ -115,7 +94,7 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
      */
     public function testValidateValidNewEmailAddress(string $address)
     {
-        $this->validator->validate($address, new EmailAddress($this->emailAddressOptions));
+        $this->validator->validate($address, new EmailAddress());
         $this->assertNoViolation();
     }
 
@@ -133,7 +112,7 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
      */
     public function testValidateInvalidNewEmailAddress(string $address, string $violationMessage)
     {
-        $this->validator->validate($address, new EmailAddress($this->emailAddressOptions));
+        $this->validator->validate($address, new EmailAddress());
         $this->buildViolation($violationMessage)
             ->assertRaised();
     }
@@ -150,34 +129,11 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
     /**
      * @param string $address
      * @param string $violationMessage
-     * @param string $operator
-     * @param int $limit
-     * @dataProvider getShortLongAddresses
-     */
-    public function testValidateShortLongEmailAddress(string $address, string $violationMessage, string $operator, int $limit)
-    {
-        $this->validator->validate($address, new EmailAddress($this->emailAddressOptions));
-        $this->buildViolation($violationMessage)
-            ->setParameter('%'.$operator.'%', $limit)
-            ->assertRaised();
-    }
-
-    public function getShortLongAddresses()
-    {
-        return [
-            ['s@'.$this->domain, 'registration.email-too-short', 'min', $this->minLength],
-            ['thisaddressiswaytoolong@'.$this->domain, 'registration.email-too-long', 'max', $this->maxLength],
-        ];
-    }
-
-    /**
-     * @param string $address
-     * @param string $violationMessage
      * @dataProvider getUsedAddresses
      */
     public function testValidateUsedEmailAddress(string $address, string $violationMessage)
     {
-        $this->validator->validate($address, new EmailAddress($this->emailAddressOptions));
+        $this->validator->validate($address, new EmailAddress());
         $this->buildViolation($violationMessage)
             ->assertRaised();
     }
