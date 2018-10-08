@@ -32,8 +32,6 @@ class EmailLengthValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, 'string');
         }
 
-        $value = (string) $value;
-
         $localPart = explode('@', $value)[0];
 
         if (is_numeric($minLength = $constraint->minLength)) {
