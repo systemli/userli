@@ -153,11 +153,18 @@ class FeatureContext extends MinkContext
                 }
 
                 switch ($key) {
+                    case 'user_id':
+                        $user = $this->getUserRepository()->find($value);
+                        $alias->setUser($user);
+                        break;
                     case 'source':
                         $alias->setSource($value);
                         break;
                     case 'destination':
                         $alias->setDestination($value);
+                        break;
+                    case 'deleted':
+                        $alias->setDeleted($value);
                         break;
                 }
 

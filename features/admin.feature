@@ -114,7 +114,7 @@ Feature: Admin
     Then the response status code should be 403
 
   @admin
-  Scenario: Access ReservedName List and able to create a reservedName as Admin
+  Scenario: Access ReservedName List and able to create a ReservedName as Admin
     When I am authenticated as "louis@example.org"
     And I am on "/admin/reservedname/list"
     Then the response status code should be 200
@@ -123,7 +123,7 @@ Feature: Admin
     Then the response status code should be 200
 
   @admin
-  Scenario: Admin can remove Vouchers, Aliases and Reserved Names
+  Scenario: Admin can remove Vouchers, Aliases and ReservedNames
     When I am authenticated as "louis@example.org"
     And I am on "/admin/voucher/1/delete"
     Then the response status code should be 200
