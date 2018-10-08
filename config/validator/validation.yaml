@@ -19,13 +19,15 @@ App\Form\Model\Registration:
             - Email:
                 strict: true
                 message: form.invalid-email
+            - App\Validator\Constraints\EmailAddress: ~
+            - App\Validator\Constraints\EmailLength:
+                minLength: 3
+                maxLength: 32
+        voucher:
+            - App\Validator\Constraints\Voucher:
+                exists: true
         plainPassword:
             - App\Validator\Constraints\PasswordPolicy: ~
-
-    constraints:
-        - App\Validator\Constraints\RegistrationConstraint:
-              minLength: 3
-              maxLength: 32
 
 App\Form\Model\PasswordChange:
     properties:
