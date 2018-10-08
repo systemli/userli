@@ -96,7 +96,8 @@ class StartController extends Controller
         $vouchers = $this->voucherHandler->getVouchersByUser($user);
 
         return $this->render(
-            'Start/index.html.twig', [
+            'Start/index.html.twig',
+            [
                 'user' => $user,
                 'aliases' => $aliases,
                 'vouchers' => $vouchers,
