@@ -89,18 +89,6 @@ class EmailAddressValidator extends ConstraintValidator
             $this->context->addViolation('registration.email-unexpected-characters');
         }
 
-        if (is_numeric($minLength = $constraint->minLength)) {
-            if (strlen($localPart) < $minLength) {
-                $this->context->addViolation('registration.email-too-short', array('%min%' => $constraint->minLength));
-            }
-        }
-
-        if (is_numeric($maxLength = $constraint->maxLength)) {
-            if (strlen($localPart) > $maxLength) {
-                $this->context->addViolation('registration.email-too-long', array('%max%' => $constraint->maxLength));
-            }
-        }
-
         if (null === $this->domainRepository->findByName($domain)) {
             $this->context->addViolation('registration.email-domain-not-exists');
         } elseif ($domain !== $this->domain) {

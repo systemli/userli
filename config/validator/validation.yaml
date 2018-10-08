@@ -19,7 +19,8 @@ App\Form\Model\Registration:
             - Email:
                 strict: true
                 message: form.invalid-email
-            - App\Validator\Constraints\EmailAddress:
+            - App\Validator\Constraints\EmailAddress: ~
+            - App\Validator\Constraints\EmailLength:
                 minLength: 3
                 maxLength: 32
         voucher:
