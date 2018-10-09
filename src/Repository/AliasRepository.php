@@ -3,12 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Alias;
-use Doctrine\ORM\EntityRepository;
 
 /**
  * Class AliasRepository.
  */
-class AliasRepository extends EntityRepository
+class AliasRepository extends AbstractRepository
 {
     /**
      * @param $email
