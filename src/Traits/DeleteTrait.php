@@ -15,9 +15,9 @@ trait DeleteTrait
     /**
      * @return bool
      */
-    public function isDeleted()
+    public function isDeleted(): bool
     {
-        return $this->deleted;
+        return ($this->deleted) ? true : false;
     }
 
     /**
