@@ -3,12 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\ReservedName;
-use Doctrine\ORM\EntityRepository;
 
 /**
  * Class ReservedNameRepository.
  */
-class ReservedNameRepository extends EntityRepository
+class ReservedNameRepository extends AbstractRepository
 {
     /**
      * @param string $name

@@ -5,12 +5,11 @@ namespace App\Repository;
 use App\Entity\User;
 use App\Entity\Voucher;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\EntityRepository;
 
 /**
  * Class VoucherRepository.
  */
-class VoucherRepository extends EntityRepository
+class VoucherRepository extends AbstractRepository
 {
     /**
      * @param $code

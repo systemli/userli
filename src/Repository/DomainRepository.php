@@ -3,12 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Domain;
-use Doctrine\ORM\EntityRepository;
 
 /**
  * Class DomainRepository.
  */
-class DomainRepository extends EntityRepository
+class DomainRepository extends AbstractRepository
 {
     /**
      * @param $name
