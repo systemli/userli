@@ -33,13 +33,6 @@ If you want to see more details about how the users are created, see
 
 Visit you local instance at http://192.168.33.99/.
 
-## Updates
-
-If updating from version 1.2.1 or lower, you'll have to upgrade the database
-schema:
-
-    bin/console doctrine:schema:update -f
-
 ## Tests
 
     cd vagrant && vagrant up && vagrant ssh
