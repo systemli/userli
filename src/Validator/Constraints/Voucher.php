@@ -16,8 +16,7 @@ class Voucher extends Constraint
     public $exists;
 
     /**
-     * Voucher constructor.
-     * @param null $options
+     * {@inheritdoc}
      */
     public function __construct($options = null)
     {

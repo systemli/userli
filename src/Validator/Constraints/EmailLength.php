@@ -21,8 +21,7 @@ class EmailLength extends Constraint
     public $maxLength;
 
     /**
-     * EmailLength constructor.
-     * @param null $options
+     * {@inheritdoc}
      */
     public function __construct($options = null)
     {
