@@ -35,5 +35,12 @@ App\Entity\Alias:
       joinColumn:
         name: domain_id
         referencedColumnName: id
+  indexes:
+    source_deleted_idx:
+      columns: ["source", "deleted"]
+    destination_deleted_idx:
+      columns: ["destination", "deleted"]
+    user_deleted_idx:
+      columns: ["user_id", "deleted"]
   lifecycleCallbacks:
     prePersist: [updateCreationTime, updateUpdatedTime]
