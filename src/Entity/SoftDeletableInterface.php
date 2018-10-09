@@ -5,7 +5,7 @@ namespace App\Entity;
 interface SoftDeletableInterface
 {
     /**
-     * @return mixed
+     * @return bool
      */
     public function isDeleted();
 }
