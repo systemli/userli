@@ -41,10 +41,10 @@ abstract class AbstractCreator
 
     /**
      * @param $entity
-     * @param array $validationGroups
+     * @param array|null $validationGroups
      * @throws ValidationException
      */
-    protected function validate($entity, ?array $validationGroups = null): void
+    protected function validate($entity, array $validationGroups = null): void
     {
         $violations = $this->validator->validate($entity, null, $validationGroups);
 
