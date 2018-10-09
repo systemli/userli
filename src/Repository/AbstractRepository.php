@@ -11,14 +11,8 @@ use Doctrine\ORM\EntityRepository;
 class AbstractRepository extends EntityRepository
 {
     /**
-     * @param mixed $id
-     * @param null $lockMode
-     * @param null $lockVersion
+     * {@inheritdoc}
      * @param bool $deleted
-     * @return null|object
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\TransactionRequiredException
      */
     public function find($id, $lockMode = null, $lockVersion = null, $deleted = false)
     {
@@ -33,8 +27,8 @@ class AbstractRepository extends EntityRepository
     }
 
     /**
+     * {@inheritdoc}
      * @param bool $deleted
-     * @return array
      */
     public function findAll($deleted = false)
     {
@@ -42,12 +36,8 @@ class AbstractRepository extends EntityRepository
     }
 
     /**
-     * @param array $criteria
-     * @param array|null $orderBy
-     * @param null $limit
-     * @param null $offset
+     * {@inheritdoc}
      * @param bool $deleted
-     * @return array
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null, $deleted = false)
     {
@@ -59,10 +49,8 @@ class AbstractRepository extends EntityRepository
     }
 
     /**
-     * @param array $criteria
-     * @param array|null $orderBy
+     * {@inheritdoc}
      * @param bool $deleted
-     * @return null|object
      */
     public function findOneBy(array $criteria, array $orderBy = null, $deleted = false)
     {
