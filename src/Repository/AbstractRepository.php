@@ -14,7 +14,7 @@ class AbstractRepository extends EntityRepository
      * {@inheritdoc}
      * @param bool $deleted
      */
-    public function find($id, $lockMode = null, $lockVersion = null, $deleted = false)
+    public function find($id, $lockMode = null, $lockVersion = null, bool $deleted = false)
     {
         $entity = parent::find($id, $lockMode, $lockVersion);
         if ($entity instanceof SoftDeletableInterface) {
@@ -30,7 +30,7 @@ class AbstractRepository extends EntityRepository
      * {@inheritdoc}
      * @param bool $deleted
      */
-    public function findAll($deleted = false)
+    public function findAll(bool $deleted = false)
     {
         return $this->findBy([], null, null, null, $deleted);
     }
@@ -39,7 +39,7 @@ class AbstractRepository extends EntityRepository
      * {@inheritdoc}
      * @param bool $deleted
      */
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null, $deleted = false)
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null, bool $deleted = false)
     {
         if (false === $deleted && $this->getClassMetadata()->hasField('deleted')) {
             $criteria += ['deleted' => 0];
@@ -52,7 +52,7 @@ class AbstractRepository extends EntityRepository
      * {@inheritdoc}
      * @param bool $deleted
      */
-    public function findOneBy(array $criteria, array $orderBy = null, $deleted = false)
+    public function findOneBy(array $criteria, array $orderBy = null, bool $deleted = false)
     {
         if (false === $deleted && $this->getClassMetadata()->hasField('deleted')) {
             $criteria += ['deleted' => 0];
