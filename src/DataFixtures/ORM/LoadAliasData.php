@@ -39,7 +39,7 @@ class LoadAliasData extends AbstractFixture implements OrderedFixtureInterface, 
         $domain = $this->getRepository()->findByName('example.org');
 
         for ($i = 1; $i < 5; ++$i) {
-            $alias = AliasFactory::create($user, sprintf('alias%d@'.$domain, $i));
+            $alias = AliasFactory::create($user, 'alias'.$i);
 
             $manager->persist($alias);
             $manager->flush();
