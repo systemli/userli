@@ -10,7 +10,7 @@ use App\Entity\Alias;
 trait AliasAwareTrait
 {
     /**
-     * @var Alias|nulll
+     * @var Alias|null
      */
     private $alias;
 
