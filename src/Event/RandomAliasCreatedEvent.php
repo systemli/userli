@@ -7,13 +7,13 @@ use App\Traits\AliasAwareTrait;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class AliasCreatedEvent
+ * Class RandomAliasCreatedEvent
  */
-class AliasCreatedEvent extends Event
+class RandomAliasCreatedEvent extends Event
 {
     use AliasAwareTrait;
 
-    const NAME = 'alias.created';
+    const NAME = 'alias.random_created';
 
     /**
      * Constructor.

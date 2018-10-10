@@ -2,7 +2,7 @@
 
 namespace App\EventListener;
 
-use App\Event\AliasCreatedEvent;
+use App\Event\RandomAliasCreatedEvent;
 use App\Helper\RandomStringGenerator;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -10,7 +10,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * @author doobry <doobry@systemli.org>
  */
-class AliasCreationListener implements EventSubscriberInterface
+class RandomAliasCreationListener implements EventSubscriberInterface
 {
     /**
      * @var ObjectManager
@@ -18,7 +18,7 @@ class AliasCreationListener implements EventSubscriberInterface
     private $manager;
 
     /**
-     * AliasCreationListener constructor.
+     * RandomAliasCreationListener constructor.
      *
      * @param ObjectManager $manager
      */
@@ -28,9 +28,9 @@ class AliasCreationListener implements EventSubscriberInterface
     }
 
     /**
-     * @param AliasCreatedEvent $event
+     * @param RandomAliasCreatedEvent $event
      */
-    public function onAliasCreated(AliasCreatedEvent $event)
+    public function onRandomAliasCreated(RandomAliasCreatedEvent $event)
     {
         $alias = $event->getAlias();
 
@@ -47,7 +47,7 @@ class AliasCreationListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AliasCreatedEvent::NAME => 'onAliasCreated',
+            RandomAliasCreatedEvent::NAME => 'onRandomAliasCreated',
         ];
     }
 }
