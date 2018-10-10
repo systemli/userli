@@ -38,9 +38,9 @@ class AliasHandler
 
     /**
      * @param User $user
-     * @return int
+     * @return bool
      */
-    public function checkAliasLimit(User $user): int
+    public function checkAliasLimit(User $user): bool
     {
         $aliases = $this->repository->findByUser($user);
 
