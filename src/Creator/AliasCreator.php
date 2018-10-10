@@ -4,7 +4,7 @@ namespace App\Creator;
 
 use App\Entity\Alias;
 use App\Entity\User;
-use App\Event\AliasEvent;
+use App\Event\AliasCreatedEvent;
 use App\Event\Events;
 use App\Exception\ValidationException;
 use App\Factory\AliasFactory;
@@ -24,25 +24,11 @@ class AliasCreator extends AbstractCreator
     {
         $alias = AliasFactory::create($user, $localPart);
 
-        $this->eventDispatcher->dispatch(Events::MAIL_ALIAS_CREATED, new AliasEvent($alias));
+        $this->eventDispatcher->dispatch(AliasCreatedEvent::NAME, new AliasCreatedEvent($alias));
+
         $this->validate($alias, ['Default', 'unique']);
         $this->save($alias);
 
         return $alias;
-    }
-
-    /**
-     * @param Alias $alias
-     * @return bool
-     */
-    public function validateUnique(Alias $alias): bool
-    {
-        try {
-            $this->validate($alias, ['Default', 'unique']);
-        } catch (ValidationException $e) {
-            return false;
-        }
-
-        return true;
     }
 }

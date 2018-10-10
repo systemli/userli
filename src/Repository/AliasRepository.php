@@ -15,7 +15,7 @@ class AliasRepository extends AbstractRepository
      *
      * @return null|object|Alias
      */
-    public function findBySource($email)
+    public function findOneBySource($email)
     {
         return $this->findOneBy(array('source' => $email));
     }

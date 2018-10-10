@@ -7,11 +7,13 @@ use App\Traits\AliasAwareTrait;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * @author louis <louis@systemli.org>
+ * Class AliasCreatedEvent
  */
-class AliasEvent extends Event
+class AliasCreatedEvent extends Event
 {
     use AliasAwareTrait;
+
+    const NAME = 'alias.created';
 
     /**
      * Constructor.

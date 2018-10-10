@@ -3,9 +3,10 @@
 namespace App\EventListener;
 
 use App\Creator\AliasCreator;
-use App\Event\AliasEvent;
+use App\Event\AliasCreatedEvent;
 use App\Event\Events;
 use App\Helper\RandomStringGenerator;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -14,27 +15,28 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class AliasCreationListener implements EventSubscriberInterface
 {
     /**
-     * @var AliasCreator
+     * @var ObjectManager
      */
-    private $creator;
+    private $manager;
 
     /**
      * AliasCreationListener constructor.
-     * @param AliasCreator $creator
+     *
+     * @param ObjectManager $manager
      */
-    public function __construct(AliasCreator $creator)
+    public function __construct(ObjectManager $manager)
     {
-        $this->creator = $creator;
+        $this->manager = $manager;
     }
 
     /**
-     * @param AliasEvent $event
+     * @param AliasCreatedEvent $event
      */
-    public function onAliasCreated(AliasEvent $event)
+    public function onAliasCreated(AliasCreatedEvent $event)
     {
         $alias = $event->getAlias();
 
-        while (false === $this->creator->validateUnique($alias)) {
+        while (null !== $this->manager->getRepository('App:Alias')->findOneBySource($alias->getSource())) {
             $localPart = RandomStringGenerator::generate(24, false);
             $domain = $alias->getDomain();
             $alias->setSource($localPart."@".$domain->getName());
@@ -47,7 +49,7 @@ class AliasCreationListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::MAIL_ALIAS_CREATED => 'onAliasCreated',
+            AliasCreatedEvent::NAME => 'onAliasCreated',
         ];
     }
 }
