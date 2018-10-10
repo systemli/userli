@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Creator\AliasCreator;
 use App\Creator\VoucherCreator;
 use App\Entity\User;
 use App\Exception\ValidationException;
@@ -12,6 +11,7 @@ use App\Form\Model\VoucherCreate;
 use App\Form\RandomAliasCreateType;
 use App\Form\PasswordChangeType;
 use App\Form\VoucherCreateType;
+use App\Handler\AliasHandler;
 use App\Handler\VoucherHandler;
 use App\Helper\PasswordUpdater;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,9 +24,9 @@ use Symfony\Component\HttpFoundation\Response;
 class StartController extends Controller
 {
     /**
-     * @var AliasCreator
+     * @var AliasHandler
      */
-    private $aliasCreator;
+    private $aliasHandler;
     /**
      * @var PasswordUpdater
      */
@@ -43,14 +43,14 @@ class StartController extends Controller
     /**
      * StartController constructor.
      *
-     * @param AliasCreator $aliasCreator
+     * @param AliasHandler $aliasHandler
      * @param PasswordUpdater $passwordUpdater
      * @param VoucherHandler  $voucherHandler
      * @param VoucherCreator  $voucherCreator
      */
-    public function __construct(AliasCreator $aliasCreator, PasswordUpdater $passwordUpdater, VoucherHandler $voucherHandler, VoucherCreator $voucherCreator)
+    public function __construct(AliasHandler $aliasHandler, PasswordUpdater $passwordUpdater, VoucherHandler $voucherHandler, VoucherCreator $voucherCreator)
     {
-        $this->aliasCreator = $aliasCreator;
+        $this->aliasHandler = $aliasHandler;
         $this->passwordUpdater = $passwordUpdater;
         $this->voucherHandler = $voucherHandler;
         $this->voucherCreator = $voucherCreator;
@@ -120,6 +120,7 @@ class StartController extends Controller
             'Start/index.html.twig',
             [
                 'user' => $user,
+                'alias_creation' => $this->aliasHandler->checkAliasLimit($user),
                 'aliases' => $aliases,
                 'vouchers' => $vouchers,
                 'voucher_form' => $voucherCreateForm->createView(),
@@ -153,9 +154,9 @@ class StartController extends Controller
     private function createRandomAlias(Request $request, User $user)
     {
         try {
-            $this->aliasCreator->create($user, null);
-
-            $request->getSession()->getFlashBag()->add('success', 'flashes.random-alias-creation-successful');
+            if ($this->aliasHandler->create($user, null)) {
+                $request->getSession()->getFlashBag()->add('success', 'flashes.random-alias-creation-successful');
+            }
         } catch (ValidationException $e) {
             // Should not thrown
         }

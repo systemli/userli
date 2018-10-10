@@ -10,6 +10,7 @@ index:
   voucher-headline: Deine Einladungscodes
   voucher-disable: Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben. Dies dient der Vermeidung von Massenregistrierungen und Spam.
   alias-headline: Deine Aliase
+  alias-limit: Du hast das Limit an erlaubten Aliases erreicht. Wenn du alte Aliases löschst, kannst du wieder neue erstellen.
   alias-empty: Du hast noch keine Aliase definiert.
   delete-headline: Account löschen
   delete-description: >
