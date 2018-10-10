@@ -2,11 +2,12 @@
 
 namespace App\Creator;
 
-use App\Entity\User;
 use App\Entity\Alias;
+use App\Entity\User;
+use App\Event\AliasEvent;
+use App\Event\Events;
 use App\Exception\ValidationException;
 use App\Factory\AliasFactory;
-use App\Helper\RandomStringGenerator;
 
 /**
  * Class AliasCreator.
@@ -23,10 +24,7 @@ class AliasCreator extends AbstractCreator
     {
         $alias = AliasFactory::create($user, $localPart);
 
-        if (null === $localPart) {
-            $alias = $this->validateAndUpdate($alias);
-        }
-
+        $this->eventDispatcher->dispatch(Events::MAIL_ALIAS_CREATED, new AliasEvent($alias));
         $this->validate($alias, ['Default', 'unique']);
         $this->save($alias);
 
@@ -35,19 +33,16 @@ class AliasCreator extends AbstractCreator
 
     /**
      * @param Alias $alias
-     * @return Alias
+     * @return bool
      */
-    private function validateAndUpdate(Alias $alias)
+    public function validateUnique(Alias $alias): bool
     {
         try {
-            $this->validate($alias, ['unique']);
+            $this->validate($alias, ['Default', 'unique']);
         } catch (ValidationException $e) {
-            $localPart = RandomStringGenerator::generate(24, false);
-            $domain = $alias->getDomain();
-            $alias->setSource($localPart."@".$domain->getName());
-            $this->validateAndUpdate($alias);
+            return false;
         }
 
-        return $alias;
+        return true;
     }
 }
