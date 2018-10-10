@@ -33,6 +33,10 @@ class AliasCreator extends AbstractCreator
         return $alias;
     }
 
+    /**
+     * @param Alias $alias
+     * @return Alias
+     */
     private function validateAndUpdate(Alias $alias)
     {
         try {
@@ -43,6 +47,7 @@ class AliasCreator extends AbstractCreator
             $alias->setSource($localPart."@".$domain->getName());
             $this->validateAndUpdate($alias);
         }
+
         return $alias;
     }
 }
