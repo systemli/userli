@@ -2,9 +2,7 @@
 
 namespace App\EventListener;
 
-use App\Creator\AliasCreator;
 use App\Event\AliasCreatedEvent;
-use App\Event\Events;
 use App\Helper\RandomStringGenerator;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

@@ -5,8 +5,6 @@ namespace App\Creator;
 use App\Entity\Alias;
 use App\Entity\User;
 use App\Event\AliasCreatedEvent;
-use App\Event\Events;
-use App\Exception\ValidationException;
 use App\Factory\AliasFactory;
 
 /**
@@ -24,7 +22,9 @@ class AliasCreator extends AbstractCreator
     {
         $alias = AliasFactory::create($user, $localPart);
 
-        $this->eventDispatcher->dispatch(AliasCreatedEvent::NAME, new AliasCreatedEvent($alias));
+        if (null === $localPart) {
+            $this->eventDispatcher->dispatch(AliasCreatedEvent::NAME, new AliasCreatedEvent($alias));
+        }
 
         $this->validate($alias, ['Default', 'unique']);
         $this->save($alias);
