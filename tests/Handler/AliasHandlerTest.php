@@ -31,7 +31,7 @@ class AliasHandlerTest extends TestCase
         $handler = $this->createHandler([]);
         $user = new User();
 
-        self::assertTrue($handler->checkAliasLimit($user, []));
+        self::assertTrue($handler->checkAliasLimit([]));
     }
 
     public function testCreate()
