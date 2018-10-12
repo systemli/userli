@@ -1,0 +1,27 @@
+<h3>{{ "index.alias-headline"|trans }}</h3>
+
+{%  if alias_creation %}
+    {{ form_start(random_alias_form) }}
+    {{ form_errors(random_alias_form) }}
+    <div class="form-group">
+        {{ form_widget(random_alias_form.submit, {'attr': {'class': 'btn btn-primary' } }) }}
+    </div>
+    {{ form_end(random_alias_form) }}
+{% else %}
+    <p class="alert alert-info">{{ "index.alias-limit"|trans({'%alias_limit%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT')}) }}</p>
+{% endif %}
+
+{% if aliases is defined and aliases|length > 0 %}
+    <ul class="list-group">
+        {% for alias in aliases %}
+            <li class="list-group-item list-group-item-primary">
+                {{ alias.source }}
+                <span class="pull-right">
+                    <a class="btn btn-danger btn-xs" href="{{ url('alias_delete', {'aliasId': alias.id}) }}">x</a>
+                </span>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p class="alert alert-info">{{ "index.alias-empty"|trans() }}</p>
+{% endif %}

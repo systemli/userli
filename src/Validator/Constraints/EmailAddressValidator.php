@@ -77,7 +77,7 @@ class EmailAddressValidator extends ConstraintValidator
 
         if (null !== $this->userRepository->findByEmail($value)) {
             $this->context->addViolation('registration.email-already-taken');
-        } elseif (null !== $this->aliasRepository->findBySource($value)) {
+        } elseif (null !== $this->aliasRepository->findOneBySource($value)) {
             $this->context->addViolation('registration.email-already-taken');
         } elseif (null !== $this->reservedNameRepository->findByName($localPart)) {
             $this->context->addViolation('registration.email-already-taken');

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Alias;
+use App\Entity\User;
 
 /**
  * Class AliasRepository.
@@ -14,7 +15,7 @@ class AliasRepository extends AbstractRepository
      *
      * @return null|object|Alias
      */
-    public function findBySource($email)
+    public function findOneBySource($email)
     {
         return $this->findOneBy(array('source' => $email));
     }
@@ -27,5 +28,15 @@ class AliasRepository extends AbstractRepository
     public function findByDestination($email)
     {
         return $this->findOneBy(array('destination' => $email));
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return array|Alias[]
+     */
+    public function findByUser(User $user)
+    {
+        return $this->findBy(['user' => $user]);
     }
 }

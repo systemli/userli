@@ -3,16 +3,18 @@
 namespace App\Entity;
 
 use App\Traits\CreationTimeTrait;
+use App\Traits\DeleteTrait;
 use App\Traits\DomainAwareTrait;
 use App\Traits\IdTrait;
 use App\Traits\UpdatedTimeTrait;
+use App\Traits\UserAwareTrait;
 
 /**
  * @author louis <louis@systemli.org>
  */
-class Alias
+class Alias implements SoftDeletableInterface
 {
-    use IdTrait, CreationTimeTrait, UpdatedTimeTrait, DomainAwareTrait;
+    use IdTrait, CreationTimeTrait, UpdatedTimeTrait, DeleteTrait, DomainAwareTrait, UserAwareTrait;
 
     /**
      * @var string
@@ -23,6 +25,14 @@ class Alias
      * @var string
      */
     protected $destination;
+
+    /**
+     * Alias constructor.
+     */
+    public function __construct()
+    {
+        $this->deleted = false;
+    }
 
     /**
      * {@inheritdoc}
@@ -54,5 +64,10 @@ class Alias
     public function setDestination($destination)
     {
         $this->destination = $destination;
+    }
+
+    public function setEmptyUser()
+    {
+        $this->user = null;
     }
 }

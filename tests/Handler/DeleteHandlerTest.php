@@ -2,6 +2,7 @@
 
 namespace App\Tests\Handler;
 
+use App\Entity\Alias;
 use App\Entity\User;
 use App\Handler\DeleteHandler;
 use App\Helper\PasswordUpdater;
@@ -10,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class DeleteHandlerTest extends TestCase
 {
-    public function testDeleteUser()
+    protected function createHandler()
     {
         $passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)
             ->disableOriginalConstructor()->getMock();
@@ -22,7 +23,34 @@ class DeleteHandlerTest extends TestCase
             ->disableOriginalConstructor()->getMock();
         $objectManager->expects($this->any())->method('flush')->willReturn(true);
 
-        $handler = new DeleteHandler($passwordUpdater, $objectManager);
+        return new DeleteHandler($passwordUpdater, $objectManager);
+
+
+    }
+
+    public function testDeleteAlias()
+    {
+        $handler = $this->createHandler();
+
+        $user = new User();
+        $alias = new Alias();
+        $alias->setUser($user);
+
+        $user2 = new User();
+        $handler->deleteAlias($alias, $user2);
+
+        self::assertNotTrue($alias->isDeleted());
+        self::assertEquals($alias->getUser(), $user);
+
+        $handler->deleteAlias($alias);
+
+        self::assertTrue($alias->isDeleted());
+        self::assertNotEquals($alias->getUser(), $user);
+    }
+
+    public function testDeleteUser()
+    {
+        $handler = $this->createHandler();
 
         $oldPassword = 'old_password';
 

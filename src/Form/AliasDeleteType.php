@@ -8,15 +8,15 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DeleteType extends AbstractType
+class AliasDeleteType extends AbstractType
 {
-    const NAME = 'delete';
+    const NAME = 'delete_alias';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('password', PasswordType::class, array('label' => 'form.delete-password'))
-            ->add('submit', SubmitType::class, array('label' => 'form.delete-account'));
+            ->add('submit', SubmitType::class, array('label' => 'form.delete-alias'));
     }
 
     /**
