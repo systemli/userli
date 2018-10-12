@@ -32,7 +32,7 @@ class AliasHandlerTest extends TestCase
         $handler = $this->createHandler([]);
         $user = new User();
 
-        self::assertTrue($handler->checkAliasLimit($user));
+        self::assertTrue($handler->checkAliasLimit($user, []));
     }
 
     public function testCreate()
@@ -40,7 +40,7 @@ class AliasHandlerTest extends TestCase
         $handler = $this->createHandler([]);
         $user = new User();
 
-        self::assertTrue($handler->create($user, null));
+        self::assertTrue($handler->create($user, [], null));
     }
 
     public function testCreateLimit()
@@ -52,6 +52,6 @@ class AliasHandlerTest extends TestCase
         $handler = $this->createHandler($list);
         $user = new User();
 
-        self::assertFalse($handler->create($user, null));
+        self::assertFalse($handler->create($user, $list, null));
     }
 }

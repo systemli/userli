@@ -120,7 +120,7 @@ class StartController extends Controller
             'Start/index.html.twig',
             [
                 'user' => $user,
-                'alias_creation' => $this->aliasHandler->checkAliasLimit($user),
+                'alias_creation' => $this->aliasHandler->checkAliasLimit($user, $aliases),
                 'aliases' => $aliases,
                 'vouchers' => $vouchers,
                 'voucher_form' => $voucherCreateForm->createView(),
@@ -150,11 +150,12 @@ class StartController extends Controller
     /**
      * @param Request $request
      * @param User    $user
+     * @param array   $aliases
      */
-    private function createRandomAlias(Request $request, User $user)
+    private function createRandomAlias(Request $request, User $user, array $aliases)
     {
         try {
-            if ($this->aliasHandler->create($user, null)) {
+            if ($this->aliasHandler->create($user, $aliases, null)) {
                 $request->getSession()->getFlashBag()->add('success', 'flashes.random-alias-creation-successful');
             }
         } catch (ValidationException $e) {

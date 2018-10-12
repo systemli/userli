@@ -27,7 +27,7 @@ class AliasFactory
             $localPart = RandomStringGenerator::generate(24, false);
         }
 
-        $alias->setSource($localPart."@".$domain);
+        $alias->setSource($localPart."@".$domain->getName());
 
         return $alias;
     }
