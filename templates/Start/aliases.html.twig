@@ -8,7 +8,7 @@
     </div>
     {{ form_end(random_alias_form) }}
 {% else %}
-    <p class="alert alert-info">{{ "index.alias-limit"|trans() }}</p>
+    <p class="alert alert-info">{{ "index.alias-limit"|trans({'%alias_limit%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT')}) }}</p>
 {% endif %}
 
 {% if aliases is defined and aliases|length > 0 %}
