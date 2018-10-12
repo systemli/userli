@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Creator\VoucherCreator;
+use App\Entity\Alias;
 use App\Entity\User;
 use App\Exception\ValidationException;
 use App\Form\Model\AliasCreate;
@@ -150,12 +151,11 @@ class StartController extends Controller
     /**
      * @param Request $request
      * @param User    $user
-     * @param array   $aliases
      */
-    private function createRandomAlias(Request $request, User $user, array $aliases)
+    private function createRandomAlias(Request $request, User $user)
     {
         try {
-            if ($this->aliasHandler->create($user, $aliases, null)) {
+            if ($this->aliasHandler->create($user, null) instanceof Alias) {
                 $request->getSession()->getFlashBag()->add('success', 'flashes.random-alias-creation-successful');
             }
         } catch (ValidationException $e) {

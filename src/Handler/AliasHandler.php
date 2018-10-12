@@ -3,6 +3,7 @@
 namespace App\Handler;
 
 use App\Creator\AliasCreator;
+use App\Entity\Alias;
 use App\Entity\User;
 use App\Exception\ValidationException;
 use App\Repository\AliasRepository;
@@ -48,18 +49,17 @@ class AliasHandler
 
     /**
      * @param User $user
-     * @param array $aliases
      * @param null|string $localPart
-     * @return bool
+     * @return Alias|null
      * @throws ValidationException
      */
-    public function create(User $user, array $aliases, ?string $localPart): bool
+    public function create(User $user, ?string $localPart): ?Alias
     {
+        $aliases = $this->repository->findByUser($user);
         if ($this->checkAliasLimit($user, $aliases)) {
-            $this->creator->create($user, $localPart);
-            return true;
-        } else {
-            return false;
+            return $this->creator->create($user, $localPart);
         }
+
+        return null;
     }
 }

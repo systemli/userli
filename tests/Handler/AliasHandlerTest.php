@@ -3,9 +3,8 @@
 namespace App\Tests\Handler;
 
 use App\Creator\AliasCreator;
-use App\Entity\Domain;
+use App\Entity\Alias;
 use App\Entity\User;
-use App\Exception\ValidationException;
 use App\Handler\AliasHandler;
 use App\Repository\AliasRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -40,7 +39,7 @@ class AliasHandlerTest extends TestCase
         $handler = $this->createHandler([]);
         $user = new User();
 
-        self::assertTrue($handler->create($user, [], null));
+        self::assertInstanceOf(Alias::class, $handler->create($user, null));
     }
 
     public function testCreateLimit()
@@ -52,6 +51,6 @@ class AliasHandlerTest extends TestCase
         $handler = $this->createHandler($list);
         $user = new User();
 
-        self::assertFalse($handler->create($user, $list, null));
+        self::assertNull($handler->create($user, null));
     }
 }
