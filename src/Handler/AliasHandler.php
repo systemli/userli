@@ -38,11 +38,10 @@ class AliasHandler
     }
 
     /**
-     * @param User $user
      * @param array $aliases
      * @return bool
      */
-    public function checkAliasLimit(User $user, array $aliases): bool
+    public function checkAliasLimit(array $aliases): bool
     {
         return (count($aliases) < self::ALIAS_LIMIT) ? true : false;
     }
@@ -56,7 +55,7 @@ class AliasHandler
     public function create(User $user, ?string $localPart): ?Alias
     {
         $aliases = $this->repository->findByUser($user);
-        if ($this->checkAliasLimit($user, $aliases)) {
+        if ($this->checkAliasLimit($aliases)) {
             return $this->creator->create($user, $localPart);
         }
 
