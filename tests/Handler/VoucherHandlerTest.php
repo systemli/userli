@@ -67,6 +67,11 @@ class VoucherHandlerTest extends TestCase
 
         self::assertNotEmpty($vouchers);
         self::assertCount(3, $vouchers);
+
+        $vouchers = $handler->getVouchersByUser($user, true);
+
+        self::assertNotEmpty($vouchers);
+        self::assertCount(3, $vouchers);
     }
 
     public function testNeedToCreateVouchers()
