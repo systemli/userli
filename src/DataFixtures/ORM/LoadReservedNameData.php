@@ -18,7 +18,7 @@ class LoadReservedNameData extends AbstractFixture implements OrderedFixtureInte
      */
     public function load(ObjectManager $manager)
     {
-        $reservedNames = Yaml::parsefile(dirname(__FILE__).'/reserved_names.yml');
+        $reservedNames = Yaml::parsefile(dirname(__FILE__).'/../../../config/reserved_names.yml');
         foreach ($reservedNames['reservedNames'] as $name) {
             $reservedName = new ReservedName();
             $reservedName->setName($name);
