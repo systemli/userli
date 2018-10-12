@@ -40,10 +40,11 @@ class VoucherHandler
 
     /**
      * @param User $user
+     * @param bool $redeemed
      *
      * @return Voucher[]
      */
-    public function getVouchersByUser(User $user): array
+    public function getVouchersByUser(User $user, bool $redeemed = false): array
     {
         if ($user->hasRole(Roles::SUSPICIOUS)) {
             return [];
@@ -51,20 +52,25 @@ class VoucherHandler
 
         $vouchers = $this->repository->findByUser($user);
 
-        if ($user->getCreationTime() > new \DateTime('-7 days')) {
-            return $vouchers;
-        }
-
-        if (count($vouchers) < self::VOUCHER_LIMIT) {
-            for ($i = count($vouchers); $i < self::VOUCHER_LIMIT; ++$i) {
-                try {
-                    $vouchers[] = $this->creator->create($user);
-                } catch (ValidationException $e) {
-                    // Should not thrown
+        if ($user->getCreationTime() <= new \DateTime('-7 days')) {
+            if (count($vouchers) < self::VOUCHER_LIMIT) {
+                for ($i = count($vouchers); $i < self::VOUCHER_LIMIT; ++$i) {
+                    try {
+                        $vouchers[] = $this->creator->create($user);
+                    } catch (ValidationException $e) {
+                        // Should not thrown
+                    }
                 }
             }
         }
 
-        return $vouchers;
+        if (true === $redeemed) {
+            return $vouchers;
+        } else {
+            $vouchersActive = array_filter($vouchers, function($k) {
+                return ($k->isRedeemed()) ? null : $k;
+            });
+            return $vouchersActive;
+        }
     }
 }
