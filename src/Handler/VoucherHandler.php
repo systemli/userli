@@ -67,8 +67,8 @@ class VoucherHandler
         if (true === $redeemed) {
             return $vouchers;
         } else {
-            $vouchersActive = array_filter($vouchers, function($k) {
-                return ($k->isRedeemed()) ? null : $k;
+            $vouchersActive = array_filter($vouchers, function (Voucher $voucher) {
+                return ($voucher->isRedeemed()) ? null : $voucher;
             });
             return $vouchersActive;
         }
