@@ -121,7 +121,7 @@ class StartController extends Controller
             'Start/index.html.twig',
             [
                 'user' => $user,
-                'alias_creation' => $this->aliasHandler->checkAliasLimit($user, $aliases),
+                'alias_creation' => $this->aliasHandler->checkAliasLimit($aliases),
                 'aliases' => $aliases,
                 'vouchers' => $vouchers,
                 'voucher_form' => $voucherCreateForm->createView(),
