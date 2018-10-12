@@ -1,3 +1,14 @@
+App\Entity\Alias:
+    properties:
+        source:
+            - NotNull: ~
+            - Email:
+                strict: true
+            - App\Validator\Constraints\EmailAddress: { groups: [unique] }
+            - App\Validator\Constraints\EmailLength:
+                minLength: 3
+                maxLength: 24
+
 App\Entity\User:
     properties:
         email:

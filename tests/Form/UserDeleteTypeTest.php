@@ -3,17 +3,17 @@
 namespace App\Tests\Form;
 
 use Symfony\Component\Form\Test\TypeTestCase;
-use App\Form\DeleteType;
+use App\Form\UserDeleteType;
 use App\Form\Model\Delete;
 
-class DeleteTypeTest extends TypeTestCase
+class UserDeleteTypeTest extends TypeTestCase
 {
     public function testSubmitValidData()
     {
         $password = 'password';
         $formData = array('password' => $password);
 
-        $form = $this->factory->create(DeleteType::class);
+        $form = $this->factory->create(UserDeleteType::class);
 
         $object = new Delete();
         $object->password = $password;

@@ -2,6 +2,7 @@
 
 namespace App\Handler;
 
+use App\Entity\Alias;
 use App\Entity\User;
 use App\Helper\PasswordGenerator;
 use App\Helper\PasswordUpdater;
@@ -28,6 +29,23 @@ class DeleteHandler
     {
         $this->passwordUpdater = $passwordUpdater;
         $this->manager = $manager;
+    }
+
+    /**
+     * @param Alias $alias
+     * @param User $user
+     */
+    public function deleteAlias(Alias $alias, User $user = null)
+    {
+        if (null !== $user) {
+            if ($alias->getUser() !== $user) {
+                return;
+            }
+        }
+
+        $alias->setDeleted(true);
+        $alias->setEmptyUser();
+        $this->manager->flush();
     }
 
     /**
