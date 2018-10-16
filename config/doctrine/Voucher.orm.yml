@@ -1,7 +1,7 @@
 App\Entity\Voucher:
   type: entity
   repositoryClass: App\Repository\VoucherRepository
-  table: virtual_voucher
+  table: virtual_vouchers
   id:
     id:
       type: integer
