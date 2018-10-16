@@ -8,7 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * @author doobry <doobry@systemli.org>
@@ -37,13 +36,13 @@ class ImportReservedNamesCommand extends ContainerAwareCommand
     {
         $this
             ->setName('usrmgmt:reservednames:import')
-            ->setDescription('Import reservedNames from a yaml file')
+            ->setDescription('Import reservedNames from stdin or file')
             ->addOption(
                 'file',
                 'f',
                 InputOption::VALUE_REQUIRED,
-                'Yaml file with list of reservedNames',
-                dirname(__FILE__).'/../../config/reserved_names.yml');
+                'Simple text file with a list of reservedNames. Give "-" to read from STDIN.',
+                dirname(__FILE__).'/../../config/reserved_names.txt');
     }
 
     /**
@@ -54,23 +53,46 @@ class ImportReservedNamesCommand extends ContainerAwareCommand
         $repository = $this->manager->getRepository('App:ReservedName');
 
         $file = $input->getOption('file');
-        $reservedNames = Yaml::parsefile($file);
+        dump($file);
+        if ('-' === $file) {
+            $handle = STDIN;
+        } else {
+            $handle = fopen($file, 'r');
+        }
 
-        foreach ($reservedNames['reservedNames'] as $name) {
+        while ($line = fgets($handle)) {
+            $name = trim($line);
+            if (empty($name)) {
+                continue;
+            } elseif (substr($name, 0, 1) === "#") {
+                // filter out comments
+                continue;
+            }
+
             if (null === $repository->findByName($name)) {
                 $output->writeln(
                     sprintf(
-                        '<INFO>Adding reservedName %s to database table</INFO>',
+                        '<INFO>Adding reservedName "%s" to database table</INFO>',
                         $name
                     ),
                     OutputInterface::VERBOSITY_VERBOSE
                 );
+
                 $reservedName = new ReservedName();
                 $reservedName->setName($name);
 
                 $this->manager->persist($reservedName);
+            } else {
+                $output->writeln(
+                    sprintf(
+                        '<INFO>Skipping reservedName "%s", already exists</INFO>',
+                        $name
+                    ),
+                    OutputInterface::VERBOSITY_VERY_VERBOSE
+                );
             }
         }
+
         $this->manager->flush();
     }
 }
