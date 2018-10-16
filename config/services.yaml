@@ -88,6 +88,10 @@ services:
         arguments:
             $to: "%env(NOTIFICATION_ADDRESS)%"
 
+    App\Handler\UserAuthenticationHandler:
+        arguments:
+            $encoderFactory: '@security.encoder_factory'
+
     App\Helper\PasswordUpdater:
         public: true
 
