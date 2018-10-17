@@ -28,7 +28,6 @@ class VoucherUnlinkCommand extends Command
 
     /**
      * VoucherUnlinkCommand constructor.
-     *
      * @param ObjectManager $manager
      * @param SuspiciousChildrenHandler $handler
      */
