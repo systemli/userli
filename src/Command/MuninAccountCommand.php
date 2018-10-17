@@ -2,17 +2,37 @@
 
 namespace App\Command;
 
-use App\Counter\UserCounter;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use App\Repository\UserRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @author louis <louis@systemli.org>
+ * Class MuninAccountCommand
  */
-class MuninAccountCommand extends ContainerAwareCommand
+class MuninAccountCommand extends Command
 {
+    /**
+     * @var UserRepository
+     */
+    private $repository;
+
+    /**
+     * MuninAccountCommand constructor.
+     *
+     * @param ObjectManager $manager
+     */
+    public function __construct(ObjectManager $manager)
+    {
+        parent::__construct();
+        $this->repository = $manager->getRepository('App:User');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function configure()
     {
         $this
@@ -22,6 +42,9 @@ class MuninAccountCommand extends ContainerAwareCommand
             ->addOption('config', null, InputOption::VALUE_NONE, 'config for the plugin');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($input->getOption('autoconf')) {
@@ -41,14 +64,6 @@ class MuninAccountCommand extends ContainerAwareCommand
             return;
         }
 
-        $output->writeln(sprintf('account.value %d', $this->getUserCounter()->getCount()));
-    }
-
-    /**
-     * @return UserCounter
-     */
-    private function getUserCounter()
-    {
-        return $this->getContainer()->get('App\Counter\UserCounter');
+        $output->writeln(sprintf('account.value %d', $this->repository->count([])));
     }
 }

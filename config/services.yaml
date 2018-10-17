@@ -187,8 +187,6 @@ services:
             - usrmgmt.admin.block.statistics
             - '@Symfony\Component\Templating\EngineInterface'
             - '@Doctrine\Common\Persistence\ObjectManager'
-            - '@App\Counter\UserCounter'
-            - '@App\Counter\VoucherCounter'
 
     usrmgmt.admin.reservedname:
         class: App\Admin\ReservedNameAdmin
