@@ -2,17 +2,19 @@
 
 namespace App\Command;
 
-use App\Entity\ReservedName;
+use App\Creator\ReservedNameCreator;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author doobry <doobry@systemli.org>
  */
-class ImportReservedNamesCommand extends ContainerAwareCommand
+class ImportReservedNamesCommand extends Command
 {
     /**
      * @var ObjectManager
@@ -20,13 +22,26 @@ class ImportReservedNamesCommand extends ContainerAwareCommand
     private $manager;
 
     /**
-     * VoucherUnlinkCommand constructor.
-     *
-     * @param ObjectManager $manager
+     * @var ValidatorInterface
      */
-    public function __construct(ObjectManager $manager)
+    private $validator;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
+     * ImportReservedNamesCommand constructor.
+     * @param ObjectManager $manager
+     * @param ValidatorInterface $validator
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(ObjectManager $manager, ValidatorInterface $validator, EventDispatcherInterface $eventDispatcher)
     {
         $this->manager = $manager;
+        $this->validator = $validator;
+        $this->eventDispatcher = $eventDispatcher;
         parent::__construct();
     }
     /**
@@ -36,24 +51,25 @@ class ImportReservedNamesCommand extends ContainerAwareCommand
     {
         $this
             ->setName('usrmgmt:reservednames:import')
-            ->setDescription('Import reservedNames from stdin or file')
+            ->setDescription('Import reserved names from stdin or file')
             ->addOption(
                 'file',
                 'f',
                 InputOption::VALUE_REQUIRED,
-                'Simple text file with a list of reservedNames. Give "-" to read from STDIN.',
-                dirname(__FILE__).'/../../config/reserved_names.txt');
+                'Simple text file with a list of reserved names. Give "-" to read from STDIN.',
+                dirname(__FILE__).'/../../config/reserved_names.txt'
+            );
     }
 
     /**
      * {@inheritdoc}
+     * @throws \App\Exception\ValidationException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $repository = $this->manager->getRepository('App:ReservedName');
 
         $file = $input->getOption('file');
-        dump($file);
         if ('-' === $file) {
             $handle = STDIN;
         } else {
@@ -72,27 +88,23 @@ class ImportReservedNamesCommand extends ContainerAwareCommand
             if (null === $repository->findByName($name)) {
                 $output->writeln(
                     sprintf(
-                        '<INFO>Adding reservedName "%s" to database table</INFO>',
+                        '<INFO>Adding reserved name "%s" to database table</INFO>',
                         $name
                     ),
                     OutputInterface::VERBOSITY_VERBOSE
                 );
 
-                $reservedName = new ReservedName();
-                $reservedName->setName($name);
-
-                $this->manager->persist($reservedName);
+                $reservedNameCreator = new ReservedNameCreator($this->manager, $this->validator, $this->eventDispatcher);
+                $reservedNameCreator->create($name);
             } else {
                 $output->writeln(
                     sprintf(
-                        '<INFO>Skipping reservedName "%s", already exists</INFO>',
+                        '<INFO>Skipping reserved name "%s", already exists</INFO>',
                         $name
                     ),
                     OutputInterface::VERBOSITY_VERY_VERBOSE
                 );
             }
         }
-
-        $this->manager->flush();
     }
 }

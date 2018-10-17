@@ -2,16 +2,31 @@
 
 namespace App\DataFixtures\ORM;
 
-use App\Entity\ReservedName;
+use App\Creator\ReservedNameCreator;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author doobry <doobry@systemli.org>
  */
-class LoadReservedNameData extends AbstractFixture implements OrderedFixtureInterface
+class LoadReservedNameData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,12 +46,16 @@ class LoadReservedNameData extends AbstractFixture implements OrderedFixtureInte
                 continue;
             }
 
-            $reservedName = new ReservedName();
-            $reservedName->setName($name);
-
-            $manager->persist($reservedName);
+            $this->getReservedNameCreator()->create($name);
         }
-        $manager->flush();
+    }
+
+    /**
+     * @return ReservedNameCreator
+     */
+    private function getReservedNameCreator()
+    {
+        return $this->container->get(ReservedNameCreator::class);
     }
 
     /**
