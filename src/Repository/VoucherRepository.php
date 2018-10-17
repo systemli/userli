@@ -22,11 +22,11 @@ class VoucherRepository extends AbstractRepository
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection|Voucher[]
+     * @return int
      */
-    public function findAllRedeemedVouchers()
+    public function countRedeemedVouchers()
     {
-        return $this->matching(Criteria::create()->where(Criteria::expr()->neq('redeemedTime', null)));
+        return $this->matching(Criteria::create()->where(Criteria::expr()->neq('redeemedTime', null)))->count();
     }
 
     /**

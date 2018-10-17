@@ -2,7 +2,6 @@
 
 namespace App\Handler;
 
-use App\Counter\UserCounter;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Event\Events;
@@ -36,10 +35,6 @@ class RegistrationHandler
      */
     private $passwordUpdater;
     /**
-     * @var UserCounter
-     */
-    private $userCounter;
-    /**
      * @var bool
      */
     private $hasSinaBox;
@@ -51,7 +46,6 @@ class RegistrationHandler
      * @param DomainGuesser            $domainGuesser
      * @param EventDispatcherInterface $eventDispatcher
      * @param PasswordUpdater          $passwordUpdater
-     * @param UserCounter              $userCounter
      * @param bool                     $hasSinaBox
      */
     public function __construct(
@@ -59,14 +53,12 @@ class RegistrationHandler
         DomainGuesser $domainGuesser,
         EventDispatcherInterface $eventDispatcher,
         PasswordUpdater $passwordUpdater,
-        UserCounter $userCounter,
         $hasSinaBox
     ) {
         $this->manager = $manager;
         $this->domainGuesser = $domainGuesser;
         $this->eventDispatcher = $eventDispatcher;
         $this->passwordUpdater = $passwordUpdater;
-        $this->userCounter = $userCounter;
         $this->hasSinaBox = $hasSinaBox;
     }
 
@@ -95,7 +87,7 @@ class RegistrationHandler
      */
     public function canRegister()
     {
-        $count = $this->userCounter->getCount();
+        $count = $this->manager->getRepository('App:User')->count([]);
 
         if (!$this->hasSinaBox && $count > self::REGISTRATION_LIMIT) {
             return false;
