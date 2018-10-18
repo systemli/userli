@@ -1,30 +1,30 @@
 <?php
 
-namespace App\DataFixtures\ORM;
+namespace App\DataFixtures;
 
 use App\Creator\ReservedNameCreator;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author doobry <doobry@systemli.org>
  */
-class LoadReservedNameData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+class LoadReservedNameData extends Fixture implements OrderedFixtureInterface
 {
     /**
-     * @var ContainerInterface
+     * @var ReservedNameCreator
      */
-    private $container;
+    private $creator;
 
     /**
-     * {@inheritdoc}
+     * LoadReservedNameData constructor.
+     *
+     * @param ReservedNameCreator $creator
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function __construct(ReservedNameCreator $creator)
     {
-        $this->container = $container;
+        $this->creator = $creator;
     }
 
     /**
@@ -34,7 +34,7 @@ class LoadReservedNameData extends AbstractFixture implements OrderedFixtureInte
     public function load(ObjectManager $manager)
     {
         $handle = fopen(
-            dirname(__FILE__).'/../../../config/reserved_names.txt',
+            dirname(__FILE__).'/../../config/reserved_names.txt',
             'r'
         );
 
@@ -47,16 +47,8 @@ class LoadReservedNameData extends AbstractFixture implements OrderedFixtureInte
                 continue;
             }
 
-            $this->getReservedNameCreator()->create($name);
+            $this->creator->create($name);
         }
-    }
-
-    /**
-     * @return ReservedNameCreator
-     */
-    private function getReservedNameCreator()
-    {
-        return $this->container->get(ReservedNameCreator::class);
     }
 
     /**

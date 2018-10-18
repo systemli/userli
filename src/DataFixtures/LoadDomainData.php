@@ -1,16 +1,16 @@
 <?php
 
-namespace App\DataFixtures\ORM;
+namespace App\DataFixtures;
 
 use App\Entity\Domain;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * @author louis <louis@systemli.org>
  */
-class LoadDomainData extends AbstractFixture implements OrderedFixtureInterface
+class LoadDomainData extends Fixture implements OrderedFixtureInterface
 {
     private $domains = [
         'example.com',

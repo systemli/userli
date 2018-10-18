@@ -1,12 +1,10 @@
 <?php
 
-namespace App\DataFixtures\ORM;
+namespace App\DataFixtures;
 
-use App\Entity\Alias;
 use App\Factory\AliasFactory;
 use App\Repository\DomainRepository;
-use App\Repository\UserRepository;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -15,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * @author louis <louis@systemli.org>
  */
-class LoadAliasData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+class LoadAliasData extends Fixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     /**
      * @var ContainerInterface
