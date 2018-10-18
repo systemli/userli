@@ -23,14 +23,10 @@ class ImportReservedNamesCommandTest extends TestCase
             ->getMock();
         $creator->method('create')->willReturn(new ReservedName());
 
-        $application = new Application();
-        $application->add(new ImportReservedNamesCommand($manager, $creator));
-        $commandTester = new CommandTester($command = $application->find('usrmgmt:reservednames:import'));
+        $command = new ImportReservedNamesCommand($manager, $creator);
+        $commandTester = new CommandTester($command);
 
-        $commandTester->execute(
-            ['command' => $command->getName()],
-            ['verbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE]
-        );
+        $commandTester->execute([], ['verbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE]);
 
         $output = $commandTester->getDisplay();
         $this->assertContains('Adding reserved name "new" to database table', $output);
@@ -47,10 +43,12 @@ class ImportReservedNamesCommandTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $repository->method('findByName')->willReturnMap([
+        $repository->method('findByName')->willReturnMap(
+            [
                 ['new', null],
                 ['name', true],
-            ]);
+            ]
+        );
 
         $manager->expects($this->any())->method('getRepository')->willReturn($repository);
 
