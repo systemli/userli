@@ -38,9 +38,6 @@ services:
             $projectName:  "%env(PROJECT_NAME)%"
             $domain:       "%env(DOMAIN)%"
 
-    App\Creator\ReservedNameCreator:
-        public: true
-
     App\EventListener\:
         resource: '../src/EventListener/*'
         tags:
