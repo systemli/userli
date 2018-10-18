@@ -29,6 +29,7 @@ class LoadReservedNameData extends AbstractFixture implements OrderedFixtureInte
 
     /**
      * {@inheritdoc}
+     * @throws \App\Exception\ValidationException
      */
     public function load(ObjectManager $manager)
     {

@@ -3,15 +3,14 @@
 namespace App\Tests\Command;
 
 use App\Command\ImportReservedNamesCommand;
+use App\Creator\ReservedNameCreator;
+use App\Entity\ReservedName;
 use App\Repository\ReservedNameRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ImportReservedNamesCommandTest extends TestCase
 {
@@ -19,13 +18,13 @@ class ImportReservedNamesCommandTest extends TestCase
     {
         $manager = $this->getManager();
 
-        $validator = $this->getMockBuilder(ValidatorInterface::class)->getMock();
-        $validator->expects($this->any())->method('validate')->willReturn(new ConstraintViolationList());
-
-        $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
+        $creator = $this->getMockBuilder(ReservedNameCreator::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $creator->method('create')->willReturn(new ReservedName());
 
         $application = new Application();
-        $application->add(new ImportReservedNamesCommand($manager, $validator, $eventDispatcher));
+        $application->add(new ImportReservedNamesCommand($manager, $creator));
         $commandTester = new CommandTester($command = $application->find('usrmgmt:reservednames:import'));
 
         $commandTester->execute(

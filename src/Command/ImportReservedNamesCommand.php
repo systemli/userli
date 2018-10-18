@@ -8,8 +8,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author doobry <doobry@systemli.org>
@@ -22,26 +20,19 @@ class ImportReservedNamesCommand extends Command
     private $manager;
 
     /**
-     * @var ValidatorInterface
+     * @var ReservedNameCreator
      */
-    private $validator;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
+    private $creator;
 
     /**
      * ImportReservedNamesCommand constructor.
      * @param ObjectManager $manager
-     * @param ValidatorInterface $validator
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param ReservedNameCreator $creator
      */
-    public function __construct(ObjectManager $manager, ValidatorInterface $validator, EventDispatcherInterface $eventDispatcher)
+    public function __construct(ObjectManager $manager, ReservedNameCreator $creator)
     {
         $this->manager = $manager;
-        $this->validator = $validator;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->creator = $creator;
         parent::__construct();
     }
     /**
@@ -94,8 +85,7 @@ class ImportReservedNamesCommand extends Command
                     OutputInterface::VERBOSITY_VERBOSE
                 );
 
-                $reservedNameCreator = new ReservedNameCreator($this->manager, $this->validator, $this->eventDispatcher);
-                $reservedNameCreator->create($name);
+                $this->creator->create($name);
             } else {
                 $output->writeln(
                     sprintf(
