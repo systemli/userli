@@ -46,6 +46,7 @@ This app brings custom commands:
     usrmgmt:munin:voucher          # Return number of vouchers to munin
     usrmgmt:registration:mail      # Send registration mail to user
     usrmgmt:report:weekly          # Send weekly report about registrations
+    usrmgmt:reservednames:import   # Import reserved names from stdin or text file
     usrmgmt:users:remove           # Remove disabled users maildirs
     usrmgmt:voucher:create         # Create multiple vouchers for user, -c configures amount
     usrmgmt:voucher:unlink         # Unlink redeemed vouchers from users
