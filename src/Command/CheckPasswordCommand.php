@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Handler\UserAuthenticationHandler;
+use App\Helper\FileDescriptorReader;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -29,6 +30,11 @@ class CheckPasswordCommand extends ContainerAwareCommand
     private $manager;
 
     /**
+     * @var FileDescriptorReader
+     */
+    private $reader;
+
+    /**
      * @var UserAuthenticationHandler
      */
     private $handler;
@@ -42,11 +48,13 @@ class CheckPasswordCommand extends ContainerAwareCommand
      * CheckPasswordCommand constructor.
      *
      * @param ObjectManager             $manager
+     * @param FileDescriptorReader      $reader
      * @param UserAuthenticationHandler $handler
      */
-    public function __construct(ObjectManager $manager, UserAuthenticationHandler $handler)
+    public function __construct(ObjectManager $manager, FileDescriptorReader $reader, UserAuthenticationHandler $handler)
     {
         $this->manager = $manager;
+        $this->reader = $reader;
         $this->handler = $handler;
         $this->repository = $this->manager->getRepository('App:User');
         parent::__construct();
@@ -75,21 +83,19 @@ class CheckPasswordCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $inputFd = 'php://fd/3';
         $replyArgs = $input->getArgument('checkpassword-reply');
 
         $replyCommand = null;
         if (0 < count($replyArgs)) {
             $replyCommand = array_shift($replyArgs);
-
-            // Allow easy commandline testing
-            if ('/bin/true' === $replyCommand) {
-                $inputFd = 'php://fd/0';
-            }
         }
 
-        $fileHandler = fopen($inputFd, 'r');
-        $contents = stream_get_contents($fileHandler);
+        // Allow easy commandline testing
+        if ('/bin/true' === $replyCommand) {
+            $contents = $this->reader->readStdin();
+        } else {
+            $contents = $this->reader->readFd3();
+        }
 
         // Validate checkpassword input from file descriptor
         try {
