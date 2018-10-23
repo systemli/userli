@@ -31,7 +31,7 @@ class AliasFactory
             $alias->setRandom();
         }
 
-        $alias->setSource(strtolower($localPart)."@".$domain->getName());
+        $alias->setSource(strtolower($localPart).'@'.$domain->getName());
 
         return $alias;
     }

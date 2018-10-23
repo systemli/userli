@@ -40,7 +40,8 @@ class AliasHandler
 
     /**
      * @param array $aliases
-     * @param int $limit
+     * @param int   $limit
+     *
      * @return bool
      */
     public function checkAliasLimit(array $aliases, int $limit = self::ALIAS_LIMIT_CUSTOM): bool
@@ -50,6 +51,7 @@ class AliasHandler
 
     /**
      * @param User $user
+     *
      * @return Alias|null
      *
      * @throws ValidationException
@@ -65,9 +67,11 @@ class AliasHandler
     }
 
     /**
-     * @param User $user
+     * @param User   $user
      * @param string $localPart
+     *
      * @return Alias|null
+     *
      * @throws ValidationException
      */
     public function createCustom(User $user, string $localPart): ?Alias

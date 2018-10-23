@@ -27,7 +27,7 @@ class Alias implements SoftDeletableInterface
     protected $destination;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $random;
 
