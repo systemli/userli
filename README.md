@@ -4,7 +4,85 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/systemli/user-management/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/systemli/user-management/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/systemli/user-management/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/systemli/user-management/?branch=master)
 
-## Set up development environment
+## Production deployment
+
+* Requirements:
+  * [PHP >= 7.1](https://secure.php.net/)
+  * [PHP composer](https://getcomposer.org/)
+  * [Node.js Yarn](https://yarnpkg.com/)
+  * [MariaDB](https://mariadb.org/) or [MySQL](https://mysql.com/)
+
+* Configure prerequisites:
+
+    # Setup database and user
+    mysql -e 'CREATE DATABASE mail'
+    mysql -e 'CREATE USER `mailuser`@`localhost` IDENTIFIED BY "<password>"'
+    mysql -e 'GRANT INSERT,SELECT,UPDATE ON mail.* TO `mailuser`@`localhost`'
+    mysql -e 'GRANT DELETE ON mail.virtual_aliases TO `mailuser`@`localhost`'
+    mysql -e 'GRANT DELETE ON mail.virtual_vouchers TO `mailuser`@`localhost`'
+
+    # Clone repository
+    git clone https://github.com/systemli/user-management/
+    cd user-management
+
+    # Install PHP dependencies and application
+    APP_ENV=prod composer install --no-dev
+    APP_ENV=prod composer dump-autoload -o
+
+* Create `config/services_prod.yaml`:
+
+    imports:
+        - { resource: parameters_prod.yaml }
+
+* Configure the application in `config/paramters_prod.yaml`:
+
+    parameters:
+        env(DATABASE_DRIVER): 'pdo_mysql'
+        env(DATABASE_URL): 'mysql://mailuser:<password>@127.0.0.1:3306/mail'
+        env(APP_ENV): 'prod'
+        env(APP_SECRET): '<random secret string>'
+        env(MAILER_URL): 'smtp://localhost:25?encryption=&auth_mode='
+        env(MAILER_DELIVERY_ADDRESS): 'admin@example.org'
+        env(APP_NAME): 'User Management'
+        env(APP_URL): 'https://users.example.org/'
+        env(PROJECT_NAME): 'example.org'
+        env(PROJECT_URL): 'https://www.example.org/'
+        env(DOMAIN): 'example.org'
+        env(SENDER_ADDRESS): 'admin@example.org'
+        env(NOTIFICATION_ADDRESS): 'monitoring@example.org'
+        env(SEND_WELCOME_MAIL): 'true'
+        env(LOCALE): 'en'
+        env(HAS_SINA_BOX): 'false'
+
+* Finalize setup:
+
+    # Create default database schema
+    APP_ENV=prod php bin/console doctrine:schema:create
+
+    # Load default reserved names into database
+    APP_ENV=prod php bin/console usrmgmt:reservednames:import
+
+    # Warm up cache
+    APP_ENV=prod php bin/console cache:warmup
+
+    # Initialize yarn and generate assets
+    yarn --pure-lockfile
+    yarn encore production
+
+## Cronjobs
+
+Some cronjobs are needed in order to run regular tasks:
+
+	# Daily purge data from deleted mail users
+	@daily usermgmt cd /path/to/user-management && APP_ENV=prod php bin/console usrmgmt:users:remove -q --env prod
+
+	# Daily unlink old redeemed vouchers
+	@daily usermgmt cd /path/to/user-management && APP_ENV=prod php bin/console usrmgmt:voucher:unlink --env prod
+
+	# Send weekly report to admins
+	12 13 * * 1 usermgmt cd /path/to/user-managment && APP_ENV=prod php bin/console usrmgmt:report:weekly --env prod
+
+## Development environment
 
 Requirements: Vagrant (VirtualBox)
 
