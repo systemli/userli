@@ -19,6 +19,7 @@
         "sensio/framework-extra-bundle": "^5.0.0",
         "sonata-project/admin-bundle": "~3.16",
         "sonata-project/doctrine-orm-admin-bundle": "~3.1",
+        "symfony/apache-pack": "^1.0",
         "symfony/console": "*",
         "symfony/flex": "^1.1",
         "symfony/form": "*",
