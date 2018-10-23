@@ -33,7 +33,7 @@ class DeleteHandler
 
     /**
      * @param Alias $alias
-     * @param User $user
+     * @param User  $user
      */
     public function deleteAlias(Alias $alias, User $user = null)
     {

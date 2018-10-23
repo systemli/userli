@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Class EmailAddressValidator.
+ *
  * @author doobry <doobry@systemli.org>
  */
 class EmailAddressValidator extends ConstraintValidator
@@ -40,8 +41,9 @@ class EmailAddressValidator extends ConstraintValidator
 
     /**
      * EmailAddressValidator constructor.
+     *
      * @param ObjectManager $manager
-     * @param string $domain
+     * @param string        $domain
      */
     public function __construct(ObjectManager $manager, string $domain)
     {

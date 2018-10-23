@@ -32,6 +32,7 @@ class DeleteController extends Controller
     /**
      * @param Request $request
      * @param $aliasId
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function deleteAliasAction(Request $request, $aliasId)

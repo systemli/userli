@@ -27,7 +27,7 @@ class StatisticsBlockService extends AbstractBlockService
      *
      * @param $name
      * @param EngineInterface $templating
-     * @param ObjectManager $manager
+     * @param ObjectManager   $manager
      */
     public function __construct($name, EngineInterface $templating, ObjectManager $manager)
     {
@@ -54,7 +54,7 @@ class StatisticsBlockService extends AbstractBlockService
 
     /**
      * @param BlockContextInterface $blockContext
-     * @param Response $response
+     * @param Response              $response
      *
      * @return Response
      */
@@ -73,7 +73,7 @@ class StatisticsBlockService extends AbstractBlockService
                 'users_count' => $this->manager->getRepository('App:User')->count([]),
                 'vouchers_count' => $vouchersCount = $this->manager->getRepository('App:Voucher')->count([]),
                 'vouchers_redeemed' => $vouchersRedeemed = $this->manager->getRepository('App:Voucher')->countRedeemedVouchers(),
-                'vouchers_ratio' => ($vouchersCount > 0) ? sprintf('%.2f%%', (float)(($vouchersRedeemed / $vouchersCount) * 100)) : '0%',
+                'vouchers_ratio' => ($vouchersCount > 0) ? sprintf('%.2f%%', (float) (($vouchersRedeemed / $vouchersCount) * 100)) : '0%',
             ),
             $response
         );

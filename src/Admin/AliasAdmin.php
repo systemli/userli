@@ -107,7 +107,7 @@ class AliasAdmin extends Admin
      */
     public function preUpdate($alias)
     {
-        $alias->setUpdatedTime(new \DateTime);
+        $alias->setUpdatedTime(new \DateTime());
         $alias->setDestination($alias->getUser());
 
         if (null !== $domain = $this->getDomainGuesser()->guess($alias->getSource())) {

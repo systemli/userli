@@ -28,8 +28,8 @@ class AliasHandler
     /**
      * AliasHandler constructor.
      *
-     * @param ObjectManager  $manager
-     * @param AliasCreator $creator
+     * @param ObjectManager $manager
+     * @param AliasCreator  $creator
      */
     public function __construct(ObjectManager $manager, AliasCreator $creator)
     {
@@ -39,6 +39,7 @@ class AliasHandler
 
     /**
      * @param array $aliases
+     *
      * @return bool
      */
     public function checkAliasLimit(array $aliases): bool
@@ -47,9 +48,11 @@ class AliasHandler
     }
 
     /**
-     * @param User $user
+     * @param User        $user
      * @param null|string $localPart
+     *
      * @return Alias|null
+     *
      * @throws ValidationException
      */
     public function create(User $user, ?string $localPart): ?Alias

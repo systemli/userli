@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Class EmailLengthValidator.
+ *
  * @author doobry <doobry@systemli.org>
  */
 class EmailLengthValidator extends ConstraintValidator

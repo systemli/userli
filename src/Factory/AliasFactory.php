@@ -12,8 +12,9 @@ use App\Helper\RandomStringGenerator;
 class AliasFactory
 {
     /**
-     * @param User $user
+     * @param User        $user
      * @param null|string $localPart
+     *
      * @return Alias
      */
     public static function create(User $user, ?string $localPart): Alias
@@ -27,7 +28,7 @@ class AliasFactory
             $localPart = RandomStringGenerator::generate(24, false);
         }
 
-        $alias->setSource($localPart."@".$domain->getName());
+        $alias->setSource($localPart.'@'.$domain->getName());
 
         return $alias;
     }

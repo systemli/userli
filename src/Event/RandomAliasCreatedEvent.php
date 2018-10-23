@@ -7,7 +7,7 @@ use App\Traits\AliasAwareTrait;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class RandomAliasCreatedEvent
+ * Class RandomAliasCreatedEvent.
  */
 class RandomAliasCreatedEvent extends Event
 {

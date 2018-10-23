@@ -2,11 +2,7 @@
 
 namespace App\Validator\Constraints;
 
-use App\Repository\AliasRepository;
-use App\Repository\DomainRepository;
-use App\Repository\UserRepository;
 use App\Repository\VoucherRepository;
-use App\Repository\ReservedNameRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -14,6 +10,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Class VoucherValidator.
+ *
  * @author doobry <doobry@systemli.org>
  */
 class VoucherValidator extends ConstraintValidator
@@ -25,6 +22,7 @@ class VoucherValidator extends ConstraintValidator
 
     /**
      * EmailAddressValidator constructor.
+     *
      * @param ObjectManager $manager
      */
     public function __construct(ObjectManager $manager)
