@@ -36,12 +36,14 @@ form:
   voucher-redeemed-on: Eingelöst am
   oclock-by: Uhr von
   actual-password: Aktuelles Passwort
+  new-custom-alias: Neues spezifisches Alias
   new-password: Neues Passwort
   new-password_confirmation: Neues Passwort bestätigen
   change-password: Passwort ändern
   delete-account: Account löschen
   delete-password: Passwort
   create-voucher: Erstelle Einladungscode
+  create-custom-alias: Erstelle spezifisches Alias
   create-random-alias: Generiere Zufalls-Alias
   delete-alias: Alias löschen
 
@@ -108,6 +110,7 @@ flashes:
   password-change-successful: Dein neues Passwort ist ab sofort aktiv!
   registration-successful: Du hast dich erfolgreich registriert!
   voucher-creation-successful: Du hast einen neuen Einladungscode erstellt!
+  custom-alias-creation-successful: Dein neues Alias wurde erstellt!
   random-alias-creation-successful: Dir wurde ein neues Zufalls-Alias erstellt!
   alias-deletion-successful: Dein Alias wurde erfolgreich gelöscht!
 

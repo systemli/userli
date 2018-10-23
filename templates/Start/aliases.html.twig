@@ -25,3 +25,17 @@
 {% else %}
     <p class="alert alert-info">{{ "index.alias-empty"|trans() }}</p>
 {% endif %}
+
+{%  if alias_creation %}
+    {{ form_start(custom_alias_form) }}
+    {{ form_errors(custom_alias_form) }}
+<div class="form-group">
+    {{ form_label(custom_alias_form.alias) }}
+    {{ form_widget(custom_alias_form.alias, {'attr': {'class': 'form-control' }}) }}
+</div>
+
+<div class="form-group">
+    {{ form_widget(custom_alias_form.submit, {'attr': {'class': 'btn btn-primary' } }) }}
+</div>
+{{ form_end(custom_alias_form) }}
+{% endif %}

@@ -36,12 +36,14 @@ form:
   voucher-redeemed-on: Redeemed on
   oclock-by: by
   actual-password: Current password
+  new-custom-alias: New custom alias
   new-password: New password
   new-password_confirmation: Confirm new password
   change-password: Change your password
   delete-account: Delete account
   delete-password: Password
   create-voucher: Create invite code
+  create-custom-alias: Add custom alias
   create-random-alias: Generate random alias
   delete-alias: Delete alias
 
@@ -108,6 +110,7 @@ flashes:
   password-change-successful: Your new password is now active!
   registration-successful: You have been successfully registered!
   voucher-creation-successful: You created a new invite code!
+  custom-alias-creation-successful: Your new alias was created!
   random-alias-creation-successful: You got a new random alias created!
   alias-deletion-successful: Your alias successfully got deleted!
 
