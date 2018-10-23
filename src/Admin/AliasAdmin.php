@@ -39,6 +39,7 @@ class AliasAdmin extends Admin
         $formMapper
             ->add('user', EntityType::class, ['class' => User::class])
             ->add('source', EmailType::class)
+            ->add('destination', EmailType::class, ['required' => false])
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
     }
 
@@ -75,6 +76,7 @@ class AliasAdmin extends Admin
         $listMapper
             ->addIdentifier('id')
             ->addIdentifier('source')
+            ->addIdentifier('destination')
             ->addIdentifier('user')
             ->add('domain')
             ->add('creationTime')
@@ -95,7 +97,9 @@ class AliasAdmin extends Admin
      */
     public function prePersist($alias)
     {
-        $alias->setDestination($alias->getUser());
+        if (null == $alias->getDestination()) {
+            $alias->setDestination($alias->getUser());
+        }
 
         if (null !== $domain = $this->getDomainGuesser()->guess($alias->getSource())) {
             $alias->setDomain($domain);
@@ -108,8 +112,9 @@ class AliasAdmin extends Admin
     public function preUpdate($alias)
     {
         $alias->setUpdatedTime(new \DateTime());
-        $alias->setDestination($alias->getUser());
-
+        if (null == $alias->getDestination()) {
+            $alias->setDestination($alias->getUser());
+        }
         if (null !== $domain = $this->getDomainGuesser()->guess($alias->getSource())) {
             $alias->setDomain($domain);
         }
