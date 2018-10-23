@@ -125,6 +125,7 @@ This app brings custom commands:
     usrmgmt:registration:mail      # Send registration mail to user
     usrmgmt:report:weekly          # Send weekly report about registrations
     usrmgmt:reservednames:import   # Import reserved names from stdin or text file
+    usrmgmt:users:checkpassword    # Checkpassword script for user authentication
     usrmgmt:users:remove           # Remove disabled users maildirs
     usrmgmt:voucher:create         # Create multiple vouchers for user, -c configures amount
     usrmgmt:voucher:unlink         # Unlink redeemed vouchers from users
@@ -138,8 +139,31 @@ Get more information about each command by running:
 You can override translation strings individually by putting them into
 override localization files at `translations/<lang>/messages.<lang>.yml`.
 
+## Using `checkpassword` command
+
+The console command `usrmgmt:users:checkpassword` is a checkpassword command
+to be used for authentication (userdb and passdb lookup) by external services.
+So far, it's only tested with Dovecot.
+
+In order to use the usrmgmt checkpassword command with Dovecot (< 2.3), the
+`default_vsz_limit` (defaults to 256MB) needs to be raised in the Dovecot
+configuration. Starting with Dovecot 2.3, the default is 1G.
+
+Example configuration for using checkpassword in Dovecot:
+
+/etc/dovecot/conf.d/auth-checkpassword.conf.ext:
+
+    passdb {
+      driver = checkpassword
+      args = /usr/bin/php7.1 /path/to/usrmgmt/bin/console usrmgmt:users:checkpassword
+    }
+
+    userdb {
+      driver = prefetch
+    }
+
 ## Coding Style
 
-Adjust coding style by
+Adjust coding style by running `php-cs-fixer`:
 
     php-cs-fixer fix src --rules=@Symfony
