@@ -101,7 +101,7 @@ class CheckPasswordCommand extends ContainerAwareCommand
         try {
             // timestamp and extra data are unused nowadays and ignored
             list($email, $password, $timestamp, $extra) = explode("\x0", $contents, 4);
-        } catch (\ErrorException $e) {
+        } catch (\Exception $e) {
             throw new InvalidArgumentException('Invalid input format. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.');
         }
 

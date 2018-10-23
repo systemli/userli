@@ -87,7 +87,7 @@
         ],
         "test": {
             "phpunit": "bin/phpunit",
-            "behat": "DATABASE_URL=mysql://mail_test:password@127.0.0.1:3306/mail_test bin/behat -f progress"
+            "behat": "bin/behat -f progress"
         }
     },
     "conflict": {

@@ -13,9 +13,9 @@ build:
             - composer install
     project_setup:
         override:
-            - mysql -uroot -e 'CREATE DATABASE mail;'
-            - mysql -uroot -e "CREATE USER 'mail'@'localhost' IDENTIFIED BY 'password';"
-            - mysql -uroot -e "GRANT ALL PRIVILEGES on mail.* to mail@localhost;"
+            - mysql -uroot -e 'CREATE DATABASE mail_test;'
+            - mysql -uroot -e "CREATE USER 'mail_test'@'localhost' IDENTIFIED BY 'password';"
+            - mysql -uroot -e "GRANT ALL PRIVILEGES on mail_test.* to mail_test@localhost;"
     nodes:
         analysis:
             tests:

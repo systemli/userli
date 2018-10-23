@@ -40,5 +40,6 @@ class PasswordUpdater
         $hash = $encoder->encodePassword($plainPassword, $user->getSalt());
 
         $user->setPassword($hash);
+        $user->updateUpdatedTime();
     }
 }

@@ -13,9 +13,9 @@ services:
   - mysql
 
 before_install:
-  - mysql -e 'CREATE DATABASE mail;'
-  - mysql -e "CREATE USER 'mail'@'localhost' IDENTIFIED BY 'password';"
-  - mysql -e "GRANT ALL PRIVILEGES on mail.* to mail@localhost;"
+  - mysql -e 'CREATE DATABASE mail_test;'
+  - mysql -e "CREATE USER 'mail_test'@'localhost' IDENTIFIED BY 'password';"
+  - mysql -e "GRANT ALL PRIVILEGES on mail_test.* to mail_test@localhost;"
 
 install:
   - cp phpunit.xml.dist phpunit.xml
