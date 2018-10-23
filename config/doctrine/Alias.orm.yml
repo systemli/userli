@@ -25,6 +25,10 @@ App\Entity\Alias:
       type: boolean
       options:
         default: 0
+    random:
+      type: boolean
+      options:
+        default: 0
   manyToOne:
     user:
       targetEntity: User

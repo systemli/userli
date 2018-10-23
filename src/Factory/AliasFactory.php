@@ -11,6 +11,8 @@ use App\Helper\RandomStringGenerator;
  */
 class AliasFactory
 {
+    const RANDOM_ALIAS_LENGTH = 24;
+
     /**
      * @param User        $user
      * @param null|string $localPart
@@ -25,10 +27,11 @@ class AliasFactory
         $alias->setDomain($domain);
         $alias->setDestination($user->getEmail());
         if (null === $localPart) {
-            $localPart = RandomStringGenerator::generate(24, false);
+            $localPart = RandomStringGenerator::generate(self::RANDOM_ALIAS_LENGTH, false);
+            $alias->setRandom();
         }
 
-        $alias->setSource($localPart.'@'.$domain->getName());
+        $alias->setSource(strtolower($localPart)."@".$domain->getName());
 
         return $alias;
     }

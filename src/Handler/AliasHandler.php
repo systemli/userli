@@ -14,7 +14,8 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class AliasHandler
 {
-    const ALIAS_LIMIT = 20;
+    const ALIAS_LIMIT_CUSTOM = 10;
+    const ALIAS_LIMIT_RANDOM = 100;
 
     /**
      * @var AliasRepository
@@ -39,26 +40,40 @@ class AliasHandler
 
     /**
      * @param array $aliases
-     *
+     * @param int $limit
      * @return bool
      */
-    public function checkAliasLimit(array $aliases): bool
+    public function checkAliasLimit(array $aliases, int $limit = self::ALIAS_LIMIT_CUSTOM): bool
     {
-        return (count($aliases) < self::ALIAS_LIMIT) ? true : false;
+        return (count($aliases) < $limit) ? true : false;
     }
 
     /**
-     * @param User        $user
-     * @param null|string $localPart
-     *
+     * @param User $user
      * @return Alias|null
      *
      * @throws ValidationException
      */
-    public function create(User $user, ?string $localPart): ?Alias
+    public function createRandom(User $user): ?Alias
     {
-        $aliases = $this->repository->findByUser($user);
-        if ($this->checkAliasLimit($aliases)) {
+        $aliases = $this->repository->findRandomByUser($user);
+        if ($this->checkAliasLimit($aliases, self::ALIAS_LIMIT_RANDOM)) {
+            return $this->creator->create($user, null);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param User $user
+     * @param string $localPart
+     * @return Alias|null
+     * @throws ValidationException
+     */
+    public function createCustom(User $user, string $localPart): ?Alias
+    {
+        $aliases = $this->repository->findCustomByUser($user);
+        if ($this->checkAliasLimit($aliases, self::ALIAS_LIMIT_CUSTOM)) {
             return $this->creator->create($user, $localPart);
         }
 

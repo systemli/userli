@@ -1,6 +1,6 @@
 <h3>{{ "index.alias-headline"|trans }}</h3>
 
-{%  if alias_creation %}
+{%  if alias_creation_random %}
     {{ form_start(random_alias_form) }}
     {{ form_errors(random_alias_form) }}
     <div class="form-group">
@@ -8,7 +8,10 @@
     </div>
     {{ form_end(random_alias_form) }}
 {% else %}
-    <p class="alert alert-info">{{ "index.alias-limit"|trans({'%alias_limit%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT')}) }}</p>
+    <p class="alert alert-info">{{ "index.alias-limit"|trans({
+            '%alias_limit%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_RANDOM'),
+            '%alias_type': random|trans
+        }) }}</p>
 {% endif %}
 
 {% if aliases is defined and aliases|length > 0 %}
@@ -26,7 +29,7 @@
     <p class="alert alert-info">{{ "index.alias-empty"|trans() }}</p>
 {% endif %}
 
-{%  if alias_creation %}
+{%  if alias_creation_custom %}
     {{ form_start(custom_alias_form) }}
     {{ form_errors(custom_alias_form) }}
 <div class="form-group">
@@ -38,4 +41,9 @@
     {{ form_widget(custom_alias_form.submit, {'attr': {'class': 'btn btn-primary' } }) }}
 </div>
 {{ form_end(custom_alias_form) }}
+{% else %}
+    <p class="alert alert-info">{{ "index.alias-limit"|trans({
+            '%alias_limit%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_CUSTOM'),
+            '%alias_type%': 'custom'|trans
+        }) }}</p>
 {% endif %}

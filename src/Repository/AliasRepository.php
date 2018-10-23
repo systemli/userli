@@ -39,4 +39,14 @@ class AliasRepository extends AbstractRepository
     {
         return $this->findBy(['user' => $user]);
     }
+
+    public function findRandomByUser(User $user)
+    {
+        return $this->findBy(['user' => $user, 'random' => true]);
+    }
+
+    public function findCustomByUser(User $user)
+    {
+        return $this->findBy(['user' => $user, 'random' => false]);
+    }
 }

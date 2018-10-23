@@ -11,7 +11,7 @@ index:
   voucher-limit: Du hast keine Einladungscodes mehr verfügbar.
   voucher-disable: Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben. Dies dient der Vermeidung von Massenregistrierungen und Spam.
   alias-headline: Deine Aliase
-  alias-limit: Du hast das Limit  von %alias_limit% erlaubten Aliases erreicht. Wenn du alte Aliases löschst, kannst du wieder neue erstellen.
+  alias-limit: Du hast das Limit  von %alias_limit% erlaubten %alias_type% Aliases erreicht. Wenn du alte Aliases löschst, kannst du wieder neue erstellen.
   alias-empty: Du hast noch keine Aliase definiert.
   delete-headline: Account löschen
   delete-description: >
@@ -125,3 +125,6 @@ error:
 
 # internal translations
 Bad credentials.: Fehlerhafte Zugangsdaten
+
+custom: spezifischen
+random: zufälligen

@@ -27,11 +27,22 @@ class Alias implements SoftDeletableInterface
     protected $destination;
 
     /**
+     * @var boolean
+     */
+    protected $random;
+
+    /**
+     * @var int
+     */
+    protected $type;
+
+    /**
      * Alias constructor.
      */
     public function __construct()
     {
         $this->deleted = false;
+        $this->random = false;
     }
 
     /**
@@ -69,5 +80,20 @@ class Alias implements SoftDeletableInterface
     public function setEmptyUser()
     {
         $this->user = null;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function isRandom()
+    {
+        return $this->random;
+    }
+
+    public function setRandom()
+    {
+        $this->random = true;
     }
 }
