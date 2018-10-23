@@ -13,9 +13,11 @@ use App\Factory\AliasFactory;
 class AliasCreator extends AbstractCreator
 {
     /**
-     * @param User $user
+     * @param User        $user
      * @param null|string $localPart
+     *
      * @return Alias
+     *
      * @throws \App\Exception\ValidationException
      */
     public function create(User $user, ?string $localPart): Alias

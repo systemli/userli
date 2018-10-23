@@ -37,7 +37,7 @@ class RandomAliasCreationListener implements EventSubscriberInterface
         while (null !== $this->manager->getRepository('App:Alias')->findOneBySource($alias->getSource())) {
             $localPart = RandomStringGenerator::generate(24, false);
             $domain = $alias->getDomain();
-            $alias->setSource($localPart."@".$domain->getName());
+            $alias->setSource($localPart.'@'.$domain->getName());
         }
     }
 

@@ -42,6 +42,7 @@ abstract class AbstractCreator
     /**
      * @param $entity
      * @param array|null $validationGroups
+     *
      * @throws ValidationException
      */
     protected function validate($entity, array $validationGroups = null): void

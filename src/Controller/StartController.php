@@ -44,7 +44,7 @@ class StartController extends Controller
     /**
      * StartController constructor.
      *
-     * @param AliasHandler $aliasHandler
+     * @param AliasHandler    $aliasHandler
      * @param PasswordUpdater $passwordUpdater
      * @param VoucherHandler  $voucherHandler
      * @param VoucherCreator  $voucherCreator

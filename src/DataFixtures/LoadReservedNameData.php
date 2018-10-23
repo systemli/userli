@@ -29,6 +29,7 @@ class LoadReservedNameData extends Fixture implements OrderedFixtureInterface
 
     /**
      * {@inheritdoc}
+     *
      * @throws \App\Exception\ValidationException
      */
     public function load(ObjectManager $manager)
@@ -42,7 +43,7 @@ class LoadReservedNameData extends Fixture implements OrderedFixtureInterface
             $name = trim($line);
             if (empty($name)) {
                 continue;
-            } elseif (substr($name, 0, 1) === "#") {
+            } elseif ('#' === substr($name, 0, 1)) {
                 // filter out comments
                 continue;
             }

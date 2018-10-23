@@ -11,6 +11,7 @@ class ReservedNameFactory
 {
     /**
      * @param string $name
+     *
      * @return ReservedName
      */
     public static function create(string $name): ReservedName

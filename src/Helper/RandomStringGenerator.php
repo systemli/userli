@@ -10,8 +10,9 @@ class RandomStringGenerator
     const LENGTH = 6;
 
     /**
-     * @param int $length
+     * @param int  $length
      * @param bool $caseSensitive
+     *
      * @return string
      */
     public static function generate(int $length = self::LENGTH, bool $caseSensitive = true)

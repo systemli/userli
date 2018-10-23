@@ -26,7 +26,8 @@ class ImportReservedNamesCommand extends Command
 
     /**
      * ImportReservedNamesCommand constructor.
-     * @param ObjectManager $manager
+     *
+     * @param ObjectManager       $manager
      * @param ReservedNameCreator $creator
      */
     public function __construct(ObjectManager $manager, ReservedNameCreator $creator)
@@ -35,6 +36,7 @@ class ImportReservedNamesCommand extends Command
         $this->creator = $creator;
         parent::__construct();
     }
+
     /**
      * {@inheritdoc}
      */
@@ -54,6 +56,7 @@ class ImportReservedNamesCommand extends Command
 
     /**
      * {@inheritdoc}
+     *
      * @throws \App\Exception\ValidationException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -71,7 +74,7 @@ class ImportReservedNamesCommand extends Command
             $name = trim($line);
             if (empty($name)) {
                 continue;
-            } elseif (substr($name, 0, 1) === "#") {
+            } elseif ('#' === substr($name, 0, 1)) {
                 // filter out comments
                 continue;
             }

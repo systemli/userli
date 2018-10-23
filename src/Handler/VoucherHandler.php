@@ -70,6 +70,7 @@ class VoucherHandler
             $vouchersActive = array_filter($vouchers, function (Voucher $voucher) {
                 return ($voucher->isRedeemed()) ? null : $voucher;
             });
+
             return $vouchersActive;
         }
     }

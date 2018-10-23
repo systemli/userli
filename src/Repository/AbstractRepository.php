@@ -6,12 +6,13 @@ use App\Entity\SoftDeletableInterface;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * Class AbstractRepository
+ * Class AbstractRepository.
  */
 class AbstractRepository extends EntityRepository
 {
     /**
      * {@inheritdoc}
+     *
      * @param bool $deleted
      */
     public function find($id, $lockMode = null, $lockVersion = null, bool $deleted = false)
@@ -28,6 +29,7 @@ class AbstractRepository extends EntityRepository
 
     /**
      * {@inheritdoc}
+     *
      * @param bool $deleted
      */
     public function findAll(bool $deleted = false)
@@ -37,6 +39,7 @@ class AbstractRepository extends EntityRepository
 
     /**
      * {@inheritdoc}
+     *
      * @param bool $deleted
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null, bool $deleted = false)
@@ -50,6 +53,7 @@ class AbstractRepository extends EntityRepository
 
     /**
      * {@inheritdoc}
+     *
      * @param bool $deleted
      */
     public function findOneBy(array $criteria, array $orderBy = null, bool $deleted = false)
