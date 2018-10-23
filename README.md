@@ -34,7 +34,7 @@ Create `config/services_prod.yaml`:
     imports:
         - { resource: parameters_prod.yaml }
 
-Configure the application in `config/paramters_prod.yaml`:
+Configure the application in `config/parameters_prod.yaml`:
 
     parameters:
         env(DATABASE_DRIVER): 'pdo_mysql'
