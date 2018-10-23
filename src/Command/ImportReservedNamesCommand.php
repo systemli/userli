@@ -63,7 +63,8 @@ class ImportReservedNamesCommand extends Command
     {
         $repository = $this->manager->getRepository('App:ReservedName');
 
-        $file = $input->getOption('file');
+        $file = (string) $input->getOption('file');
+
         if ('-' === $file) {
             $handle = STDIN;
         } else {
