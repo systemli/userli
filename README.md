@@ -12,7 +12,7 @@
   * [Node.js Yarn](https://yarnpkg.com/)
   * [MariaDB](https://mariadb.org/) or [MySQL](https://mysql.com/)
 
-* Configure prerequisites:
+Configure prerequisites:
 
     # Setup database and user
     mysql -e 'CREATE DATABASE mail'
@@ -29,12 +29,12 @@
     APP_ENV=prod composer install --no-dev
     APP_ENV=prod composer dump-autoload -o
 
-* Create `config/services_prod.yaml`:
+Create `config/services_prod.yaml`:
 
     imports:
         - { resource: parameters_prod.yaml }
 
-* Configure the application in `config/paramters_prod.yaml`:
+Configure the application in `config/parameters_prod.yaml`:
 
     parameters:
         env(DATABASE_DRIVER): 'pdo_mysql'
@@ -54,7 +54,7 @@
         env(LOCALE): 'en'
         env(HAS_SINA_BOX): 'false'
 
-* Finalize setup:
+Finalize setup:
 
     # Create default database schema
     APP_ENV=prod php bin/console doctrine:schema:create
