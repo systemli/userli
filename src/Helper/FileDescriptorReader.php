@@ -15,6 +15,7 @@ class FileDescriptorReader
     private static function readFileDescriptor(string $inputFd)
     {
         $fileHandler = fopen($inputFd, 'r');
+
         return stream_get_contents($fileHandler);
     }
 
