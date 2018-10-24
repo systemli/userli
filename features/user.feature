@@ -40,6 +40,18 @@ Feature: User
     And I should see text matching "You got a new random alias created!"
     And the response status code should be 200
 
+  @create-custom-alias
+  Scenario: Create custom alias
+    When I am authenticated as "user@example.org"
+    And I am on "/"
+    And I fill in the following:
+      | alias | test_alias |
+    And I press "Add custom alias"
+
+    Then I should be on "/"
+    And I should see text matching " Your new alias was created!"
+    And the response status code should be 200
+
   @delete-alias
   Scenario: Delete alias
     When I am authenticated as "user@example.org"

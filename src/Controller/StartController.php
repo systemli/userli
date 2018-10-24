@@ -129,16 +129,16 @@ class StartController extends Controller
 
         $aliasRepository = $this->get('doctrine')->getRepository('App:Alias');
         $aliases = $aliasRepository->findByUser($user);
-        $aliasesRandom = $aliasRepository->findRandomByUser($user);
-        $aliasesCustom = $aliasRepository->findCustomByUser($user);
+        $aliasesRandom = $aliasRepository->findByUser($user, true);
+        $aliasesCustom = $aliasRepository->findByUser($user, false);
         $vouchers = $this->voucherHandler->getVouchersByUser($user);
 
         return $this->render(
             'Start/index.html.twig',
             [
                 'user' => $user,
-                'alias_creation_random' => $this->aliasHandler->checkAliasLimit($aliasesRandom, $this->aliasHandler::ALIAS_LIMIT_RANDOM),
-                'alias_creation_custom' => $this->aliasHandler->checkAliasLimit($aliasesCustom, $this->aliasHandler::ALIAS_LIMIT_CUSTOM),
+                'alias_creation_random' => $this->aliasHandler->checkAliasLimit($aliasesRandom, true),
+                'alias_creation_custom' => $this->aliasHandler->checkAliasLimit($aliasesCustom),
                 'aliases' => $aliases,
                 'vouchers' => $vouchers,
                 'voucher_form' => $voucherCreateForm->createView(),
@@ -173,11 +173,11 @@ class StartController extends Controller
     private function createRandomAlias(Request $request, User $user)
     {
         try {
-            if ($this->aliasHandler->createRandom($user) instanceof Alias) {
+            if ($this->aliasHandler->create($user) instanceof Alias) {
                 $request->getSession()->getFlashBag()->add('success', 'flashes.random-alias-creation-successful');
             }
         } catch (ValidationException $e) {
-            // Should not thrown
+            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
         }
     }
 
@@ -189,7 +189,7 @@ class StartController extends Controller
     private function createCustomAlias(Request $request, User $user, string $alias)
     {
         try {
-            if ($this->aliasHandler->createCustom($user, $alias) instanceof Alias) {
+            if ($this->aliasHandler->create($user, strtolower($alias)) instanceof Alias) {
                 $request->getSession()->getFlashBag()->add('success', 'flashes.custom-alias-creation-successful');
             }
         } catch (ValidationException $e) {

@@ -10,7 +10,7 @@
 {% else %}
     <p class="alert alert-info">{{ "index.alias-limit"|trans({
             '%alias_limit%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_RANDOM'),
-            '%alias_type': random|trans
+            '%alias_type%': random|trans
         }) }}</p>
 {% endif %}
 

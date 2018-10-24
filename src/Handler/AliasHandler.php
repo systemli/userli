@@ -40,44 +40,37 @@ class AliasHandler
 
     /**
      * @param array $aliases
-     * @param int   $limit
+     * @param bool  $random
      *
      * @return bool
      */
-    public function checkAliasLimit(array $aliases, int $limit = self::ALIAS_LIMIT_CUSTOM): bool
+    public function checkAliasLimit(array $aliases, bool $random = false): bool
     {
+        $limit = ($random) ? self::ALIAS_LIMIT_RANDOM : self::ALIAS_LIMIT_CUSTOM;
+
         return (count($aliases) < $limit) ? true : false;
     }
 
     /**
-     * @param User $user
+     * @param User        $user
+     * @param null|string $localPart
      *
      * @return Alias|null
      *
      * @throws ValidationException
      */
-    public function createRandom(User $user): ?Alias
+    public function create(User $user, ?string $localPart = null): ?Alias
     {
-        $aliases = $this->repository->findRandomByUser($user);
-        if ($this->checkAliasLimit($aliases, self::ALIAS_LIMIT_RANDOM)) {
-            return $this->creator->create($user, null);
+        if (isset($localPart)) {
+            $random = false;
+            $limit = self::ALIAS_LIMIT_CUSTOM;
+        } else {
+            $random = true;
+            $limit = self::ALIAS_LIMIT_RANDOM;
         }
 
-        return null;
-    }
-
-    /**
-     * @param User   $user
-     * @param string $localPart
-     *
-     * @return Alias|null
-     *
-     * @throws ValidationException
-     */
-    public function createCustom(User $user, string $localPart): ?Alias
-    {
-        $aliases = $this->repository->findCustomByUser($user);
-        if ($this->checkAliasLimit($aliases, self::ALIAS_LIMIT_CUSTOM)) {
+        $aliases = $this->repository->findByUser($user, $random);
+        if ($this->checkAliasLimit($aliases, $limit)) {
             return $this->creator->create($user, $localPart);
         }
 

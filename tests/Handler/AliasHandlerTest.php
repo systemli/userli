@@ -15,7 +15,7 @@ class AliasHandlerTest extends TestCase
     private function createHandler(array $list)
     {
         $repository = $this->getMockBuilder(AliasRepository::class)->disableOriginalConstructor()->getMock();
-        $repository->expects($this->any())->method('findRandomByUser')->willReturn($list);
+        $repository->expects($this->any())->method('findByUser')->willReturn($list);
 
         $manager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects($this->any())->method('getRepository')->willReturn($repository);
@@ -39,7 +39,7 @@ class AliasHandlerTest extends TestCase
         $handler = $this->createHandler([]);
         $user = new User();
 
-        self::assertInstanceOf(Alias::class, $handler->createRandom($user));
+        self::assertInstanceOf(Alias::class, $handler->create($user, null));
     }
 
     public function testCreateLimit()
@@ -51,6 +51,6 @@ class AliasHandlerTest extends TestCase
         $handler = $this->createHandler($list);
         $user = new User();
 
-        self::assertNull($handler->createRandom($user));
+        self::assertNull($handler->create($user, null));
     }
 }
