@@ -61,16 +61,10 @@ class AliasHandler
      */
     public function create(User $user, ?string $localPart = null): ?Alias
     {
-        if (isset($localPart)) {
-            $random = false;
-            $limit = self::ALIAS_LIMIT_CUSTOM;
-        } else {
-            $random = true;
-            $limit = self::ALIAS_LIMIT_RANDOM;
-        }
+        $random = (isset($localPart)) ? false : true;
 
         $aliases = $this->repository->findByUser($user, $random);
-        if ($this->checkAliasLimit($aliases, $limit)) {
+        if ($this->checkAliasLimit($aliases, $random)) {
             return $this->creator->create($user, $localPart);
         }
 
