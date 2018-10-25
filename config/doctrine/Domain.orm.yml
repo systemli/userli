@@ -17,5 +17,6 @@ App\Entity\Domain:
       nullable: false
     name:
       type: string
+      unique: true
   lifecycleCallbacks:
     prePersist: [updateCreationTime, updateUpdatedTime]
