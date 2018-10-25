@@ -18,7 +18,8 @@ lint:
 	php -l src/
 
 test: vendors lint
-	composer test
+	bin/phpunit
+	bin/behat -f progress
 
 prepare:
 	mkdir -p build

@@ -84,11 +84,7 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ],
-        "test": {
-            "phpunit": "bin/phpunit",
-            "behat": "bin/behat -f progress"
-        }
+        ]
     },
     "conflict": {
         "symfony/symfony": "*"
