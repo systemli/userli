@@ -23,5 +23,4 @@ install:
   - composer install
 
 script:
-  - bin/phpunit
-  - bin/behat -f progress
+  - make test
