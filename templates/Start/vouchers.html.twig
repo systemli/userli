@@ -11,12 +11,12 @@
     {% for voucher in vouchers %}
         {% if voucher.redeemed %}
             <div class="alert alert-warning">
-                <p class="vocher-box"><s>{{ voucher.code }}</s></p>
+                <p class="voucher-box"><s>{{ voucher.code }}</s></p>
                 <p class="small">{{ "form.voucher-redeemed-on"|trans }} {{ voucher.redeemedTime|date("d.m.Y") }}</p>
             </div>
         {% else %}
             <div class="alert alert-success">
-                <p class="vocher-box">{{ voucher.code }}</p>
+                <p class="voucher-box">{{ voucher.code }}</p>
             </div>
         {% endif %}
     {% endfor %}
