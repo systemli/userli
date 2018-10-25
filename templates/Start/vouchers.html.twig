@@ -20,6 +20,8 @@
             </div>
         {% endif %}
     {% endfor %}
+{%  elseif user.creationTime|date('U') <= '-7 days'|date('U')  %}
+    <p class="alert alert-info">{{ "index.voucher-limit"|trans }}</p>
 {% else %}
     <p class="alert alert-info">{{ "index.voucher-disable"|trans({'%date%': user.creationTime|date_modify("+7 days")|date("d. F Y, H:i")}) }}</p>
 {% endif %}

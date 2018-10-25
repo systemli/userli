@@ -8,6 +8,7 @@ start:
 index:
   title: Manage your email-account
   voucher-headline: Your invite codes
+  voucher-limit: You don't have any vouchers available.
   voucher-disable: At %date% you will receive three invite codes. This is to avoid mass registrations and spam.
   alias-headline: Your aliases
   alias-limit: You reached the allowed limit of %alias_limit% aliases. As soon as you delete old aliases, you can create new ones again.

@@ -8,6 +8,7 @@ start:
 index:
   title: Verwalte deinen E-Mail Account
   voucher-headline: Deine Einladungscodes
+  voucher-limit: Du hast keine Vouchers mehr verfügbar.
   voucher-disable: Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben. Dies dient der Vermeidung von Massenregistrierungen und Spam.
   alias-headline: Deine Aliase
   alias-limit: Du hast das Limit  von %alias_limit% erlaubten Aliases erreicht. Wenn du alte Aliases löschst, kannst du wieder neue erstellen.
