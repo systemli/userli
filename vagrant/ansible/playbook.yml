@@ -6,11 +6,13 @@
     - nginx
     - manala.php
     - mysql
+    - dovecot
     - geerlingguy.composer
     - geerlingguy.nodejs
     - oefenweb.yarn
     - andyceo.phpcsfixer
   vars:
+    dovecot_disable_plaintext_auth: "no"
     manala_apt_repositories:
       - sury_php
     manala_apt_repositories_exclusive: false
