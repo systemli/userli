@@ -20,6 +20,7 @@
       - php@sury_php
     manala_apt_packages:
       - git
+      - make
       - unzip
       - zip
     manala_php_version: 7.1

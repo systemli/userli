@@ -3,6 +3,7 @@
 !/bin/phpunit
 !/bin/user-accounts
 !/bin/user-vouchers
+build/
 config/parameters_prod.yaml
 config/services_dev.yaml
 config/services_prod.yaml
