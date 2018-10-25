@@ -10,9 +10,9 @@ index:
   voucher-headline: Deine Einladungscodes
   voucher-limit: Du hast keine Einladungscodes mehr verfügbar.
   voucher-disable: Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben. Dies dient der Vermeidung von Massenregistrierungen und Spam.
-  alias-headline: Deine Aliase
-  alias-limit: Du hast das Limit  von %alias_limit% erlaubten %alias_type% Aliases erreicht. Wenn du alte Aliases löschst, kannst du wieder neue erstellen.
-  alias-empty: Du hast noch keine Aliase definiert.
+  alias-headline: Deine %alias_type% Aliase
+  alias-limit: Du hast das Limit von %alias_limit% erlaubten %alias_type% Aliases erreicht. Wenn du alte Aliases löschst, kannst du wieder neue erstellen.
+  alias-empty: Du hast noch keine %alias_type% Aliase definiert.
   delete-headline: Account löschen
   delete-description: >
     Du kannst deinen Account bei %project_name% löschen. Dadurch werden deine E-Mails unwiderruflich gelöscht. Eine <strong>spätere Wiederherstellung ist nicht möglich.</strong>

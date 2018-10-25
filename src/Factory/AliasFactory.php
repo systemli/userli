@@ -28,7 +28,7 @@ class AliasFactory
         $alias->setDestination($user->getEmail());
         if (null === $localPart) {
             $localPart = RandomStringGenerator::generate(self::RANDOM_ALIAS_LENGTH, false);
-            $alias->setRandom();
+            $alias->setRandom(true);
         }
 
         $alias->setSource($localPart.'@'.$domain->getName());

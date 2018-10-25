@@ -22,6 +22,7 @@ class AliasCreator extends AbstractCreator
      */
     public function create(User $user, ?string $localPart): Alias
     {
+        $localPart = (isset($localPart)) ? strtolower($localPart) : null;
         $alias = AliasFactory::create($user, $localPart);
 
         if (null === $localPart) {

@@ -6,6 +6,7 @@ use App\Traits\CreationTimeTrait;
 use App\Traits\DeleteTrait;
 use App\Traits\DomainAwareTrait;
 use App\Traits\IdTrait;
+use App\Traits\RandomTrait;
 use App\Traits\UpdatedTimeTrait;
 use App\Traits\UserAwareTrait;
 
@@ -14,7 +15,7 @@ use App\Traits\UserAwareTrait;
  */
 class Alias implements SoftDeletableInterface
 {
-    use IdTrait, CreationTimeTrait, UpdatedTimeTrait, DeleteTrait, DomainAwareTrait, UserAwareTrait;
+    use IdTrait, CreationTimeTrait, UpdatedTimeTrait, DeleteTrait, DomainAwareTrait, UserAwareTrait, RandomTrait;
 
     /**
      * @var string
@@ -25,11 +26,6 @@ class Alias implements SoftDeletableInterface
      * @var string
      */
     protected $destination;
-
-    /**
-     * @var bool
-     */
-    protected $random;
 
     /**
      * Alias constructor.
@@ -75,15 +71,5 @@ class Alias implements SoftDeletableInterface
     public function setEmptyUser()
     {
         $this->user = null;
-    }
-
-    public function isRandom()
-    {
-        return $this->random;
-    }
-
-    public function setRandom()
-    {
-        $this->random = true;
     }
 }

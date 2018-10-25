@@ -128,7 +128,6 @@ class StartController extends Controller
         }
 
         $aliasRepository = $this->get('doctrine')->getRepository('App:Alias');
-        $aliases = $aliasRepository->findByUser($user);
         $aliasesRandom = $aliasRepository->findByUser($user, true);
         $aliasesCustom = $aliasRepository->findByUser($user, false);
         $vouchers = $this->voucherHandler->getVouchersByUser($user);
@@ -137,9 +136,11 @@ class StartController extends Controller
             'Start/index.html.twig',
             [
                 'user' => $user,
+                'user_domain' => $user->getDomain(),
                 'alias_creation_random' => $this->aliasHandler->checkAliasLimit($aliasesRandom, true),
                 'alias_creation_custom' => $this->aliasHandler->checkAliasLimit($aliasesCustom),
-                'aliases' => $aliases,
+                'aliases_custom' => $aliasesCustom,
+                'aliases_random' => $aliasesRandom,
                 'vouchers' => $vouchers,
                 'voucher_form' => $voucherCreateForm->createView(),
                 'random_alias_form' => $randomAliasCreateForm->createView(),
@@ -189,7 +190,7 @@ class StartController extends Controller
     private function createCustomAlias(Request $request, User $user, string $alias)
     {
         try {
-            if ($this->aliasHandler->create($user, strtolower($alias)) instanceof Alias) {
+            if ($this->aliasHandler->create($user, $alias) instanceof Alias) {
                 $request->getSession()->getFlashBag()->add('success', 'flashes.custom-alias-creation-successful');
             }
         } catch (ValidationException $e) {

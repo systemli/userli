@@ -10,9 +10,9 @@ index:
   voucher-headline: Your invite codes
   voucher-limit: You don't have any invite codes left.
   voucher-disable: At %date% you will receive three invite codes. This is to avoid mass registrations and spam.
-  alias-headline: Your aliases
+  alias-headline: Your %alias_type% aliases
   alias-limit: You reached the allowed limit of %alias_limit% %alias_type% aliases. As soon as you delete old aliases, you can create new ones again.
-  alias-empty: You don't have any aliases defined.
+  alias-empty: You don't have any %alias_type% aliases defined.
   delete-headline: Delete account
   delete-description: >
     You can delete your %project_name% email account. This will delete all your emails. <strong>A recovery at a later date is not possible.</strong>
