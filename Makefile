@@ -18,6 +18,8 @@ lint:
 	php -l src/
 
 test: vendors lint
+	yarn
+	yarn encore dev
 	bin/phpunit
 	bin/behat -f progress
 
