@@ -37,7 +37,7 @@ Feature: User
     And I press "Generate random alias"
 
     Then I should be on "/"
-    And I should see text matching "You got a new random alias created!"
+    And I should see text matching "Your new alias address was created!"
     And the response status code should be 200
 
   @create-custom-alias
@@ -49,7 +49,7 @@ Feature: User
     And I press "Add custom alias"
 
     Then I should be on "/"
-    And I should see text matching " Your new alias was created!"
+    And I should see text matching "Your new alias address was created!"
     And the response status code should be 200
 
   @delete-alias
@@ -61,7 +61,7 @@ Feature: User
     And I press "Delete alias"
 
     Then I should be on "/"
-    And I should see text matching "Your alias successfully got deleted!"
+    And I should see text matching "Your alias address was successfully deleted!"
     And the response status code should not be 403
 
   @delete-alias

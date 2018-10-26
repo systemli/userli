@@ -175,7 +175,7 @@ class StartController extends Controller
     {
         try {
             if ($this->aliasHandler->create($user) instanceof Alias) {
-                $request->getSession()->getFlashBag()->add('success', 'flashes.random-alias-creation-successful');
+                $request->getSession()->getFlashBag()->add('success', 'flashes.alias-creation-successful');
             }
         } catch (ValidationException $e) {
             $request->getSession()->getFlashBag()->add('error', $e->getMessage());
@@ -191,7 +191,7 @@ class StartController extends Controller
     {
         try {
             if ($this->aliasHandler->create($user, $alias) instanceof Alias) {
-                $request->getSession()->getFlashBag()->add('success', 'flashes.custom-alias-creation-successful');
+                $request->getSession()->getFlashBag()->add('success', 'flashes.alias-creation-successful');
             }
         } catch (ValidationException $e) {
             $request->getSession()->getFlashBag()->add('error', $e->getMessage());
