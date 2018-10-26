@@ -46,7 +46,7 @@ Feature: User
     And I am on "/"
     And I fill in the following:
       | alias | test_alias |
-    And I press "Add custom alias"
+    And I press "Add alias address"
 
     Then I should be on "/"
     And I should see text matching "Your new alias address was created!"

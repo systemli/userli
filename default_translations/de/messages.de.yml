@@ -36,14 +36,14 @@ form:
   voucher-redeemed-on: Eingelöst am
   oclock-by: Uhr von
   actual-password: Aktuelles Passwort
-  new-custom-alias: Neues spezifische Alias-Adresse
+  new-custom-alias: Neue Alias-Adresse
   new-password: Neues Passwort
   new-password_confirmation: Neues Passwort bestätigen
   change-password: Passwort ändern
   delete-account: Account löschen
   delete-password: Passwort
   create-voucher: Erstelle Einladungscode
-  create-custom-alias: Erstelle spezifische Alias-Adresse
+  create-custom-alias: Erstelle Alias-Adresse
   create-random-alias: Generiere zufällige Alias-Adresse
   delete-alias: Alias-Adresse löschen
 
@@ -125,5 +125,5 @@ error:
 # internal translations
 Bad credentials.: Fehlerhafte Zugangsdaten
 
-custom: spezifischen
+custom: gewählten
 random: zufälligen
