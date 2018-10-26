@@ -14,7 +14,8 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class AliasHandler
 {
-    const ALIAS_LIMIT = 20;
+    const ALIAS_LIMIT_CUSTOM = 10;
+    const ALIAS_LIMIT_RANDOM = 100;
 
     /**
      * @var AliasRepository
@@ -39,12 +40,15 @@ class AliasHandler
 
     /**
      * @param array $aliases
+     * @param bool  $random
      *
      * @return bool
      */
-    public function checkAliasLimit(array $aliases): bool
+    public function checkAliasLimit(array $aliases, bool $random = false): bool
     {
-        return (count($aliases) < self::ALIAS_LIMIT) ? true : false;
+        $limit = ($random) ? self::ALIAS_LIMIT_RANDOM : self::ALIAS_LIMIT_CUSTOM;
+
+        return (count($aliases) < $limit) ? true : false;
     }
 
     /**
@@ -55,10 +59,12 @@ class AliasHandler
      *
      * @throws ValidationException
      */
-    public function create(User $user, ?string $localPart): ?Alias
+    public function create(User $user, ?string $localPart = null): ?Alias
     {
-        $aliases = $this->repository->findByUser($user);
-        if ($this->checkAliasLimit($aliases)) {
+        $random = (isset($localPart)) ? false : true;
+
+        $aliases = $this->repository->findByUser($user, $random);
+        if ($this->checkAliasLimit($aliases, $random)) {
             return $this->creator->create($user, $localPart);
         }
 

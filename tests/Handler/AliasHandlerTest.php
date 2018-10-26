@@ -45,7 +45,7 @@ class AliasHandlerTest extends TestCase
     public function testCreateLimit()
     {
         $list = [];
-        for ($i = 0; $i <= AliasHandler::ALIAS_LIMIT; ++$i) {
+        for ($i = 0; $i <= AliasHandler::ALIAS_LIMIT_RANDOM; ++$i) {
             $list[] = 'dummy';
         }
         $handler = $this->createHandler($list);

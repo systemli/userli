@@ -10,9 +10,9 @@ index:
   voucher-headline: Your invite codes
   voucher-limit: You don't have any invite codes left.
   voucher-disable: At %date% you will receive three invite codes. This is to avoid mass registrations and spam.
-  alias-headline: Your aliases
-  alias-limit: You reached the allowed limit of %alias_limit% aliases. As soon as you delete old aliases, you can create new ones again.
-  alias-empty: You don't have any aliases defined.
+  alias-headline: Your %alias_type% alias addresses
+  alias-limit: You reached the allowed limit of %alias_limit% %alias_type% alias addresses. As soon as you delete old addresses, you can create new ones again.
+  alias-empty: You don't have any %alias_type% alias addresses defined.
   delete-headline: Delete account
   delete-description: >
     You can delete your %project_name% email account. This will delete all your emails. <strong>A recovery at a later date is not possible.</strong>
@@ -36,14 +36,16 @@ form:
   voucher-redeemed-on: Redeemed on
   oclock-by: by
   actual-password: Current password
+  new-custom-alias: New alias address
   new-password: New password
   new-password_confirmation: Confirm new password
   change-password: Change your password
   delete-account: Delete account
   delete-password: Password
   create-voucher: Create invite code
-  create-random-alias: Generate random alias
-  delete-alias: Delete alias
+  create-custom-alias: Add alias address
+  create-random-alias: Generate random alias address
+  delete-alias: Delete alias address
 
 navbar_left:
   about-us:
@@ -95,8 +97,8 @@ closed:
 
 delete:
   alias:
-    headline: Delete alias %alias%
-    lead: We need to verify your password to delete your alias.
+    headline: Delete alias address %alias%
+    lead: We need to verify your password to delete your alias address.
   user:
     headline: Delete account
     lead: We need to verify your password to delete your account.
@@ -108,8 +110,8 @@ flashes:
   password-change-successful: Your new password is now active!
   registration-successful: You have been successfully registered!
   voucher-creation-successful: You created a new invite code!
-  random-alias-creation-successful: You got a new random alias created!
-  alias-deletion-successful: Your alias successfully got deleted!
+  alias-creation-successful: Your new alias address was created!
+  alias-deletion-successful: Your alias address was successfully deleted!
 
 flash_batch_remove_vouchers_success: Successfully deleted unredeemed vouchers
 
@@ -122,3 +124,6 @@ error:
 
 # internal translations
 Bad credentials.: Wrong login details
+
+custom: custom
+random: random

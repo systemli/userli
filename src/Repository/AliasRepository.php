@@ -31,12 +31,17 @@ class AliasRepository extends AbstractRepository
     }
 
     /**
-     * @param User $user
+     * @param User      $user
+     * @param null|bool $random
      *
      * @return array|Alias[]
      */
-    public function findByUser(User $user)
+    public function findByUser(User $user, ?bool $random = null)
     {
-        return $this->findBy(['user' => $user]);
+        if (isset($random)) {
+            return $this->findBy(['user' => $user, 'random' => $random]);
+        } else {
+            return $this->findBy(['user' => $user]);
+        }
     }
 }

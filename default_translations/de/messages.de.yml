@@ -10,9 +10,9 @@ index:
   voucher-headline: Deine Einladungscodes
   voucher-limit: Du hast keine Einladungscodes mehr verfügbar.
   voucher-disable: Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben. Dies dient der Vermeidung von Massenregistrierungen und Spam.
-  alias-headline: Deine Aliase
-  alias-limit: Du hast das Limit  von %alias_limit% erlaubten Aliases erreicht. Wenn du alte Aliases löschst, kannst du wieder neue erstellen.
-  alias-empty: Du hast noch keine Aliase definiert.
+  alias-headline: Deine %alias_type% Alias-Adressen
+  alias-limit: Du hast das Limit von %alias_limit% erlaubten %alias_type% Alias-Adressen erreicht. Wenn du alte Adressen löschst, kannst du wieder neue erstellen.
+  alias-empty: Du hast noch keine %alias_type% Alias-Adressen definiert.
   delete-headline: Account löschen
   delete-description: >
     Du kannst deinen Account bei %project_name% löschen. Dadurch werden deine E-Mails unwiderruflich gelöscht. Eine <strong>spätere Wiederherstellung ist nicht möglich.</strong>
@@ -36,14 +36,16 @@ form:
   voucher-redeemed-on: Eingelöst am
   oclock-by: Uhr von
   actual-password: Aktuelles Passwort
+  new-custom-alias: Neue Alias-Adresse
   new-password: Neues Passwort
   new-password_confirmation: Neues Passwort bestätigen
   change-password: Passwort ändern
   delete-account: Account löschen
   delete-password: Passwort
   create-voucher: Erstelle Einladungscode
-  create-random-alias: Generiere Zufalls-Alias
-  delete-alias: Alias löschen
+  create-custom-alias: Erstelle Alias-Adresse
+  create-random-alias: Generiere zufällige Alias-Adresse
+  delete-alias: Alias-Adresse löschen
 
 navbar_left:
   about-us:
@@ -95,8 +97,8 @@ closed:
 
 delete:
   alias:
-    headline: Alias %alias% löschen
-    lead: Mit der Bestätigung deines Passworts kannst du dein Alias unwiderruflich löschen.
+    headline: Alias-Adresse %alias% löschen
+    lead: Mit der Bestätigung deines Passworts kannst du deine Alias-Adresse unwiderruflich löschen.
   user:
     headline: Account löschen
     lead: Mit der Bestätigung deines Passworts kannst du deinen Account unwiderruflich löschen.
@@ -108,8 +110,8 @@ flashes:
   password-change-successful: Dein neues Passwort ist ab sofort aktiv!
   registration-successful: Du hast dich erfolgreich registriert!
   voucher-creation-successful: Du hast einen neuen Einladungscode erstellt!
-  random-alias-creation-successful: Dir wurde ein neues Zufalls-Alias erstellt!
-  alias-deletion-successful: Dein Alias wurde erfolgreich gelöscht!
+  alias-creation-successful: Deine neue Alias-Adresse wurde erstellt!
+  alias-deletion-successful: Deine Alias-Adresse wurde erfolgreich gelöscht!
 
 flash_batch_remove_vouchers_success: Nicht eingelöste Vouchers erfolgreich gelöscht
 
@@ -122,3 +124,6 @@ error:
 
 # internal translations
 Bad credentials.: Fehlerhafte Zugangsdaten
+
+custom: gewählten
+random: zufälligen

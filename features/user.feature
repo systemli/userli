@@ -37,7 +37,19 @@ Feature: User
     And I press "Generate random alias"
 
     Then I should be on "/"
-    And I should see text matching "You got a new random alias created!"
+    And I should see text matching "Your new alias address was created!"
+    And the response status code should be 200
+
+  @create-custom-alias
+  Scenario: Create custom alias
+    When I am authenticated as "user@example.org"
+    And I am on "/"
+    And I fill in the following:
+      | alias | test_alias |
+    And I press "Add alias address"
+
+    Then I should be on "/"
+    And I should see text matching "Your new alias address was created!"
     And the response status code should be 200
 
   @delete-alias
@@ -49,7 +61,7 @@ Feature: User
     And I press "Delete alias"
 
     Then I should be on "/"
-    And I should see text matching "Your alias successfully got deleted!"
+    And I should see text matching "Your alias address was successfully deleted!"
     And the response status code should not be 403
 
   @delete-alias
