@@ -123,4 +123,4 @@ Feature: User
     When I am authenticated as "user@example.org"
     And I am on "/"
 
-    Then I should not see text matching "Create voucher"
+    Then I should not see text matching "Create invite code"
