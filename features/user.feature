@@ -97,27 +97,27 @@ Feature: User
   Scenario: Create voucher as Admin
     When I am authenticated as "admin@example.org"
     And I am on "/"
-    And I press "Create voucher"
+    And I press "Create invite code"
 
     Then I should be on "/"
-    And I should see text matching "You got a new voucher created!"
+    And I should see text matching "You created a new invite code!"
     And the response status code should be 200
 
   @create-voucher
   Scenario: Create voucher as Support
     When I am authenticated as "support@example.org"
     And I am on "/"
-    And I press "Create voucher"
+    And I press "Create invite code"
 
     Then I should be on "/"
-    And I should see text matching "You got a new voucher created!"
+    And I should see text matching "You created a new invite code!"
     And the response status code should be 200
 
   Scenario: Voucher button as Support
     When I am authenticated as "support@example.org"
     And I am on "/"
 
-    Then I should see text matching "Create voucher"
+    Then I should see text matching "Create invite code"
 
   Scenario: Voucher button as User
     When I am authenticated as "user@example.org"

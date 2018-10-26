@@ -8,6 +8,7 @@ start:
 index:
   title: Manage your email-account
   voucher-headline: Your invite codes
+  voucher-limit: You don't have any invite codes left.
   voucher-disable: At %date% you will receive three invite codes. This is to avoid mass registrations and spam.
   alias-headline: Your aliases
   alias-limit: You reached the allowed limit of %alias_limit% aliases. As soon as you delete old aliases, you can create new ones again.
@@ -40,7 +41,7 @@ form:
   change-password: Change your password
   delete-account: Delete account
   delete-password: Password
-  create-voucher: Create voucher
+  create-voucher: Create invite code
   create-random-alias: Generate random alias
   delete-alias: Delete alias
 
@@ -106,11 +107,12 @@ flashes:
   logout-successful: You have been successfully logged out!
   password-change-successful: Your new password is now active!
   registration-successful: You have been successfully registered!
-  voucher-creation-successful: You got a new voucher created!
+  voucher-creation-successful: You created a new invite code!
   random-alias-creation-successful: You got a new random alias created!
   alias-deletion-successful: Your alias successfully got deleted!
 
 flash_batch_remove_vouchers_success: Successfully deleted unredeemed vouchers
+
 
 error:
   title: Oops, an error occured.

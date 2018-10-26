@@ -8,6 +8,7 @@ start:
 index:
   title: Verwalte deinen E-Mail Account
   voucher-headline: Deine Einladungscodes
+  voucher-limit: Du hast keine Einladungscodes mehr verfügbar.
   voucher-disable: Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben. Dies dient der Vermeidung von Massenregistrierungen und Spam.
   alias-headline: Deine Aliase
   alias-limit: Du hast das Limit  von %alias_limit% erlaubten Aliases erreicht. Wenn du alte Aliases löschst, kannst du wieder neue erstellen.
@@ -40,7 +41,7 @@ form:
   change-password: Passwort ändern
   delete-account: Account löschen
   delete-password: Passwort
-  create-voucher: Erstelle Voucher
+  create-voucher: Erstelle Einladungscode
   create-random-alias: Generiere Zufalls-Alias
   delete-alias: Alias löschen
 
@@ -106,11 +107,12 @@ flashes:
   logout-successful: Du hast dich erfolgreich abgemeldet!
   password-change-successful: Dein neues Passwort ist ab sofort aktiv!
   registration-successful: Du hast dich erfolgreich registriert!
-  voucher-creation-successful: Dir wurde ein Voucher erstellt!
+  voucher-creation-successful: Du hast einen neuen Einladungscode erstellt!
   random-alias-creation-successful: Dir wurde ein neues Zufalls-Alias erstellt!
   alias-deletion-successful: Dein Alias wurde erfolgreich gelöscht!
 
 flash_batch_remove_vouchers_success: Nicht eingelöste Vouchers erfolgreich gelöscht
+
 
 error:
   title: Oops, es ist ein Fehler passiert.
