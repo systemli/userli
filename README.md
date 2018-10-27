@@ -121,6 +121,7 @@ Visit you local instance at http://192.168.33.99/.
 This app brings custom commands:
 
     usrmgmt:munin:account          # Return number of account to munin
+    usrmgmt:munin:alias            # Return number of aliases to munin
     usrmgmt:munin:voucher          # Return number of vouchers to munin
     usrmgmt:registration:mail      # Send registration mail to user
     usrmgmt:report:weekly          # Send weekly report about registrations
