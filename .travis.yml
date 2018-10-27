@@ -19,7 +19,7 @@ before_install:
 
 install:
   - cp phpunit.xml.dist phpunit.xml
-  - cp .env.dist .env
+  - sed 's/APP_ENV=dev/APP_ENV=test/g' .env.dist > .env
   - composer install
 
 script:

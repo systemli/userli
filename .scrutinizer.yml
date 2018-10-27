@@ -8,14 +8,14 @@ build:
         mysql: 5.5
         php: 7.1
     dependencies:
-        override:
-            #- git submodule update --init --recursive 
-            - composer install
-    project_setup:
-        override:
+        before:
             - mysql -uroot -e 'CREATE DATABASE mail_test;'
             - mysql -uroot -e "CREATE USER 'mail_test'@'localhost' IDENTIFIED BY 'password';"
             - mysql -uroot -e "GRANT ALL PRIVILEGES on mail_test.* to mail_test@localhost;"
+            - sed 's/APP_ENV=dev/APP_ENV=test/g' .env.dist > .env
+        override:
+            #- git submodule update --init --recursive 
+            - composer install
     nodes:
         analysis:
             tests:
