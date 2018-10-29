@@ -83,6 +83,7 @@ services:
         public: true
         arguments:
             $hasSinaBox: "%env(HAS_SINA_BOX)%"
+            $primaryDomain: '%env(DOMAIN)'
 
     App\Handler\SuspiciousChildrenHandler:
         arguments:

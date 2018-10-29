@@ -38,6 +38,10 @@ class RegistrationHandler
      * @var bool
      */
     private $hasSinaBox;
+    /**
+     * @var $primaryDomain
+     */
+    private $primaryDomain;
 
     /**
      * Constructor.
@@ -47,19 +51,22 @@ class RegistrationHandler
      * @param EventDispatcherInterface $eventDispatcher
      * @param PasswordUpdater          $passwordUpdater
      * @param bool                     $hasSinaBox
+     * @param string                   $primaryDomain
      */
     public function __construct(
         ObjectManager $manager,
         DomainGuesser $domainGuesser,
         EventDispatcherInterface $eventDispatcher,
         PasswordUpdater $passwordUpdater,
-        $hasSinaBox
+        bool $hasSinaBox,
+        string $primaryDomain
     ) {
         $this->manager = $manager;
         $this->domainGuesser = $domainGuesser;
         $this->eventDispatcher = $eventDispatcher;
         $this->passwordUpdater = $passwordUpdater;
         $this->hasSinaBox = $hasSinaBox;
+        $this->primaryDomain = $primaryDomain;
     }
 
     /**
@@ -111,7 +118,12 @@ class RegistrationHandler
         $user->setUpdatedTime(new \DateTime());
 
         if (null !== $domain = $this->domainGuesser->guess($registration->getEmail())) {
-            $user->setDomain($domain);
+            // Use this comparison to ensure no-one tempers with domain part
+            // of the request until primary domains are properly implemented.
+            // At the moment input of domain is fixed in template anyway.
+            if ($this->primaryDomain === $domain) {
+                $user->setDomain($domain);
+            }
         }
 
         if (null !== $voucher = $this->manager->getRepository('App:Voucher')->findByCode($registration->getVoucher())) {
