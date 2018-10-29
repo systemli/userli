@@ -91,8 +91,8 @@ class EmailAddressValidator extends ConstraintValidator
 
         if (null === $this->domainRepository->findByName($domain)) {
             $this->context->addViolation('registration.email-domain-not-exists');
-        } elseif ($domain !== $this->domain) {
-            $this->context->addViolation('registration.email-domain-invalid');
+        // } elseif ($domain !== $this->domain) {
+        //     $this->context->addViolation('registration.email-domain-invalid');
         }
     }
 }
