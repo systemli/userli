@@ -57,4 +57,12 @@ class PasswordHashEncoderTest extends TestCase
         $result = $encoder->encodePassword(self::PASSWORD, 'salt');
         $this->assertTrue($encoder->isPasswordValid($result, self::PASSWORD, 'anotherSalt'));
     }
+
+    public function testMd5()
+    {
+        $encoder = new PasswordHashEncoder();
+        // doveadm pw -s MD5-CRYPT -p password
+        $result = '$1$Is0rXQe3$CdxfOUEEqjfKZWc03GpEg1';
+        $this->assertTrue($encoder->isPasswordValid($result, self::PASSWORD, 'salt'));
+    }
 }
