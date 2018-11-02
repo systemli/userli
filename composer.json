@@ -21,6 +21,7 @@
         "sonata-project/doctrine-orm-admin-bundle": "~3.1",
         "symfony/apache-pack": "^1.0",
         "symfony/console": "*",
+        "symfony/dotenv": "*",
         "symfony/flex": "^1.1",
         "symfony/form": "*",
         "symfony/framework-bundle": "*",
@@ -43,7 +44,6 @@
         "behat/mink-extension": "^2.3",
         "behat/symfony2-extension": "^2.1",
         "symfony/debug-bundle": "*",
-        "symfony/dotenv": "*",
         "symfony/phpunit-bridge": "*",
         "symfony/web-profiler-bundle": "*"
     },

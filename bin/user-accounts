@@ -3,8 +3,6 @@
 #%# family=auto
 #%# capabilities=autoconf
 
-export APP_ENV=prod
-
 SCRIPT="$(readlink -f $0)"
 COMMAND="php $(dirname ${SCRIPT})/../bin/console usrmgmt:munin:account"
 
