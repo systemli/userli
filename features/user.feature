@@ -11,10 +11,11 @@ Feature: User
       | user@example.org    | asdasd   | ROLE_USER    |
       | support@example.org | asdasd   | ROLE_SUPPORT |
     And the following Alias exists:
-      | user_id | source             | destination       | deleted |
-      | 2       | alias1@example.org | user@example.org  | 0       |
-      | 2       | alias2@example.org | user@example.org  | 1       |
-      | 1       | alias3@example.org | admin@example.org | 0       |
+      | user_id | source                     | destination       | deleted | random |
+      | 2       | alias1@example.org         | user@example.org  | 0       | 0      |
+      | 2       | alias2@example.org         | user@example.org  | 1       | 0      |
+      | 1       | alias3@example.org         | admin@example.org | 0       | 0      |
+      | 2       | random_alias_4@example.org | user@example.org  | 0       | 1      |
 
   @password-change
   Scenario: Change password
@@ -53,9 +54,17 @@ Feature: User
     And the response status code should be 200
 
   @delete-alias
-  Scenario: Delete alias
+  Scenario: Delete custom alias
     When I am authenticated as "user@example.org"
     And I am on "/alias/delete/1"
+
+    Then I should be on "/"
+    And the response status code should not be 403
+
+  @delete-alias
+  Scenario: Delete random alias
+    When I am authenticated as "user@example.org"
+    And I am on "/alias/delete/4"
     And I fill in the following:
       | delete_alias_password | asdasd |
     And I press "Delete alias"
@@ -81,7 +90,7 @@ Feature: User
   @delete-alias
   Scenario: Nonexistent alias redirect
     When I am authenticated as "user@example.org"
-    And I am on "/alias/delete/4"
+    And I am on "/alias/delete/200"
     Then I should be on "/"
     And the response status code should not be 403
 

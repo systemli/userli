@@ -166,6 +166,9 @@ class FeatureContext extends MinkContext
                     case 'deleted':
                         $alias->setDeleted($value);
                         break;
+                    case 'random':
+                        $alias->setRandom($value);
+                        break;
                 }
 
                 if (null !== $domain = $this->getDomainGuesser()->guess($value)) {
