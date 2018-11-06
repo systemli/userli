@@ -13,6 +13,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
 
 /**
  * @author louis <louis@systemli.org>
@@ -32,6 +34,25 @@ class AliasAdmin extends Admin
     private $deleteHandler;
 
     /**
+     * @var TokenStorageInterface
+     */
+    private $storage;
+
+    /**
+     * AliasAdmin Constructor.
+     *
+     * @param string                $code
+     * @param string                $class
+     * @param string                $baseControllerName
+     * @param TokenStorageInterface $storage
+     */
+    public function __construct($code, $class, $baseControllerName, TokenStorageInterface $storage)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+        $this->storage = $storage;
+    }
+
+        /**
      * {@inheritdoc}
      */
     protected function configureFormFields(FormMapper $formMapper)
@@ -98,6 +119,10 @@ class AliasAdmin extends Admin
     public function prePersist($alias)
     {
         if (null == $alias->getDestination()) {
+            if (null == $alias->getUser()) {
+                # set user_id to current user if neither destination nor user_id is given
+                $alias->setUser($this->storage->getToken()->getUser());
+            }
             $alias->setDestination($alias->getUser());
         }
 

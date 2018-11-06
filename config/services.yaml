@@ -168,6 +168,7 @@ services:
             - ~
             - App\Entity\Alias
             - ~
+            - '@Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface'
         calls:
             - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
             - [setDeleteHandler, ['@App\Handler\DeleteHandler']]
