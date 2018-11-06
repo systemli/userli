@@ -7,21 +7,35 @@ build:
     environment:
         mysql: 5.5
         php: 7.1
+        variables:
+            DATABASE_DRIVER: 'pdo_mysql'
+            DATABASE_URL: 'mysql://mail_test:password@127.0.0.1:3306/mail_test'
+            APP_ENV: 'test'
+            APP_SECRET: '165e25e3846534bb4665d7078a851c0b'
+            MAILER_URL: 'smtp://localhost:25?encryption=&auth_mode='
+            MAILER_DELIVERY_ADDRESS: 'admin@example.org'
+            APP_NAME: 'User Management'
+            APP_URL: 'https://users.example.org/'
+            PROJECT_NAME: 'example.org'
+            PROJECT_URL: 'https://www.example.org/'
+            DOMAIN: 'example.org'
+            SENDER_ADDRESS: 'admin@example.org'
+            NOTIFICATION_ADDRESS: 'monitoring@example.org'
+            SEND_WELCOME_MAIL: 'true'
+            LOCALE: 'de'
+            HAS_SINA_BOX: 'false'
     dependencies:
         before:
-            - mysql -uroot -e 'CREATE DATABASE mail_test;'
+            - mysql -uroot -e "CREATE DATABASE mail_test;"
             - mysql -uroot -e "CREATE USER 'mail_test'@'localhost' IDENTIFIED BY 'password';"
             - mysql -uroot -e "GRANT ALL PRIVILEGES on mail_test.* to mail_test@localhost;"
-            - sed 's/APP_ENV=dev/APP_ENV=test/g' .env.dist > .env
         override:
-            #- git submodule update --init --recursive 
             - composer install
     nodes:
         analysis:
             tests:
                 override:
                     - php-scrutinizer-run
-                    #- phpcs-run
         coverage:
             tests:
                 override:

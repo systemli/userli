@@ -1,9 +1,28 @@
 language: php
+sudo: false
+
 php:
   - '7.1'
   - '7.2'
 
-sudo: false
+env:
+  global:
+    - DATABASE_DRIVER=pdo_mysql
+    - DATABASE_URL=mysql://mail_test:password@127.0.0.1:3306/mail_test
+    - APP_ENV=test
+    - APP_SECRET=165e25e3846534bb4665d7078a851c0b
+    - MAILER_URL=smtp://localhost:25?encryption=&auth_mode=
+    - MAILER_DELIVERY_ADDRESS=admin@example.org
+    - APP_NAME="User Management"
+    - APP_URL="https://users.example.org/"
+    - PROJECT_NAME="example.org"
+    - PROJECT_URL="https://www.example.org/"
+    - DOMAIN="example.org"
+    - SENDER_ADDRESS="admin@example.org"
+    - NOTIFICATION_ADDRESS="monitoring@example.org"
+    - SEND_WELCOME_MAIL="true"
+    - LOCALE="de"
+    - HAS_SINA_BOX="false"
 
 cache:
   directories:
@@ -11,16 +30,44 @@ cache:
 
 services:
   - mysql
+  - postgresql
 
 before_install:
   - mysql -e 'CREATE DATABASE mail_test;'
   - mysql -e "CREATE USER 'mail_test'@'localhost' IDENTIFIED BY 'password';"
   - mysql -e "GRANT ALL PRIVILEGES on mail_test.* to mail_test@localhost;"
+  - sudo -u postgres createuser -d mail_test
+  - sudo -u postgres createdb -O mail_test mail_test
 
 install:
-  - cp phpunit.xml.dist phpunit.xml
-  - sed 's/APP_ENV=dev/APP_ENV=test/g' .env.dist > .env
   - composer install
 
 script:
   - make test
+
+stages:
+    - name: Integration with SQLite
+    - name: Integration with MySQL
+      if: branch = master
+    - name: Integration with PostgreSQL
+      if: branch = master
+
+jobs:
+  include:
+    - stage: Integration with SQLite
+      script: make integration
+      env:
+        - DATABASE_DRIVER=pdo_sqlite
+        - DATABASE_URL=sqlite:///%kernel.project_dir%/var/db_test.sqlite
+
+    - stage: Integration with MySQL
+      script: make integration
+      env:
+        - DATABASE_DRIVER=pdo_mysql
+        - DATABASE_URL=mysql://mail_test:password@127.0.0.1:3306/mail_test
+
+    - stage: Integration with PostgreSQL
+      script: make integration
+      env:
+        - DATABASE_DRIVER=pdo_pgsql
+        - DATABASE_URL=pgsql://mail_test:password@127.0.0.1:5432/mail_test
