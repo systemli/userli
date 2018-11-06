@@ -37,7 +37,7 @@ class AliasAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('user', EntityType::class, ['class' => User::class])
+            ->add('user', EntityType::class, ['class' => User::class, 'required' => false])
             ->add('source', EmailType::class)
             ->add('destination', EmailType::class, ['required' => false])
             ->add('deleted', CheckboxType::class, ['disabled' => true]);

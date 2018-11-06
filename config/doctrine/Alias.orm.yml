@@ -20,7 +20,7 @@ App\Entity\Alias:
       nullable: false
     destination:
       type: string
-      nullable: false
+      nullable: true
     deleted:
       type: boolean
       options:
