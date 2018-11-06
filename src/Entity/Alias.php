@@ -68,8 +68,9 @@ class Alias implements SoftDeletableInterface
         $this->destination = $destination;
     }
 
-    public function setEmptyUser()
+    public function clearSensitiveData()
     {
         $this->user = null;
+        $this->destination = null;
     }
 }

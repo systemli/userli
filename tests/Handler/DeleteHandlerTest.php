@@ -46,6 +46,7 @@ class DeleteHandlerTest extends TestCase
 
         self::assertTrue($alias->isDeleted());
         self::assertNotEquals($alias->getUser(), $user);
+        self::assertEquals(null, $alias->getDestination());
     }
 
     public function testDeleteUser()
