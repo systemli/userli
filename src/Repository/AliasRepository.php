@@ -22,6 +22,17 @@ class AliasRepository extends AbstractRepository
     }
 
     /**
+     * @param      $email
+     * @param bool $deleted
+     *
+     * @return null|object|Alias
+     */
+    public function findOneBySourceDeleted($email)
+    {
+        return $this->findOneBy(array('source' => $email), null, true);
+    }
+
+    /**
      * @param $email
      *
      * @return null|object|Alias
