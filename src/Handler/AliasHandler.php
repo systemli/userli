@@ -14,7 +14,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class AliasHandler
 {
-    const ALIAS_LIMIT_CUSTOM = 10;
+    const ALIAS_LIMIT_CUSTOM = 3;
     const ALIAS_LIMIT_RANDOM = 100;
 
     /**
