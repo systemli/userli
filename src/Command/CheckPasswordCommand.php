@@ -20,7 +20,7 @@ use Symfony\Component\Process\Process;
 class CheckPasswordCommand extends ContainerAwareCommand
 {
     // TODO: put the constants somewhere public and use it here and in RemoveUsersCommand
-    const VMAIL_PATH = '/var/vmail/%s/%s';
+    const VMAIL_PATH = '/var/vmail/%s/%s/Maildir';
     const VMAIL_UID = '5000';
     const VMAIL_GID = '5000';
 
@@ -100,18 +100,19 @@ class CheckPasswordCommand extends ContainerAwareCommand
         // Validate checkpassword input from file descriptor
         try {
             // timestamp and extra data are unused nowadays and ignored
+            // shows warning on commandline because of missing args
             list($email, $password, $timestamp, $extra) = explode("\x0", $contents, 4);
         } catch (\Exception $e) {
             throw new InvalidArgumentException('Invalid input format. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.');
         }
 
-        if (empty($email) || empty($password)) {
+        if (empty($email)) {
             throw new InvalidArgumentException('Invalid input format. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.');
         }
 
         // Detect if invoked as userdb lookup by dovecot (with env var AUTHORIZED='1')
         // See https://wiki2.dovecot.org/AuthDatabase/CheckPassword#Checkpassword_as_userdb
-        $userDbLookup = ('1' === getenv('AUTHORIZED')) ? true : null;
+        $userDbLookup = ('1' === getenv('AUTHORIZED')) ? true : false;
 
         // Check if user exists
         $user = $this->repository->findByEmail($email);
@@ -125,17 +126,23 @@ class CheckPasswordCommand extends ContainerAwareCommand
         }
 
         // Check if authentication credentials are valid
-        if (null === $user = $this->handler->authenticate($user, $password)) {
+        if (!($userDbLookup) && null === $user = $this->handler->authenticate($user, $password)) {
             // TODO: return 111 in case of temporary lookup failure
             return 1;
         }
 
+        // get email parts
+        $parts = explode("@", "$email");
+        $username = $parts[0];
+        $domain = $parts[1];
+
         // Set default environment variables for checkpassword-reply command
         $envVars = [
             'USER' => $email,
-            'HOME' => sprintf(self::VMAIL_PATH, $user->getDomain(), $email),
+            'HOME' => sprintf(self::VMAIL_PATH, $domain, $username),
             'userdb_uid' => self::VMAIL_UID,
             'userdb_gid' => self::VMAIL_GID,
+            //'INSECURE_SETUID' => 1,
         ];
 
         // Optionally set quota environment variable for checkpassword-reply command
@@ -152,6 +159,15 @@ class CheckPasswordCommand extends ContainerAwareCommand
             $envVars['AUTHORIZED'] = '2';
         }
 
+        // Check if this is credential lookup
+        $credentialsLookup = (bool)getenv('CREDENTIALS_LOOKUP');
+        if ($credentialsLookup) {
+            $password = $user->getPassword();
+            $envVars['password'] = sprintf('{CRYPT}%s', $password);
+            //throw new \Exception(sprintf('{CRYPT}%s', $password));
+            $envVars['EXTRA'] = 'userdb_uid userdb_gid password';
+        }
+
         if (null === $replyCommand) {
             return 0;
         }
@@ -161,12 +177,9 @@ class CheckPasswordCommand extends ContainerAwareCommand
             $replyCommand.' '.implode(' ', $replyArgs)
         );
         $replyProcess->inheritEnvironmentVariables(true);
-        $replyProcess->setEnv($envVars);
-        try {
-            $replyProcess->mustRun();
-        } catch (ProcessException $e) {
-            throw new \Exception(sprintf('Error at executing checkpassword-reply command %s: %s', $replyCommand, $replyProcess->getErrorOutput()));
-        }
+        $newEnv = array_merge(getEnv(), $envVars);
+        $replyProcess->setEnv($newEnv);
+        $replyProcess->run();
 
         return 0;
     }
