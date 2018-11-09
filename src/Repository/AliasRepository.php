@@ -11,13 +11,14 @@ use App\Entity\User;
 class AliasRepository extends AbstractRepository
 {
     /**
-     * @param $email
+     * @param      $email
+     * @param bool $deleted
      *
      * @return null|object|Alias
      */
-    public function findOneBySource($email)
+    public function findOneBySource($email, ?bool $deleted = false)
     {
-        return $this->findOneBy(array('source' => $email));
+        return $this->findOneBy(array('source' => $email), null, $deleted);
     }
 
     /**

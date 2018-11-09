@@ -44,7 +44,7 @@ class DeleteHandler
         }
 
         $alias->setDeleted(true);
-        $alias->setEmptyUser();
+        $alias->clearSensitiveData();
         $this->manager->flush();
     }
 

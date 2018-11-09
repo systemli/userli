@@ -26,7 +26,7 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $aliasRepository->expects($this->any())->method('findOneBySource')->willReturnMap([
-            [$this->aliasUsed, true],
+            [$this->aliasUsed, true, true],
         ]);
         $domainRepository = $this->getMockBuilder(DomainRepository::class)
             ->disableOriginalConstructor()
