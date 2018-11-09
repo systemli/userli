@@ -20,7 +20,7 @@ use Symfony\Component\Process\Process;
 class CheckPasswordCommand extends ContainerAwareCommand
 {
     // TODO: put the constants somewhere public and use it here and in RemoveUsersCommand
-    const VMAIL_PATH = '/var/vmail/%s/%s/Maildir';
+    const VMAIL_PATH = '/var/vmail/%s/%s';
     const VMAIL_UID = '5000';
     const VMAIL_GID = '5000';
 
@@ -105,13 +105,13 @@ class CheckPasswordCommand extends ContainerAwareCommand
             throw new InvalidArgumentException('Invalid input format. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.');
         }
 
-        if (empty($email)) {
+        if (empty($email) || empty($password)) {
             throw new InvalidArgumentException('Invalid input format. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.');
         }
 
         // Detect if invoked as userdb lookup by dovecot (with env var AUTHORIZED='1')
         // See https://wiki2.dovecot.org/AuthDatabase/CheckPassword#Checkpassword_as_userdb
-        $userDbLookup = ('1' === getenv('AUTHORIZED')) ? true : false;
+        $userDbLookup = ('1' === getenv('AUTHORIZED')) ? true : null;
 
         // Check if user exists
         $user = $this->repository->findByEmail($email);
@@ -125,20 +125,15 @@ class CheckPasswordCommand extends ContainerAwareCommand
         }
 
         // Check if authentication credentials are valid
-        if (!($userDbLookup) && null === $user = $this->handler->authenticate($user, $password)) {
+        if (null === $user = $this->handler->authenticate($user, $password)) {
             // TODO: return 111 in case of temporary lookup failure
             return 1;
         }
 
-        // get email parts
-        $parts = explode("@", "$email");
-        $username = $parts[0];
-        $domain = $parts[1];
-
         // Set default environment variables for checkpassword-reply command
         $envVars = [
             'USER' => $email,
-            'HOME' => sprintf(self::VMAIL_PATH, $domain, $username),
+            'HOME' => sprintf(self::VMAIL_PATH, $user->getDomain(), $email),
             'userdb_uid' => self::VMAIL_UID,
             'userdb_gid' => self::VMAIL_GID,
         ];
