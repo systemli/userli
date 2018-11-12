@@ -26,11 +26,14 @@ class PasswordUpdater
     }
 
     /**
-     * @param User $user
+     * @param User        $user
+     * @param string|null $plainPassword
      */
-    public function updatePassword(User $user)
+    public function updatePassword(User $user, string $plainPassword = null)
     {
-        $plainPassword = $user->getPlainPassword();
+        if (null === $plainPassword) {
+            $plainPassword = $user->getPlainPassword();
+        }
 
         if (0 === strlen($plainPassword)) {
             return;

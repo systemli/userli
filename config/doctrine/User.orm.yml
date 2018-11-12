@@ -36,6 +36,8 @@ App\Entity\User:
       column: lastlogin
       type: datetime
       nullable: true
+    passwordVersion:
+      type: integer
 
   manyToOne:
     domain:

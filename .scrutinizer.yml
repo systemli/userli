@@ -6,7 +6,7 @@ checks:
 build:
     environment:
         mysql: 5.5
-        php: 7.1
+        php: 7.2
         variables:
             DATABASE_DRIVER: 'pdo_mysql'
             DATABASE_URL: 'mysql://mail_test:password@127.0.0.1:3306/mail_test'

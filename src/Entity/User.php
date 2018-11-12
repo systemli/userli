@@ -15,15 +15,19 @@ use App\Traits\PlainPasswordTrait;
 use App\Traits\QuotaTrait;
 use App\Traits\SaltTrait;
 use App\Traits\UpdatedTimeTrait;
+use App\Traits\PasswordVersionTrait;
+use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author louis <louis@systemli.org>
  */
-class User implements UserInterface
+class User implements UserInterface, EncoderAwareInterface
 {
     use IdTrait, CreationTimeTrait, UpdatedTimeTrait, EmailTrait, QuotaTrait, PasswordTrait, SaltTrait, DeleteTrait,
-        InvitationVoucherTrait, PlainPasswordTrait, DomainAwareTrait, LastLoginTimeTrait;
+        InvitationVoucherTrait, PlainPasswordTrait, DomainAwareTrait, LastLoginTimeTrait, PasswordVersionTrait;
+
+    const CURRENT_PASSWORD_VERSION = 2;
 
     /**
      * @var array
@@ -36,6 +40,7 @@ class User implements UserInterface
     public function __construct()
     {
         $this->deleted = false;
+        $this->passwordVersion = self::CURRENT_PASSWORD_VERSION;
     }
 
     /**
@@ -85,5 +90,18 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEncoderName()
+    {
+        if ($this->getPasswordVersion() < self::CURRENT_PASSWORD_VERSION) {
+            return 'legacy';
+        }
+
+        // use default encoder
+        return null;
     }
 }

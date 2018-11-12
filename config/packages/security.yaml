@@ -5,6 +5,8 @@ security:
 
     encoders:
         App\Entity\User:
+            algorithm: argon2i
+        legacy:
             id: 'App\Security\Encoder\PasswordHashEncoder'
 
     role_hierarchy:
