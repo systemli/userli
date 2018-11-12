@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ExceptionInterface as ProcessException;
 use Symfony\Component\Process\Process;
+use Psr\Log\LoggerInterface;
 
 /**
  * @author doobry <doobry@systemli.org>
@@ -20,7 +21,7 @@ use Symfony\Component\Process\Process;
 class CheckPasswordCommand extends ContainerAwareCommand
 {
     // TODO: put the constants somewhere public and use it here and in RemoveUsersCommand
-    const VMAIL_PATH = '/var/vmail/%s/%s/Maildir';
+    const VMAIL_PATH = '/var/vmail/%s/%s/';
     const VMAIL_UID = '5000';
     const VMAIL_GID = '5000';
 
@@ -50,12 +51,14 @@ class CheckPasswordCommand extends ContainerAwareCommand
      * @param ObjectManager             $manager
      * @param FileDescriptorReader      $reader
      * @param UserAuthenticationHandler $handler
+     * @param LoggerInterface           $logger
      */
-    public function __construct(ObjectManager $manager, FileDescriptorReader $reader, UserAuthenticationHandler $handler)
+    public function __construct(ObjectManager $manager, FileDescriptorReader $reader, UserAuthenticationHandler $handler, LoggerInterface $logger)
     {
         $this->manager = $manager;
         $this->reader = $reader;
         $this->handler = $handler;
+        $this->logger = $logger;
         $this->repository = $this->manager->getRepository('App:User');
         parent::__construct();
     }
@@ -103,7 +106,7 @@ class CheckPasswordCommand extends ContainerAwareCommand
             // shows warning on commandline because of missing args
             list($email, $password, $timestamp, $extra) = explode("\x0", $contents, 4);
         } catch (\Exception $e) {
-            throw new InvalidArgumentException('Invalid input format. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.');
+            //throw new InvalidArgumentException('Invalid input format. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.');
         }
 
         if (empty($email)) {
@@ -142,14 +145,14 @@ class CheckPasswordCommand extends ContainerAwareCommand
             'HOME' => sprintf(self::VMAIL_PATH, $domain, $username),
             'userdb_uid' => self::VMAIL_UID,
             'userdb_gid' => self::VMAIL_GID,
-            //'INSECURE_SETUID' => 1,
         ];
 
+        // set EXTRA env var
+        $envVars['EXTRA'] = 'userdb_uid userdb_gid';
+
         // Optionally set quota environment variable for checkpassword-reply command
-        if (null === $user->getQuota()) {
-            $envVars['EXTRA'] = 'userdb_uid userdb_gid';
-        } else {
-            $envVars['EXTRA'] = 'userdb_uid userdb_gid userdb_quota_rule';
+        if (null !== $user->getQuota()) {
+            $envVars['EXTRA'] = sprintf('%s userdb_quota_rule', $envVars['EXTRA']);
             $envVars['userdb_quota_rule'] = sprintf('*:storage=%dM', $user->getQuota());
         }
 
@@ -158,28 +161,35 @@ class CheckPasswordCommand extends ContainerAwareCommand
         if (true === $userDbLookup) {
             $envVars['AUTHORIZED'] = '2';
         }
-
-        // Check if this is credential lookup
-        $credentialsLookup = (bool)getenv('CREDENTIALS_LOOKUP');
-        if ($credentialsLookup) {
-            $password = $user->getPassword();
-            $envVars['password'] = sprintf('{CRYPT}%s', $password);
-            //throw new \Exception(sprintf('{CRYPT}%s', $password));
-            $envVars['EXTRA'] = 'userdb_uid userdb_gid password';
-        }
-
+//
+//        // Check if this is credential lookup
+//        $credentialsLookup = (bool)getenv('CREDENTIALS_LOOKUP');
+//        if ($credentialsLookup) {
+//            $password = $user->getPassword();
+//            $envVars['password'] = sprintf('{CRYPT}%s', $password);
+//            //throw new \Exception(sprintf('{CRYPT}%s', $password));
+//            $envVars['EXTRA'] = 'userdb_uid userdb_gid password';
+//        }
+//
         if (null === $replyCommand) {
             return 0;
         }
 
+        // LOG
+        $this->logger->info(sprintf('USER %s, USER_OBJ %s, EXTRA %s', $email, $user, $envVars['EXTRA']));
+
         // Execute checkpassword-reply command
-        $replyProcess = new Process(
-            $replyCommand.' '.implode(' ', $replyArgs)
-        );
+        $replyProcess = new Process($replyCommand);
         $replyProcess->inheritEnvironmentVariables(true);
         $newEnv = array_merge(getEnv(), $envVars);
         $replyProcess->setEnv($newEnv);
         $replyProcess->run();
+
+        $this->logger->info(sprintf('COMMAND: %s', $replyCommand));
+        //$this->logger->info(sprintf('ENV: %s', json_encode($newEnv)));
+
+        //$this->logger->info(sprintf('ENV: %s', json_encode($replyProcess->getEnv())));
+        $this->logger->info(sprintf('EXIT CODE %d', $replyProcess->getExitCode()));
 
         return 0;
     }
