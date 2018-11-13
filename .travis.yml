@@ -38,8 +38,12 @@ before_install:
   - mysql -e "GRANT ALL PRIVILEGES on mail_test.* to mail_test@localhost;"
   - sudo -u postgres createuser -d mail_test
   - sudo -u postgres createdb -O mail_test mail_test
+  - sudo add-apt-repository ppa:ondrej/php -y
+  - sudo apt-get update -o Dir::Etc::sourcelist="sources.list.d/ondrej-php-trusty.list" -o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0"
+  - sudo apt-get install -y libsodium-dev
 
 install:
+  - printf "\n" | pecl install libsodium
   - composer install
 
 script:

@@ -29,6 +29,7 @@
       - apcu
       - curl
       - gd
+      - sodium
       - mbstring
       - mysql
       - xml
