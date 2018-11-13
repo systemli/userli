@@ -8,7 +8,6 @@ parameters:
 doctrine:
     dbal:
         # configure these for your database server
-        driver: '%env(DATABASE_DRIVER)%'
         charset: UTF8
         #charset: utf8mb4
         #default_table_options:
