@@ -32,7 +32,6 @@ class AliasCreatorTest extends TestCase
         $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
 
         return new AliasCreator($manager, $validator, $eventDispatcher);
-
     }
 
     protected function createUser()
@@ -41,6 +40,7 @@ class AliasCreatorTest extends TestCase
         $domain->setName('example.org');
         $user = new User();
         $user->setDomain($domain);
+
         return $user;
     }
 

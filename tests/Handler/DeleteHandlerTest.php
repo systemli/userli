@@ -24,8 +24,6 @@ class DeleteHandlerTest extends TestCase
         $objectManager->expects($this->any())->method('flush')->willReturn(true);
 
         return new DeleteHandler($passwordUpdater, $objectManager);
-
-
     }
 
     public function testDeleteAlias()

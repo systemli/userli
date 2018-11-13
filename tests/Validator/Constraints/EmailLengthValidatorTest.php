@@ -2,10 +2,6 @@
 
 namespace App\Tests\Validator\Constraints;
 
-use App\Repository\AliasRepository;
-use App\Repository\DomainRepository;
-use App\Repository\ReservedNameRepository;
-use App\Repository\UserRepository;
 use App\Validator\Constraints\EmailLength;
 use App\Validator\Constraints\EmailLengthValidator;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -84,7 +80,7 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
      * @param string $address
      * @param string $violationMessage
      * @param string $operator
-     * @param int $limit
+     * @param int    $limit
      * @dataProvider getShortLongAddresses
      */
     public function testValidateShortLongEmailLength(string $address, string $violationMessage, string $operator, int $limit)

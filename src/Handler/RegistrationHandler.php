@@ -39,7 +39,7 @@ class RegistrationHandler
      */
     private $hasSinaBox;
     /**
-     * @var $primaryDomain
+     * @var
      */
     private $primaryDomain;
 

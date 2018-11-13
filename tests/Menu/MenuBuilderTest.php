@@ -9,7 +9,6 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter;
 
 /**
  * @author doobry <doobry@systemli.org>
@@ -42,7 +41,7 @@ class MenuBuilderTest extends TestCase
             ->getMock();
         $this->menuHelper->method('build')
             ->willReturnCallback(function ($elements, $menu) {
-                    $this->childs = $elements;
+                $this->childs = $elements;
             });
     }
 
@@ -79,8 +78,8 @@ class MenuBuilderTest extends TestCase
             ->getMock();
         $authChecker->method('isGranted')
             ->willReturnMap([
-                ['IS_AUTHENTICATED_FULLY', null, False],
-                [Roles::ADMIN, null, False],
+                ['IS_AUTHENTICATED_FULLY', null, false],
+                [Roles::ADMIN, null, false],
             ]);
         $builder = new MenuBuilder($this->factory, $authChecker, $this->menuHelper, []);
 
@@ -100,8 +99,8 @@ class MenuBuilderTest extends TestCase
             ->getMock();
         $authChecker->method('isGranted')
             ->willReturnMap([
-                ['IS_AUTHENTICATED_FULLY', null, True],
-                [Roles::ADMIN, null, False],
+                ['IS_AUTHENTICATED_FULLY', null, true],
+                [Roles::ADMIN, null, false],
             ]);
         $builder = new MenuBuilder($this->factory, $authChecker, $this->menuHelper, []);
 
@@ -121,8 +120,8 @@ class MenuBuilderTest extends TestCase
             ->getMock();
         $authChecker->method('isGranted')
             ->willReturnMap([
-                ['IS_AUTHENTICATED_FULLY', null, True],
-                [Roles::ADMIN, null, True],
+                ['IS_AUTHENTICATED_FULLY', null, true],
+                [Roles::ADMIN, null, true],
             ]);
         $builder = new MenuBuilder($this->factory, $authChecker, $this->menuHelper, []);
 

@@ -41,7 +41,7 @@ class DeleteController extends Controller
         $aliasRepository = $this->get('doctrine')->getRepository('App:Alias');
         $alias = $aliasRepository->find($aliasId);
 
-        # Don't allow users to delete custom or foreign aliases
+        // Don't allow users to delete custom or foreign aliases
         if (null === $alias || $user !== $alias->getUser() || !($alias->isRandom())) {
             return $this->redirect($this->generateUrl('index'));
         }

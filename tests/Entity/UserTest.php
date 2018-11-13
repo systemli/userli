@@ -7,12 +7,10 @@ use App\Enum\Roles;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class UserTest
- * @package App\Tests\Entity
+ * Class UserTest.
  */
 class UserTest extends TestCase
 {
-
     public function testGetRoles()
     {
         $user = new User();

@@ -60,6 +60,5 @@ class MenuHelperTest extends TestCase
         self::assertCount(3, $this->childs);
         self::assertArrayHasKey('caret', $this->childs['test_example_submenu']);
         self::assertArrayNotHasKey('caret', $this->childs['test_example_submenu_item']);
-
     }
 }

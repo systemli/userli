@@ -119,7 +119,7 @@ class CheckPasswordCommandTest extends TestCase
     public function invalidContentProvider()
     {
         return [
-            ["user@example.org password timestamp extra"],
+            ['user@example.org password timestamp extra'],
             ["user@example.org\x00password timestamp extra"],
             ["user@example.org\x00password\x00timestamp extra"],
             ["user@example.org\x00password\x00timestamp\x01extra"],

@@ -15,7 +15,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-
 /**
  * @author louis <louis@systemli.org>
  */
@@ -52,7 +51,7 @@ class AliasAdmin extends Admin
         $this->storage = $storage;
     }
 
-        /**
+    /**
      * {@inheritdoc}
      */
     protected function configureFormFields(FormMapper $formMapper)
@@ -120,7 +119,7 @@ class AliasAdmin extends Admin
     {
         if (null == $alias->getDestination()) {
             if (null == $alias->getUser()) {
-                # set user_id to current user if neither destination nor user_id is given
+                // set user_id to current user if neither destination nor user_id is given
                 $alias->setUser($this->storage->getToken()->getUser());
             }
             $alias->setDestination($alias->getUser());

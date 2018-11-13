@@ -25,7 +25,6 @@ class AliasHandlerTest extends TestCase
         return new AliasHandler($manager, $creator);
     }
 
-
     public function testCheckAliasLimit()
     {
         $handler = $this->createHandler([]);

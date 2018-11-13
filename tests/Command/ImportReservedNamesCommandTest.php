@@ -8,7 +8,6 @@ use App\Entity\ReservedName;
 use App\Repository\ReservedNameRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
