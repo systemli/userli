@@ -46,6 +46,7 @@ App\Entity\User:
       joinColumn:
         name: domain_id
         referencedColumnName: id
+        nullable: false
   oneToOne:
     invitationVoucher:
       targetEntity: Voucher
