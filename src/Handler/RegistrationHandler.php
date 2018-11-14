@@ -118,12 +118,7 @@ class RegistrationHandler
         $user->setUpdatedTime(new \DateTime());
 
         if (null !== $domain = $this->domainGuesser->guess($registration->getEmail())) {
-            // Use this comparison to ensure no-one tempers with domain part
-            // of the request until primary domains are properly implemented.
-            // At the moment input of domain is fixed in template anyway.
-            if ($this->primaryDomain === $domain) {
-                $user->setDomain($domain);
-            }
+            $user->setDomain($domain);
         }
 
         if (null !== $voucher = $this->manager->getRepository('App:Voucher')->findByCode($registration->getVoucher())) {
