@@ -11,6 +11,9 @@
   * [PHP composer](https://getcomposer.org/)
   * [Node.js Yarn](https://yarnpkg.com/)
   * [MariaDB](https://mariadb.org/) or [MySQL](https://mysql.com/)
+  * [libsodium](https://download.libsodium.org/doc/)
+
+  Libsodium is already included in PHP 7.2. You can also run this application with PostgreSQL oder SQLite.
 
 Configure prerequisites:
 
@@ -166,4 +169,4 @@ Example configuration for using checkpassword in Dovecot:
 
 Adjust coding style by running `php-cs-fixer`:
 
-    php-cs-fixer fix src --rules=@Symfony
+    make cs-fixer

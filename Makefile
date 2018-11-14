@@ -13,6 +13,7 @@ vendors:
 
 cs-fixer:
 	php-cs-fixer fix src --rules=@Symfony
+	php-cs-fixer fix tests --rules=@Symfony
 
 lint:
 	php -l src/
