@@ -30,30 +30,6 @@ if [ "$CHECKPASSWORD_REPLY_BINARY" = "test" ]; then
 	INPUT_FD=0
 fi
 
-# Credentials lookup function. Given a user name it should output 'user:password' if such
-# account exists or nothing if it does not. Return non-zero code in case of error.
-credentials_lookup()
-{
-	local db="$1"
-	local user="$2"
-
-	echo LOOKUP >>$LOG
-	awk -F ':' -v USER="$user" '($1 == USER) {print}' "$db" 2>>$LOG
-}
-
-# Credentials verification function. Given a user name and password it should output non-empty
-# string (this implementation outputs 'user:password') in case supplied credentials are valid
-# or nothing if they are not. Return non-zero code in case of error.
-credentials_verify()
-{
-	local db="$1"
-	local user="$2"
-	local pass="$3"
-
-	echo VERIFY >>$LOG
-	awk -F ':' -v USER="$user" -v PASS="$pass" '($1 == USER && $2 == PASS) {print}' "$db" 2>>$LOG
-}
-
 # Just a simple logging helper.
 log_result()
 {
@@ -77,20 +53,12 @@ export HOME="/var/vmail/$domain_name/$mail_name/"
 # CREDENTIALS_LOOKUP=1 environment is set when doing non-plaintext authentication.
 #if [ "$CREDENTIALS_LOOKUP" = 1 ]; then
 if [ "$AUTHORIZED" = 1 ]; then
-	action=credentials_lookup
+    lookup_result=$(/vagrant/bin/console usrmgmt:users:check $USER)
 else
-	action=credentials_verify
+    lookup_result=$(/vagrant/bin/console usrmgmt:users:check $USER $PASS)
 fi
 
-# Perform credentials lookup/verification.
-lookup_result=`$action "/etc/dovecot/users" "$USER" "$PASS"` || {
-	# If it failed, consider it an internal temporary error.
-	# This usually happens due to permission problems.
-	log_result "internal error (ran as `id`)"
-	exit $ERR_TEMPFAIL
-}
-
-if [ -n "$lookup_result" ]; then
+if [ "$?" -eq 0 ]; then
 	# Dovecot calls the script with AUTHORIZED=1 environment set when performing a userdb lookup.
 	# The script must acknowledge this by changing the environment to AUTHORIZED=2,
 	# otherwise the lookup fails.
