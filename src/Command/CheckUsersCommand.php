@@ -66,7 +66,7 @@ class CheckUsersCommand extends Command
         // Check if user exists
         $user = $this->repository->findByEmail($email);
 
-        if ($password){
+        if ($password && null !== $user){
             // test password
             $password = $password[0];
             $this->logger->info('testing password');
