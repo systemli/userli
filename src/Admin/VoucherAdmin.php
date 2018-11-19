@@ -34,9 +34,9 @@ class VoucherAdmin extends Admin
      * @param string                $baseControllerName
      * @param TokenStorageInterface $storage
      */
-    public function __construct($code, $class, $baseControllerName, TokenStorageInterface $storage)
+    public function __construct($code, $class, $baseControllerName, $security, TokenStorageInterface $storage)
     {
-        parent::__construct($code, $class, $baseControllerName);
+        parent::__construct($code, $class, $baseControllerName, $security);
         $this->storage = $storage;
     }
 
