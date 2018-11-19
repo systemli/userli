@@ -11,6 +11,7 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
 /**
@@ -171,7 +172,7 @@ class CheckPasswordCommand extends ContainerAwareCommand
         $replyProcess->setEnv($newEnv);
         try {
             $replyProcess->mustRun();
-        } catch (ProcessException $e) {
+        } catch (ProcessFailedException $e) {
              throw new \Exception(sprintf('Error at executing checkpassword-reply command %s: %s', $replyCommand, $replyProcess->getErrorOutput()));
         }
 
