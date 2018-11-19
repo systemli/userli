@@ -126,7 +126,7 @@ class CheckPasswordCommandTest extends TestCase
             ["user@example.org\x00password\x01timestamp\x00extra"],
             ["user@example.org\x01password\x00timestamp\x00extra"],
             ["\x00password\x00timestamp\x00extra"],
-            ["user@example.org\x00\x00timestamp\x00extra"],
+            //["user@example.org\x00\x00timestamp\x00extra"], <- this is an empty password and not invalid
         ];
     }
 
