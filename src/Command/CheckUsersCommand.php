@@ -28,11 +28,10 @@ class CheckUsersCommand extends Command
      */
     private $repository;
 
-    public function __construct(ObjectManager $manager, UserAuthenticationHandler $handler, LoggerInterface $logger)
+    public function __construct(ObjectManager $manager, UserAuthenticationHandler $handler)
     {
         $this->manager = $manager;
         $this->handler = $handler;
-        $this->logger = $logger;
         $this->repository = $this->manager->getRepository('App:User');
         parent::__construct();
     }
@@ -69,16 +68,11 @@ class CheckUsersCommand extends Command
         if ($password && null !== $user){
             // test password
             $password = $password[0];
-            $this->logger->info('testing password');
             $user = $this->handler->authenticate($user, $password);
-            $this->logger->info(sprintf('USER: %s, PASS: %s', $email, $password));
-        } else {
-            $this->logger->info(sprintf('USER: %s, PASS: NONE', $email));
         }
 
         // exit if user not present or not authenticated
         if (null === $user) {
-            $this->logger->info(sprintf('NO USER'));
             $output->write('FAIL');
             return 1;
         }
