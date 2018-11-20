@@ -4,6 +4,7 @@ namespace App\Admin;
 
 use App\Entity\Alias;
 use App\Entity\User;
+use App\Enum\Roles;
 use App\Handler\DeleteHandler;
 use App\Traits\DomainGuesserAwareTrait;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -37,10 +38,14 @@ class AliasAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('user', EntityType::class, ['class' => User::class, 'required' => false])
             ->add('source', EmailType::class)
-            ->add('destination', EmailType::class, ['required' => false])
+            ->add('user', EntityType::class, ['class' => User::class, 'required' => false])
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
+
+        if ($this->security->isGranted(Roles::ADMIN)) {
+            $formMapper
+                ->add('destination', EmailType::class, ['required' => false]);
+        }
     }
 
     /**
@@ -49,10 +54,10 @@ class AliasAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('user', null, [
+            ->add('source', null, [
                 'show_filter' => true,
             ])
-            ->add('source', null, [
+            ->add('user', null, [
                 'show_filter' => true,
             ])
             ->add('domain', null, [
@@ -121,6 +126,11 @@ class AliasAdmin extends Admin
         }
         if (null !== $domain = $this->getDomainGuesser()->guess($alias->getSource())) {
             $alias->setDomain($domain);
+        }
+
+        // domain admins are only allowed to set alias to existing user
+        if (!$this->security->isGranted(Roles::ADMIN)) {
+            $alias->setDestination($alias->getUser());
         }
     }
 
