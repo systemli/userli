@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Validator\Constraints;
+namespace App\Tests\Validator;
 
 use App\Validator\Constraints\EmailLength;
-use App\Validator\Constraints\EmailLengthValidator;
+use App\Validator\EmailLengthValidator;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
