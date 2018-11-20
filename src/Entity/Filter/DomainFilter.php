@@ -2,6 +2,8 @@
 
 namespace App\Entity\Filter;
 
+use App\Entity\Alias;
+use App\Entity\Domain;
 use App\Entity\User;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
@@ -14,10 +16,25 @@ class DomainFilter extends SQLFilter
 
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
-        if ($targetEntity->getName() !== User::class) {
+        $domainId = null;
+
+        try {
+            $domainId = $this->getParameter('domainId');
+        } catch (\InvalidArgumentException $e) {
             return '';
         }
 
-        return sprintf('%s.domain_id = %s',$targetTableAlias, $this->getParameter('domainId'));
+        $entityName = $targetEntity->getName();
+
+        // if domain aware
+        if (array_key_exists('domain', $targetEntity->getAssociationMappings())) {
+            return sprintf('%s.domain_id = %s', $targetTableAlias, $domainId);
+        }
+
+        if ($entityName === Domain::class) {
+            return sprintf('%s.id = %s', $targetTableAlias, $domainId);
+        }
+
+        return '';
     }
 }

@@ -65,6 +65,11 @@ class DomainVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
+        // $subject doesn't have domain on creation
+        if (null === $subjectDomain = $subject->getDomain() ) {
+            return true;
+        }
+
         // must be at least domain admin
         if (!$this->security->isGranted('ROLE_DOMAIN_ADMIN')) {
             return false;
@@ -79,7 +84,7 @@ class DomainVoter extends Voter
         $user = $this->manager->getRepository('App:User')
             ->findByEmail($this->security->getUser()->getUsername());
 
-        if ($user->getDomain() === $subject->getDomain()) {
+        if ($user->getDomain() === $subjectDomain ) {
             return true;
         }
 
