@@ -30,22 +30,6 @@ abstract class Admin extends AbstractAdmin
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function createQuery($context = 'list')
-    {
-        $query = parent::createQuery($context);
-
-        if (!$this->security->isGranted('ROLE_ADMIN')) {
-            $user = $this->getModelManager()->findOneBy(User::class, ['email' => $this->security->getUser()->getUsername()]);
-            $query->andWhere($query->expr()->eq($query->getRootAlias() . '.domain', ':domain'));
-            $query->setParameter('domain', $user->getDomain());
-        }
-
-        return $query;
-    }
-
-    /**
      * @return bool
      */
     protected function isNewObject()
