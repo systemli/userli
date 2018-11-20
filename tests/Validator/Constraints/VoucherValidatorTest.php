@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tests\Validator;
+namespace App\Tests\Validator\Constraints;
 
 use App\Entity\Voucher;
 use App\Repository\VoucherRepository;
 use App\Validator\Constraints\Voucher as VoucherConstraint;
-use App\Validator\VoucherValidator;
+use App\Validator\Constraints\VoucherValidator;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;

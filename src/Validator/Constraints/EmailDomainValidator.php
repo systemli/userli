@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Validator;
+namespace App\Validator\Constraints;
 
 use App\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;

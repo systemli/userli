@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Validator;
+namespace App\Validator\Constraints;
 
 use App\Repository\VoucherRepository;
-use App\Validator\Constraints\Voucher;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

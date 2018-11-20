@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Tests\Validator;
+namespace App\Tests\Validator\Constraints;
 
 use App\Repository\AliasRepository;
 use App\Repository\DomainRepository;
 use App\Repository\ReservedNameRepository;
 use App\Repository\UserRepository;
 use App\Validator\Constraints\EmailAddress;
-use App\Validator\EmailAddressValidator;
+use App\Validator\Constraints\EmailAddressValidator;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;

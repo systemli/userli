@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Validator;
+namespace App\Validator\Constraints;
 
-use App\Validator\Constraints\EmailLength;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
