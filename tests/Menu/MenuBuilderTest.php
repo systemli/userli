@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class MenuBuilderTest extends TestCase
 {
     private $menu;
-    private $childs = [];
+    private $children = [];
     private $factory;
     private $menuHelper;
 
@@ -27,7 +27,7 @@ class MenuBuilderTest extends TestCase
             ->getMock();
         $this->menu->method('addChild')
             ->willReturnCallback(function ($child, $options) {
-                $this->childs[$child] = $options;
+                $this->children[$child] = $options;
             });
 
         $this->factory = $this->getMockBuilder(FactoryInterface::class)
@@ -41,7 +41,7 @@ class MenuBuilderTest extends TestCase
             ->getMock();
         $this->menuHelper->method('build')
             ->willReturnCallback(function ($elements, $menu) {
-                $this->childs = $elements;
+                $this->children = $elements;
             });
     }
 
@@ -55,7 +55,7 @@ class MenuBuilderTest extends TestCase
 
         $builder->createNavbarLeft();
 
-        self::assertCount(0, $this->childs);
+        self::assertCount(0, $this->children);
     }
 
     public function testCreateNavbarLeftNonEmpty()
@@ -68,7 +68,7 @@ class MenuBuilderTest extends TestCase
 
         $builder->createNavbarLeft();
 
-        self::assertCount(2, $this->childs);
+        self::assertCount(2, $this->children);
     }
 
     public function testCreateNavbarRightAnonymous()
@@ -79,17 +79,17 @@ class MenuBuilderTest extends TestCase
         $authChecker->method('isGranted')
             ->willReturnMap([
                 ['IS_AUTHENTICATED_FULLY', null, false],
-                [Roles::ADMIN, null, false],
+                [Roles::DOMAIN_ADMIN, null, false],
             ]);
         $builder = new MenuBuilder($this->factory, $authChecker, $this->menuHelper, []);
 
         $builtMenu = $builder->createNavbarRight();
 
-        self::assertCount(2, $this->childs);
-        self::assertArrayHasKey('navbar_right.login', $this->childs);
-        self::assertArrayHasKey('navbar_right.register', $this->childs);
-        self::assertArrayNotHasKey('navbar_right.admin', $this->childs);
-        self::assertArrayNotHasKey('navbar_right.logout', $this->childs);
+        self::assertCount(2, $this->children);
+        self::assertArrayHasKey('navbar_right.login', $this->children);
+        self::assertArrayHasKey('navbar_right.register', $this->children);
+        self::assertArrayNotHasKey('navbar_right.admin', $this->children);
+        self::assertArrayNotHasKey('navbar_right.logout', $this->children);
     }
 
     public function testCreateNavbarRightUser()
@@ -100,17 +100,17 @@ class MenuBuilderTest extends TestCase
         $authChecker->method('isGranted')
             ->willReturnMap([
                 ['IS_AUTHENTICATED_FULLY', null, true],
-                [Roles::ADMIN, null, false],
+                [Roles::DOMAIN_ADMIN, null, false],
             ]);
         $builder = new MenuBuilder($this->factory, $authChecker, $this->menuHelper, []);
 
         $builtMenu = $builder->createNavbarRight();
 
-        self::assertCount(1, $this->childs);
-        self::assertArrayNotHasKey('navbar_right.login', $this->childs);
-        self::assertArrayNotHasKey('navbar_right.register', $this->childs);
-        self::assertArrayNotHasKey('navbar_right.admin', $this->childs);
-        self::assertArrayHasKey('navbar_right.logout', $this->childs);
+        self::assertCount(1, $this->children);
+        self::assertArrayNotHasKey('navbar_right.login', $this->children);
+        self::assertArrayNotHasKey('navbar_right.register', $this->children);
+        self::assertArrayNotHasKey('navbar_right.admin', $this->children);
+        self::assertArrayHasKey('navbar_right.logout', $this->children);
     }
 
     public function testCreateNavbarRightAdmin()
@@ -121,16 +121,16 @@ class MenuBuilderTest extends TestCase
         $authChecker->method('isGranted')
             ->willReturnMap([
                 ['IS_AUTHENTICATED_FULLY', null, true],
-                [Roles::ADMIN, null, true],
+                [Roles::DOMAIN_ADMIN, null, true],
             ]);
         $builder = new MenuBuilder($this->factory, $authChecker, $this->menuHelper, []);
 
         $builtMenu = $builder->createNavbarRight();
 
-        self::assertCount(2, $this->childs);
-        self::assertArrayNotHasKey('navbar_right.login', $this->childs);
-        self::assertArrayNotHasKey('navbar_right.register', $this->childs);
-        self::assertArrayHasKey('navbar_right.admin', $this->childs);
-        self::assertArrayHasKey('navbar_right.logout', $this->childs);
+        self::assertCount(2, $this->children);
+        self::assertArrayNotHasKey('navbar_right.login', $this->children);
+        self::assertArrayNotHasKey('navbar_right.register', $this->children);
+        self::assertArrayHasKey('navbar_right.admin', $this->children);
+        self::assertArrayHasKey('navbar_right.logout', $this->children);
     }
 }

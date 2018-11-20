@@ -2,9 +2,7 @@
 
 namespace App\Entity\Filter;
 
-use App\Entity\Alias;
 use App\Entity\Domain;
-use App\Entity\User;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 
