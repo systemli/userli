@@ -127,10 +127,6 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: password_change }
 
-    App\Validator\Constraints\EmailAddressValidator:
-        arguments:
-            $domain: "%env(DOMAIN)%"
-
     App\Validator\Constraints\EmailDomainValidator:
         tags:
             - { name: validator.constraint_validator }
