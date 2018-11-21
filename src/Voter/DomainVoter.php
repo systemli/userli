@@ -4,6 +4,7 @@ namespace App\Voter;
 
 use App\Entity\Alias;
 use App\Entity\User;
+use App\Enum\Roles;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -65,25 +66,31 @@ class DomainVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        // $subject doesn't have domain on creation
-        if (null === $subjectDomain = $subject->getDomain() ) {
+        // normal admins can do everything
+        if ($this->security->isGranted(Roles::ADMIN)) {
             return true;
         }
 
         // must be at least domain admin
-        if (!$this->security->isGranted('ROLE_DOMAIN_ADMIN')) {
+        if (!$this->security->isGranted(Roles::DOMAIN_ADMIN)) {
             return false;
         }
 
-        // normal admins can see everything
-        if ($this->security->isGranted('ROLE_ADMIN')) {
+        // nobody but Admins is allowed to create/edit admins
+        if ($subject instanceof User) {
+            if (in_array(Roles::ADMIN, $subject->getRoles())) {
+                return false;
+            }
+        }
+
+        // $subject doesn't have domain on creation
+        if (null === $subjectDomain = $subject->getDomain() ) {
             return true;
         }
 
         // we compare with domain of domain admin
         $user = $this->manager->getRepository('App:User')
             ->findByEmail($this->security->getUser()->getUsername());
-
         if ($user->getDomain() === $subjectDomain ) {
             return true;
         }
