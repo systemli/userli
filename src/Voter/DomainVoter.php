@@ -15,7 +15,6 @@ use Symfony\Component\Security\Core\Security;
  */
 class DomainVoter extends Voter
 {
-
     /**
      * @var Security
      */
@@ -27,7 +26,8 @@ class DomainVoter extends Voter
 
     /**
      * DomainVoter constructor.
-     * @param Security $security
+     *
+     * @param Security      $security
      * @param ObjectManager $manager
      */
     public function __construct(Security $security, ObjectManager $manager)
@@ -40,7 +40,7 @@ class DomainVoter extends Voter
      * Determines if the attribute and subject are supported by this voter.
      *
      * @param string $attribute An attribute
-     * @param mixed $subject The subject to secure, e.g. an object the user wants to access or any other PHP type
+     * @param mixed  $subject   The subject to secure, e.g. an object the user wants to access or any other PHP type
      *
      * @return bool True if the attribute and subject are supported, false otherwise
      */
@@ -58,8 +58,8 @@ class DomainVoter extends Voter
      * Perform a single access check operation on a given attribute, subject and token.
      * It is safe to assume that $attribute and $subject already passed the "supports()" method check.
      *
-     * @param string $attribute
-     * @param mixed $subject
+     * @param string         $attribute
+     * @param mixed          $subject
      * @param TokenInterface $token
      *
      * @return bool
@@ -84,14 +84,14 @@ class DomainVoter extends Voter
         }
 
         // $subject doesn't have domain on creation
-        if (null === $subjectDomain = $subject->getDomain() ) {
+        if (null === $subjectDomain = $subject->getDomain()) {
             return true;
         }
 
         // we compare with domain of domain admin
         $user = $this->manager->getRepository('App:User')
             ->findByEmail($this->security->getUser()->getUsername());
-        if ($user->getDomain() === $subjectDomain ) {
+        if ($user->getDomain() === $subjectDomain) {
             return true;
         }
 

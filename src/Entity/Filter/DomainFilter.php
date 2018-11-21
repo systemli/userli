@@ -11,7 +11,6 @@ use Doctrine\ORM\Query\Filter\SQLFilter;
  */
 class DomainFilter extends SQLFilter
 {
-
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
         $domainId = null;
@@ -29,7 +28,7 @@ class DomainFilter extends SQLFilter
             return sprintf('%s.domain_id = %s', $targetTableAlias, $domainId);
         }
 
-        if ($entityName === Domain::class) {
+        if (Domain::class === $entityName) {
             return sprintf('%s.id = %s', $targetTableAlias, $domainId);
         }
 

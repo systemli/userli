@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\EventListener;
 
 use Doctrine\Common\Persistence\ObjectManager;
@@ -31,6 +30,7 @@ class BeforeRequestListener implements EventSubscriberInterface
 
     /**
      * BeforeRequestListener constructor.
+     *
      * @param ObjectManager         $manager
      * @param TokenStorageInterface $storage
      * @param Security              $security

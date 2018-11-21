@@ -2,7 +2,6 @@
 
 namespace App\Admin;
 
-use App\Entity\User;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Symfony\Component\Security\Core\Security;
 
@@ -18,6 +17,7 @@ abstract class Admin extends AbstractAdmin
 
     /**
      * Admin constructor.
+     *
      * @param string   $code
      * @param string   $class
      * @param string   $baseControllerName
