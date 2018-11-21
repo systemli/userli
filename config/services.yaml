@@ -177,8 +177,6 @@ services:
             - ~
             - App\Entity\Voucher
             - ~
-            - '@Symfony\Component\Security\Core\Security'
-            - '@Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface'
 
     usrmgmt.admin.block.statistics:
         class: App\Block\StatisticsBlockService
