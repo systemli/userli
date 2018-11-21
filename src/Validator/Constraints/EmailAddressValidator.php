@@ -2,13 +2,11 @@
 
 namespace App\Validator\Constraints;
 
-use App\Enum\Roles;
 use App\Repository\AliasRepository;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
 use App\Repository\ReservedNameRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -36,25 +34,19 @@ class EmailAddressValidator extends ConstraintValidator
      * @var UserRepository
      */
     private $userRepository;
-    /**
-     * @var
-     */
-    private $security;
 
     /**
      * EmailAddressValidator constructor.
      *
      * @param ObjectManager $manager
-     * @param Security      $security
      * @param string        $domain
      */
-    public function __construct(ObjectManager $manager, Security $security)
+    public function __construct(ObjectManager $manager)
     {
         $this->aliasRepository = $manager->getRepository('App:Alias');
         $this->domainRepository = $manager->getRepository('App:Domain');
         $this->reservedNameRepository = $manager->getRepository('App:ReservedName');
         $this->userRepository = $manager->getRepository('App:User');
-        $this->security = $security;
     }
 
     /**
@@ -92,20 +84,9 @@ class EmailAddressValidator extends ConstraintValidator
             $this->context->addViolation('registration.email-unexpected-characters');
         }
 
+        // check if email domain is in domain repository
         if (null === $this->domainRepository->findByName($domain)) {
             $this->context->addViolation('registration.email-domain-not-exists');
-        }
-
-        if (null === $this->domainRepository->findByName($domain)) {
-            $this->context->addViolation('registration.email-domain-not-exists');
-        }
-
-        // if not ROLE_ADMIN, the created mail must have the same domain as the users
-        if(!$this->security->isGranted(Roles::ADMIN)) {
-            $user = $this->userRepository->findByEmail($this->security->getUser());
-            if ($domain !== $user->getDomain()) {
-                $this->context->addViolation('registration.email-domain-invalid');
-            }
         }
     }
 }
