@@ -19,11 +19,11 @@ class DomainFilter extends SQLFilter
 
         // if domain aware
         if (array_key_exists('domain', $targetEntity->getAssociationMappings())) {
-            return sprintf('%s.domain_id = %s', $targetTableAlias, $domainId);
+            return sprintf('%s.domain_id = %u', $targetTableAlias, $domainId);
         }
 
         if (Domain::class === $targetEntity->getName()) {
-            return sprintf('%s.id = %s', $targetTableAlias, $domainId);
+            return sprintf('%s.id = %u', $targetTableAlias, $domainId);
         }
 
         return '';
@@ -31,7 +31,7 @@ class DomainFilter extends SQLFilter
 
     public function getDomainId(): ?int {
         try {
-            return $this->getParameter('domainId');
+            return (int) $this->getParameter('domainId');
         } catch (\InvalidArgumentException $e) {
             return null;
         }
