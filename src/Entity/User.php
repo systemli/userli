@@ -88,13 +88,6 @@ class User implements UserInterface, EncoderAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function eraseCredentials()
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getEncoderName()
     {
         if ($this->getPasswordVersion() < self::CURRENT_PASSWORD_VERSION) {

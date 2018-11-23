@@ -27,4 +27,12 @@ trait PlainPasswordTrait
     {
         $this->plainPassword = $plainPassword;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function eraseCredentials()
+    {
+        $this->plainPassword = null;
+    }
 }
