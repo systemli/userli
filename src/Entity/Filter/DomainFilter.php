@@ -13,25 +13,27 @@ class DomainFilter extends SQLFilter
 {
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
-        $domainId = null;
-
-        try {
-            $domainId = $this->getParameter('domainId');
-        } catch (\InvalidArgumentException $e) {
+        if (null === $domainId = $this->getDomainId()){
             return '';
         }
-
-        $entityName = $targetEntity->getName();
 
         // if domain aware
         if (array_key_exists('domain', $targetEntity->getAssociationMappings())) {
             return sprintf('%s.domain_id = %s', $targetTableAlias, $domainId);
         }
 
-        if (Domain::class === $entityName) {
+        if (Domain::class === $targetEntity->getName()) {
             return sprintf('%s.id = %s', $targetTableAlias, $domainId);
         }
 
         return '';
+    }
+
+    public function getDomainId(): ?int {
+        try {
+            return $this->getParameter('domainId');
+        } catch (\InvalidArgumentException $e) {
+            return null;
+        }
     }
 }
