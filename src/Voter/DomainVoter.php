@@ -78,7 +78,7 @@ class DomainVoter extends Voter
 
         // nobody but Admins is allowed to create/edit admins
         if ($subject instanceof User) {
-            if (in_array(Roles::ADMIN, $subject->getRoles())) {
+            if ($subject->hasRole(Roles::ADMIN)) {
                 return false;
             }
         }
@@ -88,7 +88,7 @@ class DomainVoter extends Voter
             return true;
         }
 
-        // we compare with domain of domain admin
+        // domain admin can only create/edit in own domain
         $user = $this->manager->getRepository('App:User')
             ->findByEmail($this->security->getUser()->getUsername());
         if ($user->getDomain() === $subjectDomain) {
