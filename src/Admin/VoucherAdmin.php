@@ -10,7 +10,6 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @author louis <louis@systemli.org>
@@ -21,24 +20,6 @@ class VoucherAdmin extends Admin
      * {@inheritdoc}
      */
     protected $baseRoutePattern = 'voucher';
-    /**
-     * @var TokenStorageInterface
-     */
-    private $storage;
-
-    /**
-     * VoucherAdmin Constructor.
-     *
-     * @param string                $code
-     * @param string                $class
-     * @param string                $baseControllerName
-     * @param TokenStorageInterface $storage
-     */
-    public function __construct($code, $class, $baseControllerName, TokenStorageInterface $storage)
-    {
-        parent::__construct($code, $class, $baseControllerName);
-        $this->storage = $storage;
-    }
 
     /**
      * {@inheritdoc}
@@ -55,7 +36,7 @@ class VoucherAdmin extends Admin
     public function getNewInstance()
     {
         /** @var User $user */
-        $user = $this->storage->getToken()->getUser();
+        $user = $this->security->getUser();
         $instance = VoucherFactory::create($user);
 
         return $instance;

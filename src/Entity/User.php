@@ -74,7 +74,7 @@ class User implements UserInterface, EncoderAwareInterface
      */
     public function hasRole($role)
     {
-        return in_array($role, $this->roles);
+        return in_array($role, $this->getRoles());
     }
 
     /**
@@ -83,13 +83,6 @@ class User implements UserInterface, EncoderAwareInterface
     public function getUsername()
     {
         return $this->email;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function eraseCredentials()
-    {
     }
 
     /**

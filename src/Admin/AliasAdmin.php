@@ -4,6 +4,7 @@ namespace App\Admin;
 
 use App\Entity\Alias;
 use App\Entity\User;
+use App\Enum\Roles;
 use App\Handler\DeleteHandler;
 use App\Traits\DomainGuesserAwareTrait;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -13,7 +14,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @author louis <louis@systemli.org>
@@ -33,34 +33,19 @@ class AliasAdmin extends Admin
     private $deleteHandler;
 
     /**
-     * @var TokenStorageInterface
-     */
-    private $storage;
-
-    /**
-     * AliasAdmin Constructor.
-     *
-     * @param string                $code
-     * @param string                $class
-     * @param string                $baseControllerName
-     * @param TokenStorageInterface $storage
-     */
-    public function __construct($code, $class, $baseControllerName, TokenStorageInterface $storage)
-    {
-        parent::__construct($code, $class, $baseControllerName);
-        $this->storage = $storage;
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('user', EntityType::class, ['class' => User::class, 'required' => false])
             ->add('source', EmailType::class)
-            ->add('destination', EmailType::class, ['required' => false])
+            ->add('user', EntityType::class, ['class' => User::class, 'required' => false])
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
+
+        if ($this->security->isGranted(Roles::ADMIN)) {
+            $formMapper
+                ->add('destination', EmailType::class, ['required' => false]);
+        }
     }
 
     /**
@@ -69,10 +54,10 @@ class AliasAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('user', null, [
+            ->add('source', null, [
                 'show_filter' => true,
             ])
-            ->add('source', null, [
+            ->add('user', null, [
                 'show_filter' => true,
             ])
             ->add('domain', null, [
@@ -120,7 +105,7 @@ class AliasAdmin extends Admin
         if (null == $alias->getDestination()) {
             if (null == $alias->getUser()) {
                 // set user_id to current user if neither destination nor user_id is given
-                $alias->setUser($this->storage->getToken()->getUser());
+                $alias->setUser($this->security->getUser());
             }
             $alias->setDestination($alias->getUser());
         }
@@ -141,6 +126,11 @@ class AliasAdmin extends Admin
         }
         if (null !== $domain = $this->getDomainGuesser()->guess($alias->getSource())) {
             $alias->setDomain($domain);
+        }
+
+        // domain admins are only allowed to set alias to existing user
+        if (!$this->security->isGranted(Roles::ADMIN)) {
+            $alias->setDestination($alias->getUser());
         }
     }
 

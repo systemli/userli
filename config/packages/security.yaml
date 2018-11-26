@@ -61,15 +61,16 @@ security:
 
         ROLE_SUPPORT:
             - ROLE_USER
-        ROLE_ADMIN:
+        ROLE_DOMAIN_ADMIN:
+            - ROLE_SUPPORT
             - ROLE_SONATA_ADMIN
             - ROLE_USRMGMT_ADMIN_USER_ADMIN
             - ROLE_USRMGMT_ADMIN_ALIAS_ADMIN
+        ROLE_ADMIN:
+            - ROLE_DOMAIN_ADMIN
             - ROLE_USRMGMT_ADMIN_DOMAIN_ADMIN
             - ROLE_USRMGMT_ADMIN_VOUCHER_ADMIN
             - ROLE_USRMGMT_ADMIN_RESERVEDNAME_ADMIN
-            - ROLE_SUPPORT
-            - ROLE_USER
         ROLE_SUPER_ADMIN:
             - ROLE_ADMIN
             - ROLE_ALLOWED_TO_SWITCH
@@ -96,5 +97,5 @@ security:
       - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: ^/welcome, roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/admin, roles: ROLE_ADMIN }
+      - { path: ^/admin, roles: ROLE_DOMAIN_ADMIN }
       - { path: ^/, roles: ROLE_USER }

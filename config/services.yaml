@@ -127,10 +127,6 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: password_change }
 
-    App\Validator\Constraints\EmailAddressValidator:
-        arguments:
-            $domain: "%env(DOMAIN)%"
-
     App\Validator\Constraints\EmailDomainValidator:
         tags:
             - { name: validator.constraint_validator }
@@ -168,7 +164,6 @@ services:
             - ~
             - App\Entity\Alias
             - ~
-            - '@Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface'
         calls:
             - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
             - [setDeleteHandler, ['@App\Handler\DeleteHandler']]
@@ -182,7 +177,6 @@ services:
             - ~
             - App\Entity\Voucher
             - ~
-            - '@Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface'
 
     usrmgmt.admin.block.statistics:
         class: App\Block\StatisticsBlockService

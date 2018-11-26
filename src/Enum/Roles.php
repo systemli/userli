@@ -11,6 +11,7 @@ final class Roles
     const USER = 'ROLE_USER';
     const SUSPICIOUS = 'ROLE_SUSPICIOUS';
     const SUPPORT = 'ROLE_SUPPORT';
+    const DOMAIN_ADMIN = 'ROLE_DOMAIN_ADMIN';
 
     /**
      * @return array
@@ -22,6 +23,7 @@ final class Roles
             self::USER => self::USER,
             self::SUSPICIOUS => self::SUSPICIOUS,
             self::SUPPORT => self::SUPPORT,
+            self::DOMAIN_ADMIN => self::DOMAIN_ADMIN,
         );
     }
 }
