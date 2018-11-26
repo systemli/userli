@@ -64,9 +64,9 @@ class DomainFilterTest extends TestCase
         $this->assertNotEquals(1, $filter->getDomainId());
 
         $filter->setParameter('domainId', '1');
-        $this->assertEquals(1, $filter->getParameter('domainId'));
-        $this->assertEquals(1, $filter->getDomainId());
-        $this->assertNotEquals(2, $filter->getDomainId());
+        $this->assertEquals('1', $filter->getParameter('domainId'));
+        $this->assertEquals('1', $filter->getDomainId());
+        $this->assertNotEquals('2', $filter->getDomainId());
     }
 
     public function testMatchDomain()
