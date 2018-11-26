@@ -67,8 +67,6 @@ class BeforeRequestListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::REQUEST => array(array('onKernelRequest')),
-        );
+        return [KernelEvents::REQUEST => [['onKernelRequest']]];
     }
 }
