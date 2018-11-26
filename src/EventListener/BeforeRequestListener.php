@@ -27,8 +27,8 @@ class BeforeRequestListener implements EventSubscriberInterface
     /**
      * BeforeRequestListener constructor.
      *
-     * @param ObjectManager         $manager
-     * @param Security              $security
+     * @param ObjectManager $manager
+     * @param Security      $security
      */
     public function __construct(ObjectManager $manager, Security $security)
     {

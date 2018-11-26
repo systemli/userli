@@ -12,8 +12,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class DomainFilterTest
- * @package App\Tests\Entity\Filter
+ * Class DomainFilterTest.
+ *
  * @author tim <tim@systemli.org>
  */
 class DomainFilterTest extends TestCase
@@ -85,7 +85,7 @@ class DomainFilterTest extends TestCase
         $this->targetEntity->method('getName')->willReturn('xyz');
         $this->targetEntity->method('getAssociationMappings')->willReturn([
                 'domain' => 1,
-                'other' => 2]
+                'other' => 2, ]
         );
 
         $this->assertEquals(
@@ -99,7 +99,7 @@ class DomainFilterTest extends TestCase
         $this->targetEntity->method('getName')->willReturn('xyz');
         $this->targetEntity->method('getAssociationMappings')->willReturn([
                 'user' => 1,
-                'other' => 2]
+                'other' => 2, ]
         );
 
         $this->assertEquals('', $this->filter->addFilterConstraint($this->targetEntity, 'xyz')

@@ -13,7 +13,7 @@ class DomainFilter extends SQLFilter
 {
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
-        if (null === $domainId = $this->getDomainId()){
+        if (null === $domainId = $this->getDomainId()) {
             return '';
         }
 
@@ -29,7 +29,8 @@ class DomainFilter extends SQLFilter
         return '';
     }
 
-    public function getDomainId(): ?string {
+    public function getDomainId(): ?string
+    {
         try {
             return $this->getParameter('domainId');
         } catch (\InvalidArgumentException $e) {

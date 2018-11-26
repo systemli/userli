@@ -55,7 +55,7 @@ class BeforeRequestListenerTest extends TestCase
     /**
      * @dataProvider provider
      *
-     * @param User|null      $user
+     * @param User|null $user
      * @param bool      $isAdmin
      * @param User|null $returnValue
      */
@@ -74,6 +74,7 @@ class BeforeRequestListenerTest extends TestCase
     public function provider(): array
     {
         $user = $this->getUser();
+
         return [
             [null, false, null],   // not logged in
             [null, true, null],    // not logged in, but thinks is admin
@@ -117,6 +118,7 @@ class BeforeRequestListenerTest extends TestCase
         $domain->setId(1);
         $user = new User();
         $user->setDomain($domain);
+
         return $user;
     }
 }

@@ -24,18 +24,19 @@ class DomainVoterTest extends TestCase
      */
     private $domain;
 
-    protected static function getMethod($name) {
+    protected static function getMethod($name)
+    {
         $class = new \ReflectionClass(DomainVoter::class);
         $method = $class->getMethod($name);
         $method->setAccessible(true);
+
         return $method;
     }
 
     public function setUp()
     {
-
         $this->domain = new Domain();
-        $user = new User;
+        $user = new User();
         $user->setDomain($this->domain);
         $repo = $this->getMockBuilder((UserRepository::class))
             ->disableOriginalConstructor()
@@ -70,10 +71,9 @@ class DomainVoterTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $method = self::getMethod('voteOnAttribute');
-        
+
         $this->assertTrue($method->invokeArgs($this->voter, ['edit', $otherUser, $token]));
         $otherUser->setDomain(new Domain());
         $this->assertFalse($method->invokeArgs($this->voter, ['edit', $otherUser, $token]));
-
     }
 }
