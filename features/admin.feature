@@ -23,7 +23,7 @@ Feature: Admin
       | forbidden |
 
   @admin
-  Scenario: Access to Admin Interface as different users
+  Scenario: Access to Admin Interface as Admin
     When I am on "/admin/dashboard"
     Then I should be on "/login"
     And the response status code should be 200
@@ -34,16 +34,22 @@ Feature: Admin
     And I should see text matching "Logout"
     And I should see text matching "Return to Index"
 
+  @admin
+  Scenario: Access to Admin Interface as Domain Admin
     When I am authenticated as "domain@example.com"
     And I am on "/admin/dashboard"
     Then the response status code should be 200
     And I should see text matching "Logout"
     And I should see text matching "Return to Index"
 
+  @admin
+  Scenario: Access to Admin Interface as Support
     When I am authenticated as "support@example.org"
     And I am on "/admin/dashboard"
     Then the response status code should be 403
 
+  @admin
+  Scenario: Access to Admin Interface as User
     When I am authenticated as "user@example.org"
     And I am on "/admin/dashboard"
     Then the response status code should be 403
