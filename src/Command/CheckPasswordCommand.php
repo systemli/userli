@@ -132,7 +132,7 @@ class CheckPasswordCommand extends ContainerAwareCommand
         }
 
         // get email parts
-        $parts = explode("@", "$email");
+        $parts = explode('@', "$email");
         $username = $parts[0];
         $domain = $parts[1];
 
@@ -168,12 +168,12 @@ class CheckPasswordCommand extends ContainerAwareCommand
             $replyCommand.' '.implode(' ', $replyArgs)
         );
         $replyProcess->inheritEnvironmentVariables(true);
-        $newEnv = array_merge(getEnv(), $envVars);
+        $newEnv = array_merge(getenv(), $envVars);
         $replyProcess->setEnv($newEnv);
         try {
             $replyProcess->mustRun();
         } catch (ProcessFailedException $e) {
-             throw new \Exception(sprintf('Error at executing checkpassword-reply command %s: %s', $replyCommand, $replyProcess->getErrorOutput()));
+            throw new \Exception(sprintf('Error at executing checkpassword-reply command %s: %s', $replyCommand, $replyProcess->getErrorOutput()));
         }
 
         return 0;

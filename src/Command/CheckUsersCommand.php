@@ -3,13 +3,12 @@
 namespace App\Command;
 
 use App\Handler\UserAuthenticationHandler;
+use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
 
 class CheckUsersCommand extends Command
 {
@@ -65,7 +64,7 @@ class CheckUsersCommand extends Command
         // Check if user exists
         $user = $this->repository->findByEmail($email);
 
-        if ($password && null !== $user){
+        if ($password && null !== $user) {
             // test password
             $password = $password[0];
             $user = $this->handler->authenticate($user, $password);
@@ -74,6 +73,7 @@ class CheckUsersCommand extends Command
         // exit if user not present or not authenticated
         if (null === $user) {
             $output->write('FAIL');
+
             return 1;
         }
         $output->write('OK');
