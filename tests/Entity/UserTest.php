@@ -34,7 +34,7 @@ class UserTest extends TestCase
     public function testUserisUserByDefault()
     {
         $user = new User();
-        $user->hasRole(Roles::USER);
+        $this->assertTrue($user->hasRole(Roles::USER));
     }
 
     public function testHasRole()
