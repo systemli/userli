@@ -27,6 +27,7 @@ class LoginListenerTest extends TestCase
         $manager = $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $manager->expects($this->once())->method('flush');
 
         $passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)
             ->disableOriginalConstructor()

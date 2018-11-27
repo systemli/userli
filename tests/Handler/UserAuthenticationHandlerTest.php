@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Handler\UserAuthenticationHandler;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
@@ -23,10 +24,6 @@ class UserAuthenticationHandlerTest extends TestCase
 
     protected function createHandler()
     {
-        $objectManager = $this->getMockBuilder(ObjectManager::class)
-            ->disableOriginalConstructor()->getMock();
-        $objectManager->expects($this->any())->method('flush')->willReturn(true);
-
         $encoder = $this->getMockBuilder(PasswordEncoderInterface::class)->getMock();
         $encoder->expects($this->any())->method('isPasswordValid')->willReturnMap(
             [
@@ -35,13 +32,17 @@ class UserAuthenticationHandlerTest extends TestCase
             ]
         );
 
+        $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $encoderFactory = $this->getMockBuilder(EncoderFactory::class)
             ->disableOriginalConstructor()->getMock();
         $encoderFactory->expects($this->any())->method('getEncoder')
             ->with($this->equalTo($this->user))
             ->will($this->returnValue($encoder));
 
-        return new UserAuthenticationHandler($objectManager, $encoderFactory);
+        return new UserAuthenticationHandler($encoderFactory, $eventDispatcher);
     }
 
     public function testAuthenticate()

@@ -3,7 +3,8 @@
 namespace App\Handler;
 
 use App\Entity\User;
-use Doctrine\Common\Persistence\ObjectManager;
+use App\Event\LoginEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 
 /**
@@ -15,32 +16,20 @@ class UserAuthenticationHandler
      * @var EncoderFactory
      */
     private $encoderFactory;
-
     /**
-     * @var ObjectManager
+     * @var EventDispatcherInterface
      */
-    private $manager;
+    protected $eventDispatcher;
 
     /**
      * UserAuthenticationHandler constructor.
      *
-     * @param ObjectManager  $manager
      * @param EncoderFactory $encoderFactory
      */
-    public function __construct(ObjectManager $manager, EncoderFactory $encoderFactory)
+    public function __construct(EncoderFactory $encoderFactory, EventDispatcherInterface $eventDispatcher)
     {
-        $this->manager = $manager;
         $this->encoderFactory = $encoderFactory;
-    }
-
-    /**
-     * @param User $user
-     */
-    private function updateLastLogin(User $user)
-    {
-        $user->updateLastLoginTime();
-        $this->manager->persist($user);
-        $this->manager->flush();
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -55,8 +44,9 @@ class UserAuthenticationHandler
         if (!$encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
             return null;
         }
+        $user->setPlainPassword($password);
 
-        $this->updateLastLogin($user);
+        $this->eventDispatcher->dispatch(LoginEvent::NAME, new LoginEvent($user));
 
         return $user;
     }
