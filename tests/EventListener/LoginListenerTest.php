@@ -3,19 +3,45 @@
 namespace App\Tests\EventListener;
 
 use App\Entity\User;
+use App\Event\LoginEvent;
 use App\EventListener\LoginListener;
 use App\Helper\PasswordUpdater;
 use Doctrine\Common\Persistence\ObjectManager;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Http\SecurityEvents;
 
 /**
  * @author tim <tim@systemli.org>
  */
 class LoginListenerTest extends TestCase
 {
+    /**
+     * @var MockObject
+     */
+    private $manager;
+    /**
+     * @var MockObject
+     */
+    private $passwordUpdater;
+    /**
+     * @var LoginListener
+     */
+    private $listener;
+    public function setUp()
+    {
+        $this->manager = $this->getMockBuilder(ObjectManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->listener = new LoginListener($this->manager, $this->passwordUpdater);
+
+    }
     /**
      * @dataProvider provider
      *
@@ -24,25 +50,17 @@ class LoginListenerTest extends TestCase
      */
     public function testOnSecurityInteractiveLogin(User $user, bool $update)
     {
-        $manager = $this->getMockBuilder(ObjectManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $manager->expects($this->once())->method('flush');
-
-        $passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->manager->expects($this->once())->method('flush');
 
         if ($update) {
-            $passwordUpdater->expects($this->once())->method('updatePassword');
+            $this->passwordUpdater->expects($this->once())->method('updatePassword');
         } else {
-            $passwordUpdater->expects($this->never())->method('updatePassword');
+            $this->passwordUpdater->expects($this->never())->method('updatePassword');
         }
 
         $event = $this->getEvent($user);
 
-        $listener = new LoginListener($manager, $passwordUpdater);
-        $listener->onSecurityInteractiveLogin($event);
+        $this->listener->onSecurityInteractiveLogin($event);
     }
 
     /**
@@ -97,5 +115,11 @@ class LoginListenerTest extends TestCase
         $user->setPasswordVersion($passwordVersion);
 
         return $user;
+    }
+
+    public function testGetSubscribedEvents() {
+        $this->assertEquals($this->listener->getSubscribedEvents(),
+            [SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
+                LoginEvent::NAME => 'onLogin']);
     }
 }
