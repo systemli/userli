@@ -179,6 +179,9 @@
     "sonata-project/datagrid-bundle": {
         "version": "2.3.1"
     },
+    "sonata-project/doctrine-extensions": {
+        "version": "1.1.0"
+    },
     "sonata-project/doctrine-orm-admin-bundle": {
         "version": "3.6.1"
     },
