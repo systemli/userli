@@ -52,7 +52,7 @@ class VoucherHandler
 
         $vouchers = $this->repository->findByUser($user);
 
-        if ($user->getCreationTime() <= new \DateTime('-7 days')) {
+        if ($user->getCreationTime() <= new \DateTime('-7 days') && null !== $user->getLastLoginTime()) {
             if (count($vouchers) < self::VOUCHER_LIMIT) {
                 for ($i = count($vouchers); $i < self::VOUCHER_LIMIT; ++$i) {
                     try {

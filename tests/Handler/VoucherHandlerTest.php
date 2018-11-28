@@ -93,6 +93,12 @@ class VoucherHandlerTest extends TestCase
         $vouchers = $handler->getVouchersByUser($user);
 
         self::assertNotEmpty($vouchers);
+        self::assertCount(2, $vouchers);
+
+        $user->setLastLoginTime(new \DateTime());
+        $vouchers = $handler->getVouchersByUser($user);
+
+        self::assertNotEmpty($vouchers);
         self::assertCount(3, $vouchers);
     }
 }
