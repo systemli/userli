@@ -16,15 +16,24 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class VoucherUnlinkCommandTest extends TestCase
 {
-    public function testExecute()
+    /**
+     * @var VoucherUnlinkCommand
+     */
+    private $command;
+
+    public function setUp()
     {
         $manager = $this->getManager();
         $handler = $this->getMockBuilder(SuspiciousChildrenHandler::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $this->command = new VoucherUnlinkCommand($manager, $handler);
+    }
 
+    public function testExecute()
+    {
         $application = new Application();
-        $application->add(new VoucherUnlinkCommand($manager, $handler));
+        $application->add($this->command);
 
         $command = $application->find('usrmgmt:voucher:unlink');
         $commandTester = new CommandTester($command);
@@ -39,6 +48,9 @@ class VoucherUnlinkCommandTest extends TestCase
         $this->assertContains('Suspicious User suspicious@example.org has invited child@example.org.', $output);
     }
 
+    /**
+     * @return \PHPUnit\Framework\MockObject\MockObject
+     */
     public function getManager()
     {
         $manager = $this->getMockBuilder(ObjectManager::class)
@@ -57,6 +69,10 @@ class VoucherUnlinkCommandTest extends TestCase
         return $manager;
     }
 
+    /**
+     * @return array|mixed
+     * @throws \Exception
+     */
     public function getResult()
     {
         $user1 = new User();
@@ -85,5 +101,29 @@ class VoucherUnlinkCommandTest extends TestCase
         ];
 
         return $result;
+    }
+
+    public function testGetSuspiciousChildren()
+    {
+        $this->assertEquals($this->command->getSuspiciousChildren([]), []);
+
+        $voucher = new Voucher();
+        $this->assertEquals($this->command->getSuspiciousChildren([$voucher]), []);
+
+        $user = $this->getMockBuilder(User::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $user->expects($this->once())->method('getUsername')->willReturn('child@example.org');
+        $user->expects($this->atLeastOnce())->method('setInvitationVoucher');
+        $voucher->setInvitedUser($user);
+        $this->assertEquals($this->command->getSuspiciousChildren([$voucher]), []);
+
+        $parent = new User();
+        $parent->setEmail('suspicious@example.org');
+        $parent->setRoles([Roles::SUSPICIOUS]);
+        $voucher->setUser($parent);
+        $this->assertEquals(
+            $this->command->getSuspiciousChildren([$voucher]),
+            ['child@example.org' => 'suspicious@example.org']);
     }
 }

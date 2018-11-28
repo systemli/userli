@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\User;
 use App\Entity\Voucher;
 use App\Enum\Roles;
 use App\Handler\SuspiciousChildrenHandler;
@@ -56,25 +57,14 @@ class VoucherUnlinkCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $vouchers = $this->manager->getRepository(Voucher::class)->getOldVouchers();
-        $suspiciousChildren = [];
 
         $output->writeln(
             sprintf('<INFO>unlink %d vouchers</INFO>', count($vouchers)),
             OutputInterface::VERBOSITY_VERBOSE
         );
 
+        $suspiciousChildren = $this->getSuspiciousChildren($vouchers);
         foreach ($vouchers as $voucher) {
-            $user = $voucher->getInvitedUser();
-            if (null !== $user) {
-                $user->setInvitationVoucher(null);
-
-                // check if user was suspicious and has redeemed codes
-                $parent = $voucher->getUser();
-                if ($parent->hasRole(Roles::SUSPICIOUS)) {
-                    $suspiciousChildren[$user->getUsername()] = $parent->getUsername();
-                }
-            }
-
             $output->writeln(
                 sprintf(
                     '%d: %s (%s)',
@@ -106,5 +96,31 @@ class VoucherUnlinkCommand extends Command
         if (false === $input->getOption('dry-run')) {
             $this->manager->flush();
         }
+    }
+
+    /**
+     * @param Voucher[] $vouchers
+     * @return string[]
+     */
+    public function getSuspiciousChildren(array $vouchers): array
+    {
+        $suspiciousChildren = [];
+
+        foreach ($vouchers as $voucher) {
+            if ($voucher instanceof Voucher) {
+                $user = $voucher->getInvitedUser();
+                if ($user instanceof User) {
+                    $user->setInvitationVoucher(null);
+
+                    // check if user was suspicious and has redeemed codes
+                    $parent = $voucher->getUser();
+                    if ($parent instanceof User && $parent->hasRole(Roles::SUSPICIOUS)) {
+                        $suspiciousChildren[$user->getUsername()] = $parent->getUsername();
+                    }
+                }
+            }
+        }
+
+        return $suspiciousChildren;
     }
 }
