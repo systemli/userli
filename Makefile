@@ -36,3 +36,15 @@ release: clean prepare
 	yarn encore production --no-verbose
 	# Create a release tarball
 	tar czf build/${RELEASE_FILE} assets bin config default_translations public src templates var vendor
+
+reset: clean
+	rm -f php_cs.cache
+	rm -rf node-modules
+	rm -rf public/build
+	rm -rf public/bundles
+	rm -rf public/components
+	rm -rf vagrant/.vagrant/
+	rm -f vagrant/ansible/playbook.retry
+	rm -rf var/log/*
+	rm -rf var/cache/*
+	rm -rf vendor
