@@ -19,7 +19,7 @@
     <p class="alert alert-info">{{ "index.alias-limit"|trans({
             '%alias_limit%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_CUSTOM'),
             '%alias_type%': 'custom'|trans
-        }) }}</p>
+        }) }} {{  "index.alias-deletion-custom"|trans }}</p>
 {% endif %}
 
 {% if aliases_custom is defined and aliases_custom|length > 0 %}
@@ -47,7 +47,7 @@
     <p class="alert alert-info">{{ "index.alias-limit"|trans({
             '%alias_limit%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_RANDOM'),
             '%alias_type%': random|trans
-        }) }}</p>
+        }) }} {{  "index.alias-deletion-random"|trans }}</p>
 {% endif %}
 
 {% if aliases_random is defined and aliases_random|length > 0 %}

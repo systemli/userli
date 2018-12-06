@@ -11,7 +11,9 @@ index:
   voucher-limit: You don't have any invite codes left.
   voucher-disable: At %date% you will receive three invite codes. This is to avoid mass registrations and spam.
   alias-headline: Your %alias_type% alias addresses
-  alias-limit: You reached the allowed limit of %alias_limit% %alias_type% alias addresses. As soon as you delete old addresses, you can create new ones again.
+  alias-limit: You reached the allowed limit of %alias_limit% %alias_type% alias addresses.
+  alias-deletion-custom: Write us in order to get addresses deleted.
+  alias-deletion-random: As soon as you delete old addresses, you can create new ones again.
   alias-empty: You don't have any %alias_type% alias addresses defined.
   delete-headline: Delete account
   delete-description: >

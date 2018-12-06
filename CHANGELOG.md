@@ -2,6 +2,7 @@
 
 * Start to list relevant changes in a dedicated changelog file.
 * Hide voucher stats from domain admins (Fixes: #72)
+* Improve message about custom alias limit (Fixes: #74)
 
 # 1.5.1 (2018.11.28)
 
