@@ -12,10 +12,12 @@
                     <dd>{{ users_count }}</dd>
                     <dt>Registered accounts in last 7 days</dt>
                     <dd>{{ users_since }}</dd>
+{% if is_granted('ROLE_ADMIN') %}
                     <dt>Existing Voucher</dt>
                     <dd>{{ vouchers_count }}</dd>
                     <dt>Redeemed Voucher</dt>
                     <dd>{{ vouchers_redeemed }} (Ratio: {{ vouchers_ratio }})</dd>
+{% endif %}
                 </dl>
             </div>
         </div>
