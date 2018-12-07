@@ -32,6 +32,9 @@
     "container-interop/container-interop": {
         "version": "1.2.0"
     },
+    "dg/bypass-finals": {
+        "version": "v1.1.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
