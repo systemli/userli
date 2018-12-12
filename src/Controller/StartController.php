@@ -59,11 +59,9 @@ class StartController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->render('Start/index_anonymous.html.twig');
