@@ -10,8 +10,8 @@ final class Roles
     const SUSPICIOUS = 'ROLE_SUSPICIOUS';
     const USER = 'ROLE_USER';
     const SUPPORT = 'ROLE_SUPPORT';
-    const ADMIN = 'ROLE_ADMIN';
     const DOMAIN_ADMIN = 'ROLE_DOMAIN_ADMIN';
+    const ADMIN = 'ROLE_ADMIN';
 
     /**
      * @return array
