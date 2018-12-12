@@ -16,22 +16,36 @@
             <p class="lead">{{ "start.intro"|trans }}</p>
         </div>
     </div>
+
     <div class="row">
-        {%  if user_domain == domain %}
-        <div class="col-xs-12 col-sm-6 col-md-4">
-            {% include 'Start/vouchers.html.twig' %}
-            <hr />
-            <p class="text-muted"><small>{{ "index.logged_in_as"|trans({'%user%': user.email}) }} </small></p>
+        <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="{{ path('vouchers') }}" class="thumbnail">
+                <img src="{{  asset('build/images/diff-added.svg') }}" alt="Invite Codes">
+                <div class="caption">
+                    <h3>{{ "start.vouchers"|trans }}</h3>
+                </div>
+            </a>
         </div>
-        {% endif %}
-        <div class="col-xs-12 col-sm-6 col-md-4">
-            {% include 'Start/aliases.html.twig' %}
+        <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="{{ path('aliases') }}" class="thumbnail">
+                <img src="{{  asset('build/images/gist-secret.svg') }}" alt="Alias">
+                <div class="caption">
+                    <h3>{{ "start.aliases"|trans }}</h3>
+                </div>
+            </a>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-4">
-            {% include 'Start/change_password.html.twig' %}
-            <hr />
-            {% include 'Start/delete_account.html.twig' %}
+        <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="{{ path('account') }}" class="thumbnail">
+                <img src="{{  asset('build/images/tools.svg') }}" alt="Account Settings">
+                <div class="caption">
+                    <h3>{{ "start.account-settings"|trans }}</h3>
+                </div>
+            </a>
         </div>
+    </div>
+    <div class="row">
+        <hr />
+        <p class="text-muted"><small>{{ "index.logged_in_as"|trans({'%user%': user.email}) }} </small></p>
     </div>
 
 {% endblock %}

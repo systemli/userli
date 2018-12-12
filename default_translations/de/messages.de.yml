@@ -4,6 +4,9 @@ start:
   registration-header: Registrierung
   registration-text: Du hast noch keinen E-Mail Account bei %domain%? Kein Problem! Wenn eine Freundin oder ein Freund einen Account besitzt, kann diese dir einen Einladungscode zukommen lassen. Mit diesem kannst du dir sofort einen Account registrieren.
   registration-button: Account anlegen
+  account-settings: Account verwalten
+  aliases: Alias-Adressen
+  vouchers: Einladungscodes
 
 index:
   title: Verwalte deinen E-Mail Account

@@ -4,6 +4,10 @@ start:
   registration-header: Registration
   registration-text: You don't have an email-account with %domain% yet? No problem! If one of your friends already has an account, you can get an invite code from them and immediately set up your own account.
   registration-button: Create account
+  account-settings: Account Settings
+  aliases: Alias addresses
+  vouchers: Invite codes
+
 
 index:
   title: Manage your email-account
