@@ -1,8 +1,9 @@
-GIT_VERSION  := $(shell git --no-pager describe --tags --always)
-GIT_COMMIT   := $(shell git rev-parse --verify HEAD)
-GIT_DATE     := $(firstword $(shell git --no-pager show --date=iso-strict --format="%ad" --name-only))
-BUILD_DATE   := $(shell date)
-RELEASE_FILE := user-management-${GIT_VERSION}.tar.gz
+GIT_VERSION    := $(shell git --no-pager describe --tags --always)
+GIT_COMMIT     := $(shell git rev-parse --verify HEAD)
+GIT_DATE       := $(firstword $(shell git --no-pager show --date=iso-strict --format="%ad" --name-only))
+BUILD_DATE     := $(shell date)
+RELEASE_FILE   := user-management-${GIT_VERSION}.tar.gz
+SHA_ALGORITHMS := 256 512
 
 clean:
 	git reset --hard
@@ -36,6 +37,10 @@ release: clean prepare
 	yarn encore production --no-verbose
 	# Create a release tarball
 	tar czf build/${RELEASE_FILE} assets bin config default_translations public src templates var vendor
+	# Generate SHA hash sum files
+	for sha in ${SHA_ALGORITHMS}; do \
+		shasum -a "$${sha}" "build/${RELEASE_FILE}" >"build/${RELEASE_FILE}.sha$${sha}"; \
+	done
 
 reset: clean
 	rm -f php_cs.cache

@@ -165,6 +165,10 @@ Example configuration for using checkpassword in Dovecot:
       driver = prefetch
     }
 
+## Creating release tarballs
+
+    $ GITHUB_API_TOKEN=<token> GPG_SIGN_KEY="<key_id>" ./bin/github-release.sh <version>
+
 ## Coding Style
 
 Adjust coding style by running `php-cs-fixer`:
