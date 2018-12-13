@@ -1,7 +1,10 @@
 /bin/*
+!/bin/checkpassword
 !/bin/console
+!/bin/githup-release.sh
 !/bin/phpunit
 !/bin/user-accounts
+!/bin/user-aliases
 !/bin/user-vouchers
 build/
 checkpassword.log
