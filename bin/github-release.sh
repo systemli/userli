@@ -81,7 +81,6 @@ git push origin "refs/tags/${version}" >/dev/null
 
 # create release on Github
 api_json=$(printf '{"tag_name": "%s","target_commitish": "%s","name": "%s","body": "%s","draft": false,"prerelease": %s}' "$version" "master" "$version" "$gh_notes" "false")
-echo "api_json: $api_json"
 gh_release="$(curl --silent --proto-redir =https --data "$api_json" "$gh_repo/releases" -H "Accept: application/vnd.github.v3+json" -H "$gh_auth")"
 
 # read asset tags
