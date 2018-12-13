@@ -19,7 +19,7 @@
                 {{ form_end(voucher_form) }}
             {%  endif %}
             {% if vouchers is defined and vouchers|length > 0 %}
-                {% for voucher in vouchers %}
+                {% for voucher in vouchers|reverse %}
                     {% if voucher.redeemed %}
                         <div class="alert alert-warning">
                             <p class="voucher-box"><s>{{ voucher.code }}</s></p>
