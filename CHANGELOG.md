@@ -1,3 +1,8 @@
+# 1.5.4 (UNRELEASED)
+
+* Split startpage into subpages (Fixes: #43)
+* Reverse order of vouchers, display newest vouchers first
+
 # 1.5.3 (2018.12.13)
 
 * Add scripts to automate building and publishing of releases

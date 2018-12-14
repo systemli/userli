@@ -1,27 +1,41 @@
-<h3>{{ "index.voucher-headline"|trans }}</h3>
-{% if is_granted('ROLE_SUPPORT') %}
-    {{ form_start(voucher_form) }}
-    {{ form_errors(voucher_form) }}
-    <div class="form-group">
-        {{ form_widget(voucher_form.submit, {'attr': {'class': 'btn btn-primary' } }) }}
+{% extends 'base.html.twig' %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li><a href="{{  path('index') }}">Start</a></li>
+        <li class="active">{{ "start.vouchers"|trans }}</li>
+    </ol>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <h3>{{ "index.voucher-headline"|trans }}</h3>
+            {% if is_granted('ROLE_SUPPORT') %}
+                {{ form_start(voucher_form) }}
+                {{ form_errors(voucher_form) }}
+                <div class="form-group">
+                    {{ form_widget(voucher_form.submit, {'attr': {'class': 'btn btn-primary' } }) }}
+                </div>
+                {{ form_end(voucher_form) }}
+            {%  endif %}
+            {% if vouchers is defined and vouchers|length > 0 %}
+                {% for voucher in vouchers|reverse %}
+                    {% if voucher.redeemed %}
+                        <div class="alert alert-warning">
+                            <p class="voucher-box"><s>{{ voucher.code }}</s></p>
+                            <p class="small">{{ "form.voucher-redeemed-on"|trans }} {{ voucher.redeemedTime|date("d.m.Y") }}</p>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success">
+                            <p class="voucher-box">{{ voucher.code }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {%  elseif user.creationTime|date('U') <= '-7 days'|date('U')  %}
+                <p class="alert alert-info">{{ "index.voucher-limit"|trans }}</p>
+            {% else %}
+                <p class="alert alert-info">{{ "index.voucher-disable"|trans({'%date%': user.creationTime|date_modify("+7 days")|date("d. F Y, H:i")}) }}</p>
+            {% endif %}
+        </div>
     </div>
-    {{ form_end(voucher_form) }}
-{%  endif %}
-{% if vouchers is defined and vouchers|length > 0 %}
-    {% for voucher in vouchers %}
-        {% if voucher.redeemed %}
-            <div class="alert alert-warning">
-                <p class="voucher-box"><s>{{ voucher.code }}</s></p>
-                <p class="small">{{ "form.voucher-redeemed-on"|trans }} {{ voucher.redeemedTime|date("d.m.Y") }}</p>
-            </div>
-        {% else %}
-            <div class="alert alert-success">
-                <p class="voucher-box">{{ voucher.code }}</p>
-            </div>
-        {% endif %}
-    {% endfor %}
-{%  elseif user.creationTime|date('U') <= '-7 days'|date('U')  %}
-    <p class="alert alert-info">{{ "index.voucher-limit"|trans }}</p>
-{% else %}
-    <p class="alert alert-info">{{ "index.voucher-disable"|trans({'%date%': user.creationTime|date_modify("+7 days")|date("d. F Y, H:i")}) }}</p>
-{% endif %}
+{%  endblock %}

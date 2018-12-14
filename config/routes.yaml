@@ -4,6 +4,18 @@ index:
     path:     /
     controller: App\Controller\StartController::indexAction
 
+aliases:
+    path:     /alias
+    controller: App\Controller\StartController::aliasAction
+
+vouchers:
+    path:     /voucher
+    controller: App\Controller\StartController::voucherAction
+
+account:
+    path:     /account
+    controller: App\Controller\StartController::accountAction
+
 # DeleteController
 
 alias_delete:

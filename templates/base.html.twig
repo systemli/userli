@@ -30,6 +30,9 @@
 {% block container %}
     <div class="container">
 
+        {% block breadcrumbs %}
+        {% endblock %}
+
         {% block flashes %}
             {% if app.session.flashbag.peekAll|length > 0 %}
                 <div class="row">

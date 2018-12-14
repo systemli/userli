@@ -41,3 +41,20 @@ body {
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
     font-size: 1.4em;
 }
+
+.thumbnail img {
+    width: 100%;
+    padding: 2em 2em 0 2em;
+}
+
+.thumbnail .caption h3 {
+    text-align: center;
+}
+
+.breadcrumb {
+    margin-bottom: 10px;
+}
+
+.alert {
+    margin-bottom: 10px;
+}

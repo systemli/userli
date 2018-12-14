@@ -43,7 +43,7 @@ class DeleteController extends Controller
 
         // Don't allow users to delete custom or foreign aliases
         if (null === $alias || $user !== $alias->getUser() || !($alias->isRandom())) {
-            return $this->redirect($this->generateUrl('index'));
+            return $this->redirect($this->generateUrl('aliases'));
         }
 
         $form = $this->createForm(AliasDeleteType::class, new Delete());
@@ -56,7 +56,7 @@ class DeleteController extends Controller
 
                 $request->getSession()->getFlashBag()->add('success', 'flashes.alias-deletion-successful');
 
-                return $this->redirect($this->generateUrl('index'));
+                return $this->redirect($this->generateUrl('aliases'));
             }
         }
 

@@ -59,11 +59,30 @@ class StartController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
+    {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->render('Start/index_anonymous.html.twig');
+        }
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        return $this->render(
+            'Start/index.html.twig',
+            [
+                'user' => $user,
+            ]
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function voucherAction(Request $request)
     {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->render('Start/index_anonymous.html.twig');
@@ -76,16 +95,51 @@ class StartController extends Controller
             VoucherCreateType::class,
             new VoucherCreate(),
             [
-                'action' => $this->generateUrl('index'),
+                'action' => $this->generateUrl('vouchers'),
                 'method' => 'post',
             ]
         );
+
+        if ('POST' === $request->getMethod()) {
+            $voucherCreateForm->handleRequest($request);
+
+            if ($voucherCreateForm->isSubmitted() && $voucherCreateForm->isValid()) {
+                $this->createVoucher($request, $user);
+            }
+        }
+
+        $vouchers = $this->voucherHandler->getVouchersByUser($user);
+
+        return $this->render(
+            'Start/vouchers.html.twig',
+            [
+                'user' => $user,
+                'user_domain' => $user->getDomain(),
+                'vouchers' => $vouchers,
+                'voucher_form' => $voucherCreateForm->createView(),
+            ]
+        );
+
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function aliasAction(Request $request)
+    {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->render('Start/index_anonymous.html.twig');
+        }
+
+        /** @var User $user */
+        $user = $this->getUser();
 
         $randomAliasCreateForm = $this->createForm(
             RandomAliasCreateType::class,
             new AliasCreate(),
             [
-                'action' => $this->generateUrl('index'),
+                'action' => $this->generateUrl('aliases'),
                 'method' => 'post',
             ]
         );
@@ -95,45 +149,29 @@ class StartController extends Controller
             CustomAliasCreateType::class,
             $aliasCreate,
             [
-                'action' => $this->generateUrl('index'),
-                'method' => 'post',
-            ]
-        );
-
-        $passwordChange = new PasswordChange();
-        $passwordChangeForm = $this->createForm(
-            PasswordChangeType::class,
-            $passwordChange,
-            [
-                'action' => $this->generateUrl('index'),
+                'action' => $this->generateUrl('aliases'),
                 'method' => 'post',
             ]
         );
 
         if ('POST' === $request->getMethod()) {
-            $voucherCreateForm->handleRequest($request);
             $randomAliasCreateForm->handleRequest($request);
             $customAliasCreateForm->handleRequest($request);
-            $passwordChangeForm->handleRequest($request);
 
-            if ($voucherCreateForm->isSubmitted() && $voucherCreateForm->isValid()) {
-                $this->createVoucher($request, $user);
-            } elseif ($randomAliasCreateForm->isSubmitted() && $randomAliasCreateForm->isValid()) {
+            if ($randomAliasCreateForm->isSubmitted() && $randomAliasCreateForm->isValid()) {
                 $this->createRandomAlias($request, $user);
             } elseif ($customAliasCreateForm->isSubmitted() && $customAliasCreateForm->isValid()) {
                 $this->createCustomAlias($request, $user, $aliasCreate->alias);
-            } elseif ($passwordChangeForm->isSubmitted() && $passwordChangeForm->isValid()) {
-                $this->changePassword($request, $user, $passwordChange->newPassword);
             }
         }
 
         $aliasRepository = $this->get('doctrine')->getRepository('App:Alias');
         $aliasesRandom = $aliasRepository->findByUser($user, true);
         $aliasesCustom = $aliasRepository->findByUser($user, false);
-        $vouchers = $this->voucherHandler->getVouchersByUser($user);
+
 
         return $this->render(
-            'Start/index.html.twig',
+            'Start/aliases.html.twig',
             [
                 'user' => $user,
                 'user_domain' => $user->getDomain(),
@@ -141,10 +179,48 @@ class StartController extends Controller
                 'alias_creation_custom' => $this->aliasHandler->checkAliasLimit($aliasesCustom),
                 'aliases_custom' => $aliasesCustom,
                 'aliases_random' => $aliasesRandom,
-                'vouchers' => $vouchers,
-                'voucher_form' => $voucherCreateForm->createView(),
                 'random_alias_form' => $randomAliasCreateForm->createView(),
                 'custom_alias_form' => $customAliasCreateForm->createView(),
+            ]
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function accountAction(Request $request)
+    {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->render('Start/index_anonymous.html.twig');
+        }
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $passwordChange = new PasswordChange();
+        $passwordChangeForm = $this->createForm(
+            PasswordChangeType::class,
+            $passwordChange,
+            [
+                'action' => $this->generateUrl('account'),
+                'method' => 'post',
+            ]
+        );
+
+        if ('POST' === $request->getMethod()) {
+            $passwordChangeForm->handleRequest($request);
+
+            if ($passwordChangeForm->isSubmitted() && $passwordChangeForm->isValid()) {
+                $this->changePassword($request, $user, $passwordChange->newPassword);
+            }
+        }
+
+        return $this->render(
+            'Start/account.html.twig',
+            [
+                'user' => $user,
+                'user_domain' => $user->getDomain(),
                 'password_form' => $passwordChangeForm->createView(),
             ]
         );
