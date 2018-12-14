@@ -26,6 +26,7 @@ index:
     <br /><br />
     Um deinen Account zu löschen wirst du aufgefordert dein Passwort einzugeben.
   delete-button: Account löschen
+  recovery-token-button: Wiederherstellungscode verwalten
   logged_in_as: Du bist angemeldet als %user%.
 
 form:
@@ -53,6 +54,7 @@ form:
   create-custom-alias: Erstelle Alias-Adresse
   create-random-alias: Generiere zufällige Alias-Adresse
   delete-alias: Alias-Adresse löschen
+  generate-recovery-token: Neuen Wiederherstellungscode generieren
 
 navbar_left:
   about-us:
@@ -110,6 +112,17 @@ delete:
     headline: Account löschen
     lead: Mit der Bestätigung deines Passworts kannst du deinen Account unwiderruflich löschen.
   cancel: Abbrechen
+
+recovery-token:
+  headline: Wiederherstellungscode verwalten
+  lead: Mit dem Wiederherstellungscode kannst du dein Passwort zurücksetzen, wenn du es verloren hast.
+  set: Du hast bereits einen Wiederherstellungscode gesetzt.
+  set-extra: Wenn du einen neuen erstellst, wird der alte ungültig.
+  unset: Du hast noch keinen Wiederherstellungscode gesetzt. Wir empfehlen dir dringend, jetzt einen zu erstellen.
+  created-headline: Der folgende Wiederherstellungscode wurde für dich erstellt:
+  created-info: Bei verlorenem Passwort ist dieser Code die einzige Möglichkeit, wieder Zugang zu deinen Account zu erlangen. Notiere ihn dir und speichere ihn an einem sicheren Ort ab.
+  displayed-once: Der Code wird nur dieses eine Mal angezeigt. Wenn du ihn verlierst, kannst du einen neuen Code generieren.
+  next-button: Ich habe den Code an einem sicheren Ort abgespeichert
 
 flashes:
   logout-successful: Du hast dich erfolgreich abgemeldet!

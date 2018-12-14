@@ -3,9 +3,8 @@ form:
   forbidden_char: "The password contains non valid characters."
   different-password: "Password and confirmation does not match."
   invalid-email: "The email is not valid."
-  password-change:
-    wrong-password: "Wrong password"
-    identical-passwords: "The new password is identical with the old one."
+  wrong-password: "Wrong password"
+  identical-passwords: "The new password is identical with the old one."
   missing-domain: "The domain is not under management in this system."
 
 registration:

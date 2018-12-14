@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <p class="lead">{{ "recovery-token.created-headline"|trans }}</p>
+            <p class="lead alert alert-warning">{{ recovery_token }}</p>
+            <p><a href="{{ path('welcome') }}" class="btn btn-lg btn-primary pull-left">{{ "recovery-token.next-button"|trans }}</a></p>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="alert alert-info side-infobox">
+                <ul>
+                    <li><strong>{{ "recovery-token.created-info"|trans }}</strong></li>
+                    <hr />
+                    <li>{{ "recovery-token.displayed-once"|trans }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

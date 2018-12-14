@@ -1,0 +1,6 @@
+<h3>{{ "recovery-token.headline"|trans }}</h3>
+<p>{{ "recovery-token.lead"|trans }}</p>
+{% if not recovery_token_set %}
+<p class="alert alert-danger">{{ "recovery-token.unset"|trans }}</p>
+{% endif %}
+<p><a class="btn btn-primary" href="{{ url('user_recovery_token') }}">{{ "index.recovery-token-button"|trans }}</a></p>

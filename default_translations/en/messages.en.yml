@@ -27,6 +27,7 @@ index:
     <br /><br />
     To delete your account you need to submit your actual password.
   delete-button: Delete account
+  recovery-token-button: Manage recovery token
   logged_in_as: You are logged in as %user%.
 
 form:
@@ -54,6 +55,7 @@ form:
   create-custom-alias: Add alias address
   create-random-alias: Generate random alias address
   delete-alias: Delete alias address
+  generate-recovery-token: Generate new recovery token
 
 navbar_left:
   about-us:
@@ -111,6 +113,17 @@ delete:
     headline: Delete account
     lead: We need to verify your password to delete your account.
   cancel: Cancel
+
+recovery-token:
+  headline: Manage recovery token
+  lead: The recovery token can be used to reset your password if it got lost.
+  set: You have a recovery token set already.
+  set-extra: Generating a new one will invalidate the current one.
+  unset: You don't have a recovery token set yet. We strongly recommend to generate one now.
+  created-headline: The following  recovery token got created for you:
+  created-info: If you lost your password, this token is the only way to recover access to your account. Note it down and store it at a secure place.
+  displayed-once: The code gets displayed only once. If you loose it, you can generate a new one.
+  next-button: I stored the recovery token at a secure place
 
 flashes:
   logout-successful: You have been successfully logged out!

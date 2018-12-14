@@ -51,9 +51,16 @@ class RegistrationController extends Controller
                     $this->get('security.token_storage')->setToken($token);
                 }
 
+                $recoveryToken = $user->getPlainRecoveryToken();
+                $user->eraseToken();
+
                 $request->getSession()->getFlashBag()->add('success', 'flashes.registration-successful');
 
-                return $this->redirect($this->generateUrl('welcome'));
+                return $this->render('Registration/recovery_token.html.twig',
+                    [
+                        'recovery_token' => $recoveryToken,
+                    ]
+                );
             }
         }
 

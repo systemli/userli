@@ -52,4 +52,10 @@ App\Form\Model\Delete:
     properties:
         password:
             - Symfony\Component\Security\Core\Validator\Constraints\UserPassword:
-                message: form.password-change.wrong-password
+                message: form.wrong-password
+
+App\Form\Model\RecoveryToken:
+    properties:
+        password:
+            - Symfony\Component\Security\Core\Validator\Constraints\UserPassword:
+                message: form.wrong-password

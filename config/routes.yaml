@@ -48,3 +48,8 @@ welcome:
     path:     /welcome
     controller: App\Controller\RegistrationController::welcomeAction
 
+# RecoveryController
+
+user_recovery_token:
+    path:     /user/recovery_token
+    controller: App\Controller\RecoveryController::recoveryTokenAction
