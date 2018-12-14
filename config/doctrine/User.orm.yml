@@ -59,4 +59,3 @@ App\Entity\User:
       columns: ["email"]
   lifecycleCallbacks:
     prePersist: [updateCreationTime, updateUpdatedTime]
-    preUpdate: [updateUpdatedTime]

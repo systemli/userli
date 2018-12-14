@@ -176,6 +176,8 @@ class UserAdmin extends Admin
     {
         if (!empty($user->getPlainPassword())) {
             $this->passwordUpdater->updatePassword($user);
+        } else {
+            $user->updateUpdatedTime();
         }
     }
 
