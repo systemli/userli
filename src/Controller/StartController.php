@@ -149,7 +149,7 @@ class StartController extends Controller
             CustomAliasCreateType::class,
             $aliasCreate,
             [
-                'action' => $this->generateUrl('index'),
+                'action' => $this->generateUrl('aliases'),
                 'method' => 'post',
             ]
         );
