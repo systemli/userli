@@ -108,7 +108,6 @@ delete:
   user:
     headline: Delete account
     lead: We need to verify your password to delete your account.
-  wrong-password: Wrong Password
   cancel: Cancel
 
 flashes:

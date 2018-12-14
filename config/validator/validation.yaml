@@ -52,4 +52,4 @@ App\Form\Model\Delete:
     properties:
         password:
             - Symfony\Component\Security\Core\Validator\Constraints\UserPassword:
-                message: delete.wrong-password
+                message: form.password-change.wrong-password
