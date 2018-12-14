@@ -1,7 +1,9 @@
-# 1.5.4 (UNRELEASED)
+# 1.6.0 (UNRELEASED)
 
 * Split startpage into subpages (Fixes: #43)
 * Reverse order of vouchers, display newest vouchers first
+* Fix when users updatedTime is updated (Fixes: #71)
+* Don't show voucher menu to suspicious users (Fixes: #81)
 
 # 1.5.3 (2018.12.13)
 
