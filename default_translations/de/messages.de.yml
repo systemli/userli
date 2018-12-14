@@ -127,8 +127,11 @@ error:
   generic_error: Es ist ein Fehler passiert. Das tut uns leid.
 
 spam:
-  title: Spammer entdeckt
-  text: Oh nein! Wir glauben dein Account wurde von einem Spammer missbraucht. Bitte kontaktiere admin@systemli.org um Zugang zu deinem Account zu bekommen.
+  title: Account gesperrt
+  text: |
+    Oh nein! Wir glauben dein Account wurde von einem Spammer missbraucht.
+    Daher haben wir den Mailzugang deaktiviert
+    Bitte kontaktiere den Support um deinen Account frei zu schalten.
 
 # internal translations
 Bad credentials.: Fehlerhafte Zugangsdaten

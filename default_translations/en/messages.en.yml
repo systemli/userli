@@ -128,8 +128,11 @@ error:
   generic_error: An error occured. We're sorry.
 
 spam:
-  title: Spammer detected
-  text: Oh no! We believe you account has been mis-used by a spammer. Please contact admin@systemli.org to unlock your account.
+  title: Account locked
+  text: |
+    Oh no! We believe you account has been mis-used by a spammer.
+    Therefore, we have disabled mail access.
+    Please contact the support to unlock your account.
 
 # internal translations
 Bad credentials.: Wrong login details
