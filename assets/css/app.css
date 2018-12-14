@@ -43,10 +43,14 @@ body {
 }
 
 .thumbnail img {
-    width: 90%;
+    width: 100%;
+    padding: 2em 2em 0 2em;
 }
 
 .thumbnail .caption h3 {
     text-align: center;
 }
 
+.breadcrumb {
+    margin-bottom: 0;
+}
