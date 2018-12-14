@@ -98,4 +98,5 @@ security:
       - { path: ^/welcome, roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: ^/admin, roles: ROLE_DOMAIN_ADMIN }
+      - { path: ^/voucher, allow_if: "!has_role('ROLE_SUSPICIOUS')"}
       - { path: ^/, roles: ROLE_USER }

@@ -18,6 +18,7 @@
     </div>
 
     <div class="row">
+        {%  if not is_granted('ROLE_SUSPICIOUS') %}
         <div class="col-xs-6 col-sm-4 col-md-3">
             <a href="{{ path('vouchers') }}" class="thumbnail">
                 <img src="{{  asset('build/images/diff-added.svg') }}" alt="Invite Codes">
@@ -26,6 +27,7 @@
                 </div>
             </a>
         </div>
+        {% endif %}
         <div class="col-xs-6 col-sm-4 col-md-3">
             <a href="{{ path('aliases') }}" class="thumbnail">
                 <img src="{{  asset('build/images/gist-secret.svg') }}" alt="Alias">
