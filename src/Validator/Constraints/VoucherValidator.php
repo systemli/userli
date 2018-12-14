@@ -61,7 +61,7 @@ class VoucherValidator extends ConstraintValidator
                 $this->context->addViolation('registration.voucher-already-redeemed');
             }
         } else {
-            if (null !== $voucher = $this->voucherRepository->findByCode($stringValue)) {
+            if (null !== $this->voucherRepository->findByCode($stringValue)) {
                 $this->context->addViolation('registration.voucher-exists');
             }
         }
