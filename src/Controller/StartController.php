@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Creator\VoucherCreator;
 use App\Entity\Alias;
 use App\Entity\User;
+use App\Enum\Roles;
 use App\Exception\ValidationException;
 use App\Form\Model\AliasCreate;
 use App\Form\Model\PasswordChange;
@@ -67,6 +68,10 @@ class StartController extends Controller
             return $this->render('Start/index_anonymous.html.twig');
         }
 
+        if ($this->isGranted(Roles::SPAM)) {
+            return $this->render('Start/index_spam.html.twig');
+        }
+
         /** @var User $user */
         $user = $this->getUser();
 
@@ -84,10 +89,6 @@ class StartController extends Controller
      */
     public function voucherAction(Request $request)
     {
-        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->render('Start/index_anonymous.html.twig');
-        }
-
         /** @var User $user */
         $user = $this->getUser();
 
@@ -128,10 +129,6 @@ class StartController extends Controller
      */
     public function aliasAction(Request $request)
     {
-        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->render('Start/index_anonymous.html.twig');
-        }
-
         /** @var User $user */
         $user = $this->getUser();
 
@@ -191,10 +188,6 @@ class StartController extends Controller
      */
     public function accountAction(Request $request)
     {
-        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->render('Start/index_anonymous.html.twig');
-        }
-
         /** @var User $user */
         $user = $this->getUser();
 

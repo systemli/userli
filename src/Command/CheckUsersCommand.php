@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Enum\Roles;
 use App\Handler\UserAuthenticationHandler;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -71,7 +72,7 @@ class CheckUsersCommand extends Command
         }
 
         // exit if user not present or not authenticated
-        if (null === $user) {
+        if (null === $user || $user->hasRole(Roles::SPAM)) {
             $output->write('FAIL');
 
             return 1;

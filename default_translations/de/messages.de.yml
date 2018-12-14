@@ -120,12 +120,15 @@ flashes:
 
 flash_batch_remove_vouchers_success: Nicht eingelöste Vouchers erfolgreich gelöscht
 
-
 error:
   title: Oops, es ist ein Fehler passiert.
   back_link: Zurück zur Startseite
   page_not_found: Die Seite die du aufgerufen hast, existiert nicht.
   generic_error: Es ist ein Fehler passiert. Das tut uns leid.
+
+spam:
+  title: Spammer entdeckt
+  text: Oh nein! Wir glauben dein Account wurde von einem Spammer missbraucht. Bitte kontaktiere admin@systemli.org um Zugang zu deinem Account zu bekommen.
 
 # internal translations
 Bad credentials.: Fehlerhafte Zugangsdaten

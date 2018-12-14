@@ -121,12 +121,15 @@ flashes:
 
 flash_batch_remove_vouchers_success: Successfully deleted unredeemed vouchers
 
-
 error:
   title: Oops, an error occured.
   back_link: Back to home
   page_not_found: The page you requested does not exist.
   generic_error: An error occured. We're sorry.
+
+spam:
+  title: Spammer detected
+  text: Oh no! We believe you account has been mis-used by a spammer. Please contact admin@systemli.org to unlock your account.
 
 # internal translations
 Bad credentials.: Wrong login details
