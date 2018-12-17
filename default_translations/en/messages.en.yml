@@ -5,7 +5,9 @@ start:
   registration-text: You don't have an email-account with %domain% yet? No problem! If one of your friends already has an account, you can get an invite code from them and immediately set up your own account.
   registration-button: Create account
   account-settings: Account Settings
+  account-delete: Account löschen
   aliases: Alias addresses
+  aliases-delete: delete alias address
   vouchers: Invite codes
 
 
