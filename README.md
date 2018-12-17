@@ -174,3 +174,13 @@ Example configuration for using checkpassword in Dovecot:
 Adjust coding style by running `php-cs-fixer`:
 
     make cs-fixer
+
+## License
+
+Files: *
+Copyright: (c) 2015-2018 systemli.org
+License: AGPL v3 or later
+
+Files: assets/images/*.svg
+Copyright: (c) github.com
+License: MIT
