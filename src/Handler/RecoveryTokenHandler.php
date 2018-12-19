@@ -182,103 +182,6 @@ class RecoveryTokenHandler
 
         return $message;
     }
-    /**
-     * @param string $plainPassword
-     * @param string $recoveryToken
-     *
-     * @return string
-     * @throws \Exception
-     */
-    private function tokenEncryptSymmetric(string $plainPassword, $recoveryToken)
-    {
-        // use php sodium implementation for crypto stuff
-        // commands taken from:
-        // * https://secure.php.net/manual/en/intro.sodium.php#122003
-        // * https://www.zimuel.it/slides/phpday2018/sodium
-
-        // generate salt for symmetric encryption key
-        $keySalt = random_bytes(SODIUM_CRYPTO_PWHASH_SALTBYTES);
-
-        // generate symmetric encryption key from key and salt
-        $key = sodium_crypto_pwhash(
-            32,
-            $recoveryToken,
-            $keySalt,
-            SODIUM_CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE,
-            SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE
-        );
-
-        // create a nonce for encryption. will be stored and recovered in the message itself
-        $nonce = random_bytes(SODIUM_CRYPTO_BOX_NONCEBYTES);
-
-        // encrypt message and combine with nonce
-        $cipher = base64_encode($keySalt . $nonce . sodium_crypto_secretbox($plainPassword, $nonce, $key));
-
-        // cleanup variables with confidential content
-        sodium_memzero($plainPassword);
-        sodium_memzero($recoveryToken);
-        sodium_memzero($key);
-
-        return $cipher;
-    }
-
-    /**
-     * @param string $recoveryToken
-     * @param string $plainPassword
-     *
-     * @return bool|string
-     * @throws \Exception
-     */
-    private function tokenDecryptSymmetric(string $encrypted, string $recoveryToken)
-    {
-        // use php sodium implementation for crypto stuff
-        // commands taken from:
-        // * https://secure.php.net/manual/en/intro.sodium.php#122003
-        // * https://www.zimuel.it/slides/phpday2018/sodium
-
-        $decoded = base64_decode($encrypted);
-
-        // check for general failures
-        if (false === $decoded) {
-            throw new \Exception('Base64 decoding of encrypted message failed');
-        }
-
-        // check for incomplete message
-        if (mb_strlen($decoded, '8bit') < (SODIUM_CRYPTO_PWHASH_SALTBYTES + SODIUM_CRYPTO_BOX_NONCEBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES)) {
-            throw new \Exception('The encrypted message was truncated');
-        }
-
-        // derive salt, nonce and encrypted cipher text from $encrypted
-        $keySalt = mb_substr($decoded, 0, SODIUM_CRYPTO_PWHASH_SALTBYTES, '8bit');
-        $nonce = mb_substr($decoded, SODIUM_CRYPTO_PWHASH_SALTBYTES, SODIUM_CRYPTO_BOX_NONCEBYTES, '8bit');
-        $cipherText = mb_substr($decoded, SODIUM_CRYPTO_PWHASH_SALTBYTES + SODIUM_CRYPTO_BOX_NONCEBYTES, null, '8bit');
-
-        // generate symmetric encryption key from key and salt
-        $key = sodium_crypto_pwhash(
-            32,
-            $recoveryToken,
-            $keySalt,
-            SODIUM_CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE,
-            SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE
-        );
-
-        // decrypt message
-        $message = sodium_crypto_secretbox_open($cipherText, $nonce, $key);
-
-        // check for decryption failures
-        if (false === $message) {
-            throw new \Exception('The encrypted message was tampered with in transit');
-        }
-
-        // cleanup variables with confidential content
-        sodium_memzero($encrypted);
-        sodium_memzero($recoveryToken);
-        sodium_memzero($decoded);
-        sodium_memzero($cipherText);
-        sodium_memzero($key);
-
-        return $message;
-    }
 
     /**
      * @param User $user
@@ -297,13 +200,6 @@ class RecoveryTokenHandler
 
         $cipher = $this->tokenEncryptAsymmetric($plainPassword, $recoveryToken);
         $user->setRecoveryCipher($cipher);
-
-        // Test Re-encryption
-        //$user->setRecoveryCipher($cipher = $this->tokenReencryptAsymmetric($cipher, $plainPassword));
-
-        // Test decryption
-        //$decrypted = $this->tokenDecryptAsymmetric($cipher, $recoveryToken);
-        //$test = ($plainPassword === $decrypted) ? "success" : "failure";
 
         // Clear variables with confidential content from memory
         sodium_memzero($plainPassword);
