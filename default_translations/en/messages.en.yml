@@ -56,6 +56,15 @@ form:
   create-random-alias: Generate random alias address
   delete-alias: Delete alias address
   generate-recovery-token: Generate new recovery token
+  recovery-token: Recovery token
+  recovery-start: Start process
+
+recovery:
+  header: Recover your account
+  lead: ...
+  cancel: Cancel
+  started: Your recovery process got started. Please come back earliest in two days, but no later than in 30 days, to reset your password.
+  pending: Your recovery process is pending, but the waiting period of two days hasn't elapsed yet. Please come back later.
 
 navbar_left:
   about-us:

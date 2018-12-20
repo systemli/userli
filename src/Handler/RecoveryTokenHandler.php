@@ -5,6 +5,7 @@ namespace App\Handler;
 use App\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * Class AliasHandler.
@@ -24,19 +25,21 @@ class RecoveryTokenHandler
     private $manager;
 
     /**
-     * AliasHandler constructor.
+     * RecoveryTokenHandler constructor.
      *
-     * @param ObjectManager $manager
+     * @param ObjectManager           $manager
+     * @param EncoderFactoryInterface $encoderFactory
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(ObjectManager $manager, EncoderFactoryInterface $encoderFactory)
     {
         $this->manager = $manager;
+        $this->encoderFactory = $encoderFactory;
     }
 
     public function tokenGenerate()
     {
         // generate a version 4 (random) UUID object
-        return(Uuid::uuid4()->toString());
+        return(strtolower(Uuid::uuid4()->toString()));
     }
 
     /**
@@ -199,5 +202,27 @@ class RecoveryTokenHandler
 
         $cipher = $user->getRecoveryCipher();
         $user->setRecoveryCipher($this->tokenReencrypt($cipher, $plainPassword));
+    }
+
+    public function verify(User $user, string $recoveryToken)
+    {
+        if (! $user->hasRecoveryToken()) {
+            return false;
+        }
+
+        try {
+            $decrypted = $this->tokenDecrypt($user->getRecoveryCipher(), strtolower($recoveryToken));
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        $encoder = $this->encoderFactory->getEncoder($user);
+        if (!$encoder->isPasswordValid($user->getPassword(), $decrypted, $user->getSalt())) {
+            sodium_memzero($decrypted);
+            return false;
+        }
+
+        sodium_memzero($decrypted);
+        return true;
     }
 }

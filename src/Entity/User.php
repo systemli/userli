@@ -11,13 +11,14 @@ use App\Traits\IdTrait;
 use App\Traits\InvitationVoucherTrait;
 use App\Traits\LastLoginTimeTrait;
 use App\Traits\PasswordTrait;
+use App\Traits\PasswordVersionTrait;
 use App\Traits\PlainPasswordTrait;
 use App\Traits\PlainRecoveryTokenTrait;
 use App\Traits\QuotaTrait;
 use App\Traits\RecoveryCipherTrait;
+use App\Traits\RecoveryProcessTimeTrait;
 use App\Traits\SaltTrait;
 use App\Traits\UpdatedTimeTrait;
-use App\Traits\PasswordVersionTrait;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -28,7 +29,7 @@ class User implements UserInterface, EncoderAwareInterface
 {
     use IdTrait, CreationTimeTrait, UpdatedTimeTrait, EmailTrait, QuotaTrait, PasswordTrait, SaltTrait, DeleteTrait,
         InvitationVoucherTrait, PlainPasswordTrait, DomainAwareTrait, LastLoginTimeTrait, PasswordVersionTrait,
-        RecoveryCipherTrait, PlainRecoveryTokenTrait;
+        RecoveryCipherTrait, PlainRecoveryTokenTrait, RecoveryProcessTimeTrait;
 
     const CURRENT_PASSWORD_VERSION = 2;
 

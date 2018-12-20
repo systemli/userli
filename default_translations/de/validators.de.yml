@@ -6,6 +6,7 @@ form:
   wrong-password: "Das eingegebene Passwort ist falsch."
   identical-passwords: "Das neue Passwort stimmt mit dem aktuellen überein."
   missing-domain: "Die Domain wird nicht vom System verwaltet und kann nicht benutzt werden."
+  recovery-token-invalid: "E-Mail Adresse und/oder Wiederherstellungscode sind falsch."
 
 registration:
   voucher-invalid: "Der Einladungscode ist ungültig."

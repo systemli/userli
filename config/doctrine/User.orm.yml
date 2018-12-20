@@ -41,6 +41,9 @@ App\Entity\User:
     recoveryCipher:
       type: string
       nullable: true
+    recoveryProcessTime:
+      type: datetime
+      nullable: true
 
   manyToOne:
     domain:

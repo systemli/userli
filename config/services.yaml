@@ -127,6 +127,10 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: password_change }
 
+    App\Validator\RecoveryProcessValidator:
+        tags:
+            - { name: validator.constraint_validator, alias: recovery_process }
+
     App\Validator\Constraints\EmailDomainValidator:
         tags:
             - { name: validator.constraint_validator }

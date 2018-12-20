@@ -55,6 +55,15 @@ form:
   create-random-alias: Generiere zufällige Alias-Adresse
   delete-alias: Alias-Adresse löschen
   generate-recovery-token: Neuen Wiederherstellungscode generieren
+  recovery-token: Wiederherstellungscode
+  recovery-start: Prozess starten
+
+recovery:
+  header: Account wiederherstellen
+  lead: ...
+  cancel: Abbrechen
+  started: Der Prozess zum Wiederherstellen deines Accounts wurde begonnen. Du kannst in zwei Tagen, aber nicht später als in 30 Tagen, wiederkommen, um ein neues Passwort zu setzen.
+  pending: Der Prozess zum Wiederherstellen deines Accounts läuft bereits, aber die Wartezeit von zwei Tagen ist noch nicht verstrichen. Bitte komm später wieder.
 
 navbar_left:
   about-us:

@@ -59,3 +59,11 @@ App\Form\Model\RecoveryToken:
         password:
             - Symfony\Component\Security\Core\Validator\Constraints\UserPassword:
                 message: form.wrong-password
+
+App\Form\Model\RecoveryProcess:
+    properties:
+        recoveryToken:
+            - Uuid: ~
+
+    constraints:
+        - App\Validator\Constraints\RecoveryProcessConstraint: ~

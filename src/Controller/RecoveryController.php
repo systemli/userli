@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Form\Model\RecoveryProcess;
 use App\Form\Model\RecoveryToken;
+use App\Form\RecoveryProcessType;
 use App\Form\RecoveryTokenType;
 use App\Handler\RecoveryTokenHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -14,9 +16,47 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class RecoveryController extends Controller
 {
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
     public function recoveryProcessAction(Request $request)
     {
-        return $this->render('Start/index_anonymous.html.twig');
+        $processState = 'NONE';
+        $form = $this->createForm(RecoveryProcessType::class, new RecoveryProcess());
+
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $userRepository = $this->get('doctrine')->getRepository('App:User');
+
+                if (null !== $user = $userRepository->findByEmail($request->get('recovery_process')['username'])) {
+                    $recoveryProcessTime = $user->getRecoveryProcessTime();
+
+                    if (null === $recoveryProcessTime || new \DateTime('-30 days') >= $recoveryProcessTime) {
+                        $processState = 'STARTED';
+                        $user->updateRecoveryProcessTime();
+                        $this->getDoctrine()->getManager()->flush();
+                    } else if (new \DateTime('-2 days') <= $recoveryProcessTime) {
+                        $processState = 'PENDING';
+                    } else {
+                        $processState = 'ACTIVE';
+                        //TODO: allow to change password
+
+                    }
+                }
+            }
+        }
+
+        return $this->render(
+            'Recovery/recovery.html.twig',
+            [
+                'form' => $form->createView(),
+                'process_state' => $processState,
+            ]
+        );
     }
 
     /**
