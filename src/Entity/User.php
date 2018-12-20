@@ -100,4 +100,12 @@ class User implements UserInterface, EncoderAwareInterface
         // use default encoder
         return null;
     }
+
+    /**
+     * @return bool
+     */
+    public function hasRecoveryToken()
+    {
+        return ($this->getRecoveryCipher()) ? true : false;
+    }
 }

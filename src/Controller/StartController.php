@@ -14,7 +14,6 @@ use App\Form\RandomAliasCreateType;
 use App\Form\PasswordChangeType;
 use App\Form\VoucherCreateType;
 use App\Handler\AliasHandler;
-use App\Handler\RecoveryTokenHandler;
 use App\Handler\VoucherHandler;
 use App\Helper\PasswordUpdater;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -35,10 +34,6 @@ class StartController extends Controller
      */
     private $passwordUpdater;
     /**
-     * @var RecoveryTokenHandler
-     */
-    private $recoveryTokenHandler;
-    /**
      * @var VoucherHandler
      */
     private $voucherHandler;
@@ -52,14 +47,12 @@ class StartController extends Controller
      *
      * @param AliasHandler         $aliasHandler
      * @param PasswordUpdater      $passwordUpdater
-     * @param RecoveryTokenHandler $passwordUpdater
      * @param VoucherHandler       $voucherHandler
      * @param VoucherCreator       $voucherCreator
      */
-    public function __construct(AliasHandler $aliasHandler, RecoveryTokenHandler $recoveryTokenHandler, PasswordUpdater $passwordUpdater, VoucherHandler $voucherHandler, VoucherCreator $voucherCreator)
+    public function __construct(AliasHandler $aliasHandler, PasswordUpdater $passwordUpdater, VoucherHandler $voucherHandler, VoucherCreator $voucherCreator)
     {
         $this->aliasHandler = $aliasHandler;
-        $this->recoveryTokenHandler = $recoveryTokenHandler;
         $this->passwordUpdater = $passwordUpdater;
         $this->voucherHandler = $voucherHandler;
         $this->voucherCreator = $voucherCreator;
@@ -229,7 +222,7 @@ class StartController extends Controller
                 'user' => $user,
                 'user_domain' => $user->getDomain(),
                 'password_form' => $passwordChangeForm->createView(),
-                'recovery_token_set' => $this->recoveryTokenHandler->hasToken($user),
+                'recovery_token_set' => $user->hasRecoveryToken(),
             ]
         );
     }

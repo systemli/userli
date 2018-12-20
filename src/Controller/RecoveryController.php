@@ -42,7 +42,7 @@ class RecoveryController extends Controller
                     [
                         'form' => $form->createView(),
                         'recovery_token' => $recoveryToken,
-                        'recovery_token_set' => $recoveryTokenHandler->hasToken($user),
+                        'recovery_token_set' => $user->hasRecoveryToken(),
                     ]
                 );
             }
@@ -51,7 +51,7 @@ class RecoveryController extends Controller
         return $this->render('User/recovery_token.html.twig',
             [
                 'form' => $form->createView(),
-                'recovery_token_set' => $recoveryTokenHandler->hasToken($user),
+                'recovery_token_set' => $user->hasRecoveryToken(),
             ]
         );
     }

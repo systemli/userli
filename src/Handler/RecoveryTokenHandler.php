@@ -27,23 +27,13 @@ class RecoveryTokenHandler
     }
 
     /**
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function hasToken(User $user)
-    {
-        return (empty($user->getRecoveryCipher())) ? false : true;
-    }
-
-    /**
      * @param string $plainPassword
      * @param string $recoveryToken
      *
      * @return string
      * @throws \Exception
      */
-    private function tokenEncryptAsymmetric(string $plainPassword, string $recoveryToken)
+    private function tokenEncrypt(string $plainPassword, string $recoveryToken)
     {
         // use php sodium implementation for crypto stuff
         // commands taken from:
@@ -85,7 +75,7 @@ class RecoveryTokenHandler
      * @return string
      * @throws \Exception
      */
-    private function tokenReencryptAsymmetric(string $encrypted, string $plainPassword)
+    private function tokenReencrypt(string $encrypted, string $plainPassword)
     {
         // use php sodium implementation for crypto stuff
         // commands taken from:
@@ -128,7 +118,7 @@ class RecoveryTokenHandler
      * @return bool|string
      * @throws \Exception
      */
-    private function tokenDecryptAsymmetric(string $encrypted, string $recoveryToken)
+    private function tokenDecrypt(string $encrypted, string $recoveryToken)
     {
         // use php sodium implementation for crypto stuff
         // commands taken from:
@@ -198,7 +188,7 @@ class RecoveryTokenHandler
         $plainPassword = $user->getPlainPassword();
         $user->eraseCredentials();
 
-        $cipher = $this->tokenEncryptAsymmetric($plainPassword, $recoveryToken);
+        $cipher = $this->tokenEncrypt($plainPassword, $recoveryToken);
         $user->setRecoveryCipher($cipher);
 
         // Clear variables with confidential content from memory
@@ -221,6 +211,6 @@ class RecoveryTokenHandler
         $user->eraseCredentials();
 
         $cipher = $user->getRecoveryCipher();
-        $user->setRecoveryCipher($this->tokenReencryptAsymmetric($cipher, $plainPassword));
+        $user->setRecoveryCipher($this->tokenReencrypt($cipher, $plainPassword));
     }
 }
