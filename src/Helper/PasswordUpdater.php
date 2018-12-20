@@ -36,9 +36,8 @@ class PasswordUpdater
     /**
      * @param User        $user
      * @param string|null $plainPassword
-     * @param bool|null   $isRegistration
      */
-    public function updatePassword(User $user, string $plainPassword = null, bool $isRegistration = false)
+    public function updatePassword(User $user, string $plainPassword = null)
     {
         if (null === $plainPassword) {
             $plainPassword = $user->getPlainPassword();
@@ -53,8 +52,8 @@ class PasswordUpdater
 
         $user->setPassword($hash);
 
-        // Don't update recovery token on registration
-        if (! $isRegistration)
+        // Update recovery token only if set
+        if ($user->hasRecoveryToken())
         {
             $this->recoveryTokenHandler->update($user);
         }

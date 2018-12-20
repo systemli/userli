@@ -86,7 +86,7 @@ class RegistrationHandler
 
         $user = $this->buildUser($registration);
 
-        $this->passwordUpdater->updatePassword($user, null, true);
+        $this->passwordUpdater->updatePassword($user);
         $user->setPlainRecoveryToken($this->recoveryTokenHandler->create($user));
         $this->manager->persist($user);
         $this->manager->flush();
