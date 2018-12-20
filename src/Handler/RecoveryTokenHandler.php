@@ -12,6 +12,13 @@ use Ramsey\Uuid\Uuid;
 class RecoveryTokenHandler
 {
     /**
+     * Using PHP sodium implementation for crypto stuff. Commands taken from:
+     * * https://secure.php.net/manual/en/intro.sodium.php#122003
+     * * https://www.zimuel.it/slides/phpday2018/sodium
+     * * https://paragonie.com/blog/2017/06/libsodium-quick-reference-quick-comparison-similar-functions-and-which-one-use
+     */
+
+    /**
      * @var ObjectManager
      */
     private $manager;
@@ -26,6 +33,41 @@ class RecoveryTokenHandler
         $this->manager = $manager;
     }
 
+    public function tokenGenerate()
+    {
+        // generate a version 4 (random) UUID object
+        return(Uuid::uuid4()->toString());
+    }
+
+    /**
+     * @param string $encrypted
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function cipherDecode(string $encrypted)
+    {
+        $decoded = base64_decode($encrypted, true);
+
+        // check for general failures
+        if (false === $decoded) {
+            throw new \Exception('Base64 decoding of encrypted message failed');
+        }
+
+        // check for incomplete message
+        if (mb_strlen($decoded, '8bit') < (SODIUM_CRYPTO_BOX_PUBLICKEYBYTES + SODIUM_CRYPTO_PWHASH_SALTBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES)) {
+            throw new \Exception('The encrypted message was truncated');
+        }
+
+        // derive pubkey, salt and encrypted cipher text from $decoded
+        return [
+            'pubKey' => mb_substr($decoded, 0, SODIUM_CRYPTO_BOX_PUBLICKEYBYTES, '8bit'),
+            'keySalt' => mb_substr($decoded, SODIUM_CRYPTO_BOX_PUBLICKEYBYTES, SODIUM_CRYPTO_PWHASH_SALTBYTES, '8bit'),
+            'cipherText' => mb_substr($decoded, SODIUM_CRYPTO_BOX_PUBLICKEYBYTES + SODIUM_CRYPTO_PWHASH_SALTBYTES, null, '8bit'),
+
+        ];
+    }
+
     /**
      * @param string $plainPassword
      * @param string $recoveryToken
@@ -33,13 +75,8 @@ class RecoveryTokenHandler
      * @return string
      * @throws \Exception
      */
-    private function tokenEncrypt(string $plainPassword, string $recoveryToken)
+    public function tokenEncrypt(string $plainPassword, string $recoveryToken)
     {
-        // use php sodium implementation for crypto stuff
-        // commands taken from:
-        // * https://secure.php.net/manual/en/intro.sodium.php#122003
-        // * https://www.zimuel.it/slides/phpday2018/sodium
-
         // generate salt for symmetric encryption key
         $keySalt = random_bytes(SODIUM_CRYPTO_PWHASH_SALTBYTES);
 
@@ -75,38 +112,16 @@ class RecoveryTokenHandler
      * @return string
      * @throws \Exception
      */
-    private function tokenReencrypt(string $encrypted, string $plainPassword)
+    public function tokenReencrypt(string $encrypted, string $plainPassword)
     {
-        // use php sodium implementation for crypto stuff
-        // commands taken from:
-        // * https://secure.php.net/manual/en/intro.sodium.php#122003
-        // * https://www.zimuel.it/slides/phpday2018/sodium
-
-        $decoded = base64_decode($encrypted);
-
-        // check for general failures
-        if (false === $decoded) {
-            throw new \Exception('Base64 decoding of encrypted message failed');
-        }
-
-        // check for incomplete message
-        if (mb_strlen($decoded, '8bit') < (SODIUM_CRYPTO_BOX_PUBLICKEYBYTES + SODIUM_CRYPTO_PWHASH_SALTBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES)) {
-            throw new \Exception('The encrypted message was truncated');
-        }
-
-        // derive pubkey, salt and encrypted cipher text from $encrypted
-        $pubKey = mb_substr($decoded, 0, SODIUM_CRYPTO_BOX_PUBLICKEYBYTES, '8bit');
-        $keySalt = mb_substr($decoded, SODIUM_CRYPTO_BOX_PUBLICKEYBYTES, SODIUM_CRYPTO_PWHASH_SALTBYTES, '8bit');
-        $cipherText = mb_substr($decoded, SODIUM_CRYPTO_BOX_PUBLICKEYBYTES + SODIUM_CRYPTO_PWHASH_SALTBYTES, null, '8bit');
+        $decodedCipher = $this->cipherDecode($encrypted);
 
         // encrypt message
-        $cipher = base64_encode($pubKey . $keySalt . sodium_crypto_box_seal($plainPassword, $pubKey));
+        $cipher = base64_encode($decodedCipher['pubKey'] . $decodedCipher['keySalt'] . sodium_crypto_box_seal($plainPassword, $decodedCipher['pubKey']));
 
         // cleanup variables with confidential content
         sodium_memzero($encrypted);
         sodium_memzero($plainPassword);
-        sodium_memzero($decoded);
-        sodium_memzero($cipherText);
 
         return $cipher;
     }
@@ -118,35 +133,15 @@ class RecoveryTokenHandler
      * @return bool|string
      * @throws \Exception
      */
-    private function tokenDecrypt(string $encrypted, string $recoveryToken)
+    public function tokenDecrypt(string $encrypted, string $recoveryToken)
     {
-        // use php sodium implementation for crypto stuff
-        // commands taken from:
-        // * https://secure.php.net/manual/en/intro.sodium.php#122003
-        // * https://www.zimuel.it/slides/phpday2018/sodium
-
-        $decoded = base64_decode($encrypted);
-
-        // check for general failures
-        if (false === $decoded) {
-            throw new \Exception('Base64 decoding of encrypted message failed');
-        }
-
-        // check for incomplete message
-        if (mb_strlen($decoded, '8bit') < (SODIUM_CRYPTO_BOX_PUBLICKEYBYTES + SODIUM_CRYPTO_PWHASH_SALTBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES)) {
-            throw new \Exception('The encrypted message was truncated');
-        }
-
-        // derive pubkey, salt and encrypted cipher text from $encrypted
-        $pubKey = mb_substr($decoded, 0, SODIUM_CRYPTO_BOX_PUBLICKEYBYTES, '8bit');
-        $keySalt = mb_substr($decoded, SODIUM_CRYPTO_BOX_PUBLICKEYBYTES, SODIUM_CRYPTO_PWHASH_SALTBYTES, '8bit');
-        $cipherText = mb_substr($decoded, SODIUM_CRYPTO_BOX_PUBLICKEYBYTES + SODIUM_CRYPTO_PWHASH_SALTBYTES, null, '8bit');
+        $decodedCipher = $this->cipherDecode($encrypted);
 
         // generate symmetric encryption key from key and salt
         $key = sodium_crypto_pwhash(
             32,
             $recoveryToken,
-            $keySalt,
+            $decodedCipher['keySalt'],
             SODIUM_CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE,
             SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE
         );
@@ -155,18 +150,11 @@ class RecoveryTokenHandler
         $keyPair = sodium_crypto_box_seed_keypair($key);
 
         // decrypt message
-        $message = sodium_crypto_box_seal_open($cipherText, $keyPair);
-
-        // check for decryption failures
-        if (false === $message) {
-            throw new \Exception('The encrypted message was tampered with in transit');
-        }
+        $message = sodium_crypto_box_seal_open($decodedCipher['cipherText'], $keyPair);
 
         // cleanup variables with confidential content
         sodium_memzero($encrypted);
         sodium_memzero($recoveryToken);
-        sodium_memzero($decoded);
-        sodium_memzero($cipherText);
         sodium_memzero($key);
         sodium_memzero($keyPair);
 
@@ -181,8 +169,7 @@ class RecoveryTokenHandler
      */
     public function create(User $user)
     {
-        // generate a version 4 (random) UUID object
-        $recoveryToken = Uuid::uuid4()->toString();
+        $recoveryToken = $this->tokenGenerate();
 
         // get plain user password to be encrypted
         $plainPassword = $user->getPlainPassword();
