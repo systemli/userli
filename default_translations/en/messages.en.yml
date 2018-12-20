@@ -120,7 +120,7 @@ recovery-token:
   set: You have a recovery token set already.
   set-extra: Generating a new one will invalidate the current one.
   unset: You don't have a recovery token set yet. We strongly recommend to generate one now.
-  created-headline: The following  recovery token got created for you:
+  created-headline: The following recovery token got created for you:
   created-info: If you lost your password, this token is the only way to recover access to your account. Note it down and store it at a secure place.
   displayed-once: The code gets displayed only once. If you loose it, you can generate a new one.
   next-button: I stored the recovery token at a secure place
