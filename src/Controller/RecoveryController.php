@@ -21,7 +21,7 @@ class RecoveryController extends Controller
      *
      * @return Response
      */
-    public function recoveryProcessAction(Request $request)
+    public function recoveryProcessAction(Request $request): Response
     {
         $processState = 'NONE';
         $form = $this->createForm(RecoveryProcessType::class, new RecoveryProcess());
@@ -33,13 +33,13 @@ class RecoveryController extends Controller
                 $userRepository = $this->get('doctrine')->getRepository('App:User');
 
                 if (null !== $user = $userRepository->findByEmail($request->get('recovery_process')['username'])) {
-                    $recoveryProcessTime = $user->getRecoveryProcessTime();
+                    $recoveryStartTime = $user->getRecoveryStartTime();
 
-                    if (null === $recoveryProcessTime || new \DateTime('-30 days') >= $recoveryProcessTime) {
+                    if (null === $recoveryStartTime || new \DateTime('-30 days') >= $recoveryStartTime) {
                         $processState = 'STARTED';
-                        $user->updateRecoveryProcessTime();
+                        $user->updateRecoveryStartTime();
                         $this->getDoctrine()->getManager()->flush();
-                    } else if (new \DateTime('-2 days') <= $recoveryProcessTime) {
+                    } else if (new \DateTime('-2 days') <= $recoveryStartTime) {
                         $processState = 'PENDING';
                     } else {
                         $processState = 'ACTIVE';
@@ -64,7 +64,7 @@ class RecoveryController extends Controller
      *
      * @return Response
      */
-    public function recoveryTokenAction(Request $request)
+    public function recoveryTokenAction(Request $request): Response
     {
         $user = $this->getUser();
         $recoveryTokenHandler = $this->getRecoveryTokenHandler();
@@ -82,7 +82,7 @@ class RecoveryController extends Controller
                     [
                         'form' => $form->createView(),
                         'recovery_token' => $recoveryToken,
-                        'recovery_token_set' => $user->hasRecoveryToken(),
+                        'recovery_secret_set' => $user->hasRecoverySecret(),
                     ]
                 );
             }
@@ -91,7 +91,7 @@ class RecoveryController extends Controller
         return $this->render('User/recovery_token.html.twig',
             [
                 'form' => $form->createView(),
-                'recovery_token_set' => $user->hasRecoveryToken(),
+                'recovery_secret_set' => $user->hasRecoverySecret(),
             ]
         );
     }
@@ -99,7 +99,7 @@ class RecoveryController extends Controller
     /**
      * @return RecoveryTokenHandler
      */
-    private function getRecoveryTokenHandler()
+    private function getRecoveryTokenHandler(): RecoveryTokenHandler
     {
         return $this->get('App\Handler\RecoveryTokenHandler');
     }

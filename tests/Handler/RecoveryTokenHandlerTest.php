@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Handler\RecoveryTokenHandler;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class RecoveryTokenHandlerTest extends TestCase
 {
@@ -15,25 +16,15 @@ class RecoveryTokenHandlerTest extends TestCase
             ->disableOriginalConstructor()->getMock();
         $objectManager->expects($this->any())->method('flush')->willReturn(true);
 
-        return new RecoveryTokenHandler($objectManager);
+        $encoderFactory = $this->getMockBuilder(EncoderFactoryInterface::class)
+            ->disableOriginalConstructor()->getMock();
+
+        return new RecoveryTokenHandler($objectManager, $encoderFactory);
     }
 
-    public function testTokenEncryptDecrypt()
+    public function testCreateUpdateVerifyToken()
     {
-        $handler = $this->createHandler();
-
-        $plainPassword = 'password';
-        $recoveryToken = $handler->tokenGenerate();
-
-        $cipher = $handler->tokenEncrypt($plainPassword, $recoveryToken);
-        $message = $handler->tokenDecrypt($cipher, $recoveryToken);
-
-        self::assertEquals($plainPassword, $message);
-    }
-
-    public function testTokenCreateUpdateDecrypt()
-    {
-        // Test creating and decrypting
+        // Test create and verify
 
         $handler = $this->createHandler();
         $plainPassword = 'password';
@@ -44,44 +35,18 @@ class RecoveryTokenHandlerTest extends TestCase
         $user->setPlainPassword($plainPassword);
         $recoveryToken = $handler->create($user);
 
-        $message = $handler->tokenDecrypt($user->getRecoveryCipher(), $recoveryToken);
-        self::assertEquals($plainPassword, $message);
+        self::assertTrue($handler->verify($user, $recoveryToken));
+        self::assertFalse($handler->verify($user, 'brokenToken'));
 
-        $message = $handler->tokenDecrypt($user->getRecoveryCipher(), 'brokenToken');
-        self::assertNotEquals($plainPassword, $message);
-
-        // Test updating with stored public key and decrypting
+        // Test update with stored public key and verify
 
         $plainPassword = 'password_new';
 
         $user->setPlainPassword($plainPassword);
         $handler->update($user);
 
-        $message = $handler->tokenDecrypt($user->getRecoveryCipher(), $recoveryToken);
-        self::assertEquals($plainPassword, $message);
-
-        $message = $handler->tokenDecrypt($user->getRecoveryCipher(), 'brokenToken');
-        self::assertNotEquals($plainPassword, $message);
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Base64 decoding of encrypted message failed
-     */
-    public function testTokenDecodeExceptionBase64()
-    {
-        $handler = $this->createHandler();
-        $handler->cipherDecode('brokenbase64%%%');
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage The encrypted message was truncated
-     */
-    public function testTokenDecodeExceptionTruncated()
-    {
-        $handler = $this->createHandler();
-        $handler->cipherDecode('shortcipher');
+        self::assertTrue($handler->verify($user, $recoveryToken));
+        self::assertFalse($handler->verify($user, 'brokenToken'));
     }
 
     public function testCreate()
@@ -102,11 +67,11 @@ class RecoveryTokenHandlerTest extends TestCase
 
         $user->setPlainPassword('password');
         $handler->create($user);
-        $cipher = $user->getRecoveryCipher();
+        $cipher = $user->getRecoverySecret();
 
         $user->setPlainPassword('password');
         $handler->update($user);
-        $cipherNew = $user->getRecoveryCipher();
+        $cipherNew = $user->getRecoverySecret();
 
         self::assertNotEquals($cipher, $cipherNew);
     }

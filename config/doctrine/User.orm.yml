@@ -38,10 +38,10 @@ App\Entity\User:
       nullable: true
     passwordVersion:
       type: integer
-    recoveryCipher:
+    recoverySecret:
       type: string
       nullable: true
-    recoveryProcessTime:
+    recoveryStartTime:
       type: datetime
       nullable: true
 

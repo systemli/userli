@@ -2,7 +2,9 @@
 
 namespace App\Handler;
 
+use App\Creator\RecoverySecretCreator;
 use App\Entity\User;
+use App\Model\RecoverySecret;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -13,16 +15,14 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 class RecoveryTokenHandler
 {
     /**
-     * Using PHP sodium implementation for crypto stuff. Commands taken from:
-     * * https://secure.php.net/manual/en/intro.sodium.php#122003
-     * * https://www.zimuel.it/slides/phpday2018/sodium
-     * * https://paragonie.com/blog/2017/06/libsodium-quick-reference-quick-comparison-similar-functions-and-which-one-use
-     */
-
-    /**
      * @var ObjectManager
      */
     private $manager;
+
+    /**
+     * @var EncoderFactoryInterface
+     */
+    private $encoderFactory;
 
     /**
      * RecoveryTokenHandler constructor.
@@ -36,115 +36,29 @@ class RecoveryTokenHandler
         $this->encoderFactory = $encoderFactory;
     }
 
-    public function tokenGenerate()
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    public function generateToken(): string
     {
         // generate a version 4 (random) UUID object
-        return(strtolower(Uuid::uuid4()->toString()));
+        return strtolower(Uuid::uuid4()->toString());
     }
 
     /**
-     * @param string $encrypted
-     *
-     * @return array
-     * @throws \Exception
-     */
-    public function cipherDecode(string $encrypted)
-    {
-        $decoded = base64_decode($encrypted, true);
-
-        // check for general failures
-        if (false === $decoded) {
-            throw new \Exception('Base64 decoding of encrypted message failed');
-        }
-
-        // check for incomplete message
-        if (mb_strlen($decoded, '8bit') < (SODIUM_CRYPTO_BOX_PUBLICKEYBYTES + SODIUM_CRYPTO_PWHASH_SALTBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES)) {
-            throw new \Exception('The encrypted message was truncated');
-        }
-
-        // derive pubkey, salt and encrypted cipher text from $decoded
-        return [
-            'pubKey' => mb_substr($decoded, 0, SODIUM_CRYPTO_BOX_PUBLICKEYBYTES, '8bit'),
-            'keySalt' => mb_substr($decoded, SODIUM_CRYPTO_BOX_PUBLICKEYBYTES, SODIUM_CRYPTO_PWHASH_SALTBYTES, '8bit'),
-            'cipherText' => mb_substr($decoded, SODIUM_CRYPTO_BOX_PUBLICKEYBYTES + SODIUM_CRYPTO_PWHASH_SALTBYTES, null, '8bit'),
-
-        ];
-    }
-
-    /**
-     * @param string $plainPassword
-     * @param string $recoveryToken
+     * @param RecoverySecret $recoverySecret
+     * @param string         $recoveryToken
      *
      * @return string
-     * @throws \Exception
      */
-    public function tokenEncrypt(string $plainPassword, string $recoveryToken)
+    public function decryptToken(RecoverySecret $recoverySecret, string $recoveryToken): string
     {
-        // generate salt for symmetric encryption key
-        $keySalt = random_bytes(SODIUM_CRYPTO_PWHASH_SALTBYTES);
-
         // generate symmetric encryption key from key and salt
         $key = sodium_crypto_pwhash(
             32,
             $recoveryToken,
-            $keySalt,
-            SODIUM_CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE,
-            SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE
-        );
-
-        // generate a key pair from the symmetric key
-        $keyPair = sodium_crypto_box_seed_keypair($key);
-        $pubKey = sodium_crypto_box_publickey($keyPair);
-
-        // encrypt message
-        $cipher = base64_encode($pubKey . $keySalt . sodium_crypto_box_seal($plainPassword, $pubKey));
-
-        // cleanup variables with confidential content
-        sodium_memzero($plainPassword);
-        sodium_memzero($recoveryToken);
-        sodium_memzero($key);
-        sodium_memzero($keyPair);
-
-        return $cipher;
-    }
-
-    /**
-     * @param string $encrypted
-     * @param string $plainPassword
-     *
-     * @return string
-     * @throws \Exception
-     */
-    public function tokenReencrypt(string $encrypted, string $plainPassword)
-    {
-        $decodedCipher = $this->cipherDecode($encrypted);
-
-        // encrypt message
-        $cipher = base64_encode($decodedCipher['pubKey'] . $decodedCipher['keySalt'] . sodium_crypto_box_seal($plainPassword, $decodedCipher['pubKey']));
-
-        // cleanup variables with confidential content
-        sodium_memzero($encrypted);
-        sodium_memzero($plainPassword);
-
-        return $cipher;
-    }
-
-    /**
-     * @param string $encrypted
-     * @param string $recoveryToken
-     *
-     * @return bool|string
-     * @throws \Exception
-     */
-    public function tokenDecrypt(string $encrypted, string $recoveryToken)
-    {
-        $decodedCipher = $this->cipherDecode($encrypted);
-
-        // generate symmetric encryption key from key and salt
-        $key = sodium_crypto_pwhash(
-            32,
-            $recoveryToken,
-            $decodedCipher['keySalt'],
+            $recoverySecret->getSalt(),
             SODIUM_CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE,
             SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE
         );
@@ -153,7 +67,7 @@ class RecoveryTokenHandler
         $keyPair = sodium_crypto_box_seed_keypair($key);
 
         // decrypt message
-        $message = sodium_crypto_box_seal_open($decodedCipher['cipherText'], $keyPair);
+        $message = sodium_crypto_box_seal_open($recoverySecret->getSecret(), $keyPair);
 
         // cleanup variables with confidential content
         sodium_memzero($encrypted);
@@ -170,16 +84,16 @@ class RecoveryTokenHandler
      * @return string
      * @throws \Exception
      */
-    public function create(User $user)
+    public function create(User $user): string
     {
-        $recoveryToken = $this->tokenGenerate();
+        $recoveryToken = $this->generateToken();
 
         // get plain user password to be encrypted
         $plainPassword = $user->getPlainPassword();
         $user->eraseCredentials();
 
-        $cipher = $this->tokenEncrypt($plainPassword, $recoveryToken);
-        $user->setRecoveryCipher($cipher);
+        $recoverySecret = RecoverySecretCreator::create($plainPassword, $recoveryToken);
+        $user->setRecoverySecret($recoverySecret->encode());
 
         // Clear variables with confidential content from memory
         sodium_memzero($plainPassword);
@@ -200,21 +114,29 @@ class RecoveryTokenHandler
         $plainPassword = $user->getPlainPassword();
         $user->eraseCredentials();
 
-        $cipher = $user->getRecoveryCipher();
-        $user->setRecoveryCipher($this->tokenReencrypt($cipher, $plainPassword));
+        $secret = $user->getRecoverySecret();
+        $user->setRecoverySecret(RecoverySecret::reEncrypt($secret, $plainPassword)->encode());
     }
 
-    public function verify(User $user, string $recoveryToken)
+    /**
+     * @param User   $user
+     * @param string $recoveryToken
+     *
+     * @return bool
+     */
+    public function verify(User $user, string $recoveryToken): bool
     {
-        if (! $user->hasRecoveryToken()) {
+        if (! $user->hasRecoverySecret()) {
             return false;
         }
 
         try {
-            $decrypted = $this->tokenDecrypt($user->getRecoveryCipher(), strtolower($recoveryToken));
+            $recoverySecret = RecoverySecret::decode($user->getRecoverySecret());
         } catch (\Exception $e) {
             return false;
         }
+        //$decrypted = $this->decryptToken($user->getRecoverySecret(), strtolower($recoveryToken));
+        $decrypted = $this->decryptToken($recoverySecret, strtolower($recoveryToken));
 
         $encoder = $this->encoderFactory->getEncoder($user);
         if (!$encoder->isPasswordValid($user->getPassword(), $decrypted, $user->getSalt())) {

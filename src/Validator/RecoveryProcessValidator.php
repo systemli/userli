@@ -47,7 +47,7 @@ class RecoveryProcessValidator extends ConstraintValidator
      *
      * @return bool
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): bool
     {
         if (!$value instanceof RecoveryProcess) {
             throw new UnexpectedTypeException('Wrong value type given', 'App\Form\Model\RecoveryProcess');

@@ -52,8 +52,8 @@ class PasswordUpdater
 
         $user->setPassword($hash);
 
-        // Update recovery token only if set
-        if ($user->hasRecoveryToken())
+        // Update recovery secret only if set
+        if ($user->hasRecoverySecret())
         {
             $this->recoveryTokenHandler->update($user);
         }

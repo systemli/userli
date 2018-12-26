@@ -14,7 +14,7 @@ class RecoveryProcessTypeTest extends TypeTestCase
         $recoveryToken = 'recovery-token';
         $formData = [
             'username' => $username,
-            'recovery_token' => $recoveryToken,
+            'recoveryToken' => $recoveryToken,
             ];
 
         $form = $this->factory->create(RecoveryProcessType::class);

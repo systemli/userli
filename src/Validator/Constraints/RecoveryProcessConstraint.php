@@ -9,11 +9,17 @@ use Symfony\Component\Validator\Constraint;
  */
 class RecoveryProcessConstraint extends Constraint
 {
-    public function validatedBy()
+    /**
+     * @return string
+     */
+    public function validatedBy(): string
     {
         return 'recovery_process';
     }
 
+    /**
+     * @return array|string
+     */
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;

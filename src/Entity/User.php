@@ -15,8 +15,8 @@ use App\Traits\PasswordVersionTrait;
 use App\Traits\PlainPasswordTrait;
 use App\Traits\PlainRecoveryTokenTrait;
 use App\Traits\QuotaTrait;
-use App\Traits\RecoveryCipherTrait;
-use App\Traits\RecoveryProcessTimeTrait;
+use App\Traits\RecoverySecretTrait;
+use App\Traits\RecoveryStartTimeTrait;
 use App\Traits\SaltTrait;
 use App\Traits\UpdatedTimeTrait;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
@@ -29,7 +29,7 @@ class User implements UserInterface, EncoderAwareInterface
 {
     use IdTrait, CreationTimeTrait, UpdatedTimeTrait, EmailTrait, QuotaTrait, PasswordTrait, SaltTrait, DeleteTrait,
         InvitationVoucherTrait, PlainPasswordTrait, DomainAwareTrait, LastLoginTimeTrait, PasswordVersionTrait,
-        RecoveryCipherTrait, PlainRecoveryTokenTrait, RecoveryProcessTimeTrait;
+        RecoverySecretTrait, PlainRecoveryTokenTrait, RecoveryStartTimeTrait;
 
     const CURRENT_PASSWORD_VERSION = 2;
 
@@ -100,13 +100,5 @@ class User implements UserInterface, EncoderAwareInterface
 
         // use default encoder
         return null;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasRecoveryToken()
-    {
-        return ($this->getRecoveryCipher()) ? true : false;
     }
 }

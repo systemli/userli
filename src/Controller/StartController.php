@@ -222,7 +222,7 @@ class StartController extends Controller
                 'user' => $user,
                 'user_domain' => $user->getDomain(),
                 'password_form' => $passwordChangeForm->createView(),
-                'recovery_token_set' => $user->hasRecoveryToken(),
+                'recovery_secret_set' => $user->hasRecoverySecret(),
             ]
         );
     }
