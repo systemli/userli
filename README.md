@@ -8,8 +8,6 @@
 
 * Requirements:
   * [PHP >= 7.1](https://secure.php.net/)
-  * [PHP composer](https://getcomposer.org/)
-  * [Node.js Yarn](https://yarnpkg.com/)
   * [MariaDB](https://mariadb.org/) or [MySQL](https://mysql.com/)
   * [libsodium](https://download.libsodium.org/doc/)
 
@@ -24,9 +22,12 @@ Configure prerequisites:
     mysql -e 'GRANT DELETE ON mail.virtual_aliases TO `mailuser`@`localhost`'
     mysql -e 'GRANT DELETE ON mail.virtual_vouchers TO `mailuser`@`localhost`'
 
-    # Clone repository
-    git clone https://github.com/systemli/user-management/
-    cd user-management
+Get the [latest release](https://github.com/systemli/user-management/releases/latest):
+
+    mkdir user-management && cd user-management 
+    wget https://github.com/systemli/user-management/releases/download/1.x.0/user-management-1.x.0.tar.gz
+    # Check signature and hash sum, if you know how to
+    tar -xvzf user-management-1.x.0.tar.gz
 
     # Copy .env file
     cp .env.dist .env
@@ -50,12 +51,6 @@ Configure the application in `.env`:
     LOCALE=en
     HAS_SINA_BOX=false
 
-Install PHP dependencies and application
-
-    composer install --no-dev
-    composer dump-autoload -o
-
-
 Finalize setup:
 
     # Create default database schema
@@ -66,10 +61,6 @@ Finalize setup:
 
     # Warm up cache
     bin/console cache:warmup
-
-    # Initialize yarn and generate assets
-    yarn --pure-lockfile
-    yarn encore production
 
 ## Cronjobs
 
@@ -166,6 +157,14 @@ Example configuration for using checkpassword in Dovecot:
     }
 
 ## Creating release tarballs
+
+First, you'll need a [Github API token](https://github.com/settings/tokens).
+The token needs the following priviledges:
+
+    public_repo, repo:status, repo_deployment
+
+Now, execute the following script. It will create a version tag, release and
+copy the info from `CHANGELOG.md` to the release info.
 
     $ GITHUB_API_TOKEN=<token> GPG_SIGN_KEY="<key_id>" ./bin/github-release.sh <version>
 
