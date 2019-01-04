@@ -1,4 +1,4 @@
-# 1.6.0 (UNRELEASED)
+# 1.6.0 (2019.01.04)
 
 * Add a role for detected spammers (Fixes: #77)
 * Split startpage into subpages (Fixes: #43)
