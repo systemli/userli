@@ -1,5 +1,6 @@
 # 1.6.0 (UNRELEASED)
 
+* Add a role for detected spammers (Fixes: #77)
 * Split startpage into subpages (Fixes: #43)
 * Reverse order of vouchers, display newest vouchers first
 * Fix when users updatedTime is updated (Fixes: #71)

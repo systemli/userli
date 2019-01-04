@@ -27,6 +27,11 @@ class FeatureContext extends MinkContext
     private $placeholders = array();
 
     /**
+     * @var string
+     */
+    private $output;
+
+    /**
      * @Given /^the database is clean$/
      */
     public function theDatabaseIsClean()
@@ -277,6 +282,23 @@ class FeatureContext extends MinkContext
     public function setHttpHeaderto($name, $value)
     {
         $this->getSession()->setRequestHeader($name, $value);
+    }
+
+    /**
+     * @When I run console command :command
+     */
+    public function iRunConsoleCommand($command)
+    {
+        $this->output = shell_exec("php bin/console " . $command);
+    }
+    /**
+     * @Then I should see :string in the output
+     */
+    public function iShouldSeeInTheOutput($string)
+    {
+        if (strpos($this->output, $string) === false) {
+            throw new \Exception(sprintf('Did not see "%s" in output "%s"', $string, $this->output));
+        }
     }
 
     /**

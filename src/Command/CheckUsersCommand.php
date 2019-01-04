@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Enum\Roles;
 use App\Handler\UserAuthenticationHandler;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -64,10 +65,16 @@ class CheckUsersCommand extends Command
         // Check if user exists
         $user = $this->repository->findByEmail($email);
 
+        // test password
         if ($password && null !== $user) {
-            // test password
             $password = $password[0];
-            $user = $this->handler->authenticate($user, $password);
+
+            // spammers not allowed to authenticate via checkpassword
+            if ($user->hasRole(Roles::SPAM)) {
+                $user = null;
+            } else {
+                $user = $this->handler->authenticate($user, $password);
+            }
         }
 
         // exit if user not present or not authenticated

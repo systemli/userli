@@ -59,6 +59,10 @@ security:
         ROLE_USRMGMT_ADMIN_RESERVEDNAME_ADMIN:
             - ROLE_USRMGMT_ADMIN_RESERVEDNAME_ALL
 
+        # Spam account is always suspicious
+        ROLE_SPAM:
+            - ROLE_SUSPICIOUS
+
         ROLE_SUPPORT:
             - ROLE_USER
         ROLE_DOMAIN_ADMIN:
@@ -98,7 +102,7 @@ security:
       - { path: ^/welcome, roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: ^/admin, roles: ROLE_DOMAIN_ADMIN }
-      - { path: ^/voucher,
-          roles: ROLE_USER,
-          allow_if: "!has_role('ROLE_SUSPICIOUS')" }
+      - { path: ^/voucher, roles: ROLE_USER, allow_if: "!has_role('ROLE_SUSPICIOUS')"}
+      - { path: ^/alias, roles: ROLE_USER, allow_if: "!has_role('ROLE_SPAM')"}
+      - { path: ^/account, roles: ROLE_USER, allow_if: "!has_role('ROLE_SPAM')"}
       - { path: ^/, roles: ROLE_USER }

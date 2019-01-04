@@ -7,6 +7,7 @@ namespace App\Enum;
  */
 final class Roles
 {
+    const SPAM = 'ROLE_SPAM';
     const SUSPICIOUS = 'ROLE_SUSPICIOUS';
     const USER = 'ROLE_USER';
     const SUPPORT = 'ROLE_SUPPORT';
@@ -19,6 +20,7 @@ final class Roles
     public static function getAll()
     {
         return array(
+            self::SPAM => self::SPAM,
             self::SUSPICIOUS => self::SUSPICIOUS,
             self::USER => self::USER,
             self::SUPPORT => self::SUPPORT,

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}{{ "spam.title"|trans({'%domain%': domain}) }}{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-10 col-md-10">
+            <h1>{{ "spam.title"|trans({'%domain%': domain}) }}</h1>
+
+            <p class="lead">{{ "spam.text"|trans }}</p>
+        </div>
+    </div>
+
+{% endblock %}

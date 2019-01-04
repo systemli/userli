@@ -10,6 +10,7 @@ Feature: Login
       | louis@example.org   | asdasd   | ROLE_ADMIN   |
       | support@example.org | asdasd   | ROLE_SUPPORT |
       | user@example.org    | asdasd   | ROLE_USER    |
+      | spam@example.org    | asdasd   | ROLE_SPAM    |
 
   @login
   Scenario: Login as User
@@ -48,7 +49,7 @@ Feature: Login
   @login
   Scenario: Login as Admin
     When I am on "/login"
-    When I fill in the following:
+    And I fill in the following:
       | username | user@example.org |
       | password | asdasd           |
     And I press "Sign in"
@@ -59,7 +60,7 @@ Feature: Login
   @login
   Scenario: Login as Support
     When I am on "/login"
-    When I fill in the following:
+    And I fill in the following:
       | username | support@example.org |
       | password | asdasd              |
     And I press "Sign in"
@@ -70,7 +71,7 @@ Feature: Login
   @login
   Scenario: Login without domain
     When I am on "/login"
-    When I fill in the following:
+    And I fill in the following:
       | username | user   |
       | password | asdasd |
     And I press "Sign in"
@@ -106,3 +107,15 @@ Feature: Login
     And I am on "/logout"
 
     Then I should see text matching "You have been successfully logged out!"
+
+  @login
+  Scenario: Login as Spam
+    When I am on "/login"
+    And I fill in the following:
+      | username | spam@example.org |
+      | password | asdasd              |
+    And I press "Sign in"
+
+    Then I should be on "/"
+    And the response status code should be 200
+    And I should see text matching "disabled mail access"
