@@ -52,12 +52,12 @@ git tag --sign --message "Release $version" "$version"
 
 # create release tarball
 tarball="build/user-management-$(git --no-pager describe --tags --always).tar.gz"
-build_cmd="make release"
 if [ "$vagrant" = "yes" ]; then
 	(cd vagrant/;
 	 vagrant up;
 	 vagrant ssh -c 'tempdir="$(mktemp -d)";
 	                 git clone /vagrant "$tempdir";
+			 cd /vagrant && make prepare;
 			 (cd "$tempdir";
                           make release;
                           cp -a build/user-management* /vagrant/build/);
