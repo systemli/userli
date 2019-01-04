@@ -43,7 +43,7 @@ before_install:
   - sudo apt-get install -y libsodium-dev
 
 install:
-  - printf "\n" | pecl install libsodium
+  - printf "\n" | pecl install libsodium-2.0.13
   - composer install
 
 script:
