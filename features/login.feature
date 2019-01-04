@@ -10,6 +10,7 @@ Feature: Login
       | louis@example.org   | asdasd   | ROLE_ADMIN   |
       | support@example.org | asdasd   | ROLE_SUPPORT |
       | user@example.org    | asdasd   | ROLE_USER    |
+      | spam@example.org    | asdasd   | ROLE_SPAM    |
 
   @login
   Scenario: Login as User
@@ -106,3 +107,15 @@ Feature: Login
     And I am on "/logout"
 
     Then I should see text matching "You have been successfully logged out!"
+
+  @login
+  Scenario: Login as Spam
+    When I am on "/login"
+    When I fill in the following:
+      | username | spam@example.org |
+      | password | asdasd              |
+    And I press "Sign in"
+
+    Then I should be on "/"
+    And the response status code should be 200
+    And I should see text matching "disabled mail access"
