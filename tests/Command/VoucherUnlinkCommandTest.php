@@ -71,6 +71,7 @@ class VoucherUnlinkCommandTest extends TestCase
 
     /**
      * @return array|mixed
+     *
      * @throws \Exception
      */
     public function getResult()

@@ -100,6 +100,7 @@ class VoucherUnlinkCommand extends Command
 
     /**
      * @param Voucher[] $vouchers
+     *
      * @return string[]
      */
     public function getSuspiciousChildren(array $vouchers): array

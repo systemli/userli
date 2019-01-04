@@ -86,6 +86,6 @@ class LoginListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
-            LoginEvent::NAME => 'onLogin'];
+            LoginEvent::NAME => 'onLogin', ];
     }
 }

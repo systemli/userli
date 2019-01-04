@@ -4,7 +4,6 @@ namespace App\Tests\Handler;
 
 use App\Entity\User;
 use App\Handler\UserAuthenticationHandler;
-use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;

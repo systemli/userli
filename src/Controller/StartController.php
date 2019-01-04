@@ -85,6 +85,7 @@ class StartController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function voucherAction(Request $request)
@@ -120,11 +121,11 @@ class StartController extends Controller
                 'voucher_form' => $voucherCreateForm->createView(),
             ]
         );
-
     }
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function aliasAction(Request $request)
@@ -166,7 +167,6 @@ class StartController extends Controller
         $aliasesRandom = $aliasRepository->findByUser($user, true);
         $aliasesCustom = $aliasRepository->findByUser($user, false);
 
-
         return $this->render(
             'Start/aliases.html.twig',
             [
@@ -184,6 +184,7 @@ class StartController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function accountAction(Request $request)

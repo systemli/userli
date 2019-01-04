@@ -31,6 +31,7 @@ class LoginListenerTest extends TestCase
      * @var LoginListener
      */
     private $listener;
+
     public function setUp()
     {
         $this->manager = $this->getMockBuilder(ObjectManager::class)
@@ -40,8 +41,8 @@ class LoginListenerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->listener = new LoginListener($this->manager, $this->passwordUpdater);
-
     }
+
     /**
      * @dataProvider provider
      *
@@ -117,9 +118,10 @@ class LoginListenerTest extends TestCase
         return $user;
     }
 
-    public function testGetSubscribedEvents() {
+    public function testGetSubscribedEvents()
+    {
         $this->assertEquals($this->listener->getSubscribedEvents(),
             [SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
-                LoginEvent::NAME => 'onLogin']);
+                LoginEvent::NAME => 'onLogin', ]);
     }
 }

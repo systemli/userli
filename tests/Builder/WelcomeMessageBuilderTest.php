@@ -7,13 +7,13 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Class WelcomeMessageBuilderTest
- * @package App\Tests\Builder
+ * Class WelcomeMessageBuilderTest.
+ *
  * @author louis <louis@systemli.org>
  */
 class WelcomeMessageBuilderTest extends TestCase
 {
-    const BODY_TEMPLATE = 'Domain: %s' . PHP_EOL . 'APP URL: %s' . PHP_EOL . 'Project Name: %s';
+    const BODY_TEMPLATE = 'Domain: %s'.PHP_EOL.'APP URL: %s'.PHP_EOL.'Project Name: %s';
 
     public function testBuildBody()
     {
@@ -43,12 +43,13 @@ class WelcomeMessageBuilderTest extends TestCase
      * @param $domain
      * @param $appUrl
      * @param $projectName
+     *
      * @return WelcomeMessageBuilder
      */
     private function getBuilder($domain, $appUrl, $projectName)
     {
         /**
-         * @var TranslatorInterface|PHPUnit_Framework_MockObject_MockObject $translator
+         * @var TranslatorInterface|PHPUnit_Framework_MockObject_MockObject
          */
         $translator = $this->getMockBuilder(TranslatorInterface::class)
             ->disableOriginalConstructor()
@@ -62,5 +63,4 @@ class WelcomeMessageBuilderTest extends TestCase
 
         return $builder;
     }
-
 }
