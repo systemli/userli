@@ -1,3 +1,7 @@
+# 1.6.1 (unreleased)
+
+* Update to symfony 4.1.10
+
 # 1.6.0 (2019.01.04)
 
 * Add a role for detected spammers (Fixes: #77)
