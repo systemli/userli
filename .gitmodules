@@ -16,6 +16,6 @@
 [submodule "vagrant/ansible/roles/manala.apt"]
 	path = vagrant/ansible/roles/manala.apt
 	url = https://github.com/manala/ansible-role-apt.git
-[submodule "vagrant/ansible/roles/dovecot"]
-	path = vagrant/ansible/roles/dovecot
+[submodule "vagrant/ansible/roles/systemli.dovecot"]
+	path = vagrant/ansible/roles/systemli.dovecot
 	url = https://github.com/systemli/ansible-role-dovecot.git

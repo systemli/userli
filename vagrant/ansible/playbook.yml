@@ -6,7 +6,7 @@
     - nginx
     - manala.php
     - mysql
-    - dovecot
+    - systemli.dovecot
     - geerlingguy.composer
     - geerlingguy.nodejs
     - oefenweb.yarn
