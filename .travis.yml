@@ -46,32 +46,24 @@ install:
   - printf "\n" | pecl install libsodium-2.0.13
   - composer install
 
-script:
-  - make test
-
-stages:
-    - name: Integration with SQLite
-    - name: Integration with MySQL
-      if: branch = master
-    - name: Integration with PostgreSQL
-      if: branch = master
-
 jobs:
   include:
-    - stage: Integration with SQLite
-      script: make integration
+    - script: make integration
+      name: Integration with sqlite
       env:
         - DATABASE_DRIVER=pdo_sqlite
         - DATABASE_URL=sqlite:///%kernel.project_dir%/var/db_test.sqlite
 
-    - stage: Integration with MySQL
-      script: make integration
+    - script: make integration
+      name: Integration with MySQL
+      if: branch = master
       env:
         - DATABASE_DRIVER=pdo_mysql
         - DATABASE_URL=mysql://mail_test:password@127.0.0.1:3306/mail_test
 
-    - stage: Integration with PostgreSQL
-      script: make integration
+    - script: make integration
+      name: Integration with PostgreSQL
+      if: branch = master
       env:
         - DATABASE_DRIVER=pdo_pgsql
         - DATABASE_URL=pgsql://mail_test:password@127.0.0.1:5432/mail_test
