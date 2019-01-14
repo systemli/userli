@@ -99,6 +99,9 @@ class FeatureContext extends MinkContext
                     case 'hash':
                         $user->setPassword($value);
                         break;
+                    case 'quota':
+                        $user->setQuota($value);
+                        break;
                 }
             }
 
@@ -292,12 +295,22 @@ class FeatureContext extends MinkContext
         $this->output = shell_exec("php bin/console " . $command);
     }
     /**
-     * @Then I should see :string in the output
+     * @Then I should see :string in the console output
      */
-    public function iShouldSeeInTheOutput($string)
+    public function iShouldSeeInTheConsoleOutput($string)
     {
         if (strpos($this->output, $string) === false) {
-            throw new \Exception(sprintf('Did not see "%s" in output "%s"', $string, $this->output));
+            throw new \Exception(sprintf('Did not see "%s" in console output "%s"', $string, $this->output));
+        }
+    }
+
+    /**
+     * @Then I should not see :string in the console output
+     */
+    public function iShouldNotSeeInTheConsoleOutput($string)
+    {
+        if (strpos($this->output, $string) === true) {
+            throw new \Exception(sprintf('Did see "%s" in console output "%s"', $string, $this->output));
         }
     }
 
