@@ -12,22 +12,22 @@ Feature: CheckUserCommand
 
   @checkUserCommand
   Scenario: Check if user exists
-    When I run console command "-v usrmgmt:users:check user@example.org"
-    Then I should see "OK" in the output
+    When I run console command "usrmgmt:users:check user@example.org"
+    Then I should see "OK" in the console output
 
-    When I run console command "-v usrmgmt:users:check spam@example.org"
-    Then I should see "OK" in the output
+    When I run console command "usrmgmt:users:check spam@example.org"
+    Then I should see "OK" in the console output
 
-    When I run console command "-v usrmgmt:users:check non-existent@example.org"
-    Then I should see "FAIL" in the output
+    When I run console command "usrmgmt:users:check non-existent@example.org"
+    Then I should see "FAIL" in the console output
 
   @checkUserCommand
   Scenario: Check if password allows for authentication
-    When I run console command "-v usrmgmt:users:check user@example.org password"
-    Then I should see "OK" in the output
+    When I run console command "usrmgmt:users:check user@example.org password"
+    Then I should see "OK" in the console output
 
-    When I run console command "-v usrmgmt:users:check user@example.org false"
-    Then I should see "FAIL" in the output
+    When I run console command "usrmgmt:users:check user@example.org false"
+    Then I should see "FAIL" in the console output
 
-    When I run console command "-v usrmgmt:users:check spam@example.org password"
-    Then I should see "FAIL" in the output
+    When I run console command "usrmgmt:users:check spam@example.org password"
+    Then I should see "FAIL" in the console output

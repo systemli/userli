@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Enum\Roles;
 use App\Handler\UserAuthenticationHandler;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -11,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CheckUsersCommand extends Command
+class QuotaCommand extends Command
 {
     /**
      * @var ObjectManager
@@ -42,15 +41,12 @@ class CheckUsersCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('usrmgmt:users:check')
-            ->setDescription('Check if user is present')
+            ->setName('usrmgmt:users:quota')
+            ->setDescription('Get quota of user if set')
             ->addArgument(
                 'email',
                 InputOption::VALUE_REQUIRED,
-                'email to test presence of')
-            ->addArgument('password',
-                InputOption::VALUE_OPTIONAL,
-                'password of supplied email address');
+                'email to get quota of');
     }
 
     /**
@@ -60,29 +56,21 @@ class CheckUsersCommand extends Command
     {
         // parse arguments
         $email = $input->getArgument('email');
-        $password = $input->getArgument('password');
 
         // Check if user exists
         $user = $this->repository->findByEmail($email);
 
-        // test password
-        if ($password && null !== $user) {
-            $password = $password[0];
-
-            // spammers not allowed to authenticate via checkpassword
-            if ($user->hasRole(Roles::SPAM)) {
-                $user = null;
-            } else {
-                $user = $this->handler->authenticate($user, $password);
-            }
-        }
-
-        // exit if user not present or not authenticated
         if (null === $user) {
-            $output->writeln('FAIL');
-
             return 1;
         }
-        $output->writeln('OK');
+
+        // get quota
+        $quota = $user->getQuota();
+
+        if (null === $quota) {
+            return 0;
+        }
+
+        $output->writeln(sprintf('%u', $quota));
     }
 }
