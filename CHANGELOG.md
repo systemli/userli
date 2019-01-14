@@ -1,4 +1,6 @@
-# 1.6.1 (unreleased)
+# 1.6.2 (unreleased)
+
+# 1.6.1 (2019.01.14)
 
 * Update to symfony 4.1.10
 * Add quota to checkpassword (Fixes: #91)
