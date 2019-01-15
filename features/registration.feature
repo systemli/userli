@@ -28,8 +28,8 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/welcome"
-    And I should see text matching "You have set up an account with us successfully. What are the next steps?"
+    Then I should be on "/register"
+    And I should see text matching "The following recovery token got created for you"
 
     When I am on "/logout"
     Then I should be on "/"

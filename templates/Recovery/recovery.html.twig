@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}{{ "recovery.header"|trans }}{% endblock %}
+
+{% form_theme form 'Form/fields.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+            <h2>{{ "recovery.header"|trans }}</h2>
+            <p class="lead">{{ "recovery.lead"|trans }}</p>
+            {% block recovery_content %}
+            {% endblock %}
+        </div>
+    </div>
+
+{% endblock %}

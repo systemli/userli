@@ -217,6 +217,7 @@ class StartController extends Controller
                 'user' => $user,
                 'user_domain' => $user->getDomain(),
                 'password_form' => $passwordChangeForm->createView(),
+                'recovery_secret_set' => $user->hasRecoverySecret(),
             ]
         );
     }

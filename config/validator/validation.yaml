@@ -40,6 +40,12 @@ App\Form\Model\Registration:
         plainPassword:
             - App\Validator\Constraints\PasswordPolicy: ~
 
+App\Form\Model\RecoveryTokenAck:
+    properties:
+        ack:
+            - NotBlank:
+                message: form.registration-recovery-token-noack
+
 App\Form\Model\PasswordChange:
     properties:
         newPassword:
@@ -52,4 +58,23 @@ App\Form\Model\Delete:
     properties:
         password:
             - Symfony\Component\Security\Core\Validator\Constraints\UserPassword:
-                message: form.password-change.wrong-password
+                message: form.wrong-password
+
+App\Form\Model\RecoveryToken:
+    properties:
+        password:
+            - Symfony\Component\Security\Core\Validator\Constraints\UserPassword:
+                message: form.wrong-password
+
+App\Form\Model\RecoveryProcess:
+    properties:
+        email:
+            - Email:
+                  strict: true
+        recoveryToken:
+            - Uuid: ~
+
+App\Form\Model\RecoveryResetPassword:
+    properties:
+        newPassword:
+            - App\Validator\Constraints\PasswordPolicy: ~

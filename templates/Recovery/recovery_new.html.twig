@@ -1,0 +1,24 @@
+{% extends 'Recovery/recovery.html.twig' %}
+
+{% block recovery_content %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div class="form-group">
+        {{ form_label(form.email) }}
+        {{ form_errors(form.email) }}
+        {{ form_widget(form.email, {'attr': {'class': 'form-control' }}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.recoveryToken) }}
+        {{ form_errors(form.recoveryToken) }}
+        {{ form_widget(form.recoveryToken, {'attr': {'class': 'form-control' }}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary' }}) }}
+        <a href="{{ url('index') }}" class="btn btn-default">{{ "recovery.cancel"|trans }}</a>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

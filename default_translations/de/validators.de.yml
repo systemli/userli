@@ -3,10 +3,10 @@ form:
   forbidden_char: "Das Passwort enthält nicht erlaubte Zeichen."
   different-password: "Die Passwörter stimmen nicht überein."
   invalid-email: "Die E-Mail Adresse ist ungültig."
-  password-change:
-    wrong-password: "Das eingegebene Passwort ist falsch."
-    identical-passwords: "Das neue Passwort stimmt mit dem aktuellen überein."
+  wrong-password: "Das eingegebene Passwort ist falsch."
+  identical-passwords: "Das neue Passwort stimmt mit dem aktuellen überein."
   missing-domain: "Die Domain wird nicht vom System verwaltet und kann nicht benutzt werden."
+  registration-recovery-token-noack: "Dieses Feld muss ausgewählt werden."
 
 registration:
   voucher-invalid: "Der Einladungscode ist ungültig."

@@ -35,6 +35,10 @@ class RegistrationHandler
      */
     private $passwordUpdater;
     /**
+     * @var RecoveryTokenHandler
+     */
+    private $recoveryTokenHandler;
+    /**
      * @var bool
      */
     private $hasSinaBox;
@@ -50,6 +54,7 @@ class RegistrationHandler
      * @param DomainGuesser            $domainGuesser
      * @param EventDispatcherInterface $eventDispatcher
      * @param PasswordUpdater          $passwordUpdater
+     * @param RecoveryTokenHandler     $recoveryTokenHandler
      * @param bool                     $hasSinaBox
      * @param string                   $primaryDomain
      */
@@ -58,6 +63,7 @@ class RegistrationHandler
         DomainGuesser $domainGuesser,
         EventDispatcherInterface $eventDispatcher,
         PasswordUpdater $passwordUpdater,
+        RecoveryTokenHandler $recoveryTokenHandler,
         bool $hasSinaBox,
         string $primaryDomain
     ) {
@@ -65,6 +71,7 @@ class RegistrationHandler
         $this->domainGuesser = $domainGuesser;
         $this->eventDispatcher = $eventDispatcher;
         $this->passwordUpdater = $passwordUpdater;
+        $this->recoveryTokenHandler = $recoveryTokenHandler;
         $this->hasSinaBox = $hasSinaBox;
         $this->primaryDomain = $primaryDomain;
     }
@@ -83,6 +90,7 @@ class RegistrationHandler
         $user = $this->buildUser($registration);
 
         $this->passwordUpdater->updatePassword($user);
+        $this->recoveryTokenHandler->create($user);
         $this->manager->persist($user);
         $this->manager->flush();
 

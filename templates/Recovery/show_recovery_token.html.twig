@@ -1,0 +1,15 @@
+<p class="lead">{{ "recovery-token.created-headline"|trans }}</p>
+<p class="lead alert alert-warning">{{ recovery_token }}</p>
+
+{{ form_start(form) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form.recoveryToken) }}
+<div class="form-group">
+    {{ form_errors(form.ack) }}
+    {{ form_widget(form.ack) }}
+    {{ form_label(form.ack) }}
+</div>
+<div class="form-group">
+    {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary' } }) }}
+</div>
+{{ form_end(form) }}

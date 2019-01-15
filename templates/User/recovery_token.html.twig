@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}{{ "recovery-token.headline"|trans }}{% endblock %}
+
+{% form_theme form 'Form/fields.html.twig' %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('index') }}">Start</a></li>
+        <li><a href="{{ path('account') }}">{{ "start.account-settings"|trans }}</a></li>
+        <li class="active">{{ "recovery-token.headline"|trans }}</li>
+    </ol>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <h3>{{ "recovery-token.headline"|trans }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            {% if recovery_token is defined %}
+                {% include 'Recovery/show_recovery_token.html.twig' %}
+            {% else %}
+                {% if recovery_secret_set %}
+                    <p class="alert alert-warning">{{ "recovery-token.set"|trans }} {{ 'recovery-token.set-extra'|trans }}</p>
+                {% else %}
+                    <p class="alert alert-danger">{{ "recovery-token.unset"|trans }}</p>
+                {% endif %}
+
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+                <div class="form-group">
+                    {{ form_label(form.password) }}
+                    {{ form_errors(form.password) }}
+                    {{ form_widget(form.password, {'attr': {'class': 'form-control' }}) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary' }}) }}
+                </div>
+
+                {{ form_end(form) }}
+            {% endif %}
+
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            {% include 'Recovery/recovery_token_notes.html.twig' %}
+        </div>
+    </div>
+{% endblock %}

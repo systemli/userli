@@ -24,12 +24,17 @@ class FeatureContext extends MinkContext
     /**
      * @var array
      */
-    private $placeholders = array();
+    private $placeholders = [];
 
     /**
      * @var string
      */
     private $output;
+
+    /**
+     * @var array
+     */
+    private $requestParams = [];
 
     /**
      * @Given /^the database is clean$/
@@ -101,6 +106,16 @@ class FeatureContext extends MinkContext
                         break;
                     case 'quota':
                         $user->setQuota($value);
+                        break;
+                    case 'recoveryStartTime':
+                        $time = new \DateTime();
+                        if ('NOW' !== 'value') {
+                            $time = $time->modify($value);
+                        }
+                        $user->setRecoveryStartTime($time);
+                        break;
+                    case 'recoverySecret':
+                        $user->setRecoverySecret($value);
                         break;
                 }
             }
@@ -235,6 +250,49 @@ class FeatureContext extends MinkContext
 
         $cookie = new Cookie($session->getName(), $session->getId());
         $client->getCookieJar()->set($cookie);
+    }
+
+    /**
+     * @When /^I have the request params for "([^"]*)":$/
+     */
+    public function iHaveTheRequestParams(string $field, TableNode $table)
+    {
+        foreach ($table->getRowsHash() as $var => $value) {
+            $this->requestParams[$field][$var] = $value;
+        }
+    }
+
+    /**
+     * @When /^I request "(GET|PUT|POST|DELETE|PATCH) ([^"]*)"$/
+     */
+    public function iRequest(string $httpMethod, string $path)
+    {
+        $driver = $this->getSession()->getDriver();
+        if (!$driver instanceof BrowserKitDriver) {
+            throw new UnsupportedDriverActionException('This step is only supported by the BrowserKitDriver', $driver);
+        }
+
+        $client = $driver->getClient();
+
+        $method = strtoupper($httpMethod);
+        $formParams = $this->requestParams;
+        $headers = [
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ];
+
+        try {
+            // Magic is here : allow to simulate any HTTP verb
+            $client->request(
+                $method,
+                $this->locatePath($path),
+                $formParams,
+                [],
+                $headers);
+        } catch (BadResponseException $e) {
+            $response = $e->getResponse();
+            throw new \Exception('Bad response.');
+        }
+
     }
 
     /**

@@ -57,13 +57,13 @@ class PasswordChangeValidator extends ConstraintValidator
         $encoder = $this->encoderFactory->getEncoder($user);
 
         if (!$encoder->isPasswordValid($user->getPassword(), $value->password, $user->getSalt())) {
-            $this->context->addViolation('form.password-change.wrong-password');
+            $this->context->addViolation('form.wrong-password');
 
             return false;
         }
 
         if ($value->password === $value->newPassword) {
-            $this->context->addViolation('form.password-change.identical-passwords');
+            $this->context->addViolation('form.identical-passwords');
 
             return false;
         }
