@@ -13,6 +13,7 @@
                 {% endif %}
                 <input type="text" id="username" class="form-control" name="_username" placeholder="{{ "form.email"|trans }}" value="{{ last_username }}" required="" autofocus="" />
                 <input type="password" id="password" class="form-control" name="_password" placeholder="{{ "form.password"|trans }}" required="">
+                <div class="form-group"><a href="{{ path('recovery') }}">{{  "form.recovery-link"|trans }}</a></div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">{{ "form.signin"|trans }}</button>
             </form>
         </div>

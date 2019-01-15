@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Form\Model\Registration;
+use App\Form\Model\RegistrationRecoveryToken;
+use App\Form\RegistrationRecoveryTokenType;
 use App\Form\RegistrationType;
 use App\Handler\RegistrationHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -18,7 +20,7 @@ class RegistrationController extends Controller
     /**
      * @param Request $request
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function registerAction(Request $request)
     {
@@ -38,10 +40,13 @@ class RegistrationController extends Controller
             )
         );
 
+        dump(1);
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
-            if ($form->isValid()) {
+            dump(2);
+            if ($form->isSubmitted() && $form->isValid()) {
+                dump(3);
                 $registrationHandler->handle($registration);
 
                 $manager = $this->get('doctrine')->getManager();
@@ -51,9 +56,27 @@ class RegistrationController extends Controller
                     $this->get('security.token_storage')->setToken($token);
                 }
 
-                $request->getSession()->getFlashBag()->add('success', 'flashes.registration-successful');
+                $recoveryToken = $user->getPlainRecoveryToken();
+                $user->eraseToken();
 
-                return $this->redirect($this->generateUrl('welcome'));
+                $registrationRecoveryToken = new RegistrationRecoveryToken();
+                $registrationRecoveryToken->setRecoveryToken($recoveryToken);
+                $registrationRecoveryTokenForm = $this->createForm(
+                    RegistrationRecoveryTokenType::class,
+                    $registrationRecoveryToken,
+                    [
+                        'action' => $this->generateUrl('register_recovery_token'),
+                        'method' => 'post',
+                    ]
+                );
+
+                dump(4);
+                return $this->render('Registration/recovery_token.html.twig',
+                    [
+                        'form' => $registrationRecoveryTokenForm->createView(),
+                        'recovery_token' => $recoveryToken,
+                    ]
+                );
             }
         }
 
@@ -61,10 +84,44 @@ class RegistrationController extends Controller
     }
 
     /**
+     * @param Request $request
+     *
      * @return Response
      */
-    public function welcomeAction()
+    public function registerRecoveryTokenAction(Request $request): Response
     {
+        $registrationRecoveryToken = new RegistrationRecoveryToken();
+        $registrationRecoveryTokenForm = $this->createForm(
+            RegistrationRecoveryTokenType::class,
+            $registrationRecoveryToken
+        );
+
+        if ('POST' === $request->getMethod()) {
+            $registrationRecoveryTokenForm->handleRequest($request);
+
+            if ($registrationRecoveryTokenForm->isSubmitted() and $registrationRecoveryTokenForm->isValid()) {
+                return $this->redirect($this->generateUrl('register_welcome'));
+            } else {
+                return $this->render('Registration/recovery_token.html.twig',
+                    [
+                        'form' => $registrationRecoveryTokenForm->createView(),
+                        'recovery_token' => $registrationRecoveryToken->recoveryToken,
+                    ]
+                );
+            }
+        }
+
+        return $this->redirectToRoute('register');
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function welcomeAction(Request $request): Response
+    {
+        $request->getSession()->getFlashBag()->add('success', 'flashes.registration-successful');
         return $this->render('Registration/welcome.html.twig');
     }
 

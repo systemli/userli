@@ -8,6 +8,7 @@ use App\Event\Events;
 use App\Event\UserEvent;
 use App\Form\Model\Registration;
 use App\Guesser\DomainGuesser;
+use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -50,6 +51,7 @@ class RegistrationHandler
      * @param DomainGuesser            $domainGuesser
      * @param EventDispatcherInterface $eventDispatcher
      * @param PasswordUpdater          $passwordUpdater
+     * @param RecoveryTokenHandler     $recoveryTokenHandler
      * @param bool                     $hasSinaBox
      * @param string                   $primaryDomain
      */
@@ -58,6 +60,7 @@ class RegistrationHandler
         DomainGuesser $domainGuesser,
         EventDispatcherInterface $eventDispatcher,
         PasswordUpdater $passwordUpdater,
+        RecoveryTokenHandler $recoveryTokenHandler,
         bool $hasSinaBox,
         string $primaryDomain
     ) {
@@ -65,6 +68,7 @@ class RegistrationHandler
         $this->domainGuesser = $domainGuesser;
         $this->eventDispatcher = $eventDispatcher;
         $this->passwordUpdater = $passwordUpdater;
+        $this->recoveryTokenHandler = $recoveryTokenHandler;
         $this->hasSinaBox = $hasSinaBox;
         $this->primaryDomain = $primaryDomain;
     }
@@ -83,6 +87,7 @@ class RegistrationHandler
         $user = $this->buildUser($registration);
 
         $this->passwordUpdater->updatePassword($user);
+        $this->recoveryTokenHandler->create($user);
         $this->manager->persist($user);
         $this->manager->flush();
 

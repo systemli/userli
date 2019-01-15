@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}{{ "recovery.header"|trans }}{% endblock %}
+
+{% form_theme form 'Form/fields.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+            <h2>{{ "recovery.header"|trans }}</h2>
+            <p class="lead">{{ "recovery.lead"|trans }}</p>
+            {% if process_state == 'STARTED' %}
+                <p class="alert alert-info">{{ "recovery.started"|trans({'%time%': active_time|localizeddate('medium', 'short')}) }}</p>
+            {% elseif process_state == 'PENDING' %}
+                <p class="alert alert-warning">{{ "recovery.pending"|trans({'%time%': active_time|localizeddate('medium', 'short')}) }}</p>
+            {% else %}
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+                <div class="form-group">
+                    {{ form_label(form.email) }}
+                    {{ form_errors(form.email) }}
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control' }}) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.recoveryToken) }}
+                    {{ form_errors(form.recoveryToken) }}
+                    {{ form_widget(form.recoveryToken, {'attr': {'class': 'form-control' }}) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary' }}) }}
+                    <a href="{{ url('index') }}" class="btn btn-default">{{ "recovery.cancel"|trans }}</a>
+                </div>
+
+                {{ form_end(form) }}
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

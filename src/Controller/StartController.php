@@ -46,10 +46,10 @@ class StartController extends Controller
     /**
      * StartController constructor.
      *
-     * @param AliasHandler    $aliasHandler
-     * @param PasswordUpdater $passwordUpdater
-     * @param VoucherHandler  $voucherHandler
-     * @param VoucherCreator  $voucherCreator
+     * @param AliasHandler         $aliasHandler
+     * @param PasswordUpdater      $passwordUpdater
+     * @param VoucherHandler       $voucherHandler
+     * @param VoucherCreator       $voucherCreator
      */
     public function __construct(AliasHandler $aliasHandler, PasswordUpdater $passwordUpdater, VoucherHandler $voucherHandler, VoucherCreator $voucherCreator)
     {
@@ -216,6 +216,7 @@ class StartController extends Controller
                 'user' => $user,
                 'user_domain' => $user->getDomain(),
                 'password_form' => $passwordChangeForm->createView(),
+                'recovery_secret_set' => $user->hasRecoverySecret(),
             ]
         );
     }

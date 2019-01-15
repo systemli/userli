@@ -38,6 +38,12 @@ App\Entity\User:
       nullable: true
     passwordVersion:
       type: integer
+    recoverySecret:
+      type: string
+      nullable: true
+    recoveryStartTime:
+      type: datetime
+      nullable: true
 
   manyToOne:
     domain:

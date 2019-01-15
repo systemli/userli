@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}{{ "registration.recovery-token-headline"|trans }}{% endblock %}
+
+{% form_theme form 'Form/fields.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <h3>{{ "recovery-token.headline"|trans }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <p class="lead">{{ "recovery-token.created-headline"|trans }}</p>
+            <p class="lead alert alert-warning">{{ recovery_token }}</p>
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            {{ form_widget(form.recoveryToken) }}
+            <div class="form-group">
+                {{ form_errors(form.ack) }}
+                {{ form_widget(form.ack) }}
+                {{ form_label(form.ack) }}
+            </div>
+            <div class="form-group">
+                {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary' } }) }}
+            </div>
+            {{ form_end(form) }}
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="alert alert-info">
+                <ul>
+                    <li><strong>{{ "recovery-token.created-info"|trans }}</strong></li>
+                    <hr />
+                    <li>{{ "recovery-token.displayed-once"|trans }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
