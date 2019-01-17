@@ -22,8 +22,8 @@ class RecoveryResetPasswordTypeTest extends TypeTestCase
         $form = $this->factory->create(RecoveryResetPasswordType::class);
 
         $object = new RecoveryResetPassword();
-        $object->email = $email;
-        $object->recoveryToken = $recoveryToken;
+        $object->setEmail($email);
+        $object->setRecoveryToken($recoveryToken);
         $object->newPassword = [$newPassword, $newPassword];
 
         // submit the data to the form directly

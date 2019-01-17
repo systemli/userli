@@ -21,7 +21,7 @@ class RecoveryTokenAckTypeTest extends TypeTestCase
 
         $object = new RecoveryTokenAck();
         $object->ack = true;
-        $object->recoveryToken = $uuid;
+        $object->setRecoveryToken($uuid);
 
         // submit the data to the form directly
         $form->submit($formData);
