@@ -10,9 +10,11 @@
             <h2>{{ "recovery.header"|trans }}</h2>
             <p class="lead">{{ "recovery.lead"|trans }}</p>
             {% if process_state == 'STARTED' %}
-                <p class="alert alert-info">{{ "recovery.started"|trans({'%time%': active_time|localizeddate('medium', 'short')}) }}</p>
+                <p class="alert alert-success">{{ "recovery.started"|trans }}<br /><br />{{ "recovery.waiting-info"|trans }}</p>
+                <p class="alert alert-info lead">{{ "recovery.waiting-time"|trans({'%time%': active_time|localizeddate('medium', 'short')}) }}</p>
             {% elseif process_state == 'PENDING' %}
-                <p class="alert alert-warning">{{ "recovery.pending"|trans({'%time%': active_time|localizeddate('medium', 'short')}) }}</p>
+                <p class="alert alert-warning">{{ "recovery.pending"|trans }}<br /><br />{{ "recovery.waiting-info"|trans }}</p>
+                <p class="alert alert-info lead">{{ "recovery.waiting-time"|trans({'%time%': active_time|localizeddate('medium', 'short')}) }}</p>
             {% else %}
                 {{ form_start(form) }}
                 {{ form_errors(form) }}

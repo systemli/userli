@@ -15,12 +15,12 @@ class RecoveryTokenAck
     /**
      * @var string
      */
-    public $recoveryToken = '';
+    private $recoveryToken;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getRecoveryToken(): string
+    public function getRecoveryToken(): ?string
     {
         return $this->recoveryToken;
     }

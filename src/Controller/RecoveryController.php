@@ -32,6 +32,10 @@ class RecoveryController extends Controller
      */
     private $recoveryTokenHandler;
 
+    const PROCESS_STATE_0 = 'NONE';
+    const PROCESS_STATE_1 = 'STARTED';
+    const PROCESS_STATE_2 = 'PENDING';
+
     /**
      * RecoveryController constructor.
      *
@@ -53,7 +57,7 @@ class RecoveryController extends Controller
      */
     public function recoveryProcessAction(Request $request): Response
     {
-        $processState = 'NONE';
+        $processState = self::PROCESS_STATE_0;
         $recoveryActiveTime = new \DateTime();
         $recoveryProcess = new RecoveryProcess();
         $recoveryForm = $this->createForm(RecoveryProcessType::class, $recoveryProcess);
@@ -77,13 +81,13 @@ class RecoveryController extends Controller
 
                     if (null === $recoveryStartTime || new \DateTime('-30 days') >= $recoveryStartTime) {
                         // Recovery process gets started
-                        $processState = 'STARTED';
+                        $processState = self::PROCESS_STATE_1;
                         $user->updateRecoveryStartTime();
                         $this->getDoctrine()->getManager()->flush();
                         $recoveryActiveTime = $user->getRecoveryStartTime()->add(new \DateInterval('P2D'));
                     } elseif (new \DateTime('-2 days') <= $recoveryStartTime) {
                         // Recovery process is pending, but waiting period didn't elapse yet
-                        $processState = 'PENDING';
+                        $processState = self::PROCESS_STATE_2;
                         $recoveryActiveTime = $recoveryStartTime->add(new \DateInterval('P2D'));
                     } else {
                         // Recovery process successful, go on with the form to reset password
@@ -142,8 +146,8 @@ class RecoveryController extends Controller
             $recoveryResetPasswordForm->handleRequest($request);
 
             if ($recoveryResetPasswordForm->isSubmitted()) {
-                $email = $recoveryResetPassword->email;
-                $recoveryToken = $recoveryResetPassword->recoveryToken;
+                $email = $recoveryResetPassword->getEmail();
+                $recoveryToken = $recoveryResetPassword->getRecoveryToken();
 
                 // Validate the passed email + recoveryToken
 
@@ -154,7 +158,7 @@ class RecoveryController extends Controller
                     if ($recoveryResetPasswordForm->isValid()) {
                         // Success, change the password and redirect to login page
                         $this->resetPassword($user, $recoveryResetPassword->newPassword);
-                        $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-password-reset');
+                        $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-password-changed');
 
                         return $this->redirect($this->generateUrl('login'));
                     } else {
@@ -266,7 +270,7 @@ class RecoveryController extends Controller
                 return $this->render('User/recovery_token.html.twig',
                     [
                         'form' => $recoveryTokenAckForm->createView(),
-                        'recovery_token' => $recoveryTokenAck->recoveryToken,
+                        'recovery_token' => $recoveryTokenAck->getRecoveryToken(),
                     ]
                 );
             }

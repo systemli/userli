@@ -101,7 +101,7 @@ class RegistrationController extends Controller
                 return $this->render('Registration/recovery_token.html.twig',
                     [
                         'form' => $recoveryTokenAckForm->createView(),
-                        'recovery_token' => $recoveryTokenAck->recoveryToken,
+                        'recovery_token' => $recoveryTokenAck->getRecoveryToken(),
                     ]
                 );
             }

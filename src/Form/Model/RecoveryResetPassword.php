@@ -10,12 +10,12 @@ class RecoveryResetPassword
     /**
      * @var string
      */
-    public $email;
+    private $email;
 
     /**
      * @var string
      */
-    public $recoveryToken;
+    private $recoveryToken;
 
     /**
      * @var string

@@ -57,7 +57,7 @@ form:
   delete-alias: Delete alias address
   generate-recovery-token: Generate new recovery token
   recovery-token: Recovery token
-  recovery-start: Start process
+  recovery-start: Start recovery
   registration-recovery-token-ack: I stored the recovery token at a secure place
   registration-recovery-token-next-button: Continue
 
@@ -65,8 +65,10 @@ recovery:
   header: Recover your account
   lead: Reset the password using your recovery token
   cancel: Cancel
-  started: Your recovery process got started. Please come back in two days (earliest %time%) to reset your password. After 30 days, the process will be reset.
-  pending: Your recovery process is pending, but the waiting period of two days hasn't elapsed yet. Please come back after %time%.
+  started: You almost made it. The fist step to reset your password is done. Now you have to wait for 48 hours. Afterwards, in a second step, you can set a new password.
+  pending: Unfortunately the waiting period of 48 hours didn't elapse yet. You have to wait a bit longer before setting a new password.
+  waiting-info: The waiting period is for your own security and cannot be shortened or skipped.
+  waiting-time: Second step starts at %time%.
   reset-lead: You're now allowed to reset your password
 
 navbar_left:
@@ -147,7 +149,7 @@ flashes:
   recovery-token-invalid: Email address and/or recovery token are wrong!
   recovery-token-ack: You successfully generated a recovery token!
   revocery-reauthenticate: Something went wrong. Please re-authenticate!
-  recovery-password-reset: You successfully changed your password. Go on with the login.
+  recovery-password-changed: You successfully changed your password. Go on with the login.
 
 flash_batch_remove_vouchers_success: Successfully deleted unredeemed vouchers
 

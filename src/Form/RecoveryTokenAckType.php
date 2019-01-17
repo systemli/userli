@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class RecoveryTokenAckType extends AbstractType
 {
-    const NAME = 'registration_recovery_token';
+    const NAME = 'recovery_token_ack';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
