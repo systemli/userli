@@ -2,7 +2,6 @@
 
 namespace App\Handler;
 
-use App\Handler\RecoverySecretHandler;
 use App\Entity\User;
 use App\Model\RecoverySecret;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -38,6 +37,7 @@ class RecoveryTokenHandler
 
     /**
      * @return string
+     *
      * @throws \Exception
      */
     public function generateToken(): string
@@ -95,7 +95,7 @@ class RecoveryTokenHandler
      */
     public function verify(User $user, string $recoveryToken): bool
     {
-        if (! $user->hasRecoverySecret()) {
+        if (!$user->hasRecoverySecret()) {
             return false;
         }
 
@@ -109,10 +109,12 @@ class RecoveryTokenHandler
         $encoder = $this->encoderFactory->getEncoder($user);
         if (empty($decrypted) || !$encoder->isPasswordValid($user->getPassword(), $decrypted, $user->getSalt())) {
             sodium_memzero($decrypted);
+
             return false;
         }
 
         sodium_memzero($decrypted);
+
         return true;
     }
 }

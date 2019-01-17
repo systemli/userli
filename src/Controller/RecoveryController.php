@@ -43,10 +43,12 @@ class RecoveryController extends Controller
         $this->passwordUpdater = $passwordUpdater;
         $this->recoveryTokenHandler = $recoveryTokenHandler;
     }
+
     /**
      * @param Request $request
      *
      * @return Response
+     *
      * @throws \Exception
      */
     public function recoveryProcessAction(Request $request): Response
@@ -79,7 +81,7 @@ class RecoveryController extends Controller
                         $user->updateRecoveryStartTime();
                         $this->getDoctrine()->getManager()->flush();
                         $recoveryActiveTime = $user->getRecoveryStartTime()->add(new \DateInterval('P2D'));
-                    } else if (new \DateTime('-2 days') <= $recoveryStartTime) {
+                    } elseif (new \DateTime('-2 days') <= $recoveryStartTime) {
                         // Recovery process is pending, but waiting period didn't elapse yet
                         $processState = 'PENDING';
                         $recoveryActiveTime = $recoveryStartTime->add(new \DateInterval('P2D'));
@@ -153,6 +155,7 @@ class RecoveryController extends Controller
                         // Success, change the password and redirect to login page
                         $this->resetPassword($user, $recoveryResetPassword->newPassword);
                         $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-password-reset');
+
                         return $this->redirect($this->generateUrl('login'));
                     } else {
                         // Validation of new password pair failed, try again
@@ -177,6 +180,7 @@ class RecoveryController extends Controller
      * @param Request $request
      *
      * @return Response
+     *
      * @throws \Exception
      */
     public function recoveryTokenAction(Request $request): Response
@@ -256,6 +260,7 @@ class RecoveryController extends Controller
 
             if ($recoveryTokenAckForm->isSubmitted() and $recoveryTokenAckForm->isValid()) {
                 $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-token-ack');
+
                 return $this->redirect($this->generateUrl('index'));
             } else {
                 return $this->render('User/recovery_token.html.twig',
@@ -271,8 +276,8 @@ class RecoveryController extends Controller
     }
 
     /**
-     * @param User    $user
-     * @param string  $password
+     * @param User   $user
+     * @param string $password
      */
     private function resetPassword(User $user, string $password)
     {

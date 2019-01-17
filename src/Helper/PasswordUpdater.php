@@ -25,7 +25,7 @@ class PasswordUpdater
      * PasswordUpdater constructor.
      *
      * @param EncoderFactoryInterface $encoderFactory
-     * @param RecoveryTokenHandler $recoveryTokenHandler
+     * @param RecoveryTokenHandler    $recoveryTokenHandler
      */
     public function __construct(EncoderFactoryInterface $encoderFactory, RecoveryTokenHandler $recoveryTokenHandler)
     {
@@ -53,8 +53,7 @@ class PasswordUpdater
         $user->setPassword($hash);
 
         // Update recovery secret only if set
-        if ($user->hasRecoverySecret())
-        {
+        if ($user->hasRecoverySecret()) {
             $this->recoveryTokenHandler->update($user);
         }
 

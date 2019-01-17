@@ -46,10 +46,10 @@ class StartController extends Controller
     /**
      * StartController constructor.
      *
-     * @param AliasHandler         $aliasHandler
-     * @param PasswordUpdater      $passwordUpdater
-     * @param VoucherHandler       $voucherHandler
-     * @param VoucherCreator       $voucherCreator
+     * @param AliasHandler    $aliasHandler
+     * @param PasswordUpdater $passwordUpdater
+     * @param VoucherHandler  $voucherHandler
+     * @param VoucherCreator  $voucherCreator
      */
     public function __construct(AliasHandler $aliasHandler, PasswordUpdater $passwordUpdater, VoucherHandler $voucherHandler, VoucherCreator $voucherCreator)
     {

@@ -1,7 +1,7 @@
 <?php
- 
+
 namespace App\Model;
- 
+
 class RecoverySecret
 {
     /**
@@ -65,7 +65,9 @@ class RecoverySecret
 
     /**
      * @param string $encrypted
+     *
      * @return RecoverySecret
+     *
      * @throws \Exception
      */
     public static function decode(string $encrypted): self
@@ -92,7 +94,9 @@ class RecoverySecret
     /**
      * @param string $encrypted
      * @param string $plainPassword
+     *
      * @return RecoverySecret
+     *
      * @throws \Exception
      */
     public static function reEncrypt(string $encrypted, string $plainPassword): self

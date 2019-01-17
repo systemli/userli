@@ -118,6 +118,7 @@ class RegistrationController extends Controller
     public function welcomeAction(Request $request): Response
     {
         $request->getSession()->getFlashBag()->add('success', 'flashes.registration-successful');
+
         return $this->render('Registration/welcome.html.twig');
     }
 
