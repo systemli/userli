@@ -6,8 +6,10 @@ use App\Entity\User;
 use App\Form\Model\RecoveryProcess;
 use App\Form\Model\RecoveryResetPassword;
 use App\Form\Model\RecoveryToken;
+use App\Form\Model\RecoveryTokenAck;
 use App\Form\RecoveryProcessType;
 use App\Form\RecoveryResetPasswordType;
+use App\Form\RecoveryTokenAckType;
 use App\Form\RecoveryTokenType;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
@@ -187,16 +189,27 @@ class RecoveryController extends Controller
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $user->setPlainPassword($recoveryTokenObject->password);
 
                 $this->recoveryTokenHandler->create($user);
                 $recoveryToken = $user->getPlainRecoveryToken();
                 $user->eraseToken();
 
+                $recoveryTokenAck = new RecoveryTokenAck();
+                $recoveryTokenAck->setRecoveryToken($recoveryToken);
+                $recoveryTokenAckForm = $this->createForm(
+                    RecoveryTokenAckType::class,
+                    $recoveryTokenAck,
+                    [
+                        'action' => $this->generateUrl('user_recovery_token_ack'),
+                        'method' => 'post',
+                    ]
+                );
+
                 return $this->render('User/recovery_token.html.twig',
                     [
-                        'form' => $form->createView(),
+                        'form' => $recoveryTokenAckForm->createView(),
                         'recovery_token' => $recoveryToken,
                         'recovery_secret_set' => $user->hasRecoverySecret(),
                     ]
@@ -204,12 +217,57 @@ class RecoveryController extends Controller
             }
         }
 
+        $recoveryTokenAckForm = $this->createForm(
+            RecoveryTokenAckType::class,
+            new RecoveryTokenAck(),
+            [
+                'action' => $this->generateUrl('user_recovery_token_ack'),
+                'method' => 'post',
+            ]
+        );
+
         return $this->render('User/recovery_token.html.twig',
             [
                 'form' => $form->createView(),
                 'recovery_secret_set' => $user->hasRecoverySecret(),
             ]
         );
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function recoveryTokenAckAction(Request $request): Response
+    {
+        $recoveryTokenAck = new RecoveryTokenAck();
+        $recoveryTokenAckForm = $this->createForm(
+            RecoveryTokenAckType::class,
+            $recoveryTokenAck,
+            [
+                'action' => $this->generateUrl('user_recovery_token_ack'),
+                'method' => 'post',
+            ]
+        );
+
+        if ('POST' === $request->getMethod()) {
+            $recoveryTokenAckForm->handleRequest($request);
+
+            if ($recoveryTokenAckForm->isSubmitted() and $recoveryTokenAckForm->isValid()) {
+                $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-token-ack');
+                return $this->redirect($this->generateUrl('index'));
+            } else {
+                return $this->render('User/recovery_token.html.twig',
+                    [
+                        'form' => $recoveryTokenAckForm->createView(),
+                        'recovery_token' => $recoveryTokenAck->recoveryToken,
+                    ]
+                );
+            }
+        }
+
+        return $this->redirectToRoute('register');
     }
 
     /**

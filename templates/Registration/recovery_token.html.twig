@@ -12,30 +12,10 @@
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6">
-            <p class="lead">{{ "recovery-token.created-headline"|trans }}</p>
-            <p class="lead alert alert-warning">{{ recovery_token }}</p>
-
-            {{ form_start(form) }}
-            {{ form_errors(form) }}
-            {{ form_widget(form.recoveryToken) }}
-            <div class="form-group">
-                {{ form_errors(form.ack) }}
-                {{ form_widget(form.ack) }}
-                {{ form_label(form.ack) }}
-            </div>
-            <div class="form-group">
-                {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary' } }) }}
-            </div>
-            {{ form_end(form) }}
+            {% include 'Recovery/show_recovery_token.html.twig' %}
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6">
-            <div class="alert alert-info">
-                <ul>
-                    <li><strong>{{ "recovery-token.created-info"|trans }}</strong></li>
-                    <hr />
-                    <li>{{ "recovery-token.displayed-once"|trans }}</li>
-                </ul>
-            </div>
+            {% include 'Recovery/recovery_token_notes.html.twig' %}
         </div>
     </div>
 {% endblock %}

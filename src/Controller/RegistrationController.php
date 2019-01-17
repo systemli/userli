@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Form\Model\Registration;
-use App\Form\Model\RegistrationRecoveryToken;
-use App\Form\RegistrationRecoveryTokenType;
+use App\Form\Model\RecoveryTokenAck;
+use App\Form\RecoveryTokenAckType;
 use App\Form\RegistrationType;
 use App\Handler\RegistrationHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -40,13 +40,10 @@ class RegistrationController extends Controller
             )
         );
 
-        dump(1);
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
-            dump(2);
             if ($form->isSubmitted() && $form->isValid()) {
-                dump(3);
                 $registrationHandler->handle($registration);
 
                 $manager = $this->get('doctrine')->getManager();
@@ -59,21 +56,20 @@ class RegistrationController extends Controller
                 $recoveryToken = $user->getPlainRecoveryToken();
                 $user->eraseToken();
 
-                $registrationRecoveryToken = new RegistrationRecoveryToken();
-                $registrationRecoveryToken->setRecoveryToken($recoveryToken);
-                $registrationRecoveryTokenForm = $this->createForm(
-                    RegistrationRecoveryTokenType::class,
-                    $registrationRecoveryToken,
+                $recoveryTokenAck = new RecoveryTokenAck();
+                $recoveryTokenAck->setRecoveryToken($recoveryToken);
+                $recoveryTokenAckForm = $this->createForm(
+                    RecoveryTokenAckType::class,
+                    $recoveryTokenAck,
                     [
                         'action' => $this->generateUrl('register_recovery_token'),
                         'method' => 'post',
                     ]
                 );
 
-                dump(4);
                 return $this->render('Registration/recovery_token.html.twig',
                     [
-                        'form' => $registrationRecoveryTokenForm->createView(),
+                        'form' => $recoveryTokenAckForm->createView(),
                         'recovery_token' => $recoveryToken,
                     ]
                 );
@@ -88,24 +84,24 @@ class RegistrationController extends Controller
      *
      * @return Response
      */
-    public function registerRecoveryTokenAction(Request $request): Response
+    public function registerRecoveryTokenAckAction(Request $request): Response
     {
-        $registrationRecoveryToken = new RegistrationRecoveryToken();
-        $registrationRecoveryTokenForm = $this->createForm(
-            RegistrationRecoveryTokenType::class,
-            $registrationRecoveryToken
+        $recoveryTokenAck = new RecoveryTokenAck();
+        $recoveryTokenAckForm = $this->createForm(
+            RecoveryTokenAckType::class,
+            $recoveryTokenAck
         );
 
         if ('POST' === $request->getMethod()) {
-            $registrationRecoveryTokenForm->handleRequest($request);
+            $recoveryTokenAckForm->handleRequest($request);
 
-            if ($registrationRecoveryTokenForm->isSubmitted() and $registrationRecoveryTokenForm->isValid()) {
+            if ($recoveryTokenAckForm->isSubmitted() and $recoveryTokenAckForm->isValid()) {
                 return $this->redirect($this->generateUrl('register_welcome'));
             } else {
                 return $this->render('Registration/recovery_token.html.twig',
                     [
-                        'form' => $registrationRecoveryTokenForm->createView(),
-                        'recovery_token' => $registrationRecoveryToken->recoveryToken,
+                        'form' => $recoveryTokenAckForm->createView(),
+                        'recovery_token' => $recoveryTokenAck->recoveryToken,
                     ]
                 );
             }

@@ -40,7 +40,7 @@ App\Form\Model\Registration:
         plainPassword:
             - App\Validator\Constraints\PasswordPolicy: ~
 
-App\Form\Model\RegistrationRecoveryToken:
+App\Form\Model\RecoveryTokenAck:
     properties:
         ack:
             - NotBlank:

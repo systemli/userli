@@ -2,11 +2,11 @@
 
 namespace App\Tests\Form;
 
-use App\Form\Model\RegistrationRecoveryToken;
-use App\Form\RegistrationRecoveryTokenType;
+use App\Form\Model\RecoveryTokenAck;
+use App\Form\RecoveryTokenAckType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class RegistrationRecoveryTokenTypeTest extends TypeTestCase
+class RecoveryTokenAckTypeTest extends TypeTestCase
 {
     public function testSubmitValidData()
     {
@@ -17,9 +17,9 @@ class RegistrationRecoveryTokenTypeTest extends TypeTestCase
             'recoveryToken' => $uuid,
         ];
 
-        $form = $this->factory->create(RegistrationRecoveryTokenType::class);
+        $form = $this->factory->create(RecoveryTokenAckType::class);
 
-        $object = new RegistrationRecoveryToken();
+        $object = new RecoveryTokenAck();
         $object->ack = true;
         $object->recoveryToken = $uuid;
 

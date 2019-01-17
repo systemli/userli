@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author doobry <doobry@systemli.org>
  */
-class RegistrationRecoveryTokenType extends AbstractType
+class RecoveryTokenAckType extends AbstractType
 {
     const NAME = 'registration_recovery_token';
 
@@ -32,7 +32,7 @@ class RegistrationRecoveryTokenType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(['data_class' => 'App\Form\Model\RegistrationRecoveryToken']);
+        $resolver->setDefaults(['data_class' => 'App\Form\Model\RecoveryTokenAck']);
     }
 
     /**

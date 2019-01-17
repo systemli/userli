@@ -145,6 +145,7 @@ flashes:
   alias-creation-successful: Your new alias address was created!
   alias-deletion-successful: Your alias address was successfully deleted!
   recovery-token-invalid: Email address and/or recovery token are wrong!
+  recovery-token-ack: You successfully generated a recovery token!
   revocery-reauthenticate: Something went wrong. Please re-authenticate!
   recovery-password-reset: You successfully changed your password. Go on with the login.
 

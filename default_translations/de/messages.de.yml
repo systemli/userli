@@ -145,6 +145,7 @@ flashes:
   alias-creation-successful: Deine neue Alias-Adresse wurde erstellt!
   alias-deletion-successful: Deine Alias-Adresse wurde erfolgreich gelöscht!
   recovery-token-invalid: E-Mail Adresse und/oder Wiederherstellungscode sind falsch!
+  recovery-token-ack: Du hast erfolgreich einen Wiederherstellungscode erzeugt!
   recovery-reauthenticate: Etwas ist schiefgelaufen. Du musst dich erneut authentifizieren!
   recovery-password-changed: Dein Passwort wurde geändert. Du kannst dich nun einloggen.
 
