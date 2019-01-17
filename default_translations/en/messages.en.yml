@@ -66,7 +66,6 @@ recovery:
   lead: Reset the password using your recovery token
   cancel: Cancel
   started: You almost made it. The fist step to reset your password is done. Now you have to wait for 48 hours. Afterwards, in a second step, you can set a new password.
-  pending: Unfortunately the waiting period of 48 hours didn't elapse yet. You have to wait a bit longer before setting a new password.
   waiting-info: The waiting period is for your own security and cannot be shortened or skipped.
   waiting-time: Second step starts at %time%.
   reset-lead: You're now allowed to reset your password

@@ -32,10 +32,6 @@ class RecoveryController extends Controller
      */
     private $recoveryTokenHandler;
 
-    const PROCESS_STATE_0 = 'NONE';
-    const PROCESS_STATE_1 = 'STARTED';
-    const PROCESS_STATE_2 = 'PENDING';
-
     /**
      * RecoveryController constructor.
      *
@@ -57,7 +53,7 @@ class RecoveryController extends Controller
      */
     public function recoveryProcessAction(Request $request): Response
     {
-        $processState = self::PROCESS_STATE_0;
+        $processStarted = false;
         $recoveryActiveTime = new \DateTime();
         $recoveryProcess = new RecoveryProcess();
         $recoveryForm = $this->createForm(RecoveryProcessType::class, $recoveryProcess);
@@ -81,13 +77,13 @@ class RecoveryController extends Controller
 
                     if (null === $recoveryStartTime || new \DateTime('-30 days') >= $recoveryStartTime) {
                         // Recovery process gets started
-                        $processState = self::PROCESS_STATE_1;
+                        $processStarted = true;
                         $user->updateRecoveryStartTime();
                         $this->getDoctrine()->getManager()->flush();
                         $recoveryActiveTime = $user->getRecoveryStartTime()->add(new \DateInterval('P2D'));
                     } elseif (new \DateTime('-2 days') <= $recoveryStartTime) {
                         // Recovery process is pending, but waiting period didn't elapse yet
-                        $processState = self::PROCESS_STATE_2;
+                        $processStarted = true;
                         $recoveryActiveTime = $recoveryStartTime->add(new \DateInterval('P2D'));
                     } else {
                         // Recovery process successful, go on with the form to reset password
@@ -119,7 +115,7 @@ class RecoveryController extends Controller
             'Recovery/recovery.html.twig',
             [
                 'form' => $recoveryForm->createView(),
-                'process_state' => $processState,
+                'process_started' => $processStarted,
                 'active_time' => $recoveryActiveTime,
             ]
         );
