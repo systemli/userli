@@ -20,7 +20,7 @@ class RecoveryTokenAckType extends AbstractType
     {
         $builder
             ->add('ack', CheckboxType::class, [
-                'required' => false,
+                'required' => true,
                 'label' => 'form.registration-recovery-token-ack',
             ])
             ->add('recoveryToken', HiddenType::class)
