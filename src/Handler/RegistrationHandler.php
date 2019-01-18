@@ -35,6 +35,10 @@ class RegistrationHandler
      */
     private $passwordUpdater;
     /**
+     * @var RecoveryTokenHandler
+     */
+    private $recoveryTokenHandler;
+    /**
      * @var bool
      */
     private $hasSinaBox;

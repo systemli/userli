@@ -69,6 +69,17 @@ recovery:
   waiting-info: The waiting period is for your own security and cannot be shortened or skipped.
   waiting-time: Second step starts at %time%.
   reset-lead: You're now allowed to reset your password
+  email-subject: The password for your email account %email% will be reset
+  email-body: |
+    Hello %email%,
+
+    Somebody (let's hope it was you) tried to reset your account password. To do so, they authenticated with your email address and corresponding recovery code at %app_url%recovery.
+
+    The 48 hours waiting period started now and will end at %time%. Afterwards, in a second step, a new password can be set for your account.
+
+    You didn't trigger this yourself? Then somebody else with access to your recovery token tries to get hold of your account. You should go to %app_url%user/recovery_token immediately and generate a new recovery token. This will invalidate the current recovery token.
+
+    We hope you continue to enjoy your email account. Your %project_name% admin team.
 
 navbar_left:
   about-us:

@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Event\Events;
+use App\Event\UserEvent;
 use App\Form\Model\RecoveryProcess;
 use App\Form\Model\RecoveryResetPassword;
 use App\Form\Model\RecoveryToken;
@@ -14,6 +16,7 @@ use App\Form\RecoveryTokenType;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,22 +29,27 @@ class RecoveryController extends Controller
      * @var PasswordUpdater
      */
     private $passwordUpdater;
-
     /**
      * @var RecoveryTokenHandler
      */
     private $recoveryTokenHandler;
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
     /**
      * RecoveryController constructor.
      *
-     * @param PasswordUpdater      $passwordUpdater
-     * @param RecoveryTokenHandler $recoveryTokenHandler
+     * @param PasswordUpdater          $passwordUpdater
+     * @param RecoveryTokenHandler     $recoveryTokenHandler
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(PasswordUpdater $passwordUpdater, RecoveryTokenHandler $recoveryTokenHandler)
+    public function __construct(PasswordUpdater $passwordUpdater, RecoveryTokenHandler $recoveryTokenHandler, EventDispatcherInterface $eventDispatcher)
     {
         $this->passwordUpdater = $passwordUpdater;
         $this->recoveryTokenHandler = $recoveryTokenHandler;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -80,6 +88,7 @@ class RecoveryController extends Controller
                         $processStarted = true;
                         $user->updateRecoveryStartTime();
                         $this->getDoctrine()->getManager()->flush();
+                        $this->eventDispatcher->dispatch(Events::RECOVERY_PROCESS_STARTED, new UserEvent($user));
                         $recoveryActiveTime = $user->getRecoveryStartTime()->add(new \DateInterval('P2D'));
                     } elseif (new \DateTime('-2 days') <= $recoveryStartTime) {
                         // Recovery process is pending, but waiting period didn't elapse yet

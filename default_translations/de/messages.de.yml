@@ -69,6 +69,17 @@ recovery:
   waiting-info: Die Wartezeit dient deiner eigenen Sicherheit und kann nicht verkürzt oder umgangen werden.
   waiting-time: Der zweite Schritt ist möglich ab dem %time%.
   reset-lead: Du kannst nun dein Passwort zurücksetzen
+  email-subject: Das Passwort zu deinem E-Mail-Account %email% wird zurückgesetzt
+  email-body: |
+    Hallo %email%,
+
+    Jemand (hoffentlich du selbst) hat versucht, dein Passwort zurückzusetzen. Dazu wurden deine E-Mail-Addresse und der zugehörige Wiederherstellungscode unter %app_url%recovery eingegeben.
+
+    Nun startet die 48-stündige Wartezeit. Diese geht bis zum %time%. Anschließend kann in einem zweiten Schritt dein Passwort neu gesetzt werden.
+
+    Du hast das nicht selbst ausgelöst? Jemand anderes mit Zugang zu deinem Wiederherstellungscode versucht, Kontrolle über deinen Account zu bekommen. Gehe schnellstmöglich zu %app_url%user/recovery_token und erstelle dir einen neuen Wiederherstellungscode. Dadurch wird der alte ungültig.
+
+    Weiterhin viel Spaß mit deinem Mailaccount, wünscht dir dein %project_name% Admin Team.
 
 navbar_left:
   about-us:

@@ -32,6 +32,11 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+    App\Builder\RecoveryProcessMessageBuilder:
+        arguments:
+            $appUrl:       "%env(APP_URL)%"
+            $projectName:  "%env(PROJECT_NAME)%"
+
     App\Builder\WelcomeMessageBuilder:
         arguments:
             $appUrl:       "%env(APP_URL)%"
@@ -96,9 +101,13 @@ services:
     App\Helper\PasswordUpdater:
         public: true
 
+    App\EventListener\RecoveryProcessListener:
+        arguments:
+            $sendMail:     "%env(SEND_MAIL)%"
+
     App\EventListener\RegistrationListener:
         arguments:
-            $sendMail:     "%env(SEND_WELCOME_MAIL)%"
+            $sendMail:     "%env(SEND_MAIL)%"
 
     App\Menu\MenuBuilder:
         arguments:
