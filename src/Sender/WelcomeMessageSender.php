@@ -33,7 +33,7 @@ class WelcomeMessageSender
      * @param WelcomeMessageBuilder $builder
      * @param string                $domain
      */
-    public function __construct(MailHandler $handler, WelcomeMessageBuilder $builder, $domain)
+    public function __construct(MailHandler $handler, WelcomeMessageBuilder $builder, string $domain)
     {
         $this->handler = $handler;
         $this->builder = $builder;
@@ -41,17 +41,23 @@ class WelcomeMessageSender
     }
 
     /**
-     * @param User $user
-     * @param $locale
+     * @param User   $user
+     * @param string $locale
+     *
+     * @throws \Exception
      */
-    public function send(User $user, $locale)
+    public function send(User $user, string $locale)
     {
-        if (strpos($email = $user->getEmail(), $this->domain) < 0) {
+        if (null === $email = $user->getEmail()) {
+            throw new \Exception('Email should not be null');
+        }
+
+        if (strpos($email, $this->domain) < 0) {
             return;
         }
 
         $body = $this->builder->buildBody($locale);
         $subject = $this->builder->buildSubject();
-        $this->handler->send($user->getEmail(), $body, $subject);
+        $this->handler->send($email, $body, $subject);
     }
 }
