@@ -117,6 +117,12 @@ class FeatureContext extends MinkContext
                     case 'recoverySecret':
                         $user->setRecoverySecret($value);
                         break;
+                    case 'mailCryptPrivateKey':
+                        $user->setMailCryptPrivateKey($value);
+                        break;
+                    case 'mailCryptPublicKey':
+                        $user->setMailCryptPublicKey($value);
+                        break;
                 }
             }
 
@@ -352,13 +358,15 @@ class FeatureContext extends MinkContext
     {
         $this->output = shell_exec("php bin/console " . $command);
     }
+
     /**
      * @Then I should see :string in the console output
      */
     public function iShouldSeeInTheConsoleOutput($string)
     {
-        if (strpos($this->output, $string) === false) {
-            throw new \Exception(sprintf('Did not see "%s" in console output "%s"', $string, $this->output));
+        $output = preg_replace('/\r\n|\r|\n/', '\\n', $this->output);
+        if (strpos($output, $string) === false) {
+            throw new \Exception(sprintf('Did not see "%s" in console output "%s"', $string, $output));
         }
     }
 
@@ -367,8 +375,19 @@ class FeatureContext extends MinkContext
      */
     public function iShouldNotSeeInTheConsoleOutput($string)
     {
-        if (strpos($this->output, $string) === true) {
-            throw new \Exception(sprintf('Did see "%s" in console output "%s"', $string, $this->output));
+        $output = preg_replace('/\r\n|\r|\n/', '\\n', $this->output);
+        if (strpos($output, $string) === true) {
+            throw new \Exception(sprintf('Did see "%s" in console output "%s"', $string, $output));
+        }
+    }
+
+    /**
+     * @Then I should see empty console output
+     */
+    public function iShouldSeeEmptyConsoleOutput()
+    {
+        if ($this->output !== null) {
+            throw new \Exception(sprintf('Did not see empty console output: "%s"', $this->output));
         }
     }
 

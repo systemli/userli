@@ -13,6 +13,7 @@
     - andyceo.phpcsfixer
   vars:
     dovecot_disable_plaintext_auth: "no"
+    dovecot_postfix_auth: true
     manala_apt_repositories:
       - sury_php
     manala_apt_repositories_exclusive: false

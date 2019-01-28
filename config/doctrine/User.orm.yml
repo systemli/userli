@@ -44,6 +44,12 @@ App\Entity\User:
     recoveryStartTime:
       type: datetime
       nullable: true
+    mailCryptPrivateSecret:
+      type: text
+      nullable: true
+    mailCryptPublicKey:
+      type: text
+      nullable: true
 
   manyToOne:
     domain:
