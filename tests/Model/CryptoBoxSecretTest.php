@@ -1,17 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: resivo
- * Date: 03.01.19
- * Time: 16:15
- */
 
 namespace App\Tests\Model;
 
-use App\Model\RecoverySecret;
+use App\Model\CryptoBoxSecret;
 use PHPUnit\Framework\TestCase;
 
-class RecoverySecretTest extends TestCase
+class CryptoBoxSecretTest extends TestCase
 {
     /**
      * @expectedException \Exception
@@ -19,7 +13,7 @@ class RecoverySecretTest extends TestCase
      */
     public function testDecodeExceptionBase64()
     {
-        $secret = new RecoverySecret('', '', '');
+        $secret = new CryptoBoxSecret('', '', '');
         $secret->decode('brokenbase64%%%');
     }
 
@@ -29,7 +23,7 @@ class RecoverySecretTest extends TestCase
      */
     public function testDecodeExceptionTruncated()
     {
-        $secret = new RecoverySecret('', '', '');
+        $secret = new CryptoBoxSecret('', '', '');
         $secret->decode('shortcipher');
     }
 }

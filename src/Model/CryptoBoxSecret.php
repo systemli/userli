@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-class RecoverySecret
+class CryptoBoxSecret
 {
     /**
      * @var string
@@ -66,8 +66,7 @@ class RecoverySecret
     /**
      * @param string $encrypted
      *
-     * @return RecoverySecret
-     *
+     * @return CryptoBoxSecret
      * @throws \Exception
      */
     public static function decode(string $encrypted): self
@@ -88,23 +87,22 @@ class RecoverySecret
         $salt = mb_substr($decoded, SODIUM_CRYPTO_BOX_PUBLICKEYBYTES, SODIUM_CRYPTO_PWHASH_SALTBYTES, '8bit');
         $secret = mb_substr($decoded, SODIUM_CRYPTO_BOX_PUBLICKEYBYTES + SODIUM_CRYPTO_PWHASH_SALTBYTES, null, '8bit');
 
-        return new RecoverySecret($publicKey, $salt, $secret);
+        return new CryptoBoxSecret($publicKey, $salt, $secret);
     }
 
     /**
      * @param string $encrypted
-     * @param string $plainPassword
+     * @param string $message
      *
-     * @return RecoverySecret
-     *
+     * @return CryptoBoxSecret
      * @throws \Exception
      */
-    public static function reEncrypt(string $encrypted, string $plainPassword): self
+    public static function reEncrypt(string $encrypted, string $message): self
     {
-        $recoverySecret = self::decode($encrypted);
+        $cryptoSecret = self::decode($encrypted);
 
-        $secret = sodium_crypto_box_seal($plainPassword, $recoverySecret->getPublicKey());
+        $secret = sodium_crypto_box_seal($message, $cryptoSecret->getPublicKey());
 
-        return new RecoverySecret($recoverySecret->getPublicKey(), $recoverySecret->getSalt(), $secret);
+        return new CryptoBoxSecret($cryptoSecret->getPublicKey(), $cryptoSecret->getSalt(), $secret);
     }
 }

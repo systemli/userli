@@ -3,10 +3,9 @@
 namespace App\Handler;
 
 use App\Entity\User;
-use App\Model\RecoverySecret;
+use App\Model\CryptoBoxSecret;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * Class AliasHandler.
@@ -19,20 +18,13 @@ class RecoveryTokenHandler
     private $manager;
 
     /**
-     * @var EncoderFactoryInterface
-     */
-    private $encoderFactory;
-
-    /**
      * RecoveryTokenHandler constructor.
      *
      * @param ObjectManager           $manager
-     * @param EncoderFactoryInterface $encoderFactory
      */
-    public function __construct(ObjectManager $manager, EncoderFactoryInterface $encoderFactory)
+    public function __construct(ObjectManager $manager)
     {
         $this->manager = $manager;
-        $this->encoderFactory = $encoderFactory;
     }
 
     /**
@@ -61,7 +53,7 @@ class RecoveryTokenHandler
         }
         $user->eraseCredentials();
 
-        $recoverySecret = RecoverySecretHandler::create($plainPassword, $recoveryToken);
+        $recoverySecret = CryptoBoxSecretHandler::create($plainPassword, $recoveryToken);
         $user->setRecoverySecret($recoverySecret->encode());
         $user->eraseRecoveryStartTime();
         $user->setPlainRecoveryToken($recoveryToken);
@@ -89,7 +81,7 @@ class RecoveryTokenHandler
         if (null === $secret = $user->getRecoverySecret()) {
             throw new \Exception('secret should not be null');
         }
-        $user->setRecoverySecret(RecoverySecret::reEncrypt($secret, $plainPassword)->encode());
+        $user->setRecoverySecret(CryptoBoxSecret::reEncrypt($secret, $plainPassword)->encode());
         $user->eraseRecoveryStartTime();
     }
 
@@ -110,22 +102,13 @@ class RecoveryTokenHandler
         if (null === $recoverySecretEncoded = $user->getRecoverySecret()) {
             throw new \Exception('recoverySecretEncoded should not be null');
         }
+
         try {
-            $recoverySecret = RecoverySecret::decode($recoverySecretEncoded);
+            $recoverySecret = CryptoBoxSecret::decode($recoverySecretEncoded);
         } catch (\Exception $e) {
             return false;
         }
-        $decrypted = RecoverySecretHandler::decrypt($recoverySecret, $recoveryToken);
 
-        $encoder = $this->encoderFactory->getEncoder($user);
-        if (empty($decrypted) || !$encoder->isPasswordValid($user->getPassword(), $decrypted, $user->getSalt())) {
-            sodium_memzero($decrypted);
-
-            return false;
-        }
-
-        sodium_memzero($decrypted);
-
-        return true;
+        return (null !== CryptoBoxSecretHandler::decrypt($recoverySecret, $recoveryToken)) ? true : false;
     }
 }
