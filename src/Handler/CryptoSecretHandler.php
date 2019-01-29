@@ -2,9 +2,9 @@
 
 namespace App\Handler;
 
-use App\Model\CryptoBoxSecret;
+use App\Model\CryptoSecret;
 
-class CryptoBoxSecretHandler
+class CryptoSecretHandler
 {
     /**
      * Using PHP sodium implementation for crypto stuff. Commands taken from:
@@ -17,10 +17,10 @@ class CryptoBoxSecretHandler
      * @param string $message
      * @param string $password
      *
-     * @return CryptoBoxSecret
+     * @return CryptoSecret
      * @throws \Exception
      */
-    public static function create(string $message, string $password): CryptoBoxSecret
+    public static function create(string $message, string $password): CryptoSecret
     {
         // generate salt for symmetric encryption key
         $salt = random_bytes(SODIUM_CRYPTO_PWHASH_SALTBYTES);
@@ -34,29 +34,26 @@ class CryptoBoxSecretHandler
             SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE
         );
 
-        // generate a key pair from the symmetric key
-        $keyPair = sodium_crypto_box_seed_keypair($key);
-        $publicKey = sodium_crypto_box_publickey($keyPair);
+        $nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
 
         // generate the crypto secret
-        $secret = sodium_crypto_box_seal($message, $publicKey);
+        $secret = sodium_crypto_secretbox($message, $nonce, $key);
 
         // cleanup variables with confidential content
         sodium_memzero($message);
         sodium_memzero($password);
         sodium_memzero($key);
-        sodium_memzero($keyPair);
 
-        return new CryptoBoxSecret($publicKey, $salt, $secret);
+        return new CryptoSecret($salt, $nonce, $secret);
     }
 
     /**
-     * @param CryptoBoxSecret $cryptoSecret
-     * @param string          $password
+     * @param CryptoSecret $cryptoSecret
+     * @param string       $password
      *
      * @return string|null
      */
-    public static function decrypt(CryptoBoxSecret $cryptoSecret, string $password): ?string
+    public static function decrypt(CryptoSecret $cryptoSecret, string $password): ?string
     {
         // generate symmetric encryption key from key and salt
         $key = sodium_crypto_pwhash(
@@ -67,18 +64,14 @@ class CryptoBoxSecretHandler
             SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE
         );
 
-        // generate a key pair from the symmetric key
-        $keyPair = sodium_crypto_box_seed_keypair($key);
-
         // decrypt message
-        if (false === $message = sodium_crypto_box_seal_open($cryptoSecret->getSecret(), $keyPair)) {
+        if (false === $message = sodium_crypto_secretbox_open($cryptoSecret->getSecret(), $cryptoSecret->getNonce(), $key)) {
             return null;
         };
 
         // cleanup variables with confidential content
         sodium_memzero($password);
         sodium_memzero($key);
-        sodium_memzero($keyPair);
 
         return $message;
     }

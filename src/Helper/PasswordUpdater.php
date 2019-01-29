@@ -3,7 +3,6 @@
 namespace App\Helper;
 
 use App\Entity\User;
-use App\Handler\RecoveryTokenHandler;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
@@ -17,20 +16,13 @@ class PasswordUpdater
     private $encoderFactory;
 
     /**
-     * @var RecoveryTokenHandler
-     */
-    private $recoveryTokenHandler;
-
-    /**
      * PasswordUpdater constructor.
      *
      * @param EncoderFactoryInterface $encoderFactory
-     * @param RecoveryTokenHandler    $recoveryTokenHandler
      */
-    public function __construct(EncoderFactoryInterface $encoderFactory, RecoveryTokenHandler $recoveryTokenHandler)
+    public function __construct(EncoderFactoryInterface $encoderFactory)
     {
         $this->encoderFactory = $encoderFactory;
-        $this->recoveryTokenHandler = $recoveryTokenHandler;
     }
 
     /**
@@ -51,11 +43,6 @@ class PasswordUpdater
         $hash = $encoder->encodePassword($plainPassword, $user->getSalt());
 
         $user->setPassword($hash);
-
-        // Update recovery secret only if set
-        if ($user->hasRecoverySecret()) {
-            $this->recoveryTokenHandler->update($user);
-        }
 
         $user->updateUpdatedTime();
     }

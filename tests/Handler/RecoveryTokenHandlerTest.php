@@ -38,22 +38,6 @@ class RecoveryTokenHandlerTest extends TestCase
         self::assertNotEmpty($user->getPlainRecoveryToken());
     }
 
-    public function testUpdate()
-    {
-        $handler = $this->createHandler();
-        $user = new User();
-
-        $user->setPlainPassword('password');
-        $handler->create($user);
-        $cipher = $user->getRecoverySecret();
-
-        $user->setPlainPassword('password');
-        $handler->update($user);
-        $cipherNew = $user->getRecoverySecret();
-
-        self::assertNotEquals($cipher, $cipherNew);
-    }
-
     public function testVerify()
     {
         $handler = $this->createHandler();
@@ -71,32 +55,5 @@ class RecoveryTokenHandlerTest extends TestCase
 
         $user->setRecoverySecret('brokenSecret');
         self::assertFalse($handler->verify($user, $recoveryToken));
-    }
-
-    public function testCreateUpdateVerifyToken()
-    {
-        // Test create and verify
-
-        $handler = $this->createHandler();
-        $plainPassword = 'password';
-
-        $user = new User();
-        $user->setPassword($plainPassword);
-
-        $user->setPlainPassword($plainPassword);
-        $handler->create($user);
-
-        self::assertTrue($handler->verify($user, $user->getPlainRecoveryToken()));
-        self::assertFalse($handler->verify($user, 'brokenToken'));
-
-        // Test update with stored public key and verify
-
-        $plainPassword = 'password_new';
-
-        $user->setPlainPassword($plainPassword);
-        $handler->update($user);
-
-        self::assertTrue($handler->verify($user, $user->getPlainRecoveryToken()));
-        self::assertFalse($handler->verify($user, 'brokenToken'));
     }
 }

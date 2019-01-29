@@ -79,6 +79,6 @@ class MailCryptKeyPair
 
         $privateKeySecret = mb_substr($decoded, SODIUM_CRYPTO_BOX_PUBLICKEYBYTES + SODIUM_CRYPTO_PWHASH_SALTBYTES, null, '8bit');
 
-        return new MailCryptKeyPair($privateKeySecret, $publicKey);
+        return new MailCryptKeyPair($privateKeySecret, $this->getPublicKey());
     }
 }

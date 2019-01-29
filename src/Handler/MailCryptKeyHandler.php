@@ -3,7 +3,7 @@
 namespace App\Handler;
 
 use App\Entity\User;
-use App\Model\CryptoBoxSecret;
+use App\Model\CryptoSecret;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
@@ -52,7 +52,8 @@ class MailCryptKeyHandler
         }
         $user->eraseCredentials();
 
-        $mailCryptPrivateSecret = CryptoBoxSecretHandler::create($keyPair->getPrivateKey(), $plainPassword);
+        $mailCryptPrivateSecret = CryptoSecretHandler::create($keyPair->getPrivateKey(), $plainPassword);
+        $user->setMailCryptPublicKey($keyPair->getPublicKey()->encode());
         $user->setMailCryptPrivateSecret($mailCryptPrivateSecret->encode());
 
         // Clear variables with confidential content from memory
@@ -78,7 +79,7 @@ class MailCryptKeyHandler
         if (null === $secret = $user->getMailCryptPrivateSecret()) {
             throw new \Exception('secret should not be null');
         }
-        $user->setMailCryptPrivateSecret(CryptoBoxSecret::reEncrypt($secret, $plainPassword)->encode());
+        $user->setMailCryptPrivateSecret(CryptoSecretHandler::create($secret, $plainPassword)->encode());
     }
 
     /**
@@ -100,11 +101,11 @@ class MailCryptKeyHandler
         }
 
         try {
-            $mailCryptPrivateSecret = CryptoBoxSecret::decode($mailCryptPrivateSecretEncoded);
+            $mailCryptPrivateSecret = CryptoSecret::decode($mailCryptPrivateSecretEncoded);
         } catch (\Exception $e) {
             return false;
         }
 
-        return (null !== CryptoBoxSecretHandler::decrypt($mailCryptPrivateSecret, $password)) ? true : false;
+        return (null !== CryptoSecretHandler::decrypt($mailCryptPrivateSecret, $password)) ? true : false;
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Handler;
 
 use App\Entity\User;
-use App\Model\CryptoBoxSecret;
+use App\Model\CryptoSecret;
 use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
@@ -53,7 +53,7 @@ class RecoveryTokenHandler
         }
         $user->eraseCredentials();
 
-        $recoverySecret = CryptoBoxSecretHandler::create($plainPassword, $recoveryToken);
+        $recoverySecret = CryptoSecretHandler::create('test', $recoveryToken);
         $user->setRecoverySecret($recoverySecret->encode());
         $user->eraseRecoveryStartTime();
         $user->setPlainRecoveryToken($recoveryToken);
@@ -63,26 +63,6 @@ class RecoveryTokenHandler
         sodium_memzero($plainPassword);
 
         $this->manager->flush();
-    }
-
-    /**
-     * @param User $user
-     *
-     * @throws \Exception
-     */
-    public function update(User $user)
-    {
-        // get plain user password to be encrypted
-        if (null === $plainPassword = $user->getPlainPassword()) {
-            throw new \Exception('plainPassword should not be null');
-        }
-        $user->eraseCredentials();
-
-        if (null === $secret = $user->getRecoverySecret()) {
-            throw new \Exception('secret should not be null');
-        }
-        $user->setRecoverySecret(CryptoBoxSecret::reEncrypt($secret, $plainPassword)->encode());
-        $user->eraseRecoveryStartTime();
     }
 
     /**
@@ -104,11 +84,11 @@ class RecoveryTokenHandler
         }
 
         try {
-            $recoverySecret = CryptoBoxSecret::decode($recoverySecretEncoded);
+            $recoverySecret = CryptoSecret::decode($recoverySecretEncoded);
         } catch (\Exception $e) {
             return false;
         }
 
-        return (null !== CryptoBoxSecretHandler::decrypt($recoverySecret, $recoveryToken)) ? true : false;
+        return (null !== CryptoSecretHandler::decrypt($recoverySecret, $recoveryToken)) ? true : false;
     }
 }

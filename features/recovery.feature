@@ -7,15 +7,15 @@ Feature: Recovery
       | example.org |
     And the following User exists:
       | email             | password     | roles     | recoverySecret                                                                                                                                   | recoveryStartTime |
-      | user@example.org  | passwordtest | ROLE_USER | KHzfT8ykMi2ECEC+h6kUv2BNURDowQA3P1NazD0kQwsaoqEOGY/Kjxb/f6IimMTFCA8rBNmNoohPqN/irzduZwYcyDIZpzufHG57MflI6B/01PeVBNcyoOC12b5UwsUZI8lms6qcNR59xijV | NOW               |
-      | user2@example.org | passwordtest | ROLE_USER | KHzfT8ykMi2ECEC+h6kUv2BNURDowQA3P1NazD0kQwsaoqEOGY/Kjxb/f6IimMTFCA8rBNmNoohPqN/irzduZwYcyDIZpzufHG57MflI6B/01PeVBNcyoOC12b5UwsUZI8lms6qcNR59xijV | -3 days           |
+      | user@example.org  | passwordtest | ROLE_USER | Jr74xRXNbLGZif6Zgbyehdw+e6RsaeTQn93QpsAwKqkthUgKJjvSBkwpfZlXhuClMgqO8/xIZ5iJam83 | NOW               |
+      | user2@example.org | passwordtest | ROLE_USER | Jr74xRXNbLGZif6Zgbyehdw+e6RsaeTQn93QpsAwKqkthUgKJjvSBkwpfZlXhuClMgqO8/xIZ5iJam83 | -3 days           |
 
   @recovery
   Scenario: Start recovery process as user (#1)
     When I am on "/recovery"
     And I fill in the following:
       | recovery_process[email]         | user@example.org                     |
-      | recovery_process[recoveryToken] | 803f124a-49a8-4c0d-b75d-a3f448614a25 |
+      | recovery_process[recoveryToken] | 4b416fd3-e35a-4928-aab3-03b0ed2cd092 |
     And I press "recovery_process[submit]"
 
     Then I should be on "/recovery"
@@ -27,7 +27,7 @@ Feature: Recovery
     When I am on "/recovery"
     And I fill in the following:
       | recovery_process[email]         | user2@example.org                    |
-      | recovery_process[recoveryToken] | 803f124a-49a8-4c0d-b75d-a3f448614a25 |
+      | recovery_process[recoveryToken] | 4b416fd3-e35a-4928-aab3-03b0ed2cd092 |
     And I press "recovery_process[submit]"
 
     Then I should be on "/recovery"
@@ -38,7 +38,7 @@ Feature: Recovery
   Scenario: Reset password in recovery process as user (#3)
     When I have the request params for "recovery_reset_password":
       | email         | user2@example.org                    |
-      | recoveryToken | 803f124a-49a8-4c0d-b75d-a3f448614a25 |
+      | recoveryToken | 4b416fd3-e35a-4928-aab3-03b0ed2cd092 |
     And I request "POST /recovery/reset_password"
     And I fill in the following:
       | recovery_reset_password[newPassword][first]  | passwordabcd                         |
@@ -55,7 +55,7 @@ Feature: Recovery
     When I am on "/recovery"
     And I fill in the following:
       | recovery_process[email]         | nonexistent@example.org              |
-      | recovery_process[recoveryToken] | 803f124a-49a8-4c0d-b75d-a3f448614a25 |
+      | recovery_process[recoveryToken] | 4b416fd3-e35a-4928-aab3-03b0ed2cd092 |
     And I press "recovery_process[submit]"
 
     Then I should be on "/recovery"
@@ -66,7 +66,7 @@ Feature: Recovery
     When I am on "/recovery"
     And I fill in the following:
       | recovery_process[email]         | user                                 |
-      | recovery_process[recoveryToken] | 803f124a-49a8-4c0d-b75d-a3f448614a25 |
+      | recovery_process[recoveryToken] | 4b416fd3-e35a-4928-aab3-03b0ed2cd092 |
     And I press "recovery_process[submit]"
 
     Then I should be on "/recovery"
