@@ -7,6 +7,7 @@ form:
   identical-passwords: "Das neue Passwort stimmt mit dem aktuellen überein."
   missing-domain: "Die Domain wird nicht vom System verwaltet und kann nicht benutzt werden."
   registration-recovery-token-noack: "Dieses Feld muss ausgewählt werden."
+  invalid-token: "Der Code hat ein ungültiges Format."
 
 registration:
   voucher-invalid: "Der Einladungscode ist ungültig."

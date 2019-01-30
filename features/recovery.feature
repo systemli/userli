@@ -81,4 +81,4 @@ Feature: Recovery
     And I press "recovery_process[submit]"
 
     Then I should be on "/recovery"
-    And I should see text matching "This is not a valid UUID."
+    And I should see text matching "This token has an invalid format."

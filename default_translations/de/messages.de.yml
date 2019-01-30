@@ -38,7 +38,7 @@ form:
   password_confirmation: Passwort bestätigen
   remember-me: Angemeldet bleiben
   signin: Anmelden
-  recovery-link: Passwort vergessen
+  recovery-link: Passwort vergessen?
   roles: Rollen
   submit: Senden
   voucher: Einladungscode
@@ -57,7 +57,7 @@ form:
   delete-alias: Alias-Adresse löschen
   generate-recovery-token: Neuen Wiederherstellungscode generieren
   recovery-token: Wiederherstellungscode
-  recovery-start: Wiederherstellung beginnen
+  recovery-start: Wiederherstellen
   registration-recovery-token-ack: Ich habe den Code an einem sicheren Ort abgespeichert
   registration-recovery-token-next-button: Weiter
 

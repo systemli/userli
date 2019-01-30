@@ -38,7 +38,7 @@ form:
   password_confirmation: Confirm password
   remember-me: Stay logged in
   signin: Sign in
-  recovery-link: Password forgotten
+  recovery-link: Password forgotten?
   roles: Roles
   submit: Submit
   voucher: Invite code
@@ -55,9 +55,9 @@ form:
   create-custom-alias: Add alias address
   create-random-alias: Generate random alias address
   delete-alias: Delete alias address
-  generate-recovery-token: Generate new recovery token
+  generate-recovery-token: Create new recovery token
   recovery-token: Recovery token
-  recovery-start: Start recovery
+  recovery-start: Recover
   registration-recovery-token-ack: I stored the recovery token at a secure place
   registration-recovery-token-next-button: Continue
 
@@ -77,7 +77,7 @@ recovery:
 
     The 48 hours waiting period started now and will end at %time%. Afterwards, in a second step, a new password can be set for your account.
 
-    You didn't trigger this yourself? Then somebody else with access to your recovery token tries to get hold of your account. You should go to %app_url%user/recovery_token immediately and generate a new recovery token. This will invalidate the current recovery token.
+    You didn't trigger this yourself? Then somebody else with access to your recovery token tries to get hold of your account. You should go to %app_url%user/recovery_token immediately and create a new recovery token. This will invalidate the current recovery token.
 
     We hope you continue to enjoy your email account. Your %project_name% admin team.
 
@@ -143,11 +143,11 @@ recovery-token:
   headline: Manage recovery token
   lead: The recovery token can be used to reset your password if it got lost.
   set: You already have a recovery token set.
-  set-extra: Generating a new token will invalidate the current one.
-  unset: You don't have a recovery token set yet. We strongly recommend to generate one now.
+  set-extra: Creating a new token will invalidate the current one.
+  unset: You don't have a recovery token set yet. We strongly recommend to create one now.
   created-headline: The following recovery token got created for you:
   created-info: If you lost your password, the recovery token allows you to reset a new one. Note it down and store it at a secure place.
-  displayed-once: For security reasons, the recovery token gets displayed only once. It is unknown to us. If you loose the token, you can generate a new one.
+  displayed-once: For security reasons, the recovery token gets displayed only once. It is unknown to us. If you loose the token, you can create a new one.
 
 flashes:
   logout-successful: You have been successfully logged out!

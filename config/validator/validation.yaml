@@ -72,7 +72,8 @@ App\Form\Model\RecoveryProcess:
             - Email:
                   strict: true
         recoveryToken:
-            - Uuid: ~
+            - Uuid:
+                message: form.invalid-token
 
 App\Form\Model\RecoveryResetPassword:
     properties:
