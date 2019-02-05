@@ -67,6 +67,7 @@ class CryptoSecret
      * @param string $encrypted
      *
      * @return CryptoSecret
+     *
      * @throws \Exception
      */
     public static function decode(string $encrypted): self

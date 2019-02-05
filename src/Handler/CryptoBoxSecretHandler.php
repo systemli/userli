@@ -18,6 +18,7 @@ class CryptoBoxSecretHandler
      * @param string $password
      *
      * @return CryptoBoxSecret
+     *
      * @throws \Exception
      */
     public static function create(string $message, string $password): CryptoBoxSecret
@@ -73,7 +74,7 @@ class CryptoBoxSecretHandler
         // decrypt message
         if (false === $message = sodium_crypto_box_seal_open($cryptoSecret->getSecret(), $keyPair)) {
             return null;
-        };
+        }
 
         // cleanup variables with confidential content
         sodium_memzero($password);

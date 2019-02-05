@@ -35,6 +35,10 @@ class RegistrationHandler
      */
     private $passwordUpdater;
     /**
+     * @var MailCryptKeyHandler
+     */
+    private $mailCryptKeyHandler;
+    /**
      * @var RecoveryTokenHandler
      */
     private $recoveryTokenHandler;
@@ -54,6 +58,7 @@ class RegistrationHandler
      * @param DomainGuesser            $domainGuesser
      * @param EventDispatcherInterface $eventDispatcher
      * @param PasswordUpdater          $passwordUpdater
+     * @param MailCryptKeyHandler      $mailCryptKeyHandler
      * @param RecoveryTokenHandler     $recoveryTokenHandler
      * @param bool                     $hasSinaBox
      * @param string                   $primaryDomain
@@ -63,6 +68,7 @@ class RegistrationHandler
         DomainGuesser $domainGuesser,
         EventDispatcherInterface $eventDispatcher,
         PasswordUpdater $passwordUpdater,
+        MailCryptKeyHandler $mailCryptKeyHandler,
         RecoveryTokenHandler $recoveryTokenHandler,
         bool $hasSinaBox,
         string $primaryDomain
@@ -71,6 +77,7 @@ class RegistrationHandler
         $this->domainGuesser = $domainGuesser;
         $this->eventDispatcher = $eventDispatcher;
         $this->passwordUpdater = $passwordUpdater;
+        $this->mailCryptKeyHandler = $mailCryptKeyHandler;
         $this->recoveryTokenHandler = $recoveryTokenHandler;
         $this->hasSinaBox = $hasSinaBox;
         $this->primaryDomain = $primaryDomain;
@@ -90,7 +97,9 @@ class RegistrationHandler
         $user = $this->buildUser($registration);
 
         $this->passwordUpdater->updatePassword($user);
+        $this->mailCryptKeyHandler->create($user);
         $this->recoveryTokenHandler->create($user);
+        $user->eraseCredentials();
         $this->manager->persist($user);
         $this->manager->flush();
 
@@ -115,6 +124,7 @@ class RegistrationHandler
      * @param Registration $registration
      *
      * @return User
+     * @throws \Exception
      */
     private function buildUser(Registration $registration)
     {

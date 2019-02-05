@@ -13,6 +13,7 @@ use App\Form\RecoveryProcessType;
 use App\Form\RecoveryResetPasswordType;
 use App\Form\RecoveryTokenAckType;
 use App\Form\RecoveryTokenType;
+use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -35,6 +36,10 @@ class RecoveryController extends Controller
     /**
      * @var RecoveryTokenHandler
      */
+    private $mailCryptKeyHandler;
+    /**
+     * @var RecoveryTokenHandler
+     */
     private $recoveryTokenHandler;
     /**
      * @var EventDispatcherInterface
@@ -45,12 +50,14 @@ class RecoveryController extends Controller
      * RecoveryController constructor.
      *
      * @param PasswordUpdater          $passwordUpdater
+     * @param MailCryptKeyHandler      $mailCryptKeyHandler
      * @param RecoveryTokenHandler     $recoveryTokenHandler
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(PasswordUpdater $passwordUpdater, RecoveryTokenHandler $recoveryTokenHandler, EventDispatcherInterface $eventDispatcher)
+    public function __construct(PasswordUpdater $passwordUpdater, MailCryptKeyHandler $mailCryptKeyHandler, RecoveryTokenHandler $recoveryTokenHandler, EventDispatcherInterface $eventDispatcher)
     {
         $this->passwordUpdater = $passwordUpdater;
+        $this->mailCryptKeyHandler = $mailCryptKeyHandler;
         $this->recoveryTokenHandler = $recoveryTokenHandler;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -310,6 +317,8 @@ class RecoveryController extends Controller
     {
         $user->setPlainPassword($password);
         $this->passwordUpdater->updatePassword($user);
+        // TODO: Reencrypt key
+        //$this->mailCryptKeyHandler->update($user, 'oldPassword');
         $user->eraseCredentials();
         $this->getDoctrine()->getManager()->flush();
     }

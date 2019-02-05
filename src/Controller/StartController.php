@@ -15,6 +15,7 @@ use App\Form\RandomAliasCreateType;
 use App\Form\PasswordChangeType;
 use App\Form\VoucherCreateType;
 use App\Handler\AliasHandler;
+use App\Handler\MailCryptKeyHandler;
 use App\Handler\VoucherHandler;
 use App\Helper\PasswordUpdater;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -42,21 +43,27 @@ class StartController extends Controller
      * @var VoucherCreator
      */
     private $voucherCreator;
+    /**
+     * @var MailCryptKeyHandler
+     */
+    private $mailCryptKeyHandler;
 
     /**
      * StartController constructor.
      *
-     * @param AliasHandler    $aliasHandler
-     * @param PasswordUpdater $passwordUpdater
-     * @param VoucherHandler  $voucherHandler
-     * @param VoucherCreator  $voucherCreator
+     * @param AliasHandler        $aliasHandler
+     * @param PasswordUpdater     $passwordUpdater
+     * @param VoucherHandler      $voucherHandler
+     * @param VoucherCreator      $voucherCreator
+     * @param MailCryptKeyHandler $mailCryptKeyHandler
      */
-    public function __construct(AliasHandler $aliasHandler, PasswordUpdater $passwordUpdater, VoucherHandler $voucherHandler, VoucherCreator $voucherCreator)
+    public function __construct(AliasHandler $aliasHandler, PasswordUpdater $passwordUpdater, VoucherHandler $voucherHandler, VoucherCreator $voucherCreator, MailCryptKeyHandler $mailCryptKeyHandler)
     {
         $this->aliasHandler = $aliasHandler;
         $this->passwordUpdater = $passwordUpdater;
         $this->voucherHandler = $voucherHandler;
         $this->voucherCreator = $voucherCreator;
+        $this->mailCryptKeyHandler = $mailCryptKeyHandler;
     }
 
     /**
@@ -207,7 +214,7 @@ class StartController extends Controller
             $passwordChangeForm->handleRequest($request);
 
             if ($passwordChangeForm->isSubmitted() && $passwordChangeForm->isValid()) {
-                $this->changePassword($request, $user, $passwordChange->newPassword);
+                $this->changePassword($request, $user, $passwordChange->newPassword, $passwordChange->password);
             }
         }
 
@@ -273,13 +280,17 @@ class StartController extends Controller
     /**
      * @param Request $request
      * @param User    $user
-     * @param string  $password
+     * @param string  $newPassword
+     * @param string  $oldPassword
+     *
+     * @throws \Exception
      */
-    private function changePassword(Request $request, User $user, string $password)
+    private function changePassword(Request $request, User $user, string $newPassword, string $oldPassword)
     {
-        $user->setPlainPassword($password);
-
+        $user->setPlainPassword($newPassword);
         $this->passwordUpdater->updatePassword($user);
+        $this->mailCryptKeyHandler->update($user, $oldPassword);
+        $user->eraseCredentials();
 
         $this->getDoctrine()->getManager()->flush();
 

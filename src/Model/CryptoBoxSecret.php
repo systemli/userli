@@ -67,6 +67,7 @@ class CryptoBoxSecret
      * @param string $encrypted
      *
      * @return CryptoBoxSecret
+     *
      * @throws \Exception
      */
     public static function decode(string $encrypted): self
@@ -95,6 +96,7 @@ class CryptoBoxSecret
      * @param string $message
      *
      * @return CryptoBoxSecret
+     *
      * @throws \Exception
      */
     public static function reEncrypt(string $encrypted, string $message): self

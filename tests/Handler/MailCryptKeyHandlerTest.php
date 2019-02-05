@@ -1,0 +1,91 @@
+<?php
+
+namespace App\Tests\Handler;
+
+use App\Entity\User;
+use App\Handler\MailCryptKeyHandler;
+use Doctrine\Common\Persistence\ObjectManager;
+use PHPUnit\Framework\TestCase;
+
+class MailCryptKeyHandlerTest extends TestCase
+{
+    private function createHandler()
+    {
+        $manager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
+        return new MailCryptKeyHandler($manager);
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage plainPassword should not be null
+     */
+    public function testCreateExceptionNullPassword()
+    {
+        $handler = $this->createHandler();
+        $user = new User();
+        $handler->create($user);
+    }
+
+    public function testCreate()
+    {
+        $handler = $this->createHandler();
+        $user = new User();
+        $user->setPlainPassword('password');
+        $handler->create($user);
+
+        self::assertNotEmpty($user->getMailCryptPublicKey());
+        self::assertNotEmpty($user->getMailCryptPrivateSecret());
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage plainPassword should not be null
+     */
+    public function testUpdateExceptionNullPassword()
+    {
+        $handler = $this->createHandler();
+        $user = new User();
+        $handler->update($user, 'old_password');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage secret should not be null
+     */
+    public function testUpdateExceptionNullSecret()
+    {
+        $handler = $this->createHandler();
+        $user = new User();
+        $user->setPlainPassword('password');
+        $handler->update($user, 'old_password');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage decryption of mailCryptPrivateSecret failed
+     */
+    public function testUpdateExceptionDecryptionFailed()
+    {
+        $handler = $this->createHandler();
+        $user = new User();
+        $user->setPlainPassword('password');
+        $handler->create($user);
+
+        $handler->update($user, 'wrong_password');
+    }
+
+    public function testUpdate()
+    {
+        $handler = $this->createHandler();
+        $user = new User();
+        $user->setPlainPassword('password');
+        $handler->create($user);
+        $secret = $user->getMailCryptPrivateSecret();
+
+        $user->setPlainPassword('new_password');
+        $handler->update($user, 'password');
+
+        self::assertNotEquals($secret, $user->getMailCryptPrivateSecret());
+    }
+
+}

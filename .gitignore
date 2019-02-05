@@ -7,7 +7,6 @@
 !/bin/user-aliases
 !/bin/user-vouchers
 build/
-checkpassword.log
 config/parameters_prod.yaml
 config/services_dev.yaml
 config/services_prod.yaml

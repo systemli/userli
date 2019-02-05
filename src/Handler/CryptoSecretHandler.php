@@ -18,6 +18,7 @@ class CryptoSecretHandler
      * @param string $password
      *
      * @return CryptoSecret
+     *
      * @throws \Exception
      */
     public static function create(string $message, string $password): CryptoSecret
@@ -67,7 +68,7 @@ class CryptoSecretHandler
         // decrypt message
         if (false === $message = sodium_crypto_secretbox_open($cryptoSecret->getSecret(), $cryptoSecret->getNonce(), $key)) {
             return null;
-        };
+        }
 
         // cleanup variables with confidential content
         sodium_memzero($password);

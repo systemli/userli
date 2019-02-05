@@ -4,6 +4,7 @@ namespace App\Handler;
 
 use App\Entity\User;
 use App\Model\CryptoSecret;
+use App\Model\MailCryptKeyPair;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
@@ -11,6 +12,10 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class MailCryptKeyHandler
 {
+    // Use elliptic curve type 'secp521r1' for mail_crypt keys
+    const MAIL_CRYPT_PRIVATE_KEY_TYPE = OPENSSL_KEYTYPE_EC;
+    const MAIL_CRYPT_CURVE_NAME = 'secp521r1';
+
     /**
      * @var ObjectManager
      */
@@ -19,22 +24,11 @@ class MailCryptKeyHandler
     /**
      * MailCryptPrivateKeyHandler constructor.
      *
-     * @param ObjectManager           $manager
+     * @param ObjectManager $manager
      */
     public function __construct(ObjectManager $manager)
     {
         $this->manager = $manager;
-    }
-
-    /**
-     * @return string
-     *
-     * @throws \Exception
-     */
-    public function generateKeyPair(): string
-    {
-        // generate a version 4 (random) UUID object
-        return strtolower(Uuid::uuid4()->toString());
     }
 
     /**
@@ -44,68 +38,58 @@ class MailCryptKeyHandler
      */
     public function create(User $user)
     {
-        $keyPair = $this->generateKeyPair();
+        $pKey = openssl_pkey_new([
+            'private_key_type' => self::MAIL_CRYPT_PRIVATE_KEY_TYPE,
+            'curve_name' => self::MAIL_CRYPT_CURVE_NAME,
+        ]);
+        openssl_pkey_export($pKey, $privateKey);
+        $keyPair = new MailCryptKeyPair(base64_encode($privateKey), base64_encode(openssl_pkey_get_details($pKey)['key']));
+        sodium_memzero($privateKey);
 
         // get plain user password
         if (null === $plainPassword = $user->getPlainPassword()) {
             throw new \Exception('plainPassword should not be null');
         }
-        $user->eraseCredentials();
 
         $mailCryptPrivateSecret = CryptoSecretHandler::create($keyPair->getPrivateKey(), $plainPassword);
-        $user->setMailCryptPublicKey($keyPair->getPublicKey()->encode());
+        $user->setMailCryptPublicKey($keyPair->getPublicKey());
         $user->setMailCryptPrivateSecret($mailCryptPrivateSecret->encode());
 
         // Clear variables with confidential content from memory
-        sodium_memzero($keyPair);
+        $keyPair->erase();
         sodium_memzero($plainPassword);
 
         $this->manager->flush();
     }
 
     /**
-     * @param User $user
+     * @param User   $user
+     * @param string $oldPlainPassword
      *
      * @throws \Exception
      */
-    public function update(User $user)
+    public function update(User $user, string $oldPlainPassword)
     {
         // get plain user password to be encrypted
         if (null === $plainPassword = $user->getPlainPassword()) {
             throw new \Exception('plainPassword should not be null');
         }
-        $user->eraseCredentials();
 
         if (null === $secret = $user->getMailCryptPrivateSecret()) {
             throw new \Exception('secret should not be null');
         }
-        $user->setMailCryptPrivateSecret(CryptoSecretHandler::create($secret, $plainPassword)->encode());
-    }
 
-    /**
-     * @param User   $user
-     * @param string $password
-     *
-     * @return bool
-     *
-     * @throws \Exception
-     */
-    public function verify(User $user, string $password): bool
-    {
-        if (!$user->hasMailCryptPrivateSecret()) {
-            return false;
+        if (null === $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($secret), $oldPlainPassword)) {
+            throw new \Exception('decryption of mailCryptPrivateSecret failed');
         }
 
-        if (null === $mailCryptPrivateSecretEncoded = $user->getRecoverySecret()) {
-            throw new \Exception('mailCryptPrivateSecretEncoded should not be null');
-        }
+        $user->setMailCryptPrivateSecret(CryptoSecretHandler::create($privateKey, $plainPassword)->encode());
 
-        try {
-            $mailCryptPrivateSecret = CryptoSecret::decode($mailCryptPrivateSecretEncoded);
-        } catch (\Exception $e) {
-            return false;
-        }
+        // Clear variables with confidential content from memory
+        sodium_memzero($plainPassword);
+        sodium_memzero($oldPlainPassword);
+        sodium_memzero($privateKey);
 
-        return (null !== CryptoSecretHandler::decrypt($mailCryptPrivateSecret, $password)) ? true : false;
+        $this->manager->flush();
     }
 }

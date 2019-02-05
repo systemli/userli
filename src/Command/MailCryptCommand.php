@@ -2,7 +2,10 @@
 
 namespace App\Command;
 
+use App\Handler\CryptoSecretHandler;
+use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
+use App\Model\CryptoSecret;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
@@ -16,22 +19,32 @@ class MailCryptCommand extends Command
      * @var ObjectManager
      */
     private $manager;
-
     /**
      * @var UserAuthenticationHandler
      */
     private $handler;
-
+    /**
+     * @var MailCryptKeyHandler
+     */
+    private $mailCryptKeyHandler;
     /**
      * @var UserRepository
      */
     private $repository;
 
-    public function __construct(ObjectManager $manager, UserAuthenticationHandler $handler)
+    /**
+     * MailCryptCommand constructor.
+     *
+     * @param ObjectManager             $manager
+     * @param UserAuthenticationHandler $handler
+     * @param MailCryptKeyHandler       $mailCryptKeyHandler
+     */
+    public function __construct(ObjectManager $manager, UserAuthenticationHandler $handler, MailCryptKeyHandler $mailCryptKeyHandler)
     {
         $this->manager = $manager;
         $this->handler = $handler;
         $this->repository = $this->manager->getRepository('App:User');
+        $this->mailCryptKeyHandler = $mailCryptKeyHandler;
         parent::__construct();
     }
 
@@ -46,28 +59,44 @@ class MailCryptCommand extends Command
             ->addArgument(
                 'email',
                 InputOption::VALUE_REQUIRED,
-                'email to get mail_crypt values for');
+                'email to get mail_crypt values for')
+            ->addArgument(
+                'password',
+                InputOption::VALUE_OPTIONAL,
+                'password of supplied email address');
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // parse arguments
         $email = $input->getArgument('email');
+        $password = $input->getArgument('password');
 
         // Check if user exists
         $user = $this->repository->findByEmail($email);
 
-        if (null === $user) {
+        if (null === $user || !$user->hasMailCryptPublicKey()) {
             return 1;
         }
 
-        // get mail_crypt values
-        if ($user->hasMailCryptPrivateSecret() && $user->hasMailCryptPublicKey()) {
-            $mailCryptPrivateKey = $user->getMailCryptPrivateSecret();
+        if ($password) {
+            $password = $password[0];
+            if (!$user->hasMailCryptPrivateSecret()) {
+                return 1;
+            } elseif (null === $user = $this->handler->authenticate($user, $password)) {
+                return 1;
+            }
+
+            // get mail_crypt private key
+            $mailCryptPrivateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($user->getMailCryptPrivateSecret()), $password);
             $output->write(sprintf("%s\n%s", $mailCryptPrivateKey, $user->getMailCryptPublicKey()));
+        } else {
+            $output->write(sprintf('%s', $user->getMailCryptPublicKey()));
         }
 
         return 0;

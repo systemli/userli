@@ -20,7 +20,9 @@ class RegistrationController extends Controller
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return Response
+     *
+     * @throws \Exception
      */
     public function registerAction(Request $request)
     {
