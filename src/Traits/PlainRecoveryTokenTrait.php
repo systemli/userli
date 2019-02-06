@@ -31,7 +31,7 @@ trait PlainRecoveryTokenTrait
     /**
      * {@inheritdoc}
      */
-    public function eraseToken()
+    public function erasePlainRecoveryToken()
     {
         $this->plainRecoveryToken = null;
     }

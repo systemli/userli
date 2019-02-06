@@ -35,4 +35,12 @@ trait MailCryptPublicKeyTrait
     {
         return ($this->getMailCryptPublicKey()) ? true : false;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function eraseMailCryptPublicKey()
+    {
+        $this->mailCryptPublicKey = null;
+    }
 }

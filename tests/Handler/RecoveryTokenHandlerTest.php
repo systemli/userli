@@ -6,8 +6,6 @@ use App\Entity\User;
 use App\Handler\RecoveryTokenHandler;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Security\Core\Encoder\EncoderFactory;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 class RecoveryTokenHandlerTest extends TestCase
 {
@@ -17,14 +15,7 @@ class RecoveryTokenHandlerTest extends TestCase
             ->disableOriginalConstructor()->getMock();
         $objectManager->expects($this->any())->method('flush')->willReturn(true);
 
-        $encoder = $this->getMockBuilder(PasswordEncoderInterface::class)->getMock();
-        $encoder->expects($this->any())->method('isPasswordValid')->willReturn(true);
-
-        $encoderFactory = $this->getMockBuilder(EncoderFactory::class)
-            ->disableOriginalConstructor()->getMock();
-        $encoderFactory->expects($this->any())->method('getEncoder')->willReturn($encoder);
-
-        return new RecoveryTokenHandler($objectManager, $encoderFactory);
+        return new RecoveryTokenHandler($objectManager);
     }
 
     public function testCreate()

@@ -56,7 +56,7 @@ class RegistrationController extends Controller
                 }
 
                 $recoveryToken = $user->getPlainRecoveryToken();
-                $user->eraseToken();
+                $user->erasePlainRecoveryToken();
 
                 $recoveryTokenAck = new RecoveryTokenAck();
                 $recoveryTokenAck->setRecoveryToken($recoveryToken);

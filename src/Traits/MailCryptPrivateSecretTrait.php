@@ -35,4 +35,13 @@ trait MailCryptPrivateSecretTrait
     {
         return ($this->getMailCryptPrivateSecret()) ? true : false;
     }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function eraseMailCryptPrivateSecret()
+    {
+        $this->mailCryptPrivateSecret = null;
+    }
 }

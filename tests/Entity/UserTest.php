@@ -77,7 +77,7 @@ class UserTest extends TestCase
         $this->assertEquals(null, $user->getPlainRecoveryToken());
         $user->setPlainRecoveryToken('testtoken');
         $this->assertEquals('testtoken', $user->getPlainRecoveryToken());
-        $user->eraseToken();
+        $user->erasePlainRecoveryToken();
         $this->assertEquals(null, $user->getPlainRecoveryToken());
     }
 }

@@ -207,7 +207,7 @@ class RecoveryController extends Controller
                 if (null === $recoveryToken = $user->getPlainRecoveryToken()) {
                     throw new \Exception('recoveryToken should not be null');
                 }
-                $user->eraseToken();
+                $user->erasePlainRecoveryToken();
 
                 $recoveryTokenAck = new RecoveryTokenAck();
                 $recoveryTokenAck->setRecoveryToken($recoveryToken);

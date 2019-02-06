@@ -53,12 +53,21 @@ class DeleteHandler
      */
     public function deleteUser(User $user)
     {
-        $password = PasswordGenerator::generate();
-
+        // Flag user as deleted
         $user->setDeleted(true);
-        $user->setPlainPassword($password);
 
+        // Set password to random new one
+        $password = PasswordGenerator::generate();
+        $user->setPlainPassword($password);
         $this->passwordUpdater->updatePassword($user);
+
+        // Erase recovery token and related fields
+        $user->eraseRecoveryStartTime();
+        $user->eraseRecoverySecret();
+
+        // Erase mail_crypt keys
+        $user->eraseMailCryptPublicKey();
+        $user->eraseMailCryptPrivateSecret();
 
         $this->manager->flush();
     }
