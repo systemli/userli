@@ -158,7 +158,7 @@ class RecoveryController extends Controller
                 if (null !== $user && $this->verifyEmailRecoveryToken($user, $recoveryToken, true)) {
                     if ($recoveryResetPasswordForm->isValid()) {
                         // Success, change the password and redirect to login page
-                        $this->resetPassword($user, $recoveryResetPassword->newPassword);
+                        $this->resetPassword($user, $recoveryResetPassword->newPassword, $recoveryToken);
                         $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-password-changed');
 
                         return $this->redirect($this->generateUrl('login'));
@@ -203,11 +203,14 @@ class RecoveryController extends Controller
             if ($form->isSubmitted() && $form->isValid()) {
                 $user->setPlainPassword($recoveryTokenModel->password);
 
+                $user->setPlainMailCryptPrivateKey($this->mailCryptKeyHandler->decrypt($user, $recoveryTokenModel->password));
                 $this->recoveryTokenHandler->create($user);
                 if (null === $recoveryToken = $user->getPlainRecoveryToken()) {
                     throw new \Exception('recoveryToken should not be null');
                 }
+                $user->erasePlainMailCryptPrivateKey();
                 $user->erasePlainRecoveryToken();
+                $user->eraseCredentials();
 
                 $recoveryTokenAck = new RecoveryTokenAck();
                 $recoveryTokenAck->setRecoveryToken($recoveryToken);
@@ -312,12 +315,14 @@ class RecoveryController extends Controller
     /**
      * @param User   $user
      * @param string $password
+     * @param string $recoveryToken
      */
-    private function resetPassword(User $user, string $password)
+    private function resetPassword(User $user, string $password, string $recoveryToken)
     {
         $user->setPlainPassword($password);
         $this->passwordUpdater->updatePassword($user);
         // TODO: Reencrypt key
+        //$user->setPlainMailCryptPrivateKey($this->recoveryTokenHandler->decrypt($recoveryToken);
         //$this->mailCryptKeyHandler->update($user, 'oldPassword');
         $user->eraseCredentials();
         $this->getDoctrine()->getManager()->flush();

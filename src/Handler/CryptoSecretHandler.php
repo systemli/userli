@@ -45,6 +45,7 @@ class CryptoSecretHandler
         sodium_memzero($password);
         sodium_memzero($key);
 
+
         return new CryptoSecret($salt, $nonce, $secret);
     }
 
@@ -56,7 +57,7 @@ class CryptoSecretHandler
      */
     public static function decrypt(CryptoSecret $cryptoSecret, string $password): ?string
     {
-        // generate symmetric encryption key from key and salt
+        // generate symmetric encryption key from password and salt
         $key = sodium_crypto_pwhash(
             32,
             strtolower($password),

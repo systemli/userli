@@ -6,6 +6,9 @@ use App\Entity\User;
 use App\Model\CryptoSecret;
 use App\Model\MailCryptKeyPair;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\InputStream;
+use Symfony\Component\Process\Process;
 
 /**
  * Class AliasHandler.
@@ -32,18 +35,40 @@ class MailCryptKeyHandler
     }
 
     /**
+     * @param string $privateKey
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function toPkcs8(string $privateKey): string
+    {
+        // Invoke `openssl pkey` to transform the EC key to PKCS#8 format
+        $process = new Process(['openssl', 'pkey', '-in', '-']);
+        $inputStream = new InputStream();
+        $process->setInput($inputStream);
+        $process->start();
+        $inputStream->write($privateKey);
+        $inputStream->close();
+        $process->wait();
+
+        sodium_memzero($privateKey);
+        return $process->getOutput();
+    }
+
+    /**
      * @param User $user
      *
      * @throws \Exception
      */
-    public function create(User $user)
+    public function create(User $user): void
     {
         $pKey = openssl_pkey_new([
             'private_key_type' => self::MAIL_CRYPT_PRIVATE_KEY_TYPE,
             'curve_name' => self::MAIL_CRYPT_CURVE_NAME,
         ]);
         openssl_pkey_export($pKey, $privateKey);
-        $keyPair = new MailCryptKeyPair(base64_encode($privateKey), base64_encode(openssl_pkey_get_details($pKey)['key']));
+        $privateKey = base64_encode($this->toPkcs8($privateKey));
+        $keyPair = new MailCryptKeyPair($privateKey, base64_encode(openssl_pkey_get_details($pKey)['key']));
         sodium_memzero($privateKey);
 
         // get plain user password
@@ -54,6 +79,7 @@ class MailCryptKeyHandler
         $mailCryptPrivateSecret = CryptoSecretHandler::create($keyPair->getPrivateKey(), $plainPassword);
         $user->setMailCryptPublicKey($keyPair->getPublicKey());
         $user->setMailCryptPrivateSecret($mailCryptPrivateSecret->encode());
+        $user->setPlainMailCryptPrivateKey($keyPair->getPrivateKey());
 
         // Clear variables with confidential content from memory
         $keyPair->erase();
@@ -68,7 +94,7 @@ class MailCryptKeyHandler
      *
      * @throws \Exception
      */
-    public function update(User $user, string $oldPlainPassword)
+    public function update(User $user, string $oldPlainPassword): void
     {
         // get plain user password to be encrypted
         if (null === $plainPassword = $user->getPlainPassword()) {
@@ -91,5 +117,26 @@ class MailCryptKeyHandler
         sodium_memzero($privateKey);
 
         $this->manager->flush();
+    }
+
+    /**
+     * @param User   $user
+     * @param string $password
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function decrypt(User $user, string $password): string
+    {
+        if (null === $secret = $user->getMailCryptPrivateSecret()) {
+            throw new \Exception('secret should not be null');
+        }
+
+        if (null === $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($secret), $password)) {
+            throw new \Exception('decryption of mailCryptPrivateSecret failed');
+        }
+
+        sodium_memzero($password);
+        return $privateKey;
     }
 }

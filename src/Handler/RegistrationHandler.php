@@ -100,6 +100,7 @@ class RegistrationHandler
         $this->mailCryptKeyHandler->create($user);
         $this->recoveryTokenHandler->create($user);
         $user->eraseCredentials();
+        $user->erasePlainMailCryptPrivateKey();
         $this->manager->persist($user);
         $this->manager->flush();
 

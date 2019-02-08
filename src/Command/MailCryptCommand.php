@@ -2,10 +2,8 @@
 
 namespace App\Command;
 
-use App\Handler\CryptoSecretHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
-use App\Model\CryptoSecret;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
@@ -80,20 +78,20 @@ class MailCryptCommand extends Command
         // Check if user exists
         $user = $this->repository->findByEmail($email);
 
-        if (null === $user || !$user->hasMailCryptPublicKey()) {
+        if (null === $user || !$user->hasMailCryptPublicKey() || !$user->hasMailCryptPrivateSecret()) {
             return 1;
         }
 
         if ($password) {
             $password = $password[0];
-            if (!$user->hasMailCryptPrivateSecret()) {
-                return 1;
-            } elseif (null === $user = $this->handler->authenticate($user, $password)) {
+            // verify user credentials
+            if (null === $user = $this->handler->authenticate($user, $password)) {
                 return 1;
             }
 
             // get mail_crypt private key
-            $mailCryptPrivateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($user->getMailCryptPrivateSecret()), $password);
+            $mailCryptPrivateKey = $this->mailCryptKeyHandler->decrypt($user, $password);
+
             $output->write(sprintf("%s\n%s", $mailCryptPrivateKey, $user->getMailCryptPublicKey()));
         } else {
             $output->write(sprintf('%s', $user->getMailCryptPublicKey()));

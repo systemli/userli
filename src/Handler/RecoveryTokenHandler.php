@@ -20,7 +20,7 @@ class RecoveryTokenHandler
     /**
      * RecoveryTokenHandler constructor.
      *
-     * @param ObjectManager           $manager
+     * @param ObjectManager       $manager
      */
     public function __construct(ObjectManager $manager)
     {
@@ -43,7 +43,7 @@ class RecoveryTokenHandler
      *
      * @throws \Exception
      */
-    public function create(User $user)
+    public function create(User $user): void
     {
         $recoveryToken = $this->generateToken();
 
@@ -53,7 +53,7 @@ class RecoveryTokenHandler
         }
         $user->eraseCredentials();
 
-        $recoverySecret = CryptoSecretHandler::create('test', $recoveryToken);
+        $recoverySecret = CryptoSecretHandler::create($user->getPlainMailCryptPrivateKey(), $recoveryToken);
         $user->setRecoverySecret($recoverySecret->encode());
         $user->eraseRecoveryStartTime();
         $user->setPlainRecoveryToken($recoveryToken);
@@ -90,5 +90,26 @@ class RecoveryTokenHandler
         }
 
         return (null !== CryptoSecretHandler::decrypt($recoverySecret, $recoveryToken)) ? true : false;
+    }
+
+    /**
+     * @param User   $user
+     * @param string $recoveryToken
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function decrypt(User $user, string $recoveryToken): string
+    {
+        if (null === $secret = $user->getRecoverySecret()) {
+            throw new \Exception('secret should not be null');
+        }
+
+        if (null === $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($secret), $recoveryToken)) {
+            throw new \Exception('decryption of recoverySecret failed');
+        }
+
+        sodium_memzero($recoveryToken);
+        return $privateKey;
     }
 }

@@ -24,6 +24,7 @@ class RecoveryTokenHandlerTest extends TestCase
         $user = new User();
 
         $user->setPlainPassword('password');
+        $user->setPlainMailCryptPrivateKey('dummyKey');
         $handler->create($user);
 
         self::assertNotEmpty($user->getPlainRecoveryToken());
@@ -37,6 +38,7 @@ class RecoveryTokenHandlerTest extends TestCase
         self::assertFalse($handler->verify($user, 'recoveryToken'));
 
         $user->setPlainPassword('password');
+        $user->setPlainMailCryptPrivateKey('dummyKey');
         $handler->create($user);
 
         $recoveryToken = $user->getPlainRecoveryToken();
@@ -46,5 +48,44 @@ class RecoveryTokenHandlerTest extends TestCase
 
         $user->setRecoverySecret('brokenSecret');
         self::assertFalse($handler->verify($user, $recoveryToken));
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage secret should not be null
+     */
+    public function testDecryptExceptionNullSecret()
+    {
+        $handler = $this->createHandler();
+        $user = new User();
+
+        $handler->decrypt($user, 'recoveryToken');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage decryption of recoverySecret failed
+     */
+    public function testDecryptExceptionDecryptionFailed()
+    {
+        $handler = $this->createHandler();
+        $user = new User();
+        $user->setPlainPassword('password');
+        $user->setPlainMailCryptPrivateKey('privateKey');
+        $handler->create($user);
+
+        $handler->decrypt($user, 'brokenRecoveryToken');
+    }
+
+    public function testDecrypt()
+    {
+        $handler = $this->createHandler();
+        $user = new User();
+        $user->setPlainPassword('password');
+        $user->setPlainMailCryptPrivateKey('privateKey');
+        $handler->create($user);
+        $recoveryToken = $user->getPlainRecoveryToken();
+
+        self::assertEquals('privateKey', $handler->decrypt($user, $recoveryToken));
     }
 }

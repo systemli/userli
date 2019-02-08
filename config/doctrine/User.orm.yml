@@ -39,7 +39,7 @@ App\Entity\User:
     passwordVersion:
       type: integer
     recoverySecret:
-      type: string
+      type: text
       nullable: true
     recoveryStartTime:
       type: datetime

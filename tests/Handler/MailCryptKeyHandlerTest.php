@@ -35,6 +35,7 @@ class MailCryptKeyHandlerTest extends TestCase
 
         self::assertNotEmpty($user->getMailCryptPublicKey());
         self::assertNotEmpty($user->getMailCryptPrivateSecret());
+        self::assertNotEmpty($user->getPlainMailCryptPrivateKey());
     }
 
     /**
@@ -88,4 +89,39 @@ class MailCryptKeyHandlerTest extends TestCase
         self::assertNotEquals($secret, $user->getMailCryptPrivateSecret());
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage secret should not be null
+     */
+    public function testDecryptExceptionNullSecret()
+    {
+        $handler = $this->createHandler();
+        $user = new User();
+
+        $handler->decrypt($user, 'password');
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage decryption of mailCryptPrivateSecret failed
+     */
+    public function testDecryptExceptionDecryptionFailed()
+    {
+        $handler = $this->createHandler();
+        $user = new User();
+        $user->setPlainPassword('password');
+        $handler->create($user);
+
+        $handler->decrypt($user, 'wrong_password');
+    }
+
+    public function testDecrypt()
+    {
+        $handler = $this->createHandler();
+        $user = new User();
+        $user->setPlainPassword('password');
+        $handler->create($user);
+
+        self::assertNotNull($handler->decrypt($user, 'password'));
+    }
 }
