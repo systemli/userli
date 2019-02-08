@@ -8,7 +8,7 @@ namespace App\Traits;
 trait QuotaTrait
 {
     /**
-     * @var null|int
+     * @var int|null
      */
     private $quota;
 

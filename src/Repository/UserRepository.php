@@ -13,7 +13,7 @@ class UserRepository extends AbstractRepository
     /**
      * @param $email
      *
-     * @return null|object|User
+     * @return object|User|null
      */
     public function findByEmail($email)
     {

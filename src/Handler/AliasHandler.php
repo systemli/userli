@@ -53,7 +53,7 @@ class AliasHandler
 
     /**
      * @param User        $user
-     * @param null|string $localPart
+     * @param string|null $localPart
      *
      * @return Alias|null
      *

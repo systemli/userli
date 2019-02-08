@@ -73,7 +73,7 @@ class Voucher
     }
 
     /**
-     * @return null|User
+     * @return User|null
      */
     public function getInvitedUser()
     {

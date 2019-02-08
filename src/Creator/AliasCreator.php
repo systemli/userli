@@ -14,7 +14,7 @@ class AliasCreator extends AbstractCreator
 {
     /**
      * @param User        $user
-     * @param null|string $localPart
+     * @param string|null $localPart
      *
      * @return Alias
      *

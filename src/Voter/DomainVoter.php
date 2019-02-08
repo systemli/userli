@@ -117,14 +117,14 @@ class DomainVoter extends Voter
 
         if ((in_array($attribute, [
             'ROLE_USRMGMT_ADMIN_USER_CREATE',
-            'ROLE_USRMGMT_ADMIN_USER_EDIT'
+            'ROLE_USRMGMT_ADMIN_USER_EDIT',
             ])) && ($userDomain === $guesser->guess($subject->getEmail()))) {
-                return true;
+            return true;
         }
 
         if ((in_array($attribute, [
                 'ROLE_USRMGMT_ADMIN_ALIAS_CREATE',
-                'ROLE_USRMGMT_ADMIN_ALIAS_EDIT'
+                'ROLE_USRMGMT_ADMIN_ALIAS_EDIT',
             ])) && ($userDomain === $guesser->guess($subject->getSource()))) {
             return true;
         }

@@ -8,7 +8,7 @@ namespace App\Traits;
 trait PasswordVersionTrait
 {
     /**
-     * @var null|int
+     * @var int|null
      */
     private $passwordVersion;
 

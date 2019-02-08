@@ -15,7 +15,7 @@ class AliasFactory
 
     /**
      * @param User        $user
-     * @param null|string $localPart
+     * @param string|null $localPart
      *
      * @return Alias
      */

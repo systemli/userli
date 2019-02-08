@@ -14,7 +14,7 @@ class AliasRepository extends AbstractRepository
      * @param      $email
      * @param bool $deleted
      *
-     * @return null|object|Alias
+     * @return object|Alias|null
      */
     public function findOneBySource($email, ?bool $deleted = false)
     {
@@ -24,7 +24,7 @@ class AliasRepository extends AbstractRepository
     /**
      * @param $email
      *
-     * @return null|object|Alias
+     * @return object|Alias|null
      */
     public function findByDestination($email)
     {
@@ -33,7 +33,7 @@ class AliasRepository extends AbstractRepository
 
     /**
      * @param User      $user
-     * @param null|bool $random
+     * @param bool|null $random
      *
      * @return array|Alias[]
      */

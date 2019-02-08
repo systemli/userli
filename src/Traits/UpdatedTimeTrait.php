@@ -8,7 +8,7 @@ namespace App\Traits;
 trait UpdatedTimeTrait
 {
     /**
-     * @var null|\DateTime
+     * @var \DateTime|null
      */
     private $updatedTime;
 

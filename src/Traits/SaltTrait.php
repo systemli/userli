@@ -13,7 +13,7 @@ trait SaltTrait
     private $salt;
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getSalt()
     {
@@ -21,7 +21,7 @@ trait SaltTrait
     }
 
     /**
-     * @param null|string $salt
+     * @param string|null $salt
      */
     public function setSalt($salt)
     {

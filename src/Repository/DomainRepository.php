@@ -12,7 +12,7 @@ class DomainRepository extends AbstractRepository
     /**
      * @param $name
      *
-     * @return null|object|Domain
+     * @return object|Domain|null
      */
     public function findByName($name)
     {

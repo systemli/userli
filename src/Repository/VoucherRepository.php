@@ -14,7 +14,7 @@ class VoucherRepository extends AbstractRepository
     /**
      * @param $code
      *
-     * @return null|Voucher|object
+     * @return Voucher|object|null
      */
     public function findByCode($code)
     {

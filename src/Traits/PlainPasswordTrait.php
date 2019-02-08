@@ -13,7 +13,7 @@ trait PlainPasswordTrait
     private $plainPassword;
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getPlainPassword()
     {
@@ -21,7 +21,7 @@ trait PlainPasswordTrait
     }
 
     /**
-     * @param null|string $plainPassword
+     * @param string|null $plainPassword
      */
     public function setPlainPassword($plainPassword)
     {

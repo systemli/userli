@@ -13,7 +13,7 @@ trait NameTrait
     private $name;
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getName()
     {
@@ -21,7 +21,7 @@ trait NameTrait
     }
 
     /**
-     * @param null|string $name
+     * @param string|null $name
      */
     public function setName($name)
     {

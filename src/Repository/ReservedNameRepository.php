@@ -12,7 +12,7 @@ class ReservedNameRepository extends AbstractRepository
     /**
      * @param string $name
      *
-     * @return null|object|ReservedName
+     * @return object|ReservedName|null
      */
     public function findByName($name)
     {

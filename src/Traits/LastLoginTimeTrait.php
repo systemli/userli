@@ -8,7 +8,7 @@ namespace App\Traits;
 trait LastLoginTimeTrait
 {
     /**
-     * @var null|\DateTime
+     * @var \DateTime|null
      */
     private $lastLoginTime;
 

@@ -8,7 +8,7 @@ namespace App\Traits;
 trait CreationTimeTrait
 {
     /**
-     * @var null|\DateTime
+     * @var \DateTime|null
      */
     private $creationTime;
 
