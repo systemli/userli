@@ -5,6 +5,7 @@ namespace App\Voter;
 use App\Entity\Alias;
 use App\Entity\User;
 use App\Enum\Roles;
+use App\Guesser\DomainGuesser;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -48,7 +49,20 @@ class DomainVoter extends Voter
     {
         // only vote on User and Alias objects inside this voter
         if ($subject instanceof User || $subject instanceof Alias) {
-            return true;
+            if (in_array($attribute, [
+                'ROLE_USRMGMT_ADMIN_USER_LIST',
+                'ROLE_USRMGMT_ADMIN_USER_VIEW',
+                'ROLE_USRMGMT_ADMIN_USER_CREATE',
+                'ROLE_USRMGMT_ADMIN_USER_EDIT',
+                'ROLE_USRMGMT_ADMIN_USER_DELETE',
+                'ROLE_USRMGMT_ADMIN_ALIAS_LIST',
+                'ROLE_USRMGMT_ADMIN_ALIAS_VIEW',
+                'ROLE_USRMGMT_ADMIN_ALIAS_CREATE',
+                'ROLE_USRMGMT_ADMIN_ALIAS_EDIT',
+                'ROLE_USRMGMT_ADMIN_ALIAS_DELETE',
+            ])) {
+                return true;
+            }
         }
 
         return false;
@@ -83,18 +97,36 @@ class DomainVoter extends Voter
             }
         }
 
-        // $subject doesn't have domain on creation
-        if (null === $subjectDomain = $subject->getDomain()) {
-            return true;
-        }
-
-        // domain admin can only create/edit in own domain
         $user = $this->manager->getRepository('App:User')
             ->findByEmail($this->security->getUser()->getUsername());
-        if ($user->getDomain() === $subjectDomain) {
+        $userDomain = $user->getDomain();
+
+        if ((in_array($attribute, [
+            'ROLE_USRMGMT_ADMIN_USER_LIST',
+            'ROLE_USRMGMT_ADMIN_USER_VIEW',
+            'ROLE_USRMGMT_ADMIN_USER_DELETE',
+            'ROLE_USRMGMT_ADMIN_ALIAS_LIST',
+            'ROLE_USRMGMT_ADMIN_ALIAS_VIEW',
+            'ROLE_USRMGMT_ADMIN_ALIAS_DELETE',
+        ])) && ($userDomain === $subject->getDomain())) {
+            // domain admin can only see own domain
             return true;
         }
 
-        return false;
+        $guesser = new DomainGuesser($this->manager);
+
+        if ((in_array($attribute, [
+            'ROLE_USRMGMT_ADMIN_USER_CREATE',
+            'ROLE_USRMGMT_ADMIN_USER_EDIT'
+            ])) && ($userDomain === $guesser->guess($subject->getEmail()))) {
+                return true;
+        }
+
+        if ((in_array($attribute, [
+                'ROLE_USRMGMT_ADMIN_ALIAS_CREATE',
+                'ROLE_USRMGMT_ADMIN_ALIAS_EDIT'
+            ])) && ($userDomain === $guesser->guess($subject->getSource()))) {
+            return true;
+        }
     }
 }

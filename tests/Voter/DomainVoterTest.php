@@ -59,8 +59,8 @@ class DomainVoterTest extends TestCase
     public function testSupports()
     {
         $method = self::getMethod('supports');
-        $this->assertTrue($method->invokeArgs($this->voter, ['test', new User()]));
-        $this->assertTrue($method->invokeArgs($this->voter, ['test', new Alias()]));
+        $this->assertTrue($method->invokeArgs($this->voter, ['ROLE_USRMGMT_ADMIN_USER_LIST', new User()]));
+        $this->assertTrue($method->invokeArgs($this->voter, ['ROLE_USRMGMT_ADMIN_ALIAS_VIEW', new Alias()]));
     }
 
     public function testVoteOnAttribute()
@@ -72,8 +72,8 @@ class DomainVoterTest extends TestCase
             ->getMock();
         $method = self::getMethod('voteOnAttribute');
 
-        $this->assertTrue($method->invokeArgs($this->voter, ['edit', $otherUser, $token]));
+        $this->assertTrue($method->invokeArgs($this->voter, ['ROLE_USRMGMT_ADMIN_USER_LIST', $otherUser, $token]));
         $otherUser->setDomain(new Domain());
-        $this->assertFalse($method->invokeArgs($this->voter, ['edit', $otherUser, $token]));
+        $this->assertFalse($method->invokeArgs($this->voter, ['ROLE_USRMGMT_ADMIN_USER_LIST', $otherUser, $token]));
     }
 }
