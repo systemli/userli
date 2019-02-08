@@ -45,8 +45,10 @@
         "behat/symfony2-extension": "^2.1",
         "dg/bypass-finals": "^1.1",
         "symfony/debug-bundle": "*",
+        "symfony/debug-pack": "^1.0",
         "symfony/phpunit-bridge": "*",
         "symfony/profiler-pack": "^1.0",
+        "symfony/var-dumper": "4.1.*",
         "symfony/web-profiler-bundle": "*"
     },
     "config": {
