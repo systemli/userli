@@ -1,6 +1,10 @@
-# 1.6.2 (unreleased)
+# 1.6.3 (unreleased)
+
+# 1.6.2 (2019.02.08)
 
 * Update to symfony 4.1.11
+* Hide vouchers in secondary domains (Fixes: #110)
+* DomainAdmins are only allowed to create Alias in their domain (Fixes: #94)
 
 # 1.6.1 (2019.01.14)
 
