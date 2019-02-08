@@ -79,6 +79,7 @@ class StartController extends Controller
             'Start/index.html.twig',
             [
                 'user' => $user,
+                'user_domain' => $user->getDomain(),
             ]
         );
     }

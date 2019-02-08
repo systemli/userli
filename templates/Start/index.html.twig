@@ -18,7 +18,7 @@
     </div>
 
     <div class="row">
-        {%  if not is_granted('ROLE_SUSPICIOUS') %}
+        {%  if domain == user_domain and not is_granted('ROLE_SUSPICIOUS')  %}
         <div class="col-xs-6 col-sm-4 col-md-3">
             <a href="{{ path('vouchers') }}" class="thumbnail">
                 <img src="{{  asset('build/images/diff-added.svg') }}" alt="Invite Codes">
