@@ -6,7 +6,6 @@ use App\Entity\User;
 use App\Model\CryptoSecret;
 use App\Model\MailCryptKeyPair;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\InputStream;
 use Symfony\Component\Process\Process;
 
@@ -38,11 +37,18 @@ class MailCryptKeyHandler
      * @param string $privateKey
      *
      * @return string
+     *
      * @throws \Exception
      */
     public function toPkcs8(string $privateKey): string
     {
-        // Invoke `openssl pkey` to transform the EC key to PKCS#8 format
+        // Unfortunately, there doesn't seem to be a way to transform elliptic curve
+        // keys from from traditional PEM to PKCS#8 format within PHP yet. The OpenSSL
+        // extension doesn't support PKCS#8 format and phpseclib doesn't support elliptic
+        // curves.
+        //
+        // Invoke `openssl pkey` system process to transform the EC key to PKCS#8 format
+
         $process = new Process(['openssl', 'pkey', '-in', '-']);
         $inputStream = new InputStream();
         $process->setInput($inputStream);
@@ -52,6 +58,7 @@ class MailCryptKeyHandler
         $process->wait();
 
         sodium_memzero($privateKey);
+
         return $process->getOutput();
     }
 
@@ -121,9 +128,32 @@ class MailCryptKeyHandler
 
     /**
      * @param User   $user
+     * @param string $privateKey
+     *
+     * @throws \Exception
+     */
+    public function updateWithPrivateKey(User $user, string $privateKey): void
+    {
+        // get plain user password to be encrypted
+        if (null === $plainPassword = $user->getPlainPassword()) {
+            throw new \Exception('plainPassword should not be null');
+        }
+
+        $user->setMailCryptPrivateSecret(CryptoSecretHandler::create($privateKey, $plainPassword)->encode());
+
+        // Clear variables with confidential content from memory
+        sodium_memzero($plainPassword);
+        sodium_memzero($privateKey);
+
+        $this->manager->flush();
+    }
+
+    /**
+     * @param User   $user
      * @param string $password
      *
      * @return string
+     *
      * @throws \Exception
      */
     public function decrypt(User $user, string $password): string
@@ -137,6 +167,7 @@ class MailCryptKeyHandler
         }
 
         sodium_memzero($password);
+
         return $privateKey;
     }
 }

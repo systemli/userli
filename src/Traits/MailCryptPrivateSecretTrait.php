@@ -36,7 +36,6 @@ trait MailCryptPrivateSecretTrait
         return ($this->getMailCryptPrivateSecret()) ? true : false;
     }
 
-
     /**
      * {@inheritdoc}
      */

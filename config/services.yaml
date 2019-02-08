@@ -43,6 +43,10 @@ services:
             $projectName:  "%env(PROJECT_NAME)%"
             $domain:       "%env(DOMAIN)%"
 
+    App\Command\MailCryptCommand:
+        arguments:
+            $mailCryptEnabled: "%env(MAIL_CRYPT_ENABLED)%"
+
     App\EventListener\:
         resource: '../src/EventListener/*'
         tags:
@@ -135,10 +139,6 @@ services:
     App\Validator\PasswordChangeValidator:
         tags:
             - { name: validator.constraint_validator, alias: password_change }
-
-    App\Validator\RecoveryProcessValidator:
-        tags:
-            - { name: validator.constraint_validator, alias: recovery_process }
 
     App\Validator\Constraints\EmailDomainValidator:
         tags:

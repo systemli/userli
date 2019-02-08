@@ -203,7 +203,11 @@ class RecoveryController extends Controller
             if ($form->isSubmitted() && $form->isValid()) {
                 $user->setPlainPassword($recoveryTokenModel->password);
 
-                $user->setPlainMailCryptPrivateKey($this->mailCryptKeyHandler->decrypt($user, $recoveryTokenModel->password));
+                if ($user->hasMailCryptPrivateSecret()) {
+                    $user->setPlainMailCryptPrivateKey($this->mailCryptKeyHandler->decrypt($user, $recoveryTokenModel->password));
+                } else {
+                    $user->setPlainMailCryptPrivateKey(random_bytes(32));
+                }
                 $this->recoveryTokenHandler->create($user);
                 if (null === $recoveryToken = $user->getPlainRecoveryToken()) {
                     throw new \Exception('recoveryToken should not be null');
@@ -316,14 +320,17 @@ class RecoveryController extends Controller
      * @param User   $user
      * @param string $password
      * @param string $recoveryToken
+     *
+     * @throws \Exception
      */
     private function resetPassword(User $user, string $password, string $recoveryToken)
     {
         $user->setPlainPassword($password);
         $this->passwordUpdater->updatePassword($user);
-        // TODO: Reencrypt key
-        //$user->setPlainMailCryptPrivateKey($this->recoveryTokenHandler->decrypt($recoveryToken);
-        //$this->mailCryptKeyHandler->update($user, 'oldPassword');
+
+        // Encrypt mail_crypt private key from recoverySecret with new password
+        $this->mailCryptKeyHandler->updateWithPrivateKey($user, $this->recoveryTokenHandler->decrypt($user, $recoveryToken));
+
         $user->eraseCredentials();
         $this->getDoctrine()->getManager()->flush();
     }

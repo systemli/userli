@@ -289,7 +289,10 @@ class StartController extends Controller
     {
         $user->setPlainPassword($newPassword);
         $this->passwordUpdater->updatePassword($user);
-        $this->mailCryptKeyHandler->update($user, $oldPassword);
+        // Reencrypt the mail_crypt key with new password
+        if ($user->hasMailCryptPrivateSecret()) {
+            $this->mailCryptKeyHandler->update($user, $oldPassword);
+        }
         $user->eraseCredentials();
 
         $this->getDoctrine()->getManager()->flush();

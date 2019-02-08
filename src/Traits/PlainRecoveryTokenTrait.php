@@ -13,7 +13,7 @@ trait PlainRecoveryTokenTrait
     private $plainRecoveryToken;
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getPlainRecoveryToken()
     {
@@ -21,7 +21,7 @@ trait PlainRecoveryTokenTrait
     }
 
     /**
-     * @param null|string $plainRecoveryToken
+     * @param string|null $plainRecoveryToken
      */
     public function setPlainRecoveryToken($plainRecoveryToken)
     {

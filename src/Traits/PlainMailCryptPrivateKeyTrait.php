@@ -13,7 +13,7 @@ trait PlainMailCryptPrivateKeyTrait
     private $plainMailCryptPrivateKey;
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getPlainMailCryptPrivateKey()
     {
@@ -21,7 +21,7 @@ trait PlainMailCryptPrivateKeyTrait
     }
 
     /**
-     * @param null|string $plainMailCryptPrivateKey
+     * @param string|null $plainMailCryptPrivateKey
      */
     public function setPlainMailCryptPrivateKey($plainMailCryptPrivateKey)
     {

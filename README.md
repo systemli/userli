@@ -50,6 +50,7 @@ Configure the application in `.env`:
     SEND_MAIL=true
     LOCALE=en
     HAS_SINA_BOX=false
+    MAIL_CRYPT_ENABLED=1
 
 Finalize setup:
 

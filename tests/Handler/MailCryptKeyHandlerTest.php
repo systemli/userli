@@ -87,6 +87,22 @@ class MailCryptKeyHandlerTest extends TestCase
         $handler->update($user, 'password');
 
         self::assertNotEquals($secret, $user->getMailCryptPrivateSecret());
+        self::assertNotEmpty($handler->decrypt($user, 'new_password'));
+    }
+
+    public function testUpdateWithPrivateKey()
+    {
+        $handler = $this->createHandler();
+        $user = new User();
+        $user->setPlainPassword('password');
+        $handler->create($user);
+        $secret = $user->getMailCryptPrivateSecret();
+
+        $user->setPlainPassword('new_password');
+        $handler->updateWithPrivateKey($user, 'plain_private_key');
+
+        self::assertNotEquals($secret, $user->getMailCryptPrivateSecret());
+        self::assertNotEmpty($handler->decrypt($user, 'new_password'));
     }
 
     /**

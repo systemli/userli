@@ -45,7 +45,6 @@ class CryptoSecretHandler
         sodium_memzero($password);
         sodium_memzero($key);
 
-
         return new CryptoSecret($salt, $nonce, $secret);
     }
 
