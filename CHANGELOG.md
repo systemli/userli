@@ -1,4 +1,4 @@
-# 2.0.0 (unreleased)
+# 1.7.0 (unreleased)
 
 * Add support for Dovecot's MailCrypt plugin. New users automatically get
   a MailCrypt key pair generated which is then passed to Dovecot via
