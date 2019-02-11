@@ -10,7 +10,7 @@ trait MailCryptTrait
     /**
      * @var bool
      */
-    private $mailCrypt;
+    private $mailCrypt = false;
 
     /**
      * @return bool

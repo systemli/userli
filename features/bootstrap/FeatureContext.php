@@ -117,8 +117,11 @@ class FeatureContext extends MinkContext
                     case 'recoverySecret':
                         $user->setRecoverySecret($value);
                         break;
-                    case 'mailCryptPrivateKey':
-                        $user->setMailCryptPrivateKey($value);
+                    case 'mailCrypt':
+                        $user->setMailCrypt($value);
+                        break;
+                    case 'mailCryptPrivateSecret':
+                        $user->setMailCryptPrivateSecret($value);
                         break;
                     case 'mailCryptPublicKey':
                         $user->setMailCryptPublicKey($value);
