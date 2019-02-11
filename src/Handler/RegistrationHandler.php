@@ -94,13 +94,21 @@ class RegistrationHandler
             throw new \Exception('The Registration Limit reached!');
         }
 
+        // Create user
         $user = $this->buildUser($registration);
 
+        // Update password, generate mail_crypt keys, generate recovery token
         $this->passwordUpdater->updatePassword($user);
         $this->mailCryptKeyHandler->create($user);
         $this->recoveryTokenHandler->create($user);
+
+        // Enable mailbox encryption
+        $user->setMailCrypt(true);
+
+        // Erase sensitive plaintext data from User object
         $user->eraseCredentials();
         $user->erasePlainMailCryptPrivateKey();
+
         $this->manager->persist($user);
         $this->manager->flush();
 

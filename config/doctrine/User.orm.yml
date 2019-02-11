@@ -44,6 +44,10 @@ App\Entity\User:
     recoveryStartTime:
       type: datetime
       nullable: true
+    mailCrypt:
+      type: boolean
+      options:
+        default: 0
     mailCryptPrivateSecret:
       type: text
       nullable: true
