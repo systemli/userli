@@ -49,7 +49,7 @@ class MailCryptKeyHandler
         //
         // Invoke `openssl pkey` system process to transform the EC key to PKCS#8 format
 
-        $process = new Process(['openssl', 'pkey', '-in', '-']);
+        $process = new Process(['openssl', 'pkey']);
         $inputStream = new InputStream();
         $process->setInput($inputStream);
         $process->start();
