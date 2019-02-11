@@ -65,22 +65,26 @@ class UserAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $user = $this->getRoot()->getSubject();
+
         $formMapper
-            ->add('email', EmailType::class, array('disabled' => !$this->isNewObject()))
-            ->add(
-                'plainPassword',
-                PasswordType::class,
-                array('label' => 'form.password', 'required' => $this->isNewObject())
-            )
-            ->add('roles', ChoiceType::class, array(
+            ->add('email', EmailType::class, ['disabled' => !$this->isNewObject()])
+            ->add('plainPassword', PasswordType::class, [
+                'label' => 'form.password',
+                'required' => $this->isNewObject(),
+                'disabled' => $user->hasMailCryptPrivateSecret(),
+                'help' => ($user->hasMailCryptPrivateSecret()) ? 'Disabled because user has a mail_crypt key defined' : null,
+            ])
+            ->add('roles', ChoiceType::class, [
                 'choices' => [Roles::getAll()],
                 'multiple' => true,
                 'expanded' => true,
                 'label' => 'form.roles',
-            ))
+            ])
             ->add('quota', null, [
                 'help' => 'Custom mailbox quota in MB',
             ])
+            ->add('mailCrypt', CheckboxType::class, ['disabled' => true])
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
     }
 
@@ -120,6 +124,14 @@ class UserAdmin extends Admin
                 'field_type' => ChoiceType::class,
                 'show_filter' => true,
             ))
+            ->add('mailCrypt', 'doctrine_orm_choice', array(
+                'field_options' => array(
+                    'required' => false,
+                    'choices' => array(0 => 'No', 1 => 'Yes'),
+                ),
+                'field_type' => ChoiceType::class,
+                'show_filter' => true,
+            ))
             ->add('deleted', 'doctrine_orm_choice', array(
                 'field_options' => array(
                     'required' => false,
@@ -140,6 +152,7 @@ class UserAdmin extends Admin
             ->addIdentifier('email')
             ->add('creationTime')
             ->add('updatedTime')
+            ->add('mailCrypt')
             ->add('deleted');
     }
 
