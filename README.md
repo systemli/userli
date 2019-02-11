@@ -21,6 +21,7 @@ The systemli web application to manage email users and their settings.
   * [PHP >= 7.1](https://secure.php.net/)
   * [MariaDB](https://mariadb.org/) or [MySQL](https://mysql.com/)
   * [libsodium](https://download.libsodium.org/doc/)
+  * [OpenSSL](https://www.openssl.org/) binary (for MailCrypt feature)
 
   Libsodium is already included in PHP 7.2. You can also run this application with PostgreSQL oder SQLite.
 
