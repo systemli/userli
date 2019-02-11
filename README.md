@@ -215,7 +215,7 @@ a later point.
 
 ### MailCrypt implementation details
 
-We use elliptic curve keys with curve `secp521r1`. The private key is encrypted
+We use elliptic curve keys with curve secp521r1. The private key is encrypted
 with a libargon2i hash of the users' password, stored in a libsodium secret
 box.
 
@@ -243,10 +243,10 @@ Adjust coding style by running `php-cs-fixer`:
 
 ## Copyright
 
-Files: *
-Copyright: (c) 2015-2019 systemli.org
-License: AGPL v3 or later
+Files: *  
+Copyright: (c) 2015-2019 systemli.org  
+License: AGPL v3 or later  
 
-Files: assets/images/*.svg
-Copyright: (c) github.com
+Files: assets/images/*.svg  
+Copyright: (c) github.com  
 License: MIT
