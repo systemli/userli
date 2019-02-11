@@ -23,6 +23,7 @@ env:
     - SEND_MAIL="true"
     - LOCALE="de"
     - HAS_SINA_BOX="false"
+    - MAIL_CRYPT_ENABLED=1
 
 cache:
   directories:
