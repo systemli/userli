@@ -97,7 +97,7 @@ class RegistrationHandler
         // Create user
         $user = $this->buildUser($registration);
 
-        // Update password, generate mail_crypt keys, generate recovery token
+        // Update password, generate MailCrypt keys, generate recovery token
         $this->passwordUpdater->updatePassword($user);
         $this->mailCryptKeyHandler->create($user);
         $this->recoveryTokenHandler->create($user);

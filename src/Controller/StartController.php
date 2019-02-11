@@ -289,7 +289,7 @@ class StartController extends Controller
     {
         $user->setPlainPassword($newPassword);
         $this->passwordUpdater->updatePassword($user);
-        // Reencrypt the mail_crypt key with new password
+        // Reencrypt the MailCrypt key with new password
         if ($user->hasMailCryptPrivateSecret()) {
             $this->mailCryptKeyHandler->update($user, $oldPassword);
         }

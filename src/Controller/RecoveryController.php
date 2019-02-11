@@ -203,16 +203,16 @@ class RecoveryController extends Controller
             if ($form->isSubmitted() && $form->isValid()) {
                 $user->setPlainPassword($recoveryTokenModel->password);
 
-                // Check if user has a mail_crypt key
+                // Check if user has a MailCrypt key
                 if ($user->hasMailCryptPrivateSecret()) {
-                    // Decrypt the mail_crypt key
+                    // Decrypt the MailCrypt key
                     $user->setPlainMailCryptPrivateKey($this->mailCryptKeyHandler->decrypt($user, $recoveryTokenModel->password));
                 } else {
-                    // Create a new mail_crypt key if none existed before
+                    // Create a new MailCrypt key if none existed before
                     $this->mailCryptKeyHandler->create($user);
                 }
 
-                // Generate a new recovery token and encrypt the mail_crypt key with it
+                // Generate a new recovery token and encrypt the MailCrypt key with it
                 $this->recoveryTokenHandler->create($user);
                 if (null === $recoveryToken = $user->getPlainRecoveryToken()) {
                     throw new \Exception('recoveryToken should not be null');
@@ -335,7 +335,7 @@ class RecoveryController extends Controller
         $user->setPlainPassword($password);
         $this->passwordUpdater->updatePassword($user);
 
-        // Encrypt mail_crypt private key from recoverySecret with new password
+        // Encrypt MailCrypt private key from recoverySecret with new password
         $this->mailCryptKeyHandler->updateWithPrivateKey($user, $this->recoveryTokenHandler->decrypt($user, $recoveryToken));
 
         $user->eraseCredentials();

@@ -63,11 +63,11 @@ class MailCryptCommand extends Command
     {
         $this
             ->setName('usrmgmt:users:mailcrypt')
-            ->setDescription('Get mail_crypt values for user')
+            ->setDescription('Get MailCrypt values for user')
             ->addArgument(
                 'email',
                 InputOption::VALUE_REQUIRED,
-                'email to get mail_crypt values for')
+                'email to get MailCrypt values for')
             ->addArgument(
                 'password',
                 InputOption::VALUE_OPTIONAL,
@@ -103,7 +103,7 @@ class MailCryptCommand extends Command
                 return 1;
             }
 
-            // get mail_crypt private key
+            // get MailCrypt private key
             $mailCryptPrivateKey = $this->mailCryptKeyHandler->decrypt($user, $password);
 
             $output->write(sprintf("%s\n%s", $mailCryptPrivateKey, $user->getMailCryptPublicKey()));

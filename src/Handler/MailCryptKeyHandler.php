@@ -14,7 +14,7 @@ use Symfony\Component\Process\Process;
  */
 class MailCryptKeyHandler
 {
-    // Use elliptic curve type 'secp521r1' for mail_crypt keys
+    // Use elliptic curve type 'secp521r1' for MailCrypt keys
     const MAIL_CRYPT_PRIVATE_KEY_TYPE = OPENSSL_KEYTYPE_EC;
     const MAIL_CRYPT_CURVE_NAME = 'secp521r1';
 

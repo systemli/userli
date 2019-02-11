@@ -65,7 +65,7 @@ class DeleteHandler
         $user->eraseRecoveryStartTime();
         $user->eraseRecoverySecret();
 
-        // Erase mail_crypt keys
+        // Erase MailCrypt keys
         $user->eraseMailCryptPublicKey();
         $user->eraseMailCryptPrivateSecret();
 

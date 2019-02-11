@@ -73,7 +73,7 @@ class UserAdmin extends Admin
                 'label' => 'form.password',
                 'required' => $this->isNewObject(),
                 'disabled' => $user->hasMailCryptPrivateSecret(),
-                'help' => ($user->hasMailCryptPrivateSecret()) ? 'Disabled because user has a mail_crypt key defined' : null,
+                'help' => ($user->hasMailCryptPrivateSecret()) ? 'Disabled because user has a MailCrypt key defined' : null,
             ])
             ->add('roles', ChoiceType::class, [
                 'choices' => [Roles::getAll()],
