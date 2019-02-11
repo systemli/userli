@@ -4,6 +4,17 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/systemli/user-management/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/systemli/user-management/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/systemli/user-management/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/systemli/user-management/?branch=master)
 
+The systemli web application to manage email users and their settings.
+
+## Features
+
+* User self-service (change password/recovery token, set aliases, ...)
+* Invite code system (new users get three invite codes after one week)
+* Domain admins (accounts with admin rights for one domain)
+* Random alias feature for users
+* Recovery tokens to restore accounts when password got lost
+* Support for [Dovecot mailbox encryption](https://wiki.dovecot.org/Plugins/MailCrypt)
+
 ## Production deployment
 
 * Requirements:
@@ -25,9 +36,9 @@ Configure prerequisites:
 Get the [latest release](https://github.com/systemli/user-management/releases/latest):
 
     mkdir user-management && cd user-management 
-    wget https://github.com/systemli/user-management/releases/download/1.x.0/user-management-1.x.0.tar.gz
+    wget https://github.com/systemli/user-management/releases/download/x.x.x/user-management-x.x.x.tar.gz
     # Check signature and hash sum, if you know how to
-    tar -xvzf user-management-1.x.0.tar.gz
+    tar -xvzf user-management-x.x.x.tar.gz
 
     # Copy .env file
     cp .env.dist .env
@@ -41,12 +52,11 @@ Configure the application in `.env`:
     DATABASE_DRIVER=pdo_mysql
     DATABASE_URL=mysql://mailuser:<password>@127.0.0.1:3306/mail
     MAILER_URL=smtp://localhost:25?encryption=&auth_mode=
-    MAILER_DELIVERY_ADDRESS=admin@example.org
     PROJECT_NAME=example.org
     PROJECT_URL=https://www.example.org/
     DOMAIN=example.org
-    SENDER_ADDRESS=admin@example.org
-    NOTIFICATION_ADDRESS=monitoring@example.org
+    SENDER_ADDRESS=user-management@example.org
+    NOTIFICATION_ADDRESS=admin@example.org
     SEND_MAIL=true
     LOCALE=en
     HAS_SINA_BOX=false
@@ -117,13 +127,15 @@ This app brings custom commands:
     usrmgmt:munin:account          # Return number of account to munin
     usrmgmt:munin:alias            # Return number of aliases to munin
     usrmgmt:munin:voucher          # Return number of vouchers to munin
-    usrmgmt:registration:mail      # Send registration mail to user
-    usrmgmt:report:weekly          # Send weekly report about registrations
-    usrmgmt:reservednames:import   # Import reserved names from stdin or text file
-    usrmgmt:users:checkpassword    # Checkpassword script for user authentication
-    usrmgmt:users:remove           # Remove disabled users maildirs
-    usrmgmt:voucher:create         # Create multiple vouchers for user, -c configures amount
-    usrmgmt:voucher:unlink         # Unlink redeemed vouchers from users
+    usrmgmt:registration:mail      # Send a registration mail to a user
+    usrmgmt:report:weekly          # Send weekly report to all admins
+    usrmgmt:reservednames:import   # Import reserved names from stdin or file
+    usrmgmt:users:check            # Check if user is present
+    usrmgmt:users:mailcrypt        # Get MailCrypt values for user
+    usrmgmt:users:quota            # Get quota of user if set
+    usrmgmt:users:remove           # Removes all mailboxes from deleted users
+    usrmgmt:voucher:create         # Create voucher for a specific user
+    usrmgmt:voucher:unlink         # Remove connection between vouchers and accounts after 3 months
     
 Get more information about each command by running:
 
@@ -146,16 +158,70 @@ configuration. Starting with Dovecot 2.3, the default is 1G.
 
 Example configuration for using checkpassword in Dovecot:
 
-/etc/dovecot/conf.d/auth-checkpassword.conf.ext:
+`/etc/dovecot/conf.d/auth-checkpassword.conf.ext`:
 
     passdb {
       driver = checkpassword
-      args = /usr/bin/php7.1 /path/to/usrmgmt/bin/console usrmgmt:users:checkpassword
+      args = /path/to/usrmgmt/bin/checkpassword
     }
 
     userdb {
       driver = prefetch
     }
+
+    userdb {
+      driver = checkpassword
+      args = /path/to/usrmgmt/bin/checkpassword
+    }
+
+## Support for [Dovecot's MailCrypt plugin](https://wiki.dovecot.org/Plugins/MailCrypt)
+
+The software has builtin support for Dovecot's mailbox encryption, using the
+[global keys mode](https://wiki.dovecot.org/Plugins/MailCrypt#Global_keys).
+Keys are created and maintained by the user-management and handed over to
+Dovecot via `checkpassword` script.
+
+The MailCrypt feature is enabled per default and can optionally be switched
+off globally by setting `MAIL_CRYPT_ENABLE=0` in the dotenv (`.env`) file.
+
+In order to enable MailCrypt in Dovecot, the following is required:
+
+* Add `mail_crypt` to the `mail_plugins` list in `/etc/dovecot/conf.d/10-mail.conf`
+* Set `mail_crypt_save_version = 0` in `/etc/dovecot/conf.d/90-mail-crypt.conf`
+
+The latter disables MailCrypt per default and is necessary to not break
+incoming mail for legacy users without MailCrypt keys. The checkpassword script
+automatically sets `mail_crypt_save_version = 2` for all users with MailCrypt
+keys.
+
+MailCrypt can be turned on/off for individual users by setting the `mailCrypt`
+switch in the `virtual_users` database table. This switch is mainly meant to
+provide a migration path from legacy users without MailCrypt keys. On new
+setups, it's recommended to keep MailCrypt enabled for all users.
+
+### Migrating legacy users to mailbox encryption
+
+Legacy users (without MailCrypt keys) continue to work without mailbox
+encryption. If they generate a recovery token manually in the account settings,
+a MailCrypt key pair gets created for them.
+
+But the `mailCrypt` switch in the database needs to be enabled manually if you
+want to migrate legacy users to mailbox encryption. Please note that existing
+mails will not be encrypted automatically. Instead, all existing mail stays
+unencrypted and only new incoming mail will be stored encrypted.
+
+We might add a migration script to encrypt old mails from existing users at
+a later point.
+
+### MailCrypt implementation details
+
+We use elliptic curve keys with curve `secp521r1`. The private key is encrypted
+with a libargon2i hash of the users' password, stored in a libsodium secret
+box.
+
+A second copy of the private key is stored encrypted with a libargon2i hash of
+the users' recovery token, to be used when a user restores their account after
+they lost their password.
 
 ## Creating release tarballs
 
@@ -175,10 +241,10 @@ Adjust coding style by running `php-cs-fixer`:
 
     make cs-fixer
 
-## License
+## Copyright
 
 Files: *
-Copyright: (c) 2015-2018 systemli.org
+Copyright: (c) 2015-2019 systemli.org
 License: AGPL v3 or later
 
 Files: assets/images/*.svg
