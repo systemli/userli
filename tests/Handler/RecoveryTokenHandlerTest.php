@@ -18,6 +18,31 @@ class RecoveryTokenHandlerTest extends TestCase
         return new RecoveryTokenHandler($objectManager);
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage plainPassword should not be null
+     */
+    public function testCreateExceptionPlainPasswordNull()
+    {
+        $handler = $this->createHandler();
+        $user = new User();
+
+        $handler->create($user);
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage plainMailCryptPrivateKey should not be null
+     */
+    public function testCreateExceptionPlainMailCryptPrivateKeyNull()
+    {
+        $handler = $this->createHandler();
+        $user = new User();
+
+        $user->setPlainPassword('password');
+        $handler->create($user);
+    }
+
     public function testCreate()
     {
         $handler = $this->createHandler();
@@ -54,7 +79,7 @@ class RecoveryTokenHandlerTest extends TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage secret should not be null
      */
-    public function testDecryptExceptionNullSecret()
+    public function testDecryptExceptionSecretNull()
     {
         $handler = $this->createHandler();
         $user = new User();

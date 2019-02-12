@@ -34,7 +34,7 @@ class RecoveryController extends Controller
      */
     private $passwordUpdater;
     /**
-     * @var RecoveryTokenHandler
+     * @var MailCryptKeyHandler
      */
     private $mailCryptKeyHandler;
     /**

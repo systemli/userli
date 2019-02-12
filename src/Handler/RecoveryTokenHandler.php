@@ -53,6 +53,10 @@ class RecoveryTokenHandler
         }
         $user->eraseCredentials();
 
+        if (null === $user->getPlainMailCryptPrivateKey()) {
+            throw new \Exception('plainMailCryptPrivateKey should not be null');
+        }
+
         $recoverySecret = CryptoSecretHandler::create($user->getPlainMailCryptPrivateKey(), $recoveryToken);
         $user->setRecoverySecret($recoverySecret->encode());
         $user->eraseRecoveryStartTime();
@@ -78,10 +82,7 @@ class RecoveryTokenHandler
         if (!$user->hasRecoverySecret()) {
             return false;
         }
-
-        if (null === $recoverySecretEncoded = $user->getRecoverySecret()) {
-            throw new \Exception('recoverySecretEncoded should not be null');
-        }
+        $recoverySecretEncoded = $user->getRecoverySecret();
 
         try {
             $recoverySecret = CryptoSecret::decode($recoverySecretEncoded);
