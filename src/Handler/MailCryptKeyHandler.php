@@ -110,11 +110,6 @@ class MailCryptKeyHandler
      */
     public function update(User $user, string $oldPlainPassword): void
     {
-        // get plain user password to be encrypted
-        if (null === $plainPassword = $user->getPlainPassword()) {
-            throw new \Exception('plainPassword should not be null');
-        }
-
         if (null === $secret = $user->getMailCryptPrivateSecret()) {
             throw new \Exception('secret should not be null');
         }
@@ -123,14 +118,11 @@ class MailCryptKeyHandler
             throw new \Exception('decryption of mailCryptPrivateSecret failed');
         }
 
-        $user->setMailCryptPrivateSecret(CryptoSecretHandler::create($privateKey, $plainPassword)->encode());
+        $this->updateWithPrivateKey($user, $privateKey);
 
         // Clear variables with confidential content from memory
-        sodium_memzero($plainPassword);
         sodium_memzero($oldPlainPassword);
         sodium_memzero($privateKey);
-
-        $this->manager->flush();
     }
 
     /**

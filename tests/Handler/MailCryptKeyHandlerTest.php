@@ -17,6 +17,34 @@ class MailCryptKeyHandlerTest extends TestCase
 
     /**
      * @expectedException \Exception
+     * @expectedExceptionMessage Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: unable to load key
+     */
+    public function testToPkcs8ExceptionOpenSSLFailed()
+    {
+        $handler = $this->createHandler();
+        $privateKey = "brokenKey";
+        $handler->toPkcs8($privateKey);
+    }
+
+    public function testToPkcs8()
+    {
+        $handler = $this->createHandler();
+        $privateKey = "-----BEGIN PRIVATE KEY-----
+MIHuAgEAMBAGByqGSM49AgEGBSuBBAAjBIHWMIHTAgEBBEIAa4qR1Piudflk83H4
+7IWtnstO4B3ZCKdUhFM0AezKqG6+6O1twrIG/jkyv0fo5e6PX0mUKWHv68bLgQJ5
+7QB+bl2hgYkDgYYABABI4CbKXvsVOCCA2B0K0FYANYBKThdSsu0XNWfSGoUKEtxo
+rBwSl9vwP07FpF2sTe9tVpbBIw8VPjLTJcS12Me+ygFZUnJRHuebAq+0ANkJ9rMw
+CdopzBsl2M8eQEw4S7yNMnC+Za7wS0+khKiW0zr6V/tzATnh9mJHcIa9u2iJFxSq
+UQ==
+-----END PRIVATE KEY-----";
+        $privateKeyPkcs8 = $handler->toPkcs8($privateKey);
+
+        self::assertNotEmpty($privateKeyPkcs8);
+        self::assertStringStartsWith('-----BEGIN PRIVATE KEY-----', $privateKeyPkcs8);
+    }
+
+    /**
+     * @expectedException \Exception
      * @expectedExceptionMessage plainPassword should not be null
      */
     public function testCreateExceptionNullPassword()
@@ -36,17 +64,6 @@ class MailCryptKeyHandlerTest extends TestCase
         self::assertNotEmpty($user->getMailCryptPublicKey());
         self::assertNotEmpty($user->getMailCryptPrivateSecret());
         self::assertNotEmpty($user->getPlainMailCryptPrivateKey());
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage plainPassword should not be null
-     */
-    public function testUpdateExceptionNullPassword()
-    {
-        $handler = $this->createHandler();
-        $user = new User();
-        $handler->update($user, 'old_password');
     }
 
     /**
@@ -88,6 +105,17 @@ class MailCryptKeyHandlerTest extends TestCase
 
         self::assertNotEquals($secret, $user->getMailCryptPrivateSecret());
         self::assertNotEmpty($handler->decrypt($user, 'new_password'));
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage plainPassword should not be null
+     */
+    public function testUpdateWithPrivateKeyExceptionNullPassword()
+    {
+        $handler = $this->createHandler();
+        $user = new User();
+        $handler->updateWithPrivateKey($user, 'old_password');
     }
 
     public function testUpdateWithPrivateKey()

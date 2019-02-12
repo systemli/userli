@@ -18,7 +18,7 @@ class CryptoSecret
     private $secret;
 
     /**
-     * RecoverySecret constructor.
+     * CryptoSecret constructor.
      *
      * @param string $salt
      * @param string $nonce

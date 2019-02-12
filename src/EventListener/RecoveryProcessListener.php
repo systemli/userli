@@ -45,9 +45,9 @@ class RecoveryProcessListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             Events::RECOVERY_PROCESS_STARTED => 'onRecoveryProcessStarted',
-        );
+        ];
     }
 
     /**

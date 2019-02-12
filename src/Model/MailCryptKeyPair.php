@@ -2,6 +2,9 @@
 
 namespace App\Model;
 
+/**
+ * @author doobry <doobry@systemli.org>
+ */
 class MailCryptKeyPair
 {
     /**
@@ -14,7 +17,7 @@ class MailCryptKeyPair
     private $publicKey;
 
     /**
-     * RecoverySecret constructor.
+     * MailCryptKeyPair constructor.
      *
      * @param string $privateKey
      * @param string $publicKey
