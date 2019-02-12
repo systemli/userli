@@ -15,7 +15,7 @@ trait MailCryptTrait
     /**
      * @return bool
      */
-    public function isMailCrypt(): bool
+    public function hasMailCrypt(): bool
     {
         return (bool) $this->mailCrypt;
     }

@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Event\Events;
+use App\Event\RecoveryProcessEvent;
 use App\Event\UserEvent;
 use App\Form\Model\RecoveryProcess;
 use App\Form\Model\RecoveryResetPassword;
@@ -95,7 +95,7 @@ class RecoveryController extends Controller
                         // Recovery process gets started
                         $user->updateRecoveryStartTime();
                         $this->getDoctrine()->getManager()->flush();
-                        $this->eventDispatcher->dispatch(Events::RECOVERY_PROCESS_STARTED, new UserEvent($user));
+                        $this->eventDispatcher->dispatch(RecoveryProcessEvent::NAME, new UserEvent($user));
                         $recoveryActiveTime = $user->getRecoveryStartTime()->add(new \DateInterval('P2D'));
                     } elseif (new \DateTime($this::PROCESS_DELAY) < $recoveryStartTime) {
                         // Recovery process is pending, but waiting period didn't elapse yet

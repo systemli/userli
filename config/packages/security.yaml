@@ -109,7 +109,6 @@ security:
       - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: ^/recovery, roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/welcome, roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: ^/admin, roles: ROLE_DOMAIN_ADMIN }
       - { path: ^/voucher, roles: ROLE_USER, allow_if: "!has_role('ROLE_SUSPICIOUS')"}

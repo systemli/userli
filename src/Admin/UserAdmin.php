@@ -33,11 +33,11 @@ class UserAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    protected $datagridValues = array(
+    protected $datagridValues = [
         '_page' => 1,
         '_sort_order' => 'DESC',
         '_sort_by' => 'creationTime',
-    );
+    ];
     /**
      * @var PasswordUpdater
      */
@@ -94,13 +94,13 @@ class UserAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('email', null, array(
+            ->add('email', null, [
                 'show_filter' => true,
-            ))
-            ->add('domain', null, array(
+            ])
+            ->add('domain', null, [
                 'show_filter' => false,
-            ))
-            ->add('registration_since', 'doctrine_orm_callback', array(
+            ])
+            ->add('registration_since', 'doctrine_orm_callback', [
                 'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
                     if (isset($value['value']) && null !== $value = $value['value']) {
                         /** @var QueryBuilder $qb */
@@ -115,31 +115,31 @@ class UserAdmin extends Admin
                 },
                 'field_type' => TextType::class,
                 'show_filter' => true,
-            ))
-            ->add('roles', null, array(
-                'field_options' => array(
+            ])
+            ->add('roles', null, [
+                'field_options' => [
                     'required' => false,
                     'choices' => [Roles::getAll()],
-                ),
+                ],
                 'field_type' => ChoiceType::class,
                 'show_filter' => true,
-            ))
-            ->add('mailCrypt', 'doctrine_orm_choice', array(
-                'field_options' => array(
+            ])
+            ->add('mailCrypt', 'doctrine_orm_choice', [
+                'field_options' => [
                     'required' => false,
-                    'choices' => array(0 => 'No', 1 => 'Yes'),
-                ),
+                    'choices' => [0 => 'No', 1 => 'Yes'],
+                ],
                 'field_type' => ChoiceType::class,
                 'show_filter' => true,
-            ))
-            ->add('deleted', 'doctrine_orm_choice', array(
-                'field_options' => array(
+            ])
+            ->add('deleted', 'doctrine_orm_choice', [
+                'field_options' => [
                     'required' => false,
-                    'choices' => array(0 => 'No', 1 => 'Yes'),
-                ),
+                    'choices' => [0 => 'No', 1 => 'Yes'],
+                ],
                 'field_type' => ChoiceType::class,
                 'show_filter' => true,
-            ));
+            ]);
     }
 
     /**
@@ -162,9 +162,9 @@ class UserAdmin extends Admin
     protected function configureBatchActions($actions)
     {
         if ($this->hasRoute('edit') && $this->hasAccess('edit')) {
-            $actions['remove_vouchers'] = array(
+            $actions['remove_vouchers'] = [
                 'ask_confirmation' => true,
-            );
+            ];
         }
 
         return $actions;

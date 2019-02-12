@@ -2,7 +2,7 @@
 
 namespace App\EventListener;
 
-use App\Event\Events;
+use App\Event\RecoveryProcessEvent;
 use App\Event\UserEvent;
 use App\Sender\RecoveryProcessMessageSender;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -46,7 +46,7 @@ class RecoveryProcessListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::RECOVERY_PROCESS_STARTED => 'onRecoveryProcessStarted',
+            RecoveryProcessEvent::NAME => 'onRecoveryProcessStarted',
         ];
     }
 
