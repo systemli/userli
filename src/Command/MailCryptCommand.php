@@ -92,7 +92,7 @@ class MailCryptCommand extends Command
         // Check if user exists
         $user = $this->repository->findByEmail($email);
 
-        if (null === $user || !$user->isMailCrypt() || !$user->hasMailCryptPublicKey() || !$user->hasMailCryptPrivateSecret()) {
+        if (null === $user || !$user->isMailCrypt() || !$user->hasMailCryptPublicKey() || !$user->hasMailCryptSecretBox()) {
             return 1;
         }
 

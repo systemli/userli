@@ -10,7 +10,7 @@ use App\Traits\EmailTrait;
 use App\Traits\IdTrait;
 use App\Traits\InvitationVoucherTrait;
 use App\Traits\LastLoginTimeTrait;
-use App\Traits\MailCryptPrivateSecretTrait;
+use App\Traits\MailCryptSecretBoxTrait;
 use App\Traits\MailCryptPublicKeyTrait;
 use App\Traits\MailCryptTrait;
 use App\Traits\PasswordTrait;
@@ -19,7 +19,7 @@ use App\Traits\PlainMailCryptPrivateKeyTrait;
 use App\Traits\PlainPasswordTrait;
 use App\Traits\PlainRecoveryTokenTrait;
 use App\Traits\QuotaTrait;
-use App\Traits\RecoverySecretTrait;
+use App\Traits\RecoverySecretBoxTrait;
 use App\Traits\RecoveryStartTimeTrait;
 use App\Traits\SaltTrait;
 use App\Traits\UpdatedTimeTrait;
@@ -33,8 +33,8 @@ class User implements UserInterface, EncoderAwareInterface
 {
     use IdTrait, CreationTimeTrait, UpdatedTimeTrait, EmailTrait, QuotaTrait, PasswordTrait, SaltTrait, DeleteTrait,
         InvitationVoucherTrait, PlainPasswordTrait, DomainAwareTrait, LastLoginTimeTrait, PasswordVersionTrait,
-        RecoverySecretTrait, PlainRecoveryTokenTrait, RecoveryStartTimeTrait, MailCryptTrait,
-        MailCryptPrivateSecretTrait, PlainMailCryptPrivateKeyTrait, MailCryptPublicKeyTrait;
+        RecoverySecretBoxTrait, PlainRecoveryTokenTrait, RecoveryStartTimeTrait, MailCryptTrait,
+        MailCryptSecretBoxTrait, PlainMailCryptPrivateKeyTrait, MailCryptPublicKeyTrait;
 
     const CURRENT_PASSWORD_VERSION = 2;
 

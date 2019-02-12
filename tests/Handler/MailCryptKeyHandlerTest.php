@@ -62,7 +62,7 @@ UQ==
         $handler->create($user);
 
         self::assertNotEmpty($user->getMailCryptPublicKey());
-        self::assertNotEmpty($user->getMailCryptPrivateSecret());
+        self::assertNotEmpty($user->getMailCryptSecretBox());
         self::assertNotEmpty($user->getPlainMailCryptPrivateKey());
     }
 
@@ -80,7 +80,7 @@ UQ==
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage decryption of mailCryptPrivateSecret failed
+     * @expectedExceptionMessage decryption of mailCryptSecretBox failed
      */
     public function testUpdateExceptionDecryptionFailed()
     {
@@ -98,12 +98,12 @@ UQ==
         $user = new User();
         $user->setPlainPassword('password');
         $handler->create($user);
-        $secret = $user->getMailCryptPrivateSecret();
+        $secret = $user->getMailCryptSecretBox();
 
         $user->setPlainPassword('new_password');
         $handler->update($user, 'password');
 
-        self::assertNotEquals($secret, $user->getMailCryptPrivateSecret());
+        self::assertNotEquals($secret, $user->getMailCryptSecretBox());
         self::assertNotEmpty($handler->decrypt($user, 'new_password'));
     }
 
@@ -124,12 +124,12 @@ UQ==
         $user = new User();
         $user->setPlainPassword('password');
         $handler->create($user);
-        $secret = $user->getMailCryptPrivateSecret();
+        $secret = $user->getMailCryptSecretBox();
 
         $user->setPlainPassword('new_password');
         $handler->updateWithPrivateKey($user, 'plain_private_key');
 
-        self::assertNotEquals($secret, $user->getMailCryptPrivateSecret());
+        self::assertNotEquals($secret, $user->getMailCryptSecretBox());
         self::assertNotEmpty($handler->decrypt($user, 'new_password'));
     }
 
@@ -147,7 +147,7 @@ UQ==
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage decryption of mailCryptPrivateSecret failed
+     * @expectedExceptionMessage decryption of mailCryptSecretBox failed
      */
     public function testDecryptExceptionDecryptionFailed()
     {

@@ -204,7 +204,7 @@ class RecoveryController extends Controller
                 $user->setPlainPassword($recoveryTokenModel->password);
 
                 // Check if user has a MailCrypt key
-                if ($user->hasMailCryptPrivateSecret()) {
+                if ($user->hasMailCryptSecretBox()) {
                     // Decrypt the MailCrypt key
                     $user->setPlainMailCryptPrivateKey($this->mailCryptKeyHandler->decrypt($user, $recoveryTokenModel->password));
                 } else {
@@ -238,7 +238,7 @@ class RecoveryController extends Controller
                     [
                         'form' => $recoveryTokenAckForm->createView(),
                         'recovery_token' => $recoveryToken,
-                        'recovery_secret_set' => $user->hasRecoverySecret(),
+                        'recovery_secret_set' => $user->hasRecoverySecretBox(),
                     ]
                 );
             }
@@ -247,7 +247,7 @@ class RecoveryController extends Controller
         return $this->render('User/recovery_token.html.twig',
             [
                 'form' => $form->createView(),
-                'recovery_secret_set' => $user->hasRecoverySecret(),
+                'recovery_secret_set' => $user->hasRecoverySecretBox(),
             ]
         );
     }
@@ -335,7 +335,7 @@ class RecoveryController extends Controller
         $user->setPlainPassword($password);
         $this->passwordUpdater->updatePassword($user);
 
-        // Encrypt MailCrypt private key from recoverySecret with new password
+        // Encrypt MailCrypt private key from recoverySecretBox with new password
         $this->mailCryptKeyHandler->updateWithPrivateKey($user, $this->recoveryTokenHandler->decrypt($user, $recoveryToken));
 
         $user->eraseCredentials();

@@ -63,11 +63,11 @@ class DeleteHandler
 
         // Erase recovery token and related fields
         $user->eraseRecoveryStartTime();
-        $user->eraseRecoverySecret();
+        $user->eraseRecoverySecretBox();
 
         // Erase MailCrypt keys
         $user->eraseMailCryptPublicKey();
-        $user->eraseMailCryptPrivateSecret();
+        $user->eraseMailCryptSecretBox();
 
         $this->manager->flush();
     }

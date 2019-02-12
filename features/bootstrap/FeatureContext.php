@@ -114,14 +114,14 @@ class FeatureContext extends MinkContext
                         }
                         $user->setRecoveryStartTime($time);
                         break;
-                    case 'recoverySecret':
-                        $user->setRecoverySecret($value);
+                    case 'recoverySecretBox':
+                        $user->setRecoverySecretBox($value);
                         break;
                     case 'mailCrypt':
                         $user->setMailCrypt($value);
                         break;
-                    case 'mailCryptPrivateSecret':
-                        $user->setMailCryptPrivateSecret($value);
+                    case 'mailCryptSecretBox':
+                        $user->setMailCryptSecretBox($value);
                         break;
                     case 'mailCryptPublicKey':
                         $user->setMailCryptPublicKey($value);

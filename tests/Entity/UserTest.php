@@ -63,12 +63,12 @@ class UserTest extends TestCase
         $this->assertEquals(null, $user->getPlainPassword());
     }
 
-    public function testHasRecoverySecret()
+    public function testHasRecoverySecretBox()
     {
         $user = new User();
-        $this->assertFalse($user->hasRecoverySecret());
-        $user->setRecoverySecret('testsecret');
-        $this->assertTrue($user->hasRecoverySecret());
+        $this->assertFalse($user->hasRecoverySecretBox());
+        $user->setRecoverySecretBox('testsecret');
+        $this->assertTrue($user->hasRecoverySecretBox());
     }
 
     public function testPlainRecoveryToken()

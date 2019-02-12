@@ -38,7 +38,7 @@ App\Entity\User:
       nullable: true
     passwordVersion:
       type: integer
-    recoverySecret:
+    recoverySecretBox:
       type: text
       nullable: true
     recoveryStartTime:
@@ -48,7 +48,7 @@ App\Entity\User:
       type: boolean
       options:
         default: 0
-    mailCryptPrivateSecret:
+    mailCryptSecretBox:
       type: text
       nullable: true
     mailCryptPublicKey:

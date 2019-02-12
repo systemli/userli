@@ -71,7 +71,7 @@ class RecoveryTokenHandlerTest extends TestCase
         self::assertTrue($handler->verify($user, $recoveryToken));
         self::assertFalse($handler->verify($user, 'brokenToken'));
 
-        $user->setRecoverySecret('brokenSecret');
+        $user->setRecoverySecretBox('brokenSecret');
         self::assertFalse($handler->verify($user, $recoveryToken));
     }
 
@@ -89,7 +89,7 @@ class RecoveryTokenHandlerTest extends TestCase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage decryption of recoverySecret failed
+     * @expectedExceptionMessage decryption of recoverySecretBox failed
      */
     public function testDecryptExceptionDecryptionFailed()
     {

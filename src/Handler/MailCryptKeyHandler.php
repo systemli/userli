@@ -90,9 +90,9 @@ class MailCryptKeyHandler
             throw new \Exception('plainPassword should not be null');
         }
 
-        $mailCryptPrivateSecret = CryptoSecretHandler::create($keyPair->getPrivateKey(), $plainPassword);
+        $mailCryptSecretBox = CryptoSecretHandler::create($keyPair->getPrivateKey(), $plainPassword);
         $user->setMailCryptPublicKey($keyPair->getPublicKey());
-        $user->setMailCryptPrivateSecret($mailCryptPrivateSecret->encode());
+        $user->setMailCryptSecretBox($mailCryptSecretBox->encode());
         $user->setPlainMailCryptPrivateKey($keyPair->getPrivateKey());
 
         // Clear variables with confidential content from memory
@@ -110,12 +110,12 @@ class MailCryptKeyHandler
      */
     public function update(User $user, string $oldPlainPassword): void
     {
-        if (null === $secret = $user->getMailCryptPrivateSecret()) {
+        if (null === $secret = $user->getMailCryptSecretBox()) {
             throw new \Exception('secret should not be null');
         }
 
         if (null === $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($secret), $oldPlainPassword)) {
-            throw new \Exception('decryption of mailCryptPrivateSecret failed');
+            throw new \Exception('decryption of mailCryptSecretBox failed');
         }
 
         $this->updateWithPrivateKey($user, $privateKey);
@@ -138,7 +138,7 @@ class MailCryptKeyHandler
             throw new \Exception('plainPassword should not be null');
         }
 
-        $user->setMailCryptPrivateSecret(CryptoSecretHandler::create($privateKey, $plainPassword)->encode());
+        $user->setMailCryptSecretBox(CryptoSecretHandler::create($privateKey, $plainPassword)->encode());
 
         // Clear variables with confidential content from memory
         sodium_memzero($plainPassword);
@@ -157,12 +157,12 @@ class MailCryptKeyHandler
      */
     public function decrypt(User $user, string $password): string
     {
-        if (null === $secret = $user->getMailCryptPrivateSecret()) {
+        if (null === $secret = $user->getMailCryptSecretBox()) {
             throw new \Exception('secret should not be null');
         }
 
         if (null === $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($secret), $password)) {
-            throw new \Exception('decryption of mailCryptPrivateSecret failed');
+            throw new \Exception('decryption of mailCryptSecretBox failed');
         }
 
         sodium_memzero($password);

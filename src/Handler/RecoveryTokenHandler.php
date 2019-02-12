@@ -57,8 +57,8 @@ class RecoveryTokenHandler
             throw new \Exception('plainMailCryptPrivateKey should not be null');
         }
 
-        $recoverySecret = CryptoSecretHandler::create($user->getPlainMailCryptPrivateKey(), $recoveryToken);
-        $user->setRecoverySecret($recoverySecret->encode());
+        $recoverySecretBox = CryptoSecretHandler::create($user->getPlainMailCryptPrivateKey(), $recoveryToken);
+        $user->setRecoverySecretBox($recoverySecretBox->encode());
         $user->eraseRecoveryStartTime();
         $user->setPlainRecoveryToken($recoveryToken);
 
@@ -79,18 +79,18 @@ class RecoveryTokenHandler
      */
     public function verify(User $user, string $recoveryToken): bool
     {
-        if (!$user->hasRecoverySecret()) {
+        if (!$user->hasRecoverySecretBox()) {
             return false;
         }
-        $recoverySecretEncoded = $user->getRecoverySecret();
+        $recoverySecretBoxEncoded = $user->getRecoverySecretBox();
 
         try {
-            $recoverySecret = CryptoSecret::decode($recoverySecretEncoded);
+            $recoverySecretBox = CryptoSecret::decode($recoverySecretBoxEncoded);
         } catch (\Exception $e) {
             return false;
         }
 
-        return (null !== CryptoSecretHandler::decrypt($recoverySecret, $recoveryToken)) ? true : false;
+        return (null !== CryptoSecretHandler::decrypt($recoverySecretBox, $recoveryToken)) ? true : false;
     }
 
     /**
@@ -102,12 +102,12 @@ class RecoveryTokenHandler
      */
     public function decrypt(User $user, string $recoveryToken): string
     {
-        if (null === $secret = $user->getRecoverySecret()) {
+        if (null === $secret = $user->getRecoverySecretBox()) {
             throw new \Exception('secret should not be null');
         }
 
         if (null === $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($secret), $recoveryToken)) {
-            throw new \Exception('decryption of recoverySecret failed');
+            throw new \Exception('decryption of recoverySecretBox failed');
         }
 
         sodium_memzero($recoveryToken);

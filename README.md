@@ -223,7 +223,7 @@ The following SQL statement can be used to enable MailCrypt for all legacy
 users that generated a recovery token in the meantime (and thus have a
 MailCrypt key). Use with caution!
 
-    UPDATE virtual_users SET mailCrypt=1 WHERE recoverySecret IS NOT NULL AND mailCryptPrivateSecret IS NOT NULL;
+    UPDATE virtual_users SET mailCrypt=1 WHERE recoverySecretBox IS NOT NULL AND mailCryptSecretBox IS NOT NULL;
 
 We might add a migration script to encrypt old mails from existing users at
 a later point.

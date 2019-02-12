@@ -224,7 +224,7 @@ class StartController extends Controller
                 'user' => $user,
                 'user_domain' => $user->getDomain(),
                 'password_form' => $passwordChangeForm->createView(),
-                'recovery_secret_set' => $user->hasRecoverySecret(),
+                'recovery_secret_set' => $user->hasRecoverySecretBox(),
             ]
         );
     }
@@ -290,7 +290,7 @@ class StartController extends Controller
         $user->setPlainPassword($newPassword);
         $this->passwordUpdater->updatePassword($user);
         // Reencrypt the MailCrypt key with new password
-        if ($user->hasMailCryptPrivateSecret()) {
+        if ($user->hasMailCryptSecretBox()) {
             $this->mailCryptKeyHandler->update($user, $oldPassword);
         }
         $user->eraseCredentials();
