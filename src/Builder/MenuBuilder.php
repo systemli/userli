@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Menu;
+namespace App\Builder;
 
 use App\Enum\Roles;
 use App\Helper\MenuHelper;

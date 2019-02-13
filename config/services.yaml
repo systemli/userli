@@ -117,7 +117,7 @@ services:
         arguments:
             $sendMail:     "%env(SEND_MAIL)%"
 
-    App\Menu\MenuBuilder:
+    App\Builder\MenuBuilder:
         arguments:
             $navbarLeft: '%navbar_left%'
 
@@ -218,14 +218,14 @@ services:
     usrmgmt.menu.navbar_left:
         class: Knp\Menu\MenuItem
         public: true
-        factory: ['@App\Menu\MenuBuilder', createNavbarLeft]
+        factory: ['@App\Builder\MenuBuilder', createNavbarLeft]
         tags:
             - { name: knp_menu.menu, alias: navbar-left }
 
     usrmgmt.menu.navbar_right:
         class: Knp\Menu\MenuItem
         public: true
-        factory: ['@App\Menu\MenuBuilder', createNavbarRight]
+        factory: ['@App\Builder\MenuBuilder', createNavbarRight]
         tags:
             - { name: knp_menu.menu, alias: navbar-right }
 

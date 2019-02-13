@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tests\Menu;
+namespace App\Tests\Builder;
 
 use App\Enum\Roles;
 use App\Helper\MenuHelper;
-use App\Menu\MenuBuilder;
+use App\Builder\MenuBuilder;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use PHPUnit\Framework\TestCase;
