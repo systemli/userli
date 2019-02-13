@@ -44,7 +44,13 @@ class MenuHelper
                     }
                 } else {
                     if (isset($item['url'])) {
-                        $menu->addChild($item['name'], ['uri' => $this->translator->trans($item['url'])]);
+                        $menu->addChild(
+                            $item['name'],
+                            [
+                                'uri' => $this->translator->trans($item['url']),
+                                'linkAttributes' => ['target' => '_blank'],
+                            ]
+                        );
                     }
                 }
             }

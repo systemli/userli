@@ -17,7 +17,7 @@
 {% block navbar %}
     {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with { fixedTop: true, staticTop: true, inverse: true, fluid: true } %}
         {% block brand %}
-            <a class="navbar-brand" href="{{  project_url }}">{{ project_name }}</a>
+            <a class="navbar-brand" href="{{  project_url }}" target="_blank">{{ project_name }}</a>
         {% endblock %}
 
         {% block menu %}
