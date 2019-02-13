@@ -65,6 +65,7 @@ class DeleteController extends Controller
             [
                 'alias' => $alias,
                 'form' => $form->createView(),
+                'user' => $user,
             ]
         );
     }
@@ -76,6 +77,7 @@ class DeleteController extends Controller
      */
     public function deleteUserAction(Request $request)
     {
+        $user = $this->getUser();
         $form = $this->createForm(UserDeleteType::class, new Delete());
 
         if ('POST' === $request->getMethod()) {
@@ -94,6 +96,7 @@ class DeleteController extends Controller
             'User/delete.html.twig',
             [
                 'form' => $form->createView(),
+                'user' => $user,
             ]
         );
     }

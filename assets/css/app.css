@@ -2,6 +2,10 @@ body {
     margin-top: 60px;
 }
 
+.footer {
+    padding: 0 15px;
+}
+
 .form-signin .form-signin-heading,
 .form-signin .checkbox {
     margin-bottom: 10px;
