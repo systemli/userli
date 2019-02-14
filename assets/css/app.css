@@ -48,11 +48,13 @@ body {
 
 .thumbnail img {
     width: 100%;
+    max-width: 205px;
     padding: 2em 2em 0 2em;
 }
 
-.thumbnail .caption h3 {
+.thumbnail {
     text-align: center;
+    hyphens: auto;
 }
 
 .breadcrumb {
