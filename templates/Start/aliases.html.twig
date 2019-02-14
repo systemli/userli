@@ -11,7 +11,27 @@
 {% block content %}
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6">
-        <h3>{{ "index.alias-headline"|trans({'%alias_type%': 'custom'|trans}) }}</h3>
+            <h3>{{ "index.alias-headline"|trans({'%alias_type%': 'custom'|trans}) }}</h3>
+
+            {%  if alias_creation_custom %}
+                {{ form_start(custom_alias_form) }}
+                {{ form_errors(custom_alias_form) }}
+                <div class="form-group">
+                    <div class="input-group">
+                        {{ form_widget(custom_alias_form.alias, {'attr': {'class': 'form-control' }, 'value': ''}) }}
+                        <span class="input-group-addon">@{{ user_domain }}</span>
+                        <div class="input-group-btn">
+                            {{ form_widget(custom_alias_form.submit, {'attr': {'class': 'btn btn-primary' } }) }}
+                        </div>
+                    </div>
+                </div>
+                {{ form_end(custom_alias_form) }}
+            {% else %}
+                <p class="alert alert-info">{{ "index.alias-limit"|trans({
+                        '%alias_limit%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_CUSTOM'),
+                        '%alias_type%': 'custom'|trans
+                    }) }} {{  "index.alias-deletion-custom"|trans }}</p>
+            {% endif %}
 
             {% if aliases_custom is defined and aliases_custom|length > 0 %}
                 <ul class="list-group">
@@ -25,31 +45,24 @@
                 <p class="alert alert-info">{{ "index.alias-empty"|trans({'%alias_type%': 'custom'|trans}) }}</p>
             {% endif %}
 
-            {%  if alias_creation_custom %}
-                {{ form_start(custom_alias_form) }}
-                {{ form_errors(custom_alias_form) }}
-                <div class="form-group">
-                    {{ form_label(custom_alias_form.alias) }}
-                    <div class="input-group">
-                        {{ form_widget(custom_alias_form.alias, {'attr': {'class': 'form-control' }, 'value': ''}) }}
-                        <span class="input-group-addon">@{{ user_domain }}</span>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    {{ form_widget(custom_alias_form.submit, {'attr': {'class': 'btn btn-primary' } }) }}
-                </div>
-                {{ form_end(custom_alias_form) }}
-            {% else %}
-                <p class="alert alert-info">{{ "index.alias-limit"|trans({
-                        '%alias_limit%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_CUSTOM'),
-                        '%alias_type%': 'custom'|trans
-                    }) }} {{  "index.alias-deletion-custom"|trans }}</p>
-            {% endif %}
         </div>
 
         <div class="col-xs-12 col-sm-6 col-md-6">
-        <h3>{{ "index.alias-headline"|trans({'%alias_type%': 'random'|trans}) }}</h3>
+            <h3>{{ "index.alias-headline"|trans({'%alias_type%': 'random'|trans}) }}</h3>
+
+            {%  if alias_creation_random %}
+                {{ form_start(random_alias_form) }}
+                {{ form_errors(random_alias_form) }}
+                <div class="form-group">
+                    {{ form_widget(random_alias_form.submit, {'attr': {'class': 'btn btn-primary' } }) }}
+                </div>
+                {{ form_end(random_alias_form) }}
+            {% else %}
+                <p class="alert alert-info">{{ "index.alias-limit"|trans({
+                        '%alias_limit%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_RANDOM'),
+                        '%alias_type%': random|trans
+                    }) }} {{  "index.alias-deletion-random"|trans }}</p>
+            {% endif %}
 
             {% if aliases_random is defined and aliases_random|length > 0 %}
                 <ul class="list-group">
@@ -64,20 +77,6 @@
                 </ul>
             {% else %}
                 <p class="alert alert-info">{{ "index.alias-empty"|trans({'%alias_type%': 'random'|trans}) }}</p>
-            {% endif %}
-
-            {%  if alias_creation_random %}
-                {{ form_start(random_alias_form) }}
-                {{ form_errors(random_alias_form) }}
-                <div class="form-group">
-                    {{ form_widget(random_alias_form.submit, {'attr': {'class': 'btn btn-primary' } }) }}
-                </div>
-                {{ form_end(random_alias_form) }}
-            {% else %}
-                <p class="alert alert-info">{{ "index.alias-limit"|trans({
-                        '%alias_limit%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_RANDOM'),
-                        '%alias_type%': random|trans
-                    }) }} {{  "index.alias-deletion-random"|trans }}</p>
             {% endif %}
         </div>
     </div>
