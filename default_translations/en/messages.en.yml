@@ -61,7 +61,7 @@ form:
   delete-account: Delete account
   delete-password: Password
   create-voucher: Create invite code
-  create-custom-alias: Add alias address
+  create-custom-alias: Add
   create-random-alias: Generate random alias address
   delete-alias: Delete alias address
   generate-recovery-token: Create new recovery token
