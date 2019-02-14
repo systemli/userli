@@ -58,7 +58,7 @@ form:
   delete-account: Account löschen
   delete-password: Passwort
   create-voucher: Erstelle Einladungscode
-  create-custom-alias: Erstelle Alias-Adresse
+  create-custom-alias: Erstellen
   create-random-alias: Generiere zufällige Alias-Adresse
   delete-alias: Alias-Adresse löschen
 

@@ -46,8 +46,8 @@ Feature: User
     When I am authenticated as "user@example.org"
     And I am on "/alias"
     And I fill in the following:
-      | alias | test_alias |
-    And I press "Add alias address"
+      | create_custom_alias_alias | test_alias |
+    And I press "Add"
 
     Then I should be on "/alias"
     And I should see text matching "Your new alias address was created!"
