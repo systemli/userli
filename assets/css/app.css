@@ -44,6 +44,7 @@ body {
 .voucher-box {
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
     font-size: 1.4em;
+    color: #333333;
 }
 
 .thumbnail img {
