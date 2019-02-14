@@ -19,6 +19,11 @@ index:
   voucher-limit: You don't have any invite codes left.
   voucher-disable: At %date% you will receive three invite codes. This is to avoid mass registrations and spam.
   voucher-sharing: Copy the invite link
+  voucher-explanation: >
+    Use your invite codes to invite friends here.
+    By default, you have three invitations available.
+    If you need invite more, please contact the administrators.
+    We store invite data for a limited amount of time to protect against abuse.
   alias-headline: Your %alias_type% alias addresses
   alias-limit: You reached the allowed limit of %alias_limit% %alias_type% alias addresses.
   alias-deletion-custom: Write us in order to get addresses deleted.
