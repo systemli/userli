@@ -5,10 +5,13 @@ start:
   registration-text: Du hast noch keinen E-Mail Account bei %domain%? Kein Problem! Wenn eine Freundin oder ein Freund einen Account besitzt, kann diese dir einen Einladungscode zukommen lassen. Mit diesem kannst du dir sofort einen Account registrieren.
   registration-button: Account anlegen
   account-settings: Account verwalten
+  account-settings-desc: Ändere Passwörter und mehr
   account-delete: Account löschen
   aliases: Alias-Adressen
   aliases-delete: Alias-Adresse löschen
+  aliases-desc: Verschleiere deine Identität
   vouchers: Einladungscodes
+  vouchers-desc: Lade Freunde zu diesem Dienst ein
 
 index:
   title: Verwalte deinen E-Mail Account
