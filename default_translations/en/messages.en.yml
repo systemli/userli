@@ -22,7 +22,7 @@ index:
     Use your invite codes to invite friends to this service.
     By default, you can invite a maximum of three friends.
     If you want to invite more, please contact the administrators.
-    We store invite data for a limited amount of time to protect against exploitation of our resources.
+    We store invite data for a limited amount of time to protect against abuse of our services.
   alias-headline: Your %alias_type% alias addresses
   alias-limit: You reached the allowed limit of %alias_limit% %alias_type% alias addresses.
   alias-deletion-custom: Write us in order to get addresses deleted.
