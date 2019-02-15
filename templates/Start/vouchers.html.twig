@@ -10,9 +10,11 @@
 {% endblock %}
 {% block content %}
     <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="col-xs-12 col-sm-12 col-md-12">
             <h3>{{ "index.voucher-headline"|trans }}</h3>
-            {% if domain == user_domain %}
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6">
+        {% if domain == user_domain %}
                 {% if is_granted('ROLE_SUPPORT') %}
                     {{ form_start(voucher_form) }}
                     {{ form_errors(voucher_form) }}
@@ -43,9 +45,7 @@
             {%  endif %}
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6">
-            <div class="info">
-                <p>{{ "index.voucher-explanation"|trans }}</p>
-            </div>
+            <p>{{ "index.voucher-explanation"|trans }}</p>
         </div>
     </div>
 {%  endblock %}
