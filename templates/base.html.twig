@@ -29,19 +29,16 @@
 
 {% block container %}
     <div class="container">
-
-        {% block breadcrumbs %}
-        {% endblock %}
-
         {% block flashes %}
             {% if app.session.flashbag.peekAll|length > 0 %}
-                <div class="row">
-                    <div class="col-xs-12 col-sm-8">
-                        {{ session_flash(true)|trans|raw }}
-                    </div>
+                <div class="flash-notification">
+                    {{ session_flash(true)|trans|raw }}
                 </div>
             {% endif %}
         {% endblock flashes %}
+
+        {% block breadcrumbs %}
+        {% endblock %}
 
         {% block content %}
 

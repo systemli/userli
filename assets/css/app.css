@@ -65,3 +65,8 @@ body {
 .alert {
     margin-bottom: 10px;
 }
+
+.flash-notification {
+    position: absolute;
+    right: 10px;
+}
