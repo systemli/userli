@@ -44,7 +44,28 @@ register:
     path:     /register
     controller: App\Controller\RegistrationController::registerAction
 
-welcome:
-    path:     /welcome
+register_recovery_token:
+    path:     /register/recovery_token
+    controller: App\Controller\RegistrationController::registerRecoveryTokenAckAction
+
+register_welcome:
+    path:     /register/welcome
     controller: App\Controller\RegistrationController::welcomeAction
 
+# RecoveryController
+
+recovery:
+    path:     /recovery
+    controller: App\Controller\RecoveryController::recoveryProcessAction
+
+recovery_reset_password:
+    path:     /recovery/reset_password
+    controller: App\Controller\RecoveryController::recoveryResetPasswordAction
+
+user_recovery_token:
+    path:     /user/recovery_token
+    controller: App\Controller\RecoveryController::recoveryTokenAction
+
+user_recovery_token_ack:
+    path:     /user/recovery_token/ack
+    controller: App\Controller\RecoveryController::recoveryTokenAckAction

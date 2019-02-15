@@ -26,6 +26,7 @@ index:
     <br /><br />
     Um deinen Account zu löschen wirst du aufgefordert dein Passwort einzugeben.
   delete-button: Account löschen
+  recovery-token-button: Wiederherstellungscode verwalten
   logged_in_as: Du bist angemeldet als %user%.
 
 form:
@@ -37,6 +38,7 @@ form:
   password_confirmation: Passwort bestätigen
   remember-me: Angemeldet bleiben
   signin: Anmelden
+  recovery-link: Passwort vergessen?
   roles: Rollen
   submit: Senden
   voucher: Einladungscode
@@ -53,6 +55,31 @@ form:
   create-custom-alias: Erstelle Alias-Adresse
   create-random-alias: Generiere zufällige Alias-Adresse
   delete-alias: Alias-Adresse löschen
+  generate-recovery-token: Neuen Wiederherstellungscode generieren
+  recovery-token: Wiederherstellungscode
+  recovery-start: Wiederherstellen
+  registration-recovery-token-ack: Ich habe den Code an einem sicheren Ort abgespeichert
+  registration-recovery-token-next-button: Weiter
+
+recovery:
+  header: Account wiederherstellen
+  lead: Passwort zurücksetzen mit Hilfe des Wiederherstellungscodes
+  cancel: Abbrechen
+  started: Fast geschafft. Der erste Schritt um dein Passwort zurückzusetzen, ist gemacht. Jetzt musst du noch 48 Stunden warten, anschließend kannst du im zweiten Schritt ein neues Passwort setzen.
+  waiting-info: Die Wartezeit dient deiner eigenen Sicherheit und kann nicht verkürzt oder umgangen werden.
+  waiting-time: Der zweite Schritt ist möglich ab dem %time%.
+  reset-lead: Du kannst nun dein Passwort zurücksetzen
+  email-subject: Das Passwort zu deinem E-Mail-Account %email% wird zurückgesetzt
+  email-body: |
+    Hallo %email%,
+
+    Jemand (hoffentlich du selbst) hat versucht, dein Passwort zurückzusetzen. Dazu wurden deine E-Mail-Addresse und der zugehörige Wiederherstellungscode unter %app_url%recovery eingegeben.
+
+    Nun startet die 48-stündige Wartezeit. Diese geht bis zum %time%. Anschließend kann in einem zweiten Schritt dein Passwort neu gesetzt werden.
+
+    Du hast das nicht selbst ausgelöst? Jemand anderes mit Zugang zu deinem Wiederherstellungscode versucht, Kontrolle über deinen Account zu bekommen. Gehe schnellstmöglich zu %app_url%user/recovery_token und erstelle dir einen neuen Wiederherstellungscode. Dadurch wird der alte ungültig.
+
+    Weiterhin viel Spaß mit deinem Mailaccount, wünscht dir dein %project_name% Admin Team.
 
 navbar_left:
   about-us:
@@ -72,6 +99,7 @@ registration:
   information-intro: Du möchtest ein E-Mail Account bei <a href="%project_url%">%project_name%</a> registrieren. Eine Registrierung ist nur möglich, wenn dich eine Freundin oder ein Freund zu unserem Dienst einlädt, sprich, dir einen Einladungscode übergibt.
   information-password-policy: <strong>Wichtig:</strong> Du benötigst ein Passwort, dass aus einer Kombination von 12 Zeichen besteht.
   label-email: Deine Wunsch E-Mail Adresse
+  recovery-token-headline: Wiederherstellungscode
 
 welcome:
   headline: Willkommen bei %project_name%!
@@ -111,6 +139,16 @@ delete:
     lead: Mit der Bestätigung deines Passworts kannst du deinen Account unwiderruflich löschen.
   cancel: Abbrechen
 
+recovery-token:
+  headline: Wiederherstellungscode verwalten
+  lead: Mit dem Wiederherstellungscode kannst du dein Passwort zurücksetzen, wenn du es verloren hast.
+  set: Du hast bereits einen Wiederherstellungscode gesetzt.
+  set-extra: Wenn du einen neuen Code erstellst, wird der bisherige ungültig.
+  unset: Du hast noch keinen Wiederherstellungscode gesetzt. Wir empfehlen dir dringend, jetzt einen zu erstellen.
+  created-headline: Der folgende Wiederherstellungscode wurde für dich erstellt:
+  created-info: Mit dem Wiederherstellungscode kannst du jederzeit dein Passwort zurücksetzen, wenn du dieses vergessen hast. Notiere ihn dir und speichere ihn an einem sicheren Ort ab.
+  displayed-once: Der Wiederherstellungscode wird aus Sicherheitsgründen nur einmal angezeigt und ist uns nicht bekannt. Wenn du ihn verlierst, kannst du einen neuen Code generieren.
+
 flashes:
   logout-successful: Du hast dich erfolgreich abgemeldet!
   password-change-successful: Dein neues Passwort ist ab sofort aktiv!
@@ -118,6 +156,10 @@ flashes:
   voucher-creation-successful: Du hast einen neuen Einladungscode erstellt!
   alias-creation-successful: Deine neue Alias-Adresse wurde erstellt!
   alias-deletion-successful: Deine Alias-Adresse wurde erfolgreich gelöscht!
+  recovery-token-invalid: E-Mail Adresse und/oder Wiederherstellungscode sind falsch!
+  recovery-token-ack: Du hast erfolgreich einen Wiederherstellungscode erzeugt!
+  recovery-reauthenticate: Etwas ist schiefgelaufen. Du musst dich erneut authentifizieren!
+  recovery-password-changed: Dein Passwort wurde geändert. Du kannst dich nun einloggen.
 
 flash_batch_remove_vouchers_success: Nicht eingelöste Vouchers erfolgreich gelöscht
 

@@ -3,10 +3,11 @@ form:
   forbidden_char: "The password contains non valid characters."
   different-password: "Password and confirmation does not match."
   invalid-email: "The email is not valid."
-  password-change:
-    wrong-password: "Wrong password"
-    identical-passwords: "The new password is identical with the old one."
+  wrong-password: "Wrong password"
+  identical-passwords: "The new password is identical with the old one."
   missing-domain: "The domain is not under management in this system."
+  registration-recovery-token-noack: "This field needs to be checked."
+  invalid-token: "This token has an invalid format."
 
 registration:
   voucher-invalid: "The invite code is invalid."

@@ -47,7 +47,7 @@ Configure the application in `.env`:
     DOMAIN=example.org
     SENDER_ADDRESS=admin@example.org
     NOTIFICATION_ADDRESS=monitoring@example.org
-    SEND_WELCOME_MAIL=true
+    SEND_MAIL=true
     LOCALE=en
     HAS_SINA_BOX=false
 

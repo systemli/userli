@@ -145,3 +145,13 @@ Feature: User
     And I am on "/voucher"
 
     Then I should not see text matching "Create invite code"
+
+  @generate-recovery-token
+  Scenario: Create a new recovery token
+    When I am authenticated as "user@example.org"
+    And I am on "/user/recovery_token"
+    And I fill in the following:
+      | recovery_token_password | asdasd |
+    And I press "Create new recovery token"
+
+    Then I should see text matching "The following recovery token got created for you"

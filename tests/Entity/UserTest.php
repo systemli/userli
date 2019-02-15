@@ -62,4 +62,22 @@ class UserTest extends TestCase
         $user->eraseCredentials();
         $this->assertEquals(null, $user->getPlainPassword());
     }
+
+    public function testHasRecoverySecret()
+    {
+        $user = new User();
+        $this->assertFalse($user->hasRecoverySecret());
+        $user->setRecoverySecret('testsecret');
+        $this->assertTrue($user->hasRecoverySecret());
+    }
+
+    public function testPlainRecoveryToken()
+    {
+        $user = new User();
+        $this->assertEquals(null, $user->getPlainRecoveryToken());
+        $user->setPlainRecoveryToken('testtoken');
+        $this->assertEquals('testtoken', $user->getPlainRecoveryToken());
+        $user->eraseToken();
+        $this->assertEquals(null, $user->getPlainRecoveryToken());
+    }
 }

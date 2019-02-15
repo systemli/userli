@@ -3,6 +3,7 @@
 namespace App\Tests\Helper;
 
 use App\Entity\User;
+use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use App\Security\Encoder\PasswordHashEncoder;
 use PHPUnit\Framework\TestCase;
@@ -15,10 +16,14 @@ class PasswordUpdaterTest extends TestCase
         $encoderFactory = $this->getMockBuilder(EncoderFactoryInterface::class)
             ->getMock();
         $encoderFactory->expects($this->any())->method('getEncoder')->willReturn(new PasswordHashEncoder());
-        $updater = new PasswordUpdater($encoderFactory);
+        $recoveryTokenHandler = $this->getMockBuilder(RecoveryTokenHandler::class)
+            ->disableOriginalConstructor()->getMock();
+        $recoveryTokenHandler->expects($this->any())->method('update')->willReturn(true);
+        $updater = new PasswordUpdater($encoderFactory, $recoveryTokenHandler);
 
         $user = new User();
         $user->setPlainPassword('password');
+        $user->setRecoverySecret('brokenSecret');
 
         self::assertNull($user->getPassword());
 
