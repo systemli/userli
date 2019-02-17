@@ -47,7 +47,16 @@ class RecoveryProcessMessageBuilder
      */
     public function buildBody(string $locale, string $email, string $time)
     {
-        $body = $this->translator->trans('recovery.email-body', ['%app_url%' => $this->appUrl, '%project_name%' => $this->projectName, '%email%' => $email, '%time%' => $time], null, $locale);
+        $body = $this->translator->trans(
+            'recovery.email-body',
+            [
+                '%app_url%' => $this->appUrl,
+                '%project_name%' => $this->projectName,
+                '%email%' => $email, '%time%' => $time,
+            ],
+            null,
+            $locale
+        );
 
         return $body;
     }
@@ -60,7 +69,9 @@ class RecoveryProcessMessageBuilder
      */
     public function buildSubject(string $locale, string $email)
     {
-        $subject = $this->translator->trans('recovery.email-subject', ['%email%' => $email], null, $locale);
+        $subject = $this->translator->trans(
+            'recovery.email-subject', ['%email%' => $email], null, $locale
+        );
 
         return $subject;
     }

@@ -133,6 +133,7 @@ class RegistrationHandler
      * @param Registration $registration
      *
      * @return User
+     *
      * @throws \Exception
      */
     private function buildUser(Registration $registration)

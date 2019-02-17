@@ -2,15 +2,15 @@
 
 namespace App\Form\Model;
 
+use App\Traits\EmailTrait;
+use App\Traits\RecoveryTokenTrait;
+
 /**
  * @author doobry <doobry@systemli.org>
  */
 class RecoveryResetPassword
 {
-    /**
-     * @var string
-     */
-    private $email;
+    use EmailTrait, RecoveryTokenTrait;
 
     /**
      * @var string
@@ -21,36 +21,4 @@ class RecoveryResetPassword
      * @var string
      */
     public $newPassword;
-
-    /**
-     * @return string|null
-     */
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string $email
-     */
-    public function setEmail(string $email): void
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getRecoveryToken(): ?string
-    {
-        return $this->recoveryToken;
-    }
-
-    /**
-     * @param string $recoveryToken
-     */
-    public function setRecoveryToken(string $recoveryToken): void
-    {
-        $this->recoveryToken = $recoveryToken;
-    }
 }

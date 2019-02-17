@@ -8,7 +8,7 @@ namespace App\Traits;
 trait RecoveryStartTimeTrait
 {
     /**
-     * @var null|\DateTime
+     * @var \DateTime|null
      */
     private $recoveryStartTime;
 

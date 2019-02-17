@@ -2,12 +2,12 @@
 
 namespace App\Model;
 
+use App\Traits\SaltTrait;
+
 class CryptoSecret
 {
-    /**
-     * @var string
-     */
-    private $salt;
+    use SaltTrait;
+
     /**
      * @var string
      */
@@ -29,14 +29,6 @@ class CryptoSecret
         $this->salt = $salt;
         $this->nonce = $nonce;
         $this->secret = $secret;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSalt(): string
-    {
-        return $this->salt;
     }
 
     /**

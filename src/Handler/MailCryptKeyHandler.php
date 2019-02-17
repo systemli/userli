@@ -60,10 +60,10 @@ class MailCryptKeyHandler
         sodium_memzero($privateKey);
 
         if (!$process->isSuccessful()) {
-            throw new \Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: ' . $process->getErrorOutput());
+            throw new \Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: '.$process->getErrorOutput());
         }
-        if (substr($process->getOutput(), 0, 27) !== '-----BEGIN PRIVATE KEY-----') {
-            throw new \Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL output is no valid PKCS#8 key: ' . $process->getOutput());
+        if ('-----BEGIN PRIVATE KEY-----' !== substr($process->getOutput(), 0, 27)) {
+            throw new \Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL output is no valid PKCS#8 key: '.$process->getOutput());
         }
 
         return $process->getOutput();

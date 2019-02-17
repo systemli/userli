@@ -20,7 +20,7 @@ class RecoveryTokenHandler
     /**
      * RecoveryTokenHandler constructor.
      *
-     * @param ObjectManager       $manager
+     * @param ObjectManager $manager
      */
     public function __construct(ObjectManager $manager)
     {
@@ -98,6 +98,7 @@ class RecoveryTokenHandler
      * @param string $recoveryToken
      *
      * @return string
+     *
      * @throws \Exception
      */
     public function decrypt(User $user, string $recoveryToken): string
@@ -111,6 +112,7 @@ class RecoveryTokenHandler
         }
 
         sodium_memzero($recoveryToken);
+
         return $privateKey;
     }
 }

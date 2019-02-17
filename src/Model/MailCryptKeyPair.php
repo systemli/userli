@@ -2,19 +2,15 @@
 
 namespace App\Model;
 
+use App\Traits\PrivateKeyTrait;
+use App\Traits\PublicKeyTrait;
+
 /**
  * @author doobry <doobry@systemli.org>
  */
 class MailCryptKeyPair
 {
-    /**
-     * @var string
-     */
-    private $privateKey;
-    /**
-     * @var string
-     */
-    private $publicKey;
+    use PrivateKeyTrait, PublicKeyTrait;
 
     /**
      * MailCryptKeyPair constructor.
@@ -26,22 +22,6 @@ class MailCryptKeyPair
     {
         $this->privateKey = $privateKey;
         $this->publicKey = $publicKey;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getPrivateKey(): ?string
-    {
-        return $this->privateKey;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getPublicKey(): ?string
-    {
-        return $this->publicKey;
     }
 
     public function erase()
