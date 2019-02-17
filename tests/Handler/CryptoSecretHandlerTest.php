@@ -15,6 +15,18 @@ class CryptoSecretHandlerTest extends TestCase
         self::assertInstanceOf(CryptoSecret::class, $secret);
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage salt should not be null
+     */
+    public function testDecryptExceptionNullSalt()
+    {
+        $secret = CryptoSecretHandler::create('message', 'password');
+
+        $secret->setSalt(null);
+        CryptoSecretHandler::decrypt($secret, 'password');
+    }
+
     public function testDecrypt()
     {
         $secret = CryptoSecretHandler::create('message', 'password');

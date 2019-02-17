@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 /**
- * @author louis <louis@systemli.org>
+ * @author doobry <doobry@systemli.org>
  */
 trait PublicKeyTrait
 {
@@ -15,7 +15,7 @@ trait PublicKeyTrait
     /**
      * @return string|null
      */
-    public function getPublicKey()
+    public function getPublicKey(): ?string
     {
         return $this->publicKey;
     }
@@ -23,7 +23,7 @@ trait PublicKeyTrait
     /**
      * @param string|null $publicKey
      */
-    public function setPublicKey($publicKey)
+    public function setPublicKey($publicKey): void
     {
         $this->publicKey = $publicKey;
     }

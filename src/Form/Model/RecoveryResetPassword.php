@@ -15,10 +15,5 @@ class RecoveryResetPassword
     /**
      * @var string
      */
-    private $recoveryToken;
-
-    /**
-     * @var string
-     */
     public $newPassword;
 }

@@ -53,9 +53,14 @@ class CryptoSecretHandler
      * @param string       $password
      *
      * @return string|null
+     * @throws \Exception
      */
     public static function decrypt(CryptoSecret $cryptoSecret, string $password): ?string
     {
+        if (null === $cryptoSecret->getSalt()) {
+            throw new \Exception('salt should not be null');
+        }
+
         // generate symmetric encryption key from password and salt
         $key = sodium_crypto_pwhash(
             32,
