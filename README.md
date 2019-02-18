@@ -15,6 +15,11 @@ The systemli web application to manage email users and their settings.
 * Recovery tokens to restore accounts when password got lost
 * Support for [Dovecot mailbox encryption](https://wiki.dovecot.org/Plugins/MailCrypt)
 
+## Upgrading
+
+Please see `UPGRADE.md` for instructions on how to upgrade from an earlier
+release.
+
 ## Production deployment
 
 * Requirements:
