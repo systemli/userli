@@ -2,10 +2,10 @@
 
 * Add support for Dovecot's MailCrypt plugin. New users automatically get
   a MailCrypt key pair generated which is then passed to Dovecot via
-  `checkpassword`.
+  `checkpassword`. (Fixes: #83)
 * Add support for recovery tokens. New users automatically get a recovery
   token generated, which can be used to restore their account if the
-  password got lost at a later time.
+  password got lost at a later time. (Fixes: #89)
 
 # 1.6.2 (2019.02.08)
 
