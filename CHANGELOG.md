@@ -6,6 +6,8 @@
 * Add support for recovery tokens. New users automatically get a recovery
   token generated, which can be used to restore their account if the
   password got lost at a later time. (Fixes: #89)
+* Add support for direct registration links with prefilled invite vouchers.
+  (Fixes: #117)
 
 # 1.6.2 (2019.02.08)
 

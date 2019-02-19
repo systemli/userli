@@ -10,6 +10,7 @@ use App\Handler\RegistrationHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Tests\DependencyInjection\NonExistentClassController;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
@@ -18,13 +19,13 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 class RegistrationController extends Controller
 {
     /**
-     * @param Request $request
+     * @param Request     $request
+     * @param string|null $voucher
      *
      * @return Response
-     *
      * @throws \Exception
      */
-    public function registerAction(Request $request)
+    public function registerAction(Request $request, string $voucher = null)
     {
         $registrationHandler = $this->getRegistrationHandler();
 
@@ -33,13 +34,16 @@ class RegistrationController extends Controller
         }
 
         $registration = new Registration();
+        if (null !== $voucher) {
+            $registration->setVoucher($voucher);
+        }
         $form = $this->createForm(
             RegistrationType::class,
             $registration,
-            array(
+            [
                 'action' => $this->generateUrl('register'),
                 'method' => 'post',
-            )
+            ]
         );
 
         if ('POST' === $request->getMethod()) {
@@ -78,7 +82,7 @@ class RegistrationController extends Controller
             }
         }
 
-        return $this->render('Registration/register.html.twig', array('form' => $form->createView()));
+        return $this->render('Registration/register.html.twig', ['form' => $form->createView()]);
     }
 
     /**

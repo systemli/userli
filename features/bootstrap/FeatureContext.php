@@ -374,6 +374,16 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @Then I should see regex :string in the console output
+     */
+    public function iShouldSeeRegexInTheConsoleOutput($string)
+    {
+        if (!preg_match($string, $this->output)) {
+            throw new \Exception(sprintf('Did not see regex "%s" in console output "%s"', $string, $this->output));
+        }
+    }
+
+    /**
      * @Then I should not see :string in the console output
      */
     public function iShouldNotSeeInTheConsoleOutput($string)

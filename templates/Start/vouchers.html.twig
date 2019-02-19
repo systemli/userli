@@ -31,7 +31,7 @@
                             </div>
                         {% else %}
                             <div class="alert alert-success">
-                                <p class="voucher-box">{{ voucher.code }}</p>
+                                <p class="voucher-box"><a href="{{ url('register_voucher', {'voucher': voucher.code}) }}" target="_blank">{{ voucher.code }}</a></p>
                             </div>
                         {% endif %}
                     {% endfor %}

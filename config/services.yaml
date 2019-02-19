@@ -47,6 +47,10 @@ services:
         arguments:
             $mailCryptEnabled: "%env(MAIL_CRYPT_ENABLED)%"
 
+    App\Command\VoucherCreationCommand:
+        arguments:
+            $appUrl: "%env(APP_URL)%"
+
     App\EventListener\:
         resource: '../src/EventListener/*'
         tags:
