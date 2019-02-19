@@ -20,7 +20,7 @@
                         {{ form_widget(voucher_form.submit, {'attr': {'class': 'btn btn-primary' } }) }}
                     </div>
                     {{ form_end(voucher_form) }}
-                 {%  endif %}
+                {% endif %}
 
                 {% if vouchers is defined and vouchers|length > 0 %}
                     {% for voucher in vouchers|reverse %}
@@ -31,16 +31,22 @@
                             </div>
                         {% else %}
                             <div class="alert alert-success">
-                                <p class="voucher-box"><a href="{{ url('register_voucher', {'voucher': voucher.code}) }}" target="_blank">{{ voucher.code }}</a></p>
+                                <p class="voucher-box">
+                                    <button type="button" class="btn btn-default invite-share-link" title="Copy invite link"
+                                            data-link="{{ url('register_voucher', {'voucher': voucher.code}) }}">
+                                        <span class="glyphicon glyphicon-copy"></span>
+                                    </button>
+                                    <span>{{ voucher.code }}</span>
+                                </p>
                             </div>
                         {% endif %}
                     {% endfor %}
-                {%  elseif user.creationTime|date('U') <= '-7 days'|date('U')  %}
+                {% elseif user.creationTime|date('U') <= '-7 days'|date('U') %}
                     <p class="alert alert-info">{{ "index.voucher-limit"|trans }}</p>
                 {% else %}
                     <p class="alert alert-info">{{ "index.voucher-disable"|trans({'%date%': user.creationTime|date_modify("+7 days")|date("d. F Y, H:i")}) }}</p>
                 {% endif %}
-            {%  endif %}
+            {% endif %}
         </div>
     </div>
-{%  endblock %}
+{% endblock %}
