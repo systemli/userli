@@ -39,7 +39,6 @@ class RegistrationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        dump($options['data']->getVoucher());
         $transformer = new TextToEmailTransformer($this->domain);
 
         $builder
