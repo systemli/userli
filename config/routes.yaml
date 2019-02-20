@@ -53,7 +53,7 @@ register_welcome:
     controller: App\Controller\RegistrationController::welcomeAction
 
 register_voucher:
-    path:     /register/voucher/{voucher}
+    path:     /register/{voucher}
     controller: App\Controller\RegistrationController::registerAction
 
 # RecoveryController
