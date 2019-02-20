@@ -15,7 +15,7 @@ index:
   voucher-headline: Your invite codes
   voucher-limit: You don't have any invite codes left.
   voucher-disable: At %date% you will receive three invite codes. This is to avoid mass registrations and spam.
-  voucher-sharing: Copy & share the invitation code
+  voucher-sharing: Copy the invite link
   alias-headline: Your %alias_type% alias addresses
   alias-limit: You reached the allowed limit of %alias_limit% %alias_type% alias addresses.
   alias-deletion-custom: Write us in order to get addresses deleted.
