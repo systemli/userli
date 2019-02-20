@@ -15,7 +15,7 @@ index:
   voucher-headline: Deine Einladungscodes
   voucher-limit: Du hast keine Einladungscodes mehr verfügbar.
   voucher-disable: Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben. Dies dient der Vermeidung von Massenregistrierungen und Spam.
-  voucher-sharing: Registrier-Link kopieren
+  voucher-sharing: Einladungslink kopieren
   alias-headline: Deine %alias_type% Alias-Adressen
   alias-limit: Du hast das Limit von %alias_limit% erlaubten %alias_type% Alias-Adressen erreicht.
   alias-deletion-custom: Schreibe uns, um Adressen löschen zu lassen.
