@@ -1,4 +1,4 @@
-# 1.7.0 (unreleased)
+# 2.0.0 (unreleased)
 
 * Add support for Dovecot's MailCrypt plugin. New users automatically get
   a MailCrypt key pair generated which is then passed to Dovecot via
@@ -11,6 +11,7 @@
 * Move flash messages to upper right corner (Fixes: #129)
 * Always display footer when logged in (Fixes: #104)
 * Open external links in new window (Fixes: #100)
+* Add option to copy link as URL (Fixes: #117)
 
 # 1.6.2 (2019.02.08)
 
