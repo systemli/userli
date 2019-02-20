@@ -34,13 +34,15 @@
                         {% else %}
                             <div class="alert alert-success">
                                 <p class="voucher-box">
-                                    <button type="button" class="btn btn-default invite-share-link"
-                                            title="{{ "index.voucher-sharing"|trans }}"
-                                            data-link="{{ url('register_voucher', {'voucher': voucher.code}) }}"
-                                            data-toggle="tooltip" data-placement="top">
-                                        <span class="glyphicon glyphicon-copy"></span>
-                                    </button>
                                     <span>{{ voucher.code }}</span>
+                                    <span class="pull-right">
+                                        <button type="button" class="btn btn-default invite-share-link"
+                                                title="{{ "index.voucher-sharing"|trans }}"
+                                                data-link="{{ url('register_voucher', {'voucher': voucher.code}) }}"
+                                                data-toggle="tooltip" data-placement="top">
+                                            <span class="glyphicon glyphicon-copy"></span>
+                                        </button>
+                                    </span>
                                 </p>
                             </div>
                         {% endif %}
