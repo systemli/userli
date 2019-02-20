@@ -8,7 +8,7 @@ start:
     Mit diesem kannst du dir sofort einen Account registrieren.
   registration-button: Account anlegen
   account-settings: Account verwalten
-  account-settings-desc: Ändere Passwörter und mehr
+  account-settings-desc: Passwörter und mehr
   account-delete: Account löschen
   aliases: Alias-Adressen
   aliases-delete: Alias-Adresse löschen
