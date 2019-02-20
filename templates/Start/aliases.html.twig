@@ -10,9 +10,12 @@
 {% endblock %}
 {% block content %}
     <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="col-xs-12 col-sm-6">
             <h3>{{ "index.alias-headline"|trans({'%alias_type%': 'custom'|trans}) }}</h3>
-
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
             {%  if alias_creation_custom %}
                 {{ form_start(custom_alias_form) }}
                 {{ form_errors(custom_alias_form) }}
@@ -33,21 +36,18 @@
                     }) }} {{  "index.alias-deletion-custom"|trans }}</p>
             {% endif %}
 
-            {% if aliases_custom is defined and aliases_custom|length > 0 %}
-                <ul class="list-group">
+            <ul class="list-group">
+                {%  if aliases_custom is empty %}
+                    <li class="list-group-item ">{{ "index.alias-empty"|trans({'%alias_type%': 'custom'|trans}) }}</li>
+                {%  else %}
                     {% for alias in aliases_custom %}
                         <li class="list-group-item list-group-item-primary">
                             {{ alias.source }}
                         </li>
                     {% endfor %}
-                </ul>
-            {% else %}
-                <p class="alert alert-info">{{ "index.alias-empty"|trans({'%alias_type%': 'custom'|trans}) }}</p>
-            {% endif %}
+                {% endif %}
+            </ul>
 
-        </div>
-
-        <div class="col-xs-12 col-sm-6 col-md-6">
             <h3>{{ "index.alias-headline"|trans({'%alias_type%': 'random'|trans}) }}</h3>
 
             {%  if alias_creation_random %}
@@ -64,20 +64,27 @@
                     }) }} {{  "index.alias-deletion-random"|trans }}</p>
             {% endif %}
 
-            {% if aliases_random is defined and aliases_random|length > 0 %}
-                <ul class="list-group">
+            <ul class="list-group">
+                {%  if aliases_random is empty %}
+                    <li class="list-group-item ">{{ "index.alias-empty"|trans({'%alias_type%': 'random'|trans}) }}</li>
+                {%  else %}
                     {% for alias in aliases_random %}
                         <li class="list-group-item list-group-item-primary">
                             {{ alias.source }}
                             <span class="pull-right">
-                    <a class="btn btn-danger btn-xs" href="{{ url('alias_delete', {'aliasId': alias.id}) }}">x</a>
-                </span>
+                                <a class="btn btn-danger btn-xs" href="{{ url('alias_delete', {'aliasId': alias.id}) }}">x</a>
+                            </span>
                         </li>
                     {% endfor %}
-                </ul>
-            {% else %}
-                <p class="alert alert-info">{{ "index.alias-empty"|trans({'%alias_type%': 'random'|trans}) }}</p>
-            {% endif %}
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="col-xs-12 col-sm-6">
+            <div class="alert alert-info">{{ "index.alias-explanation"|trans({
+                    '%alias_limit_random%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_RANDOM'),
+                    '%alias_limit_custom%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_CUSTOM'),
+                })|raw }}</div>
         </div>
     </div>
 {% endblock %}

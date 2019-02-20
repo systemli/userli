@@ -37,6 +37,22 @@ index:
   delete-button: Delete account
   recovery-token-button: Manage recovery token
   logged_in_as: You are logged in as %user%.
+  alias-explanation: |
+    <p>
+      Use alias addresses to hide your original email address from
+      people you don't know well or companies you don't fully trust.
+    </p>
+    <p>
+      <ul>
+        <li>All mails sent to alias addresses go to your normal mailbox.</li>
+        <li>To send from an alias address, you have to manually configure your mail client.</li>
+        <li>You can have %alias_limit_custom% custom alias addresses.</li>
+        <li>You can have %alias_limit_random% random alias addresses.</li>
+        <li>Random alias addresses are supposed to be used for a single pupose
+        to avoid tracking between different services.</li>
+        <li>Contact us to delete custom alias addresses.</li>
+      </ul>
+    </p>
 
 form:
   title: Register

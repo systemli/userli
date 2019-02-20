@@ -40,6 +40,22 @@ index:
   delete-button: Account löschen
   recovery-token-button: Wiederherstellungscode verwalten
   logged_in_as: Du bist angemeldet als %user%.
+  alias-explanation: |
+    <p>
+      Verstecke mittels Alias-Adressen deine originale Mail-Adresse vor Personen,
+      die du nicht gut kennst oder Firmen, denen du nicht voll vertraust.
+    </p>
+    <p>
+      <ul>
+        <li>Alle Mails, die an Alias-Adresse gesendet werden, landen in deiner normalen Mailbox.</li>
+        <li>Um von einer Alias-Adresse zu senden, musst du deinen Mail-Client manuell konfigurieren.</li>
+        <li>Du kannst %alias_limit_custom% gewählte Alias-Adressen haben.</li>
+        <li>Du kannst %alias_limit_random% zufällige Alias-Adressen haben.</li>
+        <li>Zufällige Alias-Adressen sollten nur für einen Zweck verwendet werden
+        um Verfolgung zwischen verschiedenen Diensten zu verhindern.</li>
+        <li>Kontaktiere uns um gewählte Alias-Adressen zu löschen.</li>
+      </ul>
+    </p>
 
 form:
   title: Anmelden
