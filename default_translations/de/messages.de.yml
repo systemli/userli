@@ -2,7 +2,10 @@ start:
   title: Willkommen bei %domain%
   intro: Wir bieten dir hier die Möglichkeit einen E-Mail Account zu erstellen bzw. zu verwalten.
   registration-header: Registrierung
-  registration-text: Du hast noch keinen E-Mail Account bei %domain%? Kein Problem! Wenn eine Freundin oder ein Freund einen Account besitzt, kann diese dir einen Einladungscode zukommen lassen. Mit diesem kannst du dir sofort einen Account registrieren.
+  registration-text: >
+    Du hast noch keinen E-Mail Account bei %domain%? Kein Problem!
+    Wenn eine Freund*in einen Account besitzt, kann diese dir einen Einladungscode zukommen lassen.
+    Mit diesem kannst du dir sofort einen Account registrieren.
   registration-button: Account anlegen
   account-settings: Account verwalten
   account-settings-desc: Ändere Passwörter und mehr
@@ -11,7 +14,7 @@ start:
   aliases-delete: Alias-Adresse löschen
   aliases-desc: Verschleiere deine Identität
   vouchers: Einladungscodes
-  vouchers-desc: Lade Freunde zu diesem Dienst ein
+  vouchers-desc: Lade Freund*innen ein
 
 index:
   title: Verwalte deinen E-Mail Account
@@ -105,7 +108,10 @@ navbar_right:
 registration:
   title: Bei %project_name% registrieren
   information: Hinweis
-  information-intro: Du möchtest ein E-Mail Account bei <a href="%project_url%">%project_name%</a> registrieren. Eine Registrierung ist nur möglich, wenn dich eine Freundin oder ein Freund zu unserem Dienst einlädt, sprich, dir einen Einladungscode übergibt.
+  information-intro: >
+    Du möchtest ein E-Mail Account bei <a href="%project_url%">%project_name%</a> registrieren.
+    Eine Registrierung ist nur möglich, wenn dich eine Freund*in zu unserem Dienst einlädt,
+    dir also einen Einladungscode übergibt.
   information-password-policy: <strong>Wichtig:</strong> Du benötigst ein Passwort, dass aus einer Kombination von 12 Zeichen besteht.
   label-email: Deine Wunsch E-Mail Adresse
   recovery-token-headline: Wiederherstellungscode
@@ -125,7 +131,7 @@ welcome:
 
     Dein Postfachgröße beträgt 1GB. Sollte dein Postfach diese Größe überschreiten, kann es zu Einschränkungen der Funktionalität deines E-Mail Accounts kommen.
 
-    In einer Woche bekommst du drei Einladungscodes gutgeschrieben, die du unter %app_url% abrufen kannst. Diese kannst du an Freundinnen und Freunde weiterleiten und sie so zu %project_name% einladen.
+    In einer Woche bekommst du drei Einladungscodes gutgeschrieben, die du unter %app_url% abrufen kannst. Diese kannst du an Freund*innen weiterleiten und sie so zu %project_name% einladen.
 
 
     Viel Spaß mit deinem Mailaccount, wünscht dir dein %project_name% Admin Team.
