@@ -9,7 +9,7 @@ start:
   account-delete: Delete account
   aliases: Alias addresses
   aliases-delete: delete alias address
-  aliases-desc: Hide your identity to other parties
+  aliases-desc: Hide your identity
   vouchers: Invite codes
   vouchers-desc: Invite your friends
 
