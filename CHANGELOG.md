@@ -8,6 +8,9 @@
   password got lost at a later time. (Fixes: #89)
 * Add support for direct registration links with prefilled invite vouchers.
   (Fixes: #117)
+* Move flash messages to upper right corner (Fixes: #129)
+* Always display footer when logged in (Fixes: #104)
+* Open external links in new window (Fixes: #100)
 
 # 1.6.2 (2019.02.08)
 
