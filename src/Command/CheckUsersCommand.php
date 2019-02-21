@@ -42,7 +42,7 @@ class CheckUsersCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('usrmgmt:users:check')
+            ->setName('app:users:check')
             ->setDescription('Check if user is present')
             ->addArgument(
                 'email',

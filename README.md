@@ -1,10 +1,10 @@
-# Systemli User Management
+# Userli
 
-[![Build Status](https://travis-ci.org/systemli/user-management.svg?branch=master)](https://travis-ci.org/systemli/user-management)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/systemli/user-management/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/systemli/user-management/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/systemli/user-management/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/systemli/user-management/?branch=master)
+[![Build Status](https://travis-ci.org/systemli/userli.svg?branch=master)](https://travis-ci.org/systemli/userli)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/systemli/userli/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/systemli/userli/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/systemli/userli/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/systemli/userli/?branch=master)
 
-The systemli web application to manage email users and their settings.
+Web application to (self-) manage email users and encrypt their mailboxes.
 
 ## Features
 
@@ -39,12 +39,12 @@ Configure prerequisites:
     mysql -e 'GRANT DELETE ON mail.virtual_aliases TO `mailuser`@`localhost`'
     mysql -e 'GRANT DELETE ON mail.virtual_vouchers TO `mailuser`@`localhost`'
 
-Get the [latest release](https://github.com/systemli/user-management/releases/latest):
+Get the [latest release](https://github.com/systemli/userli/releases/latest):
 
-    mkdir user-management && cd user-management 
-    wget https://github.com/systemli/user-management/releases/download/x.x.x/user-management-x.x.x.tar.gz
+    mkdir userli && cd userli
+    wget https://github.com/systemli/userli/releases/download/x.x.x/userli-x.x.x.tar.gz
     # Check signature and hash sum, if you know how to
-    tar -xvzf user-management-x.x.x.tar.gz
+    tar -xvzf userli-x.x.x.tar.gz
 
     # Copy .env file
     cp .env.dist .env
@@ -52,7 +52,7 @@ Get the [latest release](https://github.com/systemli/user-management/releases/la
 Configure the application in `.env`:
 
     APP_ENV=prod
-    APP_NAME=User Management
+    APP_NAME=Userli
     APP_SECRET=<random secret string>
     APP_URL=https://users.example.org/
     DATABASE_DRIVER=pdo_mysql
@@ -61,7 +61,7 @@ Configure the application in `.env`:
     PROJECT_NAME=example.org
     PROJECT_URL=https://www.example.org/
     DOMAIN=example.org
-    SENDER_ADDRESS=user-management@example.org
+    SENDER_ADDRESS=userli@example.org
     NOTIFICATION_ADDRESS=admin@example.org
     SEND_MAIL=true
     LOCALE=en
@@ -74,7 +74,7 @@ Finalize setup:
     bin/console doctrine:schema:create
 
     # Load default reserved names into database
-    bin/console usrmgmt:reservednames:import
+    bin/console app:reservednames:import
 
     # Warm up cache
     bin/console cache:warmup
@@ -84,13 +84,13 @@ Finalize setup:
 Some cronjobs are needed in order to run regular tasks:
 
 	# Daily purge data from deleted mail users
-	@daily usermgmt cd /path/to/user-management && bin/console usrmgmt:users:remove -q
+	@daily userli cd /path/to/userli && bin/console app:users:remove -q
 
 	# Daily unlink old redeemed vouchers
-	@daily usermgmt cd /path/to/user-management && bin/console usrmgmt:voucher:unlink
+	@daily userli cd /path/to/userli && bin/console app:voucher:unlink
 
 	# Send weekly report to admins
-	12 13 * * 1 usermgmt cd /path/to/user-managment && bin/console usrmgmt:report:weekly
+	12 13 * * 1 userli cd /path/to/userli && bin/console app:report:weekly
 
 ## Development environment
 
@@ -130,18 +130,18 @@ Visit you local instance at http://192.168.33.99/.
 
 This app brings custom commands:
 
-    usrmgmt:munin:account          # Return number of account to munin
-    usrmgmt:munin:alias            # Return number of aliases to munin
-    usrmgmt:munin:voucher          # Return number of vouchers to munin
-    usrmgmt:registration:mail      # Send a registration mail to a user
-    usrmgmt:report:weekly          # Send weekly report to all admins
-    usrmgmt:reservednames:import   # Import reserved names from stdin or file
-    usrmgmt:users:check            # Check if user is present
-    usrmgmt:users:mailcrypt        # Get MailCrypt values for user
-    usrmgmt:users:quota            # Get quota of user if set
-    usrmgmt:users:remove           # Removes all mailboxes from deleted users
-    usrmgmt:voucher:create         # Create voucher for a specific user
-    usrmgmt:voucher:unlink         # Remove connection between vouchers and accounts after 3 months
+    app:munin:account          # Return number of account to munin
+    app:munin:alias            # Return number of aliases to munin
+    app:munin:voucher          # Return number of vouchers to munin
+    app:registration:mail      # Send a registration mail to a user
+    app:report:weekly          # Send weekly report to all admins
+    app:reservednames:import   # Import reserved names from stdin or file
+    app:users:check            # Check if user is present
+    app:users:mailcrypt        # Get MailCrypt values for user
+    app:users:quota            # Get quota of user if set
+    app:users:remove           # Removes all mailboxes from deleted users
+    app:voucher:create         # Create voucher for a specific user
+    app:voucher:unlink         # Remove connection between vouchers and accounts after 3 months
     
 Get more information about each command by running:
 
@@ -154,11 +154,11 @@ override localization files at `translations/<lang>/messages.<lang>.yml`.
 
 ## Using `checkpassword` command
 
-The console command `usrmgmt:users:checkpassword` is a checkpassword command
+The console command `bin/checkpassword` is a checkpassword command
 to be used for authentication (userdb and passdb lookup) by external services.
 So far, it's only tested with Dovecot.
 
-In order to use the usrmgmt checkpassword command with Dovecot (< 2.3), the
+In order to use the userli checkpassword command with Dovecot (< 2.3), the
 `default_vsz_limit` (defaults to 256MB) needs to be raised in the Dovecot
 configuration. Starting with Dovecot 2.3, the default is 1G.
 
@@ -168,7 +168,7 @@ Example configuration for using checkpassword in Dovecot:
 
     passdb {
       driver = checkpassword
-      args = /path/to/usrmgmt/bin/checkpassword
+      args = /path/to/userli/bin/checkpassword
     }
 
     userdb {
@@ -177,14 +177,14 @@ Example configuration for using checkpassword in Dovecot:
 
     userdb {
       driver = checkpassword
-      args = /path/to/usrmgmt/bin/checkpassword
+      args = /path/to/userli/bin/checkpassword
     }
 
 ## Support for [Dovecot's MailCrypt plugin](https://wiki.dovecot.org/Plugins/MailCrypt)
 
 The software has builtin support for Dovecot's mailbox encryption, using the
 [global keys mode](https://wiki.dovecot.org/Plugins/MailCrypt#Global_keys).
-Keys are created and maintained by the user-management and handed over to
+Keys are created and maintained by userli and handed over to
 Dovecot via `checkpassword` script.
 
 The MailCrypt feature is enabled per default and can optionally be switched

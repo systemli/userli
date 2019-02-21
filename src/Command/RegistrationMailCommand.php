@@ -21,7 +21,7 @@ class RegistrationMailCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('usrmgmt:registration:mail')
+            ->setName('app:registration:mail')
             ->setDescription('Send a registration mail to a user')
             ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User who get the voucher(s)')
             ->addOption('locale', 'l', InputOption::VALUE_OPTIONAL, 'the locale', 'de');

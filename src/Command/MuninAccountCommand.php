@@ -36,7 +36,7 @@ class MuninAccountCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('usrmgmt:munin:account')
+            ->setName('app:munin:account')
             ->setDescription('Munin plugin for accounts')
             ->addOption('autoconf', null, InputOption::VALUE_NONE, 'autoconf for the plugin')
             ->addOption('config', null, InputOption::VALUE_NONE, 'config for the plugin');

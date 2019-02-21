@@ -34,7 +34,7 @@ class WeeklyReportCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('usrmgmt:report:weekly')
+            ->setName('app:report:weekly')
             ->setDescription('Send weekly report to all admins');
     }
 

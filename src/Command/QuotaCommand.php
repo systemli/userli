@@ -41,7 +41,7 @@ class QuotaCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('usrmgmt:users:quota')
+            ->setName('app:users:quota')
             ->setDescription('Get quota of user if set')
             ->addArgument(
                 'email',

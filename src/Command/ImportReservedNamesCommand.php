@@ -43,7 +43,7 @@ class ImportReservedNamesCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('usrmgmt:reservednames:import')
+            ->setName('app:reservednames:import')
             ->setDescription('Import reserved names from stdin or file')
             ->addOption(
                 'file',

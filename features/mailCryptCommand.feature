@@ -13,17 +13,17 @@ Feature: MailCryptCommand
 
   @mailCryptCommand
   Scenario: Check if mailCrypt arguments are passed when set
-    When I run console command "usrmgmt:users:mailcrypt mailcrypt@example.org password"
+    When I run console command "app:users:mailcrypt mailcrypt@example.org password"
     Then I should see "LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSHVBZ0VBTUJBR0J5cUdTTTQ5QWdFR0JTdUJCQUFqQklIV01JSFRBZ0VCQkVJQWE0cVIxUGl1ZGZsazgzSDQKN0lXdG5zdE80QjNaQ0tkVWhGTTBBZXpLcUc2KzZPMXR3cklHL2preXYwZm81ZTZQWDBtVUtXSHY2OGJMZ1FKNQo3UUIrYmwyaGdZa0RnWVlBQkFCSTRDYktYdnNWT0NDQTJCMEswRllBTllCS1RoZFNzdTBYTldmU0dvVUtFdHhvCnJCd1NsOXZ3UDA3RnBGMnNUZTl0VnBiQkl3OFZQakxUSmNTMTJNZSt5Z0ZaVW5KUkh1ZWJBcSswQU5rSjlyTXcKQ2RvcHpCc2wyTThlUUV3NFM3eU5NbkMrWmE3d1MwK2toS2lXMHpyNlYvdHpBVG5oOW1KSGNJYTl1MmlKRnhTcQpVUT09Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K\nLS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlHYk1CQUdCeXFHU000OUFnRUdCU3VCQkFBakE0R0dBQVFBU09BbXlsNzdGVGdnZ05nZEN0QldBRFdBU2s0WApVckx0RnpWbjBocUZDaExjYUt3Y0VwZmI4RDlPeGFSZHJFM3ZiVmFXd1NNUEZUNHkweVhFdGRqSHZzb0JXVkp5ClVSN25td0t2dEFEWkNmYXpNQW5hS2N3YkpkalBIa0JNT0V1OGpUSnd2bVd1OEV0UHBJU29sdE02K2xmN2N3RTUKNGZaaVIzQ0d2YnRvaVJjVXFsRT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==" in the console output
 
   Scenario: Check if public MailCrypt key is passed when set
-    When I run console command "usrmgmt:users:mailcrypt mailcrypt@example.org"
+    When I run console command "app:users:mailcrypt mailcrypt@example.org"
     Then I should see "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlHYk1CQUdCeXFHU000OUFnRUdCU3VCQkFBakE0R0dBQVFBU09BbXlsNzdGVGdnZ05nZEN0QldBRFdBU2s0WApVckx0RnpWbjBocUZDaExjYUt3Y0VwZmI4RDlPeGFSZHJFM3ZiVmFXd1NNUEZUNHkweVhFdGRqSHZzb0JXVkp5ClVSN25td0t2dEFEWkNmYXpNQW5hS2N3YkpkalBIa0JNT0V1OGpUSnd2bVd1OEV0UHBJU29sdE02K2xmN2N3RTUKNGZaaVIzQ0d2YnRvaVJjVXFsRT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==" in the console output
 
   Scenario: Check if mailCrypt arguments are empty when disabled
-    When I run console command "usrmgmt:users:mailcrypt nomailcrypt1@example.org password"
+    When I run console command "app:users:mailcrypt nomailcrypt1@example.org password"
     Then I should see empty console output
 
   Scenario: Check if mailCrypt arguments are empty when unset
-    When I run console command "usrmgmt:users:mailcrypt nomailcrypt2@example.org password"
+    When I run console command "app:users:mailcrypt nomailcrypt2@example.org password"
     Then I should see empty console output

@@ -28,7 +28,7 @@ today="$(date +%Y.%m.%d)"
 
 # set Github variables
 gh_group="systemli"
-gh_project="user-management"
+gh_project="userli"
 gh_api="https://api.github.com"
 gh_repo="$gh_api/repos/${gh_group}/${gh_project}"
 gh_tags="$gh_repo/releases/tags/$version"
@@ -51,7 +51,7 @@ gh_notes="$(awk "/^# $version/{flag=1; next} /^# [0-9]+/{flag=0} flag" CHANGELOG
 git tag --sign --message "Release $version" "$version"
 
 # create release tarball
-tarball="build/user-management-$(git --no-pager describe --tags --always).tar.gz"
+tarball="build/userli-$(git --no-pager describe --tags --always).tar.gz"
 if [ "$vagrant" = "yes" ]; then
 	(cd vagrant/;
 	 vagrant up;
@@ -60,7 +60,7 @@ if [ "$vagrant" = "yes" ]; then
 			 cd /vagrant && make prepare;
 			 (cd "$tempdir";
                           make release;
-                          cp -a build/user-management* /vagrant/build/);
+                          cp -a build/userli* /vagrant/build/);
                          rm -r "$tempdir"')
 else
     make release

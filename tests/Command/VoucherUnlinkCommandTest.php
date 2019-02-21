@@ -35,7 +35,7 @@ class VoucherUnlinkCommandTest extends TestCase
         $application = new Application();
         $application->add($this->command);
 
-        $command = $application->find('usrmgmt:voucher:unlink');
+        $command = $application->find('app:voucher:unlink');
         $commandTester = new CommandTester($command);
         $commandTester->execute(
             ['command' => $command->getName()],

@@ -46,7 +46,7 @@ class VoucherUnlinkCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('usrmgmt:voucher:unlink')
+            ->setName('app:voucher:unlink')
             ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'dry run, without any changes')
             ->setDescription('Remove connection between vouchers and accounts after 3 months');
     }

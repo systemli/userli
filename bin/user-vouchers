@@ -4,7 +4,7 @@
 #%# capabilities=autoconf
 
 SCRIPT="$(readlink -f $0)"
-COMMAND="php $(dirname ${SCRIPT})/../bin/console usrmgmt:munin:voucher"
+COMMAND="php $(dirname ${SCRIPT})/../bin/console app:munin:voucher"
 
 if [ "$1" = "autoconf" ]; then
     ${COMMAND} --autoconf
