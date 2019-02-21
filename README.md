@@ -184,11 +184,15 @@ Example configuration for using checkpassword in Dovecot:
 
 The software has builtin support for Dovecot's mailbox encryption, using the
 [global keys mode](https://wiki.dovecot.org/Plugins/MailCrypt#Global_keys).
-Keys are created and maintained by userli and handed over to
-Dovecot via `checkpassword` script.
+Keys are created and maintained by userli and handed over to Dovecot via
+`checkpassword` script.
 
 The MailCrypt feature is enabled per default and can optionally be switched
 off globally by setting `MAIL_CRYPT_ENABLE=0` in the dotenv (`.env`) file.
+
+If you want to enable MailCrypt for some users, but don't want new users to
+have MailCrypt enabled per default, you can set `MAIL_CRYPT_AUTO=0` in the
+dotenv (`.env`) file.
 
 In order to enable MailCrypt in Dovecot, the following is required:
 

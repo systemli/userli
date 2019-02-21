@@ -50,6 +50,10 @@ class RegistrationHandler
      * @var
      */
     private $primaryDomain;
+    /**
+     * @var bool
+     */
+    private $mailCryptAuto;
 
     /**
      * Constructor.
@@ -62,6 +66,7 @@ class RegistrationHandler
      * @param RecoveryTokenHandler     $recoveryTokenHandler
      * @param bool                     $hasSinaBox
      * @param string                   $primaryDomain
+     * @param bool                     $mailCryptAuto
      */
     public function __construct(
         ObjectManager $manager,
@@ -71,7 +76,8 @@ class RegistrationHandler
         MailCryptKeyHandler $mailCryptKeyHandler,
         RecoveryTokenHandler $recoveryTokenHandler,
         bool $hasSinaBox,
-        string $primaryDomain
+        string $primaryDomain,
+        bool $mailCryptAuto
     ) {
         $this->manager = $manager;
         $this->domainGuesser = $domainGuesser;
@@ -81,6 +87,7 @@ class RegistrationHandler
         $this->recoveryTokenHandler = $recoveryTokenHandler;
         $this->hasSinaBox = $hasSinaBox;
         $this->primaryDomain = $primaryDomain;
+        $this->mailCryptAuto = $mailCryptAuto;
     }
 
     /**
@@ -103,7 +110,9 @@ class RegistrationHandler
         $this->recoveryTokenHandler->create($user);
 
         // Enable mailbox encryption
-        $user->setMailCrypt(true);
+        if ($this->mailCryptAuto) {
+            $user->setMailCrypt(true);
+        }
 
         // Erase sensitive plaintext data from User object
         $user->eraseCredentials();
