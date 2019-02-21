@@ -8,11 +8,9 @@ App\Entity\ReservedName:
       generator: { strategy: AUTO }
   fields:
     creationTime:
-      #name: creation_time
       type: datetime
       nullable: false
     updatedTime:
-      #name: updated_time
       type: datetime
       nullable: false
     name:

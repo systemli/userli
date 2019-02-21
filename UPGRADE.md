@@ -4,7 +4,32 @@
 
 * Database schema changed and needs to be updated:
 
-    bin/console doctrine:schema:update --force
+    ALTER TABLE virtual_users
+    ADD recovery_secret_box LONGTEXT DEFAULT NULL,
+    ADD recovery_start_time DATETIME DEFAULT NULL,
+    ADD mail_crypt TINYINT(1) DEFAULT '0' NOT NULL,
+    ADD mail_crypt_secret_box LONGTEXT DEFAULT NULL,
+    ADD mail_crypt_public_key LONGTEXT DEFAULT NULL,
+    CHANGE creationTime creation_time DATETIME NOT NULL,
+    CHANGE updatedTime updated_time DATETIME NOT NULL,
+    CHANGE lastlogin last_login_time DATETIME DEFAULT NULL,
+    CHANGE passwordversion password_version INT NOT NULL;
+    
+    ALTER TABLE virtual_aliases
+    CHANGE creationTime creation_time DATETIME NOT NULL,
+    CHANGE updatedTime updated_time DATETIME NOT NULL;
+    
+    ALTER TABLE virtual_vouchers
+    CHANGE creationTime creation_time DATETIME NOT NULL,
+    CHANGE redeemedTime redeemed_time DATETIME NOT NULL;
+    
+    ALTER TABLE virtual_reserved_names
+    CHANGE creationTime creation_time DATETIME NOT NULL,
+    CHANGE updatedTime updated_time DATETIME NOT NULL;
+    
+    ALTER TABLE virtual_domains
+    CHANGE creationTime creation_time DATETIME NOT NULL,
+    CHANGE updatedTime updated_time DATETIME NOT NULL;
 
 * Dotenv variable `SEND_WELCOME_MAIL` was renamed to `SEND_MAIL`:
 

@@ -17,7 +17,6 @@ doctrine:
         url: '%env(resolve:DATABASE_URL)%'
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
-        #naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
         filters:
             domain_filter: 'App\Entity\Filter\DomainFilter'
@@ -28,3 +27,4 @@ doctrine:
                 dir: '%kernel.project_dir%/config/doctrine'
                 prefix: 'App\Entity'
                 alias: App
+        naming_strategy: doctrine.orm.naming_strategy.underscore

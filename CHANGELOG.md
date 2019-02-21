@@ -15,6 +15,8 @@
 * Add option to copy link as URL (Fixes: #117)
 * Explain purpose of alias addresses (Fixes: #45)
 * Remove trailing slash from default URLs
+* Adjust database to snake_case. See `UPGRADE.md` on how to adjust an older
+  database. (Fixes: 112)
 
 # 1.6.2 (2019.02.08)
 

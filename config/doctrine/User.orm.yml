@@ -8,11 +8,9 @@ App\Entity\User:
       generator: { strategy: AUTO }
   fields:
     creationTime:
-      #name: creation_time
       type: datetime
       nullable: false
     updatedTime:
-      #name: updated_time
       type: datetime
       nullable: false
     email:
@@ -33,7 +31,6 @@ App\Entity\User:
       options:
         default: 0
     lastLoginTime:
-      column: lastlogin
       type: datetime
       nullable: true
     passwordVersion:
