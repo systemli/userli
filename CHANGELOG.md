@@ -14,6 +14,7 @@
 * Open external links in new window (Fixes: #100)
 * Add option to copy link as URL (Fixes: #117)
 * Explain purpose of alias addresses (Fixes: #45)
+* Remove trailing slash from default URLs
 
 # 1.6.2 (2019.02.08)
 

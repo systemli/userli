@@ -56,7 +56,7 @@ class VoucherCreationCommand extends ContainerAwareCommand
 
         // Set
         $context = $this->router->getContext();
-        $context->setBaseUrl(rtrim($this->appUrl, '/'));
+        $context->setBaseUrl($this->appUrl);
 
         if (empty($email) || null === $user = $manager->getRepository('App:User')->findByEmail($email)) {
             throw new UsernameNotFoundException(sprintf('User with email %s not found!', $email));
