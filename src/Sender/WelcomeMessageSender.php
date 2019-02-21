@@ -57,7 +57,7 @@ class WelcomeMessageSender
         }
 
         $body = $this->builder->buildBody($locale);
-        $subject = $this->builder->buildSubject();
+        $subject = $this->builder->buildSubject($locale);
         $this->handler->send($email, $body, $subject);
     }
 }

@@ -51,17 +51,19 @@ class WelcomeMessageBuilder
      */
     public function buildBody($locale)
     {
-        $body = $this->translator->trans('welcome.email', ['%app_url%' => $this->appUrl, '%project_name%' => $this->projectName], null, $locale);
+        $body = $this->translator->trans('mail.welcome-body', ['%app_url%' => $this->appUrl, '%project_name%' => $this->projectName], null, $locale);
 
         return $body;
     }
 
     /**
+     * @param $locale
+     *
      * @return string
      */
-    public function buildSubject()
+    public function buildSubject($locale)
     {
-        $subject = sprintf('Welcome to %s!', $this->domain);
+        $subject = $this->translator->trans('mail.welcome-subject', ['%domain%' => $this->domain], null, $locale);
 
         return $subject;
     }

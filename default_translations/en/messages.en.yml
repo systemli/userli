@@ -94,17 +94,6 @@ recovery:
   waiting-info: The waiting period is for your own security and cannot be shortened or skipped.
   waiting-time: Second step starts at %time%.
   reset-lead: You're now allowed to reset your password
-  email-subject: The password for your email account %email% will be reset
-  email-body: |
-    Hello %email%,
-
-    Somebody (let's hope it was you) tried to reset your account password. To do so, they authenticated with your email address and corresponding recovery code at %app_url%/recovery.
-
-    The 48 hours waiting period started now and will end at %time%. Afterwards, in a second step, a new password can be set for your account.
-
-    You didn't trigger this yourself? Then somebody else with access to your recovery token tries to get hold of your account. You should go to %app_url%/user/recovery_token immediately and create a new recovery token. This will invalidate the current recovery token.
-
-    We hope you continue to enjoy your email account. Your %project_name% admin team.
 
 navbar_left:
   about-us:
@@ -134,17 +123,6 @@ welcome:
     <h3>Ready to go</h3>
     <p>In the web you can find guides for settting up your email-account with several client programs.</p>
     <p>In one week you will receive three invite codes, which you can collect at <a href="%app_url%">%app_url%</a>. You can pass these on to friends and invite them to register with %project_name%.</p>
-  email: |
-    Hello new user, welcome on board.
-
-    In the web you can find guides for setting up your email-account with several client programs.
-
-    You get a mailbox with 1GB quota. If you exceed your quota limit, your email-account may not function properly.
-
-    In one week you will receive three invite codes, which you can collect at %app_url%. You can pass these on to friends and invite them to register with %project_name%.
-
-
-    Sincerly your %project_name% admin team
 
 closed:
   title: Registration closed
@@ -206,3 +184,37 @@ Bad credentials.: Wrong login details
 
 custom: custom
 random: random
+
+mail:
+  welcome-subject: Welcome to %domain%
+  welcome-body: |
+    Hello new user, welcome on board.
+
+    In the web you can find guides for setting up your email-account with several client programs.
+
+    You get a mailbox with 1GB quota. If you exceed your quota limit, your email-account may not function properly.
+
+    In one week you will receive three invite codes, which you can collect at %app_url%. You can pass these on to friends and invite them to register with %project_name%.
+
+    Sincerly, your %project_name% admin team.
+  recovery-subject: The password for your email account %email% will be reset
+  recovery-body: |
+    Hello %email%,
+
+    Somebody (let's hope it was you) tried to reset your account password. To do so, they authenticated with your email address and corresponding recovery code at %app_url%/recovery.
+
+    The 48 hours waiting period started now and will end at %time%. Afterwards, in a second step, a new password can be set for your account.
+
+    You didn't trigger this yourself? Then somebody else with access to your recovery token tries to get hold of your account. You should go to %app_url%/user/recovery_token immediately and create a new recovery token. This will invalidate the current recovery token.
+
+    We hope you continue to enjoy your email account. Your %project_name% admin team.
+  alias-created-subject: New alias address created
+  alias-created:body: |
+    Hello %email%,
+
+    For your email address %email% a new alias has been added:
+    %alias%
+
+    Manage your email aliases here: %app_url%/alias
+
+    We hope you continue to enjoy your email account. Your %project_name% admin team.

@@ -5,11 +5,11 @@ namespace App\Builder;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Class RecoveryProcessMessageBuilder.
+ * Class AliasCreatedMessageBuilder.
  *
  * @author doobry <doobry@systemli.org>
  */
-class RecoveryProcessMessageBuilder
+class AliasCreatedMessageBuilder
 {
     /**
      * @var TranslatorInterface
@@ -25,7 +25,7 @@ class RecoveryProcessMessageBuilder
     private $projectName;
 
     /**
-     * RecoveryProcessMessageBuilder constructor.
+     * AliasCreatedMessageBuilder constructor.
      *
      * @param TranslatorInterface $translator
      * @param string              $appUrl
@@ -41,19 +41,19 @@ class RecoveryProcessMessageBuilder
     /**
      * @param string $locale
      * @param string $email
-     * @param string $time
+     * @param string $alias
      *
      * @return string
      */
-    public function buildBody(string $locale, string $email, string $time)
+    public function buildBody(string $locale, string $email, string $alias)
     {
         $body = $this->translator->trans(
-            'mail.recovery-body',
+            'mail.alias-created-body',
             [
                 '%app_url%' => $this->appUrl,
                 '%project_name%' => $this->projectName,
                 '%email%' => $email,
-                '%time%' => $time,
+                '%alias%' => $alias,
             ],
             null,
             $locale
@@ -71,7 +71,7 @@ class RecoveryProcessMessageBuilder
     public function buildSubject(string $locale, string $email)
     {
         $subject = $this->translator->trans(
-            'mail.recovery-subject', ['%email%' => $email], null, $locale
+            'mail.alias-created-subject', ['%email%' => $email], null, $locale
         );
 
         return $subject;

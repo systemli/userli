@@ -2,31 +2,30 @@
 
 namespace App\Tests\Builder;
 
-use App\Builder\RecoveryProcessMessageBuilder;
+use App\Builder\AliasCreatedMessageBuilder;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Class RecoveryProcessMessageBuilderTest.
+ * Class AliasCreatedMessageBuilderTest.
  *
  * @author doobry <doobry@systemli.org>
  */
-class RecoveryProcessMessageBuilderTest extends TestCase
+class AliasCreatedMessageBuilderTest extends TestCase
 {
     const BODY_TEMPLATE = 'APP URL: %s'.PHP_EOL.'Project Name: %s';
 
     private $email = 'user@example.org';
+    private $alias = 'alias@example.org';
     private $appUrl = 'https://www.example.org';
     private $projectName = 'example.org';
 
     public function testBuildBody()
     {
-        $time = 'NOW';
-
         $builder = $this->getBuilder($this->appUrl, $this->projectName);
         $expected = sprintf(self::BODY_TEMPLATE, $this->appUrl, $this->projectName);
 
-        self::assertEquals($expected, $builder->buildBody('de', $this->email, $time));
+        self::assertEquals($expected, $builder->buildBody('de', $this->email, $this->alias));
     }
 
     public function testBuildSubject()
@@ -41,7 +40,7 @@ class RecoveryProcessMessageBuilderTest extends TestCase
      * @param $appUrl
      * @param $projectName
      *
-     * @return RecoveryProcessMessageBuilder
+     * @return AliasCreatedMessageBuilder
      */
     private function getBuilder($appUrl, $projectName)
     {
@@ -56,7 +55,7 @@ class RecoveryProcessMessageBuilderTest extends TestCase
 
         $translator->expects($this->any())->method('trans')->willReturn($message);
 
-        $builder = new RecoveryProcessMessageBuilder($translator, $appUrl, $projectName);
+        $builder = new AliasCreatedMessageBuilder($translator, $appUrl, $projectName);
 
         return $builder;
     }
