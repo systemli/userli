@@ -62,7 +62,7 @@ class MailCryptCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('usrmgmt:users:mailcrypt')
+            ->setName('app:users:mailcrypt')
             ->setDescription('Get MailCrypt values for user')
             ->addArgument(
                 'email',

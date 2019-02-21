@@ -148,7 +148,7 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
-    usrmgmt.admin.user:
+    userli.admin.user:
         class: App\Admin\UserAdmin
         public: true
         tags:
@@ -162,7 +162,7 @@ services:
             - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
             - [setDeleteHandler, ['@App\Handler\DeleteHandler']]
 
-    usrmgmt.admin.domain:
+    userli.admin.domain:
         class: App\Admin\DomainAdmin
         public: true
         tags:
@@ -172,7 +172,7 @@ services:
             - App\Entity\Domain
             - ~
 
-    usrmgmt.admin.alias:
+    userli.admin.alias:
         class: App\Admin\AliasAdmin
         public: true
         tags:
@@ -185,7 +185,7 @@ services:
             - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
             - [setDeleteHandler, ['@App\Handler\DeleteHandler']]
 
-    usrmgmt.admin.voucher:
+    userli.admin.voucher:
         class: App\Admin\VoucherAdmin
         public: true
         tags:
@@ -195,17 +195,17 @@ services:
             - App\Entity\Voucher
             - ~
 
-    usrmgmt.admin.block.statistics:
+    userli.admin.block.statistics:
         class: App\Block\StatisticsBlockService
         public: true
         tags:
             - { name: sonata.block }
         arguments:
-            - usrmgmt.admin.block.statistics
+            - userli.admin.block.statistics
             - '@Symfony\Component\Templating\EngineInterface'
             - '@Doctrine\Common\Persistence\ObjectManager'
 
-    usrmgmt.admin.reservedname:
+    userli.admin.reservedname:
         class: App\Admin\ReservedNameAdmin
         public: true
         tags:
@@ -215,14 +215,14 @@ services:
             - App\Entity\ReservedName
             - ~
 
-    usrmgmt.menu.navbar_left:
+    userli.menu.navbar_left:
         class: Knp\Menu\MenuItem
         public: true
         factory: ['@App\Builder\MenuBuilder', createNavbarLeft]
         tags:
             - { name: knp_menu.menu, alias: navbar-left }
 
-    usrmgmt.menu.navbar_right:
+    userli.menu.navbar_right:
         class: Knp\Menu\MenuItem
         public: true
         factory: ['@App\Builder\MenuBuilder', createNavbarRight]

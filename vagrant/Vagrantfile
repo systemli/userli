@@ -8,7 +8,7 @@ SCRIPT
 Vagrant.configure("2") do |config|
 
     config.vm.provider :virtualbox do |v|
-        v.name = "user-management"
+        v.name = "userli"
         v.customize ["modifyvm", :id, "--memory", 2048]
     end
 

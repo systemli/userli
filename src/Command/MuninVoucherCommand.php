@@ -36,7 +36,7 @@ class MuninVoucherCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('usrmgmt:munin:voucher')
+            ->setName('app:munin:voucher')
             ->setDescription('Munin plugin for vouchers')
             ->addOption('autoconf', null, InputOption::VALUE_NONE, 'autoconf for the plugin')
             ->addOption('config', null, InputOption::VALUE_NONE, 'config for the plugin');

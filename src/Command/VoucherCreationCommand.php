@@ -41,7 +41,7 @@ class VoucherCreationCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('usrmgmt:voucher:create')
+            ->setName('app:voucher:create')
             ->setDescription('Create voucher for a specific user')
             ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User who get the voucher(s)')
             ->addOption('count', 'c', InputOption::VALUE_OPTIONAL, 'Count of the voucher which will created', 3)

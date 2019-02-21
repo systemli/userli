@@ -14,7 +14,7 @@ build:
             APP_SECRET: '165e25e3846534bb4665d7078a851c0b'
             MAILER_URL: 'smtp://localhost:25?encryption=&auth_mode='
             MAILER_DELIVERY_ADDRESS: 'admin@example.org'
-            APP_NAME: 'User Management'
+            APP_NAME: 'Userli'
             APP_URL: 'https://users.example.org/'
             PROJECT_NAME: 'example.org'
             PROJECT_URL: 'https://www.example.org/'

@@ -21,7 +21,7 @@ class RemoveUsersCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('usrmgmt:users:remove')
+            ->setName('app:users:remove')
             ->setDescription('Removes all mailboxes from deleted users')
             ->addOption('dry-run', null, InputOption::VALUE_NONE);
     }

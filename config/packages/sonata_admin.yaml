@@ -1,12 +1,12 @@
 sonata_admin:
-    title: Management
+    title: Userli
     title_logo: 'build/images/logo_small.png'
     dashboard:
         blocks:
           - position: left
             type: sonata.admin.block.admin_list
           - position: right
-            type: usrmgmt.admin.block.statistics
+            type: userli.admin.block.statistics
     templates:
         layout: 'Admin/standard_layout.html.twig'
         user_block: 'Admin/user_block.html.twig'
@@ -24,4 +24,4 @@ sonata_block:
     blocks:
         sonata.admin.block.admin_list:
             contexts:   [admin]
-        usrmgmt.admin.block.statistics: ~
+        userli.admin.block.statistics: ~

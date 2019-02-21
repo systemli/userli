@@ -2,7 +2,7 @@ GIT_VERSION    := $(shell git --no-pager describe --tags --always)
 GIT_COMMIT     := $(shell git rev-parse --verify HEAD)
 GIT_DATE       := $(firstword $(shell git --no-pager show --date=iso-strict --format="%ad" --name-only))
 BUILD_DATE     := $(shell date)
-RELEASE_FILE   := user-management-${GIT_VERSION}.tar.gz
+RELEASE_FILE   := userli-${GIT_VERSION}.tar.gz
 SHA_ALGORITHMS := 256 512
 
 clean:
