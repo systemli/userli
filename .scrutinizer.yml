@@ -25,6 +25,7 @@ build:
             LOCALE: 'de'
             HAS_SINA_BOX: 'false'
             MAIL_CRYPT_ENABLED: 1
+            MAIL_CRYPT_AUTO: 1
     dependencies:
         before:
             - mysql -uroot -e "CREATE DATABASE mail_test;"

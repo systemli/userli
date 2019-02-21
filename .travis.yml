@@ -25,6 +25,7 @@ env:
     - LOCALE="de"
     - HAS_SINA_BOX="false"
     - MAIL_CRYPT_ENABLED=1
+    - MAIL_CRYPT_AUTO=1
 
 cache:
   directories:
