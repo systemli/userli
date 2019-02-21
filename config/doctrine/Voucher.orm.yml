@@ -8,11 +8,9 @@ App\Entity\Voucher:
       generator: { strategy: AUTO }
   fields:
     creationTime:
-      #name: creation_time
       type: datetime
       nullable: false
     redeemedTime:
-      #name: redeemed_time
       type: datetime
       nullable: true
     code:
