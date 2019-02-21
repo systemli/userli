@@ -22,6 +22,9 @@ lint:
 test: vendors lint
 	bin/phpunit
 
+security-check: vendors
+	bin/console security:check
+
 integration: vendors lint
 	yarn
 	yarn encore dev
