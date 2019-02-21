@@ -1,6 +1,6 @@
 start:
   title: Willkommen bei %domain%
-  intro: Wir bieten dir hier die Möglichkeit einen E-Mail Account zu erstellen bzw. zu verwalten.
+  intro: Wir bieten dir hier die Möglichkeit, einen E-Mail Account zu erstellen bzw. zu verwalten.
   registration-header: Registrierung
   registration-text: >
     Du hast noch keinen E-Mail Account bei %domain%? Kein Problem!
@@ -128,7 +128,7 @@ registration:
     Du möchtest ein E-Mail Account bei <a href="%project_url%">%project_name%</a> registrieren.
     Eine Registrierung ist nur möglich, wenn dich eine Freund*in zu unserem Dienst einlädt,
     dir also einen Einladungscode übergibt.
-  information-password-policy: <strong>Wichtig:</strong> Du benötigst ein Passwort, dass aus einer Kombination von 12 Zeichen besteht.
+  information-password-policy: <strong>Wichtig:</strong> Du benötigst ein Passwort, das aus einer Kombination von 12 Zeichen besteht.
   label-email: Deine Wunsch E-Mail Adresse
   recovery-token-headline: Wiederherstellungscode
 
