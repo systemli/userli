@@ -67,6 +67,7 @@ Configure the application in `.env`:
     LOCALE=en
     HAS_SINA_BOX=false
     MAIL_CRYPT_ENABLED=1
+    MAIL_CRYPT_AUTO=1
 
 Finalize setup:
 
