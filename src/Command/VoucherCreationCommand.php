@@ -75,7 +75,6 @@ class VoucherCreationCommand extends ContainerAwareCommand
             $manager->persist($voucher);
         }
 
-
         $manager->flush();
     }
 }

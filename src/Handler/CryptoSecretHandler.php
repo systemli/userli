@@ -53,6 +53,7 @@ class CryptoSecretHandler
      * @param string       $password
      *
      * @return string|null
+     *
      * @throws \Exception
      */
     public static function decrypt(CryptoSecret $cryptoSecret, string $password): ?string

@@ -10,7 +10,6 @@ use App\Handler\RegistrationHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Tests\DependencyInjection\NonExistentClassController;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
@@ -23,6 +22,7 @@ class RegistrationController extends Controller
      * @param string|null $voucher
      *
      * @return Response
+     *
      * @throws \Exception
      */
     public function registerAction(Request $request, string $voucher = null)
