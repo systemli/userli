@@ -129,17 +129,6 @@ welcome:
     <h3>Los geht's</h3>
     <p>Im Web findest du Anleitungen zur Einrichtung deines E-Mail Accounts mit verschiedenen Client Programmen.</p>
     <p>In einer Woche bekommst du drei Einladungscodes gutgeschrieben, die du unter <a href="%app_url%">%app_url%</a> abrufen kannst. Diese kannst du an Freundinnen und Freunde weiterleiten und sie so zu %project_name% einladen.</p>
-  email: |
-    Lieber User, liebe Userin, willkommen an Bord.
-
-    Im Web findest du Anleitungen zur Einrichtung deines E-Mail Accounts mit verschiedenen Client Programmen.
-
-    Dein Postfachgröße beträgt 1GB. Sollte dein Postfach diese Größe überschreiten, kann es zu Einschränkungen der Funktionalität deines E-Mail Accounts kommen.
-
-    In einer Woche bekommst du drei Einladungscodes gutgeschrieben, die du unter %app_url% abrufen kannst. Diese kannst du an Freund*innen weiterleiten und sie so zu %project_name% einladen.
-
-
-    Viel Spaß mit deinem Mailaccount, wünscht dir dein %project_name% Admin Team.
 
 closed:
   title: Registrierung deaktiviert
@@ -165,7 +154,7 @@ recovery-token:
   set: Du hast bereits einen Wiederherstellungscode gesetzt.
   set-extra: Wenn du einen neuen Code erstellst, wird der bisherige ungültig.
   unset: Du hast noch keinen Wiederherstellungscode gesetzt. Wir empfehlen dir dringend, jetzt einen zu erstellen.
-  created-headline: Der folgende Wiederherstellungscode wurde für dich erstellt:
+  created-headline: "Der folgende Wiederherstellungscode wurde für dich erstellt:"
   created-info: Mit dem Wiederherstellungscode kannst du jederzeit dein Passwort zurücksetzen, wenn du dieses vergessen hast. Notiere ihn dir und speichere ihn an einem sicheren Ort ab.
   displayed-once: Der Wiederherstellungscode wird aus Sicherheitsgründen nur einmal angezeigt und ist uns nicht bekannt. Wenn du ihn verlierst, kannst du einen neuen Code generieren.
 
@@ -205,24 +194,33 @@ random: zufälligen
 mail:
   welcome-subject: Willkommen bei %domain%
   welcome-body: |
-    Lieber User, liebe Userin, willkommen an Bord.
+    Liebe Nutzer*in,
 
-    Im Web findest du Anleitungen zur Einrichtung deines E-Mail Accounts mit verschiedenen Client Programmen.
+    willkommen an Bord. Im Web findest du Anleitungen zur Einrichtung deines E-Mail-Accounts mit
+    verschiedenen Client-Programmen.
 
-    Dein Postfachgröße beträgt 1GB. Sollte dein Postfach diese Größe überschreiten, kann es zu Einschränkungen der Funktionalität deines E-Mail Accounts kommen.
+    Dein Postfachgröße beträgt 1GB. Sollte dein Postfach diese Größe überschreiten,
+    kann es zu Einschränkungen der Funktionalität deines E-Mail-Accounts kommen.
 
-    In einer Woche bekommst du drei Einladungscodes gutgeschrieben, die du unter %app_url% abrufen kannst. Diese kannst du an Freund*innen weiterleiten und sie so zu %project_name% einladen.
+    In einer Woche erhälst du drei Einladungscodes, die du unter %app_url%/voucher abrufen kannst.
+    Diese kannst du an Freund*innen weiterleiten und sie so zu %project_name% einladen.
 
     Viel Spaß mit deinem Mailaccount, wünscht dir dein %project_name% Admin Team.
   recovery-subject: Das Passwort zu deinem E-Mail-Account %email% wird zurückgesetzt
   recovery-body: |
     Hallo %email%,
 
-    Jemand (hoffentlich du selbst) hat versucht, dein Passwort zurückzusetzen. Dazu wurden deine E-Mail-Addresse und der zugehörige Wiederherstellungscode unter %app_url%/recovery eingegeben.
+    Jemand hat versucht, dein Passwort zurückzusetzen. Dazu wurden deine E-Mail-Addresse und der
+    zugehörige Wiederherstellungscode unter %app_url%/recovery eingegeben.
 
-    Nun startet die 48-stündige Wartezeit. Diese geht bis zum %time%. Anschließend kann in einem zweiten Schritt dein Passwort neu gesetzt werden.
+    Du hast das nicht selbst ausgelöst? Dann versucht jemand anderes mit Zugang zu deinem
+    Wiederherstellungscode Kontrolle über deinen Account zu bekommen. Gehe schnellstmöglich
+    zu %app_url%/user/recovery_token und erstelle dir einen neuen Wiederherstellungscode.
+    Dadurch wird der alte Code ungültig und der Vorgang abgebrochen.
 
-    Du hast das nicht selbst ausgelöst? Jemand anderes mit Zugang zu deinem Wiederherstellungscode versucht, Kontrolle über deinen Account zu bekommen. Gehe schnellstmöglich zu %app_url%/user/recovery_token und erstelle dir einen neuen Wiederherstellungscode. Dadurch wird der alte ungültig.
+    Hast du den Vorgang selbst ausgelöst, startet nun die 48-stündige Wartezeit.
+    Diese geht bis zum %time%. Anschließend kannst du mit einem Besuch von %app_url%/recovery
+    dein Passwort neu setzen.
 
     Weiterhin viel Spaß mit deinem Mailaccount, wünscht dir dein %project_name% Admin Team.
   alias-created-subject: Neue Alias-Adresse erstellt
