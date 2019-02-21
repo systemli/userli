@@ -1,5 +1,6 @@
 # 2.0.0 (unreleased)
 
+* Rename project to Userli (Fixes: #133)
 * Add support for Dovecot's MailCrypt plugin. New users automatically get
   a MailCrypt key pair generated which is then passed to Dovecot via
   `checkpassword`. (Fixes: #83)
