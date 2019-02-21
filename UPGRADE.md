@@ -44,3 +44,8 @@ Trailing slashes have been removed from default URLs:
 
     sed -e 's#^\(APP_URL=".*\)/"#\1#g' .env
     sed -e 's#^\(PROJECT_URL=".*\)/"#\1#g' .env
+
+Use 0/1 instead of false/true in .env
+
+    sed -i -e 's/="true"/=1/g' .env
+    sed -i -e 's/="false"/=0/g' .env

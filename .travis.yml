@@ -21,9 +21,9 @@ env:
     - DOMAIN="example.org"
     - SENDER_ADDRESS="admin@example.org"
     - NOTIFICATION_ADDRESS="monitoring@example.org"
-    - SEND_MAIL="true"
+    - SEND_MAIL=1
     - LOCALE="de"
-    - HAS_SINA_BOX="false"
+    - HAS_SINA_BOX=0
     - MAIL_CRYPT_ENABLED=1
     - MAIL_CRYPT_AUTO=1
 
