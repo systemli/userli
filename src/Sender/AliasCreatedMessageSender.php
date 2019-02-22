@@ -48,11 +48,7 @@ class AliasCreatedMessageSender
             throw new \Exception('Email should not be null');
         }
 
-        if (null === $aliasSource = $alias->getSource()) {
-            throw new \Exception('Alias should not be null');
-        }
-
-        $body = $this->builder->buildBody($locale, $email, $aliasSource);
+        $body = $this->builder->buildBody($locale, $email, $alias->getSource());
         $subject = $this->builder->buildSubject($locale, $email);
         $this->handler->send($email, $body, $subject);
     }
