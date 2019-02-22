@@ -190,31 +190,37 @@ mail:
   welcome-body: |
     Dear user,
 
-    Welcome aboard. You can find guides for setting up your email account with several client
-    programs in the internet.
+    Welcome aboard. You can find guides for setting up your email account
+    with several client programs in the internet.
 
     You get a mailbox with 1GB quota. If you exceed your quota limit,
     your email account may not function properly.
 
-    In one week you will receive three invite codes, which you can collect at %app_url%/voucher.
-    You can pass these on to friends and invite them to register with %project_name%.
+    In one week you will receive three invite codes, which you can collect
+    at %app_url%/voucher. You can pass these on to friends and
+    invite them to register with %project_name%.
 
     Sincerly, your %project_name% admin team.
   recovery-subject: The password for your email account %email% will be reset
   recovery-body: |
     Hello %email%,
 
-    Somebody tried to reset your account password. To do so, they authenticated with your email
-    address and corresponding recovery code at %app_url%/recovery.
+    Somebody tried to reset your account password. To do so, they
+    authenticated with your email address and corresponding recovery
+    code at %app_url%/recovery.
 
-    You didn't trigger this yourself? Then somebody else with access to your recovery token tries to
-    get hold of your account. You should go to %app_url%/user/recovery_token immediately and create
-    a new recovery token. This will invalidate the old recovery token and stop the process.
+    You didn't trigger this yourself? Then somebody else with access to
+    your recovery token tries to get hold of your account. You should go
+    to %app_url%/user/recovery_token immediately and create a
+    new recovery token. This will invalidate the old recovery token and
+    stop the process.
 
-    If you did trigger the process yourself, the 48 hours waiting period started now.
-    It will end at %time%. Afterwards, you can set a new password can at %app_url%/.
+    If you did trigger the process yourself, the 48 hours waiting period
+    started now. It will end at %time%. Afterwards, you can set
+    a new password can at %app_url%/recovery.
 
-    We hope you continue to enjoy your email account. Your %project_name% admin team.
+    We hope you continue to enjoy your email account.
+    Your %project_name% admin team.
   alias-created-subject: New alias address created
   alias-created:body: |
     Hello %email%,
@@ -224,4 +230,5 @@ mail:
 
     Manage your email aliases here: %app_url%/alias
 
-    We hope you continue to enjoy your email account. Your %project_name% admin team.
+    We hope you continue to enjoy your email account.
+    Your %project_name% admin team.
