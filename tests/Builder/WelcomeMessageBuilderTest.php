@@ -34,9 +34,9 @@ class WelcomeMessageBuilderTest extends TestCase
         $projectUrl = 'https://users.example.com';
 
         $builder = $this->getBuilder($domain, $appUrl, $projectUrl);
-        $expected = sprintf('Welcome to %s!', $domain);
+        $expected = sprintf(self::BODY_TEMPLATE, $domain, $appUrl, $projectUrl);
 
-        self::assertEquals($expected, $builder->buildSubject());
+        self::assertEquals($expected, $builder->buildSubject('en'));
     }
 
     /**
