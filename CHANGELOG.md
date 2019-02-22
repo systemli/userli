@@ -6,7 +6,7 @@
   `checkpassword`. (Fixes: #83)
 * Add support for recovery tokens. New users automatically get a recovery
   token generated, which can be used to restore their account if the
-  password got lost at a later time. (Fixes: #89)
+  password got lost at a later time. (Fixes: #89, #108)
 * Add support for direct registration links with prefilled invite vouchers.
   (Fixes: #117)
 * Move flash messages to upper right corner (Fixes: #129)
@@ -16,7 +16,7 @@
 * Explain purpose of alias addresses (Fixes: #45)
 * Remove trailing slash from default URLs
 * Adjust database to snake_case. See `UPGRADE.md` on how to adjust an older
-  database. (Fixes: 112)
+  database. (Fixes: #112)
 
 # 1.6.2 (2019.02.08)
 
