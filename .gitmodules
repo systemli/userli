@@ -19,3 +19,6 @@
 [submodule "vagrant/ansible/roles/systemli.dovecot"]
 	path = vagrant/ansible/roles/systemli.dovecot
 	url = https://github.com/systemli/ansible-role-dovecot.git
+[submodule "hugo/themes/docdock"]
+	path = hugo/themes/docdock
+	url = https://github.com/vjeantet/hugo-theme-docdock.git

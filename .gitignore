@@ -29,3 +29,5 @@ translations/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+
+hugo/public/
