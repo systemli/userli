@@ -41,13 +41,25 @@ Feature: Recovery
       | recoveryToken | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
     And I request "POST /recovery/reset_password"
     And I fill in the following:
-      | recovery_reset_password[newPassword][first]  | passwordabcd                         |
-      | recovery_reset_password[newPassword][second] | passwordabcd                         |
+      | recovery_reset_password[newPassword][first]  | passwordabcd |
+      | recovery_reset_password[newPassword][second] | passwordabcd |
     And I press "recovery_reset_password[submit]"
 
-#    Then print last response
+    Then I should be on "/recovery/reset_password"
+    And I should see text matching "You successfully changed your password."
+    And the response status code should be 200
+
+  @recovery
+  Scenario: Acknowledge new recovery token in recovery process as user (#4)
+    When I have the request params for "recovery_token_ack":
+      | recoveryToken | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
+    And I request "POST /recovery/recovery_token/ack"
+    And I fill in the following:
+      | recovery_token_ack[ack]           | 1                                    |
+    And I press "recovery_token_ack[submit]"
+
     Then I should be on "/login"
-    And I should see text matching "You successfully changed your password. Go on with the login."
+    And I should see text matching "Go on with the login."
     And the response status code should be 200
 
   @recovery

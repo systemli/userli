@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}{{ "recovery.token-lead"|trans }}{% endblock %}
+
+{% form_theme form 'Form/fields.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <h3>{{ "recovery.token-lead"|trans }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            {% include 'Recovery/show_recovery_token.html.twig' %}
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            {% include 'Recovery/recovery_token_notes.html.twig' %}
+        </div>
+    </div>
+{% endblock %}

@@ -66,6 +66,10 @@ recovery_reset_password:
     path:     /recovery/reset_password
     controller: App\Controller\RecoveryController::recoveryResetPasswordAction
 
+recovery_recovery_token_ack:
+    path:     /recovery/recovery_token/ack
+    controller: App\Controller\RecoveryController::recoveryRecoveryTokenAckAction
+
 user_recovery_token:
     path:     /user/recovery_token
     controller: App\Controller\RecoveryController::recoveryTokenAction

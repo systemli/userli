@@ -157,12 +157,34 @@ class RecoveryController extends Controller
 
                 if (null !== $user && $this->verifyEmailRecoveryToken($user, $recoveryToken, true)) {
                     if ($recoveryResetPasswordForm->isValid()) {
-                        // Success, change the password and redirect to login page
-                        $this->resetPassword($user, $recoveryResetPassword->newPassword, $recoveryToken);
+                        // Success: change the password
+                        $newRecoveryToken = $this->resetPassword($user, $recoveryResetPassword->newPassword, $recoveryToken);
                         $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-password-changed');
 
-                        return $this->redirect($this->generateUrl('login'));
+                        $recoveryTokenAck = new RecoveryTokenAck();
+                        $recoveryTokenAck->setRecoveryToken($recoveryToken);
+                        $recoveryTokenAckForm = $this->createForm(
+                            RecoveryTokenAckType::class,
+                            $recoveryTokenAck,
+                            [
+                                'action' => $this->generateUrl('recovery_recovery_token_ack'),
+                                'method' => 'post',
+                            ]
+                        );
+
+                        // Cleanup variables with confidential content
+                        sodium_memzero($recoveryToken);
+
+                        return $this->render('Recovery/recovery_token.html.twig',
+                            [
+                                'form' => $recoveryTokenAckForm->createView(),
+                                'recovery_token' => $newRecoveryToken,
+                            ]
+                        );
                     } else {
+                        // Cleanup variables with confidential content
+                        sodium_memzero($recoveryToken);
+
                         // Validation of new password pair failed, try again
                         return $this->render(
                             'Recovery/reset_password.html.twig',
@@ -172,6 +194,9 @@ class RecoveryController extends Controller
                         );
                     }
                 } else {
+                    // Cleanup variables with confidential content
+                    sodium_memzero($recoveryToken);
+
                     // Verification of $email + $recoveryToken failed, start over
                     $request->getSession()->getFlashBag()->add('error', 'flashes.recovery-reauthenticate');
                 }
@@ -257,6 +282,44 @@ class RecoveryController extends Controller
      *
      * @return Response
      */
+    public function recoveryRecoveryTokenAckAction(Request $request): Response
+    {
+        $recoveryTokenAck = new RecoveryTokenAck();
+        $recoveryTokenAckForm = $this->createForm(
+            RecoveryTokenAckType::class,
+            $recoveryTokenAck,
+            [
+                'action' => $this->generateUrl('recovery_recovery_token_ack'),
+                'method' => 'post',
+            ]
+        );
+
+        if ('POST' === $request->getMethod()) {
+            $recoveryTokenAckForm->handleRequest($request);
+
+            if ($recoveryTokenAckForm->isSubmitted() and $recoveryTokenAckForm->isValid()) {
+                $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-token-ack');
+                $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-next-login');
+
+                return $this->redirect($this->generateUrl('login'));
+            } else {
+                return $this->render('Recovery/recovery_token.html.twig',
+                    [
+                        'form' => $recoveryTokenAckForm->createView(),
+                        'recovery_token' => $recoveryTokenAck->getRecoveryToken(),
+                    ]
+                );
+            }
+        }
+
+        return $this->redirectToRoute('recovery');
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
     public function recoveryTokenAckAction(Request $request): Response
     {
         $recoveryTokenAck = new RecoveryTokenAck();
@@ -328,18 +391,36 @@ class RecoveryController extends Controller
      * @param string $password
      * @param string $recoveryToken
      *
+     * @return string
      * @throws \Exception
      */
-    private function resetPassword(User $user, string $password, string $recoveryToken)
+    private function resetPassword(User $user, string $password, string $recoveryToken): string
     {
         $user->setPlainPassword($password);
         $this->passwordUpdater->updatePassword($user);
 
-        // Encrypt MailCrypt private key from recoverySecretBox with new password
-        $this->mailCryptKeyHandler->updateWithPrivateKey($user, $this->recoveryTokenHandler->decrypt($user, $recoveryToken));
+        $mailCryptPrivateKey = $this->recoveryTokenHandler->decrypt($user, $recoveryToken);
 
+        // Encrypt MailCrypt private key from recoverySecretBox with new password
+        $this->mailCryptKeyHandler->updateWithPrivateKey($user, $mailCryptPrivateKey);
+
+        // Clear old token
+        $user->eraseRecoveryStartTime();
+        $user->eraseRecoverySecretBox();
+
+        // Generate new token
+        $user->setPlainMailCryptPrivateKey($mailCryptPrivateKey);
+        $this->recoveryTokenHandler->create($user);
+        $newRecoveryToken = $user->getPlainRecoveryToken();
+
+        $user->erasePlainRecoveryToken();
+        $user->erasePlainMailCryptPrivateKey();
         $user->eraseCredentials();
+        sodium_memzero($mailCryptPrivateKey);
+
         $this->getDoctrine()->getManager()->flush();
+
+        return $newRecoveryToken;
     }
 
     /**

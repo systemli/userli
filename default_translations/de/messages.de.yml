@@ -97,6 +97,7 @@ recovery:
   waiting-info: Die Wartezeit dient deiner eigenen Sicherheit und kann nicht verkürzt oder umgangen werden.
   waiting-time: Der zweite Schritt ist möglich ab dem %time%.
   reset-lead: Du kannst nun dein Passwort zurücksetzen
+  token-lead: Neuer Wiederherstellungscode
 
 navbar_left:
   about-us:
@@ -168,7 +169,8 @@ flashes:
   recovery-token-invalid: E-Mail Adresse und/oder Wiederherstellungscode sind falsch!
   recovery-token-ack: Du hast erfolgreich einen Wiederherstellungscode erzeugt!
   recovery-reauthenticate: Etwas ist schiefgelaufen. Du musst dich erneut authentifizieren!
-  recovery-password-changed: Dein Passwort wurde geändert. Du kannst dich nun einloggen.
+  recovery-password-changed: Dein Passwort wurde geändert.
+  recovery-next-login: Du kannst dich nun einloggen.
 
 flash_batch_remove_vouchers_success: Nicht eingelöste Vouchers erfolgreich gelöscht
 

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}{{ "recovery.header"|trans }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+            <h2>{{ "recovery.header"|trans }}</h2>
+            <p class="lead">{{ "recovery.token-lead"|trans }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            {% include 'Recovery/show_recovery_token.html.twig' %}
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            {% include 'Recovery/recovery_token_notes.html.twig' %}
+        </div>
+    </div>
+
+{% endblock %}
