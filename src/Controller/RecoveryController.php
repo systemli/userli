@@ -411,7 +411,9 @@ class RecoveryController extends Controller
         // Generate new token
         $user->setPlainMailCryptPrivateKey($mailCryptPrivateKey);
         $this->recoveryTokenHandler->create($user);
-        $newRecoveryToken = $user->getPlainRecoveryToken();
+        if (null === $newRecoveryToken = $user->getPlainRecoveryToken()) {
+            throw new \Exception('PlainRecoveryToken should not be null');
+        }
 
         $user->erasePlainRecoveryToken();
         $user->erasePlainMailCryptPrivateKey();
