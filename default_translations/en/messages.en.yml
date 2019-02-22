@@ -94,6 +94,7 @@ recovery:
   waiting-info: The waiting period is for your own security and cannot be shortened or skipped.
   waiting-time: Second step starts at %time%.
   reset-lead: You're now allowed to reset your password
+  token-lead: New recovery token
 
 navbar_left:
   about-us:
@@ -162,7 +163,8 @@ flashes:
   recovery-token-invalid: Email address and/or recovery token are wrong!
   recovery-token-ack: You successfully generated a recovery token!
   revocery-reauthenticate: Something went wrong. Please re-authenticate!
-  recovery-password-changed: You successfully changed your password. Go on with the login.
+  recovery-password-changed: You successfully changed your password.
+  recovery-next-login: Go on with the login.
 
 flash_batch_remove_vouchers_success: Successfully deleted unredeemed vouchers
 
