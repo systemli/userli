@@ -19,6 +19,7 @@
   database. (Fixes: #112)
 * Add infobox with password policy to password change forms (Fixes: #130)
 * Turn autocompletion off for voucher form field at registration (Fixes: #32)
+* Started external docs at [systemli.github.io/userli](https://systemli.github.io/userli)
 
 # 1.6.2 (2019.02.08)
 
