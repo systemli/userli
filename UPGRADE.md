@@ -21,7 +21,7 @@ Database schema changed and needs to be updated:
     
     ALTER TABLE virtual_vouchers
     CHANGE creationTime creation_time DATETIME NOT NULL,
-    CHANGE redeemedTime redeemed_time DATETIME NOT NULL;
+    CHANGE redeemedTime redeemed_time DATETIME DEFAULT NULL;
     
     ALTER TABLE virtual_reserved_names
     CHANGE creationTime creation_time DATETIME NOT NULL,
