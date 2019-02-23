@@ -34,6 +34,7 @@ class RegistrationController extends Controller
         }
 
         $registration = new Registration();
+        // Set voucher value in form if given as parameter in route
         if (null !== $voucher) {
             $registration->setVoucher($voucher);
         }

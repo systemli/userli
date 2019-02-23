@@ -44,8 +44,10 @@ class RegistrationType extends AbstractType
         $builder
             ->add('voucher', TextType::class, [
                 'label' => 'form.voucher',
-                'attr' => ['autocomplete' => 'off'],
-                'disabled' => (null === $options['data']->getVoucher()) ? false : true,
+                'attr' => [
+                    'autocomplete' => 'off',
+                    'readonly' => (null === $options['data']->getVoucher()) ? false : true,
+                ],
             ])
             ->add($builder->create(
                 'email',
