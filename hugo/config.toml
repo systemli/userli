@@ -54,7 +54,7 @@ weight = 10
 
 [[menu.shortcuts]]
 name = "<i class='fa fa-cloud-download'></i> <label>Download</label>"
-url = "https://github.com/systemli/userli/releases/tag/1.6.2"
+url = "https://github.com/systemli/userli/releases/latest"
 weight = 11
 
 # [[menu.shortcuts]]

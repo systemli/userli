@@ -16,4 +16,4 @@ Web application to (self-) manage email users and encrypt their mailboxes.
 * Recovery tokens to restore accounts when password got lost
 * Support for [Dovecot mailbox encryption](https://wiki.dovecot.org/Plugins/MailCrypt)
 
-This is a start. Please help to improve the documentation.
+This is a start. Please help to [improve the documentation](https://github.com/systemli/userli/edit/master/hugo/content/_index.md).
