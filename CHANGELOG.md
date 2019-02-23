@@ -6,7 +6,7 @@
   `checkpassword`. (Fixes: #83)
 * Add support for recovery tokens. New users automatically get a recovery
   token generated, which can be used to restore their account if the
-  password got lost at a later time. (Fixes: #89, #108)
+  password got lost at a later time. (Fixes: #89, #106, #108)
 * Add support for direct registration links with prefilled invite vouchers.
   (Fixes: #117)
 * Move flash messages to upper right corner (Fixes: #129)
