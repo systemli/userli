@@ -1,4 +1,4 @@
-# 2.0.0 (unreleased)
+# 2.0.0 (2019.02.23)
 
 * Rename project to Userli (Fixes: #133)
 * Add support for Dovecot's MailCrypt plugin. New users automatically get
