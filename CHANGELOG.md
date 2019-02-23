@@ -18,6 +18,7 @@
 * Adjust database to snake_case. See `UPGRADE.md` on how to adjust an older
   database. (Fixes: #112)
 * Add infobox with password policy to password change forms (Fixes: #130)
+* Turn autocompletion off for voucher form field at registration (Fixes: #32)
 
 # 1.6.2 (2019.02.08)
 
