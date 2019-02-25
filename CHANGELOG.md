@@ -1,3 +1,7 @@
+# 2.1.0 (unpublished)
+
+* We adobted the code of conduct from "Contributor Covenant"
+
 # 2.0.0 (2019.02.23)
 
 * Rename project to Userli (Fixes: #133)
