@@ -6,6 +6,8 @@
 
 Web application to (self-) manage email users and encrypt their mailboxes.
 
+![index](hugo/static/images/index.png)
+
 ## Features
 
 * User self-service (change password/recovery token, set aliases, ...)
