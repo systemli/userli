@@ -93,7 +93,10 @@ recovery:
   header: Account wiederherstellen
   lead: Passwort zurücksetzen mit Hilfe des Wiederherstellungscodes
   cancel: Abbrechen
-  started: Fast geschafft. Der erste Schritt um dein Passwort zurückzusetzen, ist gemacht. Jetzt musst du noch 48 Stunden warten, anschließend kannst du im zweiten Schritt ein neues Passwort setzen.
+  started: |
+    Fast geschafft. Der erste Schritt um dein Passwort zurückzusetzen, ist gemacht.
+    Jetzt musst du noch 48 Stunden warten, anschließend kannst du im zweiten Schritt
+    ein neues Passwort setzen. Bitte behalte deinen Wiederherstellungscode bis dahin.
   waiting-info: Die Wartezeit dient deiner eigenen Sicherheit und kann nicht verkürzt oder umgangen werden.
   waiting-time: Der zweite Schritt ist möglich ab dem %time%.
   reset-lead: Du kannst nun dein Passwort zurücksetzen
