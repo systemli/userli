@@ -7,7 +7,7 @@ description = "Web application to (self-) manage email users and encrypt their m
 
 Web application to (self-) manage email users and encrypt their mailboxes.
 
-![index](/images/index.png)
+![index](./images/index.png)
 
 ## Features
 
