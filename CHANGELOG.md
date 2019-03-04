@@ -1,6 +1,7 @@
-# 2.1.0 (unpublished)
+# 2.0.1 (2019.03.04)
 
-* We adobted the code of conduct from "Contributor Covenant"
+* We adobted the code of conduct from Contributor Covenant
+* Fix bug in `CryptoSecretHandler::decrypt()` that broke recovery token recreation.
 
 # 2.0.0 (2019.02.23)
 

@@ -65,7 +65,7 @@ class CryptoSecretHandler
         // generate symmetric encryption key from password and salt
         $key = sodium_crypto_pwhash(
             32,
-            strtolower($password),
+            $password,
             $cryptoSecret->getSalt(),
             SODIUM_CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE,
             SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE
