@@ -12,6 +12,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\Form\Type\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -124,6 +125,20 @@ class UserAdmin extends Admin
                 'field_type' => ChoiceType::class,
                 'show_filter' => true,
             ])
+            ->add('recoverySecretBox', 'doctrine_orm_callback', [
+                'field_type' => BooleanType::class,
+                'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
+                    if (is_array($value) && $value['value'] === 2) {
+                        $query = sprintf('%s.recoverySecretBox IS NULL', $alias);
+                    } else {
+                        $query = sprintf('%s.recoverySecretBox IS NOT NULL', $alias);
+                    }
+
+                    $proxyQuery->getQueryBuilder()->andWhere($query);
+
+                    return true;
+                },
+            ])
             ->add('mailCrypt', 'doctrine_orm_choice', [
                 'field_options' => [
                     'required' => false,
@@ -152,6 +167,9 @@ class UserAdmin extends Admin
             ->addIdentifier('email')
             ->add('creationTime')
             ->add('updatedTime')
+            ->add('hasRecoverySecretBox', 'boolean', [
+                'label' => 'Recovery Token',
+            ])
             ->add('mailCrypt')
             ->add('deleted');
     }
