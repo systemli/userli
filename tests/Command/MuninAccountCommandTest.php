@@ -16,6 +16,7 @@ class MuninAccountCommandTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $repository->expects($this->any())->method('count')->willReturn(10);
+        $repository->method('countUsersWithRecoveryTokens')->willReturn(5);
 
         $manager = $this->getMockBuilder(ObjectManager::class)
             ->getMock();
@@ -28,7 +29,7 @@ class MuninAccountCommandTest extends TestCase
 
         $output = $commandTester->getDisplay();
 
-        self::assertEquals("account.value 10\n", $output);
+        self::assertEquals("account.value 10\nrecovery_tokens.value 5\n", $output);
 
         $commandTester->execute(['--autoconf' => true]);
 
