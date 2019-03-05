@@ -168,7 +168,7 @@ class UserAdmin extends Admin
             ->addIdentifier('email')
             ->add('creationTime')
             ->add('updatedTime')
-            ->add('hasRecoverySecretBox', 'boolean', [
+            ->add('recoverySecretBox', 'boolean', [
                 'label' => 'Recovery Token',
             ])
             ->add('mailCrypt')
