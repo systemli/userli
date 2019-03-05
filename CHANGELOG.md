@@ -1,6 +1,7 @@
 # 2.1.0 (unreleased)
 
 * Add column and filter for `hasRecoveryToken` property on user in admin list (#144)
+* Export number of users with Recovery Tokens to Munin
 
 # 2.0.1 (2019.03.04)
 
