@@ -127,6 +127,7 @@ class UserAdmin extends Admin
             ])
             ->add('recoverySecretBox', 'doctrine_orm_callback', [
                 'field_type' => BooleanType::class,
+                'label' => 'Recovery Token',
                 'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
                     if (is_array($value) && $value['value'] === 2) {
                         $query = sprintf('%s.recoverySecretBox IS NULL', $alias);
