@@ -1,6 +1,11 @@
+# 2.1.0 (unreleased)
+
+* Add column and filter for `hasRecoveryToken` property on user in admin list (#144)
+* Export number of users with Recovery Tokens to Munin
+
 # 2.0.1 (2019.03.04)
 
-* We adobted the code of conduct from Contributor Covenant
+* We adopted the code of conduct from Contributor Covenant
 * Fix bug in `CryptoSecretHandler::decrypt()` that broke recovery token recreation.
 
 # 2.0.0 (2019.02.23)

@@ -60,10 +60,14 @@ class MuninAccountCommand extends Command
             $output->writeln('account.label Total Accounts');
             $output->writeln('account.type GAUGE');
             $output->writeln('account.min 0');
+            $output->writeln('recovery_tokens.label Accounts with Recovery Tokens');
+            $output->writeln('recovery_tokens.type GAUGE');
+            $output->writeln('recovery_tokens.min 0');
 
             return;
         }
 
         $output->writeln(sprintf('account.value %d', $this->repository->count([])));
+        $output->writeln(sprintf('recovery_tokens.value %d', $this->repository->countUsersWithRecoveryTokens()));
     }
 }

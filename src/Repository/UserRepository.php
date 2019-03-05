@@ -37,4 +37,13 @@ class UserRepository extends AbstractRepository
     {
         return $this->findBy(['deleted' => true]);
     }
+
+    /**
+     * @return int
+     */
+    public function countUsersWithRecoveryTokens()
+    {
+        return $this->matching(Criteria::create()
+            ->where(Criteria::expr()->neq('recoverySecretBox', null)))->count();
+    }
 }
