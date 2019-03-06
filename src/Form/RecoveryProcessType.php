@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Form\DataTransformer\OptionalDomainEmailTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -14,13 +15,33 @@ class RecoveryProcessType extends AbstractType
     const NAME = 'recovery_process';
 
     /**
+     * @var string
+     */
+    private $domain;
+
+    /**
+     * RecoveryProcessType constructor.
+     *
+     * @param string $domain
+     */
+    public function __construct(string $domain)
+    {
+        $this->domain = $domain;
+    }
+
+    /**
      * @param FormBuilderInterface $builder
      * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $transformer = new OptionalDomainEmailTransformer($this->domain);
+
         $builder
-            ->add('email', TextType::class, array('label' => 'form.email'))
+            ->add($builder->create(
+                'email',
+                TextType::class, array('label' => 'form.email')
+            )->addViewTransformer($transformer))
             ->add('recoveryToken', PasswordType::class, array('label' => 'form.recovery-token'))
             ->add('submit', SubmitType::class, array('label' => 'form.recovery-start'));
     }

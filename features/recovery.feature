@@ -74,7 +74,7 @@ Feature: Recovery
     And I should see text matching "Email address and/or recovery token are wrong!"
 
   @recovery
-  Scenario: Recovery invalid email
+  Scenario: Start recovery process with local part only
     When I am on "/recovery"
     And I fill in the following:
       | recovery_process[email]         | user                                 |
@@ -82,7 +82,8 @@ Feature: Recovery
     And I press "recovery_process[submit]"
 
     Then I should be on "/recovery"
-    And I should see text matching "This value is not a valid email address."
+    And I should see text matching "Second step starts at"
+    And the response status code should be 200
 
   @recovery
   Scenario: Recovery invalid UUID

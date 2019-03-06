@@ -74,6 +74,12 @@ services:
         tags:
             - { name: form.type, alias: password_change }
 
+    App\Form\RecoveryProcessType:
+        arguments:
+            $domain: '%env(DOMAIN)%'
+        tags:
+            - { name: form.type, alias: recovery }
+
     App\Form\RegistrationType:
         arguments:
             $domain: '%env(DOMAIN)%'
