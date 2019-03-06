@@ -50,7 +50,7 @@ class OptionalDomainEmailTransformer implements DataTransformerInterface
             return '';
         }
 
-        if (false !== $at_position = stripos($value, '@')) {
+        if (false !== stripos($value, '@')) {
             return $value;
         }
 
