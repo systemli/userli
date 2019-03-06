@@ -1,8 +1,11 @@
 # 2.1.0 (unreleased)
 
+# 2.0.2 (2019.03.06)
+
 * Add column and filter for `hasRecoveryToken` property on user in admin list (Fixes: #144)
 * Export number of users with Recovery Tokens to Munin
 * Recovery also works now with email localpart (Fixes: #148)
+* Fix release tar balls (Fixes: #150)
 
 # 2.0.1 (2019.03.04)
 

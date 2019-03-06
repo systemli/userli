@@ -39,7 +39,11 @@ release: clean prepare
 	yarn --pure-lockfile --no-verbose
 	yarn encore production --no-verbose
 	# Create a release tarball
-	tar czf build/${RELEASE_FILE} assets bin config default_translations public src templates var vendor
+	tar --exclude='./.*' --exclude='./behat.yml' --exclude='./build' --exclude='./features' \
+		--exclude='./Makefile' --exclude='./node_modules' \
+		--exclude='./phpunit.xml' --exclude='./tests' --exclude='./vagrant' \
+		--exclude='./var/cache/*' --exclude='./var/log/*' --exclude='./webpack.config.js' \
+		--exclude='./yarn.lock' -czf build/${RELEASE_FILE} .
 	# Generate SHA hash sum files
 	for sha in ${SHA_ALGORITHMS}; do \
 		shasum -a "$${sha}" "build/${RELEASE_FILE}" >"build/${RELEASE_FILE}.sha$${sha}"; \
