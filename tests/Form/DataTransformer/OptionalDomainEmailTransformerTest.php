@@ -19,12 +19,12 @@ class OptionalDomainEmailTransformerTest extends TestCase
 
     public function transformProvider()
     {
-        return array(
-            array('', ''),
-            array(null, ''),
-            array('louis@systemli.org', 'louis'),
-            array('louis', 'louis'),
-        );
+        return [
+            ['', ''],
+            [null, ''],
+            ['louis@systemli.org', 'louis'],
+            ['louis', 'louis'],
+        ];
     }
 
     /**
@@ -37,12 +37,12 @@ class OptionalDomainEmailTransformerTest extends TestCase
 
     public function reverseTransformProvider()
     {
-        return array(
-            array('', ''),
-            array(null, ''),
-            array('louis', 'louis@systemli.org'),
-            array('louis@example.org', 'louis@example.org')
-        );
+        return [
+            ['', ''],
+            [null, ''],
+            ['louis', 'louis@systemli.org'],
+            ['louis@example.org', 'louis@example.org'],
+        ];
     }
 
     /**

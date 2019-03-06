@@ -129,7 +129,7 @@ class UserAdmin extends Admin
                 'field_type' => BooleanType::class,
                 'label' => 'Recovery Token',
                 'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
-                    if (is_array($value) && $value['value'] === 2) {
+                    if (is_array($value) && 2 === $value['value']) {
                         $query = sprintf('%s.recoverySecretBox IS NULL', $alias);
                     } else {
                         $query = sprintf('%s.recoverySecretBox IS NOT NULL', $alias);
