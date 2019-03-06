@@ -15,7 +15,7 @@ class RecoveryProcessTypeTest extends TypeTestCase
             new PreloadedExtension(
                 [new RecoveryProcessType('example.org')],
                 []
-                )
+                ),
         ];
     }
 

@@ -392,6 +392,7 @@ class RecoveryController extends Controller
      * @param string $recoveryToken
      *
      * @return string
+     *
      * @throws \Exception
      */
     private function resetPassword(User $user, string $password, string $recoveryToken): string
