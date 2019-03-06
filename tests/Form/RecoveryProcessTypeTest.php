@@ -4,10 +4,21 @@ namespace App\Tests\Form;
 
 use App\Form\Model\RecoveryProcess;
 use App\Form\RecoveryProcessType;
+use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class RecoveryProcessTypeTest extends TypeTestCase
 {
+    protected function getExtensions()
+    {
+        return [
+            new PreloadedExtension(
+                [new RecoveryProcessType('example.org')],
+                []
+                )
+        ];
+    }
+
     public function testSubmitValidData()
     {
         $email = 'user@example.org';
