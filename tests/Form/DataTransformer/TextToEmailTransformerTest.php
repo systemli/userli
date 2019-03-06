@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class TextToEmailTransformerTest extends TestCase
 {
-    const DOMAIN = 'systemli.org';
+    const DOMAIN = 'example.org';
 
     /**
      * @dataProvider transformProvider
@@ -19,11 +19,11 @@ class TextToEmailTransformerTest extends TestCase
 
     public function transformProvider()
     {
-        return array(
-            array('', ''),
-            array(null, ''),
-            array('louis@systemli.org', 'louis'),
-        );
+        return [
+            ['', ''],
+            [null, ''],
+            ['louis@example.org', 'louis'],
+        ];
     }
 
     /**
@@ -36,11 +36,11 @@ class TextToEmailTransformerTest extends TestCase
 
     public function reverseTransformProvider()
     {
-        return array(
-            array('', ''),
-            array(null, ''),
-            array('louis', 'louis@systemli.org'),
-        );
+        return [
+            ['', ''],
+            [null, ''],
+            ['louis', 'louis@example.org'],
+        ];
     }
 
     /**

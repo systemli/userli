@@ -21,7 +21,7 @@ class DomainGuesserTest extends TestCase
     public function testGuess()
     {
         $this->assertNull($this->guesser->guess('user@gmail.com'));
-        $this->assertNotNull($this->guesser->guess('user@systemli.org'));
+        $this->assertNotNull($this->guesser->guess('user@example.org'));
     }
 
     protected function setUp()
@@ -40,9 +40,9 @@ class DomainGuesserTest extends TestCase
 
         $repository->expects($this->any())->method('findByName')->willReturnCallback(
             function ($domain) {
-                if ('systemli.org' === $domain) {
+                if ('example.org' === $domain) {
                     $domain = new Domain();
-                    $domain->setName('systemli.org');
+                    $domain->setName('example.org');
 
                     return $domain;
                 }
