@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class OptionalDomainEmailTransformerTest extends TestCase
 {
-    const DOMAIN = 'systemli.org';
+    const DOMAIN = 'example.org';
 
     /**
      * @dataProvider transformProvider
@@ -22,7 +22,7 @@ class OptionalDomainEmailTransformerTest extends TestCase
         return [
             ['', ''],
             [null, ''],
-            ['louis@systemli.org', 'louis'],
+            ['louis@example.org', 'louis'],
             ['louis', 'louis'],
         ];
     }
@@ -40,7 +40,7 @@ class OptionalDomainEmailTransformerTest extends TestCase
         return [
             ['', ''],
             [null, ''],
-            ['louis', 'louis@systemli.org'],
+            ['louis', 'louis@example.org'],
             ['louis@example.org', 'louis@example.org'],
         ];
     }
