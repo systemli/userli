@@ -33,9 +33,9 @@ class OptionalDomainEmailTransformer implements DataTransformerInterface
             return '';
         }
 
-        if (false !== $at_position = stripos($value, '@')) {
+        if (false !== $atPosition = stripos($value, '@')) {
             // cut of domain part
-            return substr($value, 0, $at_position);
+            return substr($value, 0, $atPosition);
         }
 
         return $value;
