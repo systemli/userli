@@ -7,7 +7,7 @@ use App\Form\Model\RecoveryTokenAck;
 use App\Form\RecoveryTokenAckType;
 use App\Form\RegistrationType;
 use App\Handler\RegistrationHandler;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 /**
  * @author louis <louis@systemli.org>
  */
-class RegistrationController extends Controller
+class RegistrationController extends AbstractController
 {
     /**
      * @param Request     $request

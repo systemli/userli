@@ -16,7 +16,7 @@ use App\Form\RecoveryTokenType;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author doobry <doobry@systemli.org>
  */
-class RecoveryController extends Controller
+class RecoveryController extends AbstractController
 {
     const PROCESS_DELAY = '-2 days';
     const PROCESS_EXPIRE = '-30 days';

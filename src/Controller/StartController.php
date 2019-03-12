@@ -18,14 +18,14 @@ use App\Handler\AliasHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\VoucherHandler;
 use App\Helper\PasswordUpdater;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class StartController.
  */
-class StartController extends Controller
+class StartController extends AbstractController
 {
     /**
      * @var AliasHandler

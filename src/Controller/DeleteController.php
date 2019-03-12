@@ -6,13 +6,13 @@ use App\Form\AliasDeleteType;
 use App\Form\UserDeleteType;
 use App\Form\Model\Delete;
 use App\Handler\DeleteHandler;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class DeleteController.
  */
-class DeleteController extends Controller
+class DeleteController extends AbstractController
 {
     /**
      * @var DeleteHandler

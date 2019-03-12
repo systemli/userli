@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Security;
@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Security;
 /**
  * @author louis <louis@systemli.org>
  */
-class SecurityController extends Controller
+class SecurityController extends AbstractController
 {
     /**
      * @param Request $request
