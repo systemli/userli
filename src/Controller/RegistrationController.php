@@ -18,6 +18,20 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 class RegistrationController extends AbstractController
 {
     /**
+     * var RegistrationHandler
+     */
+    private $registrationHandler;
+
+    /**
+     * RegistrationController constructor.
+     * @param RegistrationHandler $registrationHandler
+     */
+    public function __construct(RegistrationHandler $registrationHandler)
+    {
+        $this->registrationHandler = $registrationHandler;
+    }
+
+    /**
      * @param Request     $request
      * @param string|null $voucher
      *
@@ -27,9 +41,7 @@ class RegistrationController extends AbstractController
      */
     public function registerAction(Request $request, string $voucher = null)
     {
-        $registrationHandler = $this->getRegistrationHandler();
-
-        if (!$registrationHandler->canRegister()) {
+        if (!$this->registrationHandler->canRegister()) {
             return $this->render('Registration/closed.html.twig');
         }
 
@@ -51,7 +63,7 @@ class RegistrationController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $registrationHandler->handle($registration);
+                $this->registrationHandler->handle($registration);
 
                 $manager = $this->get('doctrine')->getManager();
 
@@ -127,13 +139,5 @@ class RegistrationController extends AbstractController
         $request->getSession()->getFlashBag()->add('success', 'flashes.registration-successful');
 
         return $this->render('Registration/welcome.html.twig');
-    }
-
-    /**
-     * @return RegistrationHandler
-     */
-    private function getRegistrationHandler()
-    {
-        return $this->get('App\Handler\RegistrationHandler');
     }
 }
