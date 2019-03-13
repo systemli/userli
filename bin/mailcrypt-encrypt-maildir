@@ -1,6 +1,8 @@
 #!/bin/sh
 
 # This script encrypts all local emails of a given user
+# It's mostly copied from https://code.immerda.ch/immerda/ibox/puppet-modules/
+#         blob/master/ib_dovecot/files/utils/encrypt_legacy_mailbox.sh
 
 EMAIL="$1"
 
