@@ -1,0 +1,56 @@
+#!/bin/sh
+
+# This script encrypts all local emails of a given user
+
+EMAIL="$1"
+
+if [ -z "$EMAIL" ]; then
+    echo "Error: Please pass email"
+    exit 1
+fi
+
+EMAIL_NAME="$(echo $EMAIL | awk -F '@' '{ print $1 }')"
+EMAIL_DOMAIN="$(echo $EMAIL | awk -F '@' '{ print $2 }')"
+
+if [ -z "$EMAIL_NAME" ]; then
+    echo "Error: Failed to get localpart of email address $EMAIL"
+    exit 1
+fi
+if [ -z "$EMAIL_DOMAIN" ]; then
+    echo "Error: Failed to get domain of email address $EMAIL"
+    exit 1
+fi
+
+SCRIPT="$(readlink -f $0)"
+PUBKEY="$(php $(dirname ${SCRIPT})/console app:users:mailcrypt -- $EMAIL)"
+
+if [ -z "$PUBKEY" ]; then
+    echo "Error: Failed to get public key"
+    exit 1
+fi
+
+KEYFILE="$(mktemp)"
+echo "$PUBKEY" >"$KEYFILE"
+
+TSFILE="$(mktemp)"
+
+DIRS="$(find /var/vmail/$EMAIL_DOMAIN/$EMAIL_NAME/ -type d \( -name cur -o -name new \))"
+
+for DIR in $DIRS; do
+    MESSAGES="$(find "$DIR" -type f)"
+    for MSGP in $MESSAGES; do
+        MAGIC="$(head -c 7 "$MSGP" | tr [[:upper:]] [[:lower:]])"
+        if [ "$MAGIC" != "crypted" ]; then
+            touch -r "$MSGP" "$TSFILE"
+            MSG="$(basename $MSGP)"
+            OWNER="$(stat -c %U $MSGP)"
+            GROUP="$(stat -c %G $MSGP)"
+            doveadm fs put crypt "public_key_path=$KEYFILE:posix:prefix=$DIR/" "$MSGP" "$MSG"
+            touch -r "$TSFILE" "$MSGP"
+            chown "$OWNER:$GROUP" "$MSGP"
+        fi
+    done
+done
+
+rm "$KEYFILE"
+rm "$TSFILE"
