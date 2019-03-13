@@ -8,7 +8,6 @@ bin/*
 !bin/user-aliases
 !bin/user-vouchers
 build/
-config/parameters_prod.yaml
 config/services_dev.yaml
 config/services_prod.yaml
 config/services_test.yaml
@@ -25,7 +24,9 @@ translations/
 ###< symfony/phpunit-bridge ###
 
 ###> symfony/framework-bundle ###
-/.env
+/.env.local
+/.env.local.php
+/.env.*.local
 /public/bundles/
 /var/
 /vendor/
