@@ -61,6 +61,6 @@ class RegistrationMailCommand extends Command
             throw new UsernameNotFoundException(sprintf('User with email %s not found!', $email));
         }
 
-        $this->welcomeMessageSender()->send($user, $locale);
+        $this->welcomeMessageSender->send($user, $locale);
     }
 }
