@@ -1,5 +1,7 @@
 # 2.1.0 (unreleased)
 
+* Update to symfony 4.2.4
+
 # 2.0.2 (2019.03.06)
 
 * Add column and filter for `hasRecoveryToken` property on user in admin list (Fixes: #144)
