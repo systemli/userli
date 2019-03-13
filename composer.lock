@@ -2293,16 +2293,16 @@
         },
         {
             "name": "sonata-project/admin-bundle",
-            "version": "3.46.0",
+            "version": "3.47.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "40552ab7ef20ac98916d657c681fa0214f792095"
+                "reference": "2644d247d2a04c98b3ec964e75c4eb2e9514b100"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/40552ab7ef20ac98916d657c681fa0214f792095",
-                "reference": "40552ab7ef20ac98916d657c681fa0214f792095",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/2644d247d2a04c98b3ec964e75c4eb2e9514b100",
+                "reference": "2644d247d2a04c98b3ec964e75c4eb2e9514b100",
                 "shasum": ""
             },
             "require": {
@@ -2394,7 +2394,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2019-03-07T07:51:38+00:00"
+            "time": "2019-03-12T23:20:49+00:00"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -5980,16 +5980,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.6.2",
+            "version": "v2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "7d7342c8a4059fefb9b8d07db0cc14007021f9b7"
+                "reference": "70c59531da43afe598c66135e39cac39475a2f51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/7d7342c8a4059fefb9b8d07db0cc14007021f9b7",
-                "reference": "7d7342c8a4059fefb9b8d07db0cc14007021f9b7",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/70c59531da43afe598c66135e39cac39475a2f51",
+                "reference": "70c59531da43afe598c66135e39cac39475a2f51",
                 "shasum": ""
             },
             "require": {
@@ -6005,7 +6005,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev"
+                    "dev-master": "2.7-dev"
                 }
             },
             "autoload": {
@@ -6043,7 +6043,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-01-14T15:00:48+00:00"
+            "time": "2019-03-12T18:48:26+00:00"
         },
         {
             "name": "ua-parser/uap-php",

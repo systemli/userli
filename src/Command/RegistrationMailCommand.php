@@ -3,8 +3,8 @@
 namespace App\Command;
 
 use App\Sender\WelcomeMessageSender;
-use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -13,8 +13,30 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 /**
  * @author louis <louis@systemli.org>
  */
-class RegistrationMailCommand extends ContainerAwareCommand
+class RegistrationMailCommand extends Command
 {
+    /**
+     * @var ObjectManager
+     */
+    private $manager;
+    /**
+     * @var WelcomeMessageSender
+     */
+    private $welcomeMessageSender;
+
+    /**
+     * RegistrationMailCommand constructor.
+     * @param ObjectManager $manager
+     * @param WelcomeMessageSender $welcomeMessageSender
+     * @param string|null $name
+     */
+    public function __construct(ObjectManager $manager, WelcomeMessageSender $welcomeMessageSender, ?string $name = null)
+    {
+        parent::__construct($name);
+        $this->manager = $manager;
+        $this->welcomeMessageSender = $welcomeMessageSender;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -35,26 +57,10 @@ class RegistrationMailCommand extends ContainerAwareCommand
         $email = $input->getOption('user');
         $locale = $input->getOption('locale');
 
-        if (empty($email) || null === $user = $this->getUserRepository()->findByEmail($email)) {
+        if (empty($email) || null === $user = $this->manager->getRepository('App:User')->findByEmail($email)) {
             throw new UsernameNotFoundException(sprintf('User with email %s not found!', $email));
         }
 
-        $this->getWelcomeMessageSender()->send($user, $locale);
-    }
-
-    /**
-     * @return UserRepository
-     */
-    private function getUserRepository()
-    {
-        return $this->getContainer()->get('doctrine')->getRepository('App:User');
-    }
-
-    /**
-     * @return WelcomeMessageSender
-     */
-    private function getWelcomeMessageSender()
-    {
-        return $this->getContainer()->get(WelcomeMessageSender::class);
+        $this->welcomeMessageSender()->send($user, $locale);
     }
 }

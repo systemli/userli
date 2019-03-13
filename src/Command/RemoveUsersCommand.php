@@ -4,16 +4,32 @@ namespace App\Command;
 
 use App\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
-class RemoveUsersCommand extends ContainerAwareCommand
+class RemoveUsersCommand extends Command
 {
     const VMAIL_PATH = '/var/vmail/%s/%s';
+
+    /**
+     * @var ObjectManager
+     */
+    private $manager;
+
+    /**
+     * RegistrationMailCommand constructor.
+     * @param ObjectManager $manager
+     * @param string|null $name
+     */
+    public function __construct(ObjectManager $manager, ?string $name = null)
+    {
+        parent::__construct($name);
+        $this->manager = $manager;
+    }
 
     /**
      * {@inheritdoc}
@@ -31,9 +47,8 @@ class RemoveUsersCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $manager = $this->getManager();
         /** @var User[] $users */
-        $users = $manager->getRepository('App:User')->findDeletedUsers();
+        $users = $this->manager->getRepository('App:User')->findDeletedUsers();
         $filesystem = new Filesystem();
 
         $output->writeln(sprintf('<info>Found %d users to delete</info>', count($users)));
@@ -64,13 +79,5 @@ class RemoveUsersCommand extends ContainerAwareCommand
                 $output->writeln(sprintf('Directory for user does not exist: %s', $user));
             }
         }
-    }
-
-    /**
-     * @return ObjectManager
-     */
-    protected function getManager()
-    {
-        return $this->getContainer()->get('doctrine')->getManager();
     }
 }

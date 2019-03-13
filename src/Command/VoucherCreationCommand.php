@@ -3,7 +3,8 @@
 namespace App\Command;
 
 use App\Factory\VoucherFactory;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -13,8 +14,12 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 /**
  * @author louis <louis@systemli.org>
  */
-class VoucherCreationCommand extends ContainerAwareCommand
+class VoucherCreationCommand extends Command
 {
+    /**
+     * @var ObjectManager
+     */
+    private $manager;
     /**
      * @var RouterInterface
      */
@@ -27,13 +32,15 @@ class VoucherCreationCommand extends ContainerAwareCommand
     /**
      * VoucherCreationCommand constructor.
      *
+     * @param ObjectManager   $manager
      * @param RouterInterface $router
      * @param string          $appUrl
      */
-    public function __construct(RouterInterface $router, string $appUrl)
+    public function __construct(ObjectManager $manager, RouterInterface $router, string $appUrl)
     {
         parent::__construct();
 
+        $this->manager = $manager;
         $this->router = $router;
         $this->appUrl = $appUrl;
     }
@@ -52,17 +59,14 @@ class VoucherCreationCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $email = $input->getOption('user');
-        $manager = $this->getContainer()->get('doctrine')->getManager();
 
         // Set
         $context = $this->router->getContext();
         $context->setBaseUrl($this->appUrl);
 
-        if (empty($email) || null === $user = $manager->getRepository('App:User')->findByEmail($email)) {
+        if (empty($email) || null === $user = $this->manager->getRepository('App:User')->findByEmail($email)) {
             throw new UsernameNotFoundException(sprintf('User with email %s not found!', $email));
         }
-
-        $manager = $this->getContainer()->get('doctrine')->getManager();
 
         for ($i = 1; $i <= $input->getOption('count'); ++$i) {
             $voucher = VoucherFactory::create($user);
@@ -72,9 +76,9 @@ class VoucherCreationCommand extends ContainerAwareCommand
                 $output->write(sprintf("%s\n", $voucher->getCode()));
             }
 
-            $manager->persist($voucher);
+            $this->manager->persist($voucher);
         }
 
-        $manager->flush();
+        $this->manager->flush();
     }
 }
