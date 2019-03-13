@@ -34,12 +34,12 @@ prepare:
 	mkdir -p build
 
 release: clean prepare
-	APP_ENV=prod composer install --no-dev --ignore-platform-reqs --no-scripts
-	APP_ENV=prod composer dumpautoload
+	APP_ENV=prod composer install --no-dev --ignore-platform-reqs
+	APP_ENV=prod composer dump-autoload
 	yarn --pure-lockfile --no-verbose
 	yarn encore production --no-verbose
 	# Create a release tarball
-	tar --exclude='./.env.*' --exclude='./.git*' --exclude='./.*.yml'
+	tar --exclude='./.env.*' --exclude='./.git*' --exclude='./.*.yml' \
 		--exclude='./behat.yml' --exclude='./build' --exclude='./features' \
 		--exclude='./Makefile' --exclude='./node_modules' \
 		--exclude='./phpunit.xml' --exclude='./tests' --exclude='./vagrant' \
