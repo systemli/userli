@@ -2,11 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * @author louis <louis@systemli.org>
@@ -14,39 +12,20 @@ use Symfony\Component\Security\Core\Security;
 class SecurityController extends AbstractController
 {
     /**
-     * @param Request $request
+     * @param AuthenticationUtils $authenticationUtils
      *
      * @return Response
      */
-    public function loginAction(Request $request)
+    public function loginAction(AuthenticationUtils $authenticationUtils): Response
     {
-        $session = $request->getSession();
-
-        if ($this->get('security.token_storage')->getToken()->getUser() instanceof User) {
-            return $this->redirect($this->generateUrl('index'));
-        }
-
         // get the login error if there is one
-        if ($request->attributes->has(Security::AUTHENTICATION_ERROR)) {
-            $error = $request->attributes->get(
-                Security::AUTHENTICATION_ERROR
-            );
-        } elseif (null !== $session && $session->has(Security::AUTHENTICATION_ERROR)) {
-            $error = $session->get(Security::AUTHENTICATION_ERROR);
-            $session->remove(Security::AUTHENTICATION_ERROR);
-        } else {
-            $error = '';
-        }
-
+        $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
-        $lastUsername = (null === $session) ? '' : $session->get(Security::LAST_USERNAME);
+        $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render(
-            'Security/login.html.twig',
-            array(
-                'last_username' => $lastUsername,
-                'error' => $error,
-            )
-        );
+        return $this->render('Security/login.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error,
+        ]);
     }
 }
