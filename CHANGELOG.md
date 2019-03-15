@@ -1,5 +1,8 @@
 # 2.1.0 (unreleased)
 
+* Add new shell script `bin/mailcrypt-encrypt-maildir` to encrypt legacy
+  mailboxes.
+
 # 2.0.2 (2019.03.06)
 
 * Add column and filter for `hasRecoveryToken` property on user in admin list (Fixes: #144)

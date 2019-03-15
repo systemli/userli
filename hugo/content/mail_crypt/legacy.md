@@ -22,6 +22,13 @@ Please note that existing mails will not be encrypted automatically. Instead,
 all existing mail stays unencrypted and only new incoming mail will be stored
 encrypted.
 
+In `bin/mailcrypt-encrypt-maildir` you find a script to encrypt unencrypted
+mail from legacy mailboxes that already have a MailCrypt key configured. This
+script needs to be invoked as a user who has write access to the mailbox in
+question - probably the best is to run it as root:
+
+    ./bin/mailcrypt-encrypt-maildir user@example.org
+
 The following SQL statement can be used to enable MailCrypt for all legacy
 users that generated a recovery token in the meantime (and thus have a
 MailCrypt key). Use with caution!
