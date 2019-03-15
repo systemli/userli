@@ -3,7 +3,7 @@ title = "Userli Documentation"
 description = "Web application to (self-) manage email users and encrypt their mailboxes."
 +++
 
-# Userli Documentation
+# Userli
 
 Web application to (self-) manage email users and encrypt their mailboxes.
 
