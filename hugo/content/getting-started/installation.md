@@ -24,6 +24,3 @@ Install the [latest release](https://github.com/systemli/userli/releases/latest)
     wget https://github.com/systemli/userli/releases/download/x.x.x/userli-x.x.x.tar.gz
     # Check signature and hash sum, if you know how to
     tar -xvzf userli-x.x.x.tar.gz
-
-    # Copy .env file
-    cp .env.dist .env
