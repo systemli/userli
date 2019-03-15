@@ -36,6 +36,7 @@
                 <div class="form-group">
                     <a href="{{ path('recovery') }}">{{  "form.recovery-link"|trans }}</a>
                 </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                 <button class="btn btn-lg btn-primary " type="submit">{{ "form.signin"|trans }}</button>
             </form>

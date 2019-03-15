@@ -100,6 +100,7 @@ security:
             pattern:   ^/
             anonymous: ~
             form_login:
+                csrf_token_generator: security.csrf.token_manager
                 require_previous_session: false
             logout:
                 success_handler: App\Handler\LogoutSuccessHandler
