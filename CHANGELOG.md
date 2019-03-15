@@ -1,7 +1,8 @@
 # 2.1.0 (unreleased)
 
-* Add new shell script `bin/mailcrypt-encrypt-maildir` to encrypt legacy mailboxes.
+* New shell script `bin/mailcrypt-encrypt-maildir` to encrypt legacy mailboxes
 * Update to symfony 4.2.4
+* Add sudo support to checkpassword script (Fixes: #127)
 
 # 2.0.2 (2019.03.06)
 
