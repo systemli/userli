@@ -1,3 +1,7 @@
+# 2.1.1 (unreleased)
+
+* Change default locale setting to 'en'
+
 # 2.1.0 (2019.03.17)
 
 * New shell script `bin/mailcrypt-encrypt-maildir` to encrypt legacy mailboxes
