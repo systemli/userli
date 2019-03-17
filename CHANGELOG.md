@@ -1,3 +1,7 @@
+# 2.1.2 (unreleased)
+
+* Create release tarball in subdirectory
+
 # 2.1.1 (2019.03.17)
 
 * Change default locale setting to 'en'
