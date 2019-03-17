@@ -1,6 +1,7 @@
-# 2.1.1 (unreleased)
+# 2.1.1 (2019.03.17)
 
 * Change default locale setting to 'en'
+* Don't resolve symlinks to not break sudo in checkpassword
 
 # 2.1.0 (2019.03.17)
 
