@@ -13,7 +13,7 @@ the following values.
 APP_ENV=prod
 APP_SECRET=<random secret string>
 APP_URL=https://users.example.org
-DATABASE_URL=mysql://mailuser:<password>@127.0.0.1:3306/mail
+DATABASE_URL=mysql://userli:<password>@127.0.0.1:3306/userli
 MAILER_URL=smtp://localhost:25?encryption=&auth_mode=
 PROJECT_NAME=example.org
 PROJECT_URL=https://www.example.org

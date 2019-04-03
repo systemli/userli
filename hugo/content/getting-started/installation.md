@@ -10,11 +10,9 @@ The following steps are here to help you instal Userli.
 ## Configure prerequisites:
 
     # Setup database and user
-    mysql -e 'CREATE DATABASE mail'
-    mysql -e 'CREATE USER `mailuser`@`localhost` IDENTIFIED BY "<password>"'
-    mysql -e 'GRANT INSERT,SELECT,UPDATE ON mail.* TO `mailuser`@`localhost`'
-    mysql -e 'GRANT DELETE ON mail.virtual_aliases TO `mailuser`@`localhost`'
-    mysql -e 'GRANT DELETE ON mail.virtual_vouchers TO `mailuser`@`localhost`'
+    mysql -e 'CREATE DATABASE userli'
+    mysql -e 'CREATE USER `userli`@`localhost` IDENTIFIED BY "<password>"'
+    mysql -e 'GRANT ALL PRIVILEGES ON userli.* TO `userli`@`localhost`'
 
 ## Get the code
 
