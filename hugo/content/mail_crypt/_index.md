@@ -1,7 +1,7 @@
 +++
 title = "MailCrypt"
 description = ""
-weight = 2
+weight = 4
 +++
 
 The software has builtin support for
