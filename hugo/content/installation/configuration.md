@@ -1,7 +1,7 @@
 +++
 title = "Configuration"
 description = ""
-weight = 2
+weight = 3
 +++
 
 You can personalize your Userli instance by creating `.env.local`,

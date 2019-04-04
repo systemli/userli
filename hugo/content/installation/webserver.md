@@ -1,10 +1,10 @@
 +++
-title = "Webserver"
+title = "Webserver configuration"
 description = ""
-weight = 7
+weight = 5
 +++
 
-Userli has to be installed like an other Symfony application.
+Userli has to be installed like any other [Symfony application](https://symfony.com/doc/current/setup/web_server_configuration.html).
 <!--more-->
 
 Below, you'll find some example configurations for webservers.

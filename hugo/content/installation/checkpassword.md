@@ -1,7 +1,7 @@
 +++
 title = "Checkpassword"
 description = ""
-weight = 5
+weight = 7
 +++
 
 The console command `bin/checkpassword` is a checkpassword command

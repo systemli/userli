@@ -1,7 +1,7 @@
 +++
 title = "Commands"
 description = ""
-weight = 4
+weight = 8
 +++
 
 This app brings custom commands:

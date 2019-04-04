@@ -1,7 +1,7 @@
 +++
 title = "Finalize the setup"
 description = ""
-weight = 3
+weight = 4
 +++
 
 Last steps to make Userli work properly.
