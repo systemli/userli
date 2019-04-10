@@ -8,3 +8,4 @@ twig:
         project_name: "%env(PROJECT_NAME)%"
         project_url:  "%env(PROJECT_URL)%"
         domain:       "%env(DOMAIN)%"
+        webmail_url:  "%env(WEBMAIL_URL)%"

@@ -1,8 +1,10 @@
 start:
   title: Welcome to %domain%
-  intro: Here you can set up and manage your email-account.
+  intro: Here you can set up and manage your email account.
   registration-header: Registration
-  registration-text: You don't have an email-account with %domain% yet? No problem! If one of your friends already has an account, you can get an invite code from them and immediately set up your own account.
+  registration-text: >
+    You don't have an email account with %domain% yet? No problem! If one of your friends already has an account,
+    you can get an invite code from them and immediately set up your own account.
   registration-button: Create account
   account-settings: Account Settings
   account-settings-desc: Passwords and more
@@ -12,9 +14,11 @@ start:
   aliases-desc: Hide your identity
   vouchers: Invite codes
   vouchers-desc: Invite your friends
+  webmail: Webmail
+  webmail-desc: Read and write mails
 
 index:
-  title: Manage your email-account
+  title: Manage your email account
   voucher-headline: Your invite codes
   voucher-limit: You don't have any invite codes left.
   voucher-disable: At %date% you will receive three invite codes. This is to avoid mass registrations and spam.
@@ -114,7 +118,9 @@ navbar_right:
 registration:
   title: Registering with %project_name%
   information: Information
-  information-intro: You would like to register an email-account with <a href="%project_url%">%project_name%</a>. We only allow a registration if a friend invites you via an invite code to our services.
+  information-intro: >
+    You would like to register an email account with <a href="%project_url%">%project_name%</a>.
+    We only allow registrations if a friend invites you with an invite code to our services.
   information-password-policy: <strong>Important:</strong> You need a password with at least 12 characters.
   label-email: Your preferred email-address
   recovery-token-headline: Recovery token
@@ -125,7 +131,7 @@ welcome:
   next-button: To the overview
   text: >
     <h3>Ready to go</h3>
-    <p>In the web you can find guides for settting up your email-account with several client programs.</p>
+    <p>In the web you can find guides for settting up your email account with several client programs.</p>
     <p>In one week you will receive three invite codes, which you can collect at <a href="%app_url%">%app_url%</a>. You can pass these on to friends and invite them to register with %project_name%.</p>
 
 closed:

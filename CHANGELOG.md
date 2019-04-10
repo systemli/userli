@@ -1,6 +1,7 @@
 # 2.1.2 (unreleased)
 
 * Create release tarball in subdirectory
+* Add optional link to webmail (Fixes: #146)
 
 # 2.1.1 (2019.03.17)
 

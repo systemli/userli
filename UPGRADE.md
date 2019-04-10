@@ -1,5 +1,11 @@
 # Upgrade documentation
 
+## Upgrade from 2.1.1 or lower
+
+New optional Dotenv variable was added to link to webmail:
+
+   WEBMAIL_URL="roundcube.example.org"
+
 ## Upgrade from 1.6.3 or lower
 
 Database schema changed and needs to be updated:
