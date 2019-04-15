@@ -15,7 +15,7 @@ start:
   vouchers: Invite codes
   vouchers-desc: Invite your friends
   webmail: Webmail
-  webmail-desc: Read and write mails
+  webmail-desc: Read and write emails
 
 index:
   title: Manage your email account
