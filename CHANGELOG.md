@@ -2,6 +2,7 @@
 
 * Create release tarball in subdirectory
 * Add optional link to webmail (Fixes: #146)
+* Update to symfony 4.2.6
 
 # 2.1.1 (2019.03.17)
 
