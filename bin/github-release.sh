@@ -81,7 +81,7 @@ git push origin "refs/tags/${version}" >/dev/null
 
 # create release on Github
 api_json=$(printf '{"tag_name": "%s","target_commitish": "%s","name": "%s","body": "%s","draft": false,"prerelease": %s}' "$version" "master" "$version" "$gh_notes" "false")
-gh_release="$(curl --silent --proto-redir =https --data "$api_json" "$gh_repo/releases" -H "Accept: application/vnd.github.v3+json" -H "$gh_auth")"
+gh_release="$(curl --silent --proto-redir https --data "$api_json" "$gh_repo/releases" -H "Accept: application/vnd.github.v3+json" -H "$gh_auth")"
 
 # read asset tags
 gh_response="$(curl --silent --header "$auth" "$gh_tags")"
@@ -93,7 +93,7 @@ eval $(printf "$gh_response" | grep -m 1 "id.:" | grep -w id | tr : = | tr -cd '
 # upload to Github
 for ext in "" ".asc" ".sha256" ".sha512"; do
     gh_asset="https://uploads.github.com/repos/${gh_group}/${gh_project}/releases/${id}/assets?name=$(basename ${tarball}${ext})"
-    curl --silent --proto-redir =https "$gh_asset" \
+    curl --silent --proto-redir https "$gh_asset" \
             -H "Content-Type: application/octet-stream" \
             -H "Accept: application/vnd.github.v3+json" \
             -H "$gh_auth" --data-binary @"${tarball}${ext}"
