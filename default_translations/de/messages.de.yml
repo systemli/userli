@@ -156,13 +156,21 @@ delete:
 
 recovery-token:
   headline: Wiederherstellungscode verwalten
-  lead: Mit dem Wiederherstellungscode kannst du dein Passwort zurücksetzen, wenn du es verloren hast.
+  lead: >
+    Mit dem Wiederherstellungscode kannst du dein Passwort zurücksetzen,
+    wenn du es vergessen hast.
   set: Du hast bereits einen Wiederherstellungscode gesetzt.
   set-extra: Wenn du einen neuen Code erstellst, wird der bisherige ungültig.
-  unset: Du hast noch keinen Wiederherstellungscode gesetzt. Wir empfehlen dir dringend, jetzt einen zu erstellen.
+  unset: >
+    Du hast noch keinen Wiederherstellungscode gesetzt.
+    Wir empfehlen dir dringend, jetzt einen zu erstellen.
   created-headline: "Der folgende Wiederherstellungscode wurde für dich erstellt:"
-  created-info: Mit dem Wiederherstellungscode kannst du jederzeit dein Passwort zurücksetzen, wenn du dieses vergessen hast. Notiere ihn dir und speichere ihn an einem sicheren Ort ab.
-  displayed-once: Der Wiederherstellungscode wird aus Sicherheitsgründen nur einmal angezeigt und ist uns nicht bekannt. Wenn du ihn verlierst, kannst du einen neuen Code generieren.
+  created-info: >
+    Mit dem Wiederherstellungscode kannst du jederzeit dein Passwort zurücksetzen,
+    wenn du dieses vergessen hast. Notiere ihn dir und speichere ihn an einem sicheren Ort ab.
+  displayed-once: >
+    Der Wiederherstellungscode wird aus Sicherheitsgründen nur einmal angezeigt.
+    Wir können ihn nicht für die wiederherstellen.
 
 flashes:
   logout-successful: Du hast dich erfolgreich abgemeldet!

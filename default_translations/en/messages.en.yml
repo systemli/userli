@@ -3,7 +3,8 @@ start:
   intro: Here you can set up and manage your email account.
   registration-header: Registration
   registration-text: >
-    You don't have an email account with %domain% yet? No problem! If one of your friends already has an account,
+    You don't have an email account with %domain% yet? No problem!
+    If one of your friends already has an account,
     you can get an invite code from them and immediately set up your own account.
   registration-button: Create account
   account-settings: Account Settings
@@ -21,7 +22,9 @@ index:
   title: Manage your email account
   voucher-headline: Your invite codes
   voucher-limit: You don't have any invite codes left.
-  voucher-disable: At %date% you will receive three invite codes. This is to avoid mass registrations and spam.
+  voucher-disable: >
+    At %date% you will receive three invite codes.
+    This is to avoid mass registrations and spam.
   voucher-sharing: Copy the invite link
   voucher-explanation: >
     Use your invite codes to invite friends here.
@@ -35,7 +38,9 @@ index:
   alias-empty: You don't have any %alias_type% alias addresses defined.
   delete-headline: Delete account
   delete-description: >
-    You can delete your %project_name% email account. This will delete all your emails. <strong>A recovery at a later date is not possible.</strong>
+    You can delete your %project_name% email account.
+    This will delete all your emails.
+    <strong>A recovery at a later date is not possible.</strong>
     <br /><br />
     To delete your account you need to submit your actual password.
   delete-button: Delete account
@@ -52,7 +57,7 @@ index:
         <li>To send from an alias address, you have to manually configure your mail client.</li>
         <li>You can have %alias_limit_custom% custom alias addresses.</li>
         <li>You can have %alias_limit_random% random alias addresses.</li>
-        <li>Random alias addresses are supposed to be used for a single pupose
+        <li>Random alias addresses are supposed to be used for a single purpose
         to avoid tracking between different services.</li>
         <li>Contact us to delete custom alias addresses.</li>
       </ul>
@@ -119,10 +124,12 @@ registration:
   title: Registering with %project_name%
   information: Information
   information-intro: >
-    You would like to register an email account with <a href="%project_url%">%project_name%</a>.
+    Would you like to register an email account with <a href="%project_url%">%project_name%</a>?
     We only allow registrations if a friend invites you with an invite code to our services.
-  information-password-policy: <strong>Important:</strong> You need a password with at least 12 characters.
-  label-email: Your preferred email-address
+  information-password-policy: >
+    <strong>Important:</strong>
+    You need a password with at least 12 characters.
+  label-email: Your preferred email address
   recovery-token-headline: Recovery token
 
 welcome:
@@ -154,13 +161,17 @@ delete:
 
 recovery-token:
   headline: Manage recovery token
-  lead: The recovery token can be used to reset your password if it got lost.
+  lead: The recovery token can be used to reset your password when you forgot it.
   set: You already have a recovery token set.
   set-extra: Creating a new token will invalidate the current one.
   unset: You don't have a recovery token set yet. We strongly recommend to create one now.
   created-headline: The following recovery token got created for you:
-  created-info: If you lost your password, the recovery token allows you to reset a new one. Note it down and store it at a secure place.
-  displayed-once: For security reasons, the recovery token gets displayed only once. It is unknown to us. If you loose the token, you can create a new one.
+  created-info: >
+    If you lost your password, the recovery token allows you to reset a new one.
+    Write it down and store it at a secure place.
+  displayed-once: >
+    For security reasons, the recovery token gets displayed only once.
+    We can't recover this token for you.
 
 flashes:
   logout-successful: You have been successfully logged out!
