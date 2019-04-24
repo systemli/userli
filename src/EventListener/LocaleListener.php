@@ -19,7 +19,7 @@ class LocaleListener implements EventSubscriberInterface
         $request = $event->getRequest();
 
         if (null === $request->attributes->get('_locale')) {
-            if (null !== $locale = $request->getPreferredLanguage(['en', 'de'])) {
+            if (null !== $locale = $request->getPreferredLanguage(['en', 'de', 'es'])) {
                 $request->attributes->set('_locale', $locale);
             }
         }

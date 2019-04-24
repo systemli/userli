@@ -1,0 +1,255 @@
+start:
+  title: Bienvenido %domain%
+  intro: Aquí puedes crear y configurar tu cuenta de e-mail
+  registration-header: Registro
+  registration-text: >
+    ¿No tienes una cuenta de e-mail de %domain% aún? ¡No hay problema!
+    ¿Algún amigo tiene una cuenta? Pídele un código amigo y comienza enseguida
+    a configurar tu propia cuenta.
+  registration-button: Crear cuenta
+  account-settings: Configurar cuenta
+  account-settings-desc: Contraseña y mas
+  account-delete: Borrar cuenta
+  aliases: Cuentas Alias 
+  aliases-delete: Borrar cuentas alias 
+  aliases-desc: Ocultar tu identidad
+  vouchers: Código amigo
+  vouchers-desc: Invita a un amigo 
+  webmail: Webmail
+  webmail-desc: Leer y escribir e-mails
+  
+index:
+  title: Configuración
+  voucher-headline: códigos amigo
+  voucher-limit: No tienes mas códigos amigo disponibles
+  voucher-disable: >
+    El %date% recibirás tres códigos amigo adicionales.
+    Esto es para evitar registros masivos y spam.
+  voucher-sharing: Copia el link de invitación
+  voucher-explanation: >
+    Usa tus códigos amigo para invitar amigos. 
+    Solo tienes tres códigos disponibles.
+    Si necesitas mas, por favor contacta al administrador. 
+    Los datos sobre invitaciones serán guardados por un período corto de tiempo,
+    como protección contra abusos. 
+  alias-headline: Tu cuenta alias %alias_type% 
+  alias-limit: Alcanzaste el limite permitido de %alias_limit% %alias_type% cuentas alias
+  alias-deletion-custom: Contáctanos para poder borrar tu cuenta 
+  alias-deletion-random: En cuanto borres tu viejas cuentas, puedes crear nuevas.
+  alias-empty: No tienes ninguna cuenta alias %alias_type%  definida.
+  delete-headline: Borrar cuenta
+  delete-description: >
+   Puedes borrar tu %project_name% cuenta de e-mail.
+    Esto eliminará todo tus correos electrónicos.
+    <strong>Una vez borrados no será posible recuperarlos</strong>
+    <br /><br />
+    Para borrar tu cuenta, es necesario que introduzcas tu contraseña actual.
+  delete-button: Borrar cuenta
+  recovery-token-button: Configurar token de recuperación
+  logged_in_as: Has iniciado sesión como %user%.
+  alias-explanation: |
+    <p>
+      Usa tu cuenta alias para proteger tu cuenta de e-mail principal de personas
+      que no conoces o compañías en las que no confías. 
+    </p>
+    <p>
+      <ul>
+        <li>Todos los correos enviados a tus cuentas alias serán dirigidos
+         a tu cuenta de e-mail principal </li>
+        <li>Para enviar e-mails desde una cuenta alias,
+        tienes que configurar manualmente tu programa de e-mail.</li>
+        <li>Puedes tener %alias_limit_custom% cuentas alias personalizadas</li>
+        <li>Puedes tener %alias_limit_random% cuentas alias aleatorias.</li>
+        <li>Cuentas alias aleatorias están pensadas para ser usadas con un solo propósito,
+        como forma de evitar tracking entre diferentes servicios o plataformas.</li>
+        <li>Ponte en contacto con nosotros para borrar tus cuentas alias.</li>
+      </ul>
+    </p>
+
+form:
+  title: Registrarse
+  signin-header: Crear sesión
+  register-header: Crear cuenta
+  email: E-Mail
+  password: Contraseña
+  password_confirmation: Confirmar contraseña
+  remember-me: Mantener la sesión abierta
+  signin: Iniciar sesión 
+  recovery-link: ¿Olvidaste tu contraseña?
+  roles: Roles
+  submit: Enviar
+  voucher: Código amigo
+  voucher-redeemed-on: Usado el 
+  oclock-by: por
+  actual-password: Contraseña actual
+  new-custom-alias: Nueva cuenta alias
+  new-password: Nueva contraseña
+  new-password_confirmation: Confirmar nueva contraseña
+  change-password: Cambiar tu contraseña
+  delete-account: Borrar cuenta
+  delete-password: Contraseña
+  create-voucher: Crear código amigo
+  create-custom-alias: Crear
+  create-random-alias: Generar cuenta alias aleatoria
+  delete-alias: Borrar cuenta alias
+  generate-recovery-token: Crear nuevo token de recuperación
+  recovery-token: Token de recuperación
+  recovery-start: Recuperar
+  registration-recovery-token-ack: He guardado mi token de recuperación en un lugar seguro.
+  registration-recovery-token-next-button: Continuar
+
+recovery:
+  header: Recuperar tu cuenta
+  lead: Resetear tu contraseña usando el token de recuperación
+  cancel: Cancelar
+  started: |
+    ¡Ya casi lo lograste! El primer paso para resetear tu contraseña esta hecho. 
+    En 48 horas,el segundo paso empezará y podrás elegir tu nueva contraseña.
+    Por favor guarda tu token de recuperación hasta entonces.
+  waiting-info: El periodo de espera es para tu propia seguridad y no puede ser omitido o reducido.
+  waiting-time: Segundo paso empieza en %time%.
+  reset-lead: Ahora puedes resetear tu contraseña. 
+  token-lead: Nuevo token de recuperación.
+
+navbar_left:
+  about-us:
+    text: Nosotros
+    link: https://www.example.org/en/about-us
+
+navbar_right:
+  login: Iniciar sesión
+  logout: Cerrar sesión
+  register: Registro
+  password-change: Cambio de contraseña
+  admin: Administrador
+
+registration:
+  title: Registro con %project_name%
+  information: Información
+  information-intro: >
+    ¿Te gustaría crear una cuenta de e-mail con <a href="%project_url%">%project_name%</a>?
+    Los registros son solo posibles con invitación de amigos
+    que ya usen el servicio por medio del uso de códigos- amigos.
+  information-password-policy: >
+    <strong>Importante:</strong>
+    Tu contraseña de contar con al menos 12 caracteres.
+  label-email: La cuenta de correo que prefieras
+  recovery-token-headline: Token de recuperación
+
+welcome:
+  headline: Bienvenido a %project_name%!
+  lead: As creado tu cuenta de correo con nosotros satisfactoriamente!
+  next-button: Tus próximos pasos.
+  text: >
+    <h3>Ready to go</h3>
+    <p>En nuestra web puedes en encontrar guías para instalar tu cuenta de e-mail en diferentes programas de gestión de e-mail.</p>
+    <p>En una semana recibirás tres códigos amigo. Los encontrarás en <a href="%app_url%">%app_url%</a>.  Estos códigos sirven para invitar amigos a usar %project_name%.</p>
+
+closed:
+  title: Registro ha cerrado
+  headline: Hemos cerrado el registro de cuentas.
+  lead: >
+    De acuerdo con el párrafo 3 de las normativa de Telecomunicaciones TKÜV
+    hemos decidido mantener un limite de 10.000 registros posibles.
+    Lamentamos los inconvenientes.
+
+delete:
+  alias:
+    headline: Borrar cuenta alias %alias%
+    lead: Es necesario verificar tu contraseña para borrar tu cuenta alias.
+  user:
+    headline: Borrar cuenta
+    lead: Es necesario verificar tu contraseña para borrar tu cuenta.
+
+recovery-token:
+  headline: Configurar token de recuperación
+  lead: El token de recuperación puede ser usado para recuperar tu contraseña.
+  set: Ya tienes un token de recuperación.
+  set-extra: Crear un nuevo token de recuperación invalidará el que ya tienes. 
+  unset: Aún no cuentas con un token de recuperación. Te recomendamos que crees uno. 
+  created-headline: El siguiente token de recuperación fue creado para ti: 
+  created-info: >
+    Si olvidas tu contraseña, el token de recuperación te permitirá resetear uno nuevo.
+    Guardalo en un lugar seguro. 
+  displayed-once: >
+    Por razones de seguridad, el token de recuperación se mostrará una sola vez.
+    El token desconocido por nosotros y por ello no podemos recuperarlo para ti.
+
+flashes:
+  logout-successful: ¡Tu sesión ha sido cerrada! 
+  password-change-successful: ¡Tu nueva contraseña está activa! 
+  registration-successful: ¡Tu registro se completó satisfactoriamente!
+  voucher-creation-successful: ¡Has creado un nuevo código amigo!
+  alias-creation-successful: ¡Tu nueva cuenta alias ha sido creada! 
+  alias-deletion-successful: ¡Tu nueva cuenta alias fue borrada con éxito!
+  recovery-token-invalid: ¡Tu cuenta de correo y/o token de seguridad son incorrectos!
+  recovery-token-ack: ¡Has generado un nuevo token de seguridad!
+  revocery-reauthenticate: ¡Algo salió mal. Por favor vuelve a autentificarte! 
+  recovery-password-changed: ¡Tu contraseña ha sido cambiada!
+  recovery-next-login: Sigue con el inicio de sesión.
+
+flash_batch_remove_vouchers_success: Los códigos amigo han sido desactivados satisfactoriamente.
+
+error:
+  title: Oops, algo salió mal.
+  back_link: Volver a homepage
+  page_not_found: Esta página no existe
+  generic_error: Algo salió mal. Lo sentimos.
+
+spam:
+  title: Cuenta boqueada
+  text: |
+    ¡Oh no! Creemos que tu cuenta a sido atacada por spammers.
+    Por ello, desactivamos el acceso de e-mails. 
+    Por favor contáctanos para desbloquear tu cuenta. 
+
+Bad credentials.: Detalles de inicio de sesión incorrectos.
+
+custom: personalizada
+random: aleatoria
+
+mail:
+  welcome-subject: Bienvenido a %domain%
+  welcome-body: |
+    Querido usuario,
+
+    Bienvenido a bordo. Aquí puedes encontrar guías para instalar tu cuenta de e-mail
+    and diferentes programas de gestión de e-mail.
+
+    Cuentas con una capacidad de 1GB en tu mailbox. Si pasas este límite,
+    tu cuenta puede reportar problemas de funcionamiento. 
+
+    En una semana recibirás tres códigos amigo.Los encontrarás en
+    %app_url%/voucher. Estos códigos sirven para invitar amigos a 
+    usar %project_name%.
+
+    Saludos cordiales, el equipo de administración de %project_name%.
+  recovery-subject: La contraseña para tu cuenta de e-mail %email%será reseteada.
+  recovery-body: |
+    Hola  %email%,
+
+    Alguien ha intentado resetear tu contraseña. Para ello, se han autentificado
+    con tu cuenta de e-mail y el token de seguridad en %app_url%/recovery.
+
+    ¿No fuiste tu? entonces alguien mas con acceso a tu token de seguridad ha estado intentado
+    tomar control de tu cuenta. Por favor entra a %app_url%/user/recovery_token de inmediato y
+    crea un nuevo token de recuperación. De esta manera el antiguo token quedará invalidado.
+
+    Si fuiste tu quien inicio el proceso, las 48 horas de espera empezaron.
+    Este tiempo terminara en %time%. Luego, vas a poder configurar tu nueva contraseña 
+    entrando a  %app_url%/recovery.
+
+    Esperamos que estés disfrutando tu cuenta de e-mail.
+
+    El equipo de  %project_name%.
+  alias-created-subject: Nueva cuenta alias creada
+  alias-created:body: |
+    Hello %email%,
+
+    Una nueva cuenta alias ha sido creada para tu cuenta de e-mail %email%:
+    %alias%
+
+    Configura tu cuenta alias aqui: %app_url%/alias
+
+    Esperamos que estes disfrutando tu cuenta de e-mail.
+    El equipo de %project_name%.
