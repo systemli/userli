@@ -1,3 +1,7 @@
+# 2.1.3 (unreleased)
+
+* Update to symfony 4.2.8
+
 # 2.1.2 (2019.04.18)
 
 * Create release tarball in subdirectory
