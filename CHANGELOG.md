@@ -1,6 +1,7 @@
 # 2.1.3 (unreleased)
 
 * Update to symfony 4.2.8
+* Add plural forms of many reserved names
 
 # 2.1.2 (2019.04.18)
 
