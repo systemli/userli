@@ -1,11 +1,11 @@
-# 2.1.3 (unreleased)
+# 2.2.0 (2019.05.22)
 
-* Update to symfony 4.2.8
-* Add plural forms of many reserved names
-* Fix mailcrypt-encrypt-maildir script for paths with whitespaces
-* Fix release tarball creation, don't use tar option --transform
 * Add initial Spanish translation
 * Add initial Portuguese translation (Thanks to Bruno Gama)
+* Add plural forms of many reserved names
+* Update to symfony 4.2.8
+* Fix mailcrypt-encrypt-maildir script for paths with whitespaces
+* Fix release tarball creation, don't use tar option --transform
 
 # 2.1.2 (2019.04.18)
 
