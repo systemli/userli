@@ -4,6 +4,7 @@ GIT_DATE       := $(firstword $(shell git --no-pager show --date=iso-strict --fo
 BUILD_DATE     := $(shell date)
 RELEASE_FILE   := userli-${GIT_VERSION}.tar.gz
 SHA_ALGORITHMS := 256 512
+PWD_NAME       := $(shell basename $(shell pwd))
 
 clean:
 	git reset --hard
@@ -39,13 +40,15 @@ release: clean prepare
 	yarn --pure-lockfile --no-verbose
 	yarn encore production --no-verbose
 	# Create a release tarball
-	tar --transform='s/^\./userli-${GIT_VERSION}/' \
-		--exclude='./.env.*' --exclude='./.git*' --exclude='./.*.yml' \
-		--exclude='./behat.yml' --exclude='./build' --exclude='./features' \
-		--exclude='./Makefile' --exclude='./node_modules' \
-		--exclude='./phpunit.xml' --exclude='./tests' --exclude='./vagrant' \
-		--exclude='./var/cache/*' --exclude='./var/log/*' --exclude='./webpack.config.js' \
-		--exclude='./yarn.lock' -czf build/${RELEASE_FILE} .
+	tar --exclude='${PWD_NAME}/.env.*' --exclude='${PWD_NAME}/.git*' \
+		--exclude='${PWD_NAME}/.*.yml' --exclude='${PWD_NAME}/behat.yml' \
+	       	--exclude='${PWD_NAME}/build' --exclude='${PWD_NAME}/features' \
+		--exclude='${PWD_NAME}/Makefile' --exclude='${PWD_NAME}/node_modules' \
+		--exclude='${PWD_NAME}/phpunit.xml' --exclude='${PWD_NAME}/tests' \
+	       	--exclude='${PWD_NAME}/vagrant' --exclude='${PWD_NAME}/var/cache/*' \
+		--exclude='${PWD_NAME}/var/log/*' --exclude='${PWD_NAME}/webpack.config.js' \
+		--exclude='${PWD_NAME}/yarn.lock' \
+		-czf build/${RELEASE_FILE} ../${PWD_NAME}
 	# Generate SHA hash sum files
 	for sha in ${SHA_ALGORITHMS}; do \
 		shasum -a "$${sha}" "build/${RELEASE_FILE}" >"build/${RELEASE_FILE}.sha$${sha}"; \
