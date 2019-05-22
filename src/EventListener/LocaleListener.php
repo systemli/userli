@@ -12,6 +12,20 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class LocaleListener implements EventSubscriberInterface
 {
     /**
+     * @var string[]
+     */
+    private $supportedLocales;
+
+    /**
+     * LocaleListener constructor.
+     * @param string[] $supportedLocales
+     */
+    public function __construct(array $supportedLocales)
+    {
+        $this->supportedLocales = $supportedLocales;
+    }
+
+    /**
      * @param GetResponseEvent $event
      */
     public function onKernelRequest(GetResponseEvent $event)
@@ -19,7 +33,7 @@ class LocaleListener implements EventSubscriberInterface
         $request = $event->getRequest();
 
         if (null === $request->attributes->get('_locale')) {
-            if (null !== $locale = $request->getPreferredLanguage(['en', 'de', 'es'])) {
+            if (null !== $locale = $request->getPreferredLanguage($this->supportedLocales)) {
                 $request->attributes->set('_locale', $locale);
             }
         }
