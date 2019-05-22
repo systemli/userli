@@ -4,6 +4,8 @@
 * Add plural forms of many reserved names
 * Fix mailcrypt-encrypt-maildir script for paths with whitespaces
 * Fix release tarball creation, don't use tar option --transform
+* Add initial Spanish translation
+* Add initial Portuguese translation (Thanks to Bruno Gama)
 
 # 2.1.2 (2019.04.18)
 

@@ -16,7 +16,7 @@ Web application to (self-) manage email users and encrypt their mailboxes.
 * Random alias feature for users
 * Recovery tokens to restore accounts when password got lost
 * Support for [Dovecot mailbox encryption](https://wiki.dovecot.org/Plugins/MailCrypt)
-* Multi-language support (English, Spanish and German provided)
+* Multi-language support (English, Spanish, Portuguese and German provided)
 
 ## Installation
 
