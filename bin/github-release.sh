@@ -61,7 +61,7 @@ if [ "$vagrant" = "yes" ]; then
 			 (cd \"\$tempdir/userli-$version\";
                           make release;
                           cp -a build/userli* /vagrant/build/);
-                         rm -r \"\$tempdir\"')
+                         rm -r \"\$tempdir\"")
 else
     make release
 fi
