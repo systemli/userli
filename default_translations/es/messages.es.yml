@@ -1,3 +1,4 @@
+---
 start:
   title: Bienvenido %domain%
   intro: Aquí puedes crear y configurar tu cuenta de e-mail
@@ -10,14 +11,14 @@ start:
   account-settings: Configurar cuenta
   account-settings-desc: Contraseña y mas
   account-delete: Borrar cuenta
-  aliases: Cuentas Alias 
-  aliases-delete: Borrar cuentas alias 
+  aliases: Cuentas Alias
+  aliases-delete: Borrar cuentas alias
   aliases-desc: Ocultar tu identidad
   vouchers: Código amigo
-  vouchers-desc: Invita a un amigo 
+  vouchers-desc: Invita a un amigo
   webmail: Webmail
   webmail-desc: Leer y escribir e-mails
-  
+
 index:
   title: Configuración
   voucher-headline: códigos amigo
@@ -27,14 +28,14 @@ index:
     Esto es para evitar registros masivos y spam.
   voucher-sharing: Copia el link de invitación
   voucher-explanation: >
-    Usa tus códigos amigo para invitar amigos. 
+    Usa tus códigos amigo para invitar amigos.
     Solo tienes tres códigos disponibles.
-    Si necesitas mas, por favor contacta al administrador. 
+    Si necesitas mas, por favor contacta al administrador.
     Los datos sobre invitaciones serán guardados por un período corto de tiempo,
-    como protección contra abusos. 
-  alias-headline: Tu cuenta alias %alias_type% 
+    como protección contra abusos.
+  alias-headline: Tu cuenta alias %alias_type%
   alias-limit: Alcanzaste el limite permitido de %alias_limit% %alias_type% cuentas alias
-  alias-deletion-custom: Contáctanos para poder borrar tu cuenta 
+  alias-deletion-custom: Contáctanos para poder borrar tu cuenta
   alias-deletion-random: En cuanto borres tu viejas cuentas, puedes crear nuevas.
   alias-empty: No tienes ninguna cuenta alias %alias_type%  definida.
   delete-headline: Borrar cuenta
@@ -50,7 +51,7 @@ index:
   alias-explanation: |
     <p>
       Usa tu cuenta alias para proteger tu cuenta de e-mail principal de personas
-      que no conoces o compañías en las que no confías. 
+      que no conoces o compañías en las que no confías.
     </p>
     <p>
       <ul>
@@ -74,12 +75,12 @@ form:
   password: Contraseña
   password_confirmation: Confirmar contraseña
   remember-me: Mantener la sesión abierta
-  signin: Iniciar sesión 
+  signin: Iniciar sesión
   recovery-link: ¿Olvidaste tu contraseña?
   roles: Roles
   submit: Enviar
   voucher: Código amigo
-  voucher-redeemed-on: Usado el 
+  voucher-redeemed-on: Usado el
   oclock-by: por
   actual-password: Contraseña actual
   new-custom-alias: Nueva cuenta alias
@@ -103,12 +104,12 @@ recovery:
   lead: Resetear tu contraseña usando el token de recuperación
   cancel: Cancelar
   started: |
-    ¡Ya casi lo lograste! El primer paso para resetear tu contraseña esta hecho. 
+    ¡Ya casi lo lograste! El primer paso para resetear tu contraseña esta hecho.
     En 48 horas,el segundo paso empezará y podrás elegir tu nueva contraseña.
     Por favor guarda tu token de recuperación hasta entonces.
   waiting-info: El periodo de espera es para tu propia seguridad y no puede ser omitido o reducido.
   waiting-time: Segundo paso empieza en %time%.
-  reset-lead: Ahora puedes resetear tu contraseña. 
+  reset-lead: Ahora puedes resetear tu contraseña.
   token-lead: Nuevo token de recuperación.
 
 navbar_left:
@@ -165,26 +166,26 @@ recovery-token:
   headline: Configurar token de recuperación
   lead: El token de recuperación puede ser usado para recuperar tu contraseña.
   set: Ya tienes un token de recuperación.
-  set-extra: Crear un nuevo token de recuperación invalidará el que ya tienes. 
-  unset: Aún no cuentas con un token de recuperación. Te recomendamos que crees uno. 
-  created-headline: El siguiente token de recuperación fue creado para ti: 
+  set-extra: Crear un nuevo token de recuperación invalidará el que ya tienes.
+  unset: Aún no cuentas con un token de recuperación. Te recomendamos que crees uno.
+  created-headline: "El siguiente token de recuperación fue creado para ti:"
   created-info: >
     Si olvidas tu contraseña, el token de recuperación te permitirá resetear uno nuevo.
-    Guardalo en un lugar seguro. 
+    Guardalo en un lugar seguro.
   displayed-once: >
     Por razones de seguridad, el token de recuperación se mostrará una sola vez.
     El token desconocido por nosotros y por ello no podemos recuperarlo para ti.
 
 flashes:
-  logout-successful: ¡Tu sesión ha sido cerrada! 
-  password-change-successful: ¡Tu nueva contraseña está activa! 
+  logout-successful: ¡Tu sesión ha sido cerrada!
+  password-change-successful: ¡Tu nueva contraseña está activa!
   registration-successful: ¡Tu registro se completó satisfactoriamente!
   voucher-creation-successful: ¡Has creado un nuevo código amigo!
-  alias-creation-successful: ¡Tu nueva cuenta alias ha sido creada! 
+  alias-creation-successful: ¡Tu nueva cuenta alias ha sido creada!
   alias-deletion-successful: ¡Tu nueva cuenta alias fue borrada con éxito!
   recovery-token-invalid: ¡Tu cuenta de correo y/o token de seguridad son incorrectos!
   recovery-token-ack: ¡Has generado un nuevo token de seguridad!
-  revocery-reauthenticate: ¡Algo salió mal. Por favor vuelve a autentificarte! 
+  revocery-reauthenticate: ¡Algo salió mal. Por favor vuelve a autentificarte!
   recovery-password-changed: ¡Tu contraseña ha sido cambiada!
   recovery-next-login: Sigue con el inicio de sesión.
 
@@ -200,8 +201,8 @@ spam:
   title: Cuenta boqueada
   text: |
     ¡Oh no! Creemos que tu cuenta a sido atacada por spammers.
-    Por ello, desactivamos el acceso de e-mails. 
-    Por favor contáctanos para desbloquear tu cuenta. 
+    Por ello, desactivamos el acceso de e-mails.
+    Por favor contáctanos para desbloquear tu cuenta.
 
 Bad credentials.: Detalles de inicio de sesión incorrectos.
 
@@ -217,10 +218,10 @@ mail:
     and diferentes programas de gestión de e-mail.
 
     Cuentas con una capacidad de 1GB en tu mailbox. Si pasas este límite,
-    tu cuenta puede reportar problemas de funcionamiento. 
+    tu cuenta puede reportar problemas de funcionamiento.
 
     En una semana recibirás tres códigos amigo.Los encontrarás en
-    %app_url%/voucher. Estos códigos sirven para invitar amigos a 
+    %app_url%/voucher. Estos códigos sirven para invitar amigos a
     usar %project_name%.
 
     Saludos cordiales, el equipo de administración de %project_name%.
@@ -236,7 +237,7 @@ mail:
     crea un nuevo token de recuperación. De esta manera el antiguo token quedará invalidado.
 
     Si fuiste tu quien inicio el proceso, las 48 horas de espera empezaron.
-    Este tiempo terminara en %time%. Luego, vas a poder configurar tu nueva contraseña 
+    Este tiempo terminara en %time%. Luego, vas a poder configurar tu nueva contraseña
     entrando a  %app_url%/recovery.
 
     Esperamos que estés disfrutando tu cuenta de e-mail.

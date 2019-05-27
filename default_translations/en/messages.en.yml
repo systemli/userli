@@ -1,3 +1,4 @@
+---
 start:
   title: Welcome to %domain%
   intro: Here you can set up and manage your email account.
@@ -165,7 +166,7 @@ recovery-token:
   set: You already have a recovery token set.
   set-extra: Creating a new token will invalidate the current one.
   unset: You don't have a recovery token set yet. We strongly recommend to create one now.
-  created-headline: The following recovery token got created for you:
+  created-headline: "The following recovery token got created for you:"
   created-info: >
     If you lost your password, the recovery token allows you to reset a new one.
     Write it down and store it at a secure place.

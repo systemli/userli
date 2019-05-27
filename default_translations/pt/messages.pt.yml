@@ -1,3 +1,4 @@
+---
 start:
   title: Te damos as boas-vindas a %domain%!
   intro: Aqui você pode criar e configurar a sua conta de e-mail.
@@ -166,7 +167,7 @@ recovery-token:
   set: Você já tem um token configurado.
   set-extra: Se você criar um novo token de recuperação o seu token atual será invalidado.
   unset: Você ainda não tem um token de recuperação configurado. Recomendamos fortemente que crie um agora mesmo.
-  created-headline: O seguinte token foi gerado para você:
+  created-headline: "O seguinte token foi gerado para você:"
   created-info: >
     Se você perder sua senha, o token de recuperação permite que você crie uma nova.
     Anote e guarde-o em algum lugar seguro.
@@ -232,13 +233,13 @@ mail:
     se autenticou com o seu endereço de e-mail e token de recuperação
     correspondente em %app_url%/recovery.
 
-    Não foi você que fez essa ativação? Pode ser que alguma outra pessoa 
+    Não foi você que fez essa ativação? Pode ser que alguma outra pessoa
     com acesso ao seu token de recuperação esteja tentando tomar posse da sua conta.
     Se esse for o caso, é importante que você vá até %app_url%/user/recovery_token imediatamente
     para criar um novo token de recuperação. Dessa forma você vai invalidar o
     token antigo e interromper o processo.
 
-    Se foi você quem ativou o processo, o período de espera de 48 horas 
+    Se foi você quem ativou o processo, o período de espera de 48 horas
     começa agora. A espera acaba %time%. Depois disso, você poderá configurar
     uma nova senha em %app_url%/recovery.
 
