@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/systemli/userli.svg?branch=master)](https://travis-ci.org/systemli/userli)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/systemli/userli/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/systemli/userli/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/systemli/userli/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/systemli/userli/?branch=master)
+[![Translation Status](https://hosted.weblate.org/widgets/userli/-/svg-badge.svg)](https://hosted.weblate.org/widgets/userli/-/svg-badge.svg)
 
 Web application to (self-) manage email users and encrypt their mailboxes.
 
@@ -37,7 +38,7 @@ the ["good first
 issues"](https://github.com/systemli/userli/labels/good%20first%20issue).
 There, you can also [report a bug or suggest an enhancement](https://github.com/systemli/userli/issues/new).
 You could also [improve our documentation](https://github.com/systemli/userli/blob/master/hugo/content/_index.md) or [provide new
-translations](https://github.com/systemli/userli/tree/master/default_translations).
+translations](https://hosted.weblate.org/engage/userli/).
 If you want to do  something else - it's totally fine. Any contribution is very welcome.
 
 Please note that everyone involved with this project is expected to follow our
