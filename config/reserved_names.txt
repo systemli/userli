@@ -64,8 +64,8 @@ boss
 bot
 bots
 broadcast
-broadcasts
 broadcasthost
+broadcasts
 business
 cache
 cadastro
@@ -134,9 +134,9 @@ dev
 devel
 devs
 dir
-dirs
-directory
 directories
+directory
+dirs
 dmarc
 dmarc-agg
 dmarc-report
@@ -156,8 +156,8 @@ e-mails
 ecommerce
 edit
 editor
-editors
 editorial
+editors
 email
 emails
 error
@@ -166,8 +166,8 @@ faq
 faqs
 favorite
 feed
-feeds
 feedback
+feeds
 file
 files
 flog
@@ -246,9 +246,9 @@ kunde
 kunden
 kundenservice
 lab
-labs
 labor
 labour
+labs
 lead
 leader
 leaders
@@ -277,9 +277,9 @@ mailer
 mailer-daemon
 mailer-daemons
 mailing
-mailings
 mailinglist
 mailinglists
+mailings
 mails
 man
 manager
@@ -302,8 +302,8 @@ mob
 mobile
 monit
 monitor
-monitors
 monitoring
+monitors
 movie
 movies
 mp3
@@ -354,6 +354,13 @@ operator
 operators
 order
 orders
+org
+orga
+organisation
+organisations
+organisator
+organisators
+orgs
 pad
 pads
 page
@@ -527,7 +534,6 @@ wikis
 win
 wordpress
 work
-works
 work-group
 work-groups
 work.group
@@ -540,6 +546,7 @@ working.group
 working.groups
 workinggroup
 workinggroups
+works
 workshop
 workshops
 wpad

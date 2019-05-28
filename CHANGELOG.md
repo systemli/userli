@@ -1,3 +1,7 @@
+# 2.2.1 (UNRELEASED)
+
+* Add org/organisation/... to reserved names
+
 # 2.2.0 (2019.05.22)
 
 * Add initial Spanish translation
