@@ -1,6 +1,7 @@
 # 2.2.1 (UNRELEASED)
 
 * Add org/organisation/... to reserved names
+* Update to symfony 4.2.9
 
 # 2.2.0 (2019.05.22)
 
