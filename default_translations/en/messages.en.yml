@@ -1,4 +1,3 @@
----
 start:
   title: Welcome to %domain%
   intro: Here you can set up and manage your email account.
@@ -18,7 +17,6 @@ start:
   vouchers-desc: Invite your friends
   webmail: Webmail
   webmail-desc: Read and write emails
-
 index:
   title: Manage your email account
   voucher-headline: Your invite codes
@@ -35,7 +33,8 @@ index:
   alias-headline: Your %alias_type% alias addresses
   alias-limit: You reached the allowed limit of %alias_limit% %alias_type% alias addresses.
   alias-deletion-custom: Write us in order to get addresses deleted.
-  alias-deletion-random: As soon as you delete old addresses, you can create new ones again.
+  alias-deletion-random: As soon as you delete old addresses, you can create new ones
+    again.
   alias-empty: You don't have any %alias_type% alias addresses defined.
   delete-headline: Delete account
   delete-description: >
@@ -63,7 +62,6 @@ index:
         <li>Contact us to delete custom alias addresses.</li>
       </ul>
     </p>
-
 form:
   title: Register
   signin-header: Sign in
@@ -95,7 +93,6 @@ form:
   recovery-start: Recover
   registration-recovery-token-ack: I stored the recovery token at a secure place
   registration-recovery-token-next-button: Continue
-
 recovery:
   header: Recover your account
   lead: Reset the password using your recovery token
@@ -104,51 +101,56 @@ recovery:
     You almost made it. The fist step to reset your password is done.
     Now you have to wait for 48 hours. Afterwards, in a second step, you can set a new password.
     Please keep your recovery token until then.
-  waiting-info: The waiting period is for your own security and cannot be shortened or skipped.
+  waiting-info: The waiting period is for your own security and cannot be shortened
+    or skipped.
   waiting-time: Second step starts at %time%.
   reset-lead: You're now allowed to reset your password
   token-lead: New recovery token
-
 navbar_left:
   about-us:
     text: About us
     link: https://www.example.org/en/about-us
-
 navbar_right:
-  login: Login
-  logout: Logout
+  login: Log in
+  logout: Log out
   admin: Admin
-
 registration:
   title: Registering with %project_name%
   information: Information
   information-intro: >
     Would you like to register an email account with <a href="%project_url%">%project_name%</a>?
-    We only allow registrations if a friend invites you with an invite code to our services.
+    We only allow registrations if a friend invites you with an invite code to our
+    services.
   information-password-policy: >
     <strong>Important:</strong>
     You need a password with at least 12 characters.
   label-email: Your preferred email address
   recovery-token-headline: Recovery token
-
 welcome:
   headline: Welcome to %project_name%!
   lead: You have set up an account with us successfully. What are the next steps?
   next-button: To the overview
   text: >
     <h3>Ready to go</h3>
-    <p>In the web you can find guides for settting up your email account with several client programs.</p>
-    <p>In one week you will receive three invite codes, which you can collect at <a href="%app_url%">%app_url%</a>. You can pass these on to friends and invite them to register with %project_name%.</p>
-
+    <p>In the web you can find guides for settting up your email account with several
+    client programs.</p>
+    <p>In one week you will receive three invite codes, which you can collect at <a
+    href="%app_url%">%app_url%</a>. You can pass these on to friends and invite them
+    to register with %project_name%.</p>
 closed:
   title: Registration closed
   headline: Registration closed
-  lead: Due to paragraph three TKÜV we decided to close our Registration. Sorry for that.
+  lead: Due to paragraph three TKÜV we decided to close our Registration. Sorry for
+    that.
   text: >
-    <p>Due <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">to paragraph three of "Verordnung über die technische und organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (short: telecommuicationen-surveillance-decree - "TKÜV") email providers with more than 10.000 users are forced to implement an surveillance interface for the authorities. That's why we decided to lock down the registration and do not allow any creation of new accounts.<p>
+    <p>Due <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html"
+    target="_blank">to paragraph three of "Verordnung über die technische und organisatorische
+    Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (short: telecommuicationen-surveillance-decree
+    - "TKÜV") email providers with more than 10.000 users are forced to implement
+    an surveillance interface for the authorities. That's why we decided to lock down
+    the registration and do not allow any creation of new accounts.<p>
 
     <p><strong>Existing accounts aren't effected</strong></p>
-
 delete:
   alias:
     headline: Delete alias address %alias%
@@ -157,23 +159,22 @@ delete:
     headline: Delete account
     lead: We need to verify your password to delete your account.
   cancel: Cancel
-
 recovery-token:
   headline: Manage recovery token
-  lead: The recovery token can be used to reset your password when you forgot it.
+  lead: The recovery token can be used to reset your password if you forget it.
   set: You already have a recovery token set.
   set-extra: Creating a new token will invalidate the current one.
-  unset: You don't have a recovery token set yet. We strongly recommend to create one now.
-  created-headline: "The following recovery token got created for you:"
+  unset: You don't have a recovery token set yet. We strongly recommend to create
+    one now.
+  created-headline: 'The following recovery token got created for you:'
   created-info: >
     If you lost your password, the recovery token allows you to reset a new one.
     Write it down and store it at a secure place.
   displayed-once: >
     For security reasons, the recovery token gets displayed only once.
     We can't recover this token for you.
-
 flashes:
-  logout-successful: You have been successfully logged out!
+  logout-successful: You are now logged out.
   password-change-successful: Your new password is now active!
   registration-successful: You have been successfully registered!
   voucher-creation-successful: You created a new invite code!
@@ -184,28 +185,21 @@ flashes:
   revocery-reauthenticate: Something went wrong. Please re-authenticate!
   recovery-password-changed: You successfully changed your password.
   recovery-next-login: Go on with the login.
-
 flash_batch_remove_vouchers_success: Successfully deleted unredeemed vouchers
-
 error:
   title: Oops, an error occured.
   back_link: Back to home
   page_not_found: The page you requested does not exist.
   generic_error: An error occured. We're sorry.
-
 spam:
   title: Account locked
   text: |
     Oh no! We believe you account has been mis-used by a spammer.
     Therefore, we have disabled mail access.
     Please contact the support to unlock your account.
-
-# internal translations
 Bad credentials.: Wrong login details
-
 custom: custom
 random: random
-
 mail:
   welcome-subject: Welcome to %domain%
   welcome-body: |
