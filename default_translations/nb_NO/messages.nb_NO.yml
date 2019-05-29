@@ -1,1 +1,137 @@
-{}
+start:
+  title: Velkommen til %domain%
+  intro: Her kan du sette opp og håndtere din e-postkonto.
+  registration-header: Registrering
+  registration-text: "Har du ikke en e-postkonto på %domain% enda? Ikke noe problem.\
+    \ Hvis én av vennene dine allerede har en konto, kan du få en invitasjonskode\
+    \ fra vedkommende og sette opp egen konto omgående.\n"
+  registration-button: Opprett konto
+  account-settings: Kontoinnstillinger
+  account-settings-desc: Passord og mer
+  account-delete: Slett konto
+  aliases: Alias-adresser
+  aliases-delete: slett alias-adresser
+  aliases-desc: Skjul din identitet
+  vouchers: Invitasjonskoder
+  vouchers-desc: Inviter vennene dine
+  webmail: Nettklients-e-post
+  webmail-desc: Les og skriv e-poster
+index:
+  title: Håndter din e-postkonto
+  voucher-headline: Dine invitasjonskoder
+  voucher-limit: Du har ingen invitasjonskoder igjen.
+  voucher-disable: "Den %date% vil du motta tre invitasjonskoder. Dette for å unngå\
+    \ masseregistreringer og søppelpost.\n"
+  voucher-sharing: Kopier invitasjonslenken
+  voucher-explanation: "Bruk dine invitasjonskoder for å invitere venner hit. Som\
+    \ forvalg har du tre tilgjengelig. Kontakt administratorene hvis dette ikke rekker.\
+    \ Din data lagres i en begrenset periode for å unngå misbruk.\n"
+  alias-headline: Dine %alias_type% alias-adresser
+  alias-limit: Du har nådd tillatt grense på %alias_limit% %alias_type% alias-adresser.
+  alias-deletion-custom: Skriv til oss for å få adresser slettet.
+  alias-deletion-random: Så snart du sletter gamle adresser, kan du opprette nye igjen.
+  alias-empty: Du har ikke noen %alias_type%-aliasadresser satt opp.
+  delete-headline: Slett konto
+  delete-description: "Du kan slette din %project_name%-e-postkonto. Dette vil slette\
+    \ alle dine e-poster. <strong>Gjenoppretting senere er ikke mulig</strong> <br\
+    \ /><br /> For å slette kontoen din må du sende inn det faktiske passordet ditt.\n"
+  delete-button: Slett konto
+  recovery-token-button: Håndter gjenopprettingssymbol
+  logged_in_as: Du er innlogget som %user%.
+form:
+  title: Registrer
+  signin-header: Logg inn
+  register-header: Opprett konto
+  email: E-post
+  password: Passord
+  password_confirmation: Bekreft passord
+  remember-me: Forbli innlogget
+  signin: Logg inn
+  recovery-link: Glemt passordet?
+  roles: Roller
+  submit: Send inn
+  voucher: Invitasjonskode
+  voucher-redeemed-on: Innløst
+  oclock-by: av
+  actual-password: Nåværende passord
+  new-custom-alias: Ny alias-adresse
+  new-password: Nytt passord
+  new-password_confirmation: Bekreft nytt passord
+  change-password: Endre passordet ditt
+  delete-account: Slett konto
+  delete-password: Passord
+  create-voucher: Opprett invitasjonskode
+  create-custom-alias: Legg til
+  create-random-alias: Generer tilfeldig alias-adresse
+  delete-alias: Slett alias-adresse
+  generate-recovery-token: Opprett nytt gjenopprettingssymbol
+  recovery-token: Gjenopprettingssymbol
+  recovery-start: Gjenopprett
+  registration-recovery-token-ack: Jeg lagret gjenopprettingssymbolet på et sikkert
+    sted
+  registration-recovery-token-next-button: Fortsett
+recovery:
+  header: Gjenopprett kontoen din
+  lead: Tilbakestill passordet med ditt gjenopprettingssymbol
+  cancel: Avbryt
+  waiting-info: Ventetiden opprettholder din sikkerhet, og kan ikke forkortes eller
+  waiting-time: Andre steg starter %time%.
+  reset-lead: Du kan nå tilbakestille passordet ditt
+  token-lead: Nytt gjenopprettingssymbol
+navbar_left:
+  about-us:
+    text: Om oss
+navbar_right:
+  login: Logg inn
+  logout: Logg ut
+  register: Registrering
+  password-change: Endre passord
+  admin: Administrator
+registration:
+  title: Registrering med %project_name%
+  information: Info
+  information-password-policy: "<strong>Viktig:</strong> Du trenger et passord på\
+    \ minst 12 tegn.\n"
+  label-email: Din foretrukne e-postadresse
+  recovery-token-headline: Gjenopprettingssymbol
+welcome:
+  headline: Velkommen til %project_name%.
+  lead: Du har nå satt opp en konto hos oss. Hva skal du foreta deg nå?
+  next-button: Til oversikten
+closed:
+  title: Registrering stengt
+  headline: Registrering stengt
+  lead: Som følge av paragraf tre i TKÜV, har vi besluttet å stenge registreringen.
+    Beklager.
+delete:
+  alias:
+    headline: Slett alias-adresse %alias%
+    lead: Passordet ditt må bekreftes for å slette din alias-adresse.
+  user:
+    headline: Slett konto
+    lead: Passordet ditt må bekreftes for å slette kontoen din.
+  cancel: Avbryt
+recovery-token:
+  headline: Håndter gjenopprettingssymbol
+  lead: Gjenopprettingssymbolet kan brukes til å tilbakestille passordet ditt når
+    du glemmer det.
+  set: Du har allerede satt opp et gjenopprettingssymbol.
+  set-extra: Oppretting av nytt symbol ugyldiggjør det nåværende symbolet.
+  unset: Du har ikke noe gjenopprettingssymbol satt opp enda. Det anbefales at du
+    oppretter et nå.
+  created-headline: 'Følgende gjenopprettingssymbol ble opprettet for deg:'
+flashes:
+  logout-successful: Du har blitt utlogget.
+  voucher-creation-successful: Du opprettet en ny invitasjonskode.
+  recovery-next-login: Fortsett med innloggingen.
+error:
+  page_not_found: Siden du forsøker å nå finnes ikke.
+  generic_error: En feil inntraff.
+spam:
+  title: Konto låst
+Bad credentials.: Feil innloggingsdetaljer
+custom: egendefinert
+random: tilfeldig
+mail:
+  welcome-subject: Velkommen til %domain%
+  alias-created-subject: Ny alias-adresse opprettet
