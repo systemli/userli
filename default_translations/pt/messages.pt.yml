@@ -1,6 +1,5 @@
----
 start:
-  title: Te damos as boas-vindas a %domain%!
+  title: Te damos as boas-vindas a %domain%
   intro: Aqui você pode criar e configurar a sua conta de e-mail.
   registration-header: Registro
   registration-text: >
@@ -18,7 +17,6 @@ start:
   vouchers-desc: Convide seus contatos
   webmail: Webmail
   webmail-desc: Leia e escreva e-mails
-
 index:
   title: Configurações
   voucher-headline: Seus convites
@@ -34,9 +32,11 @@ index:
     Os dados sobre os convites serão guardados por um tempo limitado como
     proteção contra abusos.
   alias-headline: Seus endereços alias %alias_type%
-  alias-limit: Você atingiu o limite de %alias_limit% endereços alias %alias_type% permitidos.
+  alias-limit: Você atingiu o limite de %alias_limit% endereços alias %alias_type%
+    permitidos.
   alias-deletion-custom: Entre em contato conosco para excluir endereços.
-  alias-deletion-random: Assim que excluir endereços antigos, você poderá criar novos endereços.
+  alias-deletion-random: Assim que excluir endereços antigos, você poderá criar novos
+    endereços.
   alias-empty: Você não tem nenhum endereço alias %alias_type% definido.
   delete-headline: Excluir conta
   delete-description: >
@@ -65,7 +65,6 @@ index:
         <li>Entre em contato conosco para deletar endereços personalizados.</li>
       </ul>
     </p>
-
 form:
   title: Cadastro
   signin-header: Login
@@ -97,7 +96,6 @@ form:
   recovery-start: Recuperar
   registration-recovery-token-ack: Eu guardei o token de recuperação em um lugar seguro
   registration-recovery-token-next-button: Continuar
-
 recovery:
   header: Recuperar sua conta
   lead: Redefina sua senha usando seu token de recuperação
@@ -106,23 +104,21 @@ recovery:
     Quase lá. Esse foi o primeiro passo para redefinir sua senha.
     Agora você precisa esperar por 48 horas. Depois disso, no segundo passo, você pode criar uma nova senha.
     Por favor mantenha seu token guardado até lá.
-  waiting-info: Esse tempo de espera é pela sua segurança e não pode ser encurtado ou ignorado.
+  waiting-info: Esse tempo de espera é pela sua segurança e não pode ser encurtado
+    ou ignorado.
   waiting-time: O segundo passo começa %time%.
   reset-lead: Agora você pode redefinir sua senha
   token-lead: Novo token de recuperação
-
 navbar_left:
   about-us:
     text: Sobre nós
     link: https://www.example.org/en/about-us
-
 navbar_right:
   login: Entrar
   logout: Sair
   register: Cadastro
   password-change: Mudar senha
   admin: Administrador
-
 registration:
   title: Cadastro com %project_name%
   information: Information
@@ -134,24 +130,30 @@ registration:
     Sua senha deve ter pelo menos 12 caracteres.
   label-email: Seu endereço de email desejado
   recovery-token-headline: Token de recuperação
-
 welcome:
   headline: Te damos as boas-vindas a %project_name%!
   lead: Você criou sua conta com sucesso. E agora?
   next-button: Seus próximos passos
   text: >
     <h3>Tudo pronto</h3>
-    <p>Pela web você pode encontrar guias de como configurar sua conta de e-mail com diferentes programas de e-mail.</p>
-    <p>Em uma semana você vai receber três códigos de convite, os quais você pode pegar em <a href="%app_url%">%app_url%</a>. Você pode enviá-los a seus contatos e chamá-los para se cadastrar no %project_name%.</p>
-
+    <p>Pela web você pode encontrar guias de como configurar sua conta de e-mail com
+    diferentes programas de e-mail.</p>
+    <p>Em uma semana você vai receber três códigos de convite, os quais você pode
+    pegar em <a href="%app_url%">%app_url%</a>. Você pode enviá-los a seus contatos
+    e chamá-los para se cadastrar no %project_name%.</p>
 closed:
   title: Cadastros fechados
   headline: Cadastros fechados
-  lead: >
-    De acordo com o parágrafo 3 das normas de telecomunicação TKÜV
-    decidimos manter um limite de 10.000 registros.
-    Lamentamos a inconveniência.
-
+  lead: De acordo com o parágrafo 3 das normas de telecomunicação TKÜV decidimos manter
+    um limite de 10.000 registros. Lamentamos a inconveniência.
+  text: "<p>Devido<a href=\"https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html\"\
+    \ target=\"_blank\">ao parágrafo três da \"Verordnung über die technische und\
+    \ organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation\"\
+    </a> (curto: Decreto de vigilância de telecommunicações - \"TKÜV\") provedores\
+    \ de e-mail com mais de 10.000 usuários são obrigados a implementar uma interface\
+    \ de vigilância para as autoridades. Foi por isso que decidimos bloquear o registo\
+    \ e não permitir a criação de novas contas.<p>\n<p><strong>As contas existentes\
+    \ não são afetadas</strong><</p>\n"
 delete:
   alias:
     headline: Excluir o endereço alias %alias%
@@ -160,21 +162,20 @@ delete:
     headline: Excluir conta
     lead: Precisamos verificar sua senha para excluir a sua conta.
   cancel: Cancelar
-
 recovery-token:
   headline: Gerenciar token de recuperação
   lead: O token de recuperação pode ser usado para redefinir a sua senha se você esquecê-la.
   set: Você já tem um token configurado.
   set-extra: Se você criar um novo token de recuperação o seu token atual será invalidado.
-  unset: Você ainda não tem um token de recuperação configurado. Recomendamos fortemente que crie um agora mesmo.
-  created-headline: "O seguinte token foi gerado para você:"
+  unset: Você ainda não tem um token de recuperação configurado. Recomendamos fortemente
+    que crie um agora mesmo.
+  created-headline: 'O seguinte token foi gerado para você:'
   created-info: >
     Se você perder sua senha, o token de recuperação permite que você crie uma nova.
     Anote e guarde-o em algum lugar seguro.
   displayed-once: >
     Por questão de segurança, o token de recuperação só é exibido uma vez.
     Nós não podemos recuperar esse token por você.
-
 flashes:
   logout-successful: Sua sessão foi encerrada!
   password-change-successful: Sua nova senha está ativa!
@@ -187,28 +188,21 @@ flashes:
   revocery-reauthenticate: Algo deu errado. Por favor se autentique novamente!
   recovery-password-changed: Você mudou a sua senha com sucesso.
   recovery-next-login: Inicie sua sessão agora.
-
 flash_batch_remove_vouchers_success: Códigos de convite excluidos com sucesso
-
 error:
   title: Oops, houve um erro.
   back_link: Voltar para o início
   page_not_found: A página procurada não existe.
   generic_error: Desculpe, um erro ocorreu.
-
 spam:
   title: Conta bloqueada
   text: |
     Ah não! Acreditamos que a sua conta tenha sido usada por um spammer.
     Nós bloqueamos o acesso ao e-mail por essa razão.
     Por favor entre em contato com o suporte para desbloquear a sua conta.
-
-# internal translations
 Bad credentials.: Detalhes de login errados
-
 custom: personalizado
 random: aleatório
-
 mail:
   welcome-subject: Te damos as boas-vindas a %domain%
   welcome-body: |
