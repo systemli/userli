@@ -10,7 +10,7 @@ Feature: Admin
       | email               | password | roles             |
       | louis@example.org   | asdasd   | ROLE_ADMIN        |
       | domain@example.com  | asdasd   | ROLE_DOMAIN_ADMIN |
-      | support@example.org | asdasd   | ROLE_SUPPORT      |
+      | support@example.org | asdasd   | ROLE_MULTIPLIER      |
       | user@example.org    | asdasd   | ROLE_USER         |
     And the following Voucher exists:
       | code | user             |

@@ -15,7 +15,7 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6">
             {% if domain == user_domain %}
-                {% if is_granted('ROLE_SUPPORT') %}
+                {% if is_granted('ROLE_MULTIPLIER') %}
                     {{ form_start(voucher_form) }}
                     {{ form_errors(voucher_form) }}
                     <div class="form-group">

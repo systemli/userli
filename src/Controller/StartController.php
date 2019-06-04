@@ -235,7 +235,7 @@ class StartController extends AbstractController
      */
     private function createVoucher(Request $request, User $user)
     {
-        if ($this->isGranted('ROLE_SUPPORT')) {
+        if ($this->isGranted('ROLE_MULTIPLIER')) {
             try {
                 $this->voucherCreator->create($user);
 

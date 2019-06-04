@@ -2,6 +2,7 @@
 
 * Add org/organisation/... to reserved names
 * Update to symfony 4.2.9
+* Rename ROLE_SUPPORT to ROLE_MULTIPLIER
 
 # 2.2.0 (2019.05.22)
 

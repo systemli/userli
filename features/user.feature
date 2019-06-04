@@ -9,7 +9,7 @@ Feature: User
       | email               | password | roles        |
       | admin@example.org   | asdasd   | ROLE_ADMIN   |
       | user@example.org    | asdasd   | ROLE_USER    |
-      | support@example.org | asdasd   | ROLE_SUPPORT |
+      | support@example.org | asdasd   | ROLE_MULTIPLIER |
     And the following Alias exists:
       | user_id | source                     | destination       | deleted | random |
       | 2       | alias1@example.org         | user@example.org  | 0       | 0      |

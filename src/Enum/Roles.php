@@ -7,10 +7,10 @@ namespace App\Enum;
  */
 final class Roles
 {
+    const MULTIPLIER = 'ROLE_MULTIPLIER';
     const SPAM = 'ROLE_SPAM';
     const SUSPICIOUS = 'ROLE_SUSPICIOUS';
     const USER = 'ROLE_USER';
-    const SUPPORT = 'ROLE_SUPPORT';
     const DOMAIN_ADMIN = 'ROLE_DOMAIN_ADMIN';
     const ADMIN = 'ROLE_ADMIN';
 
@@ -20,10 +20,10 @@ final class Roles
     public static function getAll()
     {
         return array(
+            self::MULTIPLIER => self::MULTIPLIER,
             self::SPAM => self::SPAM,
             self::SUSPICIOUS => self::SUSPICIOUS,
             self::USER => self::USER,
-            self::SUPPORT => self::SUPPORT,
             self::DOMAIN_ADMIN => self::DOMAIN_ADMIN,
             self::ADMIN => self::ADMIN,
         );

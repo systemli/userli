@@ -8,7 +8,7 @@ Feature: Login
     And the following User exists:
       | email               | password | roles        |
       | louis@example.org   | asdasd   | ROLE_ADMIN   |
-      | support@example.org | asdasd   | ROLE_SUPPORT |
+      | support@example.org | asdasd   | ROLE_MULTIPLIER |
       | user@example.org    | asdasd   | ROLE_USER    |
       | spam@example.org    | asdasd   | ROLE_SPAM    |
 
