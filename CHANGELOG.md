@@ -1,7 +1,8 @@
-# 2.2.1 (UNRELEASED)
+# 2.2.1 (2019.06.06)
 
 * Add org/organisation/... to reserved names
 * Update to symfony 4.2.9
+* Update PHP and JS dependecies
 * Rename ROLE_SUPPORT to ROLE_MULTIPLIER
 
 # 2.2.0 (2019.05.22)
