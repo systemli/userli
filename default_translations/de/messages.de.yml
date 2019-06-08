@@ -1,11 +1,12 @@
----
 start:
   title: Willkommen bei %domain%
-  intro: Wir bieten dir hier die Möglichkeit, einen E-Mail Account zu erstellen bzw. zu verwalten.
+  intro: Wir bieten dir hier die Möglichkeit, einen E-Mail Account zu erstellen bzw.
+    zu verwalten.
   registration-header: Registrierung
   registration-text: >
     Du hast noch keinen E-Mail Account bei %domain%? Kein Problem!
-    Wenn eine Freund*in einen Account besitzt, kann diese dir einen Einladungscode zukommen lassen.
+    Wenn eine Freund*in einen Account besitzt, kann diese dir einen Einladungscode
+    zukommen lassen.
     Mit diesem kannst du dir sofort einen Account registrieren.
   registration-button: Account anlegen
   account-settings: Account verwalten
@@ -18,12 +19,12 @@ start:
   vouchers-desc: Lade Freund*innen ein
   webmail: Webmail
   webmail-desc: Lies und schreibe E-Mails
-
 index:
   title: Verwalte deinen E-Mail Account
   voucher-headline: Deine Einladungscodes
   voucher-limit: Du hast keine Einladungscodes mehr verfügbar.
-  voucher-disable: Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben. Dies dient der Vermeidung von Massenregistrierungen und Spam.
+  voucher-disable: "Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben.\
+    \ Dies dient der Vermeidung von Massenregistrierungen und Spam.\n"
   voucher-sharing: Einladungslink kopieren
   voucher-explanation: >
     Nutze deine Einladungscodes um Freund*innen hierher einzuladen.
@@ -31,13 +32,15 @@ index:
     Wenn du mehr brauchst, wende dich an die Admins.
     Wir speichern Einladungsdaten für einen begrenzten Zeitraum um Missbrauch zu verhindern.
   alias-headline: Deine %alias_type% Alias-Adressen
-  alias-limit: Du hast das Limit von %alias_limit% erlaubten %alias_type% Alias-Adressen erreicht.
+  alias-limit: Du hast das Limit von %alias_limit% erlaubten %alias_type% Alias-Adressen
+    erreicht.
   alias-deletion-custom: Schreibe uns, um Adressen löschen zu lassen.
   alias-deletion-random: Wenn du alte Adressen löschst, kannst du wieder neue erstellen.
   alias-empty: Du hast noch keine %alias_type% Alias-Adressen definiert.
   delete-headline: Account löschen
   delete-description: >
-    Du kannst deinen Account bei %project_name% löschen. Dadurch werden deine E-Mails unwiderruflich gelöscht. Eine <strong>spätere Wiederherstellung ist nicht möglich.</strong>
+    Du kannst deinen Account bei %project_name% löschen. Dadurch werden deine E-Mails
+    unwiderruflich gelöscht. Eine <strong>spätere Wiederherstellung ist nicht möglich.</strong>
     <br /><br />
     Um deinen Account zu löschen wirst du aufgefordert dein Passwort einzugeben.
   delete-button: Account löschen
@@ -59,7 +62,6 @@ index:
         <li>Kontaktiere uns um gewählte Alias-Adressen zu löschen.</li>
       </ul>
     </p>
-
 form:
   title: Anmelden
   signin-header: Login
@@ -91,7 +93,6 @@ form:
   recovery-start: Wiederherstellen
   registration-recovery-token-ack: Ich habe den Code an einem sicheren Ort abgespeichert
   registration-recovery-token-next-button: Weiter
-
 recovery:
   header: Account wiederherstellen
   lead: Passwort zurücksetzen mit Hilfe des Wiederherstellungscodes
@@ -100,79 +101,85 @@ recovery:
     Fast geschafft. Der erste Schritt um dein Passwort zurückzusetzen, ist gemacht.
     Jetzt musst du noch 48 Stunden warten, anschließend kannst du im zweiten Schritt
     ein neues Passwort setzen. Bitte behalte deinen Wiederherstellungscode bis dahin.
-  waiting-info: Die Wartezeit dient deiner eigenen Sicherheit und kann nicht verkürzt oder umgangen werden.
+  waiting-info: Die Wartezeit dient deiner eigenen Sicherheit und kann nicht verkürzt
+    oder umgangen werden.
   waiting-time: Der zweite Schritt ist möglich ab dem %time%.
   reset-lead: Du kannst nun dein Passwort zurücksetzen
   token-lead: Neuer Wiederherstellungscode
-
 navbar_left:
   about-us:
     text: Über uns
     link: https://www.example.org/de/about-us
-
 navbar_right:
   login: Anmelden
   logout: Abmelden
   register: Registrieren
   password-change: Passwort ändern
   admin: Admin
-
 registration:
   title: Bei %project_name% registrieren
   information: Hinweis
   information-intro: >
-    Du möchtest ein E-Mail Account bei <a href="%project_url%">%project_name%</a> registrieren.
-    Eine Registrierung ist nur möglich, wenn dich eine Freund*in zu unserem Dienst einlädt,
+    Du möchtest ein E-Mail Account bei <a href="%project_url%">%project_name%</a>
+    registrieren.
+    Eine Registrierung ist nur möglich, wenn dich eine Freund*in zu unserem Dienst
+    einlädt,
     dir also einen Einladungscode übergibt.
-  information-password-policy: <strong>Wichtig:</strong> Du benötigst ein Passwort, das aus einer Kombination von 12 Zeichen besteht.
+  information-password-policy: "<strong>Wichtig:</strong> Du benötigst ein Passwort,\
+    \ das aus einer Kombination von 12 Zeichen besteht.\n"
   label-email: Deine Wunsch E-Mail Adresse
   recovery-token-headline: Wiederherstellungscode
-
 welcome:
   headline: Willkommen bei %project_name%!
   lead: Du hast erfolgreich einen E-Mail Account bei uns erstellt! Wie geht es weiter?
   next-button: Zur Übersicht
   text: >
     <h3>Los geht's</h3>
-    <p>Im Web findest du Anleitungen zur Einrichtung deines E-Mail Accounts mit verschiedenen Client Programmen.</p>
-    <p>In einer Woche bekommst du drei Einladungscodes gutgeschrieben, die du unter <a href="%app_url%">%app_url%</a> abrufen kannst. Diese kannst du an Freundinnen und Freunde weiterleiten und sie so zu %project_name% einladen.</p>
-
+    <p>Im Web findest du Anleitungen zur Einrichtung deines E-Mail Accounts mit verschiedenen
+    Client Programmen.</p>
+    <p>In einer Woche bekommst du drei Einladungscodes gutgeschrieben, die du unter
+    <a href="%app_url%">%app_url%</a> abrufen kannst. Diese kannst du an Freundinnen
+    und Freunde weiterleiten und sie so zu %project_name% einladen.</p>
 closed:
   title: Registrierung deaktiviert
   headline: Registrierung deaktiviert
-  lead: Aufgrund des §3 TKÜV haben wir die Registrierung weiterer E-Mail Konten deaktiviert. Das tut uns Leid.
+  lead: Aufgrund des §3 TKÜV haben wir die Registrierung weiterer E-Mail Konten deaktiviert.
+    Das tut uns Leid.
   text: >
-    <p>Der <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">Paragraph 3 der "Verordnung über die technische und organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (kurz: Telekommunikations-Überwachungsverordnung - TKÜV) zwingt Anbieter ab 10.000 Accounts eine Schnittstelle zur Überwachung der Kommunikation einzubauen. Daher haben wir uns entschieden keine weiteren Accounts mehr anzulegen.<p>
+    <p>Der <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html"
+    target="_blank">Paragraph 3 der "Verordnung über die technische und organisatorische
+    Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (kurz: Telekommunikations-Überwachungsverordnung
+    - TKÜV) zwingt Anbieter ab 10.000 Accounts eine Schnittstelle zur Überwachung
+    der Kommunikation einzubauen. Daher haben wir uns entschieden keine weiteren Accounts
+    mehr anzulegen.<p>
 
     <p><strong>Für bestehende Accounts ändert sich nichts.</strong></p>
-
 delete:
   alias:
     headline: Alias-Adresse %alias% löschen
-    lead: Mit der Bestätigung deines Passworts kannst du deine Alias-Adresse unwiderruflich löschen.
+    lead: Mit der Bestätigung deines Passworts kannst du deine Alias-Adresse unwiderruflich
+      löschen.
   user:
     headline: Account löschen
-    lead: Mit der Bestätigung deines Passworts kannst du deinen Account unwiderruflich löschen.
+    lead: Mit der Bestätigung deines Passworts kannst du deinen Account unwiderruflich
+      löschen.
   cancel: Abbrechen
-
 recovery-token:
   headline: Wiederherstellungscode verwalten
-  lead: >
-    Mit dem Wiederherstellungscode kannst du dein Passwort zurücksetzen,
-    wenn du es vergessen hast.
+  lead: Mit dem Wiederherstellungscode kannst du dein Passwort zurücksetzen, wenn
+    du es vergessen hast.
   set: Du hast bereits einen Wiederherstellungscode gesetzt.
   set-extra: Wenn du einen neuen Code erstellst, wird der bisherige ungültig.
-  unset: >
-    Du hast noch keinen Wiederherstellungscode gesetzt.
-    Wir empfehlen dir dringend, jetzt einen zu erstellen.
-  created-headline: "Der folgende Wiederherstellungscode wurde für dich erstellt:"
+  unset: Du hast noch keinen Wiederherstellungscode gesetzt. Wir empfehlen dir dringend,
+    jetzt einen zu erstellen.
+  created-headline: 'Der folgende Wiederherstellungscode wurde für dich erstellt:'
   created-info: >
     Mit dem Wiederherstellungscode kannst du jederzeit dein Passwort zurücksetzen,
-    wenn du dieses vergessen hast. Notiere ihn dir und speichere ihn an einem sicheren Ort ab.
+    wenn du dieses vergessen hast. Notiere ihn dir und speichere ihn an einem sicheren
+    Ort ab.
   displayed-once: >
     Der Wiederherstellungscode wird aus Sicherheitsgründen nur einmal angezeigt.
     Wir können ihn nicht für die wiederherstellen.
-
 flashes:
   logout-successful: Du hast dich erfolgreich abgemeldet!
   password-change-successful: Dein neues Passwort ist ab sofort aktiv!
@@ -185,28 +192,22 @@ flashes:
   recovery-reauthenticate: Etwas ist schiefgelaufen. Du musst dich erneut authentifizieren!
   recovery-password-changed: Dein Passwort wurde geändert.
   recovery-next-login: Du kannst dich nun einloggen.
-
+  revocery-reauthenticate: Etwas ist schief gelaufen. Bitte erneut authentifizieren!
 flash_batch_remove_vouchers_success: Nicht eingelöste Vouchers erfolgreich gelöscht
-
 error:
   title: Oops, es ist ein Fehler passiert.
   back_link: Zurück zur Startseite
   page_not_found: Die Seite die du aufgerufen hast, existiert nicht.
   generic_error: Es ist ein Fehler passiert. Das tut uns leid.
-
 spam:
   title: Account gesperrt
   text: |
     Oh nein! Wir glauben dein Account wurde von einem Spammer missbraucht.
     Daher haben wir den Mailzugang deaktiviert
     Bitte kontaktiere den Support um deinen Account frei zu schalten.
-
-# internal translations
 Bad credentials.: Fehlerhafte Zugangsdaten
-
 custom: gewählten
 random: zufälligen
-
 mail:
   welcome-subject: Willkommen bei %domain%
   welcome-body: |
@@ -258,3 +259,7 @@ mail:
 
     Weiterhin viel Spaß mit deinem Mailaccount, wünscht dir dein
     %project_name% Admin Team.
+  alias-created:body: "Hallo %E-Mail%,\n\nFür deine E-Mail-Adresse %email% wurde ein\
+    \ neuer Alias hinzugefügt:\n%alias%\n\nVerwalte hier deine E-Mail-Aliase: %app_url%/alias\n\
+    \nWir hoffen, dass du weiterhin Freude an Ihrem E-Mail-Konto haben wirst.\nDein\
+    \ %project_name% Administrator-Team.\n"
