@@ -1,3 +1,7 @@
+# 2.2.2 (UNRELEASED)
+
+* Update PHP and JS dependecies
+
 # 2.2.1 (2019.06.06)
 
 * Add org/organisation/... to reserved names
