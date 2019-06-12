@@ -1,1 +1,20 @@
-{}
+registration:
+  email-too-short: Brukernavnet må inneholdet minst %min% tegn.
+  voucher-already-redeemed: Invitasjonskoden har allerede blitt brukt.
+  email-domain-invalid: E-posten er ugydlig.
+  email-unexpected-characters: 'Brukernavnet inneholder uventede tegn. Gyldig: Nummer
+    og tall, sågar også -, _ og .'
+  email-already-taken: E-postadressen er allerede i brukt.
+  email-domain-not-exists: E-posten er ugyldig.
+  voucher-invalid: Invitasjonskoden er ugyldig.
+  email-too-long: Brukernavnet kan inneholde maksimalt %max% tegn.
+form:
+  registration-recovery-token-noack: Dette feltet må merkes av.
+  different-password: Passordet og bekreftelseskoden stemmer ikke overens.
+  wrong-password: Feil passord
+  missing-domain: Domenet er ikke i behandling i dette systemet.
+  weak_password: Passordet overholder ikke vår sikkerhetspraksis.
+  invalid-email: E-posten er ikke gyldig.
+  identical-passwords: Passordet er det samme som det gamle.
+  forbidden_char: Passordet inneholder ugyldige tegn.
+  invalid-token: Symbolet har et ugyldig format.
