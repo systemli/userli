@@ -1,5 +1,6 @@
-# 2.2.2 (UNRELEASED)
+# 2.3.0 (UNRELEASED)
 
+* Remove link to registration from right navbar
 * Update PHP and JS dependecies
 
 # 2.2.1 (2019.06.06)

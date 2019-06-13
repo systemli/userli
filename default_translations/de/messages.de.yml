@@ -113,8 +113,6 @@ navbar_left:
 navbar_right:
   login: Anmelden
   logout: Abmelden
-  register: Registrieren
-  password-change: Passwort ändern
   admin: Admin
 
 registration:

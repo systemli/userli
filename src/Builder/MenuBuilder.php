@@ -72,7 +72,6 @@ class MenuBuilder
 
         if (!$this->authChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
             $menu->addChild('navbar_right.login', array('route' => 'login'));
-            $menu->addChild('navbar_right.register', array('route' => 'register'));
         } else {
             if ($this->authChecker->isGranted(Roles::DOMAIN_ADMIN)) {
                 $menu->addChild('navbar_right.admin', array('route' => 'sonata_admin_dashboard'));

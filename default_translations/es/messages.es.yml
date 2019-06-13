@@ -120,8 +120,6 @@ navbar_left:
 navbar_right:
   login: Iniciar sesión
   logout: Cerrar sesión
-  register: Registro
-  password-change: Cambio de contraseña
   admin: Administrador
 
 registration:
