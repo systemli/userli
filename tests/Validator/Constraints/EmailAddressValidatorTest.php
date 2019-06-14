@@ -38,8 +38,8 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
         $userRepository = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $userRepository->expects($this->any())->method('findByEmail')->willReturnMap([
-            [$this->userUsed, true],
+        $userRepository->method('findOneBy')->willReturnMap([
+            [['email' => $this->userUsed], null, true, true],
         ]);
         $reservedNameRepository = $this->getMockBuilder(ReservedNameRepository::class)
             ->disableOriginalConstructor()

@@ -1,4 +1,4 @@
-# 2.2.2 (UNRELEASED)
+# 2.2.2 (2019.06.14)
 
 * Delete aliases when deleting user (Fixes: #121)
 * Fix error when trying to register deleted username (Fixes: #176)

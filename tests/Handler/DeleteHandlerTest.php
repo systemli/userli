@@ -6,6 +6,7 @@ use App\Entity\Alias;
 use App\Entity\User;
 use App\Handler\DeleteHandler;
 use App\Helper\PasswordUpdater;
+use App\Repository\AliasRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
@@ -19,8 +20,13 @@ class DeleteHandlerTest extends TestCase
             $user->setPassword('new_password');
         });
 
+        $aliasRepositry = $this->getMockBuilder(AliasRepository::class)
+            ->disableOriginalConstructor()->getMock();
+        $aliasRepositry->method('findByUser')->willReturn([]);
+
         $objectManager = $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()->getMock();
+        $objectManager->method('getRepository')->willReturn($aliasRepositry);
         $objectManager->expects($this->any())->method('flush')->willReturn(true);
 
         return new DeleteHandler($passwordUpdater, $objectManager);
