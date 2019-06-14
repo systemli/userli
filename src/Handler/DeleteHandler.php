@@ -53,8 +53,12 @@ class DeleteHandler
      */
     public function deleteUser(User $user)
     {
-        // Flag user as deleted
-        $user->setDeleted(true);
+        // Delete aliases of user
+        $aliasRepository = $this->manager->getRepository('App:Alias');
+        $aliases = $aliasRepository->findByUser($user);
+        foreach ($aliases as $alias) {
+            $this->deleteAlias($alias, $user);
+        }
 
         // Set password to random new one
         $password = PasswordGenerator::generate();
@@ -68,6 +72,9 @@ class DeleteHandler
         // Erase MailCrypt keys
         $user->eraseMailCryptPublicKey();
         $user->eraseMailCryptSecretBox();
+
+        // Flag user as deleted
+        $user->setDeleted(true);
 
         $this->manager->flush();
     }

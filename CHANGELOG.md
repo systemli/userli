@@ -1,5 +1,7 @@
 # 2.2.2 (UNRELEASED)
 
+* Delete aliases when deleting user (Fixes: #121)
+* Fix error when trying to register deleted username (Fixes: #176)
 * Update PHP and JS dependecies
 
 # 2.2.1 (2019.06.06)
