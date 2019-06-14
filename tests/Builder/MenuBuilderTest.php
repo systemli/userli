@@ -85,9 +85,8 @@ class MenuBuilderTest extends TestCase
 
         $builtMenu = $builder->createNavbarRight();
 
-        self::assertCount(2, $this->children);
+        self::assertCount(1, $this->children);
         self::assertArrayHasKey('navbar_right.login', $this->children);
-        self::assertArrayHasKey('navbar_right.register', $this->children);
         self::assertArrayNotHasKey('navbar_right.admin', $this->children);
         self::assertArrayNotHasKey('navbar_right.logout', $this->children);
     }
@@ -108,7 +107,6 @@ class MenuBuilderTest extends TestCase
 
         self::assertCount(1, $this->children);
         self::assertArrayNotHasKey('navbar_right.login', $this->children);
-        self::assertArrayNotHasKey('navbar_right.register', $this->children);
         self::assertArrayNotHasKey('navbar_right.admin', $this->children);
         self::assertArrayHasKey('navbar_right.logout', $this->children);
     }
@@ -129,7 +127,6 @@ class MenuBuilderTest extends TestCase
 
         self::assertCount(2, $this->children);
         self::assertArrayNotHasKey('navbar_right.login', $this->children);
-        self::assertArrayNotHasKey('navbar_right.register', $this->children);
         self::assertArrayHasKey('navbar_right.admin', $this->children);
         self::assertArrayHasKey('navbar_right.logout', $this->children);
     }

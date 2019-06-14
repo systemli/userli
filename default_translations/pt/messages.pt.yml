@@ -119,8 +119,6 @@ navbar_left:
 navbar_right:
   login: Entrar
   logout: Sair
-  register: Cadastro
-  password-change: Mudar senha
   admin: Administrador
 
 registration:

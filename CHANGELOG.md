@@ -2,6 +2,7 @@
 
 * Delete aliases when deleting user (Fixes: #121)
 * Fix error when trying to register deleted username (Fixes: #176)
+* Remove link to registration from right navbar
 * Update PHP and JS dependecies
 
 # 2.2.1 (2019.06.06)
