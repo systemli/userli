@@ -4,9 +4,9 @@ description = ""
 weight = 7
 +++
 
-The console command `bin/checkpassword` is a checkpassword command
-to be used for authentication (userdb and passdb lookup) by external services.
-So far, it's only tested with Dovecot.
+The PHP console command `bin/console app:users:checkpassword` provides a
+checkpassword command to be used for authentication (userdb and passdb
+lookup) by external services. So far, it's only tested with Dovecot.
 <!--more-->
 
 In order to use the userli checkpassword command with Dovecot (< 2.3), the
@@ -19,7 +19,7 @@ Example configuration for using checkpassword in Dovecot:
 
     passdb {
       driver = checkpassword
-      args = /path/to/userli/bin/checkpassword
+      args = /path/to/userli/bin/console app:users:checkpassword
     }
 
     userdb {
@@ -28,50 +28,15 @@ Example configuration for using checkpassword in Dovecot:
 
     userdb {
       driver = checkpassword
-      args = /path/to/userli/bin/checkpassword
+      args = /path/to/userli/bin/console app:users:checkpassword
     }
 
 ## Required permissions and sudo
 
-In order for checkpassword to work as expected, it has to be invoked by a user
-with read access to the whole userli project directory and write access to the
-`var/` subdirectory.
+In order for checkpassword to work as expected, your Dovecot system user needs
+read access to the userli application.
 
-The checkpassword script brings sudo support for this. In order to use it, do
-the following:
+In order to grant the required permissions, add the Dovecot system user to the
+userli system group:
 
-1. Add sudoers rules for your dovecot user, allowing them to run the scripts as
-   the userli system user:
-
-   `/etc/sudoers.d/userli`:
-
-       # Disable sudo logging for user 'dovecot' to prevent logging of user passwords
-       Defaults:dovecot !syslog
-       Defaults:dovecot !logfile
-       # Allow user 'dovecot' to run some php console commands as user 'userli' 
-       dovecot ALL=(userli) NOPASSWD: /usr/bin/php /path/to/userli/bin/console app\:users\:check*
-       dovecot ALL=(userli) NOPASSWD: /usr/bin/php /path/to/userli/bin/console app\:users\:mailcrypt*
-       dovecot ALL=(userli) NOPASSWD: /usr/bin/php /path/to/userli/bin/console app\:users\:quota*
-
-   Don't forget to set permissions for `/etc/sudoers.d/userli` to 0440:
-
-       chmod 0440 /etc/sudoers.d/userli
-
-2. Configure Dovecot to pass sudo parameters to checkpassword (`-s <user>`,
-   where <user> is the userli system user:
-
-   `/etc/dovecot/conf.d/auth-checkpassword.conf.ext`:
-   
-       passdb {
-         driver = checkpassword
-         args = /path/to/userli/bin/checkpassword -s userli
-       }
-   
-       userdb {
-         driver = prefetch
-       }
-   
-       userdb {
-         driver = checkpassword
-         args = /path/to/userli/bin/checkpassword -s userli
-       }
+    adduser dovecot userli

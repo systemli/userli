@@ -4,6 +4,7 @@ namespace App\Tests\Command;
 
 use App\Command\CheckPasswordCommand;
 use App\Entity\User;
+use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
 use App\Helper\FileDescriptorReader;
 use App\Repository\UserRepository;
@@ -13,62 +14,52 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class CheckPasswordCommandTest extends TestCase
 {
-    protected $content;
+    protected $inputStream;
     protected $plainUser;
     protected $quotaUser;
+    protected $mailCryptUser;
 
     public function setUp()
     {
         $this->plainUser = new User();
         $this->quotaUser = new User();
         $this->quotaUser->setQuota(1024);
+        $this->mailCryptUser = new User();
+        $this->mailCryptUser->setMailCrypt(true);
+        $this->mailCryptUser->setMailCryptPublicKey('somePublicKey');
     }
 
     /**
      * @dataProvider      invalidContentProvider
      * @expectedException \Symfony\Component\Console\Exception\InvalidArgumentException
      */
-    public function testExecuteInvalidArgumentException($content)
+    public function testExecuteInvalidArgumentException($inputStream, $exceptionMessage)
     {
         $manager = $this->getManager();
-        $reader = $this->getReaderFd3($content);
+        $reader = $this->getReaderFd3($inputStream);
         $handler = $this->getHandler();
+        $mailCryptKeyHandler = $this->getMailCryptKeyHandler();
+        $mailCryptEnabled = false;
 
-        $command = new CheckPasswordCommand($manager, $reader, $handler);
+        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCryptEnabled);
         $commandTester = new CommandTester($command);
 
+        $this->expectExceptionMessage($exceptionMessage);
         $commandTester->execute([]);
-    }
-
-    /**
-     * @expectedException \Exception
-     */
-    public function testExecuteProcessException()
-    {
-        $manager = $this->getManager();
-        $reader = $this->getReaderFd3("user@example.org\x00password\x00\x00");
-        $handler = $this->getHandler();
-
-        $command = new CheckPasswordCommand($manager, $reader, $handler);
-        $commandTester = new CommandTester($command);
-
-        $commandTester->execute(
-            [
-                'checkpassword-reply' => ['/usr/local/bin/nonexistent'],
-            ]
-        );
     }
 
     /**
      * @dataProvider validContentProvider
      */
-    public function testExecuteFd3($content, $returnCode)
+    public function testExecuteFd3($inputStream, $returnCode)
     {
         $manager = $this->getManager();
-        $reader = $this->getReaderFd3($content);
+        $reader = $this->getReaderFd3($inputStream);
         $handler = $this->getHandler();
+        $mailCryptKeyHandler = $this->getMailCryptKeyHandler();
+        $mailCryptEnabled = true;
 
-        $command = new CheckPasswordCommand($manager, $reader, $handler);
+        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCryptEnabled);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute([]);
@@ -79,13 +70,15 @@ class CheckPasswordCommandTest extends TestCase
     /**
      * @dataProvider validContentProvider
      */
-    public function testExecuteStdin($content, $returnCode)
+    public function testExecuteStdin($inputStream, $returnCode)
     {
         $manager = $this->getManager();
-        $reader = $this->getReaderStdin($content);
+        $reader = $this->getReaderStdin($inputStream);
         $handler = $this->getHandler();
+        $mailCryptKeyHandler = $this->getMailCryptKeyHandler();
+        $mailCryptEnabled = false;
 
-        $command = new CheckPasswordCommand($manager, $reader, $handler);
+        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCryptEnabled);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute(
@@ -100,14 +93,16 @@ class CheckPasswordCommandTest extends TestCase
     /**
      * @dataProvider userDbContentProvider
      */
-    public function testExecuteUserDbLookup($content, $returnCode)
+    public function testExecuteUserDbLookup($inputStream, $returnCode)
     {
         $manager = $this->getManager();
-        $reader = $this->getReaderFd3($content);
+        $reader = $this->getReaderFd3($inputStream);
         $handler = $this->getHandler();
+        $mailCryptKeyHandler = $this->getMailCryptKeyHandler();
+        $mailCryptEnabled = true;
 
         putenv('AUTHORIZED=1');
-        $command = new CheckPasswordCommand($manager, $reader, $handler);
+        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCryptEnabled);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute([]);
@@ -118,27 +113,39 @@ class CheckPasswordCommandTest extends TestCase
 
     public function invalidContentProvider()
     {
+        $msgMissingEmail = "Invalid input format: missing argument email. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.";
+        $msgMissingPassword = "Invalid input format: missing argument password. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.";
         return [
-            ['user@example.org password timestamp extra'],
-            ["user@example.org\x00password timestamp extra"],
-            ["user@example.org\x00password\x00timestamp extra"],
-            ["user@example.org\x00password\x00timestamp\x01extra"],
-            ["user@example.org\x00password\x01timestamp\x00extra"],
-            ["user@example.org\x01password\x00timestamp\x00extra"],
-            ["\x00password\x00timestamp\x00extra"],
-            //["user@example.org\x00\x00timestamp\x00extra"], <- this is an empty password and not invalid
+            ["", $msgMissingEmail],
+            ["user@example.org", $msgMissingPassword],
+            ["user@example.org\x00", $msgMissingPassword],
+            ["user@example.org\x00\x00", $msgMissingPassword],
+            ["user@example.org\x00\x00\x00", $msgMissingPassword],
+            ["user@example.org\x00\x00timestamp\x00", $msgMissingPassword],
+            ["user@example.org\x00\x00timestamp\x00extra", $msgMissingPassword],
+            ["\x00password", $msgMissingEmail],
+            ["\x00password\x00", $msgMissingEmail],
+            ["\x00password\x00timestamp\x00", $msgMissingEmail],
+            ["\x00password\x00timestamp\x00extra", $msgMissingEmail],
         ];
     }
 
     public function validContentProvider()
     {
         return [
+            ["user@example.org\x00password", 0],
+            ["user@example.org\x00password\x00", 0],
             ["user@example.org\x00password\x00\x00", 0],
             ["user@example.org\x00password\x00timestamp\x00", 0],
             ["user@example.org\x00password\x00timestamp\x00extra", 0],
             ["user@example.org\x00password\x00timestamp\x00extra\x00", 0],
             ["quota@example.org\x00password\x00\x00", 0],
+            ["mailcrypt@example.org\x00password\x00\x00", 0],
+            ["user@example.org\x00wrongpassword", 1],
+            ["user@example.org\x00wrongpassword\x00", 1],
             ["user@example.org\x00wrongpassword\x00\x00", 1],
+            ["unknown@example.org\x00password", 1],
+            ["unknown@example.org\x00password\x00", 1],
             ["unknown@example.org\x00password\x00\x00", 1],
             ["unknown@example.org\x00password\x00timestamp\x00extra with \x00\x00", 1],
         ];
@@ -147,8 +154,14 @@ class CheckPasswordCommandTest extends TestCase
     public function userDbContentProvider()
     {
         return [
-            ["user@example.org\x00password\x00\x00", 0],
-            ["unknown@example.org\x00password\x00\x00", 3],
+            ["user@example.org", 0],
+            ["user@example.org\x00", 0],
+            ["user@example.org\x00\x00", 0],
+            ["user@example.org\x00\x00\x00", 0],
+            ["user@example.org\x00password\x00timestamp\x00extra", 0],
+            ["quota@example.org", 0],
+            ["mailcrypt@example.org", 0],
+            ["unknown@example.org\x00password", 3],
         ];
     }
 
@@ -167,6 +180,7 @@ class CheckPasswordCommandTest extends TestCase
                 ['new@example.org', null],
                 ['user@example.org', $this->plainUser],
                 ['quota@example.org', $this->quotaUser],
+                ['mailcrypt@example.org', $this->mailCryptUser],
             ]
         );
 
@@ -184,28 +198,45 @@ class CheckPasswordCommandTest extends TestCase
             [
                 [$this->plainUser, 'password', $this->plainUser],
                 [$this->quotaUser, 'password', $this->quotaUser],
+                [$this->mailCryptUser, 'password', $this->mailCryptUser],
             ]
         );
 
         return $handler;
     }
 
-    public function getReaderStdin(string $content)
+    public function getMailCryptKeyHandler()
+    {
+        $mailCryptKeyHandler = $this->getMockBuilder(MailCryptKeyHandler::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mailCryptKeyHandler->method('decrypt')->willReturnMap(
+            [
+                [$this->plainUser, 'password', ''],
+                [$this->quotaUser, 'password', ''],
+                [$this->mailCryptUser, 'password', 'somePrivateKey'],
+            ]
+        );
+
+        return $mailCryptKeyHandler;
+    }
+
+    public function getReaderStdin(string $inputStream)
     {
         $reader = $this->getMockBuilder(FileDescriptorReader::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $reader->method('readStdin')->willReturn($content);
+        $reader->method('readStdin')->willReturn($inputStream);
 
         return $reader;
     }
 
-    public function getReaderFd3(string $content)
+    public function getReaderFd3(string $inputStream)
     {
         $reader = $this->getMockBuilder(FileDescriptorReader::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $reader->method('readFd3')->willReturn($content);
+        $reader->method('readFd3')->willReturn($inputStream);
 
         return $reader;
     }

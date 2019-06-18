@@ -49,6 +49,10 @@ services:
             $projectName:  "%env(PROJECT_NAME)%"
             $domain:       "%env(DOMAIN)%"
 
+    App\Command\CheckPasswordCommand:
+        arguments:
+            $mailCryptEnabled: "%env(MAIL_CRYPT_ENABLED)%"
+
     App\Command\MailCryptCommand:
         arguments:
             $mailCryptEnabled: "%env(MAIL_CRYPT_ENABLED)%"

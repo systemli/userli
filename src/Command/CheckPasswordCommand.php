@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
 use App\Helper\FileDescriptorReader;
 use App\Repository\UserRepository;
@@ -45,18 +46,36 @@ class CheckPasswordCommand extends Command
     private $repository;
 
     /**
+     * @var MailCryptKeyHandler
+     */
+    private $mailCryptKeyHandler;
+
+    /**
+     * @var bool
+     */
+    private $mailCryptEnabled;
+
+    /**
      * CheckPasswordCommand constructor.
      *
      * @param ObjectManager             $manager
      * @param FileDescriptorReader      $reader
      * @param UserAuthenticationHandler $handler
+     * @param MailCryptKeyHandler       $mailCryptKeyHandler
+     * @param bool                      $mailCryptEnabled
      */
-    public function __construct(ObjectManager $manager, FileDescriptorReader $reader, UserAuthenticationHandler $handler)
+    public function __construct(ObjectManager $manager,
+                                FileDescriptorReader $reader,
+                                UserAuthenticationHandler $handler,
+                                MailCryptKeyHandler $mailCryptKeyHandler,
+                                bool $mailCryptEnabled)
     {
         $this->manager = $manager;
         $this->reader = $reader;
         $this->handler = $handler;
         $this->repository = $this->manager->getRepository('App:User');
+        $this->mailCryptKeyHandler = $mailCryptKeyHandler;
+        $this->mailCryptEnabled = $mailCryptEnabled;
         parent::__construct();
     }
 
@@ -92,27 +111,32 @@ class CheckPasswordCommand extends Command
 
         // Allow easy commandline testing
         if ('/bin/true' === $replyCommand) {
-            $contents = $this->reader->readStdin();
+            $inputStream = $this->reader->readStdin();
         } else {
-            $contents = $this->reader->readFd3();
+            $inputStream = $this->reader->readFd3();
         }
 
         // Validate checkpassword input from file descriptor
-        try {
-            // timestamp and extra data are unused nowadays and ignored
-            // shows warning on commandline because of missing args
-            list($email, $password, $timestamp, $extra) = explode("\x0", $contents, 4);
-        } catch (\Exception $e) {
-            throw new InvalidArgumentException('Invalid input format. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.');
-        }
+        $inputArgs = explode("\x0", $inputStream, 4);
 
+        $email = array_shift($inputArgs);
+        $password = array_shift($inputArgs);
+        // timestamp and extra data are unused nowadays and ignored
+        //$timestamp = array_shift($inputArgs);
+        //$extra = array_shift($inputArgs);
+
+        // Verify if an email address has been passed
         if (empty($email)) {
-            throw new InvalidArgumentException('Invalid input format. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.');
+            throw new InvalidArgumentException('Invalid input format: missing argument email. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.');
         }
 
         // Detect if invoked as UserDB lookup by dovecot (with env var AUTHORIZED='1')
         // See https://wiki2.dovecot.org/AuthDatabase/CheckPassword#Checkpassword_as_userdb
         $userDbLookup = ('1' === getenv('AUTHORIZED')) ? true : false;
+
+        if (false === $userDbLookup && empty($password)) {
+            throw new InvalidArgumentException('Invalid input format: missing argument password. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.');
+        }
 
         // Check if user exists
         $user = $this->repository->findByEmail($email);
@@ -126,15 +150,15 @@ class CheckPasswordCommand extends Command
         }
 
         // Check if authentication credentials are valid
-        if (!($userDbLookup) && null === $user = $this->handler->authenticate($user, $password)) {
+        if (false === $userDbLookup && null === $user = $this->handler->authenticate($user, $password)) {
             // TODO: return 111 in case of temporary lookup failure
             return 1;
         }
 
         // get email parts
-        $parts = explode('@', "$email");
-        $username = $parts[0];
-        $domain = $parts[1];
+        $emailParts = explode('@', "$email");
+        $username = $emailParts[0];
+        $domain = $emailParts[1];
 
         // Set default environment variables for checkpassword-reply command
         $envVars = [
@@ -153,6 +177,17 @@ class CheckPasswordCommand extends Command
             $envVars['userdb_quota_rule'] = sprintf('*:storage=%dM', $user->getQuota());
         }
 
+        // Optionally set mail_crypt environment variables for checkpassword-reply command
+        if (true === $this->mailCryptEnabled && true === $user->hasMailCrypt()) {
+            $envVars['EXTRA'] = sprintf('%s userdb_mail_crypt_save_version userdb_mail_crypt_global_public_key', $envVars['EXTRA']);
+            $envVars['userdb_mail_crypt_save_version'] = '2';
+            $envVars['userdb_mail_crypt_global_public_key'] = $user->getMailCryptPublicKey();
+            if (false === $userDbLookup) {
+                $envVars['EXTRA'] = sprintf('%s userdb_mail_crypt_global_private_key', $envVars['EXTRA']);
+                $envVars['userdb_mail_crypt_global_private_key'] = $this->mailCryptKeyHandler->decrypt($user, $password);
+            }
+        }
+
         // Optionally set environment variable AUTHORIZED for dovecot UserDB lookup
         // See https://wiki2.dovecot.org/AuthDatabase/CheckPassword#Checkpassword_as_userdb
         if (true === $userDbLookup) {
@@ -168,10 +203,10 @@ class CheckPasswordCommand extends Command
             $replyCommand.' '.implode(' ', $replyArgs)
         );
         $replyProcess->inheritEnvironmentVariables(true);
-        $newEnv = array_merge(getenv(), $envVars);
+        $newEnv = array_merge([getenv()], $envVars);
         $replyProcess->setEnv($newEnv);
         try {
-            $replyProcess->mustRun();
+            $replyProcess->run();
         } catch (ProcessFailedException $e) {
             throw new \Exception(sprintf('Error at executing checkpassword-reply command %s: %s', $replyCommand, $replyProcess->getErrorOutput()));
         }

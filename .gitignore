@@ -1,5 +1,4 @@
 bin/*
-!bin/checkpassword
 !bin/console
 !bin/githup-release.sh
 !bin/mailcrypt-encrypt-maildir
