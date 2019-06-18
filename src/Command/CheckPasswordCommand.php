@@ -6,7 +6,7 @@ use App\Handler\UserAuthenticationHandler;
 use App\Helper\FileDescriptorReader;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\Process\Process;
 /**
  * @author doobry <doobry@systemli.org>
  */
-class CheckPasswordCommand extends ContainerAwareCommand
+class CheckPasswordCommand extends Command
 {
     // TODO: put the constants somewhere public and use it here and in RemoveUsersCommand
     const VMAIL_PATH = '/var/vmail/%s/%s';
@@ -66,8 +66,8 @@ class CheckPasswordCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('usrmgmt:users:checkpassword')
-            ->setDescription('Checkpassword script for userdb and passdb authentication')
+            ->setName('app:users:checkpassword')
+            ->setDescription('Checkpassword script for UserDB and PassDB authentication')
             ->addArgument(
                 'checkpassword-reply',
                 InputArgument::IS_ARRAY,
@@ -110,14 +110,14 @@ class CheckPasswordCommand extends ContainerAwareCommand
             throw new InvalidArgumentException('Invalid input format. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.');
         }
 
-        // Detect if invoked as userdb lookup by dovecot (with env var AUTHORIZED='1')
+        // Detect if invoked as UserDB lookup by dovecot (with env var AUTHORIZED='1')
         // See https://wiki2.dovecot.org/AuthDatabase/CheckPassword#Checkpassword_as_userdb
         $userDbLookup = ('1' === getenv('AUTHORIZED')) ? true : false;
 
         // Check if user exists
         $user = $this->repository->findByEmail($email);
         if (null === $user) {
-            // Return '3' for non-existent user when doing userdb lookup for dovecot
+            // Return '3' for non-existent user when doing UserDB lookup for dovecot
             if (true === $userDbLookup) {
                 return 3;
             } else {
@@ -153,7 +153,7 @@ class CheckPasswordCommand extends ContainerAwareCommand
             $envVars['userdb_quota_rule'] = sprintf('*:storage=%dM', $user->getQuota());
         }
 
-        // Optionally set environment variable AUTHORIZED for dovecot userdb lookup
+        // Optionally set environment variable AUTHORIZED for dovecot UserDB lookup
         // See https://wiki2.dovecot.org/AuthDatabase/CheckPassword#Checkpassword_as_userdb
         if (true === $userDbLookup) {
             $envVars['AUTHORIZED'] = '2';
