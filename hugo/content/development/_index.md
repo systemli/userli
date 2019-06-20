@@ -36,9 +36,4 @@ If you want to see more details about how the users are created, see
 
 Visit you local instance at http://192.168.33.99/.
 
-## Tests
-
-    cd vagrant && vagrant up && vagrant ssh
-    make test
-
 {{%children style="h2" description="true"%}}
