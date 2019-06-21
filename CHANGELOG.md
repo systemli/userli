@@ -1,6 +1,8 @@
 # 2.2.3 (UNRELEASED)
 
 * Repair js copying of invite codes (Fixes: #165)
+* Several minor language fixes (Thanks to ssantos)
+* Start Norwegian translation (Thanks to Allan Nordhøy)
 
 # 2.2.2 (2019.06.14)
 
