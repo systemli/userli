@@ -1,3 +1,7 @@
+# 2.2.3 (UNRELEASED)
+
+* Repair js copying of invite codes (Fixes: #165)
+
 # 2.2.2 (2019.06.14)
 
 * Delete aliases when deleting user (Fixes: #121)

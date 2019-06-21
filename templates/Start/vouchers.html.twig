@@ -40,7 +40,9 @@
                                                 title="{{ "index.voucher-sharing"|trans }}"
                                                 data-link="{{ url('register_voucher', {'voucher': voucher.code}) }}"
                                                 data-toggle="tooltip" data-placement="top">
-                                            <span class="glyphicon glyphicon-copy"></span>
+                                            <span class="glyphicon glyphicon-copy"
+                                                data-link="{{ url('register_voucher', {'voucher': voucher.code}) }}">
+                                            </span>
                                         </button>
                                     </span>
                                 </p>
