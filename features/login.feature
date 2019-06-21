@@ -21,7 +21,7 @@ Feature: Login
     And I press "Sign in"
 
     Then I should be on "/"
-    And I should see text matching "Logout"
+    And I should see text matching "Log out"
     And the response status code should not be 403
 
   @login
@@ -33,7 +33,7 @@ Feature: Login
     And I press "Sign in"
 
     Then I should be on "/"
-    And I should see text matching "Logout"
+    And I should see text matching "Log out"
     And the response status code should not be 403
 
   @login
@@ -106,7 +106,7 @@ Feature: Login
     When I am authenticated as "louis@example.org"
     And I am on "/logout"
 
-    Then I should see text matching "You have been successfully logged out!"
+    Then I should see text matching "You are now logged out."
 
   @login
   Scenario: Login as Spam

@@ -41,7 +41,7 @@ Feature: registration
     And I press "Sign in"
 
     Then I should be on "/"
-    And I should see text matching "Logout"
+    And I should see text matching "Log out"
 
   @registration
   Scenario: Register with invalid voucher
