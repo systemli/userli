@@ -48,23 +48,16 @@ index:
   delete-button: Excluir conta
   recovery-token-button: Configurar token de recuperação
   logged_in_as: Você entrou como %user%.
-  alias-explanation: |
-    <p>
-      Use endereços alias para esconder o seu endereço original de
-      pessoas que você não conhece bem ou empresas em que você não confia.
-    </p>
-    <p>
-      <ul>
-        <li>All mails sent to alias addresses go to your normal mailbox.</li>
-        <li>Todas as mensagens enviadas para endereços alias chegam na sua caixa de entrada original.</li>
-        <li>Para enviar a partir de um endereço alias, you have to manually configure your mail client.</li>
-        <li>Você pode ter até %alias_limit_custom% endereços personalizados.</li>
-        <li>Você pode ter até %alias_limit_random% endereços aleatórios.</li>
-        <li>Endereços aleatórios devem ser usados para situações únicas,
-        como uma forma de evitar rastreamento entre diferentes serviços.</li>
-        <li>Entre em contato conosco para deletar endereços personalizados.</li>
-      </ul>
-    </p>
+  alias-explanation: "<p>\n  Use endereços alias para esconder o seu endereço original\
+    \ de\n  pessoas que você não conhece bem ou empresas em que você não confia.\n\
+    </p>\n<p>\n  <ul>\n    <li>Todas as mensagens enviadas para endereços alias chegam\
+    \ na sua caixa de entrada original.</li>\n    <li>Para enviar a partir de um endereço\
+    \ alias, você deve configurar o seu gerenciador de email manualmente.</li>\n \
+    \   <li>Você pode ter até %alias_limit_custom% endereços personalizados.</li>\n\
+    \    <li>Você pode ter até %alias_limit_random% endereços aleatórios.</li>\n \
+    \   <li>Endereços aleatórios devem ser usados para situações únicas,\n    como\
+    \ uma forma de evitar rastreamento entre diferentes serviços.</li>\n    <li>Entre\
+    \ em contato conosco para deletar endereços personalizados.</li>\n  </ul>\n</p>\n"
 form:
   title: Cadastro
   signin-header: Login
@@ -175,7 +168,7 @@ recovery-token:
     Por questão de segurança, o token de recuperação só é exibido uma vez.
     Nós não podemos recuperar esse token por você.
 flashes:
-  logout-successful: Sua sessão foi encerrada!
+  logout-successful: Sua sessão foi encerrada.
   password-change-successful: Sua nova senha está ativa!
   registration-successful: Você se cadastrou com sucesso!
   voucher-creation-successful: Você gerou um novo convite!
