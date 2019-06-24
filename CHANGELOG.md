@@ -1,4 +1,4 @@
-# 2.2.3 (UNRELEASED)
+# 2.2.3 (2019.06.24)
 
 * Repair js copying of invite codes (Fixes: #165)
 * Several minor language fixes (Thanks to ssantos)
