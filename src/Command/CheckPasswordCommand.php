@@ -211,6 +211,6 @@ class CheckPasswordCommand extends Command
             throw new \Exception(sprintf('Error at executing checkpassword-reply command %s: %s', $replyCommand, $replyProcess->getErrorOutput()));
         }
 
-        return 0;
+        return $replyProcess->getExitCode();
     }
 }
