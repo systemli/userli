@@ -22,6 +22,7 @@
 
         {% block menu %}
             {{ mopa_bootstrap_menu('navbar-left') }}
+            {% include '_locale_switcher.html.twig' %}
             {{ mopa_bootstrap_menu('navbar-right') }}
         {% endblock %}
     {% endembed %}

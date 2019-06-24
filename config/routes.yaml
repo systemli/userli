@@ -1,36 +1,109 @@
 # StartController
 
 index:
-    path:     /
+    path:     /{_locale}/
     controller: App\Controller\StartController::indexAction
+    requirements:
+        _locale: '%locales%'
 
 aliases:
-    path:     /alias
+    path:     /{_locale}/alias
     controller: App\Controller\StartController::aliasAction
+    requirements:
+        _locale: '%locales%'
 
 vouchers:
-    path:     /voucher
+    path:     /{_locale}/voucher
     controller: App\Controller\StartController::voucherAction
+    requirements:
+        _locale: '%locales%'
 
 account:
-    path:     /account
+    path:     /{_locale}/account
     controller: App\Controller\StartController::accountAction
+    requirements:
+        _locale: '%locales%'
 
 # DeleteController
 
 alias_delete:
-    path:     /alias/delete/{aliasId}
+    path:     /{_locale}/alias/delete/{aliasId}
     controller: App\Controller\DeleteController::deleteAliasAction
+    requirements:
+        _locale: '%locales%'
 
 user_delete:
-    path:     /user/delete
+    path:     /{_locale}/user/delete
     controller: App\Controller\DeleteController::deleteUserAction
+    requirements:
+        _locale: '%locales%'
+
+
+# RegistrationController
+
+register:
+    path:     /{_locale}/register
+    controller: App\Controller\RegistrationController::registerAction
+    requirements:
+        _locale: '%locales%'
+
+register_recovery_token:
+    path:     /{_locale}/register/recovery_token
+    controller: App\Controller\RegistrationController::registerRecoveryTokenAckAction
+    requirements:
+        _locale: '%locales%'
+
+register_welcome:
+    path:     /{_locale}/register/welcome
+    controller: App\Controller\RegistrationController::welcomeAction
+    requirements:
+        _locale: '%locales%'
+
+register_voucher:
+    path:     /{_locale}/register/{voucher}
+    controller: App\Controller\RegistrationController::registerAction
+    requirements:
+        _locale: '%locales%'
+
+# RecoveryController
+
+recovery:
+    path:     /{_locale}/recovery
+    controller: App\Controller\RecoveryController::recoveryProcessAction
+    requirements:
+        _locale: '%locales%'
+
+recovery_reset_password:
+    path:     /{_locale}/recovery/reset_password
+    controller: App\Controller\RecoveryController::recoveryResetPasswordAction
+    requirements:
+        _locale: '%locales%'
+
+recovery_recovery_token_ack:
+    path:     /{_locale}/recovery/recovery_token/ack
+    controller: App\Controller\RecoveryController::recoveryRecoveryTokenAckAction
+    requirements:
+        _locale: '%locales%'
+
+user_recovery_token:
+    path:     /{_locale}/user/recovery_token
+    controller: App\Controller\RecoveryController::recoveryTokenAction
+    requirements:
+        _locale: '%locales%'
+
+user_recovery_token_ack:
+    path:     /{_locale}/user/recovery_token/ack
+    controller: App\Controller\RecoveryController::recoveryTokenAckAction
+    requirements:
+        _locale: '%locales%'
 
 # SecurityController
 
 login:
-    path:     /login
+    path:     /{_locale}/login
     controller: App\Controller\SecurityController::loginAction
+    requirements:
+        _locale: '%locales%'
 
 login_check:
     path:     /login_check
@@ -38,42 +111,68 @@ login_check:
 logout:
     path:     /logout
 
-# RegistrationController
+# fallback without locale
 
-register:
+index_fallback:
+    path:     /
+    controller: App\Controller\StartController::indexAction
+
+aliases_fallback:
+    path:     /alias
+    controller: App\Controller\StartController::aliasAction
+
+vouchers_fallback:
+    path:     /voucher
+    controller: App\Controller\StartController::voucherAction
+
+account_fallback:
+    path:     /account
+    controller: App\Controller\StartController::accountAction
+
+alias_delete_fallback:
+    path:     /alias/delete/{aliasId}
+    controller: App\Controller\DeleteController::deleteAliasAction
+
+user_delete_fallback:
+    path:     /user/delete
+    controller: App\Controller\DeleteController::deleteUserAction
+
+register_fallback:
     path:     /register
     controller: App\Controller\RegistrationController::registerAction
 
-register_recovery_token:
+register_recovery_token_fallback:
     path:     /register/recovery_token
     controller: App\Controller\RegistrationController::registerRecoveryTokenAckAction
 
-register_welcome:
+register_welcome_fallback:
     path:     /register/welcome
     controller: App\Controller\RegistrationController::welcomeAction
 
-register_voucher:
+register_voucher_fallback:
     path:     /register/{voucher}
     controller: App\Controller\RegistrationController::registerAction
 
-# RecoveryController
-
-recovery:
+recovery_fallback:
     path:     /recovery
     controller: App\Controller\RecoveryController::recoveryProcessAction
 
-recovery_reset_password:
+recovery_reset_password_fallback:
     path:     /recovery/reset_password
     controller: App\Controller\RecoveryController::recoveryResetPasswordAction
 
-recovery_recovery_token_ack:
+recovery_recovery_token_ack_fallback:
     path:     /recovery/recovery_token/ack
     controller: App\Controller\RecoveryController::recoveryRecoveryTokenAckAction
 
-user_recovery_token:
+user_recovery_token_fallback:
     path:     /user/recovery_token
     controller: App\Controller\RecoveryController::recoveryTokenAction
 
-user_recovery_token_ack:
+user_recovery_token_ack_fallback:
     path:     /user/recovery_token/ack
     controller: App\Controller\RecoveryController::recoveryTokenAckAction
+
+login_fallback:
+    path:     /login
+    controller: App\Controller\SecurityController::loginAction

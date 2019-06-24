@@ -108,11 +108,13 @@ security:
 
     access_control:
       - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/recovery, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/%locales%/recovery, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/%locales%/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/%locales%/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/admin, roles: ROLE_DOMAIN_ADMIN }
-      - { path: ^/voucher, roles: ROLE_USER, allow_if: "!has_role('ROLE_SUSPICIOUS')"}
-      - { path: ^/alias, roles: ROLE_USER, allow_if: "!has_role('ROLE_SPAM')"}
-      - { path: ^/account, roles: ROLE_USER, allow_if: "!has_role('ROLE_SPAM')"}
+      - { path: ^/alias$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/%locales%/admin, roles: ROLE_DOMAIN_ADMIN }
+      - { path: ^/%locales%/voucher, roles: ROLE_USER, allow_if: "!has_role('ROLE_SUSPICIOUS')"}
+      - { path: ^/%locales%/alias, roles: ROLE_USER, allow_if: "!has_role('ROLE_SPAM')"}
+      - { path: ^/%locales%/account, roles: ROLE_USER, allow_if: "!has_role('ROLE_SPAM')"}
       - { path: ^/, roles: ROLE_USER }
