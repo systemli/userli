@@ -42,6 +42,7 @@ release: clean prepare
 	# Create a release tarball
 	tar --exclude='${PWD_NAME}/.env.*' --exclude='${PWD_NAME}/.git*' \
 		--exclude='${PWD_NAME}/.*.yml' --exclude='${PWD_NAME}/behat.yml' \
+	       	--exclude='${PWD_NAME}/bin/github-release.sh' \
 	       	--exclude='${PWD_NAME}/build' --exclude='${PWD_NAME}/features' \
 		--exclude='${PWD_NAME}/Makefile' --exclude='${PWD_NAME}/node_modules' \
 		--exclude='${PWD_NAME}/phpunit.xml' --exclude='${PWD_NAME}/tests' \
