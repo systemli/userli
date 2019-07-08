@@ -38,6 +38,15 @@ index:
   delete-button: Slett konto
   recovery-token-button: Håndter gjenopprettingssymbol
   logged_in_as: Du er innlogget som %user%.
+  alias-explanation: "<p>\n  Bruk alias-adresser for å skjule din opprinnelige e-postadresse\
+    \ fra\n  folk du ikke kjenner godt, eller selskaper du ikke helt stoler på.\n\
+    </p>\n<p>\n  <ul>\n    <li>Alle e-poster sendt til e-postadresse går til din normale\
+    \ e-postboks.</li>\n    <li>For å sende fra en alias-adresse, må du sette opp\
+    \ din e-postklient manuelt.</li>\n    <li>Du kan ha %alias_limit_custom% egendefinerte\
+    \ alias-adresser.</li>\n    <li>Du kan ha %alias_limit_random% tilfeldige alias-adresser.</li>\n\
+    \    <li>Tilfeldige alias-adresser er tiltenkt bruk for ett formål\n    for å\
+    \ unngå sporing mellom ulike tjenester.</li>\n    <li>Kontakt oss for å slette\
+    \ egendefinerte alias-adresser.</li>\n  </ul>\n</p>\n"
 form:
   title: Registrer
   signin-header: Logg inn
@@ -78,9 +87,13 @@ recovery:
   waiting-time: Andre steg starter %time%.
   reset-lead: Du kan nå tilbakestille passordet ditt
   token-lead: Nytt gjenopprettingssymbol
+  started: "Første steg i gjenoppretting av passordet ditt er ferdig.\nVent i 48 timer.\
+    \ Deretter kan du sette et nytt passord i andre steg.\nBehold gjenopprettingssymbolet\
+    \ dit til da.\n"
 navbar_left:
   about-us:
     text: Om oss
+    link: https://www.example.org/nb/om-oss
 navbar_right:
   login: Logg inn
   logout: Logg ut
@@ -94,15 +107,29 @@ registration:
     \ minst 12 tegn.\n"
   label-email: Din foretrukne e-postadresse
   recovery-token-headline: Gjenopprettingssymbol
+  information-intro: "Ønsker du å registrere en e-postkonto med <a href=\"%project_url%\"\
+    >%project_name%</a>? Registreringer tillates kun hvis en venn inviterer deg med\
+    \ en invitasjonskode til tjenestene.\n"
 welcome:
   headline: Velkommen til %project_name%.
   lead: Du har nå satt opp en konto hos oss. Hva skal du foreta deg nå?
   next-button: Til oversikten
+  text: "<h3>Klar til bruk</h3> <p>På veven kan du finne veiledninger for å sette\
+    \ opp din e-postkonto med forskjellige klientprogrammer.</p> <p>Om én uke vil\
+    \ du motta tre invitasjonskoder, som du kan samle på <a href=\"%app_url%\">%app_url%</a>.\
+    \ Du kan gi disse til venner og invitere dem til å registrere seg på %project_name%.</p>\n"
 closed:
   title: Registrering stengt
   headline: Registrering stengt
   lead: Som følge av paragraf tre i TKÜV, har vi besluttet å stenge registreringen.
     Beklager.
+  text: "<p>Som følge av <a href=\"https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html\"\
+    \ target=\"_blank\">paragraf 3 av \"Verordnung über die technische und organisatorische\
+    \ Umsetzung von Maßnahmen zur Überwachung der Telekommunikation\"</a> (kort: telekommunikasjonsovervåknings-dekret\
+    \ - \"TKÜV\") er e-posttilbydere med mer enn 10000 brukere tvunget til å implementere\
+    \ et overvåkningsgrensesnitt for myndighetene. Derfor har vi besluttet å låse\
+    \ registreringen, og ikke tillate opprettelse av nye kontoer.<p>\n<p><strong>Dette\
+    \ har ingen innvirkning på eksisterende kontoer</strong></p>\n"
 delete:
   alias:
     headline: Slett alias-adresse %alias%
@@ -120,18 +147,56 @@ recovery-token:
   unset: Du har ikke noe gjenopprettingssymbol satt opp enda. Det anbefales at du
     oppretter et nå.
   created-headline: 'Følgende gjenopprettingssymbol ble opprettet for deg:'
+  created-info: "Hvis du har mistet passordet ditt, vil gjenopprettingssymbolet tillate\
+    \ deg å tilbakestille det. Skriv det ned og lagre det på en sikker plass.\n"
+  displayed-once: "Av sikkerhetshensyn, blir sikkerhetssymbolet kun vist én gang.\
+    \ Ingen kan gjenopprette deg for deg.\n"
 flashes:
   logout-successful: Du har blitt utlogget.
-  voucher-creation-successful: Du opprettet en ny invitasjonskode.
+  voucher-creation-successful: Ny invitasjonskode opprettet.
   recovery-next-login: Fortsett med innloggingen.
+  password-change-successful: Ditt nye passord er nå aktivt.
+  registration-successful: Du har registrert deg.
+  alias-creation-successful: Din nye alias-adresse ble opprettet.
+  alias-deletion-successful: Din alias-adresse ble slettet.
+  recovery-token-invalid: E-postadresse og/eller gjenopprettingssymbol er galt.
+  recovery-token-ack: Du genererte et gjenopprettingssymbol.
+  revocery-reauthenticate: Noe gikk galt. Identitetsbekreft deg igjen.
+  recovery-password-changed: Du endret passordet ditt.
 error:
   page_not_found: Siden du forsøker å nå finnes ikke.
   generic_error: En feil inntraff.
+  title: Oida, noe gikk galt.
+  back_link: Tilbake til hjemmesiden
 spam:
   title: Konto låst
+  text: "Oida. Det ser ut til at kontoen din har blitt misbrukt av en søppelposter.\n\
+    E-posttilgang har blitt avskrudd.\nKontakt brukerstøtte for å låse opp kontoen\
+    \ din.\n"
 Bad credentials.: Feil innloggingsdetaljer
 custom: egendefinert
 random: tilfeldig
 mail:
   welcome-subject: Velkommen til %domain%
   alias-created-subject: Ny alias-adresse opprettet
+  welcome-body: "Kjære bruker,\n\nVelkommen ombord. Du kan finne veiledninger for\
+    \ oppsett av din e-postkonto\nmed flere klientprogrammer på Internett.\n\nDu får\
+    \ en e-postboks med 1 GB kvote. Hvis du overstiger grensen,\nkan det hende din\
+    \ e-postkonto ikke fungerer riktig.\n\nOm en uke vil du motta tre invitasjonskoder,\
+    \ som du kan samle i\n%app_url%/voucher. Du kan gi disse til venner og\ninvitere\
+    \ dem til å registrere seg med %project_name%.\n\nÆrbødigst, ditt %project_name%-administratorlag.\n"
+  recovery-subject: Passordet for din e-postkonto %email% vil bli tilbakestilt
+  recovery-body: "Hei %email%,\n\nNoen har forsøkt å tilbakestille ditt kontopassord.\
+    \ For å gjøre dette,\nhar vedkommende identitetsbekreftet seg med din e-postadresse\
+    \ og\ntilhørende tilbakestillingskode på %app_url%/recovery.\n\nHar du ikke utløst\
+    \ dette selv? Da har noen andre med tilgang til\nditt gjenopprettingssymbol forsøkt\
+    \ å få tilgang til kontoen din. Gå til\n%app_url%/user/recovery_token umiddelbart\
+    \ og opprett et nytt\ngjenopprettingssymbol. Dette vil ugyldiggjøre det gamle\
+    \ gjenopprettings-\nsymbolet og stoppe prosessen.\n\nHvis du utløser prosessen\
+    \ selv, startet venteperioden på 48 timer nå.\nDen vil avsluttes klokken %time%.\
+    \ Etterpå kan du sette et nytt passord\npå %app_url%/recovery.\n\nVi håper du\
+    \ vil fortsette å ha glede av din e-postkonto.\nDitt %project_name%-administratorlag.\n"
+  alias-created:body: "Hei %email%,\n\nEt nytt alias har blitt satt opp for %email%\
+    \ e-postkontoen din:\n%alias%\n\nHåndter dine e-postaliaser her: %app_url%/alias\n\
+    \nVi håper du fortsetter å ha glede av din e-postkonto.\nDitt %project_name%-administratorlag.\n"
+flash_batch_remove_vouchers_success: Uinnløste kuponger slettet.
