@@ -314,6 +314,9 @@
             "ref": "87c585d24de9f43bca80ebcfd5cf5cb39445d95f"
         }
     },
+    "symfony/http-client": {
+        "version": "v4.3.2"
+    },
     "symfony/http-foundation": {
         "version": "v4.1.4"
     },

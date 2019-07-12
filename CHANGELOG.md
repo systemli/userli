@@ -1,6 +1,7 @@
-# 2.2.4 (UNRELEASED)
+# 2.3.0 (UNRELEASED)
 
 * Block Spammers from authenticating via checkpassword (Fixes: #177)
+* Test passwords againt haveibeenpwned database (Fixes: #161)
 * Upgrade to symfony 4.3.2
 
 # 2.2.3 (2019.06.24)

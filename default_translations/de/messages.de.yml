@@ -116,8 +116,10 @@ registration:
     Eine Registrierung ist nur möglich, wenn dich eine Freund*in zu unserem Dienst
     einlädt,
     dir also einen Einladungscode übergibt.
-  information-password-policy: "<strong>Wichtig:</strong> Du benötigst ein Passwort,\
-    \ das aus einer Kombination von 12 Zeichen besteht.\n"
+  information-password-policy: >
+    <strong>Wichtig:</strong>
+    Du benötigst ein Passwort, das aus mindestens 12 Zeichen besteht.
+    Passwörter werden gegen eine <a href="https://haveibeenpwned.com/Passwords">Datenbank bekannter schlechter Passwörter</a> getestet.
   label-email: Deine Wunsch E-Mail Adresse
   recovery-token-headline: Wiederherstellungscode
 welcome:

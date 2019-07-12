@@ -116,6 +116,7 @@ registration:
   information-password-policy: >
     <strong>Important:</strong>
     You need a password with at least 12 characters.
+    Passwords will be tested against a <a href="https://haveibeenpwned.com/Passwords">database of known bad passwords</a>.
   label-email: Your preferred email address
   recovery-token-headline: Recovery token
 welcome:

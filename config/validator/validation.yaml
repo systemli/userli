@@ -19,6 +19,7 @@ App\Entity\User:
             - NotBlank: ~
         plainPassword:
             - App\Validator\Constraints\PasswordPolicy: ~
+            - NotCompromisedPassword: ~
         domain:
             - Valid: ~
     constraints:
@@ -39,6 +40,7 @@ App\Form\Model\Registration:
                 exists: true
         plainPassword:
             - App\Validator\Constraints\PasswordPolicy: ~
+            - NotCompromisedPassword: ~
 
 App\Form\Model\RecoveryTokenAck:
     properties:
