@@ -207,4 +207,4 @@ Feature: Admin
     Then I should be on "/admin/user/batch"
     And I press "Yes, execute"
     Then I should be on "/admin/user/list"
-    And I should see text matching "Successfully deleted unredeemed vouchers"
+    And I should see text matching "Unredeemed invite codes deleted"

@@ -38,7 +38,7 @@ Feature: User
     And I press "Generate random alias"
 
     Then I should be on "/alias"
-    And I should see text matching "Your new alias address was created!"
+    And I should see text matching "Your new alias address was created."
     And the response status code should be 200
 
   @create-custom-alias
@@ -50,7 +50,7 @@ Feature: User
     And I press "Add"
 
     Then I should be on "/alias"
-    And I should see text matching "Your new alias address was created!"
+    And I should see text matching "Your new alias address was created."
     And the response status code should be 200
 
   @delete-alias
@@ -70,7 +70,7 @@ Feature: User
     And I press "Delete alias"
 
     Then I should be on "/alias"
-    And I should see text matching "Your alias address was successfully deleted!"
+    And I should see text matching "Your alias address was deleted."
     And the response status code should not be 403
 
   @delete-alias
@@ -121,7 +121,7 @@ Feature: User
     And I press "Create invite code"
 
     Then I should be on "/voucher"
-    And I should see text matching "You created a new invite code!"
+    And I should see text matching "New invite code created."
     And the response status code should be 200
 
   @create-voucher
@@ -131,7 +131,7 @@ Feature: User
     And I press "Create invite code"
 
     Then I should be on "/voucher"
-    And I should see text matching "You created a new invite code!"
+    And I should see text matching "New invite code created."
     And the response status code should be 200
 
   Scenario: Voucher button as Support

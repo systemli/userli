@@ -46,7 +46,7 @@ Feature: Recovery
     And I press "recovery_reset_password[submit]"
 
     Then I should be on "/recovery/reset_password"
-    And I should see text matching "You successfully changed your password."
+    And I should see text matching "You changed your password."
     And the response status code should be 200
 
   @recovery

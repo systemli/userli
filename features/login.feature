@@ -118,4 +118,4 @@ Feature: Login
 
     Then I should be on "/"
     And the response status code should be 200
-    And I should see text matching "disabled mail access"
+    And I should see text matching "Email access has been turned off"
