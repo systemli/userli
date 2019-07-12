@@ -1,7 +1,7 @@
 # 2.2.4 (UNRELEASED)
 
 * Block Spammers from authenticating via checkpassword (Fixes: #177)
-* Upgrade to symfony 4.2.10
+* Upgrade to symfony 4.3.2
 
 # 2.2.3 (2019.06.24)
 
