@@ -46,22 +46,16 @@ index:
   delete-button: Account löschen
   recovery-token-button: Wiederherstellungscode verwalten
   logged_in_as: Du bist angemeldet als %user%.
-  alias-explanation: |
-    <p>
-      Verstecke mittels Alias-Adressen deine originale Mail-Adresse vor Personen,
-      die du nicht gut kennst oder Firmen, denen du nicht voll vertraust.
-    </p>
-    <p>
-      <ul>
-        <li>Alle Mails, die an Alias-Adresse gesendet werden, landen in deiner normalen Mailbox.</li>
-        <li>Um von einer Alias-Adresse zu senden, musst du deinen Mail-Client manuell konfigurieren.</li>
-        <li>Du kannst %alias_limit_custom% gewählte Alias-Adressen haben.</li>
-        <li>Du kannst %alias_limit_random% zufällige Alias-Adressen haben.</li>
-        <li>Zufällige Alias-Adressen sollten nur für einen Zweck verwendet werden
-        um Verfolgung zwischen verschiedenen Diensten zu verhindern.</li>
-        <li>Kontaktiere uns um gewählte Alias-Adressen zu löschen.</li>
-      </ul>
-    </p>
+  alias-explanation: "<p>\n  Verstecke mittels Alias-Adressen deine originale Mail-Adresse\
+    \ vor Personen,  die du nicht gut kennst oder Firmen, denen du nicht voll vertraust.\n\
+    </p>\n<p>\n  <ul>\n    <li>Alle E-Mails, die an Alias-Adresse gesendet werden,\
+    \ landen in deiner normalen Mailbox.</li>\n    <li>Um von einer Alias-Adresse\
+    \ zu senden, musst du deinen Mail-Client manuell konfigurieren.</li>\n    <li>Du\
+    \ kannst %alias_limit_custom% gewählte Alias-Adressen haben.</li>\n    <li>Du\
+    \ kannst %alias_limit_random% zufällige Alias-Adressen haben.</li>\n    <li>Zufällige\
+    \ Alias-Adressen sollten nur für einen Zweck verwendet werden, um Verfolgung zwischen\
+    \ verschiedenen Diensten zu verhindern.</li>\n    <li>Kontaktiere uns um gewählte\
+    \ Alias-Adressen zu löschen.</li>\n  </ul>\n</p>\n"
 form:
   title: Anmelden
   signin-header: Login
@@ -97,10 +91,9 @@ recovery:
   header: Account wiederherstellen
   lead: Passwort zurücksetzen mit Hilfe des Wiederherstellungscodes
   cancel: Abbrechen
-  started: |
-    Fast geschafft. Der erste Schritt um dein Passwort zurückzusetzen, ist gemacht.
-    Jetzt musst du noch 48 Stunden warten, anschließend kannst du im zweiten Schritt
-    ein neues Passwort setzen. Bitte behalte deinen Wiederherstellungscode bis dahin.
+  started: "Der erste Schritt um dein Passwort zurückzusetzen, ist gemacht.\nJetzt\
+    \ musst du noch 48 Stunden warten. Anschließend kannst du im zweiten Schritt\n\
+    ein neues Passwort setzen. Bitte behalte deinen Wiederherstellungscode bis dahin.\n"
   waiting-info: Die Wartezeit dient deiner eigenen Sicherheit und kann nicht verkürzt
     oder umgangen werden.
   waiting-time: Der zweite Schritt ist möglich ab dem %time%.
@@ -181,17 +174,17 @@ recovery-token:
 flashes:
   logout-successful: Du bist jetzt abgemeldet.
   password-change-successful: Dein neues Passwort ist ab sofort aktiv!
-  registration-successful: Du hast dich erfolgreich registriert!
-  voucher-creation-successful: Du hast einen neuen Einladungscode erstellt!
-  alias-creation-successful: Deine neue Alias-Adresse wurde erstellt!
-  alias-deletion-successful: Deine Alias-Adresse wurde erfolgreich gelöscht!
+  registration-successful: Du bist nun registriert.
+  voucher-creation-successful: Neuer Einladungscode erstellt.
+  alias-creation-successful: Deine neue Alias-Adresse wurde erstellt.
+  alias-deletion-successful: Deine Alias-Adresse wurde gelöscht.
   recovery-token-invalid: E-Mail Adresse und/oder Wiederherstellungscode sind falsch!
-  recovery-token-ack: Du hast erfolgreich einen Wiederherstellungscode erzeugt!
+  recovery-token-ack: Du hast einen Wiederherstellungscode erzeugt.
   recovery-reauthenticate: Etwas ist schiefgelaufen. Du musst dich erneut authentifizieren!
   recovery-password-changed: Dein Passwort wurde geändert.
   recovery-next-login: Du kannst dich nun einloggen.
   revocery-reauthenticate: Etwas ist schief gelaufen. Bitte erneut authentifizieren!
-flash_batch_remove_vouchers_success: Nicht eingelöste Vouchers erfolgreich gelöscht
+flash_batch_remove_vouchers_success: Nicht eingelöste Einladungscodes gelöscht.
 error:
   title: Oops, es ist ein Fehler passiert.
   back_link: Zurück zur Startseite
@@ -199,10 +192,9 @@ error:
   generic_error: Es ist ein Fehler passiert. Das tut uns leid.
 spam:
   title: Account gesperrt
-  text: |
-    Oh nein! Wir glauben dein Account wurde von einem Spammer missbraucht.
-    Daher haben wir den Mailzugang deaktiviert
-    Bitte kontaktiere den Support um deinen Account frei zu schalten.
+  text: "Oh nein! Wir glauben dein Account wurde von einem Spammer missbraucht.\n\
+    Daher haben wir den E-Mailzugang deaktiviert.\nBitte kontaktiere den Support um\
+    \ deinen Account frei zu schalten.\n"
 Bad credentials.: Fehlerhafte Zugangsdaten
 custom: gewählten
 random: zufälligen
@@ -225,26 +217,17 @@ mail:
     Viel Spaß mit deinem Mailaccount, wünscht dir
     dein %project_name% Admin Team.
   recovery-subject: Das Passwort zu deinem E-Mail-Account %email% wird zurückgesetzt
-  recovery-body: |
-    Hallo %email%,
-
-    Jemand hat versucht, dein Passwort zurückzusetzen. Dazu wurden deine
-    E-Mail-Addresse und der zugehörige Wiederherstellungscode unter
-    %app_url%/recovery eingegeben.
-
-    Du hast das nicht selbst ausgelöst? Dann versucht jemand anderes mit
-    Zugang zu deinem Wiederherstellungscode Kontrolle über deinen Account
-    zu bekommen. Gehe schnellstmöglich zu %app_url%/user/recovery_token
-    und erstelle dir einen neuen Wiederherstellungscode. Dadurch wird der
-    alte Code ungültig und der Vorgang abgebrochen.
-
-    Hast du den Vorgang selbst ausgelöst, startet nun die 48-stündige
-    Wartezeit. Diese geht bis zum %time%. Anschließend kannst
-    du mit einem Besuch von %app_url%/recovery dein Passwort neu
-    setzen.
-
-    Weiterhin viel Spaß mit deinem Mailaccount, wünscht dir
-    dein %project_name% Admin Team.
+  recovery-body: "Hallo %email%,\n\nEs wurde versucht dein Passwort zurückzusetzen.\
+    \ Dazu wurden deine\nE-Mail-Addresse und der zugehörige Wiederherstellungscode\
+    \ unter\n%app_url%/recovery eingegeben.\n\nWenn du das nicht selbst warst,  versucht\
+    \ jemand anderes mit\nZugang zu deinem Wiederherstellungscode Kontrolle über deinen\
+    \ Account\nzu bekommen. Gehe schnellstmöglich zu %app_url%/user/recovery_token\n\
+    und erstelle dir einen neuen Wiederherstellungscode. Dadurch wird der\nalte Code\
+    \ ungültig und der Vorgang abgebrochen.\n\nHast du den Vorgang selbst ausgelöst,\
+    \ startet nun die 48-stündige\nWartezeit. Diese geht bis zum %time%. Anschließend\
+    \ kannst\ndu mit einem Besuch von %app_url%/recovery dein Passwort neu\nsetzen.\n\
+    \nWeiterhin viel Spaß mit deinem Mailaccount, wünscht dir\ndein %project_name%\
+    \ Admin Team.\n"
   alias-created-subject: Neue Alias-Adresse erstellt
   alias-created-body: |
     Hallo %email%,
