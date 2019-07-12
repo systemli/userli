@@ -186,7 +186,7 @@ error:
   generic_error: An error occured. We're sorry.
 spam:
   title: Account locked
-  text: "Oh no! We believe you account has been misused by a spammer.\nEmail access\
+  text: "Oh no! We believe your account has been misused by a spammer.\nEmail access\
     \ has been turned off.\nPlease contact support to unlock your account.\n"
 Bad credentials.: Wrong login details
 custom: custom

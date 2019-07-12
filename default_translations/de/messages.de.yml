@@ -194,7 +194,7 @@ error:
   generic_error: Es ist ein Fehler passiert. Das tut uns leid.
 spam:
   title: Account gesperrt
-  text: "Oh nein! Wir glauben dein Account wurde von einem Spammer missbraucht.\n\
+  text: "Oh nein! Wir glauben, dein Account wurde von einem Spammer missbraucht.\n\
     Daher haben wir den E-Mailzugang deaktiviert.\nBitte kontaktiere den Support um\
     \ deinen Account frei zu schalten.\n"
 Bad credentials.: Fehlerhafte Zugangsdaten
