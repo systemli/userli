@@ -28,11 +28,11 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/register"
+    Then I should be on "/en/register"
     And I should see text matching "The following recovery token got created for you"
 
     When I am on "/logout"
-    Then I should be on "/"
+    Then I should be on "/en/"
 
     When I am on "/login"
     And I fill in the following:
@@ -40,7 +40,7 @@ Feature: registration
       | password | P4ssW0rt!!!1      |
     And I press "Sign in"
 
-    Then I should be on "/"
+    Then I should be on "/en/"
     And I should see text matching "Log out"
 
   @registration
@@ -53,7 +53,7 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/register"
+    Then I should be on "/en/register"
     And I should see "The invite code is invalid."
 
   @registration
@@ -66,7 +66,7 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1         |
     And I press "Submit"
 
-    Then I should be on "/register"
+    Then I should be on "/en/register"
     And I should see "The email is invalid."
 
   @registration
@@ -79,7 +79,7 @@ Feature: registration
       | registration[plainPassword][second] | password |
     And I press "Submit"
 
-    Then I should be on "/register"
+    Then I should be on "/en/register"
     And I should see "The password comply not with our security policy."
 
   @registration
@@ -92,7 +92,7 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!2 |
     And I press "Submit"
 
-    Then I should be on "/register"
+    Then I should be on "/en/register"
     And I should see "Password and confirmation does not match"
 
   @registration
@@ -105,7 +105,7 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/register"
+    Then I should be on "/en/register"
     And I should see "The email address is already taken."
 
   @registration
@@ -118,7 +118,7 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/register"
+    Then I should be on "/en/register"
     And I should see "The email address is already taken."
 
   @registration
@@ -131,7 +131,7 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/register"
+    Then I should be on "/en/register"
     And I should see "The email address is already taken."
 
   @registration
@@ -144,7 +144,7 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/register"
+    Then I should be on "/en/register"
     And I should see "The email address is already taken."
 
   @registration
@@ -157,7 +157,7 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/register"
+    Then I should be on "/en/register"
     And I should see "The username must contain at least 3 characters."
 
   @registration
@@ -170,7 +170,7 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1                         |
     And I press "Submit"
 
-    Then I should be on "/register"
+    Then I should be on "/en/register"
     And I should see "The username must contain at most 32 characters."
 
   @registration
@@ -183,5 +183,5 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/register"
+    Then I should be on "/en/register"
     And I should see "The username contains unexpected characters. Only valid: Letters and numbers, as well as -, _ and ."

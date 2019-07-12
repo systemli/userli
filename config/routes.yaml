@@ -99,14 +99,14 @@ user_recovery_token_ack:
 
 # SecurityController
 
+login_check:
+    path:     /login_check
+
 login:
     path:     /{_locale}/login
     controller: App\Controller\SecurityController::loginAction
     requirements:
         _locale: '%locales%'
-
-login_check:
-    path:     /login_check
 
 logout:
     path:     /logout
