@@ -5,7 +5,7 @@ security:
 
     encoders:
         App\Entity\User:
-            algorithm: argon2i
+            algorithm: sodium
         legacy:
             id: 'App\Security\Encoder\PasswordHashEncoder'
 
