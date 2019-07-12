@@ -221,3 +221,14 @@ mail:
 
     We hope you continue to enjoy your email account.
     Your %project_name% admin team.
+admin:
+  registered-accounts: Registered accounts
+  registered-accounts-last-week: Registered accounts in last 7 days
+  invite-codes: Existing invite codes
+  invite-codes-redeemed: Redeemed invite codes
+Ratio: Ratio
+User: User
+Domain: Domain
+Alias: Alias address
+Voucher: Invite code
+Reserved Name: Reserved Name

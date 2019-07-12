@@ -8,15 +8,15 @@
             </div>
             <div class="box-body">
                 <dl>
-                    <dt>Registered accounts</dt>
+                    <dt>{{ "admin.registered-accounts"|trans }}</dt>
                     <dd>{{ users_count }}</dd>
-                    <dt>Registered accounts in last 7 days</dt>
+                    <dt>{{ "admin.registered-accounts-last-week"|trans }}s</dt>
                     <dd>{{ users_since }}</dd>
 {% if is_granted('ROLE_ADMIN') %}
-                    <dt>Existing Voucher</dt>
+                    <dt>{{ "admin.invite-codes"|trans }}</dt>
                     <dd>{{ vouchers_count }}</dd>
-                    <dt>Redeemed Voucher</dt>
-                    <dd>{{ vouchers_redeemed }} (Ratio: {{ vouchers_ratio }})</dd>
+                    <dt>{{ "admin.invite-codes-redeemed"|trans }}</dt>
+                    <dd>{{ vouchers_redeemed }} ({{  "Ratio"|trans }}: {{ vouchers_ratio }})</dd>
 {% endif %}
                 </dl>
             </div>

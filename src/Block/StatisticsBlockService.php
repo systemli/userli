@@ -5,17 +5,16 @@ namespace App\Block;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Sonata\BlockBundle\Block\Service\AbstractBlockService;
+use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
 use Sonata\BlockBundle\Model\BlockInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author louis <louis@systemli.org>
  */
-class StatisticsBlockService extends AbstractBlockService
+class StatisticsBlockService extends AbstractAdminBlockService
 {
     /**
      * @var ObjectManager
@@ -82,22 +81,6 @@ class StatisticsBlockService extends AbstractBlockService
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultSettings(OptionsResolverInterface $resolver)
-    {
-        $this->configureSettings($resolver);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
@@ -107,29 +90,6 @@ class StatisticsBlockService extends AbstractBlockService
                 'template' => 'Block/block_statistics.html.twig',
             )
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function load(BlockInterface $block)
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getJavascripts($media)
-    {
-        return array();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStylesheets($media)
-    {
-        return array();
     }
 
     /**

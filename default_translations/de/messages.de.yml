@@ -246,3 +246,14 @@ mail:
     \ neuer Alias hinzugefügt:\n%alias%\n\nVerwalte hier deine E-Mail-Aliase: %app_url%/alias\n\
     \nWir hoffen, dass du weiterhin Freude an Ihrem E-Mail-Konto haben wirst.\nDein\
     \ %project_name% Administrator-Team.\n"
+admin:
+  registered-accounts: Registrierte Nutzer
+  registered-accounts-last-week: Registrierte Nuter in den letzten 7 Tagen
+  invite-codes: Einladungscodes
+  invite-codes-redeemed: Eingelöste Einladungscodes
+Ratio: Ratio
+User: Nutzer
+Domain: Domäne
+Alias: Alias-Adresse
+Voucher: Einladungscode
+Reserved Name: Reservierter Name
