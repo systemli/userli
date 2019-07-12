@@ -1,3 +1,7 @@
+# 2.2.4 (UNRELEASED)
+
+* Block Spammers from authenticating via checkpassword (Fixes: #177)
+
 # 2.2.3 (2019.06.24)
 
 * Repair js copying of invite codes (Fixes: #165)

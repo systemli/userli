@@ -4,6 +4,7 @@ namespace App\Tests\Command;
 
 use App\Command\CheckPasswordCommand;
 use App\Entity\User;
+use App\Enum\Roles;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
 use App\Helper\FileDescriptorReader;
@@ -18,6 +19,7 @@ class CheckPasswordCommandTest extends TestCase
     protected $plainUser;
     protected $quotaUser;
     protected $mailCryptUser;
+    protected $spamUser;
 
     public function setUp()
     {
@@ -27,6 +29,8 @@ class CheckPasswordCommandTest extends TestCase
         $this->mailCryptUser = new User();
         $this->mailCryptUser->setMailCrypt(true);
         $this->mailCryptUser->setMailCryptPublicKey('somePublicKey');
+        $this->spamUser = new User();
+        $this->spamUser->setRoles([Roles::SPAM]);
     }
 
     /**
@@ -141,6 +145,7 @@ class CheckPasswordCommandTest extends TestCase
             ["user@example.org\x00password\x00timestamp\x00extra\x00", 0],
             ["quota@example.org\x00password\x00\x00", 0],
             ["mailcrypt@example.org\x00password\x00\x00", 0],
+            ["spam@example.org\x00password\x00\x00", 1],
             ["user@example.org\x00wrongpassword", 1],
             ["user@example.org\x00wrongpassword\x00", 1],
             ["user@example.org\x00wrongpassword\x00\x00", 1],
@@ -162,6 +167,7 @@ class CheckPasswordCommandTest extends TestCase
             ["quota@example.org", 0],
             ["mailcrypt@example.org", 0],
             ["unknown@example.org\x00password", 3],
+            ["spam@example.org", 1],
         ];
     }
 
@@ -181,6 +187,7 @@ class CheckPasswordCommandTest extends TestCase
                 ['user@example.org', $this->plainUser],
                 ['quota@example.org', $this->quotaUser],
                 ['mailcrypt@example.org', $this->mailCryptUser],
+                ['spam@example.org', $this->spamUser],
             ]
         );
 
@@ -199,6 +206,7 @@ class CheckPasswordCommandTest extends TestCase
                 [$this->plainUser, 'password', $this->plainUser],
                 [$this->quotaUser, 'password', $this->quotaUser],
                 [$this->mailCryptUser, 'password', $this->mailCryptUser],
+                [$this->spamUser, 'password', $this->spamUser],
             ]
         );
 
@@ -215,6 +223,7 @@ class CheckPasswordCommandTest extends TestCase
                 [$this->plainUser, 'password', ''],
                 [$this->quotaUser, 'password', ''],
                 [$this->mailCryptUser, 'password', 'somePrivateKey'],
+                [$this->spamUser, 'password', ''],
             ]
         );
 

@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Enum\Roles;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
 use App\Helper\FileDescriptorReader;
@@ -147,6 +148,11 @@ class CheckPasswordCommand extends Command
             } else {
                 return 1;
             }
+        }
+
+        // block spammers
+        if ($user->hasRole(Roles::SPAM)) {
+            return 1;
         }
 
         // Check if authentication credentials are valid
