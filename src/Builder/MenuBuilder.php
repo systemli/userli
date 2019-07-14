@@ -51,9 +51,7 @@ class MenuBuilder
      */
     public function createNavbarLeft()
     {
-        $menu = $this->factory->createItem('root', array(
-            'navbar' => true,
-        ));
+        $menu = $this->factory->createItem('root', ['navbar' => true]);
 
         if (!empty($this->navbarLeft)) {
             $menu = $this->menuHelper->build($this->navbarLeft, $menu);
@@ -71,13 +69,13 @@ class MenuBuilder
         $menu->setChildrenAttribute('class', 'nav navbar-nav navbar-right');
 
         if (!$this->authChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $menu->addChild('navbar_right.login', array('route' => 'login'));
+            $menu->addChild('navbar_right.login', ['route' => 'login']);
         } else {
             if ($this->authChecker->isGranted(Roles::DOMAIN_ADMIN)) {
-                $menu->addChild('navbar_right.admin', array('route' => 'sonata_admin_dashboard'));
+                $menu->addChild('navbar_right.admin', ['route' => 'sonata_admin_dashboard']);
             }
 
-            $menu->addChild('navbar_right.logout', array('route' => 'logout'));
+            $menu->addChild('navbar_right.logout', ['route' => 'logout']);
         }
 
         return $menu;

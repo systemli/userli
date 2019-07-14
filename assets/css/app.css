@@ -88,3 +88,7 @@ body {
     position: absolute;
     right: 10px;
 }
+
+.dropdown-menu {
+    min-width: unset;
+}
