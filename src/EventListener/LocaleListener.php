@@ -6,6 +6,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
 /**
  * @author louis <louis@systemli.org>
@@ -18,12 +22,19 @@ class LocaleListener implements EventSubscriberInterface
     private $supportedLocales;
 
     /**
+     * @var UrlMatcher
+     */
+    private $urlMatcher;
+
+    /**
      * LocaleListener constructor.
      * @param string[] $supportedLocales
+     * @param UrlMatcherInterface $urlMatcher
      */
-    public function __construct(array $supportedLocales)
+    public function __construct(array $supportedLocales, UrlMatcherInterface $urlMatcher)
     {
         $this->supportedLocales = $supportedLocales;
+        $this->urlMatcher = $urlMatcher;
     }
 
     /**
@@ -44,15 +55,15 @@ class LocaleListener implements EventSubscriberInterface
             }
         }
 
-        // Don't redirect specific urls
-        if ("/login_check" === $route) return;
-        if (strpos($route, 'logout') !== false) return;
-        if (strpos($route, '/admin/') !== false) return;
-
-        // redirect
+        // redirect if localized version exists
         $newLocale = $request->attributes->get('_locale');
         $newRoute = '/'.$newLocale.$route;
-        $event->setResponse(new RedirectResponse(($newRoute)));
+        try {
+            $this->urlMatcher->match($newRoute);
+            $event->setResponse(new RedirectResponse($newRoute));
+        } catch (ResourceNotFoundException $e) {
+        } catch (MethodNotAllowedException $e) {
+        }
     }
 
     /**
