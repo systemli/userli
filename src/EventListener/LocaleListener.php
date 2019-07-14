@@ -8,7 +8,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
 /**
@@ -22,13 +21,14 @@ class LocaleListener implements EventSubscriberInterface
     private $supportedLocales;
 
     /**
-     * @var UrlMatcher
+     * @var UrlMatcherInterface
      */
     private $urlMatcher;
 
     /**
      * LocaleListener constructor.
-     * @param string[] $supportedLocales
+     *
+     * @param string[]            $supportedLocales
      * @param UrlMatcherInterface $urlMatcher
      */
     public function __construct(array $supportedLocales, UrlMatcherInterface $urlMatcher)
@@ -46,7 +46,9 @@ class LocaleListener implements EventSubscriberInterface
         $route = $request->getRequestUri();
 
         // Check if we are already on localized path
-        if (null !== $this->checkLanguage($route)) return;
+        if (null !== $this->checkLanguage($route)) {
+            return;
+        }
 
         // Make sure _locale is set
         if (null === $request->attributes->get('_locale')) {
@@ -62,19 +64,25 @@ class LocaleListener implements EventSubscriberInterface
             $this->urlMatcher->match($newRoute);
             $event->setResponse(new RedirectResponse($newRoute));
         } catch (ResourceNotFoundException $e) {
+            // ignore errors, we just redirect if there was none
         } catch (MethodNotAllowedException $e) {
+            // ignore errors, we just redirect if there was none
         }
     }
 
     /**
      * @param $route
-     * @return null|string
+     *
+     * @return string|null
      */
-    private function checkLanguage($route){
-        foreach($this->supportedLocales as $locale){
-            if(preg_match_all("/^\/$locale\//", $route))
+    private function checkLanguage($route)
+    {
+        foreach ($this->supportedLocales as $locale) {
+            if (preg_match_all("/^\/$locale\//", $route)) {
                 return $locale;
+            }
         }
+
         return null;
     }
 
