@@ -12,7 +12,10 @@ use App\Traits\UpdatedTimeTrait;
  */
 class ReservedName
 {
-    use IdTrait, CreationTimeTrait, UpdatedTimeTrait, NameTrait;
+    use IdTrait;
+    use CreationTimeTrait;
+    use UpdatedTimeTrait;
+    use NameTrait;
 
     public function __toString()
     {

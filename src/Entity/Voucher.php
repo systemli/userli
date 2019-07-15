@@ -11,7 +11,9 @@ use App\Traits\UserAwareTrait;
  */
 class Voucher
 {
-    use IdTrait, CreationTimeTrait, UserAwareTrait;
+    use IdTrait;
+    use CreationTimeTrait;
+    use UserAwareTrait;
     /**
      * @var \DateTime
      */

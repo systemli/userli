@@ -18,12 +18,13 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 class RegistrationController extends AbstractController
 {
     /**
-     * var RegistrationHandler
+     * var RegistrationHandler.
      */
     private $registrationHandler;
 
     /**
      * RegistrationController constructor.
+     *
      * @param RegistrationHandler $registrationHandler
      */
     public function __construct(RegistrationHandler $registrationHandler)

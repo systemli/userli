@@ -26,9 +26,10 @@ class RegistrationMailCommand extends Command
 
     /**
      * RegistrationMailCommand constructor.
-     * @param ObjectManager $manager
+     *
+     * @param ObjectManager        $manager
      * @param WelcomeMessageSender $welcomeMessageSender
-     * @param string|null $name
+     * @param string|null          $name
      */
     public function __construct(ObjectManager $manager, WelcomeMessageSender $welcomeMessageSender, ?string $name = null)
     {

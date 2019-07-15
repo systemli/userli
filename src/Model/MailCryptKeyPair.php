@@ -10,7 +10,8 @@ use App\Traits\PublicKeyTrait;
  */
 class MailCryptKeyPair
 {
-    use PrivateKeyTrait, PublicKeyTrait;
+    use PrivateKeyTrait;
+    use PublicKeyTrait;
 
     /**
      * MailCryptKeyPair constructor.

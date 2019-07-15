@@ -15,7 +15,13 @@ use App\Traits\UserAwareTrait;
  */
 class Alias implements SoftDeletableInterface
 {
-    use IdTrait, CreationTimeTrait, UpdatedTimeTrait, DeleteTrait, DomainAwareTrait, UserAwareTrait, RandomTrait;
+    use IdTrait;
+    use CreationTimeTrait;
+    use UpdatedTimeTrait;
+    use DeleteTrait;
+    use DomainAwareTrait;
+    use UserAwareTrait;
+    use RandomTrait;
 
     /**
      * @var string

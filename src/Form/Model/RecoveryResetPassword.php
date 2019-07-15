@@ -10,7 +10,8 @@ use App\Traits\RecoveryTokenTrait;
  */
 class RecoveryResetPassword
 {
-    use EmailTrait, RecoveryTokenTrait;
+    use EmailTrait;
+    use RecoveryTokenTrait;
 
     /**
      * @var string

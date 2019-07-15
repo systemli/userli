@@ -31,10 +31,29 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface, EncoderAwareInterface
 {
-    use IdTrait, CreationTimeTrait, UpdatedTimeTrait, EmailTrait, QuotaTrait, PasswordTrait, SaltTrait, DeleteTrait,
-        InvitationVoucherTrait, PlainPasswordTrait, DomainAwareTrait, LastLoginTimeTrait, PasswordVersionTrait,
-        RecoverySecretBoxTrait, PlainRecoveryTokenTrait, RecoveryStartTimeTrait, MailCryptTrait,
-        MailCryptSecretBoxTrait, PlainMailCryptPrivateKeyTrait, MailCryptPublicKeyTrait;
+    use IdTrait;
+    use CreationTimeTrait;
+    use UpdatedTimeTrait;
+    use EmailTrait;
+    use QuotaTrait;
+    use PasswordTrait;
+    use SaltTrait;
+    use DeleteTrait;
+    use
+        InvitationVoucherTrait;
+    use PlainPasswordTrait;
+    use DomainAwareTrait;
+    use LastLoginTimeTrait;
+    use PasswordVersionTrait;
+    use
+        RecoverySecretBoxTrait;
+    use PlainRecoveryTokenTrait;
+    use RecoveryStartTimeTrait;
+    use MailCryptTrait;
+    use
+        MailCryptSecretBoxTrait;
+    use PlainMailCryptPrivateKeyTrait;
+    use MailCryptPublicKeyTrait;
 
     const CURRENT_PASSWORD_VERSION = 2;
 
