@@ -26,12 +26,20 @@ class Kernel extends BaseKernel
 
     public function getCacheDir()
     {
-        return $this->getProjectDir().'/var/cache/'.$this->environment;
+        $projectDir = parent::getProjectDir();
+        if ('/vagrant' === $projectDir && in_array($this->environment, array('dev', 'test'))) {
+            $projectDir = '/dev/shm/userli';
+        }
+        return $projectDir.'/var/cache/'.$this->environment;
     }
 
     public function getLogDir()
     {
-        return $this->getProjectDir().'/var/log';
+        $projectDir = parent::getProjectDir();
+        if ('/vagrant' === $projectDir && in_array($this->environment, array('dev', 'test'))) {
+            $projectDir = '/dev/shm/userli';
+        }
+        return $projectDir.'/var/log';
     }
 
     public function registerBundles()
