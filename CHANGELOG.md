@@ -1,8 +1,11 @@
-# 2.3.0 (UNRELEASED)
+# 2.3.0 (2019.07.16)
 
+* Add manual language switcher (Fixes: #172)
+* Add Norwegian Bokmål as available translation
 * Block Spammers from authenticating via checkpassword (Fixes: #177)
 * Test passwords againt haveibeenpwned database (Fixes: #161)
 * Upgrade to symfony 4.3.2
+* Improve speed of Vagrant box
 
 # 2.2.3 (2019.06.24)
 
