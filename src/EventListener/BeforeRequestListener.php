@@ -4,7 +4,7 @@ namespace App\EventListener;
 
 use App\Entity\User;
 use App\Enum\Roles;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -16,9 +16,9 @@ use Symfony\Component\Security\Core\Security;
 class BeforeRequestListener implements EventSubscriberInterface
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
-    protected $manager;
+    protected $entityManager;
     /**
      * @var Security
      */
@@ -27,12 +27,12 @@ class BeforeRequestListener implements EventSubscriberInterface
     /**
      * BeforeRequestListener constructor.
      *
-     * @param ObjectManager $manager
+     * @param EntityManagerInterface $entityManager
      * @param Security      $security
      */
-    public function __construct(ObjectManager $manager, Security $security)
+    public function __construct(EntityManagerInterface $entityManager, Security $security)
     {
-        $this->manager = $manager;
+        $this->entityManager = $entityManager;
         $this->security = $security;
     }
 
@@ -42,7 +42,7 @@ class BeforeRequestListener implements EventSubscriberInterface
     public function onKernelRequest(GetResponseEvent $event)
     {
         if ($user = $this->getNonAdminUser()) {
-            $filter = $this->manager->getFilters()->enable('domain_filter');
+            $filter = $this->entityManager->getFilters()->enable('domain_filter');
             $filter->setParameter('domainId', $user->getDomain()->getId());
         }
     }
@@ -59,7 +59,7 @@ class BeforeRequestListener implements EventSubscriberInterface
             return null;
         }
 
-        return $this->manager->getRepository(User::class)->findByEmail($user->getUsername());
+        return $this->entityManager->getRepository(User::class)->findByEmail($user->getUsername());
     }
 
     /**
