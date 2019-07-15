@@ -18,7 +18,7 @@ Feature: Recovery
       | recovery_process[recoveryToken] | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
     And I press "recovery_process[submit]"
 
-    Then I should be on "/recovery"
+    Then I should be on "/en/recovery"
     And I should see text matching "Second step starts at"
     And the response status code should be 200
 
@@ -30,7 +30,7 @@ Feature: Recovery
       | recovery_process[recoveryToken] | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
     And I press "recovery_process[submit]"
 
-    Then I should be on "/recovery"
+    Then I should be on "/en/recovery"
     And I should see text matching "You're now allowed to reset your password"
     And the response status code should be 200
 
@@ -39,13 +39,13 @@ Feature: Recovery
     When I have the request params for "recovery_reset_password":
       | email         | user2@example.org                    |
       | recoveryToken | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
-    And I request "POST /recovery/reset_password"
+    And I request "POST /en/recovery/reset_password"
     And I fill in the following:
       | recovery_reset_password[newPassword][first]  | passwordabcd |
       | recovery_reset_password[newPassword][second] | passwordabcd |
     And I press "recovery_reset_password[submit]"
 
-    Then I should be on "/recovery/reset_password"
+    Then I should be on "/en/recovery/reset_password"
     And I should see text matching "You changed your password."
     And the response status code should be 200
 
@@ -53,12 +53,12 @@ Feature: Recovery
   Scenario: Acknowledge new recovery token in recovery process as user (#4)
     When I have the request params for "recovery_token_ack":
       | recoveryToken | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
-    And I request "POST /recovery/recovery_token/ack"
+    And I request "POST /en/recovery/recovery_token/ack"
     And I fill in the following:
       | recovery_token_ack[ack]           | 1                                    |
     And I press "recovery_token_ack[submit]"
 
-    Then I should be on "/login"
+    Then I should be on "/en/login"
     And I should see text matching "Go on with the login."
     And the response status code should be 200
 
@@ -70,7 +70,7 @@ Feature: Recovery
       | recovery_process[recoveryToken] | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
     And I press "recovery_process[submit]"
 
-    Then I should be on "/recovery"
+    Then I should be on "/en/recovery"
     And I should see text matching "Email address and/or recovery token are wrong!"
 
   @recovery
@@ -81,7 +81,7 @@ Feature: Recovery
       | recovery_process[recoveryToken] | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
     And I press "recovery_process[submit]"
 
-    Then I should be on "/recovery"
+    Then I should be on "/en/recovery"
     And I should see text matching "Second step starts at"
     And the response status code should be 200
 
@@ -93,5 +93,5 @@ Feature: Recovery
       | recovery_process[recoveryToken] | broken_token     |
     And I press "recovery_process[submit]"
 
-    Then I should be on "/recovery"
+    Then I should be on "/en/recovery"
     And I should see text matching "This token has an invalid format."

@@ -71,7 +71,10 @@ class VoucherCreationCommand extends Command
         for ($i = 1; $i <= $input->getOption('count'); ++$i) {
             $voucher = VoucherFactory::create($user);
             if (true === $input->getOption('print-links')) {
-                $output->write(sprintf("%s\n", $this->router->generate('register_voucher', ['voucher' => $voucher->getCode()])));
+                $output->write(sprintf("%s\n", $this->router->generate(
+                    'register_voucher',
+                    ['_locale' => 'en', 'voucher' => $voucher->getCode()]
+                )));
             } elseif (true === $input->getOption('print')) {
                 $output->write(sprintf("%s\n", $voucher->getCode()));
             }

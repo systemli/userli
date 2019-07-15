@@ -1,0 +1,22 @@
+{% set route = app.request.attributes.get('_route') %}
+{% set route_params = app.request.attributes.get('_route_params') %}
+{% set params = route_params|merge(app.request.query.all) %}
+
+<ul id=navbar-locale class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
+            {{ app.request.locale|upper }}
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu menu_level_1" role="menu">
+{% for locale in locales if locale != app.request.locale %}
+          <li>
+                <a href="{{ path(route, params|merge({ _locale: locale })) }}">
+                    {{ locale|upper }}
+                </a>
+            </li>
+{% endfor %}
+        </ul>
+    </li>
+</ul>
+

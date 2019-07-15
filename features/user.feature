@@ -27,7 +27,7 @@ Feature: User
       | password_change_newPassword_second | P4ssW0rd!!!1 |
     And I press "Submit"
 
-    Then I should be on "/account"
+    Then I should be on "/en/account"
     And I should see text matching "Your new password is now active!"
     And the response status code should not be 403
 
@@ -37,7 +37,7 @@ Feature: User
     And I am on "/alias"
     And I press "Generate random alias"
 
-    Then I should be on "/alias"
+    Then I should be on "/en/alias"
     And I should see text matching "Your new alias address was created."
     And the response status code should be 200
 
@@ -49,7 +49,7 @@ Feature: User
       | create_custom_alias_alias | test_alias |
     And I press "Add"
 
-    Then I should be on "/alias"
+    Then I should be on "/en/alias"
     And I should see text matching "Your new alias address was created."
     And the response status code should be 200
 
@@ -58,7 +58,7 @@ Feature: User
     When I am authenticated as "user@example.org"
     And I am on "/alias/delete/1"
 
-    Then I should be on "/alias"
+    Then I should be on "/en/alias"
     And the response status code should not be 403
 
   @delete-alias
@@ -69,7 +69,7 @@ Feature: User
       | delete_alias_password | asdasd |
     And I press "Delete alias"
 
-    Then I should be on "/alias"
+    Then I should be on "/en/alias"
     And I should see text matching "Your alias address was deleted."
     And the response status code should not be 403
 
@@ -77,21 +77,21 @@ Feature: User
   Scenario: Deleted alias redirect
     When I am authenticated as "user@example.org"
     And I am on "/alias/delete/2"
-    Then I should be on "/alias"
+    Then I should be on "/en/alias"
     And the response status code should not be 403
 
   @delete-alias
   Scenario: Foreign alias redirect
     When I am authenticated as "user@example.org"
     And I am on "/alias/delete/3"
-    Then I should be on "/alias"
+    Then I should be on "/en/alias"
     And the response status code should not be 403
 
   @delete-alias
   Scenario: Nonexistent alias redirect
     When I am authenticated as "user@example.org"
     And I am on "/alias/delete/200"
-    Then I should be on "/alias"
+    Then I should be on "/en/alias"
     And the response status code should not be 403
 
   @delete-user
@@ -102,7 +102,7 @@ Feature: User
       | delete_user_password | asdasd |
     And I press "Delete account"
 
-    Then I should be on "/"
+    Then I should be on "/en/"
     And the response status code should not be 403
 
     And I fill in the following:
@@ -110,7 +110,7 @@ Feature: User
       | password | asdasd           |
     And I press "Sign in"
 
-    Then I should be on "/login"
+    Then I should be on "/en/login"
     Then I should see text matching "Wrong login details"
     And the response status code should not be 403
 
@@ -120,7 +120,7 @@ Feature: User
     And I am on "/voucher"
     And I press "Create invite code"
 
-    Then I should be on "/voucher"
+    Then I should be on "/en/voucher"
     And I should see text matching "New invite code created."
     And the response status code should be 200
 
@@ -130,7 +130,7 @@ Feature: User
     And I am on "/voucher"
     And I press "Create invite code"
 
-    Then I should be on "/voucher"
+    Then I should be on "/en/voucher"
     And I should see text matching "New invite code created."
     And the response status code should be 200
 

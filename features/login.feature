@@ -20,7 +20,7 @@ Feature: Login
       | password | asdasd            |
     And I press "Sign in"
 
-    Then I should be on "/"
+    Then I should be on "/en/"
     And I should see text matching "Log out"
     And the response status code should not be 403
 
@@ -32,7 +32,7 @@ Feature: Login
       | password | asdasd            |
     And I press "Sign in"
 
-    Then I should be on "/"
+    Then I should be on "/en/"
     And I should see text matching "Log out"
     And the response status code should not be 403
 
@@ -54,7 +54,7 @@ Feature: Login
       | password | asdasd           |
     And I press "Sign in"
 
-    Then I should be on "/"
+    Then I should be on "/en/"
     And the response status code should not be 403
 
   @login
@@ -65,7 +65,7 @@ Feature: Login
       | password | asdasd              |
     And I press "Sign in"
 
-    Then I should be on "/"
+    Then I should be on "/en/"
     And the response status code should not be 403
 
   @login
@@ -76,7 +76,7 @@ Feature: Login
       | password | asdasd |
     And I press "Sign in"
 
-    Then I should be on "/"
+    Then I should be on "/en/"
     And the response status code should not be 403
 
   @login
@@ -90,7 +90,7 @@ Feature: Login
       | password | paßwort             |
     And I press "Sign in"
 
-    Then I should be on "/"
+    Then I should be on "/en/"
     And the response status code should not be 403
 
   @logout
@@ -99,7 +99,7 @@ Feature: Login
     And I am on "/logout"
 
     When I am on "/admin/dashboard"
-    Then I should be on "/login"
+    Then I should be on "/en/login"
 
   @logout
   Scenario: Logout
@@ -116,6 +116,6 @@ Feature: Login
       | password | asdasd              |
     And I press "Sign in"
 
-    Then I should be on "/"
+    Then I should be on "/en/"
     And the response status code should be 200
     And I should see text matching "Email access has been turned off"
