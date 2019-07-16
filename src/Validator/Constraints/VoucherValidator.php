@@ -21,7 +21,7 @@ class VoucherValidator extends ConstraintValidator
     private $voucherRepository;
 
     /**
-     * EmailAddressValidator constructor.
+     * VoucherValidator constructor.
      *
      * @param ObjectManager $manager
      */
