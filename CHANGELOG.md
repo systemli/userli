@@ -1,3 +1,7 @@
+# 2.3.1 (UNRELEASED)
+
+* Skip check against HIBP service if unavailable
+
 # 2.3.0 (2019.07.16)
 
 * Add manual language switcher (Fixes: #172)
