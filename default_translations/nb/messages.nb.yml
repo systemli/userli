@@ -10,7 +10,7 @@ start:
   account-settings-desc: Passord og mer
   account-delete: Slett konto
   aliases: Alias-adresser
-  aliases-delete: slett alias-adresser
+  aliases-delete: slett alias-adresse
   aliases-desc: Skjul din identitet
   vouchers: Invitasjonskoder
   vouchers-desc: Inviter vennene dine
@@ -104,7 +104,8 @@ registration:
   title: Registrering med %project_name%
   information: Info
   information-password-policy: "<strong>Viktig:</strong> Du trenger et passord på\
-    \ minst 12 tegn.\n"
+    \ minst 12 tegn. Passord vil bli testet mot  <a href=\"https://haveibeenpwned.com/Passwords\"\
+    >databasen over kjente dårlige passord</a>.\n"
   label-email: Din foretrukne e-postadresse
   recovery-token-headline: Gjenopprettingssymbol
   information-intro: "Ønsker du å registrere en e-postkonto med <a href=\"%project_url%\"\
@@ -140,7 +141,7 @@ delete:
   cancel: Avbryt
 recovery-token:
   headline: Håndter gjenopprettingssymbol
-  lead: Gjenopprettingssymbolet kan brukes til å tilbakestille passordet ditt når
+  lead: Gjenopprettingssymbolet kan brukes til å tilbakestille passordet ditt hvis
     du glemmer det.
   set: Du har allerede satt opp et gjenopprettingssymbol.
   set-extra: Oppretting av nytt symbol ugyldiggjør det nåværende symbolet.
@@ -199,4 +200,15 @@ mail:
   alias-created:body: "Hei %email%,\n\nEt nytt alias har blitt satt opp for %email%\
     \ e-postkontoen din:\n%alias%\n\nHåndter dine e-postaliaser her: %app_url%/alias\n\
     \nVi håper du fortsetter å ha glede av din e-postkonto.\nDitt %project_name%-administratorlag.\n"
-flash_batch_remove_vouchers_success: Uinnløste kuponger slettet.
+flash_batch_remove_vouchers_success: Uinnløste invitasjonskoder slettet.
+admin:
+  registered-accounts: Registrerte kontoer
+  registered-accounts-last-week: Registrerte kontoer de siste syv dagene
+  invite-codes: Eksisterende invitasjonskoder
+  invite-codes-redeemed: Innløste invitasjonskoder
+Ratio: Forhold
+User: Bruker
+Domain: Domene
+Alias: Alias-adresse
+Voucher: Invitasjonskode
+Reserved Name: Reservert navn
