@@ -139,10 +139,8 @@ welcome:
 closed:
   title: Registro ha cerrado
   headline: Hemos cerrado el registro de cuentas.
-  lead: >
-    De acuerdo con el párrafo 3 de las normativa de Telecomunicaciones TKÜV
-    hemos decidido mantener un limite de 10.000 registros posibles.
-    Lamentamos los inconvenientes.
+  lead: De acuerdo con el párrafo 3 de las normativa de Telecomunicaciones TKÜV hemos
+    decidido mantener un limite de 10.000 registros posibles. Lamentamos los inconvenientes.
 delete:
   alias:
     headline: Borrar cuenta alias %alias%
