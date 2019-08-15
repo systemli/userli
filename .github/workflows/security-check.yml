@@ -1,0 +1,14 @@
+name: Symfony Security Check
+
+on: [push]
+
+jobs:
+  security-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Security Check
+        uses: ./symfony-security-check
+        with:
+          args: composer.lock
