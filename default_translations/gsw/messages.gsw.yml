@@ -1,1 +1,215 @@
-{}
+form:
+  remember-me: Igloggt blibe
+  email: E-Mail
+  change-password: Dis Passwort ändere
+  create-random-alias: Zuefäuigi Alias Adrässe generiere
+  delete-account: Account lösche
+  create-voucher: Invite Code erschteue
+  password_confirmation: Passwort beschtätige
+  signin: Ilogge
+  create-custom-alias: Hinzuefüege
+  recovery-token: Recovery Token
+  delete-password: Passwort
+  registration-recovery-token-ack: I ha s Recovery Token amne sichere Platz abgschpicheret
+  registration-recovery-token-next-button: Witerfahre
+  generate-recovery-token: Nöis Recovery Token erschteue
+  submit: Abschicke
+  password: Passwort
+  recovery-link: Passwort vergässe?
+  voucher-redeemed-on: Iglöst am
+  delete-alias: Alias Adrässe lösche
+  signin-header: Ilogge
+  actual-password: Momentans Passwort
+  title: Regischtriere
+  roles: Rouene
+  new-password: Nöis Passwort
+  register-header: Account erschteue
+  oclock-by: vo
+  voucher: Invite Code
+  new-password_confirmation: Nöis Passwort beschtätige
+  new-custom-alias: Nöii Alias Adrässe
+  recovery-start: Wiederhärschteue
+index:
+  recovery-token-button: Recovery Token verwaute
+  alias-explanation: "<p>\n  Alias Adrässene chasch bruuche zum dini urschprünglechi\
+    \ E-Mail Adrässe vor Lüt wo nid so guet kennsch oder Firmene wo nid vertrousch,\
+    \ z verschtecke.\n</p>\n<p>\n  <ul>\n    <li>Aui E-Mails wo a Alias Adrässene\
+    \ verschickt wärde lande i dire normale Mailbox.</li>\n    <li>Zum vonere Alias\
+    \ Adrässe us z versände muesch di E-Mail Client manuell entsprächend ischteue.</li>\n\
+    \    <li>Du chasch %alias_limit_custom% benutzerdefinierti Alias Adrässene ha.</li>\n\
+    \    <li>Du chasch %alias_limit_random% zuefäuigi Alias Adrässene ha.</li>\n \
+    \   <li>Zuefäuigi Alias Adrässene si drzue dänkt, für verschidnigi Services azmäude\
+    \ zum nid chönne trackt z wärde.</li>\n    <li>Bitte kontaktier üs zum benutzerdefinierti\
+    \ Alias Adrässene la z lösche.</li>\n  </ul>\n</p>\n"
+  alias-deletion-random: Sobaud du auti Adrässene löschisch chasch wieder nöii alege.
+  alias-deletion-custom: Schriib üs zum Adrässene la lösche.
+  voucher-explanation: "Bruch dini Invite Codes hie zum Fründe ilade. Schtandardmässig\
+    \ hesch drü Iladige z guet. Wenn meh Fründe möchtsch ilade, wänd di bitte ad Adminischtratore.\
+    \ Mir spichere Date beträffend Iladige nume e gwüssi Zyt um Missbruuch vorzböige.\n"
+  alias-empty: Du hesch keni %alias_type% Alias Adrässene feschtgleit.
+  alias-headline: Dini %alias_type% Alias Adrässene
+  delete-button: Account lösche
+  voucher-limit: Du hesch ke Invite Codes meh übrig.
+  title: Di E-Mail Account verwaute
+  logged_in_as: Du bisch igloggt aus %user%.
+  voucher-disable: "Am %date% bechunnsch drü Invite Codes. Das isch so glöst zum Masse-Regischtrierige\
+    \ und Spam verhindere.\n"
+  voucher-sharing: Dr Invite Link kopiere
+  delete-description: "Du chasch di %project_name% E-Mail Account lösche. Dadrmit\
+    \ wärde aui dini E-Mail glöscht. <strong>Es Wiederhärschteue zumne schpätere Zytpunkt\
+    \ isch nid müglech.</strong> <br /><br /> Zum di Account lösche muesch dis iztige\
+    \ Passwort igäh.\n"
+  voucher-headline: Dini Invite Codes
+  delete-headline: Account lösche
+  alias-limit: Du hesch s Limit vo %alias_limit% %alias_type% Alias Adrässene erreicht.
+admin:
+  registered-accounts-last-week: Regischtrierti Accounts ide letschte 7 Täg
+  registered-accounts: Regischtrierti Accounts
+  invite-codes-redeemed: Iglösti Invite Codes
+  invite-codes: Exischtierendi Invite Codes
+Voucher: Invite Code
+delete:
+  alias:
+    headline: Alias %alias% lösche
+    lead: Mir müesse dis Passwort verifiziere zum dä Alias chönne lösche.
+  user:
+    headline: Account lösche
+    lead: Mir müesse dis Passwort verifiziere zum di Account chönne lösche.
+  cancel: Abbräche
+start:
+  aliases: Alias Adrässene
+  account-settings: Account Iischtellige
+  aliases-desc: Dini Identität verschtecke
+  registration-button: Account erschteue
+  vouchers: Invite Codes
+  registration-text: "Du hesch no ke E-Mail Account bi %domain%? Kes Problem! We eine\
+    \ vo dine Fründe scho e Account het, frag ne doch umne Invite Code und erschteu\
+    \ dr sofort di Account.\n"
+  intro: Hie chasch e E-Mail Account erschteue und verwaute.
+  account-delete: Account lösche
+  aliases-delete: Alias Adrässe lösche
+  registration-header: Regischtration
+  vouchers-desc: Lad dini Fründe ii
+  account-settings-desc: Passwörter und meh
+  webmail-desc: E-Mails läse und schriibe
+  title: Wiukomme bi %domain%
+  webmail: Webmail
+welcome:
+  text: "<h3>Gschafft</h3> <p>Im Internet fingsch Aleitige wie du die E-Mail Account\
+    \ i verschiedenschte Programm konfiguriere chasch.</p> <p>I einere Wuche bechunnsch\
+    \ du drü Invite Codes wo bi <a href=\"%app_url%\">%app_url%</a> chasch abhole.\
+    \ Du chasch die dine Fründe witerleite und se drmit ilade e Account bi %project_name%\
+    \ z erschteue.</p>\n"
+  lead: Du hesch erfougriich e Account bi üs erschteut. Was si die nächschte Schritte?
+  headline: Wiukomme bi %project_name%!
+  next-button: Zur Übersicht
+recovery:
+  lead: S Passwort mittem Recovery Token zrüggsetze
+  token-lead: Nöis Recovery Token
+  header: Di Account wiederhärschteue
+  waiting-info: Die Wartezyt isch für dini eigeti Sicherheit und cha weder verchürzt
+    no überschprunge wärde.
+  waiting-time: Dr zwöit Schritt startet am %time%.
+  reset-lead: Du hesch ke Berächtigung zum dis Passwort zrüggzsetze
+  started: "Dr erscht Schritt zum Passwort zrüggsetze isch erledigt.\nIz muesch 48\
+    \ Schtung warte. Ab denn chasch es nöis Passwort setze im zwöite Schritt.\nBitte\
+    \ bewahr dis Recovery Token bis denn uf.\n"
+  cancel: Abbbräche
+recovery-token:
+  set: Du hesch bereits es Recovery Token gsetzt.
+  set-extra: S Erschteue vomne nöie Token wird s aktuelle invalidiere.
+  created-headline: 'Das Token isch für di erschteut worde:'
+  lead: S Recovery Token cha drzue verwändet wärde dis Passwort zrüggzsetze wenns
+    vergässe hesch.
+  created-info: "Wenn du dis Passwort verlore hesch, erloubt dir s Recovery Token\
+    \ es nöis z setze. Notier dr das Token und bewahrs amne sichere Ort uuf.\n"
+  displayed-once: "Us Sicherheitsgründ wird s Recovery Token nume einisch azeigt.\
+    \ Mir chöi das Token nid wiederhärschteue.\n"
+  headline: Recovery Token verwaute
+  unset: Du hesch no kes Recovery Token gsetzt. Mir emfpähle dringend iz eis z mache.
+Reserved Name: Reservierte Name
+error:
+  generic_error: E Fähler isch ufträtte. Excusé.
+  title: Ups, mir hei hie e Fähler.
+  page_not_found: Die agfordereti Site gits nid.
+  back_link: Zrügg zum Afang
+mail:
+  alias-created:body: "Hallo %email%,\n\nFür dini E-Mail Adrässe %email% isch e nöie\
+    \ Alias erschteut worde:\n%alias%\n\nVerwaut dini E-Mail Aliase hie: %app_url%/alias\n\
+    \nMir hoffe dass du witerhin Fröid a dim E-Mail Account hesch.\nDis %project_name%\
+    \ Admin Team.\n"
+  recovery-subject: S Passwort für di E-Mail Account %email% wird zrügggsetzt
+  recovery-body: "Hallo %email%,\n\nDis Account Passwort isch versuecht worde zrüggzsetze\
+    \ mit\ndire E-Mail Adrässe und em passende Recovery Code bi %app_url%/recovery.\n\
+    \nFaus du das nid säuber bisch gsi, het öpper angers mit Zuegriff uf\ndis Recovery\
+    \ Token versuecht di Account z übernäh. Gang so schnäu wie\nmüglech uf %app_url%/user/recovery_token\
+    \ und erschteu es nöis\nRecovery Token. Das invalidiert s alte Token und stoppt\
+    \ dr Prozäss.\n\nFaus du dä Prozäss säuber hesch igleitet, schtartet iz die 48\
+    \ stündigi\nWartezyt. Sie wird am %time% ände. När chasch bi %app_url%/recovery\n\
+    es nöis Passwort setze.\n\nMir hoffe dass du witerhin Fröid a dim E-Mail Account\
+    \ hesch.\nDis %project_name% Admin Team.\n"
+  alias-created-subject: Nöii Alias Adrässe erscheut
+  welcome-subject: Wiukomme bi %domain%
+  welcome-body: "Liebe Benutzer,\n\nWiukomme a Bord. Im Internet fingsch Aleitige\
+    \ wie du die E-Mail Account \ni verschiedenschte Programm konfiguriere chasch.\n\
+    \nDu bechunnsch e Mailbox mit 1 GB quota. Sobald das Limit erreicht isch,\nbeschteit\
+    \ d Gfahr dass di E-Mail Account nüm korräkt funktioniert.\n\nI einere Wuche bechunnsch\
+    \ du drü Invite Codes wo bi %app_url% \nchasch abhole. Du chasch die dine Fründe\
+    \ witerleite und se drmit ilade\ne Account bi %project_name% z erschteue.\n\n\
+    Beschti Grüess, dis %project_name% Admin Team.\n"
+flashes:
+  recovery-token-ack: Du hesch es Recovery Token generiert.
+  logout-successful: Du bisch iz usgloggt.
+  recovery-token-invalid: E-Mail Adrässe und/oder Recovery Token isch fautsch!
+  voucher-creation-successful: Nöie Invite Code isch erschtellt.
+  recovery-password-changed: Du hesch dis Passwort gänderet.
+  alias-deletion-successful: Alias Adrässe isch glöscht.
+  alias-creation-successful: Nöie Alias Adrässe isch erschtellt.
+  password-change-successful: Dis nöie Passwort isch iz aktiv!
+  revocery-reauthenticate: Irgendöppis isch schief gloffe. Bitte nöi amäude!
+  registration-successful: Du bisch iz regischtriert.
+  recovery-next-login: Witerfahre mittem Ilogge.
+navbar_right:
+  login: Ilogge
+  logout: Uslogge
+  admin: Admin
+Bad credentials.: Fautschi Login Agabe
+registration:
+  information: Information
+  recovery-token-headline: Recovery Token
+  title: Regischtriere bi %project_name%
+  information-password-policy: "<strong>Wichtig:</strong> Du bruuchsch es Passwort\
+    \ mit mindeschtens 12 Zeiche. Passwörter wärde gäge ne  <a href=\"https://haveibeenpwned.com/Passwords\"\
+    >Datebank mit bekannte schlächte Passwörter </a> teschtet.\n"
+  label-email: Dini bevorzugti E-Mail Adrässe
+  information-intro: "Würdsch du gärn e E-Mail Account bi <a href=\"%project_url%\"\
+    >%project_name%</a> ha? Mir erloube Nöiregischtratione nume indäm e Fründ di mittemne\
+    \ Invite Code iladt.\n"
+Domain: Domain
+closed:
+  headline: Regischtrierig gschlosse
+  lead: Wägem Absatz drü TKÜV hei mir üs entschlosse d Regischtrierig z schliesse.
+    Sorry für dä.
+  title: Regischtrierig gschlosse
+  text: "<p>Wägem <a href=\"https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html\"\
+    \ target=\"_blank\">Absatz drü vor \"Verordnung über die technische und organisatorische\
+    \ Umsetzung von Maßnahmen zur Überwachung der Telekommunikation\"</a> (churz \"\
+    TKÜV\") müesse E-Mail Provider mit meh als 10'000 User e Überwachigsschnittschteu\
+    \ fürd Behördene implementiere. Das isch dr Grund wieso mir üs hei entschlosse\
+    \ d Regischtrierig z schliesse und damit s Erschteue vo nöiie Accounts z verhindere.<p>\n\
+    <p><strong>Bishärigi Accounts si da drvo nid betroffe</strong></p>\n"
+spam:
+  text: "Oh nei! Mir hei s Gfüeu dass di Account vomene Spammer isch misbruucht worde.\n\
+    E-Mail Zuegriff isch deaktiviert worde.\nBitte kontaktier dr Support zum di Account\
+    \ entschperre.\n"
+  title: Account isch gschperrt
+User: User
+Alias: Alias Adrässe
+navbar_left:
+  about-us:
+    text: Über üs
+    link: https://www.example.org/de-ch/ueber-ues
+random: zuefäuig
+flash_batch_remove_vouchers_success: Nid iglösti Invite Codes glöscht.
+custom: benutzerdefiniert
+Ratio: Verhäutnis
