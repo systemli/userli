@@ -2,7 +2,8 @@ name: Sensio Security Check
 
 on:
   push:
-    branches: '*'
+    branches:
+      - '*'
   schedule:
     - cron:  '0 8 * * 1'
 
