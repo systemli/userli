@@ -1,0 +1,19 @@
+name: Sensio Security Check
+
+on:
+  push:
+    branches:
+      - '*'
+  schedule:
+    - cron:  '0 8 * * 1'
+
+jobs:
+  security-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Security Check
+        uses: systemli/gh-action-php-security-checker@master
+        with:
+          args: ./composer.lock
