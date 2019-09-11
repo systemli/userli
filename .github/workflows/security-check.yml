@@ -1,6 +1,10 @@
-name: Symfony Security Check
+name: Sensio Security Check
 
-on: [push]
+on:
+  push:
+    branches: '*'
+  schedule:
+    - cron:  '0 8 * * 1'
 
 jobs:
   security-check:
@@ -9,6 +13,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Security Check
-        uses: ./symfony-security-check
+        uses: systemli/gh-action-php-security-checker@master
         with:
-          args: composer.lock
+          args: ./composer.lock
