@@ -72,5 +72,3 @@ matrix:
       env:
         - DATABASE_DRIVER=pdo_pgsql
         - DATABASE_URL=pgsql://mail_test:password@127.0.0.1:5432/mail_test
-    - script: make security-check
-      name: Run symfony security checks

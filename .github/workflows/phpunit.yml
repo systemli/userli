@@ -1,0 +1,33 @@
+name: PHPUnit
+
+on: [push]
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Test
+        uses: ./.github/actions/php/7.3
+        env:
+          DATABASE_DRIVER: pdo_sqlite
+          DATABASE_URL: sqlite:///%kernel.project_dir%/var/db_test.sqlite
+          APP_ENV: test
+          APP_SECRET: 165e25e3846534bb4665d7078a851c0b
+          MAILER_URL: smtp://localhost:25?encryption=&auth_mode=
+          MAILER_DELIVERY_ADDRESS: admin@example.org
+          APP_NAME: "Userli"
+          APP_URL: "https://users.example.org"
+          PROJECT_NAME: "example.org"
+          PROJECT_URL: "https://www.example.org"
+          DOMAIN: "example.org"
+          SENDER_ADDRESS: "admin@example.org"
+          NOTIFICATION_ADDRESS: "monitoring@example.org"
+          SEND_MAIL: 1
+          LOCALE: "de"
+          HAS_SINA_BOX: 0
+          MAIL_CRYPT_ENABLED: 1
+          MAIL_CRYPT_AUTO: 1
+        with:
+          args: make test
