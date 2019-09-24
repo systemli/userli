@@ -10,12 +10,6 @@
 [submodule "vagrant/ansible/roles/andyceo.phpcsfixer"]
 	path = ansible/roles/andyceo.phpcsfixer
 	url = https://github.com/andyceo/ansible-role-php-cs-fixer.git
-[submodule "vagrant/ansible/roles/manala.php"]
-	path = ansible/roles/manala.php
-	url = https://github.com/manala/ansible-role-php.git
-[submodule "vagrant/ansible/roles/manala.apt"]
-	path = ansible/roles/manala.apt
-	url = https://github.com/manala/ansible-role-apt.git
 [submodule "vagrant/ansible/roles/systemli.dovecot"]
 	path = ansible/roles/systemli.dovecot
 	url = https://github.com/systemli/ansible-role-dovecot.git
@@ -30,4 +24,4 @@
 	url = https://github.com/weareinteractive/ansible-apt.git
 [submodule "ansible/roles/mariadb"]
 	path = ansible/roles/mariadb
-	url = git@github.com:systemli/ansible-role-mariadb.git
+	url = https://github.com/systemli/ansible-role-mariadb.git
