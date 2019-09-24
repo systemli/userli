@@ -46,9 +46,9 @@ release: clean prepare
 	       	--exclude='${PWD_NAME}/build' --exclude='${PWD_NAME}/features' \
 		--exclude='${PWD_NAME}/Makefile' --exclude='${PWD_NAME}/node_modules' \
 		--exclude='${PWD_NAME}/phpunit.xml' --exclude='${PWD_NAME}/tests' \
-	       	--exclude='${PWD_NAME}/vagrant' --exclude='${PWD_NAME}/var/cache/*' \
+	       	--exclude='${PWD_NAME}/ansible' --exclude='${PWD_NAME}/var/cache/*' \
 		--exclude='${PWD_NAME}/var/log/*' --exclude='${PWD_NAME}/webpack.config.js' \
-		--exclude='${PWD_NAME}/yarn.lock' \
+		--exclude='${PWD_NAME}/yarn.lock' --exclude='${PWD_NAME}/Vagrantfile' \
 		-czf build/${RELEASE_FILE} ../${PWD_NAME}
 	# Generate SHA hash sum files
 	for sha in ${SHA_ALGORITHMS}; do \
@@ -61,8 +61,8 @@ reset: clean
 	rm -rf public/build
 	rm -rf public/bundles
 	rm -rf public/components
-	rm -rf vagrant/.vagrant/
-	rm -f vagrant/ansible/playbook.retry
+	rm -rf .vagrant/
+	rm -f ansible/playbook.retry
 	rm -rf var/log/*
 	rm -rf var/cache/*
 	rm -rf vendor

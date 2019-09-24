@@ -12,9 +12,9 @@ Vagrant.configure("2") do |config|
         v.customize ["modifyvm", :id, "--memory", 2048]
     end
 
-    config.vm.box = "debian/stretch64"
+    config.vm.box = "debian/buster64"
     config.vm.network :private_network, ip: "192.168.33.99"
-    config.vm.synced_folder "../", "/vagrant",
+    config.vm.synced_folder "./", "/vagrant",
       type: "nfs",
       linux__nfs_options: ['rw','no_subtree_check','all_squash','async']
     config.ssh.forward_agent = true

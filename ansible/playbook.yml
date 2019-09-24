@@ -1,0 +1,61 @@
+- hosts: all
+  become: yes
+  pre_tasks:
+  roles:
+    - weareinteractive.apt
+    - nginx
+    - mariadb
+    - systemli.dovecot
+    - geerlingguy.php
+    - geerlingguy.composer
+    - geerlingguy.nodejs
+    - oefenweb.yarn
+    - andyceo.phpcsfixer
+  vars:
+    dovecot_disable_plaintext_auth: "no"
+    dovecot_postfix_auth: true
+    apt_packages:
+      - git
+      - make
+      - postfix
+      - unzip
+      - zip
+    mariadb_databases:
+      - mail
+      - mail_test
+    mariadb_users_extra:
+      - name: mail
+        host: localhost
+        password: password
+        priv: "mail.*:ALL"
+      - name: mail_test
+        host: localhost
+        password: password
+        priv: "mail_test.*:ALL"
+    nodejs_version: "8.x"
+    php_default_version_debian: 7.3
+    php_packages:
+      # necessary
+      - php{{ php_default_version_debian }}-apcu
+      - php{{ php_default_version_debian }}-cli
+      - php{{ php_default_version_debian }}-curl
+      - php{{ php_default_version_debian }}-fpm
+      - php{{ php_default_version_debian }}-gd
+      - php{{ php_default_version_debian }}-mbstring
+      - php{{ php_default_version_debian }}-mysql
+      - php{{ php_default_version_debian }}-xml
+      - php{{ php_default_version_debian }}-zip
+      # performance
+      - php{{ php_default_version_debian }}-ctype
+      - php{{ php_default_version_debian }}-intl
+      # debugging
+      - php{{ php_default_version_debian }}-xdebug
+    php_webserver_daemon: nginx
+  tasks:
+    - name: composer install
+      composer:
+        command: install
+        working_dir: /vagrant
+        no_dev: False
+      become: true
+      become_user: vagrant

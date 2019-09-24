@@ -13,8 +13,8 @@ config/services_test.yaml
 node_modules
 public/build
 public/components/*
-vagrant/.vagrant/
-vagrant/ansible/playbook.retry
+.vagrant/
+ansible/playbook.retry
 translations/
 .php_cs.cache
 

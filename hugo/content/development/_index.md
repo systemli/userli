@@ -12,7 +12,7 @@ alwaysopen = false
 ## Start Vagrant box
 
     git submodule update --init
-    cd vagrant && vagrant up && vagrant ssh
+    vagrant up && vagrant ssh
 
     # create database and schema
     bin/console doctrine:schema:create
