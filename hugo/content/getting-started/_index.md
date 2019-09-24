@@ -5,7 +5,7 @@ weight = 1
 alwaysopen = true
 +++
 
-The easiest way to install Userli on a fresh Debian OS is running these commands:
+The easiest way to install Userli on a fresh Debian Buster is running these commands:
 
     # install dependencies
     sudo apt install -y python-pip git
@@ -15,7 +15,7 @@ The easiest way to install Userli on a fresh Debian OS is running these commands
     git clone https://github.com/systemli/ansible-role-userli.git
     cd ansible-role-userli
 
-    # install caddy, mysql, php7.1 and userli
+    # install apache2, mariadb, php7.3 and userli
     sudo molecule converge -s localhost
 
 This installs all dependencies, creates a database and database user
