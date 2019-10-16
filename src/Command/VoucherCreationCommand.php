@@ -11,9 +11,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class VoucherCreationCommand extends Command
 {
     /**

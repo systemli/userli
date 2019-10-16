@@ -10,8 +10,6 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
  * Class VoucherValidator.
- *
- * @author doobry <doobry@systemli.org>
  */
 class VoucherValidator extends ConstraintValidator
 {

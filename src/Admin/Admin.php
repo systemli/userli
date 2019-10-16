@@ -5,9 +5,6 @@ namespace App\Admin;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Symfony\Component\Security\Core\Security;
 
-/**
- * @author louis <louis@systemli.org>
- */
 abstract class Admin extends AbstractAdmin
 {
     /**

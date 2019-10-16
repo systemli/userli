@@ -6,9 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class SecurityController extends AbstractController
 {
     /**

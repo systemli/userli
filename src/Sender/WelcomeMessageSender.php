@@ -8,8 +8,6 @@ use App\Handler\MailHandler;
 
 /**
  * Class WelcomeMessageSender.
- *
- * @author doobry <doobry@systemli.org>
  */
 class WelcomeMessageSender
 {

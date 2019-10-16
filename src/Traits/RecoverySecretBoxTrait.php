@@ -2,9 +2,6 @@
 
 namespace App\Traits;
 
-/**
- * @author doobry <doobry@systemli.org>
- */
 trait RecoverySecretBoxTrait
 {
     /**

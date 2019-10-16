@@ -7,9 +7,6 @@ use App\Helper\RandomStringGenerator;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * @author doobry <doobry@systemli.org>
- */
 class RandomAliasCreationListener implements EventSubscriberInterface
 {
     /**

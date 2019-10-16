@@ -2,9 +2,6 @@
 
 namespace App\Handler;
 
-/**
- * @author louis@systemli.org
- */
 class PasswordStrengthHandler
 {
     const REGEX_FORBIDDEN_CHARS = '/[äöüÄÖÜß\'"]/';

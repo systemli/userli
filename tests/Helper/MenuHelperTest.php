@@ -7,9 +7,6 @@ use Knp\Menu\ItemInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\TranslatorInterface;
 
-/**
- * @author doobry <doobry@systemli.org>
- */
 class MenuHelperTest extends TestCase
 {
     private $childs = [];

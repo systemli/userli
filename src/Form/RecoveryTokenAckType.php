@@ -9,9 +9,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @author doobry <doobry@systemli.org>
- */
 class RecoveryTokenAckType extends AbstractType
 {
     const NAME = 'recovery_token_ack';

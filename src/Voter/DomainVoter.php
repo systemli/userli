@@ -11,9 +11,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
 
-/**
- * @author tim <tim@systemli.org>
- */
 class DomainVoter extends Voter
 {
     /**

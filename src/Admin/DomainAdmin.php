@@ -8,9 +8,6 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class DomainAdmin extends Admin
 {
     /**

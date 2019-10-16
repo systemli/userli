@@ -9,9 +9,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class PasswordChangeType extends AbstractType
 {
     const NAME = 'password_change';

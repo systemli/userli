@@ -9,8 +9,6 @@ use App\Handler\MailHandler;
 
 /**
  * Class AliasCreatedMessageSender.
- *
- * @author doobry <doobry@systemli.org>
  */
 class AliasCreatedMessageSender
 {

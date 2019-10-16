@@ -16,9 +16,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-/**
- * @author doobry <doobry@systemli.org>
- */
 class CheckPasswordCommand extends Command
 {
     // TODO: put the constants somewhere public and use it here and in RemoveUsersCommand

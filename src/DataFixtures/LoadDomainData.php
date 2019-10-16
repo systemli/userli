@@ -7,9 +7,6 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class LoadDomainData extends Fixture implements OrderedFixtureInterface
 {
     private $domains = [

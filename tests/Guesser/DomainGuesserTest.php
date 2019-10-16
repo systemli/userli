@@ -8,9 +8,6 @@ use App\Repository\DomainRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class DomainGuesserTest extends TestCase
 {
     /**

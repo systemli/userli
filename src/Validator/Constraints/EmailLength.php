@@ -5,9 +5,6 @@ namespace App\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
 
-/**
- * @author doobry <doobry@systemli.org>
- */
 class EmailLength extends Constraint
 {
     /**

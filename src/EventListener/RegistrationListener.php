@@ -8,9 +8,6 @@ use App\Sender\WelcomeMessageSender;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class RegistrationListener implements EventSubscriberInterface
 {
     /**

@@ -8,9 +8,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @author tim <tim@systemli.org>
- */
 class CustomAliasCreateType extends AbstractType
 {
     const NAME = 'create_custom_alias';

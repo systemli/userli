@@ -6,9 +6,6 @@ use App\Entity\Domain;
 use App\Repository\DomainRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class DomainGuesser
 {
     /**

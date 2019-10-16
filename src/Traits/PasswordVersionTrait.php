@@ -2,9 +2,6 @@
 
 namespace App\Traits;
 
-/**
- * @author tim <tim@systemli.org>
- */
 trait PasswordVersionTrait
 {
     /**

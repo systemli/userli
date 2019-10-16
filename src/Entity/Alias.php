@@ -10,9 +10,6 @@ use App\Traits\RandomTrait;
 use App\Traits\UpdatedTimeTrait;
 use App\Traits\UserAwareTrait;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class Alias implements SoftDeletableInterface
 {
     use IdTrait;

@@ -6,9 +6,6 @@ use App\Entity\User;
 use App\Traits\UserAwareTrait;
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class UserEvent extends Event
 {
     use UserAwareTrait;

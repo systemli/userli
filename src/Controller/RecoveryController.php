@@ -21,9 +21,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @author doobry <doobry@systemli.org>
- */
 class RecoveryController extends AbstractController
 {
     const PROCESS_DELAY = '-2 days';

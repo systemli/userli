@@ -10,9 +10,6 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class LocaleListener implements EventSubscriberInterface
 {
     /**

@@ -2,9 +2,6 @@
 
 namespace App\Event;
 
-/**
- * @author louis <louis@systemli.org>
- */
 final class Events
 {
     const MAIL_ACCOUNT_CREATED = 'mail_account_created';

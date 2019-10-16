@@ -8,8 +8,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class RecoveryProcessMessageBuilderTest.
- *
- * @author doobry <doobry@systemli.org>
  */
 class RecoveryProcessMessageBuilderTest extends TestCase
 {

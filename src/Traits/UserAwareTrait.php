@@ -4,9 +4,6 @@ namespace App\Traits;
 
 use App\Entity\User;
 
-/**
- * @author louis <louis@systemli.org>
- */
 trait UserAwareTrait
 {
     /**

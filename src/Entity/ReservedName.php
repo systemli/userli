@@ -7,9 +7,6 @@ use App\Traits\IdTrait;
 use App\Traits\NameTrait;
 use App\Traits\UpdatedTimeTrait;
 
-/**
- * @author doobry <doobry@systemli.org>
- */
 class ReservedName
 {
     use IdTrait;

@@ -14,9 +14,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Security;
 
-/**
- * @author tim <tim@systemli.org>
- */
 class BeforeRequestListenerTest extends TestCase
 {
     /**

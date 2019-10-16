@@ -6,8 +6,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class RecoveryProcessMessageBuilder.
- *
- * @author doobry <doobry@systemli.org>
  */
 class RecoveryProcessMessageBuilder
 {

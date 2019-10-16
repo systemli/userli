@@ -5,9 +5,6 @@ namespace App\Security\Encoder;
 use Symfony\Component\Security\Core\Encoder\BasePasswordEncoder;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class PasswordHashEncoder extends BasePasswordEncoder
 {
     private $algorithm;

@@ -2,9 +2,6 @@
 
 namespace App\Traits;
 
-/**
- * @author louis <louis@systemli.org>
- */
 trait DeleteTrait
 {
     /**

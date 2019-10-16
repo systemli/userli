@@ -4,9 +4,6 @@ namespace App\Traits;
 
 use App\Entity\Alias;
 
-/**
- * @author doobry <doobry@systemli.org>
- */
 trait AliasAwareTrait
 {
     /**

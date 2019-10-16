@@ -20,9 +20,6 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\DateTime;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class UserAdmin extends Admin
 {
     use DomainGuesserAwareTrait;

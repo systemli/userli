@@ -6,9 +6,6 @@ use App\Entity\Domain;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 
-/**
- * @author tim <tim@systemli.org>
- */
 class DomainFilter extends SQLFilter
 {
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)

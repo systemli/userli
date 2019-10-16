@@ -4,9 +4,6 @@ namespace App\Traits;
 
 use App\Entity\Domain;
 
-/**
- * @author louis <louis@systemli.org>
- */
 trait DomainAwareTrait
 {
     /**

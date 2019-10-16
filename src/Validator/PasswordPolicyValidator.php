@@ -6,9 +6,6 @@ use App\Handler\PasswordStrengthHandler;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class PasswordPolicyValidator extends ConstraintValidator
 {
     /**

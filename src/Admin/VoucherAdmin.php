@@ -11,9 +11,6 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class VoucherAdmin extends Admin
 {
     /**

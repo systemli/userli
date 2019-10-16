@@ -2,9 +2,6 @@
 
 namespace App\Form\Model;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class Registration
 {
     /**

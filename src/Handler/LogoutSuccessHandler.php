@@ -6,9 +6,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
 {
     /**

@@ -4,9 +4,6 @@ namespace App\Traits;
 
 use App\Guesser\DomainGuesser;
 
-/**
- * @author louis <louis@systemli.org>
- */
 trait DomainGuesserAwareTrait
 {
     /**

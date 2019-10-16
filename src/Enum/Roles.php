@@ -2,9 +2,6 @@
 
 namespace App\Enum;
 
-/**
- * @author louis <louis@systemli.org>
- */
 final class Roles
 {
     const MULTIPLIER = 'ROLE_MULTIPLIER';

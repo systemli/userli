@@ -26,9 +26,6 @@ use App\Traits\UpdatedTimeTrait;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class User implements UserInterface, EncoderAwareInterface
 {
     use IdTrait;

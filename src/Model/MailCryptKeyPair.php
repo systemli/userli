@@ -5,9 +5,6 @@ namespace App\Model;
 use App\Traits\PrivateKeyTrait;
 use App\Traits\PublicKeyTrait;
 
-/**
- * @author doobry <doobry@systemli.org>
- */
 class MailCryptKeyPair
 {
     use PrivateKeyTrait;

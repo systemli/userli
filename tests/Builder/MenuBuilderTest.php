@@ -10,9 +10,6 @@ use Knp\Menu\ItemInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-/**
- * @author doobry <doobry@systemli.org>
- */
 class MenuBuilderTest extends TestCase
 {
     private $menu;

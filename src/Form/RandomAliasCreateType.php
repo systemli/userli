@@ -7,9 +7,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @author doobry <doobry@systemli.org>
- */
 class RandomAliasCreateType extends AbstractType
 {
     const NAME = 'create_alias';

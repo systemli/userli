@@ -11,9 +11,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class LoadUserData extends Fixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     const PASSWORD = 'password';

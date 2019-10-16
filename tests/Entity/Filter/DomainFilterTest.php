@@ -13,8 +13,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class DomainFilterTest.
- *
- * @author tim <tim@systemli.org>
  */
 class DomainFilterTest extends TestCase
 {

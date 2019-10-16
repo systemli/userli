@@ -6,8 +6,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class WelcomeMessageBuilder.
- *
- * @author doobry <doobry@systemli.org>
  */
 class WelcomeMessageBuilder
 {

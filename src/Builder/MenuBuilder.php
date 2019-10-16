@@ -8,9 +8,6 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class MenuBuilder
 {
     /**

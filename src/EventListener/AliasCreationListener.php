@@ -7,9 +7,6 @@ use App\Sender\AliasCreatedMessageSender;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * @author doobry <doobry@systemli.org>
- */
 class AliasCreationListener implements EventSubscriberInterface
 {
     /**

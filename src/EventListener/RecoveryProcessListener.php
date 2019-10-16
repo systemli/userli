@@ -8,9 +8,6 @@ use App\Sender\RecoveryProcessMessageSender;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-/**
- * @author doobry <doobry@systemli.org>
- */
 class RecoveryProcessListener implements EventSubscriberInterface
 {
     /**

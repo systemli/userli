@@ -7,9 +7,6 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-/**
- * @author doobry <doobry@systemli.org>
- */
 class LoadReservedNameData extends Fixture implements OrderedFixtureInterface
 {
     /**

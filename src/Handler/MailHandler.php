@@ -5,9 +5,6 @@ namespace App\Handler;
 use Swift_Mailer;
 use Swift_Message;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class MailHandler
 {
     /**

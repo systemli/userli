@@ -14,9 +14,6 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class FeatureContext extends MinkContext
 {
     use KernelDictionary;

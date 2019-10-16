@@ -12,9 +12,6 @@ use App\Helper\PasswordUpdater;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class RegistrationHandler
 {
     const REGISTRATION_LIMIT = 9999;

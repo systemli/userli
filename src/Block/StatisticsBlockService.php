@@ -11,9 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class StatisticsBlockService extends AbstractAdminBlockService
 {
     /**

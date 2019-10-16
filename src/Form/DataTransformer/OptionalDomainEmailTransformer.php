@@ -4,9 +4,6 @@ namespace App\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 
-/**
- * @author tim <tim@systemli.org>
- */
 class OptionalDomainEmailTransformer implements DataTransformerInterface
 {
     /**

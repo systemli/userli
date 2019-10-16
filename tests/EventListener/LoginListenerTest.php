@@ -14,9 +14,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
-/**
- * @author tim <tim@systemli.org>
- */
 class LoginListenerTest extends TestCase
 {
     /**

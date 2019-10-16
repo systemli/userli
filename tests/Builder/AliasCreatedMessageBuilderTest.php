@@ -8,8 +8,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class AliasCreatedMessageBuilderTest.
- *
- * @author doobry <doobry@systemli.org>
  */
 class AliasCreatedMessageBuilderTest extends TestCase
 {

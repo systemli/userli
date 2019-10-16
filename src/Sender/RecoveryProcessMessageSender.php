@@ -8,8 +8,6 @@ use App\Handler\MailHandler;
 
 /**
  * Class RecoveryProcessMessageSender.
- *
- * @author doobry <doobry@systemli.org>
  */
 class RecoveryProcessMessageSender
 {

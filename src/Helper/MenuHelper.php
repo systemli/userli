@@ -7,8 +7,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class MenuHelper.
- *
- * @author doobry <doobry@systemli.org>
  */
 class MenuHelper
 {

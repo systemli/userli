@@ -8,9 +8,6 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class UserCRUDController extends CRUDController
 {
     /**

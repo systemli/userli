@@ -6,8 +6,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class AliasCreatedMessageBuilder.
- *
- * @author doobry <doobry@systemli.org>
  */
 class AliasCreatedMessageBuilder
 {

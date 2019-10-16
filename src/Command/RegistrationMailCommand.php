@@ -10,9 +10,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
-/**
- * @author louis <louis@systemli.org>
- */
 class RegistrationMailCommand extends Command
 {
     /**

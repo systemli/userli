@@ -10,9 +10,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Security;
 
-/**
- * @author tim <tim@systemli.org>
- */
 class BeforeRequestListener implements EventSubscriberInterface
 {
     /**
