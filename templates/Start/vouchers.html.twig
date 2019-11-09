@@ -36,13 +36,12 @@
                                 <p class="voucher-box">
                                     <span>{{ voucher.code }}</span>
                                     <span class="pull-right">
-                                        <button type="button" class="btn btn-default invite-share-link"
+                                        <button type="button" class="btn btn-default"
                                                 title="{{ "index.voucher-sharing"|trans }}"
-                                                data-link="{{ url('register_voucher', {'voucher': voucher.code}) }}"
+                                                data-button="copy-to-clipboard"
+                                                data-value="{{ url('register_voucher', {'voucher': voucher.code}) }}"
                                                 data-toggle="tooltip" data-placement="top">
-                                            <span class="glyphicon glyphicon-copy"
-                                                data-link="{{ url('register_voucher', {'voucher': voucher.code}) }}">
-                                            </span>
+                                            <span class="glyphicon glyphicon-copy"></span>
                                         </button>
                                     </span>
                                 </p>
