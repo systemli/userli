@@ -2,6 +2,7 @@
 
 * Skip check against HIBP service if unavailable
 * Add copy-to-clipboard for aliases (Fixes: #181) (Thanks @jelhan)
+* Add Swiss German to supported languages (Thanks wee)
 * Update dependencies
 
 # 2.3.0 (2019.07.16)
