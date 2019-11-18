@@ -24,7 +24,6 @@ index:
   voucher-disable: >
     El %date% recibirás tres códigos amigo adicionales.
     Esto es para evitar registros masivos y spam.
-  voucher-sharing: Copia el link de invitación
   voucher-explanation: >
     Usa tus códigos amigo para invitar amigos.
     Solo tienes tres códigos disponibles.
@@ -225,3 +224,4 @@ mail:
 
     Esperamos que estes disfrutando tu cuenta de e-mail.
     El equipo de %project_name%.
+copy-to-clipboard: Copiar en el portapapeles

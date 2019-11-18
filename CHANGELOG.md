@@ -1,6 +1,7 @@
 # 2.3.1 (UNRELEASED)
 
 * Skip check against HIBP service if unavailable
+* Add copy-to-clipboard for aliases (Fixes: #181) (Thanks jelhan!)
 
 # 2.3.0 (2019.07.16)
 

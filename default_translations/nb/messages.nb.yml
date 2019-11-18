@@ -22,7 +22,6 @@ index:
   voucher-limit: Du har ingen invitasjonskoder igjen.
   voucher-disable: "Den %date% vil du motta tre invitasjonskoder. Dette for å unngå\
     \ masseregistreringer og søppelpost.\n"
-  voucher-sharing: Kopier invitasjonslenken
   voucher-explanation: "Bruk dine invitasjonskoder for å invitere venner hit. Som\
     \ forvalg har du tre tilgjengelig. Kontakt administratorene hvis dette ikke rekker.\
     \ Din data lagres i en begrenset periode for å unngå misbruk.\n"

@@ -24,7 +24,6 @@ index:
   voucher-disable: >
     No dia %date% você vai receber três códigos de convite.
     Isso é feito para evitar cadastros excessivos e spam.
-  voucher-sharing: Copiar o link de convite
   voucher-explanation: >
     Use os seus códigos para convidar seus contatos para cá.
     Por padrão, você tem três convites.
@@ -241,3 +240,4 @@ mail:
 
     Esperamos que continue a tirar proveito da sua conta.
     Time %project_name%.
+copy-to-clipboard: Copiar para a área de transferência

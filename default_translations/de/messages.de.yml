@@ -25,7 +25,6 @@ index:
   voucher-limit: Du hast keine Einladungscodes mehr verfügbar.
   voucher-disable: "Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben.\
     \ Dies dient der Vermeidung von Massenregistrierungen und Spam.\n"
-  voucher-sharing: Einladungslink kopieren
   voucher-explanation: >
     Nutze deine Einladungscodes um Freund*innen hierher einzuladen.
     Standardmäßig hast du drei Einladungen zur Verfügung.
@@ -257,3 +256,4 @@ Domain: Domäne
 Alias: Alias-Adresse
 Voucher: Einladungscode
 Reserved Name: Reservierter Name
+copy-to-clipboard: In Zwischenablage kopieren

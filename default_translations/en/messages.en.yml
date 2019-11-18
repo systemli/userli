@@ -24,7 +24,6 @@ index:
   voucher-disable: >
     At %date% you will receive three invite codes.
     This is to avoid mass registrations and spam.
-  voucher-sharing: Copy the invite link
   voucher-explanation: >
     Use your invite codes to invite friends here.
     By default, you have three invitations available.
@@ -232,3 +231,4 @@ Domain: Domain
 Alias: Alias address
 Voucher: Invite code
 Reserved Name: Reserved Name
+copy-to-clipboard: Copy to clipboard
