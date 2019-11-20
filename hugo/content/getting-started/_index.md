@@ -9,7 +9,7 @@ The easiest way to install Userli on a fresh Debian Buster is running these comm
 
     # install dependencies
     sudo apt install -y python-pip git
-    sudo pip install molecule
+    sudo pip install molecule  # re-run in case of error
 
     # get code
     git clone https://github.com/systemli/ansible-role-userli.git
