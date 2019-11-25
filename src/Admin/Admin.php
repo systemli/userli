@@ -14,11 +14,6 @@ abstract class Admin extends AbstractAdmin
 
     /**
      * Admin constructor.
-     *
-     * @param string   $code
-     * @param string   $class
-     * @param string   $baseControllerName
-     * @param Security $security
      */
     public function __construct(string $code, string $class, string $baseControllerName, Security $security)
     {

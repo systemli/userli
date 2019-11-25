@@ -21,7 +21,7 @@ class DomainAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('name', TextType::class, array('disabled' => !$this->isNewObject()));
+            ->add('name', TextType::class, ['disabled' => !$this->isNewObject()]);
     }
 
     /**

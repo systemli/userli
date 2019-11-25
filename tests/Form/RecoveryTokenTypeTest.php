@@ -2,16 +2,16 @@
 
 namespace App\Tests\Form;
 
-use Symfony\Component\Form\Test\TypeTestCase;
-use App\Form\RecoveryTokenType;
 use App\Form\Model\RecoveryToken;
+use App\Form\RecoveryTokenType;
+use Symfony\Component\Form\Test\TypeTestCase;
 
 class RecoveryTokenTypeTest extends TypeTestCase
 {
     public function testSubmitValidData()
     {
         $password = 'password';
-        $formData = array('password' => $password);
+        $formData = ['password' => $password];
 
         $form = $this->factory->create(RecoveryTokenType::class);
 

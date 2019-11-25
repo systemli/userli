@@ -9,9 +9,6 @@ trait PublicKeyTrait
      */
     public $publicKey;
 
-    /**
-     * @return string|null
-     */
     public function getPublicKey(): ?string
     {
         return $this->publicKey;

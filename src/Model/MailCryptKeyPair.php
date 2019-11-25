@@ -12,9 +12,6 @@ class MailCryptKeyPair
 
     /**
      * MailCryptKeyPair constructor.
-     *
-     * @param string $privateKey
-     * @param string $publicKey
      */
     public function __construct(string $privateKey, string $publicKey)
     {

@@ -23,9 +23,6 @@ class BeforeRequestListener implements EventSubscriberInterface
 
     /**
      * BeforeRequestListener constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param Security               $security
      */
     public function __construct(EntityManagerInterface $entityManager, Security $security)
     {
@@ -33,9 +30,6 @@ class BeforeRequestListener implements EventSubscriberInterface
         $this->security = $security;
     }
 
-    /**
-     * @param GetResponseEvent $event
-     */
     public function onKernelRequest(GetResponseEvent $event)
     {
         if ($user = $this->getNonAdminUser()) {
@@ -44,9 +38,6 @@ class BeforeRequestListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @return User|null
-     */
     public function getNonAdminUser(): ?User
     {
         $user = $this->security->getUser();

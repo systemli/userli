@@ -26,7 +26,6 @@ class UserProvider implements UserProviderInterface
     /**
      * UserProvider constructor.
      *
-     * @param ObjectManager $manager
      * @param $defaultDomain
      */
     public function __construct(ObjectManager $manager, $defaultDomain)
@@ -59,12 +58,10 @@ class UserProvider implements UserProviderInterface
     public function refreshUser(UserInterface $user)
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(
-                sprintf('Expected an instance of App\Entity\User, but got "%s".', get_class($user))
-            );
+            throw new UnsupportedUserException(sprintf('Expected an instance of App\Entity\User, but got "%s".', get_class($user)));
         }
 
-        if (null === $reloadedUser = $this->manager->getRepository('App:User')->findOneBy(array('id' => $user->getId()))) {
+        if (null === $reloadedUser = $this->manager->getRepository('App:User')->findOneBy(['id' => $user->getId()])) {
             throw new UsernameNotFoundException(sprintf('User with ID "%d" could not be reloaded.', $user->getId()));
         }
 

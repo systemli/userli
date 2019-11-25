@@ -25,8 +25,6 @@ class MailCryptKeyHandler
 
     /**
      * MailCryptPrivateKeyHandler constructor.
-     *
-     * @param ObjectManager $manager
      */
     public function __construct(ObjectManager $manager)
     {
@@ -34,10 +32,6 @@ class MailCryptKeyHandler
     }
 
     /**
-     * @param string $privateKey
-     *
-     * @return string
-     *
      * @throws \Exception
      */
     public function toPkcs8(string $privateKey): string
@@ -70,8 +64,6 @@ class MailCryptKeyHandler
     }
 
     /**
-     * @param User $user
-     *
      * @throws \Exception
      */
     public function create(User $user): void
@@ -103,9 +95,6 @@ class MailCryptKeyHandler
     }
 
     /**
-     * @param User   $user
-     * @param string $oldPlainPassword
-     *
      * @throws \Exception
      */
     public function update(User $user, string $oldPlainPassword): void
@@ -126,9 +115,6 @@ class MailCryptKeyHandler
     }
 
     /**
-     * @param User   $user
-     * @param string $privateKey
-     *
      * @throws \Exception
      */
     public function updateWithPrivateKey(User $user, string $privateKey): void
@@ -148,11 +134,6 @@ class MailCryptKeyHandler
     }
 
     /**
-     * @param User   $user
-     * @param string $password
-     *
-     * @return string
-     *
      * @throws \Exception
      */
     public function decrypt(User $user, string $password): string

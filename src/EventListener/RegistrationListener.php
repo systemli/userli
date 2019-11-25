@@ -26,9 +26,7 @@ class RegistrationListener implements EventSubscriberInterface
     /**
      * Constructor.
      *
-     * @param RequestStack         $request
-     * @param WelcomeMessageSender $sender
-     * @param bool                 $sendMail
+     * @param bool $sendMail
      */
     public function __construct(RequestStack $request, WelcomeMessageSender $sender, $sendMail)
     {
@@ -42,14 +40,11 @@ class RegistrationListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             Events::MAIL_ACCOUNT_CREATED => 'onMailAccountCreated',
-        );
+        ];
     }
 
-    /**
-     * @param UserEvent $event
-     */
     public function onMailAccountCreated(UserEvent $event)
     {
         if (!$this->sendMail) {

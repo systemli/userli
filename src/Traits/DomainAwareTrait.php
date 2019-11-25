@@ -19,9 +19,6 @@ trait DomainAwareTrait
         return $this->domain;
     }
 
-    /**
-     * @param Domain $domain
-     */
     public function setDomain(Domain $domain)
     {
         $this->domain = $domain;

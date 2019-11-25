@@ -11,9 +11,6 @@ trait DomainGuesserAwareTrait
      */
     private $domainGuesser;
 
-    /**
-     * @param DomainGuesser $domainGuesser
-     */
     public function setDomainGuesser(DomainGuesser $domainGuesser)
     {
         $this->domainGuesser = $domainGuesser;

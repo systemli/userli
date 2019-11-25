@@ -89,7 +89,6 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @param string $address
      * @dataProvider getValidNewAddresses
      */
     public function testValidateValidNewEmailAddress(string $address)
@@ -106,8 +105,6 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @param string $address
-     * @param string $violationMessage
      * @dataProvider getInvalidNewAddresses
      */
     public function testValidateInvalidNewEmailAddress(string $address, string $violationMessage)
@@ -127,8 +124,6 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @param string $address
-     * @param string $violationMessage
      * @dataProvider getUsedAddresses
      */
     public function testValidateUsedEmailAddress(string $address, string $violationMessage)

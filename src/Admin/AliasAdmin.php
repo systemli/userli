@@ -139,9 +139,6 @@ class AliasAdmin extends Admin
         $this->deleteHandler->deleteAlias($alias);
     }
 
-    /**
-     * @param DeleteHandler $deleteHandler
-     */
     public function setDeleteHandler(DeleteHandler $deleteHandler)
     {
         $this->deleteHandler = $deleteHandler;

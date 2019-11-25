@@ -51,10 +51,6 @@ class BeforeRequestListenerTest extends TestCase
 
     /**
      * @dataProvider provider
-     *
-     * @param User|null $user
-     * @param bool      $isAdmin
-     * @param User|null $returnValue
      */
     public function testGetNonAdminUser(?User $user, bool $isAdmin, ?User $returnValue)
     {
@@ -65,9 +61,6 @@ class BeforeRequestListenerTest extends TestCase
         $this->assertEquals($returnValue, $this->listener->getNonAdminUser());
     }
 
-    /**
-     * @return array
-     */
     public function provider(): array
     {
         $user = $this->getUser();
@@ -106,9 +99,6 @@ class BeforeRequestListenerTest extends TestCase
         $this->listener->onKernelRequest($event);
     }
 
-    /**
-     * @return User
-     */
     public function getUser(): User
     {
         $domain = new Domain();

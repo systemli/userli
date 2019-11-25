@@ -25,9 +25,8 @@ class RecoveryProcessMessageBuilder
     /**
      * RecoveryProcessMessageBuilder constructor.
      *
-     * @param TranslatorInterface $translator
-     * @param string              $appUrl
-     * @param string              $projectName
+     * @param string $appUrl
+     * @param string $projectName
      */
     public function __construct(TranslatorInterface $translator, $appUrl, $projectName)
     {
@@ -37,10 +36,6 @@ class RecoveryProcessMessageBuilder
     }
 
     /**
-     * @param string $locale
-     * @param string $email
-     * @param string $time
-     *
      * @return string
      */
     public function buildBody(string $locale, string $email, string $time)
@@ -61,9 +56,6 @@ class RecoveryProcessMessageBuilder
     }
 
     /**
-     * @param string $locale
-     * @param string $email
-     *
      * @return string
      */
     public function buildSubject(string $locale, string $email)

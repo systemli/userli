@@ -20,8 +20,6 @@ class VoucherValidator extends ConstraintValidator
 
     /**
      * VoucherValidator constructor.
-     *
-     * @param ObjectManager $manager
      */
     public function __construct(ObjectManager $manager)
     {

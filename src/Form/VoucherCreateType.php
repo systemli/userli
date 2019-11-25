@@ -14,7 +14,7 @@ class VoucherCreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('submit', SubmitType::class, array('label' => 'form.create-voucher'));
+            ->add('submit', SubmitType::class, ['label' => 'form.create-voucher']);
     }
 
     /**

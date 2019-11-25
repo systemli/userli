@@ -19,9 +19,6 @@ trait AliasAwareTrait
         return $this->alias;
     }
 
-    /**
-     * @param Alias $alias
-     */
     public function setAlias(Alias $alias)
     {
         $this->alias = $alias;

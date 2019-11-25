@@ -17,18 +17,12 @@ class PasswordUpdater
 
     /**
      * PasswordUpdater constructor.
-     *
-     * @param EncoderFactoryInterface $encoderFactory
      */
     public function __construct(EncoderFactoryInterface $encoderFactory)
     {
         $this->encoderFactory = $encoderFactory;
     }
 
-    /**
-     * @param User        $user
-     * @param string|null $plainPassword
-     */
     public function updatePassword(User $user, string $plainPassword = null)
     {
         if (null === $plainPassword) {

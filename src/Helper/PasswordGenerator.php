@@ -15,7 +15,7 @@ final class PasswordGenerator
     public static function generate($length = 45)
     {
         $chars = 'abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789,;.:?!';
-        $pass = array();
+        $pass = [];
         $charsLength = strlen($chars) - 1;
 
         for ($i = 0; $i < $length; ++$i) {

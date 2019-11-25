@@ -15,9 +15,6 @@ class ValidationException extends \Exception
      */
     private $constraints;
 
-    /**
-     * @param ConstraintViolationListInterface $constraints
-     */
     public function __construct(ConstraintViolationListInterface $constraints)
     {
         $this->constraints = $constraints;

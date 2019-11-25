@@ -9,17 +9,11 @@ trait RecoveryStartTimeTrait
      */
     private $recoveryStartTime;
 
-    /**
-     * @return \DateTime|null
-     */
     public function getRecoveryStartTime(): ?\DateTime
     {
         return $this->recoveryStartTime;
     }
 
-    /**
-     * @param \DateTime $recoveryStartTime
-     */
     public function setRecoveryStartTime(\DateTime $recoveryStartTime)
     {
         $this->recoveryStartTime = $recoveryStartTime;

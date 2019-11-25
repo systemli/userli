@@ -54,16 +54,6 @@ class RegistrationHandler
 
     /**
      * Constructor.
-     *
-     * @param ObjectManager            $manager
-     * @param DomainGuesser            $domainGuesser
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param PasswordUpdater          $passwordUpdater
-     * @param MailCryptKeyHandler      $mailCryptKeyHandler
-     * @param RecoveryTokenHandler     $recoveryTokenHandler
-     * @param bool                     $hasSinaBox
-     * @param string                   $primaryDomain
-     * @param bool                     $mailCryptAuto
      */
     public function __construct(
         ObjectManager $manager,
@@ -88,8 +78,6 @@ class RegistrationHandler
     }
 
     /**
-     * @param Registration $registration
-     *
      * @throws \Exception
      */
     public function handle(Registration $registration)
@@ -136,8 +124,6 @@ class RegistrationHandler
     }
 
     /**
-     * @param Registration $registration
-     *
      * @return User
      *
      * @throws \Exception
@@ -147,7 +133,7 @@ class RegistrationHandler
         $user = new User();
         $user->setEmail(strtolower($registration->getEmail()));
         $user->setPlainPassword($registration->getPlainPassword());
-        $user->setRoles(array(Roles::USER));
+        $user->setRoles([Roles::USER]);
         $user->setCreationTime(new \DateTime());
         $user->setUpdatedTime(new \DateTime());
 

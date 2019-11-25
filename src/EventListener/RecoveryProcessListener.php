@@ -25,10 +25,6 @@ class RecoveryProcessListener implements EventSubscriberInterface
 
     /**
      * RecoveryProcessListener constructor.
-     *
-     * @param RequestStack                 $request
-     * @param RecoveryProcessMessageSender $sender
-     * @param bool                         $sendMail
      */
     public function __construct(RequestStack $request, RecoveryProcessMessageSender $sender, bool $sendMail)
     {
@@ -48,8 +44,6 @@ class RecoveryProcessListener implements EventSubscriberInterface
     }
 
     /**
-     * @param UserEvent $event
-     *
      * @throws \Exception
      */
     public function onRecoveryProcessStarted(UserEvent $event)

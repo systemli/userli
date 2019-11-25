@@ -8,8 +8,6 @@ namespace App\Helper;
 class FileDescriptorReader
 {
     /**
-     * @param string $inputFd
-     *
      * @return bool|string
      */
     private static function readFileDescriptor(string $inputFd)

@@ -79,8 +79,6 @@ class UserProviderTest extends TestCase
 
     /**
      * @dataProvider userProvider
-     *
-     * @param UserInterface $user
      */
     public function testRefreshUserException(UserInterface $user, $exception)
     {

@@ -28,9 +28,6 @@ class VoucherHandler
 
     /**
      * VoucherHandler constructor.
-     *
-     * @param ObjectManager  $manager
-     * @param VoucherCreator $creator
      */
     public function __construct(ObjectManager $manager, VoucherCreator $creator)
     {
@@ -39,9 +36,6 @@ class VoucherHandler
     }
 
     /**
-     * @param User $user
-     * @param bool $redeemed
-     *
      * @return Voucher[]
      */
     public function getVouchersByUser(User $user, bool $redeemed = false): array

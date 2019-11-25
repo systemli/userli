@@ -9,9 +9,6 @@ class PasswordGeneratorTest extends TestCase
 {
     /**
      * @dataProvider provider
-     *
-     * @param int $length
-     * @param int $iterations
      */
     public function testGenerate(int $length, int $iterations)
     {

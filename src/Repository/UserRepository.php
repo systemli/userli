@@ -21,8 +21,6 @@ class UserRepository extends AbstractRepository
     }
 
     /**
-     * @param \DateTime $dateTime
-     *
      * @return \Doctrine\Common\Collections\Collection|User[]
      */
     public function findUsersSince(\DateTime $dateTime)

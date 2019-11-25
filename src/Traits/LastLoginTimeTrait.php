@@ -17,9 +17,6 @@ trait LastLoginTimeTrait
         return $this->lastLoginTime;
     }
 
-    /**
-     * @param \DateTime $LastLoginTime
-     */
     public function setLastLoginTime(\DateTime $LastLoginTime)
     {
         $this->lastLoginTime = $LastLoginTime;

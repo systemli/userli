@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Form\Model\Registration;
 use App\Form\Model\RecoveryTokenAck;
+use App\Form\Model\Registration;
 use App\Form\RecoveryTokenAckType;
 use App\Form\RegistrationType;
 use App\Handler\RegistrationHandler;
@@ -21,8 +21,6 @@ class RegistrationController extends AbstractController
 
     /**
      * RegistrationController constructor.
-     *
-     * @param RegistrationHandler $registrationHandler
      */
     public function __construct(RegistrationHandler $registrationHandler)
     {
@@ -30,9 +28,6 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @param Request     $request
-     * @param string|null $voucher
-     *
      * @return Response
      *
      * @throws \Exception
@@ -96,11 +91,6 @@ class RegistrationController extends AbstractController
         return $this->render('Registration/register.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function registerRecoveryTokenAckAction(Request $request): Response
     {
         $recoveryTokenAck = new RecoveryTokenAck();
@@ -127,11 +117,6 @@ class RegistrationController extends AbstractController
         return $this->redirectToRoute('register');
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function welcomeAction(Request $request): Response
     {
         $request->getSession()->getFlashBag()->add('success', 'flashes.registration-successful');

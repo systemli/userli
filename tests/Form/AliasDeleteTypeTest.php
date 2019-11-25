@@ -2,16 +2,16 @@
 
 namespace App\Tests\Form;
 
-use Symfony\Component\Form\Test\TypeTestCase;
 use App\Form\AliasDeleteType;
 use App\Form\Model\Delete;
+use Symfony\Component\Form\Test\TypeTestCase;
 
 class AliasDeleteTypeTest extends TypeTestCase
 {
     public function testSubmitValidData()
     {
         $password = 'password';
-        $formData = array('password' => $password);
+        $formData = ['password' => $password];
 
         $form = $this->factory->create(AliasDeleteType::class);
 

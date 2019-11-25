@@ -2,9 +2,9 @@
 
 namespace App\Tests\Builder;
 
+use App\Builder\MenuBuilder;
 use App\Enum\Roles;
 use App\Helper\MenuHelper;
-use App\Builder\MenuBuilder;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use PHPUnit\Framework\TestCase;

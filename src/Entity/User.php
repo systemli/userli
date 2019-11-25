@@ -10,8 +10,8 @@ use App\Traits\EmailTrait;
 use App\Traits\IdTrait;
 use App\Traits\InvitationVoucherTrait;
 use App\Traits\LastLoginTimeTrait;
-use App\Traits\MailCryptSecretBoxTrait;
 use App\Traits\MailCryptPublicKeyTrait;
+use App\Traits\MailCryptSecretBoxTrait;
 use App\Traits\MailCryptTrait;
 use App\Traits\PasswordTrait;
 use App\Traits\PasswordVersionTrait;
@@ -57,7 +57,7 @@ class User implements UserInterface, EncoderAwareInterface
     /**
      * @var array
      */
-    private $roles = array();
+    private $roles = [];
 
     /**
      * User constructor.
@@ -84,9 +84,6 @@ class User implements UserInterface, EncoderAwareInterface
         return !empty($this->roles) ? $this->roles : [Roles::USER];
     }
 
-    /**
-     * @param array $roles
-     */
     public function setRoles(array $roles)
     {
         $this->roles = $roles;

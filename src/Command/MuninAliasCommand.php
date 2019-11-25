@@ -21,8 +21,6 @@ class MuninAliasCommand extends Command
 
     /**
      * MuninAliasCommand constructor.
-     *
-     * @param ObjectManager $manager
      */
     public function __construct(ObjectManager $manager)
     {

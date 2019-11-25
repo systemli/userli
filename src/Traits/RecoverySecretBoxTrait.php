@@ -9,9 +9,6 @@ trait RecoverySecretBoxTrait
      */
     private $recoverySecretBox;
 
-    /**
-     * @return string|null
-     */
     public function getRecoverySecretBox(): ?string
     {
         return $this->recoverySecretBox;
@@ -25,9 +22,6 @@ trait RecoverySecretBoxTrait
         $this->recoverySecretBox = $recoverySecretBox;
     }
 
-    /**
-     * @return bool
-     */
     public function hasRecoverySecretBox(): bool
     {
         return ($this->getRecoverySecretBox()) ? true : false;

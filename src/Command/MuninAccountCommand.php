@@ -21,8 +21,6 @@ class MuninAccountCommand extends Command
 
     /**
      * MuninAccountCommand constructor.
-     *
-     * @param ObjectManager $manager
      */
     public function __construct(ObjectManager $manager)
     {

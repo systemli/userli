@@ -18,8 +18,6 @@ class VoucherRemover
 
     /**
      * VoucherRemover constructor.
-     *
-     * @param ObjectManager $manager
      */
     public function __construct(ObjectManager $manager)
     {
@@ -27,8 +25,6 @@ class VoucherRemover
     }
 
     /**
-     * @param User $user
-     *
      * @throws \Doctrine\ORM\Query\QueryException
      */
     public function removeUnredeemedVouchersByUser(User $user)
@@ -37,8 +33,6 @@ class VoucherRemover
     }
 
     /**
-     * @param array $users
-     *
      * @throws \Doctrine\ORM\Query\QueryException
      */
     public function removeUnredeemedVouchersByUsers(array $users)

@@ -15,8 +15,8 @@ class CustomAliasCreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('alias', TextType::class, array('label' => 'form.new-custom-alias'))
-            ->add('submit', SubmitType::class, array('label' => 'form.create-custom-alias'));
+            ->add('alias', TextType::class, ['label' => 'form.new-custom-alias'])
+            ->add('submit', SubmitType::class, ['label' => 'form.create-custom-alias']);
     }
 
     /**

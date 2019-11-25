@@ -19,8 +19,6 @@ class RecoveryTokenHandler
 
     /**
      * RecoveryTokenHandler constructor.
-     *
-     * @param ObjectManager $manager
      */
     public function __construct(ObjectManager $manager)
     {
@@ -28,8 +26,6 @@ class RecoveryTokenHandler
     }
 
     /**
-     * @return string
-     *
      * @throws \Exception
      */
     public function generateToken(): string
@@ -39,8 +35,6 @@ class RecoveryTokenHandler
     }
 
     /**
-     * @param User $user
-     *
      * @throws \Exception
      */
     public function create(User $user): void
@@ -70,11 +64,6 @@ class RecoveryTokenHandler
     }
 
     /**
-     * @param User   $user
-     * @param string $recoveryToken
-     *
-     * @return bool
-     *
      * @throws \Exception
      */
     public function verify(User $user, string $recoveryToken): bool
@@ -94,11 +83,6 @@ class RecoveryTokenHandler
     }
 
     /**
-     * @param User   $user
-     * @param string $recoveryToken
-     *
-     * @return string
-     *
      * @throws \Exception
      */
     public function decrypt(User $user, string $recoveryToken): string

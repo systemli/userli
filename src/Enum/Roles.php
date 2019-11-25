@@ -16,13 +16,13 @@ final class Roles
      */
     public static function getAll()
     {
-        return array(
+        return [
             self::MULTIPLIER => self::MULTIPLIER,
             self::SPAM => self::SPAM,
             self::SUSPICIOUS => self::SUSPICIOUS,
             self::USER => self::USER,
             self::DOMAIN_ADMIN => self::DOMAIN_ADMIN,
             self::ADMIN => self::ADMIN,
-        );
+        ];
     }
 }

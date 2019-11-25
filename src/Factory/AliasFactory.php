@@ -2,8 +2,8 @@
 
 namespace App\Factory;
 
-use App\Entity\User;
 use App\Entity\Alias;
+use App\Entity\User;
 use App\Helper\RandomStringGenerator;
 
 /**
@@ -13,12 +13,6 @@ class AliasFactory
 {
     const RANDOM_ALIAS_LENGTH = 24;
 
-    /**
-     * @param User        $user
-     * @param string|null $localPart
-     *
-     * @return Alias
-     */
     public static function create(User $user, ?string $localPart): Alias
     {
         $domain = $user->getDomain();

@@ -17,8 +17,6 @@ class MenuHelper
 
     /**
      * Constructor.
-     *
-     * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)
     {
@@ -26,9 +24,6 @@ class MenuHelper
     }
 
     /**
-     * @param array         $elements
-     * @param ItemInterface $menu
-     *
      * @return ItemInterface
      */
     public function build(array $elements, ItemInterface $menu)

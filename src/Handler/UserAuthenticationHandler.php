@@ -23,8 +23,6 @@ class UserAuthenticationHandler
 
     /**
      * UserAuthenticationHandler constructor.
-     *
-     * @param EncoderFactory $encoderFactory
      */
     public function __construct(EncoderFactory $encoderFactory, EventDispatcherInterface $eventDispatcher)
     {
@@ -32,12 +30,6 @@ class UserAuthenticationHandler
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @param User   $user
-     * @param string $password
-     *
-     * @return User|null
-     */
     public function authenticate(User $user, string $password): ?User
     {
         $encoder = $this->encoderFactory->getEncoder($user);

@@ -9,9 +9,6 @@ trait PrivateKeyTrait
      */
     private $privateKey;
 
-    /**
-     * @return string|null
-     */
     public function getPrivateKey(): ?string
     {
         return $this->privateKey;

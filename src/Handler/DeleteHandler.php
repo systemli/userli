@@ -21,9 +21,6 @@ class DeleteHandler
 
     /**
      * DeleteHandler constructor.
-     *
-     * @param PasswordUpdater $passwordUpdater
-     * @param ObjectManager   $manager
      */
     public function __construct(PasswordUpdater $passwordUpdater, ObjectManager $manager)
     {
@@ -32,8 +29,7 @@ class DeleteHandler
     }
 
     /**
-     * @param Alias $alias
-     * @param User  $user
+     * @param User $user
      */
     public function deleteAlias(Alias $alias, User $user = null)
     {
@@ -48,9 +44,6 @@ class DeleteHandler
         $this->manager->flush();
     }
 
-    /**
-     * @param User $user
-     */
     public function deleteUser(User $user)
     {
         // Delete aliases of user

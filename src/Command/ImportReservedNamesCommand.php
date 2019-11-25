@@ -23,9 +23,6 @@ class ImportReservedNamesCommand extends Command
 
     /**
      * ImportReservedNamesCommand constructor.
-     *
-     * @param ObjectManager       $manager
-     * @param ReservedNameCreator $creator
      */
     public function __construct(ObjectManager $manager, ReservedNameCreator $creator)
     {

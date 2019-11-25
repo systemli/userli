@@ -23,9 +23,6 @@ class LoginListener implements EventSubscriberInterface
 
     /**
      * LoginListener constructor.
-     *
-     * @param ObjectManager   $manager
-     * @param PasswordUpdater $passwordUpdater
      */
     public function __construct(ObjectManager $manager, PasswordUpdater $passwordUpdater)
     {
@@ -33,9 +30,6 @@ class LoginListener implements EventSubscriberInterface
         $this->passwordUpdater = $passwordUpdater;
     }
 
-    /**
-     * @param InteractiveLoginEvent $event
-     */
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
     {
         $request = $event->getRequest();
@@ -44,17 +38,11 @@ class LoginListener implements EventSubscriberInterface
         $this->handleLogin($user);
     }
 
-    /**
-     * @param LoginEvent $event
-     */
     public function onLogin(LoginEvent $event)
     {
         $this->handleLogin($event->getUser());
     }
 
-    /**
-     * @param User $user
-     */
     private function handleLogin(User $user)
     {
         // update password hash if necessary
@@ -67,9 +55,6 @@ class LoginListener implements EventSubscriberInterface
         $this->updateLastLogin($user);
     }
 
-    /**
-     * @param User $user
-     */
     private function updateLastLogin(User $user)
     {
         $user->updateLastLoginTime();

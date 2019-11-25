@@ -16,17 +16,12 @@ class RandomAliasCreationListener implements EventSubscriberInterface
 
     /**
      * RandomAliasCreationListener constructor.
-     *
-     * @param ObjectManager $manager
      */
     public function __construct(ObjectManager $manager)
     {
         $this->manager = $manager;
     }
 
-    /**
-     * @param RandomAliasCreatedEvent $event
-     */
     public function onRandomAliasCreated(RandomAliasCreatedEvent $event)
     {
         $alias = $event->getAlias();

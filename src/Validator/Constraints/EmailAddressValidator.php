@@ -4,8 +4,8 @@ namespace App\Validator\Constraints;
 
 use App\Repository\AliasRepository;
 use App\Repository\DomainRepository;
-use App\Repository\UserRepository;
 use App\Repository\ReservedNameRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -36,8 +36,7 @@ class EmailAddressValidator extends ConstraintValidator
     /**
      * EmailAddressValidator constructor.
      *
-     * @param ObjectManager $manager
-     * @param string        $domain
+     * @param string $domain
      */
     public function __construct(ObjectManager $manager)
     {

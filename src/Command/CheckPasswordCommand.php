@@ -55,12 +55,6 @@ class CheckPasswordCommand extends Command
 
     /**
      * CheckPasswordCommand constructor.
-     *
-     * @param ObjectManager             $manager
-     * @param FileDescriptorReader      $reader
-     * @param UserAuthenticationHandler $handler
-     * @param MailCryptKeyHandler       $mailCryptKeyHandler
-     * @param bool                      $mailCryptEnabled
      */
     public function __construct(ObjectManager $manager,
                                 FileDescriptorReader $reader,

@@ -32,10 +32,7 @@ class UserRegistrationInfoHandler
     /**
      * UserRegistrationInfoHandler constructor.
      *
-     * @param ObjectManager     $manager
-     * @param MailHandler       $handler
-     * @param \Twig_Environment $twig
-     * @param string            $to
+     * @param string $to
      */
     public function __construct(ObjectManager $manager, MailHandler $handler, \Twig_Environment $twig, $to)
     {

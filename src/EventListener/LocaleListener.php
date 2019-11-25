@@ -25,8 +25,7 @@ class LocaleListener implements EventSubscriberInterface
     /**
      * LocaleListener constructor.
      *
-     * @param string[]            $supportedLocales
-     * @param UrlMatcherInterface $urlMatcher
+     * @param string[] $supportedLocales
      */
     public function __construct(array $supportedLocales, UrlMatcherInterface $urlMatcher)
     {
@@ -34,9 +33,6 @@ class LocaleListener implements EventSubscriberInterface
         $this->urlMatcher = $urlMatcher;
     }
 
-    /**
-     * @param GetResponseEvent $event
-     */
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
@@ -88,8 +84,8 @@ class LocaleListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::REQUEST => array(array('onKernelRequest', 17)),
-        );
+        return [
+            KernelEvents::REQUEST => [['onKernelRequest', 17]],
+        ];
     }
 }

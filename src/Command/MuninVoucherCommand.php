@@ -21,8 +21,6 @@ class MuninVoucherCommand extends Command
 
     /**
      * MuninVoucherCommand constructor.
-     *
-     * @param ObjectManager $manager
      */
     public function __construct(ObjectManager $manager)
     {

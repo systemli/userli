@@ -19,10 +19,6 @@ class CryptoSecret
 
     /**
      * CryptoSecret constructor.
-     *
-     * @param string $salt
-     * @param string $nonce
-     * @param string $secret
      */
     public function __construct(string $salt, string $nonce, string $secret)
     {
@@ -31,33 +27,22 @@ class CryptoSecret
         $this->secret = $secret;
     }
 
-    /**
-     * @return string
-     */
     public function getNonce(): string
     {
         return $this->nonce;
     }
 
-    /**
-     * @return string
-     */
     public function getSecret(): string
     {
         return $this->secret;
     }
 
-    /**
-     * @return string
-     */
     public function encode(): string
     {
         return base64_encode($this->getSalt().$this->getNonce().$this->getSecret());
     }
 
     /**
-     * @param string $encrypted
-     *
      * @return CryptoSecret
      *
      * @throws \Exception

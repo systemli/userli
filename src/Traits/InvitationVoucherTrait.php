@@ -22,9 +22,6 @@ trait InvitationVoucherTrait
         return $this->invitationVoucher;
     }
 
-    /**
-     * @param Voucher|null $invitationVoucher
-     */
     public function setInvitationVoucher(Voucher $invitationVoucher = null)
     {
         $this->invitationVoucher = $invitationVoucher;

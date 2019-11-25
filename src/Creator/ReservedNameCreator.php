@@ -11,10 +11,6 @@ use App\Factory\ReservedNameFactory;
 class ReservedNameCreator extends AbstractCreator
 {
     /**
-     * @param string $name
-     *
-     * @return ReservedName
-     *
      * @throws \App\Exception\ValidationException
      */
     public function create(string $name): ReservedName

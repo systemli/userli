@@ -27,10 +27,6 @@ abstract class AbstractCreator
 
     /**
      * AbstractCreator constructor.
-     *
-     * @param ObjectManager            $manager
-     * @param ValidatorInterface       $validator
-     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(ObjectManager $manager, ValidatorInterface $validator, EventDispatcherInterface $eventDispatcher)
     {
@@ -41,7 +37,6 @@ abstract class AbstractCreator
 
     /**
      * @param $entity
-     * @param array|null $validationGroups
      *
      * @throws ValidationException
      */

@@ -18,7 +18,7 @@ class AliasRepository extends AbstractRepository
      */
     public function findOneBySource($email, ?bool $deleted = false)
     {
-        return $this->findOneBy(array('source' => $email), null, $deleted);
+        return $this->findOneBy(['source' => $email], null, $deleted);
     }
 
     /**
@@ -28,13 +28,10 @@ class AliasRepository extends AbstractRepository
      */
     public function findByDestination($email)
     {
-        return $this->findOneBy(array('destination' => $email));
+        return $this->findOneBy(['destination' => $email]);
     }
 
     /**
-     * @param User      $user
-     * @param bool|null $random
-     *
      * @return array|Alias[]
      */
     public function findByUser(User $user, ?bool $random = null)

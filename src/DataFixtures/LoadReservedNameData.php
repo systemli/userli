@@ -16,8 +16,6 @@ class LoadReservedNameData extends Fixture implements OrderedFixtureInterface
 
     /**
      * LoadReservedNameData constructor.
-     *
-     * @param ReservedNameCreator $creator
      */
     public function __construct(ReservedNameCreator $creator)
     {

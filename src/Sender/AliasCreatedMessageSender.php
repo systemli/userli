@@ -23,9 +23,6 @@ class AliasCreatedMessageSender
 
     /**
      * AliasCreatedMessageSender constructor.
-     *
-     * @param MailHandler                $handler
-     * @param AliasCreatedMessageBuilder $builder
      */
     public function __construct(MailHandler $handler, AliasCreatedMessageBuilder $builder)
     {
@@ -34,10 +31,6 @@ class AliasCreatedMessageSender
     }
 
     /**
-     * @param User   $user
-     * @param Alias  $alias
-     * @param string $locale
-     *
      * @throws \Exception
      */
     public function send(User $user, Alias $alias, string $locale)

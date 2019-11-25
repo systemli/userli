@@ -45,11 +45,6 @@ class RecoveryController extends AbstractController
 
     /**
      * RecoveryController constructor.
-     *
-     * @param PasswordUpdater          $passwordUpdater
-     * @param MailCryptKeyHandler      $mailCryptKeyHandler
-     * @param RecoveryTokenHandler     $recoveryTokenHandler
-     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(PasswordUpdater $passwordUpdater, MailCryptKeyHandler $mailCryptKeyHandler, RecoveryTokenHandler $recoveryTokenHandler, EventDispatcherInterface $eventDispatcher)
     {
@@ -60,10 +55,6 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
-     * @return Response
-     *
      * @throws \Exception
      */
     public function recoveryProcessAction(Request $request): Response
@@ -122,10 +113,6 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
-     * @return Response
-     *
      * @throws \Exception
      */
     public function recoveryResetPasswordAction(Request $request): Response
@@ -204,10 +191,6 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
-     * @return Response
-     *
      * @throws \Exception
      */
     public function recoveryTokenAction(Request $request): Response
@@ -274,11 +257,6 @@ class RecoveryController extends AbstractController
         );
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function recoveryRecoveryTokenAckAction(Request $request): Response
     {
         $recoveryTokenAck = new RecoveryTokenAck();
@@ -312,11 +290,6 @@ class RecoveryController extends AbstractController
         return $this->redirectToRoute('recovery');
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function recoveryTokenAckAction(Request $request): Response
     {
         $recoveryTokenAck = new RecoveryTokenAck();
@@ -350,9 +323,6 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @param User   $user
-     * @param string $recoveryToken
-     *
      * @return Response
      *
      * @throws \Exception
@@ -384,12 +354,6 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @param User   $user
-     * @param string $password
-     * @param string $recoveryToken
-     *
-     * @return string
-     *
      * @throws \Exception
      */
     private function resetPassword(User $user, string $password, string $recoveryToken): string
@@ -424,12 +388,6 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @param User   $user
-     * @param string $recoveryToken
-     * @param bool   $verifyTime
-     *
-     * @return bool
-     *
      * @throws \Exception
      */
     private function verifyEmailRecoveryToken(User $user, string $recoveryToken, bool $verifyTime = false): bool

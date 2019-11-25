@@ -2,11 +2,11 @@
 
 namespace App\Tests\Handler;
 
+use App\Handler\LogoutSuccessHandler;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use App\Handler\LogoutSuccessHandler;
-use PHPUnit\Framework\TestCase;
 
 class LogoutSuccessHandlerTest extends TestCase
 {

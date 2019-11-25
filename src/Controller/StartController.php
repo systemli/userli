@@ -7,12 +7,12 @@ use App\Entity\Alias;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Exception\ValidationException;
+use App\Form\CustomAliasCreateType;
 use App\Form\Model\AliasCreate;
 use App\Form\Model\PasswordChange;
 use App\Form\Model\VoucherCreate;
-use App\Form\CustomAliasCreateType;
-use App\Form\RandomAliasCreateType;
 use App\Form\PasswordChangeType;
+use App\Form\RandomAliasCreateType;
 use App\Form\VoucherCreateType;
 use App\Handler\AliasHandler;
 use App\Handler\MailCryptKeyHandler;
@@ -50,12 +50,6 @@ class StartController extends AbstractController
 
     /**
      * StartController constructor.
-     *
-     * @param AliasHandler        $aliasHandler
-     * @param PasswordUpdater     $passwordUpdater
-     * @param VoucherHandler      $voucherHandler
-     * @param VoucherCreator      $voucherCreator
-     * @param MailCryptKeyHandler $mailCryptKeyHandler
      */
     public function __construct(AliasHandler $aliasHandler, PasswordUpdater $passwordUpdater, VoucherHandler $voucherHandler, VoucherCreator $voucherCreator, MailCryptKeyHandler $mailCryptKeyHandler)
     {
@@ -92,8 +86,6 @@ class StartController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     public function voucherAction(Request $request)
@@ -132,8 +124,6 @@ class StartController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     public function aliasAction(Request $request)
@@ -191,8 +181,6 @@ class StartController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     public function accountAction(Request $request)
@@ -229,10 +217,6 @@ class StartController extends AbstractController
         );
     }
 
-    /**
-     * @param Request $request
-     * @param User    $user
-     */
     private function createVoucher(Request $request, User $user)
     {
         if ($this->isGranted('ROLE_MULTIPLIER')) {
@@ -246,10 +230,6 @@ class StartController extends AbstractController
         }
     }
 
-    /**
-     * @param Request $request
-     * @param User    $user
-     */
     private function createRandomAlias(Request $request, User $user)
     {
         try {
@@ -261,11 +241,6 @@ class StartController extends AbstractController
         }
     }
 
-    /**
-     * @param Request $request
-     * @param User    $user
-     * @param string  $alias
-     */
     private function createCustomAlias(Request $request, User $user, string $alias)
     {
         try {
@@ -278,11 +253,6 @@ class StartController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param User    $user
-     * @param string  $newPassword
-     * @param string  $oldPassword
-     *
      * @throws \Exception
      */
     private function changePassword(Request $request, User $user, string $newPassword, string $oldPassword)

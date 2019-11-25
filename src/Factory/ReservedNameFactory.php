@@ -9,11 +9,6 @@ use App\Entity\ReservedName;
  */
 class ReservedNameFactory
 {
-    /**
-     * @param string $name
-     *
-     * @return ReservedName
-     */
     public static function create(string $name): ReservedName
     {
         $reservedName = new ReservedName();

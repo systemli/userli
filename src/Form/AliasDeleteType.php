@@ -15,8 +15,8 @@ class AliasDeleteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('password', PasswordType::class, array('label' => 'form.delete-password'))
-            ->add('submit', SubmitType::class, array('label' => 'form.delete-alias'));
+            ->add('password', PasswordType::class, ['label' => 'form.delete-password'])
+            ->add('submit', SubmitType::class, ['label' => 'form.delete-alias']);
     }
 
     /**

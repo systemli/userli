@@ -17,9 +17,6 @@ trait CreationTimeTrait
         return $this->creationTime;
     }
 
-    /**
-     * @param \DateTime $creationTime
-     */
     public function setCreationTime(\DateTime $creationTime)
     {
         $this->creationTime = $creationTime;

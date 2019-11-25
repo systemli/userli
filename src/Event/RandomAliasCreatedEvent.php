@@ -17,8 +17,6 @@ class RandomAliasCreatedEvent extends Event
 
     /**
      * Constructor.
-     *
-     * @param Alias $alias
      */
     public function __construct(Alias $alias)
     {

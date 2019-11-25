@@ -14,11 +14,6 @@ class CryptoSecretHandler
      */
 
     /**
-     * @param string $message
-     * @param string $password
-     *
-     * @return CryptoSecret
-     *
      * @throws \Exception
      */
     public static function create(string $message, string $password): CryptoSecret
@@ -49,11 +44,6 @@ class CryptoSecretHandler
     }
 
     /**
-     * @param CryptoSecret $cryptoSecret
-     * @param string       $password
-     *
-     * @return string|null
-     *
      * @throws \Exception
      */
     public static function decrypt(CryptoSecret $cryptoSecret, string $password): ?string

@@ -8,11 +8,6 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    /**
-     * @param AuthenticationUtils $authenticationUtils
-     *
-     * @return Response
-     */
     public function loginAction(AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one

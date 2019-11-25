@@ -30,8 +30,6 @@ class VoucherRepository extends AbstractRepository
     }
 
     /**
-     * @param User $user
-     *
      * @return array|Voucher[]
      */
     public function findByUser(User $user)

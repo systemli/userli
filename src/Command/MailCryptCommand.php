@@ -36,11 +36,6 @@ class MailCryptCommand extends Command
 
     /**
      * MailCryptCommand constructor.
-     *
-     * @param ObjectManager             $manager
-     * @param UserAuthenticationHandler $handler
-     * @param MailCryptKeyHandler       $mailCryptKeyHandler
-     * @param bool                      $mailCryptEnabled
      */
     public function __construct(
         ObjectManager $manager,

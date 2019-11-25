@@ -23,19 +23,19 @@ class PasswordStrengthHandlerTest extends TestCase
 
     public function dataProvider()
     {
-        return array(
-            array('password', array('form.weak_password')),
-            array('Password', array('form.weak_password')),
-            array('pässword', array('form.forbidden_char', 'form.weak_password')),
-            array('PässwordSecure1', array('form.forbidden_char')),
-            array('PasswördSecure1', array('form.forbidden_char')),
-            array('PasswordSecüre1', array('form.forbidden_char')),
-            array('PasswordSecure1\'', array('form.forbidden_char')),
-            array('passwordpasswordpassword', array()),
-            array('PasswordSecure1', array()),
-            array('PasswordSecure$', array()),
-            array('PasswordSecure!', array()),
-            array('PasswordSecure_', array()),
-        );
+        return [
+            ['password', ['form.weak_password']],
+            ['Password', ['form.weak_password']],
+            ['pässword', ['form.forbidden_char', 'form.weak_password']],
+            ['PässwordSecure1', ['form.forbidden_char']],
+            ['PasswördSecure1', ['form.forbidden_char']],
+            ['PasswordSecüre1', ['form.forbidden_char']],
+            ['PasswordSecure1\'', ['form.forbidden_char']],
+            ['passwordpasswordpassword', []],
+            ['PasswordSecure1', []],
+            ['PasswordSecure$', []],
+            ['PasswordSecure!', []],
+            ['PasswordSecure_', []],
+        ];
     }
 }

@@ -27,9 +27,6 @@ class Registration
         return $this->voucher;
     }
 
-    /**
-     * @param string $voucher
-     */
     public function setVoucher(string $voucher)
     {
         $this->voucher = $voucher;
@@ -43,9 +40,6 @@ class Registration
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     */
     public function setEmail(string $email)
     {
         $this->email = strtolower($email);
@@ -59,9 +53,6 @@ class Registration
         return $this->plainPassword;
     }
 
-    /**
-     * @param string $plainPassword
-     */
     public function setPlainPassword(string $plainPassword)
     {
         $this->plainPassword = $plainPassword;

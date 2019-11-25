@@ -7,7 +7,7 @@ class PasswordStrengthHandler
     const REGEX_FORBIDDEN_CHARS = '/[äöüÄÖÜß\'"]/';
 
     /** @var array */
-    private $errors = array();
+    private $errors = [];
 
     /**
      * @param $value

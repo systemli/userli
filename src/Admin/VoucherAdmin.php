@@ -21,11 +21,11 @@ class VoucherAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    protected $datagridValues = array(
+    protected $datagridValues = [
         '_page' => 1,
         '_sort_order' => 'DESC',
         '_sort_by' => 'creationTime',
-    );
+    ];
 
     /**
      * {@inheritdoc}
@@ -50,8 +50,8 @@ class VoucherAdmin extends Admin
         }
 
         $form
-            ->add('user', null, array('disabled' => $disabled))
-            ->add('code', null, array('disabled' => !$this->isNewObject()));
+            ->add('user', null, ['disabled' => $disabled])
+            ->add('code', null, ['disabled' => !$this->isNewObject()]);
     }
 
     /**
@@ -75,7 +75,7 @@ class VoucherAdmin extends Admin
         $filter
             ->add('user')
             ->add('code')
-            ->add('created_since', 'doctrine_orm_callback', array(
+            ->add('created_since', 'doctrine_orm_callback', [
                 'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
                     if (isset($value['value']) && null !== $value = $value['value']) {
                         /** @var QueryBuilder $qb */
@@ -89,8 +89,8 @@ class VoucherAdmin extends Admin
                     return true;
                 },
                 'field_type' => TextType::class,
-            ))
-            ->add('redeemed_since', 'doctrine_orm_callback', array(
+            ])
+            ->add('redeemed_since', 'doctrine_orm_callback', [
                 'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
                     if (isset($value['value']) && null !== $value = $value['value']) {
                         /** @var QueryBuilder $qb */
@@ -104,7 +104,7 @@ class VoucherAdmin extends Admin
                     return true;
                 },
                 'field_type' => TextType::class,
-            ));
+            ]);
     }
 
     /**
@@ -112,6 +112,6 @@ class VoucherAdmin extends Admin
      */
     protected function configureBatchActions($actions)
     {
-        return array();
+        return [];
     }
 }

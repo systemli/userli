@@ -17,9 +17,6 @@ trait UpdatedTimeTrait
         return $this->updatedTime;
     }
 
-    /**
-     * @param \DateTime $updatedTime
-     */
     public function setUpdatedTime(\DateTime $updatedTime)
     {
         $this->updatedTime = $updatedTime;

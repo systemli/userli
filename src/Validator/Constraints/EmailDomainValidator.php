@@ -19,8 +19,6 @@ class EmailDomainValidator extends ConstraintValidator
 
     /**
      * EmailDomainValidator constructor.
-     *
-     * @param ObjectManager $manager
      */
     public function __construct(ObjectManager $manager)
     {

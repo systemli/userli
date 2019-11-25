@@ -11,8 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 class UserCRUDController extends CRUDController
 {
     /**
-     * @param ProxyQueryInterface $selectedModelQuery
-     * @param Request             $request
+     * @param Request $request
      *
      * @return RedirectResponse
      *
@@ -32,7 +31,7 @@ class UserCRUDController extends CRUDController
         );
 
         return new RedirectResponse(
-            $this->admin->generateUrl('list', array('filter' => $this->admin->getFilterParameters()))
+            $this->admin->generateUrl('list', ['filter' => $this->admin->getFilterParameters()])
         );
     }
 }

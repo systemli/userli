@@ -16,14 +16,14 @@ class PasswordChangeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('password', PasswordType::class, array('label' => 'form.actual-password'))
-            ->add('newPassword', RepeatedType::class, array(
+            ->add('password', PasswordType::class, ['label' => 'form.actual-password'])
+            ->add('newPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => array('label' => 'form.new-password'),
-                'second_options' => array('label' => 'form.new-password_confirmation'),
+                'first_options' => ['label' => 'form.new-password'],
+                'second_options' => ['label' => 'form.new-password_confirmation'],
                 'invalid_message' => 'form.different-password',
-            ))
-            ->add('submit', SubmitType::class, array('label' => 'form.submit'));
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'form.submit']);
     }
 
     /**

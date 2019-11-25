@@ -77,10 +77,6 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
     }
 
     /**
-     * @param string $address
-     * @param string $violationMessage
-     * @param string $operator
-     * @param int    $limit
      * @dataProvider getShortLongAddresses
      */
     public function testValidateShortLongEmailLength(string $address, string $violationMessage, string $operator, int $limit)

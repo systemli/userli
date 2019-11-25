@@ -26,10 +26,6 @@ class WelcomeMessageSender
 
     /**
      * WelcomeMessageSender constructor.
-     *
-     * @param MailHandler           $handler
-     * @param WelcomeMessageBuilder $builder
-     * @param string                $domain
      */
     public function __construct(MailHandler $handler, WelcomeMessageBuilder $builder, string $domain)
     {
@@ -39,9 +35,6 @@ class WelcomeMessageSender
     }
 
     /**
-     * @param User   $user
-     * @param string $locale
-     *
      * @throws \Exception
      */
     public function send(User $user, string $locale)

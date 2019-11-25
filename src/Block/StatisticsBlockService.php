@@ -22,8 +22,6 @@ class StatisticsBlockService extends AbstractAdminBlockService
      * Constructor.
      *
      * @param $name
-     * @param EngineInterface $templating
-     * @param ObjectManager   $manager
      */
     public function __construct($name, EngineInterface $templating, ObjectManager $manager)
     {
@@ -49,8 +47,7 @@ class StatisticsBlockService extends AbstractAdminBlockService
     }
 
     /**
-     * @param BlockContextInterface $blockContext
-     * @param Response              $response
+     * @param Response $response
      *
      * @return Response
      */
@@ -60,7 +57,7 @@ class StatisticsBlockService extends AbstractAdminBlockService
 
         return $this->templating->renderResponse(
             $blockContext->getTemplate(),
-            array(
+            [
                 'block' => $blockContext->getBlock(),
                 'settings' => $settings,
                 'users_since' => (null !== $usersSince = $this->manager->getRepository('App:User')->findUsersSince(
@@ -70,7 +67,7 @@ class StatisticsBlockService extends AbstractAdminBlockService
                 'vouchers_count' => $vouchersCount = $this->manager->getRepository('App:Voucher')->count([]),
                 'vouchers_redeemed' => $vouchersRedeemed = $this->manager->getRepository('App:Voucher')->countRedeemedVouchers(),
                 'vouchers_ratio' => ($vouchersCount > 0) ? sprintf('%.2f%%', (float) (($vouchersRedeemed / $vouchersCount) * 100)) : '0%',
-            ),
+            ],
             $response
         );
     }
@@ -81,11 +78,11 @@ class StatisticsBlockService extends AbstractAdminBlockService
     public function configureSettings(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'url' => false,
                 'title' => 'Statistics',
                 'template' => 'Block/block_statistics.html.twig',
-            )
+            ]
         );
     }
 
@@ -94,9 +91,9 @@ class StatisticsBlockService extends AbstractAdminBlockService
      */
     public function getCacheKeys(BlockInterface $block)
     {
-        return array(
+        return [
             'block_id' => $block->getId(),
             'updated_at' => $block->getUpdatedAt() ? $block->getUpdatedAt()->format('U') : strtotime('now'),
-        );
+        ];
     }
 }

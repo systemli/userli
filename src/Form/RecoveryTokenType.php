@@ -15,8 +15,8 @@ class RecoveryTokenType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('password', PasswordType::class, array('label' => 'form.password'))
-            ->add('submit', SubmitType::class, array('label' => 'form.generate-recovery-token'));
+            ->add('password', PasswordType::class, ['label' => 'form.password'])
+            ->add('submit', SubmitType::class, ['label' => 'form.generate-recovery-token']);
     }
 
     /**

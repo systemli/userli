@@ -9,9 +9,6 @@ trait RecoveryTokenTrait
      */
     private $recoveryToken;
 
-    /**
-     * @return string|null
-     */
     public function getRecoveryToken(): ?string
     {
         return $this->recoveryToken;

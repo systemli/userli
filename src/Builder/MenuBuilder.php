@@ -29,11 +29,6 @@ class MenuBuilder
 
     /**
      * Constructor.
-     *
-     * @param FactoryInterface              $factory
-     * @param AuthorizationCheckerInterface $authChecker
-     * @param MenuHelper                    $menuHelper
-     * @param array                         $navbarLeft
      */
     public function __construct(FactoryInterface $factory, AuthorizationCheckerInterface $authChecker, MenuHelper $menuHelper, array $navbarLeft)
     {

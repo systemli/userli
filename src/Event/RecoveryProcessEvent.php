@@ -17,8 +17,6 @@ class RecoveryProcessEvent extends Event
 
     /**
      * Constructor.
-     *
-     * @param User $user
      */
     public function __construct(User $user)
     {

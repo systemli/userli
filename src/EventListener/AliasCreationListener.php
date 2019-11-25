@@ -24,10 +24,6 @@ class AliasCreationListener implements EventSubscriberInterface
 
     /**
      * AliasCreationListener constructor.
-     *
-     * @param RequestStack              $request
-     * @param AliasCreatedMessageSender $sender
-     * @param bool                      $sendMail
      */
     public function __construct(
         RequestStack $request,
@@ -40,8 +36,6 @@ class AliasCreationListener implements EventSubscriberInterface
     }
 
     /**
-     * @param AliasCreatedEvent $event
-     *
      * @throws \Exception
      */
     public function onAliasCreated(AliasCreatedEvent $event)

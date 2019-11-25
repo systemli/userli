@@ -23,9 +23,6 @@ class PasswordChangeValidator extends ConstraintValidator
 
     /**
      * Constructor.
-     *
-     * @param TokenStorageInterface   $storage
-     * @param EncoderFactoryInterface $encoderFactory
      */
     public function __construct(TokenStorageInterface $storage, EncoderFactoryInterface $encoderFactory)
     {
@@ -37,7 +34,6 @@ class PasswordChangeValidator extends ConstraintValidator
      * Checks if the passed value is valid.
      *
      * @param PasswordChange $value
-     * @param Constraint     $constraint
      *
      * @throws UnexpectedTypeException
      *

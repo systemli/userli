@@ -25,7 +25,7 @@ class EmailLength extends Constraint
         parent::__construct($options);
 
         if (null === $this->minLength && null === $this->maxLength) {
-            throw new MissingOptionsException(sprintf('Either option "minLength" or "maxLength" must be given for constraint %s', __CLASS__), array('min', 'max'));
+            throw new MissingOptionsException(sprintf('Either option "minLength" or "maxLength" must be given for constraint %s', __CLASS__), ['min', 'max']);
         }
     }
 }

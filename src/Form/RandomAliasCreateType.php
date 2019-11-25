@@ -14,7 +14,7 @@ class RandomAliasCreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('submit', SubmitType::class, array('label' => 'form.create-random-alias'));
+            ->add('submit', SubmitType::class, ['label' => 'form.create-random-alias']);
     }
 
     /**

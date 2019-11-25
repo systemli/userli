@@ -35,13 +35,13 @@ class EmailLengthValidator extends ConstraintValidator
 
         if (is_numeric($minLength = $constraint->minLength)) {
             if (strlen($localPart) < $minLength) {
-                $this->context->addViolation('registration.email-too-short', array('%min%' => $constraint->minLength));
+                $this->context->addViolation('registration.email-too-short', ['%min%' => $constraint->minLength]);
             }
         }
 
         if (is_numeric($maxLength = $constraint->maxLength)) {
             if (strlen($localPart) > $maxLength) {
-                $this->context->addViolation('registration.email-too-long', array('%max%' => $constraint->maxLength));
+                $this->context->addViolation('registration.email-too-long', ['%max%' => $constraint->maxLength]);
             }
         }
     }

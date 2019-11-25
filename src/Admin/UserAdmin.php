@@ -218,17 +218,11 @@ class UserAdmin extends Admin
         $this->deleteHandler->deleteUser($user);
     }
 
-    /**
-     * @param PasswordUpdater $passwordUpdater
-     */
     public function setPasswordUpdater(PasswordUpdater $passwordUpdater)
     {
         $this->passwordUpdater = $passwordUpdater;
     }
 
-    /**
-     * @param DeleteHandler $deleteHandler
-     */
     public function setDeleteHandler(DeleteHandler $deleteHandler)
     {
         $this->deleteHandler = $deleteHandler;

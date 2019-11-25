@@ -14,10 +14,6 @@ use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 class ExceptionController extends BaseExceptionController
 {
     /**
-     * @param Request                   $request
-     * @param FlattenException          $exception
-     * @param DebugLoggerInterface|null $logger
-     *
      * @return Response
      *
      * @throws \Twig_Error_Loader

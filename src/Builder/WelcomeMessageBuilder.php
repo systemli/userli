@@ -29,10 +29,9 @@ class WelcomeMessageBuilder
     /**
      * WelcomeMessageBuilder constructor.
      *
-     * @param TranslatorInterface $translator
-     * @param string              $domain
-     * @param string              $appUrl
-     * @param string              $projectName
+     * @param string $domain
+     * @param string $appUrl
+     * @param string $projectName
      */
     public function __construct(TranslatorInterface $translator, $domain, $appUrl, $projectName)
     {

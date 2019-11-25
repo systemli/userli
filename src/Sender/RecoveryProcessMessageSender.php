@@ -22,9 +22,6 @@ class RecoveryProcessMessageSender
 
     /**
      * RecoveryProcessMessageSender constructor.
-     *
-     * @param MailHandler                   $handler
-     * @param RecoveryProcessMessageBuilder $builder
      */
     public function __construct(MailHandler $handler, RecoveryProcessMessageBuilder $builder)
     {
@@ -33,9 +30,6 @@ class RecoveryProcessMessageSender
     }
 
     /**
-     * @param User   $user
-     * @param string $locale
-     *
      * @throws \Exception
      */
     public function send(User $user, string $locale)

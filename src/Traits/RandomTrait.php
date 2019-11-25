@@ -9,9 +9,6 @@ trait RandomTrait
      */
     private $random;
 
-    /**
-     * @return bool
-     */
     public function isRandom(): bool
     {
         return (bool) $this->random;

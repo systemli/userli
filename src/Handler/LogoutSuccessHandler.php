@@ -20,8 +20,7 @@ class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
     /**
      * Constructor.
      *
-     * @param HttpUtils $httpUtils
-     * @param string    $targetUrl
+     * @param string $targetUrl
      */
     public function __construct(HttpUtils $httpUtils, $targetUrl = '/')
     {

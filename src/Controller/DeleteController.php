@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Form\AliasDeleteType;
-use App\Form\UserDeleteType;
 use App\Form\Model\Delete;
+use App\Form\UserDeleteType;
 use App\Handler\DeleteHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,8 +21,6 @@ class DeleteController extends AbstractController
 
     /**
      * DeleteController constructor.
-     *
-     * @param DeleteHandler $deleteHandler
      */
     public function __construct(DeleteHandler $deleteHandler)
     {
@@ -30,7 +28,6 @@ class DeleteController extends AbstractController
     }
 
     /**
-     * @param Request $request
      * @param $aliasId
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -71,8 +68,6 @@ class DeleteController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function deleteUserAction(Request $request)

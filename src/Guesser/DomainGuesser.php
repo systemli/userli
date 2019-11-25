@@ -15,8 +15,6 @@ class DomainGuesser
 
     /**
      * Constructor.
-     *
-     * @param ObjectManager $manager
      */
     public function __construct(ObjectManager $manager)
     {

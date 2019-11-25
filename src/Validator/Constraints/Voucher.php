@@ -18,15 +18,15 @@ class Voucher extends Constraint
     public function __construct($options = null)
     {
         if (null !== $options && !\is_array($options)) {
-            $options = array(
+            $options = [
                 'exists' => $options,
-            );
+            ];
         }
 
         parent::__construct($options);
 
         if (null === $this->exists) {
-            throw new MissingOptionsException(sprintf('Option "exists" must be given for constraint %s', __CLASS__), array('min', 'max'));
+            throw new MissingOptionsException(sprintf('Option "exists" must be given for constraint %s', __CLASS__), ['min', 'max']);
         }
     }
 }

@@ -42,9 +42,6 @@ class LoginListenerTest extends TestCase
 
     /**
      * @dataProvider provider
-     *
-     * @param User $user
-     * @param bool $update
      */
     public function testOnSecurityInteractiveLogin(User $user, bool $update)
     {
@@ -103,8 +100,6 @@ class LoginListenerTest extends TestCase
     }
 
     /**
-     * @param int|null $passwordVersion
-     *
      * @return User
      */
     public function getUser(?int $passwordVersion)

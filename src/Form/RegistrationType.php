@@ -25,18 +25,12 @@ class RegistrationType extends AbstractType
 
     /**
      * RegistrationType constructor.
-     *
-     * @param string $domain
      */
     public function __construct(string $domain)
     {
         $this->domain = $domain;
     }
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $transformer = new TextToEmailTransformer($this->domain);
@@ -52,15 +46,15 @@ class RegistrationType extends AbstractType
             ->add($builder->create(
                 'email',
                 TextType::class,
-                array('label' => 'registration.label-email')
+                ['label' => 'registration.label-email']
             )->addViewTransformer($transformer))
-            ->add('plainPassword', RepeatedType::class, array(
+            ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => array('label' => 'form.password'),
-                'second_options' => array('label' => 'form.password_confirmation'),
+                'first_options' => ['label' => 'form.password'],
+                'second_options' => ['label' => 'form.password_confirmation'],
                 'invalid_message' => 'form.different-password',
-            ))
-            ->add('submit', SubmitType::class, array('label' => 'form.submit'));
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'form.submit']);
     }
 
     /**

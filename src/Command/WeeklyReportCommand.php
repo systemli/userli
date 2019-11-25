@@ -19,8 +19,6 @@ class WeeklyReportCommand extends Command
 
     /**
      * WeeklyReportCommand constructor.
-     *
-     * @param UserRegistrationInfoHandler $handler
      */
     public function __construct(UserRegistrationInfoHandler $handler)
     {

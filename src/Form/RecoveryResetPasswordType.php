@@ -19,13 +19,13 @@ class RecoveryResetPasswordType extends AbstractType
         $builder
             ->add('email', HiddenType::class)
             ->add('recoveryToken', HiddenType::class)
-            ->add('newPassword', RepeatedType::class, array(
+            ->add('newPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => array('label' => 'form.new-password'),
-                'second_options' => array('label' => 'form.new-password_confirmation'),
+                'first_options' => ['label' => 'form.new-password'],
+                'second_options' => ['label' => 'form.new-password_confirmation'],
                 'invalid_message' => 'form.different-password',
-            ))
-            ->add('submit', SubmitType::class, array('label' => 'form.submit'));
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'form.submit']);
     }
 
     /**
