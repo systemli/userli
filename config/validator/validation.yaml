@@ -54,6 +54,8 @@ App\Form\Model\PasswordChange:
     properties:
         newPassword:
             - App\Validator\Constraints\PasswordPolicy: ~
+            - NotCompromisedPassword:
+                skipOnError: true
 
     constraints:
         - App\Validator\Constraints\PasswordChangeConstraint: ~
@@ -83,3 +85,5 @@ App\Form\Model\RecoveryResetPassword:
     properties:
         newPassword:
             - App\Validator\Constraints\PasswordPolicy: ~
+            - NotCompromisedPassword:
+                skipOnError: true
