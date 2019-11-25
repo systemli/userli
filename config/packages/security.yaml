@@ -108,6 +108,7 @@ security:
 
     access_control:
       - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: "^/[a-z]{2}/init", roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: "^/[a-z]{2}/login", roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: "^/[a-z]{2}/recovery", roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: "^/[a-z]{2}/register", roles: IS_AUTHENTICATED_ANONYMOUSLY }

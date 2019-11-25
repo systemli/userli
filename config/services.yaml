@@ -76,9 +76,17 @@ services:
         arguments:
             $debug: '%kernel.debug%'
 
+    App\Controller\InitController:
+        arguments:
+            $defaultDomain: "%env(DOMAIN)%"
+
     App\Form\PasswordChangeType:
         tags:
             - { name: form.type, alias: password_change }
+
+    App\Form\PlainPasswordType:
+        tags:
+            - { name: form.type, alias: plain_password }
 
     App\Form\RecoveryProcessType:
         arguments:

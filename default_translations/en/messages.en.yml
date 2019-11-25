@@ -232,3 +232,9 @@ Alias: Alias address
 Voucher: Invite code
 Reserved Name: Reserved Name
 copy-to-clipboard: Copy to clipboard
+init:
+  title: Creating initial configuration
+  lead: Thank your for installing Userli. Currently, there are no accounts present.
+  text: "We will therefore configure Userli for the default domain <strong>%domain%</strong>. If you wish to use a different domain,\
+    \ please <a href='https://systemli.github.io/userli/installation/configuration/'>adjust the file `.env.local`</a>."
+  admin-password: "Now, please pick a password for admin@%domain% and log in afterwards."

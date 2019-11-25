@@ -60,6 +60,13 @@ App\Form\Model\PasswordChange:
     constraints:
         - App\Validator\Constraints\PasswordChangeConstraint: ~
 
+App\Form\Model\PlainPassword:
+    properties:
+        newPassword:
+            - App\Validator\Constraints\PasswordPolicy: ~
+            - NotCompromisedPassword:
+                skipOnError: true
+
 App\Form\Model\Delete:
     properties:
         password:

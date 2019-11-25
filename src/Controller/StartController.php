@@ -18,6 +18,7 @@ use App\Handler\AliasHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\VoucherHandler;
 use App\Helper\PasswordUpdater;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,17 +48,23 @@ class StartController extends AbstractController
      * @var MailCryptKeyHandler
      */
     private $mailCryptKeyHandler;
+    /**
+     * @var ObjectManager
+     */
+    private $manager;
+
 
     /**
      * StartController constructor.
      */
-    public function __construct(AliasHandler $aliasHandler, PasswordUpdater $passwordUpdater, VoucherHandler $voucherHandler, VoucherCreator $voucherCreator, MailCryptKeyHandler $mailCryptKeyHandler)
+    public function __construct(AliasHandler $aliasHandler, PasswordUpdater $passwordUpdater, VoucherHandler $voucherHandler, VoucherCreator $voucherCreator, MailCryptKeyHandler $mailCryptKeyHandler, ObjectManager $manager)
     {
         $this->aliasHandler = $aliasHandler;
         $this->passwordUpdater = $passwordUpdater;
         $this->voucherHandler = $voucherHandler;
         $this->voucherCreator = $voucherCreator;
         $this->mailCryptKeyHandler = $mailCryptKeyHandler;
+        $this->manager = $manager;
     }
 
     /**
@@ -66,6 +73,10 @@ class StartController extends AbstractController
     public function indexAction()
     {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            // forward to installer if no domains exist
+            if (0 == $this->manager->getRepository('App:Domain')->count([])) {
+                return $this->redirectToRoute('init');
+            }
             return $this->render('Start/index_anonymous.html.twig');
         }
 
