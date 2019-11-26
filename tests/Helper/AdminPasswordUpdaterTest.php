@@ -2,7 +2,6 @@
 
 namespace App\Tests\Helper;
 
-use App\Entity\Domain;
 use App\Entity\User;
 use App\Helper\AdminPasswordUpdater;
 use App\Helper\PasswordUpdater;
@@ -67,11 +66,11 @@ class AdminPasswordUpdaterTest extends TestCase
             ->getMock();
         $userRepo->method('findByEmail')->willReturn($object);
 
-        $manager =  $this->getMockBuilder(ObjectManager::class)->getMock();
+        $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
         $manager->method('getRepository')->willReturnMap(
             [
                 ['App:Domain', $domainRepo],
-                ['App:User', $userRepo]
+                ['App:User', $userRepo],
             ]);
 
         return $manager;
@@ -82,6 +81,7 @@ class AdminPasswordUpdaterTest extends TestCase
         $encoderFactory = $this->getMockBuilder(EncoderFactoryInterface::class)
             ->getMock();
         $encoderFactory->expects($this->any())->method('getEncoder')->willReturn(new PasswordHashEncoder());
+
         return new PasswordUpdater($encoderFactory);
     }
 }

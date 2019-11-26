@@ -53,7 +53,6 @@ class StartController extends AbstractController
      */
     private $manager;
 
-
     /**
      * StartController constructor.
      */
@@ -77,6 +76,7 @@ class StartController extends AbstractController
             if (0 == $this->manager->getRepository('App:Domain')->count([])) {
                 return $this->redirectToRoute('init');
             }
+
             return $this->render('Start/index_anonymous.html.twig');
         }
 

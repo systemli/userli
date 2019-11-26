@@ -36,14 +36,12 @@ class AdminPasswordCommand extends Command
             ->setName('app:admin:password')
             ->setDescription('Set password of admin user')
             ->setHelp('Set password of admin user. Create primary user and domain if not created before.')
-            ->addOption('password', 'p',InputArgument::OPTIONAL, 'Admin password');
+            ->addOption('password', 'p', InputArgument::OPTIONAL, 'Admin password');
     }
-
-
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        if (! $input->hasArgument('password')) {
+        if (!$input->hasArgument('password')) {
             $output->writeln('Please enter new admin password:');
             $password = fgets(STDIN);
         } else {

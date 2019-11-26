@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Helper;
-
 
 use App\Entity\Domain;
 use App\Entity\User;
@@ -33,9 +31,10 @@ class AdminPasswordUpdater
 
     /**
      * Set admin password
-     * Create admin user in default domain if not existent
+     * Create admin user in default domain if not existent.
      */
-    public function updateAdminPassword(string $password) {
+    public function updateAdminPassword(string $password)
+    {
         $domain = $this->getDefaultDomain();
         $adminEmail = 'admin@'.$this->defaultDomain;
         $admin = $this->manager->getRepository('App:User')->findByEmail($adminEmail);
@@ -54,7 +53,7 @@ class AdminPasswordUpdater
 
     /**
      * Return default domain
-     * Create if not existent before
+     * Create if not existent before.
      *
      * @return Domain
      */
@@ -66,7 +65,7 @@ class AdminPasswordUpdater
             $domain->setName($this->defaultDomain);
             $this->manager->persist($domain);
         }
+
         return $domain;
     }
-
 }

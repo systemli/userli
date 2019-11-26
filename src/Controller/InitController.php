@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controller;
-
 
 use App\Form\Model\PlainPassword;
 use App\Form\PlainPasswordType;
@@ -13,8 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class InitController
- * @package App\Controller
+ * Class InitController.
  */
 class InitController extends AbstractController
 {
@@ -27,18 +24,16 @@ class InitController extends AbstractController
      */
     private $updater;
 
-    public function __construct (ObjectManager $manager, AdminPasswordUpdater $updater)
+    public function __construct(ObjectManager $manager, AdminPasswordUpdater $updater)
     {
         $this->manager = $manager;
         $this->updater = $updater;
     }
 
     /**
-     * @param Request  $request
-     *
      * @return Response
      */
-    public function indexAction (Request $request)
+    public function indexAction(Request $request)
     {
         // redirect if already configured
         if (0 < $this->manager->getRepository('App:Domain')->count([])) {
@@ -61,9 +56,11 @@ class InitController extends AbstractController
             if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
                 $this->updater->updateAdminPassword($password->newPassword);
                 $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
+
                 return $this->redirectToRoute('index');
             }
         }
+
         return $this->render('init.html.twig', ['form' => $passwordForm->createView()]);
     }
 }
