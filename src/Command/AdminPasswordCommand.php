@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 
 class AdminPasswordCommand extends Command
 {
@@ -36,18 +37,17 @@ class AdminPasswordCommand extends Command
             ->setName('app:admin:password')
             ->setDescription('Set password of admin user')
             ->setHelp('Set password of admin user. Create primary user and domain if not created before.')
-            ->addOption('password', 'p', InputArgument::OPTIONAL, 'Admin password');
+            ->addArgument('password',InputArgument::OPTIONAL,'Admin password');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!$input->hasArgument('password')) {
-            $output->writeln('Please enter new admin password:');
-            $password = fgets(STDIN);
-        } else {
-            $password = $input->getArgument('password');
+        $password = $input->getArgument('password');
+        if (null === $password) {
+            $helper = $this->getHelper('question');
+            $question = new Question('Please enter new admin password:');
+            $password = $helper->ask($input, $output, $question);
         }
-        $output->writeln(trim($password));
-        $this->updater->updateAdminPassword(trim($password));
+        $this->updater->updateAdminPassword($password);
     }
 }
