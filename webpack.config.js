@@ -9,6 +9,9 @@ Encore
     // only needed for CDN's or sub-directory deploy
     //.setManifestKeyPrefix('build/')
 
+    // Tell Webpack to *not* output a separate runtime.js file.
+    .disableSingleRuntimeChunk()
+
     /*
      * ENTRY CONFIG
      *
