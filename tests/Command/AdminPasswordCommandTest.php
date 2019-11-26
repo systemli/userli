@@ -11,7 +11,6 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class AdminPasswordCommandTest extends TestCase
 {
-
     public function testExecute()
     {
         $manager = $this->getMockBuilder(ObjectManager::class)
