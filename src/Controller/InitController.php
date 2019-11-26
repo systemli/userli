@@ -4,12 +4,9 @@
 namespace App\Controller;
 
 
-use App\Entity\Domain;
-use App\Entity\User;
-use App\Enum\Roles;
 use App\Form\Model\PlainPassword;
 use App\Form\PlainPasswordType;
-use App\Helper\PasswordUpdater;
+use App\Helper\AdminPasswordUpdater;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,24 +23,14 @@ class InitController extends AbstractController
      */
     private $manager;
     /**
-     * @var PasswordUpdater
+     * @var AdminPasswordUpdater
      */
-    private $passwordUpdater;
-    /**
-     * @var string
-     */
-    private $defaultDomain;
+    private $updater;
 
-    /**
-     * @param ObjectManager   $manager
-     * @param PasswordUpdater $passwordUpdater
-     * @param $defaultDomain
-     */
-    public function __construct (ObjectManager $manager, PasswordUpdater $passwordUpdater, $defaultDomain)
+    public function __construct (ObjectManager $manager, AdminPasswordUpdater $updater)
     {
         $this->manager = $manager;
-        $this->passwordUpdater = $passwordUpdater;
-        $this->defaultDomain = $defaultDomain;
+        $this->updater = $updater;
     }
 
     /**
@@ -72,23 +59,11 @@ class InitController extends AbstractController
             $passwordForm->handleRequest($request);
 
             if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
-                // create primary domain and admin user
-                $domain = new Domain();
-                $domain->setName($this->defaultDomain);
-                $admin = new User();
-                $admin->setEmail('admin@'.$this->defaultDomain);
-                $admin->setDomain($domain);
-                $admin->setPlainPassword($password->newPassword);
-                $admin->setRoles([Roles::ADMIN]);
-                $this->passwordUpdater->updatePassword($admin);
-                $this->manager->persist($domain);
-                $this->manager->persist($admin);
-                $this->manager->flush();
+                $this->updater->updateAdminPassword($password->newPassword);
                 $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
                 return $this->redirectToRoute('index');
             }
         }
         return $this->render('init.html.twig', ['form' => $passwordForm->createView()]);
     }
-
 }

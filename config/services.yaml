@@ -76,10 +76,6 @@ services:
         arguments:
             $debug: '%kernel.debug%'
 
-    App\Controller\InitController:
-        arguments:
-            $defaultDomain: "%env(DOMAIN)%"
-
     App\Form\PasswordChangeType:
         tags:
             - { name: form.type, alias: password_change }
@@ -131,6 +127,10 @@ services:
     App\Handler\UserAuthenticationHandler:
         arguments:
             $encoderFactory: '@security.encoder_factory'
+
+    App\Helper\AdminPasswordUpdater:
+        arguments:
+            $defaultDomain: "%env(DOMAIN)%"
 
     App\Helper\PasswordUpdater:
         public: true
