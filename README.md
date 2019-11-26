@@ -1,8 +1,7 @@
 # Userli
 
 [![Build Status](https://travis-ci.org/systemli/userli.svg?branch=master)](https://travis-ci.org/systemli/userli)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/systemli/userli/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/systemli/userli/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/systemli/userli/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/systemli/userli/?branch=master)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=systemli_userli&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=systemli_userli) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=systemli_userli&metric=alert_status)](https://sonarcloud.io/dashboard?id=systemli_userli)
 [![Translation Status](https://hosted.weblate.org/widgets/userli/-/svg-badge.svg)](https://hosted.weblate.org/widgets/userli/-/svg-badge.svg)
 
 Web application to (self-) manage email users and encrypt their mailboxes.
