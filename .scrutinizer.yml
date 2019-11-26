@@ -38,14 +38,14 @@ build:
             tests:
                 override:
                     - php-scrutinizer-run
-        coverage:
-            tests:
-                override:
-                    - command: 'bin/phpunit --coverage-clover=coverage.xml'
-                      coverage:
-                          file: 'coverage.xml'
-                          format: 'clover'
-                      idle_timeout: 300
+#         coverage:
+#             tests:
+#                 override:
+#                     - command: 'bin/phpunit --coverage-clover=coverage.xml'
+#                       coverage:
+#                           file: 'coverage.xml'
+#                           format: 'clover'
+#                       idle_timeout: 300
 
 filter:
     excluded_paths:
