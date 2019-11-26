@@ -33,6 +33,7 @@ build:
             - mysql -uroot -e "GRANT ALL PRIVILEGES on mail_test.* to mail_test@localhost;"
         override:
             - composer install
+            - ls -1 vendor/symfony
     nodes:
         analysis:
             tests:
@@ -41,7 +42,7 @@ build:
         coverage:
             tests:
                 override:
-                    - command: 'bin/phpunit --coverage-clover=coverage.xml'
+                    - command: 'vendor/symfony/phpunit-bridge/bin/simple-phpunit --coverage-clover=coverage.xml'
                       coverage:
                           file: 'coverage.xml'
                           format: 'clover'
@@ -50,8 +51,8 @@ build:
 filter:
     excluded_paths:
         - assets/*
-        - config/*
         - bin/*
+        - config/*
         - features/*
         - public/*
         - src/DataFixtures/*
