@@ -2,6 +2,9 @@ Feature: Language detection
 
   Background:
     Given the database is clean
+    And the following Domain exists:
+      | name        |
+      | example.org |
 
   @language
   Scenario: Language detection
