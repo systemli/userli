@@ -79,8 +79,10 @@ matrix:
         - DATABASE_URL=pgsql://mail_test:password@127.0.0.1:5432/mail_test
       services:
         - postgresql
+
     - script: make security-check
       name: Run symfony security checks
+
     - script: bin/phpunit --coverage-clover=coverage.xml
-      name: get code coverage
+      name: calculate code coverage
       after_success: bash <(curl -s https://codecov.io/bash)
