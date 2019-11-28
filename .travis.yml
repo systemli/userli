@@ -81,3 +81,6 @@ matrix:
         - postgresql
     - script: make security-check
       name: Run symfony security checks
+    - script: bin/phpunit --coverage-clover=coverage.xml
+      name: get code coverage
+      after_success: bash <(curl -s https://codecov.io/bash)
