@@ -2295,16 +2295,16 @@
         },
         {
             "name": "sonata-project/admin-bundle",
-            "version": "3.55.0",
+            "version": "3.56.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "223ba5c7f3d1c306a164fc0d06dace2a1ae53e2f"
+                "reference": "f37b5a6150b95faf3e56668aef5c482fddcf077e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/223ba5c7f3d1c306a164fc0d06dace2a1ae53e2f",
-                "reference": "223ba5c7f3d1c306a164fc0d06dace2a1ae53e2f",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/f37b5a6150b95faf3e56668aef5c482fddcf077e",
+                "reference": "f37b5a6150b95faf3e56668aef5c482fddcf077e",
                 "shasum": ""
             },
             "require": {
@@ -2315,34 +2315,34 @@
                 "sonata-project/block-bundle": "^3.17",
                 "sonata-project/core-bundle": "^3.15.0",
                 "sonata-project/exporter": "^1.11.0 || ^2.0",
-                "symfony/asset": "^2.8 || ^3.2 || ^4.0",
-                "symfony/config": "^2.8 || ^3.2 || ^4.0",
-                "symfony/console": "^2.8 || ^3.2 || ^4.0",
-                "symfony/dependency-injection": "^2.8 || ^3.2 || ^4.0",
-                "symfony/doctrine-bridge": "^2.8 || ^3.2 || ^4.0",
-                "symfony/event-dispatcher": "^2.8 || ^3.2 || ^4.0",
-                "symfony/expression-language": "^2.8 || ^3.2 || ^4.0",
+                "symfony/asset": "^3.4.30 || ^4.2",
+                "symfony/config": "^3.4.30 || ^4.2",
+                "symfony/console": "^3.4.30 || ^4.2",
+                "symfony/dependency-injection": "^3.4.30 || ^4.2",
+                "symfony/doctrine-bridge": "^3.4.30 || ^4.2",
+                "symfony/event-dispatcher": "^3.4.30 || ^4.2",
+                "symfony/expression-language": "^3.4.30 || ^4.2",
                 "symfony/form": "^2.8.18 || ^3.2.5 || ^4.0",
-                "symfony/framework-bundle": "^2.8 || ^3.2 || ^4.0",
-                "symfony/http-foundation": "^2.8 || ^3.2 || ^4.0",
-                "symfony/http-kernel": "^2.8 || ^3.2 || ^4.0",
-                "symfony/options-resolver": "^2.8 || ^3.2 || ^4.0",
-                "symfony/property-access": "^2.8 || ^3.2 || ^4.0",
-                "symfony/routing": "^2.8 || ^3.2 || ^4.0",
-                "symfony/security-acl": "^2.8 || ^3.0",
-                "symfony/security-bundle": "^2.8 || ^3.2 || ^4.0",
-                "symfony/security-core": "^2.8 || ^3.2 || ^4.0",
-                "symfony/security-csrf": "^2.8 || ^3.2 || ^4.0",
-                "symfony/templating": "^2.8 || ^3.2 || ^4.0",
-                "symfony/translation": "^2.8 || ^3.2 || ^4.0",
-                "symfony/twig-bridge": "^2.8 || ^3.2 || ^4.0",
-                "symfony/twig-bundle": "^2.8 || ^3.2 || ^4.0",
-                "symfony/validator": "^2.8 || ^3.2 || ^4.0",
+                "symfony/framework-bundle": "^3.4.30 || ^4.2",
+                "symfony/http-foundation": "^3.4.30 || ^4.2",
+                "symfony/http-kernel": "^3.4.30 || ^4.2",
+                "symfony/options-resolver": "^3.4.30 || ^4.2",
+                "symfony/property-access": "^3.4.30 || ^4.2",
+                "symfony/routing": "^3.4.30 || ^4.2",
+                "symfony/security-acl": "^3.0",
+                "symfony/security-bundle": "^3.4.30 || ^4.2",
+                "symfony/security-core": "^3.4.30 || ^4.2",
+                "symfony/security-csrf": "^3.4.30 || ^4.2",
+                "symfony/templating": "^3.4.30 || ^4.2",
+                "symfony/translation": "^3.4.30 || ^4.2",
+                "symfony/twig-bridge": "^3.4.30 || ^4.2",
+                "symfony/twig-bundle": "^3.4.30 || ^4.2",
+                "symfony/validator": "^3.4.30 || ^4.2",
                 "twig/extensions": "^1.5",
                 "twig/twig": "^2.10"
             },
             "conflict": {
-                "doctrine/doctrine-bundle": ">=2",
+                "doctrine/doctrine-bundle": ">=3",
                 "jms/di-extra-bundle": "<1.9",
                 "sonata-project/media-bundle": "<3.7",
                 "sonata-project/user-bundle": "<3.3"
@@ -2353,10 +2353,10 @@
                 "matthiasnoback/symfony-dependency-injection-test": "^3.1",
                 "sensio/generator-bundle": "^3.1",
                 "sonata-project/intl-bundle": "^2.4",
-                "symfony/class-loader": "^2.8 || ^3.2",
-                "symfony/filesystem": "^2.8 || ^3.2 || ^4.0",
+                "symfony/filesystem": "^3.4.30 || ^4.2",
+                "symfony/maker-bundle": "^1.14",
                 "symfony/phpunit-bridge": "^4.3",
-                "symfony/yaml": "^2.8 || ^3.2 || ^4.0"
+                "symfony/yaml": "^3.4.30 || ^4.2"
             },
             "suggest": {
                 "jms/translation-bundle": "Extract message keys from Admins",
@@ -2398,7 +2398,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2019-11-25T21:49:56+00:00"
+            "time": "2019-12-07T08:03:36+00:00"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -2707,16 +2707,16 @@
         },
         {
             "name": "sonata-project/doctrine-extensions",
-            "version": "1.3.1",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/sonata-doctrine-extensions.git",
-                "reference": "f93e32ffcbfbabf07f14e066d997824e8f3596b0"
+                "reference": "e10855ffbb6f06b87c1d8cc43e017c229bd9f45e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/sonata-doctrine-extensions/zipball/f93e32ffcbfbabf07f14e066d997824e8f3596b0",
-                "reference": "f93e32ffcbfbabf07f14e066d997824e8f3596b0",
+                "url": "https://api.github.com/repos/sonata-project/sonata-doctrine-extensions/zipball/e10855ffbb6f06b87c1d8cc43e017c229bd9f45e",
+                "reference": "e10855ffbb6f06b87c1d8cc43e017c229bd9f45e",
                 "shasum": ""
             },
             "require": {
@@ -2729,10 +2729,10 @@
                 "doctrine/phpcr-odm": "^1.4 || ^2.0",
                 "jackalope/jackalope-doctrine-dbal": "^1.0",
                 "matthiasnoback/symfony-dependency-injection-test": "^3.1",
-                "symfony/dependency-injection": "^2.8 || ^3.3 || ^4.0",
-                "symfony/expression-language": "^2.8 || ^3.3 || ^4.0",
-                "symfony/framework-bundle": "^2.8 || ^3.3 || ^4.0",
-                "symfony/phpunit-bridge": "^4.2"
+                "symfony/dependency-injection": "^3.4 || ^4.2 || ^5.0",
+                "symfony/expression-language": "^3.4 || ^4.2 || ^5.0",
+                "symfony/framework-bundle": "^3.4 || ^4.2 || ^5.0",
+                "symfony/phpunit-bridge": "^5.0"
             },
             "suggest": {
                 "doctrine/orm": "If you use doctrine orm",
@@ -2772,7 +2772,7 @@
                 "doctrine2",
                 "json"
             ],
-            "time": "2019-09-27T16:52:15+00:00"
+            "time": "2019-12-02T17:55:47+00:00"
         },
         {
             "name": "sonata-project/doctrine-orm-admin-bundle",
@@ -6996,7 +6996,6 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
-            "abandoned": "psr/container",
             "time": "2017-02-14T19:40:03+00:00"
         },
         {
