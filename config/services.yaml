@@ -188,6 +188,8 @@ services:
             - [setPasswordUpdater, ['@App\Helper\PasswordUpdater']]
             - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
             - [setDeleteHandler, ['@App\Handler\DeleteHandler']]
+            - [setMailCryptKeyHandler, ['@App\Handler\MailCryptKeyHandler']]
+            - [setMailCryptVars, ["%env(MAIL_CRYPT_ENABLED)%", "%env(MAIL_CRYPT_AUTO)%"]]
 
     userli.admin.domain:
         class: App\Admin\DomainAdmin

@@ -5,6 +5,7 @@ namespace App\Admin;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Handler\DeleteHandler;
+use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use App\Traits\DomainGuesserAwareTrait;
 use Doctrine\ORM\QueryBuilder;
@@ -44,6 +45,18 @@ class UserAdmin extends Admin
      * @var DeleteHandler
      */
     private $deleteHandler;
+    /**
+     * @var MailCryptKeyHandler
+     */
+    private $mailCryptKeyHandler;
+    /**
+     * @var bool
+     */
+    private $mailCryptEnabled;
+    /**
+     * @var bool
+     */
+    private $mailCryptAuto;
 
     /**
      * {@inheritdoc}
@@ -64,14 +77,15 @@ class UserAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $user = $this->getRoot()->getSubject();
+        $userId = (null === $user) ? null : $user->getId();
 
         $formMapper
             ->add('email', EmailType::class, ['disabled' => !$this->isNewObject()])
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'form.password',
                 'required' => $this->isNewObject(),
-                'disabled' => (null !== $user) ? $user->hasMailCryptSecretBox() : false,
-                'help' => (null !== $user && $user->hasMailCryptSecretBox()) ? 'Disabled because user has a MailCrypt key defined' : null,
+                'disabled' => (null !== $userId) ? $user->hasRecoverySecretBox() : false,
+                'help' => (null !== $userId && $user->hasRecoverySecretBox()) ? 'Disabled because user has a recovery token defined' : null,
             ])
             ->add('roles', ChoiceType::class, [
                 'choices' => [Roles::getAll()],
@@ -82,7 +96,12 @@ class UserAdmin extends Admin
             ->add('quota', null, [
                 'help' => 'Custom mailbox quota in MB',
             ])
-            ->add('mailCrypt', CheckboxType::class, ['disabled' => true])
+            ->add('mailCrypt', CheckboxType::class, [
+                // Default to true for new users if mail_crypt is enabled
+                'data' => (null !== $userId) ? $user->hasMailCrypt() : (($this->mailCryptEnabled && $this->mailCryptAuto) ? true: false),
+                // Disable for existing users
+                'disabled' => (null !== $userId) ? true : !$this->mailCryptEnabled,
+            ])
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
     }
 
@@ -188,10 +207,16 @@ class UserAdmin extends Admin
 
     /**
      * @param User $user
+     *
+     * @throws \Exception
      */
     public function prePersist($user)
     {
         $this->passwordUpdater->updatePassword($user);
+
+        if (null !== $user->hasMailCrypt()) {
+            $this->mailCryptKeyHandler->create($user);
+        }
 
         if (null === $user->getDomain() && null !== $domain = $this->domainGuesser->guess($user->getEmail())) {
             $user->setDomain($domain);
@@ -226,5 +251,16 @@ class UserAdmin extends Admin
     public function setDeleteHandler(DeleteHandler $deleteHandler)
     {
         $this->deleteHandler = $deleteHandler;
+    }
+
+    public function setMailCryptKeyHandler(MailCryptKeyHandler $mailCryptKeyHandler)
+    {
+        $this->mailCryptKeyHandler = $mailCryptKeyHandler;
+    }
+
+    public function setMailCryptVars(bool $mailCryptEnabled, bool $mailCryptAuto)
+    {
+        $this->mailCryptEnabled = $mailCryptEnabled;
+        $this->mailCryptAuto = $mailCryptAuto;
     }
 }
