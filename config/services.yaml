@@ -53,6 +53,7 @@ services:
     App\Command\CheckPasswordCommand:
         arguments:
             $mailCryptEnabled: "%env(MAIL_CRYPT_ENABLED)%"
+            $mailCryptEnforce: "%env(MAIL_CRYPT_ENFORCE)%"
 
     App\Command\MailCryptCommand:
         arguments:

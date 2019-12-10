@@ -54,13 +54,19 @@ class CheckPasswordCommand extends Command
     private $mailCryptEnabled;
 
     /**
+     * @var bool
+     */
+    private $mailCryptEnforce;
+
+    /**
      * CheckPasswordCommand constructor.
      */
     public function __construct(ObjectManager $manager,
                                 FileDescriptorReader $reader,
                                 UserAuthenticationHandler $handler,
                                 MailCryptKeyHandler $mailCryptKeyHandler,
-                                bool $mailCryptEnabled)
+                                bool $mailCryptEnabled,
+                                bool $mailCryptEnforce)
     {
         $this->manager = $manager;
         $this->reader = $reader;
@@ -68,6 +74,7 @@ class CheckPasswordCommand extends Command
         $this->repository = $this->manager->getRepository('App:User');
         $this->mailCryptKeyHandler = $mailCryptKeyHandler;
         $this->mailCryptEnabled = $mailCryptEnabled;
+        $this->mailCryptEnforce = $mailCryptEnforce;
         parent::__construct();
     }
 
@@ -172,6 +179,14 @@ class CheckPasswordCommand extends Command
         if (null !== $user->getQuota()) {
             $envVars['EXTRA'] = sprintf('%s userdb_quota_rule', $envVars['EXTRA']);
             $envVars['userdb_quota_rule'] = sprintf('*:storage=%dM', $user->getQuota());
+        }
+
+        // Optionally create mail_crypt key pair and recovery token (when MAIL_CRYPT_ENFORCE is set)
+        if (true === $this->mailCryptEnforce &&
+            true === $this->mailCryptEnabled &&
+            false === $user->hasMailCrypt() &&
+            null === $user->getMailCryptPublicKey()) {
+            $this->mailCryptKeyHandler->create($user);
         }
 
         // Optionally set mail_crypt environment variables for checkpassword-reply command

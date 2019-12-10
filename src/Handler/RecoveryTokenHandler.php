@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Ramsey\Uuid\Uuid;
 
 /**
- * Class AliasHandler.
+ * Class RecoveryTokenHandler.
  */
 class RecoveryTokenHandler
 {

@@ -1,5 +1,11 @@
 # Upgrade documentation
 
+## Upgrade from 2.4.0 or lower
+
+New mandatory Dotenv variables were added (related to MailCrypt):
+
+    MAIL_CRYPT_ENFORCE=0
+
 ## Upgrade from 2.1.1 or lower
 
 New optional Dotenv variable was added to link to webmail:

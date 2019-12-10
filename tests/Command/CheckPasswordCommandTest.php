@@ -44,8 +44,9 @@ class CheckPasswordCommandTest extends TestCase
         $handler = $this->getHandler();
         $mailCryptKeyHandler = $this->getMailCryptKeyHandler();
         $mailCryptEnabled = false;
+        $mailCryptEnforce = false;
 
-        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCryptEnabled);
+        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCryptEnabled, $mailCryptEnforce);
         $commandTester = new CommandTester($command);
 
         $this->expectExceptionMessage($exceptionMessage);
@@ -62,8 +63,9 @@ class CheckPasswordCommandTest extends TestCase
         $handler = $this->getHandler();
         $mailCryptKeyHandler = $this->getMailCryptKeyHandler();
         $mailCryptEnabled = true;
+        $mailCryptEnforce = false;
 
-        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCryptEnabled);
+        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCryptEnabled, $mailCryptEnforce);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute([]);
@@ -81,8 +83,9 @@ class CheckPasswordCommandTest extends TestCase
         $handler = $this->getHandler();
         $mailCryptKeyHandler = $this->getMailCryptKeyHandler();
         $mailCryptEnabled = false;
+        $mailCryptEnforce = false;
 
-        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCryptEnabled);
+        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCryptEnabled, $mailCryptEnforce);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute(
@@ -104,9 +107,10 @@ class CheckPasswordCommandTest extends TestCase
         $handler = $this->getHandler();
         $mailCryptKeyHandler = $this->getMailCryptKeyHandler();
         $mailCryptEnabled = true;
+        $mailCryptEnforce = false;
 
         putenv('AUTHORIZED=1');
-        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCryptEnabled);
+        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCryptEnabled, $mailCryptEnforce);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute([]);

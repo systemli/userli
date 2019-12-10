@@ -27,7 +27,7 @@ incoming mail for legacy users without MailCrypt keys. The checkpassword script
 automatically sets `mail_crypt_save_version = 2` for all users with MailCrypt
 keys.
 
-MailCrypt can be turned on/off for individual users by setting the `mailCrypt`
+MailCrypt can be turned on/off for individual users by setting the `mail_crypt`
 switch in the `virtual_users` database table. This switch is mainly meant to
 provide a migration path from legacy users without MailCrypt keys. On new
 setups, it's recommended to keep MailCrypt enabled for all users.
