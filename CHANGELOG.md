@@ -1,3 +1,10 @@
+# 2.5.0 (UNRELEASED)
+
+* Merge `MAIL_CRYPT_*` dotenv variables into a single one. Please
+  see `UPGRADING.md` and the documentation for further information.
+* Update to symfony 4.3.9
+* Update Norwegian translation (Thanks Alan Nordhøy)
+
 # 2.4.0 (2019.11.18)
 
 * Skip check against HIBP service if unavailable
