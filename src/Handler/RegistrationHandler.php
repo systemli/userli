@@ -48,9 +48,9 @@ class RegistrationHandler
      */
     private $primaryDomain;
     /**
-     * @var bool
+     * @var int
      */
-    private $mailCryptAuto;
+    private $mailCrypt;
 
     /**
      * Constructor.
@@ -64,7 +64,7 @@ class RegistrationHandler
         RecoveryTokenHandler $recoveryTokenHandler,
         bool $hasSinaBox,
         string $primaryDomain,
-        bool $mailCryptAuto
+        int $mailCrypt
     ) {
         $this->manager = $manager;
         $this->domainGuesser = $domainGuesser;
@@ -74,7 +74,7 @@ class RegistrationHandler
         $this->recoveryTokenHandler = $recoveryTokenHandler;
         $this->hasSinaBox = $hasSinaBox;
         $this->primaryDomain = $primaryDomain;
-        $this->mailCryptAuto = $mailCryptAuto;
+        $this->mailCrypt = $mailCrypt;
     }
 
     /**
@@ -95,7 +95,7 @@ class RegistrationHandler
         $this->recoveryTokenHandler->create($user);
 
         // Enable mailbox encryption
-        if ($this->mailCryptAuto) {
+        if ($this->mailCrypt >= 2) {
             $user->setMailCrypt(true);
         }
 

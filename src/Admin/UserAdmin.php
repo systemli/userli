@@ -50,13 +50,9 @@ class UserAdmin extends Admin
      */
     private $mailCryptKeyHandler;
     /**
-     * @var bool
+     * @var int
      */
-    private $mailCryptEnabled;
-    /**
-     * @var bool
-     */
-    private $mailCryptAuto;
+    private $mailCrypt;
 
     /**
      * {@inheritdoc}
@@ -98,9 +94,9 @@ class UserAdmin extends Admin
             ])
             ->add('mailCrypt', CheckboxType::class, [
                 // Default to true for new users if mail_crypt is enabled
-                'data' => (null !== $userId) ? $user->hasMailCrypt() : (($this->mailCryptEnabled && $this->mailCryptAuto) ? true: false),
-                // Disable for existing users
-                'disabled' => (null !== $userId) ? true : !$this->mailCryptEnabled,
+                'data' => (null !== $userId) ? $user->hasMailCrypt() : (($this->mailCrypt >= 2) ? true: false),
+                // Disable for existing users or when mail_crypt is disabled
+                'disabled' => (null !== $userId) ? true : (($this->mailCrypt <= 0) ? true: false),
             ])
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
     }
@@ -258,9 +254,8 @@ class UserAdmin extends Admin
         $this->mailCryptKeyHandler = $mailCryptKeyHandler;
     }
 
-    public function setMailCryptVars(bool $mailCryptEnabled, bool $mailCryptAuto)
+    public function setMailCryptVar(int $mailCrypt)
     {
-        $this->mailCryptEnabled = $mailCryptEnabled;
-        $this->mailCryptAuto = $mailCryptAuto;
+        $this->mailCrypt = $mailCrypt;
     }
 }

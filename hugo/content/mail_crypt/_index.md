@@ -11,11 +11,18 @@ Keys are created and maintained by userli and handed over to Dovecot via
 `checkpassword` script.
 
 The MailCrypt feature is enabled per default and can optionally be switched
-off globally by setting `MAIL_CRYPT_ENABLE=0` in the dotenv (`.env`) file.
+off globally by setting `MAIL_CRYPT=0` in the dotenv (`.env`) file.
 
 If you want to enable MailCrypt for some users, but don't want new users to
-have MailCrypt enabled per default, you can set `MAIL_CRYPT_AUTO=0` in the
-dotenv (`.env`) file.
+have MailCrypt enabled per default, you can set `MAIL_CRYPT=1` in the dotenv
+(`.env`) file. The following values are supported for `MAIL_CRYPT`:
+
+* `MAIL_CRYPT=0` - Disable MailCrypt globally
+* `MAIL_CRYPT=1` - Allow to use MailCrypt, needs to be enabled manually for new
+                   users
+* `MAIL_CRYPT=2` - Enforce MailCrypt key generation for new users
+* `MAIL_CRYPT=3` - Enforce MailCrypt key generation for all users, see the
+                   documentation about migrating legacy users for more info
 
 In order to enable MailCrypt in Dovecot, the following is required:
 

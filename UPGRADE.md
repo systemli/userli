@@ -2,9 +2,11 @@
 
 ## Upgrade from 2.4.0 or lower
 
-New mandatory Dotenv variables were added (related to MailCrypt):
+The `MAIL_CRYPT_*` Dotenv variables were merged into one variable:
 
-    MAIL_CRYPT_ENFORCE=0
+    MAIL_CRYPT=2
+
+See the documentation for further information on supported values.
 
 ## Upgrade from 2.1.1 or lower
 

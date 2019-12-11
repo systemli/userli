@@ -52,12 +52,11 @@ services:
 
     App\Command\CheckPasswordCommand:
         arguments:
-            $mailCryptEnabled: "%env(MAIL_CRYPT_ENABLED)%"
-            $mailCryptEnforce: "%env(MAIL_CRYPT_ENFORCE)%"
+            $mailCrypt: "%env(MAIL_CRYPT)%"
 
     App\Command\MailCryptCommand:
         arguments:
-            $mailCryptEnabled: "%env(MAIL_CRYPT_ENABLED)%"
+            $mailCrypt: "%env(MAIL_CRYPT)%"
 
     App\Command\VoucherCreationCommand:
         arguments:
@@ -115,7 +114,7 @@ services:
         arguments:
             $hasSinaBox: "%env(HAS_SINA_BOX)%"
             $primaryDomain: '%env(DOMAIN)'
-            $mailCryptAuto: '%env(MAIL_CRYPT_AUTO)%'
+            $mailCrypt: '%env(MAIL_CRYPT)%'
 
     App\Handler\SuspiciousChildrenHandler:
         arguments:
@@ -189,7 +188,7 @@ services:
             - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
             - [setDeleteHandler, ['@App\Handler\DeleteHandler']]
             - [setMailCryptKeyHandler, ['@App\Handler\MailCryptKeyHandler']]
-            - [setMailCryptVars, ["%env(MAIL_CRYPT_ENABLED)%", "%env(MAIL_CRYPT_AUTO)%"]]
+            - [setMailCryptVar, ["%env(MAIL_CRYPT)%"]]
 
     userli.admin.domain:
         class: App\Admin\DomainAdmin

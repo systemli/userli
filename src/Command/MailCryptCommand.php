@@ -30,9 +30,9 @@ class MailCryptCommand extends Command
      */
     private $repository;
     /**
-     * @var bool
+     * @var int
      */
-    private $mailCryptEnabled;
+    private $mailCrypt;
 
     /**
      * MailCryptCommand constructor.
@@ -41,13 +41,13 @@ class MailCryptCommand extends Command
         ObjectManager $manager,
         UserAuthenticationHandler $handler,
         MailCryptKeyHandler $mailCryptKeyHandler,
-        bool $mailCryptEnabled
+        int $mailCrypt
     ) {
         $this->manager = $manager;
         $this->handler = $handler;
         $this->repository = $this->manager->getRepository('App:User');
         $this->mailCryptKeyHandler = $mailCryptKeyHandler;
-        $this->mailCryptEnabled = $mailCryptEnabled;
+        $this->mailCrypt = $mailCrypt;
         parent::__construct();
     }
 
@@ -76,7 +76,7 @@ class MailCryptCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (false === $this->mailCryptEnabled) {
+        if ($this->mailCrypt <= 0) {
             return 1;
         }
 

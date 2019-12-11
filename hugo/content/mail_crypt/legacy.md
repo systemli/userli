@@ -25,9 +25,9 @@ In order to enable MailCrypt for a legacy user, do the following:
 
 Or, alternatively, to enforce MailCrypt for all legacy users:
 
-1. Set `MAIL_CRYPT_ENFORCE=1` in the dotenv (`.env`) file. This will result
-   in a MailCrypt key pair being generated automatically when legacy users
-   log in the next time. Again, we cannot do this step without the user logging
+1. Set `MAIL_CRYPT=3` in the dotenv (`.env`) file. This will result in a
+   MailCrypt key pair being generated automatically when legacy users log
+   in the next time. Again, we cannot do this step without the user logging
    in, as the user password is required to do so.
 2. Manually set `mail_crypt=1` for all users in the `virtual_users` database
    table that have a MailCrypt key pair generated but MailCrypt not enabled

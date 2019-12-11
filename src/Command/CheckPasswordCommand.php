@@ -49,14 +49,9 @@ class CheckPasswordCommand extends Command
     private $mailCryptKeyHandler;
 
     /**
-     * @var bool
+     * @var int
      */
-    private $mailCryptEnabled;
-
-    /**
-     * @var bool
-     */
-    private $mailCryptEnforce;
+    private $mailCrypt;
 
     /**
      * CheckPasswordCommand constructor.
@@ -65,16 +60,14 @@ class CheckPasswordCommand extends Command
                                 FileDescriptorReader $reader,
                                 UserAuthenticationHandler $handler,
                                 MailCryptKeyHandler $mailCryptKeyHandler,
-                                bool $mailCryptEnabled,
-                                bool $mailCryptEnforce)
+                                int $mailCrypt)
     {
         $this->manager = $manager;
         $this->reader = $reader;
         $this->handler = $handler;
         $this->repository = $this->manager->getRepository('App:User');
         $this->mailCryptKeyHandler = $mailCryptKeyHandler;
-        $this->mailCryptEnabled = $mailCryptEnabled;
-        $this->mailCryptEnforce = $mailCryptEnforce;
+        $this->mailCrypt = $mailCrypt;
         parent::__construct();
     }
 
@@ -181,16 +174,15 @@ class CheckPasswordCommand extends Command
             $envVars['userdb_quota_rule'] = sprintf('*:storage=%dM', $user->getQuota());
         }
 
-        // Optionally create mail_crypt key pair and recovery token (when MAIL_CRYPT_ENFORCE is set)
-        if (true === $this->mailCryptEnforce &&
-            true === $this->mailCryptEnabled &&
+        // Optionally create mail_crypt key pair and recovery token (when MAIL_CRYPT >= 3)
+        if ($this->mailCrypt >= 3 &&
             false === $user->hasMailCrypt() &&
             null === $user->getMailCryptPublicKey()) {
             $this->mailCryptKeyHandler->create($user);
         }
 
         // Optionally set mail_crypt environment variables for checkpassword-reply command
-        if (true === $this->mailCryptEnabled && true === $user->hasMailCrypt()) {
+        if ($this->mailCrypt >= 1 && true === $user->hasMailCrypt()) {
             $envVars['EXTRA'] = sprintf('%s userdb_mail_crypt_save_version userdb_mail_crypt_global_public_key', $envVars['EXTRA']);
             $envVars['userdb_mail_crypt_save_version'] = '2';
             $envVars['userdb_mail_crypt_global_public_key'] = $user->getMailCryptPublicKey();
