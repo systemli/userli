@@ -81,7 +81,8 @@ class UserAdmin extends Admin
                 'label' => 'form.password',
                 'required' => $this->isNewObject(),
                 'disabled' => (null !== $userId) ? $user->hasMailCryptSecretBox() : false,
-                'help' => (null !== $userId && $user->hasMailCryptSecretBox()) ? 'Disabled because user has a MailCrypt key pair' : null,
+                'help' => (null !== $userId && $user->hasMailCryptSecretBox()) ?
+                    'Disabled because user has a MailCrypt key pair defined' : null,
             ])
             ->add('roles', ChoiceType::class, [
                 'choices' => [Roles::getAll()],
@@ -94,9 +95,9 @@ class UserAdmin extends Admin
             ])
             ->add('mailCrypt', CheckboxType::class, [
                 // Default to true for new users if mail_crypt is enabled
-                'data' => (null !== $userId) ? $user->hasMailCrypt() : (($this->mailCrypt >= 2) ? true: false),
+                'data' => (null !== $userId) ? $user->hasMailCrypt() : (($this->mailCrypt >= 2) ? true : false),
                 // Disable for existing users or when mail_crypt is disabled
-                'disabled' => (null !== $userId) ? true : (($this->mailCrypt <= 0) ? true: false),
+                'disabled' => (null !== $userId) ? true : (($this->mailCrypt <= 0) ? true : false),
             ])
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
     }

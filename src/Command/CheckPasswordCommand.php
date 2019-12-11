@@ -182,7 +182,7 @@ class CheckPasswordCommand extends Command
         }
 
         // Optionally set mail_crypt environment variables for checkpassword-reply command
-        if ($this->mailCrypt >= 1 && true === $user->hasMailCrypt()) {
+        if ($this->mailCrypt >= 1 && $user->hasMailCrypt()) {
             $envVars['EXTRA'] = sprintf('%s userdb_mail_crypt_save_version userdb_mail_crypt_global_public_key', $envVars['EXTRA']);
             $envVars['userdb_mail_crypt_save_version'] = '2';
             $envVars['userdb_mail_crypt_global_public_key'] = $user->getMailCryptPublicKey();

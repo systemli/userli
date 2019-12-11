@@ -43,10 +43,9 @@ class CheckPasswordCommandTest extends TestCase
         $reader = $this->getReaderFd3($inputStream);
         $handler = $this->getHandler();
         $mailCryptKeyHandler = $this->getMailCryptKeyHandler();
-        $mailCryptEnabled = false;
-        $mailCryptEnforce = false;
+        $mailCrypt = 0;
 
-        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCryptEnabled, $mailCryptEnforce);
+        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCrypt);
         $commandTester = new CommandTester($command);
 
         $this->expectExceptionMessage($exceptionMessage);
@@ -62,10 +61,9 @@ class CheckPasswordCommandTest extends TestCase
         $reader = $this->getReaderFd3($inputStream);
         $handler = $this->getHandler();
         $mailCryptKeyHandler = $this->getMailCryptKeyHandler();
-        $mailCryptEnabled = true;
-        $mailCryptEnforce = false;
+        $mailCrypt = 2;
 
-        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCryptEnabled, $mailCryptEnforce);
+        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCrypt);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute([]);
@@ -82,10 +80,9 @@ class CheckPasswordCommandTest extends TestCase
         $reader = $this->getReaderStdin($inputStream);
         $handler = $this->getHandler();
         $mailCryptKeyHandler = $this->getMailCryptKeyHandler();
-        $mailCryptEnabled = false;
-        $mailCryptEnforce = false;
+        $mailCrypt = 0;
 
-        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCryptEnabled, $mailCryptEnforce);
+        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCrypt);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute(
@@ -106,11 +103,10 @@ class CheckPasswordCommandTest extends TestCase
         $reader = $this->getReaderFd3($inputStream);
         $handler = $this->getHandler();
         $mailCryptKeyHandler = $this->getMailCryptKeyHandler();
-        $mailCryptEnabled = true;
-        $mailCryptEnforce = false;
+        $mailCrypt = 2;
 
         putenv('AUTHORIZED=1');
-        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCryptEnabled, $mailCryptEnforce);
+        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCrypt);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute([]);
