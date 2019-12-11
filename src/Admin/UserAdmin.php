@@ -80,8 +80,8 @@ class UserAdmin extends Admin
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'form.password',
                 'required' => $this->isNewObject(),
-                'disabled' => (null !== $userId) ? $user->hasRecoverySecretBox() : false,
-                'help' => (null !== $userId && $user->hasRecoverySecretBox()) ? 'Disabled because user has a recovery token defined' : null,
+                'disabled' => (null !== $userId) ? $user->hasMailCryptSecretBox() : false,
+                'help' => (null !== $userId && $user->hasMailCryptSecretBox()) ? 'Disabled because user has a MailCrypt key pair' : null,
             ])
             ->add('roles', ChoiceType::class, [
                 'choices' => [Roles::getAll()],
