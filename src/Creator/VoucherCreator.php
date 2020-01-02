@@ -4,6 +4,7 @@ namespace App\Creator;
 
 use App\Entity\User;
 use App\Entity\Voucher;
+use App\Exception\ValidationException;
 use App\Factory\VoucherFactory;
 
 /**
@@ -12,7 +13,9 @@ use App\Factory\VoucherFactory;
 class VoucherCreator extends AbstractCreator
 {
     /**
-     * @throws \App\Exception\ValidationException
+     * @param User $user
+     * @return Voucher
+     * @throws ValidationException
      */
     public function create(User $user): Voucher
     {
