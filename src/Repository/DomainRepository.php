@@ -18,4 +18,9 @@ class DomainRepository extends AbstractRepository
     {
         return $this->findOneBy(['name' => $name]);
     }
+
+    public function getDefaultDomain(): ?Domain
+    {
+        return $this->findOneBy(['id' => 1]);
+    }
 }

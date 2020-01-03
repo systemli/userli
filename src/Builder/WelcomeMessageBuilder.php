@@ -2,6 +2,7 @@
 
 namespace App\Builder;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -28,15 +29,11 @@ class WelcomeMessageBuilder
 
     /**
      * WelcomeMessageBuilder constructor.
-     *
-     * @param string $domain
-     * @param string $appUrl
-     * @param string $projectName
      */
-    public function __construct(TranslatorInterface $translator, $domain, $appUrl, $projectName)
+    public function __construct(TranslatorInterface $translator, ObjectManager $manager, string $appUrl, string $projectName)
     {
         $this->translator = $translator;
-        $this->domain = $domain;
+        $this->domain = $manager->getRepository('App:Domain')->getDefaultDomain();
         $this->appUrl = $appUrl;
         $this->projectName = $projectName;
     }

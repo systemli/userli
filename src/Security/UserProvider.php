@@ -28,10 +28,11 @@ class UserProvider implements UserProviderInterface
      *
      * @param $defaultDomain
      */
-    public function __construct(ObjectManager $manager, $defaultDomain)
+    public function __construct(ObjectManager $manager)
     {
         $this->manager = $manager;
-        $this->defaultDomain = $defaultDomain;
+        $this->defaultDomain = $manager->getRepository('App:Domain')->getDefaultDomain();
+
     }
 
     /**

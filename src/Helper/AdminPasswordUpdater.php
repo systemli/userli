@@ -17,16 +17,11 @@ class AdminPasswordUpdater
      * @var PasswordUpdater
      */
     private $updater;
-    /**
-     * @var string
-     */
-    private $defaultDomain;
 
-    public function __construct(ObjectManager $manager, PasswordUpdater $updater, $defaultDomain)
+    public function __construct(ObjectManager $manager, PasswordUpdater $updater)
     {
         $this->manager = $manager;
         $this->updater = $updater;
-        $this->defaultDomain = $defaultDomain;
     }
 
     /**
@@ -35,8 +30,8 @@ class AdminPasswordUpdater
      */
     public function updateAdminPassword(string $password)
     {
-        $domain = $this->getDefaultDomain();
-        $adminEmail = 'admin@'.$this->defaultDomain;
+        $domain = $this->manager->getRepository('App:Domain')->getDefaultDomain();
+        $adminEmail = 'postmaster@'.$domain;
         $admin = $this->manager->getRepository('App:User')->findByEmail($adminEmail);
         if (null === $admin) {
             // create admin user
@@ -49,23 +44,5 @@ class AdminPasswordUpdater
         $this->updater->updatePassword($admin);
         $this->manager->persist($admin);
         $this->manager->flush();
-    }
-
-    /**
-     * Return default domain
-     * Create if not existent before.
-     *
-     * @return Domain
-     */
-    public function getDefaultDomain()
-    {
-        $domain = $this->manager->getRepository('App:Domain')->findByName($this->defaultDomain);
-        if (null === $domain) {
-            $domain = new Domain();
-            $domain->setName($this->defaultDomain);
-            $this->manager->persist($domain);
-        }
-
-        return $domain;
     }
 }
