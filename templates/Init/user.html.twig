@@ -2,17 +2,16 @@
 
 {% form_theme form 'Form/fields.html.twig' %}
 
-{% block subtitle %}{{ "init.title"|trans({'%domain%': domain}) }}{% endblock %}
+{% block subtitle %}{{ "init.title"|trans }}{% endblock %}
 
 {% block content %}
 
     <div class="row">
         <div class="col-xs-12 col-sm-10 col-md-10">
-            <h1>{{ "init.title"|trans({'%domain%': domain}) }}</h1>
+            <h1>{{ "init.title"|trans  }}</h1>
 
-            <p class="lead">{{ "init.lead"|trans }}</p>
-            <p >{{ "init.text"|trans({'%domain%': domain})|raw }}</p>
-            <p >{{ "init.admin-password"|trans({'%domain%': domain}) }}</p>
+            <p class="lead">{{ "init_user.lead"|trans }}</p>
+            <p >{{ "init_user.text"|trans({'%domain%': domain})|raw }}</p>
         </div>
 
         <div class="col-xs-12 col-sm-6 col-md-4">

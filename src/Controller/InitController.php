@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Creator\DomainCreator;
+use App\Form\DomainCreateType;
+use App\Form\Model\DomainCreate;
 use App\Form\Model\PlainPassword;
 use App\Form\PlainPasswordType;
 use App\Helper\AdminPasswordUpdater;
@@ -23,11 +26,16 @@ class InitController extends AbstractController
      * @var AdminPasswordUpdater
      */
     private $updater;
+    /**
+     * @var DomainCreator
+     */
+    private $creator;
 
-    public function __construct(ObjectManager $manager, AdminPasswordUpdater $updater)
+    public function __construct(ObjectManager $manager, AdminPasswordUpdater $updater, DomainCreator $creator)
     {
         $this->manager = $manager;
         $this->updater = $updater;
+        $this->creator = $creator;
     }
 
     /**
@@ -40,12 +48,44 @@ class InitController extends AbstractController
             return $this->redirectToRoute('index');
         }
 
+        $domain = new DomainCreate();
+        $domainForm = $this->createForm(
+            DomainCreateType::class,
+            $domain,
+            [
+                'action' => $this->generateUrl('init'),
+                'method' => 'post',
+            ]
+        );
+
+        if ('POST' === $request->getMethod()) {
+            $domainForm->handleRequest($request);
+
+            if ($domainForm->isSubmitted() && $domainForm->isValid()) {
+                $this->creator->create($domain->domain);
+                return $this->redirectToRoute('init_user');
+            }
+        }
+
+        return $this->render('Init/domain.html.twig', ['form' => $domainForm->createView()]);
+    }
+
+    /**
+     * @return Response
+     */
+    public function userAction(Request $request)
+    {
+        // redirect if already configured
+        if (0 < $this->manager->getRepository('App:User')->count([])) {
+            return $this->redirectToRoute('index');
+        }
+
         $password = new PlainPassword();
         $passwordForm = $this->createForm(
             PlainPasswordType::class,
             $password,
             [
-                'action' => $this->generateUrl('init'),
+                'action' => $this->generateUrl('init_user'),
                 'method' => 'post',
             ]
         );
@@ -61,6 +101,6 @@ class InitController extends AbstractController
             }
         }
 
-        return $this->render('init.html.twig', ['form' => $passwordForm->createView()]);
+        return $this->render('Init/user.html.twig', ['form' => $passwordForm->createView()]);
     }
 }

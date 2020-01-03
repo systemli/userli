@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'Form/fields.html.twig' %}
+
+{% block subtitle %}{{ "init.title"|trans }}{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-10 col-md-10">
+            <h1>{{ "init.title"|trans }}</h1>
+
+            <p class="lead">{{ "init_domain.lead"|trans }}</p>
+            <p >{{ "init_domain.text"|trans }}</p>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="form-group">
+                {{ form_label(form.domain) }}
+                {{ form_errors(form.domain) }}
+                {{ form_widget(form.domain, {'attr': {'class': 'form-control' }}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary' }}) }}
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
