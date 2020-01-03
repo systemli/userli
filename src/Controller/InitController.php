@@ -45,7 +45,7 @@ class InitController extends AbstractController
     {
         // redirect if already configured
         if (0 < $this->manager->getRepository('App:Domain')->count([])) {
-            return $this->redirectToRoute('index');
+            return $this->redirectToRoute('init_user');
         }
 
         $domain = new DomainCreate();

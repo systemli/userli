@@ -11,7 +11,10 @@ Feature: Initialization
 
   @init
   Scenario: Input admin password
-    When I am on "/en/init"
+    When the following Domain exists:
+      | name        |
+      | example.org |
+    And I am on "/en/init/user"
     And I fill in the following:
       | plain_password[newPassword][first]  | P4ssW0rt!!!1 |
       | plain_password[newPassword][second] | P4ssW0rt!!!1 |
@@ -24,6 +27,9 @@ Feature: Initialization
       When the following Domain exists:
         | name        |
         | example.org |
+      And the following User exists:
+        | email                  | password |
+        | postmaster@example.org | P4ssW0rt |
       And I am on homepage
 
       Then I should be on "/en/"

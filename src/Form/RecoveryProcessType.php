@@ -25,7 +25,7 @@ class RecoveryProcessType extends AbstractType
      */
     public function __construct(ObjectManager $manager)
     {
-        $this->domain = $manager->getRepository('App:Domain')->getDefaultDomain();
+        $this->domain = $manager->getRepository('App:Domain')->getDefaultDomain()->getName();
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

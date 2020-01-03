@@ -32,7 +32,7 @@ class WelcomeMessageSender
     {
         $this->handler = $handler;
         $this->builder = $builder;
-        $this->domain = $manager->getRepository('App:Domain')->getDefaultDomain();
+        $this->domain = $manager->getRepository('App:Domain')->getDefaultDomain()->getName();
     }
 
     /**

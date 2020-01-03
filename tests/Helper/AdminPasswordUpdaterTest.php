@@ -25,18 +25,6 @@ class AdminPasswordUpdaterTest extends TestCase
         $this->defaultDomain = 'example.org';
     }
 
-    public function testGetDefaultDomain()
-    {
-        $adminPasswordUpdater = new AdminPasswordUpdater(
-            $this->getManager(null),
-            $this->getUpdater(),
-            $this->defaultDomain);
-
-        self::assertEquals(
-            $this->defaultDomain,
-            $adminPasswordUpdater->getDefaultDomain()->getName());
-    }
-
     public function testUpdateAdminPassword()
     {
         $admin = new User();

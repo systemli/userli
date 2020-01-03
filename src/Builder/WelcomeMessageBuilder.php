@@ -33,7 +33,7 @@ class WelcomeMessageBuilder
     public function __construct(TranslatorInterface $translator, ObjectManager $manager, string $appUrl, string $projectName)
     {
         $this->translator = $translator;
-        $this->domain = $manager->getRepository('App:Domain')->getDefaultDomain();
+        $this->domain = $manager->getRepository('App:Domain')->getDefaultDomain()->getName();
         $this->appUrl = $appUrl;
         $this->projectName = $projectName;
     }
