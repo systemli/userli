@@ -76,6 +76,8 @@ class DomainAdmin extends Admin
      */
     public function create($object)
     {
+        // this is a copy of the parent function to use the DomainCreator instead of ModelMapper
+        // TODO: implement ModelMaperInterface or use prePersist and postPersist
         $this->prePersist($object);
         foreach ($this->extensions as $extension) {
             $extension->prePersist($this, $object);
