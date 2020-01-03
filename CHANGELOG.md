@@ -4,6 +4,8 @@
   see `UPGRADING.md` and the documentation for further information.
 * Update to symfony 4.3.9
 * Update Norwegian translation (Thanks Alan Nordhøy)
+* Allow to create first domain and account via web frontend (Fixes: #195)
+* Automatically create `postmaster@domain` for all domains (Fixes: #111)
 
 # 2.4.0 (2019.11.18)
 
