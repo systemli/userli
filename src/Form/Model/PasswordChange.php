@@ -2,15 +2,14 @@
 
 namespace App\Form\Model;
 
+use App\Traits\PlainPasswordTrait;
+
 class PasswordChange
 {
-    /**
-     * @var string
-     */
-    public $password;
+    use PlainPasswordTrait;
 
     /**
      * @var string
      */
-    public $newPassword;
+    public $password;
 }

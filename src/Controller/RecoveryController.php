@@ -142,7 +142,7 @@ class RecoveryController extends AbstractController
                 if (null !== $user && $this->verifyEmailRecoveryToken($user, $recoveryToken, true)) {
                     if ($recoveryResetPasswordForm->isValid()) {
                         // Success: change the password
-                        $newRecoveryToken = $this->resetPassword($user, $recoveryResetPassword->newPassword, $recoveryToken);
+                        $newRecoveryToken = $this->resetPassword($user, $recoveryResetPassword->getPlainPassword(), $recoveryToken);
                         $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-password-changed');
 
                         $recoveryTokenAck = new RecoveryTokenAck();

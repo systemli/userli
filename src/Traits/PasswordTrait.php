@@ -20,7 +20,7 @@ trait PasswordTrait
     /**
      * @param string $password
      */
-    public function setPassword($password)
+    public function setPassword(string $password)
     {
         $this->password = $password;
     }

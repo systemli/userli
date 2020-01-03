@@ -95,7 +95,7 @@ class InitController extends AbstractController
             $passwordForm->handleRequest($request);
 
             if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
-                $this->updater->updateAdminPassword($password->newPassword);
+                $this->updater->updateAdminPassword($password->getPlainPassword());
                 $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
 
                 return $this->redirectToRoute('index');

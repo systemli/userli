@@ -41,8 +41,8 @@ Feature: Recovery
       | recoveryToken | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
     And I request "POST /en/recovery/reset_password"
     And I fill in the following:
-      | recovery_reset_password[newPassword][first]  | XV7FxQWj9dApApN |
-      | recovery_reset_password[newPassword][second] | XV7FxQWj9dApApN |
+      | recovery_reset_password[plainPassword][first]  | XV7FxQWj9dApApN |
+      | recovery_reset_password[plainPassword][second] | XV7FxQWj9dApApN |
     And I press "recovery_reset_password[submit]"
 
     Then I should be on "/en/recovery/reset_password"

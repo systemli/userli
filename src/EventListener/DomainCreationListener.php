@@ -33,6 +33,7 @@ class DomainCreationListener implements EventSubscriberInterface
         }
         if ($domain !== $defaultDomain) {
             // create postmaster alias
+            // TODO: refactor this into AliasCreator
             $alias = new Alias();
             $alias->setDomain($domain);
             $alias->setSource('postmaster@'.$domain);

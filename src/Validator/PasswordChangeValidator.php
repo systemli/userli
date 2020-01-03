@@ -55,7 +55,7 @@ class PasswordChangeValidator extends ConstraintValidator
             return false;
         }
 
-        if ($value->password === $value->newPassword) {
+        if ($value->password === $value->getPlainPassword()) {
             $this->context->addViolation('form.identical-passwords');
 
             return false;

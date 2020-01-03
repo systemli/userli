@@ -71,8 +71,8 @@ form:
   oclock-by: by
   actual-password: Current password
   new-custom-alias: New alias address
-  new-password: New password
-  new-password_confirmation: Confirm new password
+  plain-password: New password
+  plain-password_confirmation: Confirm new password
   change-password: Change your password
   delete-account: Delete account
   delete-password: Password

@@ -2,10 +2,9 @@
 
 namespace App\Form\Model;
 
+use App\Traits\PlainPasswordTrait;
+
 class PlainPassword
 {
-    /**
-     * @var string
-     */
-    public $newPassword;
+    use PlainPasswordTrait;
 }

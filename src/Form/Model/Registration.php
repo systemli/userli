@@ -2,8 +2,12 @@
 
 namespace App\Form\Model;
 
+use App\Traits\PlainPasswordTrait;
+
 class Registration
 {
+    use PlainPasswordTrait;
+
     /**
      * @var string
      */
@@ -13,11 +17,6 @@ class Registration
      * @var string
      */
     private $email;
-
-    /**
-     * @var string
-     */
-    private $plainPassword;
 
     /**
      * @return string
@@ -43,18 +42,5 @@ class Registration
     public function setEmail(string $email)
     {
         $this->email = strtolower($email);
-    }
-
-    /**
-     * @return string
-     */
-    public function getPlainPassword()
-    {
-        return $this->plainPassword;
-    }
-
-    public function setPlainPassword(string $plainPassword)
-    {
-        $this->plainPassword = $plainPassword;
     }
 }

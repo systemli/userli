@@ -16,10 +16,10 @@ class PlainPasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('newPassword', RepeatedType::class, [
+            ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => 'form.new-password'],
-                'second_options' => ['label' => 'form.new-password_confirmation'],
+                'first_options' => ['label' => 'form.plain-password'],
+                'second_options' => ['label' => 'form.plain-password_confirmation'],
                 'invalid_message' => 'form.different-password',
             ])
             ->add('submit', SubmitType::class, ['label' => 'form.submit']);

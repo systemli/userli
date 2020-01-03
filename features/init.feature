@@ -16,8 +16,8 @@ Feature: Initialization
       | example.org |
     And I am on "/en/init/user"
     And I fill in the following:
-      | plain_password[newPassword][first]  | P4ssW0rt!!!1 |
-      | plain_password[newPassword][second] | P4ssW0rt!!!1 |
+      | plain_password[plainPassword][first]  | P4ssW0rt!!!1 |
+      | plain_password[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
     Then I should be on "/en/"

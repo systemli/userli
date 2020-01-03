@@ -52,7 +52,7 @@ App\Form\Model\RecoveryTokenAck:
 
 App\Form\Model\PasswordChange:
     properties:
-        newPassword:
+        plainPassword:
             - App\Validator\Constraints\PasswordPolicy: ~
             - NotCompromisedPassword:
                 skipOnError: true
@@ -62,7 +62,7 @@ App\Form\Model\PasswordChange:
 
 App\Form\Model\PlainPassword:
     properties:
-        newPassword:
+        plainPassword:
             - App\Validator\Constraints\PasswordPolicy: ~
             - NotCompromisedPassword:
                 skipOnError: true
@@ -90,7 +90,7 @@ App\Form\Model\RecoveryProcess:
 
 App\Form\Model\RecoveryResetPassword:
     properties:
-        newPassword:
+        plainPassword:
             - App\Validator\Constraints\PasswordPolicy: ~
             - NotCompromisedPassword:
                 skipOnError: true

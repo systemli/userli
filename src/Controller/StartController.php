@@ -213,7 +213,7 @@ class StartController extends AbstractController
             $passwordChangeForm->handleRequest($request);
 
             if ($passwordChangeForm->isSubmitted() && $passwordChangeForm->isValid()) {
-                $this->changePassword($request, $user, $passwordChange->newPassword, $passwordChange->password);
+                $this->changePassword($request, $user, $passwordChange->getPlainPassword(), $passwordChange->password);
             }
         }
 
