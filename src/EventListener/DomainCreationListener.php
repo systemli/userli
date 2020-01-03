@@ -1,12 +1,8 @@
 <?php
 
-
 namespace App\EventListener;
 
-
 use App\Entity\Alias;
-use App\Entity\User;
-use App\Enum\Roles;
 use App\Event\DomainCreatedEvent;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -39,7 +35,7 @@ class DomainCreationListener implements EventSubscriberInterface
             // create postmaster alias
             $alias = new Alias();
             $alias->setDomain($domain);
-            $alias->setSource('postmaster@' . $domain);
+            $alias->setSource('postmaster@'.$domain);
             $alias->setDestination($adminAddress);
             $this->manager->persist($alias);
             $this->manager->flush();

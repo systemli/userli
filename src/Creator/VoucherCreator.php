@@ -13,8 +13,6 @@ use App\Factory\VoucherFactory;
 class VoucherCreator extends AbstractCreator
 {
     /**
-     * @param User $user
-     * @return Voucher
      * @throws ValidationException
      */
     public function create(User $user): Voucher

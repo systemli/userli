@@ -63,6 +63,7 @@ class InitController extends AbstractController
 
             if ($domainForm->isSubmitted() && $domainForm->isValid()) {
                 $this->creator->create($domain->domain);
+
                 return $this->redirectToRoute('init_user');
             }
         }

@@ -69,7 +69,9 @@ class DomainAdmin extends Admin
 
     /**
      * @param Domain $object
+     *
      * @return Domain object
+     *
      * @throws \App\Exception\ValidationException
      */
     public function create($object)

@@ -10,8 +10,6 @@ use App\Factory\DomainFactory;
 class DomainCreator extends AbstractCreator
 {
     /**
-     * @param string $name
-     * @return Domain
      * @throws ValidationException
      */
     public function create(string $name): Domain
@@ -25,5 +23,4 @@ class DomainCreator extends AbstractCreator
 
         return $domain;
     }
-
 }

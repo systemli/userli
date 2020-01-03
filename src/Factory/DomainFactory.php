@@ -6,7 +6,6 @@ use App\Entity\Domain;
 
 class DomainFactory
 {
-
     public static function create(string $name): Domain
     {
         $domain = new Domain();

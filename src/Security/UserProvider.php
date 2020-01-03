@@ -32,7 +32,6 @@ class UserProvider implements UserProviderInterface
     {
         $this->manager = $manager;
         $this->defaultDomain = $manager->getRepository('App:Domain')->getDefaultDomain();
-
     }
 
     /**
