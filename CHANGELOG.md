@@ -1,4 +1,4 @@
-# 2.5.0 (UNRELEASED)
+# 2.5.0 (2020.01.05)
 
 * Merge `MAIL_CRYPT_*` dotenv variables into a single one. Please
   see `UPGRADING.md` and the documentation for further information.

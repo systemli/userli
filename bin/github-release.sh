@@ -53,15 +53,14 @@ git tag --sign --message "Release $version" "$version"
 # create release tarball
 tarball="build/userli-$(git --no-pager describe --tags --always).tar.gz"
 if [ "$vagrant" = "yes" ]; then
-	(cd vagrant/;
-	 vagrant up;
-	 vagrant ssh -c "tempdir=\"\$(mktemp -d)\";
-	                 git clone /vagrant \"\$tempdir/userli-$version\";
-			 cd /vagrant && make prepare;
-			 (cd \"\$tempdir/userli-$version\";
+    (vagrant up;
+     vagrant ssh -c "tempdir=\"\$(mktemp -d)\";
+                     git clone /vagrant \"\$tempdir/userli-$version\";
+                     make prepare;
+                     (cd \"\$tempdir/userli-$version\";
                           make release;
                           cp -a build/userli* /vagrant/build/);
-                         rm -r \"\$tempdir\"")
+                          rm -r \"\$tempdir\"")
 else
     make release
 fi
