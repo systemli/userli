@@ -48,7 +48,6 @@ services:
         arguments:
             $appUrl:       "%env(APP_URL)%"
             $projectName:  "%env(PROJECT_NAME)%"
-            $domain:       "%env(DOMAIN)%"
 
     App\Command\CheckPasswordCommand:
         arguments:
@@ -80,15 +79,15 @@ services:
         tags:
             - { name: form.type, alias: password_change }
 
+    App\Form\PlainPasswordType:
+        tags:
+            - { name: form.type, alias: plain_password }
+
     App\Form\RecoveryProcessType:
-        arguments:
-            $domain: '%env(DOMAIN)%'
         tags:
             - { name: form.type, alias: recovery }
 
     App\Form\RegistrationType:
-        arguments:
-            $domain: '%env(DOMAIN)%'
         tags:
             - { name: form.type, alias: registration }
 
@@ -113,7 +112,6 @@ services:
         public: true
         arguments:
             $hasSinaBox: "%env(HAS_SINA_BOX)%"
-            $primaryDomain: '%env(DOMAIN)'
             $mailCrypt: '%env(MAIL_CRYPT)%'
 
     App\Handler\SuspiciousChildrenHandler:
@@ -152,14 +150,8 @@ services:
             - '@Doctrine\Common\Persistence\ObjectManager'
         public: true
 
-    App\Security\UserProvider:
-        arguments:
-            $defaultDomain: "%env(DOMAIN)%"
-
     App\Sender\WelcomeMessageSender:
         public: true
-        arguments:
-            $domain:       "%env(DOMAIN)%"
 
     App\Validator\PasswordPolicyValidator:
         tags:

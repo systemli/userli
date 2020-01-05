@@ -97,6 +97,19 @@ user_recovery_token_ack:
     requirements:
         _locale: '%locales%'
 
+## InitController
+init:
+    path:     /{_locale}/init
+    controller: App\Controller\InitController::indexAction
+    requirements:
+        _locale: '%locales%'
+
+init_user:
+    path:     /{_locale}/init/user
+    controller: App\Controller\InitController::userAction
+    requirements:
+        _locale: '%locales%'
+
 # SecurityController
 
 login_check:
@@ -172,6 +185,14 @@ user_recovery_token_fallback:
 user_recovery_token_ack_fallback:
     path:     /user/recovery_token/ack
     controller: App\Controller\RecoveryController::recoveryTokenAckAction
+
+init_fallback:
+    path:     /init
+    controller: App\Controller\InitController::indexAction
+
+init_user_fallback:
+    path:     /{_locale}/init/user
+    controller: App\Controller\InitController::userAction
 
 login_fallback:
     path:     /login

@@ -3,6 +3,9 @@
 namespace App\Tests\Builder;
 
 use App\Builder\WelcomeMessageBuilder;
+use App\Entity\Domain;
+use App\Repository\DomainRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -38,7 +41,6 @@ class WelcomeMessageBuilderTest extends TestCase
     }
 
     /**
-     * @param $domain
      * @param $appUrl
      * @param $projectName
      *
@@ -57,8 +59,32 @@ class WelcomeMessageBuilderTest extends TestCase
 
         $translator->expects($this->any())->method('trans')->willReturn($message);
 
-        $builder = new WelcomeMessageBuilder($translator, $domain, $appUrl, $projectName);
+        $builder = new WelcomeMessageBuilder($translator, $this->getManager(), $appUrl, $projectName);
 
         return $builder;
+    }
+
+    /**
+     * Manager that returns default domain.
+     */
+    public function getManager()
+    {
+        $manager = $this->getMockBuilder(ObjectManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $repository = $this->getMockBuilder(DomainRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $domain = new Domain();
+        $domain->setName('example.com');
+
+        $repository->method('getDefaultDomain')
+            ->will($this->returnValue($domain));
+
+        $manager->expects($this->any())->method('getRepository')->willReturn($repository);
+
+        return $manager;
     }
 }

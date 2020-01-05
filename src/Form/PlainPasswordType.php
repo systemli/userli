@@ -3,22 +3,19 @@
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RecoveryResetPasswordType extends AbstractType
+class PlainPasswordType extends AbstractType
 {
-    const NAME = 'recovery_reset_password';
+    const NAME = 'plain_password';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', HiddenType::class)
-            ->add('recoveryToken', HiddenType::class)
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => ['label' => 'form.plain-password'],
@@ -33,7 +30,7 @@ class RecoveryResetPasswordType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(['data_class' => 'App\Form\Model\RecoveryResetPassword']);
+        $resolver->setDefaults(['data_class' => 'App\Form\Model\PlainPassword']);
     }
 
     /**

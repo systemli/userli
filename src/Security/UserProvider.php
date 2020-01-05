@@ -15,23 +15,16 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class UserProvider implements UserProviderInterface
 {
     /**
-     * @var string
-     */
-    private $defaultDomain;
-    /**
      * @var ObjectManager
      */
     private $manager;
 
     /**
      * UserProvider constructor.
-     *
-     * @param $defaultDomain
      */
-    public function __construct(ObjectManager $manager, $defaultDomain)
+    public function __construct(ObjectManager $manager)
     {
         $this->manager = $manager;
-        $this->defaultDomain = $defaultDomain;
     }
 
     /**
@@ -40,7 +33,8 @@ class UserProvider implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         if (false === strpos($username, '@')) {
-            $username = sprintf('%s@%s', $username, $this->defaultDomain);
+            $defaultDomain = $this->manager->getRepository('App:Domain')->getDefaultDomain();
+            $username = sprintf('%s@%s', $username, $defaultDomain);
         }
 
         $user = $this->manager->getRepository('App:User')->findByEmail($username);

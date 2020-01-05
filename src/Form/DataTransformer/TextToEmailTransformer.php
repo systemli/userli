@@ -13,10 +13,8 @@ class TextToEmailTransformer implements DataTransformerInterface
 
     /**
      * Constructor.
-     *
-     * @param $domain
      */
-    public function __construct($domain)
+    public function __construct(string $domain)
     {
         $this->domain = $domain;
     }

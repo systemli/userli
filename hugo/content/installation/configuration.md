@@ -17,7 +17,6 @@ DATABASE_URL=mysql://userli:<password>@127.0.0.1:3306/userli
 MAILER_URL=smtp://localhost:25?encryption=&auth_mode=
 PROJECT_NAME=example.org
 PROJECT_URL=https://www.example.org
-DOMAIN=example.org
 SENDER_ADDRESS=userli@example.org
 NOTIFICATION_ADDRESS=admin@example.org
 ```

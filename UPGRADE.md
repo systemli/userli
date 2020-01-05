@@ -8,6 +8,9 @@ The `MAIL_CRYPT_*` Dotenv variables were merged into one variable:
 
 See the documentation for further information on supported values.
 
+The `DOMAIN` Dotenv variable is now obsolete. It is replaced
+by the first created domain at the moment.
+
 ## Upgrade from 2.1.1 or lower
 
 New optional Dotenv variable was added to link to webmail:

@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Form\DataTransformer\OptionalDomainEmailTransformer;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -22,9 +23,9 @@ class RecoveryProcessType extends AbstractType
     /**
      * RecoveryProcessType constructor.
      */
-    public function __construct(string $domain)
+    public function __construct(ObjectManager $manager)
     {
-        $this->domain = $domain;
+        $this->domain = $manager->getRepository('App:Domain')->getDefaultDomain()->getName();
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)

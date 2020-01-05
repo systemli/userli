@@ -5,6 +5,7 @@ namespace App\Sender;
 use App\Builder\WelcomeMessageBuilder;
 use App\Entity\User;
 use App\Handler\MailHandler;
+use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * Class WelcomeMessageSender.
@@ -27,11 +28,11 @@ class WelcomeMessageSender
     /**
      * WelcomeMessageSender constructor.
      */
-    public function __construct(MailHandler $handler, WelcomeMessageBuilder $builder, string $domain)
+    public function __construct(MailHandler $handler, WelcomeMessageBuilder $builder, ObjectManager $manager)
     {
         $this->handler = $handler;
         $this->builder = $builder;
-        $this->domain = $domain;
+        $this->domain = $manager->getRepository('App:Domain')->getDefaultDomain()->getName();
     }
 
     /**

@@ -2,8 +2,10 @@
 
 namespace App\Tests\Security;
 
+use App\Entity\Domain;
 use App\Entity\User;
 use App\Entity\Voucher;
+use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
 use App\Security\UserProvider;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -16,19 +18,30 @@ class UserProviderTest extends TestCase
 {
     public function testLoadByUsernameSuccessful()
     {
-        $repository = $this->getMockBuilder(UserRepository::class)
+        $userRepository = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $repository->expects($this->any())->method('findByEmail')->willReturnMap([
+        $userRepository->expects($this->any())->method('findByEmail')->willReturnMap([
             ['admin@example.org', new User()],
             ['admin', new User()],
         ]);
 
-        $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
-        $manager->expects($this->any())->method('getRepository')->willReturn($repository);
-        $defaultDomain = 'example.org';
+        $domain = new Domain();
+        $domain->setName('example.org');
 
-        $provider = new UserProvider($manager, $defaultDomain);
+        $domainRepository = $this->getMockBuilder(DomainRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $domainRepository->method('getDefaultDomain')
+            ->will($this->returnValue($domain));
+
+        $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $manager->expects($this->any())->method('getRepository')->willReturnMap([
+            ['App:Domain', $domainRepository],
+            ['App:User', $userRepository],
+        ]);
+
+        $provider = new UserProvider($manager);
 
         self::assertInstanceOf(User::class, $provider->loadUserByUsername('admin'));
         self::assertInstanceOf(User::class, $provider->loadUserByUsername('admin@example.org'));
@@ -49,9 +62,8 @@ class UserProviderTest extends TestCase
 
         $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
         $manager->expects($this->any())->method('getRepository')->willReturn($repository);
-        $defaultDomain = 'example.org';
 
-        $provider = new UserProvider($manager, $defaultDomain);
+        $provider = new UserProvider($manager);
 
         $provider->loadUserByUsername('user');
     }
@@ -68,9 +80,8 @@ class UserProviderTest extends TestCase
 
         $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
         $manager->expects($this->any())->method('getRepository')->willReturn($repository);
-        $defaultDomain = 'example.org';
 
-        $provider = new UserProvider($manager, $defaultDomain);
+        $provider = new UserProvider($manager);
 
         $reloadedUser = $provider->refreshUser($user);
 
@@ -82,16 +93,27 @@ class UserProviderTest extends TestCase
      */
     public function testRefreshUserException(UserInterface $user, $exception)
     {
-        $repository = $this->getMockBuilder(UserRepository::class)
+        $userRepository = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $repository->expects($this->any())->method('findOneBy')->willReturn(null);
+        $userRepository->expects($this->any())->method('findOneBy')->willReturn(null);
+
+        $domain = new Domain();
+        $domain->setName('example.org');
+
+        $domainRepository = $this->getMockBuilder(DomainRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $domainRepository->method('getDefaultDomain')
+            ->will($this->returnValue($domain));
 
         $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
-        $manager->expects($this->any())->method('getRepository')->willReturn($repository);
-        $defaultDomain = 'example.org';
+        $manager->expects($this->any())->method('getRepository')->willReturnMap([
+            ['App:Domain', $domainRepository],
+            ['App:User', $userRepository],
+        ]);
 
-        $provider = new UserProvider($manager, $defaultDomain);
+        $provider = new UserProvider($manager);
 
         $this->expectException($exception);
 
@@ -108,9 +130,22 @@ class UserProviderTest extends TestCase
 
     public function testSupportClass()
     {
-        $defaultDomain = 'example.org';
-        $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
-        $provider = new UserProvider($manager, $defaultDomain);
+        $manager = $this->getMockBuilder(ObjectManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $repository = $this->getMockBuilder(DomainRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $domain = new Domain();
+        $domain->setName('example.com');
+
+        $repository->method('getDefaultDomain')
+            ->will($this->returnValue($domain));
+
+        $manager->expects($this->any())->method('getRepository')->willReturn($repository);
+        $provider = new UserProvider($manager);
 
         self::assertTrue($provider->supportsClass(User::class));
         self::assertFalse($provider->supportsClass(Voucher::class));

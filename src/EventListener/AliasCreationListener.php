@@ -45,7 +45,7 @@ class AliasCreationListener implements EventSubscriberInterface
         }
 
         if (null === $alias = $event->getAlias()) {
-            throw new \Exception('User should not be null');
+            throw new \Exception('Alias should not be null');
         }
 
         if (null === $user = $alias->getUser()) {

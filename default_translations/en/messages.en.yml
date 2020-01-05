@@ -71,8 +71,8 @@ form:
   oclock-by: by
   actual-password: Current password
   new-custom-alias: New alias address
-  new-password: New password
-  new-password_confirmation: Confirm new password
+  plain-password: New password
+  plain-password_confirmation: Confirm new password
   change-password: Change your password
   delete-account: Delete account
   delete-password: Password
@@ -85,6 +85,8 @@ form:
   recovery-start: Recover
   registration-recovery-token-ack: I stored the recovery token at a secure place
   registration-recovery-token-next-button: Continue
+  domain: Domain
+  add: Add
 recovery:
   header: Recover your account
   lead: Reset the password using your recovery token
@@ -232,3 +234,11 @@ Alias: Alias address
 Voucher: Invite code
 Reserved Name: Reserved Name
 copy-to-clipboard: Copy to clipboard
+init.title: Creating initial configuration
+init_domain:
+  lead: Thank your for installing Userli. Currently, there are no domains or accounts present.
+  text: Please choose your primary domain, which Userli should handle.
+init_user:
+  lead: You have created your primary domain.
+  text: "E-mail standards require the account postmaster@%domain% to be present.
+    Please pick a password for this first administrator account and log in afterwards."

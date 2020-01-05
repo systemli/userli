@@ -44,10 +44,6 @@ class RegistrationHandler
      */
     private $hasSinaBox;
     /**
-     * @var
-     */
-    private $primaryDomain;
-    /**
      * @var int
      */
     private $mailCrypt;
@@ -63,8 +59,7 @@ class RegistrationHandler
         MailCryptKeyHandler $mailCryptKeyHandler,
         RecoveryTokenHandler $recoveryTokenHandler,
         bool $hasSinaBox,
-        string $primaryDomain,
-        int $mailCrypt
+        bool $mailCrypt
     ) {
         $this->manager = $manager;
         $this->domainGuesser = $domainGuesser;
@@ -73,7 +68,6 @@ class RegistrationHandler
         $this->mailCryptKeyHandler = $mailCryptKeyHandler;
         $this->recoveryTokenHandler = $recoveryTokenHandler;
         $this->hasSinaBox = $hasSinaBox;
-        $this->primaryDomain = $primaryDomain;
         $this->mailCrypt = $mailCrypt;
     }
 
