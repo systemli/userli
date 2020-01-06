@@ -1,1 +1,241 @@
-{}
+form:
+  remember-me: Rester connecté
+  email: E-Mail
+  domain: Domaine
+  change-password: Modifier votre mot de passe
+  create-random-alias: Générer un alias d'adresse aléatoire
+  delete-account: Supprimer le compte
+  create-voucher: Créer un code d'invitation
+  password_confirmation: Confirmer le mot de passe
+  signin: Se connecter
+  create-custom-alias: Ajouter
+  plain-password: Nouveau mot de passe
+  recovery-token: Jeton de récupération
+  delete-password: Mot de passe
+  registration-recovery-token-ack: J'ai stocké le jeton de récupération de façon sécurisée
+  registration-recovery-token-next-button: Continuer
+  generate-recovery-token: Créer un nouveau jeton de récupération
+  submit: Valider
+  password: Mot de passe
+  recovery-link: Mot de passe oublié ?
+  voucher-redeemed-on: Demandé le
+  delete-alias: Supprimer l'alias d'adresse
+  plain-password_confirmation: Confirmer le nouveau mot de passe
+  signin-header: Se connecter
+  add: Ajouter
+  actual-password: Mot de passe actuel
+  title: S'inscrire
+  roles: Rôles
+  register-header: Créer un compte
+  oclock-by: par
+  voucher: Code d'invitation
+  new-custom-alias: Nouvel alias d'adresse
+  recovery-start: Récupération
+index:
+  recovery-token-button: Gérer le jeton de récupération
+  alias-explanation: "<p>\nUtilisez des alias d'adresse pour masquer votre adresse\
+    \ e-mail originale des gens que vous ne connaissez pas bien, ou des entreprises\
+    \ en lesquelles vous n'avez pas totalement confiance.\n</p>\n<p>\n  <ul>\n   \
+    \ <li>Tous les e-mails envoyés aux alias d'adresses sont redirigés dans votre\
+    \ boîte de messagerie habituelle</li>\n    <li>Pour envoyer depuis un alias d'adresse,\
+    \ vous devez configurer votre client de messagerie pour cela.</li>\n    <li>Vous\
+    \ pouvez avoir %alias_limit_custom% alias d'adresse personnalisés.</li>\n    <li>Vous\
+    \ pouvez avoir %alias_limit_random% alias d'adresse aléatoires.</li>\n    <li>Les\
+    \ alias d'adresse aléatoires sont supposés être utilisés dans un seul but afin\
+    \ d'éviter le suivi entre les différents services.</li>\n    <li>Contactez-nous\
+    \ pour supprimer des alias d'adresse personnalisés.</li>\n  </ul>\n</p>\n"
+  alias-deletion-random: Dès que vous supprimer d'anciennes adresses, vous pouvez
+    de nouveau en créer de nouvelles.
+  alias-deletion-custom: Écrivez-nous pour supprimer des adresses.
+  voucher-explanation: "Utilisez vos codes d'invitation pour inviter des amis ici.\
+    \ Par défaut, vous avez trois invitations disponibles. Si vous avez besoin de\
+    \ plus de codes d'invitation, veuillez contacter les administrateurs. Nous stockons\
+    \ les données d'invitation pendant un temps limité afin de protéger des abus.\n"
+  alias-empty: Vous n'avez aucun alias d'adresse %alias_type% défini.
+  alias-headline: Votre adresse d'alias %alias_type%
+  delete-button: Supprimer le compte
+  voucher-limit: Vous n'avez plus de code d’invitation.
+  title: Gérez votre compte e-mail
+  logged_in_as: Vous êtes connecté en tant que %user%.
+  voucher-disable: "Vous recevrez trois codes d'invitation le %date%, afin d'éviter\
+    \ les inscriptions de masse et le spam.\n"
+  delete-description: "Vous pouvez supprimer votre compte e-mail %project_name%. Cela\
+    \ supprimera tous vos e-mails. <strong>Il sera impossible de les récupérer</strong><br\
+    \ /><br /> Pour supprimer votre compte, vous devez confirmer votre mot de passe\
+    \ actuel.\n"
+  voucher-headline: Vos codes d'invitation
+  delete-headline: Supprimer le compte
+  alias-limit: Vous avez atteint la limite autorisée de %alias_limit% %alias_type%
+    alias d'adresse.
+admin:
+  registered-accounts-last-week: Inscriptions ces 7 derniers jours
+  registered-accounts: Inscriptions
+  invite-codes-redeemed: Codes d'invitation demandés
+  invite-codes: Codes d'invitation actifs
+Voucher: Code d'invitation
+delete:
+  alias:
+    headline: Supprimer l'alias d'adresse %alias%
+    lead: Nous devons vérifier votre mot de passe pour supprimer votre alias d'adresse.
+  user:
+    headline: Supprimer le compte
+    lead: Nous devons vérifier votre mot de passe pour supprimer votre compte.
+  cancel: Annuler
+start:
+  aliases: Alias d'adresses
+  account-settings: Paramètres du compte
+  aliases-desc: Masquez votre identité
+  registration-button: Créer un compte
+  vouchers: Codes d'invitation
+  registration-text: "Vous n'avez pas encore de compte e-mail avec le domaine %domain%\
+    \ ? Aucun problème ! Si l'un de vos amis a déjà un compte, vous pouvez obtenir\
+    \ un code d'invitation et configurer votre compte immédiatement.\n"
+  intro: Ici vous pouvez configurer et gérer vos comptes e-mail.
+  account-delete: Supprimer le compte
+  aliases-delete: Supprimer l'alias d'adresse
+  registration-header: Inscription
+  vouchers-desc: Invitez vos amis
+  account-settings-desc: Mots de passe et plus
+  webmail-desc: Lisez et écrivez des e-mails
+  title: Bienvenue sur %domain%
+  webmail: Webmail
+welcome:
+  text: "<h3>Vous êtes fin prêt</h3> <p>Sur le Web, vous pouvez trouvez des instructions\
+    \ pour configurer votre compte e-mail avec différents programmes clients</p> <p>Dans\
+    \ une semaine vous recevrez trois codes d'invitation, que vous pourrez récupérer\
+    \ à <a href=\"%app_url%\">%app_url</a>. Vous pouvez les donner à vos amis et les\
+    \ inviter à s'inscrire sur %project_name%.</p>\n"
+  lead: Vous avez bien créé un compte chez nous. Quelles sont les étapes suivantes
+    ?
+  headline: Bienvenue dans %project_name% !
+  next-button: Vers le tableau de bord
+recovery:
+  lead: Réinitialisez le mot de passe en utilisant le jeton de récupération
+  token-lead: Nouveau jeton de récupération
+  header: Récupérer votre compte
+  waiting-info: Cette période d'attente est mise en place pour votre propre sécurité
+    et ne peut pas être réduite ou passée.
+  waiting-time: La deuxième étape commence à %time%.
+  reset-lead: Vous n'êtes pas autorisé à réinitialiser votre mot de passe
+  started: "La première étape pour réinitialiser votre mot de passe est faite.\nVeuillez\
+    \ maintenant attendre 48 heures. Par la suite, vous pouvez définir un nouveau\
+    \ mot de passe dans une deuxième étape.\nVeuillez conserver votre jeton de récupération\
+    \ jusque là.\n"
+  cancel: Annuler
+recovery-token:
+  set: Vous avez déjà défini un jeton de récupération.
+  set-extra: Créer un nouveau jeton invalidera le jeton actuel.
+  created-headline: 'Le jeton de récupération suivant a été créé pour vous :'
+  lead: Le jeton de récupération peut être utilisé pour réinitialiser votre mot de
+    passe si vous l'oubliez.
+  created-info: "Si vous perdez votre mot de passe, le jeton de récupération vous\
+    \ permet de le réinitialiser. Notez le et stocker le de façon sécurisée.\n"
+  displayed-once: "Pour des raisons de sécurité, le jeton de récupération ne sera\
+    \ affiché qu'une seule fois. Nous ne pouvons pas récupérer ce jeton pour vous.\n"
+  headline: Gérer les jetons de récupération
+  unset: Vous n'avez pas encore défini de jeton de récupération. Nous vous recommandons
+    fortement d'en créer un maintenant.
+Reserved Name: Nom réservé
+error:
+  generic_error: Une erreur s'est produite. Nous sommes désolés.
+  title: Oups, une erreur s'est produite.
+  page_not_found: La page que vous avez demandé n'existe pas.
+  back_link: Retour à l'accueil
+mail:
+  alias-created:body: "Bonjour %email%,\n\nUn nouvel alias d'adresse a été ajouté\
+    \ pour votre adresse %email% :\n%alias%\n\nGérez vos alias d'adresse ici : %app_url%/alias\n\
+    \nNous espérons que vous êtes satisfait de votre compte e-mail.\nVotre équipe\
+    \ d'administration de %project_name%.\n"
+  recovery-subject: Le mot de passe pour votre compte e-mail %email% va être réinitialisé
+  recovery-body: "Bonjour %email%,\n\nVotre mot de passe de compte vient d'être réinitialisé,\n\
+    après identification avec votre adresse e-mail et le code de récupération\ncorrespondant\
+    \ via %app_url%/recovery.\n\nSi ce n'était pas vous, alors quelqu'un d'autre à\
+    \ eu accès à\nvotre jeton de récupération et a tenté de récupérer l'accès à votre\
+    \ compte.\nAllez à %app_url%/recovery_token immédiatement et créez un\nnouveau\
+    \ jeton de récupération. Cela invalidera l'ancien jeton de récupération et\nstoppera\
+    \ le processus.\n\nSi vous avez déclenché ce processus par vous-même, la période\
+    \ de 48 heures\nà commencé. Elle sera terminée à %time%. Par la suite, vous pourrez\
+    \ définir\nun nouveau mot de passe à %app_url%/recovery.\n\nNous espérons que\
+    \ vous êtes satisfait de votre compte e-mail.\nVotre équipe d'administration de\
+    \ %project_name%.\n"
+  alias-created-subject: Nouvel alias d'adresse créé
+  welcome-subject: Bienvenue sur %domain%
+  welcome-body: "Cher utilisateur,\n\nBienvenue à bord. Vous pouvez trouver des instructions\
+    \ pour configurer votre compte e-mail\navec différents programmes clients sur\
+    \ Internet.\n\nVous avez accès à une boîte de messagerie avec un quota de 1 Go.\
+    \ Si vous dépassez cette limite,\nvotre compte e-mail pourrait ne pas fonctionner\
+    \ correctement.\n\nDans une semaine vous recevrez trois codes d'invitation, que\
+    \ vous pouvez récupérer\nà %app_url%/voucher. Vous pouvez les donner à vos amis\
+    \ et\nles inviter à s'inscrire sur %project_name%.\n\nCordialement, votre équipe\
+    \ d'administration de %project_name%.\n"
+flashes:
+  recovery-token-ack: Vous avez généré un jeton de récupération.
+  logout-successful: Vous vous êtes déconnecté.
+  recovery-token-invalid: L'adresse e-mail et/ou le jeton de récupération sont incorrects
+    !
+  voucher-creation-successful: Nouveau code d'invitation créé.
+  recovery-password-changed: Vous avez modifié votre mot de passe.
+  alias-deletion-successful: Votre alias d'adresse a été supprimé.
+  alias-creation-successful: Votre nouvel alias d'adresse a été créé.
+  password-change-successful: Votre nouveau mot de passe est maintenant actif !
+  revocery-reauthenticate: Une erreur s'est produite. Veuillez bous identifier à nouveau
+    !
+  registration-successful: Vous êtes désormais inscrit.
+  recovery-next-login: Aller à l'écran de connexion.
+init_domain:
+  lead: Merci d'avoir installé Userli. Pour le moment il n'y a aucun domaine et aucune
+    compte.
+  text: Veuillez choisir votre domaine principal, celui que Userli doit gérer.
+navbar_right:
+  login: Se connecter
+  logout: Se déconnecter
+  admin: Administration
+init_user:
+  text: Les standards d'e-mail nécessitent la présence du compte postmaster@%domain%.
+    Veuillez définir un mot de passe pour ce premier compte administrateur puis vous
+    y connecter.
+  lead: Vous avez créé votre domaine principal.
+Bad credentials.: Identifiants incorrects
+registration:
+  information: Informations
+  recovery-token-headline: Jeton de récupération
+  title: Inscription à %project_name%
+  information-password-policy: "<strong>Important :</strong> Vous devez définir un\
+    \ mot de passe d'au moins 12 caractères. Les mots de passe seront testés avec\
+    \ une <a href=\"https://haveibeenpwned.com/Passwords\">base de données de mots\
+    \ de passe compromis</a>.\n"
+  label-email: Votre adresse e-mail préférée
+  information-intro: "Souhaitez-vous enregistrer un nouveau compte e-mail sur <a href=\"\
+    %project_url%\">%project_name%</a> ? Nous n'autorisons que les inscriptions via\
+    \ les codes d'invitation vers nos services.\n"
+copy-to-clipboard: Copier dans le presse-papiers
+init.title: Création de la configuration initiale
+Domain: Domaine
+closed:
+  headline: Inscription fermée
+  lead: En raison du paragraphe trois du TKÜV nous avons décidé de fermer les inscriptions.
+    Nous sommes désolés.
+  title: Inscription fermée
+  text: "<p>En raison du <a href=\"https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html\"\
+    \ target=\"_blank\">paragraphe trois du « Verordnung über die technische und organisatorische\
+    \ Umsetzung von Maßnahmen zur Überwachung der Telekommunikation »</a> (abrégé\
+    \ telecommuicationen-surveillance-decree ou « TKÜV »), les fournisseurs d'e-mail\
+    \ avec plus de 10 000 utilisateurs sont dans l'obligation de mettre en place une\
+    \ interface de surveillance pour les autorités. C'est pourquoi nous avons décidé\
+    \ de bloquer les inscriptions et de ne pas autoriser la création de nouveaux comptes.</p>\n\
+    <p><strong>Les comptes existants ne sont pas affectés</strong></p>\n"
+spam:
+  text: "Oh non ! Nous pensons que votre compte a été utilisé pour générer du spam.\n\
+    L'accès à au compte e-mail a été désactivé.\nVeuillez contacter le support pour\
+    \ débloquer votre compte.\n"
+  title: Compte bloqué
+User: Utilisateur
+Alias: Adresse d'alias
+navbar_left:
+  about-us:
+    text: À propos de nous
+    link: https://www.exemple.org/fr/a-propos-de-nous
+random: aléatoire
+flash_batch_remove_vouchers_success: Codes d'invitation non demandés supprimés.
+custom: personnalisé
+Ratio: Ratio
