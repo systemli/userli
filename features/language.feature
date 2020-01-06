@@ -5,6 +5,9 @@ Feature: Language detection
     And the following Domain exists:
       | name        |
       | example.org |
+    And the following User exists:
+      | email                  | password | roles        |
+      | postmaster@example.org | asdasd   | ROLE_ADMIN   |
 
   @language
   Scenario: Language detection
@@ -20,8 +23,8 @@ Feature: Language detection
     Then I should see text matching "Willkommen"
 
   @language
-  Scenario: Language detection
-    Given set the HTTP-Header "Accept-Language" to "fr"
+  Scenario: Missing language fallback
+    Given set the HTTP-Header "Accept-Language" to "afa"
     And I am on "/"
 
     Then I should see text matching "Welcome"
