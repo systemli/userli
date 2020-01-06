@@ -1,3 +1,7 @@
+# 2.6.0 (UNRELEASED)
+
+* Add French translation (Thanks Nathan Bonnemains)
+
 # 2.5.0 (2020.01.05)
 
 * Merge `MAIL_CRYPT_*` dotenv variables into a single one. Please
