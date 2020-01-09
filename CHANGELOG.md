@@ -1,5 +1,6 @@
-# 2.6.0 (UNRELEASED)
+# 2.5.1 (2020.01.09)
 
+* Fix userDB lookups for accounts without mail_crypt when MAIL_CRYPT=3.
 * Add French translation (Thanks Nathan Bonnemains)
 
 # 2.5.0 (2020.01.05)

@@ -174,8 +174,10 @@ class CheckPasswordCommand extends Command
             $envVars['userdb_quota_rule'] = sprintf('*:storage=%dM', $user->getQuota());
         }
 
-        // Optionally create mail_crypt key pair and recovery token (when MAIL_CRYPT >= 3)
+        // Optionally create mail_crypt key pair and recovery token
+        // (when MAIL_CRYPT >= 3 and not $userDbLookup)
         if ($this->mailCrypt >= 3 &&
+            false === $userDbLookup &&
             false === $user->hasMailCrypt() &&
             null === $user->getMailCryptPublicKey()) {
             $this->mailCryptKeyHandler->create($user);
