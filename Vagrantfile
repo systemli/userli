@@ -9,7 +9,8 @@ Vagrant.configure("2") do |config|
 
     config.vm.provider :virtualbox do |v|
         v.name = "userli"
-        v.customize ["modifyvm", :id, "--memory", 2048]
+        v.cpus = "2"
+        v.memory = "2048"
     end
 
     config.vm.box = "debian/buster64"
