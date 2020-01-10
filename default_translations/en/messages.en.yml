@@ -1,9 +1,9 @@
 start:
   title: Welcome to %domain%
-  intro: Here you can set up and manage your email account.
+  intro: Here you can set up and manage your e-mail account.
   registration-header: Registration
   registration-text: >
-    You don't have an email account with %domain% yet? No problem!
+    You don't have an e-mail account with %domain% yet? No problem!
     If one of your friends already has an account,
     you can get an invite code from them and immediately set up your own account.
   registration-button: Create account
@@ -16,9 +16,9 @@ start:
   vouchers: Invite codes
   vouchers-desc: Invite your friends
   webmail: Webmail
-  webmail-desc: Read and write emails
+  webmail-desc: Read and write e-mails
 index:
-  title: Manage your email account
+  title: Manage your e-mail account
   voucher-headline: Your invite codes
   voucher-limit: You don't have any invite codes left.
   voucher-disable: >
@@ -37,18 +37,18 @@ index:
   alias-empty: You don't have any %alias_type% alias addresses defined.
   delete-headline: Delete account
   delete-description: >
-    You can delete your %project_name% email account.
-    This will delete all your emails.
+    You can delete your %project_name% e-mail account.
+    This will delete all your e-mails.
     <strong>A recovery at a later date is not possible.</strong>
     <br /><br />
     To delete your account you need to submit your actual password.
   delete-button: Delete account
   recovery-token-button: Manage recovery token
   logged_in_as: You are logged in as %user%.
-  alias-explanation: "<p>\n  Use alias addresses to hide your original email address\
+  alias-explanation: "<p>\n  Use alias addresses to hide your original e-mail address\
     \ from  people you don't know well, or companies you don't fully trust.\n</p>\n\
-    <p>\n  <ul>\n    <li>All emails sent to alias addresses go to your normal mailbox.</li>\n\
-    \    <li>To send from an alias address, you have to manually set up your email\
+    <p>\n  <ul>\n    <li>All e-mails sent to alias addresses go to your normal mailbox.</li>\n\
+    \    <li>To send from an alias address, you have to manually set up your e-mail\
     \ client to do so.</li>\n    <li>You can have %alias_limit_custom% custom alias\
     \ addresses.</li>\n    <li>You can have %alias_limit_random% random alias addresses.</li>\n\
     \    <li>Random alias addresses are supposed to be used for a single purpose \
@@ -58,7 +58,7 @@ form:
   title: Register
   signin-header: Sign in
   register-header: Create account
-  email: E-Mail
+  email: E-mail
   password: Password
   password_confirmation: Confirm password
   remember-me: Stay logged in
@@ -111,14 +111,14 @@ registration:
   title: Registering with %project_name%
   information: Information
   information-intro: >
-    Would you like to register an email account with <a href="%project_url%">%project_name%</a>?
+    Would you like to register an e-mail account with <a href="%project_url%">%project_name%</a>?
     We only allow registrations if a friend invites you with an invite code to our
     services.
   information-password-policy: >
     <strong>Important:</strong>
     You need a password with at least 12 characters.
     Passwords will be tested against a <a href="https://haveibeenpwned.com/Passwords">database of known bad passwords</a>.
-  label-email: Your preferred email address
+  label-email: Your preferred e-mail address
   recovery-token-headline: Recovery token
 welcome:
   headline: Welcome to %project_name%!
@@ -126,7 +126,7 @@ welcome:
   next-button: To the overview
   text: >
     <h3>Ready to go</h3>
-    <p>In the web you can find guides for settting up your email account with several
+    <p>In the web you can find guides for settting up your e-mail account with several
     client programs.</p>
     <p>In one week you will receive three invite codes, which you can collect at <a
     href="%app_url%">%app_url%</a>. You can pass these on to friends and invite them
@@ -140,7 +140,7 @@ closed:
     <p>Due <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html"
     target="_blank">to paragraph three of "Verordnung über die technische und organisatorische
     Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (short: telecommuicationen-surveillance-decree
-    - "TKÜV") email providers with more than 10.000 users are forced to implement
+    - "TKÜV") e-mail providers with more than 10.000 users are forced to implement
     an surveillance interface for the authorities. That's why we decided to lock down
     the registration and do not allow any creation of new accounts.<p>
 
@@ -174,7 +174,7 @@ flashes:
   voucher-creation-successful: New invite code created.
   alias-creation-successful: Your new alias address was created.
   alias-deletion-successful: Your alias address was deleted.
-  recovery-token-invalid: Email address and/or recovery token are wrong!
+  recovery-token-invalid: E-mail address and/or recovery token are wrong!
   recovery-token-ack: You generated a recovery token.
   revocery-reauthenticate: Something went wrong. Please re-authenticate!
   recovery-password-changed: You changed your password.
@@ -187,7 +187,7 @@ error:
   generic_error: An error occured. We're sorry.
 spam:
   title: Account locked
-  text: "Oh no! We believe your account has been misused by a spammer.\nEmail access\
+  text: "Oh no! We believe your account has been misused by a spammer.\nE-mail access\
     \ has been turned off.\nPlease contact support to unlock your account.\n"
 Bad credentials.: Wrong login details
 custom: custom
@@ -195,32 +195,32 @@ random: random
 mail:
   welcome-subject: Welcome to %domain%
   welcome-body: "Dear user,\n\nWelcome aboard. You can find guides for setting up\
-    \ your email account\nwith several client programs on the Internet.\n\nYou get\
-    \ a mailbox with a 1 GB quota. If you exceed your limit,\nyour email account may\
+    \ your e-mail account\nwith several client programs on the Internet.\n\nYou get\
+    \ a mailbox with a 1 GB quota. If you exceed your limit,\nyour e-mail account may\
     \ not function properly.\n\nIn one week you will receive three invite codes, which\
     \ you can collect\nat %app_url%/voucher. You can pass these on to friends and\n\
     invite them to register with %project_name%.\n\nSincerly, your %project_name%\
     \ admin team.\n"
-  recovery-subject: The password for your email account %email% will be reset
+  recovery-subject: The password for your e-mail account %email% will be reset
   recovery-body: "Hello %email%,\n\nYour account password has been attemptedly reset,\n\
-    authenticating with your email address and corresponding recovery\ncode at %app_url%/recovery.\n\
+    authenticating with your e-mail address and corresponding recovery\ncode at %app_url%/recovery.\n\
     \nIf this wasn't you, then somebody else with access to\nyour recovery token tried\
     \ to get ahold of your account. Go\nto %app_url%/user/recovery_token immediately\
     \ and create a\nnew recovery token. This will invalidate the old recovery token\
     \ and\nstop the process.\n\nIf you did trigger the process yourself, the 48 hour\
     \ waiting period\nstarted now. It will end at %time%. Afterwards, you can set\n\
-    a new password at %app_url%/recovery.\n\nWe hope you continue to enjoy your email\
+    a new password at %app_url%/recovery.\n\nWe hope you continue to enjoy your e-mail\
     \ account.\nYour %project_name% admin team.\n"
   alias-created-subject: New alias address created
   alias-created:body: |
     Hello %email%,
 
-    For your email address %email% a new alias has been added:
+    For your e-mail address %email% a new alias has been added:
     %alias%
 
-    Manage your email aliases here: %app_url%/alias
+    Manage your e-mail aliases here: %app_url%/alias
 
-    We hope you continue to enjoy your email account.
+    We hope you continue to enjoy your e-mail account.
     Your %project_name% admin team.
 admin:
   registered-accounts: Registered accounts
