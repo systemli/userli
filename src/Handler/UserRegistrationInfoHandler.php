@@ -53,6 +53,6 @@ class UserRegistrationInfoHandler
     {
         $users = $this->manager->getRepository('App:User')->findUsersSince((new \DateTime())->modify($from));
         $message = $this->twig->render('Email/weekly_report.twig', ['users' => $users]);
-        $this->handler->send($this->to, $message, 'Weekly Report: Registered E-Mail Accounts');
+        $this->handler->send($this->to, $message, 'Weekly Report: Registered E-mail Accounts');
     }
 }
