@@ -38,14 +38,14 @@ index:
   recovery-token-button: Håndter gjenopprettingssymbol
   logged_in_as: Du er innlogget som %user%.
   alias-explanation: "<p>\n  Bruk alias-adresser for å skjule din opprinnelige e-postadresse\
-    \ fra\n  folk du ikke kjenner godt, eller selskaper du ikke helt stoler på.\n\
-    </p>\n<p>\n  <ul>\n    <li>Alle e-poster sendt til e-postadresse går til din normale\
+    \ fra  folk du ikke kjenner godt, eller selskaper du ikke helt stoler på.\n</p>\n\
+    <p>\n  <ul>\n    <li>Alle e-poster sendt til e-postadresse går til din normale\
     \ e-postboks.</li>\n    <li>For å sende fra en alias-adresse, må du sette opp\
     \ din e-postklient manuelt.</li>\n    <li>Du kan ha %alias_limit_custom% egendefinerte\
     \ alias-adresser.</li>\n    <li>Du kan ha %alias_limit_random% tilfeldige alias-adresser.</li>\n\
-    \    <li>Tilfeldige alias-adresser er tiltenkt bruk for ett formål\n    for å\
-    \ unngå sporing mellom ulike tjenester.</li>\n    <li>Kontakt oss for å slette\
-    \ egendefinerte alias-adresser.</li>\n  </ul>\n</p>\n"
+    \    <li>Tilfeldige alias-adresser er tiltenkt bruk for ett formål for å unngå\
+    \ sporing mellom ulike tjenester.</li>\n    <li>Kontakt oss for å slette egendefinerte\
+    \ alias-adresser.</li>\n  </ul>\n</p>\n"
 form:
   title: Registrer
   signin-header: Logg inn
@@ -78,6 +78,10 @@ form:
   registration-recovery-token-ack: Jeg lagret gjenopprettingssymbolet på et sikkert
     sted
   registration-recovery-token-next-button: Fortsett
+  plain-password: Nytt passord
+  plain-password_confirmation: Bekreft nytt passord
+  domain: Domene
+  add: Legg till
 recovery:
   header: Gjenopprett kontoen din
   lead: Tilbakestill passordet med ditt gjenopprettingssymbol
@@ -212,3 +216,11 @@ Alias: Alias-adresse
 Voucher: Invitasjonskode
 Reserved Name: Reservert navn
 copy-to-clipboard: Kopier til utklippstavle
+init.title: Skaper grunnleggende oppsett
+init_domain:
+  lead: Takk for installasjonen av Userli. Ingen domener eller kontoer er satt opp.
+  text: Velg ditt primære domene, som Userli skal håndtere.
+init_user:
+  lead: Du har opprettet ditt primære domene.
+  text: E-poststandarder krever at kontoen postmaster@%domain% finnes. Velg et passord
+    for denne første administratorkontoen og logg inn etterpå.
