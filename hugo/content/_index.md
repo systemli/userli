@@ -1,11 +1,11 @@
 +++
 title = "Userli Documentation"
-description = "Web application to (self-) manage email users and encrypt their mailboxes."
+description = "Web application to (self-) manage e-mail users and encrypt their mailboxes."
 +++
 
 # Userli
 
-Web application to (self-) manage email users and encrypt their mailboxes.
+Web application to (self-) manage e-mail users and encrypt their mailboxes.
 
 ![index](./images/index.png)
 

@@ -5,7 +5,7 @@
 [![Code Coverage](https://codecov.io/gh/systemli/userli/branch/master/graph/badge.svg)](https://codecov.io/gh/systemli/userli)
 [![Translation Status](https://hosted.weblate.org/widgets/userli/-/svg-badge.svg)](https://hosted.weblate.org/widgets/userli/-/svg-badge.svg)
 
-Web application to (self-) manage email users and encrypt their mailboxes.
+Web application to (self-) manage e-mail users and encrypt their mailboxes.
 
 ![index](hugo/static/images/index.png)
 

@@ -57,7 +57,7 @@ Feature: registration
     And I should see "The invite code is invalid."
 
   @registration
-  Scenario: Register with invalid email domain
+  Scenario: Register with invalid e-mail domain
     When I am on "/register"
     And I fill in the following:
       | registration[voucher]               | TEST                 |
@@ -67,7 +67,7 @@ Feature: registration
     And I press "Submit"
 
     Then I should be on "/en/register"
-    And I should see "The email is invalid."
+    And I should see "The e-mail is invalid."
 
   @registration
   Scenario: Register with invalid password
@@ -106,7 +106,7 @@ Feature: registration
     And I press "Submit"
 
     Then I should be on "/en/register"
-    And I should see "The email address is already taken."
+    And I should see "The e-mail address is already taken."
 
   @registration
   Scenario: Register with taken alias address
@@ -119,7 +119,7 @@ Feature: registration
     And I press "Submit"
 
     Then I should be on "/en/register"
-    And I should see "The email address is already taken."
+    And I should see "The e-mail address is already taken."
 
   @registration
   Scenario: Register with reserved address
@@ -132,7 +132,7 @@ Feature: registration
     And I press "Submit"
 
     Then I should be on "/en/register"
-    And I should see "The email address is already taken."
+    And I should see "The e-mail address is already taken."
 
   @registration
   Scenario: Register with reserved address
@@ -145,7 +145,7 @@ Feature: registration
     And I press "Submit"
 
     Then I should be on "/en/register"
-    And I should see "The email address is already taken."
+    And I should see "The e-mail address is already taken."
 
   @registration
   Scenario: Register with too short username
