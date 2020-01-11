@@ -71,7 +71,7 @@ Feature: Recovery
     And I press "recovery_process[submit]"
 
     Then I should be on "/en/recovery"
-    And I should see text matching "Email address and/or recovery token are wrong!"
+    And I should see text matching "E-mail address and/or recovery token are wrong!"
 
   @recovery
   Scenario: Start recovery process with local part only

@@ -118,4 +118,4 @@ Feature: Login
 
     Then I should be on "/en/"
     And the response status code should be 200
-    And I should see text matching "Email access has been turned off"
+    And I should see text matching "E-mail access has been turned off"
