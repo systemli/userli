@@ -12,7 +12,7 @@ form:
 
 registration:
   voucher-invalid: "The invite code is invalid."
-  email-domain-not-exists: "The email is invalid."
+  email-domain-not-exists: "The e-mail is invalid."
   voucher-already-redeemed: "The invite code has already been used."
   email-domain-invalid: "The e-mail is invalid."
   email-already-taken: "The e-mail address is already taken."
