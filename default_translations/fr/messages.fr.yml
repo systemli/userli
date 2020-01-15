@@ -1,6 +1,6 @@
 form:
   remember-me: Rester connecté
-  email: E-Mail
+  email: E-mail
   domain: Domaine
   change-password: Modifier votre mot de passe
   create-random-alias: Générer un alias d'adresse aléatoire
