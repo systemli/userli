@@ -1,6 +1,7 @@
 # 2.6.0 (2020.XX.XX)
 
 * Attempt to fix mail body translation string format (Fixes: #205)
+* Add new console command `app:users:delete` to delete users.
 
 # 2.5.1 (2020.01.09)
 

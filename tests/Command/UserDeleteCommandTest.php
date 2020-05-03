@@ -1,0 +1,79 @@
+<?php
+
+namespace App\Tests\Command;
+
+use App\Command\UserDeleteCommand;
+use App\Command\VoucherUnlinkCommand;
+use App\Entity\User;
+use App\Handler\DeleteHandler;
+use App\Repository\UserRepository;
+use Doctrine\Common\Persistence\ObjectManager;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+
+class UserDeleteCommandTest extends TestCase
+{
+    /**
+     * @var VoucherUnlinkCommand
+     */
+    private $command;
+
+    public function setUp(): void
+    {
+        $user = new User();
+        $user->setEmail('user@example.org');
+
+        $repository = $this->getMockBuilder(UserRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $repository->method('findByEmail')
+            ->willReturn($user);
+
+        $manager = $this->getMockBuilder(ObjectManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $manager->method('getRepository')->willReturn($repository);
+
+        $deleteHandler = $this->getMockBuilder(DeleteHandler::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->command = new UserDeleteCommand($manager, $deleteHandler);
+    }
+
+    public function testExecute(): void
+    {
+        $application = new Application();
+        $application->add($this->command);
+
+        $command = $application->find('app:users:delete');
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(['--user' => 'user@example.org']);
+
+        $output = $commandTester->getDisplay();
+        $this->assertContains('Deleting user user@example.org', $output);
+
+        // Test dry run user deletion
+        $commandTester->execute(['--user' => 'user@example.org', '--dry-run' => true]);
+
+        $output = $commandTester->getDisplay();
+        $this->assertContains('Would delete user user@example.org', $output);
+    }
+
+    public function testExecuteWithoutUser(): void
+    {
+        $this->expectException(UsernameNotFoundException::class);
+
+        $application = new Application();
+        $application->add($this->command);
+
+        $command = $application->find('app:users:delete');
+
+        $commandTester = new CommandTester($command);
+
+        $commandTester->execute([]);
+    }
+}
