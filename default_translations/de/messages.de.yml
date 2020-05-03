@@ -218,17 +218,25 @@ mail:
     Viel Spaß mit deinem Mailaccount, wünscht dir
     dein %project_name% Admin Team.
   recovery-subject: Das Passwort zu deinem E-Mail-Account %email% wird zurückgesetzt
-  recovery-body: "Hallo %email%,\n\nEs wurde versucht dein Passwort zurückzusetzen.\
-    \ Dazu wurden deine\nE-Mail-Addresse und der zugehörige Wiederherstellungscode\
-    \ unter\n%app_url%/recovery eingegeben.\n\nWenn du das nicht selbst warst,  versucht\
-    \ jemand anderes mit\nZugang zu deinem Wiederherstellungscode Kontrolle über deinen\
-    \ Account\nzu bekommen. Gehe schnellstmöglich zu %app_url%/user/recovery_token\n\
-    und erstelle dir einen neuen Wiederherstellungscode. Dadurch wird der\nalte Code\
-    \ ungültig und der Vorgang abgebrochen.\n\nHast du den Vorgang selbst ausgelöst,\
-    \ startet nun die 48-stündige\nWartezeit. Diese geht bis zum %time%. Anschließend\
-    \ kannst\ndu mit einem Besuch von %app_url%/recovery dein Passwort neu\nsetzen.\n\
-    \nWeiterhin viel Spaß mit deinem Mailaccount, wünscht dir\ndein %project_name%\
-    \ Admin Team.\n"
+  recovery-body: |
+    Hallo %email%,
+    
+    Es wurde versucht dein Passwort zurückzusetzen. Dazu wurden deine
+    E-Mail-Addresse und der zugehörige Wiederherstellungscode unter
+    %app_url%/recovery eingegeben.
+    
+    Wenn du das nicht selbst warst, versucht jemand anderes mit Zugang zu
+    deinem Wiederherstellungscode, Kontrolle über deinen Account zu bekommen.
+    Gehe schnellstmöglich zu %app_url%/user/recovery_token
+    und erstelle dir einen neuen Wiederherstellungscode. Dadurch wird der
+    alte Code ungültig und der Vorgang abgebrochen.
+    
+    Hast du den Vorgang selbst ausgelöst, startet nun die 48-stündige Wartezeit.
+    Diese geht bis zum %time%. Anschließend kannst du mit einem
+    Besuch von %app_url%/recovery dein Passwort neu setzen.
+
+    Weiterhin viel Spaß mit deinem Mailaccount, wünscht dir
+    dein %project_name% Admin Team.
   alias-created-subject: Neue Alias-Adresse erstellt
   alias-created-body: |
     Hallo %email%,
@@ -239,12 +247,8 @@ mail:
     Du kannst deine E-Mail-Aliase hier verwalten:
     %app_url%/alias
 
-    Weiterhin viel Spaß mit deinem Mailaccount, wünscht dir dein
-    %project_name% Admin Team.
-  alias-created:body: "Hallo %E-Mail%,\n\nFür deine E-Mail-Adresse %email% wurde ein\
-    \ neuer Alias hinzugefügt:\n%alias%\n\nVerwalte hier deine E-Mail-Aliase: %app_url%/alias\n\
-    \nWir hoffen, dass du weiterhin Freude an Ihrem E-Mail-Konto haben wirst.\nDein\
-    \ %project_name% Administrator-Team.\n"
+    Weiterhin viel Spaß mit deinem Mailaccount, wünscht dir
+    dein %project_name% Admin-Team.
 admin:
   registered-accounts: Registrierte Nutzer
   registered-accounts-last-week: Registrierte Nuter in den letzten 7 Tagen

@@ -230,7 +230,7 @@ mail:
     Esperamos que continue a tirar proveito da sua conta.
     Time %project_name%.
   alias-created-subject: Novo endereço alias criado
-  alias-created:body: |
+  alias-created-body: |
     Olá %email%,
 
     Um novo endereço alias foi criado para o seu email %email%:

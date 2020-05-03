@@ -183,26 +183,50 @@ random: tilfeldig
 mail:
   welcome-subject: Velkommen til %domain%
   alias-created-subject: Ny alias-adresse opprettet
-  welcome-body: "Kjære bruker,\n\nVelkommen ombord. Du kan finne veiledninger for\
-    \ oppsett av din e-postkonto\nmed flere klientprogrammer på Internett.\n\nDu får\
-    \ en e-postboks med 1 GB kvote. Hvis du overstiger grensen,\nkan det hende din\
-    \ e-postkonto ikke fungerer riktig.\n\nOm en uke vil du motta tre invitasjonskoder,\
-    \ som du kan samle i\n%app_url%/voucher. Du kan gi disse til venner og\ninvitere\
-    \ dem til å registrere seg med %project_name%.\n\nÆrbødigst, ditt %project_name%-administratorlag.\n"
+  welcome-body: |
+    Kjære bruker,
+    
+    Velkommen ombord. Du kan finne veiledninger for oppsett av din e-postkonto
+    med flere klientprogrammer på Internett.
+    
+    Du får en e-postboks med 1 GB kvote. Hvis du overstiger grensen, kan det
+    hende din e-postkonto ikke fungerer riktig.
+    
+    Om en uke vil du motta tre invitasjonskoder, som du kan samle i
+    %app_url%/voucher. Du kan gi disse til venner og invitere
+    dem til å registrere seg med %project_name%.
+    
+    Ærbødigst, ditt %project_name%-administratorlag.
   recovery-subject: Passordet for din e-postkonto %email% vil bli tilbakestilt
-  recovery-body: "Hei %email%,\n\nNoen har forsøkt å tilbakestille ditt kontopassord.\
-    \ For å gjøre dette,\nhar vedkommende identitetsbekreftet seg med din e-postadresse\
-    \ og\ntilhørende tilbakestillingskode på %app_url%/recovery.\n\nHar du ikke utløst\
-    \ dette selv? Da har noen andre med tilgang til\nditt gjenopprettingssymbol forsøkt\
-    \ å få tilgang til kontoen din. Gå til\n%app_url%/user/recovery_token umiddelbart\
-    \ og opprett et nytt\ngjenopprettingssymbol. Dette vil ugyldiggjøre det gamle\
-    \ gjenopprettings-\nsymbolet og stoppe prosessen.\n\nHvis du utløser prosessen\
-    \ selv, startet venteperioden på 48 timer nå.\nDen vil avsluttes klokken %time%.\
-    \ Etterpå kan du sette et nytt passord\npå %app_url%/recovery.\n\nVi håper du\
-    \ vil fortsette å ha glede av din e-postkonto.\nDitt %project_name%-administratorlag.\n"
-  alias-created:body: "Hei %email%,\n\nEt nytt alias har blitt satt opp for %email%\
-    \ e-postkontoen din:\n%alias%\n\nHåndter dine e-postaliaser her: %app_url%/alias\n\
-    \nVi håper du fortsetter å ha glede av din e-postkonto.\nDitt %project_name%-administratorlag.\n"
+  recovery-body: |
+    Hei %email%,
+
+    Noen har forsøkt å tilbakestille ditt kontopassord. For å gjøre dette,
+    har vedkommende identitetsbekreftet seg med din e-postadresse og
+    tilhørende tilbakestillingskode på %app_url%/recovery.
+    
+    Har du ikke utløst dette selv? Da har noen andre med tilgang til
+    ditt gjenopprettingssymbol forsøkt å få tilgang til kontoen din. Gå til
+    %app_url%/user/recovery_token umiddelbart og opprett et nytt
+    gjenopprettingssymbol. Dette vil ugyldiggjøre det gamle gjenopprettings-
+    symbolet og stoppe prosessen.
+    
+    Hvis du utløser prosessen selv, startet venteperioden på 48 timer nå.
+    Den vil avsluttes klokken %time%. Etterpå kan du sette et nytt passord
+    på %app_url%/recovery.
+
+    Vi håper du vil fortsette å ha glede av din e-postkonto.
+    Ditt %project_name%-administratorlag.
+  alias-created-body: |
+    Hei %email%,
+    
+    Et nytt alias har blitt satt opp for %email% e-postkontoen din:
+    %alias%
+    
+    Håndter dine e-postaliaser her: %app_url%/alias
+    
+    Vi håper du fortsetter å ha glede av din e-postkonto.
+    Ditt %project_name%-administratorlag.
 flash_batch_remove_vouchers_success: Uinnløste invitasjonskoder slettet.
 admin:
   registered-accounts: Registrerte kontoer

@@ -142,22 +142,37 @@ error:
   page_not_found: La page que vous avez demandé n'existe pas.
   back_link: Retour à l'accueil
 mail:
-  alias-created:body: "Bonjour %email%,\n\nUn nouvel alias d'adresse a été ajouté\
-    \ pour votre adresse %email% :\n%alias%\n\nGérez vos alias d'adresse ici : %app_url%/alias\n\
-    \nNous espérons que vous êtes satisfait de votre compte e-mail.\nVotre équipe\
-    \ d'administration de %project_name%.\n"
+  alias-created-body: |
+    Bonjour %email%,
+    
+    Un nouvel alias d'adresse a été ajouté pour votre adresse %email%:
+    %alias%
+    
+    Gérez vos alias d'adresse ici : %app_url%/alias
+
+    Nous espérons que vous êtes satisfait de votre compte e-mail.
+    Votre équipe d'administration de %project_name%.
   recovery-subject: Le mot de passe pour votre compte e-mail %email% va être réinitialisé
-  recovery-body: "Bonjour %email%,\n\nVotre mot de passe de compte vient d'être réinitialisé,\n\
-    après identification avec votre adresse e-mail et le code de récupération\ncorrespondant\
-    \ via %app_url%/recovery.\n\nSi ce n'était pas vous, alors quelqu'un d'autre à\
-    \ eu accès à\nvotre jeton de récupération et a tenté de récupérer l'accès à votre\
-    \ compte.\nAllez à %app_url%/recovery_token immédiatement et créez un\nnouveau\
-    \ jeton de récupération. Cela invalidera l'ancien jeton de récupération et\nstoppera\
-    \ le processus.\n\nSi vous avez déclenché ce processus par vous-même, la période\
-    \ de 48 heures\nà commencé. Elle sera terminée à %time%. Par la suite, vous pourrez\
-    \ définir\nun nouveau mot de passe à %app_url%/recovery.\n\nNous espérons que\
-    \ vous êtes satisfait de votre compte e-mail.\nVotre équipe d'administration de\
-    \ %project_name%.\n"
+  recovery-body: |
+    Bonjour %email%,
+    
+    Votre mot de passe de compte vient d'être réinitialisé,
+    après identification avec votre adresse e-mail et le code de récupération
+    correspondant via %app_url%/recovery.
+    
+    Si ce n'était pas vous, alors quelqu'un d'autre à eu accès à votre
+    jeton de récupération et a tenté de récupérer l'accès à votre compte.
+    Allez à %app_url%/recovery_token immédiatement et créez un
+    nouveau jeton de récupération. Cela invalidera l'ancien jeton de
+    récupération et stoppera le processus.
+    
+    Si vous avez déclenché ce processus par vous-même, la période de
+    48 heures à commencé. Elle sera terminée à %time%.
+    Par la suite, vous pourrez définir un nouveau mot de passe à
+    %app_url%/recovery.
+    
+    Nous espérons que vous êtes satisfait de votre compte e-mail.
+    Votre équipe d'administration de %project_name%.
   alias-created-subject: Nouvel alias d'adresse créé
   welcome-subject: Bienvenue sur %domain%
   welcome-body: "Cher utilisateur,\n\nBienvenue à bord. Vous pouvez trouver des instructions\

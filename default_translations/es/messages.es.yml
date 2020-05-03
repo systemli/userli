@@ -204,17 +204,25 @@ mail:
 
     Saludos cordiales, el equipo de administración de %project_name%.
   recovery-subject: La contraseña para tu cuenta de e-mail %email%será reseteada.
-  recovery-body: "Hola %email%,\n\nAlguien ha intentado resetear tu contraseña. Para\
-    \ ello, se han autentificado\ncon tu cuenta de e-mail y el token de seguridad\
-    \ en %app_url%/recovery.\n\n¿No fuiste tu? entonces alguien mas con acceso a tu\
-    \ token de seguridad ha estado intentado\ntomar control de tu cuenta. Por favor\
-    \ entra a %app_url%/user/recovery_token de inmediato y\ncrea un nuevo token de\
-    \ recuperación. De esta manera el antiguo token quedará invalidado.\n\nSi fuiste\
-    \ tu quien inicio el proceso, las 48 horas de espera empezaron.\nEste tiempo terminara\
-    \ en %time%. Luego, vas a poder configurar tu nueva contraseña\nentrando a %app_url%/recovery.\n\
-    \nEsperamos que estés disfrutando tu cuenta de e-mail.\n\nEl equipo de %project_name%.\n"
+  recovery-body: |
+    Hola %email%,
+    
+    Alguien ha intentado resetear tu contraseña. Para ello, se han autentificado
+    con tu cuenta de e-mail y el token de seguridad en %app_url%/recovery.
+    
+    ¿No fuiste tu? entonces alguien mas con acceso a tu token de seguridad ha estado intentado
+    tomar control de tu cuenta. Por favor entra a %app_url%/user/recovery_token de inmediato y
+    crea un nuevo token de recuperación. De esta manera el antiguo token quedará invalidado.
+    
+    Si fuiste tu quien inicio el proceso, las 48 horas de espera empezaron.
+    Este tiempo terminara en %time%. Luego, vas a poder configurar tu nueva contraseña
+    entrando a %app_url%/recovery.
+    
+    Esperamos que estés disfrutando tu cuenta de e-mail.
+    
+    El equipo de %project_name%.
   alias-created-subject: Nueva cuenta alias creada
-  alias-created:body: |
+  alias-created-body: |
     Hello %email%,
 
     Una nueva cuenta alias ha sido creada para tu cuenta de e-mail %email%:

@@ -133,29 +133,51 @@ error:
   page_not_found: Die agfordereti Site gits nid.
   back_link: Zrügg zum Afang
 mail:
-  alias-created:body: "Hallo %email%,\n\nFür dini E-Mail Adrässe %email% isch e nöie\
-    \ Alias erschteut worde:\n%alias%\n\nVerwaut dini E-Mail Aliase hie: %app_url%/alias\n\
-    \nMir hoffe dass du witerhin Fröid a dim E-Mail Account hesch.\nDis %project_name%\
-    \ Admin Team.\n"
+  alias-created-body: |
+    Hallo %email%,
+    
+    Für dini E-Mail Adrässe %email% isch e nöie Alias erschteut worde:
+    %alias%
+    
+    Verwaut dini E-Mail Aliase hie: %app_url%/alias
+    
+    Mir hoffe dass du witerhin Fröid a dim E-Mail Account hesch.
+    Dis %project_name% Admin Team.
   recovery-subject: S Passwort für di E-Mail Account %email% wird zrügggsetzt
-  recovery-body: "Hallo %email%,\n\nDis Account Passwort isch versuecht worde zrüggzsetze\
-    \ mit\ndire E-Mail Adrässe und em passende Recovery Code bi %app_url%/recovery.\n\
-    \nFaus du das nid säuber bisch gsi, het öpper angers mit Zuegriff uf\ndis Recovery\
-    \ Token versuecht di Account z übernäh. Gang so schnäu wie\nmüglech uf %app_url%/user/recovery_token\
-    \ und erschteu es nöis\nRecovery Token. Das invalidiert s alte Token und stoppt\
-    \ dr Prozäss.\n\nFaus du dä Prozäss säuber hesch igleitet, schtartet iz die 48\
-    \ stündigi\nWartezyt. Sie wird am %time% ände. När chasch bi %app_url%/recovery\n\
-    es nöis Passwort setze.\n\nMir hoffe dass du witerhin Fröid a dim E-Mail Account\
-    \ hesch.\nDis %project_name% Admin Team.\n"
+  recovery-body: |
+    Hallo %email%,
+    
+    Dis Account Passwort isch versuecht worde zrüggzsetze mit
+    dire E-Mail Adrässe und em passende Recovery Code bi %app_url%/recovery.
+    
+    Faus du das nid säuber bisch gsi, het öpper angers mit Zuegriff uf
+    dis Recovery Token versuecht di Account z übernäh. Gang so schnäu wie
+    müglech uf %app_url%/user/recovery_token und erschteu
+    es nöis Recovery Token. Das invalidiert s alte Token und stoppt
+    dr Prozäss.
+    
+    Faus du dä Prozäss säuber hesch igleitet, schtartet iz die 48
+    stündigi Wartezyt. Sie wird am %time% ände. När chasch bi
+    %app_url%/recovery es nöis Passwort setze.
+    
+    Mir hoffe dass du witerhin Fröid a dim E-Mail Account hesch.
+    Dis %project_name% Admin Team.
   alias-created-subject: Nöii Alias Adrässe erscheut
   welcome-subject: Wiukomme bi %domain%
-  welcome-body: "Liebe Benutzer,\n\nWiukomme a Bord. Im Internet fingsch Aleitige\
-    \ wie du die E-Mail Account \ni verschiedenschte Programm konfiguriere chasch.\n\
-    \nDu bechunnsch e Mailbox mit 1 GB quota. Sobald das Limit erreicht isch,\nbeschteit\
-    \ d Gfahr dass di E-Mail Account nüm korräkt funktioniert.\n\nI einere Wuche bechunnsch\
-    \ du drü Invite Codes wo bi %app_url% \nchasch abhole. Du chasch die dine Fründe\
-    \ witerleite und se drmit ilade\ne Account bi %project_name% z erschteue.\n\n\
-    Beschti Grüess, dis %project_name% Admin Team.\n"
+  welcome-body: |
+    Liebe Benutzer,
+    
+    Wiukomme a Bord. Im Internet fingsch Aleitige wie du die E-Mail Account
+    i verschiedenschte Programm konfiguriere chasch.
+    
+    Du bechunnsch e Mailbox mit 1 GB quota. Sobald das Limit erreicht isch,
+    beschteit d Gfahr dass di E-Mail Account nüm korräkt funktioniert.
+    
+    I einere Wuche bechunnsch du drü Invite Codes wo bi %app_url%
+    chasch abhole. Du chasch die dine Fründe witerleite und se drmit ilade
+    e Account bi %project_name% z erschteue.
+
+    Beschti Grüess, dis %project_name% Admin Team.
 flashes:
   recovery-token-ack: Du hesch es Recovery Token generiert.
   logout-successful: Du bisch iz usgloggt.

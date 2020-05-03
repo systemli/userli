@@ -194,25 +194,43 @@ custom: custom
 random: random
 mail:
   welcome-subject: Welcome to %domain%
-  welcome-body: "Dear user,\n\nWelcome aboard. You can find guides for setting up\
-    \ your e-mail account\nwith several client programs on the Internet.\n\nYou get\
-    \ a mailbox with a 1 GB quota. If you exceed your limit,\nyour e-mail account may\
-    \ not function properly.\n\nIn one week you will receive three invite codes, which\
-    \ you can collect\nat %app_url%/voucher. You can pass these on to friends and\n\
-    invite them to register with %project_name%.\n\nSincerly, your %project_name%\
-    \ admin team.\n"
+  welcome-body: |
+    Dear user,
+    
+    Welcome aboard. You can find guides for setting up your e-mail account
+    with several client programs on the internet.
+    
+    You get a mailbox with a 1 GB quota. If you exceed your limit,
+    your e-mail account may not function properly.
+    
+    In one week you will receive three invite codes, which you can collect
+    at %app_url%/voucher. You can pass these on to friends and
+    invite them to register with %project_name%.
+    
+    Sincerly,
+    your %project_name% admin team.
   recovery-subject: The password for your e-mail account %email% will be reset
-  recovery-body: "Hello %email%,\n\nYour account password has been attemptedly reset,\n\
-    authenticating with your e-mail address and corresponding recovery\ncode at %app_url%/recovery.\n\
-    \nIf this wasn't you, then somebody else with access to\nyour recovery token tried\
-    \ to get ahold of your account. Go\nto %app_url%/user/recovery_token immediately\
-    \ and create a\nnew recovery token. This will invalidate the old recovery token\
-    \ and\nstop the process.\n\nIf you did trigger the process yourself, the 48 hour\
-    \ waiting period\nstarted now. It will end at %time%. Afterwards, you can set\n\
-    a new password at %app_url%/recovery.\n\nWe hope you continue to enjoy your e-mail\
-    \ account.\nYour %project_name% admin team.\n"
+  recovery-body: |
+    Hello %email%,
+    
+    Your account password has been attemptedly reset by authenticating with
+    your  e-mail address and corresponding recovery code at
+    %app_url%/recovery.
+
+    If this wasn't you, then somebody else with access to your recovery
+    token tried to get ahold of your account. Go to
+    %app_url%/user/recovery_token immediately and create a
+    new recovery token. This will invalidate the old recovery token and stop
+    the process.
+    
+    If you did trigger the process yourself, the 48 hour waiting period started
+    now. It will end at %time%. Afterwards, you can set a new password at
+    %app_url%/recovery.
+    
+    We hope you continue to enjoy your e-mail account.
+    Your %project_name% admin team.
   alias-created-subject: New alias address created
-  alias-created:body: |
+  alias-created-body: |
     Hello %email%,
 
     For your e-mail address %email% a new alias has been added:
