@@ -141,8 +141,8 @@ class CheckPasswordCommand extends Command
             }
         }
 
-        // block spammers
-        if ($user->hasRole(Roles::SPAM)) {
+        // block spammers from login but not lookup
+        if (false === $userDbLookup && $user->hasRole(Roles::SPAM)) {
             return 1;
         }
 
