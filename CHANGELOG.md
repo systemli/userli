@@ -1,3 +1,7 @@
+# 2.6.1 (UNRELEASED)
+
+* Allow mails to be delivered to suspected spammers (Fixes: #212)
+
 # 2.6.0 (2020.05.12)
 
 * Attempt to fix mail body translation string format (Fixes: #205)
