@@ -168,7 +168,7 @@ class CheckPasswordCommandTest extends TestCase
             ['quota@example.org', 0],
             ['mailcrypt@example.org', 0],
             ["unknown@example.org\x00password", 3],
-            ['spam@example.org', 1],
+            ['spam@example.org', 0],
         ];
     }
 
