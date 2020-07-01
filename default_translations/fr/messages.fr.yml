@@ -144,33 +144,33 @@ error:
 mail:
   alias-created-body: |
     Bonjour %email%,
-    
-    Un nouvel alias d'adresse a été ajouté pour votre adresse %email%:
+
+    Un nouvel alias d'adresse a été ajouté pour votre adresse %email% :
     %alias%
-    
-    Gérez vos alias d'adresse ici : %app_url%/alias
+
+    Gérez vos alias d'adresse ici : %app_url%/alias
 
     Nous espérons que vous êtes satisfait de votre compte e-mail.
     Votre équipe d'administration de %project_name%.
   recovery-subject: Le mot de passe pour votre compte e-mail %email% va être réinitialisé
   recovery-body: |
     Bonjour %email%,
-    
+
     Votre mot de passe de compte vient d'être réinitialisé,
     après identification avec votre adresse e-mail et le code de récupération
     correspondant via %app_url%/recovery.
-    
+
     Si ce n'était pas vous, alors quelqu'un d'autre à eu accès à votre
     jeton de récupération et a tenté de récupérer l'accès à votre compte.
     Allez à %app_url%/recovery_token immédiatement et créez un
     nouveau jeton de récupération. Cela invalidera l'ancien jeton de
     récupération et stoppera le processus.
-    
+
     Si vous avez déclenché ce processus par vous-même, la période de
     48 heures à commencé. Elle sera terminée à %time%.
     Par la suite, vous pourrez définir un nouveau mot de passe à
     %app_url%/recovery.
-    
+
     Nous espérons que vous êtes satisfait de votre compte e-mail.
     Votre équipe d'administration de %project_name%.
   alias-created-subject: Nouvel alias d'adresse créé
@@ -181,7 +181,7 @@ mail:
     \ Si vous dépassez cette limite,\nvotre compte e-mail pourrait ne pas fonctionner\
     \ correctement.\n\nDans une semaine vous recevrez trois codes d'invitation, que\
     \ vous pouvez récupérer\nà %app_url%/voucher. Vous pouvez les donner à vos amis\
-    \ et\nles inviter à s'inscrire sur %project_name%.\n\nCordialement, votre équipe\
+    \ et\nles inviter à s'inscrire sur %project_name%.\n\nCordialement,\nvotre équipe\
     \ d'administration de %project_name%.\n"
 flashes:
   recovery-token-ack: Vous avez généré un jeton de récupération.
