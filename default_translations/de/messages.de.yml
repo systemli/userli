@@ -78,7 +78,7 @@ form:
   delete-account: Account löschen
   delete-password: Passwort
   create-voucher: Erstelle Einladungscode
-  create-custom-alias: Erstellen
+  create-custom-alias: Hinzufügen
   create-random-alias: Generiere zufällige Alias-Adresse
   delete-alias: Alias-Adresse löschen
   generate-recovery-token: Neuen Wiederherstellungscode generieren
@@ -86,6 +86,10 @@ form:
   recovery-start: Wiederherstellen
   registration-recovery-token-ack: Ich habe den Code an einem sicheren Ort abgespeichert
   registration-recovery-token-next-button: Weiter
+  add: Hinzufügen
+  domain: Domäne
+  plain-password_confirmation: Neues Passwort bestätigen
+  plain-password: Neues Passwort
 recovery:
   header: Account wiederherstellen
   lead: Passwort zurücksetzen mit Hilfe des Wiederherstellungscodes
@@ -118,7 +122,8 @@ registration:
   information-password-policy: >
     <strong>Wichtig:</strong>
     Du benötigst ein Passwort, das aus mindestens 12 Zeichen besteht.
-    Passwörter werden gegen eine <a href="https://haveibeenpwned.com/Passwords">Datenbank bekannter schlechter Passwörter</a> getestet.
+    Passwörter werden gegen eine <a href="https://haveibeenpwned.com/Passwords">Datenbank
+    bekannter schlechter Passwörter</a> getestet.
   label-email: Deine Wunsch E-Mail Adresse
   recovery-token-headline: Wiederherstellungscode
 welcome:
@@ -220,17 +225,17 @@ mail:
   recovery-subject: Das Passwort zu deinem E-Mail-Account %email% wird zurückgesetzt
   recovery-body: |
     Hallo %email%,
-    
+
     Es wurde versucht dein Passwort zurückzusetzen. Dazu wurden deine
     E-Mail-Addresse und der zugehörige Wiederherstellungscode unter
     %app_url%/recovery eingegeben.
-    
+
     Wenn du das nicht selbst warst, versucht jemand anderes mit Zugang zu
     deinem Wiederherstellungscode, Kontrolle über deinen Account zu bekommen.
     Gehe schnellstmöglich zu %app_url%/user/recovery_token
     und erstelle dir einen neuen Wiederherstellungscode. Dadurch wird der
     alte Code ungültig und der Vorgang abgebrochen.
-    
+
     Hast du den Vorgang selbst ausgelöst, startet nun die 48-stündige Wartezeit.
     Diese geht bis zum %time%. Anschließend kannst du mit einem
     Besuch von %app_url%/recovery dein Passwort neu setzen.
@@ -261,3 +266,13 @@ Alias: Alias-Adresse
 Voucher: Einladungscode
 Reserved Name: Reservierter Name
 copy-to-clipboard: In Zwischenablage kopieren
+init_user:
+  text: E-Mail-Standards erfordern, dass das Konto postmaster@%domain% vorhanden ist.
+    Wähle ein Kennwort für dieses erste Administratorkonto aus und melde dich anschließend
+    an.
+  lead: Primäre Domäne wurde erstellt.
+init_domain:
+  text: Bitte wähle Deine primäre Domäne aus, die Userli behandeln soll.
+  lead: Vielen Dank fürs installieren von Userli. Derzeit sind keine Domänen oder
+    Konten vorhanden.
+init.title: Erstellen der Erstkonfiguration
