@@ -79,8 +79,8 @@ form:
   oclock-by: por
   actual-password: Contraseña actual
   new-custom-alias: Nueva cuenta alias
-  new-password: Nueva contraseña
-  new-password_confirmation: Confirmar nueva contraseña
+  plain-password: Nueva contraseña
+  plain-password_confirmation: Confirmar nueva contraseña
   change-password: Cambiar tu contraseña
   delete-account: Borrar cuenta
   delete-password: Contraseña

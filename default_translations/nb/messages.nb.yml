@@ -63,8 +63,6 @@ form:
   oclock-by: av
   actual-password: Nåværende passord
   new-custom-alias: Ny alias-adresse
-  new-password: Nytt passord
-  new-password_confirmation: Bekreft nytt passord
   change-password: Endre passordet ditt
   delete-account: Slett konto
   delete-password: Passord

@@ -72,8 +72,6 @@ form:
   oclock-by: Uhr von
   actual-password: Aktuelles Passwort
   new-custom-alias: Neue Alias-Adresse
-  new-password: Neues Passwort
-  new-password_confirmation: Neues Passwort bestätigen
   change-password: Passwort ändern
   delete-account: Account löschen
   delete-password: Passwort

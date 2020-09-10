@@ -22,11 +22,11 @@ form:
   actual-password: Momentans Passwort
   title: Regischtriere
   roles: Rouene
-  new-password: Nöis Passwort
   register-header: Account erschteue
   oclock-by: vo
   voucher: Invite Code
-  new-password_confirmation: Nöis Passwort beschtätige
+  plain-password: Nöis Passwort
+  plain-password_confirmation: Nöis Passwort beschtätige
   new-custom-alias: Nöii Alias Adrässe
   recovery-start: Wiederhärschteue
 index:
