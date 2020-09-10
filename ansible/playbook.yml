@@ -32,7 +32,7 @@
         host: localhost
         password: password
         priv: "mail_test.*:ALL"
-    nodejs_version: "8.x"
+    nodejs_version: "10.x"
     php_default_version_debian: 7.3
     php_packages:
       # necessary
