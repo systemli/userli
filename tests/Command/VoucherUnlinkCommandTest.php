@@ -21,7 +21,7 @@ class VoucherUnlinkCommandTest extends TestCase
      */
     private $command;
 
-    public function setUp()
+    public function setUp(): void
     {
         $manager = $this->getManager();
         $handler = $this->getMockBuilder(SuspiciousChildrenHandler::class)

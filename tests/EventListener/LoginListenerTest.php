@@ -29,7 +29,7 @@ class LoginListenerTest extends TestCase
      */
     private $listener;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->manager = $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()

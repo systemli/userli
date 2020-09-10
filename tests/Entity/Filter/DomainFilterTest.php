@@ -29,7 +29,7 @@ class DomainFilterTest extends TestCase
      */
     private $targetEntity;
 
-    public function setUp()
+    public function setUp(): void
     {
         $filterCollection = $this->getMockBuilder(FilterCollection::class)
             ->disableOriginalConstructor()

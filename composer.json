@@ -28,7 +28,7 @@
         "symfony/flex": "^1.1",
         "symfony/form": "*",
         "symfony/framework-bundle": "*",
-        "symfony/http-client": "4.3.*",
+        "symfony/http-client": "4.4.*",
         "symfony/monolog-bundle": "^3.1.0",
         "symfony/polyfill-apcu": "^1.0",
         "symfony/security-bundle": "*",
@@ -54,7 +54,7 @@
         "symfony/debug-pack": "^1.0",
         "symfony/phpunit-bridge": "*",
         "symfony/profiler-pack": "^1.0",
-        "symfony/var-dumper": "4.1.*",
+        "symfony/var-dumper": "4.4.*",
         "symfony/web-profiler-bundle": "*"
     },
     "config": {
@@ -105,7 +105,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "4.3.*"
+            "require": "4.4.*"
         },
         "symfony-app-dir": "app",
         "symfony-bin-dir": "bin",

@@ -275,6 +275,9 @@
     "symfony/dotenv": {
         "version": "v4.1.4"
     },
+    "symfony/error-handler": {
+        "version": "v4.4.13"
+    },
     "symfony/event-dispatcher": {
         "version": "v4.1.4"
     },
@@ -348,13 +351,19 @@
         "version": "v4.1.4"
     },
     "symfony/phpunit-bridge": {
-        "version": "4.1",
+        "version": "4.3",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
-            "version": "4.1",
-            "ref": "b14c7f62fabeedf256d3211b0f704402b5530ba1"
-        }
+            "version": "4.3",
+            "ref": "6d0e35f749d5f4bfe1f011762875275cd3f9874f"
+        },
+        "files": [
+            ".env.test",
+            "bin/phpunit",
+            "phpunit.xml.dist",
+            "tests/bootstrap.php"
+        ]
     },
     "symfony/polyfill-apcu": {
         "version": "v1.9.0"
@@ -377,6 +386,9 @@
     "symfony/polyfill-php73": {
         "version": "v1.11.0"
     },
+    "symfony/polyfill-php80": {
+        "version": "v1.18.1"
+    },
     "symfony/process": {
         "version": "v3.4.15"
     },
@@ -395,9 +407,6 @@
             "ref": "5f514d9d3b8a8aac3d62ae6a86b18b90ed0c7826"
         }
     },
-    "symfony/security": {
-        "version": "v4.1.4"
-    },
     "symfony/security-acl": {
         "version": "v3.0.1"
     },
@@ -409,6 +418,18 @@
             "version": "3.3",
             "ref": "f8a63faa0d9521526499c0a8f403c9964ecb0527"
         }
+    },
+    "symfony/security-core": {
+        "version": "v4.4.13"
+    },
+    "symfony/security-csrf": {
+        "version": "v4.4.13"
+    },
+    "symfony/security-guard": {
+        "version": "v4.4.13"
+    },
+    "symfony/security-http": {
+        "version": "v4.4.13"
     },
     "symfony/service-contracts": {
         "version": "v1.1.8"

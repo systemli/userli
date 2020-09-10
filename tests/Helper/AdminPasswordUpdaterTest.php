@@ -20,7 +20,7 @@ class AdminPasswordUpdaterTest extends TestCase
      */
     private $defaultDomain;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->defaultDomain = 'example.org';
     }

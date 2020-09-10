@@ -17,7 +17,7 @@ class MenuBuilderTest extends TestCase
     private $factory;
     private $menuHelper;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->menu = $this->getMockBuilder(ItemInterface::class)
             ->disableOriginalConstructor()

@@ -15,7 +15,7 @@ class UserAuthenticationHandlerTest extends TestCase
     private $wrong = 'wrong';
     private $user;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->user = new User();
         $this->user->setPassword($this->password);

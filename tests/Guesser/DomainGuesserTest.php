@@ -21,7 +21,7 @@ class DomainGuesserTest extends TestCase
         $this->assertNotNull($this->guesser->guess('user@example.org'));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->guesser = new DomainGuesser($this->getManager());
     }

@@ -21,7 +21,7 @@ class CheckPasswordCommandTest extends TestCase
     protected $mailCryptUser;
     protected $spamUser;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->plainUser = new User();
         $this->quotaUser = new User();

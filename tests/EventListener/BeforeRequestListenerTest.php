@@ -33,7 +33,7 @@ class BeforeRequestListenerTest extends TestCase
      */
     private $listener;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->repo = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()
