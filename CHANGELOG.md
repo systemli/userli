@@ -1,6 +1,8 @@
-# 2.6.1 (UNRELEASED)
+# 2.6.1 (2020.09.10)
 
 * Allow mails to be delivered to suspected spammers (Fixes: #212)
+* Update to symfony 4.4
+* Update translations
 
 # 2.6.0 (2020.05.12)
 
