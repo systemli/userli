@@ -8,9 +8,6 @@ php:
   - '7.3'
   - '7.4snapshot'
 
-node_js:
-  - 10
-
 env:
   global:
     - DATABASE_DRIVER=pdo_mysql
@@ -55,6 +52,7 @@ before_install:
       sudo apt-get -qq update;
       sudo apt-get install -y libsodium-dev;
     fi
+  - nvm install 10
 
 install:
   - if [ $(phpenv version-name) != "7.3" ]; then pecl install libsodium; fi
