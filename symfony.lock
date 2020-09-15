@@ -299,8 +299,11 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "1.0",
-            "ref": "e921bdbfe20cdefa3b82f379d1cd36df1bc8d115"
-        }
+            "ref": "c0eeb50665f0f77226616b6038a9b06c03752d8e"
+        },
+        "files": [
+            ".env"
+        ]
     },
     "symfony/form": {
         "version": "v4.1.4"
