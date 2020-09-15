@@ -70,7 +70,7 @@ matrix:
       if: branch = master
       env:
         - DATABASE_DRIVER=pdo_mysql
-        - DATABASE_URL=mysql://mail_test:password@127.0.0.1:3306/mail_test
+        - DATABASE_URL=mysql://mail_test:password@127.0.0.1:3306/mail_test?charset=UTF8
 
     - script: make integration
       name: Integration with PostgreSQL
