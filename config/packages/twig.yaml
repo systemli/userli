@@ -2,6 +2,7 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    exception_controller: null
     globals:
         app_name:     "%env(APP_NAME)%"
         app_url:      "%env(APP_URL)%"
