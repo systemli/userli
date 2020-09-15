@@ -481,8 +481,13 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "2.5",
-            "ref": "3db029c03e452b4a23f7fc45cec7c922c2247eb8"
-        }
+            "ref": "ae4d22af30bbd484506bc1817c5a3ef72c855b93"
+        },
+        "files": [
+            "config/packages/dev/swiftmailer.yaml",
+            "config/packages/swiftmailer.yaml",
+            "config/packages/test/swiftmailer.yaml"
+        ]
     },
     "symfony/templating": {
         "version": "v4.1.4"
