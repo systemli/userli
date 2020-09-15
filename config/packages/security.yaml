@@ -1,4 +1,5 @@
 security:
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         user:
             id: App\Security\UserProvider
@@ -93,12 +94,11 @@ security:
 
     firewalls:
         dev:
-            pattern: ^/(_(profiler|error|wdt)|css|images|js)/
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
-        default:
-            pattern:   ^/
-            anonymous: ~
+        main:
+            anonymous: lazy
+            provider: user
             form_login:
                 csrf_token_generator: security.csrf.token_manager
                 require_previous_session: false
@@ -106,16 +106,26 @@ security:
                 success_handler: App\Handler\LogoutSuccessHandler
                 invalidate_session: false
 
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
     access_control:
-      - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: "^/[a-z]{2}/init", roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: "^/[a-z]{2}/login", roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: "^/[a-z]{2}/recovery", roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: "^/[a-z]{2}/register", roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: "^/[a-z]{2}/$", roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/admin, roles: ROLE_DOMAIN_ADMIN }
-      - { path: "^/[a-z]{2}/voucher", roles: ROLE_USER, allow_if: "!has_role('ROLE_SUSPICIOUS')"}
-      - { path: "^/[a-z]{2}/alias", roles: ROLE_USER, allow_if: "!has_role('ROLE_SPAM')"}
-      - { path: "^/[a-z]{2}/account", roles: ROLE_USER, allow_if: "!has_role('ROLE_SPAM')"}
-      - { path: ^/, roles: ROLE_USER }
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: "^/[a-z]{2}/init", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: "^/[a-z]{2}/login", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: "^/[a-z]{2}/recovery", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: "^/[a-z]{2}/register", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: "^/[a-z]{2}/$", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, roles: ROLE_DOMAIN_ADMIN }
+        - { path: "^/[a-z]{2}/voucher", roles: ROLE_USER, allow_if: "!has_role('ROLE_SUSPICIOUS')"}
+        - { path: "^/[a-z]{2}/alias", roles: ROLE_USER, allow_if: "!has_role('ROLE_SPAM')"}
+        - { path: "^/[a-z]{2}/account", roles: ROLE_USER, allow_if: "!has_role('ROLE_SPAM')"}
+        - { path: ^/, roles: ROLE_USER }
