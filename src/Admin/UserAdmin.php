@@ -194,7 +194,7 @@ class UserAdmin extends Admin
     protected function configureBatchActions($actions)
     {
         if ($this->hasRoute('edit') && $this->hasAccess('edit')) {
-            $actions['remove_vouchers'] = [
+            $actions['removeVouchers'] = [
                 'ask_confirmation' => true,
             ];
         }

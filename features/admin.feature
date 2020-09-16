@@ -202,7 +202,7 @@ Feature: Admin
     When I am authenticated as "louis@example.org"
     And I am on "/admin/user/list"
     And I check "all_elements"
-    And I select "remove_vouchers" from "action"
+    And I select "removeVouchers" from "action"
     And I press "OK"
     Then I should be on "/admin/user/batch"
     And I press "Yes, execute"
