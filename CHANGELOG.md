@@ -1,3 +1,9 @@
+# 2.7.0 (UNRELEASED)
+
+* Drop support for PHP 7.1
+* Allow to batch delete users (Fixes: #78)
+* Update dependencies
+
 # 2.6.1 (2020.09.10)
 
 * Allow mails to be delivered to suspected spammers (Fixes: #212)
