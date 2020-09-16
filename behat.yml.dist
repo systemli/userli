@@ -3,11 +3,12 @@ default:
         default:
             contexts:
                 - FeatureContext:
+                    #kernel: '@kernel'
 
     extensions:
         Behat\Symfony2Extension:
             kernel:
-                bootstrap: config/bootstrap.php
+                bootstrap: features/bootstrap/bootstrap.php
                 class: App\Kernel
         Behat\MinkExtension:
             base_url: "http://example.org/"
