@@ -208,3 +208,14 @@ Feature: Admin
     And I press "Yes, execute"
     Then I should be on "/admin/user/list"
     And I should see text matching "Unredeemed invite codes deleted"
+
+  @admin
+  Scenario: Admin can batch delete users
+    When I am authenticated as "louis@example.org"
+    And I am on "/admin/user/list"
+    And I check "all_elements"
+    And I select "delete" from "action"
+    And I press "OK"
+    Then I should be on "/admin/user/batch"
+    And I press "Yes, execute"
+    Then I should be on "/en/login"
