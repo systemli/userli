@@ -17,7 +17,7 @@ class UserCRUDController extends CRUDController
      *
      * @throws \Doctrine\ORM\Query\QueryException
      */
-    public function batchActionRemoveVouchers(ProxyQueryInterface $selectedModelQuery, Request $request = null)
+    public function batchActionRemoveVouchers(ProxyQueryInterface $selectedModelQuery)
     {
         $this->admin->checkAccess('edit');
 
@@ -27,11 +27,47 @@ class UserCRUDController extends CRUDController
 
         $this->addFlash(
             'sonata_flash_success',
-            $this->admin->trans('flash_batch_remove_vouchers_success')
+            $this->trans('flash_batch_remove_vouchers_success')
         );
 
-        return new RedirectResponse(
-            $this->admin->generateUrl('list', ['filter' => $this->admin->getFilterParameters()])
+        return $this->redirectToList();
+    }
+
+    public function deleteAction($id)
+    {
+        $request = $this->getRequest();
+        $id = $request->get($this->admin->getIdParameter());
+        $object = $this->admin->getObject($id);
+
+        if (!$object) {
+            throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
+        }
+
+        $this->admin->delete($object);
+
+        $this->addFlash(
+            'sonata_flash_success',
+            $this->trans('flash_delete_success', [], 'SonataAdminBundle')
         );
+
+        return $this->redirectToList();
+    }
+
+    public function batchActionDelete(ProxyQueryInterface $query)
+    {
+        $this->admin->checkAccess('batchDelete');
+
+        $users = $query->execute();
+
+        foreach ($users as $user) {
+            $this->admin->delete($user);
+        }
+
+        $this->addFlash(
+            'sonata_flash_success',
+            $this->trans('flash_batch_delete_success', [], 'SonataAdminBundle')
+        );
+
+        return $this->redirectToList();
     }
 }
