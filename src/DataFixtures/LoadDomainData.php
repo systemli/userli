@@ -10,8 +10,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 class LoadDomainData extends Fixture implements OrderedFixtureInterface
 {
     private $domains = [
-        'example.com',
         'example.org',
+        'example.com',
     ];
 
     /**
