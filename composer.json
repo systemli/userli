@@ -17,7 +17,7 @@
         "knplabs/knp-menu-bundle": "~2.0",
         "mopa/bootstrap-bundle": "~3.0",
         "nelmio/security-bundle": "^2.5",
-        "ramsey/uuid": "^3.8",
+        "ramsey/uuid": "^4.1",
         "robloach/component-installer": "*",
         "sensio/framework-extra-bundle": "^5.0.0",
         "sonata-project/admin-bundle": "3.73",
