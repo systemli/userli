@@ -14,7 +14,7 @@ registration:
   voucher-already-redeemed: O código de convite já foi usado.
   email-domain-invalid: O e-mail é inválido.
   email-already-taken: Este endereço de e-mail já foi usado.
-  email-too-short: O nome de usuário deve conter pelo menos %min% caracteres.
-  email-too-long: O nome de usuário deve conter no máximo %max% caracteres.
-  email-unexpected-characters: 'O nome de usuário contém caracteres não permitidos.
-    Válido apenas: Letras e números, assim como -, _ e .'
+  email-too-short: O nome de utilizador deve conter pelo menos %min% caracteres.
+  email-too-long: O nome de utilizador deve conter no máximo %max% caracteres.
+  email-unexpected-characters: 'O nome de utilizador contém caracteres não permitidos.
+    Válido apenas: letras e números, assim como -, _ e .'
