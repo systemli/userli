@@ -1,7 +1,7 @@
 start:
-  title: Te damos as boas-vindas a %domain%
+  title: Boas-vindas a %domain%
   intro: Aqui você pode criar e configurar a sua conta de e-mail.
-  registration-header: Registro
+  registration-header: Registo
   registration-text: >
     Ainda não tem uma conta em %domain%? Sem problemas!
     Se você conhece alguém que já possua uma conta você pode
@@ -9,9 +9,9 @@ start:
   registration-button: Criar conta
   account-settings: Configurar conta
   account-settings-desc: Senhas e mais
-  account-delete: Excluir conta
+  account-delete: Apagar conta
   aliases: Endereços alias
-  aliases-delete: Excluir endereço alias
+  aliases-delete: apagar endereço alias
   aliases-desc: Oculte sua identidade
   vouchers: Convites
   vouchers-desc: Convide seus contatos
@@ -34,17 +34,16 @@ index:
   alias-limit: Você atingiu o limite de %alias_limit% endereços alias %alias_type%
     permitidos.
   alias-deletion-custom: Entre em contato conosco para excluir endereços.
-  alias-deletion-random: Assim que excluir endereços antigos, você poderá criar novos
-    endereços.
+  alias-deletion-random: Assim que apagar endereços antigos, poderá criar endereços.
   alias-empty: Você não tem nenhum endereço alias %alias_type% definido.
-  delete-headline: Excluir conta
+  delete-headline: Apagar conta
   delete-description: >
     Você pode excluir sua conta %project_name%.
     Isso irá deletar todos os seus e-mails.
     <strong>Eles não poderão ser recuperados no futuro.</strong>
     <br /><br />
     Para excluir sua conta você deve inserir sua senha atual.
-  delete-button: Excluir conta
+  delete-button: Apagar conta
   recovery-token-button: Configurar token de recuperação
   logged_in_as: Você entrou como %user%.
   alias-explanation: "<p>\n  Use endereços alias para esconder o seu endereço original\
@@ -66,7 +65,7 @@ form:
   password_confirmation: Confirme sua senha
   remember-me: Lembrar meu login
   signin: Login
-  recovery-link: Esqueceu sua senha?
+  recovery-link: Esqueceu a sua palavra-passe?
   roles: Roles
   submit: Enviar
   voucher: Código de convite
@@ -77,7 +76,7 @@ form:
   plain-password: Nova senha
   plain-password_confirmation: Confime sua nova senha
   change-password: Mudar sua senha
-  delete-account: Excluir conta
+  delete-account: Apagar conta
   delete-password: Senha
   create-voucher: Criar código de convite
   create-custom-alias: Adicionar
@@ -90,7 +89,7 @@ form:
   registration-recovery-token-next-button: Continuar
 recovery:
   header: Recuperar sua conta
-  lead: Redefina sua senha usando seu token de recuperação
+  lead: Redefina a sua palavra-passe usando o seu token de recuperação
   cancel: Cancelar
   started: |
     Quase lá. Esse foi o primeiro passo para redefinir sua senha.
@@ -135,7 +134,7 @@ closed:
   title: Cadastros fechados
   headline: Cadastros fechados
   lead: De acordo com o parágrafo 3 das normas de telecomunicação TKÜV decidimos manter
-    um limite de 10.000 registros. Lamentamos a inconveniência.
+    um limite de 10.000 registos. Lamentamos a inconveniência.
   text: "<p>Devido<a href=\"https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html\"\
     \ target=\"_blank\">ao parágrafo três da \"Verordnung über die technische und\
     \ organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation\"\
@@ -146,15 +145,16 @@ closed:
     \ não são afetadas</strong><</p>\n"
 delete:
   alias:
-    headline: Excluir o endereço alias %alias%
-    lead: Precisamos verificar sua senha para excluir o seu endereço alias.
+    headline: Apagar o endereço alias %alias%
+    lead: Precisamos verificar a sua palavra-passe para apagar o seu endereço alias.
   user:
-    headline: Excluir conta
-    lead: Precisamos verificar sua senha para excluir a sua conta.
+    headline: Apagar a conta
+    lead: Precisamos verificar a sua palavra-passe para apagar a sua conta.
   cancel: Cancelar
 recovery-token:
   headline: Gerenciar token de recuperação
-  lead: O token de recuperação pode ser usado para redefinir a sua senha se você esquecê-la.
+  lead: O token de recuperação pode ser usado para redefinir a sua palavra-passe se
+    esquecê-la.
   set: Você já tem um token configurado.
   set-extra: Se você criar um novo token de recuperação o seu token atual será invalidado.
   unset: Você ainda não tem um token de recuperação configurado. Recomendamos fortemente
@@ -168,7 +168,7 @@ recovery-token:
     Nós não podemos recuperar esse token por você.
 flashes:
   logout-successful: Sua sessão foi encerrada.
-  password-change-successful: Sua nova senha está ativa!
+  password-change-successful: A sua nova palavra-passe está ativa!
   registration-successful: Você se cadastrou com sucesso!
   voucher-creation-successful: Você gerou um novo convite!
   alias-creation-successful: O seu novo endereço alias foi criado!
