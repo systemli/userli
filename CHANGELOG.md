@@ -2,6 +2,7 @@
 
 * Drop support for PHP 7.1
 * Allow to batch delete users (Fixes: #78)
+* Update Portugues translation (Thanks Silvério Santos)
 * Update dependencies
 
 # 2.6.1 (2020.09.10)
