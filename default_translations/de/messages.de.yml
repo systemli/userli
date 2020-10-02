@@ -1,13 +1,11 @@
 start:
   title: Willkommen bei %domain%
-  intro: Wir bieten dir hier die Möglichkeit, einen E-Mail Account zu erstellen bzw.
-    zu verwalten.
+  intro: Hier kannst du deinen E-Mail Account erstellen und verwalten.
   registration-header: Registrierung
   registration-text: >
-    Du hast noch keinen E-Mail Account bei %domain%? Kein Problem!
-    Wenn eine Freund*in einen Account besitzt, kann diese dir einen Einladungscode
-    zukommen lassen.
-    Mit diesem kannst du dir sofort einen Account registrieren.
+    Du hast noch keinen E-Mail Account bei %domain%? Kein Problem! Lass dir von einer
+    Freund*in einen Einladungscode schicken. Damit kannst du sofort einen Account
+    erstellen.
   registration-button: Account anlegen
   account-settings: Account verwalten
   account-settings-desc: Passwörter und mehr
@@ -18,7 +16,7 @@ start:
   vouchers: Einladungscodes
   vouchers-desc: Lade Freund*innen ein
   webmail: Webmail
-  webmail-desc: Lies und schreibe E-Mails
+  webmail-desc: Lies und schreib E-Mails
 index:
   title: Verwalte deinen E-Mail Account
   voucher-headline: Deine Einladungscodes
@@ -122,7 +120,7 @@ registration:
     Du benötigst ein Passwort, das aus mindestens 12 Zeichen besteht.
     Passwörter werden gegen eine <a href="https://haveibeenpwned.com/Passwords">Datenbank
     bekannter schlechter Passwörter</a> getestet.
-  label-email: Deine Wunsch E-Mail Adresse
+  label-email: Deine gewünschte E-Mail Adresse
   recovery-token-headline: Wiederherstellungscode
 welcome:
   headline: Willkommen bei %project_name%!
@@ -220,7 +218,7 @@ mail:
 
     Viel Spaß mit deinem Mailaccount, wünscht dir
     dein %project_name% Admin Team.
-  recovery-subject: Das Passwort zu deinem E-Mail-Account %email% wird zurückgesetzt
+  recovery-subject: Das Passwort zu deinem E-Mail Account %email% wird zurückgesetzt
   recovery-body: |
     Hallo %email%,
 
