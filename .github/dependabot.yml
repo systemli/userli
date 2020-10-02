@@ -21,6 +21,10 @@ updates:
         versions:
           - "4.5.*"
           - "5.*"
+      - dependency-name: "symfony/dotenv"
+        versions:
+          - "4.5.*"
+          - "5.*"
       - dependency-name: "symfony/var-dumper"
         versions:
           - "4.5.*"
