@@ -12,6 +12,19 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "symfony/http-client"
+        versions:
+          - "4.5.*"
+          - "5.*"
+      - dependency-name: "symfony/debug-bundle"
+        versions:
+          - "4.5.*"
+          - "5.*"
+      - dependency-name: "symfony/var-dumper"
+        versions:
+          - "4.5.*"
+          - "5.*"
 
   - package-ecosystem: "github-actions"
     # Workflow files stored in the
