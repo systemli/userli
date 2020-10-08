@@ -2,6 +2,8 @@
 
 namespace App\Handler;
 
+use App\Exception\MultipleGpgKeysForUserException;
+use App\Exception\NoGpgKeyForUserException;
 use Crypt_GPG;
 use Crypt_GPG_Exception;
 use Crypt_GPG_FileException;
@@ -9,9 +11,9 @@ use Crypt_GPG_NoDataException;
 use RuntimeException;
 
 /**
- * Class GPGKeyHandler
+ * Class GpgKeyHandler
  */
-class GPGKeyHandler
+class GpgKeyHandler
 {
     /** @var Crypt_GPG */
     private $gpg;
@@ -99,12 +101,12 @@ class GPGKeyHandler
 
         if (count($keys) < 1) {
             $this->tearDownGPGHome();
-            throw new RuntimeException(sprintf('No key found for %s', $this->email));
+            throw new NoGpgKeyForUserException(sprintf('No key found for %s', $this->email));
         }
 
         if (count($keys) > 1) {
             $this->tearDownGPGHome();
-            throw new RuntimeException(sprintf('More than one keys found for %s', $this->email));
+            throw new MultipleGpgKeysForUserException(sprintf('More than one keys found for %s', $this->email));
         }
 
         try {

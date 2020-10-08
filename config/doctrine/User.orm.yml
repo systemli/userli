@@ -51,6 +51,9 @@ App\Entity\User:
     mailCryptPublicKey:
       type: text
       nullable: true
+    wkdKey:
+      type: text
+      nullable: true
 
   manyToOne:
     domain:

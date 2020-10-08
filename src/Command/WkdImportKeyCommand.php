@@ -2,18 +2,21 @@
 
 namespace App\Command;
 
-use App\Handler\OpenPGPWKDHandler;
+use App\Exception\MultipleGpgKeysForUserException;
+use App\Exception\NoGpgKeyForUserException;
+use App\Handler\OpenPGPWkdHandler;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class WKDImportKeyCommand extends Command
+class WkdImportKeyCommand extends Command
 {
     /**
-     * @var OpenPGPWKDHandler
+     * @var OpenPGPWkdHandler
      */
     private $handler;
 
@@ -22,7 +25,7 @@ class WKDImportKeyCommand extends Command
      */
     private $repository;
 
-    public function __construct(ObjectManager $manager, OpenPGPWKDHandler $handler)
+    public function __construct(ObjectManager $manager, OpenPGPWkdHandler $handler)
     {
         $this->handler = $handler;
         $this->repository = $manager->getRepository('App:User');
@@ -69,7 +72,12 @@ class WKDImportKeyCommand extends Command
         $content = file_get_contents($file);
 
         // Import the key
-        $fingerprint = $this->handler->importKey($user, $content);
+        try {
+            $fingerprint = $this->handler->importKey($user, $content);
+        } catch (NoGpgKeyForUserException | MultipleGpgKeysForUserException $e) {
+            $output->writeln(sprintf('Error: %s in %s', $e->getMessage(), $file));
+            return;
+        }
 
         $output->writeln(sprintf('Imported key for user %s: %s', $user->getEmail(), $fingerprint));
     }

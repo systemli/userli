@@ -1,5 +1,12 @@
 # Upgrade documentation
 
+## Upgrade from 2.6.1 or lower
+
+Database schema changed and needs to be updated:
+
+    ALTER TABLE virtual_users
+    ADD wkd_key LONGTEXT DEFAULT NULL;
+
 ## Upgrade from 2.4.0 or lower
 
 The `MAIL_CRYPT_*` Dotenv variables were merged into one variable:
