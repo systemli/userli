@@ -39,6 +39,7 @@
         "symfony/translation": "*",
         "symfony/validator": "*",
         "symfony/yaml": "*",
+        "tuupola/base32": "^1.0",
         "twbs/bootstrap": "~3.3.0",
         "twig/extensions": "^1.5",
         "twig/twig": "^1.0||^2.0"

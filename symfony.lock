@@ -598,6 +598,9 @@
     "symfony/yaml": {
         "version": "v4.1.4"
     },
+    "tuupola/base32": {
+        "version": "1.0.0"
+    },
     "twbs/bootstrap": {
         "version": "v3.3.7"
     },

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1efd8dda72dce7ded9c7898444a4f031",
+    "content-hash": "d9d6cfd1e6364207ac39f5af8a253a9c",
     "packages": [
         {
             "name": "brick/math",
@@ -7425,6 +7425,58 @@
             "time": "2020-09-27T03:36:23+00:00"
         },
         {
+            "name": "tuupola/base32",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tuupola/base32.git",
+                "reference": "69f40afaf547985e2c65b533d568dae944ec1c85"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tuupola/base32/zipball/69f40afaf547985e2c65b533d568dae944ec1c85",
+                "reference": "69f40afaf547985e2c65b533d568dae944ec1c85",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.6 || ^7.0"
+            },
+            "require-dev": {
+                "overtrue/phplint": "^0.2.1",
+                "paragonie/random_compat": "^2.0",
+                "phpbench/phpbench": "^0.13.0",
+                "phpunit/phpunit": "^4.8 || ^5.5 || ^6.5",
+                "squizlabs/php_codesniffer": "^2.5"
+            },
+            "suggest": {
+                "ext-gmp": "GMP extension provides the fastest encoding and decoding."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tuupola\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mika Tuupola",
+                    "email": "tuupola@appelsiini.net",
+                    "homepage": "https://appelsiini.net/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Base32 encoder and decoder for arbitrary data",
+            "homepage": "https://github.com/tuupola/base32",
+            "keywords": [
+                "base32"
+            ],
+            "time": "2020-02-05T05:41:21+00:00"
+        },
+        {
             "name": "twbs/bootstrap",
             "version": "v3.3.7",
             "source": {
@@ -8728,5 +8780,6 @@
     "platform-dev": [],
     "platform-overrides": {
         "php": "7.2.5"
-    }
+    },
+    "plugin-api-version": "1.1.0"
 }
