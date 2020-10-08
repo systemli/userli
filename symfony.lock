@@ -164,6 +164,15 @@
     "ocramius/package-versions": {
         "version": "1.4.2"
     },
+    "pear/console_commandline": {
+        "version": "v1.2.3"
+    },
+    "pear/crypt_gpg": {
+        "version": "v1.6.4"
+    },
+    "pear/pear_exception": {
+        "version": "v1.0.1"
+    },
     "php": {
         "version": "7.2.5"
     },
