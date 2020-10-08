@@ -56,6 +56,10 @@ class OpenPGPWkdHandler
     public function getKeyFingerprint(User $user): ?string {
         $key = $user->getWkdKey();
 
+        if (null === $key) {
+            return null;
+        }
+
         $this->keyHandler->import($user->getEmail(), $key);
         $fingerprint = $this->keyHandler->getFingerprint();
         $this->keyHandler->tearDownGPGHome();

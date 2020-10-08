@@ -2,18 +2,15 @@
 
 namespace App\Command;
 
-use App\Exception\MultipleGpgKeysForUserException;
-use App\Exception\NoGpgKeyForUserException;
 use App\Handler\OpenPGPWkdHandler;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class WkdImportKeyCommand extends Command
+class WkdShowKeyCommand extends Command
 {
     /**
      * @var OpenPGPWkdHandler
@@ -38,16 +35,12 @@ class WkdImportKeyCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('app:users:wkd:import-key')
-            ->setDescription('Import OpenPGP key for user')
+            ->setName('app:users:wkd:show-key')
+            ->setDescription('Show OpenPGP key of user')
             ->addArgument(
                 'email',
                 InputOption::VALUE_REQUIRED,
-                'email address of the user')
-            ->addArgument(
-                'file',
-                InputOption::VALUE_REQUIRED,
-                'file to read the key from');
+                'email address of the user');
     }
 
     /**
@@ -57,7 +50,6 @@ class WkdImportKeyCommand extends Command
     {
         // parse arguments
         $email = $input->getArgument('email');
-        $file = $input->getArgument('file');
 
         // Check if user exists
         $user = $this->repository->findByEmail($email);
@@ -65,20 +57,9 @@ class WkdImportKeyCommand extends Command
             throw new \RuntimeException('User not found: ' . $email);
         }
 
-        // Read contents from file
-        if (!is_file($file)) {
-            throw new \RuntimeException('File not found: ' . $file);
-        }
-        $content = file_get_contents($file);
+        // Get fingerprint of the key
+        $fingerprint = $this->handler->getKeyFingerprint($user);
 
-        // Import the key
-        try {
-            $fingerprint = $this->handler->importKey($user, $content);
-        } catch (NoGpgKeyForUserException | MultipleGpgKeysForUserException $e) {
-            $output->writeln(sprintf('Error: %s in %s', $e->getMessage(), $file));
-            return;
-        }
-
-        $output->writeln(sprintf('Imported WKD key for user %s: %s', $user->getEmail(), $fingerprint));
+        $output->writeln(sprintf('WKD key for user %s: %s', $user->getEmail(), $fingerprint));
     }
 }
