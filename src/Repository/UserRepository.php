@@ -29,7 +29,7 @@ class UserRepository extends AbstractRepository
     }
 
     /**
-     * @return array|User[]
+     * @return User[]|array
      */
     public function findDeletedUsers()
     {
@@ -43,5 +43,14 @@ class UserRepository extends AbstractRepository
     {
         return $this->matching(Criteria::create()
             ->where(Criteria::expr()->neq('recoverySecretBox', null)))->count();
+    }
+
+    /**
+     * @return User[]|array
+     */
+    public function findUsersWithWkdKey(): array
+    {
+        return $this->matching(Criteria::create()
+            ->where(Criteria::expr()->neq('wkdKey', null)))->getValues();
     }
 }
