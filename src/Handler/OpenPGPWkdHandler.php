@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgKeyForUserException;
 use Doctrine\Common\Persistence\ObjectManager;
+use RuntimeException;
+use Tuupola\Base32;
 
 class OpenPGPWkdHandler
 {
@@ -15,15 +17,28 @@ class OpenPGPWkdHandler
     /** @var GpgKeyHandler */
     private $keyHandler;
 
+    /** @var string */
+    private $wkdDirectory;
+
+    /** @var string */
+    private $wkdFormat;
+
     /**
      * OpenPGPWkdHandler constructor.
      *
      * @param ObjectManager $manager
      * @param GpgKeyHandler $keyHandler
+     * @param string        $wkdDirectory
+     * @param string        $wkdFormat
      */
-    public function __construct(ObjectManager $manager, GpgKeyHandler $keyHandler) {
+    public function __construct(ObjectManager $manager,
+                                GpgKeyHandler $keyHandler,
+                                string $wkdDirectory,
+                                string $wkdFormat) {
         $this->manager = $manager;
         $this->keyHandler = $keyHandler;
+        $this->wkdDirectory = $wkdDirectory;
+        $this->wkdFormat = $wkdFormat;
     }
 
     /**
@@ -43,7 +58,8 @@ class OpenPGPWkdHandler
 
         $user->setWkdKey($sanitizedKey);
         $this->manager->flush();
-        // TODO: really import key into database
+
+        $this->exportKey($user);
 
         return $fingerprint;
     }
@@ -75,6 +91,44 @@ class OpenPGPWkdHandler
         $this->manager->flush();
     }
 
-    public function exportWkdKeys(): void {
+    /**
+     * Encodes the email address local part according to the OpenPGP Web Wey Directory RFC draft.
+     * See https://tools.ietf.org/html/draft-koch-openpgp-webkey-service-10 for further information
+     *
+     * @param string $localPart
+     *
+     * @return string
+     */
+    private function wkdHash(string $localPart): string {
+        $base32Encoder = new Base32(["characters" => Base32::ZBASE32]);
+        return $base32Encoder->encode(sha1(strtolower($localPart)));
+    }
+
+    /**
+     * @param User $user
+     *
+     * @throws RuntimeException
+     */
+    public function exportKey(User $user): void {
+        if (null === $wkdKey = $user->getWkdKey()) {
+            return;
+        }
+
+        if ($this->wkdFormat === 'advanced') {
+            $keyDir = $this->wkdDirectory . DIRECTORY_SEPARATOR . strtolower($user->getDomain()) . DIRECTORY_SEPARATOR . 'hu';
+        } elseif ($this->wkdFormat === 'simple') {
+            $keyDir = $this->wkdDirectory . DIRECTORY_SEPARATOR . 'hu';
+        } else {
+            throw new RuntimeException(sprintf('Error: unsupported WKD format: %s', $this->wkdFormat));
+        }
+
+        if (!is_dir($keyDir) && !mkdir($concurrentDirectory = $keyDir, 0775, True) && !is_dir($concurrentDirectory)) {
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+        }
+
+        $localPart = explode('@', $user->getEmail())[0];
+        $wkdHash = $this->wkdHash($localPart);
+
+        file_put_contents($keyDir . DIRECTORY_SEPARATOR . $wkdHash, $wkdKey);
     }
 }
