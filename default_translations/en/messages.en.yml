@@ -17,6 +17,11 @@ start:
   vouchers-desc: Invite your friends
   webmail: Webmail
   webmail-desc: Read and write e-mails
+  openpgp: OpenPGP key
+  openpgp-delete: delete OpenPGP key
+  openpgp-settings: OpenPGP key
+  openpgp-settings-desc: Publish your mail encryption key
+
 index:
   title: Manage your e-mail account
   voucher-headline: Your invite codes
@@ -87,6 +92,10 @@ form:
   registration-recovery-token-next-button: Continue
   domain: Domain
   add: Add
+  openpgp-key-file: OpenPGP key file
+  openpgp-key-file-submit: Publish OpenPGP key file
+  openpgp-key-text: OpenPGP key in ASCII format
+  openpgp-key-text-submit: Publish OpenPGP key
 recovery:
   header: Recover your account
   lead: Reset the password using your recovery token
@@ -152,6 +161,9 @@ delete:
   user:
     headline: Delete account
     lead: We need to verify your password to delete your account.
+  openpgp:
+    headline: Delete OpenPGP key
+    lead: We need to verify your password to delete your OpenPGP key.
   cancel: Cancel
 recovery-token:
   headline: Manage recovery token
@@ -179,6 +191,12 @@ flashes:
   revocery-reauthenticate: Something went wrong. Please re-authenticate!
   recovery-password-changed: You changed your password.
   recovery-next-login: Go on with the login.
+  openpgp-deletion-successful: Your OpenPGP key was deleted.
+  openpgp-key-upload-successful: Your OpenPGP key got uploaded.
+  openpgp-key-upload-error-no-openpgp: The uploaded file doesn't contain OpenPGP data.
+  openpgp-key-upload-error-no-keys: No keys for your mail address found in uploaded data.
+  openpgp-key-upload-error-multiple-keys: More than one key for your mail address found
+    in uploaded data. Please upload only one key.
 flash_batch_remove_vouchers_success: Unredeemed invite codes deleted.
 error:
   title: Oops, an error occured.
@@ -196,23 +214,23 @@ mail:
   welcome-subject: Welcome to %domain%
   welcome-body: |
     Dear user,
-    
+
     Welcome aboard. You can find guides for setting up your e-mail account
     with several client programs on the internet.
-    
+
     You get a mailbox with a 1 GB quota. If you exceed your limit,
     your e-mail account may not function properly.
-    
+
     In one week you will receive three invite codes, which you can collect
     at %app_url%/voucher. You can pass these on to friends and
     invite them to register with %project_name%.
-    
+
     Sincerly,
     your %project_name% admin team.
   recovery-subject: The password for your e-mail account %email% will be reset
   recovery-body: |
     Hello %email%,
-    
+
     Your account password has been attemptedly reset by authenticating with
     your  e-mail address and corresponding recovery code at
     %app_url%/recovery.
@@ -222,11 +240,11 @@ mail:
     %app_url%/user/recovery_token immediately and create a
     new recovery token. This will invalidate the old recovery token and stop
     the process.
-    
+
     If you did trigger the process yourself, the 48 hour waiting period started
     now. It will end at %time%. Afterwards, you can set a new password at
     %app_url%/recovery.
-    
+
     We hope you continue to enjoy your e-mail account.
     Your %project_name% admin team.
   alias-created-subject: New alias address created
@@ -260,3 +278,11 @@ init_user:
   lead: You have created your primary domain.
   text: "E-mail standards require the account postmaster@%domain% to be present.
     Please pick a password for this first administrator account and log in afterwards."
+openpgp:
+  key-info: Published OpenPGP key
+  delete-button: Delete OpenPGP key
+  information: Information
+  information-details:
+    If you upload your OpenPGP key here, it will be published in our <i><a target="_blank"
+    href="https://gnupg.org/faq/wkd.html">Web Key Directory</a></i>. Mail applications like
+    Thunderbird can automatically retrieve your key from there.

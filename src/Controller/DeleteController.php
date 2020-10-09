@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Form\AliasDeleteType;
 use App\Form\Model\Delete;
+use App\Form\OpenPgpDeleteType;
 use App\Form\UserDeleteType;
 use App\Handler\DeleteHandler;
+use App\Handler\OpenPGPWkdHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -18,13 +20,18 @@ class DeleteController extends AbstractController
      * @var DeleteHandler
      */
     private $deleteHandler;
+    /**
+     * @var OpenPGPWkdHandler
+     */
+    private $wkdHandler;
 
     /**
      * DeleteController constructor.
      */
-    public function __construct(DeleteHandler $deleteHandler)
+    public function __construct(DeleteHandler $deleteHandler, OpenPGPWkdHandler $wkdHandler)
     {
         $this->deleteHandler = $deleteHandler;
+        $this->wkdHandler = $wkdHandler;
     }
 
     /**
@@ -89,6 +96,33 @@ class DeleteController extends AbstractController
 
         return $this->render(
             'User/delete.html.twig',
+            [
+                'form' => $form->createView(),
+                'user' => $user,
+            ]
+        );
+    }
+
+    public function deleteOpenPgpAction(Request $request)
+    {
+        $user = $this->getUser();
+
+        $form = $this->createForm(OpenPgpDeleteType::class, new Delete());
+
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
+
+            if ($form->isValid()) {
+                $this->wkdHandler->deleteKey($user);
+
+                $request->getSession()->getFlashBag()->add('success', 'flashes.openpgp-deletion-successful');
+
+                return $this->redirect($this->generateUrl('openpgp'));
+            }
+        }
+
+        return $this->render(
+            'OpenPGP/delete.html.twig',
             [
                 'form' => $form->createView(),
                 'user' => $user,

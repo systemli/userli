@@ -17,6 +17,11 @@ start:
   vouchers-desc: Lade Freund*innen ein
   webmail: Webmail
   webmail-desc: Lies und schreib E-Mails
+  openpgp: OpenPGP Schlüssel
+  openpgp-delete: OpenPGP Schlüssel löschen
+  openpgp-settings: OpenPGP Schlüssel
+  openpgp-settings-desc: Schlüssel für E-Mail Verschlüsselung veröffentlichen
+
 index:
   title: Verwalte deinen E-Mail Account
   voucher-headline: Deine Einladungscodes
@@ -86,6 +91,10 @@ form:
   domain: Domäne
   plain-password_confirmation: Neues Passwort bestätigen
   plain-password: Neues Passwort
+  openpgp-key-file: OpenPGP Schlüssel-Datei
+  openpgp-key-file-submit: OpenPGP Schlüssel-Datei veröffentlichen
+  openpgp-key-text: OpenPGP Schlüssel im ASCII-Format
+  openpgp-key-text-submit: OpenPGP Schlüssel veröffentlichen
 recovery:
   header: Account wiederherstellen
   lead: Passwort zurücksetzen mit Hilfe des Wiederherstellungscodes
@@ -156,6 +165,10 @@ delete:
     headline: Account löschen
     lead: Mit der Bestätigung deines Passworts kannst du deinen Account unwiderruflich
       löschen.
+  openpgp:
+    headline: OpenPGP Schlüssel löschen
+    lead: Mit der Bestätigung deines Passworts kannst du deinen OpenPGP Schlüssel aus
+      dem Web Key Directory löschen.
   cancel: Abbrechen
 recovery-token:
   headline: Wiederherstellungscode verwalten
@@ -186,6 +199,12 @@ flashes:
   recovery-password-changed: Dein Passwort wurde geändert.
   recovery-next-login: Du kannst dich nun einloggen.
   revocery-reauthenticate: Etwas ist schief gelaufen. Bitte erneut authentifizieren!
+  openpgp-deletion-successful: Dein OpenPGP Schlüssel wurde gelöscht.
+  openpgp-key-upload-successful: Dein OpenPGP Schlüssel wurde hochgeladen.
+  openpgp-key-upload-error-no-openpgp: Die hochgadene Datei enthält keine OpenPGP Schlüssel.
+  openpgp-key-upload-error-no-keys: Die hochgeladene Datei enthält keine Schlüssel für deine E-Mail-Adresse.
+  openpgp-key-upload-error-multiple-keys: Die hochgeladene Datei enhält mehr als einen Schlüssel für deine
+    E-Mail-Adresse. Bitte lade nur einen Schlüssel hoch.
 flash_batch_remove_vouchers_success: Nicht eingelöste Einladungscodes gelöscht.
 error:
   title: Oops, es ist ein Fehler passiert.
@@ -272,3 +291,12 @@ init_domain:
   lead: Vielen Dank fürs installieren von Userli. Derzeit sind keine Domänen oder
     Konten vorhanden.
 init.title: Erstellen der Erstkonfiguration
+openpgp:
+  key-info: Veröffentlichter OpenPGP Schlüssel
+  delete-button: OpenPGP Schlüssel löschen
+  information: Information
+  information-details:
+    Hier kannst du deinen OpenPGP Schlüssel hochladen, damit er in unserem <i><a
+    target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key Directory</a></i>
+    veröffentlicht wird. Von dort können E-Mail-Programme wie Thunderbird in automatisch
+    herunterladen.

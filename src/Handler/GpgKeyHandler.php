@@ -3,6 +3,7 @@
 namespace App\Handler;
 
 use App\Exception\MultipleGpgKeysForUserException;
+use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
 use Crypt_GPG;
 use Crypt_GPG_Exception;
@@ -80,6 +81,11 @@ class GpgKeyHandler
     /**
      * @param string $email
      * @param string $data
+     *
+     * @throws NoGpgDataException
+     * @throws NoGpgKeyForUserException
+     * @throws MultipleGpgKeysForUserException
+     * @throws RuntimeException
      */
     public function import(string $email, string $data): void {
         $this->email = $email;
@@ -89,7 +95,7 @@ class GpgKeyHandler
             $this->gpg->importKey($data);
         } catch (\Crypt_GPG_BadPassphraseException | Crypt_GPG_NoDataException | Crypt_GPG_Exception $e) {
             $this->tearDownGPGHome();
-            throw new RuntimeException('Failed to import OpenPGP key: ' . $e);
+            throw new NoGpgDataException('Failed to import OpenPGP key: ' . $e);
         }
 
         try {

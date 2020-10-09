@@ -6,16 +6,24 @@ use App\Creator\VoucherCreator;
 use App\Entity\Alias;
 use App\Entity\User;
 use App\Enum\Roles;
+use App\Exception\MultipleGpgKeysForUserException;
+use App\Exception\NoGpgDataException;
+use App\Exception\NoGpgKeyForUserException;
 use App\Exception\ValidationException;
 use App\Form\CustomAliasCreateType;
 use App\Form\Model\AliasCreate;
+use App\Form\Model\OpenPgpKeyFile;
+use App\Form\Model\OpenPgpKeyText;
 use App\Form\Model\PasswordChange;
 use App\Form\Model\VoucherCreate;
+use App\Form\OpenPgpKeyFileType;
+use App\Form\OpenPgpKeyTextType;
 use App\Form\PasswordChangeType;
 use App\Form\RandomAliasCreateType;
 use App\Form\VoucherCreateType;
 use App\Handler\AliasHandler;
 use App\Handler\MailCryptKeyHandler;
+use App\Handler\OpenPGPWkdHandler;
 use App\Handler\VoucherHandler;
 use App\Helper\PasswordUpdater;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -52,11 +60,29 @@ class StartController extends AbstractController
      * @var ObjectManager
      */
     private $manager;
+    /**
+     * @var OpenPGPWkdHandler
+     */
+    private $wkdHandler;
 
     /**
      * StartController constructor.
+     *
+     * @param AliasHandler        $aliasHandler
+     * @param PasswordUpdater     $passwordUpdater
+     * @param VoucherHandler      $voucherHandler
+     * @param VoucherCreator      $voucherCreator
+     * @param MailCryptKeyHandler $mailCryptKeyHandler
+     * @param ObjectManager       $manager
+     * @param OpenPGPWkdHandler   $wkdHandler
      */
-    public function __construct(AliasHandler $aliasHandler, PasswordUpdater $passwordUpdater, VoucherHandler $voucherHandler, VoucherCreator $voucherCreator, MailCryptKeyHandler $mailCryptKeyHandler, ObjectManager $manager)
+    public function __construct(AliasHandler $aliasHandler,
+                                PasswordUpdater $passwordUpdater,
+                                VoucherHandler $voucherHandler,
+                                VoucherCreator $voucherCreator,
+                                MailCryptKeyHandler $mailCryptKeyHandler,
+                                ObjectManager $manager,
+                                OpenPGPWkdHandler $wkdHandler)
     {
         $this->aliasHandler = $aliasHandler;
         $this->passwordUpdater = $passwordUpdater;
@@ -64,6 +90,7 @@ class StartController extends AbstractController
         $this->voucherCreator = $voucherCreator;
         $this->mailCryptKeyHandler = $mailCryptKeyHandler;
         $this->manager = $manager;
+        $this->wkdHandler = $wkdHandler;
     }
 
     /**
@@ -97,6 +124,8 @@ class StartController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     *
      * @return Response
      */
     public function voucherAction(Request $request)
@@ -135,6 +164,8 @@ class StartController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     *
      * @return Response
      */
     public function aliasAction(Request $request)
@@ -192,6 +223,8 @@ class StartController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     *
      * @return Response
      */
     public function accountAction(Request $request)
@@ -224,6 +257,59 @@ class StartController extends AbstractController
                 'user_domain' => $user->getDomain(),
                 'password_form' => $passwordChangeForm->createView(),
                 'recovery_secret_set' => $user->hasRecoverySecretBox(),
+            ]
+        );
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function openPgpAction(Request $request): ?Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $openPgpKeyFile = new OpenPgpKeyFile();
+        $openPgpKeyFileForm = $this->createForm(
+            OpenPgpKeyFileType::class,
+            $openPgpKeyFile,
+            [
+                'action' => $this->generateUrl('openpgp'),
+                'method' => 'post',
+            ]
+        );
+
+        $openPgpKeyText = new OpenPgpKeyText();
+        $openPgpKeyTextForm = $this->createForm(
+            OpenPgpKeyTextType::class,
+            $openPgpKeyText,
+            [
+                'action' => $this->generateUrl('openpgp'),
+                'method' => 'post',
+            ]
+        );
+
+        if ('POST' === $request->getMethod()) {
+            $openPgpKeyFileForm->handleRequest($request);
+            $openPgpKeyTextForm->handleRequest($request);
+
+            if ($openPgpKeyFileForm->isSubmitted() && $openPgpKeyFileForm->isValid()) {
+                $this->importOpenPgpKey($request, $user, $openPgpKeyFile->key);
+            } elseif ($openPgpKeyTextForm->isSubmitted() && $openPgpKeyTextForm->isValid()) {
+                $this->importOpenPgpKey($request, $user, $openPgpKeyText['key']->getData());
+            }
+        }
+
+        return $this->render(
+            'Start/openpgp.html.twig',
+            [
+                'user' => $user,
+                'user_domain' => $user->getDomain(),
+                'openpgp_file_form' => $openPgpKeyFileForm->createView(),
+                'openpgp_text_form' => $openPgpKeyTextForm->createView(),
+                'openpgp_fingerprint' => $this->wkdHandler->getKeyFingerprint($user),
             ]
         );
     }
@@ -279,5 +365,24 @@ class StartController extends AbstractController
         $this->getDoctrine()->getManager()->flush();
 
         $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
+    }
+
+    /**
+     * @param Request $request
+     * @param User    $user
+     * @param string  $key
+     */
+    private function importOpenPgpKey(Request $request, User $user, string $key): void
+    {
+        try {
+            $this->wkdHandler->importKey($user, $key);
+            $request->getSession()->getFlashBag()->add('success', 'flashes.openpgp-key-upload-successful');
+        } catch (NoGpgDataException $e) {
+            $request->getSession()->getFlashBag()->add('error', 'flashes.openpgp-key-upload-error-no-openpgp');
+        } catch (NoGpgKeyForUserException $e) {
+            $request->getSession()->getFlashBag()->add('error', 'flashes.openpgp-key-upload-error-no-keys');
+        } catch (MultipleGpgKeysForUserException $e) {
+            $request->getSession()->getFlashBag()->add('error', 'flashes.openpgp-key-upload-error-multiple-keys');
+        }
     }
 }

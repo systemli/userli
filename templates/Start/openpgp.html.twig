@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}{{ "start.openpgp-settings"|trans }}{% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('index') }}">Start</a></li>
+        <li class="active">{{ "start.openpgp-settings"|trans }}</li>
+    </ol>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <h3>{{ "start.openpgp-settings"|trans }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            {% include 'Start/openpgp_form.html.twig' %}
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="alert alert-info">
+                <p class="lead">{{ "openpgp.information"|trans }}</p>
+                <p>{{ "openpgp.information-details"|trans|raw }}</p>
+            </div>
+        </div>
+
+        {% if openpgp_fingerprint %}
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <h3>{{ "openpgp.key-info"|trans }}</h3>
+                <p class="alert alert-info">
+                    {{ openpgp_fingerprint }}
+                </p>
+                <p><a class="btn btn-danger btn-primary" href="{{ url('openpgp_delete') }}">{{ "openpgp.delete-button"|trans }}</a></p>
+            </div>
+        {% endif %}
+    </div>
+{%  endblock %}

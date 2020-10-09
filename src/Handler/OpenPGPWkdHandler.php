@@ -4,6 +4,7 @@ namespace App\Handler;
 
 use App\Entity\User;
 use App\Exception\MultipleGpgKeysForUserException;
+use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
 use Doctrine\Common\Persistence\ObjectManager;
 use RuntimeException;
@@ -47,6 +48,7 @@ class OpenPGPWkdHandler
      *
      * @return string|null
      *
+     * @throws NoGpgDataException
      * @throws NoGpgKeyForUserException
      * @throws MultipleGpgKeysForUserException
      */
@@ -89,6 +91,8 @@ class OpenPGPWkdHandler
     public function deleteKey(User $user): void {
         $user->setWkdKey(null);
         $this->manager->flush();
+
+        // TODO: Delete key from WKD directory!
     }
 
     /**
