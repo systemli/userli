@@ -25,6 +25,9 @@ class OpenPGPWkdHandler
     /** @var string */
     private $wkdFormat;
 
+    /** @var string */
+    private $wkdPath;
+
     /**
      * OpenPGPWkdHandler constructor.
      */
@@ -37,6 +40,22 @@ class OpenPGPWkdHandler
         $this->keyHandler = $keyHandler;
         $this->wkdDirectory = $wkdDirectory;
         $this->wkdFormat = $wkdFormat;
+    }
+
+    private function getWkdPath(string $domain): string {
+        if ('advanced' === $this->wkdFormat) {
+            $this->wkdPath = $this->wkdDirectory.DIRECTORY_SEPARATOR.strtolower($domain).DIRECTORY_SEPARATOR.'hu';
+        } elseif ('simple' === $this->wkdFormat) {
+            $this->wkdPath = $this->wkdDirectory.DIRECTORY_SEPARATOR.'hu';
+        } else {
+            throw new RuntimeException(sprintf('Error: unsupported WKD format: %s', $this->wkdFormat));
+        }
+
+        if (!is_dir($this->wkdPath) && !mkdir($concurrentDirectory = $this->wkdPath, 0775, true) && !is_dir($concurrentDirectory)) {
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+        }
+
+        return $this->wkdPath;
     }
 
     /**
@@ -58,12 +77,12 @@ class OpenPGPWkdHandler
         return $key;
     }
 
-    public function getKey(User $user): ?OpenPGPKey
+    public function getKey(User $user): OpenPGPKey
     {
         $key = $user->getWkdKey();
 
         if (null === $key) {
-            return null;
+            return new OpenPGPKey();
         }
 
         $this->keyHandler->import($user->getEmail(), $key);
@@ -75,10 +94,21 @@ class OpenPGPWkdHandler
 
     public function deleteKey(User $user): void
     {
+        if (null === $user->getWkdKey()) {
+            return;
+        }
+
+        $wkdPath = $this->getWkdPath($user->getDomain());
+        $localPart = explode('@', $user->getEmail())[0];
+        $wkdHash = $this->wkdHash($localPart);
+        $wkdKeyPath = $wkdPath.DIRECTORY_SEPARATOR.$wkdHash;
+
+        if (!unlink($wkdKeyPath)) {
+            throw new RuntimeException(sprintf('Failed to remove key from WKD directory path %s', $wkdKeyPath));
+        }
+
         $user->setWkdKey(null);
         $this->manager->flush();
-
-        // TODO: Delete key from WKD directory!!!!
     }
 
     /**
@@ -101,21 +131,11 @@ class OpenPGPWkdHandler
             return;
         }
 
-        if ('advanced' === $this->wkdFormat) {
-            $keyDir = $this->wkdDirectory.DIRECTORY_SEPARATOR.strtolower($user->getDomain()).DIRECTORY_SEPARATOR.'hu';
-        } elseif ('simple' === $this->wkdFormat) {
-            $keyDir = $this->wkdDirectory.DIRECTORY_SEPARATOR.'hu';
-        } else {
-            throw new RuntimeException(sprintf('Error: unsupported WKD format: %s', $this->wkdFormat));
-        }
-
-        if (!is_dir($keyDir) && !mkdir($concurrentDirectory = $keyDir, 0775, true) && !is_dir($concurrentDirectory)) {
-            throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
-        }
-
+        $wkdPath = $this->getWkdPath($user->getDomain());
         $localPart = explode('@', $user->getEmail())[0];
         $wkdHash = $this->wkdHash($localPart);
+        $wkdKeyPath = $wkdPath.DIRECTORY_SEPARATOR.$wkdHash;
 
-        file_put_contents($keyDir.DIRECTORY_SEPARATOR.$wkdHash, $wkdKey);
+        file_put_contents($wkdKeyPath, $wkdKey);
     }
 }
