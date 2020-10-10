@@ -38,7 +38,7 @@ class WkdImportKeyCommand extends Command
     {
         $this
             ->setName('app:users:wkd:import-key')
-            ->setDescription('Import OpenPGP key for user')
+            ->setDescription('Import WKD key for user')
             ->addArgument(
                 'email',
                 InputOption::VALUE_REQUIRED,

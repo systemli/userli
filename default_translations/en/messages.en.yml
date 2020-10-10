@@ -17,11 +17,11 @@ start:
   vouchers-desc: Invite your friends
   webmail: Webmail
   webmail-desc: Read and write e-mails
-  openpgp: OpenPGP key
-  openpgp-delete: delete OpenPGP key
-  openpgp-settings: OpenPGP key
-  openpgp-settings-desc: Publish your mail encryption key
-  openpgp-settings-title: Publish your OpenPGP key in the Web Key Directory
+  wkd: OpenPGP key
+  wkd-delete: delete OpenPGP key
+  wkd-settings: OpenPGP key
+  wkd-settings-desc: Publish your mail encryption key
+  wkd-settings-title: Publish your OpenPGP key in the Web Key Directory
 
 index:
   title: Manage your e-mail account
@@ -93,13 +93,13 @@ form:
   registration-recovery-token-next-button: Continue
   domain: Domain
   add: Add
-  openpgp-key-file: Upload your key file:
-  openpgp-key-file-mimetype: The uploaded file doesn't contain OpenPGP data.
-  openpgp-key-upload-or: or
-  openpgp-key-text: Paste your key as text:
-  openpgp-key-text-placeholder: OpenPGP key in ASCII format
-  openpgp-key-select-one: Please upload key either as file or as ASCII text.
-  openpgp-key-submit: Publish OpenPGP key
+  wkd-key-file: Upload your key file:
+  wkd-key-file-mimetype: The uploaded file doesn't contain OpenPGP data.
+  wkd-key-upload-or: or
+  wkd-key-text: Paste your key as text:
+  wkd-key-text-placeholder: OpenPGP key in ASCII format
+  wkd-key-select-one: Please upload key either as file or as ASCII text.
+  wkd-key-submit: Publish OpenPGP key
 recovery:
   header: Recover your account
   lead: Reset the password using your recovery token
@@ -165,7 +165,7 @@ delete:
   user:
     headline: Delete account
     lead: We need to verify your password to delete your account.
-  openpgp:
+  wkd:
     headline: Delete OpenPGP key
     lead: We need to verify your password to delete your OpenPGP key.
   cancel: Cancel
@@ -195,11 +195,11 @@ flashes:
   revocery-reauthenticate: Something went wrong. Please re-authenticate!
   recovery-password-changed: You changed your password.
   recovery-next-login: Go on with the login.
-  openpgp-deletion-successful: Your OpenPGP key was deleted.
-  openpgp-key-upload-successful: Your OpenPGP key got uploaded.
-  openpgp-key-upload-error-no-openpgp: The uploaded file doesn't contain OpenPGP data.
-  openpgp-key-upload-error-no-keys: No keys for your mail address found in uploaded data.
-  openpgp-key-upload-error-multiple-keys: More than one key for your mail address found
+  wkd-deletion-successful: Your OpenPGP key was deleted.
+  wkd-key-upload-successful: Your OpenPGP key got uploaded.
+  wkd-key-upload-error-no-openpgp: The uploaded file doesn't contain OpenPGP data.
+  wkd-key-upload-error-no-keys: No keys for your mail address found in uploaded data.
+  wkd-key-upload-error-multiple-keys: More than one key for your mail address found
     in uploaded data. Please upload only one key.
 flash_batch_remove_vouchers_success: Unredeemed invite codes deleted.
 error:
@@ -282,7 +282,7 @@ init_user:
   lead: You have created your primary domain.
   text: "E-mail standards require the account postmaster@%domain% to be present.
     Please pick a password for this first administrator account and log in afterwards."
-openpgp:
+wkd:
   key-info: Published OpenPGP key
   delete-button: Delete OpenPGP key
   information: Information

@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Form\AliasDeleteType;
 use App\Form\Model\Delete;
-use App\Form\OpenPgpDeleteType;
+use App\Form\WKDDeleteType;
 use App\Form\UserDeleteType;
 use App\Handler\DeleteHandler;
 use App\Handler\OpenPGPWkdHandler;
@@ -103,11 +103,11 @@ class DeleteController extends AbstractController
         );
     }
 
-    public function deleteOpenPgpAction(Request $request)
+    public function deleteWKDAction(Request $request)
     {
         $user = $this->getUser();
 
-        $form = $this->createForm(OpenPgpDeleteType::class, new Delete());
+        $form = $this->createForm(WKDDeleteType::class, new Delete());
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -115,14 +115,14 @@ class DeleteController extends AbstractController
             if ($form->isValid()) {
                 $this->wkdHandler->deleteKey($user);
 
-                $request->getSession()->getFlashBag()->add('success', 'flashes.openpgp-deletion-successful');
+                $request->getSession()->getFlashBag()->add('success', 'flashes.wkd-deletion-successful');
 
-                return $this->redirect($this->generateUrl('openpgp'));
+                return $this->redirect($this->generateUrl('wkd'));
             }
         }
 
         return $this->render(
-            'OpenPGP/delete.html.twig',
+            'WKD/delete.html.twig',
             [
                 'form' => $form->createView(),
                 'user' => $user,

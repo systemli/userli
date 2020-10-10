@@ -82,7 +82,7 @@ class OpenPGPWkdHandler
     }
 
     /**
-     * Encodes the email address local part according to the OpenPGP Web Wey Directory RFC draft.
+     * Encodes the email address local part according to the WKD Web Wey Directory RFC draft.
      * See https://tools.ietf.org/html/draft-koch-openpgp-webkey-service-10 for further information.
      */
     private function wkdHash(string $localPart): string

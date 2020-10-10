@@ -36,7 +36,7 @@ class WkdDeleteKeyCommand extends Command
     {
         $this
             ->setName('app:users:wkd:delete-key')
-            ->setDescription('Delete OpenPGP key for user')
+            ->setDescription('Delete WKD key for user')
             ->addArgument(
                 'email',
                 InputOption::VALUE_REQUIRED,

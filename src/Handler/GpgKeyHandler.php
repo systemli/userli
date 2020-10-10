@@ -91,7 +91,7 @@ class GpgKeyHandler
             $this->gpg->importKey($data);
         } catch (\Crypt_GPG_BadPassphraseException | Crypt_GPG_NoDataException | Crypt_GPG_Exception $e) {
             $this->tearDownGPGHome();
-            throw new NoGpgDataException('Failed to import OpenPGP key: '.$e);
+            throw new NoGpgDataException('Failed to import WKD key: '.$e);
         }
 
         try {

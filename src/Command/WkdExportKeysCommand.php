@@ -35,7 +35,7 @@ class WkdExportKeysCommand extends Command
     {
         $this
             ->setName('app:users:wkd:export-keys')
-            ->setDescription('Export all OpenPGP keys to WKD directory');
+            ->setDescription('Export all WKD keys to WKD directory');
     }
 
     /**
@@ -49,6 +49,6 @@ class WkdExportKeysCommand extends Command
             ++$count;
         }
 
-        $output->writeln(sprintf('Exported %d OpenPGP keys to WKD directory', $count));
+        $output->writeln(sprintf('Exported %d WKD keys to WKD directory', $count));
     }
 }

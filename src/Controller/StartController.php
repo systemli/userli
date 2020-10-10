@@ -12,10 +12,10 @@ use App\Exception\NoGpgKeyForUserException;
 use App\Exception\ValidationException;
 use App\Form\CustomAliasCreateType;
 use App\Form\Model\AliasCreate;
-use App\Form\Model\OpenPgpKey;
+use App\Form\Model\WKDKey;
 use App\Form\Model\PasswordChange;
 use App\Form\Model\VoucherCreate;
-use App\Form\OpenPgpKeyType;
+use App\Form\WKDKeyType;
 use App\Form\PasswordChangeType;
 use App\Form\RandomAliasCreateType;
 use App\Form\VoucherCreateType;
@@ -249,45 +249,45 @@ class StartController extends AbstractController
     /**
      * @return Response
      */
-    public function openPgpAction(Request $request): ?Response
+    public function wkdAction(Request $request): ?Response
     {
         /** @var User $user */
         $user = $this->getUser();
 
-        $openPgpKey = new OpenPgpKey();
-        $openPgpKeyForm = $this->createForm(
-            OpenPgpKeyType::class,
-            $openPgpKey,
+        $wkd = new WKDKey();
+        $wkdForm = $this->createForm(
+            WKDKeyType::class,
+            $wkd,
             [
-                'action' => $this->generateUrl('openpgp'),
+                'action' => $this->generateUrl('wkd'),
                 'method' => 'post',
             ]
         );
 
         if ('POST' === $request->getMethod()) {
-            $openPgpKeyForm->handleRequest($request);
+            $wkdForm->handleRequest($request);
 
-            if ($openPgpKeyForm->isSubmitted() && $openPgpKeyForm->isValid()) {
+            if ($wkdForm->isSubmitted() && $wkdForm->isValid()) {
                 /** @var UploadedFile $keyFile */
-                $keyFile = $openPgpKeyForm->get('keyFile')->getData();
+                $keyFile = $wkdForm->get('keyFile')->getData();
                 /** @var string $keyText */
-                $keyText = $openPgpKeyForm->get('keyText')->getData();
+                $keyText = $wkdForm->get('keyText')->getData();
 
                 if ($keyFile) {
                     $content = file_get_contents($keyFile->getPathname());
-                    $this->importOpenPgpKey($request, $user, $content);
+                    $this->importWKDKey($request, $user, $content);
                 } elseif ($keyText) {
-                    $this->importOpenPgpKey($request, $user, $keyText);
+                    $this->importWKDKey($request, $user, $keyText);
                 }
             }
         }
 
         return $this->render(
-            'Start/openpgp.html.twig',
+            'Start/wkd.html.twig',
             [
                 'user' => $user,
                 'user_domain' => $user->getDomain(),
-                'openpgp_form' => $openPgpKeyForm->createView(),
+                'wkd_form' => $wkdForm->createView(),
                 'openpgp_fingerprint' => $this->wkdHandler->getKeyFingerprint($user),
             ]
         );
@@ -346,17 +346,17 @@ class StartController extends AbstractController
         $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
     }
 
-    private function importOpenPgpKey(Request $request, User $user, string $key): void
+    private function importWKDKey(Request $request, User $user, string $key): void
     {
         try {
             $this->wkdHandler->importKey($user, $key);
-            $request->getSession()->getFlashBag()->add('success', 'flashes.openpgp-key-upload-successful');
+            $request->getSession()->getFlashBag()->add('success', 'flashes.wkd-key-upload-successful');
         } catch (NoGpgDataException $e) {
-            $request->getSession()->getFlashBag()->add('error', 'flashes.openpgp-key-upload-error-no-openpgp');
+            $request->getSession()->getFlashBag()->add('error', 'flashes.wkd-key-upload-error-no-openpgp');
         } catch (NoGpgKeyForUserException $e) {
-            $request->getSession()->getFlashBag()->add('error', 'flashes.openpgp-key-upload-error-no-keys');
+            $request->getSession()->getFlashBag()->add('error', 'flashes.wkd-key-upload-error-no-keys');
         } catch (MultipleGpgKeysForUserException $e) {
-            $request->getSession()->getFlashBag()->add('error', 'flashes.openpgp-key-upload-error-multiple-keys');
+            $request->getSession()->getFlashBag()->add('error', 'flashes.wkd-key-upload-error-multiple-keys');
         }
     }
 }

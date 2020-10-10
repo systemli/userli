@@ -36,7 +36,7 @@ class WkdShowKeyCommand extends Command
     {
         $this
             ->setName('app:users:wkd:show-key')
-            ->setDescription('Show OpenPGP key of user')
+            ->setDescription('Show WKD key of user')
             ->addArgument(
                 'email',
                 InputOption::VALUE_REQUIRED,
