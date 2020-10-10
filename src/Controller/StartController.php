@@ -12,12 +12,10 @@ use App\Exception\NoGpgKeyForUserException;
 use App\Exception\ValidationException;
 use App\Form\CustomAliasCreateType;
 use App\Form\Model\AliasCreate;
-use App\Form\Model\OpenPgpKeyFile;
-use App\Form\Model\OpenPgpKeyText;
+use App\Form\Model\OpenPgpKey;
 use App\Form\Model\PasswordChange;
 use App\Form\Model\VoucherCreate;
-use App\Form\OpenPgpKeyFileType;
-use App\Form\OpenPgpKeyTextType;
+use App\Form\OpenPgpKeyType;
 use App\Form\PasswordChangeType;
 use App\Form\RandomAliasCreateType;
 use App\Form\VoucherCreateType;
@@ -28,6 +26,7 @@ use App\Handler\VoucherHandler;
 use App\Helper\PasswordUpdater;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -271,20 +270,10 @@ class StartController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        $openPgpKeyFile = new OpenPgpKeyFile();
-        $openPgpKeyFileForm = $this->createForm(
-            OpenPgpKeyFileType::class,
-            $openPgpKeyFile,
-            [
-                'action' => $this->generateUrl('openpgp'),
-                'method' => 'post',
-            ]
-        );
-
-        $openPgpKeyText = new OpenPgpKeyText();
-        $openPgpKeyTextForm = $this->createForm(
-            OpenPgpKeyTextType::class,
-            $openPgpKeyText,
+        $openPgpKey = new OpenPgpKey();
+        $openPgpKeyForm = $this->createForm(
+            OpenPgpKeyType::class,
+            $openPgpKey,
             [
                 'action' => $this->generateUrl('openpgp'),
                 'method' => 'post',
@@ -292,13 +281,20 @@ class StartController extends AbstractController
         );
 
         if ('POST' === $request->getMethod()) {
-            $openPgpKeyFileForm->handleRequest($request);
-            $openPgpKeyTextForm->handleRequest($request);
+            $openPgpKeyForm->handleRequest($request);
 
-            if ($openPgpKeyFileForm->isSubmitted() && $openPgpKeyFileForm->isValid()) {
-                $this->importOpenPgpKey($request, $user, $openPgpKeyFile->key);
-            } elseif ($openPgpKeyTextForm->isSubmitted() && $openPgpKeyTextForm->isValid()) {
-                $this->importOpenPgpKey($request, $user, $openPgpKeyText['key']->getData());
+            if ($openPgpKeyForm->isSubmitted() && $openPgpKeyForm->isValid()) {
+                /** @var UploadedFile $keyFile */
+                $keyFile = $openPgpKeyForm->get('keyFile')->getData();
+                /** @var string $keyText */
+                $keyText = $openPgpKeyForm->get('keyText')->getData();
+
+                if ($keyFile) {
+                    $content = file_get_contents($keyFile->getPathname());
+                    $this->importOpenPgpKey($request, $user, $content);
+                } elseif ($keyText) {
+                    $this->importOpenPgpKey($request, $user, $keyText);
+                }
             }
         }
 
@@ -307,8 +303,7 @@ class StartController extends AbstractController
             [
                 'user' => $user,
                 'user_domain' => $user->getDomain(),
-                'openpgp_file_form' => $openPgpKeyFileForm->createView(),
-                'openpgp_text_form' => $openPgpKeyTextForm->createView(),
+                'openpgp_form' => $openPgpKeyForm->createView(),
                 'openpgp_fingerprint' => $this->wkdHandler->getKeyFingerprint($user),
             ]
         );

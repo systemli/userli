@@ -21,6 +21,7 @@ start:
   openpgp-delete: delete OpenPGP key
   openpgp-settings: OpenPGP key
   openpgp-settings-desc: Publish your mail encryption key
+  openpgp-settings-title: Publish your OpenPGP key in the Web Key Directory
 
 index:
   title: Manage your e-mail account
@@ -92,10 +93,13 @@ form:
   registration-recovery-token-next-button: Continue
   domain: Domain
   add: Add
-  openpgp-key-file: OpenPGP key file
-  openpgp-key-file-submit: Publish OpenPGP key file
-  openpgp-key-text: OpenPGP key in ASCII format
-  openpgp-key-text-submit: Publish OpenPGP key
+  openpgp-key-file: Upload your key file:
+  openpgp-key-file-mimetype: The uploaded file doesn't contain OpenPGP data.
+  openpgp-key-upload-or: or
+  openpgp-key-text: Paste your key as text:
+  openpgp-key-text-placeholder: OpenPGP key in ASCII format
+  openpgp-key-select-one: Please upload key either as file or as ASCII text.
+  openpgp-key-submit: Publish OpenPGP key
 recovery:
   header: Recover your account
   lead: Reset the password using your recovery token

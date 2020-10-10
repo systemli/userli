@@ -10,13 +10,36 @@
 {% endblock %}
 {% block content %}
     <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6">
-            <h3>{{ "start.openpgp-settings"|trans }}</h3>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <h3>{{ "start.openpgp-settings-title"|trans }}</h3>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6">
-            {% include 'Start/openpgp_form.html.twig' %}
+            {{ form_start(openpgp_form) }}
+            {{ form_errors(openpgp_form) }}
+
+            <div class="form-group">
+                {{ form_label(openpgp_form.keyFile) }}
+                {{ form_errors(openpgp_form.keyFile) }}
+                {{ form_widget(openpgp_form.keyFile) }}
+            </div>
+
+            <div class="form-group">
+                <label><i>{{ "form.openpgp-key-upload-or"|trans }}</i></label>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(openpgp_form.keyText) }}
+                {{ form_errors(openpgp_form.keyText) }}
+                {{ form_widget(openpgp_form.keyText, {'attr': {'class': 'form-control' }}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_widget(openpgp_form.submit, {'attr': {'class': 'btn btn-primary' }}) }}
+            </div>
+
+            {{ form_end(openpgp_form) }}
         </div>
 
         <div class="col-xs-12 col-sm-6 col-md-6">
@@ -28,7 +51,7 @@
 
         {% if openpgp_fingerprint %}
             <div class="col-xs-12 col-sm-6 col-md-6">
-                <h3>{{ "openpgp.key-info"|trans }}</h3>
+                <h4>{{ "openpgp.key-info"|trans }}</h4>
                 <p class="alert alert-info">
                     {{ openpgp_fingerprint }}
                 </p>

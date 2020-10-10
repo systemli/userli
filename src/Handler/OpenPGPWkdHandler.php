@@ -92,7 +92,7 @@ class OpenPGPWkdHandler
         $user->setWkdKey(null);
         $this->manager->flush();
 
-        // TODO: Delete key from WKD directory!
+        // TODO: Delete key from WKD directory!!!!
     }
 
     /**
