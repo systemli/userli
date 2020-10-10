@@ -18,7 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WKDKeyType extends AbstractType implements EventSubscriberInterface
 {
-    public const NAME = 'upload_wkd_key_file';
+    public const NAME = 'upload_wkd_key';
 
     /** @var TranslatorInterface */
     private $translator;

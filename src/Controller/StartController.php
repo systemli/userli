@@ -276,15 +276,15 @@ class StartController extends AbstractController
 
                 if ($keyFile) {
                     $content = file_get_contents($keyFile->getPathname());
-                    $key = $this->importWKDKey($request, $user, $content);
+                    $wkdKey = $this->importWKDKey($request, $user, $content);
                 } elseif ($keyText) {
-                    $key = $this->importWKDKey($request, $user, $keyText);
+                    $wkdKey = $this->importWKDKey($request, $user, $keyText);
                 }
             }
         }
 
-        if (!isset($key)) {
-            $key = $this->wkdHandler->getKey($user);
+        if (!isset($wkdKey)) {
+            $wkdKey = $this->wkdHandler->getKey($user);
         }
 
         return $this->render(
@@ -293,8 +293,8 @@ class StartController extends AbstractController
                 'user' => $user,
                 'user_domain' => $user->getDomain(),
                 'wkd_form' => $wkdForm->createView(),
-                'openpgp_id' => $key->getId(),
-                'openpgp_fingerprint' => $key->getFingerprint(),
+                'openpgp_id' => $wkdKey->getId(),
+                'openpgp_fingerprint' => $wkdKey->getFingerprint(),
             ]
         );
     }
@@ -355,8 +355,9 @@ class StartController extends AbstractController
     private function importWKDKey(Request $request, User $user, string $key): OpenPGPKey
     {
         try {
-            $key = $this->wkdHandler->importKey($user, $key);
+            $wkdKey = $this->wkdHandler->importKey($user, $key);
             $request->getSession()->getFlashBag()->add('success', 'flashes.wkd-key-upload-successful');
+            return $wkdKey;
         } catch (NoGpgDataException $e) {
             $request->getSession()->getFlashBag()->add('error', 'flashes.wkd-key-upload-error-no-openpgp');
         } catch (NoGpgKeyForUserException $e) {
@@ -365,6 +366,6 @@ class StartController extends AbstractController
             $request->getSession()->getFlashBag()->add('error', 'flashes.wkd-key-upload-error-multiple-keys');
         }
 
-        return $key;
+        return new OpenPGPKey();
     }
 }
