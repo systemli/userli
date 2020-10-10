@@ -103,7 +103,7 @@ class OpenPGPWkdHandler
         $wkdHash = $this->wkdHash($localPart);
         $wkdKeyPath = $wkdPath.DIRECTORY_SEPARATOR.$wkdHash;
 
-        if (!unlink($wkdKeyPath)) {
+        if (is_file($wkdKeyPath) && !unlink($wkdKeyPath)) {
             throw new RuntimeException(sprintf('Failed to remove key from WKD directory path %s', $wkdKeyPath));
         }
 
