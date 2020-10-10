@@ -58,8 +58,8 @@ class WkdShowKeyCommand extends Command
         }
 
         // Get fingerprint of the key
-        $fingerprint = $this->handler->getKeyFingerprint($user);
+        $wkdKey = $this->handler->getKey($user);
 
-        $output->writeln(sprintf('WKD key for user %s: %s', $user->getEmail(), $fingerprint));
+        $output->writeln(sprintf('WKD key for user %s: %s', $user->getEmail(), $wkdKey->getFingerprint()));
     }
 }

@@ -45,7 +45,7 @@ class WkdExportKeysCommand extends Command
     {
         $count = 0;
         foreach ($this->repository->findUsersWithWkdKey() as $user) {
-            $this->handler->exportKey($user);
+            $this->handler->exportKeyToWKD($user);
             ++$count;
         }
 

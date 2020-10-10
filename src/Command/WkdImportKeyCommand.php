@@ -72,13 +72,12 @@ class WkdImportKeyCommand extends Command
 
         // Import the key
         try {
-            $fingerprint = $this->handler->importKey($user, $content);
+            $wkdKey = $this->handler->importKey($user, $content);
         } catch (NoGpgKeyForUserException | MultipleGpgKeysForUserException $e) {
             $output->writeln(sprintf('Error: %s in %s', $e->getMessage(), $file));
-
             return;
         }
 
-        $output->writeln(sprintf('Imported WKD key for user %s: %s', $user->getEmail(), $fingerprint));
+        $output->writeln(sprintf('Imported WKD key for user %s: %s', $user->getEmail(), $wkdKey->getFingerprint()));
     }
 }
