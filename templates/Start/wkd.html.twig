@@ -16,8 +16,11 @@
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6">
+            {% form_theme wkd_form 'Form/fields.html.twig' %}
             {{ form_start(wkd_form) }}
-            {{ form_errors(wkd_form) }}
+            <div class="form-group">
+                {{ form_errors(wkd_form) }}
+            </div>
 
             <div class="form-group">
                 {{ form_label(wkd_form.keyFile) }}
