@@ -10,13 +10,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class WKDDeleteType extends AbstractType
 {
-    const NAME = 'delete_alias';
+    const NAME = 'delete_wkd';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('password', PasswordType::class, ['label' => 'form.delete-password'])
-            ->add('submit', SubmitType::class, ['label' => 'form.delete-alias']);
+            ->add('submit', SubmitType::class, ['label' => 'form.wkd-delete']);
     }
 
     /**

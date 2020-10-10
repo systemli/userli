@@ -99,6 +99,7 @@ form:
   wkd-key-text-placeholder: OpenPGP Schlüssel im ASCII-Format
   wkd-key-select-one: Bitte lade den Schlüssel entweder als Datei oder im ASCII Format hoch.
   wkd-key-submit: OpenPGP Schlüssel veröffentlichen
+  wkd-delete: OpenPGP Schlüssel löschen
 recovery:
   header: Account wiederherstellen
   lead: Passwort zurücksetzen mit Hilfe des Wiederherstellungscodes

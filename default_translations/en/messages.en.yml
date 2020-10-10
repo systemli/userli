@@ -100,6 +100,7 @@ form:
   wkd-key-text-placeholder: OpenPGP key in ASCII format
   wkd-key-select-one: Please upload key either as file or as ASCII text.
   wkd-key-submit: Publish OpenPGP key
+  wkd-delete: Delete OpenPGP key
 recovery:
   header: Recover your account
   lead: Reset the password using your recovery token
@@ -167,7 +168,7 @@ delete:
     lead: We need to verify your password to delete your account.
   wkd:
     headline: Delete OpenPGP key
-    lead: We need to verify your password to delete your OpenPGP key.
+    lead: We need to verify your password to remove your OpenPGP key from the Web Key Directory.
   cancel: Cancel
 recovery-token:
   headline: Manage recovery token

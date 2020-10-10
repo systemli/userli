@@ -3,6 +3,7 @@
 use App\Entity\Alias;
 use App\Entity\User;
 use App\Guesser\DomainGuesser;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
@@ -340,6 +341,14 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @When /^File "([^"]*)" exists with content:$/
+     */
+    public function touchFile(string $path, PyStringNode $content): void
+    {
+        file_put_contents($path, $content);
+    }
+
+    /**
      * @param $page
      */
     public function visit($page)
@@ -404,6 +413,26 @@ class FeatureContext extends MinkContext
     {
         if ($this->output !== null) {
             throw new \Exception(sprintf('Did not see empty console output: "%s"', $this->output));
+        }
+    }
+
+    /**
+     * @Then /^File "([^"]*)" should exist$/
+     */
+    public function fileExists(string $path): void
+    {
+        if (!is_file($path)) {
+            throw new \Exception(sprintf('File doesn\'t exist: "%s"', $path));
+        }
+    }
+
+    /**
+     * @Then /^File "([^"]*)" should not exist$/
+     */
+    public function fileNoExists(string $path): void
+    {
+        if (is_file($path)) {
+            throw new \Exception(sprintf('File exists: "%s"', $path));
         }
     }
 
