@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Form\Model\OpenPgpKey;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -12,7 +13,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Form\Model\OpenPgpKey;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -23,9 +23,9 @@ class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
     /** @var TranslatorInterface */
     private $translator;
 
-    public function __construct(TranslatorInterface $translator) {
+    public function __construct(TranslatorInterface $translator)
+    {
         $this->translator = $translator;
-
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -43,7 +43,7 @@ class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
                             'text/plain',
                         ],
                         'mimeTypesMessage' => $this->translator->trans('form.openpgp-key-file-mimetype'),
-                    ])
+                    ]),
                 ],
             ])
             ->add('keyText', TextareaType::class, [
@@ -64,9 +64,6 @@ class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
         $resolver->setDefaults(['data_class' => OpenPgpKey::class]);
     }
 
-    /**
-     * @return string
-     */
     public function getBlockPrefix(): string
     {
         return self::NAME;
@@ -85,12 +82,7 @@ class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
 
         if ((null === $submittedData->getKeyFile() && null === $submittedData->getKeyText()) ||
             (null !== $submittedData->getKeyFile() && null !== $submittedData->getKeyText())) {
-            throw new TransformationFailedException(
-                'exactly one of keyFile or keyText must be set',
-                0, // code
-                null, // previous
-                $this->translator->trans('form.openpgp-key-select-one') // user message
-            );
+            throw new TransformationFailedException('exactly one of keyFile or keyText must be set', 0, null, $this->translator->trans('form.openpgp-key-select-one'));
         }
     }
 }

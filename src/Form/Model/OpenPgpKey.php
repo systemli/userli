@@ -3,7 +3,6 @@
 namespace App\Form\Model;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class OpenPgpKey
 {
@@ -15,17 +14,12 @@ class OpenPgpKey
     /** @var string */
     private $keyText;
 
-    /**
-     * @return string|null
-     */
     public function getKeyFile(): ?string
     {
         return $this->keyFile;
     }
 
     /**
-     * @param string $keyFile
-     *
      * @return $this
      */
     public function setKeyFile(string $keyFile): self
@@ -35,17 +29,12 @@ class OpenPgpKey
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getKeyText(): ?string
     {
         return $this->keyText;
     }
 
     /**
-     * @param string $keyText
-     *
      * @return $this
      */
     public function setKeyText(string $keyText): self

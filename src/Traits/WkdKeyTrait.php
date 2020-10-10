@@ -14,9 +14,6 @@ trait WkdKeyTrait
         return $this->wkdKey;
     }
 
-    /**
-     * @param string|null $wkdKey
-     */
     public function setWkdKey(?string $wkdKey): void
     {
         $this->wkdKey = $wkdKey;

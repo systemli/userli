@@ -54,7 +54,7 @@ class WkdDeleteKeyCommand extends Command
         // Check if user exists
         $user = $this->repository->findByEmail($email);
         if (null === $user) {
-            throw new \RuntimeException('User not found: ' . $email);
+            throw new \RuntimeException('User not found: '.$email);
         }
 
         // Delete the key

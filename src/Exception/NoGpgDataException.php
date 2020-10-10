@@ -4,5 +4,6 @@ namespace App\Exception;
 
 use RuntimeException;
 
-class NoGpgDataException extends RuntimeException {
+class NoGpgDataException extends RuntimeException
+{
 }

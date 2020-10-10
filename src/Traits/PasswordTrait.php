@@ -17,9 +17,6 @@ trait PasswordTrait
         return $this->password;
     }
 
-    /**
-     * @param string $password
-     */
     public function setPassword(string $password)
     {
         $this->password = $password;

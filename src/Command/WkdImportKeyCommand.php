@@ -7,7 +7,6 @@ use App\Exception\NoGpgKeyForUserException;
 use App\Handler\OpenPGPWkdHandler;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -62,12 +61,12 @@ class WkdImportKeyCommand extends Command
         // Check if user exists
         $user = $this->repository->findByEmail($email);
         if (null === $user) {
-            throw new \RuntimeException('User not found: ' . $email);
+            throw new \RuntimeException('User not found: '.$email);
         }
 
         // Read contents from file
         if (!is_file($file)) {
-            throw new \RuntimeException('File not found: ' . $file);
+            throw new \RuntimeException('File not found: '.$file);
         }
         $content = file_get_contents($file);
 
@@ -76,6 +75,7 @@ class WkdImportKeyCommand extends Command
             $fingerprint = $this->handler->importKey($user, $content);
         } catch (NoGpgKeyForUserException | MultipleGpgKeysForUserException $e) {
             $output->writeln(sprintf('Error: %s in %s', $e->getMessage(), $file));
+
             return;
         }
 

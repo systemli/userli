@@ -46,7 +46,7 @@ class WkdExportKeysCommand extends Command
         $count = 0;
         foreach ($this->repository->findUsersWithWkdKey() as $user) {
             $this->handler->exportKey($user);
-            $count++;
+            ++$count;
         }
 
         $output->writeln(sprintf('Exported %d OpenPGP keys to WKD directory', $count));

@@ -66,14 +66,6 @@ class StartController extends AbstractController
 
     /**
      * StartController constructor.
-     *
-     * @param AliasHandler        $aliasHandler
-     * @param PasswordUpdater     $passwordUpdater
-     * @param VoucherHandler      $voucherHandler
-     * @param VoucherCreator      $voucherCreator
-     * @param MailCryptKeyHandler $mailCryptKeyHandler
-     * @param ObjectManager       $manager
-     * @param OpenPGPWkdHandler   $wkdHandler
      */
     public function __construct(AliasHandler $aliasHandler,
                                 PasswordUpdater $passwordUpdater,
@@ -123,8 +115,6 @@ class StartController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     public function voucherAction(Request $request)
@@ -163,8 +153,6 @@ class StartController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     public function aliasAction(Request $request)
@@ -222,8 +210,6 @@ class StartController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     public function accountAction(Request $request)
@@ -261,8 +247,6 @@ class StartController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      */
     public function openPgpAction(Request $request): ?Response
@@ -362,11 +346,6 @@ class StartController extends AbstractController
         $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
     }
 
-    /**
-     * @param Request $request
-     * @param User    $user
-     * @param string  $key
-     */
     private function importOpenPgpKey(Request $request, User $user, string $key): void
     {
         try {

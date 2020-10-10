@@ -4,5 +4,6 @@ namespace App\Exception;
 
 use RuntimeException;
 
-class MultipleGpgKeysForUserException extends RuntimeException {
+class MultipleGpgKeysForUserException extends RuntimeException
+{
 }
