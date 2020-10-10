@@ -119,7 +119,7 @@ class OpenPGPWkdHandler
     {
         $base32Encoder = new Base32(['characters' => Base32::ZBASE32]);
 
-        return $base32Encoder->encode(sha1(strtolower($localPart)));
+        return $base32Encoder->encode(sha1(strtolower($localPart), true));
     }
 
     /**
