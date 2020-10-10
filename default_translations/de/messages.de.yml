@@ -302,5 +302,7 @@ wkd:
   information-details:
     Hier kannst du deinen OpenPGP Schlüssel hochladen, damit er in unserem <i><a
     target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key Directory</a></i>
-    veröffentlicht wird. Von dort können E-Mail-Programme wie Thunderbird in automatisch
+    veröffentlicht wird. Von dort können E-Mail-Programme wie Thunderbird ihn automatisch
     herunterladen.
+  keyid-label: Schlüssel ID:
+  fingerprint-label: Fingerprint:

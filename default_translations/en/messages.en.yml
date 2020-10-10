@@ -290,3 +290,5 @@ wkd:
     If you upload your OpenPGP key here, it will be published in our <i><a target="_blank"
     href="https://gnupg.org/faq/wkd.html">Web Key Directory</a></i>. Mail applications like
     Thunderbird can automatically retrieve your key from there.
+  keyid-label: Key ID:
+  fingerprint-label: Fingerprint:

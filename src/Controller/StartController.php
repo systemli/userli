@@ -24,6 +24,7 @@ use App\Handler\MailCryptKeyHandler;
 use App\Handler\OpenPGPWkdHandler;
 use App\Handler\VoucherHandler;
 use App\Helper\PasswordUpdater;
+use App\Model\OpenPGPKey;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -275,11 +276,15 @@ class StartController extends AbstractController
 
                 if ($keyFile) {
                     $content = file_get_contents($keyFile->getPathname());
-                    $this->importWKDKey($request, $user, $content);
+                    $key = $this->importWKDKey($request, $user, $content);
                 } elseif ($keyText) {
-                    $this->importWKDKey($request, $user, $keyText);
+                    $key = $this->importWKDKey($request, $user, $keyText);
                 }
             }
+        }
+
+        if (!isset($key)) {
+            $key = $this->wkdHandler->getKey($user);
         }
 
         return $this->render(
@@ -288,7 +293,8 @@ class StartController extends AbstractController
                 'user' => $user,
                 'user_domain' => $user->getDomain(),
                 'wkd_form' => $wkdForm->createView(),
-                'openpgp_fingerprint' => $this->wkdHandler->getKeyFingerprint($user),
+                'openpgp_id' => $key->getId(),
+                'openpgp_fingerprint' => $key->getFingerprint(),
             ]
         );
     }
@@ -346,10 +352,10 @@ class StartController extends AbstractController
         $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
     }
 
-    private function importWKDKey(Request $request, User $user, string $key): void
+    private function importWKDKey(Request $request, User $user, string $key): OpenPGPKey
     {
         try {
-            $this->wkdHandler->importKey($user, $key);
+            $key = $this->wkdHandler->importKey($user, $key);
             $request->getSession()->getFlashBag()->add('success', 'flashes.wkd-key-upload-successful');
         } catch (NoGpgDataException $e) {
             $request->getSession()->getFlashBag()->add('error', 'flashes.wkd-key-upload-error-no-openpgp');
@@ -358,5 +364,7 @@ class StartController extends AbstractController
         } catch (MultipleGpgKeysForUserException $e) {
             $request->getSession()->getFlashBag()->add('error', 'flashes.wkd-key-upload-error-multiple-keys');
         }
+
+        return $key;
     }
 }

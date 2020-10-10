@@ -8,7 +8,9 @@ use App\Exception\NoGpgKeyForUserException;
 use Crypt_GPG;
 use Crypt_GPG_Exception;
 use Crypt_GPG_FileException;
+use Crypt_GPG_Key;
 use Crypt_GPG_NoDataException;
+use Crypt_GPG_SubKey;
 use RuntimeException;
 
 /**
@@ -25,8 +27,14 @@ class GpgKeyHandler
     /** @var string */
     private $email;
 
-    /** @var string */
-    private $key;
+    /** @var string|null */
+    private $keyData;
+
+    /** @var string|null */
+    private $keyId;
+
+    /** @var string|null */
+    private $fingerprint;
 
     private function createTempDir(): string
     {
@@ -65,7 +73,7 @@ class GpgKeyHandler
             $this->gpg = new Crypt_GPG(['homedir' => $this->tempDir]);
         } catch (Crypt_GPG_FileException | \PEAR_Exception $e) {
             $this->tearDownGPGHome();
-            throw new RuntimeException('Failed to read GnuPG home directory: '.$e);
+            throw new RuntimeException('Failed to read GnuPG home directory: '.$e->getMessage());
         }
     }
 
@@ -91,14 +99,14 @@ class GpgKeyHandler
             $this->gpg->importKey($data);
         } catch (\Crypt_GPG_BadPassphraseException | Crypt_GPG_NoDataException | Crypt_GPG_Exception $e) {
             $this->tearDownGPGHome();
-            throw new NoGpgDataException('Failed to import WKD key: '.$e);
+            throw new NoGpgDataException('Failed to import WKD key: '.$e->getMessage());
         }
 
         try {
             $keys = $this->gpg->getKeys($this->email);
         } catch (Crypt_GPG_Exception $e) {
             $this->tearDownGPGHome();
-            throw new RuntimeException('Failed to read keys: '.$e);
+            throw new RuntimeException('Failed to read keys: '.$e->getMessage());
         }
 
         if (count($keys) < 1) {
@@ -112,31 +120,49 @@ class GpgKeyHandler
         }
 
         try {
-            $this->key = $this->gpg->exportPublicKey($this->email);
+            $this->keyData = $this->gpg->exportPublicKey($this->email);
         } catch (Crypt_GPG_Exception | \Crypt_GPG_KeyNotFoundException $e) {
             $this->tearDownGPGHome();
-            throw new RuntimeException('Failed to export key: '.$e);
+            throw new RuntimeException('Failed to export key: '.$e->getMessage());
         }
     }
 
     public function getKey(): ?string
     {
-        return $this->key;
+        return $this->keyData;
+    }
+
+    public function getId(): ?string
+    {
+        if (null === $this->keyId) {
+            try {
+                if ($keys = $this->gpg->getKeys($this->email)) {
+                    /** @var Crypt_GPG_Key $key */
+                    $key = $keys[0];
+                    /** @var Crypt_GPG_SubKey $subKey */
+                    $subKey = $key->getPrimaryKey();
+                    $this->keyId = $subKey->getId();
+                }
+            } catch (Crypt_GPG_Exception $e) {
+                $this->tearDownGPGHome();
+                throw new RuntimeException('Failed to get GnuPG key ID: '.$e->getMessage());
+            }
+        }
+
+        return $this->keyId;
     }
 
     public function getFingerprint(): ?string
     {
-        try {
-            $fingerprint = $this->gpg->getFingerprint($this->email, Crypt_GPG::FORMAT_CANONICAL);
-        } catch (Crypt_GPG_Exception $e) {
-            $this->tearDownGPGHome();
-            throw new RuntimeException('Failed to get GnuPG fingerprint: '.$e);
+        if (null === $this->fingerprint) {
+            try {
+                $this->fingerprint = $this->gpg->getFingerprint($this->email, Crypt_GPG::FORMAT_CANONICAL);
+            } catch (Crypt_GPG_Exception $e) {
+                $this->tearDownGPGHome();
+                throw new RuntimeException('Failed to get GnuPG key fingerprint: '.$e->getMessage());
+            }
         }
 
-        if (!$fingerprint) {
-            return null;
-        }
-
-        return (string) $fingerprint;
+        return $this->fingerprint;
     }
 }

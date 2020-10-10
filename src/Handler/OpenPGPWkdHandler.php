@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
+use App\Model\OpenPGPKey;
 use Doctrine\Common\Persistence\ObjectManager;
 use RuntimeException;
 use Tuupola\Base32;
@@ -43,22 +44,21 @@ class OpenPGPWkdHandler
      * @throws NoGpgKeyForUserException
      * @throws MultipleGpgKeysForUserException
      */
-    public function importKey(User $user, string $key): ?string
+    public function importKey(User $user, string $key): OpenPGPKey
     {
         $this->keyHandler->import($user->getEmail(), $key);
-        $fingerprint = $this->keyHandler->getFingerprint();
-        $sanitizedKey = $this->keyHandler->getKey();
+        $key = new OpenPGPKey($this->keyHandler->getKey(), $this->keyHandler->getId(), $this->keyHandler->getFingerprint());
         $this->keyHandler->tearDownGPGHome();
 
-        $user->setWkdKey($sanitizedKey);
+        $user->setWkdKey($key->getKey());
         $this->manager->flush();
 
-        $this->exportKey($user);
+        $this->exportKeyToWKD($user);
 
-        return $fingerprint;
+        return $key;
     }
 
-    public function getKeyFingerprint(User $user): ?string
+    public function getKey(User $user): ?OpenPGPKey
     {
         $key = $user->getWkdKey();
 
@@ -67,10 +67,10 @@ class OpenPGPWkdHandler
         }
 
         $this->keyHandler->import($user->getEmail(), $key);
-        $fingerprint = $this->keyHandler->getFingerprint();
+        $key = new OpenPGPKey($this->keyHandler->getKey(), $this->keyHandler->getId(), $this->keyHandler->getFingerprint());
         $this->keyHandler->tearDownGPGHome();
 
-        return $fingerprint;
+        return $key;
     }
 
     public function deleteKey(User $user): void
@@ -95,7 +95,7 @@ class OpenPGPWkdHandler
     /**
      * @throws RuntimeException
      */
-    public function exportKey(User $user): void
+    public function exportKeyToWKD(User $user): void
     {
         if (null === $wkdKey = $user->getWkdKey()) {
             return;
