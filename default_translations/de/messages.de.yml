@@ -303,7 +303,7 @@ wkd:
   information-details:
     Hier kannst du deinen OpenPGP-Schlüssel hochladen, damit er in unserem <i><a
     target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key Directory</a></i>
-    veröffentlicht wird. Damit hilfst du Freund*innen deinen Schlüssel automatisch
+    veröffentlicht wird. Damit hilfst du Freund*innen, deinen Schlüssel automatisch
     und sicher zu finden.
   keyid-label: Schlüssel ID:
   fingerprint-label: Fingerprint:
