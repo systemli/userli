@@ -15,8 +15,11 @@ class MuninAccountCommandTest extends TestCase
         $repository = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $repository->expects($this->any())->method('count')->willReturn(10);
-        $repository->method('countUsersWithRecoveryTokens')->willReturn(5);
+        $repository->method('countUsers')->willReturn(10);
+        $repository->method('countDeletedUsers')->willReturn(3);
+        $repository->method('countUsersWithRecoveryToken')->willReturn(5);
+        $repository->method('countUsersWithMailCrypt')->willReturn(7);
+        $repository->method('countUsersWithWkdKey')->willReturn(2);
 
         $manager = $this->getMockBuilder(ObjectManager::class)
             ->getMock();
@@ -29,7 +32,7 @@ class MuninAccountCommandTest extends TestCase
 
         $output = $commandTester->getDisplay();
 
-        self::assertEquals("account.value 10\nrecovery_tokens.value 5\n", $output);
+        self::assertEquals("account.value 10\ndeleted.value 3\nrecovery_tokens.value 5\nmail_crypt_keys.value 7\nwkd_keys.value 2\n", $output);
 
         $commandTester->execute(['--autoconf' => true]);
 
@@ -44,8 +47,12 @@ class MuninAccountCommandTest extends TestCase
         self::assertContains('graph_title User Accounts', $output);
         self::assertContains('graph_category Mail', $output);
         self::assertContains('graph_vlabel Account Counters', $output);
-        self::assertContains('account.label Total Accounts', $output);
+        self::assertContains('account.label Active accounts', $output);
         self::assertContains('account.type GAUGE', $output);
         self::assertContains('account.min 0', $output);
+        self::assertContains('deleted.label Deleted accounts', $output);
+        self::assertContains('recovery_tokens.label Active accounts with recovery token', $output);
+        self::assertContains('mail_crypt_keys.label Active accounts with mailbox encryption', $output);
+        self::assertContains('wkd_keys.label Active accounts with WKD key', $output);
     }
 }

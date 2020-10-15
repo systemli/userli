@@ -76,17 +76,15 @@ class OpenPGPWkdHandler
 
     public function getKey(User $user): OpenPGPKey
     {
-        $key = $user->getWkdKey();
-
-        if (null === $key) {
+        if (null === $wkdKey = $user->getWkdKey()) {
             return new OpenPGPKey();
         }
 
-        $this->keyHandler->import($user->getEmail(), $key);
-        $key = new OpenPGPKey($this->keyHandler->getKey(), $this->keyHandler->getId(), $this->keyHandler->getFingerprint());
+        $this->keyHandler->import($user->getEmail(), base64_decode($wkdKey));
+        $wkdKey = new OpenPGPKey($this->keyHandler->getKey(), $this->keyHandler->getId(), $this->keyHandler->getFingerprint());
         $this->keyHandler->tearDownGPGHome();
 
-        return $key;
+        return $wkdKey;
     }
 
     public function deleteKey(User $user): void
