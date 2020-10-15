@@ -17,10 +17,10 @@ start:
   vouchers-desc: Invite your friends
   webmail: Webmail
   webmail-desc: Read and write e-mails
-  wkd: OpenPGP key
+  wkd: OpenPGP
   wkd-delete: delete OpenPGP key
-  wkd-settings: OpenPGP key
-  wkd-settings-desc: Publish your mail encryption key
+  wkd-settings: OpenPGP
+  wkd-settings-desc: Publish your key
   wkd-settings-title: Publish your OpenPGP key in the Web Key Directory
 
 index:
