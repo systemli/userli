@@ -21,7 +21,7 @@ class OpenPGPKey
         $this->fingerprint = $fingerprint;
     }
 
-    public function getKey(): ?string
+    public function getData(): ?string
     {
         return $this->keyData;
     }

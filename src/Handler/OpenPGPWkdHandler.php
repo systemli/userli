@@ -25,9 +25,6 @@ class OpenPGPWkdHandler
     /** @var string */
     private $wkdFormat;
 
-    /** @var string */
-    private $wkdPath;
-
     /**
      * OpenPGPWkdHandler constructor.
      */
@@ -44,18 +41,18 @@ class OpenPGPWkdHandler
 
     private function getWkdPath(string $domain): string {
         if ('advanced' === $this->wkdFormat) {
-            $this->wkdPath = $this->wkdDirectory.DIRECTORY_SEPARATOR.strtolower($domain).DIRECTORY_SEPARATOR.'hu';
+            $wkdPath = $this->wkdDirectory.DIRECTORY_SEPARATOR.strtolower($domain).DIRECTORY_SEPARATOR.'hu';
         } elseif ('simple' === $this->wkdFormat) {
-            $this->wkdPath = $this->wkdDirectory.DIRECTORY_SEPARATOR.'hu';
+            $wkdPath = $this->wkdDirectory.DIRECTORY_SEPARATOR.'hu';
         } else {
             throw new RuntimeException(sprintf('Error: unsupported WKD format: %s', $this->wkdFormat));
         }
 
-        if (!is_dir($this->wkdPath) && !mkdir($concurrentDirectory = $this->wkdPath, 0775, true) && !is_dir($concurrentDirectory)) {
+        if (!is_dir($wkdPath) && !mkdir($concurrentDirectory = $wkdPath, 0775, true) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
         }
 
-        return $this->wkdPath;
+        return $wkdPath;
     }
 
     /**
@@ -69,7 +66,7 @@ class OpenPGPWkdHandler
         $wkdKey = new OpenPGPKey($this->keyHandler->getKey(), $this->keyHandler->getId(), $this->keyHandler->getFingerprint());
         $this->keyHandler->tearDownGPGHome();
 
-        $user->setWkdKey($wkdKey->getKey());
+        $user->setWkdKey($wkdKey->getData());
         $this->manager->flush();
 
         $this->exportKeyToWKD($user);
@@ -136,6 +133,6 @@ class OpenPGPWkdHandler
         $wkdHash = $this->wkdHash($localPart);
         $wkdKeyPath = $wkdPath.DIRECTORY_SEPARATOR.$wkdHash;
 
-        file_put_contents($wkdKeyPath, $wkdKey);
+        file_put_contents($wkdKeyPath, base64_decode($wkdKey));
     }
 }
