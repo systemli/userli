@@ -17,7 +17,6 @@ start:
   vouchers-desc: Lade Freund*innen ein
   webmail: Webmail
   webmail-desc: Lies und schreib E-Mails
-  wkd: OpenPGP-Schlüssel
   wkd-delete: OpenPGP-Schlüssel löschen
   wkd-settings: OpenPGP
   wkd-settings-desc: Veröffentliche deinen Schlüssel

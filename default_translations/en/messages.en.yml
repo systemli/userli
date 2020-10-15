@@ -17,7 +17,6 @@ start:
   vouchers-desc: Invite your friends
   webmail: Webmail
   webmail-desc: Read and write e-mails
-  wkd: OpenPGP
   wkd-delete: delete OpenPGP key
   wkd-settings: OpenPGP
   wkd-settings-desc: Publish your key
