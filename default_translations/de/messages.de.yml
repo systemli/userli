@@ -17,11 +17,11 @@ start:
   vouchers-desc: Lade Freund*innen ein
   webmail: Webmail
   webmail-desc: Lies und schreib E-Mails
-  wkd: OpenPGP Schlüssel
-  wkd-delete: OpenPGP Schlüssel löschen
+  wkd: OpenPGP-Schlüssel
+  wkd-delete: OpenPGP-Schlüssel löschen
   wkd-settings: OpenPGP
   wkd-settings-desc: Veröffentliche deinen Schlüssel
-  wkd-settings-title: OpenPGP Schlüssel im Web Key Directory veröffentlichen
+  wkd-settings-title: OpenPGP-Schlüssel im Web Key Directory veröffentlichen
 
 index:
   title: Verwalte deinen E-Mail Account
@@ -92,14 +92,14 @@ form:
   domain: Domäne
   plain-password_confirmation: Neues Passwort bestätigen
   plain-password: Neues Passwort
-  wkd-key-file: Deine Schlüssel-Datei hochladen:
-  wkd-key-file-mimetype: Die hochgeladende Datei enthält keine OpenPGP Schlüssel.
+  wkd-key-file: Deinen Schlüssel als Datei hochladen:
+  wkd-key-file-mimetype: Die hochgeladende Datei enthält keine OpenPGP-Schlüssel.
   wkd-key-upload-or: oder
-  wkd-key-text: Deinen Schlüssel als Text reinkopieren:
-  wkd-key-text-placeholder: OpenPGP Schlüssel im ASCII-Format
+  wkd-key-text: Deinen Schlüssel als Text einfügen:
+  wkd-key-text-placeholder: OpenPGP-Schlüssel im ASCII-Format
   wkd-key-select-one: Bitte lade den Schlüssel entweder als Datei oder im ASCII Format hoch.
-  wkd-key-submit: OpenPGP Schlüssel veröffentlichen
-  wkd-delete: OpenPGP Schlüssel löschen
+  wkd-key-submit: OpenPGP-Schlüssel veröffentlichen
+  wkd-delete: OpenPGP-Schlüssel löschen
 recovery:
   header: Account wiederherstellen
   lead: Passwort zurücksetzen mit Hilfe des Wiederherstellungscodes
@@ -171,8 +171,8 @@ delete:
     lead: Mit der Bestätigung deines Passworts kannst du deinen Account unwiderruflich
       löschen.
   wkd:
-    headline: OpenPGP Schlüssel löschen
-    lead: Mit der Bestätigung deines Passworts kannst du deinen OpenPGP Schlüssel aus
+    headline: OpenPGP-Schlüssel löschen
+    lead: Mit der Bestätigung deines Passworts kannst du deinen OpenPGP-Schlüssel aus
       dem Web Key Directory löschen.
   cancel: Abbrechen
 recovery-token:
@@ -204,9 +204,9 @@ flashes:
   recovery-password-changed: Dein Passwort wurde geändert.
   recovery-next-login: Du kannst dich nun einloggen.
   revocery-reauthenticate: Etwas ist schief gelaufen. Bitte erneut authentifizieren!
-  wkd-deletion-successful: Dein OpenPGP Schlüssel wurde gelöscht.
-  wkd-key-upload-successful: Dein OpenPGP Schlüssel wurde hochgeladen.
-  wkd-key-upload-error-no-openpgp: Die hochgadene Datei enthält keine OpenPGP Schlüssel.
+  wkd-deletion-successful: Dein OpenPGP-Schlüssel wurde gelöscht.
+  wkd-key-upload-successful: Dein OpenPGP-Schlüssel wurde hochgeladen.
+  wkd-key-upload-error-no-openpgp: Die hochgadene Datei enthält keine OpenPGP-Schlüssel.
   wkd-key-upload-error-no-keys: Die hochgeladene Datei enthält keine Schlüssel für deine E-Mail-Adresse.
   wkd-key-upload-error-multiple-keys: Die hochgeladene Datei enhält mehr als einen Schlüssel für deine
     E-Mail-Adresse. Bitte lade nur einen Schlüssel hoch.
@@ -297,13 +297,13 @@ init_domain:
     Konten vorhanden.
 init.title: Erstellen der Erstkonfiguration
 wkd:
-  key-info: Veröffentlichter OpenPGP Schlüssel
-  delete-button: OpenPGP Schlüssel löschen
+  key-info: Veröffentlichter OpenPGP-Schlüssel
+  delete-button: OpenPGP-Schlüssel löschen
   information: Information
   information-details:
-    Hier kannst du deinen OpenPGP Schlüssel hochladen, damit er in unserem <i><a
+    Hier kannst du deinen OpenPGP-Schlüssel hochladen, damit er in unserem <i><a
     target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key Directory</a></i>
-    veröffentlicht wird. Von dort können E-Mail-Programme wie Thunderbird ihn automatisch
-    herunterladen.
+    veröffentlicht wird. Damit hilfst du Freund*innen deinen Schlüssel automatisch
+    und sicher zu finden.
   keyid-label: Schlüssel ID:
   fingerprint-label: Fingerprint:
