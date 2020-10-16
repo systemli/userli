@@ -7,7 +7,7 @@ use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
 use App\Importer\GpgKeyImporter;
-use App\Model\OpenPGPKey;
+use App\Model\OpenPGPKeyInfo;
 use Doctrine\Common\Persistence\ObjectManager;
 use RuntimeException;
 use Tuupola\Base32;
@@ -57,22 +57,22 @@ class OpenPGPWkdHandler
      * @throws NoGpgKeyForUserException
      * @throws MultipleGpgKeysForUserException
      */
-    public function importKey(User $user, string $key): OpenPGPKey
+    public function importKey(User $user, string $key): OpenPGPKeyInfo
     {
-        $openPgpKey = GpgKeyImporter::import($user->getEmail(), $key);
+        $openPgpKeyInfo = GpgKeyImporter::import($user->getEmail(), $key);
 
-        $user->setWkdKey($openPgpKey->getData());
+        $user->setWkdKey($openPgpKeyInfo->getData());
         $this->manager->flush();
 
         $this->exportKeyToWKD($user);
 
-        return $openPgpKey;
+        return $openPgpKeyInfo;
     }
 
-    public function getKey(User $user): OpenPGPKey
+    public function getKey(User $user): OpenPGPKeyInfo
     {
         if (null === $key = $user->getWkdKey()) {
-            return new OpenPGPKey();
+            return new OpenPGPKeyInfo();
         }
 
         return GpgKeyImporter::import($user->getEmail(), base64_decode($key));

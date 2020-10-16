@@ -6,7 +6,7 @@ use App\Entity\Domain;
 use App\Entity\User;
 use App\Importer\GpgKeyImporter;
 use App\Handler\OpenPGPWkdHandler;
-use App\Model\OpenPGPKey;
+use App\Model\OpenPGPKeyInfo;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
@@ -46,7 +46,7 @@ class OpenPGPWkdHandlerTest extends TestCase
 
     public function testImportKey(): void
     {
-        $expected = new OpenPGPKey($this->keyData, $this->keyId, $this->keyFingerprint);
+        $expected = new OpenPGPKeyInfo($this->keyData, $this->keyId, $this->keyFingerprint);
 
         $handler = $this->createHandler();
         $wkdKey = $handler->importKey($this->user, base64_decode($this->keyData));

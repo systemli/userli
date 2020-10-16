@@ -5,7 +5,7 @@ namespace App\Importer;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
-use App\Model\OpenPGPKey;
+use App\Model\OpenPGPKeyInfo;
 use Crypt_GPG;
 use Crypt_GPG_Exception;
 use Crypt_GPG_FileException;
@@ -43,7 +43,7 @@ class GpgKeyImporter implements OpenPgpKeyImporterInterface
      * @throws MultipleGpgKeysForUserException
      * @throws RuntimeException
      */
-    public static function import(string $email, string $data): OpenPGPKey
+    public static function import(string $email, string $data): OpenPGPKeyInfo
     {
         $tempDir = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'userli_'.mt_rand().microtime(true);
         if (!mkdir($concurrentDirectory = $tempDir) && !is_dir($concurrentDirectory)) {
@@ -106,6 +106,6 @@ class GpgKeyImporter implements OpenPgpKeyImporterInterface
 
         self::recursiveRemoveDir($tempDir);
 
-        return new OpenPGPKey($keyData, $keyId, $fingerprint);
+        return new OpenPGPKeyInfo($keyData, $keyId, $fingerprint);
     }
 }

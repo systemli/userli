@@ -24,7 +24,7 @@ use App\Handler\MailCryptKeyHandler;
 use App\Handler\OpenPGPWkdHandler;
 use App\Handler\VoucherHandler;
 use App\Helper\PasswordUpdater;
-use App\Model\OpenPGPKey;
+use App\Model\OpenPGPKeyInfo;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -352,7 +352,7 @@ class StartController extends AbstractController
         $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
     }
 
-    private function importWKDKey(Request $request, User $user, string $key): OpenPGPKey
+    private function importWKDKey(Request $request, User $user, string $key): OpenPGPKeyInfo
     {
         try {
             $wkdKey = $this->wkdHandler->importKey($user, $key);
@@ -367,6 +367,6 @@ class StartController extends AbstractController
             $request->getSession()->getFlashBag()->add('error', 'flashes.wkd-key-upload-error-multiple-keys');
         }
 
-        return new OpenPGPKey();
+        return new OpenPGPKeyInfo();
     }
 }

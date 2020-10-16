@@ -6,7 +6,7 @@ use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
 use App\Importer\GpgKeyImporter;
-use App\Model\OpenPGPKey;
+use App\Model\OpenPGPKeyInfo;
 use PHPUnit\Framework\TestCase;
 
 class GpgKeyImporterTest extends TestCase
@@ -180,7 +180,7 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
     {
         $openPgpKey = GpgKeyImporter::import($this->email, $this->validKeyAscii);
 
-        $expected = new OpenPGPKey($this->validKeyBinary, $this->validKeyId, $this->validKeyFingerprint);
+        $expected = new OpenPGPKeyInfo($this->validKeyBinary, $this->validKeyId, $this->validKeyFingerprint);
         self::assertEquals($expected, $openPgpKey);
     }
 

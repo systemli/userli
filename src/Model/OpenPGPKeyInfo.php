@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-class OpenPGPKey
+class OpenPGPKeyInfo
 {
     /** @var string|null */
     private $keyData;
