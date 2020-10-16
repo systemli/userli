@@ -103,6 +103,7 @@ class GpgKeyHandler
         }
 
         try {
+            /** @var Crypt_GPG_Key $keys */
             $keys = $this->gpg->getKeys($this->email);
         } catch (Crypt_GPG_Exception $e) {
             $this->tearDownGPGHome();
