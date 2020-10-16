@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
+use App\Importer\GpgKeyImporter;
 use App\Model\OpenPGPKey;
 use Doctrine\Common\Persistence\ObjectManager;
 use RuntimeException;
@@ -15,9 +16,6 @@ class OpenPGPWkdHandler
 {
     /** @var ObjectManager */
     private $manager;
-
-    /** @var GpgKeyHandler */
-    private $keyHandler;
 
     /** @var string */
     private $wkdDirectory;
@@ -29,12 +27,10 @@ class OpenPGPWkdHandler
      * OpenPGPWkdHandler constructor.
      */
     public function __construct(ObjectManager $manager,
-                                GpgKeyHandler $keyHandler,
                                 string $wkdDirectory,
                                 string $wkdFormat)
     {
         $this->manager = $manager;
-        $this->keyHandler = $keyHandler;
         $this->wkdDirectory = $wkdDirectory;
         $this->wkdFormat = $wkdFormat;
     }
@@ -63,29 +59,23 @@ class OpenPGPWkdHandler
      */
     public function importKey(User $user, string $key): OpenPGPKey
     {
-        $this->keyHandler->import($user->getEmail(), $key);
-        $wkdKey = new OpenPGPKey($this->keyHandler->getKey(), $this->keyHandler->getId(), $this->keyHandler->getFingerprint());
-        $this->keyHandler->tearDownGPGHome();
+        $openPgpKey = GpgKeyImporter::import($user->getEmail(), $key);
 
-        $user->setWkdKey($wkdKey->getData());
+        $user->setWkdKey($openPgpKey->getData());
         $this->manager->flush();
 
         $this->exportKeyToWKD($user);
 
-        return $wkdKey;
+        return $openPgpKey;
     }
 
     public function getKey(User $user): OpenPGPKey
     {
-        if (null === $wkdKey = $user->getWkdKey()) {
+        if (null === $key = $user->getWkdKey()) {
             return new OpenPGPKey();
         }
 
-        $this->keyHandler->import($user->getEmail(), base64_decode($wkdKey));
-        $wkdKey = new OpenPGPKey($this->keyHandler->getKey(), $this->keyHandler->getId(), $this->keyHandler->getFingerprint());
-        $this->keyHandler->tearDownGPGHome();
-
-        return $wkdKey;
+        return GpgKeyImporter::import($user->getEmail(), base64_decode($key));
     }
 
     public function deleteKey(User $user): void
@@ -123,7 +113,7 @@ class OpenPGPWkdHandler
      */
     public function exportKeyToWKD(User $user): void
     {
-        if (null === $wkdKey = $user->getWkdKey()) {
+        if (null === $key = $user->getWkdKey()) {
             return;
         }
 
@@ -132,6 +122,6 @@ class OpenPGPWkdHandler
         $wkdHash = $this->wkdHash($localPart);
         $wkdKeyPath = $wkdPath.DIRECTORY_SEPARATOR.$wkdHash;
 
-        file_put_contents($wkdKeyPath, base64_decode($wkdKey));
+        file_put_contents($wkdKeyPath, base64_decode($key));
     }
 }

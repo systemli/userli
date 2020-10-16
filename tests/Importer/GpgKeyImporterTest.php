@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Tests\Handler;
+namespace App\Tests\Importer;
 
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
-use App\Handler\GpgKeyHandler;
+use App\Importer\GpgKeyImporter;
+use App\Model\OpenPGPKey;
 use PHPUnit\Framework\TestCase;
 
-class GpgKeyHandlerTest extends TestCase
+class GpgKeyImporterTest extends TestCase
 {
     private $email = 'alice@example.org';
     private $validKeyAscii = '-----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -177,35 +178,28 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
 
     public function testValidKey(): void
     {
-        $handler = new GpgKeyHandler();
-        $handler->import($this->email, $this->validKeyAscii);
+        $openPgpKey = GpgKeyImporter::import($this->email, $this->validKeyAscii);
 
-        self::assertEquals($this->validKeyBinary, $handler->getKey());
-        self::assertEquals($this->validKeyId, $handler->getId());
-        self::assertEquals($this->validKeyFingerprint, $handler->getFingerprint());
-
-        $handler->tearDownGPGHome();
+        $expected = new OpenPGPKey($this->validKeyBinary, $this->validKeyId, $this->validKeyFingerprint);
+        self::assertEquals($expected, $openPgpKey);
     }
 
     public function testBrokenKey(): void
     {
         $this->expectException(NoGpgDataException::class);
 
-        $handler = new GpgKeyHandler();
-        $handler->import($this->email, $this->brokenKeyAscii);
+        GpgKeyImporter::import($this->email, $this->brokenKeyAscii);
     }
 
     public function testOtherKey(): void {
         $this->expectException(NoGpgKeyForUserException::class);
 
-        $handler = new GpgKeyHandler();
-        $handler->import($this->email, $this->otherKeyAscii);
+        GpgKeyImporter::import($this->email, $this->otherKeyAscii);
     }
 
     public function testTwoKeys(): void {
         $this->expectException(MultipleGpgKeysForUserException::class);
 
-        $handler = new GpgKeyHandler();
-        $handler->import($this->email, $this->twoKeysAscii);
+        GpgKeyImporter::import($this->email, $this->twoKeysAscii);
     }
 }
