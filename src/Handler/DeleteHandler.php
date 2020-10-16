@@ -10,22 +10,25 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class DeleteHandler
 {
-    /**
-     * @var PasswordUpdater
-     */
+    /** @var PasswordUpdater */
     private $passwordUpdater;
-    /**
-     * @var ObjectManager
-     */
+
+    /** @var ObjectManager */
     private $manager;
+
+    /** @var OpenPGPWkdHandler */
+    private $wkdHandler;
 
     /**
      * DeleteHandler constructor.
      */
-    public function __construct(PasswordUpdater $passwordUpdater, ObjectManager $manager)
+    public function __construct(PasswordUpdater $passwordUpdater,
+                                ObjectManager $manager,
+                                OpenPGPWkdHandler $wkdHandler)
     {
         $this->passwordUpdater = $passwordUpdater;
         $this->manager = $manager;
+        $this->wkdHandler = $wkdHandler;
     }
 
     /**
@@ -65,6 +68,9 @@ class DeleteHandler
         // Erase MailCrypt keys
         $user->eraseMailCryptPublicKey();
         $user->eraseMailCryptSecretBox();
+
+        // Delete OpenPGP key from WKD
+        $this->wkdHandler->deleteKey($user);
 
         // Flag user as deleted
         $user->setDeleted(true);

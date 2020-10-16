@@ -5,6 +5,7 @@ namespace App\Tests\Handler;
 use App\Entity\Alias;
 use App\Entity\User;
 use App\Handler\DeleteHandler;
+use App\Handler\OpenPGPWkdHandler;
 use App\Helper\PasswordUpdater;
 use App\Repository\AliasRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -29,7 +30,10 @@ class DeleteHandlerTest extends TestCase
         $objectManager->method('getRepository')->willReturn($aliasRepositry);
         $objectManager->expects($this->any())->method('flush')->willReturn(true);
 
-        return new DeleteHandler($passwordUpdater, $objectManager);
+        $wkdHandler = $this->getMockBuilder(OpenPGPWkdHandler::class)
+            ->disableOriginalConstructor()->getMock();
+
+        return new DeleteHandler($passwordUpdater, $objectManager, $wkdHandler);
     }
 
     public function testDeleteAlias()
