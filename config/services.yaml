@@ -126,7 +126,7 @@ services:
         arguments:
             $encoderFactory: '@security.encoder_factory'
 
-    App\Handler\OpenPGPWkdHandler:
+    App\Handler\WkdHandler:
         arguments:
             $wkdDirectory: "%env(WKD_DIRECTORY)%"
             $wkdFormat: "%env(WKD_FORMAT)%"

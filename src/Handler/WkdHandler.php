@@ -12,7 +12,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use RuntimeException;
 use Tuupola\Base32;
 
-class OpenPGPWkdHandler
+class WkdHandler
 {
     /** @var ObjectManager */
     private $manager;
@@ -24,7 +24,7 @@ class OpenPGPWkdHandler
     private $wkdFormat;
 
     /**
-     * OpenPGPWkdHandler constructor.
+     * WkdHandler constructor.
      */
     public function __construct(ObjectManager $manager,
                                 string $wkdDirectory,

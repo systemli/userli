@@ -4,13 +4,12 @@ namespace App\Tests\Handler;
 
 use App\Entity\Domain;
 use App\Entity\User;
-use App\Importer\GpgKeyImporter;
-use App\Handler\OpenPGPWkdHandler;
+use App\Handler\WkdHandler;
 use App\Model\OpenPGPKeyInfo;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
-class OpenPGPWkdHandlerTest extends TestCase
+class WkdHandlerTest extends TestCase
 {
     private $user;
     private $localPart = 'alice';
@@ -41,7 +40,7 @@ class OpenPGPWkdHandlerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        return new OpenPGPWkdHandler($manager, $this->wkdDirectory, $this->wkdFormat);
+        return new WkdHandler($manager, $this->wkdDirectory, $this->wkdFormat);
     }
 
     public function testImportKey(): void

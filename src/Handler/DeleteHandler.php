@@ -16,7 +16,7 @@ class DeleteHandler
     /** @var ObjectManager */
     private $manager;
 
-    /** @var OpenPGPWkdHandler */
+    /** @var WkdHandler */
     private $wkdHandler;
 
     /**
@@ -24,7 +24,7 @@ class DeleteHandler
      */
     public function __construct(PasswordUpdater $passwordUpdater,
                                 ObjectManager $manager,
-                                OpenPGPWkdHandler $wkdHandler)
+                                WkdHandler $wkdHandler)
     {
         $this->passwordUpdater = $passwordUpdater;
         $this->manager = $manager;

@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgKeyForUserException;
-use App\Handler\OpenPGPWkdHandler;
+use App\Handler\WkdHandler;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class WkdImportKeyCommand extends Command
 {
     /**
-     * @var OpenPGPWkdHandler
+     * @var WkdHandler
      */
     private $handler;
 
@@ -24,7 +24,7 @@ class WkdImportKeyCommand extends Command
      */
     private $repository;
 
-    public function __construct(ObjectManager $manager, OpenPGPWkdHandler $handler)
+    public function __construct(ObjectManager $manager, WkdHandler $handler)
     {
         $this->handler = $handler;
         $this->repository = $manager->getRepository('App:User');

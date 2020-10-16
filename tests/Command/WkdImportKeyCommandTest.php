@@ -4,7 +4,7 @@ namespace App\Tests\Command;
 
 use App\Command\WkdImportKeyCommand;
 use App\Entity\User;
-use App\Handler\OpenPGPWkdHandler;
+use App\Handler\WkdHandler;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
@@ -40,11 +40,11 @@ class WkdImportKeyCommandTest extends TestCase
 
         $manager->method('getRepository')->willReturn($repository);
 
-        $openPGPWkdHandler = $this->getMockBuilder(OpenPGPWkdHandler::class)
+        $wkdHandler = $this->getMockBuilder(WkdHandler::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->command = new WkdImportKeyCommand($manager, $openPGPWkdHandler);
+        $this->command = new WkdImportKeyCommand($manager, $wkdHandler);
     }
 
     public function testExecute(): void

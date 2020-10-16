@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Handler\OpenPGPWkdHandler;
+use App\Handler\WkdHandler;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class WkdShowKeyCommand extends Command
 {
     /**
-     * @var OpenPGPWkdHandler
+     * @var WkdHandler
      */
     private $handler;
 
@@ -22,7 +22,7 @@ class WkdShowKeyCommand extends Command
      */
     private $repository;
 
-    public function __construct(ObjectManager $manager, OpenPGPWkdHandler $handler)
+    public function __construct(ObjectManager $manager, WkdHandler $handler)
     {
         $this->handler = $handler;
         $this->repository = $manager->getRepository('App:User');

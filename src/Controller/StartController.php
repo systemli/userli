@@ -21,7 +21,7 @@ use App\Form\VoucherCreateType;
 use App\Form\WKDKeyType;
 use App\Handler\AliasHandler;
 use App\Handler\MailCryptKeyHandler;
-use App\Handler\OpenPGPWkdHandler;
+use App\Handler\WkdHandler;
 use App\Handler\VoucherHandler;
 use App\Helper\PasswordUpdater;
 use App\Model\OpenPGPKeyInfo;
@@ -61,7 +61,7 @@ class StartController extends AbstractController
      */
     private $manager;
     /**
-     * @var OpenPGPWkdHandler
+     * @var WkdHandler
      */
     private $wkdHandler;
 
@@ -74,7 +74,7 @@ class StartController extends AbstractController
                                 VoucherCreator $voucherCreator,
                                 MailCryptKeyHandler $mailCryptKeyHandler,
                                 ObjectManager $manager,
-                                OpenPGPWkdHandler $wkdHandler)
+                                WkdHandler $wkdHandler)
     {
         $this->aliasHandler = $aliasHandler;
         $this->passwordUpdater = $passwordUpdater;

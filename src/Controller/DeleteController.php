@@ -7,7 +7,7 @@ use App\Form\Model\Delete;
 use App\Form\UserDeleteType;
 use App\Form\WKDDeleteType;
 use App\Handler\DeleteHandler;
-use App\Handler\OpenPGPWkdHandler;
+use App\Handler\WkdHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,14 +21,14 @@ class DeleteController extends AbstractController
      */
     private $deleteHandler;
     /**
-     * @var OpenPGPWkdHandler
+     * @var WkdHandler
      */
     private $wkdHandler;
 
     /**
      * DeleteController constructor.
      */
-    public function __construct(DeleteHandler $deleteHandler, OpenPGPWkdHandler $wkdHandler)
+    public function __construct(DeleteHandler $deleteHandler, WkdHandler $wkdHandler)
     {
         $this->deleteHandler = $deleteHandler;
         $this->wkdHandler = $wkdHandler;
