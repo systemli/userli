@@ -39,7 +39,8 @@ class OpenPGPWkdHandler
         $this->wkdFormat = $wkdFormat;
     }
 
-    private function getWkdPath(string $domain): string {
+    private function getWkdPath(string $domain): string
+    {
         if ('advanced' === $this->wkdFormat) {
             $wkdPath = $this->wkdDirectory.DIRECTORY_SEPARATOR.strtolower($domain).DIRECTORY_SEPARATOR.'hu';
         } elseif ('simple' === $this->wkdFormat) {

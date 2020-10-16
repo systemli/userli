@@ -12,13 +12,13 @@ use App\Exception\NoGpgKeyForUserException;
 use App\Exception\ValidationException;
 use App\Form\CustomAliasCreateType;
 use App\Form\Model\AliasCreate;
-use App\Form\Model\WKDKey;
 use App\Form\Model\PasswordChange;
 use App\Form\Model\VoucherCreate;
-use App\Form\WKDKeyType;
+use App\Form\Model\WKDKey;
 use App\Form\PasswordChangeType;
 use App\Form\RandomAliasCreateType;
 use App\Form\VoucherCreateType;
+use App\Form\WKDKeyType;
 use App\Handler\AliasHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\OpenPGPWkdHandler;
@@ -357,6 +357,7 @@ class StartController extends AbstractController
         try {
             $wkdKey = $this->wkdHandler->importKey($user, $key);
             $request->getSession()->getFlashBag()->add('success', 'flashes.wkd-key-upload-successful');
+
             return $wkdKey;
         } catch (NoGpgDataException $e) {
             $request->getSession()->getFlashBag()->add('error', 'flashes.wkd-key-upload-error-no-openpgp');

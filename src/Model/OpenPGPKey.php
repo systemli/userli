@@ -15,7 +15,8 @@ class OpenPGPKey
 
     public function __construct(?string $keyData = null,
                                 ?string $keyId = null,
-                                ?string $fingerprint = null) {
+                                ?string $fingerprint = null)
+    {
         $this->keyData = $keyData;
         $this->keyId = $keyId;
         $this->fingerprint = $fingerprint;

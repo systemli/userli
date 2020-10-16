@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Form\AliasDeleteType;
 use App\Form\Model\Delete;
-use App\Form\WKDDeleteType;
 use App\Form\UserDeleteType;
+use App\Form\WKDDeleteType;
 use App\Handler\DeleteHandler;
 use App\Handler\OpenPGPWkdHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

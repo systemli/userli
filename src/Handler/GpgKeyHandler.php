@@ -121,7 +121,7 @@ class GpgKeyHandler
         }
 
         try {
-            $this->keyData= base64_encode($this->gpg->exportPublicKey($this->email, false));
+            $this->keyData = base64_encode($this->gpg->exportPublicKey($this->email, false));
         } catch (Crypt_GPG_Exception | \Crypt_GPG_KeyNotFoundException $e) {
             $this->tearDownGPGHome();
             throw new RuntimeException('Failed to export key: '.$e->getMessage());

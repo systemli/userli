@@ -75,6 +75,7 @@ class WkdImportKeyCommand extends Command
             $wkdKey = $this->handler->importKey($user, $content);
         } catch (NoGpgKeyForUserException | MultipleGpgKeysForUserException $e) {
             $output->writeln(sprintf('Error: %s in %s', $e->getMessage(), $file));
+
             return;
         }
 
