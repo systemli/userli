@@ -75,24 +75,4 @@ class UserRepository extends AbstractRepository
             ->andWhere(Criteria::expr()->eq('mailCrypt', true))
         )->count();
     }
-
-    /**
-     * @return int
-     */
-    public function countUsersWithWkdKey()
-    {
-        return $this->matching(Criteria::create()
-            ->where(Criteria::expr()->eq('deleted', false))
-            ->andWhere(Criteria::expr()->neq('wkdKey', null))
-        )->count();
-    }
-
-    /**
-     * @return User[]|array
-     */
-    public function findUsersWithWkdKey(): array
-    {
-        return $this->matching(Criteria::create()
-            ->where(Criteria::expr()->neq('wkdKey', null)))->getValues();
-    }
 }

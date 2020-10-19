@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Repository\OpenPgpKeyRepository;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
@@ -17,7 +18,12 @@ class MuninAccountCommand extends Command
     /**
      * @var UserRepository
      */
-    private $repository;
+    private $userRepository;
+
+    /**
+     * @var OpenPgpKeyRepository
+     */
+    private $openPgpKeyRepository;
 
     /**
      * MuninAccountCommand constructor.
@@ -25,7 +31,8 @@ class MuninAccountCommand extends Command
     public function __construct(ObjectManager $manager)
     {
         parent::__construct();
-        $this->repository = $manager->getRepository('App:User');
+        $this->userRepository = $manager->getRepository('App:User');
+        $this->openPgpKeyRepository = $manager->getRepository('App:OpenPgpKey');
     }
 
     /**
@@ -67,17 +74,17 @@ class MuninAccountCommand extends Command
             $output->writeln('mail_crypt_keys.label Active accounts with mailbox encryption');
             $output->writeln('mail_crypt_keys.type GAUGE');
             $output->writeln('mail_crypt_keys.min 0');
-            $output->writeln('wkd_keys.label Active accounts with WKD key');
-            $output->writeln('wkd_keys.type GAUGE');
-            $output->writeln('wkd_keys.min 0');
+            $output->writeln('openpgp_keys.label OpenPGP keys');
+            $output->writeln('openpgp_keys.type GAUGE');
+            $output->writeln('openpgp_keys.min 0');
 
             return;
         }
 
-        $output->writeln(sprintf('account.value %d', $this->repository->countUsers()));
-        $output->writeln(sprintf('deleted.value %d', $this->repository->countDeletedUsers()));
-        $output->writeln(sprintf('recovery_tokens.value %d', $this->repository->countUsersWithRecoveryToken()));
-        $output->writeln(sprintf('mail_crypt_keys.value %d', $this->repository->countUsersWithMailCrypt()));
-        $output->writeln(sprintf('wkd_keys.value %d', $this->repository->countUsersWithWkdKey()));
+        $output->writeln(sprintf('account.value %d', $this->userRepository->countUsers()));
+        $output->writeln(sprintf('deleted.value %d', $this->userRepository->countDeletedUsers()));
+        $output->writeln(sprintf('recovery_tokens.value %d', $this->userRepository->countUsersWithRecoveryToken()));
+        $output->writeln(sprintf('mail_crypt_keys.value %d', $this->userRepository->countUsersWithMailCrypt()));
+        $output->writeln(sprintf('openpgp_keys.value %d', $this->openPgpKeyRepository->countKeys()));
     }
 }

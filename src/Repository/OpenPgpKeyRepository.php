@@ -29,4 +29,9 @@ class OpenPgpKeyRepository extends AbstractRepository
     {
         return $this->findOneBy(['email' => $email]);
     }
+
+    public function countKeys(): int
+    {
+        return $this->count();
+    }
 }
