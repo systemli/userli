@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Form\AliasDeleteType;
 use App\Form\Model\Delete;
 use App\Form\UserDeleteType;
-use App\Form\WKDDeleteType;
+use App\Form\OpenPgpDeleteType;
 use App\Handler\DeleteHandler;
 use App\Handler\WkdHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -103,11 +103,11 @@ class DeleteController extends AbstractController
         );
     }
 
-    public function deleteWKDAction(Request $request)
+    public function deleteOpenPgpAction(Request $request)
     {
         $user = $this->getUser();
 
-        $form = $this->createForm(WKDDeleteType::class, new Delete());
+        $form = $this->createForm(OpenPgpDeleteType::class, new Delete());
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
@@ -115,14 +115,14 @@ class DeleteController extends AbstractController
             if ($form->isValid()) {
                 $this->wkdHandler->deleteKey($user->getEmail());
 
-                $request->getSession()->getFlashBag()->add('success', 'flashes.wkd-deletion-successful');
+                $request->getSession()->getFlashBag()->add('success', 'flashes.openpgp-deletion-successful');
 
-                return $this->redirect($this->generateUrl('wkd'));
+                return $this->redirect($this->generateUrl('openpgp'));
             }
         }
 
         return $this->render(
-            'WKD/delete.html.twig',
+            'OpenPgp/delete.html.twig',
             [
                 'form' => $form->createView(),
                 'user' => $user,

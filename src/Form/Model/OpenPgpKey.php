@@ -4,7 +4,7 @@ namespace App\Form\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 
-class WKDKey
+class OpenPgpKey
 {
     /**
      * @ORM\Column(type="string")

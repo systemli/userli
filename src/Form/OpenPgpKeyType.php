@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Form\Model\WKDKey;
+use App\Form\Model\OpenPgpKey;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -16,9 +16,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class WKDKeyType extends AbstractType implements EventSubscriberInterface
+class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
 {
-    public const NAME = 'upload_wkd_key';
+    public const NAME = 'upload_openpgp_key';
 
     /** @var TranslatorInterface */
     private $translator;
@@ -32,8 +32,8 @@ class WKDKeyType extends AbstractType implements EventSubscriberInterface
     {
         $builder
             ->add('keyFile', FileType::class, [
-                'label' => 'form.wkd-key-file',
-                'help' => 'form.wkd-key-file',
+                'label' => 'form.openpgp-key-file',
+                'help' => 'form.openpgp-key-file',
                 'required' => false,
                 'constraints' => [
                     new File([
@@ -42,16 +42,16 @@ class WKDKeyType extends AbstractType implements EventSubscriberInterface
                             'application/pgp-keys',
                             'text/plain',
                         ],
-                        'mimeTypesMessage' => $this->translator->trans('form.wkd-key-file-mimetype'),
+                        'mimeTypesMessage' => $this->translator->trans('form.openpgp-key-file-mimetype'),
                     ]),
                 ],
             ])
             ->add('keyText', TextareaType::class, [
-                'label' => 'form.wkd-key-text',
+                'label' => 'form.openpgp-key-text',
                 'required' => false,
-                'attr' => ['placeholder' => 'form.wkd-key-text-placeholder'],
+                'attr' => ['placeholder' => 'form.openpgp-key-text-placeholder'],
             ])
-            ->add('submit', SubmitType::class, ['label' => 'form.wkd-key-submit']);
+            ->add('submit', SubmitType::class, ['label' => 'form.openpgp-key-submit']);
 
         $builder->addEventSubscriber($this);
     }
@@ -61,7 +61,7 @@ class WKDKeyType extends AbstractType implements EventSubscriberInterface
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => WKDKey::class]);
+        $resolver->setDefaults(['data_class' => OpenPgpKey::class]);
     }
 
     public function getBlockPrefix(): string
@@ -82,7 +82,7 @@ class WKDKeyType extends AbstractType implements EventSubscriberInterface
 
         if ((null === $submittedData->getKeyFile() && null === $submittedData->getKeyText()) ||
             (null !== $submittedData->getKeyFile() && null !== $submittedData->getKeyText())) {
-            throw new TransformationFailedException('exactly one of keyFile or keyText must be set', 0, null, $this->translator->trans('form.wkd-key-select-one'));
+            throw new TransformationFailedException('exactly one of keyFile or keyText must be set', 0, null, $this->translator->trans('form.openpgp-key-select-one'));
         }
     }
 }

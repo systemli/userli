@@ -8,15 +8,15 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class WKDDeleteType extends AbstractType
+class OpenPgpDeleteType extends AbstractType
 {
-    const NAME = 'delete_wkd';
+    const NAME = 'delete_openpgp';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('password', PasswordType::class, ['label' => 'form.delete-password'])
-            ->add('submit', SubmitType::class, ['label' => 'form.wkd-delete']);
+            ->add('submit', SubmitType::class, ['label' => 'form.openpgp-delete']);
     }
 
     /**

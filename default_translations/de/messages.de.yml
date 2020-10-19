@@ -17,10 +17,10 @@ start:
   vouchers-desc: Lade Freund*innen ein
   webmail: Webmail
   webmail-desc: Lies und schreib E-Mails
-  wkd-delete: OpenPGP-Schlüssel löschen
-  wkd-settings: OpenPGP
-  wkd-settings-desc: Veröffentliche deinen Schlüssel
-  wkd-settings-title: OpenPGP-Schlüssel im Web Key Directory veröffentlichen
+  openpgp-delete: OpenPGP-Schlüssel löschen
+  openpgp-settings: OpenPGP
+  openpgp-settings-desc: Veröffentliche deinen Schlüssel
+  openpgp-settings-title: OpenPGP-Schlüssel im Web Key Directory veröffentlichen
 
 index:
   title: Verwalte deinen E-Mail Account
@@ -91,14 +91,14 @@ form:
   domain: Domäne
   plain-password_confirmation: Neues Passwort bestätigen
   plain-password: Neues Passwort
-  wkd-key-file: Deinen Schlüssel als Datei hochladen:
-  wkd-key-file-mimetype: Die hochgeladende Datei enthält keine OpenPGP-Schlüssel.
-  wkd-key-upload-or: oder
-  wkd-key-text: Deinen Schlüssel als Text einfügen:
-  wkd-key-text-placeholder: OpenPGP-Schlüssel im ASCII-Format
-  wkd-key-select-one: Bitte lade den Schlüssel entweder als Datei oder im ASCII Format hoch.
-  wkd-key-submit: OpenPGP-Schlüssel veröffentlichen
-  wkd-delete: OpenPGP-Schlüssel löschen
+  openpgp-key-file: Deinen Schlüssel als Datei hochladen:
+  openpgp-key-file-mimetype: Die hochgeladende Datei enthält keine OpenPGP-Schlüssel.
+  openpgp-key-upload-or: oder
+  openpgp-key-text: Deinen Schlüssel als Text einfügen:
+  openpgp-key-text-placeholder: OpenPGP-Schlüssel im ASCII-Format
+  openpgp-key-select-one: Bitte lade den Schlüssel entweder als Datei oder im ASCII Format hoch.
+  openpgp-key-submit: OpenPGP-Schlüssel veröffentlichen
+  openpgp-delete: OpenPGP-Schlüssel löschen
 recovery:
   header: Account wiederherstellen
   lead: Passwort zurücksetzen mit Hilfe des Wiederherstellungscodes
@@ -169,7 +169,7 @@ delete:
     headline: Account löschen
     lead: Mit der Bestätigung deines Passworts kannst du deinen Account unwiderruflich
       löschen.
-  wkd:
+  openpgp:
     headline: OpenPGP-Schlüssel löschen
     lead: Mit der Bestätigung deines Passworts kannst du deinen OpenPGP-Schlüssel aus
       dem Web Key Directory löschen.
@@ -203,11 +203,11 @@ flashes:
   recovery-password-changed: Dein Passwort wurde geändert.
   recovery-next-login: Du kannst dich nun einloggen.
   revocery-reauthenticate: Etwas ist schief gelaufen. Bitte erneut authentifizieren!
-  wkd-deletion-successful: Dein OpenPGP-Schlüssel wurde gelöscht.
-  wkd-key-upload-successful: Dein OpenPGP-Schlüssel wurde hochgeladen.
-  wkd-key-upload-error-no-openpgp: Die hochgadene Datei enthält keine OpenPGP-Schlüssel.
-  wkd-key-upload-error-no-keys: Die hochgeladene Datei enthält keine Schlüssel für deine E-Mail-Adresse.
-  wkd-key-upload-error-multiple-keys: Die hochgeladene Datei enhält mehr als einen Schlüssel für deine
+  openpgp-deletion-successful: Dein OpenPGP-Schlüssel wurde gelöscht.
+  openpgp-key-upload-successful: Dein OpenPGP-Schlüssel wurde hochgeladen.
+  openpgp-key-upload-error-no-openpgp: Die hochgadene Datei enthält keine OpenPGP-Schlüssel.
+  openpgp-key-upload-error-no-keys: Die hochgeladene Datei enthält keine Schlüssel für deine E-Mail-Adresse.
+  openpgp-key-upload-error-multiple-keys: Die hochgeladene Datei enhält mehr als einen Schlüssel für deine
     E-Mail-Adresse. Bitte lade nur einen Schlüssel hoch.
 flash_batch_remove_vouchers_success: Nicht eingelöste Einladungscodes gelöscht.
 error:
@@ -295,7 +295,7 @@ init_domain:
   lead: Vielen Dank fürs installieren von Userli. Derzeit sind keine Domänen oder
     Konten vorhanden.
 init.title: Erstellen der Erstkonfiguration
-wkd:
+openpgp:
   key-info: Veröffentlichter OpenPGP-Schlüssel
   delete-button: OpenPGP-Schlüssel löschen
   information: Information

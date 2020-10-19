@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}{{ "start.openpgp-settings"|trans }}{% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('index') }}">Start</a></li>
+        <li class="active">{{ "start.openpgp-settings"|trans }}</li>
+    </ol>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <h3>{{ "start.openpgp-settings-title"|trans }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            {% form_theme openpgp_form 'Form/fields.html.twig' %}
+            {{ form_start(openpgp_form) }}
+            <div class="form-group">
+                {{ form_errors(openpgp_form) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(openpgp_form.keyFile) }}
+                {{ form_errors(openpgp_form.keyFile) }}
+                {{ form_widget(openpgp_form.keyFile) }}
+            </div>
+
+            <div class="form-group">
+                <label><i>{{ "form.openpgp-key-upload-or"|trans }}</i></label>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(openpgp_form.keyText) }}
+                {{ form_errors(openpgp_form.keyText) }}
+                {{ form_widget(openpgp_form.keyText, {'attr': {'class': 'form-control' }}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_widget(openpgp_form.submit, {'attr': {'class': 'btn btn-primary' }}) }}
+            </div>
+
+            {{ form_end(openpgp_form) }}
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="alert alert-info">
+                <p class="lead">{{ "openpgp.information"|trans }}</p>
+                <p>{{ "openpgp.information-details"|trans|raw }}</p>
+            </div>
+        </div>
+
+        {% if openpgp_id and openpgp_fingerprint %}
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <h4>{{ "openpgp.key-info"|trans }}</h4>
+                <div class="alert alert-info">
+                    <div>
+                        <label>{{ "openpgp.keyid-label"|trans }}</label>
+                        {{ openpgp_id }}
+                    </div>
+                    <div>
+                        <label>{{ "openpgp.fingerprint-label"|trans }}</label>
+                        {{ openpgp_fingerprint }}
+                    </div>
+                </div>
+                <p><a class="btn btn-danger btn-primary" href="{{ url('openpgp_delete') }}">{{ "openpgp.delete-button"|trans }}</a></p>
+            </div>
+        {% endif %}
+    </div>
+{%  endblock %}
