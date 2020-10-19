@@ -53,6 +53,9 @@ class GpgKeyImporter implements OpenPgpKeyImporterInterface
 
         try {
             $gpg = new Crypt_GPG(['homedir' => $tempDir]);
+            $gpg->setEngineOptions([
+                'import' => sprintf('--import-filter keep-uid="uid =~ <%s>"', $email),
+            ]);
         } catch (Crypt_GPG_FileException | \PEAR_Exception $e) {
             self::recursiveRemoveDir($tempDir);
             throw new RuntimeException('Failed to read GnuPG home directory: '.$e->getMessage());
