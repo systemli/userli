@@ -292,3 +292,4 @@ openpgp:
     to discover your key automatically and securely.
   keyid-label: Key ID:
   fingerprint-label: Fingerprint:
+  expiretime-label: Expiry date:

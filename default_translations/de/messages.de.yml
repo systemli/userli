@@ -306,3 +306,4 @@ openpgp:
     und sicher zu finden.
   keyid-label: Schlüssel ID:
   fingerprint-label: Fingerprint:
+  expiretime-label: Ablaufdatum:

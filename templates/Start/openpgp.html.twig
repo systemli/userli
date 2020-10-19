@@ -64,6 +64,12 @@
                         <label>{{ "openpgp.fingerprint-label"|trans }}</label>
                         {{ openpgp_fingerprint }}
                     </div>
+                    {% if openpgp_expiretime %}
+                        <div>
+                            <label>{{ "openpgp.expiretime-label"|trans }}</label>
+                            {{ openpgp_expiretime|localizeddate('medium', 'short') }}
+                        </div>
+                    {% endif %}
                 </div>
                 <p><a class="btn btn-danger btn-primary" href="{{ url('openpgp_delete') }}">{{ "openpgp.delete-button"|trans }}</a></p>
             </div>
