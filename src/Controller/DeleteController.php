@@ -113,7 +113,7 @@ class DeleteController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $this->wkdHandler->deleteKey($user);
+                $this->wkdHandler->deleteKey($user->getEmail());
 
                 $request->getSession()->getFlashBag()->add('success', 'flashes.wkd-deletion-successful');
 

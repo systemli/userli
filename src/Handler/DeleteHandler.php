@@ -70,7 +70,7 @@ class DeleteHandler
         $user->eraseMailCryptSecretBox();
 
         // Delete OpenPGP key from WKD
-        $this->wkdHandler->deleteKey($user);
+        $this->wkdHandler->deleteKey($user->getEmail());
 
         // Flag user as deleted
         $user->setDeleted(true);

@@ -5,14 +5,14 @@ namespace App\Command;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgKeyForUserException;
 use App\Handler\WkdHandler;
-use App\Repository\UserRepository;
+use App\Repository\OpenPgpKeyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class WkdImportKeyCommand extends Command
+class OpenPgpImportKeyCommand extends Command
 {
     /**
      * @var WkdHandler
@@ -20,14 +20,14 @@ class WkdImportKeyCommand extends Command
     private $handler;
 
     /**
-     * @var UserRepository
+     * @var OpenPgpKeyRepository
      */
     private $repository;
 
     public function __construct(ObjectManager $manager, WkdHandler $handler)
     {
         $this->handler = $handler;
-        $this->repository = $manager->getRepository('App:User');
+        $this->repository = $manager->getRepository('App:OpenPgpKey');
         parent::__construct();
     }
 
@@ -37,12 +37,12 @@ class WkdImportKeyCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('app:users:wkd:import-key')
-            ->setDescription('Import WKD key for user')
+            ->setName('app:openpgp:import-key')
+            ->setDescription('Import OpenPGP key for email')
             ->addArgument(
                 'email',
                 InputOption::VALUE_REQUIRED,
-                'email address of the user')
+                'email address of the OpenPGP key')
             ->addArgument(
                 'file',
                 InputOption::VALUE_REQUIRED,
@@ -58,12 +58,6 @@ class WkdImportKeyCommand extends Command
         $email = $input->getArgument('email');
         $file = $input->getArgument('file');
 
-        // Check if user exists
-        $user = $this->repository->findByEmail($email);
-        if (null === $user) {
-            throw new \RuntimeException('User not found: '.$email);
-        }
-
         // Read contents from file
         if (!is_file($file)) {
             throw new \RuntimeException('File not found: '.$file);
@@ -72,13 +66,13 @@ class WkdImportKeyCommand extends Command
 
         // Import the key
         try {
-            $wkdKey = $this->handler->importKey($user, $content);
+            $openPgpKeyInfo = $this->handler->importKey($content, $email);
         } catch (NoGpgKeyForUserException | MultipleGpgKeysForUserException $e) {
             $output->writeln(sprintf('Error: %s in %s', $e->getMessage(), $file));
 
             return;
         }
 
-        $output->writeln(sprintf('Imported WKD key for user %s: %s', $user->getEmail(), $wkdKey->getFingerprint()));
+        $output->writeln(sprintf('Imported OpenPGP key for email %s: %s', $email, $openPgpKeyInfo->getFingerprint()));
     }
 }

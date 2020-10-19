@@ -2,9 +2,9 @@
 
 namespace App\Importer;
 
-use App\Model\OpenPGPKeyInfo;
+use App\Model\OpenPpgKeyInfo;
 
 interface OpenPgpKeyImporterInterface
 {
-    public static function import(string $email, string $data): OpenPGPKeyInfo;
+    public static function import(string $email, string $data): OpenPpgKeyInfo;
 }

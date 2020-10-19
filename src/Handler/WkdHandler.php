@@ -2,12 +2,14 @@
 
 namespace App\Handler;
 
+use App\Entity\OpenPgpKey;
 use App\Entity\User;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
 use App\Importer\GpgKeyImporter;
-use App\Model\OpenPGPKeyInfo;
+use App\Model\OpenPpgKeyInfo;
+use App\Repository\OpenPgpKeyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use RuntimeException;
 use Tuupola\Base32;
@@ -16,6 +18,9 @@ class WkdHandler
 {
     /** @var ObjectManager */
     private $manager;
+
+    /** @var OpenPgpKeyRepository */
+    private $repository;
 
     /** @var string */
     private $wkdDirectory;
@@ -31,6 +36,7 @@ class WkdHandler
                                 string $wkdFormat)
     {
         $this->manager = $manager;
+        $this->repository = $manager->getRepository('App:OpenPgpKey');
         $this->wkdDirectory = $wkdDirectory;
         $this->wkdFormat = $wkdFormat;
     }
@@ -53,51 +59,6 @@ class WkdHandler
     }
 
     /**
-     * @throws NoGpgDataException
-     * @throws NoGpgKeyForUserException
-     * @throws MultipleGpgKeysForUserException
-     */
-    public function importKey(User $user, string $key): OpenPGPKeyInfo
-    {
-        $openPgpKeyInfo = GpgKeyImporter::import($user->getEmail(), $key);
-
-        $user->setWkdKey($openPgpKeyInfo->getData());
-        $this->manager->flush();
-
-        $this->exportKeyToWKD($user);
-
-        return $openPgpKeyInfo;
-    }
-
-    public function getKey(User $user): OpenPGPKeyInfo
-    {
-        if (null === $key = $user->getWkdKey()) {
-            return new OpenPGPKeyInfo();
-        }
-
-        return GpgKeyImporter::import($user->getEmail(), base64_decode($key));
-    }
-
-    public function deleteKey(User $user): void
-    {
-        if (null === $user->getWkdKey()) {
-            return;
-        }
-
-        $wkdPath = $this->getWkdPath($user->getDomain());
-        $localPart = explode('@', $user->getEmail())[0];
-        $wkdHash = $this->wkdHash($localPart);
-        $wkdKeyPath = $wkdPath.DIRECTORY_SEPARATOR.$wkdHash;
-
-        if (is_file($wkdKeyPath) && !unlink($wkdKeyPath)) {
-            throw new RuntimeException(sprintf('Failed to remove key from WKD directory path %s', $wkdKeyPath));
-        }
-
-        $user->setWkdKey(null);
-        $this->manager->flush();
-    }
-
-    /**
      * Encodes the email address local part according to the WKD Web Wey Directory RFC draft.
      * See https://tools.ietf.org/html/draft-koch-openpgp-webkey-service-10 for further information.
      */
@@ -108,20 +69,73 @@ class WkdHandler
         return $base32Encoder->encode(sha1(strtolower($localPart), true));
     }
 
-    /**
-     * @throws RuntimeException
-     */
-    public function exportKeyToWKD(User $user): void
+    private function getWkdKeyPath(string $email): string
     {
-        if (null === $key = $user->getWkdKey()) {
+        [$localPart, $domain] = explode('@', $email);
+        $wkdPath = $this->getWkdPath($domain);
+        $wkdHash = $this->wkdHash($localPart);
+        return $wkdPath.DIRECTORY_SEPARATOR.$wkdHash;
+    }
+
+    /**
+     * @throws NoGpgDataException
+     * @throws NoGpgKeyForUserException
+     * @throws MultipleGpgKeysForUserException
+     */
+    public function importKey(string $key, string $email, ?User $user = null): OpenPpgKeyInfo
+    {
+        $openPgpKeyInfo = GpgKeyImporter::import($email, $key);
+
+        if (null === $openPgpKey = $this->repository->findByEmail($email)) {
+            $openPgpKey = new OpenPgpKey();
+        }
+
+        $openPgpKey->setKeyId($openPgpKeyInfo->getId());
+        $openPgpKey->setKeyFingerprint($openPgpKeyInfo->getFingerprint());
+        $openPgpKey->setKeyData($openPgpKeyInfo->getData());
+        $openPgpKey->setEmail($email);
+        if (null !== $user) {
+            $openPgpKey->setUser($user);
+        }
+
+        $this->manager->persist($openPgpKey);
+        $this->manager->flush();
+
+        $this->exportKeyToWkd($openPgpKey);
+
+        return $openPgpKeyInfo;
+    }
+
+    public function getKey(string $email): OpenPpgKeyInfo
+    {
+        if (null === $openPgpKey = $this->repository->findByEmail($email)) {
+            return new OpenPpgKeyInfo();
+        }
+
+        return GpgKeyImporter::import($email, $openPgpKey->toBinary());
+    }
+
+    public function deleteKey(string $email): void
+    {
+        if (null === $openPgpKey = $this->repository->findByEmail($email)) {
             return;
         }
 
-        $wkdPath = $this->getWkdPath($user->getDomain());
-        $localPart = explode('@', $user->getEmail())[0];
-        $wkdHash = $this->wkdHash($localPart);
-        $wkdKeyPath = $wkdPath.DIRECTORY_SEPARATOR.$wkdHash;
+        $wkdKeyPath = $this->getWkdKeyPath($email);
 
-        file_put_contents($wkdKeyPath, base64_decode($key));
+        if (is_file($wkdKeyPath) && !unlink($wkdKeyPath)) {
+            throw new RuntimeException(sprintf('Failed to remove key from WKD directory path %s', $wkdKeyPath));
+        }
+
+        $this->manager->remove($openPgpKey);
+        $this->manager->flush();
+    }
+
+    /**
+     * @throws RuntimeException
+     */
+    public function exportKeyToWkd(OpenPgpKey $openPgpKey): void
+    {
+        file_put_contents($this->getWkdKeyPath($openPgpKey->getEmail()), $openPgpKey->toBinary());
     }
 }

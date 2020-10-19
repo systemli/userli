@@ -23,7 +23,7 @@ use App\Traits\RecoverySecretBoxTrait;
 use App\Traits\RecoveryStartTimeTrait;
 use App\Traits\SaltTrait;
 use App\Traits\UpdatedTimeTrait;
-use App\Traits\WkdKeyTrait;
+use App\Traits\OpenPgpKeyTrait;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -49,7 +49,7 @@ class User implements UserInterface, EncoderAwareInterface
     use MailCryptSecretBoxTrait;
     use PlainMailCryptPrivateKeyTrait;
     use MailCryptPublicKeyTrait;
-    use WkdKeyTrait;
+    use OpenPgpKeyTrait;
 
     const CURRENT_PASSWORD_VERSION = 2;
 

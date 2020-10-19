@@ -3,14 +3,14 @@
 namespace App\Command;
 
 use App\Handler\WkdHandler;
-use App\Repository\UserRepository;
+use App\Repository\OpenPgpKeyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class WkdShowKeyCommand extends Command
+class OpenPgpShowKeyCommand extends Command
 {
     /**
      * @var WkdHandler
@@ -18,14 +18,14 @@ class WkdShowKeyCommand extends Command
     private $handler;
 
     /**
-     * @var UserRepository
+     * @var OpenPgpKeyRepository
      */
     private $repository;
 
     public function __construct(ObjectManager $manager, WkdHandler $handler)
     {
         $this->handler = $handler;
-        $this->repository = $manager->getRepository('App:User');
+        $this->repository = $manager->getRepository('App:OpenPgpKey');
         parent::__construct();
     }
 
@@ -35,12 +35,12 @@ class WkdShowKeyCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('app:users:wkd:show-key')
-            ->setDescription('Show WKD key of user')
+            ->setName('app:openpgp:show-key')
+            ->setDescription('Show OpenPGP key of email')
             ->addArgument(
                 'email',
                 InputOption::VALUE_REQUIRED,
-                'email address of the user');
+                'email address of the OpenPGP key');
     }
 
     /**
@@ -51,15 +51,12 @@ class WkdShowKeyCommand extends Command
         // parse arguments
         $email = $input->getArgument('email');
 
-        // Check if user exists
-        $user = $this->repository->findByEmail($email);
-        if (null === $user) {
-            throw new \RuntimeException('User not found: '.$email);
+        // Check if OpenPGP key exists
+        $openPgpKey = $this->repository->findByEmail($email);
+        if (null === $openPgpKey) {
+            $output->writeln(sprintf('No OpenPGP key found for email %s', $email));
+        } else {
+            $output->writeln(sprintf('OpenPGP key for email %s: %s', $openPgpKey->getEmail(), $openPgpKey->getKeyFingerprint()));
         }
-
-        // Get fingerprint of the key
-        $wkdKey = $this->handler->getKey($user);
-
-        $output->writeln(sprintf('WKD key for user %s: %s', $user->getEmail(), $wkdKey->getFingerprint()));
     }
 }

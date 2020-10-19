@@ -4,8 +4,21 @@
 
 Database schema changed and needs to be updated:
 
-    ALTER TABLE virtual_users
-    ADD wkd_key LONGTEXT DEFAULT NULL;
+    CREATE TABLE virtual_openpgp_keys (
+      id INT AUTO_INCREMENT NOT NULL,
+      user_id INT DEFAULT NULL,
+      email VARCHAR(255) NOT NULL,
+      key_id LONGTEXT NOT NULL,
+      key_fingerprint LONGTEXT NOT NULL,
+      key_expire_time DATETIME DEFAULT NULL,
+      key_data LONGTEXT NOT NULL,
+      UNIQUE INDEX UNIQ_3DB259EAE7927C74 (email),
+      INDEX IDX_3DB259EAA76ED395 (user_id),
+      INDEX email_idx (email),
+      PRIMARY KEY(id))
+      DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;
+    ALTER TABLE virtual_openpgp_keys
+      ADD CONSTRAINT FK_3DB259EAA76ED395 FOREIGN KEY (user_id) REFERENCES virtual_users (id);
 
 ## Upgrade from 2.4.0 or lower
 
