@@ -45,14 +45,20 @@ class WkdHandler
     {
         if ('advanced' === $this->wkdFormat) {
             $wkdPath = $this->wkdDirectory.DIRECTORY_SEPARATOR.strtolower($domain).DIRECTORY_SEPARATOR.'hu';
+            $policyPath = $this->wkdDirectory.DIRECTORY_SEPARATOR.strtolower($domain).DIRECTORY_SEPARATOR.'policy';
         } elseif ('simple' === $this->wkdFormat) {
             $wkdPath = $this->wkdDirectory.DIRECTORY_SEPARATOR.'hu';
+            $policyPath = $this->wkdDirectory.DIRECTORY_SEPARATOR.'policy';
         } else {
             throw new RuntimeException(sprintf('Error: unsupported WKD format: %s', $this->wkdFormat));
         }
 
         if (!is_dir($wkdPath) && !mkdir($concurrentDirectory = $wkdPath, 0775, true) && !is_dir($concurrentDirectory)) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+        }
+
+        if (!is_file($policyPath) && !touch($policyPath)) {
+            throw new RuntimeException(sprintf('Policy file "%s" was not created', $policyPath));
         }
 
         return $wkdPath;
