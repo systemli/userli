@@ -65,6 +65,7 @@ class DeleteHandlerTest extends TestCase
 
         $user = new User();
         $user->setPassword($oldPassword);
+        $user->setEmail('alice@example.org');
 
         $handler->deleteUser($user);
 

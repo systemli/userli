@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class WkdHandlerTest extends TestCase
 {
+    private $openPgpKey;
     private $email = 'alice@example.org';
     private $domain = 'example.org';
     private $wkdDirectory = '/tmp/wkd';
@@ -34,16 +35,16 @@ class WkdHandlerTest extends TestCase
 
     private function createHandler()
     {
-        $openPgpKey = new OpenPgpKey();
-        $openPgpKey->setEmail($this->email);
-        $openPgpKey->setKeyId($this->keyId);
-        $openPgpKey->setKeyFingerprint($this->keyFingerprint);
-        $openPgpKey->setKeyExpireTime(new DateTime($this->keyExpireTime));
-        $openPgpKey->setKeyData($this->keyData);
+        $this->openPgpKey = new OpenPgpKey();
+        $this->openPgpKey->setEmail($this->email);
+        $this->openPgpKey->setKeyId($this->keyId);
+        $this->openPgpKey->setKeyFingerprint($this->keyFingerprint);
+        $this->openPgpKey->setKeyExpireTime(new DateTime($this->keyExpireTime));
+        $this->openPgpKey->setKeyData($this->keyData);
         $repository = $this->getMockBuilder(OpenPgpKeyRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $repository->method('findByEmail')->willReturn($openPgpKey);
+        $repository->method('findByEmail')->willReturn($this->openPgpKey);
 
         $manager = $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()
@@ -102,7 +103,7 @@ class WkdHandlerTest extends TestCase
         }
 
         $handler = $this->createHandler();
-        $handler->exportKeyToWKD($this->email);
+        $handler->exportKeyToWKD($this->openPgpKey);
 
         self::assertFileExists($this->wkdPath);
         self::assertEquals(base64_decode($this->keyData), file_get_contents($this->wkdPath));
