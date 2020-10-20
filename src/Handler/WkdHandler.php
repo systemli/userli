@@ -79,6 +79,7 @@ class WkdHandler
         [$localPart, $domain] = explode('@', $email);
         $wkdPath = $this->getWkdPath($domain);
         $wkdHash = $this->wkdHash($localPart);
+
         return $wkdPath.DIRECTORY_SEPARATOR.$wkdHash;
     }
 

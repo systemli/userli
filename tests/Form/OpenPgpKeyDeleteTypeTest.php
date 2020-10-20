@@ -2,8 +2,8 @@
 
 namespace App\Tests\Form;
 
-use App\Form\OpenPgpDeleteType;
 use App\Form\Model\Delete;
+use App\Form\OpenPgpDeleteType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class OpenPgpKeyDeleteTypeTest extends TypeTestCase

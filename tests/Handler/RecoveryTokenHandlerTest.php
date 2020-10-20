@@ -22,7 +22,7 @@ class RecoveryTokenHandlerTest extends TestCase
     public function testCreateExceptionPlainPasswordNull(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("plainPassword should not be null");
+        $this->expectExceptionMessage('plainPassword should not be null');
         $handler = $this->createHandler();
         $user = new User();
 
@@ -32,7 +32,7 @@ class RecoveryTokenHandlerTest extends TestCase
     public function testCreateExceptionPlainMailCryptPrivateKeyNull(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("plainMailCryptPrivateKey should not be null");
+        $this->expectExceptionMessage('plainMailCryptPrivateKey should not be null');
         $handler = $this->createHandler();
         $user = new User();
 
@@ -75,7 +75,7 @@ class RecoveryTokenHandlerTest extends TestCase
     public function testDecryptExceptionSecretNull(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("secret should not be null");
+        $this->expectExceptionMessage('secret should not be null');
         $handler = $this->createHandler();
         $user = new User();
 
@@ -85,7 +85,7 @@ class RecoveryTokenHandlerTest extends TestCase
     public function testDecryptExceptionDecryptionFailed(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("decryption of recoverySecretBox failed");
+        $this->expectExceptionMessage('decryption of recoverySecretBox failed');
         $handler = $this->createHandler();
         $user = new User();
         $user->setPlainPassword('password');

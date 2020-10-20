@@ -198,13 +198,15 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
         GpgKeyImporter::import($this->email, $this->brokenKeyAscii);
     }
 
-    public function testOtherKey(): void {
+    public function testOtherKey(): void
+    {
         $this->expectException(NoGpgKeyForUserException::class);
 
         GpgKeyImporter::import($this->email, $this->otherKeyAscii);
     }
 
-    public function testTwoKeys(): void {
+    public function testTwoKeys(): void
+    {
         $this->expectException(MultipleGpgKeysForUserException::class);
 
         GpgKeyImporter::import($this->email, $this->twoKeysAscii);

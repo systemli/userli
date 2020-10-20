@@ -11,8 +11,6 @@ use App\Entity\User;
 class OpenPgpKeyRepository extends AbstractRepository
 {
     /**
-     * @param User $user
-     *
      * @return OpenPgpKey[]
      */
     public function findByUser(User $user): array
@@ -20,11 +18,6 @@ class OpenPgpKeyRepository extends AbstractRepository
         return $this->findBy(['user' => $user]);
     }
 
-    /**
-     * @param string $email
-     *
-     * @return OpenPgpKey|null
-     */
     public function findByEmail(string $email): ?OpenPgpKey
     {
         return $this->findOneBy(['email' => $email]);

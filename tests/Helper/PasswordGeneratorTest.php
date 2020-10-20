@@ -21,9 +21,6 @@ class PasswordGeneratorTest extends TestCase
         }
     }
 
-    /**
-     * @return array
-     */
     public function provider(): array
     {
         return [

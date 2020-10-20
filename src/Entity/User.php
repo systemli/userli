@@ -13,6 +13,7 @@ use App\Traits\LastLoginTimeTrait;
 use App\Traits\MailCryptPublicKeyTrait;
 use App\Traits\MailCryptSecretBoxTrait;
 use App\Traits\MailCryptTrait;
+use App\Traits\OpenPgpKeyTrait;
 use App\Traits\PasswordTrait;
 use App\Traits\PasswordVersionTrait;
 use App\Traits\PlainMailCryptPrivateKeyTrait;
@@ -23,7 +24,6 @@ use App\Traits\RecoverySecretBoxTrait;
 use App\Traits\RecoveryStartTimeTrait;
 use App\Traits\SaltTrait;
 use App\Traits\UpdatedTimeTrait;
-use App\Traits\OpenPgpKeyTrait;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 

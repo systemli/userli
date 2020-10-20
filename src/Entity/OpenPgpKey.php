@@ -14,9 +14,6 @@ class OpenPgpKey
     use EmailTrait;
     use OpenPgpKeyTrait;
 
-    /**
-     * @return string|null
-     */
     public function toBinary(): ?string
     {
         return ($this->getKeyData()) ? base64_decode($this->getKeyData()) : null;

@@ -4,7 +4,6 @@ namespace App\Command;
 
 use App\Handler\WkdHandler;
 use App\Repository\OpenPgpKeyRepository;
-use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

@@ -11,7 +11,7 @@ class CryptoSecretTest extends TestCase
     public function testDecodeExceptionBase64(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("Base64 decoding of encrypted message failed");
+        $this->expectExceptionMessage('Base64 decoding of encrypted message failed');
         $secret = new CryptoSecret('', '', '');
         $secret::decode('brokenbase64%%%');
     }
@@ -19,7 +19,7 @@ class CryptoSecretTest extends TestCase
     public function testDecodeExceptionTruncated(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("The encrypted message was truncated");
+        $this->expectExceptionMessage('The encrypted message was truncated');
         $secret = new CryptoSecret('', '', '');
         $secret::decode('shortcipher');
     }

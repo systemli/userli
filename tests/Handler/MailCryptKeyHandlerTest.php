@@ -20,7 +20,7 @@ class MailCryptKeyHandlerTest extends TestCase
     public function testToPkcs8ExceptionOpenSSLFailed(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: unable to load key");
+        $this->expectExceptionMessage('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: unable to load key');
         $handler = $this->createHandler();
         $privateKey = 'brokenKey';
         $handler->toPkcs8($privateKey);
@@ -46,7 +46,7 @@ UQ==
     public function testCreateExceptionNullPassword(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("plainPassword should not be null");
+        $this->expectExceptionMessage('plainPassword should not be null');
         $handler = $this->createHandler();
         $user = new User();
         $handler->create($user);
@@ -67,7 +67,7 @@ UQ==
     public function testUpdateExceptionNullSecret(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("secret should not be null");
+        $this->expectExceptionMessage('secret should not be null');
         $handler = $this->createHandler();
         $user = new User();
         $user->setPlainPassword('password');
@@ -77,7 +77,7 @@ UQ==
     public function testUpdateExceptionDecryptionFailed(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("decryption of mailCryptSecretBox failed");
+        $this->expectExceptionMessage('decryption of mailCryptSecretBox failed');
         $handler = $this->createHandler();
         $user = new User();
         $user->setPlainPassword('password');
@@ -104,7 +104,7 @@ UQ==
     public function testUpdateWithPrivateKeyExceptionNullPassword(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("plainPassword should not be null");
+        $this->expectExceptionMessage('plainPassword should not be null');
         $handler = $this->createHandler();
         $user = new User();
         $handler->updateWithPrivateKey($user, 'old_password');
@@ -128,7 +128,7 @@ UQ==
     public function testDecryptExceptionNullSecret(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("secret should not be null");
+        $this->expectExceptionMessage('secret should not be null');
         $handler = $this->createHandler();
         $user = new User();
 
@@ -138,7 +138,7 @@ UQ==
     public function testDecryptExceptionDecryptionFailed(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("decryption of mailCryptSecretBox failed");
+        $this->expectExceptionMessage('decryption of mailCryptSecretBox failed');
         $handler = $this->createHandler();
         $user = new User();
         $user->setPlainPassword('password');

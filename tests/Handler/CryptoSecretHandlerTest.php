@@ -19,7 +19,7 @@ class CryptoSecretHandlerTest extends TestCase
     public function testDecryptExceptionNullSalt(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("salt should not be null");
+        $this->expectExceptionMessage('salt should not be null');
         $secret = CryptoSecretHandler::create('message', 'password');
 
         $secret->setSalt(null);
