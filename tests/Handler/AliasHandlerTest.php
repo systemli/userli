@@ -12,20 +12,20 @@ use PHPUnit\Framework\TestCase;
 
 class AliasHandlerTest extends TestCase
 {
-    private function createHandler(array $list)
+    private function createHandler(array $list): AliasHandler
     {
         $repository = $this->getMockBuilder(AliasRepository::class)->disableOriginalConstructor()->getMock();
-        $repository->expects($this->any())->method('findByUser')->willReturn($list);
+        $repository->method('findByUser')->willReturn($list);
 
         $manager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $manager->expects($this->any())->method('getRepository')->willReturn($repository);
+        $manager->method('getRepository')->willReturn($repository);
 
         $creator = $this->getMockBuilder(AliasCreator::class)->disableOriginalConstructor()->getMock();
 
         return new AliasHandler($manager, $creator);
     }
 
-    public function testCheckAliasLimit()
+    public function testCheckAliasLimit(): void
     {
         $handler = $this->createHandler([]);
         $user = new User();
@@ -33,7 +33,7 @@ class AliasHandlerTest extends TestCase
         self::assertTrue($handler->checkAliasLimit([]));
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $handler = $this->createHandler([]);
         $user = new User();
@@ -41,7 +41,7 @@ class AliasHandlerTest extends TestCase
         self::assertInstanceOf(Alias::class, $handler->create($user, null));
     }
 
-    public function testCreateLimit()
+    public function testCreateLimit(): void
     {
         $list = [];
         for ($i = 0; $i <= AliasHandler::ALIAS_LIMIT_RANDOM; ++$i) {

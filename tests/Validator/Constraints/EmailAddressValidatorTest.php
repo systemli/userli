@@ -10,6 +10,7 @@ use App\Validator\Constraints\EmailAddress;
 use App\Validator\Constraints\EmailAddressValidator;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class EmailAddressValidatorTest extends ConstraintValidatorTestCase
@@ -20,18 +21,18 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
     private $userUsed = 'user@example.org';
     private $extraDomain = 'extra.org';
 
-    protected function createValidator()
+    protected function createValidator(): EmailAddressValidator
     {
         $aliasRepository = $this->getMockBuilder(AliasRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $aliasRepository->expects($this->any())->method('findOneBySource')->willReturnMap([
+        $aliasRepository->method('findOneBySource')->willReturnMap([
             [$this->aliasUsed, true, true],
         ]);
         $domainRepository = $this->getMockBuilder(DomainRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $domainRepository->expects($this->any())->method('findByName')->willReturnMap([
+        $domainRepository->method('findByName')->willReturnMap([
             [explode('@', $this->addressNew)[1], true],
             [$this->extraDomain, true],
         ]);
@@ -44,11 +45,11 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
         $reservedNameRepository = $this->getMockBuilder(ReservedNameRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $reservedNameRepository->expects($this->any())->method('findByName')->willReturnMap([
+        $reservedNameRepository->method('findByName')->willReturnMap([
             ['reserved', true],
         ]);
         $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
-        $manager->expects($this->any())->method('getRepository')->willReturnMap([
+        $manager->method('getRepository')->willReturnMap([
             ['App:Alias', $aliasRepository],
             ['App:Domain', $domainRepository],
             ['App:ReservedName', $reservedNameRepository],
@@ -58,46 +59,42 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
         return new EmailAddressValidator($manager, $this->domain);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
-     */
-    public function testExpectsEmailAddressType()
+    public function testExpectsEmailAddressType(): void
     {
+        $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate('string', new Valid());
     }
 
-    public function testNullIsValid()
+    public function testNullIsValid(): void
     {
         $this->validator->validate(null, new EmailAddress());
 
         $this->assertNoViolation();
     }
 
-    public function testEmptyStringIsValid()
+    public function testEmptyStringIsValid(): void
     {
         $this->validator->validate('', new EmailAddress());
 
         $this->assertNoViolation();
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
-     */
-    public function testExpectsStringCompatibleType()
+    public function testExpectsStringCompatibleType(): void
     {
+        $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate(new \stdClass(), new EmailAddress());
     }
 
     /**
      * @dataProvider getValidNewAddresses
      */
-    public function testValidateValidNewEmailAddress(string $address)
+    public function testValidateValidNewEmailAddress(string $address): void
     {
         $this->validator->validate($address, new EmailAddress());
         $this->assertNoViolation();
     }
 
-    public function getValidNewAddresses()
+    public function getValidNewAddresses(): array
     {
         return [
             [$this->addressNew],
@@ -107,14 +104,14 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
     /**
      * @dataProvider getInvalidNewAddresses
      */
-    public function testValidateInvalidNewEmailAddress(string $address, string $violationMessage)
+    public function testValidateInvalidNewEmailAddress(string $address, string $violationMessage): void
     {
         $this->validator->validate($address, new EmailAddress());
         $this->buildViolation($violationMessage)
             ->assertRaised();
     }
 
-    public function getInvalidNewAddresses()
+    public function getInvalidNewAddresses(): array
     {
         return [
             ['!nvalid@'.$this->domain, 'registration.email-unexpected-characters'],
@@ -126,14 +123,14 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
     /**
      * @dataProvider getUsedAddresses
      */
-    public function testValidateUsedEmailAddress(string $address, string $violationMessage)
+    public function testValidateUsedEmailAddress(string $address, string $violationMessage): void
     {
         $this->validator->validate($address, new EmailAddress());
         $this->buildViolation($violationMessage)
             ->assertRaised();
     }
 
-    public function getUsedAddresses()
+    public function getUsedAddresses(): array
     {
         return [
             [$this->userUsed, 'registration.email-already-taken'],

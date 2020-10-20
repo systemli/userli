@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class RandomStringGeneratorTest extends TestCase
 {
-    public function testGenerate()
+    public function testGenerate(): void
     {
         $code = RandomStringGenerator::generate(20, false);
 
@@ -17,7 +17,7 @@ class RandomStringGeneratorTest extends TestCase
         self::assertNotRegExp('/^[A-Z]+$/', $code);
     }
 
-    public function testGenerateCaseSensitive()
+    public function testGenerateCaseSensitive(): void
     {
         $code = RandomStringGenerator::generate();
 

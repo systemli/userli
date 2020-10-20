@@ -54,13 +54,13 @@ class UserDeleteCommandTest extends TestCase
         $commandTester->execute(['--user' => 'user@example.org']);
 
         $output = $commandTester->getDisplay();
-        $this->assertContains('Deleting user user@example.org', $output);
+        $this->assertStringContainsString('Deleting user user@example.org', $output);
 
         // Test dry run user deletion
         $commandTester->execute(['--user' => 'user@example.org', '--dry-run' => true]);
 
         $output = $commandTester->getDisplay();
-        $this->assertContains('Would delete user user@example.org', $output);
+        $this->assertStringContainsString('Would delete user user@example.org', $output);
     }
 
     public function testExecuteWithoutUser(): void

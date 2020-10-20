@@ -48,37 +48,37 @@ class DomainFilterTest extends TestCase
         ->disableOriginalConstructor()
         ->setMethodsExcept(['addFilterConstraint'])
         ->getMock();
-        $this->filter->method('getDomainId')->willReturn(1);
+        $this->filter->method('getDomainId')->willReturn('1');
 
         $this->targetEntity = $this->getMockBuilder(ClassMetadata::class)
             ->disableOriginalConstructor()
             ->getMock();
     }
 
-    public function testGetDomainId()
+    public function testGetDomainId(): void
     {
         $filter = new DomainFilter($this->manager);
-        $this->assertEquals(null, $filter->getDomainId());
-        $this->assertNotEquals(1, $filter->getDomainId());
+        self::assertEquals(null, $filter->getDomainId());
+        self::assertNotEquals(1, $filter->getDomainId());
 
         $filter->setParameter('domainId', '1');
-        $this->assertEquals('1', $filter->getParameter('domainId'));
-        $this->assertEquals('1', $filter->getDomainId());
-        $this->assertNotEquals('2', $filter->getDomainId());
+        self::assertEquals('1', $filter->getParameter('domainId'));
+        self::assertEquals('1', $filter->getDomainId());
+        self::assertNotEquals('2', $filter->getDomainId());
     }
 
-    public function testMatchDomain()
+    public function testMatchDomain(): void
     {
         $this->targetEntity->method('getName')->willReturn(Domain::class);
         $this->targetEntity->method('getAssociationMappings')->willReturn([]);
 
-        $this->assertEquals(
+        self::assertEquals(
             'domain.id = 1',
             $this->filter->addFilterConstraint($this->targetEntity, 'domain')
         );
     }
 
-    public function testDomainAware()
+    public function testDomainAware(): void
     {
         $this->targetEntity->method('getName')->willReturn('xyz');
         $this->targetEntity->method('getAssociationMappings')->willReturn([
@@ -86,13 +86,13 @@ class DomainFilterTest extends TestCase
                 'other' => 2, ]
         );
 
-        $this->assertEquals(
+        self::assertEquals(
             'xyz.domain_id = 1',
             $this->filter->addFilterConstraint($this->targetEntity, 'xyz')
         );
     }
 
-    public function testNotDomainAndNotDomainAware()
+    public function testNotDomainAndNotDomainAware(): void
     {
         $this->targetEntity->method('getName')->willReturn('xyz');
         $this->targetEntity->method('getAssociationMappings')->willReturn([
@@ -100,7 +100,7 @@ class DomainFilterTest extends TestCase
                 'other' => 2, ]
         );
 
-        $this->assertEquals('', $this->filter->addFilterConstraint($this->targetEntity, 'xyz')
+        self::assertEquals('', $this->filter->addFilterConstraint($this->targetEntity, 'xyz')
         );
     }
 }

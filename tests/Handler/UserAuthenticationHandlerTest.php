@@ -21,10 +21,10 @@ class UserAuthenticationHandlerTest extends TestCase
         $this->user->setPassword($this->password);
     }
 
-    protected function createHandler()
+    protected function createHandler(): UserAuthenticationHandler
     {
         $encoder = $this->getMockBuilder(PasswordEncoderInterface::class)->getMock();
-        $encoder->expects($this->any())->method('isPasswordValid')->willReturnMap(
+        $encoder->method('isPasswordValid')->willReturnMap(
             [
                 [$this->user->getPassword(), $this->password, $this->user->getSalt(), true],
                 [$this->user->getPassword(), $this->wrong, $this->user->getSalt(), false],
@@ -37,14 +37,14 @@ class UserAuthenticationHandlerTest extends TestCase
 
         $encoderFactory = $this->getMockBuilder(EncoderFactory::class)
             ->disableOriginalConstructor()->getMock();
-        $encoderFactory->expects($this->any())->method('getEncoder')
-            ->with($this->equalTo($this->user))
-            ->will($this->returnValue($encoder));
+        $encoderFactory->method('getEncoder')
+            ->with(self::equalTo($this->user))
+            ->willReturn($encoder);
 
         return new UserAuthenticationHandler($encoderFactory, $eventDispatcher);
     }
 
-    public function testAuthenticate()
+    public function testAuthenticate(): void
     {
         $handler = $this->createHandler();
 

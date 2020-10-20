@@ -25,7 +25,7 @@ class AdminPasswordUpdaterTest extends TestCase
         $this->defaultDomain = 'example.org';
     }
 
-    public function testUpdateAdminPassword()
+    public function testUpdateAdminPassword(): void
     {
         $admin = new User();
         $admin->setPlainPassword('password');
@@ -38,11 +38,11 @@ class AdminPasswordUpdaterTest extends TestCase
 
         $adminPasswordUpdater->updateAdminPassword('newpassword');
 
-        $this->assertEquals('newpassword', $admin->getPlainPassword());
-        $this->assertNotEquals('impossible_login', $admin->getPassword());
+        self::assertEquals('newpassword', $admin->getPlainPassword());
+        self::assertNotEquals('impossible_login', $admin->getPassword());
     }
 
-    public function getManager($object)
+    public function getManager($object): MockObject
     {
         $domainRepo = $this->getMockBuilder(DomainRepository::class)
             ->disableOriginalConstructor()
@@ -64,11 +64,11 @@ class AdminPasswordUpdaterTest extends TestCase
         return $manager;
     }
 
-    public function getUpdater()
+    public function getUpdater(): PasswordUpdater
     {
         $encoderFactory = $this->getMockBuilder(EncoderFactoryInterface::class)
             ->getMock();
-        $encoderFactory->expects($this->any())->method('getEncoder')->willReturn(new PasswordHashEncoder());
+        $encoderFactory->method('getEncoder')->willReturn(new PasswordHashEncoder());
 
         return new PasswordUpdater($encoderFactory);
     }

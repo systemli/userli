@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class VoucherHandlerTest extends TestCase
 {
-    public function testSuspiciousUser()
+    public function testSuspiciousUser(): void
     {
         $manager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
         $creator = $this->getMockBuilder(VoucherCreator::class)->disableOriginalConstructor()->getMock();
@@ -28,7 +28,7 @@ class VoucherHandlerTest extends TestCase
         self::assertEmpty($vouchers);
     }
 
-    public function testNewUser()
+    public function testNewUser(): void
     {
         $repository = $this->getMockBuilder(VoucherRepository::class)->disableOriginalConstructor()->getMock();
         $repository->expects($this->any())->method('findByUser')->willReturn([]);
@@ -48,13 +48,13 @@ class VoucherHandlerTest extends TestCase
         self::assertEmpty($vouchers);
     }
 
-    public function testFindEnoughVouchers()
+    public function testFindEnoughVouchers(): void
     {
         $repository = $this->getMockBuilder(VoucherRepository::class)->disableOriginalConstructor()->getMock();
-        $repository->expects($this->any())->method('findByUser')->willReturn([new Voucher(), new Voucher(), new Voucher()]);
+        $repository->method('findByUser')->willReturn([new Voucher(), new Voucher(), new Voucher()]);
 
         $manager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $manager->expects($this->any())->method('getRepository')->willReturn($repository);
+        $manager->method('getRepository')->willReturn($repository);
 
         $creator = $this->getMockBuilder(VoucherCreator::class)->disableOriginalConstructor()->getMock();
 
@@ -74,16 +74,16 @@ class VoucherHandlerTest extends TestCase
         self::assertCount(3, $vouchers);
     }
 
-    public function testNeedToCreateVouchers()
+    public function testNeedToCreateVouchers(): void
     {
         $repository = $this->getMockBuilder(VoucherRepository::class)->disableOriginalConstructor()->getMock();
-        $repository->expects($this->any())->method('findByUser')->willReturn([new Voucher(), new Voucher()]);
+        $repository->method('findByUser')->willReturn([new Voucher(), new Voucher()]);
 
         $manager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $manager->expects($this->any())->method('getRepository')->willReturn($repository);
+        $manager->method('getRepository')->willReturn($repository);
 
         $creator = $this->getMockBuilder(VoucherCreator::class)->disableOriginalConstructor()->getMock();
-        $creator->expects($this->any())->method('create')->willReturn(new Voucher());
+        $creator->method('create')->willReturn(new Voucher());
 
         $handler = new VoucherHandler($manager, $creator);
 

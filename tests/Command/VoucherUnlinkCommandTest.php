@@ -44,8 +44,8 @@ class VoucherUnlinkCommandTest extends TestCase
 
         // the output of the command in the console
         $output = $commandTester->getDisplay();
-        $this->assertContains('unlink 2 vouchers', $output);
-        $this->assertContains('Suspicious User suspicious@example.org has invited child@example.org.', $output);
+        $this->assertStringContainsString('unlink 2 vouchers', $output);
+        $this->assertStringContainsString('Suspicious User suspicious@example.org has invited child@example.org.', $output);
     }
 
     /**

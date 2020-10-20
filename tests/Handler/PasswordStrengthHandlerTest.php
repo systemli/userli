@@ -13,15 +13,15 @@ class PasswordStrengthHandlerTest extends TestCase
      * @param $input
      * @param $expected
      */
-    public function testValidate($input, $expected)
+    public function testValidate($input, $expected): void
     {
         $handler = new PasswordStrengthHandler();
         $actual = $handler->validate($input);
 
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 
-    public function dataProvider()
+    public function dataProvider(): array
     {
         return [
             ['password', ['form.weak_password']],
