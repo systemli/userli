@@ -2,7 +2,7 @@
 
 * Add support to import OpenPGP keys and export them to an
   OpenPGP Web Key Directory.
-* Drop support for PHP 7.1
+* Drop support for PHP 7.1 and 7.2
 * Allow to batch delete users (Fixes: #78)
 * Update Portugues translation (Thanks Silvério Santos)
 * Update dependencies

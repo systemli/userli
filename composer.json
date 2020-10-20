@@ -4,7 +4,7 @@
     "license": "AGPL-3.0-or-later",
     "description": "Web application to (self-) manage email users and encrypt their mailboxes.",
     "require": {
-        "php": "^7.1.3",
+        "php": "^7.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-openssl": "^7.1",
@@ -22,7 +22,7 @@
         "robloach/component-installer": "*",
         "sensio/framework-extra-bundle": "^5.0.0",
         "sonata-project/admin-bundle": "3.73",
-        "sonata-project/doctrine-orm-admin-bundle": "~3.1",
+        "sonata-project/doctrine-orm-admin-bundle": "^3.24",
         "symfony/apache-pack": "^1.0",
         "symfony/console": "*",
         "symfony/dotenv": "*",
@@ -34,13 +34,13 @@
         "symfony/polyfill-apcu": "^1.0",
         "symfony/security-bundle": "*",
         "symfony/security-csrf": "*",
-        "symfony/swiftmailer-bundle": "3.1.*",
+        "symfony/swiftmailer-bundle": "^3.5",
         "symfony/templating": "*",
         "symfony/translation": "*",
         "symfony/validator": "*",
         "symfony/yaml": "*",
         "tuupola/base32": "^1.0",
-        "twbs/bootstrap": "~3.3.0",
+        "twbs/bootstrap": "^4.5",
         "twig/extensions": "^1.5",
         "twig/twig": "^1.0||^2.0"
     },
@@ -68,7 +68,7 @@
         },
         "sort-packages": true,
         "platform": {
-            "php": "7.2.5"
+            "php": "7.3.19"
         }
     },
     "autoload": {
