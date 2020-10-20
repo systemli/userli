@@ -60,3 +60,10 @@
         no_dev: False
       become: true
       become_user: vagrant
+    - name: create WKD base directory
+      file:
+        path: "/var/www/html/.well-known/openpgpkey"
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: 0755
