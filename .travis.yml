@@ -45,6 +45,7 @@ before_install:
       sudo -u postgres createdb -O mail_test mail_test;
     fi
   - sudo apt-get install gnupg openssl
+  - gpg --version
   - nvm install 10
 
 install:
