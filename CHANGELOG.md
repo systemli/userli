@@ -1,3 +1,7 @@
+# 2.7.1 (2020.10.20)
+
+* Downgrade `twbs/bootstrap` back to 3.3
+
 # 2.7.0 (2020.10.20)
 
 * Add support to import OpenPGP keys and export them to an
