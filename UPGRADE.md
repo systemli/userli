@@ -2,6 +2,8 @@
 
 ## Upgrade from 2.6.1 or lower
 
+The new OpenPGP WKD feature requires GnuPG (>=2.1.14) to be installed.
+
 Database schema changed and needs to be updated:
 
     CREATE TABLE virtual_openpgp_keys (
