@@ -16,6 +16,7 @@
     dovecot_postfix_auth: true
     apt_packages:
       - git
+      - gnupg
       - make
       - postfix
       - unzip
