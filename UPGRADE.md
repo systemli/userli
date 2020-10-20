@@ -14,7 +14,6 @@ Database schema changed and needs to be updated:
       key_data LONGTEXT NOT NULL,
       UNIQUE INDEX UNIQ_3DB259EAE7927C74 (email),
       INDEX IDX_3DB259EAA76ED395 (user_id),
-      INDEX email_idx (email),
       PRIMARY KEY(id))
       DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;
     ALTER TABLE virtual_openpgp_keys

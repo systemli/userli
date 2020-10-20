@@ -30,7 +30,4 @@ App\Entity\OpenPgpKey:
       joinColumn:
         name: user_id
         referencedColumnName: id
-        nullable: tru
-  indexes:
-    email_idx:
-      columns: ["email"]
+        nullable: true
