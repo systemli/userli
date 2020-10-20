@@ -3,5 +3,8 @@
     "@symfony/webpack-encore": "^0.31.0",
     "copy-webpack-plugin": "^6.2.1",
     "jquery": "^3.3.1"
+  },
+  "dependencies": {
+    "webpack": "^5.1.3"
   }
 }
