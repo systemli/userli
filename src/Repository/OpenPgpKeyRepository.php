@@ -32,6 +32,6 @@ class OpenPgpKeyRepository extends AbstractRepository
 
     public function countKeys(): int
     {
-        return $this->count();
+        return $this->count([]);
     }
 }
