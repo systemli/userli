@@ -51,7 +51,6 @@ App\Entity\User:
     mailCryptPublicKey:
       type: text
       nullable: true
-
   manyToOne:
     domain:
       targetEntity: Domain

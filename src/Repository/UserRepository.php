@@ -29,7 +29,7 @@ class UserRepository extends AbstractRepository
     }
 
     /**
-     * @return array|User[]
+     * @return User[]|array
      */
     public function findDeletedUsers()
     {
@@ -39,9 +39,40 @@ class UserRepository extends AbstractRepository
     /**
      * @return int
      */
-    public function countUsersWithRecoveryTokens()
+    public function countUsers()
     {
         return $this->matching(Criteria::create()
-            ->where(Criteria::expr()->neq('recoverySecretBox', null)))->count();
+            ->where(Criteria::expr()->eq('deleted', false)))->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function countDeletedUsers()
+    {
+        return $this->matching(Criteria::create()
+            ->where(Criteria::expr()->eq('deleted', true)))->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function countUsersWithRecoveryToken()
+    {
+        return $this->matching(Criteria::create()
+            ->where(Criteria::expr()->eq('deleted', false))
+            ->andWhere(Criteria::expr()->neq('recoverySecretBox', null))
+        )->count();
+    }
+
+    /**
+     * @return int
+     */
+    public function countUsersWithMailCrypt()
+    {
+        return $this->matching(Criteria::create()
+            ->where(Criteria::expr()->eq('deleted', false))
+            ->andWhere(Criteria::expr()->eq('mailCrypt', true))
+        )->count();
     }
 }

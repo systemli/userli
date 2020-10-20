@@ -12,6 +12,12 @@ aliases:
     requirements:
         _locale: '%locales%'
 
+openpgp:
+    path:     /{_locale}/openpgp
+    controller: App\Controller\StartController::openPgpAction
+    requirements:
+        _locale: '%locales%'
+
 vouchers:
     path:     /{_locale}/voucher
     controller: App\Controller\StartController::voucherAction
@@ -38,6 +44,11 @@ user_delete:
     requirements:
         _locale: '%locales%'
 
+openpgp_delete:
+    path:     /{_locale}/openpgp/delete
+    controller: App\Controller\DeleteController::deleteOpenPgpAction
+    requirements:
+        _locale: '%locales%'
 
 # RegistrationController
 
@@ -134,6 +145,10 @@ aliases_fallback:
     path:     /alias
     controller: App\Controller\StartController::aliasAction
 
+openpgp_fallback:
+    path:     /openpgp
+    controller: App\Controller\StartController::openPgpAction
+
 vouchers_fallback:
     path:     /voucher
     controller: App\Controller\StartController::voucherAction
@@ -149,6 +164,10 @@ alias_delete_fallback:
 user_delete_fallback:
     path:     /user/delete
     controller: App\Controller\DeleteController::deleteUserAction
+
+openpgp_delete_fallback:
+    path:     /openpgp/delete
+    controller: App\Controller\DeleteController::deleteOpenPgpAction
 
 register_fallback:
     path:     /register

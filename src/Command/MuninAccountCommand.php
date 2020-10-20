@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Repository\OpenPgpKeyRepository;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
@@ -17,7 +18,12 @@ class MuninAccountCommand extends Command
     /**
      * @var UserRepository
      */
-    private $repository;
+    private $userRepository;
+
+    /**
+     * @var OpenPgpKeyRepository
+     */
+    private $openPgpKeyRepository;
 
     /**
      * MuninAccountCommand constructor.
@@ -25,7 +31,8 @@ class MuninAccountCommand extends Command
     public function __construct(ObjectManager $manager)
     {
         parent::__construct();
-        $this->repository = $manager->getRepository('App:User');
+        $this->userRepository = $manager->getRepository('App:User');
+        $this->openPgpKeyRepository = $manager->getRepository('App:OpenPgpKey');
     }
 
     /**
@@ -55,17 +62,29 @@ class MuninAccountCommand extends Command
             $output->writeln('graph_title User Accounts');
             $output->writeln('graph_category Mail');
             $output->writeln('graph_vlabel Account Counters');
-            $output->writeln('account.label Total Accounts');
+            $output->writeln('account.label Active accounts');
             $output->writeln('account.type GAUGE');
             $output->writeln('account.min 0');
-            $output->writeln('recovery_tokens.label Accounts with Recovery Tokens');
+            $output->writeln('deleted.label Deleted accounts');
+            $output->writeln('deleted.type GAUGE');
+            $output->writeln('deleted.min 0');
+            $output->writeln('recovery_tokens.label Active accounts with recovery token');
             $output->writeln('recovery_tokens.type GAUGE');
             $output->writeln('recovery_tokens.min 0');
+            $output->writeln('mail_crypt_keys.label Active accounts with mailbox encryption');
+            $output->writeln('mail_crypt_keys.type GAUGE');
+            $output->writeln('mail_crypt_keys.min 0');
+            $output->writeln('openpgp_keys.label OpenPGP keys');
+            $output->writeln('openpgp_keys.type GAUGE');
+            $output->writeln('openpgp_keys.min 0');
 
             return;
         }
 
-        $output->writeln(sprintf('account.value %d', $this->repository->count([])));
-        $output->writeln(sprintf('recovery_tokens.value %d', $this->repository->countUsersWithRecoveryTokens()));
+        $output->writeln(sprintf('account.value %d', $this->userRepository->countUsers()));
+        $output->writeln(sprintf('deleted.value %d', $this->userRepository->countDeletedUsers()));
+        $output->writeln(sprintf('recovery_tokens.value %d', $this->userRepository->countUsersWithRecoveryToken()));
+        $output->writeln(sprintf('mail_crypt_keys.value %d', $this->userRepository->countUsersWithMailCrypt()));
+        $output->writeln(sprintf('openpgp_keys.value %d', $this->openPgpKeyRepository->countKeys()));
     }
 }

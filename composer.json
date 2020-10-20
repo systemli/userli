@@ -17,6 +17,7 @@
         "knplabs/knp-menu-bundle": "~2.0",
         "mopa/bootstrap-bundle": "~3.0",
         "nelmio/security-bundle": "^2.5",
+        "pear/crypt_gpg": "^1.6",
         "ramsey/uuid": "^4.1",
         "robloach/component-installer": "*",
         "sensio/framework-extra-bundle": "^5.0.0",
@@ -38,6 +39,7 @@
         "symfony/translation": "*",
         "symfony/validator": "*",
         "symfony/yaml": "*",
+        "tuupola/base32": "^1.0",
         "twbs/bootstrap": "~3.3.0",
         "twig/extensions": "^1.5",
         "twig/twig": "^1.0||^2.0"

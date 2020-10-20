@@ -23,6 +23,7 @@ use App\Traits\RecoverySecretBoxTrait;
 use App\Traits\RecoveryStartTimeTrait;
 use App\Traits\SaltTrait;
 use App\Traits\UpdatedTimeTrait;
+use App\Traits\OpenPgpKeyTrait;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -36,21 +37,19 @@ class User implements UserInterface, EncoderAwareInterface
     use PasswordTrait;
     use SaltTrait;
     use DeleteTrait;
-    use
-        InvitationVoucherTrait;
+    use InvitationVoucherTrait;
     use PlainPasswordTrait;
     use DomainAwareTrait;
     use LastLoginTimeTrait;
     use PasswordVersionTrait;
-    use
-        RecoverySecretBoxTrait;
+    use RecoverySecretBoxTrait;
     use PlainRecoveryTokenTrait;
     use RecoveryStartTimeTrait;
     use MailCryptTrait;
-    use
-        MailCryptSecretBoxTrait;
+    use MailCryptSecretBoxTrait;
     use PlainMailCryptPrivateKeyTrait;
     use MailCryptPublicKeyTrait;
+    use OpenPgpKeyTrait;
 
     const CURRENT_PASSWORD_VERSION = 2;
 
