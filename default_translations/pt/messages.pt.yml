@@ -33,7 +33,7 @@ index:
   alias-headline: Seus endereços alias %alias_type%
   alias-limit: Você atingiu o limite de %alias_limit% endereços alias %alias_type%
     permitidos.
-  alias-deletion-custom: Entre em contato conosco para excluir endereços.
+  alias-deletion-custom: Entre em contacto connosco para apagar endereços.
   alias-deletion-random: Assim que apagar endereços antigos, poderá criar endereços.
   alias-empty: Você não tem nenhum endereço alias %alias_type% definido.
   delete-headline: Apagar conta
