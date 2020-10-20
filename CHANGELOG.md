@@ -1,4 +1,4 @@
-# 2.7.0 (UNRELEASED)
+# 2.7.0 (2020.10.20)
 
 * Add support to import OpenPGP keys and export them to an
   OpenPGP Web Key Directory.
