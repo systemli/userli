@@ -91,10 +91,10 @@ form:
   domain: Domäne
   plain-password_confirmation: Neues Passwort bestätigen
   plain-password: Neues Passwort
-  openpgp-key-file: Deinen Schlüssel als Datei hochladen:
+  openpgp-key-file: "Deinen Schlüssel als Datei hochladen:"
   openpgp-key-file-mimetype: Die hochgeladende Datei enthält keine OpenPGP-Schlüssel.
   openpgp-key-upload-or: oder
-  openpgp-key-text: Deinen Schlüssel als Text einfügen:
+  openpgp-key-text: "Deinen Schlüssel als Text einfügen:"
   openpgp-key-text-placeholder: OpenPGP-Schlüssel im ASCII-Format
   openpgp-key-select-one: Bitte lade den Schlüssel entweder als Datei oder im ASCII Format hoch.
   openpgp-key-submit: OpenPGP-Schlüssel veröffentlichen
@@ -304,6 +304,6 @@ openpgp:
     target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key Directory</a></i>
     veröffentlicht wird. Damit hilfst du Freund*innen, deinen Schlüssel automatisch
     und sicher zu finden.
-  keyid-label: Schlüssel ID:
-  fingerprint-label: Fingerprint:
-  expiretime-label: Ablaufdatum:
+  keyid-label: "Schlüssel ID:"
+  fingerprint-label: "Fingerprint:"
+  expiretime-label: "Ablaufdatum:"

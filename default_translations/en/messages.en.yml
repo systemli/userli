@@ -92,10 +92,10 @@ form:
   registration-recovery-token-next-button: Continue
   domain: Domain
   add: Add
-  openpgp-key-file: Upload your key file:
+  openpgp-key-file: "Upload your key file:"
   openpgp-key-file-mimetype: The uploaded file doesn't contain OpenPGP data.
   openpgp-key-upload-or: or
-  openpgp-key-text: Paste your key as text:
+  openpgp-key-text: "Paste your key as text:"
   openpgp-key-text-placeholder: OpenPGP key in ASCII format
   openpgp-key-select-one: Please upload key either as file or as ASCII text.
   openpgp-key-submit: Publish OpenPGP key
@@ -290,6 +290,6 @@ openpgp:
     If you upload your OpenPGP key here, it will be published in our <i><a target="_blank"
     href="https://gnupg.org/faq/wkd.html">Web Key Directory</a></i>. You thereby help friends
     to discover your key automatically and securely.
-  keyid-label: Key ID:
-  fingerprint-label: Fingerprint:
-  expiretime-label: Expiry date:
+  keyid-label: "Key ID:"
+  fingerprint-label: "Fingerprint:"
+  expiretime-label: "Expiry date:"
