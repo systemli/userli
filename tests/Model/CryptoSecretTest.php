@@ -3,27 +3,24 @@
 namespace App\Tests\Model;
 
 use App\Model\CryptoSecret;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class CryptoSecretTest extends TestCase
 {
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Base64 decoding of encrypted message failed
-     */
-    public function testDecodeExceptionBase64()
+    public function testDecodeExceptionBase64(): void
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage("Base64 decoding of encrypted message failed");
         $secret = new CryptoSecret('', '', '');
-        $secret->decode('brokenbase64%%%');
+        $secret::decode('brokenbase64%%%');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage The encrypted message was truncated
-     */
-    public function testDecodeExceptionTruncated()
+    public function testDecodeExceptionTruncated(): void
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage("The encrypted message was truncated");
         $secret = new CryptoSecret('', '', '');
-        $secret->decode('shortcipher');
+        $secret::decode('shortcipher');
     }
 }

@@ -13,11 +13,11 @@ use PHPUnit\Framework\TestCase;
 
 class DeleteHandlerTest extends TestCase
 {
-    protected function createHandler()
+    protected function createHandler(): DeleteHandler
     {
         $passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)
             ->disableOriginalConstructor()->getMock();
-        $passwordUpdater->expects($this->any())->method('updatePassword')->willReturnCallback(function (User $user) {
+        $passwordUpdater->method('updatePassword')->willReturnCallback(function (User $user) {
             $user->setPassword('new_password');
         });
 
@@ -28,7 +28,7 @@ class DeleteHandlerTest extends TestCase
         $objectManager = $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()->getMock();
         $objectManager->method('getRepository')->willReturn($aliasRepositry);
-        $objectManager->expects($this->any())->method('flush')->willReturn(true);
+        $objectManager->method('flush')->willReturn(true);
 
         $wkdHandler = $this->getMockBuilder(WkdHandler::class)
             ->disableOriginalConstructor()->getMock();
@@ -36,7 +36,7 @@ class DeleteHandlerTest extends TestCase
         return new DeleteHandler($passwordUpdater, $objectManager, $wkdHandler);
     }
 
-    public function testDeleteAlias()
+    public function testDeleteAlias(): void
     {
         $handler = $this->createHandler();
 
@@ -57,7 +57,7 @@ class DeleteHandlerTest extends TestCase
         self::assertEquals(null, $alias->getDestination());
     }
 
-    public function testDeleteUser()
+    public function testDeleteUser(): void
     {
         $handler = $this->createHandler();
 

@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
  */
 class UserTest extends TestCase
 {
-    public function testGetRoles()
+    public function testGetRoles(): void
     {
         $user = new User();
         $this->hasOnlyValidRoles($user->getRoles());
@@ -23,61 +23,61 @@ class UserTest extends TestCase
     /**
      * @param $roles Roles[]
      */
-    public function hasOnlyValidRoles($roles)
+    public function hasOnlyValidRoles($roles): void
     {
-        $this->assertInternalType('array', $roles);
+        self::assertIsArray($roles);
         foreach ($roles as $role) {
-            $this->assertArrayHasKey($role, Roles::getAll());
+            self::assertArrayHasKey($role, Roles::getAll());
         }
     }
 
-    public function testUserisUserByDefault()
+    public function testUserisUserByDefault(): void
     {
         $user = new User();
-        $this->assertTrue($user->hasRole(Roles::USER));
+        self::assertTrue($user->hasRole(Roles::USER));
     }
 
-    public function testHasRole()
+    public function testHasRole(): void
     {
         $user = new User();
         $user->setRoles([Roles::DOMAIN_ADMIN]);
-        $this->assertTrue($user->hasRole(Roles::DOMAIN_ADMIN));
-        $this->assertFalse($user->hasRole(Roles::ADMIN));
+        self::assertTrue($user->hasRole(Roles::DOMAIN_ADMIN));
+        self::assertFalse($user->hasRole(Roles::ADMIN));
     }
 
-    public function testGetEncoderName()
+    public function testGetEncoderName(): void
     {
         $user = new User();
-        $this->assertEquals(null, $user->getEncoderName());
+        self::assertEquals(null, $user->getEncoderName());
         $user->setPasswordVersion(1);
-        $this->assertEquals('legacy', $user->getEncoderName());
+        self::assertEquals('legacy', $user->getEncoderName());
     }
 
-    public function testPlainPassword()
+    public function testPlainPassword(): void
     {
         $user = new User();
-        $this->assertEquals(null, $user->getPlainPassword());
+        self::assertEquals(null, $user->getPlainPassword());
         $user->setPlainPassword('test');
-        $this->assertEquals('test', $user->getPlainPassword());
+        self::assertEquals('test', $user->getPlainPassword());
         $user->eraseCredentials();
-        $this->assertEquals(null, $user->getPlainPassword());
+        self::assertEquals(null, $user->getPlainPassword());
     }
 
-    public function testHasRecoverySecretBox()
+    public function testHasRecoverySecretBox(): void
     {
         $user = new User();
-        $this->assertFalse($user->hasRecoverySecretBox());
+        self::assertFalse($user->hasRecoverySecretBox());
         $user->setRecoverySecretBox('testsecret');
-        $this->assertTrue($user->hasRecoverySecretBox());
+        self::assertTrue($user->hasRecoverySecretBox());
     }
 
-    public function testPlainRecoveryToken()
+    public function testPlainRecoveryToken(): void
     {
         $user = new User();
-        $this->assertEquals(null, $user->getPlainRecoveryToken());
+        self::assertEquals(null, $user->getPlainRecoveryToken());
         $user->setPlainRecoveryToken('testtoken');
-        $this->assertEquals('testtoken', $user->getPlainRecoveryToken());
+        self::assertEquals('testtoken', $user->getPlainRecoveryToken());
         $user->erasePlainRecoveryToken();
-        $this->assertEquals(null, $user->getPlainRecoveryToken());
+        self::assertEquals(null, $user->getPlainRecoveryToken());
     }
 }

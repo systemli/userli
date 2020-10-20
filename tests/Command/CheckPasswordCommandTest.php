@@ -11,6 +11,7 @@ use App\Helper\FileDescriptorReader;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class CheckPasswordCommandTest extends TestCase
@@ -35,10 +36,10 @@ class CheckPasswordCommandTest extends TestCase
 
     /**
      * @dataProvider      invalidContentProvider
-     * @expectedException \Symfony\Component\Console\Exception\InvalidArgumentException
      */
-    public function testExecuteInvalidArgumentException($inputStream, $exceptionMessage)
+    public function testExecuteInvalidArgumentException($inputStream, $exceptionMessage): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $manager = $this->getManager();
         $reader = $this->getReaderFd3($inputStream);
         $handler = $this->getHandler();
@@ -55,7 +56,7 @@ class CheckPasswordCommandTest extends TestCase
     /**
      * @dataProvider validContentProvider
      */
-    public function testExecuteFd3($inputStream, $returnCode)
+    public function testExecuteFd3($inputStream, $returnCode): void
     {
         $manager = $this->getManager();
         $reader = $this->getReaderFd3($inputStream);
@@ -74,7 +75,7 @@ class CheckPasswordCommandTest extends TestCase
     /**
      * @dataProvider validContentProvider
      */
-    public function testExecuteStdin($inputStream, $returnCode)
+    public function testExecuteStdin($inputStream, $returnCode): void
     {
         $manager = $this->getManager();
         $reader = $this->getReaderStdin($inputStream);
@@ -91,13 +92,13 @@ class CheckPasswordCommandTest extends TestCase
             ]
         );
 
-        $this->assertEquals($returnCode, $commandTester->getStatusCode());
+        self::assertEquals($returnCode, $commandTester->getStatusCode());
     }
 
     /**
      * @dataProvider userDbContentProvider
      */
-    public function testExecuteUserDbLookup($inputStream, $returnCode)
+    public function testExecuteUserDbLookup($inputStream, $returnCode): void
     {
         $manager = $this->getManager();
         $reader = $this->getReaderFd3($inputStream);
@@ -111,11 +112,11 @@ class CheckPasswordCommandTest extends TestCase
 
         $commandTester->execute([]);
 
-        $this->assertEquals($returnCode, $commandTester->getStatusCode());
+        self::assertEquals($returnCode, $commandTester->getStatusCode());
         putenv('AUTHORIZED');
     }
 
-    public function invalidContentProvider()
+    public function invalidContentProvider(): array
     {
         $msgMissingEmail = 'Invalid input format: missing argument email. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.';
         $msgMissingPassword = 'Invalid input format: missing argument password. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.';
@@ -135,7 +136,7 @@ class CheckPasswordCommandTest extends TestCase
         ];
     }
 
-    public function validContentProvider()
+    public function validContentProvider(): array
     {
         return [
             ["user@example.org\x00password", 0],
@@ -157,7 +158,7 @@ class CheckPasswordCommandTest extends TestCase
         ];
     }
 
-    public function userDbContentProvider()
+    public function userDbContentProvider(): array
     {
         return [
             ['user@example.org', 0],
@@ -192,7 +193,7 @@ class CheckPasswordCommandTest extends TestCase
             ]
         );
 
-        $manager->expects($this->any())->method('getRepository')->willReturn($repository);
+        $manager->method('getRepository')->willReturn($repository);
 
         return $manager;
     }

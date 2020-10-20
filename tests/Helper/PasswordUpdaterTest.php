@@ -10,11 +10,11 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class PasswordUpdaterTest extends TestCase
 {
-    public function testUpdatePassword()
+    public function testUpdatePassword(): void
     {
         $encoderFactory = $this->getMockBuilder(EncoderFactoryInterface::class)
             ->getMock();
-        $encoderFactory->expects($this->any())->method('getEncoder')->willReturn(new PasswordHashEncoder());
+        $encoderFactory->method('getEncoder')->willReturn(new PasswordHashEncoder());
         $updater = new PasswordUpdater($encoderFactory);
 
         $user = new User();

@@ -10,26 +10,26 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 class LogoutSuccessHandlerTest extends TestCase
 {
-    public function testLogout()
+    public function testLogout(): void
     {
         $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')->getMock();
         $session = new Session(new MockArraySessionStorage());
 
-        $request->expects($this->any())
+        $request
             ->method('getSession')
-            ->will($this->returnValue($session));
+            ->willReturn($session);
 
         $response = new Response();
         $httpUtils = $this->getMockBuilder('Symfony\Component\Security\Http\HttpUtils')->getMock();
-        $httpUtils->expects($this->once())
+        $httpUtils->expects(self::once())
             ->method('createRedirectResponse')
             ->with($request, '/')
-            ->will($this->returnValue($response));
+            ->willReturn($response);
 
         $handler = new LogoutSuccessHandler($httpUtils, '/');
         $result = $handler->onLogoutSuccess($request);
 
-        $this->assertSame($response, $result);
-        $this->assertArrayHasKey('success', $request->getSession()->getFlashBag()->all());
+        self::assertSame($response, $result);
+        self::assertArrayHasKey('success', $request->getSession()->getFlashBag()->all());
     }
 }

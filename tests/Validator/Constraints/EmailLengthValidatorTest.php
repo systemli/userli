@@ -6,6 +6,8 @@ use App\Validator\Constraints\EmailLength;
 use App\Validator\Constraints\EmailLengthValidator;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Validator\Exception\MissingOptionsException;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class EmailLengthValidatorTest extends ConstraintValidatorTestCase
@@ -18,59 +20,53 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
         'maxLength' => 10,
     ];
 
-    protected function createValidator()
+    protected function createValidator(): EmailLengthValidator
     {
         $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
 
         return new EmailLengthValidator($manager);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
-     */
-    public function testExpectsEmailLengthType()
+    public function testExpectsEmailLengthType(): void
     {
+        $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate('string', new Valid());
     }
 
-    public function testNullIsValid()
+    public function testNullIsValid(): void
     {
         $this->validator->validate(null, new EmailLength($this->emailLengthOptions));
 
         $this->assertNoViolation();
     }
 
-    public function testEmptyStringIsValid()
+    public function testEmptyStringIsValid(): void
     {
         $this->validator->validate('', new EmailLength($this->emailLengthOptions));
 
         $this->assertNoViolation();
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\UnexpectedTypeException
-     */
-    public function testExpectsStringCompatibleType()
+    public function testExpectsStringCompatibleType(): void
     {
+        $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate(new \stdClass(), new EmailLength($this->emailLengthOptions));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Validator\Exception\MissingOptionsException
-     */
-    public function testConstraintMissingOptions()
+    public function testConstraintMissingOptions(): void
     {
+        $this->expectException(MissingOptionsException::class);
         new EmailLength();
     }
 
-    public function testConstraintGetDefaultOption()
+    public function testConstraintGetDefaultOption(): void
     {
         $constraint = new EmailLength($this->emailLengthOptions);
-        $this->assertEquals($this->minLength, $constraint->minLength);
-        $this->assertEquals($this->maxLength, $constraint->maxLength);
+        self::assertEquals($this->minLength, $constraint->minLength);
+        self::assertEquals($this->maxLength, $constraint->maxLength);
     }
 
-    public function testValidateValidNewEmailLength()
+    public function testValidateValidNewEmailLength(): void
     {
         $this->validator->validate('new@example.org', new EmailLength($this->emailLengthOptions));
         $this->assertNoViolation();
@@ -79,7 +75,7 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
     /**
      * @dataProvider getShortLongAddresses
      */
-    public function testValidateShortLongEmailLength(string $address, string $violationMessage, string $operator, int $limit)
+    public function testValidateShortLongEmailLength(string $address, string $violationMessage, string $operator, int $limit): void
     {
         $this->validator->validate($address, new EmailLength($this->emailLengthOptions));
         $this->buildViolation($violationMessage)
@@ -87,7 +83,7 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    public function getShortLongAddresses()
+    public function getShortLongAddresses(): array
     {
         return [
             ['s@'.$this->domain, 'registration.email-too-short', 'min', $this->minLength],

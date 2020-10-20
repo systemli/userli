@@ -10,7 +10,7 @@ class PasswordGeneratorTest extends TestCase
     /**
      * @dataProvider provider
      */
-    public function testGenerate(int $length, int $iterations)
+    public function testGenerate(int $length, int $iterations): void
     {
         $password = PasswordGenerator::generate($length);
 
@@ -24,7 +24,7 @@ class PasswordGeneratorTest extends TestCase
     /**
      * @return array
      */
-    public function provider()
+    public function provider(): array
     {
         return [
             [45, 1000],

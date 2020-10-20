@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class MailCryptKeyPairTest extends TestCase
 {
-    public function testEraseKeys()
+    public function testEraseKeys(): void
     {
         $keyPair = new MailCryptKeyPair('private', 'public');
 

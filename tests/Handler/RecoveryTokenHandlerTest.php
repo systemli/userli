@@ -5,11 +5,12 @@ namespace App\Tests\Handler;
 use App\Entity\User;
 use App\Handler\RecoveryTokenHandler;
 use Doctrine\Common\Persistence\ObjectManager;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class RecoveryTokenHandlerTest extends TestCase
 {
-    protected function createHandler()
+    protected function createHandler(): RecoveryTokenHandler
     {
         $objectManager = $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()->getMock();
@@ -18,24 +19,20 @@ class RecoveryTokenHandlerTest extends TestCase
         return new RecoveryTokenHandler($objectManager);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage plainPassword should not be null
-     */
-    public function testCreateExceptionPlainPasswordNull()
+    public function testCreateExceptionPlainPasswordNull(): void
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage("plainPassword should not be null");
         $handler = $this->createHandler();
         $user = new User();
 
         $handler->create($user);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage plainMailCryptPrivateKey should not be null
-     */
-    public function testCreateExceptionPlainMailCryptPrivateKeyNull()
+    public function testCreateExceptionPlainMailCryptPrivateKeyNull(): void
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage("plainMailCryptPrivateKey should not be null");
         $handler = $this->createHandler();
         $user = new User();
 
@@ -43,7 +40,7 @@ class RecoveryTokenHandlerTest extends TestCase
         $handler->create($user);
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $handler = $this->createHandler();
         $user = new User();
@@ -55,7 +52,7 @@ class RecoveryTokenHandlerTest extends TestCase
         self::assertNotEmpty($user->getPlainRecoveryToken());
     }
 
-    public function testVerify()
+    public function testVerify(): void
     {
         $handler = $this->createHandler();
         $user = new User();
@@ -75,24 +72,20 @@ class RecoveryTokenHandlerTest extends TestCase
         self::assertFalse($handler->verify($user, $recoveryToken));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage secret should not be null
-     */
-    public function testDecryptExceptionSecretNull()
+    public function testDecryptExceptionSecretNull(): void
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage("secret should not be null");
         $handler = $this->createHandler();
         $user = new User();
 
         $handler->decrypt($user, 'recoveryToken');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage decryption of recoverySecretBox failed
-     */
-    public function testDecryptExceptionDecryptionFailed()
+    public function testDecryptExceptionDecryptionFailed(): void
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage("decryption of recoverySecretBox failed");
         $handler = $this->createHandler();
         $user = new User();
         $user->setPlainPassword('password');
@@ -102,7 +95,7 @@ class RecoveryTokenHandlerTest extends TestCase
         $handler->decrypt($user, 'brokenRecoveryToken');
     }
 
-    public function testDecrypt()
+    public function testDecrypt(): void
     {
         $handler = $this->createHandler();
         $user = new User();

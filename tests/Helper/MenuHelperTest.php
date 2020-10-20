@@ -11,7 +11,7 @@ class MenuHelperTest extends TestCase
 {
     private $childs = [];
 
-    public function testBuild()
+    public function testBuild(): void
     {
         $translator = $this->getMockBuilder(TranslatorInterface::class)
             ->disableOriginalConstructor()->getMock();
