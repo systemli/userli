@@ -89,11 +89,21 @@ class WkdHandler
      */
     public function importKey(string $key, string $email, ?User $user = null): OpenPgpKey
     {
-        $openPgpKey = GpgKeyImporter::import($email, $key);
+        if (null === $openPgpKey = $this->repository->findByEmail($email)) {
+            $openPgpKey = new OpenPgpKey();
+        }
 
         if (null !== $user) {
             $openPgpKey->setUser($user);
         }
+
+        $openPgpKeyNew = GpgKeyImporter::import($email, $key);
+
+        $openPgpKey->setEmail($openPgpKeyNew->getEmail());
+        $openPgpKey->setKeyId($openPgpKeyNew->getKeyId());
+        $openPgpKey->setKeyFingerprint($openPgpKeyNew->getKeyFingerprint());
+        $openPgpKey->setKeyExpireTime($openPgpKeyNew->getKeyExpireTime());
+        $openPgpKey->setKeyData($openPgpKeyNew->getKeyData());
 
         $this->manager->persist($openPgpKey);
         $this->manager->flush();
