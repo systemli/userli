@@ -1,3 +1,9 @@
+# 2.7.2 (2020.10.21)
+
+* Fix Munin account stats
+* Fix overwriting existing OpenPGP keys
+* Upgrade Travis CI for bionic and PHP7.3
+
 # 2.7.1 (2020.10.20)
 
 * Downgrade `twbs/bootstrap` back to 3.3
