@@ -29,8 +29,8 @@ class MuninVoucherCommandTest extends TestCase
 
         $output = $commandTester->getDisplay();
 
-        self::assertContains('voucher_total.value 10', $output);
-        self::assertContains('voucher_redeemed.value 2', $output);
+        self::assertStringContainsString('voucher_total.value 10', $output);
+        self::assertStringContainsString('voucher_redeemed.value 2', $output);
 
         $commandTester->execute(['--autoconf' => true]);
 
@@ -42,13 +42,13 @@ class MuninVoucherCommandTest extends TestCase
 
         $output = $commandTester->getDisplay();
 
-        self::assertContains('graph_title User Vouchers', $output);
-        self::assertContains('graph_category Mail', $output);
-        self::assertContains('graph_vlabel Voucher Counters', $output);
-        self::assertContains('voucher_total.label Total Vouchers', $output);
-        self::assertContains('voucher_total.min 0', $output);
-        self::assertContains('voucher_redeemed.label Redeemed Vouchers', $output);
-        self::assertContains('voucher_redeemed.type GAUGE', $output);
-        self::assertContains('voucher_redeemed.min 0', $output);
+        self::assertStringContainsString('graph_title User Vouchers', $output);
+        self::assertStringContainsString('graph_category Mail', $output);
+        self::assertStringContainsString('graph_vlabel Voucher Counters', $output);
+        self::assertStringContainsString('voucher_total.label Total Vouchers', $output);
+        self::assertStringContainsString('voucher_total.min 0', $output);
+        self::assertStringContainsString('voucher_redeemed.label Redeemed Vouchers', $output);
+        self::assertStringContainsString('voucher_redeemed.type GAUGE', $output);
+        self::assertStringContainsString('voucher_redeemed.min 0', $output);
     }
 }

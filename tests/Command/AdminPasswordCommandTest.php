@@ -35,6 +35,6 @@ class AdminPasswordCommandTest extends TestCase
         $commandTester->execute([]);
 
         $output = $commandTester->getDisplay();
-        $this->assertContains('Please enter new admin password', $output);
+        $this->assertStringContainsString('Please enter new admin password', $output);
     }
 }

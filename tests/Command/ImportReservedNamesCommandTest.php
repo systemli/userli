@@ -28,8 +28,8 @@ class ImportReservedNamesCommandTest extends TestCase
         $commandTester->execute([], ['verbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE]);
 
         $output = $commandTester->getDisplay();
-        $this->assertContains('Adding reserved name "new" to database table', $output);
-        $this->assertContains('Skipping reserved name "name", already exists', $output);
+        $this->assertStringContainsString('Adding reserved name "new" to database table', $output);
+        $this->assertStringContainsString('Skipping reserved name "name", already exists', $output);
     }
 
     public function getManager()

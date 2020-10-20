@@ -27,7 +27,7 @@ class UserTest extends TestCase
     {
         $this->assertInternalType('array', $roles);
         foreach ($roles as $role) {
-            $this->assertContains($role, Roles::getAll());
+            $this->assertArrayHasKey($role, Roles::getAll());
         }
     }
 
