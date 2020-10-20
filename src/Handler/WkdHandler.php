@@ -8,7 +8,6 @@ use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
 use App\Importer\GpgKeyImporter;
-use App\Model\OpenPpgKeyInfo;
 use App\Repository\OpenPgpKeyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use RuntimeException;
@@ -88,18 +87,10 @@ class WkdHandler
      * @throws NoGpgKeyForUserException
      * @throws MultipleGpgKeysForUserException
      */
-    public function importKey(string $key, string $email, ?User $user = null): OpenPpgKeyInfo
+    public function importKey(string $key, string $email, ?User $user = null): OpenPgpKey
     {
-        $openPgpKeyInfo = GpgKeyImporter::import($email, $key);
+        $openPgpKey = GpgKeyImporter::import($email, $key);
 
-        if (null === $openPgpKey = $this->repository->findByEmail($email)) {
-            $openPgpKey = new OpenPgpKey();
-        }
-
-        $openPgpKey->setKeyId($openPgpKeyInfo->getId());
-        $openPgpKey->setKeyFingerprint($openPgpKeyInfo->getFingerprint());
-        $openPgpKey->setKeyData($openPgpKeyInfo->getData());
-        $openPgpKey->setEmail($email);
         if (null !== $user) {
             $openPgpKey->setUser($user);
         }
@@ -109,16 +100,16 @@ class WkdHandler
 
         $this->exportKeyToWkd($openPgpKey);
 
-        return $openPgpKeyInfo;
+        return $openPgpKey;
     }
 
-    public function getKey(string $email): OpenPpgKeyInfo
+    public function getKey(string $email): OpenPgpKey
     {
         if (null === $openPgpKey = $this->repository->findByEmail($email)) {
-            return new OpenPpgKeyInfo();
+            $openPgpKey = new OpenPgpKey();
         }
 
-        return GpgKeyImporter::import($email, $openPgpKey->toBinary());
+        return $openPgpKey;
     }
 
     public function deleteKey(string $email): void

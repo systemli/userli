@@ -6,7 +6,6 @@ use App\Entity\Domain;
 use App\Entity\OpenPgpKey;
 use App\Entity\User;
 use App\Handler\WkdHandler;
-use App\Model\OpenPpgKeyInfo;
 use App\Repository\OpenPgpKeyRepository;
 use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -56,7 +55,12 @@ class WkdHandlerTest extends TestCase
 
     public function testImportKey(): void
     {
-        $expected = new OpenPpgKeyInfo($this->keyId, $this->keyFingerprint, new DateTime($this->keyExpireTime), $this->keyData);
+        $expected = new OpenPgpKey();
+        $expected->setEmail($this->email);
+        $expected->setKeyId($this->keyId);
+        $expected->setKeyFingerprint($this->keyFingerprint);
+        $expected->setKeyExpireTime(new DateTime($this->keyExpireTime));
+        $expected->setKeyData($this->keyData);
 
         $handler = $this->createHandler();
         $wkdKey = $handler->importKey(base64_decode($this->keyData), $this->email);
@@ -72,7 +76,13 @@ class WkdHandlerTest extends TestCase
         $user = new User();
         $user->setDomain($domain);
         $user->setEmail($this->email);
-        $expected = new OpenPpgKeyInfo($this->keyId, $this->keyFingerprint, new DateTime($this->keyExpireTime), $this->keyData);
+        $expected = new OpenPgpKey();
+        $expected->setEmail($this->email);
+        $expected->setKeyId($this->keyId);
+        $expected->setKeyFingerprint($this->keyFingerprint);
+        $expected->setKeyExpireTime(new DateTime($this->keyExpireTime));
+        $expected->setKeyData($this->keyData);
+        $expected->setUser($user);
 
         $handler = $this->createHandler();
         $wkdKey = $handler->importKey(base64_decode($this->keyData), $this->email, $user);

@@ -66,13 +66,13 @@ class OpenPgpImportKeyCommand extends Command
 
         // Import the key
         try {
-            $openPgpKeyInfo = $this->handler->importKey($content, $email);
+            $openPgpKey = $this->handler->importKey($content, $email);
         } catch (NoGpgKeyForUserException | MultipleGpgKeysForUserException $e) {
             $output->writeln(sprintf('Error: %s in %s', $e->getMessage(), $file));
 
             return;
         }
 
-        $output->writeln(sprintf('Imported OpenPGP key for email %s: %s', $email, $openPgpKeyInfo->getFingerprint()));
+        $output->writeln(sprintf('Imported OpenPGP key for email %s: %s', $email, $openPgpKey->getKeyFingerprint()));
     }
 }
