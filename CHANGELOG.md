@@ -1,3 +1,10 @@
+# 2.7.3 (2020.10.21)
+
+* Improve OpenPGP key import filter:
+  - Keep UIDs with valid email address but without realname
+  - Drop UIDs with invalid email address that have the valid email
+    address in realname
+
 # 2.7.2 (2020.10.21)
 
 * Fix Munin account stats

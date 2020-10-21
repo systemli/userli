@@ -54,7 +54,7 @@ class GpgKeyImporter implements OpenPgpKeyImporterInterface
         try {
             $gpg = new Crypt_GPG(['homedir' => $tempDir]);
             $gpg->setEngineOptions([
-                'import' => sprintf('--import-filter keep-uid="uid =~ <%s>"', $email),
+                'import' => sprintf('--import-filter keep-uid="uid =~ <%s> || uid = %s"', $email, $email),
             ]);
         } catch (Crypt_GPG_FileException | \PEAR_Exception $e) {
             self::recursiveRemoveDir($tempDir);
@@ -70,7 +70,7 @@ class GpgKeyImporter implements OpenPgpKeyImporterInterface
 
         try {
             /** @var Crypt_GPG_Key[] $keys */
-            $keys = $gpg->getKeys($email);
+            $keys = $gpg->getKeys(sprintf('<%s>', $email));
         } catch (Crypt_GPG_Exception $e) {
             self::recursiveRemoveDir($tempDir);
             throw new RuntimeException('Failed to read keys: '.$e->getMessage());
