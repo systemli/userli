@@ -1,3 +1,7 @@
+# 2.7.4 (2020.10.27)
+
+* Fix verification of invite codes
+
 # 2.7.3 (2020.10.21)
 
 * Improve OpenPGP key import filter:
