@@ -29,17 +29,13 @@ class VoucherValidator extends ConstraintValidator
     /**
      * Checks if the passed value is valid.
      *
-     * @param string     $value      The value that should be validated
+     * @param mixed      $value      The value that should be validated
      * @param Constraint $constraint The constraint for the validation
      */
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof Voucher) {
             throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\Voucher');
-        }
-
-        if (null === $value || '' === $value) {
-            return;
         }
 
         if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {

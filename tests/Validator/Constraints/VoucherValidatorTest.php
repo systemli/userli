@@ -36,18 +36,18 @@ class VoucherValidatorTest extends ConstraintValidatorTestCase
         $this->validator->validate('string', new Valid());
     }
 
-    public function testNullIsValid(): void
+    public function testNullIsInvalid(): void
     {
+        $this->expectException(UnexpectedTypeException::class);
         $this->validator->validate(null, new VoucherConstraint(true));
-
-        $this->assertNoViolation();
     }
 
-    public function testEmptyStringIsValid(): void
+    public function testEmptyStringIsInvalid(): void
     {
         $this->validator->validate('', new VoucherConstraint(true));
 
-        $this->assertNoViolation();
+        $this->buildViolation('registration.voucher-invalid')
+            ->assertRaised();
     }
 
     public function testExpectsStringCompatibleType(): void
