@@ -92,3 +92,7 @@ body {
 .dropdown-menu {
     min-width: unset;
 }
+
+.ascii {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
