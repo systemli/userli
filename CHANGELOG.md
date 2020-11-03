@@ -1,3 +1,7 @@
+# UNRELEASED
+
+* Improve style of pasted OpenPGP key (Thanks trashcan55)
+
 # 2.7.4 (2020.10.27)
 
 * Fix verification of invite codes
