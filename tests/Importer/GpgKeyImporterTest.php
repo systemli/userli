@@ -18,7 +18,7 @@ class GpgKeyImporterTest extends TestCase
      *   - keep UIDs with correct email with realname
      *   - keep UIDs with correct email without realname
      *   - drop UIDs with wrong email
-     *   - drop UIDs with wrong email but correct email in realname
+     *   - drop UIDs with wrong email but correct email in realname.
      *
      * pub   rsa3072 2020-10-21 [SC] [expires: 2022-10-21]
      *       D26D7D3E94B086E29893A4F391285F31F93A680B
@@ -30,9 +30,9 @@ class GpgKeyImporterTest extends TestCase
      * uid           alice@example.org
      * sub   rsa3072 2020-10-21 [E] [expires: 2022-10-21]
      *
-     * @var string $validKeyAscii
+     * @var string
      */
-    private $validKeyAscii ='-----BEGIN PGP PUBLIC KEY BLOCK-----
+    private $validKeyAscii = '-----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mQGNBF+P+1kBDADFJfEqMZb3Uo1sYql/FwLHLKiPWoGu7W2Pn8BjaorMuEc1dLc7
 H3Yn576b5ego696/QNa8GUvRYkVgMCUGWNj0jd9VK16FfVsIfJD3GoBBQLPIb0/8
@@ -126,7 +126,7 @@ y2USCeHHNeCalKPxD9efQb+iq+tKZNJT/fB6nkixkXZVifqrQa/q2g==
 =QPao
 -----END PGP PUBLIC KEY BLOCK-----';
     /**
-     * Should result in the following key being exported:
+     * Should result in the following key being exported:.
      *
      * pub   rsa3072 2020-10-21 [SC] [expires: 2022-10-21]
      *       D26D7D3E94B086E29893A4F391285F31F93A680B
@@ -135,7 +135,6 @@ y2USCeHHNeCalKPxD9efQb+iq+tKZNJT/fB6nkixkXZVifqrQa/q2g==
      * uid           alice@example.org
      * uid           <alice@example.org> <anotheralice@example.org>>
      * sub   rsa3072 2020-10-21 [E] [expires: 2022-10-21]
-
      */
     private $validKeyBinary = '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';
     private $validKeyId = '91285F31F93A680B';
