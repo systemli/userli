@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Handler\WkdHandler;
+use App\Repository\DomainRepository;
 use App\Repository\OpenPgpKeyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
@@ -17,14 +18,20 @@ class OpenPgpExportKeysCommand extends Command
     private $handler;
 
     /**
+     * @var DomainRepository
+     */
+    private $domainRepository;
+
+    /**
      * @var OpenPgpKeyRepository
      */
-    private $repository;
+    private $openPgpKeyRepository;
 
     public function __construct(ObjectManager $manager, WkdHandler $handler)
     {
         $this->handler = $handler;
-        $this->repository = $manager->getRepository('App:OpenPgpKey');
+        $this->domainRepository = $manager->getRepository('App:Domain');
+        $this->openPgpKeyRepository = $manager->getRepository('App:OpenPgpKey');
         parent::__construct();
     }
 
@@ -43,8 +50,14 @@ class OpenPgpExportKeysCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // create Web Key Directories (WKD) for all domains
+        foreach ($this->domainRepository->findAll() as $domain) {
+            $this->handler->getDomainWkdPath($domain->getName());
+        }
+
+        // export all OpenPGP keys to Web Key Directory (WKD)
         $count = 0;
-        foreach ($this->repository->findAll() as $openPgpKey) {
+        foreach ($this->openPgpKeyRepository->findAll() as $openPgpKey) {
             $this->handler->exportKeyToWKD($openPgpKey);
             ++$count;
         }

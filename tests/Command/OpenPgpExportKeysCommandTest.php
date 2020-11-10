@@ -3,8 +3,10 @@
 namespace App\Tests\Command;
 
 use App\Command\OpenPgpExportKeysCommand;
+use App\Entity\Domain;
 use App\Entity\OpenPgpKey;
 use App\Handler\WkdHandler;
+use App\Repository\DomainRepository;
 use App\Repository\OpenPgpKeyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
@@ -22,17 +24,29 @@ class OpenPgpExportKeysCommandTest extends TestCase
         $openPgpKey = new OpenPgpKey();
         $openPgpKey->setEmail('admin@example.org');
 
+        $domain = new Domain();
+        $domain->setName('example.org');
+
         $manager = $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $repository = $this->getMockBuilder(OpenPgpKeyRepository::class)
+        $domainRepository = $this->getMockBuilder(DomainRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $domainRepository->method('findAll')->willReturn([$domain]);
 
-        $repository->method('findAll')->willReturn([$openPgpKey]);
+        $openPgpKeyRepository = $this->getMockBuilder(OpenPgpKeyRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $openPgpKeyRepository->method('findAll')->willReturn([$openPgpKey]);
 
-        $manager->method('getRepository')->willReturn($repository);
+        $manager->method('getRepository')->willReturnMap(
+            [
+                ['App:Domain', $domainRepository],
+                ['App:OpenPgpKey', $openPgpKeyRepository],
+            ]
+        );
 
         $wkdHandler = $this->getMockBuilder(WkdHandler::class)
             ->disableOriginalConstructor()

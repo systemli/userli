@@ -4,6 +4,7 @@ namespace App\EventListener;
 
 use App\Entity\Alias;
 use App\Event\DomainCreatedEvent;
+use App\Handler\WkdHandler;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -14,9 +15,15 @@ class DomainCreationListener implements EventSubscriberInterface
      */
     private $manager;
 
-    public function __construct(ObjectManager $manager)
+    /**
+     * @var WkdHandler
+     */
+    private $handler;
+
+    public function __construct(ObjectManager $manager, WkdHandler $handler)
     {
         $this->manager = $manager;
+        $this->handler = $handler;
     }
 
     /**
@@ -41,6 +48,9 @@ class DomainCreationListener implements EventSubscriberInterface
             $this->manager->persist($alias);
             $this->manager->flush();
         }
+
+        // create Web Key Directory (WKD)
+        $this->handler->getDomainWkdPath($domain->getName());
     }
 
     public static function getSubscribedEvents()

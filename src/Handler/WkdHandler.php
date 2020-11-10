@@ -146,4 +146,9 @@ class WkdHandler
     {
         file_put_contents($this->getWkdKeyPath($openPgpKey->getEmail()), $openPgpKey->toBinary());
     }
+
+    public function getDomainWkdPath(string $domain): string
+    {
+        return $this->getWkdPath($domain);
+    }
 }
