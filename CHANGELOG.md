@@ -1,4 +1,4 @@
-# UNRELEASED
+# 2.7.5 (2020.11.10)
 
 * Always initiate Web Key Directory for new domains
 * Improve style of pasted OpenPGP key (Thanks trashcan55)
