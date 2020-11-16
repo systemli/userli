@@ -1,3 +1,7 @@
+# 2.7.6 (2020.11.16)
+
+* Checkpassword: Don't throw an Exception on missing password
+
 # 2.7.5 (2020.11.10)
 
 * Always initiate Web Key Directory for new domains

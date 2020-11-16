@@ -127,7 +127,9 @@ class CheckPasswordCommand extends Command
         $userDbLookup = ('1' === getenv('AUTHORIZED')) ? true : false;
 
         if (false === $userDbLookup && empty($password)) {
-            throw new InvalidArgumentException('Invalid input format: missing argument password. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.');
+            // Instead throwing an exception, just return 1 (invalid credentials)
+            //throw new InvalidArgumentException('Invalid input format: missing argument password. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.');
+            return 1;
         }
 
         // Check if user exists

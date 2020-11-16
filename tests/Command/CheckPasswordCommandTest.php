@@ -119,16 +119,9 @@ class CheckPasswordCommandTest extends TestCase
     public function invalidContentProvider(): array
     {
         $msgMissingEmail = 'Invalid input format: missing argument email. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.';
-        $msgMissingPassword = 'Invalid input format: missing argument password. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.';
 
         return [
             ['', $msgMissingEmail],
-            ['user@example.org', $msgMissingPassword],
-            ["user@example.org\x00", $msgMissingPassword],
-            ["user@example.org\x00\x00", $msgMissingPassword],
-            ["user@example.org\x00\x00\x00", $msgMissingPassword],
-            ["user@example.org\x00\x00timestamp\x00", $msgMissingPassword],
-            ["user@example.org\x00\x00timestamp\x00extra", $msgMissingPassword],
             ["\x00password", $msgMissingEmail],
             ["\x00password\x00", $msgMissingEmail],
             ["\x00password\x00timestamp\x00", $msgMissingEmail],
@@ -147,6 +140,12 @@ class CheckPasswordCommandTest extends TestCase
             ["user@example.org\x00password\x00timestamp\x00extra\x00", 0],
             ["quota@example.org\x00password\x00\x00", 0],
             ["mailcrypt@example.org\x00password\x00\x00", 0],
+            ['user@example.org', 1],
+            ["user@example.org\x00", 1],
+            ["user@example.org\x00\x00", 1],
+            ["user@example.org\x00\x00\x00", 1],
+            ["user@example.org\x00\x00timestamp\x00", 1],
+            ["user@example.org\x00\x00timestamp\x00extra", 1],
             ["spam@example.org\x00password\x00\x00", 1],
             ["user@example.org\x00wrongpassword", 1],
             ["user@example.org\x00wrongpassword\x00", 1],
