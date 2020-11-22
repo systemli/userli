@@ -18,6 +18,12 @@ Last steps to make Userli work properly.
     # Warm up cache
     bin/console cache:warmup
 
+## Configure Dovecot
+
+Configure Dovecot to use separate directories per domain and user. Change the `mail_location` in `10-mail.conf` to something like this:
+
+	mail_location = maildir:~/%d/%n
+
 ## Cronjobs
 
 Some cronjobs are needed in order to run regular tasks:

@@ -18,11 +18,6 @@ use Symfony\Component\Process\Process;
 
 class CheckPasswordCommand extends Command
 {
-    // TODO: put the constants somewhere public and use it here and in RemoveUsersCommand
-    const VMAIL_PATH = '/var/vmail/%s/%s';
-    const VMAIL_UID = '5000';
-    const VMAIL_GID = '5000';
-
     /**
      * @var ObjectManager
      */
@@ -54,13 +49,31 @@ class CheckPasswordCommand extends Command
     private $mailCrypt;
 
     /**
+     * @var int
+     */
+    private $mailUid;
+
+    /**
+     * @var int
+     */
+    private $mailGid;
+
+    /**
+     * @var string
+     */
+    private $mailLocation;
+
+    /**
      * CheckPasswordCommand constructor.
      */
     public function __construct(ObjectManager $manager,
                                 FileDescriptorReader $reader,
                                 UserAuthenticationHandler $handler,
                                 MailCryptKeyHandler $mailCryptKeyHandler,
-                                int $mailCrypt)
+                                int $mailCrypt,
+                                int $mailUid,
+                                int $mailGid,
+                                string $mailLocation)
     {
         $this->manager = $manager;
         $this->reader = $reader;
@@ -68,6 +81,9 @@ class CheckPasswordCommand extends Command
         $this->repository = $this->manager->getRepository('App:User');
         $this->mailCryptKeyHandler = $mailCryptKeyHandler;
         $this->mailCrypt = $mailCrypt;
+        $this->mailLocation = $mailLocation;
+        $this->mailUid = $mailUid;
+        $this->mailGid = $mailGid;
         parent::__construct();
     }
 
@@ -162,9 +178,9 @@ class CheckPasswordCommand extends Command
         // Set default environment variables for checkpassword-reply command
         $envVars = [
             'USER' => $email,
-            'HOME' => sprintf(self::VMAIL_PATH, $domain, $username),
-            'userdb_uid' => self::VMAIL_UID,
-            'userdb_gid' => self::VMAIL_GID,
+            'HOME' => $this->mailLocation.DIRECTORY_SEPARATOR.$domain.DIRECTORY_SEPARATOR.$username,
+            'userdb_uid' => $this->mailUid,
+            'userdb_gid' => $this->mailGid,
         ];
 
         // set EXTRA env var
