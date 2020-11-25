@@ -3,6 +3,7 @@
 * Show footer on recovery page (Fixes: #141, thanks 1resu)
 * Add hint to clear the cache to docs (Thanks 1resu)
 * Open homepage link in same window (Thanks 1resu)
+* Change username input type in login forms (Thanks 1resu)
 
 # 2.7.6 (2020.11.16)
 
