@@ -244,6 +244,7 @@ class RecoveryController extends AbstractController
                         'form' => $recoveryTokenAckForm->createView(),
                         'recovery_token' => $recoveryToken,
                         'recovery_secret_set' => $user->hasRecoverySecretBox(),
+                        'user' => $user,
                     ]
                 );
             }
@@ -253,6 +254,7 @@ class RecoveryController extends AbstractController
             [
                 'form' => $form->createView(),
                 'recovery_secret_set' => $user->hasRecoverySecretBox(),
+                'user' => $user,
             ]
         );
     }
