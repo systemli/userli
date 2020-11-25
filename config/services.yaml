@@ -56,10 +56,17 @@ services:
     App\Command\CheckPasswordCommand:
         arguments:
             $mailCrypt: "%env(MAIL_CRYPT)%"
+            $mailLocation: "%env(DOVECOT_MAIL_LOCATION)%"
+            $mailUid: "%env(DOVECOT_MAIL_UID)%"
+            $mailGid: "%env(DOVECOT_MAIL_GID)%"
 
     App\Command\MailCryptCommand:
         arguments:
             $mailCrypt: "%env(MAIL_CRYPT)%"
+
+    App\Command\RemoveUsersCommand:
+        arguments:
+            $mailLocation: "%env(DOVECOT_MAIL_LOCATION)%"
 
     App\Command\VoucherCreationCommand:
         arguments:

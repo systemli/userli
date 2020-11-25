@@ -13,20 +13,25 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class RemoveUsersCommand extends Command
 {
-    const VMAIL_PATH = '/var/vmail/%s/%s';
-
     /**
      * @var ObjectManager
      */
     private $manager;
+    /**
+     * @var string
+     */
+    private $mailLocation;
 
     /**
      * RegistrationMailCommand constructor.
      */
-    public function __construct(ObjectManager $manager, ?string $name = null)
+    public function __construct(ObjectManager $manager,
+                                string $mailLocation,
+                                ?string $name = null)
     {
         parent::__construct($name);
         $this->manager = $manager;
+        $this->mailLocation = $mailLocation;
     }
 
     /**
@@ -57,7 +62,7 @@ class RemoveUsersCommand extends Command
             }
             $domain = $user->getDomain()->getName();
             $name = str_replace('@'.$domain, '', $user->getEmail());
-            $path = sprintf(self::VMAIL_PATH, $domain, $name);
+            $path = $this->mailLocation.DIRECTORY_SEPARATOR.$domain.DIRECTORY_SEPARATOR.$name;
 
             if ($input->getOption('dry-run')) {
                 $output->writeln(sprintf('Would delete directory for user: %s', $user));
