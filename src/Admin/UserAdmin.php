@@ -226,9 +226,9 @@ class UserAdmin extends Admin
      */
     public function preUpdate($user)
     {
-        // Only admins are allowed to set admin role
+        // Only admins are allowed to set attributes of other admins
         if (!$this->security->isGranted(Roles::ADMIN) && $user->hasRole(Roles::ADMIN)) {
-            throw new AccessDeniedException('Not allowed to set admin role');
+            throw new AccessDeniedException('Not allowed to edit admin user');
         }
 
         if (!empty($user->getPlainPassword())) {
