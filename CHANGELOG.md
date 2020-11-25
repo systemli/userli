@@ -1,3 +1,9 @@
+# 2.7.7 (UNRELEASED)
+
+* Show footer on recovery page (Fixes: #141, thanks 1resu)
+* Add hint to clear the cache to docs (Thanks 1resu)
+* Open homepage link in same window (Thanks 1resu)
+
 # 2.7.6 (2020.11.16)
 
 * Checkpassword: Don't throw an Exception on missing password
