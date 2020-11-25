@@ -84,10 +84,8 @@ class DomainVoter extends Voter
         }
 
         // nobody but Admins is allowed to create/edit admins
-        if ($subject instanceof User) {
-            if ($subject->hasRole(Roles::ADMIN)) {
-                return false;
-            }
+        if (($subject instanceof User) && $subject->hasRole(Roles::ADMIN)) {
+            return false;
         }
 
         $user = $this->manager->getRepository('App:User')

@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 class UserAdmin extends Admin
@@ -225,6 +226,11 @@ class UserAdmin extends Admin
      */
     public function preUpdate($user)
     {
+        // Only admins are allowed to set admin role
+        if (!$this->security->isGranted(Roles::ADMIN) && $user->hasRole(Roles::ADMIN)) {
+            throw new AccessDeniedException('Not allowed to set admin role');
+        }
+
         if (!empty($user->getPlainPassword())) {
             $this->passwordUpdater->updatePassword($user);
         } else {
