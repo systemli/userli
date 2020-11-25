@@ -20,7 +20,8 @@ Last steps to make Userli work properly.
 
 ## Configure Dovecot
 
-Configure Dovecot to use separate directories per domain and user. Change the `mail_location` in `10-mail.conf` to something like this:
+Configure Dovecot to use separate directories per domain and user. Change
+the `mail_location` in `10-mail.conf` to something like this:
 
 	mail_location = maildir:~/%d/%n
 

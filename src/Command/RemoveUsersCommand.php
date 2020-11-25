@@ -26,7 +26,7 @@ class RemoveUsersCommand extends Command
      * RegistrationMailCommand constructor.
      */
     public function __construct(ObjectManager $manager,
-	                        string $mailLocation,
+                                string $mailLocation,
                                 ?string $name = null)
     {
         parent::__construct($name);

@@ -1,6 +1,8 @@
-# 2.7.7 (UNRELEASED)
+# 2.7.7 (2020.11.25)
 
 * Limit permissions to set admin role to admin users
+* Move mail location and dovecot UID/GID settings to environment
+  variables (Thanks 1resu)
 * Show footer on recovery page (Fixes: #141, thanks 1resu)
 * Add hint to clear the cache to docs (Thanks 1resu)
 * Open homepage link in same window (Thanks 1resu)
