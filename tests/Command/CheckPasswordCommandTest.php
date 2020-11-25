@@ -45,8 +45,18 @@ class CheckPasswordCommandTest extends TestCase
         $handler = $this->getHandler();
         $mailCryptKeyHandler = $this->getMailCryptKeyHandler();
         $mailCrypt = 0;
+        $mailUID = 5000;
+        $mailGID = 5000;
+        $mailLocation = 'var/vmail';
 
-        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCrypt);
+        $command = new CheckPasswordCommand($manager,
+                                            $reader,
+                                            $handler,
+                                            $mailCryptKeyHandler,
+                                            $mailCrypt,
+                                            $mailUID,
+                                            $mailGID,
+                                            $mailLocation);
         $commandTester = new CommandTester($command);
 
         $this->expectExceptionMessage($exceptionMessage);
@@ -63,8 +73,18 @@ class CheckPasswordCommandTest extends TestCase
         $handler = $this->getHandler();
         $mailCryptKeyHandler = $this->getMailCryptKeyHandler();
         $mailCrypt = 2;
+        $mailUID = 5000;
+        $mailGID = 5000;
+        $mailLocation = 'var/vmail';
 
-        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCrypt);
+        $command = new CheckPasswordCommand($manager,
+            $reader,
+            $handler,
+            $mailCryptKeyHandler,
+            $mailCrypt,
+            $mailUID,
+            $mailGID,
+            $mailLocation);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute([]);
@@ -82,8 +102,18 @@ class CheckPasswordCommandTest extends TestCase
         $handler = $this->getHandler();
         $mailCryptKeyHandler = $this->getMailCryptKeyHandler();
         $mailCrypt = 0;
+        $mailUID = 5000;
+        $mailGID = 5000;
+        $mailLocation = 'var/vmail';
 
-        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCrypt);
+        $command = new CheckPasswordCommand($manager,
+            $reader,
+            $handler,
+            $mailCryptKeyHandler,
+            $mailCrypt,
+            $mailUID,
+            $mailGID,
+            $mailLocation);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute(
@@ -105,9 +135,19 @@ class CheckPasswordCommandTest extends TestCase
         $handler = $this->getHandler();
         $mailCryptKeyHandler = $this->getMailCryptKeyHandler();
         $mailCrypt = 2;
+        $mailUID = 5000;
+        $mailGID = 5000;
+        $mailLocation = 'var/vmail';
 
         putenv('AUTHORIZED=1');
-        $command = new CheckPasswordCommand($manager, $reader, $handler, $mailCryptKeyHandler, $mailCrypt);
+        $command = new CheckPasswordCommand($manager,
+            $reader,
+            $handler,
+            $mailCryptKeyHandler,
+            $mailCrypt,
+            $mailUID,
+            $mailGID,
+            $mailLocation);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute([]);
