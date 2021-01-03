@@ -1,3 +1,7 @@
+# 2.7.8 (UNRELEASED)
+
+* Add placeholder for recovery code (Thanks xshadow)
+
 # 2.7.7 (2020.11.25)
 
 * Limit permissions to set admin role to admin users
