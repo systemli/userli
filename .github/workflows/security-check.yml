@@ -1,0 +1,14 @@
+name: Sensio PHP security checker
+
+on:
+  pull_request:
+  push:
+  schedule:
+    - cron:  '0 8 * * 1'
+
+jobs:
+  security-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: symfonycorp/security-checker-action@v2
