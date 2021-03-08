@@ -1,5 +1,7 @@
-# 2.7.8 (UNRELEASED)
+# 2.7.8 (2021.03.08)
 
+* Typo fixes
+* Update dependencies
 * Add placeholder for recovery code (Thanks xshadow)
 
 # 2.7.7 (2020.11.25)
