@@ -189,7 +189,7 @@ recovery-token:
     Ort ab.
   displayed-once: >
     Der Wiederherstellungscode wird aus Sicherheitsgründen nur einmal angezeigt.
-    Wir können ihn nicht für die wiederherstellen.
+    Wir können ihn nicht für dich wiederherstellen.
 flashes:
   logout-successful: Du bist jetzt abgemeldet.
   password-change-successful: Dein neues Passwort ist ab sofort aktiv!
