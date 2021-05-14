@@ -68,6 +68,9 @@
     "doctrine/dbal": {
         "version": "v2.8.0"
     },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
+    },
     "doctrine/doctrine-bundle": {
         "version": "1.12",
         "recipe": {
@@ -176,6 +179,9 @@
     "php": {
         "version": "7.3.19"
     },
+    "phpstan/phpdoc-parser": {
+        "version": "0.5.4"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -202,18 +208,6 @@
             "version": "5.2",
             "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
         }
-    },
-    "sensiolabs/security-checker": {
-        "version": "4.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.0",
-            "ref": "160c9b600564faa1224e8f387d49ef13ceb8b793"
-        },
-        "files": [
-            "config/packages/security_checker.yaml"
-        ]
     },
     "sonata-project/admin-bundle": {
         "version": "3.31",

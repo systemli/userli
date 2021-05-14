@@ -51,7 +51,6 @@
         "behat/mink-extension": "^2.3",
         "behat/symfony2-extension": "^2.1",
         "dg/bypass-finals": "^1.1",
-        "sensiolabs/security-checker": "^6.0",
         "symfony/debug-bundle": "*",
         "symfony/debug-pack": "^1.0",
         "symfony/phpunit-bridge": "*",
