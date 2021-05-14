@@ -1,3 +1,9 @@
+# 2.7.9 (2021.05.14)
+
+* Fix CVE-2021-21424
+* Upgrade to symfony 4.4.23
+* Update PHP and JS dependencies
+
 # 2.7.8 (2021.03.08)
 
 * Typo fixes
