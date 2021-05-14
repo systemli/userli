@@ -24,7 +24,7 @@ test: vendors lint
 	bin/phpunit
 
 security-check: vendors
-	bin/console security:check
+	bin/local-php-security-checker
 
 integration: vendors lint
 	yarn
