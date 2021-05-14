@@ -37,8 +37,8 @@ prepare:
 release: clean prepare
 	APP_ENV=prod composer install --no-dev --ignore-platform-reqs
 	APP_ENV=prod composer dump-autoload
-	yarn --pure-lockfile --no-verbose
-	yarn encore production --no-verbose
+	yarn --pure-lockfile
+	yarn encore production
 	# Create a release tarball
 	tar --exclude='${PWD_NAME}/.env.*' --exclude='${PWD_NAME}/.git*' \
 		--exclude='${PWD_NAME}/.*.yml' --exclude='${PWD_NAME}/behat.yml' \
