@@ -211,7 +211,7 @@ spam:
   title: Account locked
   text: "Oh no! We believe your account has been misused by a spammer.\nE-mail access\
     \ has been turned off.\nPlease contact support to unlock your account.\n"
-Bad credentials.: Wrong login details
+Bad credentials.: The presented password is invalid.
 custom: custom
 random: random
 mail:

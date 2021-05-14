@@ -111,7 +111,7 @@ Feature: User
     And I press "Sign in"
 
     Then I should be on "/en/login"
-    Then I should see text matching "Wrong login details"
+    Then I should see text matching "The presented password is invalid."
     And the response status code should not be 403
 
   @create-voucher

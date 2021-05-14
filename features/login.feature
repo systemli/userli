@@ -44,7 +44,7 @@ Feature: Login
       | password | test123           |
     And I press "Sign in"
 
-    Then I should see text matching "Wrong login details"
+    Then I should see text matching "The presented password is invalid."
 
   @login
   Scenario: Login as Admin
