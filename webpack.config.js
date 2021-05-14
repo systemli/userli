@@ -41,7 +41,9 @@ Encore
     .autoProvidejQuery()
 
     .addPlugin(new CopyWebpackPlugin({
-        patterns: [{from: './assets/images', to: 'images'}]
+        patterns: [
+            { from: './assets/images', to: 'images' }
+        ],
     }))
 ;
 
