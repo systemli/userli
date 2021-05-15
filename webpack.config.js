@@ -40,9 +40,9 @@ Encore
     // uncomment if you're having problems with a jQuery plugin
     .autoProvidejQuery()
 
-    .addPlugin(new CopyWebpackPlugin([
-        { from: './assets/images', to: 'images' }
-    ]))
+    .addPlugin(new CopyWebpackPlugin({
+        patterns: [{from: './assets/images', to: 'images'}]
+    }))
 ;
 
 module.exports = Encore.getWebpackConfig();

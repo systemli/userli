@@ -1,0 +1,194 @@
+name: Integration
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+env:
+  DATABASE_DRIVER: pdo_sqlite
+  DATABASE_URL: sqlite:///%kernel.project_dir%/var/db_test.sqlite
+  APP_ENV: test
+  APP_SECRET: 165e25e3846534bb4665d7078a851c0b
+  MAILER_URL: smtp://localhost:25?encryption=&auth_mode=
+  MAILER_DELIVERY_ADDRESS: admin@example.org
+  APP_NAME: "Userli"
+  APP_URL: "https://users.example.org"
+  PROJECT_NAME: "example.org"
+  PROJECT_URL: "https://www.example.org"
+  DOMAIN: "example.org"
+  SENDER_ADDRESS: "admin@example.org"
+  NOTIFICATION_ADDRESS: "monitoring@example.org"
+  SEND_MAIL: 1
+  LOCALE: "de"
+  HAS_SINA_BOX: 0
+  MAIL_CRYPT_ENABLED: 1
+  MAIL_CRYPT_AUTO: 1
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    name: PHPUnit
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['7.3', '7.4']
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: openssl, sodium
+          coverage: xdebug
+          tools: composer
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install
+
+      - name: PHPUnit
+        run: bin/phpunit --coverage-clover=coverage.xml
+
+      - name: Upload Test Coverage
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  integration-sqlite:
+    runs-on: ubuntu-latest
+    name: Behat (SQLite)
+    needs: unit-tests
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: openssl, sodium
+          tools: composer
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Integration with SQLite
+        run: make integration
+        env:
+          DATABASE_DRIVER: pdo_sqlite
+          DATABASE_URL: sqlite:///%kernel.project_dir%/var/db_test.sqlite
+
+  integration-mariadb:
+    runs-on: ubuntu-latest
+    name: Behat (MariaDB)
+    needs: unit-tests
+    services:
+      mariadb:
+        image: mariadb:10.5
+        ports:
+          - 3306
+        env:
+          MYSQL_USER: mail_test
+          MYSQL_PASSWORD: password
+          MYSQL_DATABASE: mail_test
+          MYSQL_ROOT_PASSWORD: password
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: openssl, sodium, mysql
+          tools: composer
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Integration with MariaDB
+        run: make integration
+        env:
+          DATABASE_DRIVER: pdo_mysql
+          DATABASE_URL: mysql://mail_test:password@127.0.0.1:${{ job.services.mariadb.ports[3306] }}/mail_test
+
+  integration-postgres:
+    runs-on: ubuntu-latest
+    name: Behat (PostgreSQL)
+    needs: unit-tests
+    services:
+      postgres:
+        image: postgres:13
+        ports:
+          - 5432
+        env:
+          POSTGRES_USER: mail_test
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: mail_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: openssl, sodium, pgsql
+          tools: composer
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Integration with PostgreSQL
+        run: make integration
+        env:
+          DATABASE_DRIVER: pdo_pgsql
+          DATABASE_URL: pgsql://mail_test:password@127.0.0.1:${{ job.services.postgres.ports[5432] }}/mail_test?charset=UTF8
