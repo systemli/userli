@@ -237,7 +237,6 @@ services:
         tags:
             - { name: sonata.block }
         arguments:
-            - userli.admin.block.statistics
             - '@Symfony\Component\Templating\EngineInterface'
             - '@Doctrine\Common\Persistence\ObjectManager'
 
