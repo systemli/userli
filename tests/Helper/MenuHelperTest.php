@@ -21,8 +21,10 @@ class MenuHelperTest extends TestCase
         $menu = $this->getMockBuilder(ItemInterface::class)
             ->disableOriginalConstructor()->getMock();
         $menu->method('addChild')
-            ->willReturnCallback(function ($child, $options) {
+            ->willReturnCallback(function ($child, $options) use ($menu) {
                 $this->childs[$child] = $options;
+
+                return $menu;
             });
 
         $builtMenu = $helper->build([], $menu);

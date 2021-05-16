@@ -25,6 +25,8 @@ class MenuBuilderTest extends TestCase
         $this->menu->method('addChild')
             ->willReturnCallback(function ($child, $options) {
                 $this->children[$child] = $options;
+
+                return $this->menu;
             });
 
         $this->factory = $this->getMockBuilder(FactoryInterface::class)
