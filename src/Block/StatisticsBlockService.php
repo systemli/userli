@@ -3,15 +3,14 @@
 namespace App\Block;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\BlockBundle\Block\BlockContextInterface;
-use Sonata\BlockBundle\Block\Service\AbstractAdminBlockService;
+use Sonata\BlockBundle\Block\Service\BlockServiceInterface;
 use Sonata\BlockBundle\Model\BlockInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class StatisticsBlockService extends AbstractAdminBlockService
+class StatisticsBlockService implements BlockServiceInterface
 {
     /**
      * @var ObjectManager
@@ -19,39 +18,29 @@ class StatisticsBlockService extends AbstractAdminBlockService
     private $manager;
 
     /**
-     * Constructor.
-     *
-     * @param $name
+     * @var EngineInterface
      */
-    public function __construct($name, EngineInterface $templating, ObjectManager $manager)
-    {
-        parent::__construct($name, $templating);
+    private $templating;
 
+    /**
+     * StatisticsBlockService constructor.
+     *
+     * @param EngineInterface $templating
+     * @param ObjectManager $manager
+     */
+    public function __construct(EngineInterface $templating, ObjectManager $manager)
+    {
+        $this->templating = $templating;
         $this->manager = $manager;
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function buildEditForm(FormMapper $form, BlockInterface $block)
-    {
-        throw new \RuntimeException('Not used, this block renders an empty result if no block document can be found');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildCreateForm(FormMapper $form, BlockInterface $block)
-    {
-        throw new \RuntimeException('Not used, this block renders an empty result if no block document can be found');
-    }
-
-    /**
-     * @param Response $response
+     * @param BlockContextInterface $blockContext
+     * @param Response|null $response
      *
      * @return Response
      */
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
+    public function execute(BlockContextInterface $blockContext, Response $response = null): Response
     {
         $settings = $blockContext->getSettings();
 
@@ -66,16 +55,16 @@ class StatisticsBlockService extends AbstractAdminBlockService
                 'users_count' => $this->manager->getRepository('App:User')->count([]),
                 'vouchers_count' => $vouchersCount = $this->manager->getRepository('App:Voucher')->count([]),
                 'vouchers_redeemed' => $vouchersRedeemed = $this->manager->getRepository('App:Voucher')->countRedeemedVouchers(),
-                'vouchers_ratio' => ($vouchersCount > 0) ? sprintf('%.2f%%', (float) (($vouchersRedeemed / $vouchersCount) * 100)) : '0%',
+                'vouchers_ratio' => ($vouchersCount > 0) ? sprintf('%.2f%%', (float)(($vouchersRedeemed / $vouchersCount) * 100)) : '0%',
             ],
             $response
         );
     }
 
     /**
-     * {@inheritdoc}
+     * @param OptionsResolver $resolver
      */
-    public function configureSettings(OptionsResolver $resolver)
+    public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -87,13 +76,21 @@ class StatisticsBlockService extends AbstractAdminBlockService
     }
 
     /**
-     * {@inheritdoc}
+     * @param BlockInterface $block
+     * @return array
      */
-    public function getCacheKeys(BlockInterface $block)
+    public function getCacheKeys(BlockInterface $block): array
     {
         return [
             'block_id' => $block->getId(),
             'updated_at' => $block->getUpdatedAt() ? $block->getUpdatedAt()->format('U') : strtotime('now'),
         ];
+    }
+
+    /**
+     * @param BlockInterface $block
+     */
+    public function load(BlockInterface $block): void
+    {
     }
 }
