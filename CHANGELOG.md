@@ -1,3 +1,9 @@
+# 2.7.10 (2021.05.20)
+
+* Really fix CVE-2021-21424
+* Upgrade to symfony 4.4.24
+* Update PHP and JS dependencies
+
 # 2.7.9 (2021.05.14)
 
 * Fix CVE-2021-21424
