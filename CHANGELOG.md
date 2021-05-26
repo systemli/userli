@@ -1,3 +1,7 @@
+# 2.7.11 (UNRELEASED)
+
+* Update PHP and JS dependencies
+
 # 2.7.10 (2021.05.20)
 
 * Really fix CVE-2021-21424
