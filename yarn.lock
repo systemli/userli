@@ -904,10 +904,10 @@
     error-stack-parser "^2.0.0"
     string-width "^2.0.0"
 
-"@symfony/webpack-encore@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@symfony/webpack-encore/-/webpack-encore-1.3.0.tgz#6ea62feef5599f62b9234186b848260b2eb21906"
-  integrity sha512-3AG84Sa8EKrTMbV+lDCpje26TrBOJ/Lt8i7MdMGCasbxQBiaBq/GamvKThkXqBGcJG05FSmNTevZ93QufmD6Hg==
+"@symfony/webpack-encore@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@symfony/webpack-encore/-/webpack-encore-1.4.0.tgz#9b5e1628a99029166f7a41f7e9bf46208b1daca4"
+  integrity sha512-6L39fpTtA+vRNQdTJzzVTzwHrant5idIzgWLh06IiH2RBXQ7QhFHbJLjRhygla0rmzuBfzKf19afTI3mniHRDA==
   dependencies:
     "@babel/core" "^7.7.0"
     "@babel/plugin-syntax-dynamic-import" "^7.0.0"
