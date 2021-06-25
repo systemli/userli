@@ -21,13 +21,13 @@ class AliasCreator extends AbstractCreator
         $localPart = (isset($localPart)) ? strtolower($localPart) : null;
         $alias = AliasFactory::create($user, $localPart);
 
+        $this->validate($alias, ['Default', 'unique']);
+        $this->save($alias);
+
         $this->eventDispatcher->dispatch(AliasCreatedEvent::NAME, new AliasCreatedEvent($alias));
         if (null === $localPart) {
             $this->eventDispatcher->dispatch(RandomAliasCreatedEvent::NAME, new RandomAliasCreatedEvent($alias));
         }
-
-        $this->validate($alias, ['Default', 'unique']);
-        $this->save($alias);
 
         return $alias;
     }
