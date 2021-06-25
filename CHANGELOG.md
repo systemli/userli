@@ -1,3 +1,7 @@
+# 2.7.12 (2021.06.25)
+
+* Fix query logic when listing inactive users in findInactiveUsers()
+
 # 2.7.11 (2021.06.25)
 
 * Update PHP and JS dependencies
