@@ -10,7 +10,7 @@
     - geerlingguy.composer
     - geerlingguy.nodejs
     - oefenweb.yarn
-    - andyceo.phpcsfixer
+    #- andyceo.phpcsfixer
   vars:
     dovecot_disable_plaintext_auth: "no"
     dovecot_postfix_auth: true

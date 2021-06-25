@@ -2,6 +2,7 @@
 
 * Update PHP and JS dependencies
 * Add ROLE_PERMANANT to be used for excluding accounts in user cleanup
+* Update ansible roles to fix playbook run
 
 # 2.7.10 (2021.05.20)
 
