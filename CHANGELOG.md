@@ -1,6 +1,7 @@
 # 2.7.11 (UNRELEASED)
 
 * Update PHP and JS dependencies
+* Add ROLE_PERMANANT to be used for excluding accounts in user cleanup
 
 # 2.7.10 (2021.05.20)
 
