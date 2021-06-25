@@ -29,6 +29,25 @@ class UserRepository extends AbstractRepository
     }
 
     /**
+     * @param int $days
+     *
+     * @return \Doctrine\Common\Collections\Collection|User[]
+     */
+    public function findInactiveUsers(int $days)
+    {
+        $dateTime = new \DateTime();
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq('deleted', 0));
+        if ($days > 0) {
+            $criteria = $criteria->andWhere(
+                Criteria::expr()->lte('lastLoginTime', $dateTime->sub(new \DateInterval('P' . $days . 'D')))
+            );
+        }
+
+        return $this->matching($criteria);
+    }
+
+    /**
      * @return User[]|array
      */
     public function findDeletedUsers()

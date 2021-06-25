@@ -4,6 +4,7 @@ namespace App\Enum;
 
 final class Roles
 {
+    const PERMANENT = 'ROLE_PERMANENT';
     const MULTIPLIER = 'ROLE_MULTIPLIER';
     const SPAM = 'ROLE_SPAM';
     const SUSPICIOUS = 'ROLE_SUSPICIOUS';
@@ -17,6 +18,7 @@ final class Roles
     public static function getAll()
     {
         return [
+            self::PERMANENT => self::PERMANENT,
             self::MULTIPLIER => self::MULTIPLIER,
             self::SPAM => self::SPAM,
             self::SUSPICIOUS => self::SUSPICIOUS,

@@ -1,6 +1,9 @@
 # 2.7.11 (UNRELEASED)
 
 * Update PHP and JS dependencies
+* Add ROLE_PERMANANT to be used for excluding accounts in user cleanup
+* Update ansible roles to fix playbook run
+* Add console command `app:users:list` with option to list inactive users
 
 # 2.7.10 (2021.05.20)
 
