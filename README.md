@@ -49,6 +49,10 @@ See more information on how to [set up your development
 environment](https://systemli.github.io/userli/development/)
 in our docs.
 
+### Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=systemli/userli)](https://github.com/systemli/userli/graphs/contributors)
+
 ## Copyright
 
 Files: *  
