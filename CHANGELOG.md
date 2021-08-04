@@ -1,3 +1,9 @@
+# 2.7.13 (2021.08.04)
+
+* Add `--list` option to RemoveUsersCommand to list maildir directories
+* Add psalm static analysis CI job
+* Add contributors to README.md
+
 # 2.7.12 (2021.06.25)
 
 * Fix query logic when listing inactive users in findInactiveUsers()
