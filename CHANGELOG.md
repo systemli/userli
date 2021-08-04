@@ -1,3 +1,7 @@
+# 2.7.14 (2021.08.04)
+
+* Don't print info line in RemoveUsersCommand with `--list`
+
 # 2.7.13 (2021.08.04)
 
 * Add `--list` option to RemoveUsersCommand to list maildir directories

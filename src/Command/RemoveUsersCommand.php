@@ -55,7 +55,9 @@ class RemoveUsersCommand extends Command
         $users = $this->manager->getRepository('App:User')->findDeletedUsers();
         $filesystem = new Filesystem();
 
-        $output->writeln(sprintf('<info>Found %d users to delete</info>', count($users)));
+		if (!$input->getOption('list')) {
+			$output->writeln(sprintf('<info>Found %d users to delete</info>', count($users)));
+		}
 
         foreach ($users as $user) {
             if (null === $user->getDomain()) {
@@ -67,7 +69,6 @@ class RemoveUsersCommand extends Command
 
             if ($input->getOption('dry-run')) {
                 $output->writeln(sprintf('Would delete directory for user: %s', $user));
-
                 continue;
             }
 
