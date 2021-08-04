@@ -42,13 +42,14 @@ class RemoveUsersCommand extends Command
         $this
             ->setName('app:users:remove')
             ->setDescription('Removes all mailboxes from deleted users')
-            ->addOption('dry-run', null, InputOption::VALUE_NONE);
+			->addOption('dry-run', null, InputOption::VALUE_NONE)
+			->addOption('list', null, InputOption::VALUE_NONE);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var User[] $users */
         $users = $this->manager->getRepository('App:User')->findDeletedUsers();
@@ -67,8 +68,13 @@ class RemoveUsersCommand extends Command
             if ($input->getOption('dry-run')) {
                 $output->writeln(sprintf('Would delete directory for user: %s', $user));
 
-                return;
+                continue;
             }
+
+            if ($input->getOption('list')) {
+            	$output->writeln($path);
+            	continue;
+			}
 
             if ($filesystem->exists($path)) {
                 $output->writeln(sprintf('Delete directory for user: %s', $user));
@@ -82,5 +88,7 @@ class RemoveUsersCommand extends Command
                 $output->writeln(sprintf('Directory for user does not exist: %s', $user));
             }
         }
+
+        return 0;
     }
 }
