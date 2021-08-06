@@ -29,10 +29,10 @@ index:
   voucher-disable: "Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben.\
     \ Dies dient der Vermeidung von Massenregistrierungen und Spam.\n"
   voucher-explanation: >
-    Nutze deine Einladungscodes um Freund*innen hierher einzuladen.
-    Standardmäßig hast du drei Einladungen zur Verfügung.
-    Wenn du mehr brauchst, wende dich an die Admins.
-    Wir speichern Einladungsdaten für einen begrenzten Zeitraum um Missbrauch zu verhindern.
+    Nutze deine Einladungscodes um Freund*innen hierher einzuladen. Standardmäßig
+    hast du drei Einladungen zur Verfügung. Wenn du mehr brauchst, wende dich an die
+    Admins. Wir speichern Einladungsdaten für einen begrenzten Zeitraum um Missbrauch
+    zu verhindern.
   alias-headline: Deine %alias_type% Alias-Adressen
   alias-limit: Du hast das Limit von %alias_limit% erlaubten %alias_type% Alias-Adressen
     erreicht.
@@ -43,8 +43,8 @@ index:
   delete-description: >
     Du kannst deinen Account bei %project_name% löschen. Dadurch werden deine E-Mails
     unwiderruflich gelöscht. Eine <strong>spätere Wiederherstellung ist nicht möglich.</strong>
-    <br /><br />
-    Um deinen Account zu löschen wirst du aufgefordert dein Passwort einzugeben.
+    <br /><br /> Um deinen Account zu löschen wirst du aufgefordert dein Passwort
+    einzugeben.
   delete-button: Account löschen
   recovery-token-button: Wiederherstellungscode verwalten
   logged_in_as: Du bist angemeldet als %user%.
@@ -96,7 +96,8 @@ form:
   openpgp-key-upload-or: oder
   openpgp-key-text: "Deinen Schlüssel als Text einfügen:"
   openpgp-key-text-placeholder: OpenPGP-Schlüssel im ASCII-Format
-  openpgp-key-select-one: Bitte lade den Schlüssel entweder als Datei oder im ASCII Format hoch.
+  openpgp-key-select-one: Bitte lade den Schlüssel entweder als Datei oder im ASCII
+    Format hoch.
   openpgp-key-submit: OpenPGP-Schlüssel veröffentlichen
   openpgp-delete: OpenPGP-Schlüssel löschen
 recovery:
@@ -124,10 +125,8 @@ registration:
   information: Hinweis
   information-intro: >
     Du möchtest ein E-Mail Account bei <a href="%project_url%">%project_name%</a>
-    registrieren.
-    Eine Registrierung ist nur möglich, wenn dich eine Freund*in zu unserem Dienst
-    einlädt,
-    dir also einen Einladungscode übergibt.
+    registrieren. Eine Registrierung ist nur möglich, wenn dich eine Freund*in zu
+    unserem Dienst einlädt, dir also einen Einladungscode übergibt.
   information-password-policy: >
     <strong>Wichtig:</strong>
     Du benötigst ein Passwort, das aus mindestens 12 Zeichen besteht.
@@ -140,12 +139,11 @@ welcome:
   lead: Du hast erfolgreich einen E-Mail Account bei uns erstellt! Wie geht es weiter?
   next-button: Zur Übersicht
   text: >
-    <h3>Los geht's</h3>
-    <p>Im Web findest du Anleitungen zur Einrichtung deines E-Mail Accounts mit verschiedenen
-    Client Programmen.</p>
-    <p>In einer Woche bekommst du drei Einladungscodes gutgeschrieben, die du unter
-    <a href="%app_url%">%app_url%</a> abrufen kannst. Diese kannst du an Freundinnen
-    und Freunde weiterleiten und sie so zu %project_name% einladen.</p>
+    <h3>Los geht's</h3> <p>Im Web findest du Anleitungen zur Einrichtung deines E-Mail
+    Accounts mit verschiedenen Client Programmen.</p> <p>In einer Woche bekommst du
+    drei Einladungscodes gutgeschrieben, die du unter <a href="%app_url%">%app_url%</a>
+    abrufen kannst. Diese kannst du an Freundinnen und Freunde weiterleiten und sie
+    so zu %project_name% einladen.</p>
 closed:
   title: Registrierung deaktiviert
   headline: Registrierung deaktiviert
@@ -171,8 +169,8 @@ delete:
       löschen.
   openpgp:
     headline: OpenPGP-Schlüssel löschen
-    lead: Mit der Bestätigung deines Passworts kannst du deinen OpenPGP-Schlüssel aus
-      dem Web Key Directory löschen.
+    lead: Mit der Bestätigung deines Passworts kannst du deinen OpenPGP-Schlüssel
+      aus dem Web Key Directory löschen.
   cancel: Abbrechen
 recovery-token:
   headline: Wiederherstellungscode verwalten
@@ -188,8 +186,8 @@ recovery-token:
     wenn du dieses vergessen hast. Notiere ihn dir und speichere ihn an einem sicheren
     Ort ab.
   displayed-once: >
-    Der Wiederherstellungscode wird aus Sicherheitsgründen nur einmal angezeigt.
-    Wir können ihn nicht für die wiederherstellen.
+    Der Wiederherstellungscode wird aus Sicherheitsgründen nur einmal angezeigt. Wir
+    können ihn nicht für die wiederherstellen.
 flashes:
   logout-successful: Du bist jetzt abgemeldet.
   password-change-successful: Dein neues Passwort ist ab sofort aktiv!
@@ -206,9 +204,10 @@ flashes:
   openpgp-deletion-successful: Dein OpenPGP-Schlüssel wurde gelöscht.
   openpgp-key-upload-successful: Dein OpenPGP-Schlüssel wurde hochgeladen.
   openpgp-key-upload-error-no-openpgp: Die hochgadene Datei enthält keine OpenPGP-Schlüssel.
-  openpgp-key-upload-error-no-keys: Die hochgeladene Datei enthält keine Schlüssel für deine E-Mail-Adresse.
-  openpgp-key-upload-error-multiple-keys: Die hochgeladene Datei enhält mehr als einen Schlüssel für deine
-    E-Mail-Adresse. Bitte lade nur einen Schlüssel hoch.
+  openpgp-key-upload-error-no-keys: Die hochgeladene Datei enthält keine Schlüssel
+    für deine E-Mail-Adresse.
+  openpgp-key-upload-error-multiple-keys: Die hochgeladene Datei enhält mehr als einen
+    Schlüssel für deine E-Mail-Adresse. Bitte lade nur einen Schlüssel hoch.
 flash_batch_remove_vouchers_success: Nicht eingelöste Einladungscodes gelöscht.
 error:
   title: Oops, es ist ein Fehler passiert.
@@ -299,11 +298,10 @@ openpgp:
   key-info: Veröffentlichter OpenPGP-Schlüssel
   delete-button: OpenPGP-Schlüssel löschen
   information: Information
-  information-details:
-    Hier kannst du deinen OpenPGP-Schlüssel hochladen, damit er in unserem <i><a
-    target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key Directory</a></i>
-    veröffentlicht wird. Damit hilfst du Freund*innen, deinen Schlüssel automatisch
-    und sicher zu finden.
+  information-details: Hier kannst du deinen OpenPGP-Schlüssel hochladen, damit er
+    in unserem <i><a target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key
+    Directory</a></i> veröffentlicht wird. Damit hilfst du Freund*innen, deinen Schlüssel
+    automatisch und sicher zu finden.
   keyid-label: "Schlüssel ID:"
   fingerprint-label: "Fingerprint:"
   expiretime-label: "Ablaufdatum:"
