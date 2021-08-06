@@ -29,6 +29,16 @@ form:
   plain-password_confirmation: Nöis Passwort beschtätige
   new-custom-alias: Nöii Alias Adrässe
   recovery-start: Wiederhärschteue
+  domain: ''
+  openpgp-delete: ''
+  openpgp-key-text-placeholder: ''
+  openpgp-key-select-one: ''
+  openpgp-key-text: ''
+  openpgp-key-file: ''
+  openpgp-key-submit: ''
+  openpgp-key-file-mimetype: ''
+  openpgp-key-upload-or: ''
+  add: ''
 index:
   recovery-token-button: Recovery Token verwaute
   alias-explanation: "<p>\n  Alias Adrässene chasch bruuche zum dini urschprünglechi\
@@ -75,6 +85,9 @@ delete:
     headline: Account lösche
     lead: Mir müesse dis Passwort verifiziere zum di Account chönne lösche.
   cancel: Abbräche
+  openpgp:
+    headline: ''
+    lead: ''
 start:
   aliases: Alias Adrässene
   account-settings: Account Iischtellige
@@ -93,6 +106,10 @@ start:
   webmail-desc: E-Mails läse und schriibe
   title: Wiukomme bi %domain%
   webmail: Webmail
+  openpgp-delete: ''
+  openpgp-settings: ''
+  openpgp-settings-title: ''
+  openpgp-settings-desc: ''
 welcome:
   text: "<h3>Gschafft</h3> <p>Im Internet fingsch Aleitige wie du die E-Mail Account\
     \ i verschiedenschte Programm konfiguriere chasch.</p> <p>I einere Wuche bechunnsch\
@@ -190,6 +207,11 @@ flashes:
   revocery-reauthenticate: Irgendöppis isch schief gloffe. Bitte nöi amäude!
   registration-successful: Du bisch iz regischtriert.
   recovery-next-login: Witerfahre mittem Ilogge.
+  openpgp-key-upload-error-no-openpgp: ''
+  openpgp-deletion-successful: ''
+  openpgp-key-upload-error-multiple-keys: ''
+  openpgp-key-upload-successful: ''
+  openpgp-key-upload-error-no-keys: ''
 navbar_right:
   login: Ilogge
   logout: Uslogge
@@ -234,3 +256,19 @@ random: zuefäuig
 flash_batch_remove_vouchers_success: Nid iglösti Invite Codes glöscht.
 custom: benutzerdefiniert
 Ratio: Verhäutnis
+init.title: ''
+init_domain:
+  lead: ''
+  text: ''
+openpgp:
+  keyid-label: ''
+  key-info: ''
+  information-details: ''
+  delete-button: ''
+  expiretime-label: ''
+  fingerprint-label: ''
+  information: ''
+init_user:
+  text: ''
+  lead: ''
+copy-to-clipboard: ''
