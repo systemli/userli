@@ -31,6 +31,14 @@ form:
   voucher: Code d'invitation
   new-custom-alias: Nouvel alias d'adresse
   recovery-start: Récupération
+  openpgp-key-text: ''
+  openpgp-key-submit: ''
+  openpgp-key-file-mimetype: ''
+  openpgp-delete: ''
+  openpgp-key-select-one: ''
+  openpgp-key-upload-or: ''
+  openpgp-key-text-placeholder: ''
+  openpgp-key-file: ''
 index:
   recovery-token-button: Gérer le jeton de récupération
   alias-explanation: "<p>\nUtilisez des alias d'adresse pour masquer votre adresse\
@@ -81,6 +89,9 @@ delete:
     headline: Supprimer le compte
     lead: Nous devons vérifier votre mot de passe pour supprimer votre compte.
   cancel: Annuler
+  openpgp:
+    headline: ''
+    lead: ''
 start:
   aliases: Alias d'adresses
   account-settings: Paramètres du compte
@@ -99,6 +110,10 @@ start:
   webmail-desc: Lisez et écrivez des e-mails
   title: Bienvenue sur %domain%
   webmail: Webmail
+  openpgp-delete: ''
+  openpgp-settings-title: ''
+  openpgp-settings-desc: ''
+  openpgp-settings: ''
 welcome:
   text: "<h3>Vous êtes fin prêt</h3> <p>Sur le Web, vous pouvez trouvez des instructions\
     \ pour configurer votre compte e-mail avec différents programmes clients</p> <p>Dans\
@@ -197,6 +212,11 @@ flashes:
     !
   registration-successful: Vous êtes désormais inscrit.
   recovery-next-login: Aller à l'écran de connexion.
+  openpgp-key-upload-error-no-openpgp: ''
+  openpgp-key-upload-successful: ''
+  openpgp-key-upload-error-no-keys: ''
+  openpgp-key-upload-error-multiple-keys: ''
+  openpgp-deletion-successful: ''
 init_domain:
   lead: Merci d'avoir installé Userli. Pour le moment il n'y a aucun domaine et aucune
     compte.
@@ -254,3 +274,11 @@ random: aléatoire
 flash_batch_remove_vouchers_success: Codes d'invitation non demandés supprimés.
 custom: personnalisé
 Ratio: Ratio
+openpgp:
+  information: ''
+  keyid-label: ''
+  information-details: ''
+  fingerprint-label: ''
+  delete-button: ''
+  key-info: ''
+  expiretime-label: ''
