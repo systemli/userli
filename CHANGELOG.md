@@ -1,3 +1,11 @@
+# 2.7.15 (2021.08.06)
+
+* Show correct random alias without reload (Fixes #307)
+* Make php7.3 serve traffic in vagrant
+* Update PHP and JS dependencies
+* Rename default git branch to `main`
+* Include default translations
+
 # 2.7.14 (2021.08.04)
 
 * Don't print info line in RemoveUsersCommand with `--list`
