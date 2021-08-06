@@ -127,7 +127,7 @@ security:
       - { path: "^/[a-z]{2}/$", roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: ^/admin, roles: ROLE_DOMAIN_ADMIN }
-      - { path: "^/[a-z]{2}/voucher", roles: ROLE_USER, allow_if: "!has_role('ROLE_SUSPICIOUS')"}
-      - { path: "^/[a-z]{2}/alias", roles: ROLE_USER, allow_if: "!has_role('ROLE_SPAM')"}
-      - { path: "^/[a-z]{2}/account", roles: ROLE_USER, allow_if: "!has_role('ROLE_SPAM')"}
+      - { path: "^/[a-z]{2}/voucher", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SUSPICIOUS')"}
+      - { path: "^/[a-z]{2}/alias", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')"}
+      - { path: "^/[a-z]{2}/account", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')"}
       - { path: ^/, roles: ROLE_USER }
