@@ -191,7 +191,11 @@ class StartController extends AbstractController
             }
         }
 
-        $aliasRepository = $this->get('doctrine')->getRepository('App:Alias');
+        # persist the object manager manually to ensure, we really show the persisted values
+        $doctrine = $this->getDoctrine();
+        $doctrine->getManager()->flush();
+
+        $aliasRepository = $doctrine->getRepository('App:Alias');
         $aliasesRandom = $aliasRepository->findByUser($user, true);
         $aliasesCustom = $aliasRepository->findByUser($user, false);
 
