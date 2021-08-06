@@ -16,6 +16,10 @@ start:
   vouchers-desc: Inviter vennene dine
   webmail: Nettklients-e-post
   webmail-desc: Les og skriv e-poster
+  openpgp-settings-desc: ''
+  openpgp-delete: ''
+  openpgp-settings: ''
+  openpgp-settings-title: ''
 index:
   title: Håndter din e-postkonto
   voucher-headline: Dine invitasjonskoder
@@ -80,6 +84,14 @@ form:
   plain-password_confirmation: Bekreft nytt passord
   domain: Domene
   add: Legg till
+  openpgp-key-text: ''
+  openpgp-key-submit: ''
+  openpgp-delete: ''
+  openpgp-key-file-mimetype: ''
+  openpgp-key-file: ''
+  openpgp-key-upload-or: ''
+  openpgp-key-select-one: ''
+  openpgp-key-text-placeholder: ''
 recovery:
   header: Gjenopprett kontoen din
   lead: Tilbakestill passordet med ditt gjenopprettingssymbol
@@ -140,6 +152,9 @@ delete:
     headline: Slett konto
     lead: Passordet ditt må bekreftes for å slette kontoen din.
   cancel: Avbryt
+  openpgp:
+    lead: ''
+    headline: ''
 recovery-token:
   headline: Håndter gjenopprettingssymbol
   lead: Gjenopprettingssymbolet kan brukes til å tilbakestille passordet ditt hvis
@@ -165,6 +180,11 @@ flashes:
   recovery-token-ack: Du genererte et gjenopprettingssymbol.
   revocery-reauthenticate: Noe gikk galt. Identitetsbekreft deg igjen.
   recovery-password-changed: Du endret passordet ditt.
+  openpgp-key-upload-error-no-keys: ''
+  openpgp-key-upload-error-multiple-keys: ''
+  openpgp-deletion-successful: ''
+  openpgp-key-upload-successful: ''
+  openpgp-key-upload-error-no-openpgp: ''
 error:
   page_not_found: Siden du forsøker å nå finnes ikke.
   generic_error: En feil inntraff.
@@ -246,3 +266,11 @@ init_user:
   lead: Du har opprettet ditt primære domene.
   text: E-poststandarder krever at kontoen postmaster@%domain% finnes. Velg et passord
     for denne første administratorkontoen og logg inn etterpå.
+openpgp:
+  keyid-label: ''
+  delete-button: ''
+  expiretime-label: ''
+  information: ''
+  information-details: ''
+  fingerprint-label: ''
+  key-info: ''

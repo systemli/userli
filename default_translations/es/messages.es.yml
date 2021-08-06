@@ -3,9 +3,9 @@ start:
   intro: Aquí puedes crear y configurar tu cuenta de e-mail
   registration-header: Registro
   registration-text: >
-    ¿No tienes una cuenta de e-mail de %domain% aún? ¡No hay problema!
-    ¿Algún amigo tiene una cuenta? Pídele un código amigo y comienza enseguida
-    a configurar tu propia cuenta.
+    ¿No tienes una cuenta de e-mail de %domain% aún? ¡No hay problema! ¿Algún amigo
+    tiene una cuenta? Pídele un código amigo y comienza enseguida a configurar tu
+    propia cuenta.
   registration-button: Crear cuenta
   account-settings: Configurar cuenta
   account-settings-desc: Contraseña y mas
@@ -17,19 +17,21 @@ start:
   vouchers-desc: Invita a un amigo
   webmail: Webmail
   webmail-desc: Leer y escribir e-mails
+  openpgp-delete: ''
+  openpgp-settings: ''
+  openpgp-settings-desc: ''
+  openpgp-settings-title: ''
 index:
   title: Configuración
   voucher-headline: códigos amigo
   voucher-limit: No tienes mas códigos amigo disponibles
   voucher-disable: >
-    El %date% recibirás tres códigos amigo adicionales.
-    Esto es para evitar registros masivos y spam.
+    El %date% recibirás tres códigos amigo adicionales. Esto es para evitar registros
+    masivos y spam.
   voucher-explanation: >
-    Usa tus códigos amigo para invitar amigos.
-    Solo tienes tres códigos disponibles.
-    Si necesitas mas, por favor contacta al administrador.
-    Los datos sobre invitaciones serán guardados por un período corto de tiempo,
-    como protección contra abusos.
+    Usa tus códigos amigo para invitar amigos. Solo tienes tres códigos disponibles.
+    Si necesitas mas, por favor contacta al administrador. Los datos sobre invitaciones
+    serán guardados por un período corto de tiempo, como protección contra abusos.
   alias-headline: Tu cuenta alias %alias_type%
   alias-limit: Alcanzaste el limite permitido de %alias_limit% %alias_type% cuentas
     alias
@@ -94,6 +96,16 @@ form:
   registration-recovery-token-ack: He guardado mi token de recuperación en un lugar
     seguro.
   registration-recovery-token-next-button: Continuar
+  domain: ''
+  openpgp-key-text-placeholder: ''
+  openpgp-key-file-mimetype: ''
+  openpgp-key-upload-or: ''
+  openpgp-delete: ''
+  openpgp-key-select-one: ''
+  openpgp-key-file: ''
+  openpgp-key-submit: ''
+  openpgp-key-text: ''
+  add: ''
 recovery:
   header: Recuperar tu cuenta
   lead: Resetear tu contraseña usando el token de recuperación
@@ -120,11 +132,10 @@ registration:
   information: Información
   information-intro: >
     ¿Te gustaría crear una cuenta de e-mail con <a href="%project_url%">%project_name%</a>?
-    Los registros son solo posibles con invitación de amigos
-    que ya usen el servicio por medio del uso de códigos- amigos.
+    Los registros son solo posibles con invitación de amigos que ya usen el servicio
+    por medio del uso de códigos- amigos.
   information-password-policy: >
-    <strong>Importante:</strong>
-    Tu contraseña de contar con al menos 12 caracteres.
+    <strong>Importante:</strong> Tu contraseña de contar con al menos 12 caracteres.
   label-email: La cuenta de correo que prefieras
   recovery-token-headline: Token de recuperación
 welcome:
@@ -140,6 +151,7 @@ closed:
   headline: Hemos cerrado el registro de cuentas.
   lead: De acuerdo con el párrafo 3 de las normativa de Telecomunicaciones TKÜV hemos
     decidido mantener un limite de 10.000 registros posibles. Lamentamos los inconvenientes.
+  text: ''
 delete:
   alias:
     headline: Borrar cuenta alias %alias%
@@ -147,6 +159,10 @@ delete:
   user:
     headline: Borrar cuenta
     lead: Es necesario verificar tu contraseña para borrar tu cuenta.
+  openpgp:
+    lead: ''
+    headline: ''
+  cancel: ''
 recovery-token:
   headline: Configurar token de recuperación
   lead: El token de recuperación puede ser usado para recuperar tu contraseña.
@@ -158,8 +174,8 @@ recovery-token:
     Si olvidas tu contraseña, el token de recuperación te permitirá resetear uno nuevo.
     Guardalo en un lugar seguro.
   displayed-once: >
-    Por razones de seguridad, el token de recuperación se mostrará una sola vez.
-    El token desconocido por nosotros y por ello no podemos recuperarlo para ti.
+    Por razones de seguridad, el token de recuperación se mostrará una sola vez. El
+    token desconocido por nosotros y por ello no podemos recuperarlo para ti.
 flashes:
   logout-successful: ¡Tu sesión ha sido cerrada!
   password-change-successful: ¡Tu nueva contraseña está activa!
@@ -172,6 +188,11 @@ flashes:
   revocery-reauthenticate: ¡Algo salió mal. Por favor vuelve a autentificarte!
   recovery-password-changed: ¡Tu contraseña ha sido cambiada!
   recovery-next-login: Sigue con el inicio de sesión.
+  openpgp-key-upload-error-no-keys: ''
+  openpgp-key-upload-successful: ''
+  openpgp-key-upload-error-multiple-keys: ''
+  openpgp-deletion-successful: ''
+  openpgp-key-upload-error-no-openpgp: ''
 flash_batch_remove_vouchers_success: Los códigos amigo han sido desactivados satisfactoriamente.
 error:
   title: Oops, algo salió mal.
@@ -206,20 +227,20 @@ mail:
   recovery-subject: La contraseña para tu cuenta de e-mail %email%será reseteada.
   recovery-body: |
     Hola %email%,
-    
+
     Alguien ha intentado resetear tu contraseña. Para ello, se han autentificado
     con tu cuenta de e-mail y el token de seguridad en %app_url%/recovery.
-    
+
     ¿No fuiste tu? entonces alguien mas con acceso a tu token de seguridad ha estado intentado
     tomar control de tu cuenta. Por favor entra a %app_url%/user/recovery_token de inmediato y
     crea un nuevo token de recuperación. De esta manera el antiguo token quedará invalidado.
-    
+
     Si fuiste tu quien inicio el proceso, las 48 horas de espera empezaron.
     Este tiempo terminara en %time%. Luego, vas a poder configurar tu nueva contraseña
     entrando a %app_url%/recovery.
-    
+
     Esperamos que estés disfrutando tu cuenta de e-mail.
-    
+
     El equipo de %project_name%.
   alias-created-subject: Nueva cuenta alias creada
   alias-created-body: |
@@ -233,3 +254,29 @@ mail:
     Esperamos que estes disfrutando tu cuenta de e-mail.
     El equipo de %project_name%.
 copy-to-clipboard: Copiar en el portapapeles
+init_domain:
+  text: ''
+  lead: ''
+openpgp:
+  information: ''
+  fingerprint-label: ''
+  keyid-label: ''
+  expiretime-label: ''
+  key-info: ''
+  information-details: ''
+  delete-button: ''
+Voucher: ''
+init.title: ''
+Reserved Name: ''
+Domain: ''
+User: ''
+init_user:
+  text: ''
+  lead: ''
+Ratio: ''
+admin:
+  registered-accounts: ''
+  invite-codes-redeemed: ''
+  invite-codes: ''
+  registered-accounts-last-week: ''
+Alias: ''

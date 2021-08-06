@@ -3,9 +3,9 @@ start:
   intro: Aqui você pode criar e configurar a sua conta de e-mail.
   registration-header: Registo
   registration-text: >
-    Ainda não tem uma conta em %domain%? Sem problemas!
-    Se você conhece alguém que já possua uma conta você pode
-    pedir um convite e começar imediatamente a criar a sua própria.
+    Ainda não tem uma conta em %domain%? Sem problemas! Se você conhece alguém que
+    já possua uma conta você pode pedir um convite e começar imediatamente a criar
+    a sua própria.
   registration-button: Criar conta
   account-settings: Configurar conta
   account-settings-desc: Senhas e mais
@@ -17,19 +17,22 @@ start:
   vouchers-desc: Convide seus contatos
   webmail: Webmail
   webmail-desc: Leia e escreva e-mails
+  openpgp-delete: ''
+  openpgp-settings: ''
+  openpgp-settings-desc: ''
+  openpgp-settings-title: ''
 index:
   title: Configurações
   voucher-headline: Seus convites
   voucher-limit: Você não tem mais convites disponíveis.
   voucher-disable: >
-    No dia %date% você vai receber três códigos de convite.
-    Isso é feito para evitar cadastros excessivos e spam.
+    No dia %date% você vai receber três códigos de convite. Isso é feito para evitar
+    cadastros excessivos e spam.
   voucher-explanation: >
-    Use os seus códigos para convidar seus contatos para cá.
-    Por padrão, você tem três convites.
-    Se precisar convidar mais pessoas, entre em contato com os administradores.
-    Os dados sobre os convites serão guardados por um tempo limitado como
-    proteção contra abusos.
+    Use os seus códigos para convidar seus contatos para cá. Por padrão, você tem
+    três convites. Se precisar convidar mais pessoas, entre em contato com os administradores.
+    Os dados sobre os convites serão guardados por um tempo limitado como proteção
+    contra abusos.
   alias-headline: Seus endereços alias %alias_type%
   alias-limit: Você atingiu o limite de %alias_limit% endereços alias %alias_type%
     permitidos.
@@ -38,11 +41,9 @@ index:
   alias-empty: Você não tem nenhum endereço alias %alias_type% definido.
   delete-headline: Apagar conta
   delete-description: >
-    Você pode excluir sua conta %project_name%.
-    Isso irá deletar todos os seus e-mails.
-    <strong>Eles não poderão ser recuperados no futuro.</strong>
-    <br /><br />
-    Para excluir sua conta você deve inserir sua senha atual.
+    Você pode excluir sua conta %project_name%. Isso irá deletar todos os seus e-mails.
+    <strong>Eles não poderão ser recuperados no futuro.</strong> <br /><br /> Para
+    excluir sua conta você deve inserir sua senha atual.
   delete-button: Apagar conta
   recovery-token-button: Configurar token de recuperação
   logged_in_as: Você entrou como %user%.
@@ -87,6 +88,16 @@ form:
   recovery-start: Recuperar
   registration-recovery-token-ack: Eu guardei o token de recuperação em um lugar seguro
   registration-recovery-token-next-button: Continuar
+  openpgp-key-submit: ''
+  openpgp-key-select-one: ''
+  openpgp-key-file-mimetype: ''
+  domain: ''
+  openpgp-key-text: ''
+  openpgp-key-text-placeholder: ''
+  openpgp-key-file: ''
+  openpgp-delete: ''
+  openpgp-key-upload-or: ''
+  add: ''
 recovery:
   header: Recuperar sua conta
   lead: Redefina a sua palavra-passe usando o seu token de recuperação
@@ -112,11 +123,10 @@ registration:
   title: Cadastro com %project_name%
   information: Information
   information-intro: >
-    Gostaria de se cadastrar em <a href="%project_url%">%project_name%</a>?
-    Você só pode se cadastrar se receber um convite para o nosso serviço.
+    Gostaria de se cadastrar em <a href="%project_url%">%project_name%</a>? Você só
+    pode se cadastrar se receber um convite para o nosso serviço.
   information-password-policy: >
-    <strong>Importante:</strong>
-    Sua senha deve ter pelo menos 12 caracteres.
+    <strong>Importante:</strong> Sua senha deve ter pelo menos 12 caracteres.
   label-email: Seu endereço de email desejado
   recovery-token-headline: Token de recuperação
 welcome:
@@ -124,12 +134,10 @@ welcome:
   lead: Você criou sua conta com sucesso. E agora?
   next-button: Seus próximos passos
   text: >
-    <h3>Tudo pronto</h3>
-    <p>Pela web você pode encontrar guias de como configurar sua conta de e-mail com
-    diferentes programas de e-mail.</p>
-    <p>Em uma semana você vai receber três códigos de convite, os quais você pode
-    pegar em <a href="%app_url%">%app_url%</a>. Você pode enviá-los a seus contatos
-    e chamá-los para se cadastrar no %project_name%.</p>
+    <h3>Tudo pronto</h3> <p>Pela web você pode encontrar guias de como configurar
+    sua conta de e-mail com diferentes programas de e-mail.</p> <p>Em uma semana você
+    vai receber três códigos de convite, os quais você pode pegar em <a href="%app_url%">%app_url%</a>.
+    Você pode enviá-los a seus contatos e chamá-los para se cadastrar no %project_name%.</p>
 closed:
   title: Cadastros fechados
   headline: Cadastros fechados
@@ -151,6 +159,9 @@ delete:
     headline: Apagar a conta
     lead: Precisamos verificar a sua palavra-passe para apagar a sua conta.
   cancel: Cancelar
+  openpgp:
+    lead: ''
+    headline: ''
 recovery-token:
   headline: Gerenciar token de recuperação
   lead: O token de recuperação pode ser usado para redefinir a sua palavra-passe se
@@ -164,8 +175,8 @@ recovery-token:
     Se você perder sua senha, o token de recuperação permite que você crie uma nova.
     Anote e guarde-o em algum lugar seguro.
   displayed-once: >
-    Por questão de segurança, o token de recuperação só é exibido uma vez.
-    Nós não podemos recuperar esse token por você.
+    Por questão de segurança, o token de recuperação só é exibido uma vez. Nós não
+    podemos recuperar esse token por você.
 flashes:
   logout-successful: Sua sessão foi encerrada.
   password-change-successful: A sua nova palavra-passe está ativa!
@@ -178,6 +189,11 @@ flashes:
   revocery-reauthenticate: Algo deu errado. Por favor se autentique novamente!
   recovery-password-changed: Você mudou a sua senha com sucesso.
   recovery-next-login: Inicie sua sessão agora.
+  openpgp-key-upload-error-no-keys: ''
+  openpgp-deletion-successful: ''
+  openpgp-key-upload-error-multiple-keys: ''
+  openpgp-key-upload-successful: ''
+  openpgp-key-upload-error-no-openpgp: ''
 flash_batch_remove_vouchers_success: Códigos de convite excluidos com sucesso
 error:
   title: Oops, houve um erro.
@@ -241,3 +257,29 @@ mail:
     Esperamos que continue a tirar proveito da sua conta.
     Time %project_name%.
 copy-to-clipboard: Copiar para a área de transferência
+Reserved Name: ''
+Domain: ''
+init_user:
+  text: ''
+  lead: ''
+init_domain:
+  lead: ''
+  text: ''
+User: ''
+Ratio: ''
+admin:
+  registered-accounts-last-week: ''
+  invite-codes: ''
+  invite-codes-redeemed: ''
+  registered-accounts: ''
+openpgp:
+  expiretime-label: ''
+  fingerprint-label: ''
+  keyid-label: ''
+  information-details: ''
+  information: ''
+  delete-button: ''
+  key-info: ''
+init.title: ''
+Voucher: ''
+Alias: ''
