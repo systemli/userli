@@ -67,3 +67,8 @@
         owner: www-data
         group: www-data
         mode: 0755
+    # XXX: Don't know why this is necessary, but it is
+    - name: restart php{{ php_default_version_debian }}-fpm
+      service:
+        name: php{{ php_default_version_debian }}-fpm
+        state: restarted
