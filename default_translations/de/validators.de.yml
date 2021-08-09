@@ -2,7 +2,7 @@ form:
   weak_password: Das Passwort entspricht nicht den Sicherheitsanforderungen.
   forbidden_char: Das Passwort enthält nicht erlaubte Zeichen.
   different-password: Die Passwörter stimmen nicht überein.
-  invalid-email: Die E-Mail Adresse ist ungültig.
+  invalid-email: Die E-Mail-Adresse ist ungültig.
   wrong-password: Das eingegebene Passwort ist falsch
   identical-passwords: Das neue Passwort stimmt mit dem aktuellen überein.
   missing-domain: Die Domain wird nicht vom System verwaltet und kann nicht benutzt
@@ -11,9 +11,9 @@ form:
   invalid-token: Der Code hat ein ungültiges Format.
 registration:
   voucher-invalid: Der Einladungscode ist ungültig.
-  email-domain-not-exists: Die E-Mail Adresse ist ungültig.
+  email-domain-not-exists: Die E-Mail-Adresse ist ungültig.
   voucher-already-redeemed: Der Einladungscode wurde bereits verwendet.
-  email-domain-invalid: Die E-Mail Adresse ist ungültig.
+  email-domain-invalid: Die E-Mail-Adresse ist ungültig.
   email-already-taken: Die E-Mail Adresse ist bereits vergeben.
   email-too-short: Der eingegebene Benutzername muss mindestens %min% Zeichen enthalten.
   email-too-long: Der eingegebene Benutzername darf nicht mehr als %max% Zeichen enthalten.
