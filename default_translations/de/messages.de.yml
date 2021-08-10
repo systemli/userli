@@ -1,15 +1,14 @@
 start:
   title: Willkommen bei %domain%
-  intro: Hier kannst du deinen E-Mail Account erstellen und verwalten.
+  intro: Hier kannst du dein E-Mail-Konto erstellen und verwalten.
   registration-header: Registrierung
   registration-text: >
-    Du hast noch keinen E-Mail Account bei %domain%? Kein Problem! Lass dir von einer
-    Freund*in einen Einladungscode schicken. Damit kannst du sofort einen Account
-    erstellen.
-  registration-button: Account anlegen
-  account-settings: Account verwalten
+    Du hast noch kein E-Mail-Konto bei %domain%? Kein Problem! Lass dir von einer
+    Freund*in einen Einladungscode schicken. Damit kannst du sofort ein Konto erstellen.
+  registration-button: Konto anlegen
+  account-settings: Konto verwalten
   account-settings-desc: Passwörter und mehr
-  account-delete: Account löschen
+  account-delete: Konto löschen
   aliases: Alias-Adressen
   aliases-delete: Alias-Adresse löschen
   aliases-desc: Verschleiere deine Identität
@@ -23,7 +22,7 @@ start:
   openpgp-settings-title: OpenPGP-Schlüssel im Web Key Directory veröffentlichen
 
 index:
-  title: Verwalte deinen E-Mail Account
+  title: Verwalte dein E-Mail-Konto
   voucher-headline: Deine Einladungscodes
   voucher-limit: Du hast keine Einladungscodes mehr verfügbar.
   voucher-disable: "Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben.\
@@ -39,13 +38,12 @@ index:
   alias-deletion-custom: Schreibe uns, um Adressen löschen zu lassen.
   alias-deletion-random: Wenn du alte Adressen löschst, kannst du wieder neue erstellen.
   alias-empty: Du hast noch keine %alias_type% Alias-Adressen definiert.
-  delete-headline: Account löschen
+  delete-headline: Konto löschen
   delete-description: >
-    Du kannst deinen Account bei %project_name% löschen. Dadurch werden deine E-Mails
+    Du kannst dein Konto bei %project_name% löschen. Dadurch werden deine E-Mails
     unwiderruflich gelöscht. Eine <strong>spätere Wiederherstellung ist nicht möglich.</strong>
-    <br /><br /> Um deinen Account zu löschen wirst du aufgefordert dein Passwort
-    einzugeben.
-  delete-button: Account löschen
+    <br /><br /> Um dein Konto zu löschen, wirst du aufgefordert dein Passwort einzugeben.
+  delete-button: Konto löschen
   recovery-token-button: Wiederherstellungscode verwalten
   logged_in_as: Du bist angemeldet als %user%.
   alias-explanation: "<p>\n  Verstecke mittels Alias-Adressen deine originale Mail-Adresse\
@@ -61,7 +59,7 @@ index:
 form:
   title: Anmelden
   signin-header: Login
-  register-header: Account erstellen
+  register-header: Konto erstellen
   email: E-Mail
   password: Passwort
   password_confirmation: Passwort bestätigen
@@ -76,7 +74,7 @@ form:
   actual-password: Aktuelles Passwort
   new-custom-alias: Neue Alias-Adresse
   change-password: Passwort ändern
-  delete-account: Account löschen
+  delete-account: Konto löschen
   delete-password: Passwort
   create-voucher: Erstelle Einladungscode
   create-custom-alias: Hinzufügen
@@ -101,7 +99,7 @@ form:
   openpgp-key-submit: OpenPGP-Schlüssel veröffentlichen
   openpgp-delete: OpenPGP-Schlüssel löschen
 recovery:
-  header: Account wiederherstellen
+  header: Konto wiederherstellen
   lead: Passwort zurücksetzen mit Hilfe des Wiederherstellungscodes
   cancel: Abbrechen
   started: "Der erste Schritt um dein Passwort zurückzusetzen, ist gemacht.\nJetzt\
@@ -124,25 +122,25 @@ registration:
   title: Bei %project_name% registrieren
   information: Hinweis
   information-intro: >
-    Du möchtest ein E-Mail Account bei <a href="%project_url%">%project_name%</a>
-    registrieren. Eine Registrierung ist nur möglich, wenn dich eine Freund*in zu
-    unserem Dienst einlädt, dir also einen Einladungscode übergibt.
+    Du möchtest ein E-Mail-Konto bei <a href="%project_url%">%project_name%</a> registrieren.
+    Eine Registrierung ist nur möglich, wenn dich eine Freund*in zu unserem Dienst
+    einlädt, dir also einen Einladungscode übergibt.
   information-password-policy: >
     <strong>Wichtig:</strong> Du benötigst ein Passwort, das aus mindestens 12 Zeichen
     besteht. Passwörter werden gegen eine <a href="https://haveibeenpwned.com/Passwords">Datenbank
     bekannter schlechter Passwörter</a> getestet.
-  label-email: Deine gewünschte E-Mail Adresse
+  label-email: Deine gewünschte E-Mail-Adresse
   recovery-token-headline: Wiederherstellungscode
 welcome:
   headline: Willkommen bei %project_name%!
-  lead: Du hast erfolgreich einen E-Mail Account bei uns erstellt! Wie geht es weiter?
+  lead: Du hast erfolgreich ein E-Mail-Konto bei uns erstellt! Wie geht es weiter?
   next-button: Zur Übersicht
   text: >
-    <h3>Los geht's</h3> <p>Im Web findest du Anleitungen zur Einrichtung deines E-Mail
-    Accounts mit verschiedenen Client Programmen.</p> <p>In einer Woche bekommst du
-    drei Einladungscodes gutgeschrieben, die du unter <a href="%app_url%">%app_url%</a>
-    abrufen kannst. Diese kannst du an Freundinnen und Freunde weiterleiten und sie
-    so zu %project_name% einladen.</p>
+    <h3>Los geht's</h3> <p>Im Web findest du Anleitungen zur Einrichtung deines E-Mail-Kontos
+    mit verschiedenen Client-Programmen.</p> <p>In einer Woche bekommst du drei Einladungscodes
+    gutgeschrieben, die du unter <a href="%app_url%">%app_url%</a> abrufen kannst.
+    Diese kannst du an Freundinnen und Freunde weiterleiten und sie so zu %project_name%
+    einladen.</p>
 closed:
   title: Registrierung deaktiviert
   headline: Registrierung deaktiviert
@@ -150,21 +148,21 @@ closed:
     Das tut uns Leid.
   text: >
     <p>Der <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html"
-    target="_blank">Paragraph 3 der "Verordnung über die technische und organisatorische
-    Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (kurz: Telekommunikations-Überwachungsverordnung
-    - TKÜV) zwingt Anbieter ab 10.000 Accounts eine Schnittstelle zur Überwachung
-    der Kommunikation einzubauen. Daher haben wir uns entschieden keine weiteren Accounts
+    target="_blank">Paragraph 3 der „Verordnung über die technische und organisatorische
+    Umsetzung von Maßnahmen zur Überwachung der Telekommunikation“</a> (kurz: Telekommunikations-Überwachungsverordnung
+    - TKÜV) zwingt Anbieter ab 10.000 Konten eine Schnittstelle zur Überwachung der
+    Kommunikation einzubauen. Daher haben wir uns entschieden keine weiteren Konten
     mehr anzulegen.<p>
 
-    <p><strong>Für bestehende Accounts ändert sich nichts.</strong></p>
+    <p><strong>Für bestehende Konten ändert sich nichts.</strong></p>
 delete:
   alias:
     headline: Alias-Adresse %alias% löschen
     lead: Mit der Bestätigung deines Passworts kannst du deine Alias-Adresse unwiderruflich
       löschen.
   user:
-    headline: Account löschen
-    lead: Mit der Bestätigung deines Passworts kannst du deinen Account unwiderruflich
+    headline: Konto löschen
+    lead: Mit der Bestätigung deines Passworts kannst du dein Konto unwiderruflich
       löschen.
   openpgp:
     headline: OpenPGP-Schlüssel löschen
@@ -194,7 +192,7 @@ flashes:
   voucher-creation-successful: Neuer Einladungscode erstellt.
   alias-creation-successful: Deine neue Alias-Adresse wurde erstellt.
   alias-deletion-successful: Deine Alias-Adresse wurde gelöscht.
-  recovery-token-invalid: E-Mail Adresse und/oder Wiederherstellungscode sind falsch!
+  recovery-token-invalid: E-Mail-Adresse oder Wiederherstellungscode sind falsch!
   recovery-token-ack: Du hast einen Wiederherstellungscode erzeugt.
   recovery-reauthenticate: Etwas ist schiefgelaufen. Du musst dich erneut authentifizieren!
   recovery-password-changed: Dein Passwort wurde geändert.
@@ -214,11 +212,11 @@ error:
   page_not_found: Die Seite die du aufgerufen hast, existiert nicht.
   generic_error: Es ist ein Fehler passiert. Das tut uns leid.
 spam:
-  title: Account gesperrt
-  text: "Oh nein! Wir glauben, dein Account wurde von einem Spammer missbraucht.\n\
-    Daher haben wir den E-Mailzugang deaktiviert.\nBitte kontaktiere den Support um\
-    \ deinen Account frei zu schalten.\n"
-Bad credentials.: Fehlerhafte Zugangsdaten
+  title: Konto gesperrt
+  text: "Oh nein! Wir glauben, dein Konto wurde von einem Spammer missbraucht.\nDaher\
+    \ haben wir den E-Mail-Zugang deaktiviert.\nBitte kontaktiere den Support um dein\
+    \ Konto freizuschalten.\n"
+Bad credentials.: Das angegebene Passwort ist ungültig.
 custom: gewählten
 random: zufälligen
 mail:
@@ -227,19 +225,19 @@ mail:
     Liebe Nutzer*in,
 
     willkommen an Bord. Im Web findest du Anleitungen zur Einrichtung deines
-    E-Mail-Accounts mit verschiedenen Client-Programmen.
+    E-Mail-Kontos mit verschiedenen Client-Programmen.
 
-    Dein Postfachgröße beträgt 1GB. Sollte dein Postfach diese Größe
+    Dein Postfachgröße beträgt 1 GB. Sollte dein Postfach diese Größe
     überschreiten, kann es zu Einschränkungen der Funktionalität deines
-    E-Mail-Accounts kommen.
+    E-Mail-Kontos kommen.
 
     In einer Woche erhälst du drei Einladungscodes, die du unter
     %app_url%/voucher abrufen kannst. Diese kannst du an Freund*innen
     weiterleiten und sie so zu %project_name% einladen.
 
-    Viel Spaß mit deinem Mailaccount, wünscht dir
-    dein %project_name% Admin Team.
-  recovery-subject: Das Passwort zu deinem E-Mail Account %email% wird zurückgesetzt
+    Viel Spaß mit deinem E-Mail-Konto, wünscht dir
+    dein %project_name%-Verwaltungsteam.
+  recovery-subject: Das Passwort zu deinem E-Mail-Konto %email% wird zurückgesetzt
   recovery-body: |
     Hallo %email%,
 
@@ -248,7 +246,7 @@ mail:
     %app_url%/recovery eingegeben.
 
     Wenn du das nicht selbst warst, versucht jemand anderes mit Zugang zu
-    deinem Wiederherstellungscode, Kontrolle über deinen Account zu bekommen.
+    deinem Wiederherstellungscode, Kontrolle über dein Konto zu bekommen.
     Gehe schnellstmöglich zu %app_url%/user/recovery_token
     und erstelle dir einen neuen Wiederherstellungscode. Dadurch wird der
     alte Code ungültig und der Vorgang abgebrochen.
@@ -257,8 +255,8 @@ mail:
     Diese geht bis zum %time%. Anschließend kannst du mit einem
     Besuch von %app_url%/recovery dein Passwort neu setzen.
 
-    Weiterhin viel Spaß mit deinem Mailaccount, wünscht dir
-    dein %project_name% Admin Team.
+    Weiterhin viel Spaß mit deinem E-Mail-Konto, wünscht dir
+    dein %project_name%-Verwaltungsteam.
   alias-created-subject: Neue Alias-Adresse erstellt
   alias-created-body: |
     Hallo %email%,
@@ -269,8 +267,8 @@ mail:
     Du kannst deine E-Mail-Aliase hier verwalten:
     %app_url%/alias
 
-    Weiterhin viel Spaß mit deinem Mailaccount, wünscht dir
-    dein %project_name% Admin-Team.
+    Weiterhin viel Spaß mit deinem E-Mail-Konto, wünscht dir
+    dein %project_name%-Verwaltungsteam.
 admin:
   registered-accounts: Registrierte Nutzer
   registered-accounts-last-week: Registrierte Nuter in den letzten 7 Tagen
@@ -301,6 +299,6 @@ openpgp:
     in unserem <i><a target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key
     Directory</a></i> veröffentlicht wird. Damit hilfst du Freund*innen, deinen Schlüssel
     automatisch und sicher zu finden.
-  keyid-label: "Schlüssel ID:"
+  keyid-label: "Schlüssel-ID:"
   fingerprint-label: "Fingerprint:"
   expiretime-label: "Ablaufdatum:"
