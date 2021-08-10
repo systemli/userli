@@ -31,26 +31,27 @@ form:
   voucher: Code d'invitation
   new-custom-alias: Nouvel alias d'adresse
   recovery-start: Récupération
-  openpgp-key-text: ''
-  openpgp-key-submit: ''
-  openpgp-key-file-mimetype: ''
-  openpgp-delete: ''
-  openpgp-key-select-one: ''
-  openpgp-key-upload-or: ''
-  openpgp-key-text-placeholder: ''
-  openpgp-key-file: ''
+  openpgp-key-text: 'Collez votre clé sous forme texte :'
+  openpgp-key-submit: 'Publier la clé OpenPGP'
+  openpgp-key-file-mimetype: 'Le fichier téléversé ne contient pas de données OpenPGP.'
+  openpgp-delete: 'Supprimer la clé OpenPGP'
+  openpgp-key-select-one: 'Veuillez téléverser la clé soit sous forme de fichier,
+    soit sous forme de texte ASCII.'
+  openpgp-key-upload-or: 'ou'
+  openpgp-key-text-placeholder: 'Clé OpenPGP au format ASCII'
+  openpgp-key-file: 'Téléverser votre clé sous forme de fichier :'
 index:
   recovery-token-button: Gérer le jeton de récupération
-  alias-explanation: "<p>\nUtilisez des alias d'adresse pour masquer votre adresse\
-    \ e-mail originale des gens que vous ne connaissez pas bien, ou des entreprises\
+  alias-explanation: "<p>\nUtilisez des alias d'adresse pour dissimuler votre adresse\
+    \ électronique réelle aux gens que vous ne connaissez pas bien ou aux entreprises\
     \ en lesquelles vous n'avez pas totalement confiance.\n</p>\n<p>\n  <ul>\n   \
-    \ <li>Tous les e-mails envoyés aux alias d'adresses sont redirigés dans votre\
-    \ boîte de messagerie habituelle</li>\n    <li>Pour envoyer depuis un alias d'adresse,\
-    \ vous devez configurer votre client de messagerie pour cela.</li>\n    <li>Vous\
-    \ pouvez avoir %alias_limit_custom% alias d'adresse personnalisés.</li>\n    <li>Vous\
-    \ pouvez avoir %alias_limit_random% alias d'adresse aléatoires.</li>\n    <li>Les\
-    \ alias d'adresse aléatoires sont supposés être utilisés dans un seul but afin\
-    \ d'éviter le suivi entre les différents services.</li>\n    <li>Contactez-nous\
+    \ <li>Tous les courriers électroniques envoyés aux alias d'adresses sont redirigés\
+    \ dans votre boîte de messagerie habituelle</li>\n    <li>Pour envoyer depuis\
+    \ un alias d'adresse, vous devez configurer votre client de messagerie pour cela.</li>\n\
+    \    <li>Vous pouvez avoir %alias_limit_custom% alias d'adresse personnalisés.</li>\n\
+    \    <li>Vous pouvez avoir %alias_limit_random% alias d'adresse aléatoires.</li>\n\
+    \    <li>Les alias d'adresse aléatoires sont supposés être utilisés dans un seul\
+    \ but afin d'éviter le suivi entre les différents services.</li>\n    <li>Contactez-nous\
     \ pour supprimer des alias d'adresse personnalisés.</li>\n  </ul>\n</p>\n"
   alias-deletion-random: Dès que vous supprimer d'anciennes adresses, vous pouvez
     de nouveau en créer de nouvelles.
@@ -63,12 +64,12 @@ index:
   alias-headline: Votre adresse d'alias %alias_type%
   delete-button: Supprimer le compte
   voucher-limit: Vous n'avez plus de code d’invitation.
-  title: Gérez votre compte e-mail
+  title: Gérez votre compte de messagerie
   logged_in_as: Vous êtes connecté en tant que %user%.
   voucher-disable: "Vous recevrez trois codes d'invitation le %date%, afin d'éviter\
     \ les inscriptions de masse et le spam.\n"
-  delete-description: "Vous pouvez supprimer votre compte e-mail %project_name%. Cela\
-    \ supprimera tous vos e-mails. <strong>Il sera impossible de les récupérer</strong><br\
+  delete-description: "Vous pouvez supprimer votre compte de messagerie %project_name%.\
+    \ Cecinsupprimera tous vos e-mails. <strong>Il sera impossible de les récupérer</strong><br\
     \ /><br /> Pour supprimer votre compte, vous devez confirmer votre mot de passe\
     \ actuel.\n"
   voucher-headline: Vos codes d'invitation
@@ -90,18 +91,19 @@ delete:
     lead: Nous devons vérifier votre mot de passe pour supprimer votre compte.
   cancel: Annuler
   openpgp:
-    headline: ''
-    lead: ''
+    headline: 'Supprimer la clé OpenPGP'
+    lead: 'Nous devons vérifier votre mot de passe pour supprimer votre clé OpenPGP
+      du Web Key Directory.'
 start:
   aliases: Alias d'adresses
   account-settings: Paramètres du compte
   aliases-desc: Masquez votre identité
   registration-button: Créer un compte
   vouchers: Codes d'invitation
-  registration-text: "Vous n'avez pas encore de compte e-mail avec le domaine %domain%\
-    \ ? Aucun problème ! Si l'un de vos amis a déjà un compte, vous pouvez obtenir\
-    \ un code d'invitation et configurer votre compte immédiatement.\n"
-  intro: Ici vous pouvez configurer et gérer vos comptes e-mail.
+  registration-text: "Vous n'avez pas encore de compte de messagerie avec le domaine\
+    \ %domain% ? Aucun problème ! Si l'un de vos amis a déjà un compte, vous pouvez\
+    \ obtenir un code d'invitation et configurer votre compte immédiatement.\n"
+  intro: Ici vous pouvez configurer et gérer vos comptes de messagerie.
   account-delete: Supprimer le compte
   aliases-delete: Supprimer l'alias d'adresse
   registration-header: Inscription
@@ -109,17 +111,17 @@ start:
   account-settings-desc: Mots de passe et plus
   webmail-desc: Lisez et écrivez des e-mails
   title: Bienvenue sur %domain%
-  webmail: Webmail
-  openpgp-delete: ''
-  openpgp-settings-title: ''
-  openpgp-settings-desc: ''
-  openpgp-settings: ''
+  webmail: Messagerie Web
+  openpgp-delete: 'supprimer la clé OpenPGP'
+  openpgp-settings-title: 'Publier votre clé OpenPGP dans le Web Key Directory'
+  openpgp-settings-desc: 'Publiez votre clé'
+  openpgp-settings: 'OpenPGP'
 welcome:
-  text: "<h3>Vous êtes fin prêt</h3> <p>Sur le Web, vous pouvez trouvez des instructions\
-    \ pour configurer votre compte e-mail avec différents programmes clients</p> <p>Dans\
-    \ une semaine vous recevrez trois codes d'invitation, que vous pourrez récupérer\
-    \ à <a href=\"%app_url%\">%app_url</a>. Vous pouvez les donner à vos amis et les\
-    \ inviter à s'inscrire sur %project_name%.</p>\n"
+  text: "<h3>Vous êtes fin prêt(e)</h3> <p>Sur le Web, vous pouvez trouvez des instructions\
+    \ pour configurer votre compte de messagerie avec différents programmes clients</p>\
+    \ <p>Dans une semaine, vous recevrez trois codes d'invitatio que vous pourrez\
+    \ récupérer à <a href=\"%app_url%\">%app_url</a>. Vous pouvez les donner à vos\
+    \ amis et les inviter à s'inscrire sur %project_name%.</p>\n"
   lead: Vous avez bien créé un compte chez nous. Quelles sont les étapes suivantes
     ?
   headline: Bienvenue dans %project_name% !
@@ -165,44 +167,45 @@ mail:
 
     Gérez vos alias d'adresse ici : %app_url%/alias
 
-    Nous espérons que vous êtes satisfait de votre compte e-mail.
+    Nous espérons que vous êtes satisfait de votre compte de messagerie.
     Votre équipe d'administration de %project_name%.
-  recovery-subject: Le mot de passe pour votre compte e-mail %email% va être réinitialisé
+  recovery-subject: Le mot de passe pour votre compte de messagerie %email% va être
+    réinitialisé
   recovery-body: |
     Bonjour %email%,
 
     Votre mot de passe de compte vient d'être réinitialisé,
-    après identification avec votre adresse e-mail et le code de récupération
+    après identification avec votre adresse électronique et le code de récupération
     correspondant via %app_url%/recovery.
 
     Si ce n'était pas vous, alors quelqu'un d'autre à eu accès à votre
     jeton de récupération et a tenté de récupérer l'accès à votre compte.
     Allez à %app_url%/recovery_token immédiatement et créez un
-    nouveau jeton de récupération. Cela invalidera l'ancien jeton de
-    récupération et stoppera le processus.
+    nouveau jeton de récupération. Ceci invalidera l'ancien jeton de
+    récupération et arrêtera le processus.
 
-    Si vous avez déclenché ce processus par vous-même, la période de
-    48 heures à commencé. Elle sera terminée à %time%.
+    Si vous avez vous-même déclenché ce processus, la période de
+    48 heures a commencé. Elle sera terminée à %time%.
     Par la suite, vous pourrez définir un nouveau mot de passe à
     %app_url%/recovery.
 
-    Nous espérons que vous êtes satisfait de votre compte e-mail.
+    Nous espérons que vous êtes satisfait de votre compte de messagerie.
     Votre équipe d'administration de %project_name%.
   alias-created-subject: Nouvel alias d'adresse créé
   welcome-subject: Bienvenue sur %domain%
-  welcome-body: "Cher utilisateur,\n\nBienvenue à bord. Vous pouvez trouver des instructions\
-    \ pour configurer votre compte e-mail\navec différents programmes clients sur\
-    \ Internet.\n\nVous avez accès à une boîte de messagerie avec un quota de 1 Go.\
-    \ Si vous dépassez cette limite,\nvotre compte e-mail pourrait ne pas fonctionner\
-    \ correctement.\n\nDans une semaine vous recevrez trois codes d'invitation, que\
-    \ vous pouvez récupérer\nà %app_url%/voucher. Vous pouvez les donner à vos amis\
-    \ et\nles inviter à s'inscrire sur %project_name%.\n\nCordialement,\nvotre équipe\
-    \ d'administration de %project_name%.\n"
+  welcome-body: "Cher utilisateur, chère utilisatrice,\n\nBienvenue à bord. Vous pouvez\
+    \ trouver des instructions pour configurer votre compte de messagerie\navec différents\
+    \ programmes clients sur Internet.\n\nVous avez accès à une boîte de messagerie\
+    \ avec un capacité de 1 Go. Si vous dépassez cette limite,\nvotre compte de messagerie\
+    \ pourrait ne pas fonctionner correctement.\n\nDans une semaine vous recevrez\
+    \ trois codes d'invitation, que vous pouvez récupérer\nà %app_url%/voucher. Vous\
+    \ pouvez les donner à vos amis et\nles inviter à s'inscrire sur %project_name%.\n\
+    \nCordialement,\nvotre équipe d'administration de %project_name%.\n"
 flashes:
   recovery-token-ack: Vous avez généré un jeton de récupération.
   logout-successful: Vous vous êtes déconnecté.
-  recovery-token-invalid: L'adresse e-mail et/ou le jeton de récupération sont incorrects
-    !
+  recovery-token-invalid: L'adresse électronique et/ou le jeton de récupération sont
+    incorrects !
   voucher-creation-successful: Nouveau code d'invitation créé.
   recovery-password-changed: Vous avez modifié votre mot de passe.
   alias-deletion-successful: Votre alias d'adresse a été supprimé.
@@ -212,11 +215,14 @@ flashes:
     !
   registration-successful: Vous êtes désormais inscrit.
   recovery-next-login: Aller à l'écran de connexion.
-  openpgp-key-upload-error-no-openpgp: ''
-  openpgp-key-upload-successful: ''
-  openpgp-key-upload-error-no-keys: ''
-  openpgp-key-upload-error-multiple-keys: ''
-  openpgp-deletion-successful: ''
+  openpgp-key-upload-error-no-openpgp: 'Le fichier téléversé ne contient pas de données
+    OpenPGP.'
+  openpgp-key-upload-successful: 'Votre clé OpenPGP a été téléversée.'
+  openpgp-key-upload-error-no-keys: 'Aucune clé pour votre adresse électronique n''a
+    été trouvée dans les données téléversées.'
+  openpgp-key-upload-error-multiple-keys: 'Plus d''une clé pour votre adresse électronique
+    a été trouvée dans les données téléversées. Veuillez téléverser une seule clé.'
+  openpgp-deletion-successful: 'Votre clé OpenPGP a été supprimée.'
 init_domain:
   lead: Merci d'avoir installé Userli. Pour le moment il n'y a aucun domaine et aucune
     compte.
@@ -230,7 +236,7 @@ init_user:
     Veuillez définir un mot de passe pour ce premier compte administrateur puis vous
     y connecter.
   lead: Vous avez créé votre domaine principal.
-Bad credentials.: Identifiants incorrects
+Bad credentials.: Le mot de passe saisi n'est pas valide.
 registration:
   information: Informations
   recovery-token-headline: Jeton de récupération
@@ -239,10 +245,10 @@ registration:
     \ mot de passe d'au moins 12 caractères. Les mots de passe seront testés avec\
     \ une <a href=\"https://haveibeenpwned.com/Passwords\">base de données de mots\
     \ de passe compromis</a>.\n"
-  label-email: Votre adresse e-mail préférée
-  information-intro: "Souhaitez-vous enregistrer un nouveau compte e-mail sur <a href=\"\
-    %project_url%\">%project_name%</a> ? Nous n'autorisons que les inscriptions via\
-    \ les codes d'invitation vers nos services.\n"
+  label-email: Votre adresse électronique préférée
+  information-intro: "Souhaitez-vous enregistrer un nouveau compte de messagerie sur\
+    \ <a href=\"%project_url%\">%project_name%</a> ? Nous n'autorisons que les inscriptions\
+    \ via les codes d'invitation vers nos services.\n"
 copy-to-clipboard: Copier dans le presse-papiers
 init.title: Création de la configuration initiale
 Domain: Domaine
@@ -254,18 +260,18 @@ closed:
   text: "<p>En raison du <a href=\"https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html\"\
     \ target=\"_blank\">paragraphe trois du « Verordnung über die technische und organisatorische\
     \ Umsetzung von Maßnahmen zur Überwachung der Telekommunikation »</a> (abrégé\
-    \ telecommuicationen-surveillance-decree ou « TKÜV »), les fournisseurs d'e-mail\
-    \ avec plus de 10 000 utilisateurs sont dans l'obligation de mettre en place une\
+    \ telecommuicationen-surveillance-decree ou « TKÜV »), les fournisseurs de messagerie\
+    \ avec plus de 10 000 utilisateurs sont dans l'obligation de mettre en place une\
     \ interface de surveillance pour les autorités. C'est pourquoi nous avons décidé\
     \ de bloquer les inscriptions et de ne pas autoriser la création de nouveaux comptes.</p>\n\
     <p><strong>Les comptes existants ne sont pas affectés</strong></p>\n"
 spam:
-  text: "Oh non ! Nous pensons que votre compte a été utilisé pour générer du spam.\n\
-    L'accès à au compte e-mail a été désactivé.\nVeuillez contacter le support pour\
-    \ débloquer votre compte.\n"
+  text: "Oh non ! Nous pensons que votre compte a été utilisé pour générer des courriers\
+    \ indésirables.\nL'accès au compte de messagerie a été désactivé.\nVeuillez contacter\
+    \ l'assistance pour débloquer votre compte.\n"
   title: Compte bloqué
 User: Utilisateur
-Alias: Adresse d'alias
+Alias: Adresse alias
 navbar_left:
   about-us:
     text: À propos de nous
@@ -275,10 +281,13 @@ flash_batch_remove_vouchers_success: Codes d'invitation non demandés supprimés
 custom: personnalisé
 Ratio: Ratio
 openpgp:
-  information: ''
-  keyid-label: ''
-  information-details: ''
-  fingerprint-label: ''
-  delete-button: ''
-  key-info: ''
-  expiretime-label: ''
+  information: 'Informations'
+  keyid-label: 'Identifiant de la clé :'
+  information-details: 'Si vous téléversez votre clé OpenPGP ici, elle sera publiée
+    dans notre <i><a target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key
+    Directory</a></i>. Vous aiderez ainsi vos amis à découvrir votre clé automatiquement
+    et en toute sécurité.'
+  fingerprint-label: 'Empreinte :'
+  delete-button: 'Supprimer la clé OpenPGP'
+  key-info: 'Clé OpenPGP publiée'
+  expiretime-label: 'Date d''expiration :'
