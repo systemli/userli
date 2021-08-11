@@ -8,8 +8,8 @@ alwaysopen = true
 The easiest way to install Userli on a fresh Debian Buster is running these commands:
 
     # install dependencies
-    sudo apt install -y python-pip git
-    sudo pip install molecule  # re-run in case of error
+    sudo apt update && sudo apt install -y ansible git python3-pip
+    sudo pip3 install molecule  # re-run in case of error
 
     # get code
     git clone https://github.com/systemli/ansible-role-userli.git
@@ -20,7 +20,8 @@ The easiest way to install Userli on a fresh Debian Buster is running these comm
 
 This installs all dependencies, creates a database and database user
 (name: userli, password: userli), and installs the userli code at `/var/www/userli`.
-It is accessible via http://localhost:8080.
+It is accessible via [http://localhost:8080](http://localhost:8080).
+There, you can create the first domain and user for your instance.
 
 {{% alert theme="danger" %}}Do not run this configuration in production.{{% /alert %}}
 
@@ -28,4 +29,5 @@ Next, you would have to change the password of the database user,
 [configure your instance](../installation/configuration),
 and probably install Dovecot to do anything meaningful.
 
-Better, do a [manual installation](../installation) to understand each part of your configuration.
+Better, do a [manual installation](../installation) to understand each part of your
+configuration.
