@@ -186,16 +186,14 @@ class StartController extends AbstractController
 
             if ($randomAliasCreateForm->isSubmitted() && $randomAliasCreateForm->isValid()) {
                 $this->createRandomAlias($request, $user);
+                # force reload to not show bogus alias
+                return $this->redirect($request->getUri());
             } elseif ($customAliasCreateForm->isSubmitted() && $customAliasCreateForm->isValid()) {
                 $this->createCustomAlias($request, $user, $aliasCreate->alias);
             }
         }
 
-        # persist the object manager manually to ensure, we really show the persisted values
-        $doctrine = $this->getDoctrine();
-        $doctrine->getManager()->flush();
-
-        $aliasRepository = $doctrine->getRepository('App:Alias');
+        $aliasRepository = $this->getDoctrine()->getRepository('App:Alias');
         $aliasesRandom = $aliasRepository->findByUser($user, true);
         $aliasesCustom = $aliasRepository->findByUser($user, false);
 

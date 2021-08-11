@@ -1,3 +1,8 @@
+# 2.7.16 (UNRELEASED)
+
+* Show correct random alias by forcing reload (Fixes #307)
+* Update German and Frensh translations
+
 # 2.7.15 (2021.08.06)
 
 * Show correct random alias without reload (Fixes #307)
