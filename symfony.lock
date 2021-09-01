@@ -300,9 +300,6 @@
             "ref": "f8863cbad2f2e58c4b65fa1eac892ab189971bea"
         }
     },
-    "symfony/debug-pack": {
-        "version": "v1.0.7"
-    },
     "symfony/dependency-injection": {
         "version": "v4.1.4"
     },
@@ -460,9 +457,6 @@
     },
     "symfony/process": {
         "version": "v3.4.15"
-    },
-    "symfony/profiler-pack": {
-        "version": "v1.0.3"
     },
     "symfony/property-access": {
         "version": "v4.1.4"
