@@ -2,7 +2,7 @@
 
 * Show correct random alias by forcing reload (Fixes #307)
 * Update German and Frensh translations
-* Update to symfony 4.3.30
+* Update to symfony 4.3.33
 * Update dependencies
 
 # 2.7.15 (2021.08.06)
