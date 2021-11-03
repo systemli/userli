@@ -1,4 +1,4 @@
-# 2.7.16 (UNRELEASED)
+# 2.7.16 (2021.11.03)
 
 * Show correct random alias by forcing reload (Fixes #307)
 * Update German and Frensh translations
