@@ -12,6 +12,7 @@
     - oefenweb.yarn
     #- andyceo.phpcsfixer
   vars:
+    __testing: true  # don't create DH param
     dovecot_disable_plaintext_auth: "no"
     dovecot_postfix_auth: true
     apt_packages:
@@ -24,7 +25,7 @@
     mariadb_databases:
       - mail
       - mail_test
-    mariadb_users_extra:
+    mariadb_users:
       - name: mail
         host: localhost
         password: password
@@ -34,7 +35,7 @@
         password: password
         priv: "mail_test.*:ALL"
     nodejs_version: "14.x"
-    php_default_version_debian: 7.3
+    php_default_version_debian: 7.4
     php_packages:
       # necessary
       - php{{ php_default_version_debian }}-apcu
