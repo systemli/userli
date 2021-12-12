@@ -84,8 +84,14 @@ class UserTest extends TestCase
     public function testHasCreationTimeSet(): void
     {
         $user = new User();
-        $cr = $user->getCreationTime();
         $today = new \DateTime();
-        self::assertEquals($cr->format('Y-m-d'), $today->format('Y-m-d'));
+        self::assertEquals($user->getCreationTime()->format('Y-m-d'), $today->format('Y-m-d'));
+    }
+
+    public function testHasUpdatedTimeSet(): void
+    {
+        $user = new User();
+        $today = new \DateTime();
+        self::assertEquals($user->getUpdatedTime()->format('Y-m-d'), $today->format('Y-m-d'));
     }
 }

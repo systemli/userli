@@ -19,7 +19,9 @@ class Domain
      */
     public function __construct()
     {
-        $this->creationTime = new \DateTime();
+        $currentDateTime = new \DateTime();
+        $this->creationTime = $currentDateTime;
+        $this->updatedTime = $currentDateTime;
     }
 
     public function __toString()
