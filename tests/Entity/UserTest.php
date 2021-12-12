@@ -80,4 +80,12 @@ class UserTest extends TestCase
         $user->erasePlainRecoveryToken();
         self::assertEquals(null, $user->getPlainRecoveryToken());
     }
+
+    public function testHasCreationTimeSet(): void
+    {
+        $user = new User();
+        $cr = $user->getCreationTime();
+        $today = new \DateTime();
+        self::assertEquals($cr->format('Y-m-d'), $today->format('Y-m-d'));
+    }
 }

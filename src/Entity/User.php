@@ -65,6 +65,7 @@ class User implements UserInterface, EncoderAwareInterface
     {
         $this->deleted = false;
         $this->passwordVersion = self::CURRENT_PASSWORD_VERSION;
+        $this->creationTime = new \DateTime();
     }
 
     /**
