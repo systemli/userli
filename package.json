@@ -5,6 +5,6 @@
     "jquery": "^3.3.1"
   },
   "dependencies": {
-    "webpack": "^5.64.4"
+    "webpack": "^5.65.0"
   }
 }
