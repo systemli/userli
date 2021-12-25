@@ -14,6 +14,16 @@ class ReservedName
     use UpdatedTimeTrait;
     use NameTrait;
 
+    /**
+     * ReservedName constructor.
+     */
+    public function __construct()
+    {
+        $currentDateTime = new \DateTime();
+        $this->creationTime = $currentDateTime;
+        $this->updatedTime = $currentDateTime;
+    }
+
     public function __toString()
     {
         return ($this->getName()) ?: '';

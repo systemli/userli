@@ -10,9 +10,6 @@ class DomainFactory
     {
         $domain = new Domain();
         $domain->setName($name);
-        $time = new \DateTime('now');
-        $domain->setCreationTime($time);
-        $domain->setUpdatedTime($time);
 
         return $domain;
     }

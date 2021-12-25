@@ -37,6 +37,9 @@ class Alias implements SoftDeletableInterface
     {
         $this->deleted = false;
         $this->random = false;
+        $currentDateTime = new \DateTime();
+        $this->creationTime = $currentDateTime;
+        $this->updatedTime = $currentDateTime;
     }
 
     /**

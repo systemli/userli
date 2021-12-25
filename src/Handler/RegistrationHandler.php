@@ -128,8 +128,6 @@ class RegistrationHandler
         $user->setEmail(strtolower($registration->getEmail()));
         $user->setPlainPassword($registration->getPlainPassword());
         $user->setRoles([Roles::USER]);
-        $user->setCreationTime(new \DateTime());
-        $user->setUpdatedTime(new \DateTime());
 
         if (null !== $domain = $this->domainGuesser->guess($registration->getEmail())) {
             $user->setDomain($domain);

@@ -14,6 +14,16 @@ class Domain
     use UpdatedTimeTrait;
     use NameTrait;
 
+    /**
+     * Domain constructor.
+     */
+    public function __construct()
+    {
+        $currentDateTime = new \DateTime();
+        $this->creationTime = $currentDateTime;
+        $this->updatedTime = $currentDateTime;
+    }
+
     public function __toString()
     {
         return ($this->getName()) ?: '';
