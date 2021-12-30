@@ -67,6 +67,10 @@
         "sort-packages": true,
         "platform": {
             "php": "7.3.19"
+        },
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "symfony/flex": true
         }
     },
     "autoload": {

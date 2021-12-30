@@ -1,4 +1,10 @@
-# 2.7.16 (UNRELEASED)
+# 2.7.17 (2021.12.30)
+
+* Set creationTime and updatedTime in all entity constructors (Fixes #207) 
+* Update to symfony 4.3.36
+* Update dependencies
+
+# 2.7.16 (2021.11.03)
 
 * Show correct random alias by forcing reload (Fixes #307)
 * Update German and Frensh translations
