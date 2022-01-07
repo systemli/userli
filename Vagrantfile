@@ -7,6 +7,11 @@ SCRIPT
 
 Vagrant.configure("2") do |config|
 
+    config.vm.provider :libvirt do |v|
+        v.cpus = "2"
+        v.memory = "2048"
+    end
+
     config.vm.provider :virtualbox do |v|
         v.name = "userli"
         v.cpus = "2"
@@ -14,6 +19,7 @@ Vagrant.configure("2") do |config|
     end
 
     config.vm.box = "debian/bullseye64"
+    config.vm.hostname = "userli"
     config.vm.network :private_network, ip: "192.168.33.99"
     config.vm.synced_folder "./", "/vagrant",
       type: "nfs",
