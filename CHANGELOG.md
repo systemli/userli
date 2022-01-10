@@ -1,3 +1,8 @@
+# 2.7.18 (2022.01.10)
+
+* Fix CheckPasswordCommand with latest symfony/process (Fixes #341)
+* Document cron job to delete obsolete maildirs. Thanks to 1resu.
+
 # 2.7.17 (2021.12.30)
 
 * Set creationTime and updatedTime in all entity constructors (Fixes #207) 
