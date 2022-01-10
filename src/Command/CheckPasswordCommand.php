@@ -19,11 +19,6 @@ use Symfony\Component\Process\Process;
 class CheckPasswordCommand extends Command
 {
     /**
-     * @var ObjectManager
-     */
-    private $manager;
-
-    /**
      * @var FileDescriptorReader
      */
     private $reader;
@@ -75,10 +70,9 @@ class CheckPasswordCommand extends Command
                                 int $mailGid,
                                 string $mailLocation)
     {
-        $this->manager = $manager;
         $this->reader = $reader;
         $this->handler = $handler;
-        $this->repository = $this->manager->getRepository('App:User');
+        $this->repository = $manager->getRepository('App:User');
         $this->mailCryptKeyHandler = $mailCryptKeyHandler;
         $this->mailCrypt = $mailCrypt;
         $this->mailLocation = $mailLocation;
@@ -90,7 +84,7 @@ class CheckPasswordCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:users:checkpassword')
@@ -108,13 +102,13 @@ class CheckPasswordCommand extends Command
      *
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $replyArgs = $input->getArgument('checkpassword-reply');
 
         $replyCommand = null;
         if (0 < count($replyArgs)) {
-            $replyCommand = array_shift($replyArgs);
+            $replyCommand = $replyArgs[0];
         }
 
         // Allow easy commandline testing
@@ -140,10 +134,10 @@ class CheckPasswordCommand extends Command
 
         // Detect if invoked as UserDB lookup by dovecot (with env var AUTHORIZED='1')
         // See https://wiki2.dovecot.org/AuthDatabase/CheckPassword#Checkpassword_as_userdb
-        $userDbLookup = ('1' === getenv('AUTHORIZED')) ? true : false;
+        $userDbLookup = '1' === getenv('AUTHORIZED');
 
         if (false === $userDbLookup && empty($password)) {
-            // Instead throwing an exception, just return 1 (invalid credentials)
+            // Instead of throwing an exception, just return 1 (invalid credentials)
             //throw new InvalidArgumentException('Invalid input format: missing argument password. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.');
             return 1;
         }
@@ -154,9 +148,9 @@ class CheckPasswordCommand extends Command
             // Return '3' for non-existent user when doing UserDB lookup for dovecot
             if (true === $userDbLookup) {
                 return 3;
-            } else {
-                return 1;
             }
+
+            return 1;
         }
 
         // block spammers from login but not lookup
@@ -171,9 +165,7 @@ class CheckPasswordCommand extends Command
         }
 
         // get email parts
-        $emailParts = explode('@', "$email");
-        $username = $emailParts[0];
-        $domain = $emailParts[1];
+        [$username, $domain] = explode('@', $email);
 
         // Set default environment variables for checkpassword-reply command
         $envVars = [
@@ -223,12 +215,9 @@ class CheckPasswordCommand extends Command
         }
 
         // Execute checkpassword-reply command
-        $replyProcess = new Process(
-            $replyCommand.' '.implode(' ', $replyArgs)
-        );
+        $replyProcess = new Process($replyArgs);
         $replyProcess->inheritEnvironmentVariables(true);
-        $newEnv = array_merge([getenv()], $envVars);
-        $replyProcess->setEnv($newEnv);
+        $replyProcess->setEnv(array_merge(getenv(), $envVars));
         try {
             $replyProcess->run();
         } catch (ProcessFailedException $e) {
