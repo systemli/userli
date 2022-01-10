@@ -27,7 +27,10 @@ the `mail_location` in `10-mail.conf` to something like this:
 
 ## Cronjobs
 
-Some cronjobs are needed in order to run regular tasks. As Userli does not have write permissions at Dovecot's maildir (usually this directory belongs to the system user `vmail`) you have to use a [script](https://github.com/systemli/ansible-role-userli/blob/master/templates/userli-maildirs-remove.sh.j2) to delete a  maildir from a removed Userli account:
+Some cronjobs are needed in order to run regular tasks. As Userli does not
+have write permissions at Dovecot's maildir (usually this directory belongs
+to the system user `vmail`) you have to use a [script](https://github.com/systemli/ansible-role-userli/blob/master/templates/userli-maildirs-remove.sh.j2)
+to delete a maildir from a removed Userli account:
 
 	# Daily create lists of removed mail accounts
 	@daily userli cd /path/to/userli && bin/console app:users:remove --list --env=prod >/usr/local/share/userli/maildirs-remove.txt
