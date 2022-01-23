@@ -186,7 +186,7 @@ class StartController extends AbstractController
 
             if ($randomAliasCreateForm->isSubmitted() && $randomAliasCreateForm->isValid()) {
                 $this->createRandomAlias($request, $user);
-                # force reload to not show bogus alias
+                // force reload to not show bogus alias
                 return $this->redirect($request->getUri());
             } elseif ($customAliasCreateForm->isSubmitted() && $customAliasCreateForm->isValid()) {
                 $this->createCustomAlias($request, $user, $aliasCreate->alias);

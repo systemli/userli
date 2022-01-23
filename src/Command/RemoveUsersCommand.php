@@ -42,8 +42,8 @@ class RemoveUsersCommand extends Command
         $this
             ->setName('app:users:remove')
             ->setDescription('Removes all mailboxes from deleted users')
-			->addOption('dry-run', null, InputOption::VALUE_NONE)
-			->addOption('list', null, InputOption::VALUE_NONE);
+            ->addOption('dry-run', null, InputOption::VALUE_NONE)
+            ->addOption('list', null, InputOption::VALUE_NONE);
     }
 
     /**
@@ -55,9 +55,9 @@ class RemoveUsersCommand extends Command
         $users = $this->manager->getRepository('App:User')->findDeletedUsers();
         $filesystem = new Filesystem();
 
-		if (!$input->getOption('list')) {
-			$output->writeln(sprintf('<info>Found %d users to delete</info>', count($users)));
-		}
+        if (!$input->getOption('list')) {
+            $output->writeln(sprintf('<info>Found %d users to delete</info>', count($users)));
+        }
 
         foreach ($users as $user) {
             if (null === $user->getDomain()) {
@@ -73,9 +73,9 @@ class RemoveUsersCommand extends Command
             }
 
             if ($input->getOption('list')) {
-            	$output->writeln($path);
-            	continue;
-			}
+                $output->writeln($path);
+                continue;
+            }
 
             if ($filesystem->exists($path)) {
                 $output->writeln(sprintf('Delete directory for user: %s', $user));

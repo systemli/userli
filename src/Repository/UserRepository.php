@@ -29,19 +29,17 @@ class UserRepository extends AbstractRepository
     }
 
     /**
-     * @param int $days
-     *
      * @return \Doctrine\Common\Collections\Collection|User[]
      */
     public function findInactiveUsers(int $days)
     {
         $expressionBuilder = Criteria::expr();
 
-        if ($days === 0) {
+        if (0 === $days) {
             $expression = $expressionBuilder->eq('deleted', 0);
         } else {
             $dateTime = new \DateTime();
-            $dateTime->sub(new \DateInterval('P' . $days . 'D'));
+            $dateTime->sub(new \DateInterval('P'.$days.'D'));
             $expression = $expressionBuilder->andX(
                 $expressionBuilder->eq('deleted', 0),
                 $expressionBuilder->orX(

@@ -61,7 +61,7 @@ class UserListCommand extends Command
         if (!isset($inactiveDays)) {
             $users = $this->repository->findAll();
         } else {
-            $usersAll = $this->repository->findInactiveUsers((int)$inactiveDays);
+            $usersAll = $this->repository->findInactiveUsers((int) $inactiveDays);
             $users = [];
             // Exclude accounts with ROLE_PERMANENT
             foreach ($usersAll as $user) {

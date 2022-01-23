@@ -24,9 +24,6 @@ class StatisticsBlockService implements BlockServiceInterface
 
     /**
      * StatisticsBlockService constructor.
-     *
-     * @param EngineInterface $templating
-     * @param ObjectManager $manager
      */
     public function __construct(EngineInterface $templating, ObjectManager $manager)
     {
@@ -34,12 +31,6 @@ class StatisticsBlockService implements BlockServiceInterface
         $this->manager = $manager;
     }
 
-    /**
-     * @param BlockContextInterface $blockContext
-     * @param Response|null $response
-     *
-     * @return Response
-     */
     public function execute(BlockContextInterface $blockContext, Response $response = null): Response
     {
         $settings = $blockContext->getSettings();
@@ -55,15 +46,12 @@ class StatisticsBlockService implements BlockServiceInterface
                 'users_count' => $this->manager->getRepository('App:User')->count([]),
                 'vouchers_count' => $vouchersCount = $this->manager->getRepository('App:Voucher')->count([]),
                 'vouchers_redeemed' => $vouchersRedeemed = $this->manager->getRepository('App:Voucher')->countRedeemedVouchers(),
-                'vouchers_ratio' => ($vouchersCount > 0) ? sprintf('%.2f%%', (float)(($vouchersRedeemed / $vouchersCount) * 100)) : '0%',
+                'vouchers_ratio' => ($vouchersCount > 0) ? sprintf('%.2f%%', (float) (($vouchersRedeemed / $vouchersCount) * 100)) : '0%',
             ],
             $response
         );
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
     public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
@@ -75,10 +63,6 @@ class StatisticsBlockService implements BlockServiceInterface
         );
     }
 
-    /**
-     * @param BlockInterface $block
-     * @return array
-     */
     public function getCacheKeys(BlockInterface $block): array
     {
         return [
@@ -87,9 +71,6 @@ class StatisticsBlockService implements BlockServiceInterface
         ];
     }
 
-    /**
-     * @param BlockInterface $block
-     */
     public function load(BlockInterface $block): void
     {
     }
