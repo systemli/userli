@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
-class UserDeleteCommand extends Command
+class UsersDeleteCommand extends Command
 {
     /**
      * @var ObjectManager
@@ -23,9 +23,6 @@ class UserDeleteCommand extends Command
      */
     private $deleteHandler;
 
-    /**
-     * RegistrationMailCommand constructor.
-     */
     public function __construct(ObjectManager $manager, DeleteHandler $deleteHandler)
     {
         $this->manager = $manager;

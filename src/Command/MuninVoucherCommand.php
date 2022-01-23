@@ -19,9 +19,6 @@ class MuninVoucherCommand extends Command
      */
     private $repository;
 
-    /**
-     * MuninVoucherCommand constructor.
-     */
     public function __construct(ObjectManager $manager)
     {
         parent::__construct();

@@ -2,7 +2,7 @@
 
 namespace App\Tests\Command;
 
-use App\Command\UserDeleteCommand;
+use App\Command\UsersDeleteCommand;
 use App\Command\VoucherUnlinkCommand;
 use App\Entity\User;
 use App\Handler\DeleteHandler;
@@ -13,7 +13,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
-class UserDeleteCommandTest extends TestCase
+class UsersDeleteCommandTest extends TestCase
 {
     /**
      * @var VoucherUnlinkCommand
@@ -40,7 +40,7 @@ class UserDeleteCommandTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->command = new UserDeleteCommand($manager, $deleteHandler);
+        $this->command = new UsersDeleteCommand($manager, $deleteHandler);
     }
 
     public function testExecute(): void

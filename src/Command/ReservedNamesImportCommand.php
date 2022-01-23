@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ImportReservedNamesCommand extends Command
+class ReservedNamesImportCommand extends Command
 {
     /**
      * @var ObjectManager
@@ -22,9 +22,6 @@ class ImportReservedNamesCommand extends Command
      */
     private $creator;
 
-    /**
-     * ImportReservedNamesCommand constructor.
-     */
     public function __construct(ObjectManager $manager, ReservedNameCreator $creator)
     {
         $this->manager = $manager;

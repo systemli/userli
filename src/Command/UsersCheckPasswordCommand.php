@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-class CheckPasswordCommand extends Command
+class UsersCheckPasswordCommand extends Command
 {
     /**
      * @var FileDescriptorReader
@@ -59,7 +59,7 @@ class CheckPasswordCommand extends Command
     private $mailLocation;
 
     /**
-     * CheckPasswordCommand constructor.
+     * UsersCheckPasswordCommand constructor.
      */
     public function __construct(ObjectManager $manager,
                                 FileDescriptorReader $reader,

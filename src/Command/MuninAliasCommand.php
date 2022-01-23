@@ -19,9 +19,6 @@ class MuninAliasCommand extends Command
      */
     private $repository;
 
-    /**
-     * MuninAliasCommand constructor.
-     */
     public function __construct(ObjectManager $manager)
     {
         parent::__construct();

@@ -2,7 +2,7 @@
 
 namespace App\Tests\Command;
 
-use App\Command\CheckPasswordCommand;
+use App\Command\UsersCheckPasswordCommand;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Handler\MailCryptKeyHandler;
@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class CheckPasswordCommandTest extends TestCase
+class UsersCheckPasswordCommandTest extends TestCase
 {
     protected $inputStream;
     protected $plainUser;
@@ -49,7 +49,7 @@ class CheckPasswordCommandTest extends TestCase
         $mailGID = 5000;
         $mailLocation = 'var/vmail';
 
-        $command = new CheckPasswordCommand($manager,
+        $command = new UsersCheckPasswordCommand($manager,
                                             $reader,
                                             $handler,
                                             $mailCryptKeyHandler,
@@ -77,7 +77,7 @@ class CheckPasswordCommandTest extends TestCase
         $mailGID = 5000;
         $mailLocation = 'var/vmail';
 
-        $command = new CheckPasswordCommand($manager,
+        $command = new UsersCheckPasswordCommand($manager,
             $reader,
             $handler,
             $mailCryptKeyHandler,
@@ -106,7 +106,7 @@ class CheckPasswordCommandTest extends TestCase
         $mailGID = 5000;
         $mailLocation = 'var/vmail';
 
-        $command = new CheckPasswordCommand($manager,
+        $command = new UsersCheckPasswordCommand($manager,
             $reader,
             $handler,
             $mailCryptKeyHandler,
@@ -140,7 +140,7 @@ class CheckPasswordCommandTest extends TestCase
         $mailLocation = 'var/vmail';
 
         putenv('AUTHORIZED=1');
-        $command = new CheckPasswordCommand($manager,
+        $command = new UsersCheckPasswordCommand($manager,
             $reader,
             $handler,
             $mailCryptKeyHandler,

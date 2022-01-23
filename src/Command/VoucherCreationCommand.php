@@ -26,9 +26,6 @@ class VoucherCreationCommand extends Command
      */
     private $appUrl;
 
-    /**
-     * VoucherCreationCommand constructor.
-     */
     public function __construct(ObjectManager $manager, RouterInterface $router, string $appUrl)
     {
         parent::__construct();

@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class MailCryptCommand extends Command
+class UsersMailCryptCommand extends Command
 {
     /**
      * @var UserAuthenticationHandler
@@ -30,9 +30,6 @@ class MailCryptCommand extends Command
      */
     private $mailCrypt;
 
-    /**
-     * MailCryptCommand constructor.
-     */
     public function __construct(
         ObjectManager $manager,
         UserAuthenticationHandler $handler,

@@ -25,9 +25,6 @@ class VoucherUnlinkCommand extends Command
      */
     private $handler;
 
-    /**
-     * VoucherUnlinkCommand constructor.
-     */
     public function __construct(ObjectManager $manager, SuspiciousChildrenHandler $handler)
     {
         $this->manager = $manager;

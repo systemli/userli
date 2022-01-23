@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
-class RemoveUsersCommand extends Command
+class UsersRemoveCommand extends Command
 {
     /**
      * @var ObjectManager
@@ -22,9 +22,6 @@ class RemoveUsersCommand extends Command
      */
     private $mailLocation;
 
-    /**
-     * RegistrationMailCommand constructor.
-     */
     public function __construct(ObjectManager $manager,
                                 string $mailLocation,
                                 ?string $name = null)

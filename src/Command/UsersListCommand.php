@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
-class UserListCommand extends Command
+class UsersListCommand extends Command
 {
     /**
      * @var UserRepository
@@ -23,9 +23,6 @@ class UserListCommand extends Command
      */
     private $roleHierarchy;
 
-    /**
-     * RegistrationMailCommand constructor.
-     */
     public function __construct(ObjectManager $manager, RoleHierarchyInterface $roleHierarchy)
     {
         $this->repository = $manager->getRepository('App:User');

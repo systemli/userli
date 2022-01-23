@@ -2,7 +2,7 @@
 
 namespace App\Tests\Command;
 
-use App\Command\ImportReservedNamesCommand;
+use App\Command\ReservedNamesImportCommand;
 use App\Creator\ReservedNameCreator;
 use App\Entity\ReservedName;
 use App\Repository\ReservedNameRepository;
@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class ImportReservedNamesCommandTest extends TestCase
+class ReservedNamesImportCommandTest extends TestCase
 {
     public function testExecuteDefaultFile(): void
     {
@@ -22,7 +22,7 @@ class ImportReservedNamesCommandTest extends TestCase
             ->getMock();
         $creator->method('create')->willReturn(new ReservedName());
 
-        $command = new ImportReservedNamesCommand($manager, $creator);
+        $command = new ReservedNamesImportCommand($manager, $creator);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute([], ['verbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE]);

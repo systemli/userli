@@ -25,9 +25,6 @@ class MuninAccountCommand extends Command
      */
     private $openPgpKeyRepository;
 
-    /**
-     * MuninAccountCommand constructor.
-     */
     public function __construct(ObjectManager $manager)
     {
         parent::__construct();
