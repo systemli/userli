@@ -28,7 +28,7 @@ class AdminPasswordUpdater
      * Set admin password
      * Create admin user in default domain if not existent.
      */
-    public function updateAdminPassword(string $password)
+    public function updateAdminPassword(string $password): void
     {
         $domain = $this->manager->getRepository('App:Domain')->getDefaultDomain();
         $adminEmail = 'postmaster@'.$domain;

@@ -18,28 +18,22 @@ class Registration
      */
     private $email;
 
-    /**
-     * @return string
-     */
-    public function getVoucher()
+    public function getVoucher(): ?string
     {
         return $this->voucher;
     }
 
-    public function setVoucher(string $voucher)
+    public function setVoucher(string $voucher): void
     {
         $this->voucher = $voucher;
     }
 
-    /**
-     * @return string
-     */
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email)
+    public function setEmail(string $email): void
     {
         $this->email = strtolower($email);
     }

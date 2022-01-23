@@ -43,7 +43,7 @@ class LoginListenerTest extends TestCase
     /**
      * @dataProvider provider
      */
-    public function testOnSecurityInteractiveLogin(User $user, bool $update)
+    public function testOnSecurityInteractiveLogin(User $user, bool $update): void
     {
         $this->manager->expects($this->once())->method('flush');
 
@@ -59,16 +59,14 @@ class LoginListenerTest extends TestCase
     }
 
     /**
-     * @param User $user
-     *
      * @return \PHPUnit_Framework_MockObject_MockObject|InteractiveLoginEvent
      */
-    private function getEvent($user)
+    private function getEvent(User $user): InteractiveLoginEvent
     {
         $request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $request->expects($this->any())->method('get')->willReturn('password');
+        $request->method('get')->willReturn('password');
 
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
@@ -85,10 +83,7 @@ class LoginListenerTest extends TestCase
         return $event;
     }
 
-    /**
-     * @return array
-     */
-    public function provider()
+    public function provider(): array
     {
         return [
             [$this->getUser(null), true],
@@ -99,10 +94,7 @@ class LoginListenerTest extends TestCase
         ];
     }
 
-    /**
-     * @return User
-     */
-    public function getUser(?int $passwordVersion)
+    public function getUser(?int $passwordVersion): User
     {
         $user = new User();
         $user->setPasswordVersion($passwordVersion);
@@ -110,10 +102,10 @@ class LoginListenerTest extends TestCase
         return $user;
     }
 
-    public function testGetSubscribedEvents()
+    public function testGetSubscribedEvents(): void
     {
-        $this->assertEquals($this->listener->getSubscribedEvents(),
-            [SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
-                LoginEvent::NAME => 'onLogin', ]);
+        $this->assertEquals([SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
+            LoginEvent::NAME => 'onLogin', ],
+            $this->listener->getSubscribedEvents());
     }
 }

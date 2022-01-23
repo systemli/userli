@@ -26,9 +26,6 @@ class VoucherCreationCommand extends Command
      */
     private $appUrl;
 
-    /**
-     * VoucherCreationCommand constructor.
-     */
     public function __construct(ObjectManager $manager, RouterInterface $router, string $appUrl)
     {
         parent::__construct();
@@ -38,7 +35,7 @@ class VoucherCreationCommand extends Command
         $this->appUrl = $appUrl;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:voucher:create')
@@ -49,7 +46,7 @@ class VoucherCreationCommand extends Command
             ->addOption('print-links', 'l', InputOption::VALUE_NONE, 'Print out links to vouchers');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $email = $input->getOption('user');
 

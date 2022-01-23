@@ -14,9 +14,9 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class WelcomeMessageBuilderTest extends TestCase
 {
-    const BODY_TEMPLATE = 'Domain: %s'.PHP_EOL.'APP URL: %s'.PHP_EOL.'Project Name: %s';
+    private const BODY_TEMPLATE = 'Domain: %s'.PHP_EOL.'APP URL: %s'.PHP_EOL.'Project Name: %s';
 
-    public function testBuildBody()
+    public function testBuildBody(): void
     {
         $domain = 'example.com';
         $appUrl = 'https://www.example.com';
@@ -28,7 +28,7 @@ class WelcomeMessageBuilderTest extends TestCase
         self::assertEquals($expected, $builder->buildBody('de'));
     }
 
-    public function testBuildSubject()
+    public function testBuildSubject(): void
     {
         $domain = 'example.com';
         $appUrl = 'https://www.example.com';
@@ -41,12 +41,11 @@ class WelcomeMessageBuilderTest extends TestCase
     }
 
     /**
+     * @param $domain
      * @param $appUrl
      * @param $projectName
-     *
-     * @return WelcomeMessageBuilder
      */
-    private function getBuilder($domain, $appUrl, $projectName)
+    private function getBuilder($domain, $appUrl, $projectName): WelcomeMessageBuilder
     {
         /**
          * @var TranslatorInterface|PHPUnit_Framework_MockObject_MockObject
@@ -57,17 +56,15 @@ class WelcomeMessageBuilderTest extends TestCase
 
         $message = sprintf(self::BODY_TEMPLATE, $domain, $appUrl, $projectName);
 
-        $translator->expects($this->any())->method('trans')->willReturn($message);
+        $translator->method('trans')->willReturn($message);
 
-        $builder = new WelcomeMessageBuilder($translator, $this->getManager(), $appUrl, $projectName);
-
-        return $builder;
+        return new WelcomeMessageBuilder($translator, $this->getManager(), $appUrl, $projectName);
     }
 
     /**
      * Manager that returns default domain.
      */
-    public function getManager()
+    public function getManager(): ObjectManager
     {
         $manager = $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()
@@ -81,9 +78,9 @@ class WelcomeMessageBuilderTest extends TestCase
         $domain->setName('example.com');
 
         $repository->method('getDefaultDomain')
-            ->will($this->returnValue($domain));
+            ->willReturn($domain);
 
-        $manager->expects($this->any())->method('getRepository')->willReturn($repository);
+        $manager->method('getRepository')->willReturn($repository);
 
         return $manager;
     }

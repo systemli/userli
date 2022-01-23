@@ -33,7 +33,7 @@ class AliasCreatedMessageSender
     /**
      * @throws \Exception
      */
-    public function send(User $user, Alias $alias, string $locale)
+    public function send(User $user, Alias $alias, string $locale): void
     {
         if (null === $email = $user->getEmail()) {
             throw new \Exception('Email should not be null');

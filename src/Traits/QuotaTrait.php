@@ -9,18 +9,12 @@ trait QuotaTrait
      */
     private $quota;
 
-    /**
-     * @return int|null
-     */
-    public function getQuota()
+    public function getQuota(): ?int
     {
         return $this->quota;
     }
 
-    /**
-     * @param int|null $quota
-     */
-    public function setQuota($quota)
+    public function setQuota(?int $quota): void
     {
         $this->quota = $quota;
     }

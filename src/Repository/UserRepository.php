@@ -29,19 +29,17 @@ class UserRepository extends AbstractRepository
     }
 
     /**
-     * @param int $days
-     *
      * @return \Doctrine\Common\Collections\Collection|User[]
      */
     public function findInactiveUsers(int $days)
     {
         $expressionBuilder = Criteria::expr();
 
-        if ($days === 0) {
+        if (0 === $days) {
             $expression = $expressionBuilder->eq('deleted', 0);
         } else {
             $dateTime = new \DateTime();
-            $dateTime->sub(new \DateInterval('P' . $days . 'D'));
+            $dateTime->sub(new \DateInterval('P'.$days.'D'));
             $expression = $expressionBuilder->andX(
                 $expressionBuilder->eq('deleted', 0),
                 $expressionBuilder->orX(
@@ -60,33 +58,24 @@ class UserRepository extends AbstractRepository
     /**
      * @return User[]|array
      */
-    public function findDeletedUsers()
+    public function findDeletedUsers(): array
     {
         return $this->findBy(['deleted' => true]);
     }
 
-    /**
-     * @return int
-     */
-    public function countUsers()
+    public function countUsers(): int
     {
         return $this->matching(Criteria::create()
             ->where(Criteria::expr()->eq('deleted', false)))->count();
     }
 
-    /**
-     * @return int
-     */
-    public function countDeletedUsers()
+    public function countDeletedUsers(): int
     {
         return $this->matching(Criteria::create()
             ->where(Criteria::expr()->eq('deleted', true)))->count();
     }
 
-    /**
-     * @return int
-     */
-    public function countUsersWithRecoveryToken()
+    public function countUsersWithRecoveryToken(): int
     {
         return $this->matching(Criteria::create()
             ->where(Criteria::expr()->eq('deleted', false))
@@ -94,10 +83,7 @@ class UserRepository extends AbstractRepository
         )->count();
     }
 
-    /**
-     * @return int
-     */
-    public function countUsersWithMailCrypt()
+    public function countUsersWithMailCrypt(): int
     {
         return $this->matching(Criteria::create()
             ->where(Criteria::expr()->eq('deleted', false))

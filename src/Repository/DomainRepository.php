@@ -9,12 +9,7 @@ use App\Entity\Domain;
  */
 class DomainRepository extends AbstractRepository
 {
-    /**
-     * @param $name
-     *
-     * @return object|Domain|null
-     */
-    public function findByName($name)
+    public function findByName(string $name): ?Domain
     {
         return $this->findOneBy(['name' => $name]);
     }

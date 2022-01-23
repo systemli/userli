@@ -11,6 +11,9 @@ use App\Helper\RandomStringGenerator;
  */
 class VoucherFactory
 {
+    /**
+     * @throws \Exception
+     */
     public static function create(User $user): Voucher
     {
         $voucher = new Voucher();

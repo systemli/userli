@@ -2,18 +2,11 @@
 
 namespace App\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
-
 /**
  * Class SuspiciousChildrenHandler.
  */
 class SuspiciousChildrenHandler
 {
-    /**
-     * @var ObjectManager
-     */
-    private $manager;
-
     /**
      * @var MailHandler
      */
@@ -34,22 +27,19 @@ class SuspiciousChildrenHandler
      *
      * @param string $to
      */
-    public function __construct(ObjectManager $manager, MailHandler $handler, \Twig_Environment $twig, $to)
+    public function __construct(MailHandler $handler, \Twig_Environment $twig, $to)
     {
-        $this->manager = $manager;
         $this->handler = $handler;
         $this->twig = $twig;
         $this->to = $to;
     }
 
     /**
-     * @param array $suspiciousChildren
-     *
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function sendReport($suspiciousChildren)
+    public function sendReport(array $suspiciousChildren): void
     {
         $message = $this->twig->render('Email/suspicious_children.twig', ['suspiciousChildren' => $suspiciousChildren]);
         $this->handler->send($this->to, $message, 'Suspicious users invited more users');

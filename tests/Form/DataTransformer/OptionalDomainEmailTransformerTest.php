@@ -12,12 +12,12 @@ class OptionalDomainEmailTransformerTest extends TestCase
     /**
      * @dataProvider transformProvider
      */
-    public function testTransform($input, $expected)
+    public function testTransform($input, $expected): void
     {
         $this->assertEquals($expected, $this->getTransformer()->transform($input));
     }
 
-    public function transformProvider()
+    public function transformProvider(): array
     {
         return [
             ['', ''],
@@ -30,12 +30,12 @@ class OptionalDomainEmailTransformerTest extends TestCase
     /**
      * @dataProvider reverseTransformProvider
      */
-    public function testReverseTransform($input, $expected)
+    public function testReverseTransform($input, $expected): void
     {
         $this->assertEquals($expected, $this->getTransformer()->reverseTransform($input));
     }
 
-    public function reverseTransformProvider()
+    public function reverseTransformProvider(): array
     {
         return [
             ['', ''],
@@ -45,10 +45,7 @@ class OptionalDomainEmailTransformerTest extends TestCase
         ];
     }
 
-    /**
-     * @return TextToEmailTransformer
-     */
-    private function getTransformer()
+    private function getTransformer(): OptionalDomainEmailTransformer
     {
         return new OptionalDomainEmailTransformer(self::DOMAIN);
     }

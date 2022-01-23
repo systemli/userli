@@ -15,7 +15,7 @@ class DomainGuesserTest extends TestCase
      */
     private $guesser;
 
-    public function testGuess()
+    public function testGuess(): void
     {
         $this->assertNull($this->guesser->guess('user@gmail.com'));
         $this->assertNotNull($this->guesser->guess('user@example.org'));
@@ -29,13 +29,13 @@ class DomainGuesserTest extends TestCase
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject|ObjectManager
      */
-    private function getManager()
+    private function getManager(): ObjectManager
     {
         $repository = $this->getMockBuilder(DomainRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $repository->expects($this->any())->method('findByName')->willReturnCallback(
+        $repository->method('findByName')->willReturnCallback(
             function ($domain) {
                 if ('example.org' === $domain) {
                     $domain = new Domain();
@@ -52,7 +52,7 @@ class DomainGuesserTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $manager->expects($this->any())->method('getRepository')->willReturn($repository);
+        $manager->method('getRepository')->willReturn($repository);
 
         return $manager;
     }

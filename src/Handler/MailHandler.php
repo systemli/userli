@@ -24,11 +24,8 @@ class MailHandler
 
     /**
      * Constructor.
-     *
-     * @param string $from
-     * @param string $name
      */
-    public function __construct(Swift_Mailer $mailer, $from, $name)
+    public function __construct(Swift_Mailer $mailer, string $from, string $name)
     {
         $this->mailer = $mailer;
         $this->from = $from;
@@ -36,11 +33,10 @@ class MailHandler
     }
 
     /**
-     * @param string $email
      * @param $plain
      * @param $subject
      */
-    public function send($email, $plain, $subject, array $params = [])
+    public function send(string $email, $plain, $subject, array $params = []): void
     {
         $message = (new Swift_Message($subject, $plain, 'text/plain'))
             ->setTo($email)

@@ -14,10 +14,7 @@ trait RecoveryTokenTrait
         return $this->recoveryToken;
     }
 
-    /**
-     * @param string $recoveryToken
-     */
-    public function setRecoveryToken($recoveryToken)
+    public function setRecoveryToken(string $recoveryToken): void
     {
         $this->recoveryToken = $recoveryToken;
     }

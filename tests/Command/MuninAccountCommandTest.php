@@ -11,7 +11,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class MuninAccountCommandTest extends TestCase
 {
-    public function testExecute()
+    public function testExecute(): void
     {
         $userRepository = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()

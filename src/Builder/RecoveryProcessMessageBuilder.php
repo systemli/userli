@@ -24,23 +24,17 @@ class RecoveryProcessMessageBuilder
 
     /**
      * RecoveryProcessMessageBuilder constructor.
-     *
-     * @param string $appUrl
-     * @param string $projectName
      */
-    public function __construct(TranslatorInterface $translator, $appUrl, $projectName)
+    public function __construct(TranslatorInterface $translator, string $appUrl, string $projectName)
     {
         $this->translator = $translator;
         $this->appUrl = $appUrl;
         $this->projectName = $projectName;
     }
 
-    /**
-     * @return string
-     */
-    public function buildBody(string $locale, string $email, string $time)
+    public function buildBody(string $locale, string $email, string $time): string
     {
-        $body = $this->translator->trans(
+        return $this->translator->trans(
             'mail.recovery-body',
             [
                 '%app_url%' => $this->appUrl,
@@ -51,19 +45,12 @@ class RecoveryProcessMessageBuilder
             null,
             $locale
         );
-
-        return $body;
     }
 
-    /**
-     * @return string
-     */
-    public function buildSubject(string $locale, string $email)
+    public function buildSubject(string $locale, string $email): string
     {
-        $subject = $this->translator->trans(
+        return $this->translator->trans(
             'mail.recovery-subject', ['%email%' => $email], null, $locale
         );
-
-        return $subject;
     }
 }

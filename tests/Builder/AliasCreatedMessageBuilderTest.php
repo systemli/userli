@@ -11,14 +11,14 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class AliasCreatedMessageBuilderTest extends TestCase
 {
-    const BODY_TEMPLATE = 'APP URL: %s'.PHP_EOL.'Project Name: %s';
+    private const BODY_TEMPLATE = 'APP URL: %s'.PHP_EOL.'Project Name: %s';
 
     private $email = 'user@example.org';
     private $alias = 'alias@example.org';
     private $appUrl = 'https://www.example.org';
     private $projectName = 'example.org';
 
-    public function testBuildBody()
+    public function testBuildBody(): void
     {
         $builder = $this->getBuilder($this->appUrl, $this->projectName);
         $expected = sprintf(self::BODY_TEMPLATE, $this->appUrl, $this->projectName);
@@ -26,7 +26,7 @@ class AliasCreatedMessageBuilderTest extends TestCase
         self::assertEquals($expected, $builder->buildBody('de', $this->email, $this->alias));
     }
 
-    public function testBuildSubject()
+    public function testBuildSubject(): void
     {
         $builder = $this->getBuilder($this->appUrl, $this->projectName);
         $expected = sprintf(self::BODY_TEMPLATE, $this->appUrl, $this->projectName);
@@ -37,10 +37,8 @@ class AliasCreatedMessageBuilderTest extends TestCase
     /**
      * @param $appUrl
      * @param $projectName
-     *
-     * @return AliasCreatedMessageBuilder
      */
-    private function getBuilder($appUrl, $projectName)
+    private function getBuilder($appUrl, $projectName): AliasCreatedMessageBuilder
     {
         /**
          * @var TranslatorInterface|PHPUnit_Framework_MockObject_MockObject
@@ -51,10 +49,8 @@ class AliasCreatedMessageBuilderTest extends TestCase
 
         $message = sprintf(self::BODY_TEMPLATE, $appUrl, $projectName);
 
-        $translator->expects($this->any())->method('trans')->willReturn($message);
+        $translator->method('trans')->willReturn($message);
 
-        $builder = new AliasCreatedMessageBuilder($translator, $appUrl, $projectName);
-
-        return $builder;
+        return new AliasCreatedMessageBuilder($translator, $appUrl, $projectName);
     }
 }

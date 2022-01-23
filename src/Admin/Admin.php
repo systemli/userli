@@ -21,10 +21,7 @@ abstract class Admin extends AbstractAdmin
         parent::__construct($code, $class, $baseControllerName);
     }
 
-    /**
-     * @return bool
-     */
-    protected function isNewObject()
+    protected function isNewObject(): bool
     {
         return !$this->getRequest()->get($this->getIdParameter());
     }

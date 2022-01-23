@@ -3,6 +3,7 @@
 namespace App;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\Config\Exception\LoaderLoadException;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -15,7 +16,7 @@ class Kernel extends BaseKernel
 
     private const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         $projectDir = parent::getProjectDir();
         if ('/vagrant' === $projectDir && in_array($this->environment, ['dev', 'test'])) {
@@ -25,7 +26,7 @@ class Kernel extends BaseKernel
         return $projectDir.'/var/cache/'.$this->environment;
     }
 
-    public function getLogDir()
+    public function getLogDir(): string
     {
         $projectDir = parent::getProjectDir();
         if ('/vagrant' === $projectDir && in_array($this->environment, ['dev', 'test'])) {
@@ -50,6 +51,9 @@ class Kernel extends BaseKernel
         return \dirname(__DIR__);
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
         $container->addResource(new FileResource($this->getProjectDir().'/config/bundles.php'));
@@ -63,6 +67,9 @@ class Kernel extends BaseKernel
         $loader->load($confDir.'/{services}_'.$this->environment.self::CONFIG_EXTS, 'glob');
     }
 
+    /**
+     * @throws LoaderLoadException
+     */
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
         $confDir = $this->getProjectDir().'/config';

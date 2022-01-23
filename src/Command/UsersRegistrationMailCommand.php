@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
-class RegistrationMailCommand extends Command
+class UsersRegistrationMailCommand extends Command
 {
     /**
      * @var ObjectManager
@@ -21,9 +21,6 @@ class RegistrationMailCommand extends Command
      */
     private $welcomeMessageSender;
 
-    /**
-     * RegistrationMailCommand constructor.
-     */
     public function __construct(ObjectManager $manager, WelcomeMessageSender $welcomeMessageSender, ?string $name = null)
     {
         parent::__construct($name);
@@ -34,10 +31,10 @@ class RegistrationMailCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setName('app:registration:mail')
+            ->setName('app:users:registration:mail')
             ->setDescription('Send a registration mail to a user')
             ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User who get the voucher(s)')
             ->addOption('locale', 'l', InputOption::VALUE_OPTIONAL, 'the locale', 'de');
@@ -45,6 +42,8 @@ class RegistrationMailCommand extends Command
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

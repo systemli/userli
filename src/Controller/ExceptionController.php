@@ -14,13 +14,11 @@ use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 class ExceptionController extends BaseExceptionController
 {
     /**
-     * @return Response
-     *
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function showAction(Request $request, FlattenException $exception, DebugLoggerInterface $logger = null)
+    public function showAction(Request $request, FlattenException $exception, DebugLoggerInterface $logger = null): Response
     {
         $code = $exception->getStatusCode();
 

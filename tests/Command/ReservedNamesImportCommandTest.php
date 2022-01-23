@@ -2,7 +2,7 @@
 
 namespace App\Tests\Command;
 
-use App\Command\ImportReservedNamesCommand;
+use App\Command\ReservedNamesImportCommand;
 use App\Creator\ReservedNameCreator;
 use App\Entity\ReservedName;
 use App\Repository\ReservedNameRepository;
@@ -11,9 +11,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class ImportReservedNamesCommandTest extends TestCase
+class ReservedNamesImportCommandTest extends TestCase
 {
-    public function testExecuteDefaultFile()
+    public function testExecuteDefaultFile(): void
     {
         $manager = $this->getManager();
 
@@ -22,7 +22,7 @@ class ImportReservedNamesCommandTest extends TestCase
             ->getMock();
         $creator->method('create')->willReturn(new ReservedName());
 
-        $command = new ImportReservedNamesCommand($manager, $creator);
+        $command = new ReservedNamesImportCommand($manager, $creator);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute([], ['verbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE]);
@@ -32,7 +32,7 @@ class ImportReservedNamesCommandTest extends TestCase
         $this->assertStringContainsString('Skipping reserved name "name", already exists', $output);
     }
 
-    public function getManager()
+    public function getManager(): ObjectManager
     {
         $manager = $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()
@@ -45,11 +45,11 @@ class ImportReservedNamesCommandTest extends TestCase
         $repository->method('findByName')->willReturnMap(
             [
                 ['new', null],
-                ['name', true],
+                ['name', new ReservedName()],
             ]
         );
 
-        $manager->expects($this->any())->method('getRepository')->willReturn($repository);
+        $manager->method('getRepository')->willReturn($repository);
 
         return $manager;
     }

@@ -14,7 +14,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RegistrationHandler
 {
-    const REGISTRATION_LIMIT = 9999;
+    private const REGISTRATION_LIMIT = 9999;
+
     /**
      * @var ObjectManager
      */
@@ -74,7 +75,7 @@ class RegistrationHandler
     /**
      * @throws \Exception
      */
-    public function handle(Registration $registration)
+    public function handle(Registration $registration): void
     {
         if (!$this->canRegister()) {
             throw new \Exception('The Registration Limit reached!');
@@ -103,26 +104,14 @@ class RegistrationHandler
         $this->eventDispatcher->dispatch(Events::MAIL_ACCOUNT_CREATED, new UserEvent($user));
     }
 
-    /**
-     * @return bool
-     */
-    public function canRegister()
+    public function canRegister(): bool
     {
         $count = $this->manager->getRepository('App:User')->count([]);
 
-        if (!$this->hasSinaBox && $count > self::REGISTRATION_LIMIT) {
-            return false;
-        }
-
-        return true;
+        return !(!$this->hasSinaBox && $count > self::REGISTRATION_LIMIT);
     }
 
-    /**
-     * @return User
-     *
-     * @throws \Exception
-     */
-    private function buildUser(Registration $registration)
+    private function buildUser(Registration $registration): User
     {
         $user = new User();
         $user->setEmail(strtolower($registration->getEmail()));

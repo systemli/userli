@@ -53,18 +53,18 @@ services:
             $appUrl:       "%env(APP_URL)%"
             $projectName:  "%env(PROJECT_NAME)%"
 
-    App\Command\CheckPasswordCommand:
+    App\Command\UsersCheckPasswordCommand:
         arguments:
             $mailCrypt: "%env(MAIL_CRYPT)%"
             $mailLocation: "%env(DOVECOT_MAIL_LOCATION)%"
             $mailUid: "%env(DOVECOT_MAIL_UID)%"
             $mailGid: "%env(DOVECOT_MAIL_GID)%"
 
-    App\Command\MailCryptCommand:
+    App\Command\UsersMailCryptCommand:
         arguments:
             $mailCrypt: "%env(MAIL_CRYPT)%"
 
-    App\Command\RemoveUsersCommand:
+    App\Command\UsersRemoveCommand:
         arguments:
             $mailLocation: "%env(DOVECOT_MAIL_LOCATION)%"
 

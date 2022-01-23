@@ -14,23 +14,17 @@ trait RecoverySecretBoxTrait
         return $this->recoverySecretBox;
     }
 
-    /**
-     * @param string $recoverySecretBox
-     */
-    public function setRecoverySecretBox($recoverySecretBox)
+    public function setRecoverySecretBox(string $recoverySecretBox): void
     {
         $this->recoverySecretBox = $recoverySecretBox;
     }
 
     public function hasRecoverySecretBox(): bool
     {
-        return ($this->getRecoverySecretBox()) ? true : false;
+        return (bool) $this->getRecoverySecretBox();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function eraseRecoverySecretBox()
+    public function eraseRecoverySecretBox(): void
     {
         $this->recoverySecretBox = null;
     }

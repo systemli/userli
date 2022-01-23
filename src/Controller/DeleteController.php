@@ -9,7 +9,9 @@ use App\Form\UserDeleteType;
 use App\Handler\DeleteHandler;
 use App\Handler\WkdHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class DeleteController.
@@ -37,7 +39,7 @@ class DeleteController extends AbstractController
     /**
      * @param $aliasId
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function deleteAliasAction(Request $request, $aliasId)
     {
@@ -75,7 +77,7 @@ class DeleteController extends AbstractController
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function deleteUserAction(Request $request)
     {

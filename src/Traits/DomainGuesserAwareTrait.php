@@ -11,16 +11,13 @@ trait DomainGuesserAwareTrait
      */
     private $domainGuesser;
 
-    public function setDomainGuesser(DomainGuesser $domainGuesser)
-    {
-        $this->domainGuesser = $domainGuesser;
-    }
-
-    /**
-     * @return DomainGuesser
-     */
-    public function getDomainGuesser()
+    public function getDomainGuesser(): DomainGuesser
     {
         return $this->domainGuesser;
+    }
+
+    public function setDomainGuesser(DomainGuesser $domainGuesser): void
+    {
+        $this->domainGuesser = $domainGuesser;
     }
 }

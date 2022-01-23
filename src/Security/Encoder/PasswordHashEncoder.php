@@ -18,7 +18,7 @@ class PasswordHashEncoder extends BasePasswordEncoder
      * @param bool   $encodeHashAsBase64 Whether to base64 encode the password hash
      * @param int    $iterations         The number of iterations to use to stretch the password hash
      */
-    public function __construct($algorithm = 'sha512', $encodeHashAsBase64 = false, $iterations = 5000)
+    public function __construct(string $algorithm = 'sha512', bool $encodeHashAsBase64 = false, int $iterations = 5000)
     {
         $this->algorithm = $algorithm;
         $this->encodeHashAsBase64 = $encodeHashAsBase64;
@@ -28,7 +28,7 @@ class PasswordHashEncoder extends BasePasswordEncoder
     /**
      * {@inheritdoc}
      */
-    public function encodePassword($raw, $salt)
+    public function encodePassword($raw, $salt): ?string
     {
         if ($this->isPasswordTooLong($raw)) {
             throw new BadCredentialsException('Invalid password.');
@@ -57,7 +57,7 @@ class PasswordHashEncoder extends BasePasswordEncoder
     /**
      * {@inheritdoc}
      */
-    public function isPasswordValid($encoded, $raw, $salt)
+    public function isPasswordValid($encoded, $raw, $salt): bool
     {
         return !$this->isPasswordTooLong($raw) && $this->comparePasswords(crypt($raw, $encoded), $encoded);
     }

@@ -4,7 +4,6 @@ namespace App\Admin;
 
 use App\Entity\User;
 use App\Factory\VoucherFactory;
-use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -34,15 +33,14 @@ class VoucherAdmin extends Admin
     {
         /** @var User $user */
         $user = $this->security->getUser();
-        $instance = VoucherFactory::create($user);
 
-        return $instance;
+        return VoucherFactory::create($user);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         $disabled = true;
         if ($this->hasAccess('list')) {
@@ -57,7 +55,7 @@ class VoucherAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         $list
             ->addIdentifier('id')
@@ -70,7 +68,7 @@ class VoucherAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('user')
@@ -78,7 +76,6 @@ class VoucherAdmin extends Admin
             ->add('created_since', 'doctrine_orm_callback', [
                 'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
                     if (isset($value['value']) && null !== $value = $value['value']) {
-                        /** @var QueryBuilder $qb */
                         $qb = $proxyQuery->getQueryBuilder();
                         $field = sprintf('%s.creationTime', $alias);
                         $qb->andWhere(sprintf('%s >= :datetime', $field))
@@ -93,7 +90,6 @@ class VoucherAdmin extends Admin
             ->add('redeemed_since', 'doctrine_orm_callback', [
                 'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
                     if (isset($value['value']) && null !== $value = $value['value']) {
-                        /** @var QueryBuilder $qb */
                         $qb = $proxyQuery->getQueryBuilder();
                         $field = sprintf('%s.redeemedTime', $alias);
                         $qb->andWhere(sprintf('%s >= :datetime', $field))
@@ -110,7 +106,7 @@ class VoucherAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    protected function configureBatchActions($actions)
+    protected function configureBatchActions($actions): array
     {
         return [];
     }

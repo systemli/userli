@@ -6,7 +6,7 @@ use App\Factory\AliasFactory;
 use App\Repository\DomainRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -20,7 +20,7 @@ class LoadAliasData extends Fixture implements OrderedFixtureInterface, Containe
     /**
      * {@inheritdoc}
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }
@@ -28,10 +28,9 @@ class LoadAliasData extends Fixture implements OrderedFixtureInterface, Containe
     /**
      * {@inheritdoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $user = $manager->getRepository('App:User')->findByEmail('admin@example.org');
-        $domain = $this->getRepository()->findByName('example.org');
 
         for ($i = 1; $i < 5; ++$i) {
             $alias = AliasFactory::create($user, 'alias'.$i);
@@ -48,10 +47,7 @@ class LoadAliasData extends Fixture implements OrderedFixtureInterface, Containe
         }
     }
 
-    /**
-     * @return DomainRepository
-     */
-    private function getRepository()
+    private function getRepository(): DomainRepository
     {
         return $this->container->get('doctrine')->getRepository('App:Domain');
     }
@@ -59,7 +55,7 @@ class LoadAliasData extends Fixture implements OrderedFixtureInterface, Containe
     /**
      * {@inheritdoc}
      */
-    public function getOrder()
+    public function getOrder(): int
     {
         return 4;
     }

@@ -33,7 +33,7 @@ class LocaleListener implements EventSubscriberInterface
         $this->urlMatcher = $urlMatcher;
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(GetResponseEvent $event): void
     {
         $request = $event->getRequest();
         $route = $request->getRequestUri();
@@ -56,19 +56,15 @@ class LocaleListener implements EventSubscriberInterface
         try {
             $this->urlMatcher->match($newRoute);
             $event->setResponse(new RedirectResponse($newRoute));
-        } catch (ResourceNotFoundException $e) {
-            // ignore errors, we just redirect if there was none
-        } catch (MethodNotAllowedException $e) {
+        } catch (ResourceNotFoundException | MethodNotAllowedException $e) {
             // ignore errors, we just redirect if there was none
         }
     }
 
     /**
      * @param $route
-     *
-     * @return string|null
      */
-    private function checkLanguage($route)
+    private function checkLanguage($route): ?string
     {
         foreach ($this->supportedLocales as $locale) {
             if (preg_match_all("/^\/$locale\//", $route)) {
@@ -82,7 +78,7 @@ class LocaleListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => [['onKernelRequest', 17]],

@@ -40,35 +40,27 @@ class WelcomeMessageBuilder
 
     /**
      * @param $locale
-     *
-     * @return string
      */
-    public function buildBody($locale)
+    public function buildBody($locale): string
     {
-        $body = $this->translator->trans(
+        return $this->translator->trans(
             'mail.welcome-body',
             ['%app_url%' => $this->appUrl, '%project_name%' => $this->projectName],
             null,
             $locale
         );
-
-        return $body;
     }
 
     /**
      * @param $locale
-     *
-     * @return string
      */
-    public function buildSubject($locale)
+    public function buildSubject($locale): string
     {
-        $subject = $this->translator->trans(
+        return $this->translator->trans(
             'mail.welcome-subject',
             ['%domain%' => $this->domain],
             null,
             $locale
         );
-
-        return $subject;
     }
 }

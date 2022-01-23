@@ -9,18 +9,12 @@ trait SaltTrait
      */
     private $salt;
 
-    /**
-     * @return string|null
-     */
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return $this->salt;
     }
 
-    /**
-     * @param string|null $salt
-     */
-    public function setSalt($salt)
+    public function setSalt(?string $salt): void
     {
         $this->salt = $salt;
     }

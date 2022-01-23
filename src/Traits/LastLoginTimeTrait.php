@@ -9,20 +9,17 @@ trait LastLoginTimeTrait
      */
     private $lastLoginTime;
 
-    /**
-     * @return \DateTime|null
-     */
-    public function getLastLoginTime()
+    public function getLastLoginTime(): ?\DateTime
     {
         return $this->lastLoginTime;
     }
 
-    public function setLastLoginTime(\DateTime $LastLoginTime)
+    public function setLastLoginTime(\DateTime $LastLoginTime): void
     {
         $this->lastLoginTime = $LastLoginTime;
     }
 
-    public function updateLastLoginTime()
+    public function updateLastLoginTime(): void
     {
         $this->setLastLoginTime(new \DateTime());
     }

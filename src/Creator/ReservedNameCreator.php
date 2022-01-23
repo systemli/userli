@@ -3,6 +3,7 @@
 namespace App\Creator;
 
 use App\Entity\ReservedName;
+use App\Exception\ValidationException;
 use App\Factory\ReservedNameFactory;
 
 /**
@@ -11,7 +12,7 @@ use App\Factory\ReservedNameFactory;
 class ReservedNameCreator extends AbstractCreator
 {
     /**
-     * @throws \App\Exception\ValidationException
+     * @throws ValidationException
      */
     public function create(string $name): ReservedName
     {

@@ -51,7 +51,7 @@ class User implements UserInterface, EncoderAwareInterface
     use MailCryptPublicKeyTrait;
     use OpenPgpKeyTrait;
 
-    const CURRENT_PASSWORD_VERSION = 2;
+    public const CURRENT_PASSWORD_VERSION = 2;
 
     /**
      * @var array
@@ -70,10 +70,7 @@ class User implements UserInterface, EncoderAwareInterface
         $this->updatedTime = $currentDateTime;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return ($this->getEmail()) ?: '';
     }
@@ -81,30 +78,28 @@ class User implements UserInterface, EncoderAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function getRoles()
+    public function getRoles(): array
     {
         return !empty($this->roles) ? $this->roles : [Roles::USER];
     }
 
-    public function setRoles(array $roles)
+    public function setRoles(array $roles): void
     {
         $this->roles = $roles;
     }
 
     /**
      * @param $role
-     *
-     * @return bool
      */
-    public function hasRole($role)
+    public function hasRole($role): bool
     {
-        return in_array($role, $this->getRoles());
+        return in_array($role, $this->getRoles(), true);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getUsername()
+    public function getUsername(): ?string
     {
         return $this->email;
     }
@@ -112,7 +107,7 @@ class User implements UserInterface, EncoderAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function getEncoderName()
+    public function getEncoderName(): ?string
     {
         if ($this->getPasswordVersion() < self::CURRENT_PASSWORD_VERSION) {
             return 'legacy';

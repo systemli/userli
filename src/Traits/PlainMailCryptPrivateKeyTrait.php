@@ -12,26 +12,17 @@ trait PlainMailCryptPrivateKeyTrait
      */
     private $plainMailCryptPrivateKey;
 
-    /**
-     * @return string|null
-     */
-    public function getPlainMailCryptPrivateKey()
+    public function getPlainMailCryptPrivateKey(): ?string
     {
         return $this->plainMailCryptPrivateKey;
     }
 
-    /**
-     * @param string|null $plainMailCryptPrivateKey
-     */
-    public function setPlainMailCryptPrivateKey($plainMailCryptPrivateKey)
+    public function setPlainMailCryptPrivateKey(?string $plainMailCryptPrivateKey): void
     {
         $this->plainMailCryptPrivateKey = $plainMailCryptPrivateKey;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function erasePlainMailCryptPrivateKey()
+    public function erasePlainMailCryptPrivateKey(): void
     {
         $this->plainMailCryptPrivateKey = null;
     }

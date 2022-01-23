@@ -13,7 +13,7 @@ class RecoveryProcessEvent extends Event
 {
     use UserAwareTrait;
 
-    const NAME = 'recovery_process_started';
+    public const NAME = 'recovery_process_started';
 
     /**
      * Constructor.

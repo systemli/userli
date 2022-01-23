@@ -21,10 +21,7 @@ class VoucherRepository extends AbstractRepository
         return $this->findOneBy(['code' => $code]);
     }
 
-    /**
-     * @return int
-     */
-    public function countRedeemedVouchers()
+    public function countRedeemedVouchers(): int
     {
         return $this->matching(Criteria::create()->where(Criteria::expr()->neq('redeemedTime', null)))->count();
     }
@@ -32,7 +29,7 @@ class VoucherRepository extends AbstractRepository
     /**
      * @return array|Voucher[]
      */
-    public function findByUser(User $user)
+    public function findByUser(User $user): array
     {
         return $this->findBy(['user' => $user]);
     }
@@ -40,7 +37,7 @@ class VoucherRepository extends AbstractRepository
     /**
      * @return Voucher[]|array
      */
-    public function getOldVouchers()
+    public function getOldVouchers(): array
     {
         return $this->createQueryBuilder('voucher')
             ->join('voucher.invitedUser', 'invitedUser')

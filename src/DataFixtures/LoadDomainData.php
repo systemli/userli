@@ -5,7 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Domain;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadDomainData extends Fixture implements OrderedFixtureInterface
 {
@@ -17,7 +17,7 @@ class LoadDomainData extends Fixture implements OrderedFixtureInterface
     /**
      * {@inheritdoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach ($this->domains as $name) {
             $domain = new Domain();
@@ -31,7 +31,7 @@ class LoadDomainData extends Fixture implements OrderedFixtureInterface
     /**
      * {@inheritdoc}
      */
-    public function getOrder()
+    public function getOrder(): int
     {
         return 1;
     }

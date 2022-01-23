@@ -9,20 +9,17 @@ trait CreationTimeTrait
      */
     private $creationTime;
 
-    /**
-     * @return \DateTime|null
-     */
-    public function getCreationTime()
+    public function getCreationTime(): ?\DateTime
     {
         return $this->creationTime;
     }
 
-    public function setCreationTime(\DateTime $creationTime)
+    public function setCreationTime(\DateTime $creationTime): void
     {
         $this->creationTime = $creationTime;
     }
 
-    public function updateCreationTime()
+    public function updateCreationTime(): void
     {
         if (null === $this->creationTime) {
             $this->setCreationTime(new \DateTime());

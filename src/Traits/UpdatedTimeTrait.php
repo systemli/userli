@@ -9,20 +9,17 @@ trait UpdatedTimeTrait
      */
     private $updatedTime;
 
-    /**
-     * @return \DateTime|null
-     */
-    public function getUpdatedTime()
+    public function getUpdatedTime(): ?\DateTime
     {
         return $this->updatedTime;
     }
 
-    public function setUpdatedTime(\DateTime $updatedTime)
+    public function setUpdatedTime(\DateTime $updatedTime): void
     {
         $this->updatedTime = $updatedTime;
     }
 
-    public function updateUpdatedTime()
+    public function updateUpdatedTime(): void
     {
         $this->setUpdatedTime(new \DateTime());
     }

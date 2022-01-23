@@ -3,13 +3,14 @@
 namespace App\Command;
 
 use App\Creator\ReservedNameCreator;
+use App\Exception\ValidationException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ImportReservedNamesCommand extends Command
+class ReservedNamesImportCommand extends Command
 {
     /**
      * @var ObjectManager
@@ -21,9 +22,6 @@ class ImportReservedNamesCommand extends Command
      */
     private $creator;
 
-    /**
-     * ImportReservedNamesCommand constructor.
-     */
     public function __construct(ObjectManager $manager, ReservedNameCreator $creator)
     {
         $this->manager = $manager;
@@ -34,7 +32,7 @@ class ImportReservedNamesCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:reservednames:import')
@@ -51,9 +49,9 @@ class ImportReservedNamesCommand extends Command
     /**
      * {@inheritdoc}
      *
-     * @throws \App\Exception\ValidationException
+     * @throws ValidationException
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $repository = $this->manager->getRepository('App:ReservedName');
 
@@ -62,14 +60,16 @@ class ImportReservedNamesCommand extends Command
         if ('-' === $file) {
             $handle = STDIN;
         } else {
-            $handle = fopen($file, 'r');
+            $handle = fopen($file, 'rb');
         }
 
         while ($line = fgets($handle)) {
             $name = trim($line);
             if (empty($name)) {
                 continue;
-            } elseif ('#' === substr($name, 0, 1)) {
+            }
+
+            if ('#' === $name[0]) {
                 // filter out comments
                 continue;
             }

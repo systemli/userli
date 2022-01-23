@@ -31,7 +31,7 @@ class EmailDomainValidator extends ConstraintValidator
      * @param User       $value      The value that should be validated
      * @param Constraint $constraint The constraint for the validation
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if ($value instanceof User) {
             $name = substr(strrchr($value->getEmail(), '@'), 1);

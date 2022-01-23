@@ -17,7 +17,7 @@ class Voucher
     /**
      * @var \DateTime
      */
-    protected $redeemedTime = null;
+    protected $redeemedTime;
 
     /**
      * @var string
@@ -27,7 +27,12 @@ class Voucher
     /**
      * @var User|null
      */
-    protected $invitedUser = null;
+    protected $invitedUser;
+
+    /**
+     * @var \DateTime
+     */
+    protected $updatedTime;
 
     public function __construct()
     {
@@ -36,58 +41,37 @@ class Voucher
         $this->updatedTime = $currentDateTime;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRedeemedTime()
+    public function getRedeemedTime(): ?\DateTime
     {
         return $this->redeemedTime;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setRedeemedTime(\DateTime $redeemedTime)
+    public function setRedeemedTime(\DateTime $redeemedTime): void
     {
         $this->redeemedTime = $redeemedTime;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isRedeemed()
+    public function isRedeemed(): bool
     {
         return null !== $this->getRedeemedTime();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setCode($code)
+    public function setCode(string $code): void
     {
         $this->code = $code;
     }
 
-    /**
-     * @return User|null
-     */
-    public function getInvitedUser()
+    public function getInvitedUser(): ?User
     {
         return $this->invitedUser;
     }
 
-    /**
-     * @param User $invitedUser
-     */
-    public function setInvitedUser(User $invitedUser = null)
+    public function setInvitedUser(User $invitedUser = null): void
     {
         $this->invitedUser = $invitedUser;
     }

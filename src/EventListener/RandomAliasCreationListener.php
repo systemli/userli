@@ -22,7 +22,7 @@ class RandomAliasCreationListener implements EventSubscriberInterface
         $this->manager = $manager;
     }
 
-    public function onRandomAliasCreated(RandomAliasCreatedEvent $event)
+    public function onRandomAliasCreated(RandomAliasCreatedEvent $event): void
     {
         $alias = $event->getAlias();
 
@@ -36,7 +36,7 @@ class RandomAliasCreationListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             RandomAliasCreatedEvent::NAME => 'onRandomAliasCreated',

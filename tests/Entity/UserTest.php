@@ -23,7 +23,7 @@ class UserTest extends TestCase
     /**
      * @param $roles Roles[]
      */
-    public function hasOnlyValidRoles($roles): void
+    public function hasOnlyValidRoles(array $roles): void
     {
         self::assertIsArray($roles);
         foreach ($roles as $role) {
@@ -31,7 +31,7 @@ class UserTest extends TestCase
         }
     }
 
-    public function testUserisUserByDefault(): void
+    public function testUserIsUserByDefault(): void
     {
         $user = new User();
         self::assertTrue($user->hasRole(Roles::USER));

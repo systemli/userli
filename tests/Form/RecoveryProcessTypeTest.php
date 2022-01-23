@@ -12,7 +12,7 @@ use Symfony\Component\Form\Test\TypeTestCase;
 
 class RecoveryProcessTypeTest extends TypeTestCase
 {
-    protected function getExtensions()
+    protected function getExtensions(): array
     {
         return [
             new PreloadedExtension(
@@ -22,7 +22,7 @@ class RecoveryProcessTypeTest extends TypeTestCase
         ];
     }
 
-    public function testSubmitValidData()
+    public function testSubmitValidData(): void
     {
         $email = 'user@example.org';
         $recoveryToken = 'recovery-token';
@@ -68,9 +68,9 @@ class RecoveryProcessTypeTest extends TypeTestCase
         $domain->setName('example.com');
 
         $repository->method('getDefaultDomain')
-            ->will($this->returnValue($domain));
+            ->willReturn($domain);
 
-        $manager->expects($this->any())->method('getRepository')->willReturn($repository);
+        $manager->method('getRepository')->willReturn($repository);
 
         return $manager;
     }

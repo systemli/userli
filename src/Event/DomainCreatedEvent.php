@@ -10,7 +10,7 @@ class DomainCreatedEvent extends Event
 {
     use DomainAwareTrait;
 
-    const NAME = 'domain.created';
+    public const NAME = 'domain.created';
 
     public function __construct(Domain $domain)
     {

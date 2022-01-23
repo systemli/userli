@@ -32,7 +32,7 @@ class OpenPgpDeleteKeyCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:openpgp:delete-key')
@@ -46,7 +46,7 @@ class OpenPgpDeleteKeyCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         // parse arguments
         $email = $input->getArgument('email');

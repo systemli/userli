@@ -24,18 +24,12 @@ class VoucherRemover
         $this->manager = $manager;
     }
 
-    /**
-     * @throws \Doctrine\ORM\Query\QueryException
-     */
-    public function removeUnredeemedVouchersByUser(User $user)
+    public function removeUnredeemedVouchersByUser(User $user): void
     {
         $this->removeUnredeemedVouchersByUsers([$user]);
     }
 
-    /**
-     * @throws \Doctrine\ORM\Query\QueryException
-     */
-    public function removeUnredeemedVouchersByUsers(array $users)
+    public function removeUnredeemedVouchersByUsers(array $users): void
     {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->isNull('redeemedTime'))

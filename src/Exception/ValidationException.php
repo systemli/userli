@@ -35,10 +35,7 @@ class ValidationException extends \Exception
         parent::__construct($message);
     }
 
-    /**
-     * @return ConstraintViolationListInterface
-     */
-    public function getConstraints()
+    public function getConstraints(): ConstraintViolationListInterface
     {
         return $this->constraints;
     }

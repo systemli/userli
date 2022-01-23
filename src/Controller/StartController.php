@@ -85,14 +85,11 @@ class StartController extends AbstractController
         $this->wkdHandler = $wkdHandler;
     }
 
-    /**
-     * @return Response
-     */
-    public function indexAction()
+    public function indexAction(): Response
     {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             // forward to installer if no domains exist
-            if (0 == $this->manager->getRepository('App:Domain')->count([])) {
+            if (0 === $this->manager->getRepository('App:Domain')->count([])) {
                 return $this->redirectToRoute('init');
             }
 
@@ -115,10 +112,7 @@ class StartController extends AbstractController
         );
     }
 
-    /**
-     * @return Response
-     */
-    public function voucherAction(Request $request)
+    public function voucherAction(Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -153,10 +147,7 @@ class StartController extends AbstractController
         );
     }
 
-    /**
-     * @return Response
-     */
-    public function aliasAction(Request $request)
+    public function aliasAction(Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -186,7 +177,7 @@ class StartController extends AbstractController
 
             if ($randomAliasCreateForm->isSubmitted() && $randomAliasCreateForm->isValid()) {
                 $this->createRandomAlias($request, $user);
-                # force reload to not show bogus alias
+                // force reload to not show bogus alias
                 return $this->redirect($request->getUri());
             } elseif ($customAliasCreateForm->isSubmitted() && $customAliasCreateForm->isValid()) {
                 $this->createCustomAlias($request, $user, $aliasCreate->alias);
@@ -213,9 +204,9 @@ class StartController extends AbstractController
     }
 
     /**
-     * @return Response
+     * @throws \Exception
      */
-    public function accountAction(Request $request)
+    public function accountAction(Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -302,7 +293,7 @@ class StartController extends AbstractController
         );
     }
 
-    private function createVoucher(Request $request, User $user)
+    private function createVoucher(Request $request, User $user): void
     {
         if ($this->isGranted('ROLE_MULTIPLIER')) {
             try {
@@ -310,12 +301,12 @@ class StartController extends AbstractController
 
                 $request->getSession()->getFlashBag()->add('success', 'flashes.voucher-creation-successful');
             } catch (ValidationException $e) {
-                // Should not thrown
+                // Should not throw
             }
         }
     }
 
-    private function createRandomAlias(Request $request, User $user)
+    private function createRandomAlias(Request $request, User $user): void
     {
         try {
             if ($this->aliasHandler->create($user) instanceof Alias) {
@@ -326,7 +317,7 @@ class StartController extends AbstractController
         }
     }
 
-    private function createCustomAlias(Request $request, User $user, string $alias)
+    private function createCustomAlias(Request $request, User $user, string $alias): void
     {
         try {
             if ($this->aliasHandler->create($user, $alias) instanceof Alias) {
@@ -340,7 +331,7 @@ class StartController extends AbstractController
     /**
      * @throws \Exception
      */
-    private function changePassword(Request $request, User $user, string $newPassword, string $oldPassword)
+    private function changePassword(Request $request, User $user, string $newPassword, string $oldPassword): void
     {
         $user->setPlainPassword($newPassword);
         $this->passwordUpdater->updatePassword($user);

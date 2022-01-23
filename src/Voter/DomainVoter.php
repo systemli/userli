@@ -39,7 +39,7 @@ class DomainVoter extends Voter
      *
      * @return bool True if the attribute and subject are supported, false otherwise
      */
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
         // only vote on User and Alias objects inside this voter
         if ($subject instanceof User || $subject instanceof Alias) {
@@ -68,10 +68,8 @@ class DomainVoter extends Voter
      *
      * @param string $attribute
      * @param mixed  $subject
-     *
-     * @return bool
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         // normal admins can do everything
         if ($this->security->isGranted(Roles::ADMIN)) {
@@ -119,5 +117,7 @@ class DomainVoter extends Voter
             ])) && ($userDomain === $guesser->guess($subject->getSource()))) {
             return true;
         }
+
+        return false;
     }
 }

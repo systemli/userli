@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Handler\UserAuthenticationHandler;
 use App\Repository\UserRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
@@ -10,35 +9,23 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class QuotaCommand extends Command
+class UsersQuotaCommand extends Command
 {
-    /**
-     * @var ObjectManager
-     */
-    private $manager;
-
-    /**
-     * @var UserAuthenticationHandler
-     */
-    private $handler;
-
     /**
      * @var UserRepository
      */
     private $repository;
 
-    public function __construct(ObjectManager $manager, UserAuthenticationHandler $handler)
+    public function __construct(ObjectManager $manager)
     {
-        $this->manager = $manager;
-        $this->handler = $handler;
-        $this->repository = $this->manager->getRepository('App:User');
+        $this->repository = $manager->getRepository('App:User');
         parent::__construct();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:users:quota')

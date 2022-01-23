@@ -14,10 +14,7 @@ trait PrivateKeyTrait
         return $this->privateKey;
     }
 
-    /**
-     * @param string|null $privateKey
-     */
-    public function setPrivateKey($privateKey): void
+    public function setPrivateKey(?string $privateKey): void
     {
         $this->privateKey = $privateKey;
     }

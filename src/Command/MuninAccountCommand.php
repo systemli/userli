@@ -25,9 +25,6 @@ class MuninAccountCommand extends Command
      */
     private $openPgpKeyRepository;
 
-    /**
-     * MuninAccountCommand constructor.
-     */
     public function __construct(ObjectManager $manager)
     {
         parent::__construct();
@@ -38,7 +35,7 @@ class MuninAccountCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:munin:account')
@@ -50,7 +47,7 @@ class MuninAccountCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         if ($input->getOption('autoconf')) {
             $output->writeln('yes');

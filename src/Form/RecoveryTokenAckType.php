@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Form\Model\RecoveryTokenAck;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -11,9 +12,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RecoveryTokenAckType extends AbstractType
 {
-    const NAME = 'recovery_token_ack';
+    public const NAME = 'recovery_token_ack';
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('ack', CheckboxType::class, [
@@ -27,15 +28,12 @@ class RecoveryTokenAckType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => 'App\Form\Model\RecoveryTokenAck']);
+        $resolver->setDefaults(['data_class' => RecoveryTokenAck::class]);
     }
 
-    /**
-     * @return string
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }

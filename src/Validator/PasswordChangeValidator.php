@@ -4,6 +4,7 @@ namespace App\Validator;
 
 use App\Entity\User;
 use App\Form\Model\PasswordChange;
+use App\Form\Model\Registration;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraint;
@@ -36,13 +37,11 @@ class PasswordChangeValidator extends ConstraintValidator
      * @param PasswordChange $value
      *
      * @throws UnexpectedTypeException
-     *
-     * @return bool
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): bool
     {
         if (!$value instanceof PasswordChange) {
-            throw new UnexpectedTypeException('Wrong value type given', 'App\Form\Model\Registration');
+            throw new UnexpectedTypeException('Wrong value type given', Registration::class);
         }
 
         /** @var User $user */

@@ -30,7 +30,7 @@ class TwigGlobalListener implements EventSubscriberInterface
         $this->manager = $manager;
     }
 
-    public function injectGlobalVariables(ControllerEvent $event)
+    public function injectGlobalVariables(ControllerEvent $event): void
     {
         $domain = $this->manager->getRepository('App:Domain')->getDefaultDomain();
         if (null !== $domain) {
@@ -40,7 +40,7 @@ class TwigGlobalListener implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::CONTROLLER => 'injectGlobalVariables'];
     }

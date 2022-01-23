@@ -11,21 +11,15 @@ trait DeleteTrait
 
     public function isDeleted(): bool
     {
-        return (bool) $this->deleted;
+        return $this->deleted;
     }
 
-    /**
-     * @return bool
-     */
-    public function getDeleted()
+    public function getDeleted(): bool
     {
         return $this->deleted;
     }
 
-    /**
-     * @param bool $deleted
-     */
-    public function setDeleted($deleted)
+    public function setDeleted(bool $deleted): void
     {
         $this->deleted = $deleted;
     }

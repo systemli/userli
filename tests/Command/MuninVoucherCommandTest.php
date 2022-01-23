@@ -10,17 +10,17 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class MuninVoucherCommandTest extends TestCase
 {
-    public function testExecute()
+    public function testExecute(): void
     {
         $repository = $this->getMockBuilder(VoucherRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $repository->expects($this->any())->method('count')->willReturn(10);
-        $repository->expects($this->any())->method('countRedeemedVouchers')->willReturn(2);
+        $repository->method('count')->willReturn(10);
+        $repository->method('countRedeemedVouchers')->willReturn(2);
 
         $manager = $this->getMockBuilder(ObjectManager::class)
             ->getMock();
-        $manager->expects($this->any())->method('getRepository')->willReturn($repository);
+        $manager->method('getRepository')->willReturn($repository);
 
         $command = new MuninVoucherCommand($manager);
 

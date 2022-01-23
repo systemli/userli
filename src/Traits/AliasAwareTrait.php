@@ -11,15 +11,12 @@ trait AliasAwareTrait
      */
     private $alias;
 
-    /**
-     * @return Alias|null
-     */
-    public function getAlias()
+    public function getAlias(): ?Alias
     {
         return $this->alias;
     }
 
-    public function setAlias(Alias $alias)
+    public function setAlias(Alias $alias): void
     {
         $this->alias = $alias;
     }

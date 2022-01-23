@@ -21,13 +21,10 @@ trait MailCryptPublicKeyTrait
 
     public function hasMailCryptPublicKey(): bool
     {
-        return ($this->getMailCryptPublicKey()) ? true : false;
+        return (bool) $this->getMailCryptPublicKey();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function eraseMailCryptPublicKey()
+    public function eraseMailCryptPublicKey(): void
     {
         $this->mailCryptPublicKey = null;
     }

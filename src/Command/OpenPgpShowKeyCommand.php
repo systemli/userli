@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Handler\WkdHandler;
 use App\Repository\OpenPgpKeyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
@@ -13,18 +12,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 class OpenPgpShowKeyCommand extends Command
 {
     /**
-     * @var WkdHandler
-     */
-    private $handler;
-
-    /**
      * @var OpenPgpKeyRepository
      */
     private $repository;
 
-    public function __construct(ObjectManager $manager, WkdHandler $handler)
+    public function __construct(ObjectManager $manager)
     {
-        $this->handler = $handler;
         $this->repository = $manager->getRepository('App:OpenPgpKey');
         parent::__construct();
     }
@@ -32,7 +25,7 @@ class OpenPgpShowKeyCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:openpgp:show-key')
@@ -46,7 +39,7 @@ class OpenPgpShowKeyCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         // parse arguments
         $email = $input->getArgument('email');

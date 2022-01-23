@@ -35,8 +35,6 @@ class EmailAddressValidator extends ConstraintValidator
 
     /**
      * EmailAddressValidator constructor.
-     *
-     * @param string $domain
      */
     public function __construct(ObjectManager $manager)
     {
@@ -52,10 +50,10 @@ class EmailAddressValidator extends ConstraintValidator
      * @param string     $value      The value that should be validated
      * @param Constraint $constraint The constraint for the validation
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof EmailAddress) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\EmailAddress');
+            throw new UnexpectedTypeException($constraint, EmailAddress::class);
         }
 
         if (null === $value || '' === $value) {
@@ -66,8 +64,7 @@ class EmailAddressValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, 'string');
         }
 
-        $localPart = explode('@', $value)[0];
-        $domain = explode('@', $value)[1];
+        [$localPart, $domain] = explode('@', $value);
 
         if (null !== $this->userRepository->findOneBy(['email' => $value], null, true)) {
             $this->context->addViolation('registration.email-already-taken');

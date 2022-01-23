@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
-class UserListCommand extends Command
+class UsersListCommand extends Command
 {
     /**
      * @var UserRepository
@@ -23,9 +23,6 @@ class UserListCommand extends Command
      */
     private $roleHierarchy;
 
-    /**
-     * RegistrationMailCommand constructor.
-     */
     public function __construct(ObjectManager $manager, RoleHierarchyInterface $roleHierarchy)
     {
         $this->repository = $manager->getRepository('App:User');
@@ -36,7 +33,7 @@ class UserListCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:users:list')
@@ -51,7 +48,7 @@ class UserListCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $inactiveDays = $input->getOption('inactive-days');
         if (!empty($inactiveDays) && !is_numeric($inactiveDays)) {
@@ -61,11 +58,11 @@ class UserListCommand extends Command
         if (!isset($inactiveDays)) {
             $users = $this->repository->findAll();
         } else {
-            $usersAll = $this->repository->findInactiveUsers((int)$inactiveDays);
+            $usersAll = $this->repository->findInactiveUsers((int) $inactiveDays);
             $users = [];
             // Exclude accounts with ROLE_PERMANENT
             foreach ($usersAll as $user) {
-                if (!in_array(Roles::PERMANENT, $this->roleHierarchy->getReachableRoleNames($user->getRoles()))) {
+                if (!in_array(Roles::PERMANENT, $this->roleHierarchy->getReachableRoleNames($user->getRoles()), true)) {
                     $users[] = $user;
                 }
             }
