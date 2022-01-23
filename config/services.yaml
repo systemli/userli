@@ -68,6 +68,10 @@ services:
         arguments:
             $mailLocation: "%env(DOVECOT_MAIL_LOCATION)%"
 
+    App\Command\UsersResetCommand:
+        arguments:
+            $mailLocation: "%env(DOVECOT_MAIL_LOCATION)%"
+
     App\Command\VoucherCreationCommand:
         arguments:
             $appUrl: "%env(APP_URL)%"
