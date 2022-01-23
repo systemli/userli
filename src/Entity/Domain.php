@@ -24,7 +24,7 @@ class Domain
         $this->updatedTime = $currentDateTime;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return ($this->getName()) ?: '';
     }

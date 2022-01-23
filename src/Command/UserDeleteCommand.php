@@ -36,7 +36,7 @@ class UserDeleteCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:users:delete')
@@ -48,7 +48,7 @@ class UserDeleteCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $email = $input->getOption('user');
 

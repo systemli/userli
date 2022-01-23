@@ -30,7 +30,7 @@ class VoucherUnlinkCommandTest extends TestCase
         $this->command = new VoucherUnlinkCommand($manager, $handler);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $application = new Application();
         $application->add($this->command);
@@ -51,7 +51,7 @@ class VoucherUnlinkCommandTest extends TestCase
     /**
      * @return \PHPUnit\Framework\MockObject\MockObject
      */
-    public function getManager()
+    public function getManager(): ObjectManager
     {
         $manager = $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()
@@ -62,19 +62,17 @@ class VoucherUnlinkCommandTest extends TestCase
             ->getMock();
 
         $repository->method('getOldVouchers')
-            ->will($this->returnValue($this->getResult()));
+            ->willReturn($this->getResult());
 
-        $manager->expects($this->any())->method('getRepository')->willReturn($repository);
+        $manager->method('getRepository')->willReturn($repository);
 
         return $manager;
     }
 
     /**
-     * @return array|mixed
-     *
      * @throws \Exception
      */
-    public function getResult()
+    public function getResult(): array
     {
         $user1 = new User();
         $user1->setEmail('suspicious@example.org');
@@ -96,20 +94,18 @@ class VoucherUnlinkCommandTest extends TestCase
         $voucher2->setCode('foobar');
         $voucher2->setRedeemedTime(new \DateTime('2018-06-27T09:37:20.046074+0000'));
 
-        $result = [
+        return [
             $voucher1,
             $voucher2,
         ];
-
-        return $result;
     }
 
-    public function testGetSuspiciousChildren()
+    public function testGetSuspiciousChildren(): void
     {
-        $this->assertEquals($this->command->getSuspiciousChildren([]), []);
+        $this->assertEquals([], $this->command->getSuspiciousChildren([]));
 
         $voucher = new Voucher();
-        $this->assertEquals($this->command->getSuspiciousChildren([$voucher]), []);
+        $this->assertEquals([], $this->command->getSuspiciousChildren([$voucher]));
 
         $user = $this->getMockBuilder(User::class)
             ->disableOriginalConstructor()
@@ -117,14 +113,14 @@ class VoucherUnlinkCommandTest extends TestCase
         $user->expects($this->once())->method('getUsername')->willReturn('child@example.org');
         $user->expects($this->atLeastOnce())->method('setInvitationVoucher');
         $voucher->setInvitedUser($user);
-        $this->assertEquals($this->command->getSuspiciousChildren([$voucher]), []);
+        $this->assertEquals([], $this->command->getSuspiciousChildren([$voucher]));
 
         $parent = new User();
         $parent->setEmail('suspicious@example.org');
         $parent->setRoles([Roles::SUSPICIOUS]);
         $voucher->setUser($parent);
         $this->assertEquals(
-            $this->command->getSuspiciousChildren([$voucher]),
-            ['child@example.org' => 'suspicious@example.org']);
+            ['child@example.org' => 'suspicious@example.org'],
+            $this->command->getSuspiciousChildren([$voucher]));
     }
 }

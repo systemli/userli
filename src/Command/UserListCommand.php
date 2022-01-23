@@ -36,7 +36,7 @@ class UserListCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:users:list')
@@ -51,7 +51,7 @@ class UserListCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $inactiveDays = $input->getOption('inactive-days');
         if (!empty($inactiveDays) && !is_numeric($inactiveDays)) {
@@ -65,7 +65,7 @@ class UserListCommand extends Command
             $users = [];
             // Exclude accounts with ROLE_PERMANENT
             foreach ($usersAll as $user) {
-                if (!in_array(Roles::PERMANENT, $this->roleHierarchy->getReachableRoleNames($user->getRoles()))) {
+                if (!in_array(Roles::PERMANENT, $this->roleHierarchy->getReachableRoleNames($user->getRoles()), true)) {
                     $users[] = $user;
                 }
             }

@@ -4,18 +4,15 @@ namespace App\Enum;
 
 final class Roles
 {
-    const PERMANENT = 'ROLE_PERMANENT';
-    const MULTIPLIER = 'ROLE_MULTIPLIER';
-    const SPAM = 'ROLE_SPAM';
-    const SUSPICIOUS = 'ROLE_SUSPICIOUS';
-    const USER = 'ROLE_USER';
-    const DOMAIN_ADMIN = 'ROLE_DOMAIN_ADMIN';
-    const ADMIN = 'ROLE_ADMIN';
+    public const PERMANENT = 'ROLE_PERMANENT';
+    public const MULTIPLIER = 'ROLE_MULTIPLIER';
+    public const SPAM = 'ROLE_SPAM';
+    public const SUSPICIOUS = 'ROLE_SUSPICIOUS';
+    public const USER = 'ROLE_USER';
+    public const DOMAIN_ADMIN = 'ROLE_DOMAIN_ADMIN';
+    public const ADMIN = 'ROLE_ADMIN';
 
-    /**
-     * @return array
-     */
-    public static function getAll()
+    public static function getAll(): array
     {
         return [
             self::PERMANENT => self::PERMANENT,

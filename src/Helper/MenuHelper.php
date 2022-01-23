@@ -23,10 +23,7 @@ class MenuHelper
         $this->translator = $translator;
     }
 
-    /**
-     * @return ItemInterface
-     */
-    public function build(array $elements, ItemInterface $menu)
+    public function build(array $elements, ItemInterface $menu): ItemInterface
     {
         foreach ($elements as $item) {
             if (isset($item['name'])) {
@@ -35,16 +32,14 @@ class MenuHelper
                     if (isset($item['items'])) {
                         $this->build($item['items'], $menu[$item['name']]);
                     }
-                } else {
-                    if (isset($item['url'])) {
-                        $menu->addChild(
-                            $item['name'],
-                            [
-                                'uri' => $this->translator->trans($item['url']),
-                                'linkAttributes' => ['target' => '_blank'],
-                            ]
-                        );
-                    }
+                } elseif (isset($item['url'])) {
+                    $menu->addChild(
+                        $item['name'],
+                        [
+                            'uri' => $this->translator->trans($item['url']),
+                            'linkAttributes' => ['target' => '_blank'],
+                        ]
+                    );
                 }
             }
         }

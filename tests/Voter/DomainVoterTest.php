@@ -24,7 +24,7 @@ class DomainVoterTest extends TestCase
      */
     private $domain;
 
-    protected static function getMethod($name)
+    protected static function getMethod($name): \ReflectionMethod
     {
         $class = new \ReflectionClass(DomainVoter::class);
         $method = $class->getMethod($name);
@@ -56,14 +56,14 @@ class DomainVoterTest extends TestCase
         $this->voter = new DomainVoter($security, $manager);
     }
 
-    public function testSupports()
+    public function testSupports(): void
     {
         $method = self::getMethod('supports');
         $this->assertTrue($method->invokeArgs($this->voter, ['ROLE_USERLI_ADMIN_USER_LIST', new User()]));
         $this->assertTrue($method->invokeArgs($this->voter, ['ROLE_USERLI_ADMIN_ALIAS_VIEW', new Alias()]));
     }
 
-    public function testVoteOnAttribute()
+    public function testVoteOnAttribute(): void
     {
         $otherUser = new User();
         $otherUser->setDomain($this->domain);

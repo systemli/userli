@@ -13,7 +13,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class ImportReservedNamesCommandTest extends TestCase
 {
-    public function testExecuteDefaultFile()
+    public function testExecuteDefaultFile(): void
     {
         $manager = $this->getManager();
 
@@ -32,7 +32,7 @@ class ImportReservedNamesCommandTest extends TestCase
         $this->assertStringContainsString('Skipping reserved name "name", already exists', $output);
     }
 
-    public function getManager()
+    public function getManager(): ObjectManager
     {
         $manager = $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()
@@ -45,11 +45,11 @@ class ImportReservedNamesCommandTest extends TestCase
         $repository->method('findByName')->willReturnMap(
             [
                 ['new', null],
-                ['name', true],
+                ['name', new ReservedName()],
             ]
         );
 
-        $manager->expects($this->any())->method('getRepository')->willReturn($repository);
+        $manager->method('getRepository')->willReturn($repository);
 
         return $manager;
     }

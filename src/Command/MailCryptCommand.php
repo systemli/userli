@@ -14,10 +14,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class MailCryptCommand extends Command
 {
     /**
-     * @var ObjectManager
-     */
-    private $manager;
-    /**
      * @var UserAuthenticationHandler
      */
     private $handler;
@@ -43,9 +39,8 @@ class MailCryptCommand extends Command
         MailCryptKeyHandler $mailCryptKeyHandler,
         int $mailCrypt
     ) {
-        $this->manager = $manager;
         $this->handler = $handler;
-        $this->repository = $this->manager->getRepository('App:User');
+        $this->repository = $manager->getRepository('App:User');
         $this->mailCryptKeyHandler = $mailCryptKeyHandler;
         $this->mailCrypt = $mailCrypt;
         parent::__construct();
@@ -54,7 +49,7 @@ class MailCryptCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:users:mailcrypt')
@@ -74,7 +69,7 @@ class MailCryptCommand extends Command
      *
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($this->mailCrypt <= 0) {
             return 1;

@@ -12,6 +12,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class OpenPgpImportKeyCommand extends Command
 {
+    /**
+     * @var WkdHandler
+     */
+    private $handler;
+
     public function __construct(WkdHandler $handler)
     {
         $this->handler = $handler;
@@ -21,7 +26,7 @@ class OpenPgpImportKeyCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:openpgp:import-key')
@@ -39,7 +44,7 @@ class OpenPgpImportKeyCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         // parse arguments
         $email = $input->getArgument('email');

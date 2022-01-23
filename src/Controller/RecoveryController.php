@@ -23,8 +23,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RecoveryController extends AbstractController
 {
-    const PROCESS_DELAY = '-2 days';
-    const PROCESS_EXPIRE = '-30 days';
+    private const PROCESS_DELAY = '-2 days';
+    private const PROCESS_EXPIRE = '-30 days';
 
     /**
      * @var PasswordUpdater
@@ -165,25 +165,25 @@ class RecoveryController extends AbstractController
                                 'recovery_token' => $newRecoveryToken,
                             ]
                         );
-                    } else {
-                        // Cleanup variables with confidential content
-                        sodium_memzero($recoveryToken);
-
-                        // Validation of new password pair failed, try again
-                        return $this->render(
-                            'Recovery/reset_password.html.twig',
-                            [
-                                'form' => $recoveryResetPasswordForm->createView(),
-                            ]
-                        );
                     }
-                } else {
+
                     // Cleanup variables with confidential content
                     sodium_memzero($recoveryToken);
 
-                    // Verification of $email + $recoveryToken failed, start over
-                    $request->getSession()->getFlashBag()->add('error', 'flashes.recovery-reauthenticate');
+                    // Validation of new password pair failed, try again
+                    return $this->render(
+                        'Recovery/reset_password.html.twig',
+                        [
+                            'form' => $recoveryResetPasswordForm->createView(),
+                        ]
+                    );
                 }
+
+                // Cleanup variables with confidential content
+                sodium_memzero($recoveryToken);
+
+                // Verification of $email + $recoveryToken failed, start over
+                $request->getSession()->getFlashBag()->add('error', 'flashes.recovery-reauthenticate');
             }
         }
 
@@ -279,14 +279,14 @@ class RecoveryController extends AbstractController
                 $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-next-login');
 
                 return $this->redirect($this->generateUrl('login'));
-            } else {
-                return $this->render('Recovery/recovery_token.html.twig',
-                    [
-                        'form' => $recoveryTokenAckForm->createView(),
-                        'recovery_token' => $recoveryTokenAck->getRecoveryToken(),
-                    ]
-                );
             }
+
+            return $this->render('Recovery/recovery_token.html.twig',
+                [
+                    'form' => $recoveryTokenAckForm->createView(),
+                    'recovery_token' => $recoveryTokenAck->getRecoveryToken(),
+                ]
+            );
         }
 
         return $this->redirectToRoute('recovery');
@@ -311,25 +311,23 @@ class RecoveryController extends AbstractController
                 $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-token-ack');
 
                 return $this->redirect($this->generateUrl('index'));
-            } else {
-                return $this->render('User/recovery_token.html.twig',
-                    [
-                        'form' => $recoveryTokenAckForm->createView(),
-                        'recovery_token' => $recoveryTokenAck->getRecoveryToken(),
-                    ]
-                );
             }
+
+            return $this->render('User/recovery_token.html.twig',
+                [
+                    'form' => $recoveryTokenAckForm->createView(),
+                    'recovery_token' => $recoveryTokenAck->getRecoveryToken(),
+                ]
+            );
         }
 
         return $this->redirectToRoute('register');
     }
 
     /**
-     * @return Response
-     *
      * @throws \Exception
      */
-    private function renderResetPasswordForm(User $user, string $recoveryToken)
+    private function renderResetPasswordForm(User $user, string $recoveryToken): Response
     {
         // Pass $email and $recoveryToken as hidden field values for verification by recoveryResetPasswordAction
         $recoveryResetPassword = new RecoveryResetPassword();
@@ -401,6 +399,6 @@ class RecoveryController extends AbstractController
             }
         }
 
-        return ($this->recoveryTokenHandler->verify($user, strtolower($recoveryToken))) ? true : false;
+        return $this->recoveryTokenHandler->verify($user, strtolower($recoveryToken));
     }
 }

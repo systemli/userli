@@ -4,17 +4,15 @@ namespace App\Handler;
 
 class PasswordStrengthHandler
 {
-    const REGEX_FORBIDDEN_CHARS = '/[äöüÄÖÜß\'"]/';
+    private const REGEX_FORBIDDEN_CHARS = '/[äöüÄÖÜß\'"]/u';
 
     /** @var array */
     private $errors = [];
 
     /**
      * @param $value
-     *
-     * @return array
      */
-    public function validate($value)
+    public function validate($value): array
     {
         if (preg_match(self::REGEX_FORBIDDEN_CHARS, $value)) {
             $this->errors[] = 'form.forbidden_char';

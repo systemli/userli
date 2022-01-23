@@ -9,12 +9,7 @@ use App\Entity\ReservedName;
  */
 class ReservedNameRepository extends AbstractRepository
 {
-    /**
-     * @param string $name
-     *
-     * @return object|ReservedName|null
-     */
-    public function findByName($name)
+    public function findByName(string $name): ?ReservedName
     {
         return $this->findOneBy(['name' => $name]);
     }

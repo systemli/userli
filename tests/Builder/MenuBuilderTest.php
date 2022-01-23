@@ -41,10 +41,12 @@ class MenuBuilderTest extends TestCase
         $this->menuHelper->method('build')
             ->willReturnCallback(function ($elements, $menu) {
                 $this->children = $elements;
+
+                return $menu;
             });
     }
 
-    public function testCreateNavbarLeftEmpty()
+    public function testCreateNavbarLeftEmpty(): void
     {
         $authChecker = $this->getMockBuilder(AuthorizationCheckerInterface::class)
             ->disableOriginalConstructor()
@@ -57,7 +59,7 @@ class MenuBuilderTest extends TestCase
         self::assertCount(0, $this->children);
     }
 
-    public function testCreateNavbarLeftNonEmpty()
+    public function testCreateNavbarLeftNonEmpty(): void
     {
         $authChecker = $this->getMockBuilder(AuthorizationCheckerInterface::class)
             ->disableOriginalConstructor()
@@ -70,7 +72,7 @@ class MenuBuilderTest extends TestCase
         self::assertCount(2, $this->children);
     }
 
-    public function testCreateNavbarRightAnonymous()
+    public function testCreateNavbarRightAnonymous(): void
     {
         $authChecker = $this->getMockBuilder(AuthorizationCheckerInterface::class)
             ->disableOriginalConstructor()
@@ -90,7 +92,7 @@ class MenuBuilderTest extends TestCase
         self::assertArrayNotHasKey('navbar_right.logout', $this->children);
     }
 
-    public function testCreateNavbarRightUser()
+    public function testCreateNavbarRightUser(): void
     {
         $authChecker = $this->getMockBuilder(AuthorizationCheckerInterface::class)
             ->disableOriginalConstructor()
@@ -110,7 +112,7 @@ class MenuBuilderTest extends TestCase
         self::assertArrayHasKey('navbar_right.logout', $this->children);
     }
 
-    public function testCreateNavbarRightAdmin()
+    public function testCreateNavbarRightAdmin(): void
     {
         $authChecker = $this->getMockBuilder(AuthorizationCheckerInterface::class)
             ->disableOriginalConstructor()

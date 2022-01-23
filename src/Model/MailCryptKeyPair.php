@@ -19,7 +19,10 @@ class MailCryptKeyPair
         $this->publicKey = $publicKey;
     }
 
-    public function erase()
+    /**
+     * @throws \SodiumException
+     */
+    public function erase(): void
     {
         sodium_memzero($this->privateKey);
         sodium_memzero($this->publicKey);

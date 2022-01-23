@@ -15,18 +15,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class VoucherCreatorTest extends TestCase
 {
-    public function testCreate()
+    public function testCreate(): void
     {
         $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
-        $manager->expects($this->any())->method('persist')->willReturnCallback(
+        $manager->method('persist')->willReturnCallback(
             function (Voucher $voucher) {
                 $voucher->setId(1);
             }
         );
-        $manager->expects($this->any())->method('flush')->willReturn(true);
+        $manager->method('flush')->willReturn(true);
 
         $validator = $this->getMockBuilder(ValidatorInterface::class)->getMock();
-        $validator->expects($this->any())->method('validate')->willReturn(new ConstraintViolationList());
+        $validator->method('validate')->willReturn(new ConstraintViolationList());
 
         $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
 
@@ -39,14 +39,14 @@ class VoucherCreatorTest extends TestCase
         self::assertEquals(1, $voucher->getId());
     }
 
-    public function testCreateWithException()
+    public function testCreateWithException(): void
     {
         $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
 
         $violation = new ConstraintViolation('message', 'messageTemplate', [], null, null, 'someValue');
 
         $validator = $this->getMockBuilder(ValidatorInterface::class)->getMock();
-        $validator->expects($this->any())->method('validate')->willReturn(new ConstraintViolationList([$violation]));
+        $validator->method('validate')->willReturn(new ConstraintViolationList([$violation]));
 
         $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
 
@@ -56,6 +56,6 @@ class VoucherCreatorTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $voucher = $creator->create($user);
+        $creator->create($user);
     }
 }

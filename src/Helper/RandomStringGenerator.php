@@ -7,12 +7,12 @@ namespace App\Helper;
  */
 class RandomStringGenerator
 {
-    const LENGTH = 6;
+    public const LENGTH = 6;
 
     /**
-     * @return string
+     * @throws \Exception
      */
-    public static function generate(int $length = self::LENGTH, bool $caseSensitive = true)
+    public static function generate(int $length = self::LENGTH, bool $caseSensitive = true): string
     {
         $chars = '0123456789abcdefghijklmnopqrstuvwxyz';
         if (true === $caseSensitive) {
@@ -21,7 +21,7 @@ class RandomStringGenerator
         $string = '';
 
         for ($i = 0; $i < $length; ++$i) {
-            $string .= $chars[rand(0, strlen($chars) - 1)];
+            $string .= $chars[random_int(0, strlen($chars) - 1)];
         }
 
         return $string;

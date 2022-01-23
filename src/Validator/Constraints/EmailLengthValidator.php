@@ -17,10 +17,10 @@ class EmailLengthValidator extends ConstraintValidator
      * @param string     $value      The value that should be validated
      * @param Constraint $constraint The constraint for the validation
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof EmailLength) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\EmailLength');
+            throw new UnexpectedTypeException($constraint, EmailLength::class);
         }
 
         if (null === $value || '' === $value) {
@@ -33,16 +33,12 @@ class EmailLengthValidator extends ConstraintValidator
 
         $localPart = explode('@', $value)[0];
 
-        if (is_numeric($minLength = $constraint->minLength)) {
-            if (strlen($localPart) < $minLength) {
-                $this->context->addViolation('registration.email-too-short', ['%min%' => $constraint->minLength]);
-            }
+        if (is_numeric($minLength = $constraint->minLength) && strlen($localPart) < $minLength) {
+            $this->context->addViolation('registration.email-too-short', ['%min%' => $constraint->minLength]);
         }
 
-        if (is_numeric($maxLength = $constraint->maxLength)) {
-            if (strlen($localPart) > $maxLength) {
-                $this->context->addViolation('registration.email-too-long', ['%max%' => $constraint->maxLength]);
-            }
+        if (is_numeric($maxLength = $constraint->maxLength) && strlen($localPart) > $maxLength) {
+            $this->context->addViolation('registration.email-too-long', ['%max%' => $constraint->maxLength]);
         }
     }
 }

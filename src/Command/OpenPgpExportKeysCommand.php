@@ -38,7 +38,7 @@ class OpenPgpExportKeysCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:wkd:export-keys')
@@ -48,7 +48,7 @@ class OpenPgpExportKeysCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         // create Web Key Directories (WKD) for all domains
         foreach ($this->domainRepository->findAll() as $domain) {

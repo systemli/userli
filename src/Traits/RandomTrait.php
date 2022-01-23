@@ -11,13 +11,10 @@ trait RandomTrait
 
     public function isRandom(): bool
     {
-        return (bool) $this->random;
+        return $this->random;
     }
 
-    /**
-     * @param bool $random
-     */
-    public function setRandom($random)
+    public function setRandom(bool $random): void
     {
         $this->random = $random;
     }

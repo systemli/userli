@@ -28,11 +28,9 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @return Response
-     *
      * @throws \Exception
      */
-    public function registerAction(Request $request, string $voucher = null)
+    public function registerAction(Request $request, string $voucher = null): Response
     {
         if (!$this->registrationHandler->canRegister()) {
             return $this->render('Registration/closed.html.twig');
@@ -102,16 +100,16 @@ class RegistrationController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $recoveryTokenAckForm->handleRequest($request);
 
-            if ($recoveryTokenAckForm->isSubmitted() and $recoveryTokenAckForm->isValid()) {
+            if ($recoveryTokenAckForm->isSubmitted() && $recoveryTokenAckForm->isValid()) {
                 return $this->redirect($this->generateUrl('register_welcome'));
-            } else {
-                return $this->render('Registration/recovery_token.html.twig',
-                    [
-                        'form' => $recoveryTokenAckForm->createView(),
-                        'recovery_token' => $recoveryTokenAck->getRecoveryToken(),
-                    ]
-                );
             }
+
+            return $this->render('Registration/recovery_token.html.twig',
+                [
+                    'form' => $recoveryTokenAckForm->createView(),
+                    'recovery_token' => $recoveryTokenAck->getRecoveryToken(),
+                ]
+            );
         }
 
         return $this->redirectToRoute('register');

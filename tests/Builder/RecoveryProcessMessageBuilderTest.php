@@ -11,13 +11,13 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class RecoveryProcessMessageBuilderTest extends TestCase
 {
-    const BODY_TEMPLATE = 'APP URL: %s'.PHP_EOL.'Project Name: %s';
+    private const BODY_TEMPLATE = 'APP URL: %s'.PHP_EOL.'Project Name: %s';
 
     private $email = 'user@example.org';
     private $appUrl = 'https://www.example.org';
     private $projectName = 'example.org';
 
-    public function testBuildBody()
+    public function testBuildBody(): void
     {
         $time = 'NOW';
 
@@ -27,7 +27,7 @@ class RecoveryProcessMessageBuilderTest extends TestCase
         self::assertEquals($expected, $builder->buildBody('de', $this->email, $time));
     }
 
-    public function testBuildSubject()
+    public function testBuildSubject(): void
     {
         $builder = $this->getBuilder($this->appUrl, $this->projectName);
         $expected = sprintf(self::BODY_TEMPLATE, $this->appUrl, $this->projectName);
@@ -38,10 +38,8 @@ class RecoveryProcessMessageBuilderTest extends TestCase
     /**
      * @param $appUrl
      * @param $projectName
-     *
-     * @return RecoveryProcessMessageBuilder
      */
-    private function getBuilder($appUrl, $projectName)
+    private function getBuilder($appUrl, $projectName): RecoveryProcessMessageBuilder
     {
         /**
          * @var TranslatorInterface|PHPUnit_Framework_MockObject_MockObject
@@ -52,10 +50,8 @@ class RecoveryProcessMessageBuilderTest extends TestCase
 
         $message = sprintf(self::BODY_TEMPLATE, $appUrl, $projectName);
 
-        $translator->expects($this->any())->method('trans')->willReturn($message);
+        $translator->method('trans')->willReturn($message);
 
-        $builder = new RecoveryProcessMessageBuilder($translator, $appUrl, $projectName);
-
-        return $builder;
+        return new RecoveryProcessMessageBuilder($translator, $appUrl, $projectName);
     }
 }

@@ -52,7 +52,7 @@ class BeforeRequestListenerTest extends TestCase
     /**
      * @dataProvider provider
      */
-    public function testGetNonAdminUser(?User $user, bool $isAdmin, ?User $returnValue)
+    public function testGetNonAdminUser(?User $user, bool $isAdmin, ?User $returnValue): void
     {
         $this->security->method('getUser')->willReturn($user);
         $this->security->method('isGranted')->willReturn($isAdmin);
@@ -73,7 +73,7 @@ class BeforeRequestListenerTest extends TestCase
         ];
     }
 
-    public function testOnKernelRequest()
+    public function testOnKernelRequest(): void
     {
         $user = $this->getUser();
         $this->security->method('getUser')->willReturn($user);

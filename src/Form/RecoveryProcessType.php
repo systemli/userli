@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Form\DataTransformer\OptionalDomainEmailTransformer;
+use App\Form\Model\RecoveryProcess;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -13,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RecoveryProcessType extends AbstractType
 {
-    const NAME = 'recovery_process';
+    public const NAME = 'recovery_process';
 
     /**
      * @var string
@@ -28,7 +29,7 @@ class RecoveryProcessType extends AbstractType
         $this->domain = $manager->getRepository('App:Domain')->getDefaultDomain()->getName();
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $transformer = new OptionalDomainEmailTransformer($this->domain);
 
@@ -44,15 +45,12 @@ class RecoveryProcessType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => 'App\Form\Model\RecoveryProcess']);
+        $resolver->setDefaults(['data_class' => RecoveryProcess::class]);
     }
 
-    /**
-     * @return string
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }

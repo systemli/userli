@@ -14,10 +14,7 @@ trait PublicKeyTrait
         return $this->publicKey;
     }
 
-    /**
-     * @param string|null $publicKey
-     */
-    public function setPublicKey($publicKey): void
+    public function setPublicKey(?string $publicKey): void
     {
         $this->publicKey = $publicKey;
     }

@@ -15,8 +15,8 @@ use Symfony\Component\Process\Process;
 class MailCryptKeyHandler
 {
     // Use elliptic curve type 'secp521r1' for MailCrypt keys
-    const MAIL_CRYPT_PRIVATE_KEY_TYPE = OPENSSL_KEYTYPE_EC;
-    const MAIL_CRYPT_CURVE_NAME = 'secp521r1';
+    private const MAIL_CRYPT_PRIVATE_KEY_TYPE = OPENSSL_KEYTYPE_EC;
+    private const MAIL_CRYPT_CURVE_NAME = 'secp521r1';
 
     /**
      * @var ObjectManager
@@ -37,7 +37,7 @@ class MailCryptKeyHandler
     public function toPkcs8(string $privateKey): string
     {
         // Unfortunately, there doesn't seem to be a way to transform elliptic curve
-        // keys from from traditional PEM to PKCS#8 format within PHP yet. The OpenSSL
+        // keys from traditional PEM to PKCS#8 format within PHP yet. The OpenSSL
         // extension doesn't support PKCS#8 format and phpseclib doesn't support elliptic
         // curves.
         //
@@ -56,7 +56,7 @@ class MailCryptKeyHandler
         if (!$process->isSuccessful()) {
             throw new \Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: '.$process->getErrorOutput());
         }
-        if ('-----BEGIN PRIVATE KEY-----' !== substr($process->getOutput(), 0, 27)) {
+        if (0 !== strpos($process->getOutput(), '-----BEGIN PRIVATE KEY-----')) {
             throw new \Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL output is no valid PKCS#8 key: '.$process->getOutput());
         }
 

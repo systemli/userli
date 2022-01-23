@@ -2,6 +2,10 @@
 
 namespace App\Tests\Validator\Constraints;
 
+use App\Entity\Alias;
+use App\Entity\Domain;
+use App\Entity\ReservedName;
+use App\Entity\User;
 use App\Repository\AliasRepository;
 use App\Repository\DomainRepository;
 use App\Repository\ReservedNameRepository;
@@ -27,26 +31,26 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $aliasRepository->method('findOneBySource')->willReturnMap([
-            [$this->aliasUsed, true, true],
+            [$this->aliasUsed, true, new Alias()],
         ]);
         $domainRepository = $this->getMockBuilder(DomainRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
         $domainRepository->method('findByName')->willReturnMap([
-            [explode('@', $this->addressNew)[1], true],
-            [$this->extraDomain, true],
+            [explode('@', $this->addressNew)[1], new Domain()],
+            [$this->extraDomain, new Domain()],
         ]);
         $userRepository = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
         $userRepository->method('findOneBy')->willReturnMap([
-            [['email' => $this->userUsed], null, true, true],
+            [['email' => $this->userUsed], null, true, new User()],
         ]);
         $reservedNameRepository = $this->getMockBuilder(ReservedNameRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
         $reservedNameRepository->method('findByName')->willReturnMap([
-            ['reserved', true],
+            ['reserved', new ReservedName()],
         ]);
         $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
         $manager->method('getRepository')->willReturnMap([

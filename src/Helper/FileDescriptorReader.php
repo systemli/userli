@@ -12,7 +12,7 @@ class FileDescriptorReader
      */
     private static function readFileDescriptor(string $inputFd)
     {
-        $fileHandler = fopen($inputFd, 'r');
+        $fileHandler = fopen($inputFd, 'rb');
 
         return stream_get_contents($fileHandler);
     }
@@ -22,7 +22,7 @@ class FileDescriptorReader
      */
     public function readFd3()
     {
-        return $this->readFileDescriptor('php://fd/3');
+        return self::readFileDescriptor('php://fd/3');
     }
 
     /**
@@ -30,6 +30,6 @@ class FileDescriptorReader
      */
     public function readStdin()
     {
-        return $this->readFileDescriptor('php://fd/0');
+        return self::readFileDescriptor('php://fd/0');
     }
 }

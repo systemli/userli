@@ -21,12 +21,7 @@ class DomainGuesser
         $this->repository = $manager->getRepository('App:Domain');
     }
 
-    /**
-     * @param string $email
-     *
-     * @return Domain|null
-     */
-    public function guess($email)
+    public function guess(string $email): ?Domain
     {
         $splitted = explode('@', $email);
 

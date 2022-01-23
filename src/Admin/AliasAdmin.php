@@ -32,15 +32,15 @@ class AliasAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('source', EmailType::class)
             ->add('user', EntityType::class, ['class' => User::class, 'required' => false])
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
 
         if ($this->security->isGranted(Roles::ADMIN)) {
-            $formMapper
+            $form
                 ->add('destination', EmailType::class, ['required' => false]);
         }
     }
@@ -48,9 +48,9 @@ class AliasAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('source', null, [
                 'show_filter' => true,
             ])
@@ -73,9 +73,9 @@ class AliasAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('id')
             ->addIdentifier('source')
             ->addIdentifier('destination')
@@ -89,57 +89,57 @@ class AliasAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    protected function configureBatchActions($actions)
+    protected function configureBatchActions($actions): array
     {
         return [];
     }
 
     /**
-     * @param Alias $alias
+     * @param Alias $object
      */
-    public function prePersist($alias)
+    public function prePersist($object): void
     {
-        if (null == $alias->getDestination()) {
-            if (null == $alias->getUser()) {
+        if (null === $object->getDestination()) {
+            if (null === $object->getUser()) {
                 // set user_id to current user if neither destination nor user_id is given
-                $alias->setUser($this->security->getUser());
+                $object->setUser($this->security->getUser());
             }
-            $alias->setDestination($alias->getUser());
+            $object->setDestination($object->getUser());
         }
 
-        if (null !== $domain = $this->getDomainGuesser()->guess($alias->getSource())) {
-            $alias->setDomain($domain);
+        if (null !== $domain = $this->getDomainGuesser()->guess($object->getSource())) {
+            $object->setDomain($domain);
         }
     }
 
     /**
-     * @param Alias $alias
+     * @param Alias $object
      */
-    public function preUpdate($alias)
+    public function preUpdate($object): void
     {
-        $alias->setUpdatedTime(new \DateTime());
-        if (null == $alias->getDestination()) {
-            $alias->setDestination($alias->getUser());
+        $object->setUpdatedTime(new \DateTime());
+        if (null === $object->getDestination()) {
+            $object->setDestination($object->getUser());
         }
-        if (null !== $domain = $this->getDomainGuesser()->guess($alias->getSource())) {
-            $alias->setDomain($domain);
+        if (null !== $domain = $this->getDomainGuesser()->guess($object->getSource())) {
+            $object->setDomain($domain);
         }
 
         // domain admins are only allowed to set alias to existing user
         if (!$this->security->isGranted(Roles::ADMIN)) {
-            $alias->setDestination($alias->getUser());
+            $object->setDestination($object->getUser());
         }
     }
 
     /**
-     * @param Alias $alias
+     * @param Alias $object
      */
-    public function delete($alias)
+    public function delete($object): void
     {
-        $this->deleteHandler->deleteAlias($alias);
+        $this->deleteHandler->deleteAlias($object);
     }
 
-    public function setDeleteHandler(DeleteHandler $deleteHandler)
+    public function setDeleteHandler(DeleteHandler $deleteHandler): void
     {
         $this->deleteHandler = $deleteHandler;
     }

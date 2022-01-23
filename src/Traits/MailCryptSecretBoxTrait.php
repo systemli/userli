@@ -21,13 +21,10 @@ trait MailCryptSecretBoxTrait
 
     public function hasMailCryptSecretBox(): bool
     {
-        return ($this->getMailCryptSecretBox()) ? true : false;
+        return (bool) $this->getMailCryptSecretBox();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function eraseMailCryptSecretBox()
+    public function eraseMailCryptSecretBox(): void
     {
         $this->mailCryptSecretBox = null;
     }

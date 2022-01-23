@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Creator\DomainCreator;
+use App\Exception\ValidationException;
 use App\Form\DomainCreateType;
 use App\Form\Model\DomainCreate;
 use App\Form\Model\PlainPassword;
@@ -39,9 +40,9 @@ class InitController extends AbstractController
     }
 
     /**
-     * @return Response
+     * @throws ValidationException
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         // redirect if already configured
         if (0 < $this->manager->getRepository('App:Domain')->count([])) {
@@ -71,10 +72,7 @@ class InitController extends AbstractController
         return $this->render('Init/domain.html.twig', ['form' => $domainForm->createView()]);
     }
 
-    /**
-     * @return Response
-     */
-    public function userAction(Request $request)
+    public function userAction(Request $request): Response
     {
         // redirect if already configured
         if (0 < $this->manager->getRepository('App:User')->count([])) {

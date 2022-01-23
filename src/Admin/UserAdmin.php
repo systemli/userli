@@ -58,7 +58,7 @@ class UserAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    public function getNewInstance()
+    public function getNewInstance(): User
     {
         /** @var User $instance */
         $instance = parent::getNewInstance();
@@ -71,12 +71,12 @@ class UserAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $form): void
     {
         $user = $this->getRoot()->getSubject();
         $userId = (null === $user) ? null : $user->getId();
 
-        $formMapper
+        $form
             ->add('email', EmailType::class, ['disabled' => !$this->isNewObject()])
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'form.password',
@@ -96,9 +96,9 @@ class UserAdmin extends Admin
             ])
             ->add('mailCrypt', CheckboxType::class, [
                 // Default to true for new users if mail_crypt is enabled
-                'data' => (null !== $userId) ? $user->hasMailCrypt() : (($this->mailCrypt >= 2) ? true : false),
+                'data' => (null !== $userId) ? $user->hasMailCrypt() : $this->mailCrypt >= 2,
                 // Disable for existing users or when mail_crypt is disabled
-                'disabled' => (null !== $userId) ? true : (($this->mailCrypt <= 0) ? true : false),
+                'disabled' => null !== $userId || $this->mailCrypt <= 0,
             ])
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
     }
@@ -106,9 +106,9 @@ class UserAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('email', null, [
                 'show_filter' => true,
             ])
@@ -175,9 +175,9 @@ class UserAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('id')
             ->addIdentifier('email')
             ->add('creationTime')
@@ -192,7 +192,7 @@ class UserAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    protected function configureBatchActions($actions)
+    protected function configureBatchActions($actions): array
     {
         if ($this->hasRoute('edit') && $this->hasAccess('edit')) {
             $actions['removeVouchers'] = [
@@ -204,64 +204,64 @@ class UserAdmin extends Admin
     }
 
     /**
-     * @param User $user
+     * @param User $object
      *
      * @throws \Exception
      */
-    public function prePersist($user)
+    public function prePersist($object): void
     {
-        $this->passwordUpdater->updatePassword($user);
+        $this->passwordUpdater->updatePassword($object);
 
-        if (null !== $user->hasMailCrypt()) {
-            $this->mailCryptKeyHandler->create($user);
+        if (null !== $object->hasMailCrypt()) {
+            $this->mailCryptKeyHandler->create($object);
         }
 
-        if (null === $user->getDomain() && null !== $domain = $this->domainGuesser->guess($user->getEmail())) {
-            $user->setDomain($domain);
+        if (null === $object->getDomain() && null !== $domain = $this->domainGuesser->guess($object->getEmail())) {
+            $object->setDomain($domain);
         }
     }
 
     /**
-     * @param User $user
+     * @param User $object
      */
-    public function preUpdate($user)
+    public function preUpdate($object): void
     {
         // Only admins are allowed to set attributes of other admins
-        if (!$this->security->isGranted(Roles::ADMIN) && $user->hasRole(Roles::ADMIN)) {
+        if (!$this->security->isGranted(Roles::ADMIN) && $object->hasRole(Roles::ADMIN)) {
             throw new AccessDeniedException('Not allowed to edit admin user');
         }
 
-        if (!empty($user->getPlainPassword())) {
-            $this->passwordUpdater->updatePassword($user);
+        if (!empty($object->getPlainPassword())) {
+            $this->passwordUpdater->updatePassword($object);
         } else {
-            $user->updateUpdatedTime();
+            $object->updateUpdatedTime();
         }
     }
 
     /**
-     * @param User $user
+     * @param User $object
      */
-    public function delete($user)
+    public function delete($object): void
     {
-        $this->deleteHandler->deleteUser($user);
+        $this->deleteHandler->deleteUser($object);
     }
 
-    public function setPasswordUpdater(PasswordUpdater $passwordUpdater)
+    public function setPasswordUpdater(PasswordUpdater $passwordUpdater): void
     {
         $this->passwordUpdater = $passwordUpdater;
     }
 
-    public function setDeleteHandler(DeleteHandler $deleteHandler)
+    public function setDeleteHandler(DeleteHandler $deleteHandler): void
     {
         $this->deleteHandler = $deleteHandler;
     }
 
-    public function setMailCryptKeyHandler(MailCryptKeyHandler $mailCryptKeyHandler)
+    public function setMailCryptKeyHandler(MailCryptKeyHandler $mailCryptKeyHandler): void
     {
         $this->mailCryptKeyHandler = $mailCryptKeyHandler;
     }
 
-    public function setMailCryptVar(int $mailCrypt)
+    public function setMailCryptVar(int $mailCrypt): void
     {
         $this->mailCrypt = $mailCrypt;
     }

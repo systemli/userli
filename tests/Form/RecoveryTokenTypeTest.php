@@ -8,7 +8,7 @@ use Symfony\Component\Form\Test\TypeTestCase;
 
 class RecoveryTokenTypeTest extends TypeTestCase
 {
-    public function testSubmitValidData()
+    public function testSubmitValidData(): void
     {
         $password = 'password';
         $formData = ['password' => $password];

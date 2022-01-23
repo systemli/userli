@@ -30,7 +30,7 @@ class LoginListener implements EventSubscriberInterface
         $this->passwordUpdater = $passwordUpdater;
     }
 
-    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
+    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $request = $event->getRequest();
         $user = $event->getAuthenticationToken()->getUser();
@@ -38,24 +38,22 @@ class LoginListener implements EventSubscriberInterface
         $this->handleLogin($user);
     }
 
-    public function onLogin(LoginEvent $event)
+    public function onLogin(LoginEvent $event): void
     {
         $this->handleLogin($event->getUser());
     }
 
-    private function handleLogin(User $user)
+    private function handleLogin(User $user): void
     {
         // update password hash if necessary
-        if ($user->getPasswordVersion() < User::CURRENT_PASSWORD_VERSION) {
-            if (null !== $plainPassword = $user->getPlainPassword()) {
-                $user->setPasswordVersion(User::CURRENT_PASSWORD_VERSION);
-                $this->passwordUpdater->updatePassword($user, $plainPassword);
-            }
+        if (($user->getPasswordVersion() < User::CURRENT_PASSWORD_VERSION) && null !== $plainPassword = $user->getPlainPassword()) {
+            $user->setPasswordVersion(User::CURRENT_PASSWORD_VERSION);
+            $this->passwordUpdater->updatePassword($user, $plainPassword);
         }
         $this->updateLastLogin($user);
     }
 
-    private function updateLastLogin(User $user)
+    private function updateLastLogin(User $user): void
     {
         $user->updateLastLoginTime();
         $this->manager->persist($user);
@@ -65,7 +63,7 @@ class LoginListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
             LoginEvent::NAME => 'onLogin', ];

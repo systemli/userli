@@ -32,10 +32,10 @@ class VoucherValidator extends ConstraintValidator
      * @param mixed      $value      The value that should be validated
      * @param Constraint $constraint The constraint for the validation
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Voucher) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\Voucher');
+            throw new UnexpectedTypeException($constraint, Voucher::class);
         }
 
         if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
@@ -52,10 +52,8 @@ class VoucherValidator extends ConstraintValidator
             if (null !== $voucher && $voucher->isRedeemed()) {
                 $this->context->addViolation('registration.voucher-already-redeemed');
             }
-        } else {
-            if (null !== $this->voucherRepository->findByCode($stringValue)) {
-                $this->context->addViolation('registration.voucher-exists');
-            }
+        } elseif (null !== $this->voucherRepository->findByCode($stringValue)) {
+            $this->context->addViolation('registration.voucher-exists');
         }
     }
 }

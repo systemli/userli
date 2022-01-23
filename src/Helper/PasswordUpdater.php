@@ -23,13 +23,13 @@ class PasswordUpdater
         $this->encoderFactory = $encoderFactory;
     }
 
-    public function updatePassword(User $user, string $plainPassword = null)
+    public function updatePassword(User $user, string $plainPassword = null): void
     {
         if (null === $plainPassword) {
             $plainPassword = $user->getPlainPassword();
         }
 
-        if (0 === strlen($plainPassword)) {
+        if (!$plainPassword) {
             return;
         }
 

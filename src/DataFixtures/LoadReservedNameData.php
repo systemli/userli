@@ -3,9 +3,10 @@
 namespace App\DataFixtures;
 
 use App\Creator\ReservedNameCreator;
+use App\Exception\ValidationException;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadReservedNameData extends Fixture implements OrderedFixtureInterface
 {
@@ -25,20 +26,22 @@ class LoadReservedNameData extends Fixture implements OrderedFixtureInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \App\Exception\ValidationException
+     * @throws ValidationException
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $handle = fopen(
             dirname(__FILE__).'/../../config/reserved_names.txt',
-            'r'
+            'rb'
         );
 
         while ($line = fgets($handle)) {
             $name = trim($line);
             if (empty($name)) {
                 continue;
-            } elseif ('#' === substr($name, 0, 1)) {
+            }
+
+            if ('#' === $name[0]) {
                 // filter out comments
                 continue;
             }
@@ -50,7 +53,7 @@ class LoadReservedNameData extends Fixture implements OrderedFixtureInterface
     /**
      * {@inheritdoc}
      */
-    public function getOrder()
+    public function getOrder(): int
     {
         return 5;
     }

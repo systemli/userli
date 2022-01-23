@@ -30,7 +30,7 @@ class OptionalDomainEmailTransformer implements DataTransformerInterface
             return '';
         }
 
-        if (false !== $atPosition = stripos($value, '@')) {
+        if (false !== $atPosition = strpos($value, '@')) {
             // cut of domain part
             return substr($value, 0, $atPosition);
         }
@@ -47,7 +47,7 @@ class OptionalDomainEmailTransformer implements DataTransformerInterface
             return '';
         }
 
-        if (false !== stripos($value, '@')) {
+        if (false !== strpos($value, '@')) {
             return $value;
         }
 

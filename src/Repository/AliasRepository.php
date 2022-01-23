@@ -11,22 +11,14 @@ use App\Entity\User;
 class AliasRepository extends AbstractRepository
 {
     /**
-     * @param      $email
      * @param bool $deleted
-     *
-     * @return object|Alias|null
      */
-    public function findOneBySource($email, ?bool $deleted = false)
+    public function findOneBySource(string $email, ?bool $deleted = false): ?Alias
     {
         return $this->findOneBy(['source' => $email], null, $deleted);
     }
 
-    /**
-     * @param $email
-     *
-     * @return object|Alias|null
-     */
-    public function findByDestination($email)
+    public function findByDestination(string $email): ?Alias
     {
         return $this->findOneBy(['destination' => $email]);
     }
@@ -34,12 +26,12 @@ class AliasRepository extends AbstractRepository
     /**
      * @return array|Alias[]
      */
-    public function findByUser(User $user, ?bool $random = null)
+    public function findByUser(User $user, ?bool $random = null): array
     {
         if (isset($random)) {
             return $this->findBy(['user' => $user, 'random' => $random]);
-        } else {
-            return $this->findBy(['user' => $user]);
         }
+
+        return $this->findBy(['user' => $user]);
     }
 }

@@ -67,7 +67,7 @@ class StatisticsBlockService implements BlockServiceInterface
     {
         return [
             'block_id' => $block->getId(),
-            'updated_at' => $block->getUpdatedAt() ? $block->getUpdatedAt()->format('U') : strtotime('now'),
+            'updated_at' => $block->getUpdatedAt() ? $block->getUpdatedAt()->format('U') : time(),
         ];
     }
 

@@ -15,7 +15,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class VoucherHandler
 {
-    const VOUCHER_LIMIT = 3;
+    private const VOUCHER_LIMIT = 3;
 
     /**
      * @var VoucherRepository
@@ -46,26 +46,22 @@ class VoucherHandler
 
         $vouchers = $this->repository->findByUser($user);
 
-        if ($user->getCreationTime() <= new \DateTime('-7 days') && null !== $user->getLastLoginTime()) {
-            if (count($vouchers) < self::VOUCHER_LIMIT) {
-                for ($i = count($vouchers); $i < self::VOUCHER_LIMIT; ++$i) {
-                    try {
-                        $vouchers[] = $this->creator->create($user);
-                    } catch (ValidationException $e) {
-                        // Should not thrown
-                    }
+        if (null !== $user->getLastLoginTime() && count($vouchers) < self::VOUCHER_LIMIT && $user->getCreationTime() <= new \DateTime('-7 days')) {
+            for ($i = count($vouchers); $i < self::VOUCHER_LIMIT; ++$i) {
+                try {
+                    $vouchers[] = $this->creator->create($user);
+                } catch (ValidationException $e) {
+                    // Should not throw
                 }
             }
         }
 
         if (true === $redeemed) {
             return $vouchers;
-        } else {
-            $vouchersActive = array_filter($vouchers, function (Voucher $voucher) {
-                return ($voucher->isRedeemed()) ? null : $voucher;
-            });
-
-            return $vouchersActive;
         }
+
+        return array_filter($vouchers, static function (Voucher $voucher) {
+            return ($voucher->isRedeemed()) ? null : $voucher;
+        });
     }
 }

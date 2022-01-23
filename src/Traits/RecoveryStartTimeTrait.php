@@ -14,7 +14,7 @@ trait RecoveryStartTimeTrait
         return $this->recoveryStartTime;
     }
 
-    public function setRecoveryStartTime(\DateTime $recoveryStartTime)
+    public function setRecoveryStartTime(\DateTime $recoveryStartTime): void
     {
         $this->recoveryStartTime = $recoveryStartTime;
     }
@@ -22,15 +22,12 @@ trait RecoveryStartTimeTrait
     /**
      * @throws \Exception
      */
-    public function updateRecoveryStartTime()
+    public function updateRecoveryStartTime(): void
     {
         $this->setRecoveryStartTime(new \DateTime());
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function eraseRecoveryStartTime()
+    public function eraseRecoveryStartTime(): void
     {
         $this->recoveryStartTime = null;
     }

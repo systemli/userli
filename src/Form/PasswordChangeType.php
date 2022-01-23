@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Form\Model\PasswordChange;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -11,9 +12,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PasswordChangeType extends AbstractType
 {
-    const NAME = 'password_change';
+    public const NAME = 'password_change';
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('password', PasswordType::class, ['label' => 'form.actual-password'])
@@ -29,15 +30,12 @@ class PasswordChangeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => 'App\Form\Model\PasswordChange']);
+        $resolver->setDefaults(['data_class' => PasswordChange::class]);
     }
 
-    /**
-     * @return string
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }

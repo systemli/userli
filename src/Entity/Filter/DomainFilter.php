@@ -8,7 +8,7 @@ use Doctrine\ORM\Query\Filter\SQLFilter;
 
 class DomainFilter extends SQLFilter
 {
-    public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
+    public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string
     {
         if (null === $domainId = $this->getDomainId()) {
             return '';

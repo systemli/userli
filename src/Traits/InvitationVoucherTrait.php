@@ -14,15 +14,12 @@ trait InvitationVoucherTrait
      */
     private $invitationVoucher;
 
-    /**
-     * @return Voucher|null
-     */
-    public function getInvitationVoucher()
+    public function getInvitationVoucher(): ?Voucher
     {
         return $this->invitationVoucher;
     }
 
-    public function setInvitationVoucher(Voucher $invitationVoucher = null)
+    public function setInvitationVoucher(Voucher $invitationVoucher = null): void
     {
         $this->invitationVoucher = $invitationVoucher;
     }

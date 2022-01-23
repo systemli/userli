@@ -79,7 +79,7 @@ class RecoveryTokenHandler
             return false;
         }
 
-        return (null !== CryptoSecretHandler::decrypt($recoverySecretBox, $recoveryToken)) ? true : false;
+        return null !== CryptoSecretHandler::decrypt($recoverySecretBox, $recoveryToken);
     }
 
     /**

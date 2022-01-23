@@ -13,7 +13,7 @@ class LoginEvent extends Event
 {
     use UserAwareTrait;
 
-    const NAME = 'user.login';
+    public const NAME = 'user.login';
 
     /**
      * Constructor.

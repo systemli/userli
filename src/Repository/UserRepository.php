@@ -58,33 +58,24 @@ class UserRepository extends AbstractRepository
     /**
      * @return User[]|array
      */
-    public function findDeletedUsers()
+    public function findDeletedUsers(): array
     {
         return $this->findBy(['deleted' => true]);
     }
 
-    /**
-     * @return int
-     */
-    public function countUsers()
+    public function countUsers(): int
     {
         return $this->matching(Criteria::create()
             ->where(Criteria::expr()->eq('deleted', false)))->count();
     }
 
-    /**
-     * @return int
-     */
-    public function countDeletedUsers()
+    public function countDeletedUsers(): int
     {
         return $this->matching(Criteria::create()
             ->where(Criteria::expr()->eq('deleted', true)))->count();
     }
 
-    /**
-     * @return int
-     */
-    public function countUsersWithRecoveryToken()
+    public function countUsersWithRecoveryToken(): int
     {
         return $this->matching(Criteria::create()
             ->where(Criteria::expr()->eq('deleted', false))
@@ -92,10 +83,7 @@ class UserRepository extends AbstractRepository
         )->count();
     }
 
-    /**
-     * @return int
-     */
-    public function countUsersWithMailCrypt()
+    public function countUsersWithMailCrypt(): int
     {
         return $this->matching(Criteria::create()
             ->where(Criteria::expr()->eq('deleted', false))

@@ -3,7 +3,6 @@
 namespace App\Command;
 
 use App\Helper\AdminPasswordUpdater;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,10 +12,6 @@ use Symfony\Component\Console\Question\Question;
 class AdminPasswordCommand extends Command
 {
     /**
-     * @var ObjectManager
-     */
-    private $manager;
-    /**
      * @var AdminPasswordUpdater
      */
     private $updater;
@@ -24,14 +19,13 @@ class AdminPasswordCommand extends Command
     /**
      * AdminPasswordCommand constructor.
      */
-    public function __construct(ObjectManager $manager, AdminPasswordUpdater $updater)
+    public function __construct(AdminPasswordUpdater $updater)
     {
         parent::__construct();
-        $this->manager = $manager;
         $this->updater = $updater;
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('app:admin:password')
@@ -40,7 +34,7 @@ class AdminPasswordCommand extends Command
             ->addArgument('password', InputArgument::OPTIONAL, 'Admin password');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): void
     {
         $password = $input->getArgument('password');
         if (null === $password) {

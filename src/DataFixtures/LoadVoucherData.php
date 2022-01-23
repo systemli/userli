@@ -6,7 +6,7 @@ use App\Entity\Voucher;
 use App\Factory\VoucherFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -20,30 +20,31 @@ class LoadVoucherData extends Fixture implements OrderedFixtureInterface, Contai
     /**
      * {@inheritdoc}
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Exception
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $users = $manager->getRepository('App:User')->findAll();
 
         for ($i = 0; $i < 1000; ++$i) {
-            /** @var Voucher $voucher */
-            $voucher = VoucherFactory::create($users[mt_rand(1, count($users) - 1)]);
+            $voucher = VoucherFactory::create($users[random_int(1, count($users) - 1)]);
 
-            $invitedUser = $users[mt_rand(0, count($users) - 1)];
+            $invitedUser = $users[random_int(0, count($users) - 1)];
             $voucher->setInvitedUser($invitedUser);
             $voucher->setRedeemedTime(new \DateTime());
 
             $invitedUser->setInvitationVoucher($voucher);
 
-            if (mt_rand(0, 100) > 50) {
-                $voucher->setRedeemedTime(new \DateTime(sprintf('-%d days', mt_rand(1, 100))));
+            if (random_int(0, 100) > 50) {
+                $voucher->setRedeemedTime(new \DateTime(sprintf('-%d days', random_int(1, 100))));
             }
 
             $manager->persist($voucher);
@@ -52,7 +53,7 @@ class LoadVoucherData extends Fixture implements OrderedFixtureInterface, Contai
         // add redeemed voucher to a suspicious parent
         $user = $manager->getRepository('App:User')->findByEmail('suspicious@example.org');
         $voucher = VoucherFactory::create($user);
-        $invitedUser = $users[mt_rand(0, count($users) - 1)];
+        $invitedUser = $users[random_int(0, count($users) - 1)];
         $voucher->setInvitedUser($invitedUser);
         $voucher->setRedeemedTime(new \DateTime(sprintf('-%d days', 100)));
         $invitedUser->setInvitationVoucher($voucher);
@@ -64,7 +65,7 @@ class LoadVoucherData extends Fixture implements OrderedFixtureInterface, Contai
     /**
      * {@inheritdoc}
      */
-    public function getOrder()
+    public function getOrder(): int
     {
         return 3;
     }

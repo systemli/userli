@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Form\Model\PlainPassword;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -11,9 +12,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PlainPasswordType extends AbstractType
 {
-    const NAME = 'plain_password';
+    public const NAME = 'plain_password';
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('plainPassword', RepeatedType::class, [
@@ -28,15 +29,12 @@ class PlainPasswordType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => 'App\Form\Model\PlainPassword']);
+        $resolver->setDefaults(['data_class' => PlainPassword::class]);
     }
 
-    /**
-     * @return string
-     */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }

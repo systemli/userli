@@ -212,7 +212,7 @@ class CheckPasswordCommandTest extends TestCase
         ];
     }
 
-    public function getManager()
+    public function getManager(): ObjectManager
     {
         $manager = $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()
@@ -237,7 +237,7 @@ class CheckPasswordCommandTest extends TestCase
         return $manager;
     }
 
-    public function getHandler()
+    public function getHandler(): UserAuthenticationHandler
     {
         $handler = $this->getMockBuilder(UserAuthenticationHandler::class)
             ->disableOriginalConstructor()
@@ -254,7 +254,7 @@ class CheckPasswordCommandTest extends TestCase
         return $handler;
     }
 
-    public function getMailCryptKeyHandler()
+    public function getMailCryptKeyHandler(): MailCryptKeyHandler
     {
         $mailCryptKeyHandler = $this->getMockBuilder(MailCryptKeyHandler::class)
             ->disableOriginalConstructor()
@@ -271,7 +271,7 @@ class CheckPasswordCommandTest extends TestCase
         return $mailCryptKeyHandler;
     }
 
-    public function getReaderStdin(string $inputStream)
+    public function getReaderStdin(string $inputStream): FileDescriptorReader
     {
         $reader = $this->getMockBuilder(FileDescriptorReader::class)
             ->disableOriginalConstructor()
@@ -281,7 +281,7 @@ class CheckPasswordCommandTest extends TestCase
         return $reader;
     }
 
-    public function getReaderFd3(string $inputStream)
+    public function getReaderFd3(string $inputStream): FileDescriptorReader
     {
         $reader = $this->getMockBuilder(FileDescriptorReader::class)
             ->disableOriginalConstructor()

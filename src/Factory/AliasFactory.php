@@ -11,8 +11,11 @@ use App\Helper\RandomStringGenerator;
  */
 class AliasFactory
 {
-    const RANDOM_ALIAS_LENGTH = 24;
+    public const RANDOM_ALIAS_LENGTH = 24;
 
+    /**
+     * @throws \Exception
+     */
     public static function create(User $user, ?string $localPart): Alias
     {
         $domain = $user->getDomain();

@@ -4,7 +4,6 @@ namespace App\Tests\Validator\Constraints;
 
 use App\Validator\Constraints\EmailLength;
 use App\Validator\Constraints\EmailLengthValidator;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -22,9 +21,7 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
 
     protected function createValidator(): EmailLengthValidator
     {
-        $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
-
-        return new EmailLengthValidator($manager);
+        return new EmailLengthValidator();
     }
 
     public function testExpectsEmailLengthType(): void

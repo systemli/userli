@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Voucher;
 use App\Enum\Roles;
 use App\Handler\SuspiciousChildrenHandler;
+use DateTimeInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,7 +38,7 @@ class VoucherUnlinkCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:voucher:unlink')
@@ -48,7 +49,7 @@ class VoucherUnlinkCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $vouchers = $this->manager->getRepository(Voucher::class)->getOldVouchers();
 
@@ -64,7 +65,7 @@ class VoucherUnlinkCommand extends Command
                     '%d: %s (%s)',
                     $voucher->getId(),
                     $voucher->getCode(),
-                    $voucher->getRedeemedTime()->format(\DateTime::W3C)
+                    $voucher->getRedeemedTime()->format(DateTimeInterface::W3C)
                 ),
                 OutputInterface::VERBOSITY_VERY_VERBOSE
             );

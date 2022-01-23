@@ -43,13 +43,11 @@ class UserRegistrationInfoHandler
     }
 
     /**
-     * @param string $from
-     *
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function sendReport($from = '-7 days')
+    public function sendReport(string $from = '-7 days'): void
     {
         $users = $this->manager->getRepository('App:User')->findUsersSince((new \DateTime())->modify($from));
         $message = $this->twig->render('Email/weekly_report.twig', ['users' => $users]);

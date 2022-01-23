@@ -13,7 +13,7 @@ class AliasCreatedEvent extends Event
 {
     use AliasAwareTrait;
 
-    const NAME = 'alias.custom_created';
+    public const NAME = 'alias.custom_created';
 
     /**
      * Constructor.

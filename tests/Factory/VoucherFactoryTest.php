@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class VoucherFactoryTest extends TestCase
 {
-    public function testCreate()
+    public function testCreate(): void
     {
         $user = new User();
 

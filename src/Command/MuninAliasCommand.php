@@ -31,7 +31,7 @@ class MuninAliasCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('app:munin:alias')
@@ -43,7 +43,7 @@ class MuninAliasCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         if ($input->getOption('autoconf')) {
             $output->writeln('yes');

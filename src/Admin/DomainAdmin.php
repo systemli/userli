@@ -4,6 +4,7 @@ namespace App\Admin;
 
 use App\Creator\DomainCreator;
 use App\Entity\Domain;
+use App\Exception\ValidationException;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -32,27 +33,27 @@ class DomainAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->add('name', TextType::class, ['disabled' => !$this->isNewObject()]);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('name');
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->addIdentifier('id')
             ->addIdentifier('name')
             ->add('creationTime')
@@ -62,7 +63,7 @@ class DomainAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollection $collection): void
     {
         $collection->remove('delete');
     }
@@ -72,12 +73,12 @@ class DomainAdmin extends Admin
      *
      * @return Domain object
      *
-     * @throws \App\Exception\ValidationException
+     * @throws ValidationException
      */
-    public function create($object)
+    public function create($object): Domain
     {
         // this is a copy of the parent function to use the DomainCreator instead of ModelMapper
-        // TODO: implement ModelMaperInterface or use prePersist and postPersist
+        // TODO: implement ModelMapperInterface or use prePersist and postPersist
         $this->prePersist($object);
         foreach ($this->extensions as $extension) {
             $extension->prePersist($this, $object);

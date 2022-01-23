@@ -6,6 +6,7 @@ use App\Entity\Alias;
 use App\Entity\User;
 use App\Event\AliasCreatedEvent;
 use App\Event\RandomAliasCreatedEvent;
+use App\Exception\ValidationException;
 use App\Factory\AliasFactory;
 
 /**
@@ -14,7 +15,7 @@ use App\Factory\AliasFactory;
 class AliasCreator extends AbstractCreator
 {
     /**
-     * @throws \App\Exception\ValidationException
+     * @throws ValidationException
      */
     public function create(User $user, ?string $localPart): Alias
     {

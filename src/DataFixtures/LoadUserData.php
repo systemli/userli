@@ -7,13 +7,13 @@ use App\Enum\Roles;
 use App\Helper\PasswordUpdater;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LoadUserData extends Fixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
-    const PASSWORD = 'password';
+    private const PASSWORD = 'password';
 
     private $users = [
         ['email' => 'admin@example.org', 'roles' => [Roles::ADMIN]],
@@ -31,15 +31,17 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
     /**
      * {@inheritdoc}
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Exception
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $this->loadStaticUsers($manager);
         $this->loadRandomUsers($manager);
@@ -48,27 +50,22 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
     /**
      * {@inheritdoc}
      */
-    public function getOrder()
+    public function getOrder(): int
     {
         return 2;
     }
 
-    /**
-     * @return PasswordUpdater
-     */
-    private function getPasswordUpdater()
+    private function getPasswordUpdater(): PasswordUpdater
     {
-        return $this->container->get('App\Helper\PasswordUpdater');
+        return $this->container->get(PasswordUpdater::class);
     }
 
     /**
      * @param $domain
      * @param $email
      * @param $roles
-     *
-     * @return User
      */
-    private function buildUser($domain, $email, $roles)
+    private function buildUser($domain, $email, $roles): User
     {
         $user = new User();
         $user->setDomain($domain);
@@ -81,7 +78,7 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
         return $user;
     }
 
-    private function loadStaticUsers(ObjectManager $manager)
+    private function loadStaticUsers(ObjectManager $manager): void
     {
         $domainRepository = $manager->getRepository('App:Domain');
 
@@ -98,24 +95,27 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
         }
     }
 
-    private function loadRandomUsers(ObjectManager $manager)
+    /**
+     * @throws \Exception
+     */
+    private function loadRandomUsers(ObjectManager $manager): void
     {
         $domainRepository = $manager->getRepository('App:Domain');
 
         for ($i = 0; $i < 500; ++$i) {
-            $email = sprintf('%s@example.org', uniqid());
+            $email = sprintf('%s@example.org', uniqid('', true));
             $splitted = explode('@', $email);
             $roles = [Roles::USER];
             $domain = $domainRepository->findOneBy(['name' => $splitted[1]]);
 
             $user = $this->buildUser($domain, $email, $roles);
-            $user->setCreationTime(new \DateTime(sprintf('-%s days', mt_rand(1, 25))));
+            $user->setCreationTime(new \DateTime(sprintf('-%s days', random_int(1, 25))));
 
-            if (0 == $i % 20) {
+            if (0 === $i % 20) {
                 $user->setDeleted(true);
             }
 
-            if (0 == $i % 30) {
+            if (0 === $i % 30) {
                 $user->setRoles(array_merge($user->getRoles(), [Roles::SUSPICIOUS]));
             }
 

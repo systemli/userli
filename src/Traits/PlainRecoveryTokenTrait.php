@@ -12,26 +12,17 @@ trait PlainRecoveryTokenTrait
      */
     private $plainRecoveryToken;
 
-    /**
-     * @return string|null
-     */
-    public function getPlainRecoveryToken()
+    public function getPlainRecoveryToken(): ?string
     {
         return $this->plainRecoveryToken;
     }
 
-    /**
-     * @param string|null $plainRecoveryToken
-     */
-    public function setPlainRecoveryToken($plainRecoveryToken)
+    public function setPlainRecoveryToken(?string $plainRecoveryToken): void
     {
         $this->plainRecoveryToken = $plainRecoveryToken;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function erasePlainRecoveryToken()
+    public function erasePlainRecoveryToken(): void
     {
         $this->plainRecoveryToken = null;
     }

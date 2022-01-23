@@ -42,39 +42,27 @@ class Alias implements SoftDeletableInterface
         $this->updatedTime = $currentDateTime;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSource()
+    public function getSource(): ?string
     {
         return $this->source;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setSource($source)
+    public function setSource(?string $source): void
     {
         $this->source = $source;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDestination()
+    public function getDestination(): ?string
     {
         return $this->destination;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setDestination($destination)
+    public function setDestination(?string $destination): void
     {
         $this->destination = $destination;
     }
 
-    public function clearSensitiveData()
+    public function clearSensitiveData(): void
     {
         $this->user = null;
         $this->destination = null;

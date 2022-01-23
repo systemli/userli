@@ -11,15 +11,12 @@ trait DomainAwareTrait
      */
     private $domain;
 
-    /**
-     * @return Domain|null
-     */
-    public function getDomain()
+    public function getDomain(): ?Domain
     {
         return $this->domain;
     }
 
-    public function setDomain(Domain $domain)
+    public function setDomain(Domain $domain): void
     {
         $this->domain = $domain;
     }

@@ -6,18 +6,10 @@ use App\Remover\VoucherRemover;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 class UserCRUDController extends CRUDController
 {
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse
-     *
-     * @throws \Doctrine\ORM\Query\QueryException
-     */
-    public function batchActionRemoveVouchers(ProxyQueryInterface $selectedModelQuery)
+    public function batchActionRemoveVouchers(ProxyQueryInterface $selectedModelQuery): RedirectResponse
     {
         $this->admin->checkAccess('edit');
 
@@ -33,7 +25,10 @@ class UserCRUDController extends CRUDController
         return $this->redirectToList();
     }
 
-    public function deleteAction($id)
+    /**
+     * @param int|string|null $id
+     */
+    public function deleteAction($id): RedirectResponse
     {
         $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
@@ -53,7 +48,7 @@ class UserCRUDController extends CRUDController
         return $this->redirectToList();
     }
 
-    public function batchActionDelete(ProxyQueryInterface $query)
+    public function batchActionDelete(ProxyQueryInterface $query): RedirectResponse
     {
         $this->admin->checkAccess('batchDelete');
 

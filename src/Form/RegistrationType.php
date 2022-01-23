@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Form\DataTransformer\TextToEmailTransformer;
+use App\Form\Model\Registration;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -17,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class RegistrationType extends AbstractType
 {
-    const NAME = 'registration';
+    public const NAME = 'registration';
 
     /**
      * @var string
@@ -41,7 +42,7 @@ class RegistrationType extends AbstractType
                 'label' => 'form.voucher',
                 'attr' => [
                     'autocomplete' => 'off',
-                    'readonly' => (null === $options['data']->getVoucher()) ? false : true,
+                    'readonly' => !((null === $options['data']->getVoucher())),
                 ],
             ])
             ->add($builder->create(
@@ -61,15 +62,15 @@ class RegistrationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => 'App\Form\Model\Registration']);
+        $resolver->setDefaults(['data_class' => Registration::class]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }

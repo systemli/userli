@@ -120,9 +120,12 @@ class UserProviderTest extends TestCase
 
     public function userProvider(): array
     {
+        $user = new User();
+        $user->setId(1);
+
         return [
             [$this->getMockBuilder(UserInterface::class)->getMock(), UnsupportedUserException::class],
-            [new User(), UsernameNotFoundException::class],
+            [$user, UsernameNotFoundException::class],
         ];
     }
 

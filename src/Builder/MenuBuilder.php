@@ -38,10 +38,7 @@ class MenuBuilder
         $this->navbarLeft = $navbarLeft;
     }
 
-    /**
-     * @return ItemInterface
-     */
-    public function createNavbarLeft()
+    public function createNavbarLeft(): ItemInterface
     {
         $menu = $this->factory->createItem('root', ['navbar' => true]);
 
@@ -52,10 +49,7 @@ class MenuBuilder
         return $menu;
     }
 
-    /**
-     * @return ItemInterface
-     */
-    public function createNavbarRight()
+    public function createNavbarRight(): ItemInterface
     {
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttribute('class', 'nav navbar-nav navbar-right');

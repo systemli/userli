@@ -16,25 +16,25 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AliasCreatorTest extends TestCase
 {
-    protected function createCreator()
+    protected function createCreator(): AliasCreator
     {
         $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
-        $manager->expects($this->any())->method('persist')->willReturnCallback(
+        $manager->method('persist')->willReturnCallback(
             function (Alias $alias) {
                 $alias->setId(1);
             }
         );
-        $manager->expects($this->any())->method('flush')->willReturn(true);
+        $manager->method('flush')->willReturn(true);
 
         $validator = $this->getMockBuilder(ValidatorInterface::class)->getMock();
-        $validator->expects($this->any())->method('validate')->willReturn(new ConstraintViolationList());
+        $validator->method('validate')->willReturn(new ConstraintViolationList());
 
         $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
 
         return new AliasCreator($manager, $validator, $eventDispatcher);
     }
 
-    protected function createUser()
+    protected function createUser(): User
     {
         $domain = new Domain();
         $domain->setName('example.org');
@@ -44,7 +44,7 @@ class AliasCreatorTest extends TestCase
         return $user;
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $creator = $this->createCreator();
         $user = $this->createUser();
@@ -54,7 +54,7 @@ class AliasCreatorTest extends TestCase
         self::assertEquals('user@example.org', $alias->getSource());
     }
 
-    public function testCreateRandom()
+    public function testCreateRandom(): void
     {
         $creator = $this->createCreator();
         $user = $this->createUser();
@@ -64,14 +64,14 @@ class AliasCreatorTest extends TestCase
         self::assertEquals(1, $alias->getId());
     }
 
-    public function testCreateWithException()
+    public function testCreateWithException(): void
     {
         $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
 
         $violation = new ConstraintViolation('message', 'messageTemplate', [], null, null, 'someValue');
 
         $validator = $this->getMockBuilder(ValidatorInterface::class)->getMock();
-        $validator->expects($this->any())->method('validate')->willReturn(new ConstraintViolationList([$violation]));
+        $validator->method('validate')->willReturn(new ConstraintViolationList([$violation]));
 
         $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
 

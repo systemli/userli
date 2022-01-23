@@ -32,7 +32,7 @@ class RecoveryProcessMessageSender
     /**
      * @throws \Exception
      */
-    public function send(User $user, string $locale)
+    public function send(User $user, string $locale): void
     {
         if (null === $email = $user->getEmail()) {
             throw new \Exception('Email should not be null');

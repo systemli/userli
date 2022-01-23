@@ -8,18 +8,16 @@ namespace App\Helper;
 final class PasswordGenerator
 {
     /**
-     * @param int $length
-     *
-     * @return string
+     * @throws \Exception
      */
-    public static function generate($length = 45)
+    public static function generate(int $length = 45): string
     {
         $chars = 'abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789,;.:?!';
         $pass = [];
         $charsLength = strlen($chars) - 1;
 
         for ($i = 0; $i < $length; ++$i) {
-            $n = rand(0, $charsLength);
+            $n = random_int(0, $charsLength);
             $pass[] = $chars[$n];
         }
 
