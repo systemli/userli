@@ -45,7 +45,6 @@ class RecoveryTokenHandler
         if (null === $plainPassword = $user->getPlainPassword()) {
             throw new \Exception('plainPassword should not be null');
         }
-        $user->eraseCredentials();
 
         if (null === $user->getPlainMailCryptPrivateKey()) {
             throw new \Exception('plainMailCryptPrivateKey should not be null');
