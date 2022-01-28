@@ -61,7 +61,6 @@ class UsersResetCommand extends Command
             ->setName('app:users:reset')
             ->setDescription('Reset a user')
             ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User to reset')
-            ->addOption('password', 'p', InputOption::VALUE_REQUIRED, 'User to reset')
             ->addOption('dry-run', null, InputOption::VALUE_NONE);
     }
 
