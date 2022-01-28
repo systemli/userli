@@ -1,3 +1,9 @@
+# 2.8.0 (2022.01.28)
+
+* Add console command to reset a user (`app:users:reset`)
+* Update dependencies
+* Many code style fixes
+
 # 2.7.18 (2022.01.10)
 
 * Fix CheckPasswordCommand with latest symfony/process (Fixes #341)
