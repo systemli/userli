@@ -20,7 +20,6 @@ translations/
 .php_cs.cache
 
 ###> symfony/phpunit-bridge ###
-.phpunit
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
