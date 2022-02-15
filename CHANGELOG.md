@@ -1,3 +1,7 @@
+# 2.8.1 (UNRELEASED)
+
+* Update dependencies
+
 # 2.8.0 (2022.01.28)
 
 * Add console command to reset a user (`app:users:reset`)
