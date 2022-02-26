@@ -2504,16 +2504,16 @@
         },
         {
             "name": "pear/crypt_gpg",
-            "version": "v1.6.6",
+            "version": "v1.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/Crypt_GPG.git",
-                "reference": "18eb7b7c0822377804adafb53dafe6d15848f245"
+                "reference": "29c0fbe96d0d4063ecd5c9a4644cb65a7fb7cc4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/Crypt_GPG/zipball/18eb7b7c0822377804adafb53dafe6d15848f245",
-                "reference": "18eb7b7c0822377804adafb53dafe6d15848f245",
+                "url": "https://api.github.com/repos/pear/Crypt_GPG/zipball/29c0fbe96d0d4063ecd5c9a4644cb65a7fb7cc4e",
+                "reference": "29c0fbe96d0d4063ecd5c9a4644cb65a7fb7cc4e",
                 "shasum": ""
             },
             "require": {
@@ -2570,7 +2570,7 @@
                 "issues": "https://pear.php.net/bugs/search.php?cmd=display&package_name[]=Crypt_GPG",
                 "source": "https://github.com/pear/Crypt_GPG"
             },
-            "time": "2021-09-05T08:33:37+00:00"
+            "time": "2022-02-16T17:39:00+00:00"
         },
         {
             "name": "pear/pear_exception",
