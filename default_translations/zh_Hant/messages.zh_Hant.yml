@@ -1,1 +1,3 @@
-{}
+start:
+  title: 歡迎來到 %domain%
+  intro: 您可以在此處設定和管理您的電子郵件帳戶。
