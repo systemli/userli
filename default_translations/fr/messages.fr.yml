@@ -1,6 +1,6 @@
 form:
   remember-me: Rester connecté
-  email: E-mail
+  email: Courriel
   domain: Domaine
   change-password: Modifier votre mot de passe
   create-random-alias: Générer un alias d'adresse aléatoire
@@ -65,11 +65,11 @@ index:
   delete-button: Supprimer le compte
   voucher-limit: Vous n'avez plus de code d’invitation.
   title: Gérez votre compte de messagerie
-  logged_in_as: Vous êtes connecté en tant que %user%.
+  logged_in_as: Vous êtes connecté(e) en tant que %user%.
   voucher-disable: "Vous recevrez trois codes d'invitation le %date%, afin d'éviter\
     \ les inscriptions de masse et le spam.\n"
   delete-description: "Vous pouvez supprimer votre compte de messagerie %project_name%.\
-    \ Cecinsupprimera tous vos e-mails. <strong>Il sera impossible de les récupérer</strong><br\
+    \ Ceci supprimera tous vos courriels. <strong>Il sera impossible de les récupérer</strong><br\
     \ /><br /> Pour supprimer votre compte, vous devez confirmer votre mot de passe\
     \ actuel.\n"
   voucher-headline: Vos codes d'invitation
@@ -109,7 +109,7 @@ start:
   registration-header: Inscription
   vouchers-desc: Invitez vos amis
   account-settings-desc: Mots de passe et plus
-  webmail-desc: Lisez et écrivez des e-mails
+  webmail-desc: Lisez et écrivez des courriels
   title: Bienvenue sur %domain%
   webmail: Messagerie Web
   openpgp-delete: 'supprimer la clé OpenPGP'
@@ -232,7 +232,7 @@ navbar_right:
   logout: Se déconnecter
   admin: Administration
 init_user:
-  text: Les standards d'e-mail nécessitent la présence du compte postmaster@%domain%.
+  text: Les standards de courrier électronique nécessitent la présence du compte postmaster@%domain%.
     Veuillez définir un mot de passe pour ce premier compte administrateur puis vous
     y connecter.
   lead: Vous avez créé votre domaine principal.
