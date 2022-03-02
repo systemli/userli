@@ -58,7 +58,7 @@ index:
     \ Alias-Adressen zu löschen.</li>\n  </ul>\n</p>\n"
 form:
   title: Anmelden
-  signin-header: Login
+  signin-header: Anmelden
   register-header: Konto erstellen
   email: E-Mail
   password: Passwort
