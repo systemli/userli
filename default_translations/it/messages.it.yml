@@ -1,1 +1,162 @@
-{}
+start:
+  registration-header: Registrazione
+  title: Benvenuto/a su %domain%
+  registration-button: Crea un account
+  aliases-delete: elimina l'indirizzo alias
+  aliases: Indirizzi alias
+  aliases-desc: Nascondi la tua identità
+  vouchers: Codici d'invito
+  vouchers-desc: Invita i tuoi amici
+  webmail: Webmail
+  webmail-desc: Leggi e scrivi e-mail
+  openpgp-delete: elimina la chiave OpenPGP
+  openpgp-settings: OpenPGP
+  openpgp-settings-desc: Pubblica la tua chiave
+  openpgp-settings-title: Pubblica la tua chiave OpenPGP nella Web Key Directory
+  intro: Qui puoi impostare e gestire il tuo account di posta elettronica.
+  registration-text: "Non hai ancora un account di posta elettronica con %domain%?\
+    \ Nessun problema! Se uno dei tuoi amici ha già un account, puoi ottenere un codice\
+    \ invito da loro e creare immediatamente il tuo account.\n"
+  account-settings: Impostazioni dell'account
+  account-settings-desc: Password e altro
+  account-delete: Elimina l'account
+index:
+  voucher-limit: Non hai più codici di invito.
+  voucher-headline: I tuoi codici di invito
+  title: Gestisci il tuo account di posta elettronica
+  alias-deletion-custom: Scrivici per fare eliminare indirizzi.
+  delete-headline: Elimina l'account
+  delete-button: Elimina l'account
+  logged_in_as: Hai effettuato l'accesso come %utente%.
+  recovery-token-button: Gestisci il gettone di recupero
+  delete-description: "Puoi eliminare il tuo account di posta elettronica %project_name%.\
+    \ Questo eliminerà tutte le tue e-mail. <strong> Un recupero in un secondo momento\
+    \ non è possibile.</strong> <br /><br /> Per eliminare il tuo account devi presentare\
+    \ la tua password attuale.\n"
+  alias-explanation: "<p>\n  Usate indirizzi alias per nascondere il vostro indirizzo\
+    \ e-mail originale alle persone che non conoscete bene o alle aziende di cui non\
+    \ vi fidate completamente.\n</p>\n<p>\n  <ul>\n    <li> Tutte le e-mail inviate\
+    \ agli indirizzi alias vanno alla tua casella di posta normale.</li>\n    <li>Per\
+    \ inviare da un indirizzo alias, devi impostare manualmente il tuo client di posta\
+    \ elettronica per farlo.</li>\n    <li>È possibile avere indirizzi alias personalizzati\
+    \ %alias_limit_custom%.</li>\n    <li>È possibile avere %alias_limit_random% indirizzi\
+    \ alias casuali.</li>\n    <li>Gli indirizzi alias casuali dovrebbero essere usati\
+    \ per un unico scopo per evitare il tracciamento tra diversi servizi.</li>\n \
+    \   <li>Contattaci per eliminare gli indirizzi alias personalizzati.</li>\n  </ul>\n\
+    </p>\n"
+form:
+  email: E-mail
+  title: Registra
+  signin-header: Accedi
+  register-header: Crea un account
+  remember-me: Rimani connesso/a
+  signin: Accedi
+  recovery-link: Password dimenticata?
+  roles: Ruoli
+  submit: Invia
+  voucher: Codice d'invito
+  actual-password: Password attuale
+  new-custom-alias: Nuovo indirizzo alias
+  delete-account: Elimina l'account
+  create-voucher: Crea un codice d'invito
+  openpgp-key-file: 'Carica il tuo file chiave:'
+  openpgp-key-file-mimetype: Il file caricato non contiene dati OpenPGP.
+  delete-password: Password
+  create-random-alias: Genera un indirizzo alias casuale
+  password: Password
+  registration-recovery-token-next-button: Continua
+  add: Aggiungi
+  password_confirmation: Conferma la password
+  domain: Dominio
+  plain-password: Nuova password
+  plain-password_confirmation: Conferma la nuova password
+  change-password: Cambia la tua password
+  create-custom-alias: Aggiungi
+  delete-alias: Elimina l'indirizzo alias
+  openpgp-key-text: 'Incolla la tua chiave come testo:'
+  openpgp-key-upload-or: o
+welcome:
+  text: "<h3>Pronto a partire</h3> <p> Nel web puoi trovare delle guide per impostare\
+    \ il tuo account di posta elettronica con diversi programmi client.</p> <p> In\
+    \ una settimana riceverai tre codici invito, che potrai raccogliere a <a href=\"\
+    %app_url%\">%app_url%</a>. Puoi passarli ai tuoi amici e invitarli a registrarsi\
+    \ con %project_name%.</p>\n"
+  headline: Benvenuto/a a %project_name%!
+  next-button: Alla panoramica
+navbar_left:
+  about-us:
+    text: Chi siamo
+navbar_right:
+  login: Accedi
+  logout: Esci
+  admin: Amministratore
+registration:
+  title: Registrazione su %project_name%
+  information: Informazioni
+  recovery-token-headline: Gettone di recupero
+  information-intro: "Vuoi registrare un account di posta elettronica con <a href=\"\
+    %project_url%\">%project_name%</a>? Permettiamo le registrazioni solo se un amico\
+    \ ti invita con un codice di invito ai nostri servizi.\n"
+  label-email: Il tuo indirizzo e-mail preferito
+delete:
+  alias:
+    headline: Elimina l'indirizzo alias %alias%
+    lead: Abbiamo bisogno di verificare la tua password per eliminare il tuo indirizzo
+      alias.
+  user:
+    headline: Elimina l'account
+    lead: Abbiamo bisogno di verificare la tua password per eliminare il tuo account.
+flashes:
+  openpgp-key-upload-error-no-keys: Nessuna chiave per il tuo indirizzo e-mail trovata
+    nei dati caricati.
+  openpgp-key-upload-error-multiple-keys: Nei dati caricati è stata trovata più di
+    una chiave per il tuo indirizzo e-mail. Si prega di caricare solo una chiave.
+  recovery-token-invalid: L'indirizzo e-mail e/o il gettone di recupero sono sbagliati!
+spam:
+  title: Account bloccato
+  text: "Oh no, crediamo che il tuo account sia stato usato impropriamente da uno\
+    \ spammer.\nL'accesso alla posta elettronica è stato disattivato.\nContatta il\
+    \ supporto per sbloccare il tuo account.\n"
+mail:
+  welcome-subject: Benvenuto/a su %domain%
+  alias-created-subject: Nuovo indirizzo alias creato
+  alias-created-body: "Ciao %email%,\n\nPer il tuo indirizzo e-mail %email% è stato\
+    \ aggiunto un nuovo alias:\n%alias%\n\nGestisci i tuoi alias di posta elettronica\
+    \ qui: %app_url%/alias\n\nCi auguriamo che tu continui a goderti il tuo account\
+    \ di posta elettronica.\nLa tua squadra gestione %project_name%.\n"
+  welcome-body: "Caro utente,\n\nBenvenuto a bordo. Puoi trovare guide per impostare\
+    \ il tuo account di posta elettronica\ncon diversi programmi client su internet.\n\
+    \nAvrai una casella di posta elettronica con una quota di 1 GB. Se superi il tuo\
+    \ limite,\nil tuo account di posta elettronica potrebbe non funzionare correttamente.\n\
+    \nIn una settimana riceverai tre codici invito, che potrai ritirare\nsu %app_url%/voucher.\
+    \ Puoi passarli ai tuoi amici e\ninvitarli a registrarsi con %project_name%.\n\
+    \nSinceramente,\nil tuo team di amministrazione di %nome_progetto%.\n"
+  recovery-subject: La password del tuo account di posta elettronica %email% sarà
+    reimpostata
+  recovery-body: "Ciao %email%,\n\nLa password del tuo account è stata tentata di\
+    \ resettare l'autenticazione con\nil tuo indirizzo e-mail e il codice di recupero\
+    \ corrispondente a\n%app_url%/recupero.\n\nSe non sei stato/a tu, allora qualcun\
+    \ altro con accesso al tuo gettone di recupero\nha tentato di entrare in possesso\
+    \ del tuo account. Vai su\n%app_url%/user/recovery_token immediatamente e crea\
+    \ un\nnuovo token di recupero. Questo invaliderà il vecchio token di recupero\
+    \ e fermerà\nil processo.\n\nSe hai attivato il processo da solo, il periodo di\
+    \ attesa di 48 ore è iniziato\nora. Finirà a %time%. In seguito, puoi impostare\
+    \ una nuova password su\n%app_url%/recupero.\n\nSperiamo che tu continui a goderti\
+    \ il tuo account di posta elettronica.\nIl tuo %project_name% admin team.\n"
+admin:
+  registered-accounts: Account registrati
+User: Utente
+init_user:
+  lead: Hai creato il tuo dominio primario.
+  text: Gli standard di posta elettronica richiedono la presenza dell'account postmaster@%dominio%.
+    Scegli una password per questo primo account di amministratore e accedi successivamente.
+openpgp:
+  information: Informazioni
+  expiretime-label: 'Data di scadenza:'
+recovery:
+  cancel: Annulla
+Alias: Indirizzo alias
+copy-to-clipboard: Copia negli appunti
+Domain: Dominio
+Voucher: Codice d'invito
+Reserved Name: Nome riservato
