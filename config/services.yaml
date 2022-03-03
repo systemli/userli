@@ -5,8 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
-    locales: en|de|es|fr|pt|nb|gsw
-    supported_locales: ['en', 'de', 'es', 'fr', 'pt', 'nb', 'gsw']
+    locales: en|de|es|fr|it|pt|nb|gsw
+    supported_locales: ['en', 'de', 'es', 'fr', 'it', 'pt', 'nb', 'gsw']
     navbar_left:
         -
             name: 'navbar_left.about-us.text'
