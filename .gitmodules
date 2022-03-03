@@ -19,9 +19,6 @@
 [submodule "ansible/roles/geerlingguy.php"]
 	path = ansible/roles/geerlingguy.php
 	url = https://github.com/geerlingguy/ansible-role-php.git
-[submodule "ansible/roles/weareinteractive.apt"]
-	path = ansible/roles/weareinteractive.apt
-	url = https://github.com/weareinteractive/ansible-apt.git
 [submodule "ansible/roles/mariadb"]
 	path = ansible/roles/mariadb
 	url = https://github.com/systemli/ansible-role-mariadb.git

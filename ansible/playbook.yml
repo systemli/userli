@@ -1,8 +1,11 @@
 - hosts: all
   become: yes
   pre_tasks:
+    - name: Install dependencies
+      apt:
+        name: "{{ apt_packages }}"
+        update_cache: true
   roles:
-    - weareinteractive.apt
     - nginx
     - mariadb
     - systemli.dovecot
