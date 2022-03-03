@@ -1,5 +1,7 @@
-# 2.8.1 (UNRELEASED)
+# 2.9.0 (2022.03.03)
 
+* Add Italian as supported language (Thanks J. Lavoie)
+* Update to symfony 4.4.38
 * Update dependencies
 
 # 2.8.0 (2022.01.28)
