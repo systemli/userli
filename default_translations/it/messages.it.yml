@@ -44,6 +44,8 @@ index:
     \ per un unico scopo per evitare il tracciamento tra diversi servizi.</li>\n \
     \   <li>Contattaci per eliminare gli indirizzi alias personalizzati.</li>\n  </ul>\n\
     </p>\n"
+  voucher-disable: "Il %date% riceverai tre codici di invito. Questo per evitare registrazioni\
+    \ di massa e spam.\n"
 form:
   email: E-mail
   title: Registra
