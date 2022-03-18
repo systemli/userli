@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 # configuration
 vagrant="yes" # run build process in vagrant
 

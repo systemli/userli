@@ -34,6 +34,6 @@ as some random aliases and vouchers. The domain for all accounts is
 If you want to see more details about how the users are created, see
 `src/DataFixtures`.
 
-Visit you local instance at http://192.168.33.99/.
+Visit you local instance at http://192.168.60.99/.
 
 {{%children style="h2" description="true"%}}
