@@ -38,6 +38,9 @@
     "composer/ca-bundle": {
         "version": "1.1.4"
     },
+    "composer/package-versions-deprecated": {
+        "version": "1.11.99.5"
+    },
     "dg/bypass-finals": {
         "version": "v1.1.0"
     },
@@ -143,9 +146,6 @@
     "knplabs/knp-menu-bundle": {
         "version": "v2.2.1"
     },
-    "kriswallsmith/assetic": {
-        "version": "v1.0.5"
-    },
     "monolog/monolog": {
         "version": "1.23.0"
     },
@@ -164,9 +164,6 @@
             "ref": "65726efb67ff51d89de38195bc0d230fa811f64d"
         }
     },
-    "ocramius/package-versions": {
-        "version": "1.4.2"
-    },
     "pear/console_commandline": {
         "version": "v1.2.3"
     },
@@ -175,9 +172,6 @@
     },
     "pear/pear_exception": {
         "version": "v1.0.1"
-    },
-    "php": {
-        "version": "7.3.19"
     },
     "phpstan/phpdoc-parser": {
         "version": "0.5.4"
@@ -196,9 +190,6 @@
     },
     "ramsey/uuid": {
         "version": "3.8.0"
-    },
-    "robloach/component-installer": {
-        "version": "0.2.3"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",

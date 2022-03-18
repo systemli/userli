@@ -1,3 +1,7 @@
+# 2.9.1 (UNRELEASED)
+
+* Update to symfony 4.4.39
+
 # 2.9.0 (2022.03.03)
 
 * Add Italian as supported language (Thanks J. Lavoie)
