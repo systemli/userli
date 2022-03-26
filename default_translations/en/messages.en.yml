@@ -130,7 +130,8 @@ registration:
   information-password-policy: >
     <strong>Important:</strong>
     You need a password with at least 12 characters.
-    Passwords will be tested against a <a href="https://haveibeenpwned.com/Passwords">database of known bad passwords</a>.
+    Passwords will be tested against a <a href="https://haveibeenpwned.com/Passwords">database
+    of known bad passwords</a>.
   label-email: Your preferred e-mail address
   recovery-token-headline: Recovery token
 welcome:
@@ -167,7 +168,8 @@ delete:
     lead: We need to verify your password to delete your account.
   openpgp:
     headline: Delete OpenPGP key
-    lead: We need to verify your password to remove your OpenPGP key from the Web Key Directory.
+    lead: We need to verify your password to remove your OpenPGP key from the Web
+      Key Directory.
   cancel: Cancel
 recovery-token:
   headline: Manage recovery token
@@ -198,9 +200,10 @@ flashes:
   openpgp-deletion-successful: Your OpenPGP key was deleted.
   openpgp-key-upload-successful: Your OpenPGP key got uploaded.
   openpgp-key-upload-error-no-openpgp: The uploaded file doesn't contain OpenPGP data.
-  openpgp-key-upload-error-no-keys: No keys for your mail address found in uploaded data.
-  openpgp-key-upload-error-multiple-keys: More than one key for your mail address found
-    in uploaded data. Please upload only one key.
+  openpgp-key-upload-error-no-keys: No keys for your mail address found in uploaded
+    data.
+  openpgp-key-upload-error-multiple-keys: More than one key for your mail address
+    found in uploaded data. Please upload only one key.
 flash_batch_remove_vouchers_success: Unredeemed invite codes deleted.
 error:
   title: Oops, an error occured.
@@ -220,7 +223,7 @@ mail:
     Dear user,
 
     Welcome aboard. You can find guides for setting up your e-mail account
-    with several client programs on the internet.
+    with several client programs on the Internet.
 
     You get a mailbox with a 1 GB quota. If you exceed your limit,
     your e-mail account may not function properly.
@@ -276,20 +279,20 @@ Reserved Name: Reserved Name
 copy-to-clipboard: Copy to clipboard
 init.title: Creating initial configuration
 init_domain:
-  lead: Thank your for installing Userli. Currently, there are no domains or accounts present.
+  lead: Thank your for installing Userli. Currently, there are no domains or accounts
+    present.
   text: Please choose your primary domain, which Userli should handle.
 init_user:
   lead: You have created your primary domain.
-  text: "E-mail standards require the account postmaster@%domain% to be present.
-    Please pick a password for this first administrator account and log in afterwards."
+  text: "E-mail standards require the account postmaster@%domain% to be present. Please\
+    \ pick a password for this first administrator account and log in afterwards."
 openpgp:
   key-info: Published OpenPGP key
   delete-button: Delete OpenPGP key
   information: Information
-  information-details:
-    If you upload your OpenPGP key here, it will be published in our <i><a target="_blank"
-    href="https://gnupg.org/faq/wkd.html">Web Key Directory</a></i>. You thereby help friends
-    to discover your key automatically and securely.
+  information-details: If you upload your OpenPGP key here, it will be published in
+    our <i><a target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key Directory</a></i>.
+    You thereby help friends to discover your key automatically and securely.
   keyid-label: "Key ID:"
   fingerprint-label: "Fingerprint:"
   expiretime-label: "Expiry date:"
