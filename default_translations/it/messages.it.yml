@@ -127,12 +127,12 @@ mail:
     \ qui: %app_url%/alias\n\nCi auguriamo che tu continui a goderti il tuo account\
     \ di posta elettronica.\nLa tua squadra gestione %project_name%.\n"
   welcome-body: "Caro utente,\n\nBenvenuto a bordo. Puoi trovare guide per impostare\
-    \ il tuo account di posta elettronica\ncon diversi programmi client su internet.\n\
+    \ il tuo account di posta elettronica\ncon diversi programmi client su Internet.\n\
     \nAvrai una casella di posta elettronica con una quota di 1 GB. Se superi il tuo\
     \ limite,\nil tuo account di posta elettronica potrebbe non funzionare correttamente.\n\
     \nIn una settimana riceverai tre codici invito, che potrai ritirare\nsu %app_url%/voucher.\
     \ Puoi passarli ai tuoi amici e\ninvitarli a registrarsi con %project_name%.\n\
-    \nSinceramente,\nil tuo team di amministrazione di %nome_progetto%.\n"
+    \nSinceramente,\nil tuo team di amministrazione di %project_name%.\n"
   recovery-subject: La password del tuo account di posta elettronica %email% sarà
     reimpostata
   recovery-body: "Ciao %email%,\n\nLa password del tuo account è stata tentata di\
