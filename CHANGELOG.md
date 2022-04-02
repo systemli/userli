@@ -1,6 +1,8 @@
 # 2.9.1 (UNRELEASED)
 
-* Update to symfony 4.4.39
+* Update to symfony 4.4.40
+* Update dependencies
+* Update translations
 
 # 2.9.0 (2022.03.03)
 
