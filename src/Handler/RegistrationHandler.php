@@ -106,7 +106,7 @@ class RegistrationHandler
 
     public function canRegister(): bool
     {
-        $count = $this->manager->getRepository('App:User')->count([]);
+        $count = $this->manager->getRepository('App:User')->count(['deleted' => false]);
 
         return !(!$this->hasSinaBox && $count > self::REGISTRATION_LIMIT);
     }
