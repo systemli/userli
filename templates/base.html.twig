@@ -1,6 +1,6 @@
-{% extends 'MopaBootstrapBundle::base.html.twig' %}
+{% extends '@MopaBootstrap/base.html.twig' %}
 
-{% from 'MopaBootstrapBundle::flash.html.twig' import session_flash %}
+{% from '@MopaBootstrap/flash.html.twig' import session_flash %}
 
 {% block head_style %}
     <link rel="stylesheet" href="{{ asset('build/app.css') }}">
