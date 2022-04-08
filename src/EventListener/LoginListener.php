@@ -5,7 +5,7 @@ namespace App\EventListener;
 use App\Entity\User;
 use App\Event\LoginEvent;
 use App\Helper\PasswordUpdater;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
@@ -13,7 +13,7 @@ use Symfony\Component\Security\Http\SecurityEvents;
 class LoginListener implements EventSubscriberInterface
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
     /**
@@ -24,7 +24,7 @@ class LoginListener implements EventSubscriberInterface
     /**
      * LoginListener constructor.
      */
-    public function __construct(ObjectManager $manager, PasswordUpdater $passwordUpdater)
+    public function __construct(EntityManagerInterface $manager, PasswordUpdater $passwordUpdater)
     {
         $this->manager = $manager;
         $this->passwordUpdater = $passwordUpdater;

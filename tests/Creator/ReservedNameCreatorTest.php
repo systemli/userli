@@ -4,7 +4,7 @@ namespace App\Tests\Creator;
 
 use App\Creator\ReservedNameCreator;
 use App\Entity\ReservedName;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -14,7 +14,7 @@ class ReservedNameCreatorTest extends TestCase
 {
     public function testCreate(): void
     {
-        $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('persist')->willReturnCallback(
             function (ReservedName $reservedName) {
                 $reservedName->setId(1);

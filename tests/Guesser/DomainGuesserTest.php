@@ -5,7 +5,7 @@ namespace App\Tests\Guesser;
 use App\Entity\Domain;
 use App\Guesser\DomainGuesser;
 use App\Repository\DomainRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 
 class DomainGuesserTest extends TestCase
@@ -27,9 +27,9 @@ class DomainGuesserTest extends TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|ObjectManager
+     * @return \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
      */
-    private function getManager(): ObjectManager
+    private function getManager(): EntityManagerInterface
     {
         $repository = $this->getMockBuilder(DomainRepository::class)
             ->disableOriginalConstructor()
@@ -48,7 +48,7 @@ class DomainGuesserTest extends TestCase
             }
         );
 
-        $manager = $this->getMockBuilder(ObjectManager::class)
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 

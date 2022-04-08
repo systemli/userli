@@ -8,7 +8,7 @@ use App\Entity\User;
 use App\Handler\WkdHandler;
 use App\Repository\OpenPgpKeyRepository;
 use DateTime;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 
 class WkdHandlerTest extends TestCase
@@ -45,7 +45,7 @@ class WkdHandlerTest extends TestCase
             ->getMock();
         $repository->method('findByEmail')->willReturn($this->openPgpKey);
 
-        $manager = $this->getMockBuilder(ObjectManager::class)
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $manager->method('getRepository')->willReturn($repository);

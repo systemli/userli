@@ -3,7 +3,7 @@
 namespace App\Creator;
 
 use App\Exception\ValidationException;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 abstract class AbstractCreator
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
     /**
@@ -28,7 +28,7 @@ abstract class AbstractCreator
     /**
      * AbstractCreator constructor.
      */
-    public function __construct(ObjectManager $manager, ValidatorInterface $validator, EventDispatcherInterface $eventDispatcher)
+    public function __construct(EntityManagerInterface $manager, ValidatorInterface $validator, EventDispatcherInterface $eventDispatcher)
     {
         $this->manager = $manager;
         $this->validator = $validator;

@@ -6,14 +6,14 @@ use App\Entity\Alias;
 use App\Entity\User;
 use App\Helper\PasswordGenerator;
 use App\Helper\PasswordUpdater;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DeleteHandler
 {
     /** @var PasswordUpdater */
     private $passwordUpdater;
 
-    /** @var ObjectManager */
+    /** @var EntityManagerInterface */
     private $manager;
 
     /** @var WkdHandler */
@@ -23,7 +23,7 @@ class DeleteHandler
      * DeleteHandler constructor.
      */
     public function __construct(PasswordUpdater $passwordUpdater,
-                                ObjectManager $manager,
+                                EntityManagerInterface $manager,
                                 WkdHandler $wkdHandler)
     {
         $this->passwordUpdater = $passwordUpdater;

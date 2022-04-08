@@ -3,7 +3,7 @@
 namespace App\Validator\Constraints;
 
 use App\Repository\VoucherRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -21,7 +21,7 @@ class VoucherValidator extends ConstraintValidator
     /**
      * VoucherValidator constructor.
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
         $this->voucherRepository = $manager->getRepository('App:Voucher');
     }

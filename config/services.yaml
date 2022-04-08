@@ -163,7 +163,7 @@ services:
 
     App\Remover\VoucherRemover:
         arguments:
-            - '@Doctrine\Common\Persistence\ObjectManager'
+            - '@Doctrine\ORM\EntityManagerInterface'
         public: true
 
     App\Sender\WelcomeMessageSender:
@@ -238,7 +238,7 @@ services:
             - { name: sonata.block }
         arguments:
             - '@Twig\Environment'
-            - '@Doctrine\Common\Persistence\ObjectManager'
+            - '@Doctrine\ORM\EntityManagerInterface'
 
     userli.admin.reservedname:
         class: App\Admin\ReservedNameAdmin

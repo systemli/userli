@@ -7,7 +7,7 @@ use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
 use App\Helper\FileDescriptorReader;
 use App\Repository\UserRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
@@ -61,7 +61,7 @@ class UsersCheckPasswordCommand extends Command
     /**
      * UsersCheckPasswordCommand constructor.
      */
-    public function __construct(ObjectManager $manager,
+    public function __construct(EntityManagerInterface $manager,
                                 FileDescriptorReader $reader,
                                 UserAuthenticationHandler $handler,
                                 MailCryptKeyHandler $mailCryptKeyHandler,

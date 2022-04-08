@@ -6,7 +6,7 @@ use App\Entity\Alias;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Guesser\DomainGuesser;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
@@ -18,14 +18,14 @@ class DomainVoter extends Voter
      */
     private $security;
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
 
     /**
      * DomainVoter constructor.
      */
-    public function __construct(Security $security, ObjectManager $manager)
+    public function __construct(Security $security, EntityManagerInterface $manager)
     {
         $this->security = $security;
         $this->manager = $manager;

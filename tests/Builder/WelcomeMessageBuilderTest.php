@@ -5,7 +5,7 @@ namespace App\Tests\Builder;
 use App\Builder\WelcomeMessageBuilder;
 use App\Entity\Domain;
 use App\Repository\DomainRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -64,9 +64,9 @@ class WelcomeMessageBuilderTest extends TestCase
     /**
      * Manager that returns default domain.
      */
-    public function getManager(): ObjectManager
+    public function getManager(): EntityManagerInterface
     {
-        $manager = $this->getMockBuilder(ObjectManager::class)
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 

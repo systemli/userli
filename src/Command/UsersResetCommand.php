@@ -7,7 +7,7 @@ use App\Handler\MailCryptKeyHandler;
 use App\Handler\PasswordStrengthHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class UsersResetCommand extends Command
 {
-    /** @var ObjectManager */
+    /** @var EntityManagerInterface */
     private $manager;
 
     /** @var PasswordUpdater */
@@ -38,7 +38,7 @@ class UsersResetCommand extends Command
     /**
      * RegistrationMailCommand constructor.
      */
-    public function __construct(ObjectManager $manager,
+    public function __construct(EntityManagerInterface $manager,
                                 PasswordUpdater $passwordUpdater,
                                 MailCryptKeyHandler $mailCryptKeyHandler,
                                 RecoveryTokenHandler $recoveryTokenHandler,

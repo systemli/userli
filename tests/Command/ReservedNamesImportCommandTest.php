@@ -6,7 +6,7 @@ use App\Command\ReservedNamesImportCommand;
 use App\Creator\ReservedNameCreator;
 use App\Entity\ReservedName;
 use App\Repository\ReservedNameRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -32,9 +32,9 @@ class ReservedNamesImportCommandTest extends TestCase
         $this->assertStringContainsString('Skipping reserved name "name", already exists', $output);
     }
 
-    public function getManager(): ObjectManager
+    public function getManager(): EntityManagerInterface
     {
-        $manager = $this->getMockBuilder(ObjectManager::class)
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 

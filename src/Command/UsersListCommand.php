@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Enum\Roles;
 use App\Repository\UserRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -23,7 +23,7 @@ class UsersListCommand extends Command
      */
     private $roleHierarchy;
 
-    public function __construct(ObjectManager $manager, RoleHierarchyInterface $roleHierarchy)
+    public function __construct(EntityManagerInterface $manager, RoleHierarchyInterface $roleHierarchy)
     {
         $this->repository = $manager->getRepository('App:User');
         $this->roleHierarchy = $roleHierarchy;

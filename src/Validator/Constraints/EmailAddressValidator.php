@@ -6,7 +6,7 @@ use App\Repository\AliasRepository;
 use App\Repository\DomainRepository;
 use App\Repository\ReservedNameRepository;
 use App\Repository\UserRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -36,7 +36,7 @@ class EmailAddressValidator extends ConstraintValidator
     /**
      * EmailAddressValidator constructor.
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
         $this->aliasRepository = $manager->getRepository('App:Alias');
         $this->domainRepository = $manager->getRepository('App:Domain');

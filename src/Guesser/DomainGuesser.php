@@ -4,7 +4,7 @@ namespace App\Guesser;
 
 use App\Entity\Domain;
 use App\Repository\DomainRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DomainGuesser
 {
@@ -16,7 +16,7 @@ class DomainGuesser
     /**
      * Constructor.
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
         $this->repository = $manager->getRepository('App:Domain');
     }

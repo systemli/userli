@@ -8,7 +8,7 @@ use App\Handler\DeleteHandler;
 use App\Handler\WkdHandler;
 use App\Helper\PasswordUpdater;
 use App\Repository\AliasRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 
 class DeleteHandlerTest extends TestCase
@@ -25,15 +25,15 @@ class DeleteHandlerTest extends TestCase
             ->disableOriginalConstructor()->getMock();
         $aliasRepositry->method('findByUser')->willReturn([]);
 
-        $objectManager = $this->getMockBuilder(ObjectManager::class)
+        $EntityManagerInterface = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()->getMock();
-        $objectManager->method('getRepository')->willReturn($aliasRepositry);
-        $objectManager->method('flush')->willReturn(true);
+        $EntityManagerInterface->method('getRepository')->willReturn($aliasRepositry);
+        $EntityManagerInterface->method('flush')->willReturn(true);
 
         $wkdHandler = $this->getMockBuilder(WkdHandler::class)
             ->disableOriginalConstructor()->getMock();
 
-        return new DeleteHandler($passwordUpdater, $objectManager, $wkdHandler);
+        return new DeleteHandler($passwordUpdater, $EntityManagerInterface, $wkdHandler);
     }
 
     public function testDeleteAlias(): void

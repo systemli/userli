@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Repository\OpenPgpKeyRepository;
 use App\Repository\UserRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -25,7 +25,7 @@ class MuninAccountCommand extends Command
      */
     private $openPgpKeyRepository;
 
-    public function __construct(ObjectManager $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
         parent::__construct();
         $this->userRepository = $manager->getRepository('App:User');

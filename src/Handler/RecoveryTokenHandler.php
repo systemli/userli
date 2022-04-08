@@ -4,7 +4,7 @@ namespace App\Handler;
 
 use App\Entity\User;
 use App\Model\CryptoSecret;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -13,14 +13,14 @@ use Ramsey\Uuid\Uuid;
 class RecoveryTokenHandler
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
 
     /**
      * RecoveryTokenHandler constructor.
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
     }

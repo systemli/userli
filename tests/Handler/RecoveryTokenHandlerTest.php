@@ -4,7 +4,7 @@ namespace App\Tests\Handler;
 
 use App\Entity\User;
 use App\Handler\RecoveryTokenHandler;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -12,11 +12,11 @@ class RecoveryTokenHandlerTest extends TestCase
 {
     protected function createHandler(): RecoveryTokenHandler
     {
-        $objectManager = $this->getMockBuilder(ObjectManager::class)
+        $EntityManagerInterface = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()->getMock();
-        $objectManager->expects($this->any())->method('flush')->willReturn(true);
+        $EntityManagerInterface->expects($this->any())->method('flush')->willReturn(true);
 
-        return new RecoveryTokenHandler($objectManager);
+        return new RecoveryTokenHandler($EntityManagerInterface);
     }
 
     public function testCreateExceptionPlainPasswordNull(): void

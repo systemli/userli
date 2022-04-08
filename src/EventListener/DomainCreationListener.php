@@ -5,13 +5,13 @@ namespace App\EventListener;
 use App\Entity\Alias;
 use App\Event\DomainCreatedEvent;
 use App\Handler\WkdHandler;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DomainCreationListener implements EventSubscriberInterface
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
 
@@ -20,7 +20,7 @@ class DomainCreationListener implements EventSubscriberInterface
      */
     private $handler;
 
-    public function __construct(ObjectManager $manager, WkdHandler $handler)
+    public function __construct(EntityManagerInterface $manager, WkdHandler $handler)
     {
         $this->manager = $manager;
         $this->handler = $handler;

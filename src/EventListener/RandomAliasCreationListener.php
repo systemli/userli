@@ -4,20 +4,20 @@ namespace App\EventListener;
 
 use App\Event\RandomAliasCreatedEvent;
 use App\Helper\RandomStringGenerator;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class RandomAliasCreationListener implements EventSubscriberInterface
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
 
     /**
      * RandomAliasCreationListener constructor.
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
     }

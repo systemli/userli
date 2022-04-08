@@ -12,7 +12,7 @@ use App\Repository\ReservedNameRepository;
 use App\Repository\UserRepository;
 use App\Validator\Constraints\EmailAddress;
 use App\Validator\Constraints\EmailAddressValidator;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
@@ -52,7 +52,7 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
         $reservedNameRepository->method('findByName')->willReturnMap([
             ['reserved', new ReservedName()],
         ]);
-        $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('getRepository')->willReturnMap([
             ['App:Alias', $aliasRepository],
             ['App:Domain', $domainRepository],

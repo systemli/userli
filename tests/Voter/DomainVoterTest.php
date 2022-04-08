@@ -7,7 +7,7 @@ use App\Entity\Domain;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Voter\DomainVoter;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -42,7 +42,7 @@ class DomainVoterTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $repo->method('findByEmail')->willReturn($user);
-        $manager = $this->getMockBuilder(ObjectManager::class)
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $manager->method('getRepository')->willReturn($repo);

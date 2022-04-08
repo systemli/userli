@@ -6,7 +6,7 @@ use App\Entity\Voucher;
 use App\Repository\VoucherRepository;
 use App\Validator\Constraints\Voucher as VoucherConstraint;
 use App\Validator\Constraints\VoucherValidator;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -24,7 +24,7 @@ class VoucherValidatorTest extends ConstraintValidatorTestCase
         $repository->method('findByCode')->willReturnMap([
             ['code', $voucher],
         ]);
-        $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('getRepository')->willReturn($repository);
 
         return new VoucherValidator($manager);

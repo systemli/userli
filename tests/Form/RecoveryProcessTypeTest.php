@@ -6,7 +6,7 @@ use App\Entity\Domain;
 use App\Form\Model\RecoveryProcess;
 use App\Form\RecoveryProcessType;
 use App\Repository\DomainRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 
@@ -56,7 +56,7 @@ class RecoveryProcessTypeTest extends TypeTestCase
      */
     public function getManager()
     {
-        $manager = $this->getMockBuilder(ObjectManager::class)
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 

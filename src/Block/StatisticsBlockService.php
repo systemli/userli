@@ -2,7 +2,7 @@
 
 namespace App\Block;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\BlockServiceInterface;
 use Sonata\BlockBundle\Model\BlockInterface;
@@ -13,7 +13,7 @@ use Twig\Environment;
 class StatisticsBlockService implements BlockServiceInterface
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
 
@@ -25,7 +25,7 @@ class StatisticsBlockService implements BlockServiceInterface
     /**
      * StatisticsBlockService constructor.
      */
-    public function __construct(Environment $twig, ObjectManager $manager)
+    public function __construct(Environment $twig, EntityManagerInterface $manager)
     {
         $this->twig = $twig;
         $this->manager = $manager;

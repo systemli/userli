@@ -2,7 +2,7 @@
 
 namespace App\Builder;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -30,7 +30,7 @@ class WelcomeMessageBuilder
     /**
      * WelcomeMessageBuilder constructor.
      */
-    public function __construct(TranslatorInterface $translator, ObjectManager $manager, string $appUrl, string $projectName)
+    public function __construct(TranslatorInterface $translator, EntityManagerInterface $manager, string $appUrl, string $projectName)
     {
         $this->translator = $translator;
         $domain = $manager->getRepository('App:Domain')->getDefaultDomain();

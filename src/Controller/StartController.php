@@ -25,7 +25,7 @@ use App\Handler\MailCryptKeyHandler;
 use App\Handler\VoucherHandler;
 use App\Handler\WkdHandler;
 use App\Helper\PasswordUpdater;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,7 +57,7 @@ class StartController extends AbstractController
      */
     private $mailCryptKeyHandler;
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
     /**
@@ -73,7 +73,7 @@ class StartController extends AbstractController
                                 VoucherHandler $voucherHandler,
                                 VoucherCreator $voucherCreator,
                                 MailCryptKeyHandler $mailCryptKeyHandler,
-                                ObjectManager $manager,
+                                EntityManagerInterface $manager,
                                 WkdHandler $wkdHandler)
     {
         $this->aliasHandler = $aliasHandler;

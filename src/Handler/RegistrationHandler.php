@@ -9,7 +9,7 @@ use App\Event\UserEvent;
 use App\Form\Model\Registration;
 use App\Guesser\DomainGuesser;
 use App\Helper\PasswordUpdater;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RegistrationHandler
@@ -17,7 +17,7 @@ class RegistrationHandler
     private const REGISTRATION_LIMIT = 9999;
 
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
     /**
@@ -53,7 +53,7 @@ class RegistrationHandler
      * Constructor.
      */
     public function __construct(
-        ObjectManager $manager,
+        EntityManagerInterface $manager,
         DomainGuesser $domainGuesser,
         EventDispatcherInterface $eventDispatcher,
         PasswordUpdater $passwordUpdater,

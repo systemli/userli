@@ -4,7 +4,7 @@ namespace App\Tests\Command;
 
 use App\Command\MuninVoucherCommand;
 use App\Repository\VoucherRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -18,7 +18,7 @@ class MuninVoucherCommandTest extends TestCase
         $repository->method('count')->willReturn(10);
         $repository->method('countRedeemedVouchers')->willReturn(2);
 
-        $manager = $this->getMockBuilder(ObjectManager::class)
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)
             ->getMock();
         $manager->method('getRepository')->willReturn($repository);
 

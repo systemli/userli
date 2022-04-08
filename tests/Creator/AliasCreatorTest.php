@@ -7,7 +7,7 @@ use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Exception\ValidationException;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -18,7 +18,7 @@ class AliasCreatorTest extends TestCase
 {
     protected function createCreator(): AliasCreator
     {
-        $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('persist')->willReturnCallback(
             function (Alias $alias) {
                 $alias->setId(1);
@@ -66,7 +66,7 @@ class AliasCreatorTest extends TestCase
 
     public function testCreateWithException(): void
     {
-        $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
 
         $violation = new ConstraintViolation('message', 'messageTemplate', [], null, null, 'someValue');
 
