@@ -4,7 +4,7 @@ namespace App\Event;
 
 use App\Entity\User;
 use App\Traits\UserAwareTrait;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class UserEvent extends Event
 {
