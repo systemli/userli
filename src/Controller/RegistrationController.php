@@ -32,7 +32,7 @@ class RegistrationController extends AbstractController
      */
     public function registerAction(Request $request, string $voucher = null): Response
     {
-        if (!$this->registrationHandler->canRegister()) {
+        if (!$this->registrationHandler->isRegistrationOpen()) {
             return $this->render('Registration/closed.html.twig');
         }
 

@@ -14,8 +14,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RegistrationHandler
 {
-    private const REGISTRATION_LIMIT = 9999;
-
     /**
      * @var ObjectManager
      */
@@ -43,7 +41,7 @@ class RegistrationHandler
     /**
      * @var bool
      */
-    private $hasSinaBox;
+    private $registrationOpen;
     /**
      * @var int
      */
@@ -59,7 +57,7 @@ class RegistrationHandler
         PasswordUpdater $passwordUpdater,
         MailCryptKeyHandler $mailCryptKeyHandler,
         RecoveryTokenHandler $recoveryTokenHandler,
-        bool $hasSinaBox,
+        bool $registrationOpen,
         bool $mailCrypt
     ) {
         $this->manager = $manager;
@@ -68,7 +66,7 @@ class RegistrationHandler
         $this->passwordUpdater = $passwordUpdater;
         $this->mailCryptKeyHandler = $mailCryptKeyHandler;
         $this->recoveryTokenHandler = $recoveryTokenHandler;
-        $this->hasSinaBox = $hasSinaBox;
+        $this->registrationOpen = $registrationOpen;
         $this->mailCrypt = $mailCrypt;
     }
 
@@ -77,8 +75,8 @@ class RegistrationHandler
      */
     public function handle(Registration $registration): void
     {
-        if (!$this->canRegister()) {
-            throw new \Exception('The Registration Limit reached!');
+        if (!$this->isRegistrationOpen()) {
+            throw new \Exception('The Registration is closed!');
         }
 
         // Create user
@@ -104,11 +102,9 @@ class RegistrationHandler
         $this->eventDispatcher->dispatch(Events::MAIL_ACCOUNT_CREATED, new UserEvent($user));
     }
 
-    public function canRegister(): bool
+    public function isRegistrationOpen(): bool
     {
-        $count = $this->manager->getRepository('App:User')->count(['deleted' => false]);
-
-        return !(!$this->hasSinaBox && $count > self::REGISTRATION_LIMIT);
+        return $this->registrationOpen;
     }
 
     private function buildUser(Registration $registration): User

@@ -126,7 +126,7 @@ services:
     App\Handler\RegistrationHandler:
         public: true
         arguments:
-            $hasSinaBox: "%env(HAS_SINA_BOX)%"
+            $registrationOpen: "%env(REGISTRATION_OPEN)%"
             $mailCrypt: '%env(MAIL_CRYPT)%'
 
     App\Handler\SuspiciousChildrenHandler:
