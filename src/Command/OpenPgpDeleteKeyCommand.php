@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Handler\WkdHandler;
 use App\Repository\OpenPgpKeyRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -22,7 +22,7 @@ class OpenPgpDeleteKeyCommand extends Command
      */
     private $repository;
 
-    public function __construct(ObjectManager $manager, WkdHandler $handler)
+    public function __construct(EntityManagerInterface $manager, WkdHandler $handler)
     {
         $this->handler = $handler;
         $this->repository = $manager->getRepository('App:OpenPgpKey');

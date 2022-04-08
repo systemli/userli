@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Creator\ReservedNameCreator;
 use App\Exception\ValidationException;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ReservedNamesImportCommand extends Command
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
 
@@ -22,7 +22,7 @@ class ReservedNamesImportCommand extends Command
      */
     private $creator;
 
-    public function __construct(ObjectManager $manager, ReservedNameCreator $creator)
+    public function __construct(EntityManagerInterface $manager, ReservedNameCreator $creator)
     {
         $this->manager = $manager;
         $this->creator = $creator;

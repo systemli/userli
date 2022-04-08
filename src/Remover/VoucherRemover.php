@@ -4,7 +4,7 @@ namespace App\Remover;
 
 use App\Entity\User;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class VoucherRemover.
@@ -12,14 +12,14 @@ use Doctrine\Common\Persistence\ObjectManager;
 class VoucherRemover
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
 
     /**
      * VoucherRemover constructor.
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
     }

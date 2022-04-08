@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Event\LoginEvent;
 use App\EventListener\LoginListener;
 use App\Helper\PasswordUpdater;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +31,7 @@ class LoginListenerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->manager = $this->getMockBuilder(ObjectManager::class)
+        $this->manager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)

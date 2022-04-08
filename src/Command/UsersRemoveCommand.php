@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Entity\User;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -14,7 +14,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class UsersRemoveCommand extends Command
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
     /**
@@ -22,7 +22,7 @@ class UsersRemoveCommand extends Command
      */
     private $mailLocation;
 
-    public function __construct(ObjectManager $manager,
+    public function __construct(EntityManagerInterface $manager,
                                 string $mailLocation,
                                 ?string $name = null)
     {

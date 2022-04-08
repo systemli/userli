@@ -9,13 +9,13 @@ use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
 use App\Importer\GpgKeyImporter;
 use App\Repository\OpenPgpKeyRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use Tuupola\Base32;
 
 class WkdHandler
 {
-    /** @var ObjectManager */
+    /** @var EntityManagerInterface */
     private $manager;
 
     /** @var OpenPgpKeyRepository */
@@ -30,7 +30,7 @@ class WkdHandler
     /**
      * WkdHandler constructor.
      */
-    public function __construct(ObjectManager $manager,
+    public function __construct(EntityManagerInterface $manager,
                                 string $wkdDirectory,
                                 string $wkdFormat)
     {

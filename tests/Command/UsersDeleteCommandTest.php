@@ -7,7 +7,7 @@ use App\Command\VoucherUnlinkCommand;
 use App\Entity\User;
 use App\Handler\DeleteHandler;
 use App\Repository\UserRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -31,7 +31,7 @@ class UsersDeleteCommandTest extends TestCase
         $repository->method('findByEmail')
             ->willReturn($user);
 
-        $manager = $this->getMockBuilder(ObjectManager::class)
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $manager->method('getRepository')->willReturn($repository);

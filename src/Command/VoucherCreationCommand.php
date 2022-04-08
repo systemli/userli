@@ -3,7 +3,7 @@
 namespace App\Command;
 
 use App\Factory\VoucherFactory;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 class VoucherCreationCommand extends Command
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
     /**
@@ -26,7 +26,7 @@ class VoucherCreationCommand extends Command
      */
     private $appUrl;
 
-    public function __construct(ObjectManager $manager, RouterInterface $router, string $appUrl)
+    public function __construct(EntityManagerInterface $manager, RouterInterface $router, string $appUrl)
     {
         parent::__construct();
 

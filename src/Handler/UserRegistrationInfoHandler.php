@@ -2,7 +2,7 @@
 
 namespace App\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class UserRegistrationInfoHandler.
@@ -10,7 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 class UserRegistrationInfoHandler
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
 
@@ -34,7 +34,7 @@ class UserRegistrationInfoHandler
      *
      * @param string $to
      */
-    public function __construct(ObjectManager $manager, MailHandler $handler, \Twig_Environment $twig, $to)
+    public function __construct(EntityManagerInterface $manager, MailHandler $handler, \Twig_Environment $twig, $to)
     {
         $this->manager = $manager;
         $this->handler = $handler;

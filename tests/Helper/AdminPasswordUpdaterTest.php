@@ -8,7 +8,7 @@ use App\Helper\PasswordUpdater;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
 use App\Security\Encoder\PasswordHashEncoder;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -54,7 +54,7 @@ class AdminPasswordUpdaterTest extends TestCase
             ->getMock();
         $userRepo->method('findByEmail')->willReturn($object);
 
-        $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('getRepository')->willReturnMap(
             [
                 ['App:Domain', $domainRepo],

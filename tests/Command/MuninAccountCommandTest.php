@@ -5,7 +5,7 @@ namespace App\Tests\Command;
 use App\Command\MuninAccountCommand;
 use App\Repository\OpenPgpKeyRepository;
 use App\Repository\UserRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -26,7 +26,7 @@ class MuninAccountCommandTest extends TestCase
             ->getMock();
         $openPgpKeyRepository->method('countKeys')->willReturn(2);
 
-        $manager = $this->getMockBuilder(ObjectManager::class)
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)
             ->getMock();
         $manager->method('getRepository')->willReturnMap([
             ['App:User', $userRepository],

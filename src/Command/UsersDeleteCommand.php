@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\Entity\User;
 use App\Handler\DeleteHandler;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 class UsersDeleteCommand extends Command
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
 
@@ -23,7 +23,7 @@ class UsersDeleteCommand extends Command
      */
     private $deleteHandler;
 
-    public function __construct(ObjectManager $manager, DeleteHandler $deleteHandler)
+    public function __construct(EntityManagerInterface $manager, DeleteHandler $deleteHandler)
     {
         $this->manager = $manager;
         $this->deleteHandler = $deleteHandler;

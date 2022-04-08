@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Form\DataTransformer\TextToEmailTransformer;
 use App\Form\Model\Registration;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -28,7 +28,7 @@ class RegistrationType extends AbstractType
     /**
      * RegistrationType constructor.
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
         $this->domain = $manager->getRepository('App:Domain')->getDefaultDomain()->getName();
     }

@@ -8,7 +8,7 @@ use App\Entity\Voucher;
 use App\Enum\Roles;
 use App\Exception\ValidationException;
 use App\Repository\VoucherRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class VoucherHandler.
@@ -29,7 +29,7 @@ class VoucherHandler
     /**
      * VoucherHandler constructor.
      */
-    public function __construct(ObjectManager $manager, VoucherCreator $creator)
+    public function __construct(EntityManagerInterface $manager, VoucherCreator $creator)
     {
         $this->repository = $manager->getRepository('App:Voucher');
         $this->creator = $creator;

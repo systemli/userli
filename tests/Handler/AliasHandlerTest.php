@@ -7,7 +7,7 @@ use App\Entity\Alias;
 use App\Entity\User;
 use App\Handler\AliasHandler;
 use App\Repository\AliasRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 
 class AliasHandlerTest extends TestCase
@@ -17,7 +17,7 @@ class AliasHandlerTest extends TestCase
         $repository = $this->getMockBuilder(AliasRepository::class)->disableOriginalConstructor()->getMock();
         $repository->method('findByUser')->willReturn($list);
 
-        $manager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)->disableOriginalConstructor()->getMock();
         $manager->method('getRepository')->willReturn($repository);
 
         $creator = $this->getMockBuilder(AliasCreator::class)->disableOriginalConstructor()->getMock();

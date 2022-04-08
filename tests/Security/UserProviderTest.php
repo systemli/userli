@@ -8,7 +8,7 @@ use App\Entity\Voucher;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
 use App\Security\UserProvider;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -35,7 +35,7 @@ class UserProviderTest extends TestCase
         $domainRepository->method('getDefaultDomain')
             ->willReturn($domain);
 
-        $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('getRepository')->willReturnMap([
             ['App:Domain', $domainRepository],
             ['App:User', $userRepository],
@@ -58,7 +58,7 @@ class UserProviderTest extends TestCase
             ['admin', new User()],
         ]);
 
-        $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('getRepository')->willReturn($repository);
 
         $provider = new UserProvider($manager);
@@ -76,7 +76,7 @@ class UserProviderTest extends TestCase
             ->getMock();
         $repository->method('findOneBy')->willReturn($user);
 
-        $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('getRepository')->willReturn($repository);
 
         $provider = new UserProvider($manager);
@@ -105,7 +105,7 @@ class UserProviderTest extends TestCase
         $domainRepository->method('getDefaultDomain')
             ->willReturn($domain);
 
-        $manager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('getRepository')->willReturnMap([
             ['App:Domain', $domainRepository],
             ['App:User', $userRepository],
@@ -131,7 +131,7 @@ class UserProviderTest extends TestCase
 
     public function testSupportClass(): void
     {
-        $manager = $this->getMockBuilder(ObjectManager::class)
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 

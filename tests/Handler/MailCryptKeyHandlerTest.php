@@ -4,7 +4,7 @@ namespace App\Tests\Handler;
 
 use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -12,7 +12,7 @@ class MailCryptKeyHandlerTest extends TestCase
 {
     private function createHandler(): MailCryptKeyHandler
     {
-        $manager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)->disableOriginalConstructor()->getMock();
 
         return new MailCryptKeyHandler($manager);
     }

@@ -7,7 +7,7 @@ use App\Entity\Alias;
 use App\Entity\User;
 use App\Exception\ValidationException;
 use App\Repository\AliasRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class AliasHandler.
@@ -29,7 +29,7 @@ class AliasHandler
     /**
      * AliasHandler constructor.
      */
-    public function __construct(ObjectManager $manager, AliasCreator $creator)
+    public function __construct(EntityManagerInterface $manager, AliasCreator $creator)
     {
         $this->repository = $manager->getRepository('App:Alias');
         $this->creator = $creator;

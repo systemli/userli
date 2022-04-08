@@ -5,7 +5,7 @@ namespace App\Command;
 use App\Handler\WkdHandler;
 use App\Repository\DomainRepository;
 use App\Repository\OpenPgpKeyRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,7 +27,7 @@ class OpenPgpExportKeysCommand extends Command
      */
     private $openPgpKeyRepository;
 
-    public function __construct(ObjectManager $manager, WkdHandler $handler)
+    public function __construct(EntityManagerInterface $manager, WkdHandler $handler)
     {
         $this->handler = $handler;
         $this->domainRepository = $manager->getRepository('App:Domain');

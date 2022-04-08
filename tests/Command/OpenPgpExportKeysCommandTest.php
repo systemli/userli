@@ -8,7 +8,7 @@ use App\Entity\OpenPgpKey;
 use App\Handler\WkdHandler;
 use App\Repository\DomainRepository;
 use App\Repository\OpenPgpKeyRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -27,7 +27,7 @@ class OpenPgpExportKeysCommandTest extends TestCase
         $domain = new Domain();
         $domain->setName('example.org');
 
-        $manager = $this->getMockBuilder(ObjectManager::class)
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 

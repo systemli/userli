@@ -9,7 +9,7 @@ use App\Form\Model\DomainCreate;
 use App\Form\Model\PlainPassword;
 use App\Form\PlainPasswordType;
 use App\Helper\AdminPasswordUpdater;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 class InitController extends AbstractController
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
     /**
@@ -32,7 +32,7 @@ class InitController extends AbstractController
      */
     private $creator;
 
-    public function __construct(ObjectManager $manager, AdminPasswordUpdater $updater, DomainCreator $creator)
+    public function __construct(EntityManagerInterface $manager, AdminPasswordUpdater $updater, DomainCreator $creator)
     {
         $this->manager = $manager;
         $this->updater = $updater;

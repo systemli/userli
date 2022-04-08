@@ -8,7 +8,7 @@ use App\Entity\Voucher;
 use App\Enum\Roles;
 use App\Handler\SuspiciousChildrenHandler;
 use App\Repository\VoucherRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -51,9 +51,9 @@ class VoucherUnlinkCommandTest extends TestCase
     /**
      * @return \PHPUnit\Framework\MockObject\MockObject
      */
-    public function getManager(): ObjectManager
+    public function getManager(): EntityManagerInterface
     {
-        $manager = $this->getMockBuilder(ObjectManager::class)
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 

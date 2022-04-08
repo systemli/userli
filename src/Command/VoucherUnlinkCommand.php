@@ -7,7 +7,7 @@ use App\Entity\Voucher;
 use App\Enum\Roles;
 use App\Handler\SuspiciousChildrenHandler;
 use DateTimeInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class VoucherUnlinkCommand extends Command
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
 
@@ -25,7 +25,7 @@ class VoucherUnlinkCommand extends Command
      */
     private $handler;
 
-    public function __construct(ObjectManager $manager, SuspiciousChildrenHandler $handler)
+    public function __construct(EntityManagerInterface $manager, SuspiciousChildrenHandler $handler)
     {
         $this->manager = $manager;
         $this->handler = $handler;

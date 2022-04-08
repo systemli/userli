@@ -5,7 +5,7 @@ namespace App\Handler;
 use App\Entity\User;
 use App\Model\CryptoSecret;
 use App\Model\MailCryptKeyPair;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Process\InputStream;
 use Symfony\Component\Process\Process;
 
@@ -19,14 +19,14 @@ class MailCryptKeyHandler
     private const MAIL_CRYPT_CURVE_NAME = 'secp521r1';
 
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
 
     /**
      * MailCryptPrivateKeyHandler constructor.
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;
     }

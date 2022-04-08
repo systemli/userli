@@ -2,7 +2,7 @@
 
 namespace App\EventListener;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -20,11 +20,11 @@ class TwigGlobalListener implements EventSubscriberInterface
      */
     private $twig;
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
 
-    public function __construct(Environment $twig, ObjectManager $manager)
+    public function __construct(Environment $twig, EntityManagerInterface $manager)
     {
         $this->twig = $twig;
         $this->manager = $manager;

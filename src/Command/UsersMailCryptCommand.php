@@ -5,7 +5,7 @@ namespace App\Command;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
 use App\Repository\UserRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -31,7 +31,7 @@ class UsersMailCryptCommand extends Command
     private $mailCrypt;
 
     public function __construct(
-        ObjectManager $manager,
+        EntityManagerInterface $manager,
         UserAuthenticationHandler $handler,
         MailCryptKeyHandler $mailCryptKeyHandler,
         int $mailCrypt

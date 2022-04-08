@@ -5,12 +5,12 @@ namespace App\Helper;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class AdminPasswordUpdater
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
     /**
@@ -18,7 +18,7 @@ class AdminPasswordUpdater
      */
     private $updater;
 
-    public function __construct(ObjectManager $manager, PasswordUpdater $updater)
+    public function __construct(EntityManagerInterface $manager, PasswordUpdater $updater)
     {
         $this->manager = $manager;
         $this->updater = $updater;
