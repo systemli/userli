@@ -4,7 +4,7 @@ namespace App\Event;
 
 use App\Entity\Alias;
 use App\Traits\AliasAwareTrait;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class RandomAliasCreatedEvent.
