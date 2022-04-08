@@ -35,7 +35,6 @@
         "symfony/security-bundle": "*",
         "symfony/security-csrf": "*",
         "symfony/swiftmailer-bundle": "^3.5",
-        "symfony/templating": "*",
         "symfony/translation": "*",
         "symfony/validator": "*",
         "symfony/yaml": "*",

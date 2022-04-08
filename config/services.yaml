@@ -106,10 +106,6 @@ services:
         tags:
             - { name: form.type, alias: registration }
 
-    App\Form\DeleteType:
-        tags:
-            - { name: form.type, alias: delete }
-
     App\Handler\LogoutSuccessHandler:
         arguments:
             $targetUrl: '/'
@@ -241,7 +237,7 @@ services:
         tags:
             - { name: sonata.block }
         arguments:
-            - '@Symfony\Component\Templating\EngineInterface'
+            - '@Twig\Environment'
             - '@Doctrine\Common\Persistence\ObjectManager'
 
     userli.admin.reservedname:

@@ -6,9 +6,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\BlockServiceInterface;
 use Sonata\BlockBundle\Model\BlockInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 class StatisticsBlockService implements BlockServiceInterface
 {
@@ -18,16 +18,16 @@ class StatisticsBlockService implements BlockServiceInterface
     private $manager;
 
     /**
-     * @var EngineInterface
+     * @var Environment
      */
-    private $templating;
+    private $twig;
 
     /**
      * StatisticsBlockService constructor.
      */
-    public function __construct(EngineInterface $templating, ObjectManager $manager)
+    public function __construct(Environment $twig, ObjectManager $manager)
     {
-        $this->templating = $templating;
+        $this->twig = $twig;
         $this->manager = $manager;
     }
 
@@ -35,7 +35,7 @@ class StatisticsBlockService implements BlockServiceInterface
     {
         $settings = $blockContext->getSettings();
 
-        return $this->templating->renderResponse(
+        $rendered = $this->twig->render(
             $blockContext->getTemplate(),
             [
                 'block' => $blockContext->getBlock(),
@@ -47,9 +47,10 @@ class StatisticsBlockService implements BlockServiceInterface
                 'vouchers_count' => $vouchersCount = $this->manager->getRepository('App:Voucher')->count([]),
                 'vouchers_redeemed' => $vouchersRedeemed = $this->manager->getRepository('App:Voucher')->countRedeemedVouchers(),
                 'vouchers_ratio' => ($vouchersCount > 0) ? sprintf('%.2f%%', (float) (($vouchersRedeemed / $vouchersCount) * 100)) : '0%',
-            ],
-            $response
+            ]
         );
+
+        return $response->setContent($rendered);
     }
 
     public function configureSettings(OptionsResolver $resolver): void
