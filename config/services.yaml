@@ -85,11 +85,6 @@ services:
         resource: '../src/Handler/*'
         public: true
 
-    App\Controller\ExceptionController:
-        public: true
-        arguments:
-            $debug: '%kernel.debug%'
-
     App\Form\PasswordChangeType:
         tags:
             - { name: form.type, alias: password_change }
