@@ -4,7 +4,7 @@ namespace App\Handler;
 
 use App\Entity\User;
 use App\Event\LoginEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 
 /**
@@ -38,7 +38,7 @@ class UserAuthenticationHandler
         }
         $user->setPlainPassword($password);
 
-        $this->eventDispatcher->dispatch(LoginEvent::NAME, new LoginEvent($user));
+        $this->eventDispatcher->dispatch(new LoginEvent($user), LoginEvent::NAME);
 
         return $user;
     }

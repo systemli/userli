@@ -25,9 +25,9 @@ class AliasCreator extends AbstractCreator
         $this->validate($alias, ['Default', 'unique']);
         $this->save($alias);
 
-        $this->eventDispatcher->dispatch(AliasCreatedEvent::NAME, new AliasCreatedEvent($alias));
+        $this->eventDispatcher->dispatch(new AliasCreatedEvent($alias), AliasCreatedEvent::NAME);
         if (null === $localPart) {
-            $this->eventDispatcher->dispatch(RandomAliasCreatedEvent::NAME, new RandomAliasCreatedEvent($alias));
+            $this->eventDispatcher->dispatch(new RandomAliasCreatedEvent($alias), RandomAliasCreatedEvent::NAME);
         }
 
         return $alias;

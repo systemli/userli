@@ -17,9 +17,9 @@ use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RecoveryController extends AbstractController
 {
@@ -83,7 +83,7 @@ class RecoveryController extends AbstractController
                         // Recovery process gets started
                         $user->updateRecoveryStartTime();
                         $this->getDoctrine()->getManager()->flush();
-                        $this->eventDispatcher->dispatch(RecoveryProcessEvent::NAME, new UserEvent($user));
+                        $this->eventDispatcher->dispatch(new UserEvent($user), RecoveryProcessEvent::NAME);
                         $recoveryActiveTime = $user->getRecoveryStartTime()->add(new \DateInterval('P2D'));
                     } elseif (new \DateTime($this::PROCESS_DELAY) < $recoveryStartTime) {
                         // Recovery process is pending, but waiting period didn't elapse yet
