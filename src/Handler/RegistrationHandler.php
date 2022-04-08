@@ -10,7 +10,7 @@ use App\Form\Model\Registration;
 use App\Guesser\DomainGuesser;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RegistrationHandler
 {
@@ -101,7 +101,7 @@ class RegistrationHandler
         $this->manager->persist($user);
         $this->manager->flush();
 
-        $this->eventDispatcher->dispatch(Events::MAIL_ACCOUNT_CREATED, new UserEvent($user));
+        $this->eventDispatcher->dispatch(new UserEvent($user), Events::MAIL_ACCOUNT_CREATED);
     }
 
     public function canRegister(): bool

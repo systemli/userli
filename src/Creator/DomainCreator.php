@@ -19,7 +19,7 @@ class DomainCreator extends AbstractCreator
         $this->validate($domain, ['Default', 'unique']);
         $this->save($domain);
 
-        $this->eventDispatcher->dispatch(DomainCreatedEvent::NAME, new DomainCreatedEvent($domain));
+        $this->eventDispatcher->dispatch(new DomainCreatedEvent($domain), DomainCreatedEvent::NAME);
 
         return $domain;
     }
