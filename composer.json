@@ -55,7 +55,8 @@
         "symfony/phpunit-bridge": "*",
         "symfony/stopwatch": "^4.4",
         "symfony/var-dumper": "4.4.*",
-        "symfony/web-profiler-bundle": "*"
+        "symfony/web-profiler-bundle": "*",
+        "symfony/web-server-bundle": "4.4"
     },
     "config": {
         "bin-dir": "bin",
