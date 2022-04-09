@@ -6,6 +6,8 @@ on:
     branches:
       - main
 
+permissions: read-all
+
 env:
   DATABASE_DRIVER: pdo_sqlite
   DATABASE_URL: sqlite:///%kernel.project_dir%/var/db_test.sqlite

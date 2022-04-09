@@ -2,6 +2,8 @@ name: Psalm Static analysis
 
 on: [pull_request]
 
+permissions: read-all
+
 jobs:
   psalm:
     name: Psalm
