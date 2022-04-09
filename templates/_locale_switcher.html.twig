@@ -9,12 +9,14 @@
             <span class="caret"></span>
         </a>
         <ul class="dropdown-menu menu_level_1" role="menu">
-{% for locale in locales if locale != app.request.locale %}
-          <li>
+{% for locale in locales %}
+  {% if locale != app.request.locale %}
+            <li>
                 <a href="{{ path(route, params|merge({ _locale: locale })) }}">
                     {{ locale|upper }}
                 </a>
             </li>
+  {% endif %}
 {% endfor %}
         </ul>
     </li>
