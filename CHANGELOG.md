@@ -3,6 +3,7 @@
 * Update to symfony 4.4.40
 * Update dependencies
 * Update translations
+* Rework Registration Config (removed `HAS_SINA_BOX`, added `REGISTRATION_OPEN`)
 
 # 2.9.0 (2022.03.03)
 
