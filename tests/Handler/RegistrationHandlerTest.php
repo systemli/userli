@@ -8,7 +8,7 @@ use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Handler\RegistrationHandler;
 use App\Helper\PasswordUpdater;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -16,7 +16,7 @@ class RegistrationHandlerTest extends TestCase
 {
     public function testHandleWithDisabledRegistration()
     {
-        $manager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)->disableOriginalConstructor()->getMock();
         $domainGuesser = $this->getMockBuilder(DomainGuesser::class)->disableOriginalConstructor()->getMock();
         $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->disableOriginalConstructor()->getMock();
         $passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)->disableOriginalConstructor()->getMock();
