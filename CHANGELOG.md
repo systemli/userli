@@ -1,7 +1,6 @@
 # 3.0.0 (UNRELEASED)
 
 * Drop official support for PHP 7.3
-  * Currently, it'll still work, but we won't be testing any more
 * Update to symfony 4.4.40
 * Update dependencies
 * Update translations
