@@ -38,9 +38,6 @@
     "composer/ca-bundle": {
         "version": "1.1.4"
     },
-    "composer/package-versions-deprecated": {
-        "version": "1.11.99.5"
-    },
     "dg/bypass-finals": {
         "version": "v1.1.0"
     },
@@ -122,17 +119,14 @@
     "doctrine/persistence": {
         "version": "v1.0.1"
     },
-    "doctrine/reflection": {
-        "version": "v1.0.0"
+    "doctrine/sql-formatter": {
+        "version": "1.1.2"
     },
     "egulias/email-validator": {
         "version": "2.1.5"
     },
     "ircmaxell/password-compat": {
         "version": "v1.0.4"
-    },
-    "jdorn/sql-formatter": {
-        "version": "v1.2.17"
     },
     "jms/metadata": {
         "version": "2.3.0"
