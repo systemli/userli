@@ -1,7 +1,7 @@
-# 3.0.0 (UNRELEASED)
+# 3.0.0 (2022.06.29)
 
 * Drop official support for PHP 7.3
-* Update to symfony 4.4.40
+* Update to symfony 4.4.43
 * Update dependencies
 * Update translations
 * Rework Registration Config (removed `HAS_SINA_BOX`, added `REGISTRATION_OPEN`)
