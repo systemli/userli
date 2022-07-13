@@ -109,6 +109,9 @@ security:
             logout:
                 success_handler: App\Handler\LogoutSuccessHandler
                 invalidate_session: false
+            two_factor:
+                auth_form_path: 2fa_login
+                check_path: 2fa_login_check
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -120,12 +123,16 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
       - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: "^/[a-z]{2}/init", roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: "^/[a-z]{2}/login", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: "^/[a-z]{2}/logout", roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: "^/[a-z]{2}/recovery", roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: "^/[a-z]{2}/register", roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: "^/[a-z]{2}/$", roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/2fa, roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
+      - { path: "^/[a-z]{2}/2fa", roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
       - { path: ^/admin, roles: ROLE_DOMAIN_ADMIN }
       - { path: "^/[a-z]{2}/voucher", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SUSPICIOUS')"}
       - { path: "^/[a-z]{2}/alias", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')"}

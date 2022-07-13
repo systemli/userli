@@ -1,5 +1,13 @@
 # Upgrade documentation
 
+## Upgrade from 3.0.0 or lower
+
+The new twofactor authentication (2FA) feature requires the database schema to
+be updated:
+
+    ALTER TABLE virtual_users
+    ADD totp_secret VARCHAR(255) DEFAULT NULL;
+
 ## Upgrade from 2.6.1 or lower
 
 The new OpenPGP WKD feature requires GnuPG (>=2.1.14) to be installed.

@@ -100,6 +100,9 @@ form:
   openpgp-key-select-one: Please upload key either as file or as ASCII text.
   openpgp-key-submit: Publish OpenPGP key
   openpgp-delete: Delete OpenPGP key
+  twofactor: Two-factor authentication
+  twofactor-short: 2FA
+
 recovery:
   header: Recover your account
   lead: Reset the password using your recovery token
