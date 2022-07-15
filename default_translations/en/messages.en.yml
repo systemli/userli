@@ -109,6 +109,28 @@ form:
   twofactor-login-desc: >
     Open your two-factor authenticator (TOTP) app to view your authentication code.
   twofactor-login-cancel: Cancel login
+  twofactor-enable: Enable two-factor authentication
+  twofactor-disable: Disable two-factor authentication
+
+account:
+  twofactor:
+    headline: Two-factor authentication
+    unset: You don't have a two-factor authentication enabled yet.
+    unset-extra: You need a TOTP app on your mobile device to enable two-factor authentication.
+    set: Two-factor authentication is enabled.
+    button: Configure two-factor authentication
+    lead: Two-factor authentication adds an additional layer of security to your account.
+    desc-login: >
+      With two-factor authentication, you have to provide a second password at login, that
+      you get from your two-factor authenticator app. This extra password is only required
+      when logging into %app_url%. It's not required for accessing other services like
+      your mails.
+    desc-lost: >
+      If you ever loose access to your two-factor authenticator app, you will have to restore
+      your account using the <a href="%app_url%/user/recovery_token">recovery token</a> that
+      you received at registration time.
+    enable-lead: >
+      Scan the image below with your two-factor app.
 
 recovery:
   header: Recover your account

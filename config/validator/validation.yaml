@@ -94,3 +94,9 @@ App\Form\Model\RecoveryResetPassword:
             - App\Validator\Constraints\PasswordPolicy: ~
             - NotCompromisedPassword:
                 skipOnError: true
+
+App\Form\Model\Twofactor:
+    properties:
+        password:
+            - Symfony\Component\Security\Core\Validator\Constraints\UserPassword:
+                  message: form.wrong-password

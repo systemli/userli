@@ -1,0 +1,9 @@
+<h3>{{ "account.twofactor.headline"|trans }}</h3>
+<p>{{ "account.twofactor.lead"|trans }}</p>
+{% if not twofactor_enabled %}
+    <p class="alert alert-danger">
+        <i class="glyphicon glyphicon-alert" aria-hidden="true"></i>
+        {{ "account.twofactor.unset"|trans }}
+    </p>
+{% endif %}
+<p><a class="btn btn-primary" href="{{ url('user_twofactor') }}">{{ "account.twofactor.button"|trans }}</a></p>

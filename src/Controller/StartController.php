@@ -236,6 +236,7 @@ class StartController extends AbstractController
                 'user_domain' => $user->getDomain(),
                 'password_form' => $passwordChangeForm->createView(),
                 'recovery_secret_set' => $user->hasRecoverySecretBox(),
+                'twofactor_enabled' => $user->isTotpAuthenticationEnabled(),
             ]
         );
     }

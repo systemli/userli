@@ -110,9 +110,15 @@ user_recovery_token_ack:
 
 # TwofactorController
 
-twofactor_enable:
-    path:     /{_locale}/user/twofactor/enable
-    controller: App\Controller\TwofactorController::enableTwofactor
+user_twofactor:
+    path:     /{_locale}/user/twofactor
+    controller: App\Controller\TwofactorController::twofactorAction
+    requirements:
+        _locale: '%locales%'
+
+user_twofactor_disable:
+    path:     /{_locale}/user/twofactor_disable
+    controller: App\Controller\TwofactorController::twofactorDisableAction
     requirements:
         _locale: '%locales%'
 
