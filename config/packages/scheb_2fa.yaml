@@ -5,7 +5,7 @@ scheb_two_factor:
         enabled: true
         server_name: Userli
         issuer: Userli
-        #template: Security/2fa_form.html.twig
+        template: Security/2fa_form.html.twig
         parameters:
             image: 'https://www.systemli.org/systemli_logo.svg'
 

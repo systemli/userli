@@ -100,8 +100,15 @@ form:
   openpgp-key-select-one: Please upload key either as file or as ASCII text.
   openpgp-key-submit: Publish OpenPGP key
   openpgp-delete: Delete OpenPGP key
+  verify: Verify
   twofactor: Two-factor authentication
   twofactor-short: 2FA
+  twofactor-login: Two-factor authentication
+  twofactor-login-placeholder: 6-digit code
+  twofactor-login-auth-code: Authentication code
+  twofactor-login-desc: >
+    Open your two-factor authenticator (TOTP) app to view your authentication code.
+  twofactor-login-cancel: Cancel login
 
 recovery:
   header: Recover your account
