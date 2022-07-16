@@ -100,3 +100,9 @@ App\Form\Model\Twofactor:
         password:
             - Symfony\Component\Security\Core\Validator\Constraints\UserPassword:
                   message: form.wrong-password
+
+App\Form\Model\TwofactorConfirm:
+    properties:
+        totpSecret:
+            - NotNull: ~
+            - App\Validator\Constraints\TotpSecret: ~

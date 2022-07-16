@@ -6,6 +6,7 @@ The new twofactor authentication (2FA) feature requires the database schema to
 be updated:
 
     ALTER TABLE virtual_users
+    ADD totp_confirmed BOOLEAN DEFAULT 0,
     ADD totp_secret VARCHAR(255) DEFAULT NULL;
 
 ## Upgrade from 2.6.1 or lower

@@ -54,6 +54,10 @@ App\Entity\User:
     totpSecret:
       type: text
       nullable: true
+    totpConfirmed:
+      type: boolean
+      options:
+        default: 0
   manyToOne:
     domain:
       targetEntity: Domain

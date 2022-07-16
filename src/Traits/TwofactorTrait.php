@@ -10,11 +10,14 @@ trait TwofactorTrait
 	/** @var string */
 	private $totpSecret;
 
+	/** @var bool */
+	private $totpConfirmed;
+
 	/**
 	 * {@inheritdoc}
 	 */
 	public function isTotpAuthenticationEnabled(): bool {
-		return null !== $this->totpSecret;
+		return $this->totpConfirmed;
 	}
 
 	/**
@@ -37,5 +40,12 @@ trait TwofactorTrait
 	 */
 	public function setTotpSecret(?string $totpSecret): void {
 		$this->totpSecret = $totpSecret;
+	}
+
+	/**
+	 * @param bool $totpConfirmed
+	 */
+	public function setTotpConfirmed(bool $totpConfirmed): void {
+		$this->totpConfirmed = $totpConfirmed;
 	}
 }

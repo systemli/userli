@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Form\Model\Twofactor;
+use App\Form\Model\TwofactorConfirm;
+use App\Form\TwofactorConfirmType;
 use App\Form\TwofactorType;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
@@ -30,6 +32,16 @@ class TwofactorController extends AbstractController
 		$twofactorModel = new Twofactor();
 		$form = $this->createForm(TwofactorType::class, $twofactorModel);
 
+		$twofactorConfirmModel = new TwofactorConfirm();
+		$confirmForm = $this->createForm(
+			TwofactorConfirmType::class,
+			$twofactorConfirmModel,
+			[
+				'action' => $this->generateUrl('user_twofactor_confirm'),
+				'method' => 'post',
+			]
+		);
+
 		$twofactorDisableModel = new Twofactor();
 		$disableForm = $this->createForm(
 			TwofactorType::class,
@@ -51,6 +63,7 @@ class TwofactorController extends AbstractController
 				return $this->render('User/twofactor.html.twig',
 					[
 						'form' => $form->createView(),
+						'confirmForm' => $confirmForm->createView(),
 						'disableForm' => $disableForm->createView(),
 						'twofactor_enable' => true,
 						'twofactor_enabled' => $user->isTotpAuthenticationEnabled(),
@@ -62,11 +75,73 @@ class TwofactorController extends AbstractController
 		return $this->render('User/twofactor.html.twig',
 			[
 				'form' => $form->createView(),
+				'confirmForm' => $confirmForm->createView(),
 				'disableForm' => $disableForm->createView(),
 				'twofactor_enable' => false,
 				'twofactor_enabled' => $user->isTotpAuthenticationEnabled(),
 			]
 		);
+	}
+
+	/**
+	 * @param Request $request
+	 *
+	 * @return Response
+	 * @throws \Exception
+	 */
+	public function twofactorConfirmAction(Request $request): Response
+	{
+		if (null === $user = $this->getUser()) {
+			throw new \Exception('User should not be null');
+		}
+
+		$twofactorConfirmModel = new TwofactorConfirm();
+		$confirmForm = $this->createForm(TwofactorConfirmType::class, $twofactorConfirmModel);
+
+		if ('POST' === $request->getMethod()) {
+			$confirmForm->handleRequest($request);
+
+			if ($confirmForm->isSubmitted()) {
+				if ($confirmForm->isValid()) {
+					$user->setTotpConfirmed(true);
+					$this->getDoctrine()->getManager()->flush();
+					return $this->redirectToRoute('user_twofactor');
+				}
+
+				$twofactorModel = new Twofactor();
+				$form = $this->createForm(
+					TwofactorType::class,
+					$twofactorModel,
+					[
+						'action' => $this->generateUrl('user_twofactor'),
+						'method' => 'post',
+					]
+				);
+
+				$twofactorDisableModel = new Twofactor();
+				$disableForm = $this->createForm(
+					TwofactorType::class,
+					$twofactorDisableModel,
+					[
+						'action' => $this->generateUrl('user_twofactor_disable'),
+						'method' => 'post',
+					]
+				);
+
+				// Again render form to display form errors
+				return $this->render('User/twofactor.html.twig',
+					[
+						'form' => $form->createView(),
+						'confirmForm' => $confirmForm->createView(),
+						'disableForm' => $disableForm->createView(),
+						'twofactor_enable' => true,
+						'twofactor_enabled' => $user->isTotpAuthenticationEnabled(),
+					]
+				);
+			}
+		}
+
+		return $this->redirectToRoute('user_twofactor');
 	}
 
 	/**

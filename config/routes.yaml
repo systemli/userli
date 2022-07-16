@@ -116,6 +116,12 @@ user_twofactor:
     requirements:
         _locale: '%locales%'
 
+user_twofactor_confirm:
+    path:     /{_locale}/user/twofactor_confirm
+    controller: App\Controller\TwofactorController::twofactorConfirmAction
+    requirements:
+        _locale: '%locales%'
+
 user_twofactor_disable:
     path:     /{_locale}/user/twofactor_disable
     controller: App\Controller\TwofactorController::twofactorDisableAction
