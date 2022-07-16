@@ -3,11 +3,11 @@ scheb_two_factor:
     # Google Authenticator config
     totp:
         enabled: true
-        server_name: Userli
-        issuer: Userli
+        server_name: users.systemli.org
+        issuer: systemli.org
         template: Security/2fa_form.html.twig
         parameters:
-            image: 'https://www.systemli.org/systemli_logo.svg'
+            image: 'https://www.systemli.org/assets/img/systemli_logo_small.png'
 
     # The security token classes, which trigger two-factor authentication.
     security_tokens:
