@@ -366,6 +366,10 @@ class RecoveryController extends AbstractController
         // Encrypt MailCrypt private key from recoverySecretBox with new password
         $this->mailCryptKeyHandler->updateWithPrivateKey($user, $mailCryptPrivateKey);
 
+        // Clear two-factor authentication settings
+        $user->setTotpConfirmed(false);
+        $user->setTotpSecret(null);
+
         // Clear old token
         $user->eraseRecoveryStartTime();
         $user->eraseRecoverySecretBox();
