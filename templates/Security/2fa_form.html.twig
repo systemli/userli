@@ -16,7 +16,7 @@
                 <input type="text" id="_auth_code" name="{{  authCodeParameterName }}" autocomplete="off" class="form-control" autofocus="" placeholder="{{ "form.twofactor-login-placeholder"|trans }}" />
 
                 {% if isCsrfProtectionEnabled %}
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token(csrfTokenId) }}">
                 {% endif %}
                 <span class="help-block">{{ "form.twofactor-login-desc"|trans }}</span>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">{{ "form.verify"|trans() }}</button>
