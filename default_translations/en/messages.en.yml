@@ -115,7 +115,7 @@ form:
 account:
   twofactor:
     headline: Two-factor authentication
-    unset: You don't have a two-factor authentication enabled yet.
+    unset: You don't have two-factor authentication enabled yet.
     unset-extra: You need a TOTP app on your mobile device to enable two-factor authentication.
     set: Two-factor authentication is enabled.
     button: Configure two-factor authentication
