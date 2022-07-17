@@ -11,7 +11,7 @@ trait TwofactorTrait
     private $totpSecret;
 
     /** @var bool */
-    private $totpConfirmed;
+    private $totpConfirmed = false;
 
     /**
      * {@inheritdoc}
