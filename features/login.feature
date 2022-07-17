@@ -119,3 +119,28 @@ Feature: Login
     Then I should be on "/en/"
     And the response status code should be 200
     And I should see text matching "E-mail access has been turned off"
+
+  @login-2fa
+  Scenario: Login asks for secret if two-factor auth is enabled
+    When the following User exists:
+      | email                 | password | roles     | totpConfirmed | totpSecret |
+      | twofactor@example.org | asdasd   | ROLE_USER | 1             | secret     |
+    And I am on "/login"
+    And I fill in the following:
+      | username | twofactor@example.org |
+      | password | asdasd                |
+    And I press "Sign in"
+
+    Then I should be on "/en/2fa"
+    And I should see text matching "Authentication code"
+
+    And I fill in the following:
+      | _auth_code | invalid-token |
+    And I press "Verify"
+
+    Then I should be on "/en/2fa"
+    And I should see text matching "The verification code is not valid."
+
+    And I follow "Cancel login"
+    Then I should be on "/en/"
+    And the response status code should be 200

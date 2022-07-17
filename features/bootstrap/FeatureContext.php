@@ -130,6 +130,12 @@ class FeatureContext extends MinkContext
                     case 'mailCryptPublicKey':
                         $user->setMailCryptPublicKey($value);
                         break;
+                    case 'totpConfirmed':
+                        $user->setTotpConfirmed($value);
+                        break;
+                    case 'totpSecret':
+                        $user->setTotpSecret($value);
+                        break;
                 }
             }
 
