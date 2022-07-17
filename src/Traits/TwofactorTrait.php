@@ -7,52 +7,49 @@ use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
 
 trait TwofactorTrait
 {
-	/** @var string */
-	private $totpSecret;
+    /** @var string */
+    private $totpSecret;
 
-	/** @var bool */
-	private $totpConfirmed;
+    /** @var bool */
+    private $totpConfirmed;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function isTotpAuthenticationEnabled(): bool {
-		return (bool) $this->totpConfirmed;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function isTotpAuthenticationEnabled(): bool
+    {
+        return (bool) $this->totpConfirmed;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getTotpAuthenticationUsername(): string {
-		return $this->getUsername();
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotpAuthenticationUsername(): string
+    {
+        return $this->getUsername();
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getTotpAuthenticationConfiguration(): ?TotpConfigurationInterface {
-		// Settings that are compatible with Google Authenticator specification
-		return new TotpConfiguration($this->totpSecret, TotpConfiguration::ALGORITHM_SHA1, 30, 6);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotpAuthenticationConfiguration(): ?TotpConfigurationInterface
+    {
+        // Settings that are compatible with Google Authenticator specification
+        return new TotpConfiguration($this->totpSecret, TotpConfiguration::ALGORITHM_SHA1, 30, 6);
+    }
 
-	/**
-	 * @param string|null $totpSecret
-	 */
-	public function setTotpSecret(?string $totpSecret): void {
-		$this->totpSecret = $totpSecret;
-	}
+    public function setTotpSecret(?string $totpSecret): void
+    {
+        $this->totpSecret = $totpSecret;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function getTotpConfirmed(): bool {
-		return (bool) $this->totpConfirmed;
-	}
+    public function getTotpConfirmed(): bool
+    {
+        return (bool) $this->totpConfirmed;
+    }
 
-	/**
-	 * @param bool $totpConfirmed
-	 */
-	public function setTotpConfirmed(bool $totpConfirmed): void {
-		$this->totpConfirmed = $totpConfirmed;
-	}
+    public function setTotpConfirmed(bool $totpConfirmed): void
+    {
+        $this->totpConfirmed = $totpConfirmed;
+    }
 }
