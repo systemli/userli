@@ -106,3 +106,9 @@ App\Form\Model\TwofactorConfirm:
         totpSecret:
             - NotNull: ~
             - App\Validator\Constraints\TotpSecret: ~
+
+App\Form\Model\TwofactorBackupAck:
+    properties:
+        ack:
+            - IsTrue:
+                  message: form.twofactor-backup-ack-missing

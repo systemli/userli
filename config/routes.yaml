@@ -122,6 +122,12 @@ user_twofactor_confirm:
     requirements:
         _locale: '%locales%'
 
+user_twofactor_backup_ack:
+    path:     /{_locale}/user/twofactor_backup_codes
+    controller: App\Controller\TwofactorController::twofactorBackupAckAction
+    requirements:
+        _locale: '%locales%'
+
 user_twofactor_disable:
     path:     /{_locale}/user/twofactor_disable
     controller: App\Controller\TwofactorController::twofactorDisableAction

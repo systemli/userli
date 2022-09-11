@@ -52,12 +52,14 @@ App\Entity\User:
       type: text
       nullable: true
     totpSecret:
-      type: text
+      type: string
       nullable: true
     totpConfirmed:
       type: boolean
       options:
         default: 0
+    totpBackupCodes:
+      type: array
   manyToOne:
     domain:
       targetEntity: Domain

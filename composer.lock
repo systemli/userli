@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a2aa010e0dc4ea0c653d698c99c12871",
+    "content-hash": "cf6ece46cbcabba74de66e66ee6722d4",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3267,6 +3267,54 @@
                 }
             ],
             "time": "2021-09-25T23:10:38+00:00"
+        },
+        {
+            "name": "scheb/2fa-backup-code",
+            "version": "v5.13.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/scheb/2fa-backup-code.git",
+                "reference": "5584eb7a2c3deb80635c7173ad77858e51129c35"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/scheb/2fa-backup-code/zipball/5584eb7a2c3deb80635c7173ad77858e51129c35",
+                "reference": "5584eb7a2c3deb80635c7173ad77858e51129c35",
+                "shasum": ""
+            },
+            "require": {
+                "scheb/2fa-bundle": "self.version"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Scheb\\TwoFactorBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Scheb",
+                    "email": "me@christianscheb.de"
+                }
+            ],
+            "description": "Extends scheb/2fa-bundle with backup codes support",
+            "homepage": "https://github.com/scheb/2fa",
+            "keywords": [
+                "2fa",
+                "Authentication",
+                "backup-codes",
+                "symfony",
+                "two-factor",
+                "two-step"
+            ],
+            "support": {
+                "source": "https://github.com/scheb/2fa-backup-code/tree/v5.13.2"
+            },
+            "time": "2022-01-03T10:21:24+00:00"
         },
         {
             "name": "scheb/2fa-bundle",

@@ -106,6 +106,7 @@ form:
   twofactor-login: Two-factor authentication
   twofactor-login-placeholder: 6-digit code
   twofactor-login-auth-code: Authentication code
+  twofactor-backup-code-ack: I stored the backup codes at a secure place
   twofactor-login-desc: >
     Open your two-factor authenticator (TOTP) app to view your authentication code.
   twofactor-login-cancel: Cancel login
@@ -131,6 +132,8 @@ account:
       you received at registration time.
     enable-lead: >
       Scan the image below with your two-factor app.
+    backup-ack-lead: >
+      Backup codes for two-factor authentication. Copy and store them at a secure place.
 
 recovery:
   header: Recover your account

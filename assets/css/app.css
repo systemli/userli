@@ -100,3 +100,8 @@ body {
 .ascii {
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+.twofactor-backup-codes {
+    white-space: pre-line;
+    padding-left: 15px;
+}

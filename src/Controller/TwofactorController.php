@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Form\Model\Twofactor;
+use App\Form\Model\TwofactorBackupAck;
 use App\Form\Model\TwofactorConfirm;
+use App\Form\TwofactorBackupAckType;
 use App\Form\TwofactorConfirmType;
 use App\Form\TwofactorType;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
@@ -54,6 +56,7 @@ class TwofactorController extends AbstractController
 
             if ($form->isSubmitted() && $form->isValid()) {
                 $user->setTotpSecret($totpAuthenticator->generateSecret());
+                $user->generateBackupCodes();
                 $this->getDoctrine()->getManager()->flush();
 
                 return $this->render('User/twofactor.html.twig',
@@ -94,44 +97,139 @@ class TwofactorController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $confirmForm->handleRequest($request);
 
+            $twofactorModel = new Twofactor();
+            $form = $this->createForm(
+                TwofactorType::class,
+                $twofactorModel,
+                [
+                    'action' => $this->generateUrl('user_twofactor'),
+                    'method' => 'post',
+                ]
+            );
+
+            $twofactorDisableModel = new Twofactor();
+            $disableForm = $this->createForm(
+                TwofactorType::class,
+                $twofactorDisableModel,
+                [
+                    'action' => $this->generateUrl('user_twofactor_disable'),
+                    'method' => 'post',
+                ]
+            );
+
+            $twofactorBackupAckModel = new TwofactorBackupAck();
+            $backupAckForm = $this->createForm(
+                TwofactorBackupAckType::class,
+                $twofactorBackupAckModel,
+                [
+                    'action' => $this->generateUrl('user_twofactor_backup_ack'),
+                    'method' => 'post',
+                ]
+            );
+
             if ($confirmForm->isSubmitted()) {
                 if ($confirmForm->isValid()) {
-                    $user->setTotpConfirmed(true);
-                    $this->getDoctrine()->getManager()->flush();
-
-                    return $this->redirectToRoute('user_twofactor');
+                    return $this->render('User/twofactor.html.twig',
+                        [
+                            'form' => $form->createView(),
+                            'confirmForm' => $confirmForm->createView(),
+                            'backupAckForm' => $backupAckForm->createView(),
+                            'disableForm' => $disableForm->createView(),
+                            'twofactor_enable' => true,
+                            'twofactor_enabled' => $user->isTotpAuthenticationEnabled(),
+                            'twofactor_backup_codes' => $user->getBackupCodes(),
+                        ]
+                    );
                 }
-
-                $twofactorModel = new Twofactor();
-                $form = $this->createForm(
-                    TwofactorType::class,
-                    $twofactorModel,
-                    [
-                        'action' => $this->generateUrl('user_twofactor'),
-                        'method' => 'post',
-                    ]
-                );
-
-                $twofactorDisableModel = new Twofactor();
-                $disableForm = $this->createForm(
-                    TwofactorType::class,
-                    $twofactorDisableModel,
-                    [
-                        'action' => $this->generateUrl('user_twofactor_disable'),
-                        'method' => 'post',
-                    ]
-                );
 
                 // Again render form to display form errors
                 return $this->render('User/twofactor.html.twig',
                     [
                         'form' => $form->createView(),
                         'confirmForm' => $confirmForm->createView(),
+                        'backupAckForm' => $backupAckForm->createView(),
                         'disableForm' => $disableForm->createView(),
                         'twofactor_enable' => true,
                         'twofactor_enabled' => $user->isTotpAuthenticationEnabled(),
                     ]
                 );
+            }
+        }
+
+        return $this->redirectToRoute('user_twofactor');
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function twofactorBackupAckAction(Request $request): Response
+    {
+        if (null === $user = $this->getUser()) {
+            throw new \Exception('User should not be null');
+        }
+
+        $twofactorBackupAckModel = new TwofactorBackupAck();
+        $backupAckForm = $this->createForm(
+            TwofactorBackupAckType::class,
+            $twofactorBackupAckModel,
+            [
+                'action' => $this->generateUrl('user_twofactor_backup_ack'),
+                'method' => 'post',
+            ]
+        );
+
+        if ('POST' === $request->getMethod()) {
+            $backupAckForm->handleRequest($request);
+
+            if ($backupAckForm->isSubmitted()) {
+                if ($backupAckForm->isValid()) {
+                    $user->setTotpConfirmed(true);
+                    $this->getDoctrine()->getManager()->flush();
+
+                    return $this->redirectToRoute('user_twofactor');
+                } else {
+                    $twofactorModel = new Twofactor();
+                    $form = $this->createForm(
+                        TwofactorType::class,
+                        $twofactorModel,
+                        [
+                            'action' => $this->generateUrl('user_twofactor'),
+                            'method' => 'post',
+                        ]
+                    );
+
+                    $twofactorConfirmModel = new TwofactorConfirm();
+                    $confirmForm = $this->createForm(
+                        TwofactorConfirmType::class,
+                        $twofactorConfirmModel,
+                        [
+                            'action' => $this->generateUrl('user_twofactor_confirm'),
+                            'method' => 'post',
+                        ]
+                    );
+
+                    $twofactorDisableModel = new Twofactor();
+                    $disableForm = $this->createForm(
+                        TwofactorType::class,
+                        $twofactorDisableModel,
+                        [
+                            'action' => $this->generateUrl('user_twofactor_disable'),
+                            'method' => 'post',
+                        ]
+                    );
+
+                    return $this->render('User/twofactor.html.twig',
+                        [
+                            'form' => $form->createView(),
+                            'confirmForm' => $confirmForm->createView(),
+                            'backupAckForm' => $backupAckForm->createView(),
+                            'disableForm' => $disableForm->createView(),
+                            'twofactor_enable' => true,
+                            'twofactor_enabled' => $user->isTotpAuthenticationEnabled(),
+                            'twofactor_backup_codes' => $user->getBackupCodes(),
+                        ]
+                    );
+                }
             }
         }
 

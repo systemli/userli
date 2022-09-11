@@ -1,0 +1,23 @@
+{% form_theme backupAckForm 'Form/fields.html.twig' %}
+
+<div>
+    {{ "account.twofactor.backup-ack-lead"|trans }}
+</div>
+<div class="alert">
+    <pre class="twofactor-backup-codes">
+        {% for key, value in twofactor_backup_codes %}
+            {{ value }}
+        {% endfor %}
+    </pre>
+</div>
+{{ form_start(backupAckForm) }}
+{{ form_errors(backupAckForm) }}
+<div class="form-group">
+    {{ form_errors(backupAckForm.ack) }}
+    {{ form_widget(backupAckForm.ack) }}
+    {{ form_label(backupAckForm.ack) }}
+</div>
+<div class="form-group">
+    {{ form_widget(backupAckForm.submit, {'attr': {'class': 'btn btn-primary' } }) }}
+</div>
+{{  form_end(backupAckForm) }}

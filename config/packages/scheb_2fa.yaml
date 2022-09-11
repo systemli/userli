@@ -8,6 +8,9 @@ scheb_two_factor:
         template: Security/2fa_form.html.twig
         parameters:
             image: "%env(PROJECT_LOGO_URL)%"
+    # Backup codes config
+    backup_codes:
+        enabled: true
 
     # The security token classes, which trigger two-factor authentication.
     security_tokens:

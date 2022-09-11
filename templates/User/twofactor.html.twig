@@ -3,7 +3,6 @@
 {% block subtitle %}{{ "account.twofactor.headline"|trans }}{% endblock %}
 
 {% form_theme form 'Form/fields.html.twig' %}
-{% form_theme confirmForm 'Form/fields.html.twig' %}
 {% form_theme disableForm 'Form/fields.html.twig' %}
 
 {% block breadcrumbs %}
@@ -21,7 +20,9 @@
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6">
-            {% if twofactor_enable %}
+            {% if twofactor_enable and twofactor_backup_codes is defined %}
+                {% include 'User/twofactor_backup_ack.html.twig' %}
+            {% elseif twofactor_enable %}
                 {% include 'User/twofactor_enable.html.twig' %}
             {% else %}
                 {% if not twofactor_enabled %}
