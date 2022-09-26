@@ -63,7 +63,7 @@ jobs:
         run: bin/phpunit --coverage-clover=coverage.xml
 
       - name: Upload Test Coverage
-        uses: codecov/codecov-action@v3.1.0
+        uses: codecov/codecov-action@v3.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
