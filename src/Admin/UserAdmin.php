@@ -255,6 +255,8 @@ class UserAdmin extends Admin
 
         if (false === $object->getTotpConfirmed()) {
             $object->setTotpSecret(null);
+            $object->setTotpConfirmed(false);
+            $object->clearBackupCodes();
         }
     }
 

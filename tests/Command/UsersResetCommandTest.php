@@ -3,7 +3,6 @@
 namespace App\Tests\Command;
 
 use App\Command\UsersResetCommand;
-use App\Command\VoucherUnlinkCommand;
 use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
@@ -17,7 +16,7 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class UsersResetCommandTest extends TestCase
 {
-    private VoucherUnlinkCommand $command;
+    private UsersResetCommand $command;
     private User $user;
 
     public function setUp(): void
