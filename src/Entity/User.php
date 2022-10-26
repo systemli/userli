@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Enum\Roles;
-use App\Traits\TwofactorBackupCodeTrait;
 use App\Traits\CreationTimeTrait;
 use App\Traits\DeleteTrait;
 use App\Traits\DomainAwareTrait;
@@ -24,6 +23,7 @@ use App\Traits\QuotaTrait;
 use App\Traits\RecoverySecretBoxTrait;
 use App\Traits\RecoveryStartTimeTrait;
 use App\Traits\SaltTrait;
+use App\Traits\TwofactorBackupCodeTrait;
 use App\Traits\TwofactorTrait;
 use App\Traits\UpdatedTimeTrait;
 use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
@@ -55,7 +55,7 @@ class User implements UserInterface, EncoderAwareInterface, TwoFactorInterface, 
     use MailCryptPublicKeyTrait;
     use OpenPgpKeyTrait;
     use TwofactorTrait;
-	use TwofactorBackupCodeTrait;
+    use TwofactorBackupCodeTrait;
 
     public const CURRENT_PASSWORD_VERSION = 2;
 
