@@ -1,6 +1,9 @@
-# 3.0.0 (2022.10.26)
+# 3.1.0 (2022.10.26)
 
 * Add Two-factor authentication support
+
+# 3.0.0 (2022.06.29)
+
 * Drop official support for PHP 7.3
 * Update to symfony 4.4.40
 * Update dependencies
