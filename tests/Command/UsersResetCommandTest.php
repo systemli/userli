@@ -3,7 +3,6 @@
 namespace App\Tests\Command;
 
 use App\Command\UsersResetCommand;
-use App\Command\VoucherUnlinkCommand;
 use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
@@ -17,21 +16,22 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class UsersResetCommandTest extends TestCase
 {
-    /**
-     * @var VoucherUnlinkCommand
-     */
-    private $command;
+    private UsersResetCommand $command;
+    private User $user;
 
     public function setUp(): void
     {
-        $user = new User();
-        $user->setEmail('user@example.org');
+        $this->user = new User();
+        $this->user->setEmail('user@example.org');
+        $this->user->setTotpSecret('secret');
+        $this->user->setTotpConfirmed(true);
+        $this->user->addBackupCode('123456');
 
         $repository = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
         $repository->method('findByEmail')
-            ->willReturn($user);
+            ->willReturn($this->user);
 
         $manager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()
@@ -73,6 +73,11 @@ class UsersResetCommandTest extends TestCase
 
         // Test real run
         $commandTester->execute(['--user' => 'user@example.org']);
+
+        // Verify that user properties got reset
+        self::assertFalse($this->user->getTotpConfirmed());
+        self::assertEmpty($this->user->getBackupCodes());
+        self::assertFalse($this->user->isTotpAuthenticationEnabled());
 
         $output = $commandTester->getDisplay();
         $this->assertStringContainsString('Resetting user user@example.org', $output);

@@ -84,6 +84,10 @@ body {
     margin-bottom: 10px;
 }
 
+.alert-header {
+    text-align: center;
+}
+
 .flash-notification {
     position: absolute;
     right: 10px;
@@ -95,4 +99,9 @@ body {
 
 .ascii {
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.twofactor-backup-codes {
+    white-space: pre-line;
+    padding-left: 15px;
 }

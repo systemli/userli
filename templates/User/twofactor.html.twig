@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}{{ "account.twofactor.headline"|trans }}{% endblock %}
+
+{% form_theme form 'Form/fields.html.twig' %}
+{% form_theme disableForm 'Form/fields.html.twig' %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('index') }}">Start</a></li>
+        <li><a href="{{ path('account') }}">{{ "start.account-settings"|trans }}</a></li>
+        <li class="active">{{ "account.twofactor.headline"|trans }}</li>
+    </ol>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            <h3>{{ "account.twofactor.headline"|trans }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            {% if twofactor_enable and twofactor_backup_codes is defined %}
+                {% include 'User/twofactor_backup_ack.html.twig' %}
+            {% elseif twofactor_enable %}
+                {% include 'User/twofactor_enable.html.twig' %}
+            {% else %}
+                {% if not twofactor_enabled %}
+                    <div class="alert alert-warning">
+                        <i class="glyphicon glyphicon-warning-sign" aria-hidden="true"></i>
+                        {{ "account.twofactor.unset"|trans }}
+                        {{ "account.twofactor.unset-extra"|trans }}
+                    </div>
+
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+                    <div class="form-group">
+                        {{ form_label(form.password) }}
+                        {{ form_errors(form.password) }}
+                        {{ form_widget(form.password, {'attr': {'class': 'form-control' }}) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary' }}) }}
+                    </div>
+                    {{ form_end(form) }}
+                {% else %}
+                    <div class="alert alert-success">
+                        <i class="glyphicon glyphicon-ok" aria-hidden="true"></i>
+                        {{ "account.twofactor.set"|trans }}
+                    </div>
+                    {{ form_start(disableForm) }}
+                    {{ form_errors(disableForm) }}
+                    <div class="form-group">
+                        {{ form_label(disableForm.password) }}
+                        {{ form_errors(disableForm.password) }}
+                        {{ form_widget(disableForm.password, {'attr': {'class': 'form-control' }}) }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_widget(disableForm.submit, {'attr': {'class': 'btn btn-primary btn-danger'}, 'label': 'form.twofactor-disable'}) }}
+                    </div>
+                    {{ form_end(disableForm) }}
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6">
+            {% include 'Twofactor/twofactor_notes.html.twig' %}
+        </div>
+    </div>
+{% endblock %}

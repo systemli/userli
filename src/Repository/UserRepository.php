@@ -90,4 +90,13 @@ class UserRepository extends AbstractRepository
             ->andWhere(Criteria::expr()->eq('mailCrypt', true))
         )->count();
     }
+
+    public function countUsersWithTwofactor(): int
+    {
+        return $this->matching(Criteria::create()
+            ->where(Criteria::expr()->eq('deleted', false))
+            ->andWhere(Criteria::expr()->eq('totpConfirmed', 1))
+            ->andWhere(Criteria::expr()->neq('totpSecret', null))
+        )->count();
+    }
 }

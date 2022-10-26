@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block subtitle %}{{ "form.twofactor-login"|trans }}{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+            <h2 class="form-signin-heading">{{ "form.twofactor-login"|trans }}</h2>
+            {% if authenticationError %}
+                <div class="alert alert-danger" role="alert">{{ authenticationError|trans(authenticationErrorData, 'SchebTwoFactorBundle') }}</div>
+            {% endif %}
+
+            <form class="form" role="form" action="{{ checkPathUrl ? checkPathUrl : path(checkPathRoute) }}" method="post">
+                <label for="_auth_code">{{ "form.twofactor-login-auth-code"|trans }}</label>
+                <input type="text" id="_auth_code" name="{{  authCodeParameterName }}" autocomplete="off" class="form-control" autofocus="" placeholder="{{ "form.twofactor-login-placeholder"|trans }}" />
+
+                {% if isCsrfProtectionEnabled %}
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token(csrfTokenId) }}">
+                {% endif %}
+                <span class="help-block">{{ "form.twofactor-login-desc"|trans }}</span>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">{{ "form.verify"|trans() }}</button>
+                <a class="btn btn-lg btn-secondary btn-block" href="{{ logoutPath }}">{{ "form.twofactor-login-cancel"|trans() }}</a>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

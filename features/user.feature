@@ -155,3 +155,32 @@ Feature: User
     And I press "Create new recovery token"
 
     Then I should see text matching "The following recovery token got created for you"
+
+  @twofactor-auth
+  Scenario: Enable two-factor authentication #1 and enter wrong password
+    When I am authenticated as "user@example.org"
+    And I am on "/user/twofactor"
+    And I fill in the following:
+      | twofactor_password | wrong-password |
+    And I press "Enable two-factor authentication"
+
+    Then I should be on "/en/user/twofactor"
+    And I should see text matching "Wrong password"
+
+  @twofactor-auth
+  Scenario: Enable two-factor authentication
+    When I am authenticated as "user@example.org"
+    And I am on "/user/twofactor"
+    And I fill in the following:
+      | twofactor_password | asdasd |
+    And I press "Enable two-factor authentication"
+
+    Then I should be on "/en/user/twofactor"
+    And I should see text matching "Scan the image below with your two-factor app."
+
+    And I fill in the following:
+      | twofactor_confirm_totpSecret | invalid-secret |
+    And I press "Verify"
+
+    Then I should be on "/en/user/twofactor_confirm"
+    And I should see text matching "The verification code is not valid."

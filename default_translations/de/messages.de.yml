@@ -3,8 +3,9 @@ start:
   intro: Hier kannst du dein E-Mail-Konto erstellen und verwalten.
   registration-header: Registrierung
   registration-text: >
-    Du hast noch kein E-Mail-Konto bei %domain%? Kein Problem! Lass dir von einer
-    Freund*in einen Einladungscode schicken. Damit kannst du sofort ein Konto erstellen.
+    Du hast noch kein E-Mail-Konto bei %domain%? Kein Problem!
+    Lass dir von einer Freund:in einen Einladungscode schicken. Damit kannst
+    du sofort ein Konto erstellen.
   registration-button: Konto anlegen
   account-settings: Konto verwalten
   account-settings-desc: Passwörter und mehr
@@ -13,7 +14,7 @@ start:
   aliases-delete: Alias-Adresse löschen
   aliases-desc: Verschleiere deine Identität
   vouchers: Einladungscodes
-  vouchers-desc: Lade Freund*innen ein
+  vouchers-desc: Lade Freund:innen ein
   webmail: Webmail
   webmail-desc: Lies und schreib E-Mails
   openpgp-delete: OpenPGP-Schlüssel löschen
@@ -25,13 +26,14 @@ index:
   title: Verwalte dein E-Mail-Konto
   voucher-headline: Deine Einladungscodes
   voucher-limit: Du hast keine Einladungscodes mehr verfügbar.
-  voucher-disable: "Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben.\
-    \ Dies dient der Vermeidung von Massenregistrierungen und Spam.\n"
+  voucher-disable: >
+    Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben.
+    Dies dient der Vermeidung von Massenregistrierungen und Spam.
   voucher-explanation: >
-    Nutze deine Einladungscodes um Freund*innen hierher einzuladen. Standardmäßig
-    hast du drei Einladungen zur Verfügung. Wenn du mehr brauchst, wende dich an die
-    Admins. Wir speichern Einladungsdaten für einen begrenzten Zeitraum um Missbrauch
-    zu verhindern.
+    Nutze deine Einladungscodes um Freund:innen hierher einzuladen.
+    Standardmäßig hast du drei Einladungen zur Verfügung. Wenn du mehr
+    brauchst, wende dich an die Admins. Wir speichern Einladungsdaten für
+    einen begrenzten Zeitraum um Missbrauch zu verhindern.
   alias-headline: Deine %alias_type% Alias-Adressen
   alias-limit: Du hast das Limit von %alias_limit% erlaubten %alias_type% Alias-Adressen
     erreicht.
@@ -42,7 +44,7 @@ index:
   delete-description: >
     Du kannst dein Konto bei %project_name% löschen. Dadurch werden deine E-Mails
     unwiderruflich gelöscht. Eine <strong>spätere Wiederherstellung ist nicht möglich.</strong>
-    <br /><br /> Um dein Konto zu löschen, wirst du aufgefordert dein Passwort einzugeben.
+    <br /><br />Um dein Konto zu löschen, wirst du aufgefordert dein Passwort einzugeben.
   delete-button: Konto löschen
   recovery-token-button: Wiederherstellungscode verwalten
   logged_in_as: Du bist angemeldet als %user%.
@@ -73,6 +75,8 @@ form:
   oclock-by: Uhr von
   actual-password: Aktuelles Passwort
   new-custom-alias: Neue Alias-Adresse
+  plain-password: Neues Passwort
+  plain-password_confirmation: Neues Passwort bestätigen
   change-password: Passwort ändern
   delete-account: Konto löschen
   delete-password: Passwort
@@ -85,10 +89,8 @@ form:
   recovery-start: Wiederherstellen
   registration-recovery-token-ack: Ich habe den Code an einem sicheren Ort abgespeichert
   registration-recovery-token-next-button: Weiter
+  domain: Domain
   add: Hinzufügen
-  domain: Domäne
-  plain-password_confirmation: Neues Passwort bestätigen
-  plain-password: Neues Passwort
   openpgp-key-file: "Deinen Schlüssel als Datei hochladen:"
   openpgp-key-file-mimetype: Die hochgeladende Datei enthält keine OpenPGP-Schlüssel.
   openpgp-key-upload-or: oder
@@ -98,6 +100,39 @@ form:
     Format hoch.
   openpgp-key-submit: OpenPGP-Schlüssel veröffentlichen
   openpgp-delete: OpenPGP-Schlüssel löschen
+  verify: Bestätigen
+  twofactor: Zwei-Faktor-Authentifizierung
+  twofactor-short: 2FA
+  twofactor-login: Zwei-Faktor-Authentifizierung
+  twofactor-login-placeholder: 6-stelliger Code
+  twofactor-login-auth-code: Authentifizierungs-Code
+  twofactor-backup-code-ack: Ich habe die Backup-Codes an einem sicheren Ort abgelegt.
+  twofactor-login-desc: >
+    Öffne deine Zwei-Faktor (TOTP) App für den Code.
+  twofactor-login-cancel: Login abbrechen
+  twofactor-enable: Zwei-Faktor-Authentifizierung aktivieren
+  twofactor-disable: Zwei-Faktor-Authentifizierung deaktivieren
+
+account:
+  twofactor:
+    headline: Zwei-Faktor-Authentifizierung
+    unset: Zwei-Faktor-Authentifizierung ist noch nicht aktiv.
+    unset-extra: Du brauchst eine TOTP App auf deinem Smartphone um Zwei-Faktor-Authentifizierung zu aktivieren.
+    set: Zwei-Faktor-Authentifizierung ist aktiv.
+    button: Zwei-Faktor-Authentifizierung konfigurieren
+    lead: Zwei-Faktor-Authentifizierung bringt zusätzliche Sicherheit für deinen Account.
+    desc-login: >
+      Mit Zwei-Faktor-Authentifizierung musst du beim Login ein zweites Passwort eingeben,
+      welches du von deiner Zwei-Faktor-App bekommst. Dieses Extra-Passwort ist nur zum
+      Login unter %app_url% nötig, nicht für andere Dienste wie etwa deine Mails.
+    desc-lost: >
+      Falls du Zugang zu deiner Zwei-Faktor-App verlierst, musst du dich mit Hilfe eines der
+      Zwei-Faktor Backup Codes anmelden.
+    enable-lead: >
+      Scanne das Bild mit deiner Zwei-Faktor-App.
+    backup-ack-lead: >
+      Backup-Codes für die Zwei-Faktor-Authentifizierung. Kopiere und speichere sie an einem sicheren Ort.
+
 recovery:
   header: Konto wiederherstellen
   lead: Passwort zurücksetzen mit Hilfe des Wiederherstellungscodes
@@ -123,7 +158,7 @@ registration:
   information: Hinweis
   information-intro: >
     Du möchtest ein E-Mail-Konto bei <a href="%project_url%">%project_name%</a> registrieren.
-    Eine Registrierung ist nur möglich, wenn dich eine Freund*in zu unserem Dienst
+    Eine Registrierung ist nur möglich, wenn dich eine Freund:in zu unserem Dienst
     einlädt, dir also einen Einladungscode übergibt.
   information-password-policy: >
     <strong>Wichtig:</strong> Du benötigst ein Passwort, das aus mindestens 12 Zeichen
@@ -194,10 +229,9 @@ flashes:
   alias-deletion-successful: Deine Alias-Adresse wurde gelöscht.
   recovery-token-invalid: E-Mail-Adresse oder Wiederherstellungscode sind falsch!
   recovery-token-ack: Du hast einen Wiederherstellungscode erzeugt.
-  recovery-reauthenticate: Etwas ist schiefgelaufen. Du musst dich erneut authentifizieren!
+  revocery-reauthenticate: Etwas ist schief gelaufen. Bitte erneut authentifizieren!
   recovery-password-changed: Dein Passwort wurde geändert.
   recovery-next-login: Du kannst dich nun einloggen.
-  revocery-reauthenticate: Etwas ist schief gelaufen. Bitte erneut authentifizieren!
   openpgp-deletion-successful: Dein OpenPGP-Schlüssel wurde gelöscht.
   openpgp-key-upload-successful: Dein OpenPGP-Schlüssel wurde hochgeladen.
   openpgp-key-upload-error-no-openpgp: Die hochgadene Datei enthält keine OpenPGP-Schlüssel.
@@ -222,7 +256,7 @@ random: zufälligen
 mail:
   welcome-subject: Willkommen bei %domain%
   welcome-body: |
-    Liebe Nutzer*in,
+    Liebe Nutzer:in,
 
     willkommen an Bord. Im Web findest du Anleitungen zur Einrichtung deines
     E-Mail-Kontos mit verschiedenen Client-Programmen.
@@ -232,7 +266,7 @@ mail:
     E-Mail-Kontos kommen.
 
     In einer Woche erhälst du drei Einladungscodes, die du unter
-    %app_url%/voucher abrufen kannst. Diese kannst du an Freund*innen
+    %app_url%/voucher abrufen kannst. Diese kannst du an Freund:innen
     weiterleiten und sie so zu %project_name% einladen.
 
     Viel Spaß mit deinem E-Mail-Konto, wünscht dir
@@ -281,23 +315,23 @@ Alias: Alias-Adresse
 Voucher: Einladungscode
 Reserved Name: Reservierter Name
 copy-to-clipboard: In Zwischenablage kopieren
+init.title: Erstellen der Erstkonfiguration
+init_domain:
+  lead: Vielen Dank fürs installieren von Userli. Derzeit sind keine Domänen oder
+    Konten vorhanden.
+  text: Bitte wähle Deine primäre Domäne aus, die Userli behandeln soll.
 init_user:
+  lead: Primäre Domäne wurde erstellt.
   text: E-Mail-Standards erfordern, dass das Konto postmaster@%domain% vorhanden ist.
     Wähle ein Kennwort für dieses erste Administratorkonto aus und melde dich anschließend
     an.
-  lead: Primäre Domäne wurde erstellt.
-init_domain:
-  text: Bitte wähle Deine primäre Domäne aus, die Userli behandeln soll.
-  lead: Vielen Dank fürs installieren von Userli. Derzeit sind keine Domänen oder
-    Konten vorhanden.
-init.title: Erstellen der Erstkonfiguration
 openpgp:
   key-info: Veröffentlichter OpenPGP-Schlüssel
   delete-button: OpenPGP-Schlüssel löschen
   information: Information
   information-details: Hier kannst du deinen OpenPGP-Schlüssel hochladen, damit er
     in unserem <i><a target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key
-    Directory</a></i> veröffentlicht wird. Damit hilfst du Freund*innen, deinen Schlüssel
+    Directory</a></i> veröffentlicht wird. Damit hilfst du Freund:innen, deinen Schlüssel
     automatisch und sicher zu finden.
   keyid-label: "Schlüssel-ID:"
   fingerprint-label: "Fingerprint:"

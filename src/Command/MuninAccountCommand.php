@@ -71,6 +71,9 @@ class MuninAccountCommand extends Command
             $output->writeln('mail_crypt_keys.label Active accounts with mailbox encryption');
             $output->writeln('mail_crypt_keys.type GAUGE');
             $output->writeln('mail_crypt_keys.min 0');
+            $output->writeln('twofactor.label Active accounts with two-factor authentication');
+            $output->writeln('twofactor.type GAUGE');
+            $output->writeln('twofactor.min 0');
             $output->writeln('openpgp_keys.label OpenPGP keys');
             $output->writeln('openpgp_keys.type GAUGE');
             $output->writeln('openpgp_keys.min 0');
@@ -82,6 +85,7 @@ class MuninAccountCommand extends Command
         $output->writeln(sprintf('deleted.value %d', $this->userRepository->countDeletedUsers()));
         $output->writeln(sprintf('recovery_tokens.value %d', $this->userRepository->countUsersWithRecoveryToken()));
         $output->writeln(sprintf('mail_crypt_keys.value %d', $this->userRepository->countUsersWithMailCrypt()));
+        $output->writeln(sprintf('twofactor.value %d', $this->userRepository->countUsersWithTwofactor()));
         $output->writeln(sprintf('openpgp_keys.value %d', $this->openPgpKeyRepository->countKeys()));
     }
 }

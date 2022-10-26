@@ -45,8 +45,7 @@ index:
     You can delete your %project_name% e-mail account.
     This will delete all your e-mails.
     <strong>A recovery at a later date is not possible.</strong>
-    <br /><br />
-    To delete your account you need to submit your actual password.
+    <br /><br />To delete your account you need to submit your actual password.
   delete-button: Delete account
   recovery-token-button: Manage recovery token
   logged_in_as: You are logged in as %user%.
@@ -100,6 +99,40 @@ form:
   openpgp-key-select-one: Please upload key either as file or as ASCII text.
   openpgp-key-submit: Publish OpenPGP key
   openpgp-delete: Delete OpenPGP key
+  verify: Verify
+  twofactor: Two-factor authentication
+  twofactor-short: 2FA
+  twofactor-login: Two-factor authentication
+  twofactor-login-placeholder: 6-digit code
+  twofactor-login-auth-code: Authentication code
+  twofactor-backup-code-ack: I stored the backup codes at a secure place
+  twofactor-login-desc: >
+    Open your two-factor authenticator (TOTP) app to view your authentication code.
+  twofactor-login-cancel: Cancel login
+  twofactor-enable: Enable two-factor authentication
+  twofactor-disable: Disable two-factor authentication
+
+account:
+  twofactor:
+    headline: Two-factor authentication
+    unset: You don't have two-factor authentication enabled yet.
+    unset-extra: You need a TOTP app on your mobile device to enable two-factor authentication.
+    set: Two-factor authentication is enabled.
+    button: Configure two-factor authentication
+    lead: Two-factor authentication adds an additional layer of security to your account.
+    desc-login: >
+      With two-factor authentication, you have to provide a second password at login, that
+      you get from your two-factor authenticator app. This extra password is only required
+      when logging into %app_url%. It's not required for accessing other services like
+      your mails.
+    desc-lost: >
+      If you ever loose access to your two-factor authenticator app, you will have to authenticate
+      using one of the two-factor backup codes.
+    enable-lead: >
+      Scan the image below with your two-factor app.
+    backup-ack-lead: >
+      Backup codes for two-factor authentication. Copy and store them at a secure place.
+
 recovery:
   header: Recover your account
   lead: Reset the password using your recovery token
@@ -128,8 +161,7 @@ registration:
     We only allow registrations if a friend invites you with an invite code to our
     services.
   information-password-policy: >
-    <strong>Important:</strong>
-    You need a password with at least 12 characters.
+    <strong>Important:</strong> You need a password with at least 12 characters.
     Passwords will be tested against a <a href="https://haveibeenpwned.com/Passwords">database
     of known bad passwords</a>.
   label-email: Your preferred e-mail address
@@ -139,9 +171,8 @@ welcome:
   lead: You have set up an account with us successfully. What are the next steps?
   next-button: To the overview
   text: >
-    <h3>Ready to go</h3>
-    <p>In the web you can find guides for settting up your e-mail account with several
-    client programs.</p>
+    <h3>Ready to go</h3> <p>In the web you can find guides for settting up your e-mail
+    account with several client programs.</p>
     <p>In one week you will receive three invite codes, which you can collect at <a
     href="%app_url%">%app_url%</a>. You can pass these on to friends and invite them
     to register with %project_name%.</p>

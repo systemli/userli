@@ -23,11 +23,15 @@ use App\Traits\QuotaTrait;
 use App\Traits\RecoverySecretBoxTrait;
 use App\Traits\RecoveryStartTimeTrait;
 use App\Traits\SaltTrait;
+use App\Traits\TwofactorBackupCodeTrait;
+use App\Traits\TwofactorTrait;
 use App\Traits\UpdatedTimeTrait;
+use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
+use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class User implements UserInterface, EncoderAwareInterface
+class User implements UserInterface, EncoderAwareInterface, TwoFactorInterface, BackupCodeInterface
 {
     use IdTrait;
     use CreationTimeTrait;
@@ -50,6 +54,8 @@ class User implements UserInterface, EncoderAwareInterface
     use PlainMailCryptPrivateKeyTrait;
     use MailCryptPublicKeyTrait;
     use OpenPgpKeyTrait;
+    use TwofactorTrait;
+    use TwofactorBackupCodeTrait;
 
     public const CURRENT_PASSWORD_VERSION = 2;
 

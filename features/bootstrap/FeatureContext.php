@@ -10,6 +10,7 @@ use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 use Doctrine\ORM\Tools\SchemaTool;
+use OTPHP\TOTP;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -129,6 +130,16 @@ class FeatureContext extends MinkContext
                         break;
                     case 'mailCryptPublicKey':
                         $user->setMailCryptPublicKey($value);
+                        break;
+                    case 'totpConfirmed':
+                        $user->setTotpConfirmed($value);
+                        break;
+                    case 'totpSecret':
+                        $user->setTotpSecret($value);
+                        break;
+                    case 'totp_backup_codes':
+                        $user->generateBackupCodes();
+                        $this->setPlaceholder('totp_backup_codes', $user->getBackupCodes());
                         break;
                 }
             }
@@ -414,6 +425,18 @@ class FeatureContext extends MinkContext
         if ($this->output !== null) {
             throw new \Exception(sprintf('Did not see empty console output: "%s"', $this->output));
         }
+    }
+
+    /**
+     * @Then I enter TOTP backup code
+     */
+    public function iEnterTotpBackupCode()
+    {
+        $totpBackupCodes = $this->getPlaceholder('totp_backup_codes');
+        if (!$totpBackupCodes) {
+            throw new \Exception('No TOTP backup codes cached');
+        }
+        $this->fillField('_auth_code', $totpBackupCodes[0]);
     }
 
     /**

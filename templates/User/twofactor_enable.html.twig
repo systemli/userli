@@ -1,0 +1,24 @@
+{% form_theme confirmForm 'Form/fields.html.twig' %}
+
+<div>
+    {{ "account.twofactor.enable-lead"|trans }}
+</div>
+<div class="alert">
+    <img src="{{ url('user_twofactor_qrcode') }}" alt="">
+</div>
+{{ form_start(confirmForm) }}
+{{ form_errors(confirmForm) }}
+<div class="form-group">
+    {{ form_label(confirmForm.totpSecret) }}
+    {{ form_errors(confirmForm.totpSecret) }}
+    {{ form_widget(confirmForm.totpSecret, {'attr': {
+        'class': 'form-control',
+        'autofocus': '',
+        'placeholder': 'form.twofactor-login-placeholder',
+        'autocomplete': 'off'
+    }}) }}
+</div>
+<div class="form-group">
+    {{ form_widget(confirmForm.submit, {'attr': {'class': 'btn btn-primary' } }) }}
+</div>
+{{  form_end(confirmForm) }}

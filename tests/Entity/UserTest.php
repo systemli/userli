@@ -5,6 +5,7 @@ namespace App\Tests\Entity;
 use App\Entity\User;
 use App\Enum\Roles;
 use PHPUnit\Framework\TestCase;
+use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
 
 /**
  * Class UserTest.
@@ -93,5 +94,28 @@ class UserTest extends TestCase
         $user = new User();
         $today = new \DateTime();
         self::assertEquals($user->getUpdatedTime()->format('Y-m-d'), $today->format('Y-m-d'));
+    }
+
+    public function testTotp(): void
+    {
+        // totpSecret and totpConfirmed
+        $totpSecret = 'secret';
+        $user = new User();
+        self::assertEquals(false, $user->getTotpConfirmed());
+        self::assertEquals(false, $user->isTotpAuthenticationEnabled());
+        $user->setTotpSecret($totpSecret);
+        self::assertEquals(false, $user->isTotpAuthenticationEnabled());
+        $user->setTotpConfirmed(true);
+        self::assertEquals(true, $user->getTotpConfirmed());
+        self::assertEquals(true, $user->isTotpAuthenticationEnabled());
+
+        // getTotpAuthenticationUsername
+        $email = 'user@example.org';
+        $user->setEmail($email);
+        self::assertEquals($email, $user->getTotpAuthenticationUsername());
+
+        // getTotpAuthenticationConfiguration
+        $totpConfiguration = new TotpConfiguration($totpSecret, TotpConfiguration::ALGORITHM_SHA1, 30, 6);
+        self::assertEquals($totpConfiguration, $user->getTotpAuthenticationConfiguration());
     }
 }

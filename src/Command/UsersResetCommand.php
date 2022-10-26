@@ -129,10 +129,16 @@ class UsersResetCommand extends Command
             $output->write(sprintf("<info>New recovery token (please hand over to user): %s</info>\n\n", $user->getPlainRecoveryToken()));
         }
 
+        // Reset twofactor settings
+        $user->setTotpConfirmed(false);
+        $user->setTotpSecret(null);
+        $user->clearBackupCodes();
+
         // Clear plain password and flush changes to database
         $user->eraseCredentials();
         $user->erasePlainMailCryptPrivateKey();
         $user->erasePlainRecoveryToken();
+
         $this->manager->flush();
 
         // Clear users mailbox

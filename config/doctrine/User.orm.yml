@@ -51,6 +51,15 @@ App\Entity\User:
     mailCryptPublicKey:
       type: text
       nullable: true
+    totpSecret:
+      type: string
+      nullable: true
+    totpConfirmed:
+      type: boolean
+      options:
+        default: 0
+    totpBackupCodes:
+      type: array
   manyToOne:
     domain:
       targetEntity: Domain

@@ -85,10 +85,23 @@ class UserAdmin extends Admin
                 'help' => (null !== $userId && $user->hasMailCryptSecretBox()) ?
                     'Disabled because user has a MailCrypt key pair defined' : null,
             ])
+            ->add('totp_confirmed', CheckboxType::class, [
+                'label' => 'form.twofactor',
+                'required' => false,
+                'data' => (null !== $userId) ? $user->isTotpAuthenticationEnabled() : false,
+                'disabled' => null === $userId || !$user->isTotpAuthenticationEnabled(),
+                'help' => 'Can only be enabled by user',
+            ])
+            ->add('recovery_secret_box', CheckboxType::class, [
+                'label' => 'Recovery Token',
+                'data' => (null !== $userId) ? $user->hasRecoverySecretBox() : false,
+                'disabled' => true,
+                'help' => 'Can only be configured by user',
+            ])
             ->add('roles', ChoiceType::class, [
                 'choices' => [Roles::getAll()],
                 'multiple' => true,
-                'expanded' => true,
+                'expanded' => false,
                 'label' => 'form.roles',
             ])
             ->add('quota', null, [
@@ -182,6 +195,9 @@ class UserAdmin extends Admin
             ->addIdentifier('email')
             ->add('creationTime')
             ->add('updatedTime')
+            ->add('isTotpAuthenticationEnabled', 'boolean', [
+                'label' => 'form.twofactor-short',
+            ])
             ->add('recoverySecretBox', 'boolean', [
                 'label' => 'Recovery Token',
             ])
@@ -235,6 +251,12 @@ class UserAdmin extends Admin
             $this->passwordUpdater->updatePassword($object);
         } else {
             $object->updateUpdatedTime();
+        }
+
+        if (false === $object->getTotpConfirmed()) {
+            $object->setTotpSecret(null);
+            $object->setTotpConfirmed(false);
+            $object->clearBackupCodes();
         }
     }
 

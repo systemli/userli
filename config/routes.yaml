@@ -108,6 +108,38 @@ user_recovery_token_ack:
     requirements:
         _locale: '%locales%'
 
+# TwofactorController
+
+user_twofactor:
+    path:     /{_locale}/user/twofactor
+    controller: App\Controller\TwofactorController::twofactorAction
+    requirements:
+        _locale: '%locales%'
+
+user_twofactor_confirm:
+    path:     /{_locale}/user/twofactor_confirm
+    controller: App\Controller\TwofactorController::twofactorConfirmAction
+    requirements:
+        _locale: '%locales%'
+
+user_twofactor_backup_ack:
+    path:     /{_locale}/user/twofactor_backup_codes
+    controller: App\Controller\TwofactorController::twofactorBackupAckAction
+    requirements:
+        _locale: '%locales%'
+
+user_twofactor_disable:
+    path:     /{_locale}/user/twofactor_disable
+    controller: App\Controller\TwofactorController::twofactorDisableAction
+    requirements:
+        _locale: '%locales%'
+
+user_twofactor_qrcode:
+    path:     /{_locale}/user/twofactor/qrcode
+    controller: App\Controller\TwofactorController::displayTotpQrCode
+    requirements:
+        _locale: '%locales%'
+
 ## InitController
 init:
     path:     /{_locale}/init

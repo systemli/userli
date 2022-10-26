@@ -4,8 +4,8 @@ namespace App\Handler;
 
 use App\Entity\User;
 use App\Event\LoginEvent;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class UserAuthenticationHandler.
