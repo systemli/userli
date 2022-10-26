@@ -20,6 +20,7 @@ class MuninAccountCommandTest extends TestCase
         $userRepository->method('countDeletedUsers')->willReturn(3);
         $userRepository->method('countUsersWithRecoveryToken')->willReturn(5);
         $userRepository->method('countUsersWithMailCrypt')->willReturn(7);
+        $userRepository->method('countUsersWithTwofactor')->willReturn(9);
 
         $openPgpKeyRepository = $this->getMockBuilder(OpenPgpKeyRepository::class)
             ->disableOriginalConstructor()
@@ -40,7 +41,7 @@ class MuninAccountCommandTest extends TestCase
 
         $output = $commandTester->getDisplay();
 
-        self::assertEquals("account.value 10\ndeleted.value 3\nrecovery_tokens.value 5\nmail_crypt_keys.value 7\nopenpgp_keys.value 2\n", $output);
+        self::assertEquals("account.value 10\ndeleted.value 3\nrecovery_tokens.value 5\nmail_crypt_keys.value 7\ntwofactor.value 9\nopenpgp_keys.value 2\n", $output);
 
         $commandTester->execute(['--autoconf' => true]);
 
@@ -61,6 +62,7 @@ class MuninAccountCommandTest extends TestCase
         self::assertStringContainsString('deleted.label Deleted accounts', $output);
         self::assertStringContainsString('recovery_tokens.label Active accounts with recovery token', $output);
         self::assertStringContainsString('mail_crypt_keys.label Active accounts with mailbox encryption', $output);
+        self::assertStringContainsString('twofactor.label Active accounts with two-factor authentication', $output);
         self::assertStringContainsString('openpgp_keys.label OpenPGP keys', $output);
     }
 }
