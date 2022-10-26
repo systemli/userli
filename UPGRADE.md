@@ -10,6 +10,9 @@ be updated:
     ADD totp_secret VARCHAR(255) DEFAULT NULL;
     ADD totp_backup_codes LONGTEXT NOT NULL;
 
+Additionally, the environment variable `REGISTRATION_OPEN` got added to
+configure whether open registration is allowed.
+
 ## Upgrade from 2.6.1 or lower
 
 The new OpenPGP WKD feature requires GnuPG (>=2.1.14) to be installed.
