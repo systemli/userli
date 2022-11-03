@@ -4,7 +4,10 @@ description = ""
 alwaysopen = true
 +++
 
-To update Userli just download the latest version and run these commands:
+When updating to a new userli version, please take a look at `UPGRADE.md`
+to see whether manual steps are required.
+
+To automatically update the database schema of userli, run these commands:
 
     # Warm up cache
     bin/console cache:warmup
