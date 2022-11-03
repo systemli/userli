@@ -81,7 +81,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '12'
+          node-version: '16'
 
       - name: Get composer cache directory
         id: composer-cache
@@ -129,7 +129,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '12'
+          node-version: '16'
 
       - name: Get composer cache directory
         id: composer-cache
@@ -176,7 +176,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '12'
+          node-version: '16'
 
       - name: Get composer cache directory
         id: composer-cache
