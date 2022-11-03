@@ -108,7 +108,7 @@ class WkdHandlerTest extends TestCase
         $handler = $this->createHandler();
         $handler->deleteKey($this->email);
 
-        self::assertFileNotExists($this->wkdPath);
+        self::assertFileDoesNotExist($this->wkdPath);
     }
 
     public function testExportKeyToWKD(): void

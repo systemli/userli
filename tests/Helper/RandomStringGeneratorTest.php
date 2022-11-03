@@ -13,8 +13,8 @@ class RandomStringGeneratorTest extends TestCase
 
         self::assertNotEmpty($code);
         self::assertEquals(20, strlen($code));
-        self::assertRegExp('/^[0-9a-z]+$/', $code);
-        self::assertNotRegExp('/^[A-Z]+$/', $code);
+        self::assertMatchesRegularExpression('/^[0-9a-z]+$/', $code);
+        self::assertDoesNotMatchRegularExpression('/^[A-Z]+$/', $code);
     }
 
     public function testGenerateCaseSensitive(): void
@@ -23,6 +23,6 @@ class RandomStringGeneratorTest extends TestCase
 
         self::assertNotEmpty($code);
         self::assertEquals(RandomStringGenerator::LENGTH, strlen($code));
-        self::assertRegExp('/^[0-9a-zA-Z]+$/', $code);
+        self::assertMatchesRegularExpression('/^[0-9a-zA-Z]+$/', $code);
     }
 }
