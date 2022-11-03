@@ -55,7 +55,7 @@ class FeatureContext extends MinkContext
         $schemaTool = new SchemaTool($this->manager);
         $metadata = $this->manager->getMetadataFactory()->getAllMetadata();
 
-        $schemaTool->dropSchema($metadata);
+        $schemaTool->dropDatabase();
         $schemaTool->createSchema($metadata);
     }
 
