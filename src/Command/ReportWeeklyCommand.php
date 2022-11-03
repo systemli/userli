@@ -12,10 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ReportWeeklyCommand extends Command
 {
-    /**
-     * @var UserRegistrationInfoHandler
-     */
-    private $handler;
+    private UserRegistrationInfoHandler $handler;
 
     public function __construct(UserRegistrationInfoHandler $handler)
     {
@@ -36,8 +33,10 @@ class ReportWeeklyCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->handler->sendReport();
+
+        return 0;
     }
 }

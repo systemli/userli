@@ -64,7 +64,7 @@ class WkdHandlerTest extends TestCase
 
         $handler = $this->createHandler();
         $wkdKey = $handler->importKey(base64_decode($this->keyData), $this->email);
-        //overwrite timestamps as they may differ by a few microseconds
+        // overwrite timestamps as they may differ by a few microseconds
         $wkdKey->setCreationTime($expected->getCreationTime());
         $wkdKey->setUpdatedTime($expected->getUpdatedTime());
 
@@ -90,7 +90,7 @@ class WkdHandlerTest extends TestCase
         $handler = $this->createHandler();
         $wkdKey = $handler->importKey(base64_decode($this->keyData), $this->email, $user);
 
-        //overwrite timestamps as they may differ by a few microseconds
+        // overwrite timestamps as they may differ by a few microseconds
         $wkdKey->setCreationTime($expected->getCreationTime());
         $wkdKey->setUpdatedTime($expected->getUpdatedTime());
 
@@ -108,7 +108,7 @@ class WkdHandlerTest extends TestCase
         $handler = $this->createHandler();
         $handler->deleteKey($this->email);
 
-        self::assertFileNotExists($this->wkdPath);
+        self::assertFileDoesNotExist($this->wkdPath);
     }
 
     public function testExportKeyToWKD(): void

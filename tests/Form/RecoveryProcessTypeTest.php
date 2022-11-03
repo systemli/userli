@@ -18,7 +18,7 @@ class RecoveryProcessTypeTest extends TypeTestCase
             new PreloadedExtension(
                 [new RecoveryProcessType($this->getManager())],
                 []
-                ),
+            ),
         ];
     }
 

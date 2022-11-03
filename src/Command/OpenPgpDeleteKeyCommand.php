@@ -12,15 +12,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class OpenPgpDeleteKeyCommand extends Command
 {
-    /**
-     * @var WkdHandler
-     */
-    private $handler;
-
-    /**
-     * @var OpenPgpKeyRepository
-     */
-    private $repository;
+    private WkdHandler $handler;
+    private OpenPgpKeyRepository $repository;
 
     public function __construct(EntityManagerInterface $manager, WkdHandler $handler)
     {
@@ -46,7 +39,7 @@ class OpenPgpDeleteKeyCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // parse arguments
         $email = $input->getArgument('email');
@@ -60,5 +53,7 @@ class OpenPgpDeleteKeyCommand extends Command
             $this->handler->deleteKey($openPgpKey->getEmail());
             $output->writeln(sprintf('Deleted OpenPGP key for email %s: %s', $openPgpKey->getEmail(), $openPgpKey->getKeyFingerprint()));
         }
+
+        return 0;
     }
 }

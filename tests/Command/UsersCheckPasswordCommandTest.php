@@ -50,13 +50,13 @@ class UsersCheckPasswordCommandTest extends TestCase
         $mailLocation = 'var/vmail';
 
         $command = new UsersCheckPasswordCommand($manager,
-                                            $reader,
-                                            $handler,
-                                            $mailCryptKeyHandler,
-                                            $mailCrypt,
-                                            $mailUID,
-                                            $mailGID,
-                                            $mailLocation);
+            $reader,
+            $handler,
+            $mailCryptKeyHandler,
+            $mailCrypt,
+            $mailUID,
+            $mailGID,
+            $mailLocation);
         $commandTester = new CommandTester($command);
 
         $this->expectExceptionMessage($exceptionMessage);

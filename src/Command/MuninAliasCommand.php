@@ -14,10 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class MuninAliasCommand extends Command
 {
-    /**
-     * @var AliasRepository
-     */
-    private $repository;
+    private AliasRepository $repository;
 
     public function __construct(EntityManagerInterface $manager)
     {
@@ -40,12 +37,12 @@ class MuninAliasCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($input->getOption('autoconf')) {
             $output->writeln('yes');
 
-            return;
+            return 0;
         }
 
         if ($input->getOption('config')) {
@@ -59,10 +56,12 @@ class MuninAliasCommand extends Command
             $output->writeln('alias_random.type GAUGE');
             $output->writeln('alias_random.min 0');
 
-            return;
+            return 0;
         }
 
         $output->writeln(sprintf('alias_total.value %d', $this->repository->count([])));
         $output->writeln(sprintf('alias_random.value %d', $this->repository->count(['random' => true])));
+
+        return 0;
     }
 }

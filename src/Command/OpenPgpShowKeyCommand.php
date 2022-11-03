@@ -11,10 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class OpenPgpShowKeyCommand extends Command
 {
-    /**
-     * @var OpenPgpKeyRepository
-     */
-    private $repository;
+    private OpenPgpKeyRepository $repository;
 
     public function __construct(EntityManagerInterface $manager)
     {
@@ -39,7 +36,7 @@ class OpenPgpShowKeyCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // parse arguments
         $email = $input->getArgument('email');
@@ -51,5 +48,7 @@ class OpenPgpShowKeyCommand extends Command
         } else {
             $output->writeln(sprintf('OpenPGP key for email %s: %s', $openPgpKey->getEmail(), $openPgpKey->getKeyFingerprint()));
         }
+
+        return 0;
     }
 }

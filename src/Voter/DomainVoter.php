@@ -90,31 +90,31 @@ class DomainVoter extends Voter
             ->findByEmail($this->security->getUser()->getUsername());
         $userDomain = $user->getDomain();
 
-        if ((in_array($attribute, [
+        if (in_array($attribute, [
             'ROLE_USERLI_ADMIN_USER_LIST',
             'ROLE_USERLI_ADMIN_USER_VIEW',
             'ROLE_USERLI_ADMIN_USER_DELETE',
             'ROLE_USERLI_ADMIN_ALIAS_LIST',
             'ROLE_USERLI_ADMIN_ALIAS_VIEW',
             'ROLE_USERLI_ADMIN_ALIAS_DELETE',
-        ])) && ($userDomain === $subject->getDomain())) {
+        ]) && ($userDomain === $subject->getDomain())) {
             // domain admin can only see own domain
             return true;
         }
 
         $guesser = new DomainGuesser($this->manager);
 
-        if ((in_array($attribute, [
+        if (in_array($attribute, [
             'ROLE_USERLI_ADMIN_USER_CREATE',
             'ROLE_USERLI_ADMIN_USER_EDIT',
-            ])) && ($userDomain === $guesser->guess($subject->getEmail()))) {
+            ]) && ($userDomain === $guesser->guess($subject->getEmail()))) {
             return true;
         }
 
-        if ((in_array($attribute, [
+        if (in_array($attribute, [
                 'ROLE_USERLI_ADMIN_ALIAS_CREATE',
                 'ROLE_USERLI_ADMIN_ALIAS_EDIT',
-            ])) && ($userDomain === $guesser->guess($subject->getSource()))) {
+            ]) && ($userDomain === $guesser->guess($subject->getSource()))) {
             return true;
         }
 

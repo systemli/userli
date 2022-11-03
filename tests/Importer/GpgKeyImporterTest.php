@@ -271,7 +271,7 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
         $expected->setKeyExpireTime(new DateTime($this->validExpireTime));
         $expected->setKeyData($this->validKeyBinary);
 
-        //overwrite timestamps as they may differ by a few microseconds
+        // overwrite timestamps as they may differ by a few microseconds
         $openPgpKey->setCreationTime($expected->getCreationTime());
         $openPgpKey->setUpdatedTime($expected->getUpdatedTime());
 

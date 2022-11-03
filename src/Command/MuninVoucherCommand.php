@@ -14,10 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class MuninVoucherCommand extends Command
 {
-    /**
-     * @var VoucherRepository
-     */
-    private $repository;
+    private VoucherRepository $repository;
 
     public function __construct(EntityManagerInterface $manager)
     {
@@ -40,12 +37,12 @@ class MuninVoucherCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($input->getOption('autoconf')) {
             $output->writeln('yes');
 
-            return;
+            return 0;
         }
 
         if ($input->getOption('config')) {
@@ -59,10 +56,12 @@ class MuninVoucherCommand extends Command
             $output->writeln('voucher_redeemed.type GAUGE');
             $output->writeln('voucher_redeemed.min 0');
 
-            return;
+            return 0;
         }
 
         $output->writeln(sprintf('voucher_total.value %d', $this->repository->count([])));
         $output->writeln(sprintf('voucher_redeemed.value %d', $this->repository->countRedeemedVouchers()));
+
+        return 0;
     }
 }

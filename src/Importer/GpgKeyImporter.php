@@ -56,14 +56,14 @@ class GpgKeyImporter implements OpenPgpKeyImporterInterface
             $gpg->setEngineOptions([
                 'import' => sprintf('--import-filter keep-uid="uid =~ <%s> || uid = %s"', $email, $email),
             ]);
-        } catch (Crypt_GPG_FileException | \PEAR_Exception $e) {
+        } catch (Crypt_GPG_FileException|\PEAR_Exception $e) {
             self::recursiveRemoveDir($tempDir);
             throw new RuntimeException('Failed to read GnuPG home directory: '.$e->getMessage());
         }
 
         try {
             $gpg->importKey($data);
-        } catch (\Crypt_GPG_BadPassphraseException | Crypt_GPG_NoDataException | Crypt_GPG_Exception $e) {
+        } catch (\Crypt_GPG_BadPassphraseException|Crypt_GPG_NoDataException|Crypt_GPG_Exception $e) {
             self::recursiveRemoveDir($tempDir);
             throw new NoGpgDataException('Failed to import WKD key: '.$e->getMessage());
         }
@@ -88,7 +88,7 @@ class GpgKeyImporter implements OpenPgpKeyImporterInterface
 
         try {
             $keyData = base64_encode($gpg->exportPublicKey($email, false));
-        } catch (Crypt_GPG_Exception | \Crypt_GPG_KeyNotFoundException $e) {
+        } catch (Crypt_GPG_Exception|\Crypt_GPG_KeyNotFoundException $e) {
             self::recursiveRemoveDir($tempDir);
             throw new RuntimeException('Failed to export key: '.$e->getMessage());
         }

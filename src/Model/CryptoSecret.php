@@ -43,8 +43,6 @@ class CryptoSecret
     }
 
     /**
-     * @return CryptoSecret
-     *
      * @throws \Exception
      */
     public static function decode(string $encrypted): self

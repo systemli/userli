@@ -15,15 +15,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class VoucherUnlinkCommand extends Command
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-
-    /**
-     * @var SuspiciousChildrenHandler
-     */
-    private $handler;
+    private EntityManagerInterface $manager;
+    private SuspiciousChildrenHandler $handler;
 
     public function __construct(EntityManagerInterface $manager, SuspiciousChildrenHandler $handler)
     {
@@ -46,7 +39,7 @@ class VoucherUnlinkCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $vouchers = $this->manager->getRepository(Voucher::class)->getOldVouchers();
 
@@ -88,6 +81,8 @@ class VoucherUnlinkCommand extends Command
         if (false === $input->getOption('dry-run')) {
             $this->manager->flush();
         }
+
+        return 0;
     }
 
     /**

@@ -13,15 +13,8 @@ use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 class UsersListCommand extends Command
 {
-    /**
-     * @var UserRepository
-     */
-    private $repository;
-
-    /**
-     * @var RoleHierarchyInterface
-     */
-    private $roleHierarchy;
+    private UserRepository $repository;
+    private RoleHierarchyInterface $roleHierarchy;
 
     public function __construct(EntityManagerInterface $manager, RoleHierarchyInterface $roleHierarchy)
     {
@@ -48,7 +41,7 @@ class UsersListCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $inactiveDays = $input->getOption('inactive-days');
         if (!empty($inactiveDays) && !is_numeric($inactiveDays)) {
@@ -71,5 +64,7 @@ class UsersListCommand extends Command
         foreach ($users as $user) {
             $output->write(sprintf("%s\n", $user->getEmail()));
         }
+
+        return 0;
     }
 }

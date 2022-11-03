@@ -15,15 +15,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class MuninAccountCommand extends Command
 {
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
-
-    /**
-     * @var OpenPgpKeyRepository
-     */
-    private $openPgpKeyRepository;
+    private UserRepository $userRepository;
+    private OpenPgpKeyRepository $openPgpKeyRepository;
 
     public function __construct(EntityManagerInterface $manager)
     {
@@ -47,12 +40,12 @@ class MuninAccountCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($input->getOption('autoconf')) {
             $output->writeln('yes');
 
-            return;
+            return 0;
         }
 
         if ($input->getOption('config')) {
@@ -78,7 +71,7 @@ class MuninAccountCommand extends Command
             $output->writeln('openpgp_keys.type GAUGE');
             $output->writeln('openpgp_keys.min 0');
 
-            return;
+            return 0;
         }
 
         $output->writeln(sprintf('account.value %d', $this->userRepository->countUsers()));
@@ -87,5 +80,7 @@ class MuninAccountCommand extends Command
         $output->writeln(sprintf('mail_crypt_keys.value %d', $this->userRepository->countUsersWithMailCrypt()));
         $output->writeln(sprintf('twofactor.value %d', $this->userRepository->countUsersWithTwofactor()));
         $output->writeln(sprintf('openpgp_keys.value %d', $this->openPgpKeyRepository->countKeys()));
+
+        return 0;
     }
 }

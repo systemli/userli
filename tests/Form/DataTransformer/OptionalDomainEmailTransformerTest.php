@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class OptionalDomainEmailTransformerTest extends TestCase
 {
-    const DOMAIN = 'example.org';
+    public const DOMAIN = 'example.org';
 
     /**
      * @dataProvider transformProvider

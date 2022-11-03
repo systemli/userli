@@ -10,7 +10,6 @@
         "ext-openssl": ">=7.1",
         "ext-sodium": "^2.0 | >=7.2",
         "doctrine/doctrine-bundle": "^2.6",
-        "doctrine/doctrine-cache-bundle": "^1.4",
         "doctrine/doctrine-fixtures-bundle": "~3.4",
         "doctrine/orm": "^2.11",
         "ircmaxell/password-compat": "~1.0.3",
@@ -44,7 +43,8 @@
         "symfony/yaml": "*",
         "tuupola/base32": "^1.0",
         "twbs/bootstrap": "~3.3.0",
-        "twig/extensions": "^1.5",
+        "twig/extra-bundle": "^3.4",
+        "twig/intl-extra": "^3.4",
         "twig/twig": "^1.0||^2.0"
     },
     "require-dev": {
@@ -58,8 +58,7 @@
         "symfony/phpunit-bridge": "*",
         "symfony/stopwatch": "^4.4",
         "symfony/var-dumper": "4.4.*",
-        "symfony/web-profiler-bundle": "*",
-        "symfony/web-server-bundle": "4.4"
+        "symfony/web-profiler-bundle": "*"
     },
     "config": {
         "bin-dir": "bin",

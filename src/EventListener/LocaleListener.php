@@ -56,7 +56,7 @@ class LocaleListener implements EventSubscriberInterface
         try {
             $this->urlMatcher->match($newRoute);
             $event->setResponse(new RedirectResponse($newRoute));
-        } catch (ResourceNotFoundException | MethodNotAllowedException $e) {
+        } catch (ResourceNotFoundException|MethodNotAllowedException $e) {
             // ignore errors, we just redirect if there was none
         }
     }

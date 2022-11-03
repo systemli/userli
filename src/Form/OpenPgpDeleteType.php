@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OpenPgpDeleteType extends AbstractType
 {
-    const NAME = 'delete_openpgp';
+    public const NAME = 'delete_openpgp';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

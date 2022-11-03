@@ -16,10 +16,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class VoucherUnlinkCommandTest extends TestCase
 {
-    /**
-     * @var VoucherUnlinkCommand
-     */
-    private $command;
+    private VoucherUnlinkCommand $command;
 
     public function setUp(): void
     {
@@ -62,7 +59,7 @@ class VoucherUnlinkCommandTest extends TestCase
             ->getMock();
 
         $repository->method('getOldVouchers')
-            ->willReturn($this->getResult());
+            ->willReturn($this->getOldVouchers());
 
         $manager->method('getRepository')->willReturn($repository);
 
@@ -72,7 +69,7 @@ class VoucherUnlinkCommandTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function getResult(): array
+    public function getOldVouchers(): array
     {
         $user1 = new User();
         $user1->setEmail('suspicious@example.org');
