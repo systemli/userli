@@ -237,9 +237,6 @@
     "sonata-project/twig-extensions": {
         "version": "0.1.1"
     },
-    "swiftmailer/swiftmailer": {
-        "version": "v6.1.3"
-    },
     "symfony/apache-pack": {
         "version": "1.0",
         "recipe": {
@@ -384,6 +381,18 @@
     "symfony/intl": {
         "version": "v4.1.4"
     },
+    "symfony/mailer": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.3",
+            "ref": "97a61eabb351d7f6cb7702039bcfe07fe9d7e03c"
+        },
+        "files": [
+            "config/packages/mailer.yaml"
+        ]
+    },
     "symfony/mime": {
         "version": "v4.3.2"
     },
@@ -508,20 +517,6 @@
     },
     "symfony/string": {
         "version": "v5.1.5"
-    },
-    "symfony/swiftmailer-bundle": {
-        "version": "2.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "2.5",
-            "ref": "ae4d22af30bbd484506bc1817c5a3ef72c855b93"
-        },
-        "files": [
-            "config/packages/dev/swiftmailer.yaml",
-            "config/packages/swiftmailer.yaml",
-            "config/packages/test/swiftmailer.yaml"
-        ]
     },
     "symfony/translation": {
         "version": "3.3",

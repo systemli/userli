@@ -1,5 +1,11 @@
 # Upgrade documentation
 
+## Upgrade from 3.1.0 or lower
+
+Userli migrated from swiftmailer-bundle to symfony/mailer. Remove environment
+variable `MAILER_URL` and replace it with `MAILER_DSN`. See `.env` file for the
+syntax.
+
 ## Upgrade from 3.0.0 or lower
 
 The new twofactor authentication (2FA) feature requires the database schema to

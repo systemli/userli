@@ -1,0 +1,7 @@
+# See https://symfony.com/doc/current/mailer.html#always-send-to-the-same-address
+framework:
+    mailer:
+        dsn: '%env(MAILER_DSN)%?verify_peer=0'
+        envelope:
+            # send all emails to a specific address
+            recipients: ['%env(MAILER_DELIVERY_ADDRESS)%']
