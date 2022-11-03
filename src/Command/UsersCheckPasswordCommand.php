@@ -216,7 +216,6 @@ class UsersCheckPasswordCommand extends Command
 
         // Execute checkpassword-reply command
         $replyProcess = new Process($replyArgs);
-        $replyProcess->inheritEnvironmentVariables(true);
         $replyProcess->setEnv(array_merge(getenv(), $envVars));
         try {
             $replyProcess->run();
