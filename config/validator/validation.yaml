@@ -3,7 +3,7 @@ App\Entity\Alias:
         source:
             - NotNull: ~
             - Email:
-                strict: true
+                mode: strict
             - App\Validator\Constraints\EmailAddress: { groups: [unique] }
             - App\Validator\Constraints\EmailLength:
                 minLength: 3
@@ -30,7 +30,7 @@ App\Form\Model\Registration:
     properties:
         email:
             - Email:
-                strict: true
+                mode: strict
                 message: form.invalid-email
             - App\Validator\Constraints\EmailAddress: ~
             - App\Validator\Constraints\EmailLength:
@@ -83,7 +83,7 @@ App\Form\Model\RecoveryProcess:
     properties:
         email:
             - Email:
-                  strict: true
+                  mode: strict
         recoveryToken:
             - Uuid:
                 message: form.invalid-token
