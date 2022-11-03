@@ -3,13 +3,12 @@
 namespace App\Controller;
 
 use App\Handler\DeleteHandler;
-use App\Remover\VoucherRemover;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class UserCRUDController extends CRUDController
+class AliasCRUDController extends CRUDController
 {
     private DeleteHandler $deleteHandler;
 
@@ -18,31 +17,11 @@ class UserCRUDController extends CRUDController
     }
 
     /**
-     * @param ProxyQueryInterface $query
-     *
-     * @return RedirectResponse
-     */
-    public function batchActionRemoveVouchers(ProxyQueryInterface $query): RedirectResponse {
-        $this->admin->checkAccess('edit');
-
-        $users = $query->execute();
-
-        $this->get(VoucherRemover::class)->removeUnredeemedVouchersByUsers($users);
-
-        $this->addFlash(
-            'sonata_flash_success',
-            $this->trans('flash_batch_remove_vouchers_success')
-        );
-
-        return $this->redirectToList();
-    }
-
-    /**
      * @param int|string|null $id
      *
-     * @return RedirectResponse
+     * @return Response|RedirectResponse
      */
-    public function deleteAction($id): RedirectResponse
+    public function deleteAction($id)
     {
         $request = $this->getRequest();
         $this->assertObjectExists($request, true);
@@ -56,7 +35,7 @@ class UserCRUDController extends CRUDController
 
         $objectName = $this->admin->toString($object);
 
-        $this->deleteHandler->deleteUser($object);
+        $this->deleteHandler->deleteAlias($object);
 
         $this->addFlash(
             'sonata_flash_success',
@@ -79,10 +58,10 @@ class UserCRUDController extends CRUDController
     {
         $this->admin->checkAccess('batchDelete');
 
-        $users = $query->execute();
+        $aliases = $query->execute();
 
-        foreach ($users as $user) {
-            $this->deleteHandler->deleteUser($user);
+        foreach ($aliases as $alias) {
+            $this->deleteHandler->deleteAlias($alias);
         }
 
         $this->addFlash(

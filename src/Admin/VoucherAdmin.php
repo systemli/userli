@@ -2,12 +2,12 @@
 
 namespace App\Admin;
 
-use App\Entity\User;
-use App\Factory\VoucherFactory;
+use App\Helper\RandomStringGenerator;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class VoucherAdmin extends Admin
@@ -29,12 +29,10 @@ class VoucherAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    public function getNewInstance()
+    public function alterNewInstance(object $object): void
     {
-        /** @var User $user */
-        $user = $this->security->getUser();
-
-        return VoucherFactory::create($user);
+        $object->setUser($this->security->getUser());
+        $object->setCode(RandomStringGenerator::generate(6, true));
     }
 
     /**
@@ -73,7 +71,7 @@ class VoucherAdmin extends Admin
         $filter
             ->add('user')
             ->add('code')
-            ->add('created_since', 'doctrine_orm_callback', [
+            ->add('created_since', CallbackFilter::class, [
                 'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
                     if (isset($value['value']) && null !== $value = $value['value']) {
                         $qb = $proxyQuery->getQueryBuilder();
@@ -87,7 +85,7 @@ class VoucherAdmin extends Admin
                 },
                 'field_type' => TextType::class,
             ])
-            ->add('redeemed_since', 'doctrine_orm_callback', [
+            ->add('redeemed_since', CallbackFilter::class, [
                 'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
                     if (isset($value['value']) && null !== $value = $value['value']) {
                         $qb = $proxyQuery->getQueryBuilder();
