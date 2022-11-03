@@ -2,16 +2,17 @@ default:
     suites:
         default:
             contexts:
-                - FeatureContext:
-                    #kernel: '@kernel'
+                - App\Tests\Behat\FeatureContext: ~
 
     extensions:
-        Behat\Symfony2Extension:
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: "tests/bootstrap.php"
             kernel:
-                bootstrap: features/bootstrap/bootstrap.php
-                class: App\Kernel
+                class: ~
+                path: ~
+                environment: ~
+                debug: ~
         Behat\MinkExtension:
-            base_url: "http://example.org/"
             sessions:
-                default:
-                    symfony2: ~
+                symfony:
+                    symfony: ~

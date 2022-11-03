@@ -5,30 +5,6 @@
     "behat/gherkin": {
         "version": "v4.5.1"
     },
-    "behat/mink": {
-        "version": "1.7.x-dev"
-    },
-    "behat/mink-browserkit-driver": {
-        "version": "1.3.3"
-    },
-    "behat/mink-extension": {
-        "version": "2.3.1"
-    },
-    "behat/symfony2-extension": {
-        "version": "2.1",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "2.1",
-            "ref": "af4f8fa93b1fee9e6f15d1e208ce743bb31cb2b2"
-        },
-        "files": [
-            "behat.yml.dist",
-            "features/bootstrap/FeatureContext.php",
-            "features/bootstrap/bootstrap.php",
-            "features/demo.feature"
-        ]
-    },
     "behat/transliterator": {
         "version": "v1.2.0"
     },
@@ -121,6 +97,21 @@
     },
     "egulias/email-validator": {
         "version": "2.1.5"
+    },
+    "friends-of-behat/symfony-extension": {
+        "version": "2.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "2.0",
+            "ref": "1e012e04f573524ca83795cd19df9ea690adb604"
+        },
+        "files": [
+            "behat.yml.dist",
+            "config/services_test.yaml",
+            "features/demo.feature",
+            "tests/Behat/DemoContext.php"
+        ]
     },
     "ircmaxell/password-compat": {
         "version": "v1.0.4"
@@ -249,9 +240,6 @@
     "symfony/asset": {
         "version": "v4.1.4"
     },
-    "symfony/browser-kit": {
-        "version": "v4.1.4"
-    },
     "symfony/cache": {
         "version": "v4.1.4"
     },
@@ -277,9 +265,6 @@
             "config/bootstrap.php"
         ]
     },
-    "symfony/css-selector": {
-        "version": "v4.1.4"
-    },
     "symfony/debug": {
         "version": "v4.1.4"
     },
@@ -299,9 +284,6 @@
         "version": "v2.4.0"
     },
     "symfony/doctrine-bridge": {
-        "version": "v4.1.4"
-    },
-    "symfony/dom-crawler": {
         "version": "v4.1.4"
     },
     "symfony/dotenv": {
