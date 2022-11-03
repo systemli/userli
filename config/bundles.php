@@ -1,7 +1,6 @@
 <?php
 
 return [
-    Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle::class => ['all' => true],
     Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['all' => true],
     Knp\Bundle\MenuBundle\KnpMenuBundle::class => ['all' => true],
