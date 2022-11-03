@@ -22,12 +22,13 @@ class UserCRUDController extends CRUDController
      *
      * @return RedirectResponse
      */
-    public function batchActionRemoveVouchers(ProxyQueryInterface $query): RedirectResponse {
+    public function batchActionRemoveVouchers(ProxyQueryInterface $query): RedirectResponse
+    {
         $this->admin->checkAccess('edit');
 
         $users = $query->execute();
 
-        $this->get(VoucherRemover::class)->removeUnredeemedVouchersByUsers($users);
+        $this->get(VoucherRemover::class)->removeUnredeemedVouchersByUsers(iterator_to_array($users, false));
 
         $this->addFlash(
             'sonata_flash_success',
