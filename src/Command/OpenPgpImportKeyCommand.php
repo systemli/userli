@@ -12,10 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class OpenPgpImportKeyCommand extends Command
 {
-    /**
-     * @var WkdHandler
-     */
-    private $handler;
+    private WkdHandler $handler;
 
     public function __construct(WkdHandler $handler)
     {
@@ -44,7 +41,7 @@ class OpenPgpImportKeyCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // parse arguments
         $email = $input->getArgument('email');
@@ -62,9 +59,11 @@ class OpenPgpImportKeyCommand extends Command
         } catch (NoGpgKeyForUserException | MultipleGpgKeysForUserException $e) {
             $output->writeln(sprintf('Error: %s in %s', $e->getMessage(), $file));
 
-            return;
+            return 0;
         }
 
         $output->writeln(sprintf('Imported OpenPGP key for email %s: %s', $email, $openPgpKey->getKeyFingerprint()));
+
+        return 0;
     }
 }

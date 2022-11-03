@@ -12,20 +12,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class OpenPgpExportKeysCommand extends Command
 {
-    /**
-     * @var WkdHandler
-     */
-    private $handler;
-
-    /**
-     * @var DomainRepository
-     */
-    private $domainRepository;
-
-    /**
-     * @var OpenPgpKeyRepository
-     */
-    private $openPgpKeyRepository;
+    private WkdHandler $handler;
+    private DomainRepository $domainRepository;
+    private OpenPgpKeyRepository $openPgpKeyRepository;
 
     public function __construct(EntityManagerInterface $manager, WkdHandler $handler)
     {
@@ -48,7 +37,7 @@ class OpenPgpExportKeysCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // create Web Key Directories (WKD) for all domains
         foreach ($this->domainRepository->findAll() as $domain) {
@@ -63,5 +52,7 @@ class OpenPgpExportKeysCommand extends Command
         }
 
         $output->writeln(sprintf('Exported %d OpenPGP keys to WKD directory', $count));
+
+        return 0;
     }
 }

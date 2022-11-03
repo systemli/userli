@@ -13,15 +13,8 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class UsersDeleteCommand extends Command
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-
-    /**
-     * @var DeleteHandler
-     */
-    private $deleteHandler;
+    private EntityManagerInterface $manager;
+    private DeleteHandler $deleteHandler;
 
     public function __construct(EntityManagerInterface $manager, DeleteHandler $deleteHandler)
     {
@@ -45,7 +38,7 @@ class UsersDeleteCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $email = $input->getOption('user');
 
@@ -59,5 +52,7 @@ class UsersDeleteCommand extends Command
             $output->write(sprintf("Deleting user %s\n", $email));
             $this->deleteHandler->deleteUser($user);
         }
+
+        return 0;
     }
 }

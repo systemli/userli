@@ -13,18 +13,9 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class VoucherCreationCommand extends Command
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var string
-     */
-    private $appUrl;
+    private EntityManagerInterface $manager;
+    private RouterInterface $router;
+    private string $appUrl;
 
     public function __construct(EntityManagerInterface $manager, RouterInterface $router, string $appUrl)
     {
@@ -46,7 +37,7 @@ class VoucherCreationCommand extends Command
             ->addOption('print-links', 'l', InputOption::VALUE_NONE, 'Print out links to vouchers');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $email = $input->getOption('user');
 
@@ -73,5 +64,7 @@ class VoucherCreationCommand extends Command
         }
 
         $this->manager->flush();
+
+        return 0;
     }
 }

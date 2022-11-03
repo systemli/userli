@@ -12,15 +12,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ReservedNamesImportCommand extends Command
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-
-    /**
-     * @var ReservedNameCreator
-     */
-    private $creator;
+    private EntityManagerInterface $manager;
+    private ReservedNameCreator $creator;
 
     public function __construct(EntityManagerInterface $manager, ReservedNameCreator $creator)
     {
@@ -51,7 +44,7 @@ class ReservedNamesImportCommand extends Command
      *
      * @throws ValidationException
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $repository = $this->manager->getRepository('App:ReservedName');
 
@@ -94,5 +87,7 @@ class ReservedNamesImportCommand extends Command
                 );
             }
         }
+
+        return 0;
     }
 }

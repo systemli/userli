@@ -11,10 +11,7 @@ use Symfony\Component\Console\Question\Question;
 
 class AdminPasswordCommand extends Command
 {
-    /**
-     * @var AdminPasswordUpdater
-     */
-    private $updater;
+    private AdminPasswordUpdater $updater;
 
     /**
      * AdminPasswordCommand constructor.
@@ -34,7 +31,7 @@ class AdminPasswordCommand extends Command
             ->addArgument('password', InputArgument::OPTIONAL, 'Admin password');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): void
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $password = $input->getArgument('password');
         if (null === $password) {
@@ -43,5 +40,7 @@ class AdminPasswordCommand extends Command
             $password = $helper->ask($input, $output, $question);
         }
         $this->updater->updateAdminPassword($password);
+
+        return 0;
     }
 }
