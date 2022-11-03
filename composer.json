@@ -43,6 +43,8 @@
         "symfony/yaml": "*",
         "tuupola/base32": "^1.0",
         "twbs/bootstrap": "~3.3.0",
+        "twig/extra-bundle": "^3.4",
+        "twig/intl-extra": "^3.4",
         "twig/twig": "^1.0||^2.0"
     },
     "require-dev": {

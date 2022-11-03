@@ -585,6 +585,9 @@
     "twbs/bootstrap": {
         "version": "v3.3.7"
     },
+    "twig/extra-bundle": {
+        "version": "v3.4.0"
+    },
     "twig/string-extra": {
         "version": "v3.0.5"
     },

@@ -1,5 +1,5 @@
 {% block form_errors %}
-    {% filter spaceless %}
+    {% apply spaceless %}
         {% if errors|length > 0 %}
             <div class="alert alert-danger small">
                 {% for error in errors %}
@@ -7,5 +7,5 @@
                 {% endfor %}
             </div>
         {% endif %}
-    {% endfilter %}
+    {% endapply %}
 {% endblock form_errors %}
