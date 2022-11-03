@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "70d3339227b84b50de6ccc4d615ab949",
+    "content-hash": "d588c4e15f5d68306f0240c8892d18c5",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -9513,27 +9513,27 @@
         },
         {
             "name": "tuupola/base32",
-            "version": "1.0.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tuupola/base32.git",
-                "reference": "69f40afaf547985e2c65b533d568dae944ec1c85"
+                "reference": "a1757113ca0aa68ae970e1692bf39fd3de58a5e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tuupola/base32/zipball/69f40afaf547985e2c65b533d568dae944ec1c85",
-                "reference": "69f40afaf547985e2c65b533d568dae944ec1c85",
+                "url": "https://api.github.com/repos/tuupola/base32/zipball/a1757113ca0aa68ae970e1692bf39fd3de58a5e0",
+                "reference": "a1757113ca0aa68ae970e1692bf39fd3de58a5e0",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6 || ^7.0"
+                "php": "^7.1|^8.0"
             },
             "require-dev": {
-                "overtrue/phplint": "^0.2.1",
-                "paragonie/random_compat": "^2.0",
-                "phpbench/phpbench": "^0.13.0",
-                "phpunit/phpunit": "^4.8 || ^5.5 || ^6.5",
-                "squizlabs/php_codesniffer": "^2.5"
+                "overtrue/phplint": "^1.2",
+                "phpbench/phpbench": "^0.16.0",
+                "phpstan/phpstan": "^0.12.9",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0",
+                "squizlabs/php_codesniffer": "^3.5"
             },
             "suggest": {
                 "ext-gmp": "GMP extension provides the fastest encoding and decoding."
@@ -9563,9 +9563,15 @@
             ],
             "support": {
                 "issues": "https://github.com/tuupola/base32/issues",
-                "source": "https://github.com/tuupola/base32/tree/1.0.0"
+                "source": "https://github.com/tuupola/base32/tree/2.0.0"
             },
-            "time": "2020-02-05T05:41:21+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/tuupola",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-11-19T12:39:22+00:00"
         },
         {
             "name": "twbs/bootstrap",
