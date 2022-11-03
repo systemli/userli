@@ -7,9 +7,6 @@ bin/*
 !bin/user-aliases
 !bin/user-vouchers
 build/
-config/services_dev.yaml
-config/services_prod.yaml
-config/services_test.yaml
 .idea/
 node_modules
 public/build
@@ -37,6 +34,6 @@ translations/
 
 hugo/public/
 
-###> behat/symfony2-extension ###
-behat.yml
-###< behat/symfony2-extension ###
+###> friends-of-behat/symfony-extension ###
+/behat.yml
+###< friends-of-behat/symfony-extension ###

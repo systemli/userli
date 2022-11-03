@@ -1,17 +1,22 @@
 <?php
 
+namespace App\Tests\Behat;
+
 use App\Entity\Alias;
 use App\Entity\User;
 use App\Guesser\DomainGuesser;
+use App\Helper\PasswordUpdater;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\MinkContext;
-use Behat\Symfony2Extension\Context\KernelDictionary;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
-use OTPHP\TOTP;
+use Doctrine\ORM\Tools\ToolsException;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -24,31 +29,31 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 */
 class FeatureContext extends MinkContext
 {
-    use KernelDictionary;
+    private KernelInterface $kernel;
+    private EntityManagerInterface $manager;
+    private PasswordUpdater $passwordUpdater;
+    private DomainGuesser $domainGuesser;
+    private array $placeholders = [];
+    private ?string $output;
+    private array $requestParams = [];
 
-    /**
-     * @var array
-     */
-    private $placeholders = [];
-
-    /**
-     * @var string
-     */
-    private $output;
-
-    /**
-     * @var array
-     */
-    private $requestParams = [];
+    public function __construct(KernelInterface $kernel,
+                                EntityManagerInterface $manager,
+                                PasswordUpdater $passwordUpdater,
+                                DomainGuesser $domainGuesser) {
+        $this->kernel = $kernel;
+        $this->manager = $manager;
+        $this->passwordUpdater = $passwordUpdater;
+        $this->domainGuesser = $domainGuesser;
+    }
 
     /**
      * @Given /^the database is clean$/
+     * @throws ToolsException
      */
-    public function theDatabaseIsClean()
-    {
-        $em = $this->getManager();
-        $schemaTool = new SchemaTool($em);
-        $metadata = $em->getMetadataFactory()->getAllMetadata();
+    public function theDatabaseIsClean(): void {
+        $schemaTool = new SchemaTool($this->manager);
+        $metadata = $this->manager->getMetadataFactory()->getAllMetadata();
 
         $schemaTool->dropSchema($metadata);
         $schemaTool->createSchema($metadata);
@@ -57,10 +62,8 @@ class FeatureContext extends MinkContext
     /**
      * @When the following Domain exists:
      */
-    public function theFollowingDomainExists(TableNode $table)
-    {
+    public function theFollowingDomainExists(TableNode $table): void {
         foreach ($table->getColumnsHash() as $data) {
-            /** @var $domain \App\Entity\Domain */
             $domain = new \App\Entity\Domain();
 
             foreach ($data as $key => $value) {
@@ -70,18 +73,16 @@ class FeatureContext extends MinkContext
                 }
             }
 
-            $this->getManager()->persist($domain);
-            $this->getManager()->flush();
+            $this->manager->persist($domain);
+            $this->manager->flush();
         }
     }
 
     /**
      * @When the following User exists:
      */
-    public function theFollowingUserExists(TableNode $table)
-    {
+    public function theFollowingUserExists(TableNode $table): void {
         foreach ($table->getColumnsHash() as $data) {
-            /** @var $user \App\Entity\User */
             $user = new User();
 
             foreach ($data as $key => $value) {
@@ -93,14 +94,14 @@ class FeatureContext extends MinkContext
                     case 'email':
                         $user->setEmail($value);
 
-                        if (null !== $domain = $this->getDomainGuesser()->guess($value)) {
+                        if (null !== $domain = $this->domainGuesser->guess($value)) {
                             $user->setDomain($domain);
                         }
 
                         break;
                     case 'password':
                         $user->setPlainPassword($value);
-                        $this->getContainer()->get('App\Helper\PasswordUpdater')->updatePassword($user);
+                        $this->passwordUpdater->updatePassword($user);
                         break;
                     case 'roles':
                         $roles = explode(',', $value);
@@ -144,8 +145,8 @@ class FeatureContext extends MinkContext
                 }
             }
 
-            $this->getManager()->persist($user);
-            $this->getManager()->flush();
+            $this->manager->persist($user);
+            $this->manager->flush();
 
         }
     }
@@ -153,10 +154,8 @@ class FeatureContext extends MinkContext
     /**
      * @When the following Voucher exists:
      */
-    public function theFollowingVoucherExists(TableNode $table)
-    {
+    public function theFollowingVoucherExists(TableNode $table): void {
         foreach ($table->getColumnsHash() as $data) {
-            /** @var $voucher \App\Entity\Voucher */
             $voucher = new \App\Entity\Voucher();
 
             foreach ($data as $key => $value) {
@@ -180,18 +179,16 @@ class FeatureContext extends MinkContext
 
             }
 
-            $this->getManager()->persist($voucher);
-            $this->getManager()->flush();
+            $this->manager->persist($voucher);
+            $this->manager->flush();
         }
     }
 
     /**
      * @When the following Alias exists:
      */
-    public function theFollowingAliasExists(TableNode $table)
-    {
+    public function theFollowingAliasExists(TableNode $table): void {
         foreach ($table->getColumnsHash() as $data) {
-            /** @var $alias Alias */
             $alias = new Alias();
 
             foreach ($data as $key => $value) {
@@ -218,21 +215,20 @@ class FeatureContext extends MinkContext
                         break;
                 }
 
-                if (null !== $domain = $this->getDomainGuesser()->guess($value)) {
+                if (null !== $domain = $this->domainGuesser->guess($value)) {
                     $alias->setDomain($domain);
                 }
             }
 
-            $this->getManager()->persist($alias);
-            $this->getManager()->flush();
+            $this->manager->persist($alias);
+            $this->manager->flush();
         }
     }
 
     /**
      * @When the following ReservedName exists:
      */
-    public function theFollowingReservedNameExists(TableNode $table)
-    {
+    public function theFollowingReservedNameExists(TableNode $table): void {
         foreach ($table->getColumnsHash() as $data) {
             /** @var $reservedName \App\Entity\ReservedName */
             $reservedName = new \App\Entity\ReservedName();
@@ -244,16 +240,16 @@ class FeatureContext extends MinkContext
                 }
             }
 
-            $this->getManager()->persist($reservedName);
-            $this->getManager()->flush();
+            $this->manager->persist($reservedName);
+            $this->manager->flush();
         }
     }
 
     /**
      * @Given /^I am authenticated as "([^"]*)"$/
+     * @throws UnsupportedDriverActionException
      */
-    public function iAmAuthenticatedAs($username)
-    {
+    public function iAmAuthenticatedAs(string $username): void {
         $driver = $this->getSession()->getDriver();
         if (!$driver instanceof BrowserKitDriver) {
             throw new UnsupportedDriverActionException('This step is only supported by the BrowserKitDriver', $driver);
@@ -262,7 +258,7 @@ class FeatureContext extends MinkContext
         $client = $driver->getClient();
         $client->getCookieJar()->set(new Cookie(session_name(), true));
 
-        $session = $this->getContainer()->get('session');
+        $session = $this->kernel->getContainer()->get('session');
 
         $user = $this->getUserRepository()->findByEmail($username);
         $providerKey = "default";
@@ -279,8 +275,7 @@ class FeatureContext extends MinkContext
     /**
      * @When /^I have the request params for "([^"]*)":$/
      */
-    public function iHaveTheRequestParams(string $field, TableNode $table)
-    {
+    public function iHaveTheRequestParams(string $field, TableNode $table): void {
         foreach ($table->getRowsHash() as $var => $value) {
             $this->requestParams[$field][$var] = $value;
         }
@@ -288,9 +283,9 @@ class FeatureContext extends MinkContext
 
     /**
      * @When /^I request "(GET|PUT|POST|DELETE|PATCH) ([^"]*)"$/
+     * @throws UnsupportedDriverActionException
      */
-    public function iRequest(string $httpMethod, string $path)
-    {
+    public function iRequest(string $httpMethod, string $path): void {
         $driver = $this->getSession()->getDriver();
         if (!$driver instanceof BrowserKitDriver) {
             throw new UnsupportedDriverActionException('This step is only supported by the BrowserKitDriver', $driver);
@@ -304,26 +299,20 @@ class FeatureContext extends MinkContext
             'Content-Type' => 'application/x-www-form-urlencoded',
         ];
 
-        try {
-            // Magic is here : allow to simulate any HTTP verb
-            $client->request(
-                $method,
-                $this->locatePath($path),
-                $formParams,
-                [],
-                $headers);
-        } catch (BadResponseException $e) {
-            $response = $e->getResponse();
-            throw new \Exception('Bad response.');
-        }
+        // Magic is here : allow to simulate any HTTP verb
+        $client->request(
+            $method,
+            $this->locatePath($path),
+            $formParams,
+            [],
+            $headers);
 
     }
 
     /**
      * @When /^I set the placeholder "([^"]*)" with property "([^"]*)" for "([^"]*)"$/
      */
-    public function iSetPlaceholderForUser($name, $key, $email)
-    {
+    public function iSetPlaceholderForUser(string $name, string $key, string $email): void {
         $user = $this->getUserRepository()->findByEmail($email);
 
         if (!$user) {
@@ -338,8 +327,7 @@ class FeatureContext extends MinkContext
     /**
      * @When /^I set the placeholder "([^"]*)" from url parameter "([^"]*)"$/
      */
-    public function iSetPlaceholderFromUrl($name, $key)
-    {
+    public function iSetPlaceholderFromUrl(string $name, string $key): void {
         $queryParams = parse_url($this->getSession()->getCurrentUrl(), PHP_URL_QUERY);
 
         if (null !== $queryParams) {
@@ -362,8 +350,7 @@ class FeatureContext extends MinkContext
     /**
      * @param $page
      */
-    public function visit($page)
-    {
+    public function visit($page): void {
         $page = $this->replacePlaceholders($page);
 
         parent::visit($page);
@@ -372,69 +359,63 @@ class FeatureContext extends MinkContext
     /**
      * @Given /^set the HTTP-Header "([^"]*)" to "([^"]*)"$/
      */
-    public function setHttpHeaderto($name, $value)
-    {
+    public function setHttpHeaderto(string $name, string $value): void {
         $this->getSession()->setRequestHeader($name, $value);
     }
 
     /**
      * @When I run console command :command
      */
-    public function iRunConsoleCommand($command)
-    {
+    public function iRunConsoleCommand(string $command): void {
         $this->output = shell_exec("php bin/console " . $command);
     }
 
     /**
      * @Then I should see :string in the console output
      */
-    public function iShouldSeeInTheConsoleOutput($string)
-    {
+    public function iShouldSeeInTheConsoleOutput(string $string): void {
         $output = preg_replace('/\r\n|\r|\n/', '\\n', $this->output);
         if (strpos($output, $string) === false) {
-            throw new \Exception(sprintf('Did not see "%s" in console output "%s"', $string, $output));
+            throw new \RuntimeException(sprintf('Did not see "%s" in console output "%s"', $string, $output));
         }
     }
 
     /**
      * @Then I should see regex :string in the console output
      */
-    public function iShouldSeeRegexInTheConsoleOutput($string)
-    {
+    public function iShouldSeeRegexInTheConsoleOutput(string $string): void {
         if (!preg_match($string, $this->output)) {
-            throw new \Exception(sprintf('Did not see regex "%s" in console output "%s"', $string, $this->output));
+            throw new \RuntimeException(sprintf('Did not see regex "%s" in console output "%s"', $string, $this->output));
         }
     }
 
     /**
      * @Then I should not see :string in the console output
      */
-    public function iShouldNotSeeInTheConsoleOutput($string)
-    {
+    public function iShouldNotSeeInTheConsoleOutput(string $string): void {
         $output = preg_replace('/\r\n|\r|\n/', '\\n', $this->output);
         if (strpos($output, $string) === true) {
-            throw new \Exception(sprintf('Did see "%s" in console output "%s"', $string, $output));
+            throw new \RuntimeException(sprintf('Did see "%s" in console output "%s"', $string, $output));
         }
     }
 
     /**
      * @Then I should see empty console output
      */
-    public function iShouldSeeEmptyConsoleOutput()
-    {
+    public function iShouldSeeEmptyConsoleOutput(): void {
         if ($this->output !== null) {
-            throw new \Exception(sprintf('Did not see empty console output: "%s"', $this->output));
+            throw new \RuntimeException(sprintf('Did not see empty console output: "%s"', $this->output));
         }
     }
 
     /**
      * @Then I enter TOTP backup code
      */
-    public function iEnterTotpBackupCode()
+    public function iEnterTotpBackupCode(): void
     {
         $totpBackupCodes = $this->getPlaceholder('totp_backup_codes');
         if (!$totpBackupCodes) {
-            throw new \Exception('No TOTP backup codes cached');
+            throw new \RuntimeException('No TOTP backup codes cached');
         }
         $this->fillField('_auth_code', $totpBackupCodes[0]);
     }
@@ -445,7 +426,7 @@ class FeatureContext extends MinkContext
     public function fileExists(string $path): void
     {
         if (!is_file($path)) {
-            throw new \Exception(sprintf('File doesn\'t exist: "%s"', $path));
+            throw new \RuntimeException(sprintf('File doesn\'t exist: "%s"', $path));
         }
     }
 
@@ -455,15 +436,15 @@ class FeatureContext extends MinkContext
     public function fileNoExists(string $path): void
     {
         if (is_file($path)) {
-            throw new \Exception(sprintf('File exists: "%s"', $path));
+            throw new \RuntimeException(sprintf('File exists: "%s"', $path));
         }
     }
 
     /**
-     * @param $key
+     * @param string $key
      * @param $value
      */
-    public function setPlaceholder($key, $value)
+    public function setPlaceholder(string $key, $value): void
     {
         $this->placeholders[$key] = $value;
     }
@@ -473,16 +454,15 @@ class FeatureContext extends MinkContext
      *
      * @return mixed
      */
-    public function getPlaceholder($key)
+    public function getPlaceholder(string $key)
     {
-        return (isset($this->placeholders[$key])) ? $this->placeholders[$key] : null;
+        return $this->placeholders[$key] ?? null;
     }
 
     /**
      * @return array
      */
-    public function getAllPlaceholders()
-    {
+    public function getAllPlaceholders(): array {
         return $this->placeholders;
     }
 
@@ -491,7 +471,7 @@ class FeatureContext extends MinkContext
      *
      * @return string
      */
-    public function replacePlaceholders($string)
+    public function replacePlaceholders(string $string): string
     {
         foreach ($this->getAllPlaceholders() as $key => $value) {
             if (strpos($string, $key) !== false) {
@@ -503,26 +483,10 @@ class FeatureContext extends MinkContext
     }
 
     /**
-     * @return \App\Repository\UserRepository
+     * @return ObjectRepository
      */
-    private function getUserRepository()
+    public function getUserRepository(): ObjectRepository
     {
-        return $this->getContainer()->get('doctrine')->getRepository('App:User');
-    }
-
-    /**
-     * @return DomainGuesser
-     */
-    private function getDomainGuesser()
-    {
-        return new DomainGuesser($this->getManager());
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectManager|object
-     */
-    private function getManager()
-    {
-        return $this->getContainer()->get('doctrine')->getManager();
+        return $this->manager->getRepository('App:User');
     }
 }

@@ -48,12 +48,11 @@
         "twig/twig": "^1.0||^2.0"
     },
     "require-dev": {
-        "behat/behat": "^3.5",
-        "behat/mink": "dev-master",
-        "behat/mink-browserkit-driver": "^v2.1.0",
-        "behat/mink-extension": "^2.3",
-        "behat/symfony2-extension": "^2.1",
         "dg/bypass-finals": "^1.1",
+        "friends-of-behat/mink": "^1.10",
+        "friends-of-behat/mink-browserkit-driver": "^1.6",
+        "friends-of-behat/mink-extension": "^2.7",
+        "friends-of-behat/symfony-extension": "^2.0",
         "symfony/debug-bundle": "*",
         "symfony/phpunit-bridge": "*",
         "symfony/stopwatch": "^4.4",
