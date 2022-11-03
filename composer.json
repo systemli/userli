@@ -22,7 +22,7 @@
         "scheb/2fa-bundle": "^5.13",
         "scheb/2fa-qr-code": "^5.13",
         "scheb/2fa-totp": "^5.13",
-        "sensio/framework-extra-bundle": "^5.0.0",
+        "sensio/framework-extra-bundle": "^6.2",
         "sonata-project/admin-bundle": "3.75.0",
         "sonata-project/doctrine-orm-admin-bundle": "^3.24",
         "symfony/apache-pack": "^1.0",
