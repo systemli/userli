@@ -2,30 +2,17 @@
 
 namespace App\Handler;
 
-use Swift_Mailer;
-use Swift_Message;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 
 class MailHandler
 {
-    /**
-     * @var Swift_Mailer
-     */
-    private $mailer;
+    private MailerInterface $mailer;
+    private string $from;
+    private string $name;
 
-    /**
-     * @var string
-     */
-    private $from;
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * Constructor.
-     */
-    public function __construct(Swift_Mailer $mailer, string $from, string $name)
+    public function __construct(MailerInterface $mailer, string $from, string $name)
     {
         $this->mailer = $mailer;
         $this->from = $from;
@@ -33,21 +20,25 @@ class MailHandler
     }
 
     /**
-     * @param $plain
-     * @param $subject
+     * @param string $email
+     * @param string $plain
+     * @param string $subject
+     * @param array  $params
      */
-    public function send(string $email, $plain, $subject, array $params = []): void
+    public function send(string $email, string $plain, string $subject, array $params = []): void
     {
-        $message = (new Swift_Message($subject, $plain, 'text/plain'))
-            ->setTo($email)
-            ->setFrom($this->from, $this->name);
+        $message = (new Email())
+            ->from(new Address($this->from, $this->name))
+            ->to($email)
+            ->subject($subject)
+            ->text($plain);
 
         if (isset($params['bcc'])) {
-            $message->setBcc($params['bcc']);
+            $message->bcc($params['bcc']);
         }
 
         if (isset($params['html'])) {
-            $message->addPart($params['html'], 'text/html');
+            $message->html($params['html']);
         }
 
         $this->mailer->send($message);
