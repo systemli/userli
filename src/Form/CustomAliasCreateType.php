@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CustomAliasCreateType extends AbstractType
 {
-    const NAME = 'create_custom_alias';
+    public const NAME = 'create_custom_alias';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

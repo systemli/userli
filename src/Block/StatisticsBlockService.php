@@ -41,8 +41,8 @@ class StatisticsBlockService implements BlockServiceInterface
                 'block' => $blockContext->getBlock(),
                 'settings' => $settings,
                 'users_since' => (null !== $usersSince = $this->manager->getRepository('App:User')->findUsersSince(
-                        new \DateTime('-7 days')
-                    )) ? count($usersSince) : 0,
+                    new \DateTime('-7 days')
+                )) ? count($usersSince) : 0,
                 'users_count' => $this->manager->getRepository('App:User')->count([]),
                 'vouchers_count' => $vouchersCount = $this->manager->getRepository('App:Voucher')->count([]),
                 'vouchers_redeemed' => $vouchersRedeemed = $this->manager->getRepository('App:Voucher')->countRedeemedVouchers(),

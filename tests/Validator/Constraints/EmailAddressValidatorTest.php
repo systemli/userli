@@ -120,7 +120,7 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
         return [
             ['!nvalid@'.$this->domain, 'registration.email-unexpected-characters'],
             ['new@nonexistant.org', 'registration.email-domain-not-exists'],
-            //['new@'.$this->extraDomain, 'registration.email-domain-invalid'],
+            // ['new@'.$this->extraDomain, 'registration.email-domain-invalid'],
         ];
     }
 

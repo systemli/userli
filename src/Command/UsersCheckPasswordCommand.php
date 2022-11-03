@@ -124,8 +124,8 @@ class UsersCheckPasswordCommand extends Command
         $email = array_shift($inputArgs);
         $password = array_shift($inputArgs);
         // timestamp and extra data are unused nowadays and ignored
-        //$timestamp = array_shift($inputArgs);
-        //$extra = array_shift($inputArgs);
+        // $timestamp = array_shift($inputArgs);
+        // $extra = array_shift($inputArgs);
 
         // Verify if an email address has been passed
         if (empty($email)) {
@@ -138,7 +138,7 @@ class UsersCheckPasswordCommand extends Command
 
         if (false === $userDbLookup && empty($password)) {
             // Instead of throwing an exception, just return 1 (invalid credentials)
-            //throw new InvalidArgumentException('Invalid input format: missing argument password. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.');
+            // throw new InvalidArgumentException('Invalid input format: missing argument password. See https://cr.yp.to/checkpwd/interface.html for documentation of the checkpassword interface.');
             return 1;
         }
 

@@ -48,7 +48,7 @@ class DeleteController extends AbstractController
         $alias = $aliasRepository->find($aliasId);
 
         // Don't allow users to delete custom or foreign aliases
-        if (null === $alias || $user !== $alias->getUser() || !($alias->isRandom())) {
+        if (null === $alias || $user !== $alias->getUser() || !$alias->isRandom()) {
             return $this->redirect($this->generateUrl('aliases'));
         }
 

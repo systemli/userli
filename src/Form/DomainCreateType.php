@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DomainCreateType extends AbstractType
 {
-    const NAME = 'create_domain';
+    public const NAME = 'create_domain';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

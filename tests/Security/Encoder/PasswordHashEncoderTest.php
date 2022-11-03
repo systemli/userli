@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 class PasswordHashEncoderTest extends TestCase
 {
-    const PASSWORD = 'password';
+    public const PASSWORD = 'password';
 
     public function testValidationWithConfig(): void
     {

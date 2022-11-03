@@ -19,12 +19,6 @@ class MailHandler
         $this->name = $name;
     }
 
-    /**
-     * @param string $email
-     * @param string $plain
-     * @param string $subject
-     * @param array  $params
-     */
     public function send(string $email, string $plain, string $subject, array $params = []): void
     {
         $message = (new Email())

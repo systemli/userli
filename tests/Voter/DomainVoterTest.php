@@ -38,7 +38,7 @@ class DomainVoterTest extends TestCase
         $this->domain = new Domain();
         $user = new User();
         $user->setDomain($this->domain);
-        $repo = $this->getMockBuilder((UserRepository::class))
+        $repo = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
         $repo->method('findByEmail')->willReturn($user);

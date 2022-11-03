@@ -56,7 +56,7 @@ class OpenPgpImportKeyCommand extends Command
         // Import the key
         try {
             $openPgpKey = $this->handler->importKey($content, $email);
-        } catch (NoGpgKeyForUserException | MultipleGpgKeysForUserException $e) {
+        } catch (NoGpgKeyForUserException|MultipleGpgKeysForUserException $e) {
             $output->writeln(sprintf('Error: %s in %s', $e->getMessage(), $file));
 
             return 0;
