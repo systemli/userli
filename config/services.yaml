@@ -201,6 +201,9 @@ services:
             - ~
             - App\Entity\Domain
             - ~
+        calls:
+            - [setDomainCreator, ['@App\Creator\DomainCreator']]
+            - [setEventDispatcher, ['@Symfony\Contracts\EventDispatcher\EventDispatcherInterface']]
 
     userli.admin.alias:
         class: App\Admin\AliasAdmin

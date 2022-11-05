@@ -174,8 +174,16 @@ class UserAdmin extends Admin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->addIdentifier('id')
-            ->addIdentifier('email')
+            ->addIdentifier('id', null, [
+                'route' => [
+                    'name' => 'edit'
+                ]
+            ])
+            ->addIdentifier('email', null, [
+                'route' => [
+                    'name' => 'edit'
+                ]
+            ])
             ->add('creationTime')
             ->add('updatedTime')
             ->add('isTotpAuthenticationEnabled', 'boolean', [

@@ -38,8 +38,16 @@ class ReservedNameAdmin extends Admin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->addIdentifier('id')
-            ->addIdentifier('name')
+            ->addIdentifier('id', null, [
+                'route' => [
+                    'name' => 'edit'
+                ]
+            ])
+            ->addIdentifier('name', null, [
+                'route' => [
+                    'name' => 'edit'
+                ]
+            ])
             ->add('creationTime')
             ->add('updatedTime');
     }

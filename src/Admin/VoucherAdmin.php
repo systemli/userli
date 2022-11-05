@@ -56,7 +56,11 @@ class VoucherAdmin extends Admin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->addIdentifier('id')
+            ->addIdentifier('id', null, [
+                'route' => [
+                    'name' => 'edit'
+                ]
+            ])
             ->add('code')
             ->add('user')
             ->add('creationTime')

@@ -71,10 +71,26 @@ class AliasAdmin extends Admin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->addIdentifier('id')
-            ->addIdentifier('source')
-            ->addIdentifier('destination')
-            ->addIdentifier('user')
+            ->addIdentifier('id', null, [
+                'route' => [
+                    'name' => 'edit'
+                ]
+            ])
+            ->addIdentifier('source', null, [
+                'route' => [
+                    'name' => 'edit'
+                ]
+            ])
+            ->addIdentifier('destination', null, [
+                'route' => [
+                    'name' => 'edit'
+                ]
+            ])
+            ->addIdentifier('user', null, [
+                'route' => [
+                    'name' => 'edit'
+                ]
+            ])
             ->add('domain')
             ->add('creationTime')
             ->add('updatedTime')

@@ -12,18 +12,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 abstract class AbstractCreator
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
+    private EntityManagerInterface $manager;
+    private ValidatorInterface $validator;
+    protected EventDispatcherInterface $eventDispatcher;
 
     /**
      * AbstractCreator constructor.
@@ -40,7 +31,7 @@ abstract class AbstractCreator
      *
      * @throws ValidationException
      */
-    protected function validate($entity, array $validationGroups = null): void
+    public function validate($entity, array $validationGroups = null): void
     {
         $violations = $this->validator->validate($entity, null, $validationGroups);
 
