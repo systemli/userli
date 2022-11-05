@@ -33,6 +33,7 @@ class FeatureContext extends MinkContext
     private EntityManagerInterface $manager;
     private PasswordUpdater $passwordUpdater;
     private DomainGuesser $domainGuesser;
+    private string $dbPlatform;
     private array $placeholders = [];
     private ?string $output;
     private array $requestParams = [];
@@ -45,6 +46,7 @@ class FeatureContext extends MinkContext
         $this->manager = $manager;
         $this->passwordUpdater = $passwordUpdater;
         $this->domainGuesser = $domainGuesser;
+        $this->dbPlatform = $this->manager->getConnection()->getDatabasePlatform()->getName();
     }
 
     /**
@@ -55,7 +57,12 @@ class FeatureContext extends MinkContext
         $schemaTool = new SchemaTool($this->manager);
         $metadata = $this->manager->getMetadataFactory()->getAllMetadata();
 
-        $schemaTool->dropDatabase();
+        // dropSchema leads to errors with sqlite backend since DBAL 2.10.3
+        if ($this->dbPlatform === 'sqlite') {
+            $schemaTool->dropDatabase();
+        } else {
+            $schemaTool->dropSchema($metadata);
+        }
         $schemaTool->createSchema($metadata);
     }
 
