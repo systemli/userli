@@ -6,6 +6,7 @@ use App\Handler\DeleteHandler;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class AliasCRUDController extends CRUDController
@@ -17,21 +18,21 @@ class AliasCRUDController extends CRUDController
     }
 
     /**
-     * @param int|string|null $id
+     * @param Request $request
      *
-     * @return Response|RedirectResponse
+     * @return Response
      */
-    public function deleteAction($id)
+    public function deleteAction(Request $request): Response
     {
-        $request = $this->getRequest();
-        $this->assertObjectExists($request, true);
-
-        $id = $request->get($this->admin->getIdParameter());
-        \assert(null !== $id);
-        $object = $this->admin->getObject($id);
+        $object = $this->assertObjectExists($request, true);
         \assert(null !== $object);
 
         $this->admin->checkAccess('delete', $object);
+
+        $preResponse = $this->preDelete($request, $object);
+        if (null !== $preResponse) {
+            return $preResponse;
+        }
 
         $objectName = $this->admin->toString($object);
 
