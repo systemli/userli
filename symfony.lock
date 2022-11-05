@@ -265,9 +265,6 @@
             "config/bootstrap.php"
         ]
     },
-    "symfony/debug": {
-        "version": "v4.1.4"
-    },
     "symfony/debug-bundle": {
         "version": "4.1",
         "recipe": {
@@ -352,9 +349,6 @@
         "version": "v4.1.4"
     },
     "symfony/http-kernel": {
-        "version": "v4.1.4"
-    },
-    "symfony/inflector": {
         "version": "v4.1.4"
     },
     "symfony/intl": {

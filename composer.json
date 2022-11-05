@@ -31,14 +31,15 @@
         "symfony/flex": "^1.1",
         "symfony/form": "*",
         "symfony/framework-bundle": "*",
-        "symfony/http-client": "4.4.*",
-        "symfony/mailer": "4.4.*",
+        "symfony/http-client": "5.4.*",
+        "symfony/mailer": "5.4.*",
         "symfony/monolog-bundle": "^3.8.0",
         "symfony/polyfill-apcu": "^1.0",
-        "symfony/process": "4.4.*",
+        "symfony/process": "5.4.*",
         "symfony/security-bundle": "*",
         "symfony/security-csrf": "*",
         "symfony/translation": "*",
+        "symfony/twig-bundle": "5.4.*",
         "symfony/validator": "*",
         "symfony/yaml": "*",
         "tuupola/base32": "^2.0",
@@ -56,7 +57,7 @@
         "symfony/debug-bundle": "*",
         "symfony/phpunit-bridge": "*",
         "symfony/stopwatch": "*",
-        "symfony/var-dumper": "4.4.*",
+        "symfony/var-dumper": "5.4.*",
         "symfony/web-profiler-bundle": "*"
     },
     "config": {
@@ -112,7 +113,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "4.4.*"
+            "require": "5.4.*"
         },
         "symfony-app-dir": "app",
         "symfony-bin-dir": "bin",
