@@ -7,7 +7,7 @@ use App\Entity\Domain;
 use App\Repository\DomainRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class WelcomeMessageBuilderTest.
@@ -47,9 +47,6 @@ class WelcomeMessageBuilderTest extends TestCase
      */
     private function getBuilder($domain, $appUrl, $projectName): WelcomeMessageBuilder
     {
-        /**
-         * @var TranslatorInterface|PHPUnit_Framework_MockObject_MockObject
-         */
         $translator = $this->getMockBuilder(TranslatorInterface::class)
             ->disableOriginalConstructor()
             ->getMock();

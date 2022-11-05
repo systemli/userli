@@ -3,6 +3,7 @@
 namespace App\Handler;
 
 use App\Entity\User;
+use App\Entity\Voucher;
 use App\Enum\Roles;
 use App\Event\Events;
 use App\Event\UserEvent;
@@ -14,37 +15,13 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RegistrationHandler
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-    /**
-     * @var DomainGuesser
-     */
-    private $domainGuesser;
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-    /**
-     * @var PasswordUpdater
-     */
-    private $passwordUpdater;
-    /**
-     * @var MailCryptKeyHandler
-     */
-    private $mailCryptKeyHandler;
-    /**
-     * @var RecoveryTokenHandler
-     */
-    private $recoveryTokenHandler;
-    /**
-     * @var bool
-     */
-    private $registrationOpen;
-    /**
-     * @var int
-     */
+    private EntityManagerInterface $manager;
+    private DomainGuesser $domainGuesser;
+    private EventDispatcherInterface $eventDispatcher;
+    private PasswordUpdater $passwordUpdater;
+    private MailCryptKeyHandler $mailCryptKeyHandler;
+    private RecoveryTokenHandler $recoveryTokenHandler;
+    private bool $registrationOpen;
     private $mailCrypt;
 
     /**
@@ -118,7 +95,7 @@ class RegistrationHandler
             $user->setDomain($domain);
         }
 
-        if (null !== $voucher = $this->manager->getRepository('App:Voucher')->findByCode($registration->getVoucher())) {
+        if (null !== $voucher = $this->manager->getRepository(Voucher::class)->findByCode($registration->getVoucher())) {
             $voucher->setRedeemedTime(new \DateTime());
 
             $user->setInvitationVoucher($voucher);

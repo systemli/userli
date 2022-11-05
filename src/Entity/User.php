@@ -59,10 +59,7 @@ class User implements UserInterface, EncoderAwareInterface, TwoFactorInterface, 
 
     public const CURRENT_PASSWORD_VERSION = 2;
 
-    /**
-     * @var array
-     */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * User constructor.
@@ -96,6 +93,8 @@ class User implements UserInterface, EncoderAwareInterface, TwoFactorInterface, 
 
     /**
      * @param $role
+     *
+     * @return bool
      */
     public function hasRole($role): bool
     {

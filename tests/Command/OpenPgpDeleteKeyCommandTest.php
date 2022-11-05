@@ -12,10 +12,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class OpenPgpDeleteKeyCommandTest extends TestCase
 {
-    /**
-     * @var OpenPgpDeleteKeyCommand
-     */
-    private $command;
+    private OpenPgpDeleteKeyCommand $command;
 
     public function setUp(): void
     {

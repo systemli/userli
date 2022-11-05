@@ -8,21 +8,14 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Voter\DomainVoter;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Security;
 
 class DomainVoterTest extends TestCase
 {
-    /**
-     * @var MockObject
-     */
-    private $voter;
-    /**
-     * @var Domain
-     */
-    private $domain;
+    private DomainVoter $voter;
+    private Domain $domain;
 
     protected static function getMethod($name): \ReflectionMethod
     {

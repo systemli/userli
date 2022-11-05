@@ -10,18 +10,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class RegistrationListener implements EventSubscriberInterface
 {
-    /**
-     * @var RequestStack
-     */
-    private $request;
-    /**
-     * @var WelcomeMessageSender
-     */
-    private $sender;
-    /**
-     * @var bool
-     */
-    private $sendMail;
+    private RequestStack $request;
+    private WelcomeMessageSender $sender;
+    private bool $sendMail;
 
     /**
      * Constructor.

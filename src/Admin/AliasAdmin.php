@@ -19,10 +19,9 @@ class AliasAdmin extends Admin
 {
     use DomainGuesserAwareTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    protected $baseRoutePattern = 'alias';
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string {
+        return 'alias';
+    }
 
     /**
      * {@inheritdoc}
@@ -73,23 +72,23 @@ class AliasAdmin extends Admin
         $list
             ->addIdentifier('id', null, [
                 'route' => [
-                    'name' => 'edit'
-                ]
+                    'name' => 'edit',
+                ],
             ])
             ->addIdentifier('source', null, [
                 'route' => [
-                    'name' => 'edit'
-                ]
+                    'name' => 'edit',
+                ],
             ])
             ->addIdentifier('destination', null, [
                 'route' => [
-                    'name' => 'edit'
-                ]
+                    'name' => 'edit',
+                ],
             ])
             ->addIdentifier('user', null, [
                 'route' => [
-                    'name' => 'edit'
-                ]
+                    'name' => 'edit',
+                ],
             ])
             ->add('domain')
             ->add('creationTime')

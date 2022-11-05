@@ -10,14 +10,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class DeleteHandler
 {
-    /** @var PasswordUpdater */
-    private $passwordUpdater;
-
-    /** @var EntityManagerInterface */
-    private $manager;
-
-    /** @var WkdHandler */
-    private $wkdHandler;
+    private PasswordUpdater $passwordUpdater;
+    private EntityManagerInterface $manager;
+    private WkdHandler $wkdHandler;
 
     /**
      * DeleteHandler constructor.
@@ -50,7 +45,7 @@ class DeleteHandler
     public function deleteUser(User $user)
     {
         // Delete aliases of user
-        $aliasRepository = $this->manager->getRepository('App:Alias');
+        $aliasRepository = $this->manager->getRepository(Alias::class);
         $aliases = $aliasRepository->findByUser($user);
         foreach ($aliases as $alias) {
             $this->deleteAlias($alias, $user);

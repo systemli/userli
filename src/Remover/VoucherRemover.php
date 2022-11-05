@@ -3,6 +3,7 @@
 namespace App\Remover;
 
 use App\Entity\User;
+use App\Entity\Voucher;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -11,10 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class VoucherRemover
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
+    private EntityManagerInterface $manager;
 
     /**
      * VoucherRemover constructor.
@@ -35,7 +33,7 @@ class VoucherRemover
             ->where(Criteria::expr()->isNull('redeemedTime'))
             ->andWhere(Criteria::expr()->in('user', $users));
 
-        $this->manager->getRepository('App:Voucher')
+        $this->manager->getRepository(Voucher::class)
             ->createQueryBuilder('a')
             ->addCriteria($criteria)
             ->delete()

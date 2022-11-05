@@ -13,15 +13,11 @@ class AliasCRUDController extends CRUDController
 {
     private DeleteHandler $deleteHandler;
 
-    public function __construct(DeleteHandler $deleteHandler) {
+    public function __construct(DeleteHandler $deleteHandler)
+    {
         $this->deleteHandler = $deleteHandler;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function deleteAction(Request $request): Response
     {
         $object = $this->assertObjectExists($request, true);
@@ -50,11 +46,6 @@ class AliasCRUDController extends CRUDController
         return $this->redirectToList();
     }
 
-    /**
-     * @param ProxyQueryInterface $query
-     *
-     * @return RedirectResponse
-     */
     public function batchActionDelete(ProxyQueryInterface $query): RedirectResponse
     {
         $this->admin->checkAccess('batchDelete');

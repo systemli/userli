@@ -4,7 +4,7 @@ namespace App\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
@@ -12,15 +12,8 @@ use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
 class LocaleListener implements EventSubscriberInterface
 {
-    /**
-     * @var string[]
-     */
-    private $supportedLocales;
-
-    /**
-     * @var UrlMatcherInterface
-     */
-    private $urlMatcher;
+    private array $supportedLocales;
+    private UrlMatcherInterface $urlMatcher;
 
     /**
      * LocaleListener constructor.
@@ -33,7 +26,7 @@ class LocaleListener implements EventSubscriberInterface
         $this->urlMatcher = $urlMatcher;
     }
 
-    public function onKernelRequest(GetResponseEvent $event): void
+    public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
         $route = $request->getRequestUri();

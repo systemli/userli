@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\User;
 use App\Enum\Roles;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,7 +19,7 @@ class UsersListCommand extends Command
 
     public function __construct(EntityManagerInterface $manager, RoleHierarchyInterface $roleHierarchy)
     {
-        $this->repository = $manager->getRepository('App:User');
+        $this->repository = $manager->getRepository(User::class);
         $this->roleHierarchy = $roleHierarchy;
         parent::__construct();
     }

@@ -14,10 +14,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class OpenPgpExportKeysCommandTest extends TestCase
 {
-    /**
-     * @var OpenPgpExportKeysCommand
-     */
-    private $command;
+    private OpenPgpExportKeysCommand $command;
 
     public function setUp(): void
     {
@@ -43,8 +40,8 @@ class OpenPgpExportKeysCommandTest extends TestCase
 
         $manager->method('getRepository')->willReturnMap(
             [
-                ['App:Domain', $domainRepository],
-                ['App:OpenPgpKey', $openPgpKeyRepository],
+                [Domain::class, $domainRepository],
+                [OpenPgpKey::class, $openPgpKeyRepository],
             ]
         );
 

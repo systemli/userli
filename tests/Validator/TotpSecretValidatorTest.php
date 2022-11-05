@@ -14,11 +14,8 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class TotpSecretValidatorTest extends ConstraintValidatorTestCase
 {
-    /** @var User */
-    private $user;
-
-    /** @var TotpAuthenticatorInterface */
-    private $totpAuthenticator;
+    private User $user;
+    private TotpAuthenticatorInterface $totpAuthenticator;
 
     protected function createValidator(): TotpSecretValidator
     {

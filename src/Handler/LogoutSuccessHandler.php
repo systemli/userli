@@ -8,14 +8,8 @@ use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
 class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
 {
-    /**
-     * @var HttpUtils
-     */
-    private $httpUtils;
-    /**
-     * @var string
-     */
-    private $targetUrl;
+    private HttpUtils $httpUtils;
+    private string $targetUrl;
 
     /**
      * Constructor.

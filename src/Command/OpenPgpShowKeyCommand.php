@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\OpenPgpKey;
 use App\Repository\OpenPgpKeyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -15,7 +16,7 @@ class OpenPgpShowKeyCommand extends Command
 
     public function __construct(EntityManagerInterface $manager)
     {
-        $this->repository = $manager->getRepository('App:OpenPgpKey');
+        $this->repository = $manager->getRepository(OpenPgpKey::class);
         parent::__construct();
     }
 

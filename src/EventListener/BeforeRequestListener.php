@@ -6,20 +6,14 @@ use App\Entity\User;
 use App\Enum\Roles;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Security;
 
 class BeforeRequestListener implements EventSubscriberInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-    /**
-     * @var Security
-     */
-    protected $security;
+    protected EntityManagerInterface $entityManager;
+    protected Security $security;
 
     /**
      * BeforeRequestListener constructor.
@@ -30,7 +24,7 @@ class BeforeRequestListener implements EventSubscriberInterface
         $this->security = $security;
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         if ($user = $this->getNonAdminUser()) {
             $filter = $this->entityManager->getFilters()->enable('domain_filter');

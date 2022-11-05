@@ -32,13 +32,13 @@ class UserProviderTest extends TestCase
         $domainRepository = $this->getMockBuilder(DomainRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $domainRepository->method('getDefaultDomain')
+        $domainRepository->METHOD('getDefaultDomain')
             ->willReturn($domain);
 
         $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('getRepository')->willReturnMap([
-            ['App:Domain', $domainRepository],
-            ['App:User', $userRepository],
+            [Domain::class, $domainRepository],
+            [User::class, $userRepository],
         ]);
 
         $provider = new UserProvider($manager);
@@ -107,8 +107,8 @@ class UserProviderTest extends TestCase
 
         $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('getRepository')->willReturnMap([
-            ['App:Domain', $domainRepository],
-            ['App:User', $userRepository],
+            [Domain::class, $domainRepository],
+            [User::class, $userRepository],
         ]);
 
         $provider = new UserProvider($manager);

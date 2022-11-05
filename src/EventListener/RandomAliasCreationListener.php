@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use App\Entity\Alias;
 use App\Event\RandomAliasCreatedEvent;
 use App\Helper\RandomStringGenerator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -9,10 +10,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class RandomAliasCreationListener implements EventSubscriberInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
+    private EntityManagerInterface $manager;
 
     /**
      * RandomAliasCreationListener constructor.
@@ -26,7 +24,7 @@ class RandomAliasCreationListener implements EventSubscriberInterface
     {
         $alias = $event->getAlias();
 
-        while (null !== $this->manager->getRepository('App:Alias')->findOneBySource($alias->getSource())) {
+        while (null !== $this->manager->getRepository(Alias::class)->findOneBySource($alias->getSource())) {
             $localPart = RandomStringGenerator::generate(24, false);
             $domain = $alias->getDomain();
             $alias->setSource($localPart.'@'.$domain->getName());

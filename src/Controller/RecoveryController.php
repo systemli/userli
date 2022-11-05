@@ -26,22 +26,10 @@ class RecoveryController extends AbstractController
     private const PROCESS_DELAY = '-2 days';
     private const PROCESS_EXPIRE = '-30 days';
 
-    /**
-     * @var PasswordUpdater
-     */
-    private $passwordUpdater;
-    /**
-     * @var MailCryptKeyHandler
-     */
-    private $mailCryptKeyHandler;
-    /**
-     * @var RecoveryTokenHandler
-     */
-    private $recoveryTokenHandler;
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private PasswordUpdater $passwordUpdater;
+    private MailCryptKeyHandler $mailCryptKeyHandler;
+    private RecoveryTokenHandler $recoveryTokenHandler;
+    private EventDispatcherInterface $eventDispatcher;
 
     /**
      * RecoveryController constructor.
@@ -71,7 +59,7 @@ class RecoveryController extends AbstractController
 
                 // Validate the passed email + recoveryToken
 
-                $userRepository = $this->get('doctrine')->getRepository('App:User');
+                $userRepository = $this->get('doctrine')->getRepository(User::class);
                 $user = $userRepository->findByEmail($email);
 
                 if (null === $user || !$this->verifyEmailRecoveryToken($user, $recoveryToken)) {
@@ -136,7 +124,7 @@ class RecoveryController extends AbstractController
 
                 // Validate the passed email + recoveryToken
 
-                $userRepository = $this->get('doctrine')->getRepository('App:User');
+                $userRepository = $this->get('doctrine')->getRepository(User::class);
                 $user = $userRepository->findByEmail($email);
 
                 if (null !== $user && $this->verifyEmailRecoveryToken($user, $recoveryToken, true)) {

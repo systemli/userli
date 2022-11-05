@@ -3,6 +3,7 @@
 namespace App\Sender;
 
 use App\Builder\WelcomeMessageBuilder;
+use App\Entity\Domain;
 use App\Entity\User;
 use App\Handler\MailHandler;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,17 +13,8 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class WelcomeMessageSender
 {
-    /**
-     * @var MailHandler
-     */
-    private $handler;
-    /**
-     * @var WelcomeMessageBuilder
-     */
-    private $builder;
-    /**
-     * @var string
-     */
+    private MailHandler $handler;
+    private WelcomeMessageBuilder $builder;
     private $domain;
 
     /**
@@ -32,7 +24,7 @@ class WelcomeMessageSender
     {
         $this->handler = $handler;
         $this->builder = $builder;
-        $domain = $manager->getRepository('App:Domain')->getDefaultDomain();
+        $domain = $manager->getRepository(Domain::class)->getDefaultDomain();
         $this->domain = null !== $domain ? $domain->getName() : '';
     }
 

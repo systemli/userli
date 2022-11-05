@@ -4,7 +4,7 @@ namespace App\Tests\Builder;
 
 use App\Builder\RecoveryProcessMessageBuilder;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class RecoveryProcessMessageBuilderTest.
@@ -13,9 +13,9 @@ class RecoveryProcessMessageBuilderTest extends TestCase
 {
     private const BODY_TEMPLATE = 'APP URL: %s'.PHP_EOL.'Project Name: %s';
 
-    private $email = 'user@example.org';
-    private $appUrl = 'https://www.example.org';
-    private $projectName = 'example.org';
+    private string $email = 'user@example.org';
+    private string $appUrl = 'https://www.example.org';
+    private string $projectName = 'example.org';
 
     public function testBuildBody(): void
     {
@@ -41,9 +41,6 @@ class RecoveryProcessMessageBuilderTest extends TestCase
      */
     private function getBuilder($appUrl, $projectName): RecoveryProcessMessageBuilder
     {
-        /**
-         * @var TranslatorInterface|PHPUnit_Framework_MockObject_MockObject
-         */
         $translator = $this->getMockBuilder(TranslatorInterface::class)
             ->disableOriginalConstructor()
             ->getMock();

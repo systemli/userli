@@ -16,10 +16,9 @@ class DomainAdmin extends Admin
     private DomainCreator $domainCreator;
     private EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * {@inheritdoc}
-     */
-    protected $baseRoutePattern = 'domain';
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string {
+        return 'domain';
+    }
 
     /**
      * {@inheritdoc}
@@ -47,13 +46,13 @@ class DomainAdmin extends Admin
         $list
             ->addIdentifier('id', null, [
                 'route' => [
-                    'name' => 'edit'
-                ]
+                    'name' => 'edit',
+                ],
             ])
             ->addIdentifier('name', null, [
                 'route' => [
-                    'name' => 'edit'
-                ]
+                    'name' => 'edit',
+                ],
             ])
             ->add('creationTime')
             ->add('updatedTime');
@@ -67,11 +66,13 @@ class DomainAdmin extends Admin
         $collection->remove('delete');
     }
 
-    protected function prePersist(object $object): void {
+    protected function prePersist(object $object): void
+    {
         $this->domainCreator->validate($object, ['Default', 'unique']);
     }
 
-    protected function postPersist(object $object): void {
+    protected function postPersist(object $object): void
+    {
         $this->eventDispatcher->dispatch(new DomainCreatedEvent($object), DomainCreatedEvent::NAME);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\User;
 use App\Entity\Voucher;
 use App\Factory\VoucherFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -12,10 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LoadVoucherData extends Fixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
 
     /**
      * {@inheritdoc}
@@ -32,7 +30,7 @@ class LoadVoucherData extends Fixture implements OrderedFixtureInterface, Contai
      */
     public function load(ObjectManager $manager): void
     {
-        $users = $manager->getRepository('App:User')->findAll();
+        $users = $manager->getRepository(User::class)->findAll();
 
         for ($i = 0; $i < 1000; ++$i) {
             $voucher = VoucherFactory::create($users[random_int(1, count($users) - 1)]);
@@ -51,7 +49,7 @@ class LoadVoucherData extends Fixture implements OrderedFixtureInterface, Contai
         }
 
         // add redeemed voucher to a suspicious parent
-        $user = $manager->getRepository('App:User')->findByEmail('suspicious@example.org');
+        $user = $manager->getRepository(User::class)->findByEmail('suspicious@example.org');
         $voucher = VoucherFactory::create($user);
         $invitedUser = $users[random_int(0, count($users) - 1)];
         $voucher->setInvitedUser($invitedUser);

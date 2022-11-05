@@ -2,6 +2,7 @@
 
 namespace App\Validator\Constraints;
 
+use App\Entity\Domain;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
@@ -12,10 +13,7 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class EmailDomainValidator extends ConstraintValidator
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
+    private EntityManagerInterface $manager;
 
     /**
      * EmailDomainValidator constructor.
@@ -35,7 +33,7 @@ class EmailDomainValidator extends ConstraintValidator
     {
         if ($value instanceof User) {
             $name = substr(strrchr($value->getEmail(), '@'), 1);
-            $domain = $this->manager->getRepository('App:Domain')->findOneBy(['name' => $name]);
+            $domain = $this->manager->getRepository(Domain::class)->findOneBy(['name' => $name]);
 
             if (null === $domain) {
                 $this->context->addViolation('form.missing-domain');

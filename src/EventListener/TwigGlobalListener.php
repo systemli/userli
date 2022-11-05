@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use App\Entity\Domain;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -15,14 +16,8 @@ class TwigGlobalListener implements EventSubscriberInterface
 {
     // https://stackoverflow.com/questions/54117732/how-to-define-global-variables-for-twig-templates-with-values-coming-from-the-db
 
-    /**
-     * @var Environment
-     */
-    private $twig;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
+    private Environment $twig;
+    private EntityManagerInterface $manager;
 
     public function __construct(Environment $twig, EntityManagerInterface $manager)
     {
@@ -32,7 +27,7 @@ class TwigGlobalListener implements EventSubscriberInterface
 
     public function injectGlobalVariables(ControllerEvent $event): void
     {
-        $domain = $this->manager->getRepository('App:Domain')->getDefaultDomain();
+        $domain = $this->manager->getRepository(Domain::class)->getDefaultDomain();
         if (null !== $domain) {
             $this->twig->addGlobal('domain', $domain->getName());
         } else {

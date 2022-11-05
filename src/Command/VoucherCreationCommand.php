@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\User;
 use App\Factory\VoucherFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -45,7 +46,7 @@ class VoucherCreationCommand extends Command
         $context = $this->router->getContext();
         $context->setBaseUrl($this->appUrl);
 
-        if (empty($email) || null === $user = $this->manager->getRepository('App:User')->findByEmail($email)) {
+        if (empty($email) || null === $user = $this->manager->getRepository(User::class)->findByEmail($email)) {
             throw new UsernameNotFoundException(sprintf('User with email %s not found!', $email));
         }
 

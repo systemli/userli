@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\Model\RecoveryTokenAck;
 use App\Form\Model\Registration;
 use App\Form\RecoveryTokenAckType;
@@ -14,10 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class RegistrationController extends AbstractController
 {
-    /**
-     * var RegistrationHandler.
-     */
-    private $registrationHandler;
+    private RegistrationHandler $registrationHandler;
 
     /**
      * RegistrationController constructor.
@@ -58,7 +56,7 @@ class RegistrationController extends AbstractController
 
                 $manager = $this->get('doctrine')->getManager();
 
-                if (null !== $user = $manager->getRepository('App:User')->findByEmail($registration->getEmail())) {
+                if (null !== $user = $manager->getRepository(User::class)->findByEmail($registration->getEmail())) {
                     $token = new UsernamePasswordToken($user, $user->getPassword(), 'default', $user->getRoles());
                     $this->get('security.token_storage')->setToken($token);
                 }

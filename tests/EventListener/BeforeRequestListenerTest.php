@@ -11,27 +11,15 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\FilterCollection;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Security;
 
 class BeforeRequestListenerTest extends TestCase
 {
-    /**
-     * @var MockObject
-     */
-    private $repo;
-    /**
-     * @var MockObject
-     */
-    private $manager;
-    /**
-     * @var MockObject
-     */
-    private $security;
-    /**
-     * @var BeforeRequestListener
-     */
-    private $listener;
+    private UserRepository $repo;
+    private EntityManager $manager;
+    private Security $security;
+    private BeforeRequestListener $listener;
 
     public function setUp(): void
     {
@@ -92,7 +80,7 @@ class BeforeRequestListenerTest extends TestCase
         $this->manager->expects($this->once())->method('getFilters')
             ->willReturn($filterCollection);
 
-        $event = $this->getMockBuilder(GetResponseEvent::class)
+        $event = $this->getMockBuilder(RequestEvent::class)
             ->disableOriginalConstructor()
             ->getMock();
 

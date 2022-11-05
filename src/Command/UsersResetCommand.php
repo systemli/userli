@@ -20,20 +20,11 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 class UsersResetCommand extends Command
 {
-    /** @var EntityManagerInterface */
-    private $manager;
-
-    /** @var PasswordUpdater */
-    private $passwordUpdater;
-
-    /** @var MailCryptKeyHandler */
-    private $mailCryptKeyHandler;
-
-    /** @var RecoveryTokenHandler */
-    private $recoveryTokenHandler;
-
-    /** @var string */
-    private $mailLocation;
+    private EntityManagerInterface $manager;
+    private PasswordUpdater $passwordUpdater;
+    private MailCryptKeyHandler $mailCryptKeyHandler;
+    private RecoveryTokenHandler $recoveryTokenHandler;
+    private string $mailLocation;
 
     /**
      * RegistrationMailCommand constructor.

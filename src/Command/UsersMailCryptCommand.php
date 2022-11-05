@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
 use App\Repository\UserRepository;
@@ -13,22 +14,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UsersMailCryptCommand extends Command
 {
-    /**
-     * @var UserAuthenticationHandler
-     */
-    private $handler;
-    /**
-     * @var MailCryptKeyHandler
-     */
-    private $mailCryptKeyHandler;
-    /**
-     * @var UserRepository
-     */
-    private $repository;
-    /**
-     * @var int
-     */
-    private $mailCrypt;
+    private UserAuthenticationHandler $handler;
+    private MailCryptKeyHandler $mailCryptKeyHandler;
+    private UserRepository $repository;
+    private int $mailCrypt;
 
     public function __construct(
         EntityManagerInterface $manager,
@@ -37,7 +26,7 @@ class UsersMailCryptCommand extends Command
         int $mailCrypt
     ) {
         $this->handler = $handler;
-        $this->repository = $manager->getRepository('App:User');
+        $this->repository = $manager->getRepository(User::class);
         $this->mailCryptKeyHandler = $mailCryptKeyHandler;
         $this->mailCrypt = $mailCrypt;
         parent::__construct();

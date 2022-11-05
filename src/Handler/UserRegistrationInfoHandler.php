@@ -2,6 +2,7 @@
 
 namespace App\Handler;
 
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -9,25 +10,10 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class UserRegistrationInfoHandler
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-
-    /**
-     * @var MailHandler
-     */
-    private $handler;
-
-    /**
-     * @var \Twig_Environment
-     */
-    private $twig;
-
-    /**
-     * @var string
-     */
-    private $to;
+    private EntityManagerInterface $manager;
+    private MailHandler $handler;
+    private \Twig_Environment $twig;
+    private string $to;
 
     /**
      * UserRegistrationInfoHandler constructor.
@@ -49,7 +35,7 @@ class UserRegistrationInfoHandler
      */
     public function sendReport(string $from = '-7 days'): void
     {
-        $users = $this->manager->getRepository('App:User')->findUsersSince((new \DateTime())->modify($from));
+        $users = $this->manager->getRepository(User::class)->findUsersSince((new \DateTime())->modify($from));
         $message = $this->twig->render('Email/weekly_report.twig', ['users' => $users]);
         $this->handler->send($this->to, $message, 'Weekly Report: Registered E-mail Accounts');
     }

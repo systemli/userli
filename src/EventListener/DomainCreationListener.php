@@ -3,6 +3,7 @@
 namespace App\EventListener;
 
 use App\Entity\Alias;
+use App\Entity\Domain;
 use App\Event\DomainCreatedEvent;
 use App\Handler\WkdHandler;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,15 +11,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DomainCreationListener implements EventSubscriberInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-
-    /**
-     * @var WkdHandler
-     */
-    private $handler;
+    private EntityManagerInterface $manager;
+    private WkdHandler $handler;
 
     public function __construct(EntityManagerInterface $manager, WkdHandler $handler)
     {
@@ -32,7 +26,7 @@ class DomainCreationListener implements EventSubscriberInterface
     public function onDomainCreated(DomainCreatedEvent $event)
     {
         $domain = $event->getDomain();
-        $defaultDomain = $this->manager->getRepository('App:Domain')->getDefaultDomain();
+        $defaultDomain = $this->manager->getRepository(Domain::class)->getDefaultDomain();
         $adminAddress = 'postmaster@'.$defaultDomain;
 
         if (null === $domain) {

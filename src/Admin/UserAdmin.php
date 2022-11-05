@@ -7,7 +7,6 @@ use App\Enum\Roles;
 use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use App\Traits\DomainGuesserAwareTrait;
-use Doctrine\ORM\QueryBuilder;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -27,14 +26,11 @@ class UserAdmin extends Admin
 {
     use DomainGuesserAwareTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    protected $baseRoutePattern = 'user';
-    /*
-     * {@inheritdoc}
-     */
-    protected $datagridValues = [
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string {
+        return 'user';
+    }
+
+    protected array $datagridValues = [
         '_page' => 1,
         '_sort_order' => 'DESC',
         '_sort_by' => 'creationTime',
@@ -114,7 +110,6 @@ class UserAdmin extends Admin
             ->add('registration_since', CallbackFilter::class, [
                 'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
                     if (isset($value['value']) && null !== $value = $value['value']) {
-                        /** @var QueryBuilder $qb */
                         $qb = $proxyQuery->getQueryBuilder();
                         $field = sprintf('%s.creationTime', $alias);
                         $qb->andWhere(sprintf('%s >= :datetime', $field))
@@ -176,13 +171,13 @@ class UserAdmin extends Admin
         $list
             ->addIdentifier('id', null, [
                 'route' => [
-                    'name' => 'edit'
-                ]
+                    'name' => 'edit',
+                ],
             ])
             ->addIdentifier('email', null, [
                 'route' => [
-                    'name' => 'edit'
-                ]
+                    'name' => 'edit',
+                ],
             ])
             ->add('creationTime')
             ->add('updatedTime')

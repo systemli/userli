@@ -12,14 +12,8 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 class LoginListener implements EventSubscriberInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-    /**
-     * @var PasswordUpdater
-     */
-    private $passwordUpdater;
+    private EntityManagerInterface $manager;
+    private PasswordUpdater $passwordUpdater;
 
     /**
      * LoginListener constructor.

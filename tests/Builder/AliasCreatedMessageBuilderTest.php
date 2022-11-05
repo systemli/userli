@@ -4,7 +4,7 @@ namespace App\Tests\Builder;
 
 use App\Builder\AliasCreatedMessageBuilder;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class AliasCreatedMessageBuilderTest.
@@ -40,9 +40,6 @@ class AliasCreatedMessageBuilderTest extends TestCase
      */
     private function getBuilder($appUrl, $projectName): AliasCreatedMessageBuilder
     {
-        /**
-         * @var TranslatorInterface|PHPUnit_Framework_MockObject_MockObject
-         */
         $translator = $this->getMockBuilder(TranslatorInterface::class)
             ->disableOriginalConstructor()
             ->getMock();

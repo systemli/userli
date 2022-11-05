@@ -9,18 +9,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class AliasCreationListener implements EventSubscriberInterface
 {
-    /**
-     * @var RequestStack
-     */
-    private $request;
-    /**
-     * @var AliasCreatedMessageSender
-     */
-    private $sender;
-    /**
-     * @var bool
-     */
-    private $sendMail;
+    private RequestStack $request;
+    private AliasCreatedMessageSender $sender;
+    private bool $sendMail;
 
     /**
      * AliasCreationListener constructor.

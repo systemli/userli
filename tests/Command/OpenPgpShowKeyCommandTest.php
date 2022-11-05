@@ -12,10 +12,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class OpenPgpShowKeyCommandTest extends TestCase
 {
-    /**
-     * @var OpenPgpShowKeyCommand
-     */
-    private $command;
+    private OpenPgpShowKeyCommand $command;
 
     public function setUp(): void
     {

@@ -9,14 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class AdminPasswordUpdater
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-    /**
-     * @var PasswordUpdater
-     */
-    private $updater;
+    private EntityManagerInterface $manager;
+    private PasswordUpdater $updater;
 
     public function __construct(EntityManagerInterface $manager, PasswordUpdater $updater)
     {
@@ -30,9 +24,9 @@ class AdminPasswordUpdater
      */
     public function updateAdminPassword(string $password): void
     {
-        $domain = $this->manager->getRepository('App:Domain')->getDefaultDomain();
+        $domain = $this->manager->getRepository(Domain::class)->getDefaultDomain();
         $adminEmail = 'postmaster@'.$domain;
-        $admin = $this->manager->getRepository('App:User')->findByEmail($adminEmail);
+        $admin = $this->manager->getRepository(User::class)->findByEmail($adminEmail);
         if (null === $admin) {
             // create admin user
             $admin = new User();

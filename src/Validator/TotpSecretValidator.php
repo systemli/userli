@@ -13,11 +13,8 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 class TotpSecretValidator extends ConstraintValidator
 {
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var TotpAuthenticatorInterface */
-    private $totpAuthenticator;
+    private TokenStorageInterface $tokenStorage;
+    private TotpAuthenticatorInterface $totpAuthenticator;
 
     public function __construct(TokenStorageInterface $tokenStorage, TotpAuthenticatorInterface $totpAuthenticator)
     {
@@ -26,7 +23,10 @@ class TotpSecretValidator extends ConstraintValidator
     }
 
     /**
-     * @param $value
+     * @param            $value
+     * @param Constraint $constraint
+     *
+     * @return bool
      */
     public function validate($value, Constraint $constraint): bool
     {

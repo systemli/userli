@@ -16,18 +16,9 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 class LoginListenerTest extends TestCase
 {
-    /**
-     * @var MockObject
-     */
-    private $manager;
-    /**
-     * @var MockObject
-     */
-    private $passwordUpdater;
-    /**
-     * @var LoginListener
-     */
-    private $listener;
+    private EntityManagerInterface $manager;
+    private PasswordUpdater $passwordUpdater;
+    private LoginListener $listener;
 
     public function setUp(): void
     {

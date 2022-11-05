@@ -2,6 +2,8 @@
 
 namespace App\Block;
 
+use App\Entity\User;
+use App\Entity\Voucher;
 use Doctrine\ORM\EntityManagerInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\BlockServiceInterface;
@@ -12,15 +14,8 @@ use Twig\Environment;
 
 class StatisticsBlockService implements BlockServiceInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-
-    /**
-     * @var Environment
-     */
-    private $twig;
+    private EntityManagerInterface $manager;
+    private Environment $twig;
 
     /**
      * StatisticsBlockService constructor.
@@ -40,12 +35,12 @@ class StatisticsBlockService implements BlockServiceInterface
             [
                 'block' => $blockContext->getBlock(),
                 'settings' => $settings,
-                'users_since' => (null !== $usersSince = $this->manager->getRepository('App:User')->findUsersSince(
+                'users_since' => (null !== $usersSince = $this->manager->getRepository(User::class)->findUsersSince(
                     new \DateTime('-7 days')
                 )) ? count($usersSince) : 0,
-                'users_count' => $this->manager->getRepository('App:User')->count([]),
-                'vouchers_count' => $vouchersCount = $this->manager->getRepository('App:Voucher')->count([]),
-                'vouchers_redeemed' => $vouchersRedeemed = $this->manager->getRepository('App:Voucher')->countRedeemedVouchers(),
+                'users_count' => $this->manager->getRepository(User::class)->count([]),
+                'vouchers_count' => $vouchersCount = $this->manager->getRepository(Voucher::class)->count([]),
+                'vouchers_redeemed' => $vouchersRedeemed = $this->manager->getRepository(Voucher::class)->countRedeemedVouchers(),
                 'vouchers_ratio' => ($vouchersCount > 0) ? sprintf('%.2f%%', (float) (($vouchersRedeemed / $vouchersCount) * 100)) : '0%',
             ]
         );

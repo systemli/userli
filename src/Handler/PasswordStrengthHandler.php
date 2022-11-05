@@ -6,11 +6,12 @@ class PasswordStrengthHandler
 {
     private const REGEX_FORBIDDEN_CHARS = '/[äöüÄÖÜß\'"]/u';
 
-    /** @var array */
-    private $errors = [];
+    private array $errors = [];
 
     /**
      * @param $value
+     *
+     * @return array
      */
     public function validate($value): array
     {

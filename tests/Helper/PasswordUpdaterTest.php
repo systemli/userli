@@ -6,16 +6,19 @@ use App\Entity\User;
 use App\Helper\PasswordUpdater;
 use App\Security\Encoder\PasswordHashEncoder;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
 class PasswordUpdaterTest extends TestCase
 {
     public function testUpdatePassword(): void
     {
-        $encoderFactory = $this->getMockBuilder(EncoderFactoryInterface::class)
+        $hasher = $this->getMockBuilder(PasswordHasherInterface::class)
             ->getMock();
-        $encoderFactory->method('getEncoder')->willReturn(new PasswordHashEncoder());
-        $updater = new PasswordUpdater($encoderFactory);
+        $passwordHasherFactory = $this->getMockBuilder(PasswordHasherFactoryInterface::class)
+            ->getMock();
+        $passwordHasherFactory->method('getPasswordHasher')->willReturn($hasher);
+        $updater = new PasswordUpdater($passwordHasherFactory);
 
         $user = new User();
         $user->setPlainPassword('password');

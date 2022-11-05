@@ -126,7 +126,7 @@ services:
 
     App\Handler\UserAuthenticationHandler:
         arguments:
-            $encoderFactory: '@security.encoder_factory'
+            $passwordHasherFactory: '@security.password_hasher_factory'
 
     App\Handler\WkdHandler:
         arguments:

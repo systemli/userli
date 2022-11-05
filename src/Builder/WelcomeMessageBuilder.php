@@ -2,30 +2,19 @@
 
 namespace App\Builder;
 
+use App\Entity\Domain;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class WelcomeMessageBuilder.
  */
 class WelcomeMessageBuilder
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-    /**
-     * @var string
-     */
+    private TranslatorInterface $translator;
     private $domain;
-    /**
-     * @var string
-     */
-    private $appUrl;
-    /**
-     * @var string
-     */
-    private $projectName;
+    private string $appUrl;
+    private string $projectName;
 
     /**
      * WelcomeMessageBuilder constructor.
@@ -33,7 +22,7 @@ class WelcomeMessageBuilder
     public function __construct(TranslatorInterface $translator, EntityManagerInterface $manager, string $appUrl, string $projectName)
     {
         $this->translator = $translator;
-        $domain = $manager->getRepository('App:Domain')->getDefaultDomain();
+        $domain = $manager->getRepository(Domain::class)->getDefaultDomain();
         $this->domain = null !== $domain ? $domain->getName() : '';
         $this->appUrl = $appUrl;
         $this->projectName = $projectName;

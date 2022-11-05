@@ -10,10 +10,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class OpenPgpImportKeyCommandTest extends TestCase
 {
-    /**
-     * @var OpenPgpImportKeyCommand
-     */
-    private $command;
+    private OpenPgpImportKeyCommand $command;
 
     public function setUp(): void
     {

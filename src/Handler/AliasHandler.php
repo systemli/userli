@@ -17,21 +17,15 @@ class AliasHandler
     public const ALIAS_LIMIT_CUSTOM = 3;
     public const ALIAS_LIMIT_RANDOM = 100;
 
-    /**
-     * @var AliasRepository
-     */
-    private $repository;
-    /**
-     * @var AliasCreator
-     */
-    private $creator;
+    private AliasRepository $repository;
+    private AliasCreator $creator;
 
     /**
      * AliasHandler constructor.
      */
     public function __construct(EntityManagerInterface $manager, AliasCreator $creator)
     {
-        $this->repository = $manager->getRepository('App:Alias');
+        $this->repository = $manager->getRepository(Alias::class);
         $this->creator = $creator;
     }
 

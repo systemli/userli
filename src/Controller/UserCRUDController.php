@@ -15,16 +15,12 @@ class UserCRUDController extends CRUDController
     private DeleteHandler $deleteHandler;
     private VoucherRemover $voucherRemover;
 
-    public function __construct(DeleteHandler $deleteHandler, VoucherRemover $voucherRemover) {
+    public function __construct(DeleteHandler $deleteHandler, VoucherRemover $voucherRemover)
+    {
         $this->deleteHandler = $deleteHandler;
         $this->voucherRemover = $voucherRemover;
     }
 
-    /**
-     * @param ProxyQueryInterface $query
-     *
-     * @return RedirectResponse
-     */
     public function batchActionRemoveVouchers(ProxyQueryInterface $query): RedirectResponse
     {
         $this->admin->checkAccess('edit');
@@ -42,11 +38,6 @@ class UserCRUDController extends CRUDController
         return $this->redirectToList();
     }
 
-    /**
-     * @param int|string|null $id
-     *
-     * @return Response
-     */
     public function deleteAction(Request $request): Response
     {
         $object = $this->assertObjectExists($request, true);
@@ -75,11 +66,6 @@ class UserCRUDController extends CRUDController
         return $this->redirectToList();
     }
 
-    /**
-     * @param ProxyQueryInterface $query
-     *
-     * @return RedirectResponse
-     */
     public function batchActionDelete(ProxyQueryInterface $query): RedirectResponse
     {
         $this->admin->checkAccess('batchDelete');

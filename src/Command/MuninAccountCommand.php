@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Entity\OpenPgpKey;
+use App\Entity\User;
 use App\Repository\OpenPgpKeyRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,8 +23,8 @@ class MuninAccountCommand extends Command
     public function __construct(EntityManagerInterface $manager)
     {
         parent::__construct();
-        $this->userRepository = $manager->getRepository('App:User');
-        $this->openPgpKeyRepository = $manager->getRepository('App:OpenPgpKey');
+        $this->userRepository = $manager->getRepository(User::class);
+        $this->openPgpKeyRepository = $manager->getRepository(OpenPgpKey::class);
     }
 
     /**
