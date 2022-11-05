@@ -5,11 +5,11 @@ namespace App\Admin;
 use App\Entity\Alias;
 use App\Entity\User;
 use App\Enum\Roles;
-use App\Handler\DeleteHandler;
 use App\Traits\DomainGuesserAwareTrait;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -23,11 +23,6 @@ class AliasAdmin extends Admin
      * {@inheritdoc}
      */
     protected $baseRoutePattern = 'alias';
-
-    /**
-     * @var DeleteHandler
-     */
-    private $deleteHandler;
 
     /**
      * {@inheritdoc}
@@ -60,7 +55,7 @@ class AliasAdmin extends Admin
             ->add('domain', null, [
                 'show_filter' => true,
             ])
-            ->add('deleted', 'doctrine_orm_choice', [
+            ->add('deleted', ChoiceFilter::class, [
                 'field_options' => [
                     'required' => false,
                     'choices' => [0 => 'No', 1 => 'Yes'],
@@ -129,18 +124,5 @@ class AliasAdmin extends Admin
         if (!$this->security->isGranted(Roles::ADMIN)) {
             $object->setDestination($object->getUser());
         }
-    }
-
-    /**
-     * @param Alias $object
-     */
-    public function delete($object): void
-    {
-        $this->deleteHandler->deleteAlias($object);
-    }
-
-    public function setDeleteHandler(DeleteHandler $deleteHandler): void
-    {
-        $this->deleteHandler = $deleteHandler;
     }
 }

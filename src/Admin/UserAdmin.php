@@ -4,7 +4,6 @@ namespace App\Admin;
 
 use App\Entity\User;
 use App\Enum\Roles;
-use App\Handler\DeleteHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use App\Traits\DomainGuesserAwareTrait;
@@ -13,6 +12,8 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\Form\Type\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -30,7 +31,7 @@ class UserAdmin extends Admin
      * {@inheritdoc}
      */
     protected $baseRoutePattern = 'user';
-    /**
+    /*
      * {@inheritdoc}
      */
     protected $datagridValues = [
@@ -38,34 +39,16 @@ class UserAdmin extends Admin
         '_sort_order' => 'DESC',
         '_sort_by' => 'creationTime',
     ];
-    /**
-     * @var PasswordUpdater
-     */
-    private $passwordUpdater;
-    /**
-     * @var DeleteHandler
-     */
-    private $deleteHandler;
-    /**
-     * @var MailCryptKeyHandler
-     */
-    private $mailCryptKeyHandler;
-    /**
-     * @var int
-     */
-    private $mailCrypt;
+    private PasswordUpdater $passwordUpdater;
+    private MailCryptKeyHandler $mailCryptKeyHandler;
+    private int $mailCrypt;
 
     /**
      * {@inheritdoc}
      */
-    public function getNewInstance(): User
+    public function alterNewInstance(object $object): void
     {
-        /** @var User $instance */
-        $instance = parent::getNewInstance();
-
-        $instance->setRoles([Roles::USER]);
-
-        return $instance;
+        $object->setRoles([Roles::USER]);
     }
 
     /**
@@ -128,7 +111,7 @@ class UserAdmin extends Admin
             ->add('domain', null, [
                 'show_filter' => false,
             ])
-            ->add('registration_since', 'doctrine_orm_callback', [
+            ->add('registration_since', CallbackFilter::class, [
                 'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
                     if (isset($value['value']) && null !== $value = $value['value']) {
                         /** @var QueryBuilder $qb */
@@ -152,7 +135,7 @@ class UserAdmin extends Admin
                 'field_type' => ChoiceType::class,
                 'show_filter' => true,
             ])
-            ->add('recoverySecretBox', 'doctrine_orm_callback', [
+            ->add('recoverySecretBox', CallbackFilter::class, [
                 'field_type' => BooleanType::class,
                 'label' => 'Recovery Token',
                 'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
@@ -167,7 +150,7 @@ class UserAdmin extends Admin
                     return true;
                 },
             ])
-            ->add('mailCrypt', 'doctrine_orm_choice', [
+            ->add('mailCrypt', ChoiceFilter::class, [
                 'field_options' => [
                     'required' => false,
                     'choices' => [0 => 'No', 1 => 'Yes'],
@@ -175,7 +158,7 @@ class UserAdmin extends Admin
                 'field_type' => ChoiceType::class,
                 'show_filter' => true,
             ])
-            ->add('deleted', 'doctrine_orm_choice', [
+            ->add('deleted', ChoiceFilter::class, [
                 'field_options' => [
                     'required' => false,
                     'choices' => [0 => 'No', 1 => 'Yes'],
@@ -260,22 +243,9 @@ class UserAdmin extends Admin
         }
     }
 
-    /**
-     * @param User $object
-     */
-    public function delete($object): void
-    {
-        $this->deleteHandler->deleteUser($object);
-    }
-
     public function setPasswordUpdater(PasswordUpdater $passwordUpdater): void
     {
         $this->passwordUpdater = $passwordUpdater;
-    }
-
-    public function setDeleteHandler(DeleteHandler $deleteHandler): void
-    {
-        $this->deleteHandler = $deleteHandler;
     }
 
     public function setMailCryptKeyHandler(MailCryptKeyHandler $mailCryptKeyHandler): void

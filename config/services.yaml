@@ -189,7 +189,6 @@ services:
         calls:
             - [setPasswordUpdater, ['@App\Helper\PasswordUpdater']]
             - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
-            - [setDeleteHandler, ['@App\Handler\DeleteHandler']]
             - [setMailCryptKeyHandler, ['@App\Handler\MailCryptKeyHandler']]
             - [setMailCryptVar, ["%env(MAIL_CRYPT)%"]]
 
@@ -211,10 +210,9 @@ services:
         arguments:
             - ~
             - App\Entity\Alias
-            - ~
+            - App\Controller\AliasCRUDController
         calls:
             - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
-            - [setDeleteHandler, ['@App\Handler\DeleteHandler']]
 
     userli.admin.voucher:
         class: App\Admin\VoucherAdmin
