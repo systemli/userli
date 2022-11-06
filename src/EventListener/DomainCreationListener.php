@@ -23,7 +23,7 @@ class DomainCreationListener implements EventSubscriberInterface
     /**
      * @throws \Exception
      */
-    public function onDomainCreated(DomainCreatedEvent $event)
+    public function onDomainCreated(DomainCreatedEvent $event): void
     {
         $domain = $event->getDomain();
         $defaultDomain = $this->manager->getRepository(Domain::class)->getDefaultDomain();
@@ -47,7 +47,7 @@ class DomainCreationListener implements EventSubscriberInterface
         $this->handler->getDomainWkdPath($domain->getName());
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             DomainCreatedEvent::NAME => 'onDomainCreated',

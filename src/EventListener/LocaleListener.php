@@ -56,6 +56,8 @@ class LocaleListener implements EventSubscriberInterface
 
     /**
      * @param $route
+     *
+     * @return string|null
      */
     private function checkLanguage($route): ?string
     {

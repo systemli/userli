@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use App\Entity\User;
 use App\Event\Events;
 use App\Event\UserEvent;
 use App\Sender\WelcomeMessageSender;
@@ -43,6 +44,7 @@ class RegistrationListener implements EventSubscriberInterface
             return;
         }
 
+        /** @var User $user */
         $user = $event->getUser();
         $locale = $this->request->getCurrentRequest()->getLocale();
 
