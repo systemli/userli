@@ -8,12 +8,17 @@ use App\Form\Model\TwofactorConfirm;
 use App\Form\TwofactorBackupAckType;
 use App\Form\TwofactorConfirmType;
 use App\Form\TwofactorType;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\PngWriter;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
-use Scheb\TwoFactorBundle\Security\TwoFactor\QrCode\QrCodeGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TwofactorController extends AbstractController
 {
@@ -286,19 +291,31 @@ class TwofactorController extends AbstractController
     }
 
     /**
-     * @return Response
+     * @param TotpAuthenticatorInterface $totpAuthenticator
      *
+     * @return Response
      * @throws \Exception
      */
-    public function displayTotpQrCode(QrCodeGenerator $qrCodeGenerator)
+    public function displayTotpQrCode(TotpAuthenticatorInterface $totpAuthenticator): Response
     {
-        /** @var $user TwoFactorInterface */
         if (null === $user = $this->getUser()) {
             throw new \Exception('User should not be null');
         }
+        if (!($user instanceof TwoFactorInterface)) {
+            throw new NotFoundHttpException('Cannot display QR code');
+        }
 
-        $qrCode = $qrCodeGenerator->getTotpQrCode($user);
+        $result = Builder::create()
+            ->writer(new PngWriter())
+            ->writerOptions([])
+            ->data($totpAuthenticator->getQRContent($user))
+            ->encoding(new Encoding('UTF-8'))
+            ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+            ->size(320)
+            ->margin(20)
+            ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+            ->build();
 
-        return new Response($qrCode->writeString(), 200, ['Content-Type' => 'image/png']);
+        return new Response($result->getString(), 200, ['Content-Type' => 'image/png']);
     }
 }
