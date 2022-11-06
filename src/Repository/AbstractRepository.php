@@ -13,7 +13,7 @@ class AbstractRepository extends EntityRepository
     /**
      * {@inheritdoc}
      */
-    public function find($id, $lockMode = null, $lockVersion = null, bool $deleted = false)
+    public function find($id, $lockMode = null, $lockVersion = null, bool $deleted = false): ?object
     {
         $entity = parent::find($id, $lockMode, $lockVersion);
         if (($entity instanceof SoftDeletableInterface) && false === $deleted && $entity->isDeleted()) {

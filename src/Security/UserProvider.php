@@ -28,17 +28,25 @@ class UserProvider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername(string $username): UserInterface
     {
-        if (false === strpos($username, '@')) {
+        return $this->loadUserByIdentifier($username);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function loadUserByIdentifier(string $identifier): UserInterface
+    {
+        if (false === strpos($identifier, '@')) {
             $defaultDomain = $this->manager->getRepository(Domain::class)->getDefaultDomain();
-            $username = sprintf('%s@%s', $username, $defaultDomain);
+            $identifier = sprintf('%s@%s', $identifier, $defaultDomain);
         }
 
-        $user = $this->manager->getRepository(User::class)->findByEmail($username);
+        $user = $this->manager->getRepository(User::class)->findByEmail($identifier);
 
         if (!$user) {
-            throw new UserNotFoundException(sprintf('No user with name "%s" was found.', $username));
+            throw new UserNotFoundException(sprintf('No user with name "%s" was found.', $identifier));
         }
 
         return $user;
@@ -47,7 +55,7 @@ class UserProvider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof User) {
             throw new UnsupportedUserException(sprintf('Expected an instance of App\Entity\User, but got "%s".', get_class($user)));

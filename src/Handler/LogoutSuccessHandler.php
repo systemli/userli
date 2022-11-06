@@ -3,6 +3,7 @@
 namespace App\Handler;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
@@ -16,7 +17,7 @@ class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
      *
      * @param string $targetUrl
      */
-    public function __construct(HttpUtils $httpUtils, $targetUrl = '/')
+    public function __construct(HttpUtils $httpUtils, string $targetUrl = '/')
     {
         $this->httpUtils = $httpUtils;
         $this->targetUrl = $targetUrl;
@@ -25,7 +26,7 @@ class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function onLogoutSuccess(Request $request)
+    public function onLogoutSuccess(Request $request): Response
     {
         $request->getSession()->getFlashBag()->add('success', 'flashes.logout-successful');
 

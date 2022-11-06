@@ -43,8 +43,8 @@ class UserProviderTest extends TestCase
 
         $provider = new UserProvider($manager);
 
-        self::assertInstanceOf(User::class, $provider->loadUserByUsername('admin'));
-        self::assertInstanceOf(User::class, $provider->loadUserByUsername('admin@example.org'));
+        self::assertInstanceOf(User::class, $provider->loadUserByIdentifier('admin'));
+        self::assertInstanceOf(User::class, $provider->loadUserByIdentifier('admin@example.org'));
     }
 
     public function testLoadByUsernameException(): void

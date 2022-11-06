@@ -24,7 +24,7 @@ class BeforeRequestListener implements EventSubscriberInterface
         $this->security = $security;
     }
 
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if ($user = $this->getNonAdminUser()) {
             $filter = $this->entityManager->getFilters()->enable('domain_filter');
@@ -47,7 +47,7 @@ class BeforeRequestListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::REQUEST => [['onKernelRequest']]];
     }
