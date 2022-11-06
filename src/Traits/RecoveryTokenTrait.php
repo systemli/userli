@@ -4,17 +4,14 @@ namespace App\Traits;
 
 trait RecoveryTokenTrait
 {
-    /**
-     * @var string|null
-     */
-    private $recoveryToken;
+    private ?string $recoveryToken = null;
 
     public function getRecoveryToken(): ?string
     {
         return $this->recoveryToken;
     }
 
-    public function setRecoveryToken(string $recoveryToken): void
+    public function setRecoveryToken(?string $recoveryToken): void
     {
         $this->recoveryToken = $recoveryToken;
     }

@@ -4,10 +4,7 @@ namespace App\Traits;
 
 trait NameTrait
 {
-    /**
-     * @var string|null
-     */
-    private $name;
+    private ?string $name = null;
 
     public function getName(): ?string
     {
