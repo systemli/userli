@@ -4,11 +4,11 @@ security:
         user:
             id: App\Security\UserProvider
 
-    encoders:
+    password_hashers:
         App\Entity\User:
             algorithm: sodium
         legacy:
-            id: 'App\Security\Encoder\PasswordHashEncoder'
+            id: 'App\Security\Encoder\LegacyPasswordHasher'
 
     role_hierarchy:
         # User

@@ -95,8 +95,10 @@ class LoginListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        $this->assertEquals([SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
-            LoginEvent::NAME => 'onLogin', ],
-            $this->listener->getSubscribedEvents());
+        $this->assertEquals([
+            SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
+            LoginEvent::class => 'onLogin',
+        ],
+            $this->listener::getSubscribedEvents());
     }
 }

@@ -28,10 +28,10 @@ use App\Traits\TwofactorTrait;
 use App\Traits\UpdatedTimeTrait;
 use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class User implements UserInterface, EncoderAwareInterface, TwoFactorInterface, BackupCodeInterface
+class User implements UserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface
 {
     use IdTrait;
     use CreationTimeTrait;
@@ -119,7 +119,7 @@ class User implements UserInterface, EncoderAwareInterface, TwoFactorInterface, 
     /**
      * {@inheritdoc}
      */
-    public function getEncoderName(): ?string
+    public function getPasswordHasherName(): ?string
     {
         if ($this->getPasswordVersion() < self::CURRENT_PASSWORD_VERSION) {
             return 'legacy';

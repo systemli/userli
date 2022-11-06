@@ -46,12 +46,12 @@ class UserTest extends TestCase
         self::assertFalse($user->hasRole(Roles::ADMIN));
     }
 
-    public function testGetEncoderName(): void
+    public function testGetPasswordHasherName(): void
     {
         $user = new User();
-        self::assertEquals(null, $user->getEncoderName());
+        self::assertEquals(null, $user->getPasswordHasherName());
         $user->setPasswordVersion(1);
-        self::assertEquals('legacy', $user->getEncoderName());
+        self::assertEquals('legacy', $user->getPasswordHasherName());
     }
 
     public function testPlainPassword(): void

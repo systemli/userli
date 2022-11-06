@@ -31,7 +31,7 @@ class PasswordUpdater
         }
 
         $hasher = $this->passwordHasherFactory->getPasswordHasher($user);
-        $hash = $hasher->hash($plainPassword, $user->getSalt());
+        $hash = $hasher->hash($plainPassword);
 
         $user->setPassword($hash);
 

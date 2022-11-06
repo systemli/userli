@@ -8,7 +8,7 @@ use App\Helper\AdminPasswordUpdater;
 use App\Helper\PasswordUpdater;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
-use App\Security\Encoder\PasswordHashEncoder;
+use App\Security\Encoder\LegacyPasswordHasher;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

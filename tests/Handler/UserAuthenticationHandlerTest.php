@@ -7,9 +7,7 @@ use App\Handler\UserAuthenticationHandler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
-use Symfony\Component\PasswordHasher\Hasher\SodiumPasswordHasher;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 class UserAuthenticationHandlerTest extends TestCase
 {
