@@ -81,7 +81,7 @@ class DomainVoter extends Voter
         }
 
         $user = $this->manager->getRepository(User::class)
-            ->findByEmail($this->security->getUser()->getUsername());
+            ->findByEmail($this->security->getUser()->getUserIdentifier());
         $userDomain = $user->getDomain();
 
         if (in_array($attribute, [

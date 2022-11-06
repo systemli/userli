@@ -106,6 +106,13 @@ class User implements UserInterface, EncoderAwareInterface, TwoFactorInterface, 
      */
     public function getUsername(): ?string
     {
+        return $this->getUserIdentifier();
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserIdentifier(): string {
         return $this->email;
     }
 

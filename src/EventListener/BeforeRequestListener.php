@@ -41,7 +41,7 @@ class BeforeRequestListener implements EventSubscriberInterface
             return null;
         }
 
-        return $this->entityManager->getRepository(User::class)->findByEmail($user->getUsername());
+        return $this->entityManager->getRepository(User::class)->findByEmail($user->getUserIdentifier());
     }
 
     /**
