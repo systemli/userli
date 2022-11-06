@@ -100,10 +100,6 @@ services:
         tags:
             - { name: form.type, alias: registration }
 
-    App\Handler\LogoutSuccessHandler:
-        arguments:
-            $targetUrl: '/'
-
     App\Handler\MailHandler:
         arguments:
             $from: "%env(SENDER_ADDRESS)%"

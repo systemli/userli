@@ -29,7 +29,7 @@ class AliasCreationListener implements EventSubscriberInterface
     /**
      * @throws \Exception
      */
-    public function onAliasCreated(AliasCreatedEvent $event)
+    public function onAliasCreated(AliasCreatedEvent $event): void
     {
         if (!$this->sendMail) {
             return;
@@ -49,7 +49,7 @@ class AliasCreationListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             AliasCreatedEvent::NAME => 'onAliasCreated',
