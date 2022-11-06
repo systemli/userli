@@ -3,7 +3,6 @@
 namespace App\Tests\Command;
 
 use App\Command\UsersDeleteCommand;
-use App\Command\VoucherUnlinkCommand;
 use App\Entity\User;
 use App\Handler\DeleteHandler;
 use App\Repository\UserRepository;
@@ -11,14 +10,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class UsersDeleteCommandTest extends TestCase
 {
-    /**
-     * @var VoucherUnlinkCommand
-     */
-    private $command;
+    private UsersDeleteCommand $command;
 
     public function setUp(): void
     {
@@ -65,7 +61,7 @@ class UsersDeleteCommandTest extends TestCase
 
     public function testExecuteWithoutUser(): void
     {
-        $this->expectException(UsernameNotFoundException::class);
+        $this->expectException(UserNotFoundException::class);
 
         $application = new Application();
         $application->add($this->command);

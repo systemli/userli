@@ -16,18 +16,9 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 class LoginListenerTest extends TestCase
 {
-    /**
-     * @var MockObject
-     */
-    private $manager;
-    /**
-     * @var MockObject
-     */
-    private $passwordUpdater;
-    /**
-     * @var LoginListener
-     */
-    private $listener;
+    private EntityManagerInterface $manager;
+    private PasswordUpdater $passwordUpdater;
+    private LoginListener $listener;
 
     public function setUp(): void
     {
@@ -104,8 +95,10 @@ class LoginListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        $this->assertEquals([SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
-            LoginEvent::NAME => 'onLogin', ],
-            $this->listener->getSubscribedEvents());
+        $this->assertEquals([
+            SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
+            LoginEvent::class => 'onLogin',
+        ],
+            $this->listener::getSubscribedEvents());
     }
 }

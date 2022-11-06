@@ -4,10 +4,7 @@ namespace App\Traits;
 
 trait EmailTrait
 {
-    /**
-     * @var string|null
-     */
-    private $email;
+    private string $email = '';
 
     public function getEmail(): ?string
     {

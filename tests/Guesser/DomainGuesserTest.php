@@ -10,10 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class DomainGuesserTest extends TestCase
 {
-    /**
-     * @var DomainGuesser
-     */
-    private $guesser;
+    private DomainGuesser $guesser;
 
     public function testGuess(): void
     {

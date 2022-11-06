@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Creator\ReservedNameCreator;
+use App\Entity\ReservedName;
 use App\Exception\ValidationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -46,7 +47,7 @@ class ReservedNamesImportCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $repository = $this->manager->getRepository('App:ReservedName');
+        $repository = $this->manager->getRepository(ReservedName::class);
 
         $file = (string) $input->getOption('file');
 

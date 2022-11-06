@@ -13,14 +13,8 @@ use Symfony\Component\Security\Core\Security;
 
 class DomainVoter extends Voter
 {
-    /**
-     * @var Security
-     */
-    private $security;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
+    private Security $security;
+    private EntityManagerInterface $manager;
 
     /**
      * DomainVoter constructor.
@@ -86,8 +80,8 @@ class DomainVoter extends Voter
             return false;
         }
 
-        $user = $this->manager->getRepository('App:User')
-            ->findByEmail($this->security->getUser()->getUsername());
+        $user = $this->manager->getRepository(User::class)
+            ->findByEmail($this->security->getUser()->getUserIdentifier());
         $userDomain = $user->getDomain();
 
         if (in_array($attribute, [

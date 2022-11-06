@@ -3,6 +3,8 @@
 namespace App\Tests\Command;
 
 use App\Command\MuninAccountCommand;
+use App\Entity\OpenPgpKey;
+use App\Entity\User;
 use App\Repository\OpenPgpKeyRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,8 +32,8 @@ class MuninAccountCommandTest extends TestCase
         $manager = $this->getMockBuilder(EntityManagerInterface::class)
             ->getMock();
         $manager->method('getRepository')->willReturnMap([
-            ['App:User', $userRepository],
-            ['App:OpenPgpKey', $openPgpKeyRepository],
+            [User::class, $userRepository],
+            [OpenPgpKey::class, $openPgpKeyRepository],
             ]);
 
         $command = new MuninAccountCommand($manager);

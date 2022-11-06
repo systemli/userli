@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Domain;
 use App\Form\DataTransformer\OptionalDomainEmailTransformer;
 use App\Form\Model\RecoveryProcess;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,7 +27,7 @@ class RecoveryProcessType extends AbstractType
      */
     public function __construct(EntityManagerInterface $manager)
     {
-        $this->domain = $manager->getRepository('App:Domain')->getDefaultDomain()->getName();
+        $this->domain = $manager->getRepository(Domain::class)->getDefaultDomain()->getName();
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

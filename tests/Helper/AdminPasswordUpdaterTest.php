@@ -2,23 +2,22 @@
 
 namespace App\Tests\Helper;
 
+use App\Entity\Domain;
 use App\Entity\User;
 use App\Helper\AdminPasswordUpdater;
 use App\Helper\PasswordUpdater;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
-use App\Security\Encoder\PasswordHashEncoder;
+use App\Security\Encoder\LegacyPasswordHasher;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
 class AdminPasswordUpdaterTest extends TestCase
 {
-    /**
-     * @var MockObject
-     */
-    private $defaultDomain;
+    private string $defaultDomain;
 
     public function setUp(): void
     {
@@ -57,8 +56,8 @@ class AdminPasswordUpdaterTest extends TestCase
         $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('getRepository')->willReturnMap(
             [
-                ['App:Domain', $domainRepo],
-                ['App:User', $userRepo],
+                [Domain::class, $domainRepo],
+                [User::class, $userRepo],
             ]);
 
         return $manager;
@@ -66,10 +65,12 @@ class AdminPasswordUpdaterTest extends TestCase
 
     public function getUpdater(): PasswordUpdater
     {
-        $encoderFactory = $this->getMockBuilder(EncoderFactoryInterface::class)
+        $hasher = $this->getMockBuilder(PasswordHasherInterface::class)
             ->getMock();
-        $encoderFactory->method('getEncoder')->willReturn(new PasswordHashEncoder());
+        $passwordHasherFactory = $this->getMockBuilder(PasswordHasherFactoryInterface::class)
+            ->getMock();
+        $passwordHasherFactory->method('getPasswordHasher')->willReturn($hasher);
 
-        return new PasswordUpdater($encoderFactory);
+        return new PasswordUpdater($passwordHasherFactory);
     }
 }

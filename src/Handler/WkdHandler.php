@@ -15,17 +15,10 @@ use Tuupola\Base32;
 
 class WkdHandler
 {
-    /** @var EntityManagerInterface */
-    private $manager;
-
-    /** @var OpenPgpKeyRepository */
-    private $repository;
-
-    /** @var string */
-    private $wkdDirectory;
-
-    /** @var string */
-    private $wkdFormat;
+    private EntityManagerInterface $manager;
+    private OpenPgpKeyRepository $repository;
+    private string $wkdDirectory;
+    private string $wkdFormat;
 
     /**
      * WkdHandler constructor.
@@ -35,7 +28,7 @@ class WkdHandler
                                 string $wkdFormat)
     {
         $this->manager = $manager;
-        $this->repository = $manager->getRepository('App:OpenPgpKey');
+        $this->repository = $manager->getRepository(OpenPgpKey::class);
         $this->wkdDirectory = $wkdDirectory;
         $this->wkdFormat = $wkdFormat;
     }

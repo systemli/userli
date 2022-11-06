@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class GpgKeyImporterTest extends TestCase
 {
-    private $email = 'alice@example.org';
+    private string $email = 'alice@example.org';
     /**
      * An OpenPGP key with several UIDs to check that we
      *   - keep UIDs with correct email with realname
@@ -29,10 +29,8 @@ class GpgKeyImporterTest extends TestCase
      * uid           Another Alice <anotheralice@example.org>
      * uid           alice@example.org
      * sub   rsa3072 2020-10-21 [E] [expires: 2022-10-21]
-     *
-     * @var string
      */
-    private $validKeyAscii = '-----BEGIN PGP PUBLIC KEY BLOCK-----
+    private string $validKeyAscii = '-----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mQGNBF+P+1kBDADFJfEqMZb3Uo1sYql/FwLHLKiPWoGu7W2Pn8BjaorMuEc1dLc7
 H3Yn576b5ego696/QNa8GUvRYkVgMCUGWNj0jd9VK16FfVsIfJD3GoBBQLPIb0/8

@@ -28,10 +28,10 @@ use App\Traits\TwofactorTrait;
 use App\Traits\UpdatedTimeTrait;
 use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class User implements UserInterface, EncoderAwareInterface, TwoFactorInterface, BackupCodeInterface
+class User implements UserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface
 {
     use IdTrait;
     use CreationTimeTrait;
@@ -59,10 +59,7 @@ class User implements UserInterface, EncoderAwareInterface, TwoFactorInterface, 
 
     public const CURRENT_PASSWORD_VERSION = 2;
 
-    /**
-     * @var array
-     */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * User constructor.
@@ -96,6 +93,8 @@ class User implements UserInterface, EncoderAwareInterface, TwoFactorInterface, 
 
     /**
      * @param $role
+     *
+     * @return bool
      */
     public function hasRole($role): bool
     {
@@ -107,13 +106,20 @@ class User implements UserInterface, EncoderAwareInterface, TwoFactorInterface, 
      */
     public function getUsername(): ?string
     {
+        return $this->getUserIdentifier();
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserIdentifier(): string {
         return $this->email;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getEncoderName(): ?string
+    public function getPasswordHasherName(): ?string
     {
         if ($this->getPasswordVersion() < self::CURRENT_PASSWORD_VERSION) {
             return 'legacy';

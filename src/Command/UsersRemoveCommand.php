@@ -13,14 +13,8 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class UsersRemoveCommand extends Command
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-    /**
-     * @var string
-     */
-    private $mailLocation;
+    private EntityManagerInterface $manager;
+    private string $mailLocation;
 
     public function __construct(EntityManagerInterface $manager,
                                 string $mailLocation,
@@ -49,7 +43,7 @@ class UsersRemoveCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var User[] $users */
-        $users = $this->manager->getRepository('App:User')->findDeletedUsers();
+        $users = $this->manager->getRepository(User::class)->findDeletedUsers();
         $filesystem = new Filesystem();
 
         if (!$input->getOption('list')) {

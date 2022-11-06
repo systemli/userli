@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\OpenPgpKey;
 use App\Handler\WkdHandler;
 use App\Repository\OpenPgpKeyRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,7 +19,7 @@ class OpenPgpDeleteKeyCommand extends Command
     public function __construct(EntityManagerInterface $manager, WkdHandler $handler)
     {
         $this->handler = $handler;
-        $this->repository = $manager->getRepository('App:OpenPgpKey');
+        $this->repository = $manager->getRepository(OpenPgpKey::class);
         parent::__construct();
     }
 

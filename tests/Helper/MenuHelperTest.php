@@ -5,7 +5,7 @@ namespace App\Tests\Helper;
 use App\Helper\MenuHelper;
 use Knp\Menu\ItemInterface;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MenuHelperTest extends TestCase
 {

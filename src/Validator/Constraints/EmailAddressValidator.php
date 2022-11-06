@@ -2,6 +2,10 @@
 
 namespace App\Validator\Constraints;
 
+use App\Entity\Alias;
+use App\Entity\Domain;
+use App\Entity\ReservedName;
+use App\Entity\User;
 use App\Repository\AliasRepository;
 use App\Repository\DomainRepository;
 use App\Repository\ReservedNameRepository;
@@ -16,32 +20,20 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class EmailAddressValidator extends ConstraintValidator
 {
-    /**
-     * @var AliasRepository
-     */
-    private $aliasRepository;
-    /**
-     * @var DomainRepository
-     */
-    private $domainRepository;
-    /**
-     * @var ReservedNameRepository
-     */
-    private $reservedNameRepository;
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private AliasRepository $aliasRepository;
+    private DomainRepository $domainRepository;
+    private ReservedNameRepository $reservedNameRepository;
+    private UserRepository $userRepository;
 
     /**
      * EmailAddressValidator constructor.
      */
     public function __construct(EntityManagerInterface $manager)
     {
-        $this->aliasRepository = $manager->getRepository('App:Alias');
-        $this->domainRepository = $manager->getRepository('App:Domain');
-        $this->reservedNameRepository = $manager->getRepository('App:ReservedName');
-        $this->userRepository = $manager->getRepository('App:User');
+        $this->aliasRepository = $manager->getRepository(Alias::class);
+        $this->domainRepository = $manager->getRepository(Domain::class);
+        $this->reservedNameRepository = $manager->getRepository(ReservedName::class);
+        $this->userRepository = $manager->getRepository(User::class);
     }
 
     /**

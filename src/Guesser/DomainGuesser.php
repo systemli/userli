@@ -8,17 +8,14 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class DomainGuesser
 {
-    /**
-     * @var DomainRepository
-     */
-    private $repository;
+    private DomainRepository $repository;
 
     /**
      * Constructor.
      */
     public function __construct(EntityManagerInterface $manager)
     {
-        $this->repository = $manager->getRepository('App:Domain');
+        $this->repository = $manager->getRepository(Domain::class);
     }
 
     public function guess(string $email): ?Domain

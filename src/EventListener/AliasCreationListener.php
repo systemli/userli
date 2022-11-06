@@ -9,18 +9,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class AliasCreationListener implements EventSubscriberInterface
 {
-    /**
-     * @var RequestStack
-     */
-    private $request;
-    /**
-     * @var AliasCreatedMessageSender
-     */
-    private $sender;
-    /**
-     * @var bool
-     */
-    private $sendMail;
+    private RequestStack $request;
+    private AliasCreatedMessageSender $sender;
+    private bool $sendMail;
 
     /**
      * AliasCreationListener constructor.
@@ -38,7 +29,7 @@ class AliasCreationListener implements EventSubscriberInterface
     /**
      * @throws \Exception
      */
-    public function onAliasCreated(AliasCreatedEvent $event)
+    public function onAliasCreated(AliasCreatedEvent $event): void
     {
         if (!$this->sendMail) {
             return;
@@ -58,7 +49,7 @@ class AliasCreationListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             AliasCreatedEvent::NAME => 'onAliasCreated',

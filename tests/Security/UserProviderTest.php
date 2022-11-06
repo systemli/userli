@@ -11,7 +11,7 @@ use App\Security\UserProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserProviderTest extends TestCase
@@ -32,24 +32,24 @@ class UserProviderTest extends TestCase
         $domainRepository = $this->getMockBuilder(DomainRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $domainRepository->method('getDefaultDomain')
+        $domainRepository->METHOD('getDefaultDomain')
             ->willReturn($domain);
 
         $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('getRepository')->willReturnMap([
-            ['App:Domain', $domainRepository],
-            ['App:User', $userRepository],
+            [Domain::class, $domainRepository],
+            [User::class, $userRepository],
         ]);
 
         $provider = new UserProvider($manager);
 
-        self::assertInstanceOf(User::class, $provider->loadUserByUsername('admin'));
-        self::assertInstanceOf(User::class, $provider->loadUserByUsername('admin@example.org'));
+        self::assertInstanceOf(User::class, $provider->loadUserByIdentifier('admin'));
+        self::assertInstanceOf(User::class, $provider->loadUserByIdentifier('admin@example.org'));
     }
 
     public function testLoadByUsernameException(): void
     {
-        $this->expectException(UsernameNotFoundException::class);
+        $this->expectException(UserNotFoundException::class);
         $repository = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -107,8 +107,8 @@ class UserProviderTest extends TestCase
 
         $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('getRepository')->willReturnMap([
-            ['App:Domain', $domainRepository],
-            ['App:User', $userRepository],
+            [Domain::class, $domainRepository],
+            [User::class, $userRepository],
         ]);
 
         $provider = new UserProvider($manager);
@@ -125,7 +125,7 @@ class UserProviderTest extends TestCase
 
         return [
             [$this->getMockBuilder(UserInterface::class)->getMock(), UnsupportedUserException::class],
-            [$user, UsernameNotFoundException::class],
+            [$user, UserNotFoundException::class],
         ];
     }
 

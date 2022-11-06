@@ -7,10 +7,7 @@ use Symfony\Component\Security\Core\Security;
 
 abstract class Admin extends AbstractAdmin
 {
-    /**
-     * @var Security
-     */
-    protected $security;
+    protected Security $security;
 
     /**
      * Admin constructor.

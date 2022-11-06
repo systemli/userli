@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\Alias;
 use App\Repository\AliasRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -19,7 +20,7 @@ class MuninAliasCommand extends Command
     public function __construct(EntityManagerInterface $manager)
     {
         parent::__construct();
-        $this->repository = $manager->getRepository('App:Alias');
+        $this->repository = $manager->getRepository(Alias::class);
     }
 
     /**

@@ -12,10 +12,7 @@ use Ramsey\Uuid\Uuid;
  */
 class RecoveryTokenHandler
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
+    private EntityManagerInterface $manager;
 
     /**
      * RecoveryTokenHandler constructor.

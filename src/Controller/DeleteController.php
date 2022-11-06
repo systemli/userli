@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Alias;
 use App\Form\AliasDeleteType;
 use App\Form\Model\Delete;
 use App\Form\OpenPgpDeleteType;
@@ -18,14 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DeleteController extends AbstractController
 {
-    /**
-     * @var DeleteHandler
-     */
-    private $deleteHandler;
-    /**
-     * @var WkdHandler
-     */
-    private $wkdHandler;
+    private DeleteHandler $deleteHandler;
+    private WkdHandler $wkdHandler;
 
     /**
      * DeleteController constructor.
@@ -44,7 +39,7 @@ class DeleteController extends AbstractController
     public function deleteAliasAction(Request $request, $aliasId)
     {
         $user = $this->getUser();
-        $aliasRepository = $this->get('doctrine')->getRepository('App:Alias');
+        $aliasRepository = $this->get('doctrine')->getRepository(Alias::class);
         $alias = $aliasRepository->find($aliasId);
 
         // Don't allow users to delete custom or foreign aliases

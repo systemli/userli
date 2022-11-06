@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Helper\PasswordUpdater;
@@ -15,7 +16,7 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
 {
     private const PASSWORD = 'password';
 
-    private $users = [
+    private array $users = [
         ['email' => 'admin@example.org', 'roles' => [Roles::ADMIN]],
         ['email' => 'user@example.org', 'roles' => [Roles::USER]],
         ['email' => 'support@example.org', 'roles' => [Roles::MULTIPLIER]],
@@ -23,10 +24,7 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
         ['email' => 'domain@example.com', 'roles' => [Roles::DOMAIN_ADMIN]],
     ];
 
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
 
     /**
      * {@inheritdoc}
@@ -80,7 +78,7 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
 
     private function loadStaticUsers(ObjectManager $manager): void
     {
-        $domainRepository = $manager->getRepository('App:Domain');
+        $domainRepository = $manager->getRepository(Domain::class);
 
         foreach ($this->users as $user) {
             $email = $user['email'];
@@ -100,7 +98,7 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
      */
     private function loadRandomUsers(ObjectManager $manager): void
     {
-        $domainRepository = $manager->getRepository('App:Domain');
+        $domainRepository = $manager->getRepository(Domain::classn);
 
         for ($i = 0; $i < 500; ++$i) {
             $email = sprintf('%s@example.org', uniqid('', true));

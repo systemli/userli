@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use App\Entity\User;
 use App\Event\Events;
 use App\Event\UserEvent;
 use App\Sender\WelcomeMessageSender;
@@ -10,18 +11,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class RegistrationListener implements EventSubscriberInterface
 {
-    /**
-     * @var RequestStack
-     */
-    private $request;
-    /**
-     * @var WelcomeMessageSender
-     */
-    private $sender;
-    /**
-     * @var bool
-     */
-    private $sendMail;
+    private RequestStack $request;
+    private WelcomeMessageSender $sender;
+    private bool $sendMail;
 
     /**
      * Constructor.
@@ -52,6 +44,7 @@ class RegistrationListener implements EventSubscriberInterface
             return;
         }
 
+        /** @var User $user */
         $user = $event->getUser();
         $locale = $this->request->getCurrentRequest()->getLocale();
 

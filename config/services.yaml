@@ -2,7 +2,7 @@
 # Files in the packages/ subdirectory configure your dependencies.
 
 # Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     locale: 'en'
     locales: en|de|es|fr|it|pt|nb|gsw
@@ -27,7 +27,6 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-            - '../src/Tests/'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -101,10 +100,6 @@ services:
         tags:
             - { name: form.type, alias: registration }
 
-    App\Handler\LogoutSuccessHandler:
-        arguments:
-            $targetUrl: '/'
-
     App\Handler\MailHandler:
         arguments:
             $from: "%env(SENDER_ADDRESS)%"
@@ -126,7 +121,7 @@ services:
 
     App\Handler\UserAuthenticationHandler:
         arguments:
-            $encoderFactory: '@security.encoder_factory'
+            $passwordHasherFactory: '@security.password_hasher_factory'
 
     App\Handler\WkdHandler:
         arguments:
@@ -201,6 +196,9 @@ services:
             - ~
             - App\Entity\Domain
             - ~
+        calls:
+            - [setDomainCreator, ['@App\Creator\DomainCreator']]
+            - [setEventDispatcher, ['@Symfony\Contracts\EventDispatcher\EventDispatcherInterface']]
 
     userli.admin.alias:
         class: App\Admin\AliasAdmin

@@ -6,10 +6,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class OptionalDomainEmailTransformer implements DataTransformerInterface
 {
-    /**
-     * @var string
-     */
-    private $domain;
+    private string $domain;
 
     /**
      * Constructor.
@@ -23,6 +20,7 @@ class OptionalDomainEmailTransformer implements DataTransformerInterface
 
     /**
      * {@inheritdoc}
+     * @return false|string
      */
     public function transform($value)
     {
@@ -40,6 +38,7 @@ class OptionalDomainEmailTransformer implements DataTransformerInterface
 
     /**
      * {@inheritdoc}
+     * @return mixed
      */
     public function reverseTransform($value)
     {

@@ -6,14 +6,14 @@ use App\Entity\User;
 use App\Handler\UserAuthenticationHandler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactory;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
 class UserAuthenticationHandlerTest extends TestCase
 {
-    private $password = 'password';
-    private $wrong = 'wrong';
-    private $user;
+    private string $password = 'password';
+    private string $wrong = 'wrong';
+    private User $user;
 
     public function setUp(): void
     {
@@ -23,11 +23,11 @@ class UserAuthenticationHandlerTest extends TestCase
 
     protected function createHandler(): UserAuthenticationHandler
     {
-        $encoder = $this->getMockBuilder(PasswordEncoderInterface::class)->getMock();
-        $encoder->method('isPasswordValid')->willReturnMap(
+        $hasher = $this->getMockBuilder(PasswordHasherInterface::class)->getMock();
+        $hasher->method('verify')->willReturnMap(
             [
-                [$this->user->getPassword(), $this->password, $this->user->getSalt(), true],
-                [$this->user->getPassword(), $this->wrong, $this->user->getSalt(), false],
+                [$this->user->getPassword(), $this->password, true],
+                [$this->user->getPassword(), $this->wrong, false],
             ]
         );
 
@@ -35,13 +35,13 @@ class UserAuthenticationHandlerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $encoderFactory = $this->getMockBuilder(EncoderFactory::class)
+        $passwordHasherFactory = $this->getMockBuilder(PasswordHasherFactoryInterface::class)
             ->disableOriginalConstructor()->getMock();
-        $encoderFactory->method('getEncoder')
+        $passwordHasherFactory->method('getPasswordHasher')
             ->with(self::equalTo($this->user))
-            ->willReturn($encoder);
+            ->willReturn($hasher);
 
-        return new UserAuthenticationHandler($encoderFactory, $eventDispatcher);
+        return new UserAuthenticationHandler($passwordHasherFactory, $eventDispatcher);
     }
 
     public function testAuthenticate(): void

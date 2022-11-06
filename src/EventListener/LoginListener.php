@@ -12,14 +12,8 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 class LoginListener implements EventSubscriberInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-    /**
-     * @var PasswordUpdater
-     */
-    private $passwordUpdater;
+    private EntityManagerInterface $manager;
+    private PasswordUpdater $passwordUpdater;
 
     /**
      * LoginListener constructor.
@@ -33,6 +27,7 @@ class LoginListener implements EventSubscriberInterface
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $request = $event->getRequest();
+        /** @var User $user */
         $user = $event->getAuthenticationToken()->getUser();
         $user->setPlainPassword($request->get('_password'));
         $this->handleLogin($user);
@@ -65,7 +60,9 @@ class LoginListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents(): array
     {
-        return [SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
-            LoginEvent::NAME => 'onLogin', ];
+        return [
+            SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
+            LoginEvent::class => 'onLogin',
+        ];
     }
 }

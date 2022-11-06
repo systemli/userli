@@ -9,10 +9,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ReservedNameAdmin extends Admin
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected $baseRoutePattern = 'reservedname';
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string {
+        return 'reservedname';
+    }
 
     /**
      * {@inheritdoc}
@@ -38,8 +37,16 @@ class ReservedNameAdmin extends Admin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->addIdentifier('id')
-            ->addIdentifier('name')
+            ->addIdentifier('id', null, [
+                'route' => [
+                    'name' => 'edit',
+                ],
+            ])
+            ->addIdentifier('name', null, [
+                'route' => [
+                    'name' => 'edit',
+                ],
+            ])
             ->add('creationTime')
             ->add('updatedTime');
     }

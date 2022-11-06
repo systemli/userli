@@ -16,18 +16,9 @@ use PHPUnit\Framework\TestCase;
  */
 class DomainFilterTest extends TestCase
 {
-    /**
-     * @var MockObject
-     */
-    private $filter;
-    /**
-     * @var MockObject
-     */
-    private $manager;
-    /**
-     * @var MockObject
-     */
-    private $targetEntity;
+    private DomainFilter $filter;
+    private EntityManager $manager;
+    private ClassMetadata $targetEntity;
 
     public function setUp(): void
     {

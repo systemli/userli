@@ -12,14 +12,8 @@ use App\Handler\MailHandler;
  */
 class AliasCreatedMessageSender
 {
-    /**
-     * @var MailHandler
-     */
-    private $handler;
-    /**
-     * @var AliasCreatedMessageBuilder
-     */
-    private $builder;
+    private MailHandler $handler;
+    private AliasCreatedMessageBuilder $builder;
 
     /**
      * AliasCreatedMessageSender constructor.

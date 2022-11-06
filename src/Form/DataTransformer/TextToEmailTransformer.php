@@ -6,10 +6,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class TextToEmailTransformer implements DataTransformerInterface
 {
-    /**
-     * @var string
-     */
-    private $domain;
+    private string $domain;
 
     /**
      * Constructor.
@@ -21,6 +18,7 @@ class TextToEmailTransformer implements DataTransformerInterface
 
     /**
      * {@inheritdoc}
+     * @return false|string
      */
     public function transform($value)
     {
@@ -34,7 +32,7 @@ class TextToEmailTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): string
     {
         if (null === $value || '' === $value) {
             return '';

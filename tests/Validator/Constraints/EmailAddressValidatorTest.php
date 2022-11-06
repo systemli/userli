@@ -54,10 +54,10 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
         ]);
         $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('getRepository')->willReturnMap([
-            ['App:Alias', $aliasRepository],
-            ['App:Domain', $domainRepository],
-            ['App:ReservedName', $reservedNameRepository],
-            ['App:User', $userRepository],
+            [Alias::class, $aliasRepository],
+            [Domain::class, $domainRepository],
+            [ReservedName::class, $reservedNameRepository],
+            [User::class, $userRepository],
         ]);
 
         return new EmailAddressValidator($manager, $this->domain);

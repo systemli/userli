@@ -103,7 +103,7 @@ class VoucherUnlinkCommand extends Command
                     // check if user was suspicious and has redeemed codes
                     $parent = $voucher->getUser();
                     if ($parent instanceof User && $parent->hasRole(Roles::SUSPICIOUS)) {
-                        $suspiciousChildren[$user->getUsername()] = $parent->getUsername();
+                        $suspiciousChildren[$user->getUserIdentifier()] = $parent->getUserIdentifier();
                     }
                 }
             }

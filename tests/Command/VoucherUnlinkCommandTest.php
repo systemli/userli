@@ -107,7 +107,7 @@ class VoucherUnlinkCommandTest extends TestCase
         $user = $this->getMockBuilder(User::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $user->expects($this->once())->method('getUsername')->willReturn('child@example.org');
+        $user->expects($this->once())->method('getUserIdentifier')->willReturn('child@example.org');
         $user->expects($this->atLeastOnce())->method('setInvitationVoucher');
         $voucher->setInvitedUser($user);
         $this->assertEquals([], $this->command->getSuspiciousChildren([$voucher]));

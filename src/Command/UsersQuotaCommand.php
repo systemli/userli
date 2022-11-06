@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -11,14 +12,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UsersQuotaCommand extends Command
 {
-    /**
-     * @var UserRepository
-     */
-    private $repository;
+    private UserRepository $repository;
 
     public function __construct(EntityManagerInterface $manager)
     {
-        $this->repository = $manager->getRepository('App:User');
+        $this->repository = $manager->getRepository(User::class);
         parent::__construct();
     }
 
@@ -39,7 +37,7 @@ class UsersQuotaCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // parse arguments
         $email = $input->getArgument('email');
@@ -59,5 +57,7 @@ class UsersQuotaCommand extends Command
         }
 
         $output->writeln(sprintf('%u', $quota));
+
+        return 0;
     }
 }

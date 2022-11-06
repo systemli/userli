@@ -11,14 +11,8 @@ use App\Handler\MailHandler;
  */
 class RecoveryProcessMessageSender
 {
-    /**
-     * @var MailHandler
-     */
-    private $handler;
-    /**
-     * @var RecoveryProcessMessageBuilder
-     */
-    private $builder;
+    private MailHandler $handler;
+    private RecoveryProcessMessageBuilder $builder;
 
     /**
      * RecoveryProcessMessageSender constructor.

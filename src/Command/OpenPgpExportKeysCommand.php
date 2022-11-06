@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Entity\Domain;
+use App\Entity\OpenPgpKey;
 use App\Handler\WkdHandler;
 use App\Repository\DomainRepository;
 use App\Repository\OpenPgpKeyRepository;
@@ -19,8 +21,8 @@ class OpenPgpExportKeysCommand extends Command
     public function __construct(EntityManagerInterface $manager, WkdHandler $handler)
     {
         $this->handler = $handler;
-        $this->domainRepository = $manager->getRepository('App:Domain');
-        $this->openPgpKeyRepository = $manager->getRepository('App:OpenPgpKey');
+        $this->domainRepository = $manager->getRepository(Domain::class);
+        $this->openPgpKeyRepository = $manager->getRepository(OpenPgpKey::class);
         parent::__construct();
     }
 

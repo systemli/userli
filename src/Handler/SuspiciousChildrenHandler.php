@@ -7,27 +7,14 @@ namespace App\Handler;
  */
 class SuspiciousChildrenHandler
 {
-    /**
-     * @var MailHandler
-     */
-    private $handler;
-
-    /**
-     * @var \Twig_Environment
-     */
-    private $twig;
-
-    /**
-     * @var string
-     */
-    private $to;
+    private MailHandler $handler;
+    private \Twig_Environment $twig;
+    private string $to;
 
     /**
      * SuspiciousChildrenHandler constructor.
-     *
-     * @param string $to
      */
-    public function __construct(MailHandler $handler, \Twig_Environment $twig, $to)
+    public function __construct(MailHandler $handler, \Twig_Environment $twig, string $to)
     {
         $this->handler = $handler;
         $this->twig = $twig;

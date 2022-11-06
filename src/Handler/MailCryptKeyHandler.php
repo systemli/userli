@@ -18,10 +18,7 @@ class MailCryptKeyHandler
     private const MAIL_CRYPT_PRIVATE_KEY_TYPE = OPENSSL_KEYTYPE_EC;
     private const MAIL_CRYPT_CURVE_NAME = 'secp521r1';
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
+    private EntityManagerInterface $manager;
 
     /**
      * MailCryptPrivateKeyHandler constructor.

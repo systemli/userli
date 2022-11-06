@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Creator\DomainCreator;
+use App\Entity\Domain;
+use App\Entity\User;
 use App\Exception\ValidationException;
 use App\Form\DomainCreateType;
 use App\Form\Model\DomainCreate;
@@ -19,18 +21,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class InitController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-    /**
-     * @var AdminPasswordUpdater
-     */
-    private $updater;
-    /**
-     * @var DomainCreator
-     */
-    private $creator;
+    private EntityManagerInterface $manager;
+    private AdminPasswordUpdater $updater;
+    private DomainCreator $creator;
 
     public function __construct(EntityManagerInterface $manager, AdminPasswordUpdater $updater, DomainCreator $creator)
     {
@@ -45,7 +38,7 @@ class InitController extends AbstractController
     public function indexAction(Request $request): Response
     {
         // redirect if already configured
-        if (0 < $this->manager->getRepository('App:Domain')->count([])) {
+        if (0 < $this->manager->getRepository(Domain::class)->count([])) {
             return $this->redirectToRoute('init_user');
         }
 
@@ -75,7 +68,7 @@ class InitController extends AbstractController
     public function userAction(Request $request): Response
     {
         // redirect if already configured
-        if (0 < $this->manager->getRepository('App:User')->count([])) {
+        if (0 < $this->manager->getRepository(User::class)->count([])) {
             return $this->redirectToRoute('index');
         }
 

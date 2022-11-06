@@ -12,19 +12,15 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class VoucherAdmin extends Admin
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected $baseRoutePattern = 'voucher';
-
-    /**
-     * {@inheritdoc}
-     */
-    protected $datagridValues = [
+    protected array $datagridValues = [
         '_page' => 1,
         '_sort_order' => 'DESC',
         '_sort_by' => 'creationTime',
     ];
+
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string {
+        return 'voucher';
+    }
 
     /**
      * {@inheritdoc}
@@ -56,7 +52,11 @@ class VoucherAdmin extends Admin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->addIdentifier('id')
+            ->addIdentifier('id', null, [
+                'route' => [
+                    'name' => 'edit',
+                ],
+            ])
             ->add('code')
             ->add('user')
             ->add('creationTime')

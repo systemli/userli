@@ -2,24 +2,19 @@
 
 namespace App\Command;
 
+use App\Entity\User;
 use App\Sender\WelcomeMessageSender;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class UsersRegistrationMailCommand extends Command
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-    /**
-     * @var WelcomeMessageSender
-     */
-    private $welcomeMessageSender;
+    private EntityManagerInterface $manager;
+    private WelcomeMessageSender $welcomeMessageSender;
 
     public function __construct(EntityManagerInterface $manager, WelcomeMessageSender $welcomeMessageSender, ?string $name = null)
     {
@@ -50,8 +45,8 @@ class UsersRegistrationMailCommand extends Command
         $email = $input->getOption('user');
         $locale = $input->getOption('locale');
 
-        if (empty($email) || null === $user = $this->manager->getRepository('App:User')->findByEmail($email)) {
-            throw new UsernameNotFoundException(sprintf('User with email %s not found!', $email));
+        if (empty($email) || null === $user = $this->manager->getRepository(User::class)->findByEmail($email)) {
+            throw new UserNotFoundException(sprintf('User with email %s not found!', $email));
         }
 
         $this->welcomeMessageSender->send($user, $locale);

@@ -26,7 +26,7 @@ trait TwofactorTrait
      */
     public function getTotpAuthenticationUsername(): string
     {
-        return $this->getUsername();
+        return $this->getUserIdentifier();
     }
 
     /**

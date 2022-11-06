@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\User;
 use App\Enum\Roles;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
@@ -18,45 +19,14 @@ use Symfony\Component\Process\Process;
 
 class UsersCheckPasswordCommand extends Command
 {
-    /**
-     * @var FileDescriptorReader
-     */
-    private $reader;
-
-    /**
-     * @var UserAuthenticationHandler
-     */
-    private $handler;
-
-    /**
-     * @var UserRepository
-     */
-    private $repository;
-
-    /**
-     * @var MailCryptKeyHandler
-     */
-    private $mailCryptKeyHandler;
-
-    /**
-     * @var int
-     */
-    private $mailCrypt;
-
-    /**
-     * @var int
-     */
-    private $mailUid;
-
-    /**
-     * @var int
-     */
-    private $mailGid;
-
-    /**
-     * @var string
-     */
-    private $mailLocation;
+    private FileDescriptorReader $reader;
+    private UserAuthenticationHandler $handler;
+    private UserRepository $repository;
+    private MailCryptKeyHandler $mailCryptKeyHandler;
+    private int $mailCrypt;
+    private int $mailUid;
+    private int $mailGid;
+    private string $mailLocation;
 
     /**
      * UsersCheckPasswordCommand constructor.
@@ -72,7 +42,7 @@ class UsersCheckPasswordCommand extends Command
     {
         $this->reader = $reader;
         $this->handler = $handler;
-        $this->repository = $manager->getRepository('App:User');
+        $this->repository = $manager->getRepository(User::class);
         $this->mailCryptKeyHandler = $mailCryptKeyHandler;
         $this->mailCrypt = $mailCrypt;
         $this->mailLocation = $mailLocation;

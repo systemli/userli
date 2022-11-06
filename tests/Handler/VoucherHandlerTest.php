@@ -15,7 +15,14 @@ class VoucherHandlerTest extends TestCase
 {
     public function testSuspiciousUser(): void
     {
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)->disableOriginalConstructor()->getMock();
+        $voucherRepository = $this->getMockBuilder(VoucherRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $manager->method('getRepository')
+            ->willReturn($voucherRepository);
         $creator = $this->getMockBuilder(VoucherCreator::class)->disableOriginalConstructor()->getMock();
 
         $handler = new VoucherHandler($manager, $creator);

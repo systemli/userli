@@ -4,11 +4,13 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Common\Collections\Criteria;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class UserRepository.
  */
-class UserRepository extends AbstractRepository
+class UserRepository extends AbstractRepository implements PasswordUpgraderInterface
 {
     /**
      * @param $email
@@ -98,5 +100,11 @@ class UserRepository extends AbstractRepository
             ->andWhere(Criteria::expr()->eq('totpConfirmed', 1))
             ->andWhere(Criteria::expr()->neq('totpSecret', null))
         )->count();
+    }
+
+    public function upgradePassword(UserInterface $user, string $newHashedPassword): void
+    {
+        $user->setPassword($newHashedPassword);
+        $this->getEntityManager()->flush();
     }
 }

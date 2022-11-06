@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\Voucher;
 use App\Repository\VoucherRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -19,7 +20,7 @@ class MuninVoucherCommand extends Command
     public function __construct(EntityManagerInterface $manager)
     {
         parent::__construct();
-        $this->repository = $manager->getRepository('App:Voucher');
+        $this->repository = $manager->getRepository(Voucher::class);
     }
 
     /**

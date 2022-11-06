@@ -2,25 +2,16 @@
 
 namespace App\Builder;
 
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class AliasCreatedMessageBuilder.
  */
 class AliasCreatedMessageBuilder
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-    /**
-     * @var string
-     */
-    private $appUrl;
-    /**
-     * @var string
-     */
-    private $projectName;
+    private TranslatorInterface $translator;
+    private string $appUrl;
+    private string $projectName;
 
     /**
      * AliasCreatedMessageBuilder constructor.

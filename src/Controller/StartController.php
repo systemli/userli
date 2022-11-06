@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Creator\VoucherCreator;
 use App\Entity\Alias;
+use App\Entity\Domain;
 use App\Entity\OpenPgpKey;
 use App\Entity\User;
 use App\Enum\Roles;
@@ -36,34 +37,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class StartController extends AbstractController
 {
-    /**
-     * @var AliasHandler
-     */
-    private $aliasHandler;
-    /**
-     * @var PasswordUpdater
-     */
-    private $passwordUpdater;
-    /**
-     * @var VoucherHandler
-     */
-    private $voucherHandler;
-    /**
-     * @var VoucherCreator
-     */
-    private $voucherCreator;
-    /**
-     * @var MailCryptKeyHandler
-     */
-    private $mailCryptKeyHandler;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-    /**
-     * @var WkdHandler
-     */
-    private $wkdHandler;
+    private AliasHandler $aliasHandler;
+    private PasswordUpdater $passwordUpdater;
+    private VoucherHandler $voucherHandler;
+    private VoucherCreator $voucherCreator;
+    private MailCryptKeyHandler $mailCryptKeyHandler;
+    private EntityManagerInterface $manager;
+    private WkdHandler $wkdHandler;
 
     /**
      * StartController constructor.
@@ -89,7 +69,7 @@ class StartController extends AbstractController
     {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             // forward to installer if no domains exist
-            if (0 === $this->manager->getRepository('App:Domain')->count([])) {
+            if (0 === $this->manager->getRepository(Domain::class)->count([])) {
                 return $this->redirectToRoute('init');
             }
 
@@ -184,7 +164,7 @@ class StartController extends AbstractController
             }
         }
 
-        $aliasRepository = $this->getDoctrine()->getRepository('App:Alias');
+        $aliasRepository = $this->getDoctrine()->getRepository(Alias::class);
         $aliasesRandom = $aliasRepository->findByUser($user, true);
         $aliasesCustom = $aliasRepository->findByUser($user, false);
 
