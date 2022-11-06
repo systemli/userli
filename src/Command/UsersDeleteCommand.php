@@ -9,7 +9,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class UsersDeleteCommand extends Command
 {
@@ -43,7 +43,7 @@ class UsersDeleteCommand extends Command
         $email = $input->getOption('user');
 
         if (empty($email) || null === $user = $this->manager->getRepository(User::class)->findByEmail($email)) {
-            throw new UsernameNotFoundException(sprintf('User with email %s not found!', $email));
+            throw new UserNotFoundException(sprintf('User with email %s not found!', $email));
         }
 
         if ($input->getOption('dry-run')) {

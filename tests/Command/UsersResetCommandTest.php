@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class UsersResetCommandTest extends TestCase
 {
@@ -117,7 +117,7 @@ class UsersResetCommandTest extends TestCase
 
     public function testExecuteWithoutUser(): void
     {
-        $this->expectException(UsernameNotFoundException::class);
+        $this->expectException(UserNotFoundException::class);
 
         $application = new Application();
         $application->add($this->command);

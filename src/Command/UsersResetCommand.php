@@ -16,7 +16,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class UsersResetCommand extends Command
 {
@@ -65,7 +65,7 @@ class UsersResetCommand extends Command
         $email = $input->getOption('user');
 
         if (empty($email) || null === $user = $this->manager->getRepository(User::class)->findByEmail($email)) {
-            throw new UsernameNotFoundException(sprintf('User with email %s not found!', $email));
+            throw new UserNotFoundException(sprintf('User with email %s not found!', $email));
         }
 
         $questionHelper = $this->getHelper('question');

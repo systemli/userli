@@ -11,7 +11,7 @@ use App\Security\UserProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserProviderTest extends TestCase
@@ -49,7 +49,7 @@ class UserProviderTest extends TestCase
 
     public function testLoadByUsernameException(): void
     {
-        $this->expectException(UsernameNotFoundException::class);
+        $this->expectException(UserNotFoundException::class);
         $repository = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -125,7 +125,7 @@ class UserProviderTest extends TestCase
 
         return [
             [$this->getMockBuilder(UserInterface::class)->getMock(), UnsupportedUserException::class],
-            [$user, UsernameNotFoundException::class],
+            [$user, UserNotFoundException::class],
         ];
     }
 

@@ -19,7 +19,7 @@ use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 /**
  * This context class contains the definitions of the steps used by the demo
@@ -333,7 +333,7 @@ class FeatureContext extends MinkContext
         $user = $this->getUserRepository()->findByEmail($email);
 
         if (!$user) {
-            throw new UsernameNotFoundException();
+            throw new UserNotFoundException();
         }
 
         $value = PropertyAccess::createPropertyAccessor()->getValue($user, $key);

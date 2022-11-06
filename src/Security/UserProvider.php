@@ -6,7 +6,7 @@ use App\Entity\Domain;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -38,7 +38,7 @@ class UserProvider implements UserProviderInterface
         $user = $this->manager->getRepository(User::class)->findByEmail($username);
 
         if (!$user) {
-            throw new UsernameNotFoundException(sprintf('No user with name "%s" was found.', $username));
+            throw new UserNotFoundException(sprintf('No user with name "%s" was found.', $username));
         }
 
         return $user;
@@ -54,7 +54,7 @@ class UserProvider implements UserProviderInterface
         }
 
         if (null === $reloadedUser = $this->manager->getRepository(User::class)->findOneBy(['id' => $user->getId()])) {
-            throw new UsernameNotFoundException(sprintf('User with ID "%d" could not be reloaded.', $user->getId()));
+            throw new UserNotFoundException(sprintf('User with ID "%d" could not be reloaded.', $user->getId()));
         }
 
         return $reloadedUser;
