@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\User;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class UserRepository.
@@ -102,7 +101,7 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
         )->count();
     }
 
-    public function upgradePassword(UserInterface $user, string $newHashedPassword): void
+    public function upgradePassword(User $user, string $newHashedPassword): void
     {
         $user->setPassword($newHashedPassword);
         $this->getEntityManager()->flush();
