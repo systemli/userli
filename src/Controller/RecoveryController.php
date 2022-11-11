@@ -211,9 +211,7 @@ class RecoveryController extends AbstractController
                     throw new \Exception('recoveryToken should not be null');
                 }
 
-                // Erase sensitive plaintext data from User object
-                $user->erasePlainMailCryptPrivateKey();
-                $user->erasePlainRecoveryToken();
+                // Clear sensitive plaintext data from User object
                 $user->eraseCredentials();
 
                 $recoveryTokenAck = new RecoveryTokenAck();
@@ -365,8 +363,7 @@ class RecoveryController extends AbstractController
             throw new \Exception('PlainRecoveryToken should not be null');
         }
 
-        $user->erasePlainRecoveryToken();
-        $user->erasePlainMailCryptPrivateKey();
+        // Clear sensitive plaintext data from User object
         $user->eraseCredentials();
         sodium_memzero($mailCryptPrivateKey);
 

@@ -71,7 +71,6 @@ class RegistrationHandler
 
         // Erase sensitive plaintext data from User object
         $user->eraseCredentials();
-        $user->erasePlainMailCryptPrivateKey();
 
         $this->manager->persist($user);
         $this->manager->flush();
