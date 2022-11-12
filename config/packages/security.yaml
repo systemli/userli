@@ -1,14 +1,18 @@
 security:
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
-    providers:
-        user:
-            id: App\Security\UserProvider
+    enable_authenticator_manager: true
 
+    # https://symfony.com/doc/current/security.html#c-hashing-passwords
     password_hashers:
         App\Entity\User:
             algorithm: sodium
         legacy:
             id: 'App\Security\Encoder\LegacyPasswordHasher'
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        # Custom UserProvider to allow login via email and localpart (without domain)
+        user:
+            id: App\Security\UserProvider
 
     role_hierarchy:
         # User
@@ -99,12 +103,10 @@ security:
         dev:
             pattern: ^/(_(profiler|error|wdt)|css|images|js)/
             security: false
-
         default:
-            pattern:   ^/
-            anonymous: ~
+            pattern: ^/
             form_login:
-                csrf_token_generator: security.csrf.token_manager
+                enable_csrf: true
                 require_previous_session: false
             logout:
                 invalidate_session: false

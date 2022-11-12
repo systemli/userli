@@ -125,10 +125,8 @@ class UsersResetCommand extends Command
         $user->setTotpSecret(null);
         $user->clearBackupCodes();
 
-        // Clear plain password and flush changes to database
+        // Clear sensitive plaintext data from User object
         $user->eraseCredentials();
-        $user->erasePlainMailCryptPrivateKey();
-        $user->erasePlainRecoveryToken();
 
         $this->manager->flush();
 

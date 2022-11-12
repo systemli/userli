@@ -4,10 +4,7 @@ namespace App\Traits;
 
 trait IdTrait
 {
-    /**
-     * @var int
-     */
-    private $id;
+    private ?int $id = null;
 
     public function getId(): ?int
     {
