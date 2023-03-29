@@ -98,7 +98,7 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
      */
     private function loadRandomUsers(ObjectManager $manager): void
     {
-        $domainRepository = $manager->getRepository(Domain::classn);
+        $domainRepository = $manager->getRepository(Domain::class);
 
         for ($i = 0; $i < 500; ++$i) {
             $email = sprintf('%s@example.org', uniqid('', true));

@@ -12,6 +12,8 @@ use Doctrine\Common\Collections\Criteria;
 class VoucherRepository extends AbstractRepository
 {
     /**
+     * Finds a voucher by its code.
+     * 
      * @param $code
      *
      * @return Voucher|object|null
@@ -21,12 +23,29 @@ class VoucherRepository extends AbstractRepository
         return $this->findOneBy(['code' => $code]);
     }
 
+    /**
+     * Returns the number of redeemed vouchers.
+     * 
+     * @return int
+     */
     public function countRedeemedVouchers(): int
     {
         return $this->matching(Criteria::create()->where(Criteria::expr()->neq('redeemedTime', null)))->count();
     }
 
     /**
+     * Returns the number of unredeemed vouchers.
+     * 
+     * @return int
+     */
+    public function countUnredeemedVouchers(): int
+    {
+        return $this->matching(Criteria::create()->where(Criteria::expr()->eq('redeemedTime', null)))->count();
+    }
+
+    /**
+     * Finds all vouchers for a given user.
+     * 
      * @return array|Voucher[]
      */
     public function findByUser(User $user): array
@@ -35,6 +54,8 @@ class VoucherRepository extends AbstractRepository
     }
 
     /**
+     * Get all redeemed vouchers that are older than 3 months.
+     * 
      * @return Voucher[]|array
      */
     public function getOldVouchers(): array
