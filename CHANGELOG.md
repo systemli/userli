@@ -1,3 +1,7 @@
+# 3.2.0 (UNRELEASED)
+
+* Add Command to export metrics to Prometheus
+
 # 3.1.0 (2022.10.26)
 
 * Add Two-factor authentication support
