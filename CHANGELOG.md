@@ -1,4 +1,4 @@
-# 3.2.0 (UNRELEASED)
+# 3.2.0 (2023.03.30)
 
 * Add Command to export metrics to Prometheus
 
