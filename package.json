@@ -5,7 +5,7 @@
     "@symfony/webpack-encore": "^4.2.0",
     "copy-webpack-plugin": "^11.0.0",
     "jquery": "^3.6.4",
-    "webpack": "^5.76.2",
+    "webpack": "^5.76.3",
     "webpack-cli": "^5.0.1"
   }
 }
