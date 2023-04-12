@@ -8,7 +8,6 @@ use App\Helper\AdminPasswordUpdater;
 use App\Helper\PasswordUpdater;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
-use App\Security\Encoder\LegacyPasswordHasher;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -33,7 +32,8 @@ class AdminPasswordUpdaterTest extends TestCase
         $adminPasswordUpdater = new AdminPasswordUpdater(
             $this->getManager($admin),
             $this->getUpdater(),
-            $this->defaultDomain);
+            $this->defaultDomain
+        );
 
         $adminPasswordUpdater->updateAdminPassword('newpassword');
 
@@ -58,7 +58,8 @@ class AdminPasswordUpdaterTest extends TestCase
             [
                 [Domain::class, $domainRepo],
                 [User::class, $userRepo],
-            ]);
+            ]
+        );
 
         return $manager;
     }

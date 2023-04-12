@@ -1,4 +1,8 @@
-# 3.2.0 (UNRELEASED)
+# 3.3.0 (UNRELEASED)
+
+* Remove legacy password hash support (drop field `password_version` from `virtual_users` table)
+
+# 3.2.0 (2023.03.30)
 
 * Add Command to export metrics to Prometheus
 

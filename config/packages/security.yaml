@@ -5,8 +5,6 @@ security:
     password_hashers:
         App\Entity\User:
             algorithm: sodium
-        legacy:
-            id: 'App\Security\Encoder\LegacyPasswordHasher'
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
@@ -124,19 +122,31 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-      - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: "^/[a-z]{2}/init", roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: "^/[a-z]{2}/login", roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: "^/[a-z]{2}/logout", roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: "^/[a-z]{2}/recovery", roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: "^/[a-z]{2}/register", roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: "^/[a-z]{2}/$", roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/2fa, roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
-      - { path: "^/[a-z]{2}/2fa", roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
-      - { path: ^/admin, roles: ROLE_DOMAIN_ADMIN }
-      - { path: "^/[a-z]{2}/voucher", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SUSPICIOUS')"}
-      - { path: "^/[a-z]{2}/alias", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')"}
-      - { path: "^/[a-z]{2}/account", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')"}
-      - { path: ^/, roles: ROLE_USER }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: "^/[a-z]{2}/init", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: "^/[a-z]{2}/login", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: "^/[a-z]{2}/logout", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: "^/[a-z]{2}/recovery", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: "^/[a-z]{2}/register", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: "^/[a-z]{2}/$", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/2fa, roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
+        - { path: "^/[a-z]{2}/2fa", roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
+        - { path: ^/admin, roles: ROLE_DOMAIN_ADMIN }
+        - {
+              path: "^/[a-z]{2}/voucher",
+              roles: ROLE_USER,
+              allow_if: "!is_granted('ROLE_SUSPICIOUS')",
+          }
+        - {
+              path: "^/[a-z]{2}/alias",
+              roles: ROLE_USER,
+              allow_if: "!is_granted('ROLE_SPAM')",
+          }
+        - {
+              path: "^/[a-z]{2}/account",
+              roles: ROLE_USER,
+              allow_if: "!is_granted('ROLE_SPAM')",
+          }
+        - { path: ^/, roles: ROLE_USER }
