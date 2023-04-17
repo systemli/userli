@@ -15,7 +15,6 @@ use App\Traits\MailCryptSecretBoxTrait;
 use App\Traits\MailCryptTrait;
 use App\Traits\OpenPgpKeyTrait;
 use App\Traits\PasswordTrait;
-use App\Traits\PasswordVersionTrait;
 use App\Traits\PlainMailCryptPrivateKeyTrait;
 use App\Traits\PlainPasswordTrait;
 use App\Traits\PlainRecoveryTokenTrait;
@@ -46,7 +45,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     use PlainPasswordTrait;
     use DomainAwareTrait;
     use LastLoginTimeTrait;
-    use PasswordVersionTrait;
     use RecoverySecretBoxTrait;
     use PlainRecoveryTokenTrait;
     use RecoveryStartTimeTrait;
@@ -58,8 +56,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     use TwofactorTrait;
     use TwofactorBackupCodeTrait;
 
-    public const CURRENT_PASSWORD_VERSION = 2;
-
     private array $roles = [];
 
     /**
@@ -68,7 +64,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     public function __construct()
     {
         $this->deleted = false;
-        $this->passwordVersion = self::CURRENT_PASSWORD_VERSION;
         $currentDateTime = new \DateTime();
         $this->creationTime = $currentDateTime;
         $this->updatedTime = $currentDateTime;
@@ -113,7 +108,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     /**
      * @return string
      */
-    public function getUserIdentifier(): string {
+    public function getUserIdentifier(): string
+    {
         return $this->email;
     }
 
@@ -122,10 +118,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
      */
     public function getPasswordHasherName(): ?string
     {
-        if ($this->getPasswordVersion() < self::CURRENT_PASSWORD_VERSION) {
-            return 'legacy';
-        }
-
         // use default encoder
         return null;
     }

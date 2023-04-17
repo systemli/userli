@@ -4,7 +4,6 @@ namespace App\Tests\Helper;
 
 use App\Entity\User;
 use App\Helper\PasswordUpdater;
-use App\Security\Encoder\LegacyPasswordHasher;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;

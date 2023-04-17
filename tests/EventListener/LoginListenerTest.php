@@ -7,7 +7,6 @@ use App\Event\LoginEvent;
 use App\EventListener\LoginListener;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -16,89 +15,57 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 class LoginListenerTest extends TestCase
 {
-    private EntityManagerInterface $manager;
-    private PasswordUpdater $passwordUpdater;
     private LoginListener $listener;
 
     public function setUp(): void
     {
-        $this->manager = $this->getMockBuilder(EntityManagerInterface::class)
+        $manager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)
+        $passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->listener = new LoginListener($this->manager, $this->passwordUpdater);
+        $this->listener = new LoginListener($manager, $passwordUpdater);
     }
 
-    /**
-     * @dataProvider provider
-     */
-    public function testOnSecurityInteractiveLogin(User $user, bool $update): void
+    public function testOnSecurityInteractiveLogin(): void
     {
-        $this->manager->expects($this->once())->method('flush');
+        $user = new User();
+        $user->setLastLoginTime(new \DateTime('1970-01-01 00:00:00'));
 
-        if ($update) {
-            $this->passwordUpdater->expects($this->once())->method('updatePassword');
-        } else {
-            $this->passwordUpdater->expects($this->never())->method('updatePassword');
-        }
-
-        $event = $this->getEvent($user);
-
-        $this->listener->onSecurityInteractiveLogin($event);
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|InteractiveLoginEvent
-     */
-    private function getEvent(User $user): InteractiveLoginEvent
-    {
         $request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->getMock();
         $request->method('get')->willReturn('password');
-
-        $token = $this->getMockBuilder(TokenInterface::class)
+        $authenticationToken = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $token->method('getUser')->willReturn($user);
+        $authenticationToken->method('getUser')->willReturn($user);
+        $event = new InteractiveLoginEvent($request, $authenticationToken);
 
-        $event = $this->getMockBuilder(InteractiveLoginEvent::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->listener->onSecurityInteractiveLogin($event);
 
-        $event->method('getRequest')->willReturn($request);
-        $event->method('getAuthenticationToken')->willReturn($token);
+        self::assertNotEquals(new \DateTime('1970-01-01 00:00:00'), $user->getLastLoginTime());
 
-        return $event;
-    }
-
-    public function provider(): array
-    {
-        return [
-            [$this->getUser(null), true],
-            [$this->getUser(0), true],
-            [$this->getUser(1), true],
-            [$this->getUser(2), false],
-            [$this->getUser(3), false],
-        ];
-    }
-
-    public function getUser(?int $passwordVersion): User
-    {
         $user = new User();
-        $user->setPasswordVersion($passwordVersion);
+        $user->setLastLoginTime(new \DateTime('1970-01-01 00:00:00'));
+        $authenticationToken->method('getUser')->willReturn(null);
 
-        return $user;
+        $event = new InteractiveLoginEvent($request, $authenticationToken);
+
+        $this->listener->onSecurityInteractiveLogin($event);
+
+        self::assertEquals(new \DateTime('1970-01-01 00:00:00'), $user->getLastLoginTime());
     }
 
     public function testGetSubscribedEvents(): void
     {
-        $this->assertEquals([
-            SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
-            LoginEvent::class => 'onLogin',
-        ],
-            $this->listener::getSubscribedEvents());
+        $this->assertEquals(
+            [
+                SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
+                LoginEvent::class => 'onLogin',
+            ],
+            $this->listener::getSubscribedEvents()
+        );
     }
 }

@@ -50,8 +50,6 @@ class UserTest extends TestCase
     {
         $user = new User();
         self::assertEquals(null, $user->getPasswordHasherName());
-        $user->setPasswordVersion(1);
-        self::assertEquals('legacy', $user->getPasswordHasherName());
     }
 
     public function testPlainPassword(): void

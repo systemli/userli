@@ -33,8 +33,6 @@ App\Entity\User:
     lastLoginTime:
       type: datetime
       nullable: true
-    passwordVersion:
-      type: integer
     recoverySecretBox:
       type: text
       nullable: true
