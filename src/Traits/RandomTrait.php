@@ -2,12 +2,12 @@
 
 namespace App\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
+
 trait RandomTrait
 {
-    /**
-     * @var bool;
-     */
-    private $random;
+    /** @ORM\Column(options={"default"=false}) */
+    private bool $random = false;
 
     public function isRandom(): bool
     {

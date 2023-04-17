@@ -2,12 +2,12 @@
 
 namespace App\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
+
 trait RecoveryStartTimeTrait
 {
-    /**
-     * @var \DateTime|null
-     */
-    private $recoveryStartTime;
+    /** @ORM\Column(nullable=true) */
+    private ?\DateTime $recoveryStartTime;
 
     public function getRecoveryStartTime(): ?\DateTime
     {

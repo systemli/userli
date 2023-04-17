@@ -2,16 +2,17 @@
 
 namespace App\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
 
 trait TwofactorTrait
 {
-    /** @var string */
-    private $totpSecret;
+    /** @ORM\Column(nullable=true) */
+    private ?string $totpSecret;
 
-    /** @var bool */
-    private $totpConfirmed = false;
+    /** @ORM\Column(options={"default"=false}) */
+    private bool $totpConfirmed = false;
 
     /**
      * {@inheritdoc}
@@ -35,7 +36,7 @@ trait TwofactorTrait
     public function getTotpAuthenticationConfiguration(): ?TotpConfigurationInterface
     {
         // Settings that are compatible with Google Authenticator specification
-        return new TotpConfiguration($this->totpSecret, TotpConfiguration::ALGORITHM_SHA1, 30, 6);
+        return new TotpConfiguration($this->totpSecret ?: '', TotpConfiguration::ALGORITHM_SHA1, 30, 6);
     }
 
     public function setTotpSecret(?string $totpSecret): void

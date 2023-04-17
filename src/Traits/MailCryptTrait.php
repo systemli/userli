@@ -2,12 +2,12 @@
 
 namespace App\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
+
 trait MailCryptTrait
 {
-    /**
-     * @var bool
-     */
-    private $mailCrypt = false;
+    /** @ORM\Column(options={"default"=false}) */
+    private bool $mailCrypt = false;
 
     public function hasMailCrypt(): bool
     {

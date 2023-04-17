@@ -13,7 +13,6 @@ use App\Traits\LastLoginTimeTrait;
 use App\Traits\MailCryptPublicKeyTrait;
 use App\Traits\MailCryptSecretBoxTrait;
 use App\Traits\MailCryptTrait;
-use App\Traits\OpenPgpKeyTrait;
 use App\Traits\PasswordTrait;
 use App\Traits\PasswordVersionTrait;
 use App\Traits\PlainMailCryptPrivateKeyTrait;
@@ -26,12 +25,20 @@ use App\Traits\SaltTrait;
 use App\Traits\TwofactorBackupCodeTrait;
 use App\Traits\TwofactorTrait;
 use App\Traits\UpdatedTimeTrait;
+use Doctrine\ORM\Mapping as ORM;
 use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\Mapping\Index;
 
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Table(name="virtual_users", indexes={
+ *     @Index(name="email_idx", columns={"email"})
+ * })
+ */
 class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface
 {
     use IdTrait;
@@ -54,12 +61,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     use MailCryptSecretBoxTrait;
     use PlainMailCryptPrivateKeyTrait;
     use MailCryptPublicKeyTrait;
-    use OpenPgpKeyTrait;
     use TwofactorTrait;
     use TwofactorBackupCodeTrait;
 
     public const CURRENT_PASSWORD_VERSION = 2;
 
+    /** @ORM\Column(type="array") */
     private array $roles = [];
 
     /**

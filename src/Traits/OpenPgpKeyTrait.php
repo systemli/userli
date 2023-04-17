@@ -3,20 +3,21 @@
 namespace App\Traits;
 
 use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 trait OpenPgpKeyTrait
 {
-    /** @var string */
-    public $keyId;
+    /** @ORM\Column(type="text") */
+    public ?string $keyId;
 
-    /** @var string */
-    public $keyFingerprint;
+    /** @ORM\Column(type="text") */
+    public ?string $keyFingerprint;
 
-    /** @var DateTime|null */
-    public $keyExpireTime;
+    /** @ORM\Column(nullable="true") */
+    public ?DateTime $keyExpireTime;
 
-    /** @var string */
-    public $keyData;
+    /** @ORM\Column(type="text") */
+    public ?string $keyData;
 
     public function getKeyId(): ?string
     {

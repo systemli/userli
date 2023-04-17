@@ -6,7 +6,12 @@ use App\Traits\CreationTimeTrait;
 use App\Traits\IdTrait;
 use App\Traits\NameTrait;
 use App\Traits\UpdatedTimeTrait;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\ReservedNameRepository")
+ * @ORM\Table(name="virtual_reserved_names")
+ */
 class ReservedName
 {
     use IdTrait;

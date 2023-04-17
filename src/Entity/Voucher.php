@@ -5,40 +5,33 @@ namespace App\Entity;
 use App\Traits\CreationTimeTrait;
 use App\Traits\IdTrait;
 use App\Traits\UserAwareTrait;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 
 /**
- * Class Voucher.
+ * @ORM\Entity(repositoryClass="App\Repository\VoucherRepository")
+ * @ORM\Table(name="virtual_vouchers", indexes={
+ *     @Index(name="code_idx", columns={"code"})
+ * })
  */
 class Voucher
 {
     use IdTrait;
     use CreationTimeTrait;
     use UserAwareTrait;
-    /**
-     * @var \DateTime
-     */
-    protected $redeemedTime;
 
-    /**
-     * @var string
-     */
-    protected $code;
+    /** @ORM\Column(nullable=true) */
+    protected ?\DateTime $redeemedTime;
 
-    /**
-     * @var User|null
-     */
-    protected $invitedUser;
+    /** @ORM\Column(unique=true) */
+    protected ?string $code;
 
-    /**
-     * @var \DateTime
-     */
-    protected $updatedTime;
+    protected ?User $invitedUser;
 
     public function __construct()
     {
         $currentDateTime = new \DateTime();
         $this->creationTime = $currentDateTime;
-        $this->updatedTime = $currentDateTime;
     }
 
     public function getRedeemedTime(): ?\DateTime
@@ -46,7 +39,7 @@ class Voucher
         return $this->redeemedTime;
     }
 
-    public function setRedeemedTime(\DateTime $redeemedTime): void
+    public function setRedeemedTime(?\DateTime $redeemedTime): void
     {
         $this->redeemedTime = $redeemedTime;
     }

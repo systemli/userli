@@ -2,14 +2,16 @@
 
 namespace App\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
+
 trait TwofactorBackupCodeTrait
 {
-    /** @var array */
-    private $totpBackupCodes = [];
+    /** @ORM\Column(type="array") */
+    private array $totpBackupCodes = [];
 
     public function getBackupCodes(): array
     {
-        return $this->totpBackupCodes;
+        return $this->totpBackupCodes ?: [];
     }
 
     /**

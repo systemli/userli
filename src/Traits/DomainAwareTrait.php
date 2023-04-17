@@ -3,13 +3,15 @@
 namespace App\Traits;
 
 use App\Entity\Domain;
+use Doctrine\ORM\Mapping as ORM;
 
 trait DomainAwareTrait
 {
     /**
-     * @var Domain|null
+     * @ORM\ManyToOne(targetEntity="Domain")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $domain;
+    private ?Domain $domain;
 
     public function getDomain(): ?Domain
     {

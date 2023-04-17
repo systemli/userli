@@ -2,19 +2,19 @@
 
 namespace App\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
+
 trait MailCryptSecretBoxTrait
 {
-    /**
-     * @var string|null
-     */
-    private $mailCryptSecretBox;
+    /** @ORM\Column(type="text", nullable=true) */
+    private ?string $mailCryptSecretBox;
 
     public function getMailCryptSecretBox(): ?string
     {
         return $this->mailCryptSecretBox;
     }
 
-    public function setMailCryptSecretBox(string $mailCryptSecretBox): void
+    public function setMailCryptSecretBox(?string $mailCryptSecretBox): void
     {
         $this->mailCryptSecretBox = $mailCryptSecretBox;
     }

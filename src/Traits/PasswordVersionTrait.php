@@ -2,12 +2,12 @@
 
 namespace App\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
+
 trait PasswordVersionTrait
 {
-    /**
-     * @var int|null
-     */
-    private $passwordVersion;
+    /** @ORM\Column() */
+    private ?int $passwordVersion;
 
     public function getPasswordVersion(): ?int
     {

@@ -2,31 +2,22 @@
 
 namespace App\Entity;
 
-use App\Traits\CreationTimeTrait;
 use App\Traits\EmailTrait;
 use App\Traits\IdTrait;
 use App\Traits\OpenPgpKeyTrait;
-use App\Traits\UpdatedTimeTrait;
 use App\Traits\UserAwareTrait;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\OpenPgpKeyRepository")
+ * @ORM\Table(name="virtual_openpgp_keys")
+ */
 class OpenPgpKey
 {
-    use CreationTimeTrait;
-    use UpdatedTimeTrait;
     use IdTrait;
     use UserAwareTrait;
     use EmailTrait;
     use OpenPgpKeyTrait;
-
-    /**
-     * OpenPgpKey constructor.
-     */
-    public function __construct()
-    {
-        $currentDateTime = new \DateTime();
-        $this->creationTime = $currentDateTime;
-        $this->updatedTime = $currentDateTime;
-    }
 
     public function toBinary(): ?string
     {
