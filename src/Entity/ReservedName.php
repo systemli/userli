@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Traits\CreationTimeTrait;
 use App\Traits\IdTrait;
 use App\Traits\NameTrait;
@@ -11,6 +12,18 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReservedNameRepository")
  * @ORM\Table(name="virtual_reserved_names")
+ * @ApiResource(
+ *     security="is_granted('ROLE_ADMIN')",
+ *     collectionOperations={
+ *         "get",
+ *         "post",
+ *     },
+ *     itemOperations={
+ *         "get",
+ *         "put",
+ *         "delete",
+ *     },
+ * )
  */
 class ReservedName
 {

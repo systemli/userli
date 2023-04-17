@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Traits\CreationTimeTrait;
 use App\Traits\DeleteTrait;
 use App\Traits\DomainAwareTrait;
@@ -26,6 +27,19 @@ use Doctrine\ORM\Mapping\Index;
  *     ))
  * })
  * @ORM\HasLifecycleCallbacks()
+ * @ApiResource(
+ *     normalizationContext={"enable_max_depth"=true},
+ *     security="is_granted('ROLE_USER')",
+ *     collectionOperations={
+ *         "get"={"security"="is_granted('ROLE_USER')"},
+ *         "post"={"security"="is_granted('ROLE_ADMIN')"},
+ *     },
+ *     itemOperations={
+ *         "get"={"security"="is_granted('ROLE_ADMIN') or object.getUser() == user"},
+ *         "put"={"security"="is_granted('ROLE_ADMIN') or object.getUser() == user"},
+ *         "delete"={"security"="is_granted('ROLE_ADMIN') or object.getUser() == user"},
+ *     },
+ * )
  */
 class Alias implements SoftDeletableInterface
 {

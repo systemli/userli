@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Traits\CreationTimeTrait;
 use App\Traits\IdTrait;
 use App\Traits\UserAwareTrait;
@@ -13,6 +14,19 @@ use Doctrine\ORM\Mapping\Index;
  * @ORM\Table(name="virtual_vouchers", indexes={
  *     @Index(name="code_idx", columns={"code"})
  * })
+ * @ApiResource(
+ *     normalizationContext={"enable_max_depth"=true},
+ *     security="is_granted('ROLE_ADMIN')",
+ *     collectionOperations={
+ *         "get",
+ *         "post",
+ *     },
+ *     itemOperations={
+ *         "get",
+ *         "put",
+ *         "delete",
+ *     },
+ * )
  */
 class Voucher
 {

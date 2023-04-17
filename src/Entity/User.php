@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Enum\Roles;
 use App\Traits\CreationTimeTrait;
 use App\Traits\DeleteTrait;
@@ -38,6 +39,18 @@ use Doctrine\ORM\Mapping\Index;
  * @ORM\Table(name="virtual_users", indexes={
  *     @Index(name="email_idx", columns={"email"})
  * })
+ * @ApiResource(
+ *     security="is_granted('ROLE_USER')",
+ *     collectionOperations={
+ *         "get"={"security"="is_granted('ROLE_USER')"},
+ *         "post"={"security"="is_granted('ROLE_ADMIN')"},
+ *     },
+ *     itemOperations={
+ *         "get"={"security"="is_granted('ROLE_ADMIN') or object == user"},
+ *         "put"={"security"="is_granted('ROLE_ADMIN')"},
+ *         "delete"={"security"="is_granted('ROLE_ADMIN')"},
+ *     },
+ * )
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface
 {
