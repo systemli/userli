@@ -4,10 +4,7 @@ namespace App\Traits;
 
 trait PrivateKeyTrait
 {
-    /**
-     * @var string|null
-     */
-    private $privateKey;
+    private ?string $privateKey = null;
 
     public function getPrivateKey(): ?string
     {

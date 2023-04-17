@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait MailCryptPublicKeyTrait
 {
     /** @ORM\Column(type="text", nullable=true) */
-    private ?string $mailCryptPublicKey;
+    private ?string $mailCryptPublicKey = null;
 
     public function getMailCryptPublicKey(): ?string
     {

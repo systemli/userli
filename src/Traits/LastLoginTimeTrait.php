@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait LastLoginTimeTrait
 {
     /** @ORM\Column(nullable=true) */
-    private ?\DateTime $lastLoginTime;
+    private ?\DateTime $lastLoginTime = null;
 
     public function getLastLoginTime(): ?\DateTime
     {

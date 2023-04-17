@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait CreationTimeTrait
 {
     /** @ORM\Column() */
-    private ?DateTime $creationTime;
+    private ?DateTime $creationTime = null;
 
     public function getCreationTime(): ?DateTime
     {

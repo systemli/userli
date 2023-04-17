@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait UpdatedTimeTrait
 {
     /** @ORM\Column() */
-    private ?DateTime $updatedTime;
+    private ?DateTime $updatedTime = null;
 
     public function getUpdatedTime(): ?DateTime
     {

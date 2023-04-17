@@ -11,7 +11,7 @@ trait DomainAwareTrait
      * @ORM\ManyToOne(targetEntity="Domain")
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?Domain $domain;
+    private ?Domain $domain = null;
 
     public function getDomain(): ?Domain
     {

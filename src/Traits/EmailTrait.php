@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait EmailTrait
 {
     /** @ORM\Column(unique=true) */
-    private string $email = '';
+    private ?string $email = '';
 
     public function getEmail(): ?string
     {

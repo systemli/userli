@@ -4,10 +4,7 @@ namespace App\Traits;
 
 trait SaltTrait
 {
-    /**
-     * @var string|null
-     */
-    private $salt;
+    private ?string $salt = null;
 
     public function getSalt(): ?string
     {

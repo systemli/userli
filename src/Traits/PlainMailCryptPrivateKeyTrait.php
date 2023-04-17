@@ -7,10 +7,7 @@ namespace App\Traits;
  */
 trait PlainMailCryptPrivateKeyTrait
 {
-    /**
-     * @var string|null
-     */
-    private $plainMailCryptPrivateKey;
+    private ?string $plainMailCryptPrivateKey = null;
 
     public function getPlainMailCryptPrivateKey(): ?string
     {

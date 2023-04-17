@@ -7,7 +7,7 @@ trait PublicKeyTrait
     /**
      * @var string|null
      */
-    public $publicKey;
+    public ?string $publicKey = null;
 
     public function getPublicKey(): ?string
     {

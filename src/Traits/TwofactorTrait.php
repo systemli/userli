@@ -9,7 +9,7 @@ use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
 trait TwofactorTrait
 {
     /** @ORM\Column(nullable=true) */
-    private ?string $totpSecret;
+    private ?string $totpSecret = null;
 
     /** @ORM\Column(options={"default"=false}) */
     private bool $totpConfirmed = false;

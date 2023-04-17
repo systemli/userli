@@ -102,6 +102,7 @@ class VoucherUnlinkCommandTest extends TestCase
         $this->assertEquals([], $this->command->getSuspiciousChildren([]));
 
         $voucher = new Voucher();
+        $voucher->setUser(new User());
         $this->assertEquals([], $this->command->getSuspiciousChildren([$voucher]));
 
         $user = $this->getMockBuilder(User::class)

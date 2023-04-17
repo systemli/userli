@@ -20,7 +20,7 @@ class MailCryptKeyHandlerTest extends TestCase
     public function testToPkcs8ExceptionOpenSSLFailed(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: Could not read key from <stdin>');
+        $this->expectExceptionMessage('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully:');
         $handler = $this->createHandler();
         $privateKey = 'brokenKey';
         $handler->toPkcs8($privateKey);

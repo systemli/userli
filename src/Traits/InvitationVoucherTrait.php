@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait InvitationVoucherTrait
 {
     /** @ORM\OneToOne(targetEntity="Voucher") */
-    private ?Voucher $invitationVoucher;
+    private ?Voucher $invitationVoucher = null;
 
     public function getInvitationVoucher(): ?Voucher
     {

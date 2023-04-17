@@ -21,12 +21,12 @@ class Voucher
     use UserAwareTrait;
 
     /** @ORM\Column(nullable=true) */
-    protected ?\DateTime $redeemedTime;
+    protected ?\DateTime $redeemedTime = null;
 
     /** @ORM\Column(unique=true) */
-    protected ?string $code;
+    protected ?string $code = null;
 
-    protected ?User $invitedUser;
+    protected ?User $invitedUser = null;
 
     public function __construct()
     {

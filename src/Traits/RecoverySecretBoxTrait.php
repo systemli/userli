@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait RecoverySecretBoxTrait
 {
     /** @ORM\Column(type="text", nullable=true) */
-    private ?string $recoverySecretBox;
+    private ?string $recoverySecretBox = null;
 
     public function getRecoverySecretBox(): ?string
     {

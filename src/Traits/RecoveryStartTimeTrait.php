@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait RecoveryStartTimeTrait
 {
     /** @ORM\Column(nullable=true) */
-    private ?\DateTime $recoveryStartTime;
+    private ?\DateTime $recoveryStartTime = null;
 
     public function getRecoveryStartTime(): ?\DateTime
     {

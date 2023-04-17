@@ -6,10 +6,7 @@ use App\Guesser\DomainGuesser;
 
 trait DomainGuesserAwareTrait
 {
-    /**
-     * @var DomainGuesser
-     */
-    private $domainGuesser;
+    private DomainGuesser $domainGuesser;
 
     public function getDomainGuesser(): DomainGuesser
     {

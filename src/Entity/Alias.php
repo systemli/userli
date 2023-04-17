@@ -38,10 +38,10 @@ class Alias implements SoftDeletableInterface
     use RandomTrait;
 
     /** @ORM\Column() */
-    protected ?string $source;
+    protected ?string $source = null;
 
     /** @ORM\Column(nullable=true) */
-    protected ?string $destination;
+    protected ?string $destination = null;
 
     /**
      * Alias constructor.

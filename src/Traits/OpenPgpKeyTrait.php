@@ -8,16 +8,16 @@ use Doctrine\ORM\Mapping as ORM;
 trait OpenPgpKeyTrait
 {
     /** @ORM\Column(type="text") */
-    public ?string $keyId;
+    public ?string $keyId = null;
 
     /** @ORM\Column(type="text") */
-    public ?string $keyFingerprint;
+    public ?string $keyFingerprint = null;
 
     /** @ORM\Column(nullable="true") */
-    public ?DateTime $keyExpireTime;
+    public ?DateTime $keyExpireTime = null;
 
     /** @ORM\Column(type="text") */
-    public ?string $keyData;
+    public ?string $keyData = null;
 
     public function getKeyId(): ?string
     {

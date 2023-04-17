@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait PasswordVersionTrait
 {
     /** @ORM\Column() */
-    private ?int $passwordVersion;
+    private ?int $passwordVersion = null;
 
     public function getPasswordVersion(): ?int
     {

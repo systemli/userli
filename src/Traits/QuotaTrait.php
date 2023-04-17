@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait QuotaTrait
 {
     /** @ORM\Column(nullable=true) */
-    private ?int $quota;
+    private ?int $quota = null;
 
     public function getQuota(): ?int
     {
