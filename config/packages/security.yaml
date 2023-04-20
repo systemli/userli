@@ -124,15 +124,15 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-      - { path: ^/login, roles: PUBLIC_ACCESS }
-      - { path: ^/logout, roles: PUBLIC_ACCESS }
-      - { path: "^/[a-z]{2}/init", roles: PUBLIC_ACCESS }
-      - { path: "^/[a-z]{2}/login", roles: PUBLIC_ACCESS }
-      - { path: "^/[a-z]{2}/logout", roles: PUBLIC_ACCESS }
-      - { path: "^/[a-z]{2}/recovery", roles: PUBLIC_ACCESS }
-      - { path: "^/[a-z]{2}/register", roles: PUBLIC_ACCESS }
-      - { path: "^/[a-z]{2}/$", roles: PUBLIC_ACCESS }
-      - { path: ^/$, roles: PUBLIC_ACCESS }
+      - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/logout, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: "^/[a-z]{2}/init", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: "^/[a-z]{2}/login", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: "^/[a-z]{2}/logout", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: "^/[a-z]{2}/recovery", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: "^/[a-z]{2}/register", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: "^/[a-z]{2}/$", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: ^/2fa, roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
       - { path: "^/[a-z]{2}/2fa", roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
       - { path: ^/admin, roles: ROLE_DOMAIN_ADMIN }
