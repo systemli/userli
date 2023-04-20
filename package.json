@@ -2,10 +2,16 @@
   "devDependencies": {
     "@babel/core": "^7.23.7",
     "@babel/preset-env": "^7.23.7",
+    "@babel/preset-react": "^7.23.3",
     "@symfony/webpack-encore": "^4.4.0",
     "copy-webpack-plugin": "^11.0.0",
     "jquery": "^3.7.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@api-platform/admin": "^3.4.3"
   }
 }

@@ -141,6 +141,7 @@ user_twofactor_qrcode:
         _locale: '%locales%'
 
 ## InitController
+
 init:
     path:     /{_locale}/init
     controller: App\Controller\InitController::indexAction
@@ -166,6 +167,12 @@ login:
 
 logout:
     path:     /logout
+
+# AdminController
+
+admin_app:
+    path:     /admin_app
+    controller: App\Controller\AdminController::indexAction
 
 # fallback without locale
 
