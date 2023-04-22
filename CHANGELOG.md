@@ -1,3 +1,8 @@
+# 3.2.1 (2023.04.22)
+
+* Fix display of recovery token during registration process (Fixes #451)
+* Update dependencies
+
 # 3.2.0 (2023.03.30)
 
 * Add Command to export metrics to Prometheus

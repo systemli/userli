@@ -9,6 +9,7 @@ use App\Helper\PasswordUpdater;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
+use Behat\Mink\Exception\ElementTextException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\MinkContext;
 use Doctrine\ORM\EntityManagerInterface;
@@ -323,6 +324,26 @@ class FeatureContext extends MinkContext
             $formParams,
             [],
             $headers);
+    }
+
+    /**
+     * @When /^I should see text matching regex "(?P<regex>[^"]*)" in element with selector "(?P<selector>[^"]*)"$/
+     */
+    public function iSeeNonemptyElement($regex, $selector): void
+    {
+        $element = $this->assertSession()->elementExists('css', $selector);
+        $actual = $element->getText();
+
+        $message = sprintf(
+            'The text with regex "%s" was not found in the text of element "%s", "%s"',
+            $regex,
+            $selector,
+            $actual
+        );
+
+        if (!preg_match($regex, $actual)) {
+            throw new ElementTextException($message, $this->getSession()->getDriver(), $element);
+        }
     }
 
     /**

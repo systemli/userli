@@ -62,7 +62,10 @@ class RegistrationController extends AbstractController
                 }
 
                 $recoveryToken = $user->getPlainRecoveryToken();
-                $user->erasePlainRecoveryToken();
+
+                // We have fetched plainRecoveryToken, which we need to show and can now remove
+                // all sensitive values from the user object
+                $user->eraseCredentials();
 
                 $recoveryTokenAck = new RecoveryTokenAck();
                 $recoveryTokenAck->setRecoveryToken($recoveryToken);

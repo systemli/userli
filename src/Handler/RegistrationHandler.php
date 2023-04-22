@@ -69,8 +69,8 @@ class RegistrationHandler
             $user->setMailCrypt(true);
         }
 
-        // Erase sensitive plaintext data from User object
-        $user->eraseCredentials();
+        // We used to erase sensitive data here, but it's now done in RegistrationController
+        // as we need to print the plainRecoveryToken beforehand
 
         $this->manager->persist($user);
         $this->manager->flush();
