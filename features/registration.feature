@@ -30,6 +30,7 @@ Feature: registration
 
     Then I should be on "/en/register"
     And I should see text matching "The following recovery token got created for you"
+    And I should see text matching regex "/^[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}+$/" in element with selector ".recovery-token"
 
     When I am on "/logout"
     Then I should be on "/en/"
