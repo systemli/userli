@@ -1,7 +1,7 @@
 {
   "devDependencies": {
     "@babel/core": "^7.22.1",
-    "@babel/preset-env": "^7.21.5",
+    "@babel/preset-env": "^7.22.2",
     "@symfony/webpack-encore": "^4.3.0",
     "copy-webpack-plugin": "^11.0.0",
     "jquery": "^3.7.0",
