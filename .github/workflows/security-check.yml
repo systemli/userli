@@ -13,5 +13,5 @@ jobs:
     runs-on: ubuntu-latest
     name: PHP Security Checker
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: symfonycorp/security-checker-action@v5
