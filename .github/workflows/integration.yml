@@ -79,7 +79,7 @@ jobs:
           extensions: openssl, sodium
           tools: composer
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: '16'
 
@@ -127,7 +127,7 @@ jobs:
           extensions: openssl, sodium, mysql
           tools: composer
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: '16'
 
@@ -174,7 +174,7 @@ jobs:
           extensions: openssl, sodium, pgsql
           tools: composer
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: '16'
 
