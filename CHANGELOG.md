@@ -1,3 +1,11 @@
+# 3.2.3 (2023.10.31)
+
+* Update dependencies
+
+# 3.2.2 (2023.10.10)
+
+* Update dependencies
+
 # 3.2.1 (2023.04.22)
 
 * Fix display of recovery token during registration process (Fixes #451)
