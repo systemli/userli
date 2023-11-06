@@ -7,7 +7,7 @@ use App\Traits\UserAwareTrait;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Class LoginEvent.
+ * Class RecoveryProcessEvent.
  */
 class RecoveryProcessEvent extends Event
 {
