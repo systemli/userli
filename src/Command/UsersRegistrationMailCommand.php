@@ -40,7 +40,7 @@ class UsersRegistrationMailCommand extends Command
      *
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $email = $input->getOption('user');
         $locale = $input->getOption('locale');
@@ -50,5 +50,7 @@ class UsersRegistrationMailCommand extends Command
         }
 
         $this->welcomeMessageSender->send($user, $locale);
+
+        return 0;
     }
 }

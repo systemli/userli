@@ -1,3 +1,7 @@
+# 3.2.4 (unreleased)
+
+* Fix setting last_login_time on authentication through checkpassword command.
+
 # 3.2.3 (2023.10.31)
 
 * Update dependencies

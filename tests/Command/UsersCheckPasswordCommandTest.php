@@ -5,6 +5,8 @@ namespace App\Tests\Command;
 use App\Command\UsersCheckPasswordCommand;
 use App\Entity\User;
 use App\Enum\Roles;
+use App\Event\LoginEvent;
+use App\EventListener\LoginListener;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
 use App\Helper\FileDescriptorReader;
@@ -13,6 +15,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
 class UsersCheckPasswordCommandTest extends TestCase
 {
@@ -21,16 +27,21 @@ class UsersCheckPasswordCommandTest extends TestCase
     protected $quotaUser;
     protected $mailCryptUser;
     protected $spamUser;
+    protected $loginListener;
 
     public function setUp(): void
     {
         $this->plainUser = new User();
+        $this->plainUser->setPassword('passwordhash');
         $this->quotaUser = new User();
+        $this->quotaUser->setPassword('passwordhash');
         $this->quotaUser->setQuota(1024);
         $this->mailCryptUser = new User();
+        $this->mailCryptUser->setPassword('passwordhash');
         $this->mailCryptUser->setMailCrypt(true);
         $this->mailCryptUser->setMailCryptPublicKey('somePublicKey');
         $this->spamUser = new User();
+        $this->spamUser->setPassword('passwordhash');
         $this->spamUser->setRoles([Roles::SPAM]);
     }
 
@@ -90,6 +101,35 @@ class UsersCheckPasswordCommandTest extends TestCase
         $commandTester->execute([]);
 
         $this->assertEquals($returnCode, $commandTester->getStatusCode());
+    }
+
+    public function testExecuteCallsLoginListener(): void
+    {
+        $inputStream = "user@example.org\x00password";
+        $returnCode = 0;
+
+        $manager = $this->getManager();
+        $reader = $this->getReaderFd3($inputStream);
+        $handler = $this->getHandler();
+        $mailCryptKeyHandler = $this->getMailCryptKeyHandler();
+        $mailCrypt = 2;
+        $mailUID = 5000;
+        $mailGID = 5000;
+        $mailLocation = 'var/vmail';
+
+        $command = new UsersCheckPasswordCommand($manager,
+            $reader,
+            $handler,
+            $mailCryptKeyHandler,
+            $mailCrypt,
+            $mailUID,
+            $mailGID,
+            $mailLocation);
+        $commandTester = new CommandTester($command);
+
+        $this->loginListener->expects(self::once())->method('onLogin');
+        $commandTester->execute([]);
+        self::assertEquals($returnCode, $commandTester->getStatusCode());
     }
 
     /**
@@ -239,19 +279,21 @@ class UsersCheckPasswordCommandTest extends TestCase
 
     public function getHandler(): UserAuthenticationHandler
     {
-        $handler = $this->getMockBuilder(UserAuthenticationHandler::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $handler->method('authenticate')->willReturnMap(
+        $passwordHasher = $this->createMock(PasswordHasherInterface::class);
+        $passwordHasher->method('verify')->willReturnMap(
             [
-                [$this->plainUser, 'password', $this->plainUser],
-                [$this->quotaUser, 'password', $this->quotaUser],
-                [$this->mailCryptUser, 'password', $this->mailCryptUser],
-                [$this->spamUser, 'password', $this->spamUser],
+                ['passwordhash', 'password', true],
+                ['passwordhash', 'wrongpassword', false],
+                ['passwordhash', '', false],
             ]
         );
+        $passwordHasherFactory = $this->createMock(PasswordHasherFactoryInterface::class);
+        $passwordHasherFactory->method('getPasswordHasher')->willReturn($passwordHasher);
 
-        return $handler;
+        $this->loginListener = $this->createMock(LoginListener::class);
+        $eventDispatcher = new EventDispatcher();
+        $eventDispatcher->addListener(LoginEvent::NAME, [$this->loginListener, 'onLogin']);
+        return new UserAuthenticationHandler($passwordHasherFactory, $eventDispatcher);
     }
 
     public function getMailCryptKeyHandler(): MailCryptKeyHandler
