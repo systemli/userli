@@ -1,5 +1,6 @@
-# 3.2.4 (unreleased)
+# 3.3.0 (unreleased)
 
+* Add command to delete a user alias.
 * Fix setting last_login_time on authentication through checkpassword command.
 
 # 3.2.3 (2023.10.31)
