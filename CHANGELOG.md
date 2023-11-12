@@ -1,4 +1,4 @@
-# 3.3.1 (UNRELEASED)
+# 3.3.1 (2023.11.12)
 
 * Update dependencies
 
