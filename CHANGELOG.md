@@ -1,3 +1,7 @@
+# 3.3.1 (UNRELEASED)
+
+* Update dependencies
+
 # 3.3.0 (2023.11.08)
 
 * Add command to delete a user alias.
