@@ -6,6 +6,7 @@ final class Roles
 {
     public const PERMANENT = 'ROLE_PERMANENT';
     public const MULTIPLIER = 'ROLE_MULTIPLIER';
+    /** @deprecated */
     public const SPAM = 'ROLE_SPAM';
     public const SUSPICIOUS = 'ROLE_SUSPICIOUS';
     public const USER = 'ROLE_USER';

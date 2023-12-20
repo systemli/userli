@@ -21,6 +21,7 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
         ['email' => 'user@example.org', 'roles' => [Roles::USER]],
         ['email' => 'support@example.org', 'roles' => [Roles::MULTIPLIER]],
         ['email' => 'suspicious@example.org', 'roles' => [Roles::SUSPICIOUS]],
+        ['email' => 'spammer@example.org', 'roles' => [Roles::SPAM]],
         ['email' => 'domain@example.com', 'roles' => [Roles::DOMAIN_ADMIN]],
     ];
 
