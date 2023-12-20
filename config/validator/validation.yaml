@@ -17,6 +17,14 @@ App\Entity\Domain:
             - NotNull: ~
             - NotBlank: ~
 
+App\Entity\ReservedName:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
+    properties:
+        name:
+            - NotNull: ~
+            - NotBlank: ~
+
 App\Entity\User:
     properties:
         email:
