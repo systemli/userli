@@ -52,6 +52,7 @@ class UserAdmin extends Admin
         $userId = (null === $user) ? null : $user->getId();
 
         $form
+            ->add('enabled', CheckboxType::class, ['required' => false])
             ->add('email', EmailType::class, ['disabled' => !$this->isNewObject()])
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'form.password',
@@ -97,6 +98,14 @@ class UserAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
+            ->add('enabled', ChoiceFilter::class, [
+                'field_options' => [
+                    'required' => false,
+                    'choices' => [0 => 'No', 1 => 'Yes'],
+                ],
+                'field_type' => ChoiceType::class,
+                'show_filter' => true,
+            ])
             ->add('email', null, [
                 'show_filter' => true,
             ])
@@ -170,6 +179,8 @@ class UserAdmin extends Admin
                     'name' => 'edit',
                 ],
             ])
+            ->add('enabled')
+            ->add('deleted')
             ->addIdentifier('email', null, [
                 'route' => [
                     'name' => 'edit',
@@ -183,8 +194,7 @@ class UserAdmin extends Admin
             ->add('recoverySecretBox', 'boolean', [
                 'label' => 'Recovery Token',
             ])
-            ->add('mailCrypt')
-            ->add('deleted');
+            ->add('mailCrypt');
     }
 
     /**
