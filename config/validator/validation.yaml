@@ -10,11 +10,12 @@ App\Entity\Alias:
                 maxLength: 24
 
 App\Entity\Domain:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
     properties:
         name:
             - NotNull: ~
             - NotBlank: ~
-            - App\Validator\Constraints\Domain: ~
 
 App\Entity\User:
     properties:

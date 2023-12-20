@@ -168,10 +168,6 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: password_change }
 
-    App\Validator\Contraints\DomainValidator:
-        tags:
-            - { name: validator.constraint_validator }
-
     App\Validator\Constraints\EmailDomainValidator:
         tags:
             - { name: validator.constraint_validator }
