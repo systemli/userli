@@ -9,6 +9,8 @@ form:
     werden.
   registration-recovery-token-noack: Dieses Feld muss ausgewählt werden.
   invalid-token: Der Code hat ein ungültiges Format.
+  already-exists: "Existiert bereits."
+
 registration:
   voucher-invalid: Der Einladungscode ist ungültig.
   email-domain-not-exists: Die E-Mail-Adresse ist ungültig.

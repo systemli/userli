@@ -9,6 +9,13 @@ App\Entity\Alias:
                 minLength: 3
                 maxLength: 24
 
+App\Entity\Domain:
+    properties:
+        name:
+            - NotNull: ~
+            - NotBlank: ~
+            - App\Validator\Constraints\Domain: ~
+
 App\Entity\User:
     properties:
         email:
