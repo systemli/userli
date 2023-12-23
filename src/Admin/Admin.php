@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Symfony\Component\Security\Core\Security;
 
 abstract class Admin extends AbstractAdmin
@@ -16,6 +17,13 @@ abstract class Admin extends AbstractAdmin
     {
         $this->security = $security;
         parent::__construct($code, $class, $baseControllerName);
+    }
+
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        $sortValues[DatagridInterface::PAGE] = 1;
+        $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+        $sortValues[DatagridInterface::SORT_BY] = 'id';
     }
 
     protected function isNewObject(): bool
