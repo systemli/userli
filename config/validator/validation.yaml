@@ -9,6 +9,22 @@ App\Entity\Alias:
                 minLength: 3
                 maxLength: 24
 
+App\Entity\Domain:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
+    properties:
+        name:
+            - NotNull: ~
+            - NotBlank: ~
+
+App\Entity\ReservedName:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
+    properties:
+        name:
+            - NotNull: ~
+            - NotBlank: ~
+
 App\Entity\User:
     properties:
         email:
