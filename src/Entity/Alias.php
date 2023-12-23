@@ -67,4 +67,17 @@ class Alias implements SoftDeletableInterface
         $this->user = null;
         $this->destination = null;
     }
+
+    public function __toString()
+    {
+        if ($this->source === null) {
+            return '';
+        }
+
+        if ($this->random) {
+            return $this->source . ' -> ' . $this->destination . ' (random)';
+        }
+
+        return $this->source . ' -> ' . $this->destination;
+    }
 }
