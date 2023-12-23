@@ -75,4 +75,9 @@ class Voucher
     {
         $this->invitedUser = $invitedUser;
     }
+
+    public function __toString()
+    {
+        return $this->code;
+    }
 }
