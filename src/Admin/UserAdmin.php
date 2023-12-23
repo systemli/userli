@@ -26,15 +26,11 @@ class UserAdmin extends Admin
 {
     use DomainGuesserAwareTrait;
 
-    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string {
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+    {
         return 'user';
     }
 
-    protected array $datagridValues = [
-        '_page' => 1,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'creationTime',
-    ];
     private PasswordUpdater $passwordUpdater;
     private MailCryptKeyHandler $mailCryptKeyHandler;
     private int $mailCrypt;
