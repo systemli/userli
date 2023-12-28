@@ -1,38 +1,37 @@
+---
 version: 2
 updates:
-
-  # Maintain dependencies for npm
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      npm-dependencies:
+        patterns:
+          - "*"
 
-  ## Maintain dependencies for Composer
-  #- package-ecosystem: "composer"
-  #  directory: "/"
-  #  schedule:
-  #    interval: "weekly"
-  #  ignore:
-  #    - dependency-name: "symfony/http-client"
-  #      versions:
-  #        - "4.5.*"
-  #        - "5.*"
-  #    - dependency-name: "symfony/debug-bundle"
-  #      versions:
-  #        - "4.5.*"
-  #        - "5.*"
-  #    - dependency-name: "symfony/dotenv"
-  #      versions:
-  #        - "4.5.*"
-  #        - "5.*"
-  #    - dependency-name: "symfony/var-dumper"
-  #      versions:
-  #        - "4.5.*"
-  #        - "5.*"
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+    allow:
+      - dependency-name: "endroid/qr-code"
+      - dependency-name: "ircmaxell/password-compat"
+      - dependency-name: "mopa/bootstrap-bundle"
+      - dependency-name: "nelmio/security-bundle"
+      - dependency-name: "pear/crypt_gpg"
+      - dependency-name: "ramsey/uuid"
+      - dependency-name: "scheb/*"
+      - dependency-name: "sonata-project/*"
+      - dependency-name: "tuupola/base32"
+    groups:
+      php-dependencies:
+        patterns:
+          - "*"
 
   - package-ecosystem: "github-actions"
-    # Workflow files stored in the
-    # default location of `.github/workflows`
     directory: "/"
     schedule:
       interval: "weekly"
