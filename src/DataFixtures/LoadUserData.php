@@ -16,6 +16,8 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
 {
     private const PASSWORD = 'password';
 
+    private string $passwordHash;
+
     private array $users = [
         ['email' => 'admin@example.org', 'roles' => [Roles::ADMIN]],
         ['email' => 'user@example.org', 'roles' => [Roles::USER]],
@@ -41,6 +43,11 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
      */
     public function load(ObjectManager $manager): void
     {
+        $user = new User();
+        $user->setPlainPassword(self::PASSWORD);
+        $this->getPasswordUpdater()->updatePassword($user);
+        $this->passwordHash = $user->getPassword();
+
         $this->loadStaticUsers($manager);
         $this->loadRandomUsers($manager);
     }
@@ -58,20 +65,13 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
         return $this->container->get(PasswordUpdater::class);
     }
 
-    /**
-     * @param $domain
-     * @param $email
-     * @param $roles
-     */
-    private function buildUser($domain, $email, $roles): User
+    private function buildUser(Domain $domain, string $email, array $roles): User
     {
         $user = new User();
         $user->setDomain($domain);
         $user->setEmail($email);
         $user->setRoles($roles);
-        $user->setPlainPassword(self::PASSWORD);
-
-        $this->getPasswordUpdater()->updatePassword($user);
+        $user->setPassword($this->passwordHash);
 
         return $user;
     }
@@ -89,8 +89,10 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
             $user = $this->buildUser($domain, $email, $roles);
 
             $manager->persist($user);
-            $manager->flush();
         }
+
+        $manager->flush();
+        $manager->clear();
     }
 
     /**
@@ -99,12 +101,11 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
     private function loadRandomUsers(ObjectManager $manager): void
     {
         $domainRepository = $manager->getRepository(Domain::class);
+        $domain = $domainRepository->findOneBy(['name' => 'example.org']);
+        $roles = [Roles::USER];
 
-        for ($i = 0; $i < 500; ++$i) {
-            $email = sprintf('%s@example.org', uniqid('', true));
-            $splitted = explode('@', $email);
-            $roles = [Roles::USER];
-            $domain = $domainRepository->findOneBy(['name' => $splitted[1]]);
+        for ($i = 0; $i < 15000; ++$i) {
+            $email = sprintf('user-%d@%s', $i, $domain->getName());
 
             $user = $this->buildUser($domain, $email, $roles);
             $user->setCreationTime(new \DateTime(sprintf('-%s days', random_int(1, 25))));
@@ -118,7 +119,13 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
             }
 
             $manager->persist($user);
-            $manager->flush();
+
+            if (($i % 100) === 0) {
+                $manager->flush();
+            }
         }
+
+        $manager->flush();
+        $manager->clear();
     }
 }

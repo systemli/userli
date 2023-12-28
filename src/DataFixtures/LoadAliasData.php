@@ -2,28 +2,14 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Domain;
 use App\Entity\User;
 use App\Factory\AliasFactory;
-use App\Repository\DomainRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class LoadAliasData extends Fixture implements OrderedFixtureInterface, ContainerAwareInterface
+class LoadAliasData extends Fixture implements OrderedFixtureInterface
 {
-    private ContainerInterface $container;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null): void
-    {
-        $this->container = $container;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -32,23 +18,25 @@ class LoadAliasData extends Fixture implements OrderedFixtureInterface, Containe
         $user = $manager->getRepository(User::class)->findByEmail('admin@example.org');
 
         for ($i = 1; $i < 5; ++$i) {
-            $alias = AliasFactory::create($user, 'alias'.$i);
-
-            $manager->persist($alias);
-            $manager->flush();
-        }
-
-        for ($i = 1; $i < 5; ++$i) {
             $alias = AliasFactory::create($user, null);
 
             $manager->persist($alias);
-            $manager->flush();
         }
-    }
 
-    private function getRepository(): DomainRepository
-    {
-        return $this->container->get('doctrine')->getRepository(Domain::class);
+        $users = $manager->getRepository(User::class)->findAll();
+
+        for ($i = 1; $i < 500; ++$i) {
+            $alias = AliasFactory::create($users[random_int(0, count($users) - 1)], 'alias' . $i);
+
+            $manager->persist($alias);
+
+            if (($i % 100) === 0) {
+                $manager->flush();
+            }
+        }
+
+        $manager->flush();
+        $manager->clear();
     }
 
     /**
