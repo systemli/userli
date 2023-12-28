@@ -30,6 +30,10 @@ App\Entity\User:
       type: boolean
       options:
         default: 0
+    enabled:
+      type: boolean
+      options:
+        default: 1
     lastLoginTime:
       type: datetime
       nullable: true

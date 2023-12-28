@@ -7,6 +7,7 @@ use App\Traits\CreationTimeTrait;
 use App\Traits\DeleteTrait;
 use App\Traits\DomainAwareTrait;
 use App\Traits\EmailTrait;
+use App\Traits\EnableTrait;
 use App\Traits\IdTrait;
 use App\Traits\InvitationVoucherTrait;
 use App\Traits\LastLoginTimeTrait;
@@ -38,6 +39,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     use CreationTimeTrait;
     use UpdatedTimeTrait;
     use EmailTrait;
+    use EnableTrait;
     use QuotaTrait;
     use PasswordTrait;
     use SaltTrait;
@@ -68,6 +70,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     public function __construct()
     {
         $this->deleted = false;
+        $this->enabled = true;
         $this->passwordVersion = self::CURRENT_PASSWORD_VERSION;
         $currentDateTime = new \DateTime();
         $this->creationTime = $currentDateTime;
@@ -113,7 +116,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     /**
      * @return string
      */
-    public function getUserIdentifier(): string {
+    public function getUserIdentifier(): string
+    {
         return $this->email;
     }
 
