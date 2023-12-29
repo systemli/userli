@@ -1,3 +1,8 @@
+# 3.4.0 (UNRELEASED)
+
+* Adjust Admin List Order
+* Add __toString methods to Entities
+
 # 3.3.1 (2023.11.12)
 
 * Update dependencies
