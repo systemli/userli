@@ -9,10 +9,8 @@ use App\Traits\DomainGuesserAwareTrait;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 class AliasAdmin extends Admin
@@ -47,7 +45,7 @@ class AliasAdmin extends Admin
     {
         $filter
             ->add('source')
-            ->add('user')
+            ->add('user.email', null, ['label' => 'User'])
             ->add('domain')
             ->add('deleted');
     }

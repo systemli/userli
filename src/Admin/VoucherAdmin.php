@@ -6,9 +6,8 @@ use App\Helper\RandomStringGenerator;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
-use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Sonata\DoctrineORMAdminBundle\Filter\DateTimeRangeFilter;
+use Sonata\Form\Type\DateRangePickerType;
 
 class VoucherAdmin extends Admin
 {
@@ -18,7 +17,8 @@ class VoucherAdmin extends Admin
         '_sort_by' => 'creationTime',
     ];
 
-    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string {
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+    {
         return 'voucher';
     }
 
@@ -69,35 +69,23 @@ class VoucherAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
-            ->add('user')
+            ->add('user.email', null, ['label' => 'User'])
             ->add('code')
-            ->add('created_since', CallbackFilter::class, [
-                'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
-                    if (isset($value['value']) && null !== $value = $value['value']) {
-                        $qb = $proxyQuery->getQueryBuilder();
-                        $field = sprintf('%s.creationTime', $alias);
-                        $qb->andWhere(sprintf('%s >= :datetime', $field))
-                            ->setParameter('datetime', new \DateTime($value))
-                            ->orderBy($field, 'DESC');
-                    }
-
-                    return true;
-                },
-                'field_type' => TextType::class,
+            ->add('creationTime', DateTimeRangeFilter::class, [
+                'field_type' => DateRangePickerType::class,
+                'field_options' => [
+                    'field_options' => [
+                        'format' => 'dd.MM.yyyy'
+                    ]
+                ]
             ])
-            ->add('redeemed_since', CallbackFilter::class, [
-                'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
-                    if (isset($value['value']) && null !== $value = $value['value']) {
-                        $qb = $proxyQuery->getQueryBuilder();
-                        $field = sprintf('%s.redeemedTime', $alias);
-                        $qb->andWhere(sprintf('%s >= :datetime', $field))
-                            ->setParameter('datetime', new \DateTime($value))
-                            ->orderBy($field, 'DESC');
-                    }
-
-                    return true;
-                },
-                'field_type' => TextType::class,
+            ->add('redeemedTime', DateTimeRangeFilter::class, [
+                'field_type' => DateRangePickerType::class,
+                'field_options' => [
+                    'field_options' => [
+                        'format' => 'dd.MM.yyyy'
+                    ]
+                ]
             ]);
     }
 
