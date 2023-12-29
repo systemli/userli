@@ -2,6 +2,7 @@
 
 * Adjust Admin List Order
 * Add __toString methods to Entities
+* Improve fixture loading while increasing the number of fixtures
 
 # 3.3.1 (2023.11.12)
 
@@ -60,7 +61,7 @@
 
 # 2.7.17 (2021.12.30)
 
-* Set creationTime and updatedTime in all entity constructors (Fixes #207) 
+* Set creationTime and updatedTime in all entity constructors (Fixes #207)
 * Update to symfony 4.3.36
 * Update dependencies
 
@@ -145,8 +146,8 @@
 # 2.7.3 (2020.10.21)
 
 * Improve OpenPGP key import filter:
-  - Keep UIDs with valid email address but without realname
-  - Drop UIDs with invalid email address that have the valid email
+  * Keep UIDs with valid email address but without realname
+  * Drop UIDs with invalid email address that have the valid email
     address in realname
 
 # 2.7.2 (2020.10.21)
