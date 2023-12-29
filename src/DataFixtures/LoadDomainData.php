@@ -24,8 +24,10 @@ class LoadDomainData extends Fixture implements OrderedFixtureInterface
             $domain->setName($name);
 
             $manager->persist($domain);
-            $manager->flush();
         }
+
+        $manager->flush();
+        $manager->clear();
     }
 
     /**

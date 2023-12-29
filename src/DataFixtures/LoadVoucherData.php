@@ -3,26 +3,13 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
-use App\Entity\Voucher;
 use App\Factory\VoucherFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class LoadVoucherData extends Fixture implements OrderedFixtureInterface, ContainerAwareInterface
+class LoadVoucherData extends Fixture implements OrderedFixtureInterface
 {
-    private ContainerInterface $container;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null): void
-    {
-        $this->container = $container;
-    }
-
     /**
      * {@inheritdoc}
      *
@@ -46,6 +33,10 @@ class LoadVoucherData extends Fixture implements OrderedFixtureInterface, Contai
             }
 
             $manager->persist($voucher);
+
+            if (($i % 100) === 0) {
+                $manager->flush();
+            }
         }
 
         // add redeemed voucher to a suspicious parent
@@ -58,6 +49,7 @@ class LoadVoucherData extends Fixture implements OrderedFixtureInterface, Contai
         $manager->persist($voucher);
 
         $manager->flush();
+        $manager->clear();
     }
 
     /**

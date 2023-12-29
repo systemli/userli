@@ -1,0 +1,9 @@
+---
+ignore:
+  - "config"
+  - "features"
+  - "hugo"
+  - "public"
+  - "src/DataFixtures"
+  - "templates"
+  - "tests"
