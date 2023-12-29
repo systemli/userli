@@ -19,7 +19,8 @@ class AliasAdmin extends Admin
 {
     use DomainGuesserAwareTrait;
 
-    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string {
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+    {
         return 'alias';
     }
 
@@ -45,23 +46,10 @@ class AliasAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
-            ->add('source', null, [
-                'show_filter' => true,
-            ])
-            ->add('user', null, [
-                'show_filter' => true,
-            ])
-            ->add('domain', null, [
-                'show_filter' => true,
-            ])
-            ->add('deleted', ChoiceFilter::class, [
-                'field_options' => [
-                    'required' => false,
-                    'choices' => [0 => 'No', 1 => 'Yes'],
-                ],
-                'field_type' => ChoiceType::class,
-                'show_filter' => true,
-            ]);
+            ->add('source')
+            ->add('user')
+            ->add('domain')
+            ->add('deleted');
     }
 
     /**
