@@ -12,15 +12,14 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
-use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\DateTimeRangeFilter;
 use Sonata\Form\Type\BooleanType;
+use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 class UserAdmin extends Admin
 {
@@ -97,26 +96,15 @@ class UserAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
-            ->add('email', null, [
-                'show_filter' => true,
-            ])
-            ->add('domain', null, [
-                'show_filter' => false,
-            ])
-            ->add('registration_since', CallbackFilter::class, [
-                'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
-                    if (isset($value['value']) && null !== $value = $value['value']) {
-                        $qb = $proxyQuery->getQueryBuilder();
-                        $field = sprintf('%s.creationTime', $alias);
-                        $qb->andWhere(sprintf('%s >= :datetime', $field))
-                            ->setParameter('datetime', new DateTime($value))
-                            ->orderBy($field, 'DESC');
-                    }
-
-                    return true;
-                },
-                'field_type' => TextType::class,
-                'show_filter' => true,
+            ->add('email')
+            ->add('domain')
+            ->add('creationTime', DateTimeRangeFilter::class, [
+                'field_type' => DateRangePickerType::class,
+                'field_options' => [
+                    'field_options' => [
+                        'format' => 'dd.MM.yyyy'
+                    ]
+                ]
             ])
             ->add('roles', null, [
                 'field_options' => [
@@ -141,22 +129,8 @@ class UserAdmin extends Admin
                     return true;
                 },
             ])
-            ->add('mailCrypt', ChoiceFilter::class, [
-                'field_options' => [
-                    'required' => false,
-                    'choices' => [0 => 'No', 1 => 'Yes'],
-                ],
-                'field_type' => ChoiceType::class,
-                'show_filter' => true,
-            ])
-            ->add('deleted', ChoiceFilter::class, [
-                'field_options' => [
-                    'required' => false,
-                    'choices' => [0 => 'No', 1 => 'Yes'],
-                ],
-                'field_type' => ChoiceType::class,
-                'show_filter' => true,
-            ]);
+            ->add('mailCrypt')
+            ->add('deleted');
     }
 
     /**
