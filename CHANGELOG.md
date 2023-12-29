@@ -5,6 +5,7 @@
 * Improve fixture loading while increasing the number of fixtures
 * Fix Filters in User Admin
 * Fix Filters in Alias Admin
+* Improve Performance for Alias and Voucher Admin
 
 # 3.3.1 (2023.11.12)
 
