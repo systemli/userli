@@ -9,6 +9,7 @@ use App\Traits\DomainGuesserAwareTrait;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -29,7 +30,7 @@ class AliasAdmin extends Admin
     {
         $form
             ->add('source', EmailType::class)
-            ->add('user', EntityType::class, ['class' => User::class, 'required' => false])
+            ->add('user', ModelAutocompleteType::class, ['property' => 'email', 'required' => false])
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
 
         if ($this->security->isGranted(Roles::ADMIN)) {

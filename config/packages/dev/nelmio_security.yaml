@@ -1,6 +1,3 @@
 nelmio_security:
     csp:
-        enabled: true
-        enforce:
-            default-src:
-              - 'self'
+        enabled: false

@@ -6,17 +6,12 @@ use App\Helper\RandomStringGenerator;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateTimeRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 
 class VoucherAdmin extends Admin
 {
-    protected array $datagridValues = [
-        '_page' => 1,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'creationTime',
-    ];
-
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {
         return 'voucher';
@@ -42,7 +37,7 @@ class VoucherAdmin extends Admin
         }
 
         $form
-            ->add('user', null, ['disabled' => $disabled])
+            ->add('user', ModelAutocompleteType::class, ['disabled' => $disabled, 'property' => 'email'])
             ->add('code', null, ['disabled' => !$this->isNewObject()]);
     }
 
