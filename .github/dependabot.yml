@@ -14,8 +14,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    ignore:
-      - dependency-name: "*"
     allow:
       - dependency-name: "endroid/qr-code"
       - dependency-name: "ircmaxell/password-compat"
@@ -26,6 +24,7 @@ updates:
       - dependency-name: "scheb/*"
       - dependency-name: "sonata-project/*"
       - dependency-name: "tuupola/base32"
+      - dependency-name: "friends-of-behat/*"
     groups:
       php-dependencies:
         patterns:
