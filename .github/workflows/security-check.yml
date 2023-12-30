@@ -6,12 +6,13 @@ on:
   schedule:
     - cron:  '0 8 * * 1'
 
-permissions: read-all
-
 jobs:
   security-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     name: PHP Security Checker
     steps:
-      - uses: actions/checkout@v4
-      - uses: symfonycorp/security-checker-action@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Symfony Security Check
+        uses: symfonycorp/security-checker-action@v5

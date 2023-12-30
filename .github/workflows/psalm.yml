@@ -2,14 +2,12 @@ name: Psalm Static analysis
 
 on: [pull_request]
 
-permissions: read-all
-
 jobs:
   psalm:
     name: Psalm
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Psalm
@@ -17,6 +15,7 @@ jobs:
         with:
           security_analysis: true
           report_file: results.sarif
+
       - name: Upload Security Analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v3
         with:
