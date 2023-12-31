@@ -1,6 +1,7 @@
 sonata_admin:
     title: Userli
     title_logo: 'build/images/logo_small.png'
+    show_mosaic_button: false
     dashboard:
         blocks:
           - position: left
