@@ -6,8 +6,6 @@ on:
     branches:
       - main
 
-permissions: read-all
-
 env:
   DATABASE_DRIVER: pdo_sqlite
   DATABASE_URL: sqlite:///%kernel.project_dir%/var/db_test.sqlite
@@ -30,15 +28,18 @@ env:
 
 jobs:
   unit-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     name: PHPUnit
     strategy:
       fail-fast: false
       matrix:
         php-versions: ['7.4', '8.2']
     steps:
-      - uses: actions/checkout@v4
-      - uses: shivammathur/setup-php@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: openssl, sodium
@@ -76,16 +77,21 @@ jobs:
       matrix:
         php-versions: ['7.4', '8.2']
     steps:
-      - uses: actions/checkout@v4
-      - uses: shivammathur/setup-php@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: openssl, sodium
           tools: composer
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: 'lts/*'
+          cache: 'yarn'
 
       - name: Get composer cache directory
         id: composer-cache
@@ -124,16 +130,21 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: shivammathur/setup-php@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4'
           extensions: openssl, sodium, mysql
           tools: composer
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: 'lts/*'
+          cache: 'yarn'
 
       - name: Get composer cache directory
         id: composer-cache
@@ -171,16 +182,21 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: shivammathur/setup-php@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
           extensions: openssl, sodium, pgsql
           tools: composer
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: 'lts/*'
+          cache: 'yarn'
 
       - name: Get composer cache directory
         id: composer-cache
