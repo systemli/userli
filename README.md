@@ -3,7 +3,6 @@
 [![Integration](https://github.com/systemli/userli/actions/workflows/integration.yml/badge.svg)](https://github.com/systemli/userli/actions/workflows/integration.yml)
 [![Security](https://github.com/systemli/userli/actions/workflows/security-check.yml/badge.svg)](https://github.com/systemli/userli/actions/workflows/security-check.yml)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=systemli_userli&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=systemli_userli) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=systemli_userli&metric=alert_status)](https://sonarcloud.io/dashboard?id=systemli_userli)
-[![Code Coverage](https://codecov.io/gh/systemli/userli/branch/main/graph/badge.svg)](https://codecov.io/gh/systemli/userli)
 [![Translation Status](https://hosted.weblate.org/widgets/userli/-/svg-badge.svg)](https://hosted.weblate.org/widgets/userli/-/svg-badge.svg)
 
 Web application to (self-) manage e-mail users and encrypt their mailboxes.
