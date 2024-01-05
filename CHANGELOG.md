@@ -1,4 +1,4 @@
-# 3.4.0 (UNRELEASED)
+# 3.4.0 (2024.01.05)
 
 * Adjust Admin List Order
 * Add __toString methods to Entities
