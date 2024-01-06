@@ -11,12 +11,6 @@ sonata_admin:
     templates:
         layout: 'Admin/standard_layout.html.twig'
         user_block: 'Admin/user_block.html.twig'
-    assets:
-        # overwrite to remove google fonts
-        remove_stylesheets:
-          - 'bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css'
-        extra_stylesheets:
-          - 'assets/AdminLTE.min.css'
     security:
         handler: sonata.admin.security.handler.role
 
