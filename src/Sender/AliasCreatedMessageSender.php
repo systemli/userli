@@ -12,16 +12,11 @@ use App\Handler\MailHandler;
  */
 class AliasCreatedMessageSender
 {
-    private MailHandler $handler;
-    private AliasCreatedMessageBuilder $builder;
-
     /**
      * AliasCreatedMessageSender constructor.
      */
-    public function __construct(MailHandler $handler, AliasCreatedMessageBuilder $builder)
+    public function __construct(private MailHandler $handler, private AliasCreatedMessageBuilder $builder)
     {
-        $this->handler = $handler;
-        $this->builder = $builder;
     }
 
     /**

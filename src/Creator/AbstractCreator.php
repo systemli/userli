@@ -12,18 +12,11 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 abstract class AbstractCreator
 {
-    private EntityManagerInterface $manager;
-    private ValidatorInterface $validator;
-    protected EventDispatcherInterface $eventDispatcher;
-
     /**
      * AbstractCreator constructor.
      */
-    public function __construct(EntityManagerInterface $manager, ValidatorInterface $validator, EventDispatcherInterface $eventDispatcher)
+    public function __construct(private EntityManagerInterface $manager, private ValidatorInterface $validator, protected EventDispatcherInterface $eventDispatcher)
     {
-        $this->manager = $manager;
-        $this->validator = $validator;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

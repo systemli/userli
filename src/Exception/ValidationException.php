@@ -10,15 +10,8 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class ValidationException extends \Exception
 {
-    /**
-     * @var ConstraintViolationListInterface
-     */
-    private $constraints;
-
-    public function __construct(ConstraintViolationListInterface $constraints)
+    public function __construct(private ConstraintViolationListInterface $constraints)
     {
-        $this->constraints = $constraints;
-
         $messages = [];
         foreach ($constraints as $constraint) {
             /** @var ConstraintViolationInterface $constraint */

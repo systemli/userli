@@ -12,16 +12,11 @@ use Symfony\Component\Security\Core\Security;
 
 class BeforeRequestListener implements EventSubscriberInterface
 {
-    protected EntityManagerInterface $entityManager;
-    protected Security $security;
-
     /**
      * BeforeRequestListener constructor.
      */
-    public function __construct(EntityManagerInterface $entityManager, Security $security)
+    public function __construct(protected EntityManagerInterface $entityManager, protected Security $security)
     {
-        $this->entityManager = $entityManager;
-        $this->security = $security;
     }
 
     public function onKernelRequest(RequestEvent $event): void

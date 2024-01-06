@@ -37,32 +37,11 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class StartController extends AbstractController
 {
-    private AliasHandler $aliasHandler;
-    private PasswordUpdater $passwordUpdater;
-    private VoucherHandler $voucherHandler;
-    private VoucherCreator $voucherCreator;
-    private MailCryptKeyHandler $mailCryptKeyHandler;
-    private EntityManagerInterface $manager;
-    private WkdHandler $wkdHandler;
-
     /**
      * StartController constructor.
      */
-    public function __construct(AliasHandler $aliasHandler,
-                                PasswordUpdater $passwordUpdater,
-                                VoucherHandler $voucherHandler,
-                                VoucherCreator $voucherCreator,
-                                MailCryptKeyHandler $mailCryptKeyHandler,
-                                EntityManagerInterface $manager,
-                                WkdHandler $wkdHandler)
+    public function __construct(private AliasHandler $aliasHandler, private PasswordUpdater $passwordUpdater, private VoucherHandler $voucherHandler, private VoucherCreator $voucherCreator, private MailCryptKeyHandler $mailCryptKeyHandler, private EntityManagerInterface $manager, private WkdHandler $wkdHandler)
     {
-        $this->aliasHandler = $aliasHandler;
-        $this->passwordUpdater = $passwordUpdater;
-        $this->voucherHandler = $voucherHandler;
-        $this->voucherCreator = $voucherCreator;
-        $this->mailCryptKeyHandler = $mailCryptKeyHandler;
-        $this->manager = $manager;
-        $this->wkdHandler = $wkdHandler;
     }
 
     public function indexAction(): Response
@@ -281,7 +260,7 @@ class StartController extends AbstractController
                 $this->voucherCreator->create($user);
 
                 $request->getSession()->getFlashBag()->add('success', 'flashes.voucher-creation-successful');
-            } catch (ValidationException $e) {
+            } catch (ValidationException) {
                 // Should not throw
             }
         }
@@ -333,11 +312,11 @@ class StartController extends AbstractController
         try {
             $openPgpKey = $this->wkdHandler->importKey($key, $user);
             $request->getSession()->getFlashBag()->add('success', 'flashes.openpgp-key-upload-successful');
-        } catch (NoGpgDataException $e) {
+        } catch (NoGpgDataException) {
             $request->getSession()->getFlashBag()->add('error', 'flashes.openpgp-key-upload-error-no-openpgp');
-        } catch (NoGpgKeyForUserException $e) {
+        } catch (NoGpgKeyForUserException) {
             $request->getSession()->getFlashBag()->add('error', 'flashes.openpgp-key-upload-error-no-keys');
-        } catch (MultipleGpgKeysForUserException $e) {
+        } catch (MultipleGpgKeysForUserException) {
             $request->getSession()->getFlashBag()->add('error', 'flashes.openpgp-key-upload-error-multiple-keys');
         }
 

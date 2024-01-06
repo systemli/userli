@@ -14,15 +14,8 @@ use Twig\Environment;
  */
 class TwigGlobalListener implements EventSubscriberInterface
 {
-    // https://stackoverflow.com/questions/54117732/how-to-define-global-variables-for-twig-templates-with-values-coming-from-the-db
-
-    private Environment $twig;
-    private EntityManagerInterface $manager;
-
-    public function __construct(Environment $twig, EntityManagerInterface $manager)
+    public function __construct(private Environment $twig, private EntityManagerInterface $manager)
     {
-        $this->twig = $twig;
-        $this->manager = $manager;
     }
 
     public function injectGlobalVariables(ControllerEvent $event): void

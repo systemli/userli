@@ -10,20 +10,11 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class MenuBuilder
 {
-    private FactoryInterface $factory;
-    private AuthorizationCheckerInterface $authChecker;
-    private MenuHelper $menuHelper;
-    private array $navbarLeft;
-
     /**
      * Constructor.
      */
-    public function __construct(FactoryInterface $factory, AuthorizationCheckerInterface $authChecker, MenuHelper $menuHelper, array $navbarLeft)
+    public function __construct(private FactoryInterface $factory, private AuthorizationCheckerInterface $authChecker, private MenuHelper $menuHelper, private array $navbarLeft)
     {
-        $this->factory = $factory;
-        $this->authChecker = $authChecker;
-        $this->menuHelper = $menuHelper;
-        $this->navbarLeft = $navbarLeft;
     }
 
     public function createNavbarLeft(): ItemInterface

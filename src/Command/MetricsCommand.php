@@ -24,15 +24,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class MetricsCommand extends Command
 {
-    private EntityManagerInterface $manager;
-
     /**
      * MetricsCommand constructor.
      */
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(private EntityManagerInterface $manager)
     {
         parent::__construct();
-        $this->manager = $manager;
     }
 
     /**

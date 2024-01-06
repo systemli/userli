@@ -11,15 +11,12 @@ use Symfony\Component\Console\Question\Question;
 
 class AdminPasswordCommand extends Command
 {
-    private AdminPasswordUpdater $updater;
-
     /**
      * AdminPasswordCommand constructor.
      */
-    public function __construct(AdminPasswordUpdater $updater)
+    public function __construct(private AdminPasswordUpdater $updater)
     {
         parent::__construct();
-        $this->updater = $updater;
     }
 
     public function configure(): void

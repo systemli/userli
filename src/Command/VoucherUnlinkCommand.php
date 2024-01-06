@@ -15,13 +15,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class VoucherUnlinkCommand extends Command
 {
-    private EntityManagerInterface $manager;
-    private SuspiciousChildrenHandler $handler;
-
-    public function __construct(EntityManagerInterface $manager, SuspiciousChildrenHandler $handler)
+    public function __construct(private EntityManagerInterface $manager, private SuspiciousChildrenHandler $handler)
     {
-        $this->manager = $manager;
-        $this->handler = $handler;
         parent::__construct();
     }
 

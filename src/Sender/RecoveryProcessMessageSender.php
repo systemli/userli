@@ -11,16 +11,11 @@ use App\Handler\MailHandler;
  */
 class RecoveryProcessMessageSender
 {
-    private MailHandler $handler;
-    private RecoveryProcessMessageBuilder $builder;
-
     /**
      * RecoveryProcessMessageSender constructor.
      */
-    public function __construct(MailHandler $handler, RecoveryProcessMessageBuilder $builder)
+    public function __construct(private MailHandler $handler, private RecoveryProcessMessageBuilder $builder)
     {
-        $this->handler = $handler;
-        $this->builder = $builder;
     }
 
     /**

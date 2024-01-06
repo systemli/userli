@@ -9,18 +9,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class RecoveryProcessMessageBuilder
 {
-    private TranslatorInterface $translator;
-    private string $appUrl;
-    private string $projectName;
-
     /**
      * RecoveryProcessMessageBuilder constructor.
      */
-    public function __construct(TranslatorInterface $translator, string $appUrl, string $projectName)
+    public function __construct(private TranslatorInterface $translator, private string $appUrl, private string $projectName)
     {
-        $this->translator = $translator;
-        $this->appUrl = $appUrl;
-        $this->projectName = $projectName;
     }
 
     public function buildBody(string $locale, string $email, string $time): string

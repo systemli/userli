@@ -10,22 +10,11 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class UserRegistrationInfoHandler
 {
-    private EntityManagerInterface $manager;
-    private MailHandler $handler;
-    private \Twig_Environment $twig;
-    private string $to;
-
     /**
      * UserRegistrationInfoHandler constructor.
-     *
-     * @param string $to
      */
-    public function __construct(EntityManagerInterface $manager, MailHandler $handler, \Twig_Environment $twig, $to)
+    public function __construct(private EntityManagerInterface $manager, private MailHandler $handler, private \Twig_Environment $twig, private string $to)
     {
-        $this->manager = $manager;
-        $this->handler = $handler;
-        $this->twig = $twig;
-        $this->to = $to;
     }
 
     /**

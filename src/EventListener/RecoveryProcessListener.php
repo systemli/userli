@@ -10,18 +10,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class RecoveryProcessListener implements EventSubscriberInterface
 {
-    private RequestStack $request;
-    private RecoveryProcessMessageSender $sender;
-    private bool $sendMail;
-
     /**
      * RecoveryProcessListener constructor.
      */
-    public function __construct(RequestStack $request, RecoveryProcessMessageSender $sender, bool $sendMail)
+    public function __construct(private RequestStack $request, private RecoveryProcessMessageSender $sender, private bool $sendMail)
     {
-        $this->request = $request;
-        $this->sender = $sender;
-        $this->sendMail = $sendMail;
     }
 
     /**

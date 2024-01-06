@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="virtual_domains")
  * @ORM\HasLifecycleCallbacks()
  */
-class Domain
+class Domain implements \Stringable
 {
     use IdTrait;
     use CreationTimeTrait;

@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping\Index;
  * })
  * @ORM\HasLifecycleCallbacks()
  */
-class Alias implements SoftDeletableInterface
+class Alias implements SoftDeletableInterface, \Stringable
 {
     use IdTrait;
     use CreationTimeTrait;
@@ -81,7 +81,7 @@ class Alias implements SoftDeletableInterface
         $this->destination = null;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         if ($this->source === null) {
             return '';

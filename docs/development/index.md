@@ -51,8 +51,8 @@ Visit you local instance at http://192.168.60.99/.
 # spin up mariadb
 docker-compose up -d
 
-brew install php@7.4
-export PATH="/opt/homebrew/opt/php@7.4/bin:$PATH"
+brew install php@8.0
+export PATH="/opt/homebrew/opt/php@8.0/bin:$PATH"
 
 # install dependencies and run composer scripts
 composer install --ignore-platform-reqs

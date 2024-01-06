@@ -4,7 +4,7 @@
     "license": "AGPL-3.0-or-later",
     "description": "Web application to (self-) manage email users and encrypt their mailboxes.",
     "require": {
-        "php": "^7.4",
+        "php": "^8.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-openssl": ">=7.1",
@@ -53,6 +53,7 @@
         "friends-of-behat/mink-browserkit-driver": "^1.6",
         "friends-of-behat/mink-extension": "^2.7",
         "friends-of-behat/symfony-extension": "^2.0",
+        "rector/rector": "^0.18.13",
         "symfony/debug-bundle": "*",
         "symfony/phpunit-bridge": "*",
         "symfony/stopwatch": "*",
@@ -68,7 +69,7 @@
         },
         "sort-packages": true,
         "platform": {
-            "php": "7.4.28"
+            "php": "8.0.30"
         },
         "allow-plugins": {
             "composer/package-versions-deprecated": true,

@@ -15,14 +15,11 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class RegistrationController extends AbstractController
 {
-    private RegistrationHandler $registrationHandler;
-
     /**
      * RegistrationController constructor.
      */
-    public function __construct(RegistrationHandler $registrationHandler)
+    public function __construct(private RegistrationHandler $registrationHandler)
     {
-        $this->registrationHandler = $registrationHandler;
     }
 
     /**

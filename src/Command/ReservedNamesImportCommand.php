@@ -13,13 +13,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ReservedNamesImportCommand extends Command
 {
-    private EntityManagerInterface $manager;
-    private ReservedNameCreator $creator;
-
-    public function __construct(EntityManagerInterface $manager, ReservedNameCreator $creator)
+    public function __construct(private EntityManagerInterface $manager, private ReservedNameCreator $creator)
     {
-        $this->manager = $manager;
-        $this->creator = $creator;
         parent::__construct();
     }
 

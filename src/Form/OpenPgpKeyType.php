@@ -20,12 +20,8 @@ class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
 {
     public const NAME = 'upload_openpgp_key';
 
-    /** @var TranslatorInterface */
-    private $translator;
-
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(private TranslatorInterface $translator)
     {
-        $this->translator = $translator;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void

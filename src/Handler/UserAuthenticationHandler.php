@@ -12,16 +12,11 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 class UserAuthenticationHandler
 {
-    private PasswordHasherFactoryInterface $passwordHasherFactory;
-    protected EventDispatcherInterface $eventDispatcher;
-
     /**
      * UserAuthenticationHandler constructor.
      */
-    public function __construct(PasswordHasherFactoryInterface $passwordHasherFactory, EventDispatcherInterface $eventDispatcher)
+    public function __construct(private PasswordHasherFactoryInterface $passwordHasherFactory, protected EventDispatcherInterface $eventDispatcher)
     {
-        $this->passwordHasherFactory = $passwordHasherFactory;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function authenticate(User $user, string $password): ?User

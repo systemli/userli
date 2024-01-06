@@ -14,13 +14,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class OpenPgpExportKeysCommand extends Command
 {
-    private WkdHandler $handler;
     private DomainRepository $domainRepository;
     private OpenPgpKeyRepository $openPgpKeyRepository;
 
-    public function __construct(EntityManagerInterface $manager, WkdHandler $handler)
+    public function __construct(EntityManagerInterface $manager, private WkdHandler $handler)
     {
-        $this->handler = $handler;
         $this->domainRepository = $manager->getRepository(Domain::class);
         $this->openPgpKeyRepository = $manager->getRepository(OpenPgpKey::class);
         parent::__construct();

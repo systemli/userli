@@ -12,18 +12,13 @@ use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
 class LocaleListener implements EventSubscriberInterface
 {
-    private array $supportedLocales;
-    private UrlMatcherInterface $urlMatcher;
-
     /**
      * LocaleListener constructor.
      *
      * @param string[] $supportedLocales
      */
-    public function __construct(array $supportedLocales, UrlMatcherInterface $urlMatcher)
+    public function __construct(private array $supportedLocales, private UrlMatcherInterface $urlMatcher)
     {
-        $this->supportedLocales = $supportedLocales;
-        $this->urlMatcher = $urlMatcher;
     }
 
     public function onKernelRequest(RequestEvent $event): void
@@ -49,7 +44,7 @@ class LocaleListener implements EventSubscriberInterface
         try {
             $this->urlMatcher->match($newRoute);
             $event->setResponse(new RedirectResponse($newRoute));
-        } catch (ResourceNotFoundException|MethodNotAllowedException $e) {
+        } catch (ResourceNotFoundException|MethodNotAllowedException) {
             // ignore errors, we just redirect if there was none
         }
     }

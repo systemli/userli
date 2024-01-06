@@ -10,14 +10,11 @@ use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
  */
 class PasswordUpdater
 {
-    private PasswordHasherFactoryInterface $passwordHasherFactory;
-
     /**
      * PasswordUpdater constructor.
      */
-    public function __construct(PasswordHasherFactoryInterface $passwordHasherFactory)
+    public function __construct(private PasswordHasherFactoryInterface $passwordHasherFactory)
     {
-        $this->passwordHasherFactory = $passwordHasherFactory;
     }
 
     public function updatePassword(User $user, string $plainPassword = null): void

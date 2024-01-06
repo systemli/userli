@@ -8,15 +8,8 @@ use Symfony\Component\Mime\Email;
 
 class MailHandler
 {
-    private MailerInterface $mailer;
-    private string $from;
-    private string $name;
-
-    public function __construct(MailerInterface $mailer, string $from, string $name)
+    public function __construct(private MailerInterface $mailer, private string $from, private string $name)
     {
-        $this->mailer = $mailer;
-        $this->from = $from;
-        $this->name = $name;
     }
 
     public function send(string $email, string $plain, string $subject, array $params = []): void

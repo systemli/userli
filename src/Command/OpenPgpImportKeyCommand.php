@@ -12,11 +12,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class OpenPgpImportKeyCommand extends Command
 {
-    private WkdHandler $handler;
-
-    public function __construct(WkdHandler $handler)
+    public function __construct(private WkdHandler $handler)
     {
-        $this->handler = $handler;
         parent::__construct();
     }
 

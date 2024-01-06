@@ -15,14 +15,11 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class UserProvider implements UserProviderInterface
 {
-    private EntityManagerInterface $manager;
-
     /**
      * UserProvider constructor.
      */
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(private EntityManagerInterface $manager)
     {
-        $this->manager = $manager;
     }
 
     /**
@@ -38,7 +35,7 @@ class UserProvider implements UserProviderInterface
      */
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        if (false === strpos($identifier, '@')) {
+        if (!str_contains($identifier, '@')) {
             $defaultDomain = $this->manager->getRepository(Domain::class)->getDefaultDomain();
             $identifier = sprintf('%s@%s', $identifier, $defaultDomain);
         }
@@ -58,7 +55,7 @@ class UserProvider implements UserProviderInterface
     public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Expected an instance of App\Entity\User, but got "%s".', get_class($user)));
+            throw new UnsupportedUserException(sprintf('Expected an instance of App\Entity\User, but got "%s".', $user::class));
         }
 
         if (null === $reloadedUser = $this->manager->getRepository(User::class)->findOneBy(['id' => $user->getId()])) {

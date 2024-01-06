@@ -13,16 +13,11 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class UsersRemoveCommand extends Command
 {
-    private EntityManagerInterface $manager;
-    private string $mailLocation;
-
-    public function __construct(EntityManagerInterface $manager,
-                                string $mailLocation,
+    public function __construct(private EntityManagerInterface $manager,
+                                private string $mailLocation,
                                 ?string $name = null)
     {
         parent::__construct($name);
-        $this->manager = $manager;
-        $this->mailLocation = $mailLocation;
     }
 
     /**

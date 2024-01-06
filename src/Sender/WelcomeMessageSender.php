@@ -13,17 +13,13 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class WelcomeMessageSender
 {
-    private MailHandler $handler;
-    private WelcomeMessageBuilder $builder;
     private $domain;
 
     /**
      * WelcomeMessageSender constructor.
      */
-    public function __construct(MailHandler $handler, WelcomeMessageBuilder $builder, EntityManagerInterface $manager)
+    public function __construct(private MailHandler $handler, private WelcomeMessageBuilder $builder, EntityManagerInterface $manager)
     {
-        $this->handler = $handler;
-        $this->builder = $builder;
         $domain = $manager->getRepository(Domain::class)->getDefaultDomain();
         $this->domain = null !== $domain ? $domain->getName() : '';
     }

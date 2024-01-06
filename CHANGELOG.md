@@ -1,6 +1,7 @@
 # 3.4.1 (UNRELEASED)
 
 * Fix CSP Settings for Sonata Admin
+* Make Project PHP 8 ready
 
 # 3.4.0 (2024.01.05)
 

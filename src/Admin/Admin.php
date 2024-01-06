@@ -8,14 +8,11 @@ use Symfony\Component\Security\Core\Security;
 
 abstract class Admin extends AbstractAdmin
 {
-    protected Security $security;
-
     /**
      * Admin constructor.
      */
-    public function __construct(string $code, string $class, string $baseControllerName, Security $security)
+    public function __construct(string $code, string $class, string $baseControllerName, protected Security $security)
     {
-        $this->security = $security;
         parent::__construct($code, $class, $baseControllerName);
     }
 

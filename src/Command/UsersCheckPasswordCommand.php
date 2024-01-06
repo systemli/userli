@@ -19,35 +19,21 @@ use Symfony\Component\Process\Process;
 
 class UsersCheckPasswordCommand extends Command
 {
-    private FileDescriptorReader $reader;
-    private UserAuthenticationHandler $handler;
     private UserRepository $repository;
-    private MailCryptKeyHandler $mailCryptKeyHandler;
-    private int $mailCrypt;
-    private int $mailUid;
-    private int $mailGid;
-    private string $mailLocation;
 
     /**
      * UsersCheckPasswordCommand constructor.
      */
     public function __construct(EntityManagerInterface $manager,
-                                FileDescriptorReader $reader,
-                                UserAuthenticationHandler $handler,
-                                MailCryptKeyHandler $mailCryptKeyHandler,
-                                int $mailCrypt,
-                                int $mailUid,
-                                int $mailGid,
-                                string $mailLocation)
+                                private FileDescriptorReader $reader,
+                                private UserAuthenticationHandler $handler,
+                                private MailCryptKeyHandler $mailCryptKeyHandler,
+                                private int $mailCrypt,
+                                private int $mailUid,
+                                private int $mailGid,
+                                private string $mailLocation)
     {
-        $this->reader = $reader;
-        $this->handler = $handler;
         $this->repository = $manager->getRepository(User::class);
-        $this->mailCryptKeyHandler = $mailCryptKeyHandler;
-        $this->mailCrypt = $mailCrypt;
-        $this->mailLocation = $mailLocation;
-        $this->mailUid = $mailUid;
-        $this->mailGid = $mailGid;
         parent::__construct();
     }
 
@@ -189,7 +175,7 @@ class UsersCheckPasswordCommand extends Command
         $replyProcess->setEnv(array_merge(getenv(), $envVars));
         try {
             $replyProcess->run();
-        } catch (ProcessFailedException $e) {
+        } catch (ProcessFailedException) {
             throw new \Exception(sprintf('Error at executing checkpassword-reply command %s: %s', $replyCommand, $replyProcess->getErrorOutput()));
         }
 

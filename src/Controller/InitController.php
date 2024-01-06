@@ -21,15 +21,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class InitController extends AbstractController
 {
-    private EntityManagerInterface $manager;
-    private AdminPasswordUpdater $updater;
-    private DomainCreator $creator;
-
-    public function __construct(EntityManagerInterface $manager, AdminPasswordUpdater $updater, DomainCreator $creator)
+    public function __construct(private EntityManagerInterface $manager, private AdminPasswordUpdater $updater, private DomainCreator $creator)
     {
-        $this->manager = $manager;
-        $this->updater = $updater;
-        $this->creator = $creator;
     }
 
     /**

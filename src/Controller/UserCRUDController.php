@@ -12,13 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserCRUDController extends CRUDController
 {
-    private DeleteHandler $deleteHandler;
-    private VoucherRemover $voucherRemover;
-
-    public function __construct(DeleteHandler $deleteHandler, VoucherRemover $voucherRemover)
+    public function __construct(private DeleteHandler $deleteHandler, private VoucherRemover $voucherRemover)
     {
-        $this->deleteHandler = $deleteHandler;
-        $this->voucherRemover = $voucherRemover;
     }
 
     public function batchActionRemoveVouchers(ProxyQueryInterface $query): RedirectResponse

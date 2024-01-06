@@ -6,16 +6,13 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class OptionalDomainEmailTransformer implements DataTransformerInterface
 {
-    private string $domain;
-
     /**
      * Constructor.
      *
      * @param $domain
      */
-    public function __construct($domain)
+    public function __construct(private string $domain)
     {
-        $this->domain = $domain;
     }
 
     /**
@@ -46,7 +43,7 @@ class OptionalDomainEmailTransformer implements DataTransformerInterface
             return '';
         }
 
-        if (false !== strpos($value, '@')) {
+        if (str_contains($value, '@')) {
             return $value;
         }
 

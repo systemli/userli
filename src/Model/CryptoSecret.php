@@ -9,22 +9,11 @@ class CryptoSecret
     use SaltTrait;
 
     /**
-     * @var string
-     */
-    private $nonce;
-    /**
-     * @var string
-     */
-    private $secret;
-
-    /**
      * CryptoSecret constructor.
      */
-    public function __construct(string $salt, string $nonce, string $secret)
+    public function __construct(string $salt, private string $nonce, private string $secret)
     {
         $this->salt = $salt;
-        $this->nonce = $nonce;
-        $this->secret = $secret;
     }
 
     public function getNonce(): string
