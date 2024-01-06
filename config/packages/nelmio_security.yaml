@@ -8,11 +8,13 @@ nelmio_security:
         enabled: true
         enforce:
             default-src:
-            - 'none'
+            - 'self'
             script-src:
             - 'self'
+            - 'unsafe-inline'
             style-src:
             - 'self'
+            - 'unsafe-inline'
             font-src:
             - 'self'
             img-src:

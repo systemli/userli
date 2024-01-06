@@ -1,3 +1,0 @@
-nelmio_security:
-    csp:
-        enabled: false
