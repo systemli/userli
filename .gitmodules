@@ -13,9 +13,6 @@
 [submodule "ansible/roles/systemli.dovecot"]
 	path = ansible/roles/systemli.dovecot
 	url = https://github.com/systemli/ansible-role-dovecot.git
-[submodule "hugo/themes/docdock"]
-	path = hugo/themes/docdock
-	url = https://github.com/vjeantet/hugo-theme-docdock.git
 [submodule "ansible/roles/geerlingguy.php"]
 	path = ansible/roles/geerlingguy.php
 	url = https://github.com/geerlingguy/ansible-role-php.git

@@ -31,8 +31,6 @@ translations/
 /vendor/
 ###< symfony/framework-bundle ###
 
-hugo/public/
-
 ###> friends-of-behat/symfony-extension ###
 /behat.yml
 ###< friends-of-behat/symfony-extension ###
