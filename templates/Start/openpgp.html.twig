@@ -67,7 +67,7 @@
                     {% if openpgp_expiretime %}
                         <div>
                             <label>{{ "openpgp.expiretime-label"|trans }}</label>
-                            {{ openpgp_expiretime|format_date('medium', 'short') }}
+                            {{ openpgp_expiretime|date("d.m.Y") }}
                         </div>
                     {% endif %}
                 </div>
