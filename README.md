@@ -9,7 +9,7 @@
 
 Web application to (self-) manage e-mail users and encrypt their mailboxes.
 
-![index](hugo/static/images/index.png)
+![index](docs/assets/images/index.png)
 
 ## Features
 
@@ -39,7 +39,7 @@ If you're looking for things to work on, take a look in
 the ["good first
 issues"](https://github.com/systemli/userli/labels/good%20first%20issue).
 There, you can also [report a bug or suggest an enhancement](https://github.com/systemli/userli/issues/new).
-You could also [improve our documentation](https://github.com/systemli/userli/blob/main/hugo/content/_index.md) or [provide new
+You could also [improve our documentation](https://github.com/systemli/userli/blob/main/docs/index.md) or [provide new
 translations](https://hosted.weblate.org/engage/userli/).
 If you want to do  something else - it's totally fine. Any contribution is very welcome.
 

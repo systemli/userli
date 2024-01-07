@@ -1,0 +1,53 @@
+---
+site_name: Userli
+site_author: Systemli
+repo_url: https://github.com/systemli/userli
+
+nav:
+  - Home: index.md
+  - Development:
+      - Development: development/index.md
+      - "Code of Conduct": development/code_of_conduct.md
+      - Icons: development/icons.md
+      - Release: development/release.md
+      - Tests: development/tests.md
+  - "Getting started": getting-started/index.md
+  - Installation:
+      - Installation: installation/index.md
+      - Checkpassword: installation/checkpassword.md
+      - Commands: installation/commands.md
+      - Configuration: installation/configuration.md
+      - Customize: installation/customize.md
+      - Database: installation/database.md
+      - Finalize: installation/finalize.md
+      - Webserver: installation/webserver.md
+  - MailCrypt:
+      - MailCrypt: mail_crypt/index.md
+      - Details: mail_crypt/details.md
+      - Legacy: mail_crypt/legacy.md
+  - Screenshots: screenshots/index.md
+  - Update: update/index.md
+  - "Web Key Directory": wkd/index.md
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+  logo: assets/logo.png
+  favicon: assets/logo.png
+  palette:
+    primary: "blue"
+    accent: "blue"
+
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/solid/globe
+      link: https://www.systemli.org
+    - icon: fontawesome/brands/github
+      link: https://github.com/systemli
+
+markdown_extensions:
+  - admonition

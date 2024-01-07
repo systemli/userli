@@ -1,0 +1,20 @@
+name: Documentation
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  mkdocs:
+    name: Build & Deploy Documentation
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Deploy Documentation
+        uses: mhausenblas/mkdocs-deploy-gh-pages@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CONFIG_FILE: mkdocs.yml
