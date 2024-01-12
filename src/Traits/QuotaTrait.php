@@ -2,12 +2,12 @@
 
 namespace App\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
+
 trait QuotaTrait
 {
-    /**
-     * @var int|null
-     */
-    private $quota;
+    /** @ORM\Column(nullable=true) */
+    private ?int $quota = null;
 
     public function getQuota(): ?int
     {

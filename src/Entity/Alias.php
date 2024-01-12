@@ -9,26 +9,39 @@ use App\Traits\IdTrait;
 use App\Traits\RandomTrait;
 use App\Traits\UpdatedTimeTrait;
 use App\Traits\UserAwareTrait;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\AssociationOverride;
+use Doctrine\ORM\Mapping\Index;
 
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\AliasRepository")
+ * @ORM\Table(name="virtual_aliases", indexes={
+ *     @Index(name="source_deleted_idx", columns={"source", "deleted"}),
+ *     @Index(name="destination_deleted_idx", columns={"destination", "deleted"}),
+ *     @Index(name="user_deleted_idx", columns={"user_id", "deleted"})
+ * })
+ * @ORM\AssociationOverrides({
+ *     @AssociationOverride(name="domain", joinColumns=@ORM\JoinColumn(
+ *         nullable=true
+ *     ))
+ * })
+ * @ORM\HasLifecycleCallbacks()
+ */
 class Alias implements SoftDeletableInterface
 {
     use IdTrait;
     use CreationTimeTrait;
     use UpdatedTimeTrait;
     use DeleteTrait;
-    use DomainAwareTrait;
     use UserAwareTrait;
+    use DomainAwareTrait;
     use RandomTrait;
 
-    /**
-     * @var string
-     */
-    protected $source;
+    /** @ORM\Column() */
+    protected ?string $source = null;
 
-    /**
-     * @var string
-     */
-    protected $destination;
+    /** @ORM\Column(nullable=true) */
+    protected ?string $destination = null;
 
     /**
      * Alias constructor.

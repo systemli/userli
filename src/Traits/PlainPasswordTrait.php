@@ -10,7 +10,7 @@ trait PlainPasswordTrait
     /**
      * @var string|null
      */
-    private $plainPassword;
+    private ?string $plainPassword = null;
 
     public function getPlainPassword(): ?string
     {

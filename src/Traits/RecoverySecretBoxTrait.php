@@ -2,19 +2,19 @@
 
 namespace App\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
+
 trait RecoverySecretBoxTrait
 {
-    /**
-     * @var string|null
-     */
-    private $recoverySecretBox;
+    /** @ORM\Column(type="text", nullable=true) */
+    private ?string $recoverySecretBox = null;
 
     public function getRecoverySecretBox(): ?string
     {
         return $this->recoverySecretBox;
     }
 
-    public function setRecoverySecretBox(string $recoverySecretBox): void
+    public function setRecoverySecretBox(?string $recoverySecretBox): void
     {
         $this->recoverySecretBox = $recoverySecretBox;
     }

@@ -6,7 +6,13 @@ use App\Traits\CreationTimeTrait;
 use App\Traits\IdTrait;
 use App\Traits\NameTrait;
 use App\Traits\UpdatedTimeTrait;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\DomainRepository")
+ * @ORM\Table(name="virtual_domains")
+ * @ORM\HasLifecycleCallbacks()
+ */
 class Domain
 {
     use IdTrait;
@@ -14,9 +20,6 @@ class Domain
     use UpdatedTimeTrait;
     use NameTrait;
 
-    /**
-     * Domain constructor.
-     */
     public function __construct()
     {
         $currentDateTime = new \DateTime();

@@ -2,19 +2,19 @@
 
 namespace App\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
+
 trait LastLoginTimeTrait
 {
-    /**
-     * @var \DateTime|null
-     */
-    private $lastLoginTime;
+    /** @ORM\Column(nullable=true) */
+    private ?\DateTime $lastLoginTime = null;
 
     public function getLastLoginTime(): ?\DateTime
     {
         return $this->lastLoginTime;
     }
 
-    public function setLastLoginTime(\DateTime $LastLoginTime): void
+    public function setLastLoginTime(?\DateTime $LastLoginTime): void
     {
         $this->lastLoginTime = $LastLoginTime;
     }

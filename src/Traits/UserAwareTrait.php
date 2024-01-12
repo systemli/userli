@@ -3,13 +3,12 @@
 namespace App\Traits;
 
 use App\Entity\User;
+use Doctrine\ORM\Mapping as ORM;
 
 trait UserAwareTrait
 {
-    /**
-     * @var User|null
-     */
-    private $user;
+    /** @ORM\ManyToOne(targetEntity="User") */
+    private ?User $user = null;
 
     public function getUser(): ?User
     {

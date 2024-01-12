@@ -64,9 +64,6 @@ class WkdHandlerTest extends TestCase
 
         $handler = $this->createHandler();
         $wkdKey = $handler->importKey(base64_decode($this->keyData), $this->email);
-        // overwrite timestamps as they may differ by a few microseconds
-        $wkdKey->setCreationTime($expected->getCreationTime());
-        $wkdKey->setUpdatedTime($expected->getUpdatedTime());
 
         self::assertEquals($expected, $wkdKey);
         self::assertFileExists($this->wkdPath);
@@ -89,10 +86,6 @@ class WkdHandlerTest extends TestCase
 
         $handler = $this->createHandler();
         $wkdKey = $handler->importKey(base64_decode($this->keyData), $this->email, $user);
-
-        // overwrite timestamps as they may differ by a few microseconds
-        $wkdKey->setCreationTime($expected->getCreationTime());
-        $wkdKey->setUpdatedTime($expected->getUpdatedTime());
 
         self::assertEquals($expected, $wkdKey);
         self::assertFileExists($this->wkdPath);

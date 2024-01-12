@@ -2,12 +2,12 @@
 
 namespace App\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
+
 trait DeleteTrait
 {
-    /**
-     * @var bool;
-     */
-    private $deleted;
+    /** @ORM\Column(options={"default"=false}) */
+    private bool $deleted = false;
 
     public function isDeleted(): bool
     {

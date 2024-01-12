@@ -6,10 +6,7 @@ use App\Entity\Alias;
 
 trait AliasAwareTrait
 {
-    /**
-     * @var Alias|null
-     */
-    private $alias;
+    private ?Alias $alias = null;
 
     public function getAlias(): ?Alias
     {

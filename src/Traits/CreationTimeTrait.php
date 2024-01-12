@@ -2,27 +2,29 @@
 
 namespace App\Traits;
 
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
+
 trait CreationTimeTrait
 {
-    /**
-     * @var \DateTime|null
-     */
-    private $creationTime;
+    /** @ORM\Column() */
+    private ?DateTime $creationTime = null;
 
-    public function getCreationTime(): ?\DateTime
+    public function getCreationTime(): ?DateTime
     {
         return $this->creationTime;
     }
 
-    public function setCreationTime(\DateTime $creationTime): void
+    public function setCreationTime(DateTime $creationTime): void
     {
         $this->creationTime = $creationTime;
     }
 
+    /** @ORM\PrePersist() */
     public function updateCreationTime(): void
     {
         if (null === $this->creationTime) {
-            $this->setCreationTime(new \DateTime());
+            $this->setCreationTime(new DateTime());
         }
     }
 }

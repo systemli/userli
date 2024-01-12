@@ -3,16 +3,15 @@
 namespace App\Traits;
 
 use App\Entity\Voucher;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Trait InvitationVoucherTrait.
  */
 trait InvitationVoucherTrait
 {
-    /**
-     * @var Voucher|null
-     */
-    private $invitationVoucher;
+    /** @ORM\OneToOne(targetEntity="Voucher") */
+    private ?Voucher $invitationVoucher = null;
 
     public function getInvitationVoucher(): ?Voucher
     {

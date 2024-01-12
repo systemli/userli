@@ -2,9 +2,12 @@
 
 namespace App\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
+
 trait EmailTrait
 {
-    private string $email = '';
+    /** @ORM\Column(unique=true) */
+    private ?string $email = '';
 
     public function getEmail(): ?string
     {

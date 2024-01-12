@@ -2,12 +2,12 @@
 
 namespace App\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
+
 trait MailCryptPublicKeyTrait
 {
-    /**
-     * @var string|null
-     */
-    private $mailCryptPublicKey;
+    /** @ORM\Column(type="text", nullable=true) */
+    private ?string $mailCryptPublicKey = null;
 
     public function getMailCryptPublicKey(): ?string
     {

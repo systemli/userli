@@ -10,7 +10,7 @@ trait PlainRecoveryTokenTrait
     /**
      * @var string|null
      */
-    private $plainRecoveryToken;
+    private ?string $plainRecoveryToken = null;
 
     public function getPlainRecoveryToken(): ?string
     {
