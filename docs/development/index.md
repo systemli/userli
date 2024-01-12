@@ -4,14 +4,27 @@
 
 ### Requirements
 
-- [Vagrant](https://vagrantup.com/)
-- [VirtualBox](https://www.virtualbox.org/)
+- [Vagrant](https://vagrantup.com/) to set up a virtual machine as development environment.
+- [VirtualBox](https://www.virtualbox.org/) as a [virtualisation provider](https://developer.hashicorp.com/vagrant/docs/providers/virtualbox) for Vagrant.
+- [Ansible](https://www.ansible.com/) for provisioning the virtual machine.
+
+!!! note
+
+    The provisioning of the development environment is defined in `.Vagrantfile` and `.ansible/playbook.yml`.
+    If you're unfamiliar with Vagrant, you might want to check out its [Quick Start guide](https://developer.hashicorp.com/vagrant/tutorials/getting-started).
 
 ### Start Vagrant box
 
 ````shell
+# pull ansible roles for provisioning:
 git submodule update --init
-vagrant up && vagrant ssh
+
+# start vagrant box.
+# Implies "vagrant up --provision" when run for first time
+vagrant up
+
+## ssh into the virtual environment
+vagrant ssh
 
 # create database and schema
 bin/console doctrine:schema:create
@@ -70,5 +83,3 @@ as some random aliases and vouchers. The domain for all accounts is
 
 If you want to see more details about how the users are created, see
 `src/DataFixtures`.
-
-{{%children style="h2" description="true"%}}
