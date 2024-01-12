@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use DateTime;
 use App\Entity\Alias;
 use App\Entity\User;
 use App\Enum\Roles;
@@ -114,7 +115,7 @@ class AliasAdmin extends Admin
      */
     public function preUpdate($object): void
     {
-        $object->setUpdatedTime(new \DateTime());
+        $object->setUpdatedTime(new DateTime());
         if (null === $object->getDestination()) {
             $object->setDestination($object->getUser());
         }

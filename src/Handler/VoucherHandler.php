@@ -2,6 +2,7 @@
 
 namespace App\Handler;
 
+use DateTime;
 use App\Creator\VoucherCreator;
 use App\Entity\User;
 use App\Entity\Voucher;
@@ -38,7 +39,7 @@ class VoucherHandler
 
         $vouchers = $this->repository->findByUser($user);
 
-        if (null !== $user->getLastLoginTime() && count($vouchers) < self::VOUCHER_LIMIT && $user->getCreationTime() <= new \DateTime('-7 days')) {
+        if (null !== $user->getLastLoginTime() && count($vouchers) < self::VOUCHER_LIMIT && $user->getCreationTime() <= new DateTime('-7 days')) {
             for ($i = count($vouchers); $i < self::VOUCHER_LIMIT; ++$i) {
                 try {
                     $vouchers[] = $this->creator->create($user);

@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use Exception;
 use App\Traits\SaltTrait;
 
 class CryptoSecret
@@ -32,7 +33,7 @@ class CryptoSecret
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public static function decode(string $encrypted): self
     {
@@ -40,12 +41,12 @@ class CryptoSecret
 
         // check for general failures
         if (false === $decoded) {
-            throw new \Exception('Base64 decoding of encrypted message failed');
+            throw new Exception('Base64 decoding of encrypted message failed');
         }
 
         // check for incomplete message
         if (mb_strlen($decoded, '8bit') < (SODIUM_CRYPTO_PWHASH_SALTBYTES + SODIUM_CRYPTO_SECRETBOX_NONCEBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES)) {
-            throw new \Exception('The encrypted message was truncated');
+            throw new Exception('The encrypted message was truncated');
         }
 
         $salt = mb_substr($decoded, 0, SODIUM_CRYPTO_PWHASH_SALTBYTES, '8bit');

@@ -2,6 +2,7 @@
 
 namespace App\Handler;
 
+use Exception;
 use App\Model\CryptoSecret;
 
 class CryptoSecretHandler
@@ -12,9 +13,8 @@ class CryptoSecretHandler
      * * https://www.zimuel.it/slides/phpday2018/sodium
      * * https://paragonie.com/blog/2017/06/libsodium-quick-reference-quick-comparison-similar-functions-and-which-one-use.
      */
-
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public static function create(string $message, string $password): CryptoSecret
     {
@@ -44,12 +44,12 @@ class CryptoSecretHandler
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public static function decrypt(CryptoSecret $cryptoSecret, string $password): ?string
     {
         if (null === $cryptoSecret->getSalt()) {
-            throw new \Exception('salt should not be null');
+            throw new Exception('salt should not be null');
         }
 
         // generate symmetric encryption key from password and salt

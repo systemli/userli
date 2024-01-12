@@ -2,6 +2,7 @@
 
 namespace App\Admin;
 
+use Exception;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Handler\MailCryptKeyHandler;
@@ -178,7 +179,7 @@ class UserAdmin extends Admin
     /**
      * @param User $object
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function prePersist($object): void
     {

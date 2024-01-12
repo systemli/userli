@@ -12,6 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UsersQuotaCommand extends Command
 {
+    protected static $defaultName = 'app:users:quota';
     private UserRepository $repository;
 
     public function __construct(EntityManagerInterface $manager)
@@ -26,7 +27,6 @@ class UsersQuotaCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:users:quota')
             ->setDescription('Get quota of user if set')
             ->addArgument(
                 'email',

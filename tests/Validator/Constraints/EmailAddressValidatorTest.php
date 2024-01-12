@@ -2,6 +2,7 @@
 
 namespace App\Tests\Validator\Constraints;
 
+use stdClass;
 use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\ReservedName;
@@ -86,7 +87,7 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
     public function testExpectsStringCompatibleType(): void
     {
         $this->expectException(UnexpectedTypeException::class);
-        $this->validator->validate(new \stdClass(), new EmailAddress());
+        $this->validator->validate(new stdClass(), new EmailAddress());
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Stringable;
+use DateTime;
 use App\Traits\CreationTimeTrait;
 use App\Traits\DeleteTrait;
 use App\Traits\DomainAwareTrait;
@@ -27,7 +29,7 @@ use Doctrine\ORM\Mapping\Index;
  * })
  * @ORM\HasLifecycleCallbacks()
  */
-class Alias implements SoftDeletableInterface, \Stringable
+class Alias implements SoftDeletableInterface, Stringable
 {
     use IdTrait;
     use CreationTimeTrait;
@@ -50,7 +52,7 @@ class Alias implements SoftDeletableInterface, \Stringable
     {
         $this->deleted = false;
         $this->random = false;
-        $currentDateTime = new \DateTime();
+        $currentDateTime = new DateTime();
         $this->creationTime = $currentDateTime;
         $this->updatedTime = $currentDateTime;
     }

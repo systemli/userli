@@ -2,29 +2,31 @@
 
 namespace App\Traits;
 
+use DateTime;
+use Exception;
 use Doctrine\ORM\Mapping as ORM;
 
 trait RecoveryStartTimeTrait
 {
     /** @ORM\Column(nullable=true) */
-    private ?\DateTime $recoveryStartTime = null;
+    private ?DateTime $recoveryStartTime = null;
 
-    public function getRecoveryStartTime(): ?\DateTime
+    public function getRecoveryStartTime(): ?DateTime
     {
         return $this->recoveryStartTime;
     }
 
-    public function setRecoveryStartTime(\DateTime $recoveryStartTime): void
+    public function setRecoveryStartTime(DateTime $recoveryStartTime): void
     {
         $this->recoveryStartTime = $recoveryStartTime;
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function updateRecoveryStartTime(): void
     {
-        $this->setRecoveryStartTime(new \DateTime());
+        $this->setRecoveryStartTime(new DateTime());
     }
 
     public function eraseRecoveryStartTime(): void

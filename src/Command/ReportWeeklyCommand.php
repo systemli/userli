@@ -12,6 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ReportWeeklyCommand extends Command
 {
+    protected static $defaultName = 'app:report:weekly';
     public function __construct(private UserRegistrationInfoHandler $handler)
     {
         parent::__construct();
@@ -23,7 +24,6 @@ class ReportWeeklyCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:report:weekly')
             ->setDescription('Send weekly report to all admins');
     }
 

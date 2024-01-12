@@ -2,6 +2,7 @@
 
 namespace App\Sender;
 
+use Exception;
 use App\Builder\AliasCreatedMessageBuilder;
 use App\Entity\Alias;
 use App\Entity\User;
@@ -20,12 +21,12 @@ class AliasCreatedMessageSender
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function send(User $user, Alias $alias, string $locale): void
     {
         if (null === $email = $user->getEmail()) {
-            throw new \Exception('Email should not be null');
+            throw new Exception('Email should not be null');
         }
 
         $body = $this->builder->buildBody($locale, $email, $alias->getSource());

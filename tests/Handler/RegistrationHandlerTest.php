@@ -2,6 +2,7 @@
 
 namespace App\Tests\Handler;
 
+use Exception;
 use App\Form\Model\Registration;
 use App\Guesser\DomainGuesser;
 use App\Handler\MailCryptKeyHandler;
@@ -25,7 +26,7 @@ class RegistrationHandlerTest extends TestCase
 
         $handler = new RegistrationHandler($manager, $domainGuesser, $eventDispatcher, $passwordUpdater, $mailCryptKeyHandler, $recoveryTokenHandler, false, 2);
 
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $handler->handle(new Registration());
     }
 }

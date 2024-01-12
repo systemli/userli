@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Stringable;
+use DateTime;
 use App\Traits\CreationTimeTrait;
 use App\Traits\IdTrait;
 use App\Traits\UserAwareTrait;
@@ -14,14 +16,14 @@ use Doctrine\ORM\Mapping\Index;
  *     @Index(name="code_idx", columns={"code"})
  * })
  */
-class Voucher implements \Stringable
+class Voucher implements Stringable
 {
     use IdTrait;
     use CreationTimeTrait;
     use UserAwareTrait;
 
     /** @ORM\Column(nullable=true) */
-    protected ?\DateTime $redeemedTime = null;
+    protected ?DateTime $redeemedTime = null;
 
     /** @ORM\Column(unique=true) */
     protected ?string $code = null;
@@ -30,16 +32,16 @@ class Voucher implements \Stringable
 
     public function __construct()
     {
-        $currentDateTime = new \DateTime();
+        $currentDateTime = new DateTime();
         $this->creationTime = $currentDateTime;
     }
 
-    public function getRedeemedTime(): ?\DateTime
+    public function getRedeemedTime(): ?DateTime
     {
         return $this->redeemedTime;
     }
 
-    public function setRedeemedTime(?\DateTime $redeemedTime): void
+    public function setRedeemedTime(?DateTime $redeemedTime): void
     {
         $this->redeemedTime = $redeemedTime;
     }

@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use Exception;
 use App\Event\RecoveryProcessEvent;
 use App\Event\UserEvent;
 use App\Sender\RecoveryProcessMessageSender;
@@ -28,7 +29,7 @@ class RecoveryProcessListener implements EventSubscriberInterface
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function onRecoveryProcessStarted(UserEvent $event): void
     {
@@ -37,7 +38,7 @@ class RecoveryProcessListener implements EventSubscriberInterface
         }
 
         if (null === $user = $event->getUser()) {
-            throw new \Exception('User should not be null');
+            throw new Exception('User should not be null');
         }
         $locale = $this->request->getCurrentRequest()->getLocale();
 

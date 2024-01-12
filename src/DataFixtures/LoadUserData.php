@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use Exception;
+use DateTime;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
@@ -27,6 +29,9 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
     ];
 
     private ContainerInterface $container;
+    public function __construct(private PasswordUpdater $passwordUpdater)
+    {
+    }
 
     /**
      * {@inheritdoc}
@@ -39,7 +44,7 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
     /**
      * {@inheritdoc}
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function load(ObjectManager $manager): void
     {
@@ -62,7 +67,7 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
 
     private function getPasswordUpdater(): PasswordUpdater
     {
-        return $this->container->get(PasswordUpdater::class);
+        return $this->passwordUpdater;
     }
 
     private function buildUser(Domain $domain, string $email, array $roles): User
@@ -96,7 +101,7 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function loadRandomUsers(ObjectManager $manager): void
     {
@@ -108,7 +113,7 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
             $email = sprintf('user-%d@%s', $i, $domain->getName());
 
             $user = $this->buildUser($domain, $email, $roles);
-            $user->setCreationTime(new \DateTime(sprintf('-%s days', random_int(1, 25))));
+            $user->setCreationTime(new DateTime(sprintf('-%s days', random_int(1, 25))));
 
             if (0 === $i % 20) {
                 $user->setDeleted(true);

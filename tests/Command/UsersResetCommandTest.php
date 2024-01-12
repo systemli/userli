@@ -2,6 +2,7 @@
 
 namespace App\Tests\Command;
 
+use Exception;
 use App\Command\UsersResetCommand;
 use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
@@ -85,7 +86,7 @@ class UsersResetCommandTest extends TestCase
 
     public function testExecuteShortPassword(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage("The password doesn't comply with our security policy.");
 
         $application = new Application();
@@ -101,7 +102,7 @@ class UsersResetCommandTest extends TestCase
 
     public function testExecutePasswordsDontMatch(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage("The passwords don't match");
 
         $application = new Application();

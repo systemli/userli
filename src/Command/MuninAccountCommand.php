@@ -17,6 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class MuninAccountCommand extends Command
 {
+    protected static $defaultName = 'app:munin:account';
     private UserRepository $userRepository;
     private OpenPgpKeyRepository $openPgpKeyRepository;
 
@@ -33,7 +34,6 @@ class MuninAccountCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:munin:account')
             ->setDescription('Munin plugin for accounts')
             ->addOption('autoconf', null, InputOption::VALUE_NONE, 'autoconf for the plugin')
             ->addOption('config', null, InputOption::VALUE_NONE, 'config for the plugin');

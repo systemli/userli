@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Traversable;
 use App\Handler\DeleteHandler;
 use App\Remover\VoucherRemover;
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -20,7 +21,7 @@ class UserCRUDController extends CRUDController
     {
         $this->admin->checkAccess('edit');
 
-        /** @phpstan-var \Traversable $users */
+        /** @phpstan-var Traversable $users */
         $users = $query->execute();
 
         $this->voucherRemover->removeUnredeemedVouchersByUsers(iterator_to_array($users, false));
@@ -33,7 +34,7 @@ class UserCRUDController extends CRUDController
         return $this->redirectToList();
     }
 
-    public function deleteAction(Request $request): Response
+    public function delete(Request $request): Response
     {
         $object = $this->assertObjectExists($request, true);
         \assert(null !== $object);

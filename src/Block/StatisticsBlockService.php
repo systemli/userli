@@ -2,6 +2,7 @@
 
 namespace App\Block;
 
+use DateTime;
 use App\Entity\User;
 use App\Entity\Voucher;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,7 +32,7 @@ class StatisticsBlockService implements BlockServiceInterface
                 'block' => $blockContext->getBlock(),
                 'settings' => $settings,
                 'users_since' => (null !== $usersSince = $this->manager->getRepository(User::class)->findUsersSince(
-                    new \DateTime('-7 days')
+                    new DateTime('-7 days')
                 )) ? count($usersSince) : 0,
                 'users_count' => $this->manager->getRepository(User::class)->count([]),
                 'vouchers_count' => $vouchersCount = $this->manager->getRepository(Voucher::class)->count([]),

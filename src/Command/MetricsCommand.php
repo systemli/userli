@@ -24,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class MetricsCommand extends Command
 {
+    protected static $defaultName = 'app:metrics';
     /**
      * MetricsCommand constructor.
      */
@@ -39,7 +40,6 @@ class MetricsCommand extends Command
     {
         # TODO: Option for exposing metrics in different formats (prometheus, openmetrics, etc.)
         $this
-            ->setName('app:metrics')
             ->setDescription('Global Metrics for Userli');
     }
 

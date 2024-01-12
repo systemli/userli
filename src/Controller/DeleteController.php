@@ -9,6 +9,7 @@ use App\Form\OpenPgpDeleteType;
 use App\Form\UserDeleteType;
 use App\Handler\DeleteHandler;
 use App\Handler\WkdHandler;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,7 @@ class DeleteController extends AbstractController
     /**
      * DeleteController constructor.
      */
-    public function __construct(private DeleteHandler $deleteHandler, private WkdHandler $wkdHandler)
+    public function __construct(private DeleteHandler $deleteHandler, private WkdHandler $wkdHandler, private ManagerRegistry $doctrine)
     {
     }
 
@@ -31,10 +32,10 @@ class DeleteController extends AbstractController
      *
      * @return RedirectResponse|Response
      */
-    public function deleteAliasAction(Request $request, $aliasId)
+    public function deleteAlias(Request $request, $aliasId)
     {
         $user = $this->getUser();
-        $aliasRepository = $this->get('doctrine')->getRepository(Alias::class);
+        $aliasRepository = $this->doctrine->getRepository(Alias::class);
         $alias = $aliasRepository->find($aliasId);
 
         // Don't allow users to delete custom or foreign aliases
@@ -69,7 +70,7 @@ class DeleteController extends AbstractController
     /**
      * @return RedirectResponse|Response
      */
-    public function deleteUserAction(Request $request)
+    public function deleteUser(Request $request)
     {
         $user = $this->getUser();
         $form = $this->createForm(UserDeleteType::class, new Delete());
@@ -95,7 +96,7 @@ class DeleteController extends AbstractController
         );
     }
 
-    public function deleteOpenPgpAction(Request $request)
+    public function deleteOpenPgp(Request $request)
     {
         $user = $this->getUser();
 

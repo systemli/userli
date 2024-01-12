@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Stringable;
+use DateTime;
 use App\Traits\CreationTimeTrait;
 use App\Traits\IdTrait;
 use App\Traits\NameTrait;
@@ -12,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\ReservedNameRepository")
  * @ORM\Table(name="virtual_reserved_names")
  */
-class ReservedName implements \Stringable
+class ReservedName implements Stringable
 {
     use IdTrait;
     use CreationTimeTrait;
@@ -24,7 +26,7 @@ class ReservedName implements \Stringable
      */
     public function __construct()
     {
-        $currentDateTime = new \DateTime();
+        $currentDateTime = new DateTime();
         $this->creationTime = $currentDateTime;
         $this->updatedTime = $currentDateTime;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Factory;
 
+use Exception;
 use App\Entity\Alias;
 use App\Entity\User;
 use App\Helper\RandomStringGenerator;
@@ -14,7 +15,7 @@ class AliasFactory
     public const RANDOM_ALIAS_LENGTH = 24;
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public static function create(User $user, ?string $localPart): Alias
     {

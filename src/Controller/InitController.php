@@ -28,7 +28,7 @@ class InitController extends AbstractController
     /**
      * @throws ValidationException
      */
-    public function indexAction(Request $request): Response
+    public function index(Request $request): Response
     {
         // redirect if already configured
         if (0 < $this->manager->getRepository(Domain::class)->count([])) {
@@ -58,7 +58,7 @@ class InitController extends AbstractController
         return $this->render('Init/domain.html.twig', ['form' => $domainForm->createView()]);
     }
 
-    public function userAction(Request $request): Response
+    public function user(Request $request): Response
     {
         // redirect if already configured
         if (0 < $this->manager->getRepository(User::class)->count([])) {

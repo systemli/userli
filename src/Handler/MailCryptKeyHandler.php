@@ -2,6 +2,7 @@
 
 namespace App\Handler;
 
+use Exception;
 use App\Entity\User;
 use App\Model\CryptoSecret;
 use App\Model\MailCryptKeyPair;
@@ -26,7 +27,7 @@ class MailCryptKeyHandler
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function toPkcs8(string $privateKey): string
     {
@@ -48,17 +49,17 @@ class MailCryptKeyHandler
         sodium_memzero($privateKey);
 
         if (!$process->isSuccessful()) {
-            throw new \Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: '.$process->getErrorOutput());
+            throw new Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: '.$process->getErrorOutput());
         }
         if (!str_starts_with($process->getOutput(), '-----BEGIN PRIVATE KEY-----')) {
-            throw new \Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL output is no valid PKCS#8 key: '.$process->getOutput());
+            throw new Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL output is no valid PKCS#8 key: '.$process->getOutput());
         }
 
         return $process->getOutput();
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function create(User $user): void
     {
@@ -73,7 +74,7 @@ class MailCryptKeyHandler
 
         // get plain user password
         if (null === $plainPassword = $user->getPlainPassword()) {
-            throw new \Exception('plainPassword should not be null');
+            throw new Exception('plainPassword should not be null');
         }
 
         $mailCryptSecretBox = CryptoSecretHandler::create($keyPair->getPrivateKey(), $plainPassword);
@@ -89,16 +90,16 @@ class MailCryptKeyHandler
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function update(User $user, string $oldPlainPassword): void
     {
         if (null === $secret = $user->getMailCryptSecretBox()) {
-            throw new \Exception('secret should not be null');
+            throw new Exception('secret should not be null');
         }
 
         if (null === $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($secret), $oldPlainPassword)) {
-            throw new \Exception('decryption of mailCryptSecretBox failed');
+            throw new Exception('decryption of mailCryptSecretBox failed');
         }
 
         $this->updateWithPrivateKey($user, $privateKey);
@@ -109,13 +110,13 @@ class MailCryptKeyHandler
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function updateWithPrivateKey(User $user, string $privateKey): void
     {
         // get plain user password to be encrypted
         if (null === $plainPassword = $user->getPlainPassword()) {
-            throw new \Exception('plainPassword should not be null');
+            throw new Exception('plainPassword should not be null');
         }
 
         $user->setMailCryptSecretBox(CryptoSecretHandler::create($privateKey, $plainPassword)->encode());
@@ -128,16 +129,16 @@ class MailCryptKeyHandler
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function decrypt(User $user, string $password): string
     {
         if (null === $secret = $user->getMailCryptSecretBox()) {
-            throw new \Exception('secret should not be null');
+            throw new Exception('secret should not be null');
         }
 
         if (null === $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($secret), $password)) {
-            throw new \Exception('decryption of mailCryptSecretBox failed');
+            throw new Exception('decryption of mailCryptSecretBox failed');
         }
 
         sodium_memzero($password);

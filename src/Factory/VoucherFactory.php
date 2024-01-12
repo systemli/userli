@@ -2,6 +2,7 @@
 
 namespace App\Factory;
 
+use Exception;
 use App\Entity\User;
 use App\Entity\Voucher;
 use App\Helper\RandomStringGenerator;
@@ -12,7 +13,7 @@ use App\Helper\RandomStringGenerator;
 class VoucherFactory
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public static function create(User $user): Voucher
     {

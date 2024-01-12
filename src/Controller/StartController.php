@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Exception;
 use App\Creator\VoucherCreator;
 use App\Entity\Alias;
 use App\Entity\Domain;
@@ -44,7 +45,7 @@ class StartController extends AbstractController
     {
     }
 
-    public function indexAction(): Response
+    public function index(): Response
     {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             // forward to installer if no domains exist
@@ -71,7 +72,7 @@ class StartController extends AbstractController
         );
     }
 
-    public function voucherAction(Request $request): Response
+    public function voucher(Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -106,7 +107,7 @@ class StartController extends AbstractController
         );
     }
 
-    public function aliasAction(Request $request): Response
+    public function alias(Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -163,9 +164,9 @@ class StartController extends AbstractController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function accountAction(Request $request): Response
+    public function account(Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -203,7 +204,7 @@ class StartController extends AbstractController
     /**
      * @return Response
      */
-    public function openPgpAction(Request $request): ?Response
+    public function openPgp(Request $request): ?Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -289,7 +290,7 @@ class StartController extends AbstractController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function changePassword(Request $request, User $user, string $newPassword, string $oldPassword): void
     {

@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use Exception;
 use App\Entity\User;
 use App\Sender\WelcomeMessageSender;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +14,7 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class UsersRegistrationMailCommand extends Command
 {
+    protected static $defaultName = 'app:users:registration:mail';
     public function __construct(private EntityManagerInterface $manager, private WelcomeMessageSender $welcomeMessageSender, ?string $name = null)
     {
         parent::__construct($name);
@@ -24,7 +26,6 @@ class UsersRegistrationMailCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:users:registration:mail')
             ->setDescription('Send a registration mail to a user')
             ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User who get the voucher(s)')
             ->addOption('locale', 'l', InputOption::VALUE_OPTIONAL, 'the locale', 'de');
@@ -33,7 +34,7 @@ class UsersRegistrationMailCommand extends Command
     /**
      * {@inheritdoc}
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

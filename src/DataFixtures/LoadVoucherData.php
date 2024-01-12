@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use Exception;
+use DateTime;
 use App\Entity\User;
 use App\Factory\VoucherFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -13,7 +15,7 @@ class LoadVoucherData extends Fixture implements OrderedFixtureInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function load(ObjectManager $manager): void
     {
@@ -24,12 +26,12 @@ class LoadVoucherData extends Fixture implements OrderedFixtureInterface
 
             $invitedUser = $users[random_int(0, count($users) - 1)];
             $voucher->setInvitedUser($invitedUser);
-            $voucher->setRedeemedTime(new \DateTime());
+            $voucher->setRedeemedTime(new DateTime());
 
             $invitedUser->setInvitationVoucher($voucher);
 
             if (random_int(0, 100) > 50) {
-                $voucher->setRedeemedTime(new \DateTime(sprintf('-%d days', random_int(1, 100))));
+                $voucher->setRedeemedTime(new DateTime(sprintf('-%d days', random_int(1, 100))));
             }
 
             $manager->persist($voucher);
@@ -44,7 +46,7 @@ class LoadVoucherData extends Fixture implements OrderedFixtureInterface
         $voucher = VoucherFactory::create($user);
         $invitedUser = $users[random_int(0, count($users) - 1)];
         $voucher->setInvitedUser($invitedUser);
-        $voucher->setRedeemedTime(new \DateTime(sprintf('-%d days', 100)));
+        $voucher->setRedeemedTime(new DateTime(sprintf('-%d days', 100)));
         $invitedUser->setInvitationVoucher($voucher);
         $manager->persist($voucher);
 

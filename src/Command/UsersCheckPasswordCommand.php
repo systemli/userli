@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use Exception;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Handler\MailCryptKeyHandler;
@@ -19,6 +20,7 @@ use Symfony\Component\Process\Process;
 
 class UsersCheckPasswordCommand extends Command
 {
+    protected static $defaultName = 'app:users:checkpassword';
     private UserRepository $repository;
 
     /**
@@ -43,7 +45,6 @@ class UsersCheckPasswordCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:users:checkpassword')
             ->setDescription('Checkpassword script for UserDB and PassDB authentication')
             ->addArgument(
                 'checkpassword-reply',
@@ -56,7 +57,7 @@ class UsersCheckPasswordCommand extends Command
     /**
      * {@inheritdoc}
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
@@ -176,7 +177,7 @@ class UsersCheckPasswordCommand extends Command
         try {
             $replyProcess->run();
         } catch (ProcessFailedException) {
-            throw new \Exception(sprintf('Error at executing checkpassword-reply command %s: %s', $replyCommand, $replyProcess->getErrorOutput()));
+            throw new Exception(sprintf('Error at executing checkpassword-reply command %s: %s', $replyCommand, $replyProcess->getErrorOutput()));
         }
 
         return $replyProcess->getExitCode();

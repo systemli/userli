@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Stringable;
+use DateTime;
 use App\Enum\Roles;
 use App\Traits\CreationTimeTrait;
 use App\Traits\DeleteTrait;
@@ -39,7 +41,7 @@ use Doctrine\ORM\Mapping\Index;
  *     @Index(name="email_idx", columns={"email"})
  * })
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface, \Stringable
+class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface, Stringable
 {
     use IdTrait;
     use CreationTimeTrait;
@@ -76,7 +78,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     {
         $this->deleted = false;
         $this->passwordVersion = self::CURRENT_PASSWORD_VERSION;
-        $currentDateTime = new \DateTime();
+        $currentDateTime = new DateTime();
         $this->creationTime = $currentDateTime;
         $this->updatedTime = $currentDateTime;
     }

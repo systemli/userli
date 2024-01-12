@@ -2,6 +2,7 @@
 
 namespace App\Tests\Validator\Constraints;
 
+use stdClass;
 use App\Entity\Voucher;
 use App\Repository\VoucherRepository;
 use App\Validator\Constraints\Voucher as VoucherConstraint;
@@ -53,7 +54,7 @@ class VoucherValidatorTest extends ConstraintValidatorTestCase
     public function testExpectsStringCompatibleType(): void
     {
         $this->expectException(UnexpectedTypeException::class);
-        $this->validator->validate(new \stdClass(), new VoucherConstraint(true));
+        $this->validator->validate(new stdClass(), new VoucherConstraint(true));
     }
 
     public function testConstraintMissingOptions(): void

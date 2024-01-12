@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use Exception;
 use App\Entity\User;
 use App\Event\Events;
 use App\Event\UserEvent;
@@ -29,7 +30,7 @@ class RegistrationListener implements EventSubscriberInterface
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function onMailAccountCreated(UserEvent $event): void
     {

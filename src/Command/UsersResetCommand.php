@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use Exception;
 use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\PasswordStrengthHandler;
@@ -20,6 +21,7 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class UsersResetCommand extends Command
 {
+    protected static $defaultName = 'app:users:reset';
     /**
      * RegistrationMailCommand constructor.
      */
@@ -38,7 +40,6 @@ class UsersResetCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:users:reset')
             ->setDescription('Reset a user')
             ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User to reset')
             ->addOption('dry-run', null, InputOption::VALUE_NONE);
@@ -47,7 +48,7 @@ class UsersResetCommand extends Command
     /**
      * {@inheritdoc}
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -67,7 +68,7 @@ class UsersResetCommand extends Command
         $passwordQuest->setValidator(function ($value) {
             $validator = new PasswordStrengthHandler();
             if ($validator->validate($value)) {
-                throw new \Exception('The password doesn\'t comply with our security policy.');
+                throw new Exception('The password doesn\'t comply with our security policy.');
             }
 
             return $value;
@@ -85,7 +86,7 @@ class UsersResetCommand extends Command
         $passwordConfirm = $questionHelper->ask($input, $output, $passwordConfirmQuest);
 
         if ($password !== $passwordConfirm) {
-            throw new \Exception('The passwords don\'t match');
+            throw new Exception('The passwords don\'t match');
         }
 
         if ($input->getOption('dry-run')) {

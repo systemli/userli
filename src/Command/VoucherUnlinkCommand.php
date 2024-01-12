@@ -15,6 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class VoucherUnlinkCommand extends Command
 {
+    protected static $defaultName = 'app:voucher:unlink';
     public function __construct(private EntityManagerInterface $manager, private SuspiciousChildrenHandler $handler)
     {
         parent::__construct();
@@ -26,7 +27,6 @@ class VoucherUnlinkCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:voucher:unlink')
             ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'dry run, without any changes')
             ->setDescription('Remove connection between vouchers and accounts after 3 months');
     }

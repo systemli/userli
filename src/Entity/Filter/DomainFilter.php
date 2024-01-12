@@ -2,6 +2,7 @@
 
 namespace App\Entity\Filter;
 
+use InvalidArgumentException;
 use App\Entity\Domain;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
@@ -30,7 +31,7 @@ class DomainFilter extends SQLFilter
     {
         try {
             return $this->getParameter('domainId');
-        } catch (\InvalidArgumentException) {
+        } catch (InvalidArgumentException) {
             return null;
         }
     }

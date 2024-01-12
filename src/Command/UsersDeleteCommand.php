@@ -13,6 +13,7 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class UsersDeleteCommand extends Command
 {
+    protected static $defaultName = 'app:users:delete';
     public function __construct(private EntityManagerInterface $manager, private DeleteHandler $deleteHandler)
     {
         parent::__construct();
@@ -24,7 +25,6 @@ class UsersDeleteCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:users:delete')
             ->setDescription('Delete a user')
             ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User to delete')
             ->addOption('dry-run', null, InputOption::VALUE_NONE);
