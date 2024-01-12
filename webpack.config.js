@@ -6,7 +6,7 @@ Encore
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
     .setPublicPath('/build')
-    // only needed for CDN's or sub-directory deploy
+    // only needed for CDN's or subdirectory deploy
     //.setManifestKeyPrefix('build/')
 
     // Tell Webpack to *not* output a separate runtime.js file.
@@ -22,6 +22,7 @@ Encore
      * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
+    .addEntry('admin', './assets/js/admin.js')
 
     // impossible, because webpack tries to find the included images
     //.addStyleEntry('AdminLTE.min.css', './assets/css/AdminLTE.min.css')
@@ -36,6 +37,9 @@ Encore
 
     // uncomment if you use Sass/SCSS files
     //.enableSassLoader()
+
+    // uncomment if you use React
+    .enableReactPreset()
 
     // uncomment if you're having problems with a jQuery plugin
     .autoProvidejQuery()
