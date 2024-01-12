@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Exception;
 use App\Entity\User;
 use App\Form\Model\RecoveryTokenAck;
 use App\Form\Model\Registration;
@@ -18,14 +21,14 @@ class RegistrationController extends AbstractController
     /**
      * RegistrationController constructor.
      */
-    public function __construct(private RegistrationHandler $registrationHandler)
+    public function __construct(private RegistrationHandler $registrationHandler, private ManagerRegistry $doctrine, private TokenStorageInterface $tokenStorage)
     {
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function registerAction(Request $request, string $voucher = null): Response
+    public function register(Request $request, string $voucher = null): Response
     {
         if (!$this->registrationHandler->isRegistrationOpen()) {
             return $this->render('Registration/closed.html.twig');
@@ -51,11 +54,9 @@ class RegistrationController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->registrationHandler->handle($registration);
 
-                $manager = $this->get('doctrine')->getManager();
-
-                if (null !== $user = $manager->getRepository(User::class)->findByEmail($registration->getEmail())) {
+                if (null !== $user = $this->doctrine->getRepository(User::class)->findByEmail($registration->getEmail())) {
                     $token = new UsernamePasswordToken($user, $user->getPassword(), 'default', $user->getRoles());
-                    $this->get('security.token_storage')->setToken($token);
+                    $this->tokenStorage->setToken($token);
                 }
 
                 $recoveryToken = $user->getPlainRecoveryToken();
@@ -87,7 +88,7 @@ class RegistrationController extends AbstractController
         return $this->render('Registration/register.html.twig', ['form' => $form->createView()]);
     }
 
-    public function registerRecoveryTokenAckAction(Request $request): Response
+    public function registerRecoveryTokenAck(Request $request): Response
     {
         $recoveryTokenAck = new RecoveryTokenAck();
         $recoveryTokenAckForm = $this->createForm(
@@ -113,7 +114,7 @@ class RegistrationController extends AbstractController
         return $this->redirectToRoute('register');
     }
 
-    public function welcomeAction(Request $request): Response
+    public function welcome(Request $request): Response
     {
         $request->getSession()->getFlashBag()->add('success', 'flashes.registration-successful');
 

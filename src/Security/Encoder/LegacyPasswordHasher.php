@@ -2,6 +2,7 @@
 
 namespace App\Security\Encoder;
 
+use LogicException;
 use Symfony\Component\PasswordHasher\Exception\InvalidPasswordException;
 use Symfony\Component\PasswordHasher\Hasher\CheckPasswordLengthTrait;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
@@ -42,7 +43,7 @@ class LegacyPasswordHasher implements PasswordHasherInterface
         $hashId = match ($this->algorithm) {
             'sha256' => 5,
             'sha512' => 6,
-            default => throw new \LogicException(sprintf('The algorithm "%s" is not supported.', $this->algorithm)),
+            default => throw new LogicException(sprintf('The algorithm "%s" is not supported.', $this->algorithm)),
         };
 
         $salt = uniqid(mt_rand(), true);

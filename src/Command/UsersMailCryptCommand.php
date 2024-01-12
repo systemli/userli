@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use Exception;
 use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
@@ -14,6 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UsersMailCryptCommand extends Command
 {
+    protected static $defaultName = 'app:users:mailcrypt';
     private UserRepository $repository;
 
     public function __construct(
@@ -32,7 +34,6 @@ class UsersMailCryptCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:users:mailcrypt')
             ->setDescription('Get MailCrypt values for user')
             ->addArgument(
                 'email',
@@ -47,7 +48,7 @@ class UsersMailCryptCommand extends Command
     /**
      * {@inheritdoc}
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

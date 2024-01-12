@@ -2,6 +2,7 @@
 
 namespace App\Helper;
 
+use Exception;
 /**
  * Class RandomStringGenerator.
  */
@@ -10,7 +11,7 @@ class RandomStringGenerator
     public const LENGTH = 6;
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public static function generate(int $length = self::LENGTH, bool $caseSensitive = true): string
     {

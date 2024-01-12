@@ -15,6 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class MuninAliasCommand extends Command
 {
+    protected static $defaultName = 'app:munin:alias';
     private AliasRepository $repository;
 
     public function __construct(EntityManagerInterface $manager)
@@ -29,7 +30,6 @@ class MuninAliasCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:munin:alias')
             ->setDescription('Munin plugin for aliases')
             ->addOption('autoconf', null, InputOption::VALUE_NONE, 'autoconf for the plugin')
             ->addOption('config', null, InputOption::VALUE_NONE, 'config for the plugin');

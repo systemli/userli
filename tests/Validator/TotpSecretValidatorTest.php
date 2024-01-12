@@ -2,6 +2,7 @@
 
 namespace App\Tests\Validator;
 
+use stdClass;
 use App\Entity\User;
 use App\Validator\Constraints\TotpSecret;
 use App\Validator\TotpSecretValidator;
@@ -59,7 +60,7 @@ class TotpSecretValidatorTest extends ConstraintValidatorTestCase
     public function testExpectsStringCompatibleType(): void
     {
         $this->expectException(UnexpectedTypeException::class);
-        $this->validator->validate(new \stdClass(), new TotpSecret());
+        $this->validator->validate(new stdClass(), new TotpSecret());
     }
 
     public function testValidateVoucherInvalid(): void

@@ -13,6 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class OpenPgpDeleteKeyCommand extends Command
 {
+    protected static $defaultName = 'app:openpgp:delete-key';
     private OpenPgpKeyRepository $repository;
 
     public function __construct(EntityManagerInterface $manager, private WkdHandler $handler)
@@ -27,7 +28,6 @@ class OpenPgpDeleteKeyCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:openpgp:delete-key')
             ->setDescription('Delete OpenPGP key for email')
             ->addArgument(
                 'email',

@@ -14,6 +14,7 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class VoucherCreationCommand extends Command
 {
+    protected static $defaultName = 'app:voucher:create';
     public function __construct(private EntityManagerInterface $manager, private RouterInterface $router, private string $appUrl)
     {
         parent::__construct();
@@ -22,7 +23,6 @@ class VoucherCreationCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:voucher:create')
             ->setDescription('Create voucher for a specific user')
             ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User who get the voucher(s)')
             ->addOption('count', 'c', InputOption::VALUE_OPTIONAL, 'Count of the voucher which will created', 3)

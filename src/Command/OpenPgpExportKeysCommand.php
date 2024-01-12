@@ -14,6 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class OpenPgpExportKeysCommand extends Command
 {
+    protected static $defaultName = 'app:wkd:export-keys';
     private DomainRepository $domainRepository;
     private OpenPgpKeyRepository $openPgpKeyRepository;
 
@@ -30,7 +31,6 @@ class OpenPgpExportKeysCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:wkd:export-keys')
             ->setDescription('Export all OpenPGP keys to WKD directory');
     }
 

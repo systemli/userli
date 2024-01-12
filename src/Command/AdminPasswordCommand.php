@@ -11,6 +11,7 @@ use Symfony\Component\Console\Question\Question;
 
 class AdminPasswordCommand extends Command
 {
+    protected static $defaultName = 'app:admin:password';
     /**
      * AdminPasswordCommand constructor.
      */
@@ -22,7 +23,6 @@ class AdminPasswordCommand extends Command
     public function configure(): void
     {
         $this
-            ->setName('app:admin:password')
             ->setDescription('Set password of admin user')
             ->setHelp('Set password of admin user. Create primary user and domain if not created before.')
             ->addArgument('password', InputArgument::OPTIONAL, 'Admin password');

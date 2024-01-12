@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use SodiumException;
 use App\Traits\PrivateKeyTrait;
 use App\Traits\PublicKeyTrait;
 
@@ -20,7 +21,7 @@ class MailCryptKeyPair
     }
 
     /**
-     * @throws \SodiumException
+     * @throws SodiumException
      */
     public function erase(): void
     {

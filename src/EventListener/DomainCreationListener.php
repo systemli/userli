@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use Exception;
 use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Event\DomainCreatedEvent;
@@ -16,7 +17,7 @@ class DomainCreationListener implements EventSubscriberInterface
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function onDomainCreated(DomainCreatedEvent $event): void
     {
@@ -25,7 +26,7 @@ class DomainCreationListener implements EventSubscriberInterface
         $adminAddress = 'postmaster@'.$defaultDomain;
 
         if (null === $domain) {
-            throw new \Exception('Domain shouldn\'t be null');
+            throw new Exception('Domain shouldn\'t be null');
         }
         if ($domain !== $defaultDomain) {
             // create postmaster alias

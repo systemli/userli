@@ -2,6 +2,7 @@
 
 namespace App\Tests\Entity;
 
+use DateTime;
 use App\Entity\User;
 use App\Enum\Roles;
 use PHPUnit\Framework\TestCase;
@@ -85,14 +86,14 @@ class UserTest extends TestCase
     public function testHasCreationTimeSet(): void
     {
         $user = new User();
-        $today = new \DateTime();
+        $today = new DateTime();
         self::assertEquals($user->getCreationTime()->format('Y-m-d'), $today->format('Y-m-d'));
     }
 
     public function testHasUpdatedTimeSet(): void
     {
         $user = new User();
-        $today = new \DateTime();
+        $today = new DateTime();
         self::assertEquals($user->getUpdatedTime()->format('Y-m-d'), $today->format('Y-m-d'));
     }
 

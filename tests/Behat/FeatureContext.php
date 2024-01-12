@@ -2,6 +2,11 @@
 
 namespace App\Tests\Behat;
 
+use App\Entity\Domain;
+use DateTime;
+use App\Entity\Voucher;
+use App\Entity\ReservedName;
+use RuntimeException;
 use App\Entity\Alias;
 use App\Entity\User;
 use App\Guesser\DomainGuesser;
@@ -68,7 +73,7 @@ class FeatureContext extends MinkContext
     public function theFollowingDomainExists(TableNode $table): void
     {
         foreach ($table->getColumnsHash() as $data) {
-            $domain = new \App\Entity\Domain();
+            $domain = new Domain();
 
             foreach ($data as $key => $value) {
                 switch ($key) {
@@ -119,7 +124,7 @@ class FeatureContext extends MinkContext
                         $user->setQuota($value);
                         break;
                     case 'recoveryStartTime':
-                        $time = new \DateTime();
+                        $time = new DateTime();
                         if ('NOW' !== 'value') {
                             $time = $time->modify($value);
                         }
@@ -161,7 +166,7 @@ class FeatureContext extends MinkContext
     public function theFollowingVoucherExists(TableNode $table): void
     {
         foreach ($table->getColumnsHash() as $data) {
-            $voucher = new \App\Entity\Voucher();
+            $voucher = new Voucher();
 
             foreach ($data as $key => $value) {
                 if (empty($value)) {
@@ -236,7 +241,7 @@ class FeatureContext extends MinkContext
     public function theFollowingReservedNameExists(TableNode $table): void
     {
         foreach ($table->getColumnsHash() as $data) {
-            $reservedName = new \App\Entity\ReservedName();
+            $reservedName = new ReservedName();
 
             foreach ($data as $key => $value) {
                 switch ($key) {
@@ -411,7 +416,7 @@ class FeatureContext extends MinkContext
     {
         $output = preg_replace('/\r\n|\r|\n/', '\\n', $this->output);
         if (!str_contains($output, $string)) {
-            throw new \RuntimeException(sprintf('Did not see "%s" in console output "%s"', $string, $output));
+            throw new RuntimeException(sprintf('Did not see "%s" in console output "%s"', $string, $output));
         }
     }
 
@@ -421,7 +426,7 @@ class FeatureContext extends MinkContext
     public function iShouldSeeRegexInTheConsoleOutput(string $string): void
     {
         if (!preg_match($string, $this->output)) {
-            throw new \RuntimeException(sprintf('Did not see regex "%s" in console output "%s"', $string, $this->output));
+            throw new RuntimeException(sprintf('Did not see regex "%s" in console output "%s"', $string, $this->output));
         }
     }
 
@@ -432,7 +437,7 @@ class FeatureContext extends MinkContext
     {
         $output = preg_replace('/\r\n|\r|\n/', '\\n', $this->output);
         if (true === strpos($output, $string)) {
-            throw new \RuntimeException(sprintf('Did see "%s" in console output "%s"', $string, $output));
+            throw new RuntimeException(sprintf('Did see "%s" in console output "%s"', $string, $output));
         }
     }
 
@@ -442,7 +447,7 @@ class FeatureContext extends MinkContext
     public function iShouldSeeEmptyConsoleOutput(): void
     {
         if (null !== $this->output) {
-            throw new \RuntimeException(sprintf('Did not see empty console output: "%s"', $this->output));
+            throw new RuntimeException(sprintf('Did not see empty console output: "%s"', $this->output));
         }
     }
 
@@ -453,7 +458,7 @@ class FeatureContext extends MinkContext
     {
         $totpBackupCodes = $this->getPlaceholder('totp_backup_codes');
         if (!$totpBackupCodes) {
-            throw new \RuntimeException('No TOTP backup codes cached');
+            throw new RuntimeException('No TOTP backup codes cached');
         }
         $this->fillField('_auth_code', $totpBackupCodes[0]);
     }
@@ -464,7 +469,7 @@ class FeatureContext extends MinkContext
     public function fileExists(string $path): void
     {
         if (!is_file($path)) {
-            throw new \RuntimeException(sprintf('File doesn\'t exist: "%s"', $path));
+            throw new RuntimeException(sprintf('File doesn\'t exist: "%s"', $path));
         }
     }
 
@@ -474,7 +479,7 @@ class FeatureContext extends MinkContext
     public function fileNoExists(string $path): void
     {
         if (is_file($path)) {
-            throw new \RuntimeException(sprintf('File exists: "%s"', $path));
+            throw new RuntimeException(sprintf('File exists: "%s"', $path));
         }
     }
 

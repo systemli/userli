@@ -13,6 +13,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class UsersRemoveCommand extends Command
 {
+    protected static $defaultName = 'app:users:remove';
     public function __construct(private EntityManagerInterface $manager,
                                 private string $mailLocation,
                                 ?string $name = null)
@@ -26,7 +27,6 @@ class UsersRemoveCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:users:remove')
             ->setDescription('Removes all mailboxes from deleted users')
             ->addOption('dry-run', null, InputOption::VALUE_NONE)
             ->addOption('list', null, InputOption::VALUE_NONE);

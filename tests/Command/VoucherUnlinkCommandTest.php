@@ -2,6 +2,8 @@
 
 namespace App\Tests\Command;
 
+use Exception;
+use DateTime;
 use App\Command\VoucherUnlinkCommand;
 use App\Entity\User;
 use App\Entity\Voucher;
@@ -67,7 +69,7 @@ class VoucherUnlinkCommandTest extends TestCase
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function getOldVouchers(): array
     {
@@ -82,14 +84,14 @@ class VoucherUnlinkCommandTest extends TestCase
         $voucher1->setId(1);
         $voucher1->setUser($user1);
         $voucher1->setCode('blabla');
-        $voucher1->setRedeemedTime(new \DateTime('2018-06-27T09:37:20.046074+0000'));
+        $voucher1->setRedeemedTime(new DateTime('2018-06-27T09:37:20.046074+0000'));
         $voucher1->setInvitedUser($user2);
 
         $voucher2 = new Voucher();
         $voucher2->setId(2);
         $voucher2->setUser($user2);
         $voucher2->setCode('foobar');
-        $voucher2->setRedeemedTime(new \DateTime('2018-06-27T09:37:20.046074+0000'));
+        $voucher2->setRedeemedTime(new DateTime('2018-06-27T09:37:20.046074+0000'));
 
         return [
             $voucher1,

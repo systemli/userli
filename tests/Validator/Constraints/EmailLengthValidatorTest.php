@@ -2,6 +2,7 @@
 
 namespace App\Tests\Validator\Constraints;
 
+use stdClass;
 use App\Validator\Constraints\EmailLength;
 use App\Validator\Constraints\EmailLengthValidator;
 use Symfony\Component\Validator\Constraints\Valid;
@@ -47,7 +48,7 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
     public function testExpectsStringCompatibleType(): void
     {
         $this->expectException(UnexpectedTypeException::class);
-        $this->validator->validate(new \stdClass(), new EmailLength($this->emailLengthOptions));
+        $this->validator->validate(new stdClass(), new EmailLength($this->emailLengthOptions));
     }
 
     public function testConstraintMissingOptions(): void

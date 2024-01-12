@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use RuntimeException;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Repository\UserRepository;
@@ -14,6 +15,7 @@ use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 class UsersListCommand extends Command
 {
+    protected static $defaultName = 'app:users:list';
     private UserRepository $repository;
 
     public function __construct(EntityManagerInterface $manager, private RoleHierarchyInterface $roleHierarchy)
@@ -28,7 +30,6 @@ class UsersListCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:users:list')
             ->setDescription('List users')
             ->addOption(
                 'inactive-days',
@@ -44,7 +45,7 @@ class UsersListCommand extends Command
     {
         $inactiveDays = $input->getOption('inactive-days');
         if (!empty($inactiveDays) && !is_numeric($inactiveDays)) {
-            throw new \RuntimeException('Inactive days argument needs to be a number');
+            throw new RuntimeException('Inactive days argument needs to be a number');
         }
 
         if (!isset($inactiveDays)) {

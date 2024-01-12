@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use RuntimeException;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgKeyForUserException;
 use App\Handler\WkdHandler;
@@ -12,6 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class OpenPgpImportKeyCommand extends Command
 {
+    protected static $defaultName = 'app:openpgp:import-key';
     public function __construct(private WkdHandler $handler)
     {
         parent::__construct();
@@ -23,7 +25,6 @@ class OpenPgpImportKeyCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:openpgp:import-key')
             ->setDescription('Import OpenPGP key for email')
             ->addArgument(
                 'email',
@@ -46,7 +47,7 @@ class OpenPgpImportKeyCommand extends Command
 
         // Read contents from file
         if (!is_file($file)) {
-            throw new \RuntimeException('File not found: '.$file);
+            throw new RuntimeException('File not found: '.$file);
         }
         $content = file_get_contents($file);
 

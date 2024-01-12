@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Exception;
 use App\Form\Model\Twofactor;
 use App\Form\Model\TwofactorBackupAck;
 use App\Form\Model\TwofactorConfirm;
@@ -23,13 +24,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class TwofactorController extends AbstractController
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function twofactorAction(Request $request, TotpAuthenticatorInterface $totpAuthenticator): Response
+    public function twofactor(Request $request, TotpAuthenticatorInterface $totpAuthenticator): Response
     {
         /** @var $user TwoFactorInterface */
         if (null === $user = $this->getUser()) {
-            throw new \Exception('User should not be null');
+            throw new Exception('User should not be null');
         }
 
         $twofactorModel = new Twofactor();
@@ -88,12 +89,12 @@ class TwofactorController extends AbstractController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function twofactorConfirmAction(Request $request): Response
+    public function twofactorConfirm(Request $request): Response
     {
         if (null === $user = $this->getUser()) {
-            throw new \Exception('User should not be null');
+            throw new Exception('User should not be null');
         }
 
         $twofactorConfirmModel = new TwofactorConfirm();
@@ -165,12 +166,12 @@ class TwofactorController extends AbstractController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function twofactorBackupAckAction(Request $request): Response
+    public function twofactorBackupAck(Request $request): Response
     {
         if (null === $user = $this->getUser()) {
-            throw new \Exception('User should not be null');
+            throw new Exception('User should not be null');
         }
 
         $twofactorBackupAckModel = new TwofactorBackupAck();
@@ -242,12 +243,12 @@ class TwofactorController extends AbstractController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function twofactorDisableAction(Request $request): Response
+    public function twofactorDisable(Request $request): Response
     {
         if (null === $user = $this->getUser()) {
-            throw new \Exception('User should not be null');
+            throw new Exception('User should not be null');
         }
 
         $twofactorDisableModel = new Twofactor();
@@ -293,12 +294,12 @@ class TwofactorController extends AbstractController
     /**
      *
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
     public function displayTotpQrCode(TotpAuthenticatorInterface $totpAuthenticator): Response
     {
         if (null === $user = $this->getUser()) {
-            throw new \Exception('User should not be null');
+            throw new Exception('User should not be null');
         }
         if (!($user instanceof TwoFactorInterface)) {
             throw new NotFoundHttpException('Cannot display QR code');
@@ -315,6 +316,6 @@ class TwofactorController extends AbstractController
             ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
             ->build();
 
-        return new Response($result->getString(), 200, ['Content-Type' => 'image/png']);
+        return new Response($result->getString(), Response::HTTP_OK, ['Content-Type' => 'image/png']);
     }
 }

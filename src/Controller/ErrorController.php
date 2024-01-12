@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
  */
 class ErrorController extends AbstractController
 {
-    public function showAction(FlattenException $exception, DebugLoggerInterface $logger = null): Response
+    public function show(FlattenException $exception, DebugLoggerInterface $logger = null): Response
     {
         return $this->render('Exception/show.html.twig', [
             'message' => $exception->getMessage(),

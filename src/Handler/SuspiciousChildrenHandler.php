@@ -2,6 +2,10 @@
 
 namespace App\Handler;
 
+use Twig_Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 /**
  * Class SuspiciousChildrenHandler.
  */
@@ -10,14 +14,14 @@ class SuspiciousChildrenHandler
     /**
      * SuspiciousChildrenHandler constructor.
      */
-    public function __construct(private MailHandler $handler, private \Twig_Environment $twig, private string $to)
+    public function __construct(private MailHandler $handler, private Twig_Environment $twig, private string $to)
     {
     }
 
     /**
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function sendReport(array $suspiciousChildren): void
     {

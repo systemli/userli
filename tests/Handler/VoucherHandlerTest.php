@@ -2,6 +2,7 @@
 
 namespace App\Tests\Handler;
 
+use DateTime;
 use App\Creator\VoucherCreator;
 use App\Entity\User;
 use App\Entity\Voucher;
@@ -48,7 +49,7 @@ class VoucherHandlerTest extends TestCase
         $handler = new VoucherHandler($manager, $creator);
 
         $user = new User();
-        $user->setCreationTime(new \DateTime());
+        $user->setCreationTime(new DateTime());
 
         $vouchers = $handler->getVouchersByUser($user);
 
@@ -68,7 +69,7 @@ class VoucherHandlerTest extends TestCase
         $handler = new VoucherHandler($manager, $creator);
 
         $user = new User();
-        $user->setCreationTime(new \DateTime('-8 days'));
+        $user->setCreationTime(new DateTime('-8 days'));
 
         $vouchers = $handler->getVouchersByUser($user);
 
@@ -95,14 +96,14 @@ class VoucherHandlerTest extends TestCase
         $handler = new VoucherHandler($manager, $creator);
 
         $user = new User();
-        $user->setCreationTime(new \DateTime('-8 days'));
+        $user->setCreationTime(new DateTime('-8 days'));
 
         $vouchers = $handler->getVouchersByUser($user);
 
         self::assertNotEmpty($vouchers);
         self::assertCount(2, $vouchers);
 
-        $user->setLastLoginTime(new \DateTime());
+        $user->setLastLoginTime(new DateTime());
         $vouchers = $handler->getVouchersByUser($user);
 
         self::assertNotEmpty($vouchers);

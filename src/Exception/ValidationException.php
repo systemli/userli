@@ -2,13 +2,14 @@
 
 namespace App\Exception;
 
+use Exception;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * Class ValidationException.
  */
-class ValidationException extends \Exception
+class ValidationException extends Exception
 {
     public function __construct(private ConstraintViolationListInterface $constraints)
     {

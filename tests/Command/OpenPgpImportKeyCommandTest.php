@@ -2,6 +2,7 @@
 
 namespace App\Tests\Command;
 
+use RuntimeException;
 use App\Command\OpenPgpImportKeyCommand;
 use App\Entity\OpenPgpKey;
 use App\Handler\WkdHandler;
@@ -39,7 +40,7 @@ class OpenPgpImportKeyCommandTest extends TestCase
 
     public function testExecuteWithNonexistentFile(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('File not found: /nonexistent');
 
         $commandTester = new CommandTester($this->command);

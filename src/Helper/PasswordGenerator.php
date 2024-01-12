@@ -2,13 +2,14 @@
 
 namespace App\Helper;
 
+use Exception;
 /**
  * Class PasswordGenerator.
  */
 final class PasswordGenerator
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public static function generate(int $length = 45): string
     {

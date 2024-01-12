@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
+use Exception;
+use DateTime;
+use DateInterval;
 use App\Entity\User;
 use App\Event\RecoveryProcessEvent;
 use App\Event\UserEvent;
@@ -29,14 +33,14 @@ class RecoveryController extends AbstractController
     /**
      * RecoveryController constructor.
      */
-    public function __construct(private PasswordUpdater $passwordUpdater, private MailCryptKeyHandler $mailCryptKeyHandler, private RecoveryTokenHandler $recoveryTokenHandler, private EventDispatcherInterface $eventDispatcher)
+    public function __construct(private PasswordUpdater $passwordUpdater, private MailCryptKeyHandler $mailCryptKeyHandler, private RecoveryTokenHandler $recoveryTokenHandler, private EventDispatcherInterface $eventDispatcher, private ManagerRegistry $docrine)
     {
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function recoveryProcessAction(Request $request): Response
+    public function recoveryProcess(Request $request): Response
     {
         $recoveryProcess = new RecoveryProcess();
         $recoveryForm = $this->createForm(RecoveryProcessType::class, $recoveryProcess);
@@ -50,7 +54,7 @@ class RecoveryController extends AbstractController
 
                 // Validate the passed email + recoveryToken
 
-                $userRepository = $this->get('doctrine')->getRepository(User::class);
+                $userRepository = $this->docrine->getRepository(User::class);
                 $user = $userRepository->findByEmail($email);
 
                 if (null === $user || !$this->verifyEmailRecoveryToken($user, $recoveryToken)) {
@@ -58,15 +62,15 @@ class RecoveryController extends AbstractController
                 } else {
                     $recoveryStartTime = $user->getRecoveryStartTime();
 
-                    if (null === $recoveryStartTime || new \DateTime($this::PROCESS_EXPIRE) >= $recoveryStartTime) {
+                    if (null === $recoveryStartTime || new DateTime($this::PROCESS_EXPIRE) >= $recoveryStartTime) {
                         // Recovery process gets started
                         $user->updateRecoveryStartTime();
                         $this->getDoctrine()->getManager()->flush();
                         $this->eventDispatcher->dispatch(new UserEvent($user), RecoveryProcessEvent::NAME);
-                        $recoveryActiveTime = $user->getRecoveryStartTime()->add(new \DateInterval('P2D'));
-                    } elseif (new \DateTime($this::PROCESS_DELAY) < $recoveryStartTime) {
+                        $recoveryActiveTime = $user->getRecoveryStartTime()->add(new DateInterval('P2D'));
+                    } elseif (new DateTime($this::PROCESS_DELAY) < $recoveryStartTime) {
                         // Recovery process is pending, but waiting period didn't elapse yet
-                        $recoveryActiveTime = $recoveryStartTime->add(new \DateInterval('P2D'));
+                        $recoveryActiveTime = $recoveryStartTime->add(new DateInterval('P2D'));
                     } else {
                         // Recovery process successful, go on with the form to reset password
                         return $this->renderResetPasswordForm($user, $recoveryToken);
@@ -92,9 +96,9 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function recoveryResetPasswordAction(Request $request): Response
+    public function recoveryResetPassword(Request $request): Response
     {
         $recoveryResetPassword = new RecoveryResetPassword();
         $recoveryResetPasswordForm = $this->createForm(
@@ -115,7 +119,7 @@ class RecoveryController extends AbstractController
 
                 // Validate the passed email + recoveryToken
 
-                $userRepository = $this->get('doctrine')->getRepository(User::class);
+                $userRepository = $this->docrine->getRepository(User::class);
                 $user = $userRepository->findByEmail($email);
 
                 if (null !== $user && $this->verifyEmailRecoveryToken($user, $recoveryToken, true)) {
@@ -170,12 +174,12 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function recoveryTokenAction(Request $request): Response
+    public function recoveryToken(Request $request): Response
     {
         if (null === $user = $this->getUser()) {
-            throw new \Exception('User should not be null');
+            throw new Exception('User should not be null');
         }
 
         $recoveryTokenModel = new RecoveryToken();
@@ -199,7 +203,7 @@ class RecoveryController extends AbstractController
                 // Generate a new recovery token and encrypt the MailCrypt key with it
                 $this->recoveryTokenHandler->create($user);
                 if (null === $recoveryToken = $user->getPlainRecoveryToken()) {
-                    throw new \Exception('recoveryToken should not be null');
+                    throw new Exception('recoveryToken should not be null');
                 }
 
                 // Clear sensitive plaintext data from User object
@@ -236,7 +240,7 @@ class RecoveryController extends AbstractController
         );
     }
 
-    public function recoveryRecoveryTokenAckAction(Request $request): Response
+    public function recoveryRecoveryTokenAck(Request $request): Response
     {
         $recoveryTokenAck = new RecoveryTokenAck();
         $recoveryTokenAckForm = $this->createForm(
@@ -269,7 +273,7 @@ class RecoveryController extends AbstractController
         return $this->redirectToRoute('recovery');
     }
 
-    public function recoveryTokenAckAction(Request $request): Response
+    public function recoveryTokenAck(Request $request): Response
     {
         $recoveryTokenAck = new RecoveryTokenAck();
         $recoveryTokenAckForm = $this->createForm(
@@ -302,14 +306,14 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function renderResetPasswordForm(User $user, string $recoveryToken): Response
     {
         // Pass $email and $recoveryToken as hidden field values for verification by recoveryResetPasswordAction
         $recoveryResetPassword = new RecoveryResetPassword();
         if (null === $email = $user->getEmail()) {
-            throw new \Exception('email should not be null');
+            throw new Exception('email should not be null');
         }
         $recoveryResetPassword->setEmail($email);
         $recoveryResetPassword->setRecoveryToken($recoveryToken);
@@ -331,7 +335,7 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function resetPassword(User $user, string $password, string $recoveryToken): string
     {
@@ -351,7 +355,7 @@ class RecoveryController extends AbstractController
         $user->setPlainMailCryptPrivateKey($mailCryptPrivateKey);
         $this->recoveryTokenHandler->create($user);
         if (null === $newRecoveryToken = $user->getPlainRecoveryToken()) {
-            throw new \Exception('PlainRecoveryToken should not be null');
+            throw new Exception('PlainRecoveryToken should not be null');
         }
 
         // Clear sensitive plaintext data from User object
@@ -364,13 +368,13 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function verifyEmailRecoveryToken(User $user, string $recoveryToken, bool $verifyTime = false): bool
     {
         if ($verifyTime) {
             $recoveryStartTime = $user->getRecoveryStartTime();
-            if (null === $recoveryStartTime || new \DateTime($this::PROCESS_DELAY) < $recoveryStartTime) {
+            if (null === $recoveryStartTime || new DateTime($this::PROCESS_DELAY) < $recoveryStartTime) {
                 return false;
             }
         }

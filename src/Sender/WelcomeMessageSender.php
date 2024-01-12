@@ -2,6 +2,7 @@
 
 namespace App\Sender;
 
+use Exception;
 use App\Builder\WelcomeMessageBuilder;
 use App\Entity\Domain;
 use App\Entity\User;
@@ -25,12 +26,12 @@ class WelcomeMessageSender
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function send(User $user, string $locale): void
     {
         if (null === $email = $user->getEmail()) {
-            throw new \Exception('Email should not be null');
+            throw new Exception('Email should not be null');
         }
 
         if (strpos($email, $this->domain) < 0) {

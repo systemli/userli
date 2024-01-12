@@ -14,6 +14,7 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class AliasDeleteCommand extends Command
 {
+    protected static $defaultName = 'app:alias:delete';
     public function __construct(private EntityManagerInterface $manager, private DeleteHandler $deleteHandler)
     {
         parent::__construct();
@@ -25,7 +26,6 @@ class AliasDeleteCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:alias:delete')
             ->setDescription('Delete an alias')
             ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User who owns the alias (optional)')
             ->addOption('alias', 'a', InputOption::VALUE_REQUIRED, 'Alias address to delete')

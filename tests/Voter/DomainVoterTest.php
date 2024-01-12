@@ -2,6 +2,8 @@
 
 namespace App\Tests\Voter;
 
+use ReflectionMethod;
+use ReflectionClass;
 use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\User;
@@ -17,9 +19,9 @@ class DomainVoterTest extends TestCase
     private DomainVoter $voter;
     private Domain $domain;
 
-    protected static function getMethod($name): \ReflectionMethod
+    protected static function getMethod($name): ReflectionMethod
     {
-        $class = new \ReflectionClass(DomainVoter::class);
+        $class = new ReflectionClass(DomainVoter::class);
         $method = $class->getMethod($name);
         $method->setAccessible(true);
 

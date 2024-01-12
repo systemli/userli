@@ -2,6 +2,9 @@
 
 namespace App\Repository;
 
+use Doctrine\Common\Collections\Collection;
+use DateTime;
+use DateInterval;
 use App\Entity\User;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -22,15 +25,15 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection|User[]
+     * @return Collection|User[]
      */
-    public function findUsersSince(\DateTime $dateTime)
+    public function findUsersSince(DateTime $dateTime)
     {
         return $this->matching(Criteria::create()->where(Criteria::expr()->gte('creationTime', $dateTime)));
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection|User[]
+     * @return Collection|User[]
      */
     public function findInactiveUsers(int $days)
     {
@@ -39,8 +42,8 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
         if (0 === $days) {
             $expression = $expressionBuilder->eq('deleted', 0);
         } else {
-            $dateTime = new \DateTime();
-            $dateTime->sub(new \DateInterval('P'.$days.'D'));
+            $dateTime = new DateTime();
+            $dateTime->sub(new DateInterval('P'.$days.'D'));
             $expression = $expressionBuilder->andX(
                 $expressionBuilder->eq('deleted', 0),
                 $expressionBuilder->orX(

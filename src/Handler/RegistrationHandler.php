@@ -2,6 +2,8 @@
 
 namespace App\Handler;
 
+use Exception;
+use DateTime;
 use App\Entity\User;
 use App\Entity\Voucher;
 use App\Enum\Roles;
@@ -23,12 +25,12 @@ class RegistrationHandler
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function handle(Registration $registration): void
     {
         if (!$this->isRegistrationOpen()) {
-            throw new \Exception('The Registration is closed!');
+            throw new Exception('The Registration is closed!');
         }
 
         // Create user
@@ -70,7 +72,7 @@ class RegistrationHandler
         }
 
         if (null !== $voucher = $this->manager->getRepository(Voucher::class)->findByCode($registration->getVoucher())) {
-            $voucher->setRedeemedTime(new \DateTime());
+            $voucher->setRedeemedTime(new DateTime());
 
             $user->setInvitationVoucher($voucher);
 

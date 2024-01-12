@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use Exception;
 use App\Event\AliasCreatedEvent;
 use App\Sender\AliasCreatedMessageSender;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -17,7 +18,7 @@ class AliasCreationListener implements EventSubscriberInterface
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function onAliasCreated(AliasCreatedEvent $event): void
     {
@@ -26,11 +27,11 @@ class AliasCreationListener implements EventSubscriberInterface
         }
 
         if (null === $alias = $event->getAlias()) {
-            throw new \Exception('Alias should not be null');
+            throw new Exception('Alias should not be null');
         }
 
         if (null === $user = $alias->getUser()) {
-            throw new \Exception('User should not be null');
+            throw new Exception('User should not be null');
         }
         $locale = $this->request->getCurrentRequest()->getLocale();
         $this->sender->send($user, $alias, $locale);

@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use DateTime;
 use App\Entity\User;
 use App\Entity\Voucher;
 use Doctrine\Common\Collections\Criteria;
@@ -63,7 +64,7 @@ class VoucherRepository extends AbstractRepository
         return $this->createQueryBuilder('voucher')
             ->join('voucher.invitedUser', 'invitedUser')
             ->where('voucher.redeemedTime < :date')
-            ->setParameter('date', new \DateTime('-3 months'))
+            ->setParameter('date', new DateTime('-3 months'))
             ->orderBy('voucher.redeemedTime')
             ->getQuery()
             ->getResult();

@@ -2,6 +2,7 @@
 
 namespace App\Handler;
 
+use Exception;
 use App\Entity\User;
 use App\Model\CryptoSecret;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,7 +21,7 @@ class RecoveryTokenHandler
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function generateToken(): string
     {
@@ -29,7 +30,7 @@ class RecoveryTokenHandler
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function create(User $user): void
     {
@@ -37,11 +38,11 @@ class RecoveryTokenHandler
 
         // get plain user password to be encrypted
         if (null === $plainPassword = $user->getPlainPassword()) {
-            throw new \Exception('plainPassword should not be null');
+            throw new Exception('plainPassword should not be null');
         }
 
         if (null === $user->getPlainMailCryptPrivateKey()) {
-            throw new \Exception('plainMailCryptPrivateKey should not be null');
+            throw new Exception('plainMailCryptPrivateKey should not be null');
         }
 
         $recoverySecretBox = CryptoSecretHandler::create($user->getPlainMailCryptPrivateKey(), $recoveryToken);
@@ -57,7 +58,7 @@ class RecoveryTokenHandler
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function verify(User $user, string $recoveryToken): bool
     {
@@ -68,7 +69,7 @@ class RecoveryTokenHandler
 
         try {
             $recoverySecretBox = CryptoSecret::decode($recoverySecretBoxEncoded);
-        } catch (\Exception) {
+        } catch (Exception) {
             return false;
         }
 
@@ -76,16 +77,16 @@ class RecoveryTokenHandler
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function decrypt(User $user, string $recoveryToken): string
     {
         if (null === $secret = $user->getRecoverySecretBox()) {
-            throw new \Exception('secret should not be null');
+            throw new Exception('secret should not be null');
         }
 
         if (null === $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($secret), $recoveryToken)) {
-            throw new \Exception('decryption of recoverySecretBox failed');
+            throw new Exception('decryption of recoverySecretBox failed');
         }
 
         sodium_memzero($recoveryToken);

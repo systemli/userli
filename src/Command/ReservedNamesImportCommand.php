@@ -13,6 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ReservedNamesImportCommand extends Command
 {
+    protected static $defaultName = 'app:reservednames:import';
     public function __construct(private EntityManagerInterface $manager, private ReservedNameCreator $creator)
     {
         parent::__construct();
@@ -24,7 +25,6 @@ class ReservedNamesImportCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:reservednames:import')
             ->setDescription('Import reserved names from stdin or file')
             ->addOption(
                 'file',

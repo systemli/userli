@@ -12,6 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class OpenPgpShowKeyCommand extends Command
 {
+    protected static $defaultName = 'app:openpgp:show-key';
     private OpenPgpKeyRepository $repository;
 
     public function __construct(EntityManagerInterface $manager)
@@ -26,7 +27,6 @@ class OpenPgpShowKeyCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('app:openpgp:show-key')
             ->setDescription('Show OpenPGP key of email')
             ->addArgument(
                 'email',

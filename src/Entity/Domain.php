@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Stringable;
+use DateTime;
 use App\Traits\CreationTimeTrait;
 use App\Traits\IdTrait;
 use App\Traits\NameTrait;
@@ -13,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="virtual_domains")
  * @ORM\HasLifecycleCallbacks()
  */
-class Domain implements \Stringable
+class Domain implements Stringable
 {
     use IdTrait;
     use CreationTimeTrait;
@@ -22,7 +24,7 @@ class Domain implements \Stringable
 
     public function __construct()
     {
-        $currentDateTime = new \DateTime();
+        $currentDateTime = new DateTime();
         $this->creationTime = $currentDateTime;
         $this->updatedTime = $currentDateTime;
     }
