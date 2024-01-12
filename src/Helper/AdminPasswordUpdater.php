@@ -9,13 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class AdminPasswordUpdater
 {
-    private EntityManagerInterface $manager;
-    private PasswordUpdater $updater;
-
-    public function __construct(EntityManagerInterface $manager, PasswordUpdater $updater)
+    public function __construct(private EntityManagerInterface $manager, private PasswordUpdater $updater)
     {
-        $this->manager = $manager;
-        $this->updater = $updater;
     }
 
     /**

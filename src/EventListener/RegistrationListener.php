@@ -11,18 +11,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class RegistrationListener implements EventSubscriberInterface
 {
-    private RequestStack $request;
-    private WelcomeMessageSender $sender;
-    private bool $sendMail;
-
     /**
      * Constructor.
      */
-    public function __construct(RequestStack $request, WelcomeMessageSender $sender, bool $sendMail)
+    public function __construct(private RequestStack $request, private WelcomeMessageSender $sender, private bool $sendMail)
     {
-        $this->request = $request;
-        $this->sender = $sender;
-        $this->sendMail = $sendMail;
     }
 
     /**

@@ -11,21 +11,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class WelcomeMessageBuilder
 {
-    private TranslatorInterface $translator;
     private $domain;
-    private string $appUrl;
-    private string $projectName;
 
     /**
      * WelcomeMessageBuilder constructor.
      */
-    public function __construct(TranslatorInterface $translator, EntityManagerInterface $manager, string $appUrl, string $projectName)
+    public function __construct(private TranslatorInterface $translator, EntityManagerInterface $manager, private string $appUrl, private string $projectName)
     {
-        $this->translator = $translator;
         $domain = $manager->getRepository(Domain::class)->getDefaultDomain();
         $this->domain = null !== $domain ? $domain->getName() : '';
-        $this->appUrl = $appUrl;
-        $this->projectName = $projectName;
     }
 
     /**

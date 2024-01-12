@@ -15,12 +15,10 @@ use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 class UsersListCommand extends Command
 {
     private UserRepository $repository;
-    private RoleHierarchyInterface $roleHierarchy;
 
-    public function __construct(EntityManagerInterface $manager, RoleHierarchyInterface $roleHierarchy)
+    public function __construct(EntityManagerInterface $manager, private RoleHierarchyInterface $roleHierarchy)
     {
         $this->repository = $manager->getRepository(User::class);
-        $this->roleHierarchy = $roleHierarchy;
         parent::__construct();
     }
 

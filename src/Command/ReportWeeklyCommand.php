@@ -12,11 +12,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ReportWeeklyCommand extends Command
 {
-    private UserRegistrationInfoHandler $handler;
-
-    public function __construct(UserRegistrationInfoHandler $handler)
+    public function __construct(private UserRegistrationInfoHandler $handler)
     {
-        $this->handler = $handler;
         parent::__construct();
     }
 

@@ -11,13 +11,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DomainCreationListener implements EventSubscriberInterface
 {
-    private EntityManagerInterface $manager;
-    private WkdHandler $handler;
-
-    public function __construct(EntityManagerInterface $manager, WkdHandler $handler)
+    public function __construct(private EntityManagerInterface $manager, private WkdHandler $handler)
     {
-        $this->manager = $manager;
-        $this->handler = $handler;
     }
 
     /**

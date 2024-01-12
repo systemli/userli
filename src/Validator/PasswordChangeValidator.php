@@ -13,16 +13,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class PasswordChangeValidator extends ConstraintValidator
 {
-    private TokenStorageInterface $storage;
-    private PasswordHasherFactoryInterface $passwordHasherFactory;
-
     /**
      * Constructor.
      */
-    public function __construct(TokenStorageInterface $storage, PasswordHasherFactoryInterface $passwordHasherFactory)
+    public function __construct(private TokenStorageInterface $storage, private PasswordHasherFactoryInterface $passwordHasherFactory)
     {
-        $this->storage = $storage;
-        $this->passwordHasherFactory = $passwordHasherFactory;
     }
 
     /**

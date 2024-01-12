@@ -10,7 +10,7 @@ The easiest way to install Userli on a fresh Debian Buster is running these comm
     git clone https://github.com/systemli/ansible-role-userli.git
     cd ansible-role-userli
 
-    # install apache2, mariadb, php7.4 and userli
+    # install apache2, mariadb, php8.0 and userli
     sudo molecule converge -s localhost
 
 This installs all dependencies, creates a database and database user

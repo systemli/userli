@@ -11,14 +11,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class RandomAliasCreationListener implements EventSubscriberInterface
 {
-    private EntityManagerInterface $manager;
-
     /**
      * RandomAliasCreationListener constructor.
      */
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(private EntityManagerInterface $manager)
     {
-        $this->manager = $manager;
     }
 
     public function onRandomAliasCreated(RandomAliasCreatedEvent $event): void

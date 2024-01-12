@@ -10,14 +10,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class MenuHelper
 {
-    private TranslatorInterface $translator;
-
     /**
      * Constructor.
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(private TranslatorInterface $translator)
     {
-        $this->translator = $translator;
     }
 
     public function build(array $elements, ItemInterface $menu): ItemInterface

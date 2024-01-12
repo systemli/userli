@@ -10,25 +10,13 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class DeleteHandler
 {
-    private PasswordUpdater $passwordUpdater;
-    private EntityManagerInterface $manager;
-    private WkdHandler $wkdHandler;
-
     /**
      * DeleteHandler constructor.
      */
-    public function __construct(PasswordUpdater $passwordUpdater,
-                                EntityManagerInterface $manager,
-                                WkdHandler $wkdHandler)
+    public function __construct(private PasswordUpdater $passwordUpdater, private EntityManagerInterface $manager, private WkdHandler $wkdHandler)
     {
-        $this->passwordUpdater = $passwordUpdater;
-        $this->manager = $manager;
-        $this->wkdHandler = $wkdHandler;
     }
 
-    /**
-     * @param User $user
-     */
     public function deleteAlias(Alias $alias, User $user = null)
     {
         if (null !== $user) {

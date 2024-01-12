@@ -21,6 +21,6 @@ final class PasswordGenerator
             $pass[] = $chars[$n];
         }
 
-        return implode($pass);
+        return implode('', $pass);
     }
 }

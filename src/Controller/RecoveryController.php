@@ -26,20 +26,11 @@ class RecoveryController extends AbstractController
     private const PROCESS_DELAY = '-2 days';
     private const PROCESS_EXPIRE = '-30 days';
 
-    private PasswordUpdater $passwordUpdater;
-    private MailCryptKeyHandler $mailCryptKeyHandler;
-    private RecoveryTokenHandler $recoveryTokenHandler;
-    private EventDispatcherInterface $eventDispatcher;
-
     /**
      * RecoveryController constructor.
      */
-    public function __construct(PasswordUpdater $passwordUpdater, MailCryptKeyHandler $mailCryptKeyHandler, RecoveryTokenHandler $recoveryTokenHandler, EventDispatcherInterface $eventDispatcher)
+    public function __construct(private PasswordUpdater $passwordUpdater, private MailCryptKeyHandler $mailCryptKeyHandler, private RecoveryTokenHandler $recoveryTokenHandler, private EventDispatcherInterface $eventDispatcher)
     {
-        $this->passwordUpdater = $passwordUpdater;
-        $this->mailCryptKeyHandler = $mailCryptKeyHandler;
-        $this->recoveryTokenHandler = $recoveryTokenHandler;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

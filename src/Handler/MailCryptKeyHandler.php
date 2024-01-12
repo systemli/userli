@@ -18,14 +18,11 @@ class MailCryptKeyHandler
     private const MAIL_CRYPT_PRIVATE_KEY_TYPE = OPENSSL_KEYTYPE_EC;
     private const MAIL_CRYPT_CURVE_NAME = 'secp521r1';
 
-    private EntityManagerInterface $manager;
-
     /**
      * MailCryptPrivateKeyHandler constructor.
      */
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(private EntityManagerInterface $manager)
     {
-        $this->manager = $manager;
     }
 
     /**
@@ -53,7 +50,7 @@ class MailCryptKeyHandler
         if (!$process->isSuccessful()) {
             throw new \Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: '.$process->getErrorOutput());
         }
-        if (0 !== strpos($process->getOutput(), '-----BEGIN PRIVATE KEY-----')) {
+        if (!str_starts_with($process->getOutput(), '-----BEGIN PRIVATE KEY-----')) {
             throw new \Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL output is no valid PKCS#8 key: '.$process->getOutput());
         }
 

@@ -10,14 +10,11 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadReservedNameData extends Fixture implements OrderedFixtureInterface
 {
-    private ReservedNameCreator $creator;
-
     /**
      * LoadReservedNameData constructor.
      */
-    public function __construct(ReservedNameCreator $creator)
+    public function __construct(private ReservedNameCreator $creator)
     {
-        $this->creator = $creator;
     }
 
     /**

@@ -13,16 +13,11 @@ use Symfony\Component\Security\Core\Security;
 
 class DomainVoter extends Voter
 {
-    private Security $security;
-    private EntityManagerInterface $manager;
-
     /**
      * DomainVoter constructor.
      */
-    public function __construct(Security $security, EntityManagerInterface $manager)
+    public function __construct(private Security $security, private EntityManagerInterface $manager)
     {
-        $this->security = $security;
-        $this->manager = $manager;
     }
 
     /**

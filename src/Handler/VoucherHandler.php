@@ -18,15 +18,13 @@ class VoucherHandler
     private const VOUCHER_LIMIT = 3;
 
     private VoucherRepository $repository;
-    private VoucherCreator $creator;
 
     /**
      * VoucherHandler constructor.
      */
-    public function __construct(EntityManagerInterface $manager, VoucherCreator $creator)
+    public function __construct(EntityManagerInterface $manager, private VoucherCreator $creator)
     {
         $this->repository = $manager->getRepository(Voucher::class);
-        $this->creator = $creator;
     }
 
     /**
@@ -44,7 +42,7 @@ class VoucherHandler
             for ($i = count($vouchers); $i < self::VOUCHER_LIMIT; ++$i) {
                 try {
                     $vouchers[] = $this->creator->create($user);
-                } catch (ValidationException $e) {
+                } catch (ValidationException) {
                     // Should not throw
                 }
             }

@@ -19,16 +19,11 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DeleteController extends AbstractController
 {
-    private DeleteHandler $deleteHandler;
-    private WkdHandler $wkdHandler;
-
     /**
      * DeleteController constructor.
      */
-    public function __construct(DeleteHandler $deleteHandler, WkdHandler $wkdHandler)
+    public function __construct(private DeleteHandler $deleteHandler, private WkdHandler $wkdHandler)
     {
-        $this->deleteHandler = $deleteHandler;
-        $this->wkdHandler = $wkdHandler;
     }
 
     /**

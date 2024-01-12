@@ -13,12 +13,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class OpenPgpDeleteKeyCommand extends Command
 {
-    private WkdHandler $handler;
     private OpenPgpKeyRepository $repository;
 
-    public function __construct(EntityManagerInterface $manager, WkdHandler $handler)
+    public function __construct(EntityManagerInterface $manager, private WkdHandler $handler)
     {
-        $this->handler = $handler;
         $this->repository = $manager->getRepository(OpenPgpKey::class);
         parent::__construct();
     }

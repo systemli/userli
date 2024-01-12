@@ -20,26 +20,15 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class UsersResetCommand extends Command
 {
-    private EntityManagerInterface $manager;
-    private PasswordUpdater $passwordUpdater;
-    private MailCryptKeyHandler $mailCryptKeyHandler;
-    private RecoveryTokenHandler $recoveryTokenHandler;
-    private string $mailLocation;
-
     /**
      * RegistrationMailCommand constructor.
      */
-    public function __construct(EntityManagerInterface $manager,
-                                PasswordUpdater $passwordUpdater,
-                                MailCryptKeyHandler $mailCryptKeyHandler,
-                                RecoveryTokenHandler $recoveryTokenHandler,
-                                string $mailLocation)
+    public function __construct(private EntityManagerInterface $manager,
+                                private PasswordUpdater $passwordUpdater,
+                                private MailCryptKeyHandler $mailCryptKeyHandler,
+                                private RecoveryTokenHandler $recoveryTokenHandler,
+                                private string $mailLocation)
     {
-        $this->manager = $manager;
-        $this->passwordUpdater = $passwordUpdater;
-        $this->mailCryptKeyHandler = $mailCryptKeyHandler;
-        $this->recoveryTokenHandler = $recoveryTokenHandler;
-        $this->mailLocation = $mailLocation;
         parent::__construct();
     }
 

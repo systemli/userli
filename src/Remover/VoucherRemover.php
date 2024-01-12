@@ -12,14 +12,11 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class VoucherRemover
 {
-    private EntityManagerInterface $manager;
-
     /**
      * VoucherRemover constructor.
      */
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(private EntityManagerInterface $manager)
     {
-        $this->manager = $manager;
     }
 
     public function removeUnredeemedVouchersByUser(User $user): void

@@ -104,7 +104,7 @@ class GpgKeyImporter implements OpenPgpKeyImporterInterface
         if (0 !== $expireUnixTimestamp = $primaryKey->getExpirationDate()) {
             try {
                 $expireTime = new DateTime('@'.$expireUnixTimestamp);
-            } catch (\Exception $e) {
+            } catch (\Exception) {
             }
         }
 

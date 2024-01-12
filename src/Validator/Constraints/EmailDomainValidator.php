@@ -13,14 +13,11 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class EmailDomainValidator extends ConstraintValidator
 {
-    private EntityManagerInterface $manager;
-
     /**
      * EmailDomainValidator constructor.
      */
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(private EntityManagerInterface $manager)
     {
-        $this->manager = $manager;
     }
 
     /**

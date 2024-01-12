@@ -30,24 +30,16 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
  */
 class FeatureContext extends MinkContext
 {
-    private KernelInterface $kernel;
-    private EntityManagerInterface $manager;
-    private PasswordUpdater $passwordUpdater;
-    private DomainGuesser $domainGuesser;
     private string $dbPlatform;
     private array $placeholders = [];
     private ?string $output;
     private array $requestParams = [];
 
-    public function __construct(KernelInterface $kernel,
-                                EntityManagerInterface $manager,
-                                PasswordUpdater $passwordUpdater,
-                                DomainGuesser $domainGuesser)
+    public function __construct(private KernelInterface $kernel,
+                                private EntityManagerInterface $manager,
+                                private PasswordUpdater $passwordUpdater,
+                                private DomainGuesser $domainGuesser)
     {
-        $this->kernel = $kernel;
-        $this->manager = $manager;
-        $this->passwordUpdater = $passwordUpdater;
-        $this->domainGuesser = $domainGuesser;
         $this->dbPlatform = $this->manager->getConnection()->getDatabasePlatform()->getName();
     }
 
@@ -418,7 +410,7 @@ class FeatureContext extends MinkContext
     public function iShouldSeeInTheConsoleOutput(string $string): void
     {
         $output = preg_replace('/\r\n|\r|\n/', '\\n', $this->output);
-        if (false === strpos($output, $string)) {
+        if (!str_contains($output, $string)) {
             throw new \RuntimeException(sprintf('Did not see "%s" in console output "%s"', $string, $output));
         }
     }
@@ -512,7 +504,7 @@ class FeatureContext extends MinkContext
     public function replacePlaceholders(string $string): string
     {
         foreach ($this->getAllPlaceholders() as $key => $value) {
-            if (false !== strpos($string, $key)) {
+            if (str_contains($string, $key)) {
                 $string = str_replace($key, $value, $string);
             }
         }

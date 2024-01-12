@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\ReservedNameRepository")
  * @ORM\Table(name="virtual_reserved_names")
  */
-class ReservedName
+class ReservedName implements \Stringable
 {
     use IdTrait;
     use CreationTimeTrait;

@@ -12,16 +12,11 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 class LoginListener implements EventSubscriberInterface
 {
-    private EntityManagerInterface $manager;
-    private PasswordUpdater $passwordUpdater;
-
     /**
      * LoginListener constructor.
      */
-    public function __construct(EntityManagerInterface $manager, PasswordUpdater $passwordUpdater)
+    public function __construct(private EntityManagerInterface $manager, private PasswordUpdater $passwordUpdater)
     {
-        $this->manager = $manager;
-        $this->passwordUpdater = $passwordUpdater;
     }
 
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event): void

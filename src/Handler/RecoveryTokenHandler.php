@@ -12,14 +12,11 @@ use Ramsey\Uuid\Uuid;
  */
 class RecoveryTokenHandler
 {
-    private EntityManagerInterface $manager;
-
     /**
      * RecoveryTokenHandler constructor.
      */
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(private EntityManagerInterface $manager)
     {
-        $this->manager = $manager;
     }
 
     /**
@@ -71,7 +68,7 @@ class RecoveryTokenHandler
 
         try {
             $recoverySecretBox = CryptoSecret::decode($recoverySecretBoxEncoded);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return false;
         }
 

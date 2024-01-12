@@ -6,14 +6,11 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class TextToEmailTransformer implements DataTransformerInterface
 {
-    private string $domain;
-
     /**
      * Constructor.
      */
-    public function __construct(string $domain)
+    public function __construct(private string $domain)
     {
-        $this->domain = $domain;
     }
 
     /**

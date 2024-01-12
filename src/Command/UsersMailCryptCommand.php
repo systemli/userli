@@ -14,21 +14,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UsersMailCryptCommand extends Command
 {
-    private UserAuthenticationHandler $handler;
-    private MailCryptKeyHandler $mailCryptKeyHandler;
     private UserRepository $repository;
-    private int $mailCrypt;
 
     public function __construct(
         EntityManagerInterface $manager,
-        UserAuthenticationHandler $handler,
-        MailCryptKeyHandler $mailCryptKeyHandler,
-        int $mailCrypt
+        private UserAuthenticationHandler $handler,
+        private MailCryptKeyHandler $mailCryptKeyHandler,
+        private int $mailCrypt
     ) {
-        $this->handler = $handler;
         $this->repository = $manager->getRepository(User::class);
-        $this->mailCryptKeyHandler = $mailCryptKeyHandler;
-        $this->mailCrypt = $mailCrypt;
         parent::__construct();
     }
 

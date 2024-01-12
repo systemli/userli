@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping\Index;
  *     @Index(name="code_idx", columns={"code"})
  * })
  */
-class Voucher
+class Voucher implements \Stringable
 {
     use IdTrait;
     use CreationTimeTrait;
@@ -69,8 +69,8 @@ class Voucher
         $this->invitedUser = $invitedUser;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->code;
+        return (string) $this->code;
     }
 }

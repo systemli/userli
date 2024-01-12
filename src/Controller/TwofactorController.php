@@ -291,7 +291,6 @@ class TwofactorController extends AbstractController
     }
 
     /**
-     * @param TotpAuthenticatorInterface $totpAuthenticator
      *
      * @return Response
      * @throws \Exception

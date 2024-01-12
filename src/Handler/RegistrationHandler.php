@@ -15,36 +15,11 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RegistrationHandler
 {
-    private EntityManagerInterface $manager;
-    private DomainGuesser $domainGuesser;
-    private EventDispatcherInterface $eventDispatcher;
-    private PasswordUpdater $passwordUpdater;
-    private MailCryptKeyHandler $mailCryptKeyHandler;
-    private RecoveryTokenHandler $recoveryTokenHandler;
-    private bool $registrationOpen;
-    private $mailCrypt;
-
     /**
      * Constructor.
      */
-    public function __construct(
-        EntityManagerInterface $manager,
-        DomainGuesser $domainGuesser,
-        EventDispatcherInterface $eventDispatcher,
-        PasswordUpdater $passwordUpdater,
-        MailCryptKeyHandler $mailCryptKeyHandler,
-        RecoveryTokenHandler $recoveryTokenHandler,
-        bool $registrationOpen,
-        bool $mailCrypt
-    ) {
-        $this->manager = $manager;
-        $this->domainGuesser = $domainGuesser;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->passwordUpdater = $passwordUpdater;
-        $this->mailCryptKeyHandler = $mailCryptKeyHandler;
-        $this->recoveryTokenHandler = $recoveryTokenHandler;
-        $this->registrationOpen = $registrationOpen;
-        $this->mailCrypt = $mailCrypt;
+    public function __construct(private EntityManagerInterface $manager, private DomainGuesser $domainGuesser, private EventDispatcherInterface $eventDispatcher, private PasswordUpdater $passwordUpdater, private MailCryptKeyHandler $mailCryptKeyHandler, private RecoveryTokenHandler $recoveryTokenHandler, private bool $registrationOpen, private bool $mailCrypt)
+    {
     }
 
     /**

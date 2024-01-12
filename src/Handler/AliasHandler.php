@@ -18,15 +18,13 @@ class AliasHandler
     public const ALIAS_LIMIT_RANDOM = 100;
 
     private AliasRepository $repository;
-    private AliasCreator $creator;
 
     /**
      * AliasHandler constructor.
      */
-    public function __construct(EntityManagerInterface $manager, AliasCreator $creator)
+    public function __construct(EntityManagerInterface $manager, private AliasCreator $creator)
     {
         $this->repository = $manager->getRepository(Alias::class);
-        $this->creator = $creator;
     }
 
     public function checkAliasLimit(array $aliases, bool $random = false): bool

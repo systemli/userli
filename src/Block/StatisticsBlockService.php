@@ -14,16 +14,11 @@ use Twig\Environment;
 
 class StatisticsBlockService implements BlockServiceInterface
 {
-    private EntityManagerInterface $manager;
-    private Environment $twig;
-
     /**
      * StatisticsBlockService constructor.
      */
-    public function __construct(Environment $twig, EntityManagerInterface $manager)
+    public function __construct(private Environment $twig, private EntityManagerInterface $manager)
     {
-        $this->twig = $twig;
-        $this->manager = $manager;
     }
 
     public function execute(BlockContextInterface $blockContext, Response $response = null): Response

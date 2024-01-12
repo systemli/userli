@@ -39,7 +39,7 @@ use Doctrine\ORM\Mapping\Index;
  *     @Index(name="email_idx", columns={"email"})
  * })
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface, \Stringable
 {
     use IdTrait;
     use CreationTimeTrait;

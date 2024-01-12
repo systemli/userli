@@ -10,10 +10,6 @@ class LegacyPasswordHasher implements PasswordHasherInterface
 {
     use CheckPasswordLengthTrait;
 
-    private string $algorithm;
-    private bool $encodeHashAsBase64;
-    private int $iterations;
-
     /**
      * Constructor.
      *
@@ -21,11 +17,8 @@ class LegacyPasswordHasher implements PasswordHasherInterface
      * @param bool   $encodeHashAsBase64 Whether to base64 encode the password hash
      * @param int    $iterations         The number of iterations to use to stretch the password hash
      */
-    public function __construct(string $algorithm = 'sha512', bool $encodeHashAsBase64 = false, int $iterations = 5000)
+    public function __construct(private string $algorithm = 'sha512', private bool $encodeHashAsBase64 = false, private int $iterations = 5000)
     {
-        $this->algorithm = $algorithm;
-        $this->encodeHashAsBase64 = $encodeHashAsBase64;
-        $this->iterations = $iterations;
     }
 
     /**
@@ -46,16 +39,11 @@ class LegacyPasswordHasher implements PasswordHasherInterface
             throw new InvalidPasswordException('Invalid password.');
         }
 
-        switch ($this->algorithm) {
-            case 'sha256':
-                $hashId = 5;
-                break;
-            case 'sha512':
-                $hashId = 6;
-                break;
-            default:
-                throw new \LogicException(sprintf('The algorithm "%s" is not supported.', $this->algorithm));
-        }
+        $hashId = match ($this->algorithm) {
+            'sha256' => 5,
+            'sha512' => 6,
+            default => throw new \LogicException(sprintf('The algorithm "%s" is not supported.', $this->algorithm)),
+        };
 
         $salt = uniqid(mt_rand(), true);
 

@@ -30,7 +30,7 @@ class DomainFilter extends SQLFilter
     {
         try {
             return $this->getParameter('domainId');
-        } catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException) {
             return null;
         }
     }
