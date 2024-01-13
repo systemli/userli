@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Exception;
 use App\Entity\User;
@@ -18,14 +19,18 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class RegistrationController extends AbstractController
 {
-    /**
-     * RegistrationController constructor.
-     */
     public function __construct(private RegistrationHandler $registrationHandler, private ManagerRegistry $doctrine, private TokenStorageInterface $tokenStorage)
     {
     }
 
     /**
+     * @Route("/{_locale}/register", name="register", requirements={"_locale": "%locales%"})
+     * @Route("/{_locale}/register/{voucher}", name="register_voucher", requirements={"_locale": "%locales%"})
+     * @Route("/register", name="register_fallback")
+     * @Route("/register/{voucher}", name="register_voucher_fallback")
+     * @param Request $request
+     * @param string|null $voucher
+     * @return Response
      * @throws Exception
      */
     public function register(Request $request, string $voucher = null): Response
@@ -88,6 +93,12 @@ class RegistrationController extends AbstractController
         return $this->render('Registration/register.html.twig', ['form' => $form->createView()]);
     }
 
+    /**
+     * @Route("/{_locale}/register/recovery_token", name="register_recovery_token", requirements={"_locale": "%locales%"})
+     * @Route("/register/recovery_token", name="register_recovery_token_fallback")
+     * @param Request $request
+     * @return Response
+     */
     public function registerRecoveryTokenAck(Request $request): Response
     {
         $recoveryTokenAck = new RecoveryTokenAck();
@@ -114,6 +125,12 @@ class RegistrationController extends AbstractController
         return $this->redirectToRoute('register');
     }
 
+    /**
+     * @Route("/{_locale}/register/welcome", name="register_welcome", requirements={"_locale": "%locales%"})
+     * @Route("/register/welcome", name="register_welcome_fallback")
+     * @param Request $request
+     * @return Response
+     */
     public function welcome(Request $request): Response
     {
         $request->getSession()->getFlashBag()->add('success', 'flashes.registration-successful');

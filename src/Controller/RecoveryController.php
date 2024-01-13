@@ -23,6 +23,7 @@ use App\Helper\PasswordUpdater;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class RecoveryController extends AbstractController
@@ -30,14 +31,15 @@ class RecoveryController extends AbstractController
     private const PROCESS_DELAY = '-2 days';
     private const PROCESS_EXPIRE = '-30 days';
 
-    /**
-     * RecoveryController constructor.
-     */
     public function __construct(private PasswordUpdater $passwordUpdater, private MailCryptKeyHandler $mailCryptKeyHandler, private RecoveryTokenHandler $recoveryTokenHandler, private EventDispatcherInterface $eventDispatcher, private ManagerRegistry $docrine)
     {
     }
 
     /**
+     * @Route("/{_locale}/recovery", name="recovery", requirements={"_locale": "%locales%"})
+     * @Route("/recovery", name="recovery_fallback")
+     * @param Request $request
+     * @return Response
      * @throws Exception
      */
     public function recoveryProcess(Request $request): Response
@@ -96,6 +98,10 @@ class RecoveryController extends AbstractController
     }
 
     /**
+     * @Route("/{_locale}/recovery/reset_password", name="recovery_reset_password", requirements={"_locale": "%locales%"})
+     * @Route("/recovery/reset_password", name="recovery_reset_password_fallback")
+     * @param Request $request
+     * @return Response
      * @throws Exception
      */
     public function recoveryResetPassword(Request $request): Response
@@ -174,6 +180,10 @@ class RecoveryController extends AbstractController
     }
 
     /**
+     * @Route("/{_locale}/user/recovery_token", name="user_recovery_token", requirements={"_locale": "%locales%"})
+     * @Route("/user/recovery_token", name="user_recovery_token_fallback")
+     * @param Request $request
+     * @return Response
      * @throws Exception
      */
     public function recoveryToken(Request $request): Response
@@ -240,6 +250,12 @@ class RecoveryController extends AbstractController
         );
     }
 
+    /**
+     * @Route("/{_locale}/recovery/recovery_token/ack", name="recovery_recovery_token_ack", requirements={"_locale": "%locales%"})
+     * @Route("/recovery/recovery_token/ack", name="recovery_recovery_token_ack_fallback")
+     * @param Request $request
+     * @return Response
+     */
     public function recoveryRecoveryTokenAck(Request $request): Response
     {
         $recoveryTokenAck = new RecoveryTokenAck();
@@ -273,6 +289,12 @@ class RecoveryController extends AbstractController
         return $this->redirectToRoute('recovery');
     }
 
+    /**
+     * @Route("/{_locale}/user/recovery_token/ack", name="user_recovery_token_ack", requirements={"_locale": "%locales%"})
+     * @Route("/user/recovery_token/ack", name="user_recovery_token_ack_fallback")
+     * @param Request $request
+     * @return Response
+     */
     public function recoveryTokenAck(Request $request): Response
     {
         $recoveryTokenAck = new RecoveryTokenAck();
@@ -306,6 +328,9 @@ class RecoveryController extends AbstractController
     }
 
     /**
+     * @param User $user
+     * @param string $recoveryToken
+     * @return Response
      * @throws Exception
      */
     private function renderResetPasswordForm(User $user, string $recoveryToken): Response
@@ -335,6 +360,10 @@ class RecoveryController extends AbstractController
     }
 
     /**
+     * @param User $user
+     * @param string $password
+     * @param string $recoveryToken
+     * @return string
      * @throws Exception
      */
     private function resetPassword(User $user, string $password, string $recoveryToken): string
@@ -368,6 +397,10 @@ class RecoveryController extends AbstractController
     }
 
     /**
+     * @param User $user
+     * @param string $recoveryToken
+     * @param bool $verifyTime
+     * @return bool
      * @throws Exception
      */
     private function verifyEmailRecoveryToken(User $user, string $recoveryToken, bool $verifyTime = false): bool

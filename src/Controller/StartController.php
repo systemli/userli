@@ -32,19 +32,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class StartController.
- */
 class StartController extends AbstractController
 {
-    /**
-     * StartController constructor.
-     */
     public function __construct(private AliasHandler $aliasHandler, private PasswordUpdater $passwordUpdater, private VoucherHandler $voucherHandler, private VoucherCreator $voucherCreator, private MailCryptKeyHandler $mailCryptKeyHandler, private EntityManagerInterface $manager, private WkdHandler $wkdHandler)
     {
     }
 
+    /**
+     * @Route("/{_locale}/", name="index", requirements={"_locale"="%locales%"})
+     * @Route("/", name="index_fallback")
+     * @return Response
+     */
     public function index(): Response
     {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -72,6 +72,12 @@ class StartController extends AbstractController
         );
     }
 
+    /**
+     * @Route("/{_locale}/voucher", name="vouchers", requirements={"_locale"="%locales%"})
+     * @Route("/voucher", name="voucher_fallback")
+     * @param Request $request
+     * @return Response
+     */
     public function voucher(Request $request): Response
     {
         /** @var User $user */
@@ -107,6 +113,12 @@ class StartController extends AbstractController
         );
     }
 
+    /**
+     * @Route("/{_locale}/alias", name="aliases", requirements={"_locale"="%locales%"})
+     * @Route("/aliases", name="alias_fallback")
+     * @param Request $request
+     * @return Response
+     */
     public function alias(Request $request): Response
     {
         /** @var User $user */
@@ -164,6 +176,10 @@ class StartController extends AbstractController
     }
 
     /**
+     * @Route("/{_locale}/account", name="account", requirements={"_locale"="%locales%"})
+     * @Route("/account", name="account_fallback")
+     * @param Request $request
+     * @return Response
      * @throws Exception
      */
     public function account(Request $request): Response
@@ -202,7 +218,10 @@ class StartController extends AbstractController
     }
 
     /**
-     * @return Response
+     * @Route("/{_locale}/openpgp", name="openpgp", requirements={"_locale"="%locales%"})
+     * @Route("/openpgp", name="openpgp_fallback")
+     * @param Request $request
+     * @return Response|null
      */
     public function openPgp(Request $request): ?Response
     {
