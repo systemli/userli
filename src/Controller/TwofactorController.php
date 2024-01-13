@@ -20,10 +20,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 class TwofactorController extends AbstractController
 {
     /**
+     * @Route("/{_locale}/user/twofactor", name="user_twofactor", requirements={"_locale": "%locales%"})
+     * @param Request $request
+     * @param TotpAuthenticatorInterface $totpAuthenticator
+     * @return Response
      * @throws Exception
      */
     public function twofactor(Request $request, TotpAuthenticatorInterface $totpAuthenticator): Response
@@ -89,6 +94,9 @@ class TwofactorController extends AbstractController
     }
 
     /**
+     * @Route("/{_locale}/user/twofactor_confirm", name="user_twofactor_confirm", requirements={"_locale": "%locales%"})
+     * @param Request $request
+     * @return Response
      * @throws Exception
      */
     public function twofactorConfirm(Request $request): Response
@@ -166,6 +174,9 @@ class TwofactorController extends AbstractController
     }
 
     /**
+     * @Route("/{_locale}/user/twofactor_backup_codes", name="user_twofactor_backup_ack", requirements={"_locale": "%locales%"})
+     * @param Request $request
+     * @return Response
      * @throws Exception
      */
     public function twofactorBackupAck(Request $request): Response
@@ -243,6 +254,9 @@ class TwofactorController extends AbstractController
     }
 
     /**
+     * @Route("/{_locale}/user/twofactor_disable", name="user_twofactor_disable", requirements={"_locale": "%locales%"})
+     * @param Request $request
+     * @return Response
      * @throws Exception
      */
     public function twofactorDisable(Request $request): Response
@@ -292,7 +306,8 @@ class TwofactorController extends AbstractController
     }
 
     /**
-     *
+     * @Route("/{_locale}/user/twofactor/qrcode", name="user_twofactor_qrcode", requirements={"_locale": "%locales%"})
+     * @param TotpAuthenticatorInterface $totpAuthenticator
      * @return Response
      * @throws Exception
      */

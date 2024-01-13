@@ -15,10 +15,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class InitController.
- */
 class InitController extends AbstractController
 {
     public function __construct(private EntityManagerInterface $manager, private AdminPasswordUpdater $updater, private DomainCreator $creator)
@@ -26,6 +24,10 @@ class InitController extends AbstractController
     }
 
     /**
+     * @Route("/{_locale}/init", name="init", requirements={"_locale": "%locales%"})
+     * @Route("/init", name="init_fallback")
+     * @param Request $request
+     * @return Response
      * @throws ValidationException
      */
     public function index(Request $request): Response
@@ -58,6 +60,12 @@ class InitController extends AbstractController
         return $this->render('Init/domain.html.twig', ['form' => $domainForm->createView()]);
     }
 
+    /**
+     * @Route("/{_locale}/init/user", name="init_user", requirements={"_locale": "%locales%"})
+     * @Route("/init/user", name="init_user_fallback")
+     * @param Request $request
+     * @return Response
+     */
     public function user(Request $request): Response
     {
         // redirect if already configured

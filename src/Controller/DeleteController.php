@@ -14,25 +14,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class DeleteController.
- */
 class DeleteController extends AbstractController
 {
-    /**
-     * DeleteController constructor.
-     */
     public function __construct(private DeleteHandler $deleteHandler, private WkdHandler $wkdHandler, private ManagerRegistry $doctrine)
     {
     }
 
     /**
+     * @Route("/{_locale}/alias/delete/{aliasId}", name="alias_delete", requirements={"_locale": "%locales%"})
+     * @Route("/alias/delete/{aliasId}", name="alias_delete_fallback")
+     * @param Request $request
      * @param $aliasId
-     *
-     * @return RedirectResponse|Response
+     * @return Response
      */
-    public function deleteAlias(Request $request, $aliasId)
+    public function deleteAlias(Request $request, $aliasId): Response
     {
         $user = $this->getUser();
         $aliasRepository = $this->doctrine->getRepository(Alias::class);
@@ -68,9 +65,12 @@ class DeleteController extends AbstractController
     }
 
     /**
+     * @Route("/{_locale}/user/delete", name="user_delete", requirements={"_locale": "%locales%"})
+     * @Route("/user/delete", name="user_delete_fallback")
+     * @param Request $request
      * @return RedirectResponse|Response
      */
-    public function deleteUser(Request $request)
+    public function deleteUser(Request $request): RedirectResponse|Response
     {
         $user = $this->getUser();
         $form = $this->createForm(UserDeleteType::class, new Delete());
@@ -96,7 +96,13 @@ class DeleteController extends AbstractController
         );
     }
 
-    public function deleteOpenPgp(Request $request)
+    /**
+     * @Route("/{_locale}/openpgp/delete", name="openpgp_delete", requirements={"_locale": "%locales%"})
+     * @Route("/openpgp/delete", name="openpgp_delete_fallback")
+     * @param Request $request
+     * @return RedirectResponse|Response
+     */
+    public function deleteOpenPgp(Request $request): RedirectResponse|Response
     {
         $user = $this->getUser();
 
