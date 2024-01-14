@@ -6,6 +6,7 @@
 parameters:
     locale: 'en'
     locales: 'en|de|es|fr|it|pt|nb|gsw'
+    supported_locales: ['en', 'de', 'es', 'fr', 'it', 'pt', 'nb', 'gsw']
     navbar_left:
         -
             name: 'navbar_left.about-us.text'

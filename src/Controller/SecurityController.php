@@ -11,6 +11,7 @@ class SecurityController extends AbstractController
 {
     /**
      * @Route("/{_locale<%locales%>}/login", name="login", requirements={"_locale": "%locales%"})
+     * @Route("/login", name="login_without_locale")
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */

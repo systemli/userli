@@ -43,11 +43,16 @@ class StartController extends AbstractController
 
     /**
      * @Route("/", name="index_no_locale")
+     * @param Request $request
      * @return RedirectResponse
      */
-    public function indexNoLocale(): RedirectResponse
+    public function indexNoLocale(Request $request): RedirectResponse
     {
-        return $this->redirectToRoute('index');
+        $supportedLocales = (array) $this->getParameter('supported_locales');
+        $preferredLanguage = $request->getPreferredLanguage($supportedLocales);
+        $locale = $preferredLanguage ?: $request->getLocale();
+
+        return $this->redirectToRoute('index', ['_locale' =>  $locale]);
     }
     
     /**
