@@ -30,6 +30,7 @@ use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,8 +42,16 @@ class StartController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/", name="index", requirements={"_locale"="%locales%"})
-     * @Route("/", name="index_fallback")
+     * @Route("/", name="index_no_locale")
+     * @return RedirectResponse
+     */
+    public function indexNoLocale(): RedirectResponse
+    {
+        return $this->redirectToRoute('index');
+    }
+    
+    /**
+     * @Route("/{_locale}/", name="index")
      * @return Response
      */
     public function index(): Response
@@ -73,8 +82,7 @@ class StartController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/voucher", name="vouchers", requirements={"_locale"="%locales%"})
-     * @Route("/voucher", name="voucher_fallback")
+     * @Route("/{_locale}/voucher", name="vouchers")
      * @param Request $request
      * @return Response
      */
@@ -114,8 +122,7 @@ class StartController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/alias", name="aliases", requirements={"_locale"="%locales%"})
-     * @Route("/aliases", name="alias_fallback")
+     * @Route("/{_locale}/alias", name="aliases")
      * @param Request $request
      * @return Response
      */
@@ -176,8 +183,7 @@ class StartController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/account", name="account", requirements={"_locale"="%locales%"})
-     * @Route("/account", name="account_fallback")
+     * @Route("/{_locale}/account", name="account")
      * @param Request $request
      * @return Response
      * @throws Exception
@@ -218,8 +224,7 @@ class StartController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/openpgp", name="openpgp", requirements={"_locale"="%locales%"})
-     * @Route("/openpgp", name="openpgp_fallback")
+     * @Route("/{_locale}/openpgp", name="openpgp")
      * @param Request $request
      * @return Response|null
      */
