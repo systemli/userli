@@ -23,7 +23,7 @@ class DeleteController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/alias/delete/{aliasId}", name="alias_delete")
+     * @Route("/{_locale<%locales%>}/alias/delete/{aliasId}", name="alias_delete")
      * @param Request $request
      * @param $aliasId
      * @return Response
@@ -64,7 +64,7 @@ class DeleteController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/user/delete", name="user_delete")
+     * @Route("/{_locale<%locales%>}/user/delete", name="user_delete")
      * @param Request $request
      * @return RedirectResponse|Response
      */
@@ -95,7 +95,7 @@ class DeleteController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/openpgp/delete", name="openpgp_delete")
+     * @Route("/{_locale<%locales%>}/openpgp/delete", name="openpgp_delete")
      * @param Request $request
      * @return RedirectResponse|Response
      */

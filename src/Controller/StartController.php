@@ -51,7 +51,7 @@ class StartController extends AbstractController
     }
     
     /**
-     * @Route("/{_locale}/", name="index")
+     * @Route("/{_locale<%locales%>}/", name="index")
      * @return Response
      */
     public function index(): Response
@@ -82,7 +82,7 @@ class StartController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/voucher", name="vouchers")
+     * @Route("/{_locale<%locales%>}/voucher", name="vouchers", requirements={"_locale": "%locales%"})
      * @param Request $request
      * @return Response
      */
@@ -122,7 +122,7 @@ class StartController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/alias", name="aliases")
+     * @Route("/{_locale<%locales%>}/alias", name="aliases")
      * @param Request $request
      * @return Response
      */
@@ -183,7 +183,7 @@ class StartController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/account", name="account")
+     * @Route("/{_locale<%locales%>}/account", name="account")
      * @param Request $request
      * @return Response
      * @throws Exception
@@ -224,7 +224,7 @@ class StartController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/openpgp", name="openpgp")
+     * @Route("/{_locale<%locales%>}/openpgp", name="openpgp")
      * @param Request $request
      * @return Response|null
      */

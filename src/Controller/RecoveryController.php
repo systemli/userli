@@ -36,7 +36,7 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/recovery", name="recovery")
+     * @Route("/{_locale<%locales%>}/recovery", name="recovery")
      * @param Request $request
      * @return Response
      * @throws Exception
@@ -97,7 +97,7 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/recovery/reset_password", name="recovery_reset_password")
+     * @Route("/{_locale<%locales%>}/recovery/reset_password", name="recovery_reset_password")
      * @param Request $request
      * @return Response
      * @throws Exception
@@ -178,7 +178,7 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/user/recovery_token", name="user_recovery_token")
+     * @Route("/{_locale<%locales%>}/user/recovery_token", name="user_recovery_token")
      * @param Request $request
      * @return Response
      * @throws Exception
@@ -248,7 +248,7 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/recovery/recovery_token/ack", name="recovery_recovery_token_ack")
+     * @Route("/{_locale<%locales%>}/recovery/recovery_token/ack", name="recovery_recovery_token_ack")
      * @param Request $request
      * @return Response
      */
@@ -286,7 +286,7 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/user/recovery_token/ack", name="user_recovery_token_ack")
+     * @Route("/{_locale<%locales%>}/user/recovery_token/ack", name="user_recovery_token_ack")
      * @param Request $request
      * @return Response
      */

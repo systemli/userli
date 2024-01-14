@@ -24,8 +24,8 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/register", name="register")
-     * @Route("/{_locale}/register/{voucher}", name="register_voucher")
+     * @Route("/{_locale<%locales%>}/register", name="register")
+     * @Route("/{_locale<%locales%>}/register/{voucher}", name="register_voucher")
      * @param Request $request
      * @param string|null $voucher
      * @return Response
@@ -92,7 +92,7 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/register/recovery_token", name="register_recovery_token")
+     * @Route("/{_locale<%locales%>}/register/recovery_token", name="register_recovery_token")
      * @param Request $request
      * @return Response
      */
@@ -123,7 +123,7 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/register/welcome", name="register_welcome")
+     * @Route("/{_locale<%locales%>}/register/welcome", name="register_welcome")
      * @param Request $request
      * @return Response
      */

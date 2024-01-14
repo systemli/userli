@@ -24,7 +24,7 @@ class InitController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/init", name="init")
+     * @Route("/{_locale<%locales%>}/init", name="init")
      * @param Request $request
      * @return Response
      * @throws ValidationException
@@ -60,7 +60,7 @@ class InitController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/init/user", name="init_user")
+     * @Route("/{_locale<%locales%>}/init/user", name="init_user")
      * @param Request $request
      * @return Response
      */
