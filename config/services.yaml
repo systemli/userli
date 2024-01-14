@@ -135,10 +135,6 @@ services:
         arguments:
             $sendMail:     "%env(SEND_MAIL)%"
 
-    App\EventListener\LocaleListener:
-        arguments:
-            $supportedLocales: '%supported_locales%'
-
     App\EventListener\RecoveryProcessListener:
         arguments:
             $sendMail:     "%env(SEND_MAIL)%"
