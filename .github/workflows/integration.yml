@@ -6,6 +6,9 @@ on:
     branches:
       - main
 
+env:
+  SYMFONY_ENV: test
+
 jobs:
   unit-tests:
     runs-on: ubuntu-22.04
