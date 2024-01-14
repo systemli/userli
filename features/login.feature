@@ -99,7 +99,7 @@ Feature: Login
     And I am on "/logout"
 
     When I am on "/admin/dashboard"
-    Then I should be on "/en/login"
+    Then I should be on "/login"
 
   @logout
   Scenario: Logout

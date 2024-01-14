@@ -125,9 +125,10 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
       - { path: "^/$", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: "^/login", roles: IS_AUTHENTICATED_ANONYMOUSLY }
+      - { path: "^/logout", roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: "^/[a-z]{2,3}/init", roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: "^/[a-z]{2,3}/login", roles: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: "^/[a-z]{2,3}/logout", roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: "^/[a-z]{2,3}/recovery", roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: "^/[a-z]{2,3}/register", roles: IS_AUTHENTICATED_ANONYMOUSLY }
       - { path: "^/[a-z]{2,3}/$", roles: IS_AUTHENTICATED_ANONYMOUSLY }

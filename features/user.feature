@@ -20,7 +20,7 @@ Feature: User
   @password-change
   Scenario: Change password
     When I am authenticated as "user@example.org"
-    And I am on "/account"
+    And I am on "/en/account"
     And I fill in the following:
       | password_change_password             | asdasd       |
       | password_change_plainPassword_first  | P4ssW0rd!!!1 |
@@ -34,7 +34,7 @@ Feature: User
   @create-random-alias
   Scenario: Create random alias
     When I am authenticated as "user@example.org"
-    And I am on "/alias"
+    And I am on "/en/alias"
     And I press "Generate random alias"
 
     Then I should be on "/en/alias"
@@ -44,7 +44,7 @@ Feature: User
   @create-custom-alias
   Scenario: Create custom alias
     When I am authenticated as "user@example.org"
-    And I am on "/alias"
+    And I am on "/en/alias"
     And I fill in the following:
       | create_custom_alias_alias | test_alias |
     And I press "Add"
@@ -56,7 +56,7 @@ Feature: User
   @delete-alias
   Scenario: Delete custom alias
     When I am authenticated as "user@example.org"
-    And I am on "/alias/delete/1"
+    And I am on "/en/alias/delete/1"
 
     Then I should be on "/en/alias"
     And the response status code should not be 403
@@ -64,7 +64,7 @@ Feature: User
   @delete-alias
   Scenario: Delete random alias
     When I am authenticated as "user@example.org"
-    And I am on "/alias/delete/4"
+    And I am on "/en/alias/delete/4"
     And I fill in the following:
       | delete_alias_password | asdasd |
     And I press "Delete alias"
@@ -76,28 +76,28 @@ Feature: User
   @delete-alias
   Scenario: Deleted alias redirect
     When I am authenticated as "user@example.org"
-    And I am on "/alias/delete/2"
+    And I am on "/en/alias/delete/2"
     Then I should be on "/en/alias"
     And the response status code should not be 403
 
   @delete-alias
   Scenario: Foreign alias redirect
     When I am authenticated as "user@example.org"
-    And I am on "/alias/delete/3"
+    And I am on "/en/alias/delete/3"
     Then I should be on "/en/alias"
     And the response status code should not be 403
 
   @delete-alias
   Scenario: Nonexistent alias redirect
     When I am authenticated as "user@example.org"
-    And I am on "/alias/delete/200"
+    And I am on "/en/alias/delete/200"
     Then I should be on "/en/alias"
     And the response status code should not be 403
 
   @delete-user
   Scenario: Delete Account
     When I am authenticated as "user@example.org"
-    And I am on "/user/delete"
+    And I am on "/en/user/delete"
     And I fill in the following:
       | delete_user_password | asdasd |
     And I press "Delete account"
@@ -110,14 +110,14 @@ Feature: User
       | password | asdasd           |
     And I press "Sign in"
 
-    Then I should be on "/en/login"
+    Then I should be on "/login"
     Then I should see text matching "The presented password is invalid."
     And the response status code should not be 403
 
   @create-voucher
   Scenario: Create voucher as Admin
     When I am authenticated as "admin@example.org"
-    And I am on "/voucher"
+    And I am on "/en/voucher"
     And I press "Create invite code"
 
     Then I should be on "/en/voucher"
@@ -127,7 +127,7 @@ Feature: User
   @create-voucher
   Scenario: Create voucher as Support
     When I am authenticated as "support@example.org"
-    And I am on "/voucher"
+    And I am on "/en/voucher"
     And I press "Create invite code"
 
     Then I should be on "/en/voucher"
@@ -136,20 +136,20 @@ Feature: User
 
   Scenario: Voucher button as Support
     When I am authenticated as "support@example.org"
-    And I am on "/voucher"
+    And I am on "/en/voucher"
 
     Then I should see text matching "Create invite code"
 
   Scenario: Voucher button as User
     When I am authenticated as "user@example.org"
-    And I am on "/voucher"
+    And I am on "/en/voucher"
 
     Then I should not see text matching "Create invite code"
 
   @generate-recovery-token
   Scenario: Create a new recovery token
     When I am authenticated as "user@example.org"
-    And I am on "/user/recovery_token"
+    And I am on "/en/user/recovery_token"
     And I fill in the following:
       | recovery_token_password | asdasd |
     And I press "Create new recovery token"
@@ -159,7 +159,7 @@ Feature: User
   @twofactor-auth
   Scenario: Enable two-factor authentication #1 and enter wrong password
     When I am authenticated as "user@example.org"
-    And I am on "/user/twofactor"
+    And I am on "/en/user/twofactor"
     And I fill in the following:
       | twofactor_password | wrong-password |
     And I press "Enable two-factor authentication"
@@ -170,7 +170,7 @@ Feature: User
   @twofactor-auth
   Scenario: Enable two-factor authentication
     When I am authenticated as "user@example.org"
-    And I am on "/user/twofactor"
+    And I am on "/en/user/twofactor"
     And I fill in the following:
       | twofactor_password | asdasd |
     And I press "Enable two-factor authentication"
