@@ -25,6 +25,7 @@ env:
   REGISTRATION_OPEN: 1
   MAIL_CRYPT_ENABLED: 1
   MAIL_CRYPT_AUTO: 1
+  WEBMAIL_URL: "https://webmail.example.org"
 
 jobs:
   unit-tests:
@@ -42,6 +43,12 @@ jobs:
           coverage: xdebug
           tools: composer
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'yarn'
+
       - name: Get composer cache directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
@@ -55,6 +62,14 @@ jobs:
 
       - name: Install dependencies
         run: composer install
+
+      - name: Prepare Database Schema
+        run: bin/console doctrine:schema:create --env=test
+
+      - name: Prepare Assets
+        run: |
+          yarn
+          yarn encore dev
 
       - name: PHPUnit
         run: bin/phpunit --coverage-clover=coverage.xml
