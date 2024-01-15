@@ -38,7 +38,7 @@
         password: password
         priv: "mail_test.*:ALL"
     nodejs_version: "16.x"
-    php_default_version_debian: 7.4
+    php_default_version_debian: 8.2
     php_packages:
       # necessary
       - php{{ php_default_version_debian }}-apcu
