@@ -36,7 +36,7 @@ yarn
 yarn encore dev
 ````
 
-Visit you local instance at http://192.168.60.99/.
+Visit you local instance at [http://192.168.60.99/](http://192.168.60.99).
 
 ## Development on macOS
 
