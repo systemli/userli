@@ -25,7 +25,7 @@ Feature: Admin
   @admin
   Scenario: Access to Admin Interface as Admin
     When I am on "/admin/dashboard"
-    Then I should be on "/login"
+    Then I should be on "/en/login"
     And the response status code should be 200
 
     When I am authenticated as "louis@example.org"
@@ -218,4 +218,4 @@ Feature: Admin
     And I press "OK"
     Then I should be on "/admin/user/batch"
     And I press "Yes, execute"
-    Then I should be on "/login"
+    Then I should be on "/en/login"

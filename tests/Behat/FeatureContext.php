@@ -273,7 +273,7 @@ class FeatureContext extends MinkContext
         $session = $this->kernel->getContainer()->get('session');
 
         $user = $this->getUserRepository()->findByEmail($username);
-        $providerKey = 'default';
+        $providerKey = 'main';
 
         $token = new UsernamePasswordToken($user, null, $providerKey, $user->getRoles());
 
