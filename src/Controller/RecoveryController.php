@@ -36,8 +36,7 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/recovery", name="recovery", requirements={"_locale": "%locales%"})
-     * @Route("/recovery", name="recovery_fallback")
+     * @Route("/{_locale<%locales%>}/recovery", name="recovery")
      * @param Request $request
      * @return Response
      * @throws Exception
@@ -98,8 +97,7 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/recovery/reset_password", name="recovery_reset_password", requirements={"_locale": "%locales%"})
-     * @Route("/recovery/reset_password", name="recovery_reset_password_fallback")
+     * @Route("/{_locale<%locales%>}/recovery/reset_password", name="recovery_reset_password")
      * @param Request $request
      * @return Response
      * @throws Exception
@@ -180,8 +178,7 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/user/recovery_token", name="user_recovery_token", requirements={"_locale": "%locales%"})
-     * @Route("/user/recovery_token", name="user_recovery_token_fallback")
+     * @Route("/{_locale<%locales%>}/user/recovery_token", name="user_recovery_token")
      * @param Request $request
      * @return Response
      * @throws Exception
@@ -251,8 +248,7 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/recovery/recovery_token/ack", name="recovery_recovery_token_ack", requirements={"_locale": "%locales%"})
-     * @Route("/recovery/recovery_token/ack", name="recovery_recovery_token_ack_fallback")
+     * @Route("/{_locale<%locales%>}/recovery/recovery_token/ack", name="recovery_recovery_token_ack")
      * @param Request $request
      * @return Response
      */
@@ -290,8 +286,7 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/user/recovery_token/ack", name="user_recovery_token_ack", requirements={"_locale": "%locales%"})
-     * @Route("/user/recovery_token/ack", name="user_recovery_token_ack_fallback")
+     * @Route("/{_locale<%locales%>}/user/recovery_token/ack", name="user_recovery_token_ack")
      * @param Request $request
      * @return Response
      */

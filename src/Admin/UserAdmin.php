@@ -227,8 +227,8 @@ class UserAdmin extends Admin
         $this->mailCryptKeyHandler = $mailCryptKeyHandler;
     }
 
-    public function setMailCryptVar(int $mailCrypt): void
+    public function setMailCryptVar(string $mailCrypt): void
     {
-        $this->mailCrypt = $mailCrypt;
+        $this->mailCrypt = (int) $mailCrypt;
     }
 }

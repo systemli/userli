@@ -12,7 +12,7 @@ Feature: Recovery
 
   @recovery
   Scenario: Start recovery process as user (#1)
-    When I am on "/recovery"
+    When I am on "/en/recovery"
     And I fill in the following:
       | recovery_process[email]         | user@example.org                     |
       | recovery_process[recoveryToken] | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
@@ -24,7 +24,7 @@ Feature: Recovery
 
   @recovery
   Scenario: Continue recovery process as user (#2)
-    When I am on "/recovery"
+    When I am on "/en/recovery"
     And I fill in the following:
       | recovery_process[email]         | user2@example.org                    |
       | recovery_process[recoveryToken] | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
@@ -64,7 +64,7 @@ Feature: Recovery
 
   @recovery
   Scenario: Recovery authentication failures
-    When I am on "/recovery"
+    When I am on "/en/recovery"
     And I fill in the following:
       | recovery_process[email]         | nonexistent@example.org              |
       | recovery_process[recoveryToken] | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
@@ -75,7 +75,7 @@ Feature: Recovery
 
   @recovery
   Scenario: Start recovery process with local part only
-    When I am on "/recovery"
+    When I am on "/en/recovery"
     And I fill in the following:
       | recovery_process[email]         | user                                 |
       | recovery_process[recoveryToken] | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
@@ -87,7 +87,7 @@ Feature: Recovery
 
   @recovery
   Scenario: Recovery invalid UUID
-    When I am on "/recovery"
+    When I am on "/en/recovery"
     And I fill in the following:
       | recovery_process[email]         | user@example.org |
       | recovery_process[recoveryToken] | broken_token     |

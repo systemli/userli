@@ -20,7 +20,7 @@ Feature: registration
 
   @registration
   Scenario: Register as new user
-    When I am on "/register"
+    When I am on "/en/register"
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | user1        |
@@ -46,7 +46,7 @@ Feature: registration
 
   @registration
   Scenario: Register with invalid voucher
-    When I am on "/register"
+    When I am on "/en/register"
     And I fill in the following:
       | registration[voucher]               | INVALID      |
       | registration[email]                 | user1        |
@@ -59,7 +59,7 @@ Feature: registration
 
   @registration
   Scenario: Register with invalid e-mail domain
-    When I am on "/register"
+    When I am on "/en/register"
     And I fill in the following:
       | registration[voucher]               | TEST                 |
       | registration[email]                 | user@nonexistant.org |
@@ -72,7 +72,7 @@ Feature: registration
 
   @registration
   Scenario: Register with invalid password
-    When I am on "/register"
+    When I am on "/en/register"
     And I fill in the following:
       | registration[voucher]               | TEST     |
       | registration[email]                 | user1    |
@@ -85,7 +85,7 @@ Feature: registration
 
   @registration
   Scenario: Register with different passwords
-    When I am on "/register"
+    When I am on "/en/register"
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | user1        |
@@ -98,7 +98,7 @@ Feature: registration
 
   @registration
   Scenario: Register with taken address
-    When I am on "/register"
+    When I am on "/en/register"
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | louis        |
@@ -111,7 +111,7 @@ Feature: registration
 
   @registration
   Scenario: Register with taken alias address
-    When I am on "/register"
+    When I am on "/en/register"
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | alias        |
@@ -124,7 +124,7 @@ Feature: registration
 
   @registration
   Scenario: Register with reserved address
-    When I am on "/register"
+    When I am on "/en/register"
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | webmaster    |
@@ -137,7 +137,7 @@ Feature: registration
 
   @registration
   Scenario: Register with reserved address
-    When I am on "/register"
+    When I am on "/en/register"
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | Webmaster    |
@@ -150,7 +150,7 @@ Feature: registration
 
   @registration
   Scenario: Register with too short username
-    When I am on "/register"
+    When I am on "/en/register"
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | ab           |
@@ -163,7 +163,7 @@ Feature: registration
 
   @registration
   Scenario: Register with too long username
-    When I am on "/register"
+    When I am on "/en/register"
     And I fill in the following:
       | registration[voucher]               | TEST                                 |
       | registration[email]                 | abcdefghijklmnopqrstuvwxyz0123456789 |
@@ -176,7 +176,7 @@ Feature: registration
 
   @registration
   Scenario: Register with a plus sign
-    When I am on "/register"
+    When I am on "/en/register"
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | user+test    |

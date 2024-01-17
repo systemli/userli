@@ -5,7 +5,7 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     locale: 'en'
-    locales: en|de|es|fr|it|pt|nb|gsw
+    locales: 'en|de|es|fr|it|pt|nb|gsw'
     supported_locales: ['en', 'de', 'es', 'fr', 'it', 'pt', 'nb', 'gsw']
     navbar_left:
         -
@@ -134,10 +134,6 @@ services:
     App\EventListener\AliasCreationListener:
         arguments:
             $sendMail:     "%env(SEND_MAIL)%"
-
-    App\EventListener\LocaleListener:
-        arguments:
-            $supportedLocales: '%supported_locales%'
 
     App\EventListener\RecoveryProcessListener:
         arguments:

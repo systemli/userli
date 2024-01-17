@@ -25,7 +25,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class TwofactorController extends AbstractController
 {
     /**
-     * @Route("/{_locale}/user/twofactor", name="user_twofactor", requirements={"_locale": "%locales%"})
+     * @Route("/{_locale<%locales%>}/user/twofactor", name="user_twofactor")
      * @param Request $request
      * @param TotpAuthenticatorInterface $totpAuthenticator
      * @return Response
@@ -94,7 +94,7 @@ class TwofactorController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/user/twofactor_confirm", name="user_twofactor_confirm", requirements={"_locale": "%locales%"})
+     * @Route("/{_locale<%locales%>}/user/twofactor_confirm", name="user_twofactor_confirm")
      * @param Request $request
      * @return Response
      * @throws Exception
@@ -174,7 +174,7 @@ class TwofactorController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/user/twofactor_backup_codes", name="user_twofactor_backup_ack", requirements={"_locale": "%locales%"})
+     * @Route("/{_locale<%locales%>}/user/twofactor_backup_codes", name="user_twofactor_backup_ack")
      * @param Request $request
      * @return Response
      * @throws Exception
@@ -254,7 +254,7 @@ class TwofactorController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/user/twofactor_disable", name="user_twofactor_disable", requirements={"_locale": "%locales%"})
+     * @Route("/{_locale<%locales%>}/user/twofactor_disable", name="user_twofactor_disable")
      * @param Request $request
      * @return Response
      * @throws Exception
@@ -306,7 +306,7 @@ class TwofactorController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale}/user/twofactor/qrcode", name="user_twofactor_qrcode", requirements={"_locale": "%locales%"})
+     * @Route("/{_locale<%locales%>}/user/twofactor/qrcode", name="user_twofactor_qrcode")
      * @param TotpAuthenticatorInterface $totpAuthenticator
      * @return Response
      * @throws Exception
