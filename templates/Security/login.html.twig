@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
-            <form class="form-signin" role="form" action="{{ path('login_check') }}" method="post">
+            <form class="form-signin" role="form" action="{{ path('login') }}" method="post">
                 <h2 class="form-signin-heading">{{ "form.signin-header"|trans }}</h2>
                 {% if error %}
                     <div class="alert alert-danger" role="alert">{{ error.message|trans }}</div>
