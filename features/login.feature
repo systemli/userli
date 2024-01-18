@@ -14,7 +14,7 @@ Feature: Login
 
   @login
   Scenario: Login as User
-    When I am on "/login"
+    When I am on "/en/login"
     And I fill in the following:
       | username | louis@example.org |
       | password | asdasd            |
@@ -38,7 +38,7 @@ Feature: Login
 
   @login
   Scenario: Login failures
-    When I am on "/login"
+    When I am on "/en/login"
     And I fill in the following:
       | username | louis@example.org |
       | password | test123           |
@@ -48,7 +48,7 @@ Feature: Login
 
   @login
   Scenario: Login as Admin
-    When I am on "/login"
+    When I am on "/en/login"
     And I fill in the following:
       | username | user@example.org |
       | password | asdasd           |
@@ -59,7 +59,7 @@ Feature: Login
 
   @login
   Scenario: Login as Support
-    When I am on "/login"
+    When I am on "/en/login"
     And I fill in the following:
       | username | support@example.org |
       | password | asdasd              |
@@ -70,7 +70,7 @@ Feature: Login
 
   @login
   Scenario: Login without domain
-    When I am on "/login"
+    When I am on "/en/login"
     And I fill in the following:
       | username | user   |
       | password | asdasd |
@@ -84,7 +84,7 @@ Feature: Login
     When the following User exists:
       | email               | password | roles     |
       | special@example.org | paßwort  | ROLE_USER |
-    And I am on "/login"
+    And I am on "/en/login"
     And I fill in the following:
       | username | special@example.org |
       | password | paßwort             |
@@ -110,7 +110,7 @@ Feature: Login
 
   @login
   Scenario: Login as Spam
-    When I am on "/login"
+    When I am on "/en/login"
     And I fill in the following:
       | username | spam@example.org |
       | password | asdasd              |
@@ -125,7 +125,7 @@ Feature: Login
     When the following User exists:
       | email                 | password | roles     | totpConfirmed | totpSecret |
       | twofactor@example.org | asdasd   | ROLE_USER | 1             | secret     |
-    And I am on "/login"
+    And I am on "/en/login"
     And I fill in the following:
       | username | twofactor@example.org |
       | password | asdasd                |
@@ -149,7 +149,7 @@ Feature: Login
     When the following User exists:
       | email                 | password | roles     | totpConfirmed | totpSecret | totp_backup_codes |
       | twofactor@example.org | asdasd   | ROLE_USER | 1             | secret     | true              |
-    And I am on "/login"
+    And I am on "/en/login"
     And I fill in the following:
       | username | twofactor@example.org |
       | password | asdasd                |

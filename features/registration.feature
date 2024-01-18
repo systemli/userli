@@ -35,7 +35,7 @@ Feature: registration
     When I am on "/logout"
     Then I should be on "/en/"
 
-    When I am on "/login"
+    When I am on "/en/login"
     And I fill in the following:
       | username | user1@example.org |
       | password | P4ssW0rt!!!1      |
