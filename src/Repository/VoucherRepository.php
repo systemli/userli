@@ -6,20 +6,17 @@ use DateTime;
 use App\Entity\User;
 use App\Entity\Voucher;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\EntityRepository;
 
-/**
- * Class VoucherRepository.
- */
-class VoucherRepository extends AbstractRepository
+class VoucherRepository extends EntityRepository
 {
     /**
      * Finds a voucher by its code.
      * 
      * @param $code
-     *
-     * @return Voucher|object|null
+     * @return Voucher|null
      */
-    public function findByCode($code)
+    public function findByCode($code): ?Voucher
     {
         return $this->findOneBy(['code' => $code]);
     }

@@ -2,30 +2,33 @@
 
 namespace App\Repository;
 
+use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\Common\Collections\Collection;
 use DateTime;
 use DateInterval;
 use App\Entity\User;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Selectable;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\LazyCriteriaCollection;
+use Exception;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
-/**
- * Class UserRepository.
- */
-class UserRepository extends AbstractRepository implements PasswordUpgraderInterface
+class UserRepository extends EntityRepository implements PasswordUpgraderInterface
 {
     /**
      * @param $email
      *
-     * @return object|User|null
+     * @return User|null
      */
-    public function findByEmail($email)
+    public function findByEmail($email): ?User
     {
         return $this->findOneBy(['email' => $email]);
     }
 
     /**
-     * @return Collection|User[]
+     * @param DateTime $dateTime
+     * @return AbstractLazyCollection|(AbstractLazyCollection&Selectable)|LazyCriteriaCollection
      */
     public function findUsersSince(DateTime $dateTime)
     {
@@ -33,7 +36,9 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
     }
 
     /**
-     * @return Collection|User[]
+     * @param int $days
+     * @return AbstractLazyCollection|(AbstractLazyCollection&Selectable)|LazyCriteriaCollection
+     * @throws Exception
      */
     public function findInactiveUsers(int $days)
     {
@@ -67,18 +72,27 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
         return $this->findBy(['deleted' => true]);
     }
 
+    /**
+     * @return int
+     */
     public function countUsers(): int
     {
         return $this->matching(Criteria::create()
             ->where(Criteria::expr()->eq('deleted', false)))->count();
     }
 
+    /**
+     * @return int
+     */
     public function countDeletedUsers(): int
     {
         return $this->matching(Criteria::create()
             ->where(Criteria::expr()->eq('deleted', true)))->count();
     }
 
+    /**
+     * @return int
+     */
     public function countUsersWithRecoveryToken(): int
     {
         return $this->matching(Criteria::create()
@@ -87,6 +101,9 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
         )->count();
     }
 
+    /**
+     * @return int
+     */
     public function countUsersWithMailCrypt(): int
     {
         return $this->matching(Criteria::create()
@@ -95,6 +112,9 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
         )->count();
     }
 
+    /**
+     * @return int
+     */
     public function countUsersWithTwofactor(): int
     {
         return $this->matching(Criteria::create()
@@ -102,11 +122,5 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
             ->andWhere(Criteria::expr()->eq('totpConfirmed', 1))
             ->andWhere(Criteria::expr()->neq('totpSecret', null))
         )->count();
-    }
-
-    public function upgradePassword(User $user, string $newHashedPassword): void
-    {
-        $user->setPassword($newHashedPassword);
-        $this->getEntityManager()->flush();
     }
 }

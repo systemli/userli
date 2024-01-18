@@ -4,11 +4,9 @@ namespace App\Repository;
 
 use App\Entity\OpenPgpKey;
 use App\Entity\User;
+use Doctrine\ORM\EntityRepository;
 
-/**
- * Class OpenPgpKeyRepository.
- */
-class OpenPgpKeyRepository extends AbstractRepository
+class OpenPgpKeyRepository extends EntityRepository
 {
     /**
      * @return OpenPgpKey[]

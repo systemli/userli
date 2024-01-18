@@ -4,34 +4,31 @@ namespace App\Repository;
 
 use App\Entity\Alias;
 use App\Entity\User;
+use Doctrine\ORM\EntityRepository;
 
-/**
- * Class AliasRepository.
- */
-class AliasRepository extends AbstractRepository
+class AliasRepository extends EntityRepository
 {
     /**
-     * @param bool $deleted
+     * @param string $email
+     * @return Alias|null
      */
-    public function findOneBySource(string $email, ?bool $deleted = false): ?Alias
+    public function findOneBySource(string $email): ?Alias
     {
-        return $this->findOneBy(['source' => $email], null, $deleted);
-    }
-
-    public function findByDestination(string $email): ?Alias
-    {
-        return $this->findOneBy(['destination' => $email]);
+        return $this->findOneBy(['source' => $email]);
     }
 
     /**
+     * @param User $user
+     * @param bool|null $random
+     * @param bool $deleted
      * @return array|Alias[]
      */
-    public function findByUser(User $user, ?bool $random = null): array
+    public function findByUser(User $user, ?bool $random = null, ?bool $deleted = false): array
     {
         if (isset($random)) {
-            return $this->findBy(['user' => $user, 'random' => $random]);
+            return $this->findBy(['user' => $user, 'random' => $random, 'deleted' => $deleted]);
         }
 
-        return $this->findBy(['user' => $user]);
+        return $this->findBy(['user' => $user, 'deleted' => $deleted]);
     }
 }

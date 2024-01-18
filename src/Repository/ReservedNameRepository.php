@@ -3,11 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\ReservedName;
+use Doctrine\ORM\EntityRepository;
 
-/**
- * Class ReservedNameRepository.
- */
-class ReservedNameRepository extends AbstractRepository
+class ReservedNameRepository extends EntityRepository
 {
     public function findByName(string $name): ?ReservedName
     {
