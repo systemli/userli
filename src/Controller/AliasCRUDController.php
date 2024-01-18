@@ -15,7 +15,7 @@ class AliasCRUDController extends CRUDController
     {
     }
 
-    public function delete(Request $request): Response
+    public function deleteAction(Request $request): Response
     {
         $object = $this->assertObjectExists($request, true);
         \assert(null !== $object);
