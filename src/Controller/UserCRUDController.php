@@ -34,7 +34,7 @@ class UserCRUDController extends CRUDController
         return $this->redirectToList();
     }
 
-    public function delete(Request $request): Response
+    public function deleteAction(Request $request): Response
     {
         $object = $this->assertObjectExists($request, true);
         \assert(null !== $object);
