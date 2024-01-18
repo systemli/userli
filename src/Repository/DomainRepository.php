@@ -3,11 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Domain;
+use Doctrine\ORM\EntityRepository;
 
-/**
- * Class DomainRepository.
- */
-class DomainRepository extends AbstractRepository
+class DomainRepository extends EntityRepository
 {
     public function findByName(string $name): ?Domain
     {

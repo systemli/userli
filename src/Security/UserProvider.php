@@ -10,29 +10,17 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-/**
- * Class UserProvider.
- */
 class UserProvider implements UserProviderInterface
 {
-    /**
-     * UserProvider constructor.
-     */
     public function __construct(private EntityManagerInterface $manager)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function loadUserByUsername(string $username): UserInterface
     {
         return $this->loadUserByIdentifier($username);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         if (!str_contains($identifier, '@')) {
@@ -49,25 +37,20 @@ class UserProvider implements UserProviderInterface
         return $user;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Expected an instance of App\Entity\User, but got "%s".', $user::class));
+            throw new UnsupportedUserException(sprintf('Invalid user class "%s".', get_class($user)));
         }
 
-        if (null === $reloadedUser = $this->manager->getRepository(User::class)->findOneBy(['id' => $user->getId()])) {
+        $reloadedUser = $this->manager->getRepository(User::class)->findOneBy(['id' => $user->getId(), 'deleted' => false]);
+        if (null === $reloadedUser) {
             throw new UserNotFoundException(sprintf('User with ID "%d" could not be reloaded.', $user->getId()));
         }
 
         return $reloadedUser;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportsClass($class): bool
     {
         $userClass = User::class;

@@ -105,6 +105,7 @@ security:
             security: false
         main:
             pattern: ^/
+            user_checker: App\Security\UserChecker
             form_login:
                 enable_csrf: true
                 require_previous_session: false
