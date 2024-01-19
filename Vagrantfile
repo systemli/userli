@@ -28,6 +28,7 @@ Vagrant.configure("2") do |config|
     config.ssh.forward_agent = true
 
     config.vm.provision "ansible" do |ansible|
+        ansible.galaxy_role_file = "requirements.yml"
         ansible.playbook = "ansible/playbook.yml"
         ansible.compatibility_mode = "2.0"
     end
