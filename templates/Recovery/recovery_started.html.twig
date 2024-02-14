@@ -2,5 +2,5 @@
 
 {% block recovery_content %}
     <p class="alert alert-success">{{ "recovery.started"|trans }}<br /><br />{{ "recovery.waiting-info"|trans }}</p>
-    <p class="alert alert-info lead">{{ "recovery.waiting-time"|trans({'%time%': active_time|format_date('medium', 'short')}) }}</p>
+    <p class="alert alert-info lead">{{ "recovery.waiting-time"|trans({'%time%': active_time|date("d.m.Y")}) }}</p>
 {% endblock %}
