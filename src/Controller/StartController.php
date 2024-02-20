@@ -168,7 +168,7 @@ class StartController extends AbstractController
             }
         }
 
-        $aliasRepository = $this->getDoctrine()->getRepository(Alias::class);
+        $aliasRepository = $this->manager->getRepository(Alias::class);
         $aliasesRandom = $aliasRepository->findByUser($user, true);
         $aliasesCustom = $aliasRepository->findByUser($user, false);
 
