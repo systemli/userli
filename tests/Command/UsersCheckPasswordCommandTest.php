@@ -27,6 +27,7 @@ class UsersCheckPasswordCommandTest extends TestCase
     protected $quotaUser;
     protected $mailCryptUser;
     protected $spamUser;
+    protected $deletedUser;
     protected $loginListener;
 
     public function setUp(): void
@@ -43,6 +44,9 @@ class UsersCheckPasswordCommandTest extends TestCase
         $this->spamUser = new User();
         $this->spamUser->setPassword('passwordhash');
         $this->spamUser->setRoles([Roles::SPAM]);
+        $this->deletedUser = new User();
+        $this->deletedUser->setPassword('passwordhash');
+        $this->deletedUser->setDeleted(true);
     }
 
     /**
@@ -234,6 +238,7 @@ class UsersCheckPasswordCommandTest extends TestCase
             ["unknown@example.org\x00password\x00", 1],
             ["unknown@example.org\x00password\x00\x00", 1],
             ["unknown@example.org\x00password\x00timestamp\x00extra with \x00\x00", 1],
+            ["deleted@example.org\x00password\x00\x00", 1]
         ];
     }
 
@@ -269,6 +274,7 @@ class UsersCheckPasswordCommandTest extends TestCase
                 ['quota@example.org', $this->quotaUser],
                 ['mailcrypt@example.org', $this->mailCryptUser],
                 ['spam@example.org', $this->spamUser],
+                ['deleted@example.org', $this->deletedUser],
             ]
         );
 

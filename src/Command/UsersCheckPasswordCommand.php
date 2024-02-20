@@ -101,7 +101,7 @@ class UsersCheckPasswordCommand extends Command
 
         // Check if user exists
         $user = $this->repository->findByEmail($email);
-        if (null === $user) {
+        if (null === $user || $user->isDeleted()) {
             // Return '3' for non-existent user when doing UserDB lookup for dovecot
             if (true === $userDbLookup) {
                 return 3;
