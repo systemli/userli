@@ -279,13 +279,16 @@
         ]
     },
     "symfony/debug-bundle": {
-        "version": "4.1",
+        "version": "6.0",
         "recipe": {
             "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.1",
-            "ref": "f8863cbad2f2e58c4b65fa1eac892ab189971bea"
-        }
+            "branch": "main",
+            "version": "5.3",
+            "ref": "5aa8aa48234c8eb6dbdd7b3cd5d791485d2cec4b"
+        },
+        "files": [
+            "config/packages/debug.yaml"
+        ]
     },
     "symfony/dependency-injection": {
         "version": "v4.1.4"
