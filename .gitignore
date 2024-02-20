@@ -2,7 +2,6 @@ bin/*
 !bin/console
 !bin/githup-release.sh
 !bin/mailcrypt-encrypt-maildir
-!bin/phpunit
 !bin/user-accounts
 !bin/user-aliases
 !bin/user-vouchers
