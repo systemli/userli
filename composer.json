@@ -36,6 +36,7 @@
         "symfony/monolog-bundle": "^3.8.0",
         "symfony/polyfill-apcu": "^1.0",
         "symfony/process": "6.0.*",
+        "symfony/runtime": "6.0.*",
         "symfony/security-bundle": "*",
         "symfony/security-csrf": "*",
         "symfony/translation": "*",
@@ -77,7 +78,8 @@
         },
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
-            "symfony/flex": true
+            "symfony/flex": true,
+            "symfony/runtime": true
         }
     },
     "autoload": {
