@@ -105,6 +105,8 @@ security:
             security: false
         main:
             pattern: ^/
+            provider: user
+            lazy: true
             user_checker: App\Security\UserChecker
             form_login:
                 enable_csrf: true
@@ -120,7 +122,7 @@ security:
                 enable_csrf: true
 
             # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#firewalls-authentication
+            # https://symfony.com/doc/current/security.html#the-firewall
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
