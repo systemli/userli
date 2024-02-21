@@ -14,7 +14,7 @@ class RandomAliasCreationListener implements EventSubscriberInterface
     /**
      * RandomAliasCreationListener constructor.
      */
-    public function __construct(private EntityManagerInterface $manager)
+    public function __construct(private readonly EntityManagerInterface $manager)
     {
     }
 

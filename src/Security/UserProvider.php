@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class UserProvider implements UserProviderInterface
 {
-    public function __construct(private EntityManagerInterface $manager)
+    public function __construct(private readonly EntityManagerInterface $manager)
     {
     }
 

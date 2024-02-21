@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ReportWeeklyCommand extends Command
 {
     protected static $defaultName = 'app:report:weekly';
-    public function __construct(private UserRegistrationInfoHandler $handler)
+    public function __construct(private readonly UserRegistrationInfoHandler $handler)
     {
         parent::__construct();
     }

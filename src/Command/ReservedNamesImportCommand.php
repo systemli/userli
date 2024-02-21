@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ReservedNamesImportCommand extends Command
 {
     protected static $defaultName = 'app:reservednames:import';
-    public function __construct(private EntityManagerInterface $manager, private ReservedNameCreator $creator)
+    public function __construct(private readonly EntityManagerInterface $manager, private readonly ReservedNameCreator $creator)
     {
         parent::__construct();
     }

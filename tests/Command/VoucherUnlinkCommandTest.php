@@ -2,6 +2,7 @@
 
 namespace App\Tests\Command;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Exception;
 use DateTime;
 use App\Command\VoucherUnlinkCommand;
@@ -48,7 +49,7 @@ class VoucherUnlinkCommandTest extends TestCase
     }
 
     /**
-     * @return \PHPUnit\Framework\MockObject\MockObject
+     * @return MockObject
      */
     public function getManager(): EntityManagerInterface
     {

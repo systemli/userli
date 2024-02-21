@@ -16,7 +16,7 @@ class AliasCreatedMessageSender
     /**
      * AliasCreatedMessageSender constructor.
      */
-    public function __construct(private MailHandler $handler, private AliasCreatedMessageBuilder $builder)
+    public function __construct(private readonly MailHandler $handler, private readonly AliasCreatedMessageBuilder $builder)
     {
     }
 

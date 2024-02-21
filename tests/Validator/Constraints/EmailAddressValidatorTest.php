@@ -38,7 +38,7 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $domainRepository->method('findByName')->willReturnMap([
-            [explode('@', $this->addressNew)[1], new Domain()],
+            [explode('@', (string) $this->addressNew)[1], new Domain()],
             [$this->extraDomain, new Domain()],
         ]);
         $userRepository = $this->getMockBuilder(UserRepository::class)

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\AliasRepository;
 use Stringable;
 use DateTime;
 use App\Traits\CreationTimeTrait;
@@ -15,20 +16,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\AssociationOverride;
 use Doctrine\ORM\Mapping\Index;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\AliasRepository")
- * @ORM\Table(name="virtual_aliases", indexes={
- *     @Index(name="source_deleted_idx", columns={"source", "deleted"}),
- *     @Index(name="destination_deleted_idx", columns={"destination", "deleted"}),
- *     @Index(name="user_deleted_idx", columns={"user_id", "deleted"})
- * })
- * @ORM\AssociationOverrides({
- *     @AssociationOverride(name="domain", joinColumns=@ORM\JoinColumn(
- *         nullable=true
- *     ))
- * })
- * @ORM\HasLifecycleCallbacks()
- */
+#[ORM\Entity(repositoryClass: AliasRepository::class)]
+#[ORM\AssociationOverrides([new AssociationOverride(name: 'domain', joinColumns: new ORM\JoinColumn(nullable: true))])]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: 'virtual_aliases')]
+#[Index(name: 'source_deleted_idx', columns: ['source', 'deleted'])]
+#[Index(name: 'destination_deleted_idx', columns: ['destination', 'deleted'])]
+#[Index(name: 'user_deleted_idx', columns: ['user_id', 'deleted'])]
 class Alias implements SoftDeletableInterface, Stringable
 {
     use IdTrait;
@@ -39,10 +33,10 @@ class Alias implements SoftDeletableInterface, Stringable
     use DomainAwareTrait;
     use RandomTrait;
 
-    /** @ORM\Column() */
+    #[ORM\Column]
     protected ?string $source = null;
 
-    /** @ORM\Column(nullable=true) */
+    #[ORM\Column(nullable: true)]
     protected ?string $destination = null;
 
     /**

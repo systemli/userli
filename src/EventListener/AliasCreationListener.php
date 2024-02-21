@@ -13,7 +13,7 @@ class AliasCreationListener implements EventSubscriberInterface
     /**
      * AliasCreationListener constructor.
      */
-    public function __construct(private RequestStack $request, private AliasCreatedMessageSender $sender, private bool $sendMail)
+    public function __construct(private readonly RequestStack $request, private readonly AliasCreatedMessageSender $sender, private readonly bool $sendMail)
     {
     }
 

@@ -15,7 +15,7 @@ class RegistrationListener implements EventSubscriberInterface
     /**
      * Constructor.
      */
-    public function __construct(private RequestStack $request, private WelcomeMessageSender $sender, private bool $sendMail)
+    public function __construct(private readonly RequestStack $request, private readonly WelcomeMessageSender $sender, private readonly bool $sendMail)
     {
     }
 

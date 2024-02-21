@@ -15,7 +15,7 @@ class LoginListener implements EventSubscriberInterface
     /**
      * LoginListener constructor.
      */
-    public function __construct(private EntityManagerInterface $manager, private PasswordUpdater $passwordUpdater)
+    public function __construct(private readonly EntityManagerInterface $manager, private readonly PasswordUpdater $passwordUpdater)
     {
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\ReservedNameRepository;
 use Stringable;
 use DateTime;
 use App\Traits\CreationTimeTrait;
@@ -10,10 +11,8 @@ use App\Traits\NameTrait;
 use App\Traits\UpdatedTimeTrait;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ReservedNameRepository")
- * @ORM\Table(name="virtual_reserved_names")
- */
+#[ORM\Entity(repositoryClass: ReservedNameRepository::class)]
+#[ORM\Table(name: 'virtual_reserved_names')]
 class ReservedName implements Stringable
 {
     use IdTrait;

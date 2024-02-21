@@ -15,14 +15,14 @@ use Tuupola\Base32;
 
 class WkdHandler
 {
-    private OpenPgpKeyRepository $repository;
+    private readonly OpenPgpKeyRepository $repository;
 
     /**
      * WkdHandler constructor.
      */
-    public function __construct(private EntityManagerInterface $manager,
-                                private string $wkdDirectory,
-                                private string $wkdFormat)
+    public function __construct(private readonly EntityManagerInterface $manager,
+                                private readonly string $wkdDirectory,
+                                private readonly string $wkdFormat)
     {
         $this->repository = $manager->getRepository(OpenPgpKey::class);
     }

@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class UsersQuotaCommand extends Command
 {
     protected static $defaultName = 'app:users:quota';
-    private UserRepository $repository;
+    private readonly UserRepository $repository;
 
     public function __construct(EntityManagerInterface $manager)
     {

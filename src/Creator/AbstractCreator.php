@@ -15,7 +15,7 @@ abstract class AbstractCreator
     /**
      * AbstractCreator constructor.
      */
-    public function __construct(private EntityManagerInterface $manager, private ValidatorInterface $validator, protected EventDispatcherInterface $eventDispatcher)
+    public function __construct(private readonly EntityManagerInterface $manager, private readonly ValidatorInterface $validator, protected EventDispatcherInterface $eventDispatcher)
     {
     }
 

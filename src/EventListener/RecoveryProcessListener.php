@@ -14,7 +14,7 @@ class RecoveryProcessListener implements EventSubscriberInterface
     /**
      * RecoveryProcessListener constructor.
      */
-    public function __construct(private RequestStack $request, private RecoveryProcessMessageSender $sender, private bool $sendMail)
+    public function __construct(private readonly RequestStack $request, private readonly RecoveryProcessMessageSender $sender, private readonly bool $sendMail)
     {
     }
 

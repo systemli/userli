@@ -61,7 +61,7 @@ class WkdHandlerTest extends TestCase
         $expected->setKeyData($this->keyData);
 
         $handler = $this->createHandler();
-        $wkdKey = $handler->importKey(base64_decode($this->keyData), $this->email);
+        $wkdKey = $handler->importKey(base64_decode((string) $this->keyData), $this->email);
 
         self::assertEquals($expected, $wkdKey);
         self::assertFileExists($this->wkdPath);
@@ -70,7 +70,7 @@ class WkdHandlerTest extends TestCase
     public function testImportKeyWithUser(): void
     {
         $domain = new Domain();
-        $domain->setName(explode('@', $this->email)[1]);
+        $domain->setName(explode('@', (string) $this->email)[1]);
         $user = new User();
         $user->setDomain($domain);
         $user->setEmail($this->email);
@@ -83,7 +83,7 @@ class WkdHandlerTest extends TestCase
         $expected->setUser($user);
 
         $handler = $this->createHandler();
-        $wkdKey = $handler->importKey(base64_decode($this->keyData), $this->email, $user);
+        $wkdKey = $handler->importKey(base64_decode((string) $this->keyData), $this->email, $user);
 
         self::assertEquals($expected, $wkdKey);
         self::assertFileExists($this->wkdPath);
@@ -91,8 +91,8 @@ class WkdHandlerTest extends TestCase
 
     public function testDeleteKey(): void
     {
-        if (!is_dir(dirname($this->wkdPath))) {
-            mkdir(dirname($this->wkdPath), 0755, true);
+        if (!is_dir(dirname((string) $this->wkdPath))) {
+            mkdir(dirname((string) $this->wkdPath), 0755, true);
         }
         touch($this->wkdPath);
 
@@ -104,8 +104,8 @@ class WkdHandlerTest extends TestCase
 
     public function testExportKeyToWKD(): void
     {
-        if (!is_dir(dirname($this->wkdPath))) {
-            mkdir(dirname($this->wkdPath), 0755, true);
+        if (!is_dir(dirname((string) $this->wkdPath))) {
+            mkdir(dirname((string) $this->wkdPath), 0755, true);
         } elseif (is_file($this->wkdPath)) {
             unlink($this->wkdPath);
         }
@@ -114,6 +114,6 @@ class WkdHandlerTest extends TestCase
         $handler->exportKeyToWKD($this->openPgpKey);
 
         self::assertFileExists($this->wkdPath);
-        self::assertEquals(base64_decode($this->keyData), file_get_contents($this->wkdPath));
+        self::assertEquals(base64_decode((string) $this->keyData), file_get_contents($this->wkdPath));
     }
 }

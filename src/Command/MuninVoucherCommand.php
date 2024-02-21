@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class MuninVoucherCommand extends Command
 {
     protected static $defaultName = 'app:munin:voucher';
-    private VoucherRepository $repository;
+    private readonly VoucherRepository $repository;
 
     public function __construct(EntityManagerInterface $manager)
     {

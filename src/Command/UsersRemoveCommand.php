@@ -14,8 +14,8 @@ use Symfony\Component\Filesystem\Filesystem;
 class UsersRemoveCommand extends Command
 {
     protected static $defaultName = 'app:users:remove';
-    public function __construct(private EntityManagerInterface $manager,
-                                private string $mailLocation,
+    public function __construct(private readonly EntityManagerInterface $manager,
+                                private readonly string $mailLocation,
                                 ?string $name = null)
     {
         parent::__construct($name);
@@ -50,7 +50,7 @@ class UsersRemoveCommand extends Command
                 continue;
             }
             $domain = $user->getDomain()->getName();
-            $name = str_replace('@'.$domain, '', $user->getEmail());
+            $name = str_replace('@'.$domain, '', (string) $user->getEmail());
             $path = $this->mailLocation.DIRECTORY_SEPARATOR.$domain.DIRECTORY_SEPARATOR.$name;
 
             if ($input->getOption('dry-run')) {

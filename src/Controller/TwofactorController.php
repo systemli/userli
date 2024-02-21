@@ -25,18 +25,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TwofactorController extends AbstractController
 {
-    public function __construct(private EntityManagerInterface $manager)
+    public function __construct(private readonly EntityManagerInterface $manager)
     {
 
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/user/twofactor", name="user_twofactor")
      * @param Request $request
      * @param TotpAuthenticatorInterface $totpAuthenticator
      * @return Response
      * @throws Exception
      */
+    #[Route(path: '/{_locale<%locales%>}/user/twofactor', name: 'user_twofactor')]
     public function twofactor(Request $request, TotpAuthenticatorInterface $totpAuthenticator): Response
     {
         /** @var $user TwoFactorInterface */
@@ -97,11 +97,11 @@ class TwofactorController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/user/twofactor_confirm", name="user_twofactor_confirm")
      * @param Request $request
      * @return Response
      * @throws Exception
      */
+    #[Route(path: '/{_locale<%locales%>}/user/twofactor_confirm', name: 'user_twofactor_confirm')]
     public function twofactorConfirm(Request $request): Response
     {
         if (null === $user = $this->getUser()) {
@@ -173,11 +173,11 @@ class TwofactorController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/user/twofactor_backup_codes", name="user_twofactor_backup_ack")
      * @param Request $request
      * @return Response
      * @throws Exception
      */
+    #[Route(path: '/{_locale<%locales%>}/user/twofactor_backup_codes', name: 'user_twofactor_backup_ack')]
     public function twofactorBackupAck(Request $request): Response
     {
         if (null === $user = $this->getUser()) {
@@ -249,11 +249,11 @@ class TwofactorController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/user/twofactor_disable", name="user_twofactor_disable")
      * @param Request $request
      * @return Response
      * @throws Exception
      */
+    #[Route(path: '/{_locale<%locales%>}/user/twofactor_disable', name: 'user_twofactor_disable')]
     public function twofactorDisable(Request $request): Response
     {
         if (null === $user = $this->getUser()) {
@@ -299,11 +299,11 @@ class TwofactorController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/user/twofactor/qrcode", name="user_twofactor_qrcode")
      * @param TotpAuthenticatorInterface $totpAuthenticator
      * @return Response
      * @throws Exception
      */
+    #[Route(path: '/{_locale<%locales%>}/user/twofactor/qrcode', name: 'user_twofactor_qrcode')]
     public function displayTotpQrCode(TotpAuthenticatorInterface $totpAuthenticator): Response
     {
         if (null === $user = $this->getUser()) {

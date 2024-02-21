@@ -15,10 +15,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 class OpenPgpExportKeysCommand extends Command
 {
     protected static $defaultName = 'app:wkd:export-keys';
-    private DomainRepository $domainRepository;
-    private OpenPgpKeyRepository $openPgpKeyRepository;
+    private readonly DomainRepository $domainRepository;
+    private readonly OpenPgpKeyRepository $openPgpKeyRepository;
 
-    public function __construct(EntityManagerInterface $manager, private WkdHandler $handler)
+    public function __construct(EntityManagerInterface $manager, private readonly WkdHandler $handler)
     {
         $this->domainRepository = $manager->getRepository(Domain::class);
         $this->openPgpKeyRepository = $manager->getRepository(OpenPgpKey::class);

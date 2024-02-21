@@ -22,7 +22,7 @@ class MailCryptKeyHandler
     /**
      * MailCryptPrivateKeyHandler constructor.
      */
-    public function __construct(private EntityManagerInterface $manager)
+    public function __construct(private readonly EntityManagerInterface $manager)
     {
     }
 
@@ -69,7 +69,7 @@ class MailCryptKeyHandler
         ]);
         openssl_pkey_export($pKey, $privateKey);
         $privateKey = base64_encode($this->toPkcs8($privateKey));
-        $keyPair = new MailCryptKeyPair($privateKey, base64_encode(openssl_pkey_get_details($pKey)['key']));
+        $keyPair = new MailCryptKeyPair($privateKey, base64_encode((string) openssl_pkey_get_details($pKey)['key']));
         sodium_memzero($privateKey);
 
         // get plain user password

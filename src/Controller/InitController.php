@@ -19,16 +19,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class InitController extends AbstractController
 {
-    public function __construct(private EntityManagerInterface $manager, private AdminPasswordUpdater $updater, private DomainCreator $creator)
+    public function __construct(private readonly EntityManagerInterface $manager, private readonly AdminPasswordUpdater $updater, private readonly DomainCreator $creator)
     {
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/init", name="init")
      * @param Request $request
      * @return Response
      * @throws ValidationException
      */
+    #[Route(path: '/{_locale<%locales%>}/init', name: 'init')]
     public function index(Request $request): Response
     {
         // redirect if already configured
@@ -60,10 +60,10 @@ class InitController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/init/user", name="init_user")
      * @param Request $request
      * @return Response
      */
+    #[Route(path: '/{_locale<%locales%>}/init/user', name: 'init_user')]
     public function user(Request $request): Response
     {
         // redirect if already configured

@@ -8,7 +8,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class PasswordPolicyValidator extends ConstraintValidator
 {
-    public function __construct(private PasswordStrengthHandler $handler)
+    public function __construct(private readonly PasswordStrengthHandler $handler)
     {
     }
 

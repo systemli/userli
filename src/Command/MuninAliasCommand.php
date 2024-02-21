@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class MuninAliasCommand extends Command
 {
     protected static $defaultName = 'app:munin:alias';
-    private AliasRepository $repository;
+    private readonly AliasRepository $repository;
 
     public function __construct(EntityManagerInterface $manager)
     {

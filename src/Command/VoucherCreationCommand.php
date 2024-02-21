@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 class VoucherCreationCommand extends Command
 {
     protected static $defaultName = 'app:voucher:create';
-    public function __construct(private EntityManagerInterface $manager, private RouterInterface $router, private string $appUrl)
+    public function __construct(private readonly EntityManagerInterface $manager, private readonly RouterInterface $router, private readonly string $appUrl)
     {
         parent::__construct();
     }

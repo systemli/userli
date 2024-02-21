@@ -35,15 +35,15 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
  */
 class FeatureContext extends MinkContext
 {
-    private string $dbPlatform;
+    private readonly string $dbPlatform;
     private array $placeholders = [];
     private ?string $output;
     private array $requestParams = [];
 
-    public function __construct(private KernelInterface $kernel,
-                                private EntityManagerInterface $manager,
-                                private PasswordUpdater $passwordUpdater,
-                                private DomainGuesser $domainGuesser)
+    public function __construct(private readonly KernelInterface $kernel,
+                                private readonly EntityManagerInterface $manager,
+                                private readonly PasswordUpdater $passwordUpdater,
+                                private readonly DomainGuesser $domainGuesser)
     {
         $this->dbPlatform = $this->manager->getConnection()->getDatabasePlatform()->getName();
     }
@@ -114,7 +114,7 @@ class FeatureContext extends MinkContext
                         $this->passwordUpdater->updatePassword($user);
                         break;
                     case 'roles':
-                        $roles = explode(',', $value);
+                        $roles = explode(',', (string) $value);
                         $user->setRoles($roles);
                         break;
                     case 'hash':
@@ -414,8 +414,8 @@ class FeatureContext extends MinkContext
      */
     public function iShouldSeeInTheConsoleOutput(string $string): void
     {
-        $output = preg_replace('/\r\n|\r|\n/', '\\n', $this->output);
-        if (!str_contains($output, $string)) {
+        $output = preg_replace('/\r\n|\r|\n/', '\\n', (string) $this->output);
+        if (!str_contains((string) $output, $string)) {
             throw new RuntimeException(sprintf('Did not see "%s" in console output "%s"', $string, $output));
         }
     }
@@ -425,7 +425,7 @@ class FeatureContext extends MinkContext
      */
     public function iShouldSeeRegexInTheConsoleOutput(string $string): void
     {
-        if (!preg_match($string, $this->output)) {
+        if (!preg_match($string, (string) $this->output)) {
             throw new RuntimeException(sprintf('Did not see regex "%s" in console output "%s"', $string, $this->output));
         }
     }
@@ -435,8 +435,8 @@ class FeatureContext extends MinkContext
      */
     public function iShouldNotSeeInTheConsoleOutput(string $string): void
     {
-        $output = preg_replace('/\r\n|\r|\n/', '\\n', $this->output);
-        if (true === strpos($output, $string)) {
+        $output = preg_replace('/\r\n|\r|\n/', '\\n', (string) $this->output);
+        if (true === strpos((string) $output, $string)) {
             throw new RuntimeException(sprintf('Did see "%s" in console output "%s"', $string, $output));
         }
     }

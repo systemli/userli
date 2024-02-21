@@ -31,16 +31,16 @@ class RecoveryController extends AbstractController
     private const PROCESS_DELAY = '-2 days';
     private const PROCESS_EXPIRE = '-30 days';
 
-    public function __construct(private PasswordUpdater $passwordUpdater, private MailCryptKeyHandler $mailCryptKeyHandler, private RecoveryTokenHandler $recoveryTokenHandler, private EventDispatcherInterface $eventDispatcher, private ManagerRegistry $docrine)
+    public function __construct(private readonly PasswordUpdater $passwordUpdater, private readonly MailCryptKeyHandler $mailCryptKeyHandler, private readonly RecoveryTokenHandler $recoveryTokenHandler, private readonly EventDispatcherInterface $eventDispatcher, private readonly ManagerRegistry $docrine)
     {
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/recovery", name="recovery")
      * @param Request $request
      * @return Response
      * @throws Exception
      */
+    #[Route(path: '/{_locale<%locales%>}/recovery', name: 'recovery')]
     public function recoveryProcess(Request $request): Response
     {
         $recoveryProcess = new RecoveryProcess();
@@ -97,11 +97,11 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/recovery/reset_password", name="recovery_reset_password")
      * @param Request $request
      * @return Response
      * @throws Exception
      */
+    #[Route(path: '/{_locale<%locales%>}/recovery/reset_password', name: 'recovery_reset_password')]
     public function recoveryResetPassword(Request $request): Response
     {
         $recoveryResetPassword = new RecoveryResetPassword();
@@ -178,11 +178,11 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/user/recovery_token", name="user_recovery_token")
      * @param Request $request
      * @return Response
      * @throws Exception
      */
+    #[Route(path: '/{_locale<%locales%>}/user/recovery_token', name: 'user_recovery_token')]
     public function recoveryToken(Request $request): Response
     {
         if (null === $user = $this->getUser()) {
@@ -248,10 +248,10 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/recovery/recovery_token/ack", name="recovery_recovery_token_ack")
      * @param Request $request
      * @return Response
      */
+    #[Route(path: '/{_locale<%locales%>}/recovery/recovery_token/ack', name: 'recovery_recovery_token_ack')]
     public function recoveryRecoveryTokenAck(Request $request): Response
     {
         $recoveryTokenAck = new RecoveryTokenAck();
@@ -286,10 +286,10 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/user/recovery_token/ack", name="user_recovery_token_ack")
      * @param Request $request
      * @return Response
      */
+    #[Route(path: '/{_locale<%locales%>}/user/recovery_token/ack', name: 'user_recovery_token_ack')]
     public function recoveryTokenAck(Request $request): Response
     {
         $recoveryTokenAck = new RecoveryTokenAck();

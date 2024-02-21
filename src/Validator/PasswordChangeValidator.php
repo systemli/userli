@@ -16,7 +16,7 @@ class PasswordChangeValidator extends ConstraintValidator
     /**
      * Constructor.
      */
-    public function __construct(private TokenStorageInterface $storage, private PasswordHasherFactoryInterface $passwordHasherFactory)
+    public function __construct(private readonly TokenStorageInterface $storage, private readonly PasswordHasherFactoryInterface $passwordHasherFactory)
     {
     }
 

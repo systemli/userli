@@ -13,7 +13,7 @@ class PasswordUpdater
     /**
      * PasswordUpdater constructor.
      */
-    public function __construct(private PasswordHasherFactoryInterface $passwordHasherFactory)
+    public function __construct(private readonly PasswordHasherFactoryInterface $passwordHasherFactory)
     {
     }
 

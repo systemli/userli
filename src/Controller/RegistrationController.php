@@ -19,18 +19,18 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class RegistrationController extends AbstractController
 {
-    public function __construct(private RegistrationHandler $registrationHandler, private ManagerRegistry $doctrine, private TokenStorageInterface $tokenStorage)
+    public function __construct(private readonly RegistrationHandler $registrationHandler, private readonly ManagerRegistry $doctrine, private readonly TokenStorageInterface $tokenStorage)
     {
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/register", name="register")
-     * @Route("/{_locale<%locales%>}/register/{voucher}", name="register_voucher")
      * @param Request $request
      * @param string|null $voucher
      * @return Response
      * @throws Exception
      */
+    #[Route(path: '/{_locale<%locales%>}/register', name: 'register')]
+    #[Route(path: '/{_locale<%locales%>}/register/{voucher}', name: 'register_voucher')]
     public function register(Request $request, string $voucher = null): Response
     {
         if (!$this->registrationHandler->isRegistrationOpen()) {
@@ -92,10 +92,10 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/register/recovery_token", name="register_recovery_token")
      * @param Request $request
      * @return Response
      */
+    #[Route(path: '/{_locale<%locales%>}/register/recovery_token', name: 'register_recovery_token')]
     public function registerRecoveryTokenAck(Request $request): Response
     {
         $recoveryTokenAck = new RecoveryTokenAck();
@@ -123,10 +123,10 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/register/welcome", name="register_welcome")
      * @param Request $request
      * @return Response
      */
+    #[Route(path: '/{_locale<%locales%>}/register/welcome', name: 'register_welcome')]
     public function welcome(Request $request): Response
     {
         $request->getSession()->getFlashBag()->add('success', 'flashes.registration-successful');

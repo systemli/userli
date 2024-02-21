@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Stringable;
 use DateTime;
 use App\Enum\Roles;
@@ -35,12 +36,9 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping\Index;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ORM\Table(name="virtual_users", indexes={
- *     @Index(name="email_idx", columns={"email"})
- * })
- */
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: 'virtual_users')]
+#[Index(name: 'email_idx', columns: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface, Stringable
 {
     use IdTrait;
@@ -68,7 +66,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 
     public const CURRENT_PASSWORD_VERSION = 2;
 
-    /** @ORM\Column(type="array") */
+    #[ORM\Column(type: 'array')]
     private array $roles = [];
 
     /**

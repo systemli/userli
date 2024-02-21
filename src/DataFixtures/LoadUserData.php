@@ -29,7 +29,7 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
     ];
 
     private ContainerInterface $container;
-    public function __construct(private PasswordUpdater $passwordUpdater)
+    public function __construct(private readonly PasswordUpdater $passwordUpdater)
     {
     }
 
@@ -87,7 +87,7 @@ class LoadUserData extends Fixture implements OrderedFixtureInterface, Container
 
         foreach ($this->users as $user) {
             $email = $user['email'];
-            $splitted = explode('@', $email);
+            $splitted = explode('@', (string) $email);
             $roles = $user['roles'];
             $domain = $domainRepository->findOneBy(['name' => $splitted[1]]);
 

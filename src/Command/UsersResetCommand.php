@@ -25,11 +25,11 @@ class UsersResetCommand extends Command
     /**
      * RegistrationMailCommand constructor.
      */
-    public function __construct(private EntityManagerInterface $manager,
-                                private PasswordUpdater $passwordUpdater,
-                                private MailCryptKeyHandler $mailCryptKeyHandler,
-                                private RecoveryTokenHandler $recoveryTokenHandler,
-                                private string $mailLocation)
+    public function __construct(private readonly EntityManagerInterface $manager,
+                                private readonly PasswordUpdater $passwordUpdater,
+                                private readonly MailCryptKeyHandler $mailCryptKeyHandler,
+                                private readonly RecoveryTokenHandler $recoveryTokenHandler,
+                                private readonly string $mailLocation)
     {
         parent::__construct();
     }
@@ -121,7 +121,7 @@ class UsersResetCommand extends Command
         $this->manager->flush();
 
         // Clear users mailbox
-        [$localPart, $domain] = explode('@', $email);
+        [$localPart, $domain] = explode('@', (string) $email);
         $path = $this->mailLocation.DIRECTORY_SEPARATOR.$domain.DIRECTORY_SEPARATOR.$localPart.DIRECTORY_SEPARATOR.'Maildir';
         $filesystem = new Filesystem();
         if ($filesystem->exists($path)) {

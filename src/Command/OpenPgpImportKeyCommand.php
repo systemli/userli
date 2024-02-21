@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class OpenPgpImportKeyCommand extends Command
 {
     protected static $defaultName = 'app:openpgp:import-key';
-    public function __construct(private WkdHandler $handler)
+    public function __construct(private readonly WkdHandler $handler)
     {
         parent::__construct();
     }

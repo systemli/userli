@@ -18,16 +18,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DeleteController extends AbstractController
 {
-    public function __construct(private DeleteHandler $deleteHandler, private WkdHandler $wkdHandler, private ManagerRegistry $doctrine)
+    public function __construct(private readonly DeleteHandler $deleteHandler, private readonly WkdHandler $wkdHandler, private readonly ManagerRegistry $doctrine)
     {
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/alias/delete/{aliasId}", name="alias_delete")
      * @param Request $request
      * @param $aliasId
      * @return Response
      */
+    #[Route(path: '/{_locale<%locales%>}/alias/delete/{aliasId}', name: 'alias_delete')]
     public function deleteAlias(Request $request, $aliasId): Response
     {
         $user = $this->getUser();
@@ -64,10 +64,10 @@ class DeleteController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/user/delete", name="user_delete")
      * @param Request $request
      * @return RedirectResponse|Response
      */
+    #[Route(path: '/{_locale<%locales%>}/user/delete', name: 'user_delete')]
     public function deleteUser(Request $request): RedirectResponse|Response
     {
         $user = $this->getUser();
@@ -95,10 +95,10 @@ class DeleteController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/openpgp/delete", name="openpgp_delete")
      * @param Request $request
      * @return RedirectResponse|Response
      */
+    #[Route(path: '/{_locale<%locales%>}/openpgp/delete', name: 'openpgp_delete')]
     public function deleteOpenPgp(Request $request): RedirectResponse|Response
     {
         $user = $this->getUser();

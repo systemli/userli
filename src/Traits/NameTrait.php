@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait NameTrait
 {
-    /** @ORM\Column(unique=true) */
+    #[ORM\Column(unique: true)]
     private ?string $name = null;
 
     public function getName(): ?string

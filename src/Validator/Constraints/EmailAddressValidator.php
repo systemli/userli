@@ -20,10 +20,10 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class EmailAddressValidator extends ConstraintValidator
 {
-    private AliasRepository $aliasRepository;
-    private DomainRepository $domainRepository;
-    private ReservedNameRepository $reservedNameRepository;
-    private UserRepository $userRepository;
+    private readonly AliasRepository $aliasRepository;
+    private readonly DomainRepository $domainRepository;
+    private readonly ReservedNameRepository $reservedNameRepository;
+    private readonly UserRepository $userRepository;
 
     /**
      * EmailAddressValidator constructor.

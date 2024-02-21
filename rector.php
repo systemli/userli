@@ -1,6 +1,6 @@
 <?php
 
-use Rector\Core\ValueObject\PhpVersion;
+use Rector\Doctrine\Set\DoctrineSetList;
 use Rector\Set\ValueObject\SetList;
 use Rector\Symfony\CodeQuality\Rector\ClassMethod\ActionSuffixRemoverRector;
 use Rector\Symfony\Set\SymfonySetList;
@@ -13,7 +13,7 @@ return static function (RectorConfig $rectorConfig): void {
     ]);
     $rectorConfig->symfonyContainerXml(__DIR__ . '/var/cache/dev/App_KernelDevDebugContainer.xml');
     $rectorConfig->importNames();
-    $rectorConfig->phpVersion(PhpVersion::PHP_80);
+    $rectorConfig->phpVersion(\Rector\ValueObject\PhpVersion::PHP_81);
 
     $rectorConfig->skip([
         // SonataAdminBundle CRUDController needs the suffix for actions
@@ -24,8 +24,10 @@ return static function (RectorConfig $rectorConfig): void {
     ]);
 
     $rectorConfig->sets([
-        SetList::PHP_80,
+        SetList::PHP_81,
         SymfonySetList::SYMFONY_CODE_QUALITY,
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
+        SymfonySetList::ANNOTATIONS_TO_ATTRIBUTES,
+        DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES,
     ]);
 };

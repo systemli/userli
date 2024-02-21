@@ -18,7 +18,7 @@ class UserRegistrationInfoHandler
     /**
      * UserRegistrationInfoHandler constructor.
      */
-    public function __construct(private EntityManagerInterface $manager, private MailHandler $handler, private Twig_Environment $twig, private string $to)
+    public function __construct(private readonly EntityManagerInterface $manager, private readonly MailHandler $handler, private readonly Twig_Environment $twig, private readonly string $to)
     {
     }
 

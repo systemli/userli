@@ -37,15 +37,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class StartController extends AbstractController
 {
-    public function __construct(private AliasHandler $aliasHandler, private PasswordUpdater $passwordUpdater, private VoucherHandler $voucherHandler, private VoucherCreator $voucherCreator, private MailCryptKeyHandler $mailCryptKeyHandler, private EntityManagerInterface $manager, private WkdHandler $wkdHandler)
+    public function __construct(private readonly AliasHandler $aliasHandler, private readonly PasswordUpdater $passwordUpdater, private readonly VoucherHandler $voucherHandler, private readonly VoucherCreator $voucherCreator, private readonly MailCryptKeyHandler $mailCryptKeyHandler, private readonly EntityManagerInterface $manager, private readonly WkdHandler $wkdHandler)
     {
     }
 
     /**
-     * @Route("/", name="index_no_locale")
      * @param Request $request
      * @return RedirectResponse
      */
+    #[Route(path: '/', name: 'index_no_locale')]
     public function indexNoLocale(Request $request): RedirectResponse
     {
         $supportedLocales = (array) $this->getParameter('supported_locales');
@@ -56,9 +56,9 @@ class StartController extends AbstractController
     }
     
     /**
-     * @Route("/{_locale<%locales%>}/", name="index")
      * @return Response
      */
+    #[Route(path: '/{_locale<%locales%>}/', name: 'index')]
     public function index(): Response
     {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -87,10 +87,10 @@ class StartController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/voucher", name="vouchers", requirements={"_locale": "%locales%"})
      * @param Request $request
      * @return Response
      */
+    #[Route(path: '/{_locale<%locales%>}/voucher', name: 'vouchers', requirements: ['_locale' => '%locales%'])]
     public function voucher(Request $request): Response
     {
         /** @var User $user */
@@ -127,10 +127,10 @@ class StartController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/alias", name="aliases")
      * @param Request $request
      * @return Response
      */
+    #[Route(path: '/{_locale<%locales%>}/alias', name: 'aliases')]
     public function alias(Request $request): Response
     {
         /** @var User $user */
@@ -188,11 +188,11 @@ class StartController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/account", name="account")
      * @param Request $request
      * @return Response
      * @throws Exception
      */
+    #[Route(path: '/{_locale<%locales%>}/account', name: 'account')]
     public function account(Request $request): Response
     {
         /** @var User $user */
@@ -229,10 +229,10 @@ class StartController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/openpgp", name="openpgp")
      * @param Request $request
      * @return Response|null
      */
+    #[Route(path: '/{_locale<%locales%>}/openpgp', name: 'openpgp')]
     public function openPgp(Request $request): ?Response
     {
         /** @var User $user */
