@@ -31,7 +31,13 @@ class RecoveryController extends AbstractController
     private const PROCESS_DELAY = '-2 days';
     private const PROCESS_EXPIRE = '-30 days';
 
-    public function __construct(private readonly PasswordUpdater $passwordUpdater, private readonly MailCryptKeyHandler $mailCryptKeyHandler, private readonly RecoveryTokenHandler $recoveryTokenHandler, private readonly EventDispatcherInterface $eventDispatcher, private readonly ManagerRegistry $docrine)
+    public function __construct(
+        private readonly PasswordUpdater          $passwordUpdater,
+        private readonly MailCryptKeyHandler      $mailCryptKeyHandler,
+        private readonly RecoveryTokenHandler     $recoveryTokenHandler,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ManagerRegistry          $doctrine
+    )
     {
     }
 
@@ -55,7 +61,7 @@ class RecoveryController extends AbstractController
 
                 // Validate the passed email + recoveryToken
 
-                $userRepository = $this->docrine->getRepository(User::class);
+                $userRepository = $this->doctrine->getRepository(User::class);
                 $user = $userRepository->findByEmail($email);
 
                 if (null === $user || !$this->verifyEmailRecoveryToken($user, $recoveryToken)) {
@@ -66,7 +72,7 @@ class RecoveryController extends AbstractController
                     if (null === $recoveryStartTime || new DateTime($this::PROCESS_EXPIRE) >= $recoveryStartTime) {
                         // Recovery process gets started
                         $user->updateRecoveryStartTime();
-                        $this->getDoctrine()->getManager()->flush();
+                        $this->doctrine->getManager()->flush();
                         $this->eventDispatcher->dispatch(new UserEvent($user), RecoveryProcessEvent::NAME);
                         $recoveryActiveTime = $user->getRecoveryStartTime()->add(new DateInterval('P2D'));
                     } elseif (new DateTime($this::PROCESS_DELAY) < $recoveryStartTime) {
@@ -386,7 +392,7 @@ class RecoveryController extends AbstractController
         $user->eraseCredentials();
         sodium_memzero($mailCryptPrivateKey);
 
-        $this->getDoctrine()->getManager()->flush();
+        $this->docrine->getManager()->flush();
 
         return $newRecoveryToken;
     }

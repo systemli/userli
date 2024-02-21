@@ -37,7 +37,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class StartController extends AbstractController
 {
-    public function __construct(private readonly AliasHandler $aliasHandler, private readonly PasswordUpdater $passwordUpdater, private readonly VoucherHandler $voucherHandler, private readonly VoucherCreator $voucherCreator, private readonly MailCryptKeyHandler $mailCryptKeyHandler, private readonly EntityManagerInterface $manager, private readonly WkdHandler $wkdHandler)
+    public function __construct(
+        private readonly AliasHandler           $aliasHandler,
+        private readonly PasswordUpdater        $passwordUpdater,
+        private readonly VoucherHandler         $voucherHandler,
+        private readonly VoucherCreator         $voucherCreator,
+        private readonly MailCryptKeyHandler    $mailCryptKeyHandler,
+        private readonly EntityManagerInterface $manager,
+        private readonly WkdHandler             $wkdHandler
+    )
     {
     }
 
@@ -48,13 +56,13 @@ class StartController extends AbstractController
     #[Route(path: '/', name: 'index_no_locale')]
     public function indexNoLocale(Request $request): RedirectResponse
     {
-        $supportedLocales = (array) $this->getParameter('supported_locales');
+        $supportedLocales = (array)$this->getParameter('supported_locales');
         $preferredLanguage = $request->getPreferredLanguage($supportedLocales);
         $locale = $preferredLanguage ?: $request->getLocale();
 
-        return $this->redirectToRoute('index', ['_locale' =>  $locale]);
+        return $this->redirectToRoute('index', ['_locale' => $locale]);
     }
-    
+
     /**
      * @return Response
      */
@@ -331,7 +339,7 @@ class StartController extends AbstractController
         }
         $user->eraseCredentials();
 
-        $this->getDoctrine()->getManager()->flush();
+        $this->manager->flush();
 
         $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
     }
