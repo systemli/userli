@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use App\Form\Model\Twofactor;
 use App\Form\Model\TwofactorBackupAck;
@@ -24,6 +25,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TwofactorController extends AbstractController
 {
+    public function __construct(private EntityManagerInterface $manager)
+    {
+
+    }
+
     /**
      * @Route("/{_locale<%locales%>}/user/twofactor", name="user_twofactor")
      * @param Request $request
@@ -38,23 +44,20 @@ class TwofactorController extends AbstractController
             throw new Exception('User should not be null');
         }
 
-        $twofactorModel = new Twofactor();
-        $form = $this->createForm(TwofactorType::class, $twofactorModel);
+        $form = $this->createForm(TwofactorType::class, new Twofactor());
 
-        $twofactorConfirmModel = new TwofactorConfirm();
         $confirmForm = $this->createForm(
             TwofactorConfirmType::class,
-            $twofactorConfirmModel,
+            new TwofactorConfirm(),
             [
                 'action' => $this->generateUrl('user_twofactor_confirm'),
                 'method' => 'post',
             ]
         );
 
-        $twofactorDisableModel = new Twofactor();
         $disableForm = $this->createForm(
             TwofactorType::class,
-            $twofactorDisableModel,
+            new Twofactor(),
             [
                 'action' => $this->generateUrl('user_twofactor_disable'),
                 'method' => 'post',
@@ -68,7 +71,7 @@ class TwofactorController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $user->setTotpSecret($totpAuthenticator->generateSecret());
                 $user->generateBackupCodes();
-                $this->getDoctrine()->getManager()->flush();
+                $this->manager->flush();
 
                 return $this->render('User/twofactor.html.twig',
                     [
@@ -105,36 +108,32 @@ class TwofactorController extends AbstractController
             throw new Exception('User should not be null');
         }
 
-        $twofactorConfirmModel = new TwofactorConfirm();
-        $confirmForm = $this->createForm(TwofactorConfirmType::class, $twofactorConfirmModel);
+        $confirmForm = $this->createForm(TwofactorConfirmType::class, new TwofactorConfirm());
 
         if ('POST' === $request->getMethod()) {
             $confirmForm->handleRequest($request);
 
-            $twofactorModel = new Twofactor();
             $form = $this->createForm(
                 TwofactorType::class,
-                $twofactorModel,
+                new Twofactor(),
                 [
                     'action' => $this->generateUrl('user_twofactor'),
                     'method' => 'post',
                 ]
             );
 
-            $twofactorDisableModel = new Twofactor();
             $disableForm = $this->createForm(
                 TwofactorType::class,
-                $twofactorDisableModel,
+                new Twofactor(),
                 [
                     'action' => $this->generateUrl('user_twofactor_disable'),
                     'method' => 'post',
                 ]
             );
 
-            $twofactorBackupAckModel = new TwofactorBackupAck();
             $backupAckForm = $this->createForm(
                 TwofactorBackupAckType::class,
-                $twofactorBackupAckModel,
+                new TwofactorBackupAck(),
                 [
                     'action' => $this->generateUrl('user_twofactor_backup_ack'),
                     'method' => 'post',
@@ -185,10 +184,9 @@ class TwofactorController extends AbstractController
             throw new Exception('User should not be null');
         }
 
-        $twofactorBackupAckModel = new TwofactorBackupAck();
         $backupAckForm = $this->createForm(
             TwofactorBackupAckType::class,
-            $twofactorBackupAckModel,
+            new TwofactorBackupAck(),
             [
                 'action' => $this->generateUrl('user_twofactor_backup_ack'),
                 'method' => 'post',
@@ -201,34 +199,31 @@ class TwofactorController extends AbstractController
             if ($backupAckForm->isSubmitted()) {
                 if ($backupAckForm->isValid()) {
                     $user->setTotpConfirmed(true);
-                    $this->getDoctrine()->getManager()->flush();
+                    $this->manager->flush();
 
                     return $this->redirectToRoute('user_twofactor');
                 } else {
-                    $twofactorModel = new Twofactor();
                     $form = $this->createForm(
                         TwofactorType::class,
-                        $twofactorModel,
+                        new Twofactor(),
                         [
                             'action' => $this->generateUrl('user_twofactor'),
                             'method' => 'post',
                         ]
                     );
 
-                    $twofactorConfirmModel = new TwofactorConfirm();
                     $confirmForm = $this->createForm(
                         TwofactorConfirmType::class,
-                        $twofactorConfirmModel,
+                        new TwofactorConfirm(),
                         [
                             'action' => $this->generateUrl('user_twofactor_confirm'),
                             'method' => 'post',
                         ]
                     );
 
-                    $twofactorDisableModel = new Twofactor();
                     $disableForm = $this->createForm(
                         TwofactorType::class,
-                        $twofactorDisableModel,
+                        new Twofactor(),
                         [
                             'action' => $this->generateUrl('user_twofactor_disable'),
                             'method' => 'post',
@@ -265,8 +260,7 @@ class TwofactorController extends AbstractController
             throw new Exception('User should not be null');
         }
 
-        $twofactorDisableModel = new Twofactor();
-        $disableForm = $this->createForm(TwofactorType::class, $twofactorDisableModel);
+        $disableForm = $this->createForm(TwofactorType::class, new Twofactor());
 
         if ('POST' === $request->getMethod()) {
             $disableForm->handleRequest($request);
@@ -275,15 +269,14 @@ class TwofactorController extends AbstractController
                 if ($disableForm->isValid()) {
                     $user->setTotpConfirmed(false);
                     $user->setTotpSecret(null);
-                    $this->getDoctrine()->getManager()->flush();
+                    $this->manager->flush();
 
                     return $this->redirectToRoute('user_twofactor');
                 }
 
-                $twofactorModel = new Twofactor();
                 $form = $this->createForm(
                     TwofactorType::class,
-                    $twofactorModel,
+                    new Twofactor(),
                     [
                         'action' => $this->generateUrl('user_twofactor'),
                         'method' => 'post',
