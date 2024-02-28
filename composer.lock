@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd4b121e2062a46c232eff08acedbf53",
+    "content-hash": "38c59aeb1eb16ca73c1843e10bc17e14",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3148,20 +3148,20 @@
         },
         {
             "name": "scheb/2fa-backup-code",
-            "version": "v6.12.0",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-backup-code.git",
-                "reference": "1ad84e7eb26eb425c609e03097cac99387dde44c"
+                "reference": "f8a936409d53cf51dac8488a936417198e1ef060"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-backup-code/zipball/1ad84e7eb26eb425c609e03097cac99387dde44c",
-                "reference": "1ad84e7eb26eb425c609e03097cac99387dde44c",
+                "url": "https://api.github.com/repos/scheb/2fa-backup-code/zipball/f8a936409d53cf51dac8488a936417198e1ef060",
+                "reference": "f8a936409d53cf51dac8488a936417198e1ef060",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0",
+                "php": "~8.2.0 || ~8.3.0",
                 "scheb/2fa-bundle": "self.version"
             },
             "type": "library",
@@ -3191,40 +3191,39 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-backup-code/tree/v6.12.0"
+                "source": "https://github.com/scheb/2fa-backup-code/tree/v7.2.0"
             },
-            "time": "2023-12-03T15:44:26+00:00"
+            "time": "2023-12-03T16:24:13+00:00"
         },
         {
             "name": "scheb/2fa-bundle",
-            "version": "v6.12.0",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-bundle.git",
-                "reference": "6e51477c53070f27ac3e3d36be1a991870db415a"
+                "reference": "3eac1a44af1707056426197eda3c7a54a5ac9719"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-bundle/zipball/6e51477c53070f27ac3e3d36be1a991870db415a",
-                "reference": "6e51477c53070f27ac3e3d36be1a991870db415a",
+                "url": "https://api.github.com/repos/scheb/2fa-bundle/zipball/3eac1a44af1707056426197eda3c7a54a5ac9719",
+                "reference": "3eac1a44af1707056426197eda3c7a54a5ac9719",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "php": "~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0",
-                "symfony/config": "^5.4 || ^6.0",
-                "symfony/dependency-injection": "^5.4 || ^6.0",
-                "symfony/event-dispatcher": "^5.4 || ^6.0",
-                "symfony/framework-bundle": "^5.4 || ^6.0",
-                "symfony/http-foundation": "^5.4 || ^6.0",
-                "symfony/http-kernel": "^5.4 || ^6.0",
-                "symfony/property-access": "^5.4 || ^6.0",
-                "symfony/security-bundle": "^5.4 || ^6.0",
-                "symfony/twig-bundle": "^5.4 || ^6.0"
+                "php": "~8.2.0 || ~8.3.0",
+                "symfony/config": "^6.4 || ^7.0",
+                "symfony/dependency-injection": "^6.4 || ^7.0",
+                "symfony/event-dispatcher": "^6.4 || ^7.0",
+                "symfony/framework-bundle": "^6.4 || ^7.0",
+                "symfony/http-foundation": "^6.4 || ^7.0",
+                "symfony/http-kernel": "^6.4 || ^7.0",
+                "symfony/property-access": "^6.4 || ^7.0",
+                "symfony/security-bundle": "^6.4 || ^7.0",
+                "symfony/twig-bundle": "^6.4 || ^7.0"
             },
             "conflict": {
-                "scheb/two-factor-bundle": "*",
-                "symfony/security-core": "^7"
+                "scheb/two-factor-bundle": "*"
             },
             "suggest": {
                 "scheb/2fa-backup-code": "Emergency codes when you have no access to other methods",
@@ -3259,29 +3258,28 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-bundle/tree/v6.12.0"
+                "source": "https://github.com/scheb/2fa-bundle/tree/v7.2.0"
             },
-            "time": "2023-12-03T16:02:15+00:00"
+            "time": "2024-01-26T17:30:55+00:00"
         },
         {
             "name": "scheb/2fa-totp",
-            "version": "v6.12.0",
+            "version": "v7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scheb/2fa-totp.git",
-                "reference": "a233f4638b75941e97f089c4c917f6101f2983e3"
+                "reference": "436f070c6c6b75ca579585ffcfd14ad02d7ac683"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scheb/2fa-totp/zipball/a233f4638b75941e97f089c4c917f6101f2983e3",
-                "reference": "a233f4638b75941e97f089c4c917f6101f2983e3",
+                "url": "https://api.github.com/repos/scheb/2fa-totp/zipball/436f070c6c6b75ca579585ffcfd14ad02d7ac683",
+                "reference": "436f070c6c6b75ca579585ffcfd14ad02d7ac683",
                 "shasum": ""
             },
             "require": {
-                "paragonie/constant_time_encoding": "^2.4",
-                "php": "~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0",
+                "php": "~8.2.0 || ~8.3.0",
                 "scheb/2fa-bundle": "self.version",
-                "spomky-labs/otphp": "^10.0 || ^11.0"
+                "spomky-labs/otphp": "^11.0"
             },
             "type": "library",
             "autoload": {
@@ -3310,9 +3308,9 @@
                 "two-step"
             ],
             "support": {
-                "source": "https://github.com/scheb/2fa-totp/tree/v6.12.0"
+                "source": "https://github.com/scheb/2fa-totp/tree/v7.2.0"
             },
-            "time": "2023-12-03T15:44:26+00:00"
+            "time": "2024-01-18T20:20:03+00:00"
         },
         {
             "name": "sonata-project/admin-bundle",
@@ -12627,7 +12625,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.1",
+        "php": "^8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-openssl": ">=7.1",
@@ -12635,7 +12633,7 @@
     },
     "platform-dev": [],
     "platform-overrides": {
-        "php": "8.1.0"
+        "php": "8.2.0"
     },
     "plugin-api-version": "2.3.0"
 }
