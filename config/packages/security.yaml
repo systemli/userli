@@ -133,6 +133,7 @@ security:
       - { path: "^/$", roles: PUBLIC_ACCESS }
       - { path: "^/login", roles: PUBLIC_ACCESS }
       - { path: "^/logout", roles: PUBLIC_ACCESS }
+      - { path: "^/2fa", roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
       - { path: "^/[a-z]{2,3}/init", roles: PUBLIC_ACCESS }
       - { path: "^/[a-z]{2,3}/login", roles: PUBLIC_ACCESS }
       - { path: "^/[a-z]{2,3}/recovery", roles: PUBLIC_ACCESS }

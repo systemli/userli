@@ -69,6 +69,9 @@ class StartController extends AbstractController
     #[Route(path: '/{_locale<%locales%>}/', name: 'index')]
     public function index(): Response
     {
+        if ($this->isGranted('IS_AUTHENTICATED_2FA_IN_PROGRESS')) {
+            return $this->redirectToRoute('2fa_login');
+        }
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             // forward to installer if no domains exist
             if (0 === $this->manager->getRepository(Domain::class)->count([])) {
