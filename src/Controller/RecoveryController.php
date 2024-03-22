@@ -74,7 +74,8 @@ class RecoveryController extends AbstractController
                         $user->updateRecoveryStartTime();
                         $this->doctrine->getManager()->flush();
                         $this->eventDispatcher->dispatch(new UserEvent($user), RecoveryProcessEvent::NAME);
-                        $recoveryActiveTime = $user->getRecoveryStartTime()->add(new DateInterval('P2D'));
+                        // We don't have to add two days here, they will get added in `RecoveryProcessMessageSender`
+                        $recoveryActiveTime = $user->getRecoveryStartTime();
                     } elseif (new DateTime($this::PROCESS_DELAY) < $recoveryStartTime) {
                         // Recovery process is pending, but waiting period didn't elapse yet
                         $recoveryActiveTime = $recoveryStartTime->add(new DateInterval('P2D'));
