@@ -2,10 +2,9 @@
 
 namespace App\Controller;
 
-use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 use DateTime;
 use DateInterval;
+use Exception;
 use App\Entity\User;
 use App\Event\RecoveryProcessEvent;
 use App\Event\UserEvent;
@@ -25,6 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 class RecoveryController extends AbstractController
 {
@@ -36,7 +36,7 @@ class RecoveryController extends AbstractController
         private readonly MailCryptKeyHandler      $mailCryptKeyHandler,
         private readonly RecoveryTokenHandler     $recoveryTokenHandler,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly ManagerRegistry          $doctrine
+        private readonly EntityManagerInterface   $manager,
     )
     {
     }
@@ -61,7 +61,7 @@ class RecoveryController extends AbstractController
 
                 // Validate the passed email + recoveryToken
 
-                $userRepository = $this->doctrine->getRepository(User::class);
+                $userRepository = $this->manager->getRepository(User::class);
                 $user = $userRepository->findByEmail($email);
 
                 if (null === $user || !$this->verifyEmailRecoveryToken($user, $recoveryToken)) {
@@ -72,7 +72,7 @@ class RecoveryController extends AbstractController
                     if (null === $recoveryStartTime || new DateTime($this::PROCESS_EXPIRE) >= $recoveryStartTime) {
                         // Recovery process gets started
                         $user->updateRecoveryStartTime();
-                        $this->doctrine->getManager()->flush();
+                        $this->manager->flush();
                         $this->eventDispatcher->dispatch(new UserEvent($user), RecoveryProcessEvent::NAME);
                         // We don't have to add two days here, they will get added in `RecoveryProcessMessageSender`
                         $recoveryActiveTime = $user->getRecoveryStartTime();
@@ -130,7 +130,7 @@ class RecoveryController extends AbstractController
 
                 // Validate the passed email + recoveryToken
 
-                $userRepository = $this->docrine->getRepository(User::class);
+                $userRepository = $this->manager->getRepository(User::class);
                 $user = $userRepository->findByEmail($email);
 
                 if (null !== $user && $this->verifyEmailRecoveryToken($user, $recoveryToken, true)) {
@@ -393,7 +393,7 @@ class RecoveryController extends AbstractController
         $user->eraseCredentials();
         sodium_memzero($mailCryptPrivateKey);
 
-        $this->docrine->getManager()->flush();
+        $this->manager->flush();
 
         return $newRecoveryToken;
     }

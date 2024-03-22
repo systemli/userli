@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DeleteController extends AbstractController
 {
-    public function __construct(private readonly DeleteHandler $deleteHandler, private readonly WkdHandler $wkdHandler, private readonly ManagerRegistry $doctrine)
+    public function __construct(private readonly DeleteHandler $deleteHandler, private readonly WkdHandler $wkdHandler, private readonly ManagerRegistry $manager)
     {
     }
 
@@ -31,7 +31,7 @@ class DeleteController extends AbstractController
     public function deleteAlias(Request $request, $aliasId): Response
     {
         $user = $this->getUser();
-        $aliasRepository = $this->doctrine->getRepository(Alias::class);
+        $aliasRepository = $this->manager->getRepository(Alias::class);
         $alias = $aliasRepository->find($aliasId);
 
         // Don't allow users to delete custom or foreign aliases

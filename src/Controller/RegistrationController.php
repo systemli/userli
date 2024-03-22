@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class RegistrationController extends AbstractController
 {
-    public function __construct(private readonly RegistrationHandler $registrationHandler, private readonly ManagerRegistry $doctrine, private readonly TokenStorageInterface $tokenStorage)
+    public function __construct(private readonly RegistrationHandler $registrationHandler, private readonly ManagerRegistry $manager, private readonly TokenStorageInterface $tokenStorage)
     {
     }
 
@@ -100,7 +100,7 @@ class RegistrationController extends AbstractController
 			if ($form->isSubmitted() && $form->isValid()) {
 				$this->registrationHandler->handle($registration);
 
-				if (null !== $user = $this->doctrine->getRepository(User::class)->findByEmail($registration->getEmail())) {
+				if (null !== $user = $this->manager->getRepository(User::class)->findByEmail($registration->getEmail())) {
 					$token = new UsernamePasswordToken($user, 'default', $user->getRoles());
 					$this->tokenStorage->setToken($token);
 				}
