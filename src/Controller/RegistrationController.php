@@ -58,7 +58,7 @@ class RegistrationController extends AbstractController
                 $this->registrationHandler->handle($registration);
 
                 if (null !== $user = $this->doctrine->getRepository(User::class)->findByEmail($registration->getEmail())) {
-                    $token = new UsernamePasswordToken($user, $user->getPassword(), 'default', $user->getRoles());
+                    $token = new UsernamePasswordToken($user, 'default', $user->getRoles());
                     $this->tokenStorage->setToken($token);
                 }
 
