@@ -20,7 +20,7 @@ class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
 {
     public const NAME = 'upload_openpgp_key';
 
-    public function __construct(private TranslatorInterface $translator)
+    public function __construct(private readonly TranslatorInterface $translator)
     {
     }
 

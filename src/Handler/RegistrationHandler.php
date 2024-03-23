@@ -20,7 +20,7 @@ class RegistrationHandler
     /**
      * Constructor.
      */
-    public function __construct(private EntityManagerInterface $manager, private DomainGuesser $domainGuesser, private EventDispatcherInterface $eventDispatcher, private PasswordUpdater $passwordUpdater, private MailCryptKeyHandler $mailCryptKeyHandler, private RecoveryTokenHandler $recoveryTokenHandler, private bool $registrationOpen, private bool $mailCrypt)
+    public function __construct(private readonly EntityManagerInterface $manager, private readonly DomainGuesser $domainGuesser, private readonly EventDispatcherInterface $eventDispatcher, private readonly PasswordUpdater $passwordUpdater, private readonly MailCryptKeyHandler $mailCryptKeyHandler, private readonly RecoveryTokenHandler $recoveryTokenHandler, private readonly bool $registrationOpen, private readonly bool $mailCrypt)
     {
     }
 
@@ -63,7 +63,7 @@ class RegistrationHandler
     private function buildUser(Registration $registration): User
     {
         $user = new User();
-        $user->setEmail(strtolower($registration->getEmail()));
+        $user->setEmail(strtolower((string) $registration->getEmail()));
         $user->setPlainPassword($registration->getPlainPassword());
         $user->setRoles([Roles::USER]);
 

@@ -16,13 +16,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class UsersMailCryptCommand extends Command
 {
     protected static $defaultName = 'app:users:mailcrypt';
-    private UserRepository $repository;
+    private readonly UserRepository $repository;
 
     public function __construct(
         EntityManagerInterface $manager,
-        private UserAuthenticationHandler $handler,
-        private MailCryptKeyHandler $mailCryptKeyHandler,
-        private int $mailCrypt
+        private readonly UserAuthenticationHandler $handler,
+        private readonly MailCryptKeyHandler $mailCryptKeyHandler,
+        private readonly int $mailCrypt
     ) {
         $this->repository = $manager->getRepository(User::class);
         parent::__construct();

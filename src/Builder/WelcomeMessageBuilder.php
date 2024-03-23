@@ -16,7 +16,7 @@ class WelcomeMessageBuilder
     /**
      * WelcomeMessageBuilder constructor.
      */
-    public function __construct(private TranslatorInterface $translator, EntityManagerInterface $manager, private string $appUrl, private string $projectName)
+    public function __construct(private readonly TranslatorInterface $translator, EntityManagerInterface $manager, private readonly string $appUrl, private readonly string $projectName)
     {
         $domain = $manager->getRepository(Domain::class)->getDefaultDomain();
         $this->domain = null !== $domain ? $domain->getName() : '';

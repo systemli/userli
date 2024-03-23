@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 class UsersRegistrationMailCommand extends Command
 {
     protected static $defaultName = 'app:users:registration:mail';
-    public function __construct(private EntityManagerInterface $manager, private WelcomeMessageSender $welcomeMessageSender, ?string $name = null)
+    public function __construct(private readonly EntityManagerInterface $manager, private readonly WelcomeMessageSender $welcomeMessageSender, ?string $name = null)
     {
         parent::__construct($name);
     }

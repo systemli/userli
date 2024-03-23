@@ -6,11 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait IdTrait
 {
-    /**
-     * @ORM\Id()
-     * @ORM\Column()
-     * @ORM\GeneratedValue()
-     */
+    #[ORM\Id]
+    #[ORM\Column]
+    #[ORM\GeneratedValue]
     private ?int $id = null;
 
     public function getId(): ?int

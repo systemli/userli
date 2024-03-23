@@ -15,7 +15,7 @@ class UserAuthenticationHandler
     /**
      * UserAuthenticationHandler constructor.
      */
-    public function __construct(private PasswordHasherFactoryInterface $passwordHasherFactory, protected EventDispatcherInterface $eventDispatcher)
+    public function __construct(private readonly PasswordHasherFactoryInterface $passwordHasherFactory, protected EventDispatcherInterface $eventDispatcher)
     {
     }
 

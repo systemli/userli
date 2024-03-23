@@ -16,7 +16,7 @@ class DomainVoter extends Voter
     /**
      * DomainVoter constructor.
      */
-    public function __construct(private Security $security, private EntityManagerInterface $manager)
+    public function __construct(private readonly Security $security, private readonly EntityManagerInterface $manager)
     {
     }
 

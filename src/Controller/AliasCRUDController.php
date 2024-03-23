@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AliasCRUDController extends CRUDController
 {
-    public function __construct(private DeleteHandler $deleteHandler)
+    public function __construct(private readonly DeleteHandler $deleteHandler)
     {
     }
 

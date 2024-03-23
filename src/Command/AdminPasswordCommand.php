@@ -15,7 +15,7 @@ class AdminPasswordCommand extends Command
     /**
      * AdminPasswordCommand constructor.
      */
-    public function __construct(private AdminPasswordUpdater $updater)
+    public function __construct(private readonly AdminPasswordUpdater $updater)
     {
         parent::__construct();
     }

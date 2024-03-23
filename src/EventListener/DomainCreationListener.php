@@ -12,7 +12,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DomainCreationListener implements EventSubscriberInterface
 {
-    public function __construct(private EntityManagerInterface $manager, private WkdHandler $handler)
+    public function __construct(private readonly EntityManagerInterface $manager, private readonly WkdHandler $handler)
     {
     }
 

@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserCRUDController extends CRUDController
 {
-    public function __construct(private DeleteHandler $deleteHandler, private VoucherRemover $voucherRemover)
+    public function __construct(private readonly DeleteHandler $deleteHandler, private readonly VoucherRemover $voucherRemover)
     {
     }
 

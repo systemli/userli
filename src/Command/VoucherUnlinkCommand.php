@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class VoucherUnlinkCommand extends Command
 {
     protected static $defaultName = 'app:voucher:unlink';
-    public function __construct(private EntityManagerInterface $manager, private SuspiciousChildrenHandler $handler)
+    public function __construct(private readonly EntityManagerInterface $manager, private readonly SuspiciousChildrenHandler $handler)
     {
         parent::__construct();
     }

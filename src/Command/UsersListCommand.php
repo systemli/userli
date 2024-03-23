@@ -16,9 +16,9 @@ use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 class UsersListCommand extends Command
 {
     protected static $defaultName = 'app:users:list';
-    private UserRepository $repository;
+    private readonly UserRepository $repository;
 
-    public function __construct(EntityManagerInterface $manager, private RoleHierarchyInterface $roleHierarchy)
+    public function __construct(EntityManagerInterface $manager, private readonly RoleHierarchyInterface $roleHierarchy)
     {
         $this->repository = $manager->getRepository(User::class);
         parent::__construct();

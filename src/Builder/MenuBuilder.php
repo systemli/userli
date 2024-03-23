@@ -13,7 +13,7 @@ class MenuBuilder
     /**
      * Constructor.
      */
-    public function __construct(private FactoryInterface $factory, private AuthorizationCheckerInterface $authChecker, private MenuHelper $menuHelper, private array $navbarLeft)
+    public function __construct(private readonly FactoryInterface $factory, private readonly AuthorizationCheckerInterface $authChecker, private readonly MenuHelper $menuHelper, private readonly array $navbarLeft)
     {
     }
 

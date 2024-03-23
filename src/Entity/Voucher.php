@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\VoucherRepository;
 use Stringable;
 use DateTime;
 use App\Traits\CreationTimeTrait;
@@ -10,22 +11,19 @@ use App\Traits\UserAwareTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\VoucherRepository")
- * @ORM\Table(name="virtual_vouchers", indexes={
- *     @Index(name="code_idx", columns={"code"})
- * })
- */
+#[ORM\Entity(repositoryClass: VoucherRepository::class)]
+#[ORM\Table(name: 'virtual_vouchers')]
+#[Index(name: 'code_idx', columns: ['code'])]
 class Voucher implements Stringable
 {
     use IdTrait;
     use CreationTimeTrait;
     use UserAwareTrait;
 
-    /** @ORM\Column(nullable=true) */
+    #[ORM\Column(nullable: true)]
     protected ?DateTime $redeemedTime = null;
 
-    /** @ORM\Column(unique=true) */
+    #[ORM\Column(unique: true)]
     protected ?string $code = null;
 
     protected ?User $invitedUser = null;

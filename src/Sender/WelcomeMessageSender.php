@@ -19,7 +19,7 @@ class WelcomeMessageSender
     /**
      * WelcomeMessageSender constructor.
      */
-    public function __construct(private MailHandler $handler, private WelcomeMessageBuilder $builder, EntityManagerInterface $manager)
+    public function __construct(private readonly MailHandler $handler, private readonly WelcomeMessageBuilder $builder, EntityManagerInterface $manager)
     {
         $domain = $manager->getRepository(Domain::class)->getDefaultDomain();
         $this->domain = null !== $domain ? $domain->getName() : '';
@@ -34,7 +34,7 @@ class WelcomeMessageSender
             throw new Exception('Email should not be null');
         }
 
-        if (strpos($email, $this->domain) < 0) {
+        if (strpos($email, (string) $this->domain) < 0) {
             return;
         }
 

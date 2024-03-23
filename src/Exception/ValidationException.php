@@ -11,7 +11,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class ValidationException extends Exception
 {
-    public function __construct(private ConstraintViolationListInterface $constraints)
+    public function __construct(private readonly ConstraintViolationListInterface $constraints)
     {
         $messages = [];
         foreach ($constraints as $constraint) {

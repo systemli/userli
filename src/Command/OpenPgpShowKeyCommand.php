@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class OpenPgpShowKeyCommand extends Command
 {
     protected static $defaultName = 'app:openpgp:show-key';
-    private OpenPgpKeyRepository $repository;
+    private readonly OpenPgpKeyRepository $repository;
 
     public function __construct(EntityManagerInterface $manager)
     {

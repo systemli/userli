@@ -18,8 +18,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class MuninAccountCommand extends Command
 {
     protected static $defaultName = 'app:munin:account';
-    private UserRepository $userRepository;
-    private OpenPgpKeyRepository $openPgpKeyRepository;
+    private readonly UserRepository $userRepository;
+    private readonly OpenPgpKeyRepository $openPgpKeyRepository;
 
     public function __construct(EntityManagerInterface $manager)
     {

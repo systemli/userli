@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class AdminPasswordUpdater
 {
-    public function __construct(private EntityManagerInterface $manager, private PasswordUpdater $updater)
+    public function __construct(private readonly EntityManagerInterface $manager, private readonly PasswordUpdater $updater)
     {
     }
 

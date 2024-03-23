@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class DomainGuesser
 {
-    private DomainRepository $repository;
+    private readonly DomainRepository $repository;
 
     /**
      * Constructor.

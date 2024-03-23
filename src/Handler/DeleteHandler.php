@@ -13,7 +13,7 @@ class DeleteHandler
     /**
      * DeleteHandler constructor.
      */
-    public function __construct(private PasswordUpdater $passwordUpdater, private EntityManagerInterface $manager, private WkdHandler $wkdHandler)
+    public function __construct(private readonly PasswordUpdater $passwordUpdater, private readonly EntityManagerInterface $manager, private readonly WkdHandler $wkdHandler)
     {
     }
 

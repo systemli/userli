@@ -9,7 +9,7 @@ class TextToEmailTransformer implements DataTransformerInterface
     /**
      * Constructor.
      */
-    public function __construct(private string $domain)
+    public function __construct(private readonly string $domain)
     {
     }
 
@@ -23,7 +23,7 @@ class TextToEmailTransformer implements DataTransformerInterface
             return '';
         }
 
-        return substr($value, 0, strpos($value, '@'));
+        return substr((string) $value, 0, strpos((string) $value, '@'));
     }
 
     /**

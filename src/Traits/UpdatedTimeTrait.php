@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait UpdatedTimeTrait
 {
-    /** @ORM\Column() */
+    #[ORM\Column]
     private ?DateTime $updatedTime = null;
 
     public function getUpdatedTime(): ?DateTime
@@ -20,7 +20,7 @@ trait UpdatedTimeTrait
         $this->updatedTime = $updatedTime;
     }
 
-    /** @ORM\PrePersist() */
+    #[ORM\PrePersist]
     public function updateUpdatedTime(): void
     {
         $this->setUpdatedTime(new DateTime());

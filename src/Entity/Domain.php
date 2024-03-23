@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\DomainRepository;
 use Stringable;
 use DateTime;
 use App\Traits\CreationTimeTrait;
@@ -10,11 +11,9 @@ use App\Traits\NameTrait;
 use App\Traits\UpdatedTimeTrait;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\DomainRepository")
- * @ORM\Table(name="virtual_domains")
- * @ORM\HasLifecycleCallbacks()
- */
+#[ORM\Entity(repositoryClass: DomainRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: 'virtual_domains')]
 class Domain implements Stringable
 {
     use IdTrait;

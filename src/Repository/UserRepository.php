@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\LazyCriteriaCollection;
 use Exception;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 class UserRepository extends EntityRepository implements PasswordUpgraderInterface
@@ -122,5 +123,11 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
             ->andWhere(Criteria::expr()->eq('totpConfirmed', 1))
             ->andWhere(Criteria::expr()->neq('totpSecret', null))
         )->count();
+    }
+
+    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
+    {
+        $user->setPassword($newHashedPassword);
+        $this->getEntityManager()->flush($user);
     }
 }

@@ -11,7 +11,7 @@ class OptionalDomainEmailTransformer implements DataTransformerInterface
      *
      * @param $domain
      */
-    public function __construct(private string $domain)
+    public function __construct(private readonly string $domain)
     {
     }
 
@@ -25,9 +25,9 @@ class OptionalDomainEmailTransformer implements DataTransformerInterface
             return '';
         }
 
-        if (false !== $atPosition = strpos($value, '@')) {
+        if (false !== $atPosition = strpos((string) $value, '@')) {
             // cut of domain part
-            return substr($value, 0, $atPosition);
+            return substr((string) $value, 0, $atPosition);
         }
 
         return $value;
@@ -43,7 +43,7 @@ class OptionalDomainEmailTransformer implements DataTransformerInterface
             return '';
         }
 
-        if (str_contains($value, '@')) {
+        if (str_contains((string) $value, '@')) {
             return $value;
         }
 

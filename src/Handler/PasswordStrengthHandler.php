@@ -15,11 +15,11 @@ class PasswordStrengthHandler
      */
     public function validate($value): array
     {
-        if (preg_match(self::REGEX_FORBIDDEN_CHARS, $value)) {
+        if (preg_match(self::REGEX_FORBIDDEN_CHARS, (string) $value)) {
             $this->errors[] = 'form.forbidden_char';
         }
 
-        if (strlen($value) < 12) {
+        if (strlen((string) $value) < 12) {
             $this->errors[] = 'form.weak_password';
         }
 

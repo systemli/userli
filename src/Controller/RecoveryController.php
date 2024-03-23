@@ -2,10 +2,9 @@
 
 namespace App\Controller;
 
-use Doctrine\Persistence\ManagerRegistry;
-use Exception;
 use DateTime;
 use DateInterval;
+use Exception;
 use App\Entity\User;
 use App\Event\RecoveryProcessEvent;
 use App\Event\UserEvent;
@@ -25,22 +24,29 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 class RecoveryController extends AbstractController
 {
     private const PROCESS_DELAY = '-2 days';
     private const PROCESS_EXPIRE = '-30 days';
 
-    public function __construct(private PasswordUpdater $passwordUpdater, private MailCryptKeyHandler $mailCryptKeyHandler, private RecoveryTokenHandler $recoveryTokenHandler, private EventDispatcherInterface $eventDispatcher, private ManagerRegistry $docrine)
+    public function __construct(
+        private readonly PasswordUpdater          $passwordUpdater,
+        private readonly MailCryptKeyHandler      $mailCryptKeyHandler,
+        private readonly RecoveryTokenHandler     $recoveryTokenHandler,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly EntityManagerInterface   $manager,
+    )
     {
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/recovery", name="recovery")
      * @param Request $request
      * @return Response
      * @throws Exception
      */
+    #[Route(path: '/{_locale<%locales%>}/recovery', name: 'recovery')]
     public function recoveryProcess(Request $request): Response
     {
         $recoveryProcess = new RecoveryProcess();
@@ -55,7 +61,7 @@ class RecoveryController extends AbstractController
 
                 // Validate the passed email + recoveryToken
 
-                $userRepository = $this->docrine->getRepository(User::class);
+                $userRepository = $this->manager->getRepository(User::class);
                 $user = $userRepository->findByEmail($email);
 
                 if (null === $user || !$this->verifyEmailRecoveryToken($user, $recoveryToken)) {
@@ -66,9 +72,10 @@ class RecoveryController extends AbstractController
                     if (null === $recoveryStartTime || new DateTime($this::PROCESS_EXPIRE) >= $recoveryStartTime) {
                         // Recovery process gets started
                         $user->updateRecoveryStartTime();
-                        $this->getDoctrine()->getManager()->flush();
+                        $this->manager->flush();
                         $this->eventDispatcher->dispatch(new UserEvent($user), RecoveryProcessEvent::NAME);
-                        $recoveryActiveTime = $user->getRecoveryStartTime()->add(new DateInterval('P2D'));
+                        // We don't have to add two days here, they will get added in `RecoveryProcessMessageSender`
+                        $recoveryActiveTime = $user->getRecoveryStartTime();
                     } elseif (new DateTime($this::PROCESS_DELAY) < $recoveryStartTime) {
                         // Recovery process is pending, but waiting period didn't elapse yet
                         $recoveryActiveTime = $recoveryStartTime->add(new DateInterval('P2D'));
@@ -97,11 +104,11 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/recovery/reset_password", name="recovery_reset_password")
      * @param Request $request
      * @return Response
      * @throws Exception
      */
+    #[Route(path: '/{_locale<%locales%>}/recovery/reset_password', name: 'recovery_reset_password')]
     public function recoveryResetPassword(Request $request): Response
     {
         $recoveryResetPassword = new RecoveryResetPassword();
@@ -123,7 +130,7 @@ class RecoveryController extends AbstractController
 
                 // Validate the passed email + recoveryToken
 
-                $userRepository = $this->docrine->getRepository(User::class);
+                $userRepository = $this->manager->getRepository(User::class);
                 $user = $userRepository->findByEmail($email);
 
                 if (null !== $user && $this->verifyEmailRecoveryToken($user, $recoveryToken, true)) {
@@ -178,11 +185,11 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/user/recovery_token", name="user_recovery_token")
      * @param Request $request
      * @return Response
      * @throws Exception
      */
+    #[Route(path: '/{_locale<%locales%>}/user/recovery_token', name: 'user_recovery_token')]
     public function recoveryToken(Request $request): Response
     {
         if (null === $user = $this->getUser()) {
@@ -248,10 +255,10 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/recovery/recovery_token/ack", name="recovery_recovery_token_ack")
      * @param Request $request
      * @return Response
      */
+    #[Route(path: '/{_locale<%locales%>}/recovery/recovery_token/ack', name: 'recovery_recovery_token_ack')]
     public function recoveryRecoveryTokenAck(Request $request): Response
     {
         $recoveryTokenAck = new RecoveryTokenAck();
@@ -286,10 +293,10 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @Route("/{_locale<%locales%>}/user/recovery_token/ack", name="user_recovery_token_ack")
      * @param Request $request
      * @return Response
      */
+    #[Route(path: '/{_locale<%locales%>}/user/recovery_token/ack', name: 'user_recovery_token_ack')]
     public function recoveryTokenAck(Request $request): Response
     {
         $recoveryTokenAck = new RecoveryTokenAck();
@@ -386,7 +393,7 @@ class RecoveryController extends AbstractController
         $user->eraseCredentials();
         sodium_memzero($mailCryptPrivateKey);
 
-        $this->getDoctrine()->getManager()->flush();
+        $this->manager->flush();
 
         return $newRecoveryToken;
     }

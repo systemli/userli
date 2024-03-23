@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait PasswordTrait
 {
-    /** @ORM\Column() */
+    #[ORM\Column]
     private ?string $password = null;
 
     public function getPassword(): ?string

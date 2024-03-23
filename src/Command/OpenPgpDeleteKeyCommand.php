@@ -14,9 +14,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class OpenPgpDeleteKeyCommand extends Command
 {
     protected static $defaultName = 'app:openpgp:delete-key';
-    private OpenPgpKeyRepository $repository;
+    private readonly OpenPgpKeyRepository $repository;
 
-    public function __construct(EntityManagerInterface $manager, private WkdHandler $handler)
+    public function __construct(EntityManagerInterface $manager, private readonly WkdHandler $handler)
     {
         $this->repository = $manager->getRepository(OpenPgpKey::class);
         parent::__construct();

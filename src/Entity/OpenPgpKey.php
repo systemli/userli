@@ -2,16 +2,15 @@
 
 namespace App\Entity;
 
+use App\Repository\OpenPgpKeyRepository;
 use App\Traits\EmailTrait;
 use App\Traits\IdTrait;
 use App\Traits\OpenPgpKeyTrait;
 use App\Traits\UserAwareTrait;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\OpenPgpKeyRepository")
- * @ORM\Table(name="virtual_openpgp_keys")
- */
+#[ORM\Entity(repositoryClass: OpenPgpKeyRepository::class)]
+#[ORM\Table(name: 'virtual_openpgp_keys')]
 class OpenPgpKey
 {
     use IdTrait;

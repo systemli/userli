@@ -62,6 +62,6 @@ class LegacyPasswordHasher implements PasswordHasherInterface
             return false;
         }
 
-        return hash_equals(crypt($plainPassword, $hashedPassword), $hashedPassword);
+        return hash_equals(crypt((string) $plainPassword, $hashedPassword), $hashedPassword);
     }
 }

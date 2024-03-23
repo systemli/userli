@@ -15,7 +15,7 @@ class VoucherRemover
     /**
      * VoucherRemover constructor.
      */
-    public function __construct(private EntityManagerInterface $manager)
+    public function __construct(private readonly EntityManagerInterface $manager)
     {
     }
 

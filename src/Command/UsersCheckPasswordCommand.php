@@ -21,19 +21,19 @@ use Symfony\Component\Process\Process;
 class UsersCheckPasswordCommand extends Command
 {
     protected static $defaultName = 'app:users:checkpassword';
-    private UserRepository $repository;
+    private readonly UserRepository $repository;
 
     /**
      * UsersCheckPasswordCommand constructor.
      */
     public function __construct(EntityManagerInterface $manager,
-                                private FileDescriptorReader $reader,
-                                private UserAuthenticationHandler $handler,
-                                private MailCryptKeyHandler $mailCryptKeyHandler,
-                                private int $mailCrypt,
-                                private int $mailUid,
-                                private int $mailGid,
-                                private string $mailLocation)
+                                private readonly FileDescriptorReader $reader,
+                                private readonly UserAuthenticationHandler $handler,
+                                private readonly MailCryptKeyHandler $mailCryptKeyHandler,
+                                private readonly int $mailCrypt,
+                                private readonly int $mailUid,
+                                private readonly int $mailGid,
+                                private readonly string $mailLocation)
     {
         $this->repository = $manager->getRepository(User::class);
         parent::__construct();

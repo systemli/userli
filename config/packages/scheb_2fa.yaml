@@ -1,4 +1,4 @@
-# See the configuration reference at https://symfony.com/bundles/SchebTwoFactorBundle/5.x/configuration.html
+# See the configuration reference at https://symfony.com/bundles/SchebTwoFactorBundle/6.x/configuration.html
 scheb_two_factor:
     # Google Authenticator config
     totp:
@@ -15,3 +15,4 @@ scheb_two_factor:
     # The security token classes, which trigger two-factor authentication.
     security_tokens:
         - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+        - Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken

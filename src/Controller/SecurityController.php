@@ -10,10 +10,10 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/{_locale<%locales%>}/login", name="login")
      * @param AuthenticationUtils $authenticationUtils
      * @return Response
      */
+    #[Route(path: '/{_locale<%locales%>}/login', name: 'login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one
@@ -28,9 +28,9 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/logout", name="logout", methods={"GET"})
      * @return void
      */
+    #[Route(path: '/logout', name: 'logout', methods: ['GET'])]
     public function logout(): void
     {
 

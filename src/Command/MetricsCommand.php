@@ -28,7 +28,7 @@ class MetricsCommand extends Command
     /**
      * MetricsCommand constructor.
      */
-    public function __construct(private EntityManagerInterface $manager)
+    public function __construct(private readonly EntityManagerInterface $manager)
     {
         parent::__construct();
     }

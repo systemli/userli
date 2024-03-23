@@ -18,12 +18,12 @@ class VoucherHandler
 {
     private const VOUCHER_LIMIT = 3;
 
-    private VoucherRepository $repository;
+    private readonly VoucherRepository $repository;
 
     /**
      * VoucherHandler constructor.
      */
-    public function __construct(EntityManagerInterface $manager, private VoucherCreator $creator)
+    public function __construct(EntityManagerInterface $manager, private readonly VoucherCreator $creator)
     {
         $this->repository = $manager->getRepository(Voucher::class);
     }

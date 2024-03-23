@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 class AliasDeleteCommand extends Command
 {
     protected static $defaultName = 'app:alias:delete';
-    public function __construct(private EntityManagerInterface $manager, private DeleteHandler $deleteHandler)
+    public function __construct(private readonly EntityManagerInterface $manager, private readonly DeleteHandler $deleteHandler)
     {
         parent::__construct();
     }

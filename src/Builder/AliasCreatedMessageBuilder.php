@@ -12,7 +12,7 @@ class AliasCreatedMessageBuilder
     /**
      * AliasCreatedMessageBuilder constructor.
      */
-    public function __construct(private TranslatorInterface $translator, private string $appUrl, private string $projectName)
+    public function __construct(private readonly TranslatorInterface $translator, private readonly string $appUrl, private readonly string $projectName)
     {
     }
 

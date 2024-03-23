@@ -16,7 +16,7 @@ class EmailDomainValidator extends ConstraintValidator
     /**
      * EmailDomainValidator constructor.
      */
-    public function __construct(private EntityManagerInterface $manager)
+    public function __construct(private readonly EntityManagerInterface $manager)
     {
     }
 
@@ -29,7 +29,7 @@ class EmailDomainValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint): void
     {
         if ($value instanceof User) {
-            $name = substr(strrchr($value->getEmail(), '@'), 1);
+            $name = substr(strrchr((string) $value->getEmail(), '@'), 1);
             $domain = $this->manager->getRepository(Domain::class)->findOneBy(['name' => $name]);
 
             if (null === $domain) {
