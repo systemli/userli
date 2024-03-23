@@ -315,7 +315,7 @@ class RecoveryController extends AbstractController
             if ($recoveryTokenAckForm->isSubmitted() and $recoveryTokenAckForm->isValid()) {
                 $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-token-ack');
 
-                return $this->redirect($this->generateUrl('index'));
+                return $this->redirect($this->generateUrl('start'));
             }
 
             return $this->render('User/recovery_token.html.twig',

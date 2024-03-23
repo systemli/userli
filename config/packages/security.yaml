@@ -75,6 +75,7 @@ security:
 
         # Spam account is always suspicious
         ROLE_SPAM:
+            - ROLE_USER
             - ROLE_SUSPICIOUS
 
         ROLE_PERMANENT:
@@ -113,6 +114,7 @@ security:
                 require_previous_session: false
                 login_path: login
                 check_path: login
+                default_target_path: start
             logout:
                 path: logout
                 invalidate_session: false
@@ -140,6 +142,7 @@ security:
       - { path: "^/[a-z]{2,3}/register", roles: PUBLIC_ACCESS }
       - { path: "^/[a-z]{2,3}/$", roles: PUBLIC_ACCESS }
       - { path: "^/[a-z]{2,3}/2fa", roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
+      - { path: "^/[a-z]{2,3}/start", roles: ROLE_USER }
       - { path: "^/[a-z]{2,3}/voucher", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SUSPICIOUS')"}
       - { path: "^/[a-z]{2,3}/alias", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')"}
       - { path: "^/[a-z]{2,3}/account", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')"}
