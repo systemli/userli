@@ -1,7 +1,20 @@
-# 3.4.1 (UNRELEASED)
+# 3.5.0 (2024.03.24)
 
 * Fix CSP Settings for Sonata Admin
+* Fix malformed expiry date for PGP key
+* Use mkdocs instead of hugo
+* Improve documentation
+* Migrate Doctrine mappings to PHP annotations
 * Make Project PHP 8 ready
+* Move routing configuration to annotations
+* Modernize form login
+* Fix regression in CRUD controllers
+* Modernize authentication and repositories
+* Fix malformed date for recovery page
+* Fix login for deleted user in UsersCheckPasswordCommand
+* Update dependencies
+* Upgrade to Symfony 6
+* Split index route in public (index) and authenticated (start)
 
 # 3.4.0 (2024.01.05)
 
