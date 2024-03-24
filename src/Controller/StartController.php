@@ -69,18 +69,39 @@ class StartController extends AbstractController
     #[Route(path: '/{_locale<%locales%>}/', name: 'index')]
     public function index(): Response
     {
-        if ($this->isGranted('IS_AUTHENTICATED_2FA_IN_PROGRESS')) {
-            return $this->redirectToRoute('2fa_login');
-        }
-        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            // forward to installer if no domains exist
-            if (0 === $this->manager->getRepository(Domain::class)->count([])) {
-                return $this->redirectToRoute('init');
-            }
-
-            return $this->render('Start/index_anonymous.html.twig');
+        // forward to start if logged in
+        if ($this->isGranted(Roles::USER)) {
+            return $this->redirectToRoute('start');
         }
 
+        // forward to installer if no domains exist
+        if (0 === $this->manager->getRepository(Domain::class)->count([])) {
+            return $this->redirectToRoute('init');
+        }
+
+        return $this->render('Start/index_anonymous.html.twig');
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    #[Route(path: '/start', name: 'start_no_locale')]
+    public function startNoLocale(Request $request): RedirectResponse
+    {
+        $supportedLocales = (array)$this->getParameter('supported_locales');
+        $preferredLanguage = $request->getPreferredLanguage($supportedLocales);
+        $locale = $preferredLanguage ?: $request->getLocale();
+
+        return $this->redirectToRoute('start', ['_locale' => $locale]);
+    }
+
+    /**
+     * @return Response
+     */
+    #[Route(path: '/{_locale<%locales%>}/start', name: 'start')]
+    public function start(): Response
+    {
         if ($this->isGranted(Roles::SPAM)) {
             return $this->render('Start/index_spam.html.twig');
         }
@@ -296,7 +317,7 @@ class StartController extends AbstractController
 
     private function createVoucher(Request $request, User $user): void
     {
-        if ($this->isGranted('ROLE_MULTIPLIER')) {
+        if ($this->isGranted(Roles::MULTIPLIER)) {
             try {
                 $this->voucherCreator->create($user);
 

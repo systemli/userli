@@ -41,7 +41,7 @@ Feature: registration
       | password | P4ssW0rt!!!1      |
     And I press "Sign in"
 
-    Then I should be on "/en/"
+    Then I should be on "/en/start"
     And I should see text matching "Log out"
 
   @registration
