@@ -6,14 +6,15 @@ use App\Creator\ReservedNameCreator;
 use App\Entity\ReservedName;
 use App\Exception\ValidationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'app:reservednames:import')]
 class ReservedNamesImportCommand extends Command
 {
-    protected static $defaultName = 'app:reservednames:import';
     public function __construct(private readonly EntityManagerInterface $manager, private readonly ReservedNameCreator $creator)
     {
         parent::__construct();

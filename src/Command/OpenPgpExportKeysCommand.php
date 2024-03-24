@@ -8,13 +8,14 @@ use App\Handler\WkdHandler;
 use App\Repository\DomainRepository;
 use App\Repository\OpenPgpKeyRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'app:wkd:export-keys')]
 class OpenPgpExportKeysCommand extends Command
 {
-    protected static $defaultName = 'app:wkd:export-keys';
     private readonly DomainRepository $domainRepository;
     private readonly OpenPgpKeyRepository $openPgpKeyRepository;
 

@@ -8,14 +8,15 @@ use App\Enum\Roles;
 use App\Handler\SuspiciousChildrenHandler;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'app:voucher:unlink')]
 class VoucherUnlinkCommand extends Command
 {
-    protected static $defaultName = 'app:voucher:unlink';
     public function __construct(private readonly EntityManagerInterface $manager, private readonly SuspiciousChildrenHandler $handler)
     {
         parent::__construct();

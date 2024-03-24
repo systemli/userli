@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Repository\OpenPgpKeyRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -15,9 +16,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class MuninAccountCommand.
  */
+#[AsCommand(name: 'app:munin:account')]
 class MuninAccountCommand extends Command
 {
-    protected static $defaultName = 'app:munin:account';
     private readonly UserRepository $userRepository;
     private readonly OpenPgpKeyRepository $openPgpKeyRepository;
 

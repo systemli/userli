@@ -6,15 +6,15 @@ use App\Entity\Alias;
 use App\Entity\User;
 use App\Handler\DeleteHandler;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
+#[AsCommand(name: 'app:alias:delete')]
 class AliasDeleteCommand extends Command
 {
-    protected static $defaultName = 'app:alias:delete';
     public function __construct(private readonly EntityManagerInterface $manager, private readonly DeleteHandler $deleteHandler)
     {
         parent::__construct();

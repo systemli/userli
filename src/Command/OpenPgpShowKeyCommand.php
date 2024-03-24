@@ -5,14 +5,15 @@ namespace App\Command;
 use App\Entity\OpenPgpKey;
 use App\Repository\OpenPgpKeyRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'app:openpgp:show-key')]
 class OpenPgpShowKeyCommand extends Command
 {
-    protected static $defaultName = 'app:openpgp:show-key';
     private readonly OpenPgpKeyRepository $repository;
 
     public function __construct(EntityManagerInterface $manager)

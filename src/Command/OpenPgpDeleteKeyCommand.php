@@ -6,14 +6,15 @@ use App\Entity\OpenPgpKey;
 use App\Handler\WkdHandler;
 use App\Repository\OpenPgpKeyRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'app:openpgp:delete-key')]
 class OpenPgpDeleteKeyCommand extends Command
 {
-    protected static $defaultName = 'app:openpgp:delete-key';
     private readonly OpenPgpKeyRepository $repository;
 
     public function __construct(EntityManagerInterface $manager, private readonly WkdHandler $handler)
