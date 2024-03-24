@@ -8,23 +8,24 @@ use App\Entity\OpenPgpKey;
 use App\Entity\User;
 use App\Entity\Voucher;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class MetricsCommand.
- * 
+ *
  * This command exposes metrics for Prometheus. It is intended to be used as a
- * cronjob. It can be used together with the Prometheus Node Exporter (textfile 
- * collector). 
- * 
+ * cronjob. It can be used together with the Prometheus Node Exporter (textfile
+ * collector).
+ *
  * Example for Cron:
- * * * * * * php /path/to/bin/console app:metrics | sponge /path/to/metrics/userli.prom 
+ * * * * * * php /path/to/bin/console app:metrics | sponge /path/to/metrics/userli.prom
  */
+#[AsCommand(name: 'app:metrics')]
 class MetricsCommand extends Command
 {
-    protected static $defaultName = 'app:metrics';
     /**
      * MetricsCommand constructor.
      */

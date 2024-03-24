@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\User;
 use App\Factory\VoucherFactory;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -12,9 +13,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
+#[AsCommand(name: 'app:voucher:create')]
 class VoucherCreationCommand extends Command
 {
-    protected static $defaultName = 'app:voucher:create';
     public function __construct(private readonly EntityManagerInterface $manager, private readonly RouterInterface $router, private readonly string $appUrl)
     {
         parent::__construct();

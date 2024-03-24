@@ -9,6 +9,7 @@ use App\Handler\PasswordStrengthHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -19,9 +20,9 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
+#[AsCommand(name: 'app:users:reset')]
 class UsersResetCommand extends Command
 {
-    protected static $defaultName = 'app:users:reset';
     /**
      * RegistrationMailCommand constructor.
      */
