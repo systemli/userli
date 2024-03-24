@@ -1,3 +1,8 @@
+# 3.5.1 (2024.03.24)
+
+* Migrate from deprecated `$defaultName` to name annotation
+* Update docs how to test `checkpassword` command
+
 # 3.5.0 (2024.03.24)
 
 * Fix CSP Settings for Sonata Admin
