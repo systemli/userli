@@ -13,7 +13,7 @@
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-fixtures-bundle": "~3.4",
         "doctrine/orm": "^2.13",
-        "endroid/qr-code": "^4.6",
+        "endroid/qr-code": "^5.0",
         "ircmaxell/password-compat": "~1.0.3",
         "knplabs/knp-menu-bundle": "^3.0",
         "mopa/bootstrap-bundle": "~3.0",
