@@ -1,3 +1,7 @@
+# 3.5.2 (2024.03.28)
+
+* Add fallback route for `/recovery`
+
 # 3.5.1 (2024.03.24)
 
 * Migrate from deprecated `$defaultName` to name annotation
