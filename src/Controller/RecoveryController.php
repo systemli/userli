@@ -43,6 +43,20 @@ class RecoveryController extends AbstractController
 
     /**
      * @param Request $request
+     * @return RedirectResponse
+     */
+    #[Route(path: '/recovery', name: 'recovery_no_locale')]
+    public function recoveryNoLocale(Request $request): RedirectResponse
+    {
+        $supportedLocales = (array)$this->getParameter('supported_locales');
+        $preferredLanguage = $request->getPreferredLanguage($supportedLocales);
+        $locale = $preferredLanguage ?: $request->getLocale();
+
+        return $this->redirectToRoute('recovery', ['_locale' => $locale]);
+    }
+
+    /**
+     * @param Request $request
      * @return Response
      * @throws Exception
      */
