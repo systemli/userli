@@ -1,3 +1,7 @@
+# 3.5.3 (UNRELEASED)
+
+* Add missing use to RecoveryController
+
 # 3.5.2 (2024.03.28)
 
 * Add fallback route for `/recovery`
