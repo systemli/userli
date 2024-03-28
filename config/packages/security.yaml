@@ -104,6 +104,28 @@ security:
         dev:
             pattern: ^/(_(profiler|error|wdt)|css|images|js)/
             security: false
+        api-login:
+            pattern: ^/api/login
+            stateless: false
+            json_login:
+                check_path: api_login
+                username_path: data.username
+                password_path: data.password
+                success_handler: App\Security\JWTAuthenticationSuccessHandler
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            two_factor:
+                check_path: api_login_2fa
+                prepare_on_login: true
+                prepare_on_access_denied: true
+                post_only: true
+                auth_code_parameter_name: data.totp
+                authentication_required_handler: App\Security\TwoFactorAuthenticationRequiredHandler
+                success_handler: App\Security\TwoFactorAuthenticationSuccessHandler
+                failure_handler: App\Security\TwoFactorAuthenticationFailureHandler
+        api:
+            pattern: ^/api
+            stateless: false
+            jwt: ~
         main:
             pattern: ^/
             provider: user
@@ -129,6 +151,7 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
+
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
@@ -145,3 +168,5 @@ security:
       - { path: "^/account", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')" }
       - { path: "^/openpgp", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')" }
       - { path: "^/admin", roles: ROLE_DOMAIN_ADMIN }
+      - { path: "^/api/login", roles: PUBLIC_ACCESS }
+      - { path: "^/api", roles: ROLE_USER }
