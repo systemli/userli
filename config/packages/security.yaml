@@ -155,6 +155,28 @@ security:
             provider: user
             http_basic:
                 realm: Roundcube API
+        user-api-login:
+            pattern: ^/api/user/login
+            stateless: false
+            json_login:
+                check_path: api_login
+                username_path: data.username
+                password_path: data.password
+                success_handler: App\Security\JWTAuthenticationSuccessHandler
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            two_factor:
+                check_path: api_login_2fa
+                prepare_on_login: true
+                prepare_on_access_denied: true
+                post_only: true
+                auth_code_parameter_name: data.totp
+                authentication_required_handler: App\Security\TwoFactorAuthenticationRequiredHandler
+                success_handler: App\Security\TwoFactorAuthenticationSuccessHandler
+                failure_handler: App\Security\TwoFactorAuthenticationFailureHandler
+        user-api:
+            pattern: ^/api/user
+            stateless: false
+            jwt: ~
         main:
             pattern: ^/
             provider: user
@@ -226,3 +248,5 @@ security:
           allow_if: "'%env(DOVECOT_API_ENABLED)%' == 'true' and is_granted('ROLE_DOVECOT')",
         }
       - { path: "^/api/dovecot", roles: ROLE_NO_ACCESS }
+      - { path: "^/api/user/login", roles: PUBLIC_ACCESS }
+      - { path: "^/api/user", roles: ROLE_USER }
