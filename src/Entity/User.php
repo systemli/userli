@@ -66,7 +66,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 
     public const CURRENT_PASSWORD_VERSION = 2;
 
-    #[ORM\Column(type: 'array')]
+    #[ORM\Column(type: 'array', options: ['default' => 'a:0:{}'])]
     private array $roles = [];
 
     /**
