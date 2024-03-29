@@ -10,21 +10,29 @@ Feature: Language detection
       | postmaster@example.org | asdasd   | ROLE_ADMIN   |
 
   @language
-  Scenario: Language detection
-    And I am on "/"
-
+  Scenario: Default language
+    When I am on "/"
     Then I should see text matching "Welcome"
-
-  @language
-  Scenario: Language detection
-    Given set the HTTP-Header "Accept-Language" to "de"
-    And I am on "/"
-
+    Then I am on "/?_locale=de"
+    Then I should see text matching "Willkommen"
+    Then I am on "/"
     Then I should see text matching "Willkommen"
 
   @language
-  Scenario: Missing language fallback
-    Given set the HTTP-Header "Accept-Language" to "afa"
+  Scenario: Session language
+    When I am on "/?_locale=de"
+    Then I should see text matching "Willkommen"
     And I am on "/"
+    And I should see text matching "Willkommen"
 
+  @language
+  Scenario: Browser language detection
+    Given set the HTTP-Header "Accept-Language" to "de"
+    When I am on "/"
+    Then I should see text matching "Willkommen"
+
+  @language
+  Scenario: Browser language fallback
+    Given set the HTTP-Header "Accept-Language" to "afa"
+    When I am on "/"
     Then I should see text matching "Welcome"

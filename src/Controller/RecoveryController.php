@@ -44,24 +44,10 @@ class RecoveryController extends AbstractController
 
     /**
      * @param Request $request
-     * @return RedirectResponse
-     */
-    #[Route(path: '/recovery', name: 'recovery_no_locale')]
-    public function recoveryNoLocale(Request $request): RedirectResponse
-    {
-        $supportedLocales = (array)$this->getParameter('supported_locales');
-        $preferredLanguage = $request->getPreferredLanguage($supportedLocales);
-        $locale = $preferredLanguage ?: $request->getLocale();
-
-        return $this->redirectToRoute('recovery', ['_locale' => $locale]);
-    }
-
-    /**
-     * @param Request $request
      * @return Response
      * @throws Exception
      */
-    #[Route(path: '/{_locale<%locales%>}/recovery', name: 'recovery')]
+    #[Route(path: '/recovery', name: 'recovery')]
     public function recoveryProcess(Request $request): Response
     {
         $recoveryProcess = new RecoveryProcess();
@@ -123,7 +109,7 @@ class RecoveryController extends AbstractController
      * @return Response
      * @throws Exception
      */
-    #[Route(path: '/{_locale<%locales%>}/recovery/reset_password', name: 'recovery_reset_password')]
+    #[Route(path: '/recovery/reset_password', name: 'recovery_reset_password')]
     public function recoveryResetPassword(Request $request): Response
     {
         $recoveryResetPassword = new RecoveryResetPassword();
@@ -204,7 +190,7 @@ class RecoveryController extends AbstractController
      * @return Response
      * @throws Exception
      */
-    #[Route(path: '/{_locale<%locales%>}/user/recovery_token', name: 'user_recovery_token')]
+    #[Route(path: '/user/recovery_token', name: 'user_recovery_token')]
     public function recoveryToken(Request $request): Response
     {
         if (null === $user = $this->getUser()) {
@@ -273,7 +259,7 @@ class RecoveryController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    #[Route(path: '/{_locale<%locales%>}/recovery/recovery_token/ack', name: 'recovery_recovery_token_ack')]
+    #[Route(path: '/recovery/recovery_token/ack', name: 'recovery_recovery_token_ack')]
     public function recoveryRecoveryTokenAck(Request $request): Response
     {
         $recoveryTokenAck = new RecoveryTokenAck();
@@ -311,7 +297,7 @@ class RecoveryController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    #[Route(path: '/{_locale<%locales%>}/user/recovery_token/ack', name: 'user_recovery_token_ack')]
+    #[Route(path: '/user/recovery_token/ack', name: 'user_recovery_token_ack')]
     public function recoveryTokenAck(Request $request): Response
     {
         $recoveryTokenAck = new RecoveryTokenAck();

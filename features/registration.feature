@@ -20,7 +20,7 @@ Feature: registration
 
   @registration
   Scenario: Register as new user
-    When I am on "/en/register"
+    When I am on "/register"
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | user1        |
@@ -28,25 +28,25 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/en/register"
+    Then I should be on "/register"
     And I should see text matching "The following recovery token got created for you"
     And I should see text matching regex "/^[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}+$/" in element with selector ".recovery-token"
 
     When I am on "/logout"
-    Then I should be on "/en/"
+    Then I should be on "/"
 
-    When I am on "/en/login"
+    When I am on "/login"
     And I fill in the following:
       | username | user1@example.org |
       | password | P4ssW0rt!!!1      |
     And I press "Sign in"
 
-    Then I should be on "/en/start"
+    Then I should be on "/start"
     And I should see text matching "Log out"
 
   @registration
   Scenario: Register with invalid voucher
-    When I am on "/en/register"
+    When I am on "/register"
     And I fill in the following:
       | registration[voucher]               | INVALID      |
       | registration[email]                 | user1        |
@@ -54,12 +54,12 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/en/register"
+    Then I should be on "/register"
     And I should see "The invite code is invalid."
 
   @registration
   Scenario: Register with invalid e-mail domain
-    When I am on "/en/register"
+    When I am on "/register"
     And I fill in the following:
       | registration[voucher]               | TEST                 |
       | registration[email]                 | user@nonexistant.org |
@@ -67,12 +67,12 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1         |
     And I press "Submit"
 
-    Then I should be on "/en/register"
+    Then I should be on "/register"
     And I should see "The e-mail is invalid."
 
   @registration
   Scenario: Register with invalid password
-    When I am on "/en/register"
+    When I am on "/register"
     And I fill in the following:
       | registration[voucher]               | TEST     |
       | registration[email]                 | user1    |
@@ -80,12 +80,12 @@ Feature: registration
       | registration[plainPassword][second] | password |
     And I press "Submit"
 
-    Then I should be on "/en/register"
+    Then I should be on "/register"
     And I should see "The password comply not with our security policy."
 
   @registration
   Scenario: Register with different passwords
-    When I am on "/en/register"
+    When I am on "/register"
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | user1        |
@@ -93,12 +93,12 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!2 |
     And I press "Submit"
 
-    Then I should be on "/en/register"
+    Then I should be on "/register"
     And I should see "Password and confirmation does not match"
 
   @registration
   Scenario: Register with taken address
-    When I am on "/en/register"
+    When I am on "/register"
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | louis        |
@@ -106,12 +106,12 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/en/register"
+    Then I should be on "/register"
     And I should see "The e-mail address is already taken."
 
   @registration
   Scenario: Register with taken alias address
-    When I am on "/en/register"
+    When I am on "/register"
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | alias        |
@@ -119,12 +119,12 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/en/register"
+    Then I should be on "/register"
     And I should see "The e-mail address is already taken."
 
   @registration
   Scenario: Register with reserved address
-    When I am on "/en/register"
+    When I am on "/register"
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | webmaster    |
@@ -132,12 +132,12 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/en/register"
+    Then I should be on "/register"
     And I should see "The e-mail address is already taken."
 
   @registration
   Scenario: Register with reserved address
-    When I am on "/en/register"
+    When I am on "/register"
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | Webmaster    |
@@ -145,12 +145,12 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/en/register"
+    Then I should be on "/register"
     And I should see "The e-mail address is already taken."
 
   @registration
   Scenario: Register with too short username
-    When I am on "/en/register"
+    When I am on "/register"
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | ab           |
@@ -158,12 +158,12 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/en/register"
+    Then I should be on "/register"
     And I should see "The username must contain at least 3 characters."
 
   @registration
   Scenario: Register with too long username
-    When I am on "/en/register"
+    When I am on "/register"
     And I fill in the following:
       | registration[voucher]               | TEST                                 |
       | registration[email]                 | abcdefghijklmnopqrstuvwxyz0123456789 |
@@ -171,12 +171,12 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1                         |
     And I press "Submit"
 
-    Then I should be on "/en/register"
+    Then I should be on "/register"
     And I should see "The username must contain at most 32 characters."
 
   @registration
   Scenario: Register with a plus sign
-    When I am on "/en/register"
+    When I am on "/register"
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | user+test    |
@@ -184,5 +184,5 @@ Feature: registration
       | registration[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/en/register"
+    Then I should be on "/register"
     And I should see "The username contains unexpected characters. Only valid: Letters and numbers, as well as -, _ and ."

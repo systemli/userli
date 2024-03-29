@@ -15,7 +15,12 @@ class RegistrationListener implements EventSubscriberInterface
     /**
      * Constructor.
      */
-    public function __construct(private readonly RequestStack $request, private readonly WelcomeMessageSender $sender, private readonly bool $sendMail)
+    public function __construct(
+        private readonly RequestStack $request,
+        private readonly WelcomeMessageSender $sender,
+        private readonly bool $sendMail,
+        private readonly string $defaultLocale,
+    )
     {
     }
 
@@ -40,7 +45,7 @@ class RegistrationListener implements EventSubscriberInterface
 
         /** @var User $user */
         $user = $event->getUser();
-        $locale = $this->request->getCurrentRequest()->getLocale();
+        $locale = $this->request->getSession()->get('_locale', $this->defaultLocale);
 
         $this->sender->send($user, $locale);
     }

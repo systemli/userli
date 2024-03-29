@@ -14,7 +14,12 @@ class RecoveryProcessListener implements EventSubscriberInterface
     /**
      * RecoveryProcessListener constructor.
      */
-    public function __construct(private readonly RequestStack $request, private readonly RecoveryProcessMessageSender $sender, private readonly bool $sendMail)
+    public function __construct(
+        private readonly RequestStack $request,
+        private readonly RecoveryProcessMessageSender $sender,
+        private readonly bool $sendMail,
+        private readonly string $defaultLocale,
+    )
     {
     }
 
@@ -40,7 +45,7 @@ class RecoveryProcessListener implements EventSubscriberInterface
         if (null === $user = $event->getUser()) {
             throw new Exception('User should not be null');
         }
-        $locale = $this->request->getCurrentRequest()->getLocale();
+        $locale = $this->request->getSession()->get('_locale', $this->defaultLocale);
 
         $this->sender->send($user, $locale);
     }

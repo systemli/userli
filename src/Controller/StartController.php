@@ -50,23 +50,9 @@ class StartController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @return RedirectResponse
-     */
-    #[Route(path: '/', name: 'index_no_locale')]
-    public function indexNoLocale(Request $request): RedirectResponse
-    {
-        $supportedLocales = (array)$this->getParameter('supported_locales');
-        $preferredLanguage = $request->getPreferredLanguage($supportedLocales);
-        $locale = $preferredLanguage ?: $request->getLocale();
-
-        return $this->redirectToRoute('index', ['_locale' => $locale]);
-    }
-
-    /**
      * @return Response
      */
-    #[Route(path: '/{_locale<%locales%>}/', name: 'index')]
+    #[Route(path: '/', name: 'index')]
     public function index(): Response
     {
         // forward to start if logged in
@@ -83,23 +69,9 @@ class StartController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @return RedirectResponse
-     */
-    #[Route(path: '/start', name: 'start_no_locale')]
-    public function startNoLocale(Request $request): RedirectResponse
-    {
-        $supportedLocales = (array)$this->getParameter('supported_locales');
-        $preferredLanguage = $request->getPreferredLanguage($supportedLocales);
-        $locale = $preferredLanguage ?: $request->getLocale();
-
-        return $this->redirectToRoute('start', ['_locale' => $locale]);
-    }
-
-    /**
      * @return Response
      */
-    #[Route(path: '/{_locale<%locales%>}/start', name: 'start')]
+    #[Route(path: '/start', name: 'start')]
     public function start(): Response
     {
         if ($this->isGranted(Roles::SPAM)) {
@@ -122,7 +94,7 @@ class StartController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    #[Route(path: '/{_locale<%locales%>}/voucher', name: 'vouchers', requirements: ['_locale' => '%locales%'])]
+    #[Route(path: '/voucher', name: 'vouchers')]
     public function voucher(Request $request): Response
     {
         /** @var User $user */
@@ -162,7 +134,7 @@ class StartController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    #[Route(path: '/{_locale<%locales%>}/alias', name: 'aliases')]
+    #[Route(path: '/alias', name: 'aliases')]
     public function alias(Request $request): Response
     {
         /** @var User $user */
@@ -224,7 +196,7 @@ class StartController extends AbstractController
      * @return Response
      * @throws Exception
      */
-    #[Route(path: '/{_locale<%locales%>}/account', name: 'account')]
+    #[Route(path: '/account', name: 'account')]
     public function account(Request $request): Response
     {
         /** @var User $user */
@@ -264,7 +236,7 @@ class StartController extends AbstractController
      * @param Request $request
      * @return Response|null
      */
-    #[Route(path: '/{_locale<%locales%>}/openpgp', name: 'openpgp')]
+    #[Route(path: '/openpgp', name: 'openpgp')]
     public function openPgp(Request $request): ?Response
     {
         /** @var User $user */

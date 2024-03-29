@@ -27,7 +27,7 @@ class DeleteController extends AbstractController
      * @param $aliasId
      * @return Response
      */
-    #[Route(path: '/{_locale<%locales%>}/alias/delete/{aliasId}', name: 'alias_delete')]
+    #[Route(path: '/alias/delete/{aliasId}', name: 'alias_delete')]
     public function deleteAlias(Request $request, $aliasId): Response
     {
         $user = $this->getUser();
@@ -67,7 +67,7 @@ class DeleteController extends AbstractController
      * @param Request $request
      * @return RedirectResponse|Response
      */
-    #[Route(path: '/{_locale<%locales%>}/user/delete', name: 'user_delete')]
+    #[Route(path: '/user/delete', name: 'user_delete')]
     public function deleteUser(Request $request): RedirectResponse|Response
     {
         $user = $this->getUser();
@@ -98,7 +98,7 @@ class DeleteController extends AbstractController
      * @param Request $request
      * @return RedirectResponse|Response
      */
-    #[Route(path: '/{_locale<%locales%>}/openpgp/delete', name: 'openpgp_delete')]
+    #[Route(path: '/openpgp/delete', name: 'openpgp_delete')]
     public function deleteOpenPgp(Request $request): RedirectResponse|Response
     {
         $user = $this->getUser();

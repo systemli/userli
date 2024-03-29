@@ -2,19 +2,19 @@
 
 namespace App\Controller;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use App\Form\Model\Twofactor;
 use App\Form\Model\TwofactorBackupAck;
 use App\Form\Model\TwofactorConfirm;
 use App\Form\TwofactorBackupAckType;
 use App\Form\TwofactorConfirmType;
 use App\Form\TwofactorType;
+use Doctrine\ORM\EntityManagerInterface;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
-use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\RoundBlockSizeMode;
 use Endroid\QrCode\Writer\PngWriter;
+use RuntimeException;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,21 +27,20 @@ class TwofactorController extends AbstractController
 {
     public function __construct(private readonly EntityManagerInterface $manager)
     {
-
     }
 
     /**
      * @param Request $request
      * @param TotpAuthenticatorInterface $totpAuthenticator
      * @return Response
-     * @throws Exception
+     * @throws RuntimeException
      */
-    #[Route(path: '/{_locale<%locales%>}/user/twofactor', name: 'user_twofactor')]
+    #[Route(path: '/user/twofactor', name: 'user_twofactor')]
     public function twofactor(Request $request, TotpAuthenticatorInterface $totpAuthenticator): Response
     {
         /** @var $user TwoFactorInterface */
         if (null === $user = $this->getUser()) {
-            throw new Exception('User should not be null');
+            throw new RuntimeException('User should not be null');
         }
 
         $form = $this->createForm(TwofactorType::class, new Twofactor());
@@ -99,13 +98,13 @@ class TwofactorController extends AbstractController
     /**
      * @param Request $request
      * @return Response
-     * @throws Exception
+     * @throws RuntimeException
      */
-    #[Route(path: '/{_locale<%locales%>}/user/twofactor_confirm', name: 'user_twofactor_confirm')]
+    #[Route(path: '/user/twofactor_confirm', name: 'user_twofactor_confirm')]
     public function twofactorConfirm(Request $request): Response
     {
         if (null === $user = $this->getUser()) {
-            throw new Exception('User should not be null');
+            throw new RuntimeException('User should not be null');
         }
 
         $confirmForm = $this->createForm(TwofactorConfirmType::class, new TwofactorConfirm());
@@ -175,13 +174,13 @@ class TwofactorController extends AbstractController
     /**
      * @param Request $request
      * @return Response
-     * @throws Exception
+     * @throws RuntimeException
      */
-    #[Route(path: '/{_locale<%locales%>}/user/twofactor_backup_codes', name: 'user_twofactor_backup_ack')]
+    #[Route(path: '/user/twofactor_backup_codes', name: 'user_twofactor_backup_ack')]
     public function twofactorBackupAck(Request $request): Response
     {
         if (null === $user = $this->getUser()) {
-            throw new Exception('User should not be null');
+            throw new RuntimeException('User should not be null');
         }
 
         $backupAckForm = $this->createForm(
@@ -251,13 +250,13 @@ class TwofactorController extends AbstractController
     /**
      * @param Request $request
      * @return Response
-     * @throws Exception
+     * @throws RuntimeException
      */
-    #[Route(path: '/{_locale<%locales%>}/user/twofactor_disable', name: 'user_twofactor_disable')]
+    #[Route(path: '/user/twofactor_disable', name: 'user_twofactor_disable')]
     public function twofactorDisable(Request $request): Response
     {
         if (null === $user = $this->getUser()) {
-            throw new Exception('User should not be null');
+            throw new RuntimeException('User should not be null');
         }
 
         $disableForm = $this->createForm(TwofactorType::class, new Twofactor());
@@ -301,13 +300,13 @@ class TwofactorController extends AbstractController
     /**
      * @param TotpAuthenticatorInterface $totpAuthenticator
      * @return Response
-     * @throws Exception
+     * @throws RuntimeException
      */
-    #[Route(path: '/{_locale<%locales%>}/user/twofactor/qrcode', name: 'user_twofactor_qrcode')]
+    #[Route(path: '/user/twofactor/qrcode', name: 'user_twofactor_qrcode')]
     public function displayTotpQrCode(TotpAuthenticatorInterface $totpAuthenticator): Response
     {
         if (null === $user = $this->getUser()) {
-            throw new Exception('User should not be null');
+            throw new RuntimeException('User should not be null');
         }
         if (!($user instanceof TwoFactorInterface)) {
             throw new NotFoundHttpException('Cannot display QR code');
@@ -318,10 +317,10 @@ class TwofactorController extends AbstractController
             ->writerOptions([])
             ->data($totpAuthenticator->getQRContent($user))
             ->encoding(new Encoding('UTF-8'))
-            ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+            ->errorCorrectionLevel(ErrorCorrectionLevel::High)
             ->size(320)
             ->margin(20)
-            ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+            ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
             ->build();
 
         return new Response($result->getString(), Response::HTTP_OK, ['Content-Type' => 'image/png']);

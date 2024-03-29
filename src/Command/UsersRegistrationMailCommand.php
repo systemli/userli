@@ -16,7 +16,11 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 #[AsCommand(name: 'app:users:registration:mail')]
 class UsersRegistrationMailCommand extends Command
 {
-    public function __construct(private readonly EntityManagerInterface $manager, private readonly WelcomeMessageSender $welcomeMessageSender, ?string $name = null)
+    public function __construct(
+        private readonly EntityManagerInterface $manager,
+        private readonly WelcomeMessageSender $welcomeMessageSender,
+        private readonly string $defaultLocale,
+        ?string $name = null)
     {
         parent::__construct($name);
     }
@@ -29,7 +33,7 @@ class UsersRegistrationMailCommand extends Command
         $this
             ->setDescription('Send a registration mail to a user')
             ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User who get the voucher(s)')
-            ->addOption('locale', 'l', InputOption::VALUE_OPTIONAL, 'the locale', 'de');
+            ->addOption('locale', 'l', InputOption::VALUE_OPTIONAL, 'the locale', $this->defaultLocale);
     }
 
     /**

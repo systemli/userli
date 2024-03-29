@@ -48,7 +48,7 @@ class VoucherCreationCommand extends Command
             if (true === $input->getOption('print-links')) {
                 $output->write(sprintf("%s\n", $this->router->generate(
                     'register_voucher',
-                    ['_locale' => 'en', 'voucher' => $voucher->getCode()]
+                    ['voucher' => $voucher->getCode()]
                 )));
             } elseif (true === $input->getOption('print')) {
                 $output->write(sprintf("%s\n", $voucher->getCode()));

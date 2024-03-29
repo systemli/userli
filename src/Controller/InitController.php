@@ -28,7 +28,7 @@ class InitController extends AbstractController
      * @return Response
      * @throws ValidationException
      */
-    #[Route(path: '/{_locale<%locales%>}/init', name: 'init')]
+    #[Route(path: '/init', name: 'init')]
     public function index(Request $request): Response
     {
         // redirect if already configured
@@ -63,7 +63,7 @@ class InitController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    #[Route(path: '/{_locale<%locales%>}/init/user', name: 'init_user')]
+    #[Route(path: '/init/user', name: 'init_user')]
     public function user(Request $request): Response
     {
         // redirect if already configured

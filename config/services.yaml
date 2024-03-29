@@ -63,6 +63,10 @@ services:
         arguments:
             $mailCrypt: "%env(MAIL_CRYPT)%"
 
+    App\Command\UsersRegistrationMailCommand:
+        arguments:
+            $defaultLocale: "%kernel.default_locale%"
+
     App\Command\UsersRemoveCommand:
         arguments:
             $mailLocation: "%env(DOVECOT_MAIL_LOCATION)%"
@@ -79,6 +83,11 @@ services:
         resource: '../src/EventListener/*'
         tags:
             - { name: kernel.event_subscriber }
+
+    App\EventListener\LocaleListener:
+        arguments:
+            $defaultLocale: "%locale%"
+            $supportedLocales: "%supported_locales%"
 
     App\Handler\:
         resource: '../src/Handler/*'
@@ -133,15 +142,18 @@ services:
 
     App\EventListener\AliasCreationListener:
         arguments:
-            $sendMail:     "%env(SEND_MAIL)%"
+            $sendMail: "%env(SEND_MAIL)%"
+            $defaultLocale: "%kernel.default_locale%"
 
     App\EventListener\RecoveryProcessListener:
         arguments:
-            $sendMail:     "%env(SEND_MAIL)%"
+            $sendMail: "%env(SEND_MAIL)%"
+            $defaultLocale: "%kernel.default_locale%"
 
     App\EventListener\RegistrationListener:
         arguments:
-            $sendMail:     "%env(SEND_MAIL)%"
+            $sendMail: "%env(SEND_MAIL)%"
+            $defaultLocale: "%kernel.default_locale%"
 
     App\Builder\MenuBuilder:
         arguments:
