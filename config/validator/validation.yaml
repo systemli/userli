@@ -42,6 +42,10 @@ App\Entity\User:
     constraints:
         - App\Validator\Constraints\EmailDomain: ~
 
+App\Entity\Voucher:
+    constraints:
+        - App\Validator\Constraints\VoucherUser: ~
+
 App\Form\Model\Registration:
     properties:
         email:
