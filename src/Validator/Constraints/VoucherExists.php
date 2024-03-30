@@ -5,7 +5,7 @@ namespace App\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
 
-class Voucher extends Constraint
+class VoucherExists extends Constraint
 {
     /**
      * @var bool|null
