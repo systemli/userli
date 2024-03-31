@@ -14,7 +14,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 #[AsCommand(name: 'app:voucher:create')]
-class VoucherCreationCommand extends Command
+class VoucherCreateCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $manager,
