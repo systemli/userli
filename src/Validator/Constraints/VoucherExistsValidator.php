@@ -4,22 +4,15 @@ namespace App\Validator\Constraints;
 
 use App\Entity\Voucher;
 use App\Repository\VoucherRepository;
-use App\Validator\Constraints\Voucher as VoucherConstraint;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-/**
- * Class VoucherValidator.
- */
-class VoucherValidator extends ConstraintValidator
+class VoucherExistsValidator extends ConstraintValidator
 {
     private readonly VoucherRepository $voucherRepository;
 
-    /**
-     * VoucherValidator constructor.
-     */
     public function __construct(EntityManagerInterface $manager)
     {
         $this->voucherRepository = $manager->getRepository(Voucher::class);
@@ -33,8 +26,8 @@ class VoucherValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof VoucherConstraint) {
-            throw new UnexpectedTypeException($constraint, Voucher::class);
+        if (!$constraint instanceof VoucherExists) {
+            throw new UnexpectedTypeException($constraint, VoucherExists::class);
         }
 
         if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {

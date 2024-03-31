@@ -21,3 +21,6 @@ registration:
   email-too-short: "The username must contain at least %min% characters."
   email-too-long: "The username must contain at most %max% characters."
   email-unexpected-characters: "The username contains unexpected characters. Only valid: Letters and numbers, as well as -, _ and ."
+
+voucher:
+  suspicious-user: "Not allowed to create voucher for suspicious users."

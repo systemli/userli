@@ -1,4 +1,4 @@
-Feature: VoucherCreationCommand
+Feature: VoucherCreateCommand
 
   Background:
     Given the database is clean
