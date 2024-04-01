@@ -53,6 +53,30 @@ Feature: User
     And I should see text matching "Your new alias address was created."
     And the response status code should be 200
 
+  @fail-to-create-existing-custom-alias
+  Scenario: Fail to create existing custom alias
+    When I am authenticated as "user@example.org"
+    And I am on "/alias"
+    And I fill in the following:
+      | create_custom_alias_alias | alias1 |
+    And I press "Add"
+
+    Then I should be on "/alias"
+    And I should see "The e-mail address is already taken."
+    And the response status code should be 200
+
+  @fail-to-create-deleted-custom-alias
+  Scenario: Fail to create deleted custom alias
+    When I am authenticated as "user@example.org"
+    And I am on "/alias"
+    And I fill in the following:
+      | create_custom_alias_alias | alias2 |
+    And I press "Add"
+
+    Then I should be on "/alias"
+    And I should see "The e-mail address is already taken."
+    And the response status code should be 200
+
   @delete-alias
   Scenario: Delete custom alias
     When I am authenticated as "user@example.org"

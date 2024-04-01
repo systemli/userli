@@ -31,7 +31,7 @@ class AliasHandler
     {
         $limit = ($random) ? self::ALIAS_LIMIT_RANDOM : self::ALIAS_LIMIT_CUSTOM;
 
-        return (count($aliases) < $limit) ? true : false;
+        return count($aliases) < $limit;
     }
 
     /**
@@ -39,7 +39,7 @@ class AliasHandler
      */
     public function create(User $user, ?string $localPart = null): ?Alias
     {
-        $random = (isset($localPart)) ? false : true;
+        $random = !isset($localPart);
 
         $aliases = $this->repository->findByUser($user, $random);
         if ($this->checkAliasLimit($aliases, $random)) {
