@@ -2,10 +2,7 @@
 
 namespace App\Command;
 
-use App\Entity\User;
 use App\Entity\Voucher;
-use App\Enum\Roles;
-use App\Handler\SuspiciousChildrenHandler;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -17,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:voucher:unlink')]
 class VoucherUnlinkCommand extends Command
 {
-    public function __construct(private readonly EntityManagerInterface $manager, private readonly SuspiciousChildrenHandler $handler)
+    public function __construct(private readonly EntityManagerInterface $manager)
     {
         parent::__construct();
     }
@@ -44,7 +41,6 @@ class VoucherUnlinkCommand extends Command
             OutputInterface::VERBOSITY_VERBOSE
         );
 
-        $suspiciousChildren = $this->getSuspiciousChildren($vouchers);
         foreach ($vouchers as $voucher) {
             $output->writeln(
                 sprintf(
@@ -57,54 +53,10 @@ class VoucherUnlinkCommand extends Command
             );
         }
 
-        if (count($suspiciousChildren) > 0) {
-            // output all children of suspicious users
-            foreach ($suspiciousChildren as $child => $parent) {
-                $output->writeln(
-                    sprintf(
-                        '<comment>Suspicious User %s has invited %s.</comment>',
-                        $parent,
-                        $child
-                    ),
-                    OutputInterface::VERBOSITY_VERBOSE
-                );
-            }
-
-            // inform about suspicious children via mail
-            $this->handler->sendReport($suspiciousChildren);
-        }
-
         if (false === $input->getOption('dry-run')) {
             $this->manager->flush();
         }
 
         return 0;
-    }
-
-    /**
-     * @param Voucher[] $vouchers
-     *
-     * @return string[]
-     */
-    public function getSuspiciousChildren(array $vouchers): array
-    {
-        $suspiciousChildren = [];
-
-        foreach ($vouchers as $voucher) {
-            if ($voucher instanceof Voucher) {
-                $user = $voucher->getInvitedUser();
-                if ($user instanceof User) {
-                    $user->setInvitationVoucher(null);
-
-                    // check if user was suspicious and has redeemed codes
-                    $parent = $voucher->getUser();
-                    if ($parent instanceof User && $parent->hasRole(Roles::SUSPICIOUS)) {
-                        $suspiciousChildren[$user->getUserIdentifier()] = $parent->getUserIdentifier();
-                    }
-                }
-            }
-        }
-
-        return $suspiciousChildren;
     }
 }
