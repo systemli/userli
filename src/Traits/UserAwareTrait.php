@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait UserAwareTrait
 {
-    #[ORM\ManyToOne(targetEntity: \User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $user = null;
 
     public function getUser(): ?User

@@ -26,6 +26,7 @@ class Voucher implements Stringable
     #[ORM\Column(unique: true)]
     protected ?string $code = null;
 
+    #[ORM\OneToOne(targetEntity: User::class, mappedBy: 'invitationVoucher')]
     protected ?User $invitedUser = null;
 
     public function __construct()
