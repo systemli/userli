@@ -12,7 +12,7 @@ class VoucherRepository extends EntityRepository
 {
     /**
      * Finds a voucher by its code.
-     * 
+     *
      * @param $code
      * @return Voucher|null
      */
@@ -23,7 +23,7 @@ class VoucherRepository extends EntityRepository
 
     /**
      * Returns the number of redeemed vouchers.
-     * 
+     *
      * @return int
      */
     public function countRedeemedVouchers(): int
@@ -33,7 +33,7 @@ class VoucherRepository extends EntityRepository
 
     /**
      * Returns the number of unredeemed vouchers.
-     * 
+     *
      * @return int
      */
     public function countUnredeemedVouchers(): int
@@ -43,7 +43,7 @@ class VoucherRepository extends EntityRepository
 
     /**
      * Finds all vouchers for a given user.
-     * 
+     *
      * @return array|Voucher[]
      */
     public function findByUser(User $user): array
@@ -52,8 +52,25 @@ class VoucherRepository extends EntityRepository
     }
 
     /**
+     * Get all redeemed vouchers for a user.
+     *
+     * @return Voucher[]|array
+     */
+    public function getRedeemedVouchersByUser(User $user): array
+    {
+        return $this->createQueryBuilder('voucher')
+            ->join('voucher.invitedUser', 'invitedUser')
+            ->where('voucher.user = :user')
+            ->setParameter('user', $user)
+            ->andWhere('voucher.redeemedTime IS NOT NULL')
+            ->orderBy('voucher.redeemedTime')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Get all redeemed vouchers that are older than 3 months.
-     * 
+     *
      * @return Voucher[]|array
      */
     public function getOldVouchers(): array

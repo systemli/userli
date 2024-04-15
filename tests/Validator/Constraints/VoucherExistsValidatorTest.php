@@ -2,7 +2,9 @@
 
 namespace App\Tests\Validator\Constraints;
 
+use App\Entity\User;
 use App\Entity\Voucher;
+use App\Enum\Roles;
 use App\Repository\VoucherRepository;
 use App\Validator\Constraints\VoucherExists;
 use App\Validator\Constraints\VoucherExistsValidator;
@@ -15,15 +17,20 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class VoucherExistsValidatorTest extends ConstraintValidatorTestCase
 {
+    private User $user;
+    private Voucher $voucher;
+
     protected function createValidator(): VoucherExistsValidator
     {
-        $voucher = new Voucher();
-        $voucher->setCode('code');
+        $this->user = new User();
+        $this->voucher = new Voucher();
+        $this->voucher->setCode('code');
+        $this->voucher->setUser($this->user);
         $repository = $this->getMockBuilder(VoucherRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
         $repository->method('findByCode')->willReturnMap([
-            ['code', $voucher],
+            ['code', $this->voucher],
         ]);
         $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('getRepository')->willReturn($repository);
@@ -72,6 +79,14 @@ class VoucherExistsValidatorTest extends ConstraintValidatorTestCase
     public function testValidateVoucherInvalid(): void
     {
         $this->validator->validate('code2', new VoucherExists(true));
+        $this->buildViolation('registration.voucher-invalid')
+            ->assertRaised();
+    }
+
+    public function testValidateSuspiciousVoucherInvalid(): void
+    {
+        $this->user->setRoles([Roles::SUSPICIOUS]);
+        $this->validator->validate('code', new VoucherExists(true));
         $this->buildViolation('registration.voucher-invalid')
             ->assertRaised();
     }

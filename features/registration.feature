@@ -8,9 +8,11 @@ Feature: registration
     And the following User exists:
       | email             | password | roles      |
       | louis@example.org | asdasd   | ROLE_ADMIN |
+      | suspicious@example.org | asdasd   | ROLE_SUSPICIOUS |
     And the following Voucher exists:
       | code | user              |
       | TEST | louis@example.org |
+      | ABCD | suspicious@example.org |
     And the following Alias exists:
       | source            | destination       |
       | alias@example.org | goto@example.org |
@@ -43,6 +45,19 @@ Feature: registration
 
     Then I should be on "/start"
     And I should see text matching "Log out"
+
+  @registration
+  Scenario: Register with voucher from suspicious user
+    When I am on "/register"
+    And I fill in the following:
+      | registration[voucher]               | ABCD         |
+      | registration[email]                 | user1        |
+      | registration[plainPassword][first]  | P4ssW0rt!!!1 |
+      | registration[plainPassword][second] | P4ssW0rt!!!1 |
+    And I press "Submit"
+
+    Then I should be on "/register"
+    And I should see "The invite code is invalid."
 
   @registration
   Scenario: Register with invalid voucher

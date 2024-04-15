@@ -2,7 +2,9 @@
 
 namespace App\Validator\Constraints;
 
+use App\Entity\User;
 use App\Entity\Voucher;
+use App\Enum\Roles;
 use App\Repository\VoucherRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
@@ -39,10 +41,17 @@ class VoucherExistsValidator extends ConstraintValidator
         if (true === $constraint->exists) {
             if (null === $voucher = $this->voucherRepository->findByCode($stringValue)) {
                 $this->context->addViolation('registration.voucher-invalid');
+                return;
             }
 
-            if (null !== $voucher && $voucher->isRedeemed()) {
+            if ($voucher->isRedeemed()) {
                 $this->context->addViolation('registration.voucher-already-redeemed');
+            }
+
+            /** @var User $user */
+            $user = $voucher->getUser();
+            if ($user->hasRole(Roles::SUSPICIOUS)) {
+                $this->context->addViolation('registration.voucher-invalid');
             }
         } elseif (null !== $this->voucherRepository->findByCode($stringValue)) {
             $this->context->addViolation('registration.voucher-exists');
