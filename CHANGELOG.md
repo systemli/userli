@@ -1,6 +1,14 @@
-# 3.5.3 (UNRELEASED)
+# 3.6.0 (2024.04.15)
 
+* Remove URL-based localized routes, store locale in session
+* Check for invited by `ROLE_SUSPICIOUS` when assigning the role
+* Don't accept invite codes of suspicious users on registration
 * Add missing use to RecoveryController
+* Add missing default value for roles column
+* Require Node v18.x
+* Check whether user is suspicious before creating voucher
+* Bring back old logic of `findOneBySource()` in AliasRepository
+* Update dependencies
 
 # 3.5.2 (2024.03.28)
 
