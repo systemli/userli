@@ -164,6 +164,11 @@ services:
             - '@Doctrine\ORM\EntityManagerInterface'
         public: true
 
+    App\Security\KeycloakApiAccessTokenHandler:
+        arguments:
+            $keycloakApi: "%env(KEYCLOAK_API)%"
+            $keycloakApiAccessToken: "%env(KEYCLOAK_API_ACCESS_TOKEN)%"
+
     App\Sender\WelcomeMessageSender:
         public: true
 

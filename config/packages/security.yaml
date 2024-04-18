@@ -14,11 +14,10 @@ security:
         # Custom UserProvider to allow login via email and localpart (without domain)
         user:
             id: App\Security\UserProvider
-        in_memory_users:
+        keycloak_api_user:
             memory:
                 users:
-                    - identifier: '%env(HTTP_BASIC_AUTH_USERNAME)%'
-                      password: '%env(HTTP_BASIC_AUTH_PASSWORD)%'
+                    - identifier: keycloak
                       roles: ['ROLE_API_KEYCLOAK']
 
     role_hierarchy:
@@ -114,9 +113,9 @@ security:
         api_keycloak:
             pattern: ^/api/keycloak
             stateless: true
-            provider: in_memory_users
-            http_basic:
-                realm: Secured Area
+            provider: keycloak_api_user
+            access_token:
+                token_handler: App\Security\KeycloakApiAccessTokenHandler
         main:
             pattern: ^/
             provider: user
