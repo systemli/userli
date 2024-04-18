@@ -11,6 +11,7 @@ final class Roles
     public const USER = 'ROLE_USER';
     public const DOMAIN_ADMIN = 'ROLE_DOMAIN_ADMIN';
     public const ADMIN = 'ROLE_ADMIN';
+    public const API_KEYCLOAK = 'ROLE_API_KEYCLOAK';
 
     public static function getAll(): array
     {
@@ -22,6 +23,7 @@ final class Roles
             self::USER => self::USER,
             self::DOMAIN_ADMIN => self::DOMAIN_ADMIN,
             self::ADMIN => self::ADMIN,
+            self::API_KEYCLOAK => self::API_KEYCLOAK,
         ];
     }
 }

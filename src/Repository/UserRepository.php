@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Domain;
 use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\Common\Collections\Collection;
 use DateTime;
@@ -17,18 +18,31 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 class UserRepository extends EntityRepository implements PasswordUpgraderInterface
 {
-    /**
-     * @param $email
-     *
-     * @return User|null
-     */
-    public function findByEmail($email): ?User
+    public function findById(int $id): ?User
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
+
+    public function findByEmail(string $email): ?User
     {
         return $this->findOneBy(['email' => $email]);
     }
 
+    public function findByDomainAndEmail(Domain $domain, string $email): ?User
+    {
+        return $this->findOneBy(['domain' => $domain, 'email' => $email]);
+    }
+
+    public function findUsersByString(Domain $domain, string $string, int $max, int $first): AbstractLazyCollection|LazyCriteriaCollection
+    {
+        $criteria = Criteria::create()->where(Criteria::expr()->eq('domain', $domain));
+        $criteria->andWhere(Criteria::expr()->contains('email', $string));
+        $criteria->setMaxResults($max);
+        $criteria->setFirstResult($first);
+        return $this->matching($criteria);
+    }
+
     /**
-     * @param DateTime $dateTime
      * @return AbstractLazyCollection|(AbstractLazyCollection&Selectable)|LazyCriteriaCollection
      */
     public function findUsersSince(DateTime $dateTime)
@@ -37,7 +51,6 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
     }
 
     /**
-     * @param int $days
      * @return AbstractLazyCollection|(AbstractLazyCollection&Selectable)|LazyCriteriaCollection
      * @throws Exception
      */
@@ -65,35 +78,31 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
         return $this->matching(new Criteria($expression));
     }
 
-    /**
-     * @return User[]|array
-     */
     public function findDeletedUsers(): array
     {
         return $this->findBy(['deleted' => true]);
     }
 
-    /**
-     * @return int
-     */
     public function countUsers(): int
     {
         return $this->matching(Criteria::create()
             ->where(Criteria::expr()->eq('deleted', false)))->count();
     }
 
-    /**
-     * @return int
-     */
+    public function countDomainUsers(Domain $domain): int
+    {
+        return $this->matching(Criteria::create()
+            ->where(Criteria::expr()->eq('domain', $domain))
+            ->andWhere(Criteria::expr()->eq('deleted', false)))
+            ->count();
+    }
+
     public function countDeletedUsers(): int
     {
         return $this->matching(Criteria::create()
             ->where(Criteria::expr()->eq('deleted', true)))->count();
     }
 
-    /**
-     * @return int
-     */
     public function countUsersWithRecoveryToken(): int
     {
         return $this->matching(Criteria::create()
@@ -102,9 +111,6 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
         )->count();
     }
 
-    /**
-     * @return int
-     */
     public function countUsersWithMailCrypt(): int
     {
         return $this->matching(Criteria::create()
@@ -113,9 +119,6 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
         )->count();
     }
 
-    /**
-     * @return int
-     */
     public function countUsersWithTwofactor(): int
     {
         return $this->matching(Criteria::create()
