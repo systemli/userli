@@ -5,6 +5,7 @@ namespace App\Tests\EventListener;
 use App\EventListener\LocaleListener;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\InputBag;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -22,6 +23,9 @@ class LocaleListenerTest extends TestCase
 
         $this->session = $this->createMock(Session::class);
         $this->request = $this->createMock(Request::class);
+        $attributes = $this->createMock(ParameterBag::class);
+        $attributes->method('getBoolean')->willReturn(false);
+        $this->request->attributes = $attributes;
         $this->request->method('getSession')
             ->willReturn($this->session);
         $this->request->query = new InputBag();

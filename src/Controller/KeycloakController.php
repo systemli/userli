@@ -23,7 +23,7 @@ class KeycloakController extends AbstractController
         $this->userRepository = $this->manager->getRepository(User::class);
     }
 
-    #[Route(path: '/api/keycloak', name: 'api_keycloak_index', methods: ['GET'])]
+    #[Route(path: '/api/keycloak', name: 'api_keycloak_index', methods: ['GET'], stateless: true)]
     public function index(Request $request): Response
     {
         if (null === $domain = $this->domainRepository->findByName($request->query->get('domain') ?? '')) {
@@ -53,7 +53,7 @@ class KeycloakController extends AbstractController
         return $this->json($users);
     }
 
-    #[Route(path: '/api/keycloak/count', name: 'api_keycloak_count', methods: ['GET'])]
+    #[Route(path: '/api/keycloak/count', name: 'api_keycloak_count', methods: ['GET'], stateless: true)]
     public function count(Request $request): Response
     {
         if (null === $domain = $this->domainRepository->findByName($request->query->get('domain') ?? '')) {
@@ -65,7 +65,7 @@ class KeycloakController extends AbstractController
         return $this->json($this->userRepository->countDomainUsers($domain));
     }
 
-    #[Route(path: '/api/keycloak/user/{email}', name: 'api_keycloak_user', methods: ['GET'])]
+    #[Route(path: '/api/keycloak/user/{email}', name: 'api_keycloak_user', methods: ['GET'], stateless: true)]
     public function get(Request $request, string $email): Response
     {
         if (null === $domain = $this->domainRepository->findByName($request->query->get('domain') ?? '')) {
@@ -90,7 +90,7 @@ class KeycloakController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/api/keycloak/validate/{email}', name: 'api_keycloak_user_validate', methods: ['POST'])]
+    #[Route(path: '/api/keycloak/validate/{email}', name: 'api_keycloak_user_validate', methods: ['POST'], stateless: true)]
     public function validate(Request $request, string $email): Response
     {
         if (null === $domain = $this->domainRepository->findByName($request->request->get('domain') ?? '')) {
