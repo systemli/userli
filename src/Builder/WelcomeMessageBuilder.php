@@ -11,7 +11,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class WelcomeMessageBuilder
 {
-    private $domain;
+    private string $domain;
 
     /**
      * WelcomeMessageBuilder constructor.

@@ -74,18 +74,16 @@ class RegistrationController extends AbstractController
 	 */
 	#[Route(path: '/register', name: 'register')]
 	#[Route(path: '/register/{voucher}', name: 'register_voucher')]
-	public function register(Request $request, string $voucher = null): Response
+	public function register(Request $request, string $voucher = ''): Response
 	{
 		if (!$this->registrationHandler->isRegistrationOpen()) {
 			return $this->render('Registration/closed.html.twig');
 		}
 
 		$registration = new Registration();
-		// Set voucher value in form if given as parameter in route
-		if (null !== $voucher) {
-			$registration->setVoucher($voucher);
-		}
-		$form = $this->createForm(
+        $registration->setVoucher($voucher);
+
+        $form = $this->createForm(
 			RegistrationType::class,
 			$registration,
 			[

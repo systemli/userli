@@ -7,9 +7,6 @@ namespace App\Traits;
  */
 trait PlainRecoveryTokenTrait
 {
-    /**
-     * @var string|null
-     */
     private ?string $plainRecoveryToken = null;
 
     public function getPlainRecoveryToken(): ?string

@@ -7,8 +7,7 @@ use App\Validator\Constraints\TotpSecret;
 
 class TwofactorConfirm
 {
-    /** @var string */
     #[Assert\NotNull]
     #[TotpSecret]
-    public $totpSecret;
+    public string $totpSecret;
 }

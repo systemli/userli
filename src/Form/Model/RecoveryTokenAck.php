@@ -9,9 +9,6 @@ class RecoveryTokenAck
 {
     use RecoveryTokenTrait;
 
-    /**
-     * @var bool
-     */
     #[Assert\NotBlank(message: 'form.registration-recovery-token-noack')]
-    public $ack = false;
+    public bool $ack = false;
 }

@@ -6,11 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 class OpenPgpKey
 {
-    #[ORM\Column(type: 'string')]
-    private $keyFile;
+    private ?string $keyFile = null;
 
-    /** @var string */
-    private $keyText;
+    private ?string $keyText = null;
 
     public function getKeyFile(): ?string
     {

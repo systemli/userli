@@ -4,9 +4,6 @@ namespace App\Traits;
 
 trait PublicKeyTrait
 {
-    /**
-     * @var string|null
-     */
     public ?string $publicKey = null;
 
     public function getPublicKey(): ?string

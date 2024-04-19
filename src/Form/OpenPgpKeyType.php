@@ -74,6 +74,7 @@ class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
 
     public function ensureOneFieldIsSubmitted(FormEvent $event): void
     {
+        /** @var OpenPgpKey $submittedData */
         $submittedData = $event->getData();
 
         if ((null === $submittedData->getKeyFile() && null === $submittedData->getKeyText()) ||

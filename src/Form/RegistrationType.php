@@ -21,10 +21,7 @@ class RegistrationType extends AbstractType
 {
     public const NAME = 'registration';
 
-    /**
-     * @var string
-     */
-    private $domain;
+    private string $domain;
 
     /**
      * RegistrationType constructor.

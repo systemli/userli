@@ -6,15 +6,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class RecoveryProcess
 {
-    /**
-     * @var string
-     */
     #[Assert\Email(mode: 'strict')]
-    public $email;
+    public string $email;
 
-    /**
-     * @var string
-     */
     #[Assert\Uuid(message: 'form.invalid-token')]
-    public $recoveryToken;
+    public string $recoveryToken;
 }
