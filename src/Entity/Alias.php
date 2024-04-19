@@ -12,9 +12,12 @@ use App\Traits\IdTrait;
 use App\Traits\RandomTrait;
 use App\Traits\UpdatedTimeTrait;
 use App\Traits\UserAwareTrait;
+use App\Validator\Constraints\EmailAddress;
+use App\Validator\Constraints\EmailLength;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\AssociationOverride;
 use Doctrine\ORM\Mapping\Index;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AliasRepository::class)]
 #[ORM\AssociationOverrides([new AssociationOverride(name: 'domain', joinColumns: new ORM\JoinColumn(nullable: true))])]
@@ -34,6 +37,10 @@ class Alias implements SoftDeletableInterface, Stringable
     use RandomTrait;
 
     #[ORM\Column]
+    #[Assert\NotNull]
+    #[Assert\Email(mode: 'strict')]
+    #[EmailAddress(groups: ['unique'])]
+    #[EmailLength(minLength: 3, maxLength: 24)]
     protected ?string $source = null;
 
     #[ORM\Column(nullable: true)]

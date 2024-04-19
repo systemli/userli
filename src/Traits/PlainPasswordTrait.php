@@ -2,6 +2,9 @@
 
 namespace App\Traits;
 
+use App\Validator\Constraints\PasswordPolicy;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Trait PlainPasswordTrait.
  */
@@ -10,6 +13,8 @@ trait PlainPasswordTrait
     /**
      * @var string|null
      */
+    #[PasswordPolicy]
+    #[Assert\NotCompromisedPassword( skipOnError: 'true')]
     private ?string $plainPassword = null;
 
     public function getPlainPassword(): ?string

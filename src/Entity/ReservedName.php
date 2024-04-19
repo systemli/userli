@@ -10,9 +10,11 @@ use App\Traits\IdTrait;
 use App\Traits\NameTrait;
 use App\Traits\UpdatedTimeTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ReservedNameRepository::class)]
 #[ORM\Table(name: 'virtual_reserved_names')]
+#[UniqueEntity('name')]
 class ReservedName implements Stringable
 {
     use IdTrait;

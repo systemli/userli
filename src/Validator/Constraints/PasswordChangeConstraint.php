@@ -4,6 +4,7 @@ namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
+#[\Attribute]
 class PasswordChangeConstraint extends Constraint
 {
     public function validatedBy(): string

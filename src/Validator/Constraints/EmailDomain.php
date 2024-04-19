@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraint;
 /**
  * Class EmailDomain.
  */
+#[\Attribute]
 class EmailDomain extends Constraint
 {
     public function getTargets(): string

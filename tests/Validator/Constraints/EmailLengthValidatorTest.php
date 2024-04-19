@@ -15,10 +15,6 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
     private $domain = 'example.org';
     private $minLength = 3;
     private $maxLength = 10;
-    private $emailLengthOptions = [
-        'minLength' => 3,
-        'maxLength' => 10,
-    ];
 
     protected function createValidator(): EmailLengthValidator
     {
@@ -33,14 +29,14 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
 
     public function testNullIsValid(): void
     {
-        $this->validator->validate(null, new EmailLength($this->emailLengthOptions));
+        $this->validator->validate(null, new EmailLength($this->minLength, $this->maxLength));
 
         $this->assertNoViolation();
     }
 
     public function testEmptyStringIsValid(): void
     {
-        $this->validator->validate('', new EmailLength($this->emailLengthOptions));
+        $this->validator->validate('', new EmailLength($this->minLength, $this->maxLength));
 
         $this->assertNoViolation();
     }
@@ -48,7 +44,7 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
     public function testExpectsStringCompatibleType(): void
     {
         $this->expectException(UnexpectedTypeException::class);
-        $this->validator->validate(new stdClass(), new EmailLength($this->emailLengthOptions));
+        $this->validator->validate(new stdClass(), new EmailLength($this->minLength, $this->maxLength));
     }
 
     public function testConstraintMissingOptions(): void
@@ -59,14 +55,14 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
 
     public function testConstraintGetDefaultOption(): void
     {
-        $constraint = new EmailLength($this->emailLengthOptions);
+        $constraint = new EmailLength($this->minLength, $this->maxLength);
         self::assertEquals($this->minLength, $constraint->minLength);
         self::assertEquals($this->maxLength, $constraint->maxLength);
     }
 
     public function testValidateValidNewEmailLength(): void
     {
-        $this->validator->validate('new@example.org', new EmailLength($this->emailLengthOptions));
+        $this->validator->validate('new@example.org', new EmailLength($this->minLength, $this->maxLength));
         $this->assertNoViolation();
     }
 
@@ -75,17 +71,17 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
      */
     public function testValidateShortLongEmailLength(string $address, string $violationMessage, string $operator, int $limit): void
     {
-        $this->validator->validate($address, new EmailLength($this->emailLengthOptions));
+        $this->validator->validate($address, new EmailLength($this->minLength, $this->maxLength));
         $this->buildViolation($violationMessage)
-            ->setParameter('%'.$operator.'%', $limit)
+            ->setParameter('%' . $operator . '%', $limit)
             ->assertRaised();
     }
 
     public function getShortLongAddresses(): array
     {
         return [
-            ['s@'.$this->domain, 'registration.email-too-short', 'min', $this->minLength],
-            ['thisaddressiswaytoolong@'.$this->domain, 'registration.email-too-long', 'max', $this->maxLength],
+            ['s@' . $this->domain, 'registration.email-too-short', 'min', $this->minLength],
+            ['thisaddressiswaytoolong@' . $this->domain, 'registration.email-too-long', 'max', $this->maxLength],
         ];
     }
 }

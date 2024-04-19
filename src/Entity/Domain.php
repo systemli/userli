@@ -10,10 +10,12 @@ use App\Traits\IdTrait;
 use App\Traits\NameTrait;
 use App\Traits\UpdatedTimeTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: DomainRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'virtual_domains')]
+#[UniqueEntity('name')]
 class Domain implements Stringable
 {
     use IdTrait;

@@ -5,27 +5,23 @@ namespace App\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
 
+#[\Attribute]
 class EmailLength extends Constraint
 {
-    /**
-     * @var int|null
-     */
-    public $minLength;
-
-    /**
-     * @var int|null
-     */
-    public $maxLength;
-
+    public int $minLength;
+    public int $maxLength;
     /**
      * {@inheritdoc}
      */
-    public function __construct($options = null)
+    public function __construct(?int $minLength = null, ?int $maxLength = null)
     {
-        parent::__construct($options);
+        parent::__construct([]);
 
-        if (null === $this->minLength && null === $this->maxLength) {
+        if (null === $minLength && null === $maxLength) {
             throw new MissingOptionsException(sprintf('Either option "minLength" or "maxLength" must be given for constraint %s', __CLASS__), ['min', 'max']);
         }
+
+        $this->minLength = $minLength ?? $this->minLength;
+        $this->maxLength = $maxLength ?? $this->maxLength;
     }
 }

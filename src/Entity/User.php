@@ -28,17 +28,20 @@ use App\Traits\SaltTrait;
 use App\Traits\TwofactorBackupCodeTrait;
 use App\Traits\TwofactorTrait;
 use App\Traits\UpdatedTimeTrait;
+use App\Validator\Constraints\EmailDomain;
 use Doctrine\ORM\Mapping as ORM;
 use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping\Index;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'virtual_users')]
 #[Index(name: 'email_idx', columns: ['email'])]
+#[EmailDomain]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface, Stringable
 {
     use IdTrait;
@@ -67,6 +70,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     public const CURRENT_PASSWORD_VERSION = 2;
 
     #[ORM\Column(type: 'array', options: ['default' => 'a:0:{}'])]
+    #[Assert\NotNull]
+    #[Assert\NotBlank]
     private array $roles = [];
 
     /**
@@ -120,7 +125,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     /**
      * @return string
      */
-    public function getUserIdentifier(): string {
+    public function getUserIdentifier(): string
+    {
         return $this->email;
     }
 
