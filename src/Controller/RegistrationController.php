@@ -23,10 +23,6 @@ class RegistrationController extends AbstractController
     {
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     #[Route(path: '/register/recovery_token', name: 'register_recovery_token')]
     public function registerRecoveryTokenAck(Request $request): Response
     {
@@ -54,10 +50,6 @@ class RegistrationController extends AbstractController
         return $this->redirectToRoute('register');
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
     #[Route(path: '/register/welcome', name: 'register_welcome')]
     public function welcome(Request $request): Response
     {
@@ -66,69 +58,66 @@ class RegistrationController extends AbstractController
         return $this->render('Registration/welcome.html.twig');
     }
 
-	/**
-	 * @param Request $request
-	 * @param string|null $voucher
-	 * @return Response
-	 * @throws Exception
-	 */
-	#[Route(path: '/register', name: 'register')]
-	#[Route(path: '/register/{voucher}', name: 'register_voucher')]
-	public function register(Request $request, string $voucher = ''): Response
-	{
-		if (!$this->registrationHandler->isRegistrationOpen()) {
-			return $this->render('Registration/closed.html.twig');
-		}
+    /**
+     * @throws Exception
+     */
+    #[Route(path: '/register', name: 'register')]
+    #[Route(path: '/register/{voucher}', name: 'register_voucher')]
+    public function register(Request $request, string $voucher = ''): Response
+    {
+        if (!$this->registrationHandler->isRegistrationOpen()) {
+            return $this->render('Registration/closed.html.twig');
+        }
 
-		$registration = new Registration();
+        $registration = new Registration();
         $registration->setVoucher($voucher);
 
         $form = $this->createForm(
-			RegistrationType::class,
-			$registration,
-			[
-				'action' => $this->generateUrl('register'),
-				'method' => 'post',
-			]
-		);
+            RegistrationType::class,
+            $registration,
+            [
+                'action' => $this->generateUrl('register'),
+                'method' => 'post',
+            ]
+        );
 
-		if ('POST' === $request->getMethod()) {
-			$form->handleRequest($request);
+        if ('POST' === $request->getMethod()) {
+            $form->handleRequest($request);
 
-			if ($form->isSubmitted() && $form->isValid()) {
-				$this->registrationHandler->handle($registration);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->registrationHandler->handle($registration);
 
-				if (null !== $user = $this->manager->getRepository(User::class)->findByEmail($registration->getEmail())) {
-					$token = new UsernamePasswordToken($user, 'default', $user->getRoles());
-					$this->tokenStorage->setToken($token);
-				}
+                if (null !== $user = $this->manager->getRepository(User::class)->findByEmail($registration->getEmail())) {
+                    $token = new UsernamePasswordToken($user, 'default', $user->getRoles());
+                    $this->tokenStorage->setToken($token);
+                }
 
-				$recoveryToken = $user->getPlainRecoveryToken();
+                $recoveryToken = $user->getPlainRecoveryToken();
 
-				// We have fetched plainRecoveryToken, which we need to show and can now remove
-				// all sensitive values from the user object
-				$user->eraseCredentials();
+                // We have fetched plainRecoveryToken, which we need to show and can now remove
+                // all sensitive values from the user object
+                $user->eraseCredentials();
 
-				$recoveryTokenAck = new RecoveryTokenAck();
-				$recoveryTokenAck->setRecoveryToken($recoveryToken);
-				$recoveryTokenAckForm = $this->createForm(
-					RecoveryTokenAckType::class,
-					$recoveryTokenAck,
-					[
-						'action' => $this->generateUrl('register_recovery_token'),
-						'method' => 'post',
-					]
-				);
+                $recoveryTokenAck = new RecoveryTokenAck();
+                $recoveryTokenAck->setRecoveryToken($recoveryToken);
+                $recoveryTokenAckForm = $this->createForm(
+                    RecoveryTokenAckType::class,
+                    $recoveryTokenAck,
+                    [
+                        'action' => $this->generateUrl('register_recovery_token'),
+                        'method' => 'post',
+                    ]
+                );
 
-				return $this->render('Registration/recovery_token.html.twig',
-					[
-						'form' => $recoveryTokenAckForm->createView(),
-						'recovery_token' => $recoveryToken,
-					]
-				);
-			}
-		}
+                return $this->render('Registration/recovery_token.html.twig',
+                    [
+                        'form' => $recoveryTokenAckForm->createView(),
+                        'recovery_token' => $recoveryToken,
+                    ]
+                );
+            }
+        }
 
-		return $this->render('Registration/register.html.twig', ['form' => $form->createView()]);
-	}
+        return $this->render('Registration/register.html.twig', ['form' => $form->createView()]);
+    }
 }
