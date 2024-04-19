@@ -6,43 +6,18 @@ use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\ReservedName;
 use App\Entity\User;
-use App\Repository\AliasRepository;
-use App\Repository\DomainRepository;
-use App\Repository\ReservedNameRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-/**
- * Class EmailAddressValidator.
- */
 class EmailAddressValidator extends ConstraintValidator
 {
-    private readonly AliasRepository $aliasRepository;
-    private readonly DomainRepository $domainRepository;
-    private readonly ReservedNameRepository $reservedNameRepository;
-    private readonly UserRepository $userRepository;
-
-    /**
-     * EmailAddressValidator constructor.
-     */
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(private readonly EntityManagerInterface $manager)
     {
-        $this->aliasRepository = $manager->getRepository(Alias::class);
-        $this->domainRepository = $manager->getRepository(Domain::class);
-        $this->reservedNameRepository = $manager->getRepository(ReservedName::class);
-        $this->userRepository = $manager->getRepository(User::class);
     }
 
-    /**
-     * Checks if the passed value is valid.
-     *
-     * @param string     $value      The value that should be validated
-     * @param Constraint $constraint The constraint for the validation
-     */
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof EmailAddress) {
             throw new UnexpectedTypeException($constraint, EmailAddress::class);
@@ -57,21 +32,20 @@ class EmailAddressValidator extends ConstraintValidator
         }
 
         [$localPart, $domain] = explode('@', $value);
+        $user = $this->manager->getRepository(User::class)->findOneBy(['email' => $value], null, true);
+        $alias = $this->manager->getRepository(Alias::class)->findOneBySource($value, true);
+        $reservedName = $this->manager->getRepository(ReservedName::class)->findByName($localPart);
 
-        if (null !== $this->userRepository->findOneBy(['email' => $value], null, true)) {
-            $this->context->addViolation('registration.email-already-taken');
-        } elseif (null !== $this->aliasRepository->findOneBySource($value, true)) {
-            $this->context->addViolation('registration.email-already-taken');
-        } elseif (null !== $this->reservedNameRepository->findByName($localPart)) {
+        if (null !== $user || null !== $alias || null !== $reservedName) {
             $this->context->addViolation('registration.email-already-taken');
         }
 
-        if (1 !== preg_match('/^[a-z0-9\-\_\.]*$/ui', $localPart)) {
+        if (1 !== preg_match('/^[a-z0-9\-_.]*$/ui', $localPart)) {
             $this->context->addViolation('registration.email-unexpected-characters');
         }
 
         // check if email domain is in domain repository
-        if (null === $this->domainRepository->findByName($domain)) {
+        if (null === $this->manager->getRepository(Domain::class)->findByName($domain)) {
             $this->context->addViolation('registration.email-domain-not-exists');
         }
     }

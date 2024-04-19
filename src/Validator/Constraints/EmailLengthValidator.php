@@ -6,18 +6,9 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-/**
- * Class EmailLengthValidator.
- */
 class EmailLengthValidator extends ConstraintValidator
 {
-    /**
-     * Checks if the passed value is valid.
-     *
-     * @param string     $value      The value that should be validated
-     * @param Constraint $constraint The constraint for the validation
-     */
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof EmailLength) {
             throw new UnexpectedTypeException($constraint, EmailLength::class);

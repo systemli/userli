@@ -12,13 +12,10 @@ class PasswordPolicyValidator extends ConstraintValidator
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validate($value, Constraint $constraint): bool
+    public function validate(mixed $value, Constraint $constraint): void
     {
-        if (empty($value)) {
-            return true;
+        if (empty($value) || !is_string($value)) {
+            return;
         }
 
         $errors = $this->handler->validate($value);
@@ -27,10 +24,6 @@ class PasswordPolicyValidator extends ConstraintValidator
             foreach ($errors as $error) {
                 $this->context->addViolation($error);
             }
-
-            return false;
         }
-
-        return true;
     }
 }

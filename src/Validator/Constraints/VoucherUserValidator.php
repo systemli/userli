@@ -11,12 +11,6 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class VoucherUserValidator extends ConstraintValidator
 {
-    /**
-     * Checks if the passed value is valid.
-     *
-     * @param mixed      $value      The value that should be validated
-     * @param Constraint $constraint The constraint for the validation
-     */
     public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof VoucherUser) {
@@ -27,9 +21,8 @@ class VoucherUserValidator extends ConstraintValidator
             return;
         }
 
-        /** @var User $user */
         $user = $value->getUser();
-        if ($user->hasRole(Roles::SUSPICIOUS)) {
+        if (null !== $user && $user->hasRole(Roles::SUSPICIOUS)) {
             $this->context->addViolation('voucher.suspicious-user');
         }
     }
