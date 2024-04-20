@@ -20,13 +20,7 @@ class VoucherExistsValidator extends ConstraintValidator
         $this->voucherRepository = $manager->getRepository(Voucher::class);
     }
 
-    /**
-     * Checks if the passed value is valid.
-     *
-     * @param mixed      $value      The value that should be validated
-     * @param Constraint $constraint The constraint for the validation
-     */
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof VoucherExists) {
             throw new UnexpectedTypeException($constraint, VoucherExists::class);
@@ -36,7 +30,7 @@ class VoucherExistsValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, 'string');
         }
 
-        $stringValue = (string) $value;
+        $stringValue = (string)$value;
 
         if (true === $constraint->exists) {
             if (null === $voucher = $this->voucherRepository->findByCode($stringValue)) {

@@ -13,21 +13,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class PasswordChangeValidator extends ConstraintValidator
 {
-    /**
-     * Constructor.
-     */
     public function __construct(private readonly TokenStorageInterface $storage, private readonly PasswordHasherFactoryInterface $passwordHasherFactory)
     {
     }
 
-    /**
-     * Checks if the passed value is valid.
-     *
-     * @param PasswordChange $value
-     *
-     * @throws UnexpectedTypeException
-     */
-    public function validate($value, Constraint $constraint): bool
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$value instanceof PasswordChange) {
             throw new UnexpectedTypeException('Wrong value type given', Registration::class);
@@ -39,16 +29,10 @@ class PasswordChangeValidator extends ConstraintValidator
 
         if (!$hasher->verify($user->getPassword(), $value->password)) {
             $this->context->addViolation('form.wrong-password');
-
-            return false;
         }
 
         if ($value->password === $value->getPlainPassword()) {
             $this->context->addViolation('form.identical-passwords');
-
-            return false;
         }
-
-        return true;
     }
 }
