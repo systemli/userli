@@ -154,7 +154,8 @@ class WkdHandler
         if ($this->manager->getRepository(Alias::class)->findOneBySource($uid, false)) {
             return true;
         }
-        if ($this->manager->getRepository(User::class)->findOneBy($uid, false)) {
+
+        if ($this->manager->getRepository(User::class)->findByEmail($uid, false)) {
             return true;
         }
         return false;
