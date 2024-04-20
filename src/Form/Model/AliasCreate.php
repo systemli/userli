@@ -4,8 +4,5 @@ namespace App\Form\Model;
 
 class AliasCreate
 {
-    /**
-     * @var string
-     */
-    public $alias;
+    public string $alias;
 }

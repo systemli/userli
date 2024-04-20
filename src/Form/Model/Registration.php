@@ -12,19 +12,13 @@ class Registration
 {
     use PlainPasswordTrait;
 
-    /**
-     * @var string
-     */
     #[VoucherExists(exists: true)]
-    private $voucher;
+    private string $voucher = '';
 
-    /**
-     * @var string
-     */
-    #[Assert\Email(mode: 'strict', message: 'form.invalid-email')]
+    #[Assert\Email(message: 'form.invalid-email', mode: 'strict')]
     #[EmailAddress]
     #[EmailLength(minLength: 3, maxLength: 32)]
-    private $email;
+    private string $email;
 
     public function getVoucher(): ?string
     {

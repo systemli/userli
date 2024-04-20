@@ -17,10 +17,7 @@ class RecoveryProcessType extends AbstractType
 {
     public const NAME = 'recovery_process';
 
-    /**
-     * @var string
-     */
-    private $domain;
+    private string $domain;
 
     /**
      * RecoveryProcessType constructor.

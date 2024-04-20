@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class WelcomeMessageSender
 {
-    private $domain;
+    private string $domain;
 
     /**
      * WelcomeMessageSender constructor.
