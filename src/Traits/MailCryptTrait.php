@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 
+
 trait MailCryptTrait
 {
     #[ORM\Column(options: ['default' => false])]

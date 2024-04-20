@@ -105,7 +105,7 @@ security:
             pattern: ^/(_(profiler|error|wdt)|css|images|js)/
             security: false
         api-login:
-            pattern: ^/api/login
+            pattern: ^/api/user/login
             stateless: false
             json_login:
                 check_path: api_login
@@ -168,5 +168,7 @@ security:
       - { path: "^/account", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')" }
       - { path: "^/openpgp", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')" }
       - { path: "^/admin", roles: ROLE_DOMAIN_ADMIN }
-      - { path: "^/api/login", roles: PUBLIC_ACCESS }
-      - { path: "^/api", roles: ROLE_USER }
+      - { path: "^/api/user/login", roles: PUBLIC_ACCESS }
+      - { path: "^/api/user/login/2fa", roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
+      - { path: "^/api/user/register", roles: PUBLIC_ACCESS }
+      - { path: "^/api/user/", roles: ROLE_USER }

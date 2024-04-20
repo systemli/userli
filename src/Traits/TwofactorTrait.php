@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
 
+
 trait TwofactorTrait
 {
     #[ORM\Column(nullable: true)]
