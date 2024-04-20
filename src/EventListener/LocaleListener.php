@@ -12,8 +12,7 @@ class LocaleListener implements EventSubscriberInterface
     public function __construct(
         private readonly string $defaultLocale,
         private readonly array $supportedLocales,
-    )
-    {
+    ) {
     }
 
     public function onKernelRequest(RequestEvent $event): void

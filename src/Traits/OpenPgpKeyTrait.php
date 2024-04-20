@@ -5,6 +5,7 @@ namespace App\Traits;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
+
 trait OpenPgpKeyTrait
 {
     #[ORM\Column(type: 'text')]

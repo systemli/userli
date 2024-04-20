@@ -18,22 +18,22 @@ security:
             memory:
                 users:
                     - identifier: retention
-                      roles: ['ROLE_RETENTION']
+                      roles: ["ROLE_RETENTION"]
         keycloak:
             memory:
                 users:
                     - identifier: keycloak
-                      roles: ['ROLE_KEYCLOAK']
+                      roles: ["ROLE_KEYCLOAK"]
         postfix:
             memory:
                 users:
                     - identifier: postfix
-                      roles: ['ROLE_POSTFIX']
+                      roles: ["ROLE_POSTFIX"]
         dovecot:
             memory:
                 users:
                     - identifier: dovecot
-                      roles: ['ROLE_DOVECOT']
+                      roles: ["ROLE_DOVECOT"]
 
     role_hierarchy:
         # User
@@ -175,7 +175,7 @@ security:
                 failure_handler: App\Security\TwoFactorAuthenticationFailureHandler
         user-api:
             pattern: ^/api/user
-            stateless: false
+            stateless: true
             jwt: ~
         main:
             pattern: ^/
@@ -222,7 +222,7 @@ security:
           path: "^/api/retention",
           ips: "%env(RETENTION_API_IP_ALLOWLIST)%",
           allow_if: "'%env(RETENTION_API_ENABLED)%' == 'true' and is_granted('ROLE_RETENTION')",
-      }
+        }
       - { path: "^/api/retention", roles: ROLE_NO_ACCESS }
       - {
           path: "^/api/keycloak",
@@ -249,4 +249,21 @@ security:
         }
       - { path: "^/api/dovecot", roles: ROLE_NO_ACCESS }
       - { path: "^/api/user/login", roles: PUBLIC_ACCESS }
+      - { path: "^/api/user/login", roles: PUBLIC_ACCESS }
+      - { path: "^/api/user/login/2fa", roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
+      - { path: "^/api/user/register", roles: PUBLIC_ACCESS }
+      - { path: "^/api/user/recovery", roles: PUBLIC_ACCESS }
       - { path: "^/api/user", roles: ROLE_USER }
+      - { path: "^/$", roles: PUBLIC_ACCESS }
+      - { path: "^/init", roles: PUBLIC_ACCESS }
+      - { path: "^/login", roles: PUBLIC_ACCESS }
+      - { path: "^/recovery", roles: PUBLIC_ACCESS }
+      - { path: "^/register", roles: PUBLIC_ACCESS }
+      - { path: "^/logout", roles: PUBLIC_ACCESS }
+      - { path: "^/2fa", roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
+      - { path: "^/start", roles: ROLE_USER }
+      - { path: "^/voucher", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SUSPICIOUS')" }
+      - { path: "^/alias", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')" }
+      - { path: "^/account", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')" }
+      - { path: "^/openpgp", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')" }
+      - { path: "^/admin", roles: ROLE_DOMAIN_ADMIN }

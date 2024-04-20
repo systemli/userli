@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 
+
 trait QuotaTrait
 {
     #[ORM\Column(nullable: true)]

@@ -2,6 +2,7 @@
 
 namespace App\Handler;
 
+use App\Entity\Alias;
 use App\Entity\OpenPgpKey;
 use App\Entity\User;
 use App\Exception\MultipleGpgKeysForUserException;
@@ -12,6 +13,7 @@ use App\Repository\OpenPgpKeyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use Tuupola\Base32;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class WkdHandler
 {
@@ -20,21 +22,24 @@ class WkdHandler
     /**
      * WkdHandler constructor.
      */
-    public function __construct(private readonly EntityManagerInterface $manager,
-                                private readonly string $wkdDirectory,
-                                private readonly string $wkdFormat)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $manager,
+        private readonly string $wkdDirectory,
+        private readonly string $wkdFormat,
+        private ValidatorInterface $validator,
+    ) {
         $this->repository = $manager->getRepository(OpenPgpKey::class);
+        $this->validator = $validator;
     }
 
     private function getWkdPath(string $domain): string
     {
         if ('advanced' === $this->wkdFormat) {
-            $wkdPath = $this->wkdDirectory.DIRECTORY_SEPARATOR.strtolower($domain).DIRECTORY_SEPARATOR.'hu';
-            $policyPath = $this->wkdDirectory.DIRECTORY_SEPARATOR.strtolower($domain).DIRECTORY_SEPARATOR.'policy';
+            $wkdPath = $this->wkdDirectory . DIRECTORY_SEPARATOR . strtolower($domain) . DIRECTORY_SEPARATOR . 'hu';
+            $policyPath = $this->wkdDirectory . DIRECTORY_SEPARATOR . strtolower($domain) . DIRECTORY_SEPARATOR . 'policy';
         } elseif ('simple' === $this->wkdFormat) {
-            $wkdPath = $this->wkdDirectory.DIRECTORY_SEPARATOR.'hu';
-            $policyPath = $this->wkdDirectory.DIRECTORY_SEPARATOR.'policy';
+            $wkdPath = $this->wkdDirectory . DIRECTORY_SEPARATOR . 'hu';
+            $policyPath = $this->wkdDirectory . DIRECTORY_SEPARATOR . 'policy';
         } else {
             throw new RuntimeException(sprintf('Error: unsupported WKD format: %s', $this->wkdFormat));
         }
@@ -67,7 +72,7 @@ class WkdHandler
         $wkdPath = $this->getWkdPath($domain);
         $wkdHash = $this->wkdHash($localPart);
 
-        return $wkdPath.DIRECTORY_SEPARATOR.$wkdHash;
+        return $wkdPath . DIRECTORY_SEPARATOR . $wkdHash;
     }
 
     /**
@@ -110,10 +115,10 @@ class WkdHandler
         return $openPgpKey;
     }
 
-    public function deleteKey(string $email): void
+    public function deleteKey(string $email): bool
     {
         if (null === $openPgpKey = $this->repository->findByEmail($email)) {
-            return;
+            return false;
         }
 
         $wkdKeyPath = $this->getWkdKeyPath($email);
@@ -124,6 +129,8 @@ class WkdHandler
 
         $this->manager->remove($openPgpKey);
         $this->manager->flush();
+
+        return true;
     }
 
     /**
@@ -137,5 +144,19 @@ class WkdHandler
     public function getDomainWkdPath(string $domain): string
     {
         return $this->getWkdPath($domain);
+    }
+
+    /**
+     * Assert that at least one non-deleted user exists to use the given uid
+     */
+    public function userToUserIdExists(string $uid): bool
+    {
+        if ($this->manager->getRepository(Alias::class)->findOneBySource($uid, false)) {
+            return true;
+        }
+        if ($this->manager->getRepository(User::class)->findOneBy($uid, false)) {
+            return true;
+        }
+        return false;
     }
 }

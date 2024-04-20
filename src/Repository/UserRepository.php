@@ -23,9 +23,12 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
         return $this->findOneBy(['id' => $id]);
     }
 
-    public function findByEmail(string $email): ?User
+    public function findByEmail(string $email, ?bool $deleted = false): ?User
     {
-        return $this->findOneBy(['email' => $email]);
+        if (!$deleted) {
+            return $this->findOneBy(['email' => $email]);
+        }
+        return $this->findOneBy(['email' => $email, 'deleted' => $deleted]);
     }
 
     public function findByDomainAndEmail(Domain $domain, string $email): ?User
@@ -62,7 +65,7 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
             $expression = $expressionBuilder->eq('deleted', 0);
         } else {
             $dateTime = new DateTime();
-            $dateTime->sub(new DateInterval('P'.$days.'D'));
+            $dateTime->sub(new DateInterval('P' . $days . 'D'));
             $expression = $expressionBuilder->andX(
                 $expressionBuilder->eq('deleted', 0),
                 $expressionBuilder->orX(
@@ -107,26 +110,29 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
 
     public function countUsersWithRecoveryToken(): int
     {
-        return $this->matching(Criteria::create()
-            ->where(Criteria::expr()->eq('deleted', false))
-            ->andWhere(Criteria::expr()->neq('recoverySecretBox', null))
+        return $this->matching(
+            Criteria::create()
+                ->where(Criteria::expr()->eq('deleted', false))
+                ->andWhere(Criteria::expr()->neq('recoverySecretBox', null))
         )->count();
     }
 
     public function countUsersWithMailCrypt(): int
     {
-        return $this->matching(Criteria::create()
-            ->where(Criteria::expr()->eq('deleted', false))
-            ->andWhere(Criteria::expr()->eq('mailCryptEnabled', true))
+        return $this->matching(
+            Criteria::create()
+                ->where(Criteria::expr()->eq('deleted', false))
+                ->andWhere(Criteria::expr()->eq('mailCryptEnabled', true))
         )->count();
     }
 
     public function countUsersWithTwofactor(): int
     {
-        return $this->matching(Criteria::create()
-            ->where(Criteria::expr()->eq('deleted', false))
-            ->andWhere(Criteria::expr()->eq('totpConfirmed', 1))
-            ->andWhere(Criteria::expr()->neq('totpSecret', null))
+        return $this->matching(
+            Criteria::create()
+                ->where(Criteria::expr()->eq('deleted', false))
+                ->andWhere(Criteria::expr()->eq('totpConfirmed', 1))
+                ->andWhere(Criteria::expr()->neq('totpSecret', null))
         )->count();
     }
 
