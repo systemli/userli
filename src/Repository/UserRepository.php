@@ -17,18 +17,15 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 class UserRepository extends EntityRepository implements PasswordUpgraderInterface
 {
-    /**
-     * @param $email
-     *
-     * @return User|null
-     */
-    public function findByEmail($email): ?User
+    public function findByEmail(string $email, ?bool $deleted = false): ?User
     {
-        return $this->findOneBy(['email' => $email]);
+        if (!$deleted) {
+            return $this->findOneBy(['email' => $email]);
+        }
+        return $this->findOneBy(['email' => $email, 'deleted' => $deleted]);
     }
 
     /**
-     * @param DateTime $dateTime
      * @return AbstractLazyCollection|(AbstractLazyCollection&Selectable)|LazyCriteriaCollection
      */
     public function findUsersSince(DateTime $dateTime)
@@ -37,7 +34,6 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
     }
 
     /**
-     * @param int $days
      * @return AbstractLazyCollection|(AbstractLazyCollection&Selectable)|LazyCriteriaCollection
      * @throws Exception
      */
@@ -49,7 +45,7 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
             $expression = $expressionBuilder->eq('deleted', 0);
         } else {
             $dateTime = new DateTime();
-            $dateTime->sub(new DateInterval('P'.$days.'D'));
+            $dateTime->sub(new DateInterval('P' . $days . 'D'));
             $expression = $expressionBuilder->andX(
                 $expressionBuilder->eq('deleted', 0),
                 $expressionBuilder->orX(
@@ -73,55 +69,43 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
         return $this->findBy(['deleted' => true]);
     }
 
-    /**
-     * @return int
-     */
     public function countUsers(): int
     {
         return $this->matching(Criteria::create()
             ->where(Criteria::expr()->eq('deleted', false)))->count();
     }
 
-    /**
-     * @return int
-     */
     public function countDeletedUsers(): int
     {
         return $this->matching(Criteria::create()
             ->where(Criteria::expr()->eq('deleted', true)))->count();
     }
 
-    /**
-     * @return int
-     */
     public function countUsersWithRecoveryToken(): int
     {
-        return $this->matching(Criteria::create()
-            ->where(Criteria::expr()->eq('deleted', false))
-            ->andWhere(Criteria::expr()->neq('recoverySecretBox', null))
+        return $this->matching(
+            Criteria::create()
+                ->where(Criteria::expr()->eq('deleted', false))
+                ->andWhere(Criteria::expr()->neq('recoverySecretBox', null))
         )->count();
     }
 
-    /**
-     * @return int
-     */
     public function countUsersWithMailCrypt(): int
     {
-        return $this->matching(Criteria::create()
-            ->where(Criteria::expr()->eq('deleted', false))
-            ->andWhere(Criteria::expr()->eq('mailCrypt', true))
+        return $this->matching(
+            Criteria::create()
+                ->where(Criteria::expr()->eq('deleted', false))
+                ->andWhere(Criteria::expr()->eq('mailCrypt', true))
         )->count();
     }
 
-    /**
-     * @return int
-     */
     public function countUsersWithTwofactor(): int
     {
-        return $this->matching(Criteria::create()
-            ->where(Criteria::expr()->eq('deleted', false))
-            ->andWhere(Criteria::expr()->eq('totpConfirmed', 1))
-            ->andWhere(Criteria::expr()->neq('totpSecret', null))
+        return $this->matching(
+            Criteria::create()
+                ->where(Criteria::expr()->eq('deleted', false))
+                ->andWhere(Criteria::expr()->eq('totpConfirmed', 1))
+                ->andWhere(Criteria::expr()->neq('totpSecret', null))
         )->count();
     }
 
