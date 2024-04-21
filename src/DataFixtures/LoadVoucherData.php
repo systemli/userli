@@ -2,15 +2,16 @@
 
 namespace App\DataFixtures;
 
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Exception;
 use DateTime;
 use App\Entity\User;
 use App\Factory\VoucherFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadVoucherData extends Fixture implements OrderedFixtureInterface
+class LoadVoucherData extends Fixture implements FixtureGroupInterface, DependentFixtureInterface
 {
     /**
      * {@inheritdoc}
@@ -54,11 +55,15 @@ class LoadVoucherData extends Fixture implements OrderedFixtureInterface
         $manager->clear();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrder(): int
+    public static function getGroups(): array
     {
-        return 3;
+        return ['advanced'];
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            LoadUserData::class,
+        ];
     }
 }

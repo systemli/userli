@@ -21,6 +21,7 @@ lint:
 	php -l src/
 
 test: vendors lint
+	bin/console doctrine:fixtures:load --group=basic --env=test -n
 	bin/phpunit
 
 security-check: vendors

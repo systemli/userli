@@ -24,7 +24,6 @@ class StartController extends AbstractController
     #[Route(path: '/', name: 'index')]
     public function index(): Response
     {
-        // forward to start if logged in
         if ($this->isGranted(Roles::USER)) {
             return $this->redirectToRoute('start');
         }

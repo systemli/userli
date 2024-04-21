@@ -5,10 +5,11 @@ namespace App\DataFixtures;
 use App\Entity\User;
 use App\Factory\AliasFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class LoadAliasData extends Fixture implements OrderedFixtureInterface
+class LoadAliasData extends Fixture implements FixtureGroupInterface, DependentFixtureInterface
 {
     /**
      * {@inheritdoc}
@@ -39,11 +40,15 @@ class LoadAliasData extends Fixture implements OrderedFixtureInterface
         $manager->clear();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrder(): int
+    public static function getGroups(): array
     {
-        return 4;
+        return ['advanced'];
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            LoadUserData::class,
+        ];
     }
 }
