@@ -2,49 +2,35 @@
 
 namespace App\Controller;
 
+use App\Dto\KeycloakUserValidateDto;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Handler\UserAuthenticationHandler;
-use App\Repository\DomainRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 
 class KeycloakController extends AbstractController
 {
-    private readonly DomainRepository $domainRepository;
-    private readonly UserRepository $userRepository;
-
-    public function __construct(private readonly EntityManagerInterface $manager, private readonly UserAuthenticationHandler $handler) {
-        $this->domainRepository = $this->manager->getRepository(Domain::class);
-        $this->userRepository = $this->manager->getRepository(User::class);
-    }
+    public function __construct(private readonly EntityManagerInterface $manager, private readonly UserAuthenticationHandler $handler)
+    {}
 
     #[Route(path: '/api/keycloak', name: 'api_keycloak_index', methods: ['GET'], stateless: true)]
-    public function index(Request $request): Response
+    public function getUsersSearch(
+        #[MapQueryParameter] string $domain,
+        #[MapQueryParameter] string $search = '',
+        #[MapQueryParameter] int $max = 10,
+        #[MapQueryParameter] int $first = 0,
+    ): Response
     {
-        if (null === $domain = $this->domainRepository->findByName($request->query->get('domain') ?? '')) {
-            return $this->json([
-                'message' => 'domain not found',
-            ], Response::HTTP_NOT_FOUND);
+        if (null === $domainObject = $this->manager->getRepository(Domain::class)->findByName($domain)) {
+            return $this->json([], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        if (null === $search = $request->query->get('search')) {
-            $search = '';
-        }
-
-        if (null === $max = $request->query->get('max')) {
-            $max = 10;
-        }
-
-        if (null === $first = $request->query->get('first')) {
-            $first = 0;
-        }
-
-        $users = $this->userRepository->findUsersByString($domain, $search, $max, $first)->map(function (User $user) {
+        $users = $this->manager->getRepository(User::class)->findUsersByString($domainObject, $search, $max, $first)->map(function (User $user) {
             return [
                 'id' => explode('@', $user->getEmail())[0],
                 'email' => $user->getEmail(),
@@ -54,31 +40,30 @@ class KeycloakController extends AbstractController
     }
 
     #[Route(path: '/api/keycloak/count', name: 'api_keycloak_count', methods: ['GET'], stateless: true)]
-    public function count(Request $request): Response
+    public function getUsersCount(#[MapQueryParameter] string $domain): Response
     {
-        if (null === $domain = $this->domainRepository->findByName($request->query->get('domain') ?? '')) {
-            return $this->json([
-                'message' => 'domain not found',
-            ], Response::HTTP_NOT_FOUND);
+        if (null === $domainObject = $this->manager->getRepository(Domain::class)->findByName($domain)) {
+            return $this->json([], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        return $this->json($this->userRepository->countDomainUsers($domain));
+        return $this->json($this->manager->getRepository(User::class)->countDomainUsers($domainObject));
     }
 
     #[Route(path: '/api/keycloak/user/{email}', name: 'api_keycloak_user', methods: ['GET'], stateless: true)]
-    public function get(Request $request, string $email): Response
+    public function getOneUser(
+        #[MapQueryParameter] string $domain,
+        string $email,
+    ): Response
     {
-        if (null === $domain = $this->domainRepository->findByName($request->query->get('domain') ?? '')) {
-            return $this->json([
-                'message' => 'domain not found',
-            ], Response::HTTP_NOT_FOUND);
+        if (null === $domainObject = $this->manager->getRepository(Domain::class)->findByName($domain)) {
+            return $this->json([], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         if (!str_contains($email, '@')) {
-            $email .= '@' . $domain->getName();
+            $email .= '@' . $domainObject->getName();
         }
 
-        if (null === $foundUser = $this->userRepository->findByDomainAndEmail($domain, $email)) {
+        if (null === $foundUser = $this->manager->getRepository(User::class)->findByDomainAndEmail($domainObject, $email)) {
             return $this->json([
                 'message' => 'user not found',
             ], Response::HTTP_NOT_FOUND);
@@ -91,27 +76,19 @@ class KeycloakController extends AbstractController
     }
 
     #[Route(path: '/api/keycloak/validate/{email}', name: 'api_keycloak_user_validate', methods: ['POST'], stateless: true)]
-    public function validate(Request $request, string $email): Response
+    public function postUserValidate(#[MapRequestPayload] KeycloakUserValidateDto $requestData, string $email): Response
     {
-        if (null === $domain = $this->domainRepository->findByName($request->request->get('domain') ?? '')) {
-            return $this->json([
-                'message' => 'domain not found',
-            ], Response::HTTP_NOT_FOUND);
+        if (null === $domainObject = $this->manager->getRepository(Domain::class)->findByName($requestData->domain)) {
+            return $this->json([], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        if (null === $password = $request->request->get('password')) {
-            return $this->json([
-                'message' => 'missing password',
-            ], Response::HTTP_FORBIDDEN);
-        }
-
-        if (null === $user = $this->userRepository->findByDomainAndEmail($domain, $email)) {
+        if (null === $user = $this->manager->getRepository(User::class)->findByDomainAndEmail($domainObject, $email)) {
             return $this->json([
                 'message' => 'authentication failed',
             ], Response::HTTP_FORBIDDEN);
         }
 
-        if (null === $authUser = $this->handler->authenticate($user, $password)) {
+        if ($this->handler->authenticate($user, $requestData->password) === null) {
             return $this->json([
                 'message' => 'authentication failed',
             ], Response::HTTP_FORBIDDEN);

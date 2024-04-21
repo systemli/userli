@@ -14,11 +14,11 @@ security:
         # Custom UserProvider to allow login via email and localpart (without domain)
         user:
             id: App\Security\UserProvider
-        keycloak_api_user:
+        keycloak:
             memory:
                 users:
                     - identifier: keycloak
-                      roles: ['ROLE_API_KEYCLOAK']
+                      roles: ['ROLE_KEYCLOAK']
 
     role_hierarchy:
         # User
@@ -110,10 +110,10 @@ security:
         dev:
             pattern: ^/(_(profiler|error|wdt)|css|images|js)/
             security: false
-        api_keycloak:
+        keycloak:
             pattern: ^/api/keycloak
             stateless: true
-            provider: keycloak_api_user
+            provider: keycloak
             access_token:
                 token_handler: App\Security\KeycloakApiAccessTokenHandler
         main:
@@ -157,4 +157,8 @@ security:
       - { path: "^/account", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')" }
       - { path: "^/openpgp", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')" }
       - { path: "^/admin", roles: ROLE_DOMAIN_ADMIN }
-      - { path: "^/api/keycloak", roles: ROLE_API_KEYCLOAK }
+      - {
+          path: "^/api/keycloak",
+          roles: ROLE_KEYCLOAK,
+          allow_if: "'%env(KEYCLOAK_API_ENABLED)%' == 'true' and '%env(KEYCLOAK_API_IP)%' == request.getClientIp()",
+        }
