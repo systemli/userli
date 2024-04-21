@@ -50,6 +50,9 @@ jobs:
           yarn
           yarn encore dev
 
+      - name: Load Fixtures
+        run: bin/console doctrine:fixtures:load --group=basic --env=test --no-interaction
+
       - name: PHPUnit
         run: bin/phpunit --coverage-clover=coverage.xml
 
