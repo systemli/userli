@@ -60,4 +60,46 @@ class AccountControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('div.alert-success', 'Your new password is now active!');
     }
+
+    public function testChangePasswordIdentical()
+    {
+        $client = static::createClient();
+        $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => 'user@example.org']);
+
+        $client->loginUser($user);
+
+        $crawler = $client->request('GET', '/account');
+
+        $form = $crawler->selectButton('Submit')->form();
+
+        $form['password_change[password]'] = 'zr8cxfeeY9Qv5AR7tydM';
+        $form['password_change[plainPassword][first]'] = 'zr8cxfeeY9Qv5AR7tydM';
+        $form['password_change[plainPassword][second]'] = 'zr8cxfeeY9Qv5AR7tydM';
+
+        $client->submit($form);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('div.alert-danger', 'The new password is identical with the old one.');
+    }
+
+    public function testChangePasswordInsecure()
+    {
+        $client = static::createClient();
+        $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => 'user@example.org']);
+
+        $client->loginUser($user);
+
+        $crawler = $client->request('GET', '/account');
+
+        $form = $crawler->selectButton('Submit')->form();
+
+        $form['password_change[password]'] = 'zr8cxfeeY9Qv5AR7tydM';
+        $form['password_change[plainPassword][first]'] = 'password';
+        $form['password_change[plainPassword][second]'] = 'password';
+
+        $client->submit($form);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('div.alert-danger', 'The password comply not with our security policy.');
+    }
 }
