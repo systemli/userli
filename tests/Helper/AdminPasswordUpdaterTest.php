@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\PlaintextPasswordHasher;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
 class AdminPasswordUpdaterTest extends TestCase
@@ -37,8 +38,7 @@ class AdminPasswordUpdaterTest extends TestCase
 
         $adminPasswordUpdater->updateAdminPassword('newpassword');
 
-        self::assertEquals('newpassword', $admin->getPlainPassword());
-        self::assertNotEquals('impossible_login', $admin->getPassword());
+        self::assertEquals('newpassword', $admin->getPassword());
     }
 
     public function getManager($object): MockObject
@@ -65,8 +65,7 @@ class AdminPasswordUpdaterTest extends TestCase
 
     public function getUpdater(): PasswordUpdater
     {
-        $hasher = $this->getMockBuilder(PasswordHasherInterface::class)
-            ->getMock();
+        $hasher = new PlaintextPasswordHasher();
         $passwordHasherFactory = $this->getMockBuilder(PasswordHasherFactoryInterface::class)
             ->getMock();
         $passwordHasherFactory->method('getPasswordHasher')->willReturn($hasher);

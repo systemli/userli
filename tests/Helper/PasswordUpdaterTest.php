@@ -4,42 +4,28 @@ namespace App\Tests\Helper;
 
 use App\Entity\User;
 use App\Helper\PasswordUpdater;
-use App\Security\Encoder\LegacyPasswordHasher;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
-use Symfony\Component\PasswordHasher\PasswordHasherInterface;
+use Symfony\Component\PasswordHasher\Hasher\PlaintextPasswordHasher;
 
 class PasswordUpdaterTest extends TestCase
 {
     public function testUpdatePassword(): void
     {
-        $hasher = $this->getMockBuilder(PasswordHasherInterface::class)
-            ->getMock();
+        $hasher = new PlaintextPasswordHasher();
         $passwordHasherFactory = $this->getMockBuilder(PasswordHasherFactoryInterface::class)
             ->getMock();
         $passwordHasherFactory->method('getPasswordHasher')->willReturn($hasher);
         $updater = new PasswordUpdater($passwordHasherFactory);
 
         $user = new User();
-        $user->setPlainPassword('password');
-
-        self::assertNull($user->getPassword());
-
-        $updater->updatePassword($user);
+        $updater->updatePassword($user, 'password');
 
         $password = $user->getPassword();
         self::assertNotNull($password);
 
-        $user->setPlainPassword(null);
+        $updater->updatePassword($user, 'new password');
 
-        $updater->updatePassword($user);
-
-        self::assertEquals($password, $user->getPassword());
-
-        $user->setPlainPassword('');
-
-        $updater->updatePassword($user);
-
-        self::assertEquals($password, $user->getPassword());
+        self::assertNotEquals($password, $user->getPassword());
     }
 }

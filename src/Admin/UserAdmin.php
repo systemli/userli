@@ -183,7 +183,7 @@ class UserAdmin extends Admin
      */
     public function prePersist($object): void
     {
-        $this->passwordUpdater->updatePassword($object);
+        $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
 
         if (null !== $object->hasMailCrypt()) {
             $this->mailCryptKeyHandler->create($object);
@@ -205,7 +205,7 @@ class UserAdmin extends Admin
         }
 
         if (!empty($object->getPlainPassword())) {
-            $this->passwordUpdater->updatePassword($object);
+            $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
         } else {
             $object->updateUpdatedTime();
         }
