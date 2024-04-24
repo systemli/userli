@@ -12,13 +12,13 @@ class PasswordChangeTypeTest extends TypeTestCase
     public function testSubmitValidData(): void
     {
         $password = 'password';
-        $plainPassword = 'password';
+        $newPassword = 'password';
 
         $formData = [
             'password' => $password,
-            'plainPassword' => [
-                'first' => $plainPassword,
-                'second' => $plainPassword,
+            'newPassword' => [
+                'first' => $newPassword,
+                'second' => $newPassword,
             ],
         ];
 
@@ -27,7 +27,7 @@ class PasswordChangeTypeTest extends TypeTestCase
 
         $expected = new PasswordChange();
         $expected->setPassword($password);
-        $expected->setPlainPassword($plainPassword);
+        $expected->setNewPassword($newPassword);
 
         $form->submit($formData);
 

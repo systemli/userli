@@ -11,6 +11,11 @@ class PasswordChange
     #[UserPassword(message: 'form.wrong-password')]
     private string $password;
 
+    #[PasswordPolicy]
+    #[Assert\NotCompromisedPassword(skipOnError: 'true')]
+    #[Assert\NotIdenticalTo(propertyPath: 'password', message: 'form.identical-passwords')]
+    private string $newPassword;
+
     public function getPassword(): string
     {
         return $this->password;
@@ -21,18 +26,13 @@ class PasswordChange
         $this->password = $password;
     }
 
-    #[PasswordPolicy]
-    #[Assert\NotCompromisedPassword(skipOnError: 'true')]
-    #[Assert\NotIdenticalTo(propertyPath: 'password', message: 'form.identical-passwords')]
-    private string $plainPassword;
-
-    public function getPlainPassword(): string
+    public function getNewPassword(): string
     {
-        return $this->plainPassword;
+        return $this->newPassword;
     }
 
-    public function setPlainPassword(string $plainPassword): void
+    public function setNewPassword(string $newPassword): void
     {
-        $this->plainPassword = $plainPassword;
+        $this->newPassword = $newPassword;
     }
 }

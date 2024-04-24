@@ -18,7 +18,7 @@ class PasswordChangeType extends AbstractType
     {
         $builder
             ->add('password', PasswordType::class, ['label' => 'form.actual-password'])
-            ->add('plainPassword', RepeatedType::class, [
+            ->add('newPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => ['label' => 'form.plain-password'],
                 'second_options' => ['label' => 'form.plain-password_confirmation'],
