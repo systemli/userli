@@ -48,6 +48,7 @@
       - php{{ php_default_version_debian }}-gd
       - php{{ php_default_version_debian }}-mbstring
       - php{{ php_default_version_debian }}-mysql
+      - php{{ php_default_version_debian }}-sqlite3
       - php{{ php_default_version_debian }}-xml
       - php{{ php_default_version_debian }}-zip
       # performance
