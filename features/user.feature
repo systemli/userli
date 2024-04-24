@@ -23,8 +23,8 @@ Feature: User
     And I am on "/account"
     And I fill in the following:
       | password_change_password             | asdasd       |
-      | password_change_plainPassword_first  | P4ssW0rd!!!1 |
-      | password_change_plainPassword_second | P4ssW0rd!!!1 |
+      | password_change_newPassword_first    | P4ssW0rd!!!1 |
+      | password_change_newPassword_second   | P4ssW0rd!!!1 |
     And I press "Submit"
 
     Then I should be on "/account"
