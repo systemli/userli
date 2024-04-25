@@ -12,13 +12,15 @@ class LocaleListener implements EventSubscriberInterface
     public function __construct(
         private readonly string $defaultLocale,
         private readonly array $supportedLocales,
-    )
-    {
+    ) {
     }
 
     public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
+        if ($request->attributes->getBoolean('_stateless')) {
+            return;
+        }
         $session = $request->getSession();
         $sessionLocale = $session->get('_locale');
 
