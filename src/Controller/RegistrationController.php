@@ -85,12 +85,10 @@ class RegistrationController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $this->registrationHandler->handle($registration);
+                $user = $this->registrationHandler->handle($registration);
 
-                if (null !== $user = $this->manager->getRepository(User::class)->findByEmail($registration->getEmail())) {
-                    $token = new UsernamePasswordToken($user, 'default', $user->getRoles());
-                    $this->tokenStorage->setToken($token);
-                }
+                $token = new UsernamePasswordToken($user, 'default', $user->getRoles());
+                $this->tokenStorage->setToken($token);
 
                 $recoveryToken = $user->getPlainRecoveryToken();
 
