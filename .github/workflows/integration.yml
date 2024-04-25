@@ -7,12 +7,14 @@ on:
       - main
 
 jobs:
-  unit-tests:
+  test:
     runs-on: ubuntu-22.04
-    name: PHPUnit
+    name: PHPUnit & Behat
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -47,14 +49,18 @@ jobs:
 
       - name: Prepare Assets
         run: |
-          yarn
+          yarn install --frozen-lockfile
           yarn encore dev
 
-      - name: Load Fixtures
-        run: bin/console doctrine:fixtures:load --group=basic --env=test --no-interaction
-
       - name: PHPUnit
-        run: bin/phpunit --coverage-clover=coverage.xml
+        run: |
+          bin/console doctrine:fixtures:load --group=basic --env=test --no-interaction
+          bin/phpunit
+
+      - name: Behat
+        run: |
+          bin/console cache:clear --env=test
+          bin/behat --format progress
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
@@ -62,52 +68,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  integration-sqlite:
-    runs-on: ubuntu-latest
-    name: Behat (SQLite)
-    needs: unit-tests
-    strategy:
-      fail-fast: false
-      matrix:
-        php-versions: ['8.2']
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-versions }}
-          extensions: openssl, sodium
-          tools: composer
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'lts/*'
-          cache: 'yarn'
-
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: Integration with SQLite
-        run: make integration
-        env:
-          DATABASE_DRIVER: pdo_sqlite
-          DATABASE_URL: sqlite:///%kernel.project_dir%/var/db_test.sqlite
-
-  integration-mariadb:
+  test-mariadb:
     runs-on: ubuntu-latest
     name: Behat (MariaDB)
-    needs: unit-tests
+    needs: test
     services:
       mariadb:
         image: mariadb:10.5
@@ -157,10 +121,10 @@ jobs:
           DATABASE_DRIVER: pdo_mysql
           DATABASE_URL: mysql://mail_test:password@127.0.0.1:${{ job.services.mariadb.ports[3306] }}/mail
 
-  integration-postgres:
+  test-postgres:
     runs-on: ubuntu-latest
     name: Behat (PostgreSQL)
-    needs: unit-tests
+    needs: test
     services:
       postgres:
         image: postgres:13
