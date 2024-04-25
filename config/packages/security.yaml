@@ -104,6 +104,28 @@ security:
         dev:
             pattern: ^/(_(profiler|error|wdt)|css|images|js)/
             security: false
+        api-login:
+            pattern: ^/api/user/login
+            stateless: false
+            json_login:
+                check_path: api_login
+                username_path: data.username
+                password_path: data.password
+                success_handler: App\Security\JWTAuthenticationSuccessHandler
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            two_factor:
+                check_path: api_login_2fa
+                prepare_on_login: true
+                prepare_on_access_denied: true
+                post_only: true
+                auth_code_parameter_name: data.totp
+                authentication_required_handler: App\Security\TwoFactorAuthenticationRequiredHandler
+                success_handler: App\Security\TwoFactorAuthenticationSuccessHandler
+                failure_handler: App\Security\TwoFactorAuthenticationFailureHandler
+        api:
+            pattern: ^/api/
+            stateless: true
+            jwt: ~
         main:
             pattern: ^/
             provider: user
@@ -132,16 +154,40 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-      - { path: "^/$", roles: PUBLIC_ACCESS }
-      - { path: "^/init", roles: PUBLIC_ACCESS }
-      - { path: "^/login", roles: PUBLIC_ACCESS }
-      - { path: "^/recovery", roles: PUBLIC_ACCESS }
-      - { path: "^/register", roles: PUBLIC_ACCESS }
-      - { path: "^/logout", roles: PUBLIC_ACCESS }
-      - { path: "^/2fa", roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
-      - { path: "^/start", roles: ROLE_USER }
-      - { path: "^/voucher", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SUSPICIOUS')" }
-      - { path: "^/alias", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')" }
-      - { path: "^/account", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')" }
-      - { path: "^/openpgp", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')" }
-      - { path: "^/admin", roles: ROLE_DOMAIN_ADMIN }
+        - { path: "^/$", roles: PUBLIC_ACCESS }
+        - { path: "^/init", roles: PUBLIC_ACCESS }
+        - { path: "^/login", roles: PUBLIC_ACCESS }
+        - { path: "^/recovery", roles: PUBLIC_ACCESS }
+        - { path: "^/register", roles: PUBLIC_ACCESS }
+        - { path: "^/logout", roles: PUBLIC_ACCESS }
+        - { path: "^/2fa", roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
+        - { path: "^/start", roles: ROLE_USER }
+        - {
+              path: "^/voucher",
+              roles: ROLE_USER,
+              allow_if: "!is_granted('ROLE_SUSPICIOUS')",
+          }
+        - {
+              path: "^/alias",
+              roles: ROLE_USER,
+              allow_if: "!is_granted('ROLE_SPAM')",
+          }
+        - {
+              path: "^/account",
+              roles: ROLE_USER,
+              allow_if: "!is_granted('ROLE_SPAM')",
+          }
+        - {
+              path: "^/openpgp",
+              roles: ROLE_USER,
+              allow_if: "!is_granted('ROLE_SPAM')",
+          }
+        - { path: "^/admin", roles: ROLE_DOMAIN_ADMIN }
+        - { path: "^/api/user/login", roles: PUBLIC_ACCESS }
+        - {
+              path: "^/api/user/login/2fa",
+              roles: IS_AUTHENTICATED_2FA_IN_PROGRESS,
+          }
+        - { path: "^/api/user/register", roles: PUBLIC_ACCESS }
+        - { path: "^/api/user/recovery", roles: PUBLIC_ACCESS }
+        - { path: "^/api/user/", roles: ROLE_USER }

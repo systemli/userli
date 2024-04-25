@@ -5,6 +5,8 @@ namespace App\Traits;
 use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 
+
+
 trait UserAwareTrait
 {
     #[ORM\ManyToOne(targetEntity: User::class)]
