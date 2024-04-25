@@ -20,14 +20,22 @@ class RegistrationHandler
     /**
      * Constructor.
      */
-    public function __construct(private readonly EntityManagerInterface $manager, private readonly DomainGuesser $domainGuesser, private readonly EventDispatcherInterface $eventDispatcher, private readonly PasswordUpdater $passwordUpdater, private readonly MailCryptKeyHandler $mailCryptKeyHandler, private readonly RecoveryTokenHandler $recoveryTokenHandler, private readonly bool $registrationOpen, private readonly bool $mailCrypt)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $manager,
+        private readonly DomainGuesser $domainGuesser,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly PasswordUpdater $passwordUpdater,
+        private readonly MailCryptKeyHandler $mailCryptKeyHandler,
+        private readonly RecoveryTokenHandler $recoveryTokenHandler,
+        private readonly bool $registrationOpen,
+        private readonly bool $mailCrypt
+    ) {
     }
 
     /**
      * @throws Exception
      */
-    public function handle(Registration $registration): void
+    public function handle(Registration $registration): User
     {
         if (!$this->isRegistrationOpen()) {
             throw new Exception('The Registration is closed!');
@@ -53,6 +61,8 @@ class RegistrationHandler
         $this->manager->flush();
 
         $this->eventDispatcher->dispatch(new UserEvent($user), Events::MAIL_ACCOUNT_CREATED);
+
+        return $user;
     }
 
     public function isRegistrationOpen(): bool
