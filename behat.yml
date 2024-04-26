@@ -1,0 +1,33 @@
+default:
+  suites:
+    default:
+      contexts:
+        - App\Tests\Behat\FeatureContext: ~
+
+  extensions:
+    FriendsOfBehat\SymfonyExtension:
+      bootstrap: "tests/bootstrap.php"
+      kernel:
+        class: ~
+        path: ~
+        environment: ~
+        debug: ~
+    Behat\MinkExtension:
+      sessions:
+        symfony:
+          symfony: ~
+
+    DVDoug\Behat\CodeCoverage\Extension:
+      filter:
+        include:
+          directories:
+            'src': ~
+        exclude:
+          directories:
+            'src/DataFixtures': ~
+      reports:
+        clover:
+          target: build/clover-behat.xml
+          name: 'Behat'
+        text:
+          showOnlySummary: true

@@ -51,6 +51,7 @@
     },
     "require-dev": {
         "dg/bypass-finals": "^1.1",
+        "dvdoug/behat-code-coverage": "^5.3",
         "friends-of-behat/mink": "^1.10",
         "friends-of-behat/mink-browserkit-driver": "^1.6",
         "friends-of-behat/mink-extension": "^2.7",
