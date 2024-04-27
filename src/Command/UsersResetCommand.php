@@ -98,9 +98,7 @@ class UsersResetCommand extends Command
 
         $output->write(sprintf("\nResetting user %s ...\n\n", $email));
 
-        // Set new password
-        $user->setPlainPassword($password);
-        $this->passwordUpdater->updatePassword($user);
+        $this->passwordUpdater->updatePassword($user, $password);
 
         // Generate MailCrypt key with new password (overwrites old MailCrypt key)
         if ($user->hasMailCryptSecretBox()) {

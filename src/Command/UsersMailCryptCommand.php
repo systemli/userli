@@ -20,11 +20,12 @@ class UsersMailCryptCommand extends Command
     private readonly UserRepository $repository;
 
     public function __construct(
-        EntityManagerInterface $manager,
+        EntityManagerInterface                     $manager,
         private readonly UserAuthenticationHandler $handler,
-        private readonly MailCryptKeyHandler $mailCryptKeyHandler,
-        private readonly int $mailCrypt
-    ) {
+        private readonly MailCryptKeyHandler       $mailCryptKeyHandler,
+        private readonly int                       $mailCrypt
+    )
+    {
         $this->repository = $manager->getRepository(User::class);
         parent::__construct();
     }

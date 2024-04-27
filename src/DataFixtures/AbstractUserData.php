@@ -16,8 +16,7 @@ abstract class AbstractUserData extends Fixture
     public function __construct(readonly PasswordUpdater $passwordUpdater)
     {
         $user = new User();
-        $user->setPlainPassword(self::PASSWORD);
-        $passwordUpdater->updatePassword($user);
+        $passwordUpdater->updatePassword($user, self::PASSWORD);
         $this->passwordHash = $user->getPassword();
     }
 

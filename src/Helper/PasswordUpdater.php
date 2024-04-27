@@ -5,33 +5,15 @@ namespace App\Helper;
 use App\Entity\User;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
-/**
- * Class PasswordUpdater.
- */
-class PasswordUpdater
+readonly class PasswordUpdater
 {
-    /**
-     * PasswordUpdater constructor.
-     */
-    public function __construct(private readonly PasswordHasherFactoryInterface $passwordHasherFactory)
+    public function __construct(private PasswordHasherFactoryInterface $passwordHasherFactory)
     {
     }
 
-    public function updatePassword(User $user, string $plainPassword = null): void
+    public function updatePassword(User $user, string $plainPassword): void
     {
-        if (null === $plainPassword) {
-            $plainPassword = $user->getPlainPassword();
-        }
-
-        if (!$plainPassword) {
-            return;
-        }
-
-        $hasher = $this->passwordHasherFactory->getPasswordHasher($user);
-        $hash = $hasher->hash($plainPassword);
-
-        $user->setPassword($hash);
-
+        $user->setPassword($this->passwordHasherFactory->getPasswordHasher($user)->hash($plainPassword));
         $user->updateUpdatedTime();
     }
 }

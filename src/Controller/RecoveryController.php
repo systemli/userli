@@ -372,7 +372,7 @@ class RecoveryController extends AbstractController
     private function resetPassword(User $user, string $password, string $recoveryToken): string
     {
         $user->setPlainPassword($password);
-        $this->passwordUpdater->updatePassword($user);
+        $this->passwordUpdater->updatePassword($user, $password);
 
         $mailCryptPrivateKey = $this->recoveryTokenHandler->decrypt($user, $recoveryToken);
 

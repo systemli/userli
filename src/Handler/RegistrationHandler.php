@@ -15,12 +15,21 @@ use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class RegistrationHandler
+readonly class RegistrationHandler
 {
     /**
      * Constructor.
      */
-    public function __construct(private readonly EntityManagerInterface $manager, private readonly DomainGuesser $domainGuesser, private readonly EventDispatcherInterface $eventDispatcher, private readonly PasswordUpdater $passwordUpdater, private readonly MailCryptKeyHandler $mailCryptKeyHandler, private readonly RecoveryTokenHandler $recoveryTokenHandler, private readonly bool $registrationOpen, private readonly bool $mailCrypt)
+    public function __construct(
+        private EntityManagerInterface   $manager,
+        private DomainGuesser            $domainGuesser,
+        private EventDispatcherInterface $eventDispatcher,
+        private PasswordUpdater          $passwordUpdater,
+        private MailCryptKeyHandler      $mailCryptKeyHandler,
+        private RecoveryTokenHandler     $recoveryTokenHandler,
+        private bool                     $registrationOpen,
+        private bool                     $mailCrypt
+    )
     {
     }
 
@@ -37,7 +46,7 @@ class RegistrationHandler
         $user = $this->buildUser($registration);
 
         // Update password, generate MailCrypt keys, generate recovery token
-        $this->passwordUpdater->updatePassword($user);
+        $this->passwordUpdater->updatePassword($user, $registration->getPlainPassword());
         $this->mailCryptKeyHandler->create($user);
         $this->recoveryTokenHandler->create($user);
 
@@ -63,7 +72,7 @@ class RegistrationHandler
     private function buildUser(Registration $registration): User
     {
         $user = new User();
-        $user->setEmail(strtolower((string) $registration->getEmail()));
+        $user->setEmail(strtolower((string)$registration->getEmail()));
         $user->setPlainPassword($registration->getPlainPassword());
         $user->setRoles([Roles::USER]);
 

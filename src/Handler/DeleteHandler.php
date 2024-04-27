@@ -41,8 +41,7 @@ class DeleteHandler
 
         // Set password to random new one
         $password = PasswordGenerator::generate();
-        $user->setPlainPassword($password);
-        $this->passwordUpdater->updatePassword($user);
+        $this->passwordUpdater->updatePassword($user, $password);
 
         // Erase recovery token and related fields
         $user->eraseRecoveryStartTime();

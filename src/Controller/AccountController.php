@@ -19,7 +19,8 @@ class AccountController extends AbstractController
         private readonly PasswordUpdater        $passwordUpdater,
         private readonly MailCryptKeyHandler    $mailCryptKeyHandler,
         private readonly EntityManagerInterface $manager,
-    ) {
+    )
+    {
     }
 
     /**
@@ -69,7 +70,7 @@ class AccountController extends AbstractController
     private function changePassword(Request $request, User $user, PasswordChange $passwordChange): void
     {
         $user->setPlainPassword($passwordChange->getNewPassword());
-        $this->passwordUpdater->updatePassword($user);
+        $this->passwordUpdater->updatePassword($user, $passwordChange->getNewPassword());
         // Reencrypt the MailCrypt key with new password
         if ($user->hasMailCryptSecretBox()) {
             $this->mailCryptKeyHandler->update($user, $passwordChange->getPassword());

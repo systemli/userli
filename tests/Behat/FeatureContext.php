@@ -125,8 +125,7 @@ class FeatureContext extends MinkContext
 
                         break;
                     case 'password':
-                        $user->setPlainPassword($value);
-                        $this->passwordUpdater->updatePassword($user);
+                        $this->passwordUpdater->updatePassword($user, $value);
                         break;
                     case 'roles':
                         $roles = explode(',', (string)$value);
