@@ -7,6 +7,7 @@ use App\Entity\Domain;
 use App\Entity\User;
 use App\Handler\UserAuthenticationHandler;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
@@ -18,19 +19,15 @@ class KeycloakController extends AbstractController
     public function __construct(private readonly EntityManagerInterface $manager, private readonly UserAuthenticationHandler $handler)
     {}
 
-    #[Route(path: '/api/keycloak', name: 'api_keycloak_index', methods: ['GET'], stateless: true)]
+    #[Route(path: '/api/keycloak/{domainUrl}', name: 'api_keycloak_index', methods: ['GET'], stateless: true)]
     public function getUsersSearch(
-        #[MapQueryParameter] string $domain,
+        #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
         #[MapQueryParameter] string $search = '',
         #[MapQueryParameter] int $max = 10,
         #[MapQueryParameter] int $first = 0,
     ): Response
     {
-        if (null === $domainObject = $this->manager->getRepository(Domain::class)->findByName($domain)) {
-            return $this->json([], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        $users = $this->manager->getRepository(User::class)->findUsersByString($domainObject, $search, $max, $first)->map(function (User $user) {
+        $users = $this->manager->getRepository(User::class)->findUsersByString($domain, $search, $max, $first)->map(function (User $user) {
             return [
                 'id' => explode('@', $user->getEmail())[0],
                 'email' => $user->getEmail(),
@@ -39,31 +36,23 @@ class KeycloakController extends AbstractController
         return $this->json($users);
     }
 
-    #[Route(path: '/api/keycloak/count', name: 'api_keycloak_count', methods: ['GET'], stateless: true)]
-    public function getUsersCount(#[MapQueryParameter] string $domain): Response
+    #[Route(path: '/api/keycloak/{domainUrl}/count', name: 'api_keycloak_count', methods: ['GET'], stateless: true)]
+    public function getUsersCount(#[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain): Response
     {
-        if (null === $domainObject = $this->manager->getRepository(Domain::class)->findByName($domain)) {
-            return $this->json([], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        return $this->json($this->manager->getRepository(User::class)->countDomainUsers($domainObject));
+        return $this->json($this->manager->getRepository(User::class)->countDomainUsers($domain));
     }
 
-    #[Route(path: '/api/keycloak/user/{email}', name: 'api_keycloak_user', methods: ['GET'], stateless: true)]
+    #[Route(path: '/api/keycloak/{domainUrl}/user/{email}', name: 'api_keycloak_user', methods: ['GET'], stateless: true)]
     public function getOneUser(
-        #[MapQueryParameter] string $domain,
+        #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
         string $email,
     ): Response
     {
-        if (null === $domainObject = $this->manager->getRepository(Domain::class)->findByName($domain)) {
-            return $this->json([], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
         if (!str_contains($email, '@')) {
-            $email .= '@' . $domainObject->getName();
+            $email .= '@' . $domain->getName();
         }
 
-        if (null === $foundUser = $this->manager->getRepository(User::class)->findByDomainAndEmail($domainObject, $email)) {
+        if (null === $foundUser = $this->manager->getRepository(User::class)->findByDomainAndEmail($domain, $email)) {
             return $this->json([
                 'message' => 'user not found',
             ], Response::HTTP_NOT_FOUND);
@@ -75,14 +64,14 @@ class KeycloakController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/api/keycloak/validate/{email}', name: 'api_keycloak_user_validate', methods: ['POST'], stateless: true)]
-    public function postUserValidate(#[MapRequestPayload] KeycloakUserValidateDto $requestData, string $email): Response
+    #[Route(path: '/api/keycloak/{domainUrl}/validate/{email}', name: 'api_keycloak_user_validate', methods: ['POST'], stateless: true)]
+    public function postUserValidate(
+        #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
+        #[MapRequestPayload] KeycloakUserValidateDto $requestData,
+        string $email,
+    ): Response
     {
-        if (null === $domainObject = $this->manager->getRepository(Domain::class)->findByName($requestData->getDomain())) {
-            return $this->json([], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        if (null === $user = $this->manager->getRepository(User::class)->findByDomainAndEmail($domainObject, $email)) {
+        if (null === $user = $this->manager->getRepository(User::class)->findByDomainAndEmail($domain, $email)) {
             return $this->json([
                 'message' => 'authentication failed',
             ], Response::HTTP_FORBIDDEN);

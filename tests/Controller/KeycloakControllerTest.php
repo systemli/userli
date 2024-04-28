@@ -11,7 +11,7 @@ class KeycloakControllerTest extends WebTestCase
         $client = static::createClient([], [
             'HTTP_Authorization' => 'Bearer wrong',
         ]);
-        $client->request('GET', '/api/keycloak?domain=example.org&search=example&max=2');
+        $client->request('GET', '/api/keycloak/example.org?search=example&max=2');
 
         self::assertResponseStatusCodeSame(401);
     }
@@ -21,7 +21,7 @@ class KeycloakControllerTest extends WebTestCase
         $client = static::createClient([], [
             'HTTP_Authorization' => 'Bearer insecure',
         ]);
-        $client->request('GET', '/api/keycloak?domain=example.org&search=example&max=2');
+        $client->request('GET', '/api/keycloak/example.org?search=example&max=2');
 
         self::assertResponseIsSuccessful();
 
@@ -33,14 +33,14 @@ class KeycloakControllerTest extends WebTestCase
         self::assertEquals($expected, $data);
     }
 
-    public function testGetUsersSearchEmptyDomain(): void
+    public function testGetUsersSearchNonexistentDomain(): void
     {
         $client = static::createClient([], [
             'HTTP_Authorization' => 'Bearer insecure',
         ]);
-        $client->request('GET', '/api/keycloak?domain=&search=example&max=2');
+        $client->request('GET', '/api/keycloak/nonexistent.org?search=example&max=2');
 
-        self::assertResponseStatusCodeSame(422);
+        self::assertResponseStatusCodeSame(404);
     }
 
     public function testGetUsersCount(): void
@@ -48,7 +48,7 @@ class KeycloakControllerTest extends WebTestCase
         $client = static::createClient([], [
             'HTTP_Authorization' => 'Bearer insecure',
         ]);
-        $client->request('GET', '/api/keycloak/count?domain=example.org');
+        $client->request('GET', '/api/keycloak/example.org/count');
 
         self::assertResponseIsSuccessful();
 
@@ -62,7 +62,7 @@ class KeycloakControllerTest extends WebTestCase
         $client = static::createClient([], [
             'HTTP_Authorization' => 'Bearer insecure',
         ]);
-        $client->request('GET', '/api/keycloak/user/user@example.org?domain=example.org');
+        $client->request('GET', '/api/keycloak/example.org/user/user@example.org');
 
         self::assertResponseIsSuccessful();
 
@@ -76,7 +76,7 @@ class KeycloakControllerTest extends WebTestCase
         $client = static::createClient([], [
             'HTTP_Authorization' => 'Bearer insecure',
         ]);
-        $client->request('GET', '/api/keycloak/user/nonexistent@example.org?domain=example.org');
+        $client->request('GET', '/api/keycloak/example.org/user/nonexistent@example.org');
 
         self::assertResponseStatusCodeSame(404);
     }
@@ -86,10 +86,7 @@ class KeycloakControllerTest extends WebTestCase
         $client = static::createClient([], [
             'HTTP_Authorization' => 'Bearer insecure',
         ]);
-        $client->request('POST', '/api/keycloak/validate/support@example.org', [
-            'domain' => 'example.org',
-            'password' => 'password',
-        ]);
+        $client->request('POST', '/api/keycloak/example.org/validate/support@example.org', ['password' => 'password']);
 
         self::assertResponseIsSuccessful();
 
@@ -103,10 +100,7 @@ class KeycloakControllerTest extends WebTestCase
         $client = static::createClient([], [
             'HTTP_Authorization' => 'Bearer insecure',
         ]);
-        $client->request('POST', '/api/keycloak/validate/support@example.org', [
-            'domain' => 'example.org',
-            'password' => 'wrong',
-        ]);
+        $client->request('POST', '/api/keycloak/example.org/validate/support@example.org', ['password' => 'wrong']);
 
         self::assertResponseStatusCodeSame(403);
 
