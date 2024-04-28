@@ -159,6 +159,7 @@ security:
       - { path: "^/admin", roles: ROLE_DOMAIN_ADMIN }
       - {
           path: "^/api/keycloak",
-          roles: ROLE_KEYCLOAK,
-          allow_if: "'%env(KEYCLOAK_API_ENABLED)%' == 'true' and '%env(KEYCLOAK_API_IP)%' == request.getClientIp()",
+          ips: "%env(KEYCLOAK_API_IP_ALLOWLIST)%",
+          allow_if: "'%env(KEYCLOAK_API_ENABLED)%' == 'true' and is_granted('ROLE_KEYCLOAK')",
         }
+      - { path: "^/api/keycloak", roles: ROLE_NO_ACCESS }
