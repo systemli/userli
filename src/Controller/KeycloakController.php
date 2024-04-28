@@ -78,7 +78,7 @@ class KeycloakController extends AbstractController
     #[Route(path: '/api/keycloak/validate/{email}', name: 'api_keycloak_user_validate', methods: ['POST'], stateless: true)]
     public function postUserValidate(#[MapRequestPayload] KeycloakUserValidateDto $requestData, string $email): Response
     {
-        if (null === $domainObject = $this->manager->getRepository(Domain::class)->findByName($requestData->domain)) {
+        if (null === $domainObject = $this->manager->getRepository(Domain::class)->findByName($requestData->getDomain())) {
             return $this->json([], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
@@ -88,7 +88,7 @@ class KeycloakController extends AbstractController
             ], Response::HTTP_FORBIDDEN);
         }
 
-        if ($this->handler->authenticate($user, $requestData->password) === null) {
+        if ($this->handler->authenticate($user, $requestData->getPassword()) === null) {
             return $this->json([
                 'message' => 'authentication failed',
             ], Response::HTTP_FORBIDDEN);
