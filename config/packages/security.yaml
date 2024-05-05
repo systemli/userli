@@ -115,7 +115,7 @@ security:
             stateless: true
             provider: keycloak
             access_token:
-                token_handler: App\Security\KeycloakApiAccessTokenHandler
+                token_handler: App\Security\KeycloakAccessTokenHandler
         main:
             pattern: ^/
             provider: user
