@@ -7,12 +7,18 @@ security:
             algorithm: sodium
         legacy:
             id: 'App\Security\Encoder\LegacyPasswordHasher'
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: plaintext
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # Custom UserProvider to allow login via email and localpart (without domain)
         user:
             id: App\Security\UserProvider
+        keycloak:
+            memory:
+                users:
+                    - identifier: keycloak
+                      roles: ['ROLE_KEYCLOAK']
 
     role_hierarchy:
         # User
@@ -104,6 +110,12 @@ security:
         dev:
             pattern: ^/(_(profiler|error|wdt)|css|images|js)/
             security: false
+        keycloak:
+            pattern: ^/api/keycloak
+            stateless: true
+            provider: keycloak
+            access_token:
+                token_handler: App\Security\KeycloakAccessTokenHandler
         main:
             pattern: ^/
             provider: user
@@ -145,3 +157,9 @@ security:
       - { path: "^/account", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')" }
       - { path: "^/openpgp", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')" }
       - { path: "^/admin", roles: ROLE_DOMAIN_ADMIN }
+      - {
+          path: "^/api/keycloak",
+          ips: "%env(KEYCLOAK_API_IP_ALLOWLIST)%",
+          allow_if: "'%env(KEYCLOAK_API_ENABLED)%' == 'true' and is_granted('ROLE_KEYCLOAK')",
+        }
+      - { path: "^/api/keycloak", roles: ROLE_NO_ACCESS }
