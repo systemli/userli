@@ -1,3 +1,17 @@
+# 3.7.0 (2024.05.20)
+
+* Move validation config from yaml to attributes
+* Adjust Validator Signatures
+* Add Types to Properties
+* Split StartController into specific Controllers
+* Vagrant provisioning: Install php-sqlite3
+* PasswordChange: Use builtin validators
+* Gather Coverage from Behat Tests
+* Add TestCase for DomainCreator
+* Make password not optional in PasswordUpdater
+* Add keycloak API endpoints
+* Update dependencies
+
 # 3.6.0 (2024.04.15)
 
 * Remove URL-based localized routes, store locale in session
