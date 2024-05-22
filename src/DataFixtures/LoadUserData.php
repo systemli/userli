@@ -12,12 +12,13 @@ use Doctrine\Persistence\ObjectManager;
 class LoadUserData extends AbstractUserData implements DependentFixtureInterface, FixtureGroupInterface
 {
     private array $users = [
-        ['email' => 'admin@example.org', 'roles' => [Roles::ADMIN]],
-        ['email' => 'user@example.org', 'roles' => [Roles::USER]],
-        ['email' => 'spam@example.org', 'roles' => [Roles::SPAM]],
-        ['email' => 'support@example.org', 'roles' => [Roles::MULTIPLIER]],
-        ['email' => 'suspicious@example.org', 'roles' => [Roles::SUSPICIOUS]],
-        ['email' => 'domain@example.com', 'roles' => [Roles::DOMAIN_ADMIN]],
+        ['email' => 'admin@example.org', 'roles' => [Roles::ADMIN], 'totp' => false],
+        ['email' => 'user@example.org', 'roles' => [Roles::USER], 'totp' => false],
+        ['email' => 'totp@example.org', 'roles' => [Roles::USER], 'totp' => true],
+        ['email' => 'spam@example.org', 'roles' => [Roles::SPAM], 'totp' => false],
+        ['email' => 'support@example.org', 'roles' => [Roles::MULTIPLIER], 'totp' => false],
+        ['email' => 'suspicious@example.org', 'roles' => [Roles::SUSPICIOUS], 'totp' => false],
+        ['email' => 'domain@example.com', 'roles' => [Roles::DOMAIN_ADMIN], 'totp' => false],
     ];
 
     /**
@@ -33,7 +34,12 @@ class LoadUserData extends AbstractUserData implements DependentFixtureInterface
             $roles = $user['roles'];
             $domain = $manager->getRepository(Domain::class)->findOneBy(['name' => $splitted[1]]);
 
+            $totpEnabled = $user['totp'];
             $user = $this->buildUser($domain, $email, $roles);
+            if ($totpEnabled) {
+                $user->setTotpSecret($this->totpAuthenticator->generateSecret());
+                $user->setTotpConfirmed(true);
+            }
 
             $manager->persist($user);
         }
