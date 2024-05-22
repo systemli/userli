@@ -40,7 +40,7 @@ class RegistrationType extends AbstractType
                 'label' => 'form.voucher',
                 'attr' => [
                     'autocomplete' => 'off',
-                    'readonly' => !(null === $options['data']->getVoucher()),
+                    'readonly' => ('' !== $options['data']->getVoucher()),
                 ],
             ])
             ->add($builder->create(
