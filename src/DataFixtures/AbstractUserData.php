@@ -6,6 +6,7 @@ use App\Entity\Domain;
 use App\Entity\User;
 use App\Helper\PasswordUpdater;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticator;
 
 abstract class AbstractUserData extends Fixture
 {
@@ -13,7 +14,7 @@ abstract class AbstractUserData extends Fixture
 
     protected string $passwordHash;
 
-    public function __construct(readonly PasswordUpdater $passwordUpdater)
+    public function __construct(readonly PasswordUpdater $passwordUpdater, readonly TotpAuthenticator $totpAuthenticator)
     {
         $user = new User();
         $passwordUpdater->updatePassword($user, self::PASSWORD);

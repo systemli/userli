@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class KeycloakControllerTest extends WebTestCase
@@ -26,8 +27,8 @@ class KeycloakControllerTest extends WebTestCase
         self::assertResponseIsSuccessful();
 
         $expected = [
-            [ 'id' => 'admin', 'email' => 'admin@example.org' ],
-            [ 'id' => 'user', 'email' => 'user@example.org']
+            ['id' => 'admin', 'email' => 'admin@example.org'],
+            ['id' => 'user', 'email' => 'user@example.org']
         ];
         $data = json_decode($client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
         self::assertEquals($expected, $data);
@@ -52,9 +53,8 @@ class KeycloakControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        $expected = 5;
         $data = json_decode($client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        self::assertEquals($expected, $data);
+        self::assertEquals(6, $data);
     }
 
     public function testGetOneUser(): void
@@ -66,7 +66,7 @@ class KeycloakControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        $expected = [ 'id' => 'user', 'email' => 'user@example.org' ];
+        $expected = ['id' => 'user', 'email' => 'user@example.org'];
         $data = json_decode($client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
         self::assertEquals($expected, $data);
     }
@@ -81,31 +81,68 @@ class KeycloakControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(404);
     }
 
-    public function testPostUserValidatae(): void
+    public function testPostUserValidate(): void
     {
         $client = static::createClient([], [
             'HTTP_Authorization' => 'Bearer insecure',
         ]);
-        $client->request('POST', '/api/keycloak/example.org/validate/support@example.org', ['password' => 'password']);
+        $client->request('POST', '/api/keycloak/example.org/validate/support@example.org', ['credentialType' => 'password', 'password' => 'password']);
 
         self::assertResponseIsSuccessful();
-
-        $expected = ['message' => 'success'];
         $data = json_decode($client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        self::assertEquals($expected, $data);
-    }
+        self::assertEquals(['message' => 'success'], $data);
 
-    public function testPostUserValidateWrongPassword(): void
-    {
-        $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
-        ]);
         $client->request('POST', '/api/keycloak/example.org/validate/support@example.org', ['password' => 'wrong']);
 
         self::assertResponseStatusCodeSame(403);
-
-        $expected = ['message' => 'authentication failed'];
         $data = json_decode($client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        self::assertEquals($expected, $data);
+        self::assertEquals(['message' => 'authentication failed'], $data);
+
+        $client->request('POST', '/api/keycloak/example.org/validate/support@example.org', ['credentialType' => 'wrong', 'password' => 'password']);
+
+        self::assertResponseStatusCodeSame(400);
+        $data = json_decode($client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        self::assertEquals(['message' => 'not supported'], $data);
+
+        $client->request('POST', '/api/keycloak/example.org/validate/404@example.org', ['credentialType' => 'password', 'password' => 'password']);
+
+        self::assertResponseStatusCodeSame(403);
+        $data = json_decode($client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        self::assertEquals(['message' => 'authentication failed'], $data);
+    }
+
+    public function testPostUserValidateOTP(): void
+    {
+        $client = static::createClient([], [
+            'HTTP_Authorization' => 'Bearer insecure',
+        ]);
+        $client->request('POST', '/api/keycloak/example.org/validate/support@example.org', ['credentialType' => 'otp', 'password' => '123456']);
+        self::assertResponseStatusCodeSame(403);
+
+        $client->request('POST', '/api/keycloak/example.org/validate/totp@example.org', ['credentialType' => 'otp', 'password' => '123456']);
+        self::assertResponseStatusCodeSame(403);
+
+        $user = $client->getContainer()->get('doctrine.orm.entity_manager')->getRepository(User::class)->findOneBy(['email' => 'totp@example.org']);
+        $totp = $client->getContainer()->get('scheb_two_factor.security.totp_factory')->createTotpForUser($user);
+
+        $client->request('POST', '/api/keycloak/example.org/validate/totp@example.org', ['credentialType' => 'otp', 'password' => $totp->now()]);
+        self::assertResponseIsSuccessful();
+    }
+    public function testGetIsConfiguredFor(): void
+    {
+        $client = static::createClient([], [
+            'HTTP_Authorization' => 'Bearer insecure',
+        ]);
+        $client->request('GET', '/api/keycloak/example.org/configured/otp/support@example.org');
+        self::assertResponseStatusCodeSame(404);
+
+        $client->request('GET', '/api/keycloak/example.org/configured/otp/totp@example.org');
+        self::assertResponseIsSuccessful();
+
+        $client->request('GET', '/api/keycloak/example.org/configured/password/support@example.org');
+        self::assertResponseIsSuccessful();
+
+        $client->request('GET', '/api/keycloak/example.org/configured/password/404@example.org');
+        self::assertResponseStatusCodeSame(404);
     }
 }
