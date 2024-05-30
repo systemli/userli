@@ -1,3 +1,12 @@
+# 3.8.0 (2024.05.30)
+
+* Add Support for TOTP in KeyCloak API
+* Update dependencies
+
+# 3.7.1 (2024.05.24)
+
+* Fix Readonly Attribute in Registration Form
+
 # 3.7.0 (2024.05.20)
 
 * Move validation config from yaml to attributes
