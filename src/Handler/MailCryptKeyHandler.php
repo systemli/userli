@@ -49,10 +49,10 @@ class MailCryptKeyHandler
         sodium_memzero($privateKey);
 
         if (!$process->isSuccessful()) {
-            throw new Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: '.$process->getErrorOutput());
+            throw new Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: ' . $process->getErrorOutput());
         }
         if (!str_starts_with($process->getOutput(), '-----BEGIN PRIVATE KEY-----')) {
-            throw new Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL output is no valid PKCS#8 key: '.$process->getOutput());
+            throw new Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL output is no valid PKCS#8 key: ' . $process->getOutput());
         }
 
         return $process->getOutput();
@@ -61,7 +61,7 @@ class MailCryptKeyHandler
     /**
      * @throws Exception
      */
-    public function create(User $user): void
+    public function create(User $user, string $password): void
     {
         $pKey = openssl_pkey_new([
             'private_key_type' => self::MAIL_CRYPT_PRIVATE_KEY_TYPE,
@@ -69,22 +69,16 @@ class MailCryptKeyHandler
         ]);
         openssl_pkey_export($pKey, $privateKey);
         $privateKey = base64_encode($this->toPkcs8($privateKey));
-        $keyPair = new MailCryptKeyPair($privateKey, base64_encode((string) openssl_pkey_get_details($pKey)['key']));
+        $keyPair = new MailCryptKeyPair($privateKey, base64_encode((string)openssl_pkey_get_details($pKey)['key']));
         sodium_memzero($privateKey);
 
-        // get plain user password
-        if (null === $plainPassword = $user->getPlainPassword()) {
-            throw new Exception('plainPassword should not be null');
-        }
-
-        $mailCryptSecretBox = CryptoSecretHandler::create($keyPair->getPrivateKey(), $plainPassword);
+        $mailCryptSecretBox = CryptoSecretHandler::create($keyPair->getPrivateKey(), $password);
         $user->setMailCryptPublicKey($keyPair->getPublicKey());
         $user->setMailCryptSecretBox($mailCryptSecretBox->encode());
         $user->setPlainMailCryptPrivateKey($keyPair->getPrivateKey());
 
         // Clear variables with confidential content from memory
         $keyPair->erase();
-        sodium_memzero($plainPassword);
 
         $this->manager->flush();
     }
@@ -92,38 +86,26 @@ class MailCryptKeyHandler
     /**
      * @throws Exception
      */
-    public function update(User $user, string $oldPlainPassword): void
+    public function update(User $user, string $oldPassword, string $newPassword): void
     {
         if (null === $secret = $user->getMailCryptSecretBox()) {
             throw new Exception('secret should not be null');
         }
 
-        if (null === $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($secret), $oldPlainPassword)) {
+        if (null === $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($secret), $oldPassword)) {
             throw new Exception('decryption of mailCryptSecretBox failed');
         }
 
-        $this->updateWithPrivateKey($user, $privateKey);
-
-        // Clear variables with confidential content from memory
-        sodium_memzero($oldPlainPassword);
-        sodium_memzero($privateKey);
+        $this->updateWithPrivateKey($user, $privateKey, $newPassword);
     }
 
     /**
      * @throws Exception
      */
-    public function updateWithPrivateKey(User $user, string $privateKey): void
+    public function updateWithPrivateKey(User $user, string $privateKey, string $password): void
     {
-        // get plain user password to be encrypted
-        if (null === $plainPassword = $user->getPlainPassword()) {
-            throw new Exception('plainPassword should not be null');
-        }
-
-        $user->setMailCryptSecretBox(CryptoSecretHandler::create($privateKey, $plainPassword)->encode());
-
-        // Clear variables with confidential content from memory
-        sodium_memzero($plainPassword);
-        sodium_memzero($privateKey);
+        $secretBox = CryptoSecretHandler::create($privateKey, $password);
+        $user->setMailCryptSecretBox($secretBox->encode());
 
         $this->manager->flush();
     }

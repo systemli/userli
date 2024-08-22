@@ -43,21 +43,11 @@ UQ==
         self::assertStringStartsWith('-----BEGIN PRIVATE KEY-----', $privateKeyPkcs8);
     }
 
-    public function testCreateExceptionNullPassword(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('plainPassword should not be null');
-        $handler = $this->createHandler();
-        $user = new User();
-        $handler->create($user);
-    }
-
     public function testCreate(): void
     {
         $handler = $this->createHandler();
         $user = new User();
-        $user->setPlainPassword('password');
-        $handler->create($user);
+        $handler->create($user, "password");
 
         self::assertNotEmpty($user->getMailCryptPublicKey());
         self::assertNotEmpty($user->getMailCryptSecretBox());
@@ -70,8 +60,7 @@ UQ==
         $this->expectExceptionMessage('secret should not be null');
         $handler = $this->createHandler();
         $user = new User();
-        $user->setPlainPassword('password');
-        $handler->update($user, 'old_password');
+        $handler->update($user, 'oldPassword', 'newPassword');
     }
 
     public function testUpdateExceptionDecryptionFailed(): void
@@ -80,46 +69,32 @@ UQ==
         $this->expectExceptionMessage('decryption of mailCryptSecretBox failed');
         $handler = $this->createHandler();
         $user = new User();
-        $user->setPlainPassword('password');
-        $handler->create($user);
+        $handler->create($user, 'password');
 
-        $handler->update($user, 'wrong_password');
+        $handler->update($user, 'wrongPassword', 'newPassword');
     }
 
     public function testUpdate(): void
     {
         $handler = $this->createHandler();
         $user = new User();
-        $user->setPlainPassword('password');
-        $handler->create($user);
+        $handler->create($user, 'password');
         $secret = $user->getMailCryptSecretBox();
 
-        $user->setPlainPassword('new_password');
-        $handler->update($user, 'password');
+        $handler->update($user, 'password', 'newPassword');
 
         self::assertNotEquals($secret, $user->getMailCryptSecretBox());
-        self::assertNotEmpty($handler->decrypt($user, 'new_password'));
-    }
-
-    public function testUpdateWithPrivateKeyExceptionNullPassword(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('plainPassword should not be null');
-        $handler = $this->createHandler();
-        $user = new User();
-        $handler->updateWithPrivateKey($user, 'old_password');
+        self::assertNotEmpty($handler->decrypt($user, 'newPassword'));
     }
 
     public function testUpdateWithPrivateKey(): void
     {
         $handler = $this->createHandler();
         $user = new User();
-        $user->setPlainPassword('password');
-        $handler->create($user);
+        $handler->create($user, 'password');
         $secret = $user->getMailCryptSecretBox();
 
-        $user->setPlainPassword('new_password');
-        $handler->updateWithPrivateKey($user, 'plain_private_key');
+        $handler->updateWithPrivateKey($user, $secret, 'new_password');
 
         self::assertNotEquals($secret, $user->getMailCryptSecretBox());
         self::assertNotEmpty($handler->decrypt($user, 'new_password'));
@@ -141,9 +116,7 @@ UQ==
         $this->expectExceptionMessage('decryption of mailCryptSecretBox failed');
         $handler = $this->createHandler();
         $user = new User();
-        $user->setPlainPassword('password');
-        $handler->create($user);
-
+        $handler->create($user, 'password');
         $handler->decrypt($user, 'wrong_password');
     }
 
@@ -151,8 +124,7 @@ UQ==
     {
         $handler = $this->createHandler();
         $user = new User();
-        $user->setPlainPassword('password');
-        $handler->create($user);
+        $handler->create($user, 'password');
 
         self::assertNotNull($handler->decrypt($user, 'password'));
     }

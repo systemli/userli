@@ -19,16 +19,6 @@ class RecoveryTokenHandlerTest extends TestCase
         return new RecoveryTokenHandler($EntityManagerInterface);
     }
 
-    public function testCreateExceptionPlainPasswordNull(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('plainPassword should not be null');
-        $handler = $this->createHandler();
-        $user = new User();
-
-        $handler->create($user);
-    }
-
     public function testCreateExceptionPlainMailCryptPrivateKeyNull(): void
     {
         $this->expectException(Exception::class);

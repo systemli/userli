@@ -69,11 +69,10 @@ class AccountController extends AbstractController
      */
     private function changePassword(Request $request, User $user, PasswordChange $passwordChange): void
     {
-        $user->setPlainPassword($passwordChange->getNewPassword());
         $this->passwordUpdater->updatePassword($user, $passwordChange->getNewPassword());
         // Reencrypt the MailCrypt key with new password
         if ($user->hasMailCryptSecretBox()) {
-            $this->mailCryptKeyHandler->update($user, $passwordChange->getPassword());
+            $this->mailCryptKeyHandler->update($user, $passwordChange->getPassword(), $passwordChange->getNewPassword());
         }
         $user->eraseCredentials();
 
