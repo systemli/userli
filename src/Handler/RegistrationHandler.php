@@ -47,7 +47,7 @@ readonly class RegistrationHandler
 
         // Update password, generate MailCrypt keys, generate recovery token
         $this->passwordUpdater->updatePassword($user, $registration->getPlainPassword());
-        $this->mailCryptKeyHandler->create($user);
+        $this->mailCryptKeyHandler->create($user, $registration->getPlainPassword());
         $this->recoveryTokenHandler->create($user);
 
         // Enable mailbox encryption

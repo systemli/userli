@@ -102,7 +102,7 @@ class UsersResetCommand extends Command
 
         // Generate MailCrypt key with new password (overwrites old MailCrypt key)
         if ($user->hasMailCryptSecretBox()) {
-            $this->mailCryptKeyHandler->create($user);
+            $this->mailCryptKeyHandler->create($user, $password);
 
             // Reset recovery token
             $this->recoveryTokenHandler->create($user);

@@ -11,12 +11,12 @@ use Ramsey\Uuid\Uuid;
 /**
  * Class RecoveryTokenHandler.
  */
-class RecoveryTokenHandler
+readonly class RecoveryTokenHandler
 {
     /**
      * RecoveryTokenHandler constructor.
      */
-    public function __construct(private readonly EntityManagerInterface $manager)
+    public function __construct(private EntityManagerInterface $manager)
     {
     }
 
@@ -36,11 +36,6 @@ class RecoveryTokenHandler
     {
         $recoveryToken = $this->generateToken();
 
-        // get plain user password to be encrypted
-        if (null === $plainPassword = $user->getPlainPassword()) {
-            throw new Exception('plainPassword should not be null');
-        }
-
         if (null === $user->getPlainMailCryptPrivateKey()) {
             throw new Exception('plainMailCryptPrivateKey should not be null');
         }
@@ -52,7 +47,6 @@ class RecoveryTokenHandler
 
         // Clear variables with confidential content from memory
         sodium_memzero($recoveryToken);
-        sodium_memzero($plainPassword);
 
         $this->manager->flush();
     }

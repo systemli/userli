@@ -193,6 +193,7 @@ class RecoveryController extends AbstractController
     #[Route(path: '/user/recovery_token', name: 'user_recovery_token')]
     public function recoveryToken(Request $request): Response
     {
+        /** @var User|null $user */
         if (null === $user = $this->getUser()) {
             throw new Exception('User should not be null');
         }
@@ -212,7 +213,7 @@ class RecoveryController extends AbstractController
                     $user->setPlainMailCryptPrivateKey($this->mailCryptKeyHandler->decrypt($user, $recoveryTokenModel->password));
                 } else {
                     // Create a new MailCrypt key if none existed before
-                    $this->mailCryptKeyHandler->create($user);
+                    $this->mailCryptKeyHandler->create($user, $recoveryTokenModel->password);
                 }
 
                 // Generate a new recovery token and encrypt the MailCrypt key with it
@@ -371,13 +372,12 @@ class RecoveryController extends AbstractController
      */
     private function resetPassword(User $user, string $password, string $recoveryToken): string
     {
-        $user->setPlainPassword($password);
         $this->passwordUpdater->updatePassword($user, $password);
 
         $mailCryptPrivateKey = $this->recoveryTokenHandler->decrypt($user, $recoveryToken);
 
         // Encrypt MailCrypt private key from recoverySecretBox with new password
-        $this->mailCryptKeyHandler->updateWithPrivateKey($user, $mailCryptPrivateKey);
+        $this->mailCryptKeyHandler->updateWithPrivateKey($user, $mailCryptPrivateKey, $password);
 
         // Clear old token
         $user->eraseRecoveryStartTime();

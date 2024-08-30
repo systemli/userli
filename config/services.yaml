@@ -175,11 +175,6 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: password_policy }
 
-
-    App\Validator\PasswordChangeValidator:
-        tags:
-            - { name: validator.constraint_validator, alias: password_change }
-
     App\Validator\Constraints\EmailDomainValidator:
         tags:
             - { name: validator.constraint_validator }
@@ -194,10 +189,7 @@ services:
             - App\Entity\User
             - App\Controller\UserCRUDController
         calls:
-            - [setPasswordUpdater, ['@App\Helper\PasswordUpdater']]
             - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
-            - [setMailCryptKeyHandler, ['@App\Handler\MailCryptKeyHandler']]
-            - [setMailCryptVar, ["%env(MAIL_CRYPT)%"]]
 
     userli.admin.domain:
         class: App\Admin\DomainAdmin

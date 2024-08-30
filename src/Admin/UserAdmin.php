@@ -31,10 +31,6 @@ class UserAdmin extends Admin
         return 'user';
     }
 
-    private PasswordUpdater $passwordUpdater;
-    private MailCryptKeyHandler $mailCryptKeyHandler;
-    private int $mailCrypt;
-
     /**
      * {@inheritdoc}
      */
@@ -49,29 +45,16 @@ class UserAdmin extends Admin
     protected function configureFormFields(FormMapper $form): void
     {
         $user = $this->getRoot()->getSubject();
-        $userId = (null === $user) ? null : $user->getId();
+        $userId = $user->getId();
 
         $form
             ->add('email', EmailType::class, ['disabled' => !$this->isNewObject()])
-            ->add('plainPassword', PasswordType::class, [
-                'label' => 'form.password',
-                'required' => $this->isNewObject(),
-                'disabled' => (null !== $userId) ? $user->hasMailCryptSecretBox() : false,
-                'help' => (null !== $userId && $user->hasMailCryptSecretBox()) ?
-                    'Disabled because user has a MailCrypt key pair defined' : null,
-            ])
             ->add('totp_confirmed', CheckboxType::class, [
                 'label' => 'form.twofactor',
                 'required' => false,
                 'data' => (null !== $userId) ? $user->isTotpAuthenticationEnabled() : false,
                 'disabled' => null === $userId || !$user->isTotpAuthenticationEnabled(),
                 'help' => 'Can only be enabled by user',
-            ])
-            ->add('recovery_secret_box', CheckboxType::class, [
-                'label' => 'Recovery Token',
-                'data' => (null !== $userId) ? $user->hasRecoverySecretBox() : false,
-                'disabled' => true,
-                'help' => 'Can only be configured by user',
             ])
             ->add('roles', ChoiceType::class, [
                 'choices' => [Roles::getAll()],
@@ -81,12 +64,6 @@ class UserAdmin extends Admin
             ])
             ->add('quota', null, [
                 'help' => 'Custom mailbox quota in MB',
-            ])
-            ->add('mailCrypt', CheckboxType::class, [
-                // Default to true for new users if mail_crypt is enabled
-                'data' => (null !== $userId) ? $user->hasMailCrypt() : $this->mailCrypt >= 2,
-                // Disable for existing users or when mail_crypt is disabled
-                'disabled' => null !== $userId || $this->mailCrypt <= 0,
             ])
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
     }
@@ -178,24 +155,6 @@ class UserAdmin extends Admin
 
     /**
      * @param User $object
-     *
-     * @throws Exception
-     */
-    public function prePersist($object): void
-    {
-        $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
-
-        if (null !== $object->hasMailCrypt()) {
-            $this->mailCryptKeyHandler->create($object);
-        }
-
-        if (null === $object->getDomain() && null !== $domain = $this->domainGuesser->guess($object->getEmail())) {
-            $object->setDomain($domain);
-        }
-    }
-
-    /**
-     * @param User $object
      */
     public function preUpdate($object): void
     {
@@ -204,31 +163,12 @@ class UserAdmin extends Admin
             throw new AccessDeniedException('Not allowed to edit admin user');
         }
 
-        if (!empty($object->getPlainPassword())) {
-            $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
-        } else {
-            $object->updateUpdatedTime();
-        }
+        $object->updateUpdatedTime();
 
         if (false === $object->getTotpConfirmed()) {
             $object->setTotpSecret(null);
             $object->setTotpConfirmed(false);
             $object->clearBackupCodes();
         }
-    }
-
-    public function setPasswordUpdater(PasswordUpdater $passwordUpdater): void
-    {
-        $this->passwordUpdater = $passwordUpdater;
-    }
-
-    public function setMailCryptKeyHandler(MailCryptKeyHandler $mailCryptKeyHandler): void
-    {
-        $this->mailCryptKeyHandler = $mailCryptKeyHandler;
-    }
-
-    public function setMailCryptVar(string $mailCrypt): void
-    {
-        $this->mailCrypt = (int) $mailCrypt;
     }
 }
