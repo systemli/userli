@@ -19,7 +19,6 @@ use App\Traits\MailCryptTrait;
 use App\Traits\PasswordTrait;
 use App\Traits\PasswordVersionTrait;
 use App\Traits\PlainMailCryptPrivateKeyTrait;
-use App\Traits\PlainPasswordTrait;
 use App\Traits\PlainRecoveryTokenTrait;
 use App\Traits\QuotaTrait;
 use App\Traits\RecoverySecretBoxTrait;
@@ -53,7 +52,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     use SaltTrait;
     use DeleteTrait;
     use InvitationVoucherTrait;
-    use PlainPasswordTrait;
     use DomainAwareTrait;
     use LastLoginTimeTrait;
     use PasswordVersionTrait;
@@ -141,5 +139,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 
         // use default encoder
         return null;
+    }
+
+    public function eraseCredentials()
+    {
     }
 }
