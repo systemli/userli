@@ -14,6 +14,7 @@ class LoadUserData extends AbstractUserData implements DependentFixtureInterface
     private array $users = [
         ['email' => 'admin@example.org', 'roles' => [Roles::ADMIN], 'totp' => false],
         ['email' => 'user@example.org', 'roles' => [Roles::USER], 'totp' => false],
+        ['email' => 'user2@example.org', 'roles' => [Roles::USER], 'totp' => false],
         ['email' => 'totp@example.org', 'roles' => [Roles::USER], 'totp' => true],
         ['email' => 'spam@example.org', 'roles' => [Roles::SPAM], 'totp' => false],
         ['email' => 'support@example.org', 'roles' => [Roles::MULTIPLIER], 'totp' => false],

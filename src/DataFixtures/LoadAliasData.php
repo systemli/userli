@@ -16,25 +16,12 @@ class LoadAliasData extends Fixture implements FixtureGroupInterface, DependentF
      */
     public function load(ObjectManager $manager): void
     {
-        $user = $manager->getRepository(User::class)->findByEmail('admin@example.org');
+        $user = $manager->getRepository(User::class)->findByEmail('user2@example.org');
 
-        for ($i = 1; $i < 5; ++$i) {
-            $alias = AliasFactory::create($user, null);
-
-            $manager->persist($alias);
-        }
-
-        $users = $manager->getRepository(User::class)->findAll();
-
-        for ($i = 1; $i < 500; ++$i) {
-            $alias = AliasFactory::create($users[random_int(0, count($users) - 1)], 'alias' . $i);
-
-            $manager->persist($alias);
-
-            if (($i % 100) === 0) {
-                $manager->flush();
-            }
-        }
+        $alias = AliasFactory::create($user, 'alias');
+        $manager->persist($alias);
+        $alias2 = AliasFactory::create($user, 'alias2');
+        $manager->persist($alias2);
 
         $manager->flush();
         $manager->clear();
@@ -42,7 +29,7 @@ class LoadAliasData extends Fixture implements FixtureGroupInterface, DependentF
 
     public static function getGroups(): array
     {
-        return ['advanced'];
+        return ['basic'];
     }
 
     public function getDependencies(): array

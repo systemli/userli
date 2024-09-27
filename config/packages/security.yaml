@@ -116,6 +116,12 @@ security:
             provider: keycloak
             access_token:
                 token_handler: App\Security\KeycloakAccessTokenHandler
+        roundcube:
+            pattern: ^/api/roundcube
+            stateless: true
+            provider: user
+            http_basic:
+                realm: Roundcube API
         main:
             pattern: ^/
             provider: user
@@ -163,3 +169,9 @@ security:
           allow_if: "'%env(KEYCLOAK_API_ENABLED)%' == 'true' and is_granted('ROLE_KEYCLOAK')",
         }
       - { path: "^/api/keycloak", roles: ROLE_NO_ACCESS }
+      - {
+          path: "^/api/roundcube",
+          ips: "%env(ROUNDCUBE_API_IP_ALLOWLIST)%",
+          allow_if: "'%env(ROUNDCUBE_API_ENABLED)%' == 'true' and is_granted('ROLE_USER')",
+        }
+      - { path: "^/api/roundcube", roles: ROLE_NO_ACCESS }
