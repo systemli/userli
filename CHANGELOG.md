@@ -1,3 +1,9 @@
+# 3.9.0 (2024.09.27)
+
+* Add roundcube API endpoint to get list of aliases
+* Fix MailCryptKeyHandler create/update (#629)
+* Update dependencies
+
 # 3.8.0 (2024.05.30)
 
 * Add Support for TOTP in KeyCloak API
