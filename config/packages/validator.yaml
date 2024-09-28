@@ -7,6 +7,12 @@ framework:
         #auto_mapping:
         #    App\Entity\: []
 
+when@prod:
+    framework:
+        validation:
+            cache: validator.mapping.cache.doctrine.apc
+
+
 when@test:
     framework:
         validation:

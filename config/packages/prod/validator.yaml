@@ -1,3 +1,0 @@
-framework:
-    validation:
-        cache: validator.mapping.cache.doctrine.apc
