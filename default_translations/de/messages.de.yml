@@ -21,6 +21,8 @@ start:
   openpgp-settings: OpenPGP
   openpgp-settings-desc: Veröffentliche deinen Schlüssel
   openpgp-settings-title: OpenPGP-Schlüssel im Web Key Directory veröffentlichen
+  domain-settings: Domain verwalten
+  domain-settings-desc: Einstellungen für deine Domain
 
 index:
   title: Verwalte dein E-Mail-Konto
@@ -75,11 +77,13 @@ form:
   oclock-by: Uhr von
   actual-password: Aktuelles Passwort
   new-custom-alias: Neue Alias-Adresse
+  new-alias: Neue Alias-Adresse
   plain-password: Neues Passwort
   plain-password_confirmation: Neues Passwort bestätigen
   change-password: Passwort ändern
   delete-account: Konto löschen
   delete-password: Passwort
+  create-alias: Erstelle Alias-Adresse
   create-voucher: Erstelle Einladungscode
   create-custom-alias: Hinzufügen
   create-random-alias: Generiere zufällige Alias-Adresse
@@ -336,3 +340,12 @@ openpgp:
   keyid-label: "Schlüssel-ID:"
   fingerprint-label: "Fingerprint:"
   expiretime-label: "Ablaufdatum:"
+
+domain_settings:
+  title: Domain verwalten
+  intro: Hier kannst du Einstellungen für deine Domain vornehmen.
+  new-account: Neues Konto erstellen
+  new-alias: Neue Alias-Adresse erstellen
+  form-error: Es ist ein Fehler aufgetreten. Bitte überprüfe deine Eingaben.
+  registration-success: Das Konto wurde erfolgreich erstellt.
+  alias-success: Die Alias-Adresse wurde erfolgreich erstellt.

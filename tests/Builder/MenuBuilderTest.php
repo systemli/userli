@@ -100,7 +100,7 @@ class MenuBuilderTest extends TestCase
         $authChecker->method('isGranted')
             ->willReturnMap([
                 ['IS_AUTHENTICATED_FULLY', null, true],
-                [Roles::DOMAIN_ADMIN, null, false],
+                [Roles::ADMIN, null, false],
             ]);
         $builder = new MenuBuilder($this->factory, $authChecker, $this->menuHelper, []);
 
@@ -120,7 +120,7 @@ class MenuBuilderTest extends TestCase
         $authChecker->method('isGranted')
             ->willReturnMap([
                 ['IS_AUTHENTICATED_FULLY', null, true],
-                [Roles::DOMAIN_ADMIN, null, true],
+                [Roles::ADMIN, null, true],
             ]);
         $builder = new MenuBuilder($this->factory, $authChecker, $this->menuHelper, []);
 

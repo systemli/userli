@@ -10,7 +10,7 @@ Feature: Admin
       | email               | password | roles             |
       | louis@example.org   | asdasd   | ROLE_ADMIN        |
       | domain@example.com  | asdasd   | ROLE_DOMAIN_ADMIN |
-      | support@example.org | asdasd   | ROLE_MULTIPLIER      |
+      | support@example.org | asdasd   | ROLE_MULTIPLIER   |
       | user@example.org    | asdasd   | ROLE_USER         |
     And the following Voucher exists:
       | code | user             |
@@ -38,9 +38,7 @@ Feature: Admin
   Scenario: Access to Admin Interface as Domain Admin
     When I am authenticated as "domain@example.com"
     And I am on "/admin/dashboard"
-    Then the response status code should be 200
-    And I should see text matching "Logout"
-    And I should see text matching "Return to Index"
+    Then the response status code should be 403
 
   @admin
   Scenario: Access to Admin Interface as Support
@@ -68,11 +66,10 @@ Feature: Admin
   Scenario: Access User List and able to create a User as Domain Admin
     When I am authenticated as "domain@example.com"
     And I am on "/admin/user/list"
-    Then the response status code should be 200
-    And I should not see "example.org"
+    Then the response status code should be 403
 
     When I am on "/admin/user/create"
-    Then the response status code should be 200
+    Then the response status code should be 403
 
   @admin
   Scenario: Access User List and able to create a User as Support
@@ -123,10 +120,10 @@ Feature: Admin
   Scenario: Access Alias List and able to create a Alias as Domain Admin
     When I am authenticated as "domain@example.com"
     And I am on "/admin/alias/list"
-    Then the response status code should be 200
+    Then the response status code should be 403
 
     When I am on "/admin/alias/create"
-    Then the response status code should be 200
+    Then the response status code should be 403
 
   @admin
   Scenario: Access Alias List and able to create a Alias as Support

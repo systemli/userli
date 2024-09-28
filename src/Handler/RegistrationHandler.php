@@ -9,7 +9,6 @@ use App\Entity\Voucher;
 use App\Enum\Roles;
 use App\Event\Events;
 use App\Event\UserEvent;
-use App\Form\Model\Registration;
 use App\Guesser\DomainGuesser;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,18 +35,18 @@ readonly class RegistrationHandler
     /**
      * @throws Exception
      */
-    public function handle(Registration $registration): void
+    public function handle(string $email, string $password, string $voucher = null): void
     {
         if (!$this->isRegistrationOpen()) {
             throw new Exception('The Registration is closed!');
         }
 
         // Create user
-        $user = $this->buildUser($registration);
+        $user = $this->buildUser($email, $password, $voucher);
 
         // Update password, generate MailCrypt keys, generate recovery token
-        $this->passwordUpdater->updatePassword($user, $registration->getPlainPassword());
-        $this->mailCryptKeyHandler->create($user, $registration->getPlainPassword());
+        $this->passwordUpdater->updatePassword($user, $password);
+        $this->mailCryptKeyHandler->create($user, $password);
         $this->recoveryTokenHandler->create($user);
 
         // Enable mailbox encryption
@@ -69,18 +68,18 @@ readonly class RegistrationHandler
         return $this->registrationOpen;
     }
 
-    private function buildUser(Registration $registration): User
+    private function buildUser(string $email, string $password, string $voucher = null): User
     {
         $user = new User();
-        $user->setEmail(strtolower((string)$registration->getEmail()));
-        $user->setPlainPassword($registration->getPlainPassword());
+        $user->setEmail(strtolower((string)$email));
+        $user->setPlainPassword($password);
         $user->setRoles([Roles::USER]);
 
-        if (null !== $domain = $this->domainGuesser->guess($registration->getEmail())) {
+        if (null !== $domain = $this->domainGuesser->guess($email)) {
             $user->setDomain($domain);
         }
 
-        if (null !== $voucher = $this->manager->getRepository(Voucher::class)->findByCode($registration->getVoucher())) {
+        if (null !== $voucher = $this->manager->getRepository(Voucher::class)->findByCode($voucher)) {
             $voucher->setRedeemedTime(new DateTime());
 
             $user->setInvitationVoucher($voucher);
