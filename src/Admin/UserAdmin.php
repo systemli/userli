@@ -74,8 +74,12 @@ class UserAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
-            ->add('email')
-            ->add('domain')
+            ->add('email', null, [
+                'show_filter' => true,
+            ])
+            ->add('domain', null, [
+                'show_filter' => true,
+            ])
             ->add('creationTime', DateTimeRangeFilter::class, [
                 'field_type' => DateRangePickerType::class,
                 'field_options' => [
