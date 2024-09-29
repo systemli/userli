@@ -189,7 +189,10 @@ services:
             - App\Entity\User
             - App\Controller\UserCRUDController
         calls:
+            - [setPasswordUpdater, ['@App\Helper\PasswordUpdater']]
             - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
+            - [setMailCryptKeyHandler, ['@App\Handler\MailCryptKeyHandler']]
+            - [setMailCryptVar, ["%env(MAIL_CRYPT)%"]]
 
     userli.admin.domain:
         class: App\Admin\DomainAdmin
