@@ -19,6 +19,11 @@ security:
                 users:
                     - identifier: keycloak
                       roles: ['ROLE_KEYCLOAK']
+        postfix:
+            memory:
+                users:
+                    - identifier: postfix
+                      roles: ['ROLE_POSTFIX']
         dovecot:
             memory:
                 users:
@@ -121,6 +126,12 @@ security:
             provider: keycloak
             access_token:
                 token_handler: App\Security\KeycloakAccessTokenHandler
+        postfix:
+            pattern: ^/api/postfix
+            stateless: true
+            provider: postfix
+            access_token:
+                token_handler: App\Security\PostfixAccessTokenHandler
         roundcube:
             pattern: ^/api/roundcube
             stateless: true
@@ -180,6 +191,12 @@ security:
           allow_if: "'%env(KEYCLOAK_API_ENABLED)%' == 'true' and is_granted('ROLE_KEYCLOAK')",
         }
       - { path: "^/api/keycloak", roles: ROLE_NO_ACCESS }
+      - {
+          path: "^/api/postfix",
+          ips: "%env(POSTFIX_API_IP_ALLOWLIST)%",
+          allow_if: "'%env(POSTFIX_API_ENABLED)%' == 'true' and is_granted('ROLE_POSTFIX')",
+        }
+      - { path: "^/api/postfix", roles: ROLE_NO_ACCESS }
       - {
           path: "^/api/roundcube",
           ips: "%env(ROUNDCUBE_API_IP_ALLOWLIST)%",
