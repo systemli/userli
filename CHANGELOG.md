@@ -1,3 +1,8 @@
+# 3.9.1 (2024.09.29)
+
+* Fix adding Users in Admin
+* Show email and domain filters per default in admin user list
+
 # 3.9.0 (2024.09.27)
 
 * Add roundcube API endpoint to get list of aliases
