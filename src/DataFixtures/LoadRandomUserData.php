@@ -19,7 +19,7 @@ class LoadRandomUserData extends AbstractUserData implements FixtureGroupInterfa
             $email = sprintf('user-%d@%s', $i, $domain->getName());
 
             $user = $this->buildUser($domain, $email, $roles);
-            $user->setCreationTime(new DateTime(sprintf('-%s days', random_int(1, 25))));
+            $user->setCreationTime(new \DateTime(sprintf('-%s days', random_int(1, 25))));
 
             if (0 === $i % 20) {
                 $user->setDeleted(true);

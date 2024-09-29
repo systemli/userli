@@ -74,6 +74,17 @@
                 </div>
             </a>
         </div>
+        {% if is_granted('ROLE_DOMAIN_ADMIN') %}
+        <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="{{ path('domain_settings') }}" class="thumbnail">
+                <img src="{{  asset('build/images/domain.svg') }}" alt="Domain Settings">
+                <div class="caption">
+                    <h3>{{ "start.domain-settings"|trans }}</h3>
+                    <p>{{ "start.domain-settings-desc"|trans }}</p>
+                </div>
+            </a>
+        </div>
+        {% endif %}
     </div>
 
 {% endblock %}
