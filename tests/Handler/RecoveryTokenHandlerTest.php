@@ -26,7 +26,6 @@ class RecoveryTokenHandlerTest extends TestCase
         $handler = $this->createHandler();
         $user = new User();
 
-        $user->setPlainPassword('password');
         $handler->create($user);
     }
 
@@ -35,7 +34,6 @@ class RecoveryTokenHandlerTest extends TestCase
         $handler = $this->createHandler();
         $user = new User();
 
-        $user->setPlainPassword('password');
         $user->setPlainMailCryptPrivateKey('dummyKey');
         $handler->create($user);
 
@@ -49,7 +47,6 @@ class RecoveryTokenHandlerTest extends TestCase
 
         self::assertFalse($handler->verify($user, 'recoveryToken'));
 
-        $user->setPlainPassword('password');
         $user->setPlainMailCryptPrivateKey('dummyKey');
         $handler->create($user);
 
@@ -78,7 +75,6 @@ class RecoveryTokenHandlerTest extends TestCase
         $this->expectExceptionMessage('decryption of recoverySecretBox failed');
         $handler = $this->createHandler();
         $user = new User();
-        $user->setPlainPassword('password');
         $user->setPlainMailCryptPrivateKey('privateKey');
         $handler->create($user);
 
@@ -89,7 +85,6 @@ class RecoveryTokenHandlerTest extends TestCase
     {
         $handler = $this->createHandler();
         $user = new User();
-        $user->setPlainPassword('password');
         $user->setPlainMailCryptPrivateKey('privateKey');
         $handler->create($user);
         $recoveryToken = $user->getPlainRecoveryToken();
