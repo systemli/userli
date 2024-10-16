@@ -1,0 +1,124 @@
+<?php
+
+namespace App\Controller;
+
+use App\Dto\DovecotPassdbDto;
+use App\Entity\User;
+use App\Enum\MailCrypt;
+use App\Enum\Roles;
+use App\Handler\MailCryptKeyHandler;
+use App\Handler\UserAuthenticationHandler;
+use Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Component\Routing\Annotation\Route;
+
+class DovecotController extends AbstractController
+{
+    const MESSAGE_SUCCESS = 'success';
+    const MESSAGE_AUTHENTICATION_FAILED = 'authentication failed';
+    const MESSAGE_USER_NOT_FOUND = 'user not found';
+    const MESSAGE_KEY_GENERATION_ERROR = 'unable to create mailbox key';
+    const MESSAGE_KEY_DECRYPTION_ERROR = 'unable to decrypt mailbox key';
+
+    private readonly MailCrypt $mailCrypt;
+
+    public function __construct(
+        private readonly MailCryptKeyHandler $mailCryptKeyHandler,
+        private readonly UserAuthenticationHandler $authHandler,
+        private readonly int $mailCryptEnv,
+    ) {
+        $this->mailCrypt = MailCrypt::from($this->mailCryptEnv);
+    }
+
+    #[Route('/api/dovecot', name: 'api_dovecot_status', methods: ['GET'], stateless: true)]
+    public function status(): JsonResponse
+    {
+        return $this->json([
+            'message' => self::MESSAGE_SUCCESS,
+        ], JsonResponse::HTTP_OK);
+    }
+
+
+    #[Route('/api/dovecot/{email}', name: 'api_dovecot_userdb', methods: ['GET'], stateless: true)]
+    public function userdb(
+        #[MapEntity(mapping: ['email' => 'email'])] User $user,
+    ): JsonResponse {
+        if (null === $user || $user->isDeleted() || $user->hasRole(Roles::SPAM)) {
+            return $this->json(['message' => self::MESSAGE_USER_NOT_FOUND], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        if (
+            $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_OPTIONAL) &&
+            $user->hasMailCrypt() &&
+            $user->hasMailCryptPublicKey()
+        ) {
+            $mailCryptReported = 2;
+        } else {
+            $mailCryptReported = 0;
+        }
+
+        return $this->json([
+            'message' => self::MESSAGE_SUCCESS,
+            'body' => [
+                'email' => $user->getEmail(),
+                'domain' => $user->getDomain()->getName(),
+                'mailCrypt' => $mailCryptReported,
+                'mailCryptPublicKey' =>  $user->getMailCryptPublicKey() ?? "",
+                'quota' => $user->getQuota() ?? "",
+            ]
+        ], JsonResponse::HTTP_OK);
+    }
+
+    #[Route('/api/dovecot/{email}', name: 'api_dovecot_passdb', methods: ['POST'], stateless: true)]
+    public function passdb(
+        #[MapEntity(mapping: ['email' => 'email'])] User $user,
+        #[MapRequestPayload] DovecotPassdbDto $request,
+    ): JsonResponse {
+        if (null === $user || $user->isDeleted() || $user->hasRole(Roles::SPAM)) {
+            return $this->json(['message' => self::MESSAGE_USER_NOT_FOUND], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        if (null === $this->authHandler->authenticate($user, $request->getPassword())) {
+            return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
+        // If mailcrypt is enforced for all users, optionally create mailCrypt keypair for user
+        // This will not persist "hasMailCrypt" in $user
+        /*
+        if (
+            $$this->mailCrypt === MailCrypt::ENABLED_ENFORCE_ALL_USERS &&
+            false === $user->getMailCrypt() &&
+            null === $user->getMailCryptPublicKey()
+        ) {
+            try {
+                $this->mailCryptKeyHandler->create($user, $request->getPassword());
+            } catch (Exception $exception) {
+                return $this->json(['error' => $exception->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        }
+        */
+
+        // If mailCrypt is enabled and enabled for user, derive mailCryptPrivateKey
+        if ($this->mailCrypt->isAtLeast(MailCrypt::ENABLED_OPTIONAL) && $user->hasMailCrypt()) {
+            try {
+                $privateKey = $this->mailCryptKeyHandler->decrypt($user, $request->getPassword());
+            } catch (Exception $exception) {
+                return $this->json(['error' => $exception->getMessage()], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+            }
+            $mailCryptReported = 2;
+        } else {
+            $mailCryptReported = 0;
+        }
+
+        return $this->json([
+            'message' => self::MESSAGE_SUCCESS,
+            'body' => [
+                'mailCrypt' => $mailCryptReported,
+                'mailCryptPrivateKey' => $privateKey ?? "",
+            ]
+        ], JsonResponse::HTTP_OK);
+    }
+}
