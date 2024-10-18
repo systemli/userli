@@ -79,6 +79,13 @@ services:
         arguments:
             $appUrl: "%env(APP_URL)%"
 
+    App\Controller\DovecotController:
+        arguments:
+            $mailCryptEnv: "%env(MAIL_CRYPT)%"
+            $mailLocation: "%env(DOVECOT_MAIL_LOCATION)%"
+            $mailUid: "%env(DOVECOT_MAIL_UID)%"
+            $mailGid: "%env(DOVECOT_MAIL_GID)%"
+
     App\EventListener\:
         resource: '../src/EventListener/*'
         tags:
@@ -167,6 +174,10 @@ services:
     App\Security\KeycloakAccessTokenHandler:
         arguments:
             $keycloakApiAccessToken: "%env(KEYCLOAK_API_ACCESS_TOKEN)%"
+
+    App\Security\DovecotAccessTokenHandler:
+        arguments:
+            $dovecotApiAccessToken: "%env(DOVECOT_API_ACCESS_TOKEN)%"
 
     App\Sender\WelcomeMessageSender:
         public: true
