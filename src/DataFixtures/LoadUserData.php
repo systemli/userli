@@ -11,15 +11,18 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadUserData extends AbstractUserData implements DependentFixtureInterface, FixtureGroupInterface
 {
+    private const PASSWORD = 'password';
+
     private array $users = [
-        ['email' => 'admin@example.org', 'roles' => [Roles::ADMIN], 'totp' => false],
-        ['email' => 'user@example.org', 'roles' => [Roles::USER], 'totp' => false],
-        ['email' => 'user2@example.org', 'roles' => [Roles::USER], 'totp' => false],
-        ['email' => 'totp@example.org', 'roles' => [Roles::USER], 'totp' => true],
-        ['email' => 'spam@example.org', 'roles' => [Roles::SPAM], 'totp' => false],
-        ['email' => 'support@example.org', 'roles' => [Roles::MULTIPLIER], 'totp' => false],
-        ['email' => 'suspicious@example.org', 'roles' => [Roles::SUSPICIOUS], 'totp' => false],
-        ['email' => 'domain@example.com', 'roles' => [Roles::DOMAIN_ADMIN], 'totp' => false],
+        ['email' => 'admin@example.org', 'roles' => [Roles::ADMIN], 'totp' => false, 'mailcrypt' => false],
+        ['email' => 'user@example.org', 'roles' => [Roles::USER], 'totp' => false, 'mailcrypt' => false],
+        ['email' => 'user2@example.org', 'roles' => [Roles::USER], 'totp' => false, 'mailcrypt' => false],
+        ['email' => 'mailcrypt@example.org', 'roles' => [Roles::USER], 'totp' => false, 'mailcrypt' => true],
+        ['email' => 'totp@example.org', 'roles' => [Roles::USER], 'totp' => true, 'mailcrypt' => false],
+        ['email' => 'spam@example.org', 'roles' => [Roles::SPAM], 'totp' => false, 'mailcrypt' => false],
+        ['email' => 'support@example.org', 'roles' => [Roles::MULTIPLIER], 'totp' => false, 'mailcrypt' => false],
+        ['email' => 'suspicious@example.org', 'roles' => [Roles::SUSPICIOUS], 'totp' => false, 'mailcrypt' => false],
+        ['email' => 'domain@example.com', 'roles' => [Roles::DOMAIN_ADMIN], 'totp' => false, 'mailcrypt' => false],
     ];
 
     /**
@@ -36,12 +39,17 @@ class LoadUserData extends AbstractUserData implements DependentFixtureInterface
             $domain = $manager->getRepository(Domain::class)->findOneBy(['name' => $splitted[1]]);
 
             $totpEnabled = $user['totp'];
+            $mailcryptEnabled = $user['mailcrypt'];
+
             $user = $this->buildUser($domain, $email, $roles);
             if ($totpEnabled) {
                 $user->setTotpSecret($this->totpAuthenticator->generateSecret());
                 $user->setTotpConfirmed(true);
             }
-
+            if ($mailcryptEnabled) {
+                $this->mailCryptKeyHandler->create($user, self::PASSWORD);
+                $user->setMailCrypt(true);
+            }
             $manager->persist($user);
         }
 
