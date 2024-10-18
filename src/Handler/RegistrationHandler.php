@@ -46,14 +46,11 @@ readonly class RegistrationHandler
         $user = $this->buildUser($registration);
 
         // Update password, generate MailCrypt keys, generate recovery token
+        // key material for mailCrypt is always generated, but only enabled if MAIL_CRYPT >= 2
+        $mailCryptEnable = $this->mailCrypt >= 2;
         $this->passwordUpdater->updatePassword($user, $registration->getPlainPassword());
-        $this->mailCryptKeyHandler->create($user, $registration->getPlainPassword());
+        $this->mailCryptKeyHandler->create($user, $registration->getPlainPassword(), $mailCryptEnable);
         $this->recoveryTokenHandler->create($user);
-
-        // Enable mailbox encryption
-        if ($this->mailCrypt >= 2) {
-            $user->setMailCrypt(true);
-        }
 
         // We used to erase sensitive data here, but it's now done in RegistrationController
         // as we need to print the plainRecoveryToken beforehand

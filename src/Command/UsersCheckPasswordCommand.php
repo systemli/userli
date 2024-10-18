@@ -148,7 +148,7 @@ class UsersCheckPasswordCommand extends Command
             false === $userDbLookup &&
             false === $user->hasMailCrypt() &&
             null === $user->getMailCryptPublicKey()) {
-            $this->mailCryptKeyHandler->create($user, $password);
+            $this->mailCryptKeyHandler->create($user, $password, true);
         }
 
         // Optionally set mail_crypt environment variables for checkpassword-reply command
