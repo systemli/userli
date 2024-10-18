@@ -60,8 +60,9 @@ class MailCryptKeyHandler
 
     /**
      * @throws Exception
+     *
      */
-    public function create(User $user, string $password): void
+    public function create(User $user, string $password, ?bool $mailCryptEnable = false): void
     {
         $pKey = openssl_pkey_new([
             'private_key_type' => self::MAIL_CRYPT_PRIVATE_KEY_TYPE,
@@ -79,6 +80,10 @@ class MailCryptKeyHandler
 
         // Clear variables with confidential content from memory
         $keyPair->erase();
+
+        if (true === $mailCryptEnable) {
+            $user->setMailCrypt(true);
+        }
 
         $this->manager->flush();
     }
