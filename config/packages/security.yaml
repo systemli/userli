@@ -19,6 +19,11 @@ security:
                 users:
                     - identifier: keycloak
                       roles: ['ROLE_KEYCLOAK']
+        dovecot:
+            memory:
+                users:
+                    - identifier: dovecot
+                      roles: ['ROLE_DOVECOT']
 
     role_hierarchy:
         # User
@@ -122,6 +127,12 @@ security:
             provider: user
             http_basic:
                 realm: Roundcube API
+        dovecot:
+            pattern: ^/api/dovecot
+            stateless: true
+            provider: dovecot
+            access_token:
+                token_handler: App\Security\DovecotAccessTokenHandler
         main:
             pattern: ^/
             provider: user
@@ -175,3 +186,9 @@ security:
           allow_if: "'%env(ROUNDCUBE_API_ENABLED)%' == 'true' and is_granted('ROLE_USER')",
         }
       - { path: "^/api/roundcube", roles: ROLE_NO_ACCESS }
+      - {
+          path: "^/api/dovecot",
+          ips: "%env(DOVECOT_API_IP_ALLOWLIST)%",
+          allow_if: "'%env(DOVECOT_API_ENABLED)%' == 'true' and is_granted('ROLE_DOVECOT')",
+        }
+      - { path: "^/api/dovecot", roles: ROLE_NO_ACCESS }
