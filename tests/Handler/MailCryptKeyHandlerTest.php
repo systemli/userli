@@ -20,7 +20,7 @@ class MailCryptKeyHandlerTest extends TestCase
     public function testToPkcs8ExceptionOpenSSLFailed(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully:');
+        $this->expectExceptionMessage(MailCryptKeyHandler::MESSAGE_OPENSSL_EXITED_UNSUCCESSFULLY);
         $handler = $this->createHandler();
         $privateKey = 'brokenKey';
         $handler->toPkcs8($privateKey);
@@ -57,7 +57,7 @@ UQ==
     public function testUpdateExceptionNullSecret(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('secret should not be null');
+        $this->expectExceptionMessage(MailCryptKeyHandler::MESSAGE_SECRET_IS_NULL);
         $handler = $this->createHandler();
         $user = new User();
         $handler->update($user, 'oldPassword', 'newPassword');
@@ -66,7 +66,7 @@ UQ==
     public function testUpdateExceptionDecryptionFailed(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('decryption of mailCryptSecretBox failed');
+        $this->expectExceptionMessage(MailCryptKeyHandler::MESSAGE_DECRYPTION_FAILED);
         $handler = $this->createHandler();
         $user = new User();
         $handler->create($user, 'password');
@@ -103,7 +103,7 @@ UQ==
     public function testDecryptExceptionNullSecret(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('secret should not be null');
+        $this->expectExceptionMessage(MailCryptKeyHandler::MESSAGE_SECRET_IS_NULL);
         $handler = $this->createHandler();
         $user = new User();
 
@@ -113,7 +113,7 @@ UQ==
     public function testDecryptExceptionDecryptionFailed(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('decryption of mailCryptSecretBox failed');
+        $this->expectExceptionMessage(MailCryptKeyHandler::MESSAGE_DECRYPTION_FAILED);
         $handler = $this->createHandler();
         $user = new User();
         $handler->create($user, 'password');
