@@ -175,6 +175,10 @@ services:
         arguments:
             $keycloakApiAccessToken: "%env(KEYCLOAK_API_ACCESS_TOKEN)%"
 
+    App\Security\PostfixAccessTokenHandler:
+        arguments:
+            $postfixApiAccessToken: "%env(POSTFIX_API_ACCESS_TOKEN)%"
+
     App\Security\DovecotAccessTokenHandler:
         arguments:
             $dovecotApiAccessToken: "%env(DOVECOT_API_ACCESS_TOKEN)%"
