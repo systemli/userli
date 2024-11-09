@@ -1,3 +1,9 @@
+# 3.10.0 (UNRELEASED)
+
+* Upgrade to Symfony 6.4.14 (#659)
+* Add API for Postfix (#644)
+* Add API for Dovecot (#651)
+
 # 3.9.1 (2024.09.29)
 
 * Fix adding Users in Admin
