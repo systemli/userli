@@ -2,7 +2,7 @@
 
 namespace App\Handler;
 
-use Twig_Environment;
+use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -18,14 +18,14 @@ class UserRegistrationInfoHandler
     /**
      * UserRegistrationInfoHandler constructor.
      */
-    public function __construct(private readonly EntityManagerInterface $manager, private readonly MailHandler $handler, private readonly Twig_Environment $twig, private readonly string $to)
+    public function __construct(private readonly EntityManagerInterface $manager, private readonly MailHandler $handler, private readonly Environment $twig, private readonly string $to)
     {
     }
 
     /**
      * @throws LoaderError
      * @throws RuntimeError
-     * @throws SyntaxError
+     * @throws SyntaxError|\DateMalformedStringException
      */
     public function sendReport(string $from = '-7 days'): void
     {

@@ -2,7 +2,7 @@
 
 namespace App\Handler;
 
-use Twig_Environment;
+use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -14,7 +14,7 @@ class SuspiciousChildrenHandler
     /**
      * SuspiciousChildrenHandler constructor.
      */
-    public function __construct(private readonly MailHandler $handler, private readonly Twig_Environment $twig, private readonly string $to)
+    public function __construct(private readonly MailHandler $handler, private readonly Environment $twig, private readonly string $to)
     {
     }
 
