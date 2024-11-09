@@ -1,4 +1,4 @@
-# 3.10.0 (UNRELEASED)
+# 3.10.0 (2024.11.09)
 
 * Upgrade to Symfony 6.4.14 (#659)
 * Add API for Postfix (#644)
