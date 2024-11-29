@@ -20,10 +20,7 @@ class AliasController extends AbstractController
     public function __construct(
         private readonly AliasHandler           $aliasHandler,
         private readonly EntityManagerInterface $manager,
-    )
-    {
-
-    }
+    ) {}
 
     #[Route(path: '/alias', name: 'aliases')]
     public function alias(Request $request): Response
@@ -64,8 +61,8 @@ class AliasController extends AbstractController
         }
 
         $aliasRepository = $this->manager->getRepository(Alias::class);
-        $aliasesRandom = $aliasRepository->findByUser($user, true);
-        $aliasesCustom = $aliasRepository->findByUser($user, false);
+        $aliasesRandom = $aliasRepository->findByUser($user, true, true);
+        $aliasesCustom = $aliasRepository->findByUser($user, false, true);
 
         return $this->render(
             'Start/aliases.html.twig',
