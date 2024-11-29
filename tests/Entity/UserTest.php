@@ -55,16 +55,6 @@ class UserTest extends TestCase
         self::assertEquals('legacy', $user->getPasswordHasherName());
     }
 
-    public function testPlainPassword(): void
-    {
-        $user = new User();
-        self::assertEquals(null, $user->getPlainPassword());
-        $user->setPlainPassword('test');
-        self::assertEquals('test', $user->getPlainPassword());
-        $user->eraseCredentials();
-        self::assertEquals(null, $user->getPlainPassword());
-    }
-
     public function testHasRecoverySecretBox(): void
     {
         $user = new User();

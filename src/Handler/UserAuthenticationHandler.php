@@ -25,8 +25,6 @@ class UserAuthenticationHandler
         if (!$hasher->verify($user->getPassword(), $password)) {
             return null;
         }
-        $user->setPlainPassword($password);
-
         $this->eventDispatcher->dispatch(new LoginEvent($user), LoginEvent::NAME);
 
         return $user;
