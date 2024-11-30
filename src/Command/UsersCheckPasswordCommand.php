@@ -19,6 +19,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
+/**
+ * @deprecated Use dovecot API with Lua auth instead.
+ */
 #[AsCommand(name: 'app:users:checkpassword')]
 class UsersCheckPasswordCommand extends Command
 {
@@ -62,6 +65,8 @@ class UsersCheckPasswordCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
+        trigger_error("UsersCheckPasswordCommand is deprecated. Use dovecot API with Lua auth instead.", E_USER_DEPRECATED);
+
         $replyArgs = $input->getArgument('checkpassword-reply');
 
         $replyCommand = null;
