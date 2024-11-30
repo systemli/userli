@@ -1,3 +1,7 @@
+# 3.10.1 (2024.11.20)
+
+* Migrate large parts of release process to Makefile
+
 # 3.10.0 (2024.11.10)
 
 * Upgrade to Symfony 6.4.14 (#659)
