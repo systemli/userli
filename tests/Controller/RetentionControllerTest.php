@@ -11,7 +11,7 @@ class RetentionControllerTest extends WebTestCase
         $client = static::createClient([], [
             'HTTP_Authorization' => 'Bearer wrong',
         ]);
-        $client->request('PUT', '/api/retention/nonexistant@example.org/touch_user');
+        $client->request('PUT', '/api/retention/nonexistant@example.org/touch');
 
         self::assertResponseStatusCodeSame(401);
     }
@@ -22,7 +22,7 @@ class RetentionControllerTest extends WebTestCase
             'HTTP_Authorization' => 'Bearer insecure',
         ]);
 
-        $client->request('PUT', '/api/retention/nonexistant@example.org/touch_user');
+        $client->request('PUT', '/api/retention/nonexistant@example.org/touch');
         self::assertResponseStatusCodeSame(404);
     }
 
@@ -32,8 +32,8 @@ class RetentionControllerTest extends WebTestCase
             'HTTP_Authorization' => 'Bearer insecure',
         ]);
 
-        $client->request('PUT', '/api/retention/user@example.org/touch_user', ['timestamp' => 999999999999]);
-        self::assertResponseStatusCodeSame(403);
+        $client->request('PUT', '/api/retention/user@example.org/touch', ['timestamp' => 999999999999]);
+        self::assertResponseStatusCodeSame(400);
     }
 
     public function testPutTouchUser(): void
@@ -42,7 +42,7 @@ class RetentionControllerTest extends WebTestCase
             'HTTP_Authorization' => 'Bearer insecure',
         ]);
 
-        $client->request('PUT', '/api/retention/user@example.org/touch_user', ['timestamp' => 0]);
+        $client->request('PUT', '/api/retention/user@example.org/touch', ['timestamp' => 0]);
         self::assertResponseIsSuccessful();
         self::assertJsonStringEqualsJsonString('[]', $client->getResponse()->getContent());
     }
@@ -53,7 +53,7 @@ class RetentionControllerTest extends WebTestCase
             'HTTP_Authorization' => 'Bearer insecure',
         ]);
 
-        $client->request('GET', '/api/retention/nonexistant.org/deleted_users');
+        $client->request('GET', '/api/retention/nonexistant.org/users');
         self::assertResponseStatusCodeSame(404);
     }
 
@@ -63,7 +63,7 @@ class RetentionControllerTest extends WebTestCase
             'HTTP_Authorization' => 'Bearer insecure',
         ]);
 
-        $client->request('GET', '/api/retention/example.org/deleted_users');
+        $client->request('GET', '/api/retention/example.org/users');
         self::assertResponseIsSuccessful();
         self::assertJsonStringEqualsJsonString('["deleted@example.org"]', $client->getResponse()->getContent());
     }

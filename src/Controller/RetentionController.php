@@ -21,7 +21,7 @@ class RetentionController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/api/retention/{email}/touch_user', name: 'retention_touch_user', methods: ['PUT'], stateless: true)]
+    #[Route(path: '/api/retention/{email}/touch', name: 'retention_touch', methods: ['PUT'], stateless: true)]
     public function putTouchUser(
         #[MapEntity(mapping: ['email' => 'email'])] User $user,
         #[MapRequestPayload] RetentionTouchUserDto $requestData,
@@ -36,7 +36,7 @@ class RetentionController extends AbstractController
         if ($time > $now) {
             return $this->json([
                 'message' => self::MESSAGE_TIMESTAMP_IN_FUTURE,
-            ], Response::HTTP_FORBIDDEN);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         if ($time > $user->getLastLoginTime()) {
@@ -48,7 +48,10 @@ class RetentionController extends AbstractController
         return $this->json([]);
     }
 
-    #[Route(path: '/api/retention/{domainUrl}/deleted_users', name: 'retention_deleted_users', methods: ['GET'], stateless: true)]
+    /**
+     * List deleted users
+     */
+    #[Route(path: '/api/retention/{domainUrl}/users', name: 'retention_users', methods: ['GET'], stateless: true)]
     public function getDeletedUsers(
         #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
     ): Response
