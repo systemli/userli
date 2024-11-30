@@ -60,7 +60,7 @@ endif
 build: build-checks prepare
 	git clone ./ $(BUILDDIR)
 	(cd $(BUILDDIR); \
-		APP_ENV=prod composer install --no-dev --ignore-platform-reqs; \
+		APP_ENV=prod composer install --no-dev --ignore-platform-reqs --no-scripts; \
 		APP_ENV=prod composer dump-autoload; \
 		$(YARN) --pure-lockfile; \
 		$(YARN) encore production)
