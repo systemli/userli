@@ -14,6 +14,11 @@ security:
         # Custom UserProvider to allow login via email and localpart (without domain)
         user:
             id: App\Security\UserProvider
+        retention:
+            memory:
+                users:
+                    - identifier: retention
+                      roles: ['ROLE_RETENTION']
         keycloak:
             memory:
                 users:
@@ -120,6 +125,12 @@ security:
         dev:
             pattern: ^/(_(profiler|error|wdt)|css|images|js)/
             security: false
+        retention:
+            pattern: ^/api/retention
+            stateless: true
+            provider: retention
+            access_token:
+                token_handler: App\Security\RetentionAccessTokenHandler
         keycloak:
             pattern: ^/api/keycloak
             stateless: true
@@ -185,6 +196,12 @@ security:
       - { path: "^/account", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')" }
       - { path: "^/openpgp", roles: ROLE_USER, allow_if: "!is_granted('ROLE_SPAM')" }
       - { path: "^/admin", roles: ROLE_DOMAIN_ADMIN }
+      - {
+          path: "^/api/retention",
+          ips: "%env(RETENTION_API_IP_ALLOWLIST)%",
+          allow_if: "'%env(RETENTION_API_ENABLED)%' == 'true' and is_granted('ROLE_RETENTION')",
+      }
+      - { path: "^/api/retention", roles: ROLE_NO_ACCESS }
       - {
           path: "^/api/keycloak",
           ips: "%env(KEYCLOAK_API_IP_ALLOWLIST)%",

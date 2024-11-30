@@ -23,6 +23,7 @@ class LoadUserData extends AbstractUserData implements DependentFixtureInterface
         ['email' => 'support@example.org', 'roles' => [Roles::MULTIPLIER], 'totp' => false, 'mailcrypt' => false],
         ['email' => 'suspicious@example.org', 'roles' => [Roles::SUSPICIOUS], 'totp' => false, 'mailcrypt' => false],
         ['email' => 'domain@example.com', 'roles' => [Roles::DOMAIN_ADMIN], 'totp' => false, 'mailcrypt' => false],
+        ['email' => 'deleted@example.org', 'roles' => [Roles::USER], 'totp' => false, 'mailcrypt' => false, 'deleted' => true],
     ];
 
     /**
@@ -37,6 +38,7 @@ class LoadUserData extends AbstractUserData implements DependentFixtureInterface
             $splitted = explode('@', (string)$email);
             $roles = $user['roles'];
             $domain = $manager->getRepository(Domain::class)->findOneBy(['name' => $splitted[1]]);
+            $deleted = array_key_exists('deleted', $user) && $user['deleted'];
 
             $totpEnabled = $user['totp'];
             $mailcryptEnabled = $user['mailcrypt'];
@@ -49,6 +51,9 @@ class LoadUserData extends AbstractUserData implements DependentFixtureInterface
             if ($mailcryptEnabled) {
                 $this->mailCryptKeyHandler->create($user, self::PASSWORD);
                 $user->setMailCrypt(true);
+            }
+            if ($deleted) {
+                $user->setDeleted(true);
             }
             $manager->persist($user);
         }
