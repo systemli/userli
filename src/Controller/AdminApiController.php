@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AdminController extends AbstractController
+class AdminApiController extends AbstractController
 {
     const MESSAGE_USER_NOT_FOUND = 'user not found';
     const MESSAGE_TIMESTAMP_IN_FUTURE = 'timestamp in future';
@@ -33,7 +33,7 @@ class AdminController extends AbstractController
         if (null === $user) {
             return $this->json([
                 'message' => self::MESSAGE_USER_NOT_FOUND,
-            ], Response::HTTP_FORBIDDEN);
+            ], Response::HTTP_NOT_FOUND);
         }
 
         $now = new \DateTime;
