@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AdminApiController extends AbstractController
+class RetentionController extends AbstractController
 {
     const MESSAGE_USER_NOT_FOUND = 'user not found';
     const MESSAGE_TIMESTAMP_IN_FUTURE = 'timestamp in future';
@@ -21,7 +21,7 @@ class AdminApiController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/api/admin/touch_user', name: 'admin_touch_user', methods: ['PUT'], stateless: true)]
+    #[Route(path: '/api/retention/touch_user', name: 'retention_touch_user', methods: ['PUT'], stateless: true)]
     public function putTouchUser(
         #[MapRequestPayload] AdminTouchUserDto $requestData,
     ): Response
@@ -57,7 +57,7 @@ class AdminApiController extends AbstractController
         return $this->json([]);
     }
 
-    #[Route(path: '/api/admin/deleted_users', name: 'admin_deleted_users', methods: ['GET'], stateless: true)]
+    #[Route(path: '/api/retention/deleted_users', name: 'retention_deleted_users', methods: ['GET'], stateless: true)]
     public function getDeletedUsers(): Response
     {
         $domain = $this->manager->getRepository(Domain::class)->getDefaultDomain();

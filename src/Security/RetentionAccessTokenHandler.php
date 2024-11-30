@@ -6,18 +6,18 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 
-class AdminApiAccessTokenHandler implements AccessTokenHandlerInterface
+class RetentionAccessTokenHandler implements AccessTokenHandlerInterface
 {
-    public function __construct(private string $adminApiAccessToken)
+    public function __construct(private string $retentionAccessToken)
     {
     }
 
     public function getUserBadgeFrom(#[\SensitiveParameter] string $accessToken): UserBadge
     {
-        if ($accessToken !== $this->adminApiAccessToken) {
+        if ($accessToken !== $this->retentionAccessToken) {
             throw new BadCredentialsException('Invalid access token');
         }
 
-        return new UserBadge('admin_api');
+        return new UserBadge('retention');
     }
 }

@@ -171,9 +171,9 @@ services:
             - '@Doctrine\ORM\EntityManagerInterface'
         public: true
 
-    App\Security\AdminApiAccessTokenHandler:
+    App\Security\RetentionAccessTokenHandler:
         arguments:
-            $adminApiAccessToken: "%env(ADMIN_API_ACCESS_TOKEN)%"
+            $retentionAccessToken: "%env(RETENTION_API_ACCESS_TOKEN)%"
 
     App\Security\KeycloakAccessTokenHandler:
         arguments:
