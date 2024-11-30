@@ -11,7 +11,7 @@ class RetentionControllerTest extends WebTestCase
         $client = static::createClient([], [
             'HTTP_Authorization' => 'Bearer wrong',
         ]);
-        $client->request('PUT', '/api/retention/touch_user');
+        $client->request('PUT', '/api/retention/touch_user/nonexistant@example.org');
 
         self::assertResponseStatusCodeSame(401);
     }
@@ -22,8 +22,18 @@ class RetentionControllerTest extends WebTestCase
             'HTTP_Authorization' => 'Bearer insecure',
         ]);
 
-        $client->request('PUT', '/api/retention/touch_user', ['email' => 'nonexistant@example.org']);
+        $client->request('PUT', '/api/retention/touch_user/nonexistant@example.org');
         self::assertResponseStatusCodeSame(404);
+    }
+
+    public function testPutTouchUserTimestampInFuture(): void
+    {
+        $client = static::createClient([], [
+            'HTTP_Authorization' => 'Bearer insecure',
+        ]);
+
+        $client->request('PUT', '/api/retention/touch_user/user@example.org', ['timestamp' => 999999999999]);
+        self::assertResponseStatusCodeSame(403);
     }
 
     public function testPutTouchUser(): void
@@ -32,7 +42,7 @@ class RetentionControllerTest extends WebTestCase
             'HTTP_Authorization' => 'Bearer insecure',
         ]);
 
-        $client->request('PUT', '/api/retention/touch_user', ['email' => 'user@example.org']);
+        $client->request('PUT', '/api/retention/touch_user/user@example.org', ['timestamp' => 0]);
         self::assertResponseIsSuccessful();
         self::assertJsonStringEqualsJsonString('[]', $client->getResponse()->getContent());
     }
