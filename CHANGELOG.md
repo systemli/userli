@@ -1,6 +1,14 @@
-# 3.10.1 (2024.11.20)
+# 3.11.0 (2024.11.30)
 
+* Add retention API to update last login time for users
+* Add retention API to list deleted users
+* Do not filter displayed aliases in /alias
+* Support trusted proxies for userli behind reverse proxy
+* Fix postfix controller
+* Fix userdb attributes in dovecot lua auth script
 * Migrate large parts of release process to Makefile
+* Add Deprecation for UsersCheckPasswordCommand
+* Update dependencies
 
 # 3.10.0 (2024.11.10)
 
