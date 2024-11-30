@@ -122,7 +122,7 @@ endif
 	fi
 
 # Publish to Github
-release: release-checks
+release: build release-checks
 	# sign release tarball
 	gpg -u $(GPG_SIGN_KEY) --output "build/$(RELEASE_FILE).asc" --armor --detach-sign --batch --yes build/$(RELEASE_FILE)
 	# git tag and push
