@@ -46,7 +46,7 @@ class PostfixController extends AbstractController
     public function getSenders(string $email): Response
     {
         $users = $this->manager->getRepository(User::class)->findBy(['deleted' => false, 'email' => $email]);
-        $aliases = $this->manager->getRepository(Alias::class)->findBy(['deleted' => false, 'destination' => $email]);
+        $aliases = $this->manager->getRepository(Alias::class)->findBy(['deleted' => false, 'source' => $email]);
 
         // Extract email addresses from users
         $senders = array_map(function (User $user) {
