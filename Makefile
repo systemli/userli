@@ -1,10 +1,9 @@
 APP_NAME:= $(notdir $(CURDIR))
-RELEASE_DIR:=$(APP_NAME)-$(VERSION)
-RELEASE_FILE:=$(RELEASE_DIR).tar.gz
+RELEASE_FILE:=$(APP_NAME)-$(VERSION).tar.gz
 SHA_ALGORITHMS:=256 512
-PWD_NAME:=$(shell pwd)
+PWD_NAME:=$(shell basename $(shell pwd))
 TMPDIR:=$(shell mktemp -d)
-BUILDDIR:=$(TMPDIR)/$(RELEASE_DIR)
+BUILDDIR:=$(TMPDIR)/userli-$(VERSION)
 
 # Release variables
 VERSION_CHANGELOG:=$(shell sed -ne 's/^\#\s\([0-9\.]\+\)\s.*$$/\1/p' CHANGELOG.md | head -n1)
@@ -64,50 +63,51 @@ build: build-checks prepare
 		APP_ENV=prod composer dump-autoload; \
 		$(YARN) --pure-lockfile; \
 		$(YARN) encore production)
+	#cd $(PWD_NAME)
 	# Create a release tarball
-	(cd $(TMPDIR); tar --exclude='$(RELEASE_DIR)/.env.*' \
-		--exclude='$(RELEASE_DIR)/.git*' \
-		--exclude='$(RELEASE_DIR)/.idea' \
-		--exclude='$(RELEASE_DIR)/.php-cs-fixer.cache' \
-		--exclude='$(RELEASE_DIR)/.phpunit*' \
-		--exclude='$(RELEASE_DIR)/.vagrant' \
-		--exclude='$(RELEASE_DIR)/.*.yml' \
-		--exclude='$(RELEASE_DIR)/ansible' \
-		--exclude='$(RELEASE_DIR)/behat.yml' \
-		--exclude='$(RELEASE_DIR)/bin/behat*' \
-		--exclude='$(RELEASE_DIR)/bin/crypt-gpg-pinentry' \
-		--exclude='$(RELEASE_DIR)/bin/doctrine*' \
-		--exclude='$(RELEASE_DIR)/bin/github-release.sh' \
-		--exclude='$(RELEASE_DIR)/bin/local-php-security-checker' \
-		--exclude='$(RELEASE_DIR)/bin/patch-type-declarations' \
-		--exclude='$(RELEASE_DIR)/bin/php*' \
-		--exclude='$(RELEASE_DIR)/bin/rector' \
-		--exclude='$(RELEASE_DIR)/bin/simple-phpunit' \
-		--exclude='$(RELEASE_DIR)/bin/sql-formatter' \
-		--exclude='$(RELEASE_DIR)/bin/uaparser' \
-		--exclude='$(RELEASE_DIR)/bin/var-dump-server' \
-		--exclude='$(RELEASE_DIR)/bin/yaml-lint' \
-		--exclude='$(RELEASE_DIR)/build' \
-		--exclude='$(RELEASE_DIR)/composer.*' \
-		--exclude='$(RELEASE_DIR)/features' \
-		--exclude='$(RELEASE_DIR)/Makefile' \
-		--exclude='$(RELEASE_DIR)/mkdocs.yml' \
-		--exclude='$(RELEASE_DIR)/node_modules' \
-		--exclude='$(RELEASE_DIR)/package.json' \
-		--exclude='$(RELEASE_DIR)/phpunit.xml' \
-		--exclude='$(RELEASE_DIR)/rector.php' \
-		--exclude='$(RELEASE_DIR)/requirements.yml' \
-		--exclude='$(RELEASE_DIR)/sonar-project.properties' \
-		--exclude='$(RELEASE_DIR)/symfony.lock' \
-		--exclude='$(RELEASE_DIR)/tests' \
-		--exclude='$(RELEASE_DIR)/Vagrantfile' \
-		--exclude='$(RELEASE_DIR)/var/cache/*' \
-		--exclude='$(RELEASE_DIR)/var/db_test.sqlite' \
-		--exclude='$(RELEASE_DIR)/var/log/*' \
-		--exclude='$(RELEASE_DIR)/vendor/bin/.phpunit' \
-		--exclude='$(RELEASE_DIR)/webpack.config.js' \
-		--exclude='$(RELEASE_DIR)/yarn.lock' \
-		-czf $(PWD)/build/$(RELEASE_FILE) $(RELEASE_DIR))
+	tar --exclude='$(BUILDDIR)/.env.*' \
+		--exclude='$(BUILDDIR)/.git*' \
+		--exclude='$(BUILDDIR)/.idea' \
+		--exclude='$(BUILDDIR)/.php-cs-fixer.cache' \
+		--exclude='$(BUILDDIR)/.phpunit*' \
+		--exclude='$(BUILDDIR)/.vagrant' \
+		--exclude='$(BUILDDIR)/.*.yml' \
+		--exclude='$(BUILDDIR)/ansible' \
+		--exclude='$(BUILDDIR)/behat.yml' \
+		--exclude='$(BUILDDIR)/bin/behat*' \
+		--exclude='$(BUILDDIR)/bin/crypt-gpg-pinentry' \
+		--exclude='$(BUILDDIR)/bin/doctrine*' \
+		--exclude='$(BUILDDIR)/bin/github-release.sh' \
+		--exclude='$(BUILDDIR)/bin/local-php-security-checker' \
+		--exclude='$(BUILDDIR)/bin/patch-type-declarations' \
+		--exclude='$(BUILDDIR)/bin/php*' \
+		--exclude='$(BUILDDIR)/bin/rector' \
+		--exclude='$(BUILDDIR)/bin/simple-phpunit' \
+		--exclude='$(BUILDDIR)/bin/sql-formatter' \
+		--exclude='$(BUILDDIR)/bin/uaparser' \
+		--exclude='$(BUILDDIR)/bin/var-dump-server' \
+		--exclude='$(BUILDDIR)/bin/yaml-lint' \
+		--exclude='$(BUILDDIR)/build' \
+		--exclude='$(BUILDDIR)/composer.*' \
+		--exclude='$(BUILDDIR)/features' \
+		--exclude='$(BUILDDIR)/Makefile' \
+		--exclude='$(BUILDDIR)/mkdocs.yml' \
+		--exclude='$(BUILDDIR)/node_modules' \
+		--exclude='$(BUILDDIR)/package.json' \
+		--exclude='$(BUILDDIR)/phpunit.xml' \
+		--exclude='$(BUILDDIR)/rector.php' \
+		--exclude='$(BUILDDIR)/requirements.yml' \
+		--exclude='$(BUILDDIR)/sonar-project.properties' \
+		--exclude='$(BUILDDIR)/symfony.lock' \
+		--exclude='$(BUILDDIR)/tests' \
+		--exclude='$(BUILDDIR)/Vagrantfile' \
+		--exclude='$(BUILDDIR)/var/cache/*' \
+		--exclude='$(BUILDDIR)/var/db_test.sqlite' \
+		--exclude='$(BUILDDIR)/var/log/*' \
+		--exclude='$(BUILDDIR)/vendor/bin/.phpunit' \
+		--exclude='$(BUILDDIR)/webpack.config.js' \
+		--exclude='$(BUILDDIR)/yarn.lock' \
+		-czf build/$(RELEASE_FILE) $(BUILDDIR)
 	rm -rf $(TMPDIR)
 	# Generate SHA hash sum files
 	for sha in ${SHA_ALGORITHMS}; do \
