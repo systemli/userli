@@ -19,7 +19,7 @@ class PostfixControllerTest extends WebTestCase
     public function testGetAliasUsers(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer postfix',
         ]);
 
         $client->request('GET', '/api/postfix/alias/alias@example.org');
@@ -44,7 +44,7 @@ class PostfixControllerTest extends WebTestCase
     public function testGetDomain(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer postfix',
         ]);
         $client->request('GET', '/api/postfix/domain/example.org');
 
@@ -65,7 +65,7 @@ class PostfixControllerTest extends WebTestCase
     public function testGetMailbox(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer postfix',
         ]);
         $client->request('GET', '/api/postfix/mailbox/user@example.org');
 
@@ -86,7 +86,7 @@ class PostfixControllerTest extends WebTestCase
     public function testGetSenders(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer postfix',
         ]);
         $client->request('GET', '/api/postfix/senders/user@example.org');
 

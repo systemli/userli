@@ -19,7 +19,7 @@ class RetentionControllerTest extends WebTestCase
     public function testPutTouchUserUnknownUser(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer retention',
         ]);
 
         $client->request('PUT', '/api/retention/nonexistant@example.org/touch');
@@ -29,7 +29,7 @@ class RetentionControllerTest extends WebTestCase
     public function testPutTouchUserTimestampInFuture(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer retention',
         ]);
 
         $client->request('PUT', '/api/retention/user@example.org/touch', ['timestamp' => 999999999999]);
@@ -39,7 +39,7 @@ class RetentionControllerTest extends WebTestCase
     public function testPutTouchUser(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer retention',
         ]);
 
         $client->request('PUT', '/api/retention/user@example.org/touch', ['timestamp' => 0]);
@@ -50,7 +50,7 @@ class RetentionControllerTest extends WebTestCase
     public function testGetDeletedUsersNonexistantDomain(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer retention',
         ]);
 
         $client->request('GET', '/api/retention/nonexistant.org/users');
@@ -60,7 +60,7 @@ class RetentionControllerTest extends WebTestCase
     public function testGetDeletedUsers(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer retention',
         ]);
 
         $client->request('GET', '/api/retention/example.org/users');

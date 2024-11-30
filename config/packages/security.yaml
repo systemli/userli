@@ -130,31 +130,31 @@ security:
             stateless: true
             provider: retention
             access_token:
-                token_handler: App\Security\RetentionAccessTokenHandler
+                token_handler: App\Security\ApiAccessTokenHandler
         keycloak:
             pattern: ^/api/keycloak
             stateless: true
             provider: keycloak
             access_token:
-                token_handler: App\Security\KeycloakAccessTokenHandler
+                token_handler: App\Security\ApiAccessTokenHandler
         postfix:
             pattern: ^/api/postfix
             stateless: true
             provider: postfix
             access_token:
-                token_handler: App\Security\PostfixAccessTokenHandler
+                token_handler: App\Security\ApiAccessTokenHandler
+        dovecot:
+            pattern: ^/api/dovecot
+            stateless: true
+            provider: dovecot
+            access_token:
+                token_handler: App\Security\ApiAccessTokenHandler
         roundcube:
             pattern: ^/api/roundcube
             stateless: true
             provider: user
             http_basic:
                 realm: Roundcube API
-        dovecot:
-            pattern: ^/api/dovecot
-            stateless: true
-            provider: dovecot
-            access_token:
-                token_handler: App\Security\DovecotAccessTokenHandler
         main:
             pattern: ^/
             provider: user

@@ -9,7 +9,7 @@ class DovecotControllerTest extends WebTestCase
     public function testStatus(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer dovecot',
         ]);
         $client->request('GET', '/api/dovecot/status');
 
@@ -29,7 +29,7 @@ class DovecotControllerTest extends WebTestCase
     public function testPassdbUser(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer dovecot',
         ]);
         $client->request('POST', '/api/dovecot/support@example.org', ['password' => 'password']);
 
@@ -39,7 +39,7 @@ class DovecotControllerTest extends WebTestCase
     public function testPassdbUserWrongPassword(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer dovecot',
         ]);
         $client->request('POST', '/api/dovecot/support@example.org', ['password' => 'wrong']);
 
@@ -49,7 +49,7 @@ class DovecotControllerTest extends WebTestCase
     public function testPassdbNonexistentUser(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer dovecot',
         ]);
         $client->request('POST', '/api/dovecot/nonexistent@example.org', ['password' => 'password']);
 
@@ -59,7 +59,7 @@ class DovecotControllerTest extends WebTestCase
     public function testPassdbSpamUser(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer dovecot',
         ]);
         $client->request('POST', '/api/dovecot/spam@example.org', ['password' => 'password']);
 
@@ -69,7 +69,7 @@ class DovecotControllerTest extends WebTestCase
     public function testPassdbMailCrypt(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer dovecot',
         ]);
         $client->request('POST', '/api/dovecot/mailcrypt@example.org', ['password' => 'password']);
 
@@ -82,7 +82,7 @@ class DovecotControllerTest extends WebTestCase
     public function testUserdbUser(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer dovecot',
         ]);
         $client->request('GET', '/api/dovecot/user@example.org');
 
@@ -96,13 +96,12 @@ class DovecotControllerTest extends WebTestCase
         self::assertIsInt($data['body']['gid']);
         self::assertIsInt($data['body']['uid']);
         self::assertNotEquals($data['body']['home'], '');
-
     }
 
     public function testUserdbMailcrypt(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer dovecot',
         ]);
         $client->request('GET', '/api/dovecot/mailcrypt@example.org');
 
@@ -119,7 +118,7 @@ class DovecotControllerTest extends WebTestCase
     public function testUserdbNonexistentUser(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer dovecot',
         ]);
         $client->request('GET', '/api/dovecot/nonexistent@example.org');
 
@@ -130,7 +129,7 @@ class DovecotControllerTest extends WebTestCase
     public function testUserdbSpamUser(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer dovecot',
         ]);
         $client->request('GET', '/api/dovecot/spam@example.org');
 

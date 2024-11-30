@@ -171,21 +171,12 @@ services:
             - '@Doctrine\ORM\EntityManagerInterface'
         public: true
 
-    App\Security\RetentionAccessTokenHandler:
+    App\Security\ApiAccessTokenHandler:
         arguments:
-            $retentionAccessToken: "%env(RETENTION_API_ACCESS_TOKEN)%"
-
-    App\Security\KeycloakAccessTokenHandler:
-        arguments:
-            $keycloakApiAccessToken: "%env(KEYCLOAK_API_ACCESS_TOKEN)%"
-
-    App\Security\PostfixAccessTokenHandler:
-        arguments:
-            $postfixApiAccessToken: "%env(POSTFIX_API_ACCESS_TOKEN)%"
-
-    App\Security\DovecotAccessTokenHandler:
-        arguments:
-            $dovecotApiAccessToken: "%env(DOVECOT_API_ACCESS_TOKEN)%"
+            $accessTokenDovecot: '%env(DOVECOT_API_ACCESS_TOKEN)%'
+            $accessTokenKeycloak: '%env(KEYCLOAK_API_ACCESS_TOKEN)%'
+            $accessTokenRetention: '%env(RETENTION_API_ACCESS_TOKEN)%'
+            $accessTokenPostfix: '%env(POSTFIX_API_ACCESS_TOKEN)%'
 
     App\Sender\WelcomeMessageSender:
         public: true
