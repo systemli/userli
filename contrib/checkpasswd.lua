@@ -100,8 +100,8 @@ function auth_userdb_lookup(request)
         end
         -- Only return mailcrypt attributes if mailcrypt is enabled for user:
         if data.body.mailCrypt == 2 then
-            attributes["userdb_mail_crypt_global_public_key"] = data.body.mailCryptPublicKey
-            attributes["userdb_mail_crypt_save_version"]      = data.body.mailCrypt
+            attributes["mail_crypt_global_public_key"] = data.body.mailCryptPublicKey
+            attributes["mail_crypt_save_version"]      = data.body.mailCrypt
         end
         request:log_info(log_msg['http-ok'] .. http_response:status())
         return dovecot.auth.USERDB_RESULT_OK, attributes
@@ -130,7 +130,7 @@ function auth_password_verify(request, password)
         local data = json.decode(http_response:payload())
 
         -- mailCryptPrivateKey may be empty, but cannot be nil
-        if not(data and data.body and data.body.mailCrypt and data.body.mailCryptPrivateKey) then
+        if not(data and data.body and data.body.mailCrypt and data.body.mailCryptPrivateKey and data.body.mailCryptPublicKey) then
             request:log_error(log_msg['http-ok-malformed'])
             return dovecot.auth.PASSDB_RESULT_INTERNAL_FAILURE, ""
         end
@@ -140,6 +140,7 @@ function auth_password_verify(request, password)
         if data.body.mailCrypt == 2 then
             attributes["userdb_mail_crypt_save_version"]       = data.body.mailCrypt
             attributes["userdb_mail_crypt_global_private_key"] = data.body.mailCryptPrivateKey
+            attributes["userdb_mail_crypt_global_public_key"]  = data.body.mailCryptPublicKey
         end
         return dovecot.auth.PASSDB_RESULT_OK, attributes
     end

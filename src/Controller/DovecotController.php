@@ -67,7 +67,7 @@ class DovecotController extends AbstractController
             'message' => self::MESSAGE_SUCCESS,
             'body' => [
                 'user' => $user->getEmail(),
-                'home' => $this->mailLocation.DIRECTORY_SEPARATOR.$domain.DIRECTORY_SEPARATOR.$username,
+                'home' => $this->mailLocation . DIRECTORY_SEPARATOR . $domain . DIRECTORY_SEPARATOR . $username,
                 'mailCrypt' => $mailCryptReported,
                 'mailCryptPublicKey' =>  $user->getMailCryptPublicKey() ?? "",
                 'gid' => $this->mailGid,
@@ -121,6 +121,7 @@ class DovecotController extends AbstractController
             'body' => [
                 'mailCrypt' => $mailCryptReported,
                 'mailCryptPrivateKey' => $privateKey ?? "",
+                'mailCryptPublicKey' => $user->getMailCryptPublicKey() ?? "",
             ]
         ], Response::HTTP_OK);
     }
