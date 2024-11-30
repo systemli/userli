@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Dto\AdminTouchUserDto;
+use App\Dto\RetentionTouchUserDto;
 use App\Entity\Domain;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,10 +21,10 @@ class RetentionController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/api/retention/touch_user/{email}', name: 'retention_touch_user', methods: ['PUT'], stateless: true)]
+    #[Route(path: '/api/retention/{email}/touch_user', name: 'retention_touch_user', methods: ['PUT'], stateless: true)]
     public function putTouchUser(
         #[MapEntity(mapping: ['email' => 'email'])] User $user,
-        #[MapRequestPayload] AdminTouchUserDto $requestData,
+        #[MapRequestPayload] RetentionTouchUserDto $requestData,
     ): Response
     {
         $now = new \DateTime;
@@ -48,10 +48,11 @@ class RetentionController extends AbstractController
         return $this->json([]);
     }
 
-    #[Route(path: '/api/retention/deleted_users', name: 'retention_deleted_users', methods: ['GET'], stateless: true)]
-    public function getDeletedUsers(): Response
+    #[Route(path: '/api/retention/{domainUrl}/deleted_users', name: 'retention_deleted_users', methods: ['GET'], stateless: true)]
+    public function getDeletedUsers(
+        #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
+    ): Response
     {
-        $domain = $this->manager->getRepository(Domain::class)->getDefaultDomain();
         $deletedUsers = $this->manager->getRepository(User::class)->findDeletedUsers($domain);
         $deletedUsernames = array_map(static function ($user) { return $user->getEmail(); }, $deletedUsers);
         return $this->json($deletedUsernames);

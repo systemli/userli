@@ -2,7 +2,7 @@
 
 namespace App\Dto;
 
-class AdminTouchUserDto
+class RetentionTouchUserDto
 {
     private int $timestamp = 0;
 
