@@ -312,16 +312,17 @@ class TwofactorController extends AbstractController
             throw new NotFoundHttpException('Cannot display QR code');
         }
 
-        $result = Builder::create()
-            ->writer(new PngWriter())
-            ->writerOptions([])
-            ->data($totpAuthenticator->getQRContent($user))
-            ->encoding(new Encoding('UTF-8'))
-            ->errorCorrectionLevel(ErrorCorrectionLevel::High)
-            ->size(320)
-            ->margin(20)
-            ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
-            ->build();
+        $builder = new Builder(
+            writer: new PngWriter(),
+            writerOptions: [],
+            data: $totpAuthenticator->getQRContent($user),
+            encoding: new Encoding('UTF-8'),
+            errorCorrectionLevel: ErrorCorrectionLevel::High,
+            size: 320,
+            margin: 20,
+            roundBlockSizeMode: RoundBlockSizeMode::Margin,
+        );
+        $result = $builder->build();
 
         return new Response($result->getString(), Response::HTTP_OK, ['Content-Type' => 'image/png']);
     }
