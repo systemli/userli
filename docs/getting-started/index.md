@@ -1,29 +1,38 @@
 # Getting Started
 
-The easiest way to install Userli on a fresh Debian Buster is running these commands:
+The easiest way to get started with Userli is to use podman or docker.
+We provide a `docker-compose.yml` file that starts Userli and MariaDB.
+This is not recommended for production use, but it is a good way to get started.
 
-    # install dependencies
-    sudo apt update && sudo apt install -y ansible git python3-pip
-    sudo pip3 install molecule  # re-run in case of error
+!!! info
+    If you don't have podman or docker installed, you can find the installation instructions on the [podman website](https://podman.io/getting-started/installation) or the [docker website](https://docs.docker.com/get-docker/).
 
-    # get code
-    git clone https://github.com/systemli/ansible-role-userli.git
-    cd ansible-role-userli
+1. Start Userli and MariaDB with podman or docker:
+    
+    Using podman: 
 
-    # install apache2, mariadb, php8.0 and userli
-    sudo molecule converge -s localhost
+    ```shell
+    podman compose up -d --build
+   ```
 
-This installs all dependencies, creates a database and database user
-(name: userli, password: userli), and installs the userli code at `/var/www/userli`.
-It is accessible via [http://localhost:8080](http://localhost:8080).
-There, you can create the first domain and user for your instance.
+    Using docker:
 
-!!! warning
-    Do not run this configuration in production.
+    ```shell
+    docker-compose up -d --build
+    ```
 
-Next, you would have to change the password of the database user,
-[configure your instance](../installation/configuration),
-and probably install Dovecot to do anything meaningful.
+2. Initialize the database:
 
-Better, do a [manual installation](../installation) to understand each part of your
-configuration.
+    Using podman:
+
+    ```shell
+    podman exec userli bin/console doctrine:schema:create
+    ```
+
+    Using docker:
+
+    ```shell
+    docker exec userli bin/console doctrine:schema:create
+    ```
+
+3. Open your browser and go to [http://localhost:8000](http://localhost:8000)

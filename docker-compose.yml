@@ -1,16 +1,28 @@
 ---
 services:
-  mysql:
-    image: mariadb:10.11
+  userli:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - '3306:3306'
+      - 8000:80
+    networks:
+      - userli
+
+  mariadb:
+    image: mariadb:10.11
     environment:
       MYSQL_USER: mail
       MYSQL_PASSWORD: password
       MYSQL_DATABASE: mail
       MARIADB_RANDOM_ROOT_PASSWORD: true
     volumes:
-      - mysql:/var/lib/mysql
+      - mariadb:/var/lib/mysql
+    networks:
+        - userli
+
+networks:
+  userli:
 
 volumes:
-  mysql:
+  mariadb:
