@@ -1,14 +1,29 @@
-FROM composer AS composer
+FROM composer:2.8.3 AS composer
 
-FROM php:8.2-apache-bookworm
-RUN apt-get update && apt-get install -y libpng-dev libzip-dev nodejs npm zlib1g-dev zip
-RUN docker-php-ext-install -j$(nproc) gd zip
-COPY . /var/www/html
-COPY userli.conf /etc/apache2/sites-enabled/000-default.conf
+
+FROM php:8.2-cli AS builder
+
+RUN apt-get update && \
+    apt-get install -y libzip-dev nodejs npm zip
+RUN docker-php-ext-install -j$(nproc) zip
+
+COPY . /var/www/html/
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
-RUN mv .env.test .env
-RUN APP_ENV=test composer install --no-scripts &&   bin/console doctrine:schema:create --env=test &&   bin/console doctrine:fixtures:load --group=basic --env=test -n
-RUN npm install --global yarn && yarn install && yarn encore production
-RUN bin/console assets:install
-RUN chown -R www-data:www-data var
+WORKDIR /var/www/html
+
+RUN composer install --no-scripts && \
+    npm install --global yarn && \
+    yarn install && \
+    yarn encore production && \
+    bin/console assets:install
+
+
+FROM php:8.2-apache-bookworm
+
+RUN apt-get update && \
+    apt-get install -y libpng-dev libsodium-dev libsqlite3-dev libzip-dev zlib1g-dev zip
+RUN docker-php-ext-install -j$(nproc) gd opcache pdo_mysql pdo_sqlite sodium zip
+
+COPY --from=builder /var/www/html /var/www/html
+COPY contrib/apache.conf /etc/apache2/sites-available/000-default.conf

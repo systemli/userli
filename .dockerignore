@@ -1,0 +1,8 @@
+.git
+.github
+.vscode
+ansible
+build
+docs
+var
+vendor
