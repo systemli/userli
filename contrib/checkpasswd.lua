@@ -96,7 +96,7 @@ function auth_userdb_lookup(request)
         attributes["uid"]  = data.body.uid
 
         if data.body.quota ~= "" then
-            attributes["userdb_quota_rule"] = data.body.quota
+            attributes["quota_rule"] = data.body.quota
         end
         -- Only return mailcrypt attributes if mailcrypt is enabled for user:
         if data.body.mailCrypt == 2 then

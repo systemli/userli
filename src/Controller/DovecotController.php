@@ -61,7 +61,11 @@ class DovecotController extends AbstractController
         } else {
             $mailCryptReported = 0;
         }
+
         [$username, $domain] = explode('@', $user->getEmail());
+
+        $customQuota = $user->getQuota();
+        $customQuotaString = $customQuota !== null ? sprintf('*:storage=%dM', $customQuota) : "";
 
         return $this->json([
             'message' => self::MESSAGE_SUCCESS,
@@ -72,7 +76,7 @@ class DovecotController extends AbstractController
                 'mailCryptPublicKey' =>  $user->getMailCryptPublicKey() ?? "",
                 'gid' => $this->mailGid,
                 'uid' => $this->mailUid,
-                'quota' => $user->getQuota() ?? "",
+                'quota' => $customQuotaString,
             ]
         ], Response::HTTP_OK);
     }
