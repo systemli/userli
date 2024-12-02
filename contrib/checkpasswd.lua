@@ -123,7 +123,7 @@ function auth_password_verify(request, password)
     }
     http_request:add_header("Content-Type","application/json")
     http_request:add_header("Authorization","Bearer " .. env_userli_token)
-    http_request:set_payload(string.format('{"password": "%s"}', password))
+    http_request:set_payload(json.encode({password = password}))
     local http_response = http_request:submit()
 
     if http_response:status() == 200 then
