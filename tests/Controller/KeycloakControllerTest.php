@@ -20,7 +20,7 @@ class KeycloakControllerTest extends WebTestCase
     public function testGetUsersSearch(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer keycloak',
         ]);
         $client->request('GET', '/api/keycloak/example.org?search=example&max=2');
 
@@ -37,7 +37,7 @@ class KeycloakControllerTest extends WebTestCase
     public function testGetUsersSearchNonexistentDomain(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer keycloak',
         ]);
         $client->request('GET', '/api/keycloak/nonexistent.org?search=example&max=2');
 
@@ -47,7 +47,7 @@ class KeycloakControllerTest extends WebTestCase
     public function testGetUsersCount(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer keycloak',
         ]);
         $client->request('GET', '/api/keycloak/example.org/count');
 
@@ -60,7 +60,7 @@ class KeycloakControllerTest extends WebTestCase
     public function testGetOneUser(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer keycloak',
         ]);
         $client->request('GET', '/api/keycloak/example.org/user/user@example.org');
 
@@ -74,7 +74,7 @@ class KeycloakControllerTest extends WebTestCase
     public function testGetOneNonexistentUser(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer keycloak',
         ]);
         $client->request('GET', '/api/keycloak/example.org/user/nonexistent@example.org');
 
@@ -84,7 +84,7 @@ class KeycloakControllerTest extends WebTestCase
     public function testPostUserValidate(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer keycloak',
         ]);
         $client->request('POST', '/api/keycloak/example.org/validate/support@example.org', ['credentialType' => 'password', 'password' => 'password']);
 
@@ -114,7 +114,7 @@ class KeycloakControllerTest extends WebTestCase
     public function testPostUserValidateOTP(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer keycloak',
         ]);
         $client->request('POST', '/api/keycloak/example.org/validate/support@example.org', ['credentialType' => 'otp', 'password' => '123456']);
         self::assertResponseStatusCodeSame(403);
@@ -131,7 +131,7 @@ class KeycloakControllerTest extends WebTestCase
     public function testGetIsConfiguredFor(): void
     {
         $client = static::createClient([], [
-            'HTTP_Authorization' => 'Bearer insecure',
+            'HTTP_Authorization' => 'Bearer keycloak',
         ]);
         $client->request('GET', '/api/keycloak/example.org/configured/otp/support@example.org');
         self::assertResponseStatusCodeSame(404);
