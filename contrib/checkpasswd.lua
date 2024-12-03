@@ -96,7 +96,7 @@ function auth_userdb_lookup(request)
         attributes["uid"]  = data.body.uid
 
         if data.body.quota ~= "" then
-            attributes["userdb_quota_rule"] = data.body.quota
+            attributes["quota_rule"] = data.body.quota
         end
         -- Only return mailcrypt attributes if mailcrypt is enabled for user:
         if data.body.mailCrypt == 2 then
@@ -123,7 +123,7 @@ function auth_password_verify(request, password)
     }
     http_request:add_header("Content-Type","application/json")
     http_request:add_header("Authorization","Bearer " .. env_userli_token)
-    http_request:set_payload(string.format('{"password": "%s"}', password))
+    http_request:set_payload(json.encode({password = password}))
     local http_response = http_request:submit()
 
     if http_response:status() == 200 then
