@@ -96,6 +96,10 @@ services:
             $defaultLocale: "%locale%"
             $supportedLocales: "%supported_locales%"
 
+    App\EventListener\JsonResponseExceptionListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.exception' }
+
     App\Handler\:
         resource: '../src/Handler/*'
         public: true
