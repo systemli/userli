@@ -10,7 +10,7 @@ services:
       - userli
 
   mariadb:
-    image: mariadb:10.11
+    image: docker.io/mariadb:10.11
     environment:
       MYSQL_USER: mail
       MYSQL_PASSWORD: password

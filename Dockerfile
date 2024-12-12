@@ -1,7 +1,7 @@
-FROM composer:2.8.3 AS composer
+FROM docker.io/composer:2.8.3 AS composer
 
 
-FROM php:8.2-cli AS builder
+FROM docker.io/php:8.2-cli AS builder
 
 RUN apt-get update && \
     apt-get install -y libzip-dev nodejs npm zip
@@ -19,7 +19,7 @@ RUN composer install --no-scripts && \
     bin/console assets:install
 
 
-FROM php:8.2-apache-bookworm
+FROM docker.io/php:8.2-apache-bookworm
 
 RUN apt-get update && \
     apt-get install -y libpng-dev libsodium-dev libsqlite3-dev libzip-dev zlib1g-dev zip
