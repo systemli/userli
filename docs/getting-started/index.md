@@ -13,12 +13,12 @@ This is not recommended for production use, but it is a good way to get started.
 
     ```shell
     podman compose up -d --build
-   ```
+    ```
 
     Using docker:
 
     ```shell
-    docker-compose up -d --build
+    docker compose up -d --build
     ```
 
 2. Initialize the database:
@@ -26,13 +26,13 @@ This is not recommended for production use, but it is a good way to get started.
     Using podman:
 
     ```shell
-    podman exec userli bin/console doctrine:schema:create
+    podman compose exec userli bin/console doctrine:schema:create
     ```
 
     Using docker:
 
     ```shell
-    docker exec userli bin/console doctrine:schema:create
+    docker compose exec userli bin/console doctrine:schema:create
     ```
 
 3. Open your browser and go to [http://localhost:8000](http://localhost:8000)
