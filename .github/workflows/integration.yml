@@ -172,3 +172,24 @@ jobs:
         env:
           DATABASE_DRIVER: pdo_pgsql
           DATABASE_URL: pgsql://mail_test:password@127.0.0.1:${{ job.services.postgres.ports[5432] }}/mail?charset=UTF8
+
+  docker:
+    runs-on: ubuntu-22.04
+    name: Build & Push Docker Image
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3.3.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Docker Build
+        run: docker build -t docker.io/systemli/userli .
+
+      - name: Docker Push
+        if: github.ref == 'refs/heads/main'
+        run: docker push docker.io/systemli/userli

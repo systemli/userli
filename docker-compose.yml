@@ -1,6 +1,7 @@
 ---
 services:
   userli:
+    image: docker.io/systemli/userli:latest
     build:
       context: .
       dockerfile: Dockerfile
