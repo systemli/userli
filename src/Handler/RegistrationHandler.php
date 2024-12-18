@@ -70,7 +70,6 @@ readonly class RegistrationHandler
     {
         $user = new User();
         $user->setEmail(strtolower((string)$registration->getEmail()));
-        $user->setPlainPassword($registration->getPlainPassword());
         $user->setRoles([Roles::USER]);
 
         if (null !== $domain = $this->domainGuesser->guess($registration->getEmail())) {
