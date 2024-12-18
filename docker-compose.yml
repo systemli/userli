@@ -4,6 +4,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/html
     ports:
       - 8000:80
     networks:
@@ -16,6 +18,8 @@ services:
       MYSQL_PASSWORD: password
       MYSQL_DATABASE: mail
       MARIADB_RANDOM_ROOT_PASSWORD: true
+    ports:
+      - 3306:3306
     volumes:
       - mariadb:/var/lib/mysql
     networks:
