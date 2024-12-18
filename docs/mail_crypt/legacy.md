@@ -8,7 +8,6 @@ partially unencrypted (the old) and partially encrypted (the new) mails.
 Therefore we decided to leave the exercise to enable MailCrypt for legacy
 users who got a MailCrypt key pair generated in the meantime to the system
 admins (e.g. by a cron script).
-<!--more-->
 
 In order to enable MailCrypt for a legacy user, do the following:
 
@@ -39,12 +38,16 @@ mail from legacy mailboxes that already have a MailCrypt key configured. This
 script needs to be invoked as a user who has write access to the mailbox in
 question - probably the best is to run it as root:
 
-    ./bin/mailcrypt-encrypt-maildir user@example.org
+```shell
+./bin/mailcrypt-encrypt-maildir user@example.org
+```
 
 The following SQL statement can be used to enable MailCrypt for all legacy
 users that got a MailCrypt key pair generated. Use with caution!
 
-    UPDATE virtual_users SET mail_crypt=1 WHERE mail_crypt_secret_box IS NOT NULL AND mail_crypt = 0;
+```sql
+UPDATE virtual_users SET mail_crypt=1 WHERE mail_crypt_secret_box IS NOT NULL AND mail_crypt = 0;
+```
 
 We might add a migration script to encrypt old mails from existing users at
 a later point.

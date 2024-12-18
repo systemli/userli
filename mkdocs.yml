@@ -32,6 +32,9 @@ nav:
 theme:
   name: material
   features:
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.sections
@@ -51,3 +54,7 @@ extra:
 
 markdown_extensions:
   - admonition
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences

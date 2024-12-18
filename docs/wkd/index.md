@@ -20,4 +20,6 @@ for details.
 The WKD directory can be regenerated at any time by running the console
 command: 
 
-    bin/console app:wkd:export-keys
+```shell
+bin/console app:wkd:export-keys
+```

@@ -13,19 +13,22 @@ Example configuration for using checkpassword in Dovecot:
 
 `/etc/dovecot/conf.d/auth-checkpassword.conf.ext`:
 
-    passdb {
-      driver = checkpassword
-      args = /path/to/userli/bin/console app:users:checkpassword
-    }
+```text
+passdb {
+  driver = checkpassword
+  args = /path/to/userli/bin/console app:users:checkpassword
+}
 
-    userdb {
-      driver = prefetch
-    }
+userdb {
+  driver = prefetch
+}
 
-    userdb {
-      driver = checkpassword
-      args = /path/to/userli/bin/console app:users:checkpassword
-    }
+userdb {
+  driver = checkpassword
+  args = /path/to/userli/bin/console app:users:checkpassword
+}
+```
+
 
 ## Required permissions and sudo
 
@@ -35,4 +38,6 @@ read access to the userli application.
 In order to grant the required permissions, add the Dovecot system user to the
 userli system group:
 
-    adduser dovecot userli
+```shell
+adduser dovecot userli
+```
