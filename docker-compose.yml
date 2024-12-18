@@ -25,6 +25,22 @@ services:
     networks:
         - userli
 
+  dovecot:
+    build:
+      context: contrib/docker
+      dockerfile: Dockerfile.dovecot
+    environment:
+      MAIL_CRYPT: 2
+      USERLI_HOST: userli
+      USERLI_API_ACCESS_TOKEN: insecure
+      DOVECOT_LUA_INSECURE: true
+    volumes:
+      - ./contrib/dovecot/dovecot.conf:/etc/dovecot/dovecot.conf:ro
+      - ./contrib/dovecot/conf.d:/etc/dovecot/conf.d:ro
+      - ./contrib/dovecot/userli.lua:/usr/local/bin/userli.lua:ro
+    networks:
+      - userli
+
 networks:
   userli:
 
