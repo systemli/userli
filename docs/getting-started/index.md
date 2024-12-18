@@ -12,13 +12,13 @@ This is not recommended for production use, but it is a good way to get started.
     Using podman: 
 
     ```shell
-    podman compose up -d --build
+    podman compose up -d
     ```
 
     Using docker:
 
     ```shell
-    docker compose up -d --build
+    docker compose up -d
     ```
 
 2. Initialize the database:
