@@ -26,12 +26,12 @@ class RegistrationType extends AbstractType
     /**
      * RegistrationType constructor.
      */
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager) : void
     {
         $this->domain = $manager->getRepository(Domain::class)->getDefaultDomain()->getName();
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options) : void
     {
         $transformer = new TextToEmailTransformer($this->domain);
 
