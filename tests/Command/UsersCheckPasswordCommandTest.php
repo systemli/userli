@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
-class LegacyUsersCheckPasswordCommandTest extends TestCase
+class UsersCheckPasswordCommandTest extends TestCase
 {
     protected $inputStream;
     protected $plainUser;
