@@ -1,3 +1,14 @@
+# 3.11.1 (2024.12.26)
+
+* Fix displaying QR code when configuring 2FA
+* Dovecot lua auth: Fix encoding of payload
+* Dovecot lua auth: Fix quota attribute
+* Add docker image for human testing
+* Unify API access token handlers
+* Simplify apache config example
+* Improve documentation
+* Update dependencies
+
 # 3.11.0 (2024.11.30)
 
 * Add retention API to update last login time for users
