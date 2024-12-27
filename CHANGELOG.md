@@ -1,4 +1,4 @@
-# 3.11.1 (2024.12.26)
+# 3.11.1 (2024.12.27)
 
 * Fix displaying QR code when configuring 2FA
 * Dovecot lua auth: Fix encoding of payload
