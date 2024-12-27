@@ -36,8 +36,10 @@ prepare:
 	mkdir -p build
 
 release: clean prepare
-	APP_ENV=prod composer install --no-dev --ignore-platform-reqs
-	APP_ENV=prod composer dump-autoload
+	APP_ENV=prod DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db" \
+		composer install --no-dev --ignore-platform-reqs
+	APP_ENV=prod DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db" \
+		composer dump-autoload
 	yarn --pure-lockfile
 	yarn encore production
 	# Create a release tarball
