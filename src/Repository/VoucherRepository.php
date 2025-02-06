@@ -42,6 +42,24 @@ class VoucherRepository extends EntityRepository
     }
 
     /**
+     * Returns the number of unredeemed vouchers per user, per default
+     * Optionally return the number of redeemed vouchers
+     */
+    public function countVouchersByUser(User $user, ?bool $redeemed): int
+    {
+        if ($redeemed === true) {
+            return $this->matching(Criteria::create()
+                ->where(Criteria::expr()->eq('user', $user))
+                ->andWhere(Criteria::expr()->neq('redeemedTime', null)))
+                ->count();
+        }
+        return $this->matching(Criteria::create()
+            ->where(Criteria::expr()->eq('user', $user))
+            ->andWhere(Criteria::expr()->eq('redeemedTime', null)))
+            ->count();
+    }
+
+    /**
      * Finds all vouchers for a given user.
      *
      * @return array|Voucher[]
