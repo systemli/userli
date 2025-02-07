@@ -47,15 +47,11 @@ class VoucherRepository extends EntityRepository
      */
     public function countVouchersByUser(User $user, ?bool $redeemed): int
     {
-        if ($redeemed === true) {
-            return $this->matching(Criteria::create()
-                ->where(Criteria::expr()->eq('user', $user))
-                ->andWhere(Criteria::expr()->neq('redeemedTime', null)))
-                ->count();
-        }
+        $criteria = $redeemed ? Criteria::expr()->neq('redeemedTime', null) : Criteria::expr()->eq('redeemedTime', null);
+
         return $this->matching(Criteria::create()
             ->where(Criteria::expr()->eq('user', $user))
-            ->andWhere(Criteria::expr()->eq('redeemedTime', null)))
+            ->andWhere($criteria))
             ->count();
     }
 

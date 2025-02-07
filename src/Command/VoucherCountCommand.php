@@ -17,7 +17,8 @@ class VoucherCountCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $manager,
-    ) {
+    )
+    {
         parent::__construct();
     }
 
@@ -37,13 +38,10 @@ class VoucherCountCommand extends Command
             throw new UserNotFoundException(sprintf('User with email %s not found!', $email));
         }
 
-        if (false === $input->getOption('redeemed')) {
-            $count = $this->manager->getRepository(Voucher::class)->countVouchersByUser($user, true);
-            $output->write(sprintf($count));
-        } else {
-            $count = $this->manager->getRepository(Voucher::class)->countVouchersByUser($user, null);
-            $output->write(sprintf($count));
-        }
+        $redeemed = $input->getOption('redeemed');
+        $count = $this->manager->getRepository(Voucher::class)->countVouchersByUser($user, $redeemed);
+        $output->write($count);
+
         return 0;
     }
 }
