@@ -3,8 +3,7 @@
 The software has builtin support for
 [Dovecot's mailbox encryption](https://wiki.dovecot.org/Plugins/MailCrypt), using the
 [global keys mode](https://wiki.dovecot.org/Plugins/MailCrypt#Global_keys).
-Keys are created and maintained by userli and handed over to Dovecot via
-`checkpassword` script.
+Keys are created and maintained by userli and handed over to Dovecot via an API.
 
 The MailCrypt feature is enabled per default and can optionally be switched
 off globally by setting `MAIL_CRYPT=0` in the dotenv (`.env`) file.
