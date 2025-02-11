@@ -12,6 +12,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
+ * @deprecated Use Prometheus exporter instead.
+ *
  * Class MuninVoucherCommand.
  */
 #[AsCommand(name: 'app:munin:voucher')]
@@ -41,6 +43,8 @@ class MuninVoucherCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        trigger_error("MuninVoucherCommand is deprecated. Use Prometheus exporter instead.", E_USER_DEPRECATED);
+
         if ($input->getOption('autoconf')) {
             $output->writeln('yes');
 
