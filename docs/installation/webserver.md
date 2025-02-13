@@ -24,7 +24,7 @@ rewrite {
 server {
     listen  80;
 
-    root /vagrant/public;
+    root /var/www/userli/public;
     index index.php;
 
     location / {
