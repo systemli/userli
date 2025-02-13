@@ -6,12 +6,11 @@ repo_url: https://github.com/systemli/userli
 nav:
   - Home: index.md
   - Development:
-      - Development: development/index.md
+      - "Getting started": development/index.md
       - "Code of Conduct": development/code_of_conduct.md
       - Icons: development/icons.md
       - Release: development/release.md
       - Tests: development/tests.md
-  - "Getting started": getting-started/index.md
   - Installation:
       - Installation: installation/index.md
       - Checkpassword: installation/checkpassword.md
@@ -35,6 +34,7 @@ theme:
     - content.code.copy
     - content.code.select
     - content.code.annotate
+    - content.tabs.link
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.sections
@@ -54,7 +54,10 @@ extra:
 
 markdown_extensions:
   - admonition
+  - pymdownx.details
   - pymdownx.highlight
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true

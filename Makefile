@@ -64,7 +64,6 @@ reset: clean
 	rm -rf public/build
 	rm -rf public/bundles
 	rm -rf public/components
-	rm -rf .vagrant/
 	rm -f ansible/playbook.retry
 	rm -rf var/log/*
 	rm -rf var/cache/*
