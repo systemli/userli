@@ -13,11 +13,11 @@ nav:
       - Tests: development/tests.md
   - Installation:
       - Installation: installation/index.md
-      - Checkpassword: installation/checkpassword.md
       - Commands: installation/commands.md
       - Configuration: installation/configuration.md
       - Customize: installation/customize.md
       - Database: installation/database.md
+      - Dovecot: installation/dovecot.md
       - Finalize: installation/finalize.md
       - Webserver: installation/webserver.md
   - MailCrypt:

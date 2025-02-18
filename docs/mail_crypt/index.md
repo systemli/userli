@@ -3,8 +3,9 @@
 The software has builtin support for
 [Dovecot's mailbox encryption](https://wiki.dovecot.org/Plugins/MailCrypt), using the
 [global keys mode](https://wiki.dovecot.org/Plugins/MailCrypt#Global_keys).
-Keys are created and maintained by userli and handed over to Dovecot via
-`checkpassword` script.
+Keys are created and maintained by userli and handed over via an API and can
+be consumed by Dovecot by a Lua script. See [here](/installation/dovecot)
+for how to configure authentication and mailcrypt in Dovecot.
 
 The MailCrypt feature is enabled per default and can optionally be switched
 off globally by setting `MAIL_CRYPT=0` in the dotenv (`.env`) file.
@@ -19,16 +20,6 @@ have MailCrypt enabled per default, you can set `MAIL_CRYPT=1` in the dotenv
 * `MAIL_CRYPT=2` - Enforce MailCrypt key generation for new users
 * `MAIL_CRYPT=3` - Enforce MailCrypt key generation for all users, see the
                    documentation about migrating legacy users for more info
-
-In order to enable MailCrypt in Dovecot, the following is required:
-
-* Add `mail_crypt` to the `mail_plugins` list in `/etc/dovecot/conf.d/10-mail.conf`
-* Set `mail_crypt_save_version = 0` in `/etc/dovecot/conf.d/90-mail-crypt.conf`
-
-The latter disables MailCrypt per default and is necessary to not break
-incoming mail for legacy users without MailCrypt keys. The checkpassword script
-automatically sets `mail_crypt_save_version = 2` for all users with MailCrypt
-keys.
 
 MailCrypt can be turned on/off for individual users by setting the `mail_crypt`
 switch in the `virtual_users` database table. This switch is mainly meant to
