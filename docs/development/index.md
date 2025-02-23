@@ -28,8 +28,7 @@ Start the containers:
     ```
 
 !!! info
-    `$command compose up -d` will initiate building the containers on first run. Append `--build` to force a full rebuild
-
+    This command will initiate building the containers on first run. Append `--build` to always force a full rebuild
 
 
 Install PHP dependencies, run composer scripts and update assets:
@@ -55,7 +54,6 @@ Initialize the database and install sample data:
     docker compose exec userli bin/console doctrine:schema:create
     docker compose exec userli bin/console doctrine:fixtures:load
     ```
-
 
 Open your browser and go to [http://localhost:8000](http://localhost:8000)
 
