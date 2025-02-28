@@ -1,3 +1,7 @@
+# 3.12.1 (2025.02.28)
+
+* Fix Makefile
+
 # 3.12.0 (2025.02.28)
 
 * Release Userli-Dovecot-Adapter as own tarball
