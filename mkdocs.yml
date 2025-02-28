@@ -8,11 +8,13 @@ nav:
   - Development:
       - "Getting started": development/index.md
       - "Code of Conduct": development/code_of_conduct.md
+      - "Coding style": development/coding_style.md
       - Icons: development/icons.md
       - Release: development/release.md
       - Tests: development/tests.md
   - Installation:
       - Installation: installation/index.md
+      - Code: installation/code.md
       - Commands: installation/commands.md
       - Configuration: installation/configuration.md
       - Customize: installation/customize.md
@@ -61,3 +63,4 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
+
