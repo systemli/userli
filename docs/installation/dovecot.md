@@ -1,4 +1,4 @@
-# Dovecot Authentication 
+# Dovecot Authentication
 
 Userli provides an API for `userdb` and `passdb` lookups.
 This can be used to authenticate users with Dovecot by using [Lua based authentication](https://doc.dovecot.org/2.3/configuration_manual/authentication/lua_based_authentication/).
@@ -27,12 +27,12 @@ On Debian based systems, following packages are required:
 * `dovecot-auth-lua`
 
 !!! warning
-   Debian 12 ships version 1.3.4-2 of `json-lua`, which does not include the library for the lua5.4 runtime.
-   This can be solved with symlinks:
-   ```shell
-   sudo ln -s  /usr/share/lua/5.3/json.lua  /usr/share/lua/5.4/
-   sudo ln -s  /usr/share/lua/5.3/json  /usr/share/lua/5.4/
-   ```
+    Debian 12 ships version 1.3.4-2 of `json-lua`, which does not include the library for the lua5.4 runtime.
+    This can be solved with symlinks:
+    ```shell
+    sudo ln -s  /usr/share/lua/5.3/json.lua  /usr/share/lua/5.4/
+    sudo ln -s  /usr/share/lua/5.3/json  /usr/share/lua/5.4/
+    ```
 
 ## Export environment variables
 
