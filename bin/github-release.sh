@@ -53,26 +53,23 @@ gh_notes="$(awk "/^# $version/{flag=1; next} /^# [0-9]+/{flag=0} flag" CHANGELOG
 git tag --sign --message "Release $version" "$version"
 
 # create release tarball
-tarball="build/userli-$(git --no-pager describe --tags --always).tar.gz"
-if [ "$vagrant" = "yes" ]; then
-    (vagrant up;
-     vagrant ssh -c "tempdir=\"\$(mktemp -d)\";
-                     git clone /vagrant \"\$tempdir/userli-$version\";
-                     make prepare;
-                     (cd \"\$tempdir/userli-$version\";
-                          make release;
-                          cp -a build/userli* /vagrant/build/);
-                          rm -r \"\$tempdir\"")
-else
-    make release
-fi
-if [ ! -f "$tarball" ]; then
-    printf "Error: release tarball %s not created\n" "$tarball" >&2
+tarball_userli="build/userli-$(git --no-pager describe --tags --always).tar.gz"
+tarball_adapter="build/userli-dovecot-adapter-$(git --no-pager describe --tags --always).tar.gz"
+make release
+
+if [ ! -f "$tarball_userli" ]; then
+    printf "Error: release tarball %s not created\n" "$tarball_userli" >&2
     exit 1
 fi
 
-# gpg-sign release tarball
-gpg -u ${GPG_SIGN_KEY} --output "${tarball}.asc" --armor --detach-sign --batch --yes "$tarball"
+if [ ! -f "$tarball_adapter" ]; then
+    printf "Error: release tarball %s not created\n" "$tarball_adapter" >&2
+    exit 1
+fi
+
+# gpg-sign release tarballs
+gpg -u ${GPG_SIGN_KEY} --output "${tarball_userli}.asc" --armor --detach-sign --batch --yes "$tarball_userli"
+gpg -u ${GPG_SIGN_KEY} --output "${tarball_adapter}.asc" --armor --detach-sign --batch --yes "$tarball_adapter"
 
 # validate token
 curl --output /dev/null --silent --header "$auth" $gh_repo || { printf "Error: Invalid repo, token or network issue\n" >&2; exit 1; }
@@ -92,10 +89,12 @@ eval $(printf "$gh_response" | grep -m 1 "id.:" | grep -w id | tr : = | tr -cd '
 [ "$id" ] || { printf "Error: Failed to get release id for tag: %s\n" "$version"; printf "%s\n" "$gh_response" | awk 'length($0)<100' >&2; exit 1; }
 
 # upload to Github
-for ext in "" ".asc" ".sha256" ".sha512"; do
-    gh_asset="https://uploads.github.com/repos/${gh_group}/${gh_project}/releases/${id}/assets?name=$(basename ${tarball}${ext})"
-    curl --silent --proto-redir https "$gh_asset" \
-            -H "Content-Type: application/octet-stream" \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "$gh_auth" --data-binary @"${tarball}${ext}"
+for tarball in ${tarball_userli} ${tarball_adapter}; do
+    for ext in "" ".asc" ".sha256" ".sha512"; do
+        gh_asset="https://uploads.github.com/repos/${gh_group}/${gh_project}/releases/${id}/assets?name=$(basename ${tarball}${ext})"
+        curl --silent --proto-redir https "$gh_asset" \
+                -H "Content-Type: application/octet-stream" \
+                -H "Accept: application/vnd.github.v3+json" \
+                -H "$gh_auth" --data-binary @"${tarball}${ext}"
+        done
 done
