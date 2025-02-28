@@ -1,13 +1,19 @@
 # Getting started
 
-The easiest way to get started with Userli is to use podman or docker.
-We provide a `docker-compose.yml` file that starts Userli, Dovecot and MariaDB.
+We provide a `docker-compose.yml` file that starts Userli, Dovecot and MariaDB to set up a development environment.
+
+## Requirements
+
+- `docker-compose` or `podman-compose`
+- `yarn` (or `yarn-pkg` on Ubuntu or Debian based systems)
+- `composer`
 
 !!! info
     If you don't have podman or docker installed, you can find the installation instructions on the [podman website](https://podman.io/getting-started/installation) or the [docker website](https://docs.docker.com/get-docker/).
 
+## Set up
 
-Start Userli, Dovecot and MariaDB with podman or docker:
+Start the containers:
 
 === "podman"
 
@@ -21,34 +27,31 @@ Start Userli, Dovecot and MariaDB with podman or docker:
     docker compose up -d
     ```
 
-Install dependencies and run composer scripts:
+!!! info
+    This command will initiate building the containers on first run. Append `--build` to always force a full rebuild
+
+
+Install PHP dependencies, run composer scripts and update assets:
+
 
 ```shell
 composer install --ignore-platform-reqs
+yarn
+yarn encore dev
 ```
 
-Initialize the database:
+Initialize the database and install sample data:
 
 === "podman"
 
     ```shell
     podman compose exec userli bin/console doctrine:schema:create
-    ```
-
-=== "docker"
-    ```shell
-    docker compose exec userli bin/console doctrine:schema:create
-    ```
-
-Install sample data:
-
-=== "podman"
-    ```shell
     podman compose exec userli bin/console doctrine:fixtures:load
     ```
 
 === "docker"
     ```shell
+    docker compose exec userli bin/console doctrine:schema:create
     docker compose exec userli bin/console doctrine:fixtures:load
     ```
 
