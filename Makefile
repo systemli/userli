@@ -78,3 +78,11 @@ reset:
 	rm -rf var/cache/*
 	rm -rf vendor
 	rm -rf userli-*
+
+vendors:
+	composer install
+
+integration: vendors lint
+	yarn
+	yarn encore dev
+	bin/behat -f progress
