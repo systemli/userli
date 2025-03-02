@@ -28,4 +28,4 @@ Userli supports a role system to help you run your mail server.
 
 ## Contribute
 
-This is a start. Please help to [improve the documentation](https://github.com/systemli/userli/edit/main/docsindex.md).
+This is a start. Please help to [improve the documentation](https://github.com/systemli/userli/edit/main/docs/index.md).
