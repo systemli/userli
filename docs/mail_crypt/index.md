@@ -4,7 +4,7 @@ The software has builtin support for
 [Dovecot's mailbox encryption](https://wiki.dovecot.org/Plugins/MailCrypt), using the
 [global keys mode](https://wiki.dovecot.org/Plugins/MailCrypt#Global_keys).
 Keys are created and maintained by userli and handed over via an API and can
-be consumed by Dovecot by a Lua script. See [here](/installation/dovecot)
+be consumed by Dovecot by a Lua script. See [here](/userli/installation/dovecot)
 for how to configure authentication and mailcrypt in Dovecot.
 
 The MailCrypt feature is enabled per default and can optionally be switched
