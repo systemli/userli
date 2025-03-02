@@ -1,3 +1,21 @@
+# 3.12.1 (2025.02.28)
+
+* Fix Makefile
+
+# 3.12.0 (2025.02.28)
+
+* Release Userli-Dovecot-Adapter as own tarball
+* Remove container variable in Dovecot Dockerfile
+* Say goodbye to Vagrant
+* Lua script: fix typo
+* Simplify Command and Repository Method
+* Deprecate Munin
+* Add command to get voucher count for User
+* Upgrade Symfony
+* Update npm dependencies
+* Use sqlite DB in release process to not depend on MySQL
+* Various improvements to documentation
+
 # 3.11.1 (2024.12.27)
 
 * Fix displaying QR code when configuring 2FA
