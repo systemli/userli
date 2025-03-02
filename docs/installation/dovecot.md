@@ -24,7 +24,7 @@ On Debian based systems, run
 
 ```shell
 sudo apt update
-sudo apt install lua json-lua dovecot-auth-lua
+sudo apt install lua5.3 lua-json dovecot-auth-lua
 ```
 
 !!! warning
