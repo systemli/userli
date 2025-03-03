@@ -55,10 +55,27 @@ Initialize the database and install sample data:
     docker compose exec userli bin/console doctrine:fixtures:load
     ```
 
-Open your browser and go to [http://localhost:8000](http://localhost:8000)
-
-
 !!! info
     The `doctrine:fixtures:load` command will create four new accounts with corresponding roles (`admin`, `user`, `support`, `suspicious`) as well as some random aliases and vouchers. The domain for all accounts is "example.org" and the password is "password".
     
     If you want to see more details about how the users are created, see `src/DataFixtures`.
+
+Open your browser and go to [http://localhost:8000](http://localhost:8000)
+
+## Troubleshooting
+
+On systems with SELinux enabled, the webserver might throw an error due to broken filesystem permissions.
+To fix this, create `docker-compose.override.yml` in the root directory with following content:
+
+```yaml
+---
+services:
+  userli:
+    security_opt:
+      - label=disable
+
+  dovecot:
+    security_opt:
+      - label=disable
+```
+
