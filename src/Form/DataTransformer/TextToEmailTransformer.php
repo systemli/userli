@@ -17,7 +17,7 @@ class TextToEmailTransformer implements DataTransformerInterface
      * {@inheritdoc}
      * @return false|string
      */
-    public function transform($value)
+    public function transform($value): mixed
     {
         if (null === $value) {
             return '';
