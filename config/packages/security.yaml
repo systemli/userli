@@ -1,6 +1,4 @@
 security:
-    enable_authenticator_manager: true
-
     # https://symfony.com/doc/current/security.html#c-hashing-passwords
     password_hashers:
         App\Entity\User:
