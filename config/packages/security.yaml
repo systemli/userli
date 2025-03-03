@@ -162,7 +162,6 @@ security:
             user_checker: App\Security\UserChecker
             form_login:
                 enable_csrf: true
-                require_previous_session: false
                 login_path: login
                 check_path: login
                 default_target_path: start
