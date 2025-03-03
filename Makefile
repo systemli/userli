@@ -86,3 +86,7 @@ integration: vendors lint
 	yarn
 	yarn encore dev
 	bin/behat -f progress
+
+security-check: vendors
+	bin/local-php-security-checker
+
