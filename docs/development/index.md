@@ -5,7 +5,7 @@ We provide a `docker-compose.yml` file that starts Userli, Dovecot and MariaDB t
 ## Requirements
 
 - `docker-compose` or `podman-compose`
-- `yarn` (or `yarn-pkg` on Ubuntu or Debian based systems)
+- `yarn` (or `yarnpkg` on Ubuntu or Debian based systems)
 - `composer`
 
 !!! info
