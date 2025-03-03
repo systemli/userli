@@ -38,7 +38,7 @@ services:
     volumes:
       - ./contrib/dovecot/dovecot.conf:/etc/dovecot/dovecot.conf:ro
       - ./contrib/dovecot/conf.d:/etc/dovecot/conf.d:ro
-      - ./contrib/dovecot/userli.lua:/usr/local/bin/userli.lua:ro
+      - ./contrib/dovecot/userli-dovecot-adapter.lua:/usr/local/bin/userli-dovecot-adapter.lua:ro
     networks:
       - userli
 
