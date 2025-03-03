@@ -63,7 +63,7 @@ class UsersCheckPasswordCommand extends Command
      *
      * @throws Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         trigger_error("UsersCheckPasswordCommand is deprecated. Use dovecot API with Lua auth instead.", E_USER_DEPRECATED);
 
