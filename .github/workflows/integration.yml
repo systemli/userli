@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-24.04
+    runs-on: self-hosted
     name: PHPUnit & Behat
     steps:
       - name: Checkout
@@ -69,7 +69,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   test-mariadb:
-    runs-on: ubuntu-24.04
+    runs-on: self-hosted
     name: Behat (MariaDB)
     needs: test
     services:
@@ -122,7 +122,7 @@ jobs:
           DATABASE_URL: mysql://mail_test:password@127.0.0.1:${{ job.services.mariadb.ports[3306] }}/mail
 
   test-postgres:
-    runs-on: ubuntu-24.04
+    runs-on: self-hosted
     name: Behat (PostgreSQL)
     needs: test
     services:
@@ -174,7 +174,7 @@ jobs:
           DATABASE_URL: pgsql://mail_test:password@127.0.0.1:${{ job.services.postgres.ports[5432] }}/mail?charset=UTF8
 
   docker:
-    runs-on: ubuntu-24.04
+    runs-on: self-hosted
     name: Build & Push Docker Image
     needs: test
     steps:
