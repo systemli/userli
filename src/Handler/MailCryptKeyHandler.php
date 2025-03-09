@@ -85,7 +85,7 @@ class MailCryptKeyHandler
         $keyPair->erase();
 
         if (true === $mailCryptEnable) {
-            $user->setMailCrypt(true);
+            $user->setMailCryptEnabled(true);
         }
 
         $this->manager->flush();

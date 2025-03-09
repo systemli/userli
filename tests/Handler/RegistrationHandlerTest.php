@@ -58,7 +58,7 @@ class RegistrationHandlerTest extends KernelTestCase
             $this->assertEquals([Roles::USER], $user->getRoles());
             $this->assertEquals($domain, $user->getDomain());
             $this->assertEquals($voucher, $user->getInvitationVoucher());
-            $this->assertFalse($user->getMailCrypt());
+            $this->assertFalse($user->getMailCryptEnabled());
         });
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
