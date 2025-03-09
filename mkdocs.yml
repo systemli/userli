@@ -22,13 +22,12 @@ nav:
       - Dovecot: installation/dovecot.md
       - Finalize: installation/finalize.md
       - Webserver: installation/webserver.md
-  - MailCrypt:
-      - MailCrypt: mail_crypt/index.md
-      - Details: mail_crypt/details.md
-      - Legacy: mail_crypt/legacy.md
-  - Screenshots: screenshots/index.md
   - Update: update/index.md
-  - "Web Key Directory": wkd/index.md
+  - Features:
+      - MailCrypt: features/mail_crypt.md
+      - "Web Key Directory": features/wkd.md
+      - Integrations: features/integrations.md
+  - Screenshots: screenshots/index.md
 
 theme:
   name: material
