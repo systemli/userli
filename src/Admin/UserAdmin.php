@@ -176,7 +176,7 @@ class UserAdmin extends Admin
     public function prePersist($object): void
     {
         $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
-        if (null !== $object->hasMailCrypt()) {
+        if (null !== $object->getMailCryptEnabled()) {
             $this->mailCryptKeyHandler->create($object, $object->getPlainPassword());
         }
         if (null === $object->getDomain() && null !== $domain = $this->domainGuesser->guess($object->getEmail())) {

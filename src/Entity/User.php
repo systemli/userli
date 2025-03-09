@@ -15,7 +15,7 @@ use App\Traits\InvitationVoucherTrait;
 use App\Traits\LastLoginTimeTrait;
 use App\Traits\MailCryptPublicKeyTrait;
 use App\Traits\MailCryptSecretBoxTrait;
-use App\Traits\MailCryptTrait;
+use App\Traits\MailCryptEnabledTrait;
 use App\Traits\PasswordTrait;
 use App\Traits\PasswordVersionTrait;
 use App\Traits\PlainMailCryptPrivateKeyTrait;
@@ -60,7 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     use RecoverySecretBoxTrait;
     use PlainRecoveryTokenTrait;
     use RecoveryStartTimeTrait;
-    use MailCryptTrait;
+    use MailCryptEnabledTrait;
     use MailCryptSecretBoxTrait;
     use PlainMailCryptPrivateKeyTrait;
     use MailCryptPublicKeyTrait;
