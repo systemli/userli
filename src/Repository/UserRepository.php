@@ -117,7 +117,7 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
     {
         return $this->matching(Criteria::create()
             ->where(Criteria::expr()->eq('deleted', false))
-            ->andWhere(Criteria::expr()->eq('mailCrypt', true))
+            ->andWhere(Criteria::expr()->eq('mailCryptEnabled', true))
         )->count();
     }
 

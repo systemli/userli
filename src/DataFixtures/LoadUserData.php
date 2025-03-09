@@ -50,7 +50,7 @@ class LoadUserData extends AbstractUserData implements DependentFixtureInterface
             }
             if ($mailcryptEnabled) {
                 $this->mailCryptKeyHandler->create($user, self::PASSWORD);
-                $user->setMailCrypt(true);
+                $user->setMailCryptEnabled(true);
             }
             if ($deleted) {
                 $user->setDeleted(true);

@@ -150,13 +150,13 @@ class UsersCheckPasswordCommand extends Command
         // Optionally create mail_crypt key pair (when MAIL_CRYPT >= 3 and not $userDbLookup)
         if ($this->mailCrypt >= 3 &&
             false === $userDbLookup &&
-            false === $user->hasMailCrypt() &&
+            false === $user->getMailCryptEnabled() &&
             null === $user->getMailCryptPublicKey()) {
             $this->mailCryptKeyHandler->create($user, $password, true);
         }
 
         // Optionally set mail_crypt environment variables for checkpassword-reply command
-        if ($this->mailCrypt >= 1 && $user->hasMailCrypt()) {
+        if ($this->mailCrypt >= 1 && $user->getMailCryptEnabled()) {
             $envVars['EXTRA'] = sprintf('%s userdb_mail_crypt_save_version userdb_mail_crypt_global_public_key', $envVars['EXTRA']);
             $envVars['userdb_mail_crypt_save_version'] = '2';
             $envVars['userdb_mail_crypt_global_public_key'] = $user->getMailCryptPublicKey();
