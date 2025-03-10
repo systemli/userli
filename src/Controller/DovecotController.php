@@ -54,7 +54,7 @@ class DovecotController extends AbstractController
 
         if (
             $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_OPTIONAL) &&
-            $user->hasMailCrypt() &&
+            $user->getMailCryptEnabled() &&
             $user->hasMailCryptPublicKey()
         ) {
             $mailCryptReported = 2;
@@ -98,7 +98,7 @@ class DovecotController extends AbstractController
         // If mailCrypt is enforced for all users, optionally create mailCrypt keypair for user
         if (
             $this->mailCrypt === MailCrypt::ENABLED_ENFORCE_ALL_USERS &&
-            false === $user->getMailCrypt() &&
+            false === $user->getMailCryptEnabled() &&
             null === $user->getMailCryptPublicKey()
         ) {
             try {
@@ -109,7 +109,7 @@ class DovecotController extends AbstractController
         }
 
         // If mailCrypt is enabled and enabled for user, derive mailCryptPrivateKey
-        if ($this->mailCrypt->isAtLeast(MailCrypt::ENABLED_OPTIONAL) && $user->hasMailCrypt()) {
+        if ($this->mailCrypt->isAtLeast(MailCrypt::ENABLED_OPTIONAL) && $user->getMailCryptEnabled()) {
             try {
                 $privateKey = $this->mailCryptKeyHandler->decrypt($user, $request->getPassword());
             } catch (Exception $exception) {
