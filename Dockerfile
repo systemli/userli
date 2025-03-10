@@ -22,7 +22,7 @@ RUN composer install --no-scripts && \
 FROM docker.io/php:8.2-apache-bookworm
 
 RUN apt-get update && \
-    apt-get install -y libpng-dev libsodium-dev libsqlite3-dev libzip-dev zlib1g-dev zip && \
+    apt-get install -y libpng-dev libsodium-dev libsqlite3-dev libzip-dev zlib1g-dev zip gpg && \
     a2enmod rewrite && \
     docker-php-ext-install -j$(nproc) gd opcache pdo_mysql pdo_sqlite sodium zip && \
     echo "memory_limit = 512M" > /usr/local/etc/php/conf.d/memory_limit.ini
