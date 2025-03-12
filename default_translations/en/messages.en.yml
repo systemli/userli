@@ -127,7 +127,7 @@ account:
       your mails.
     desc-lost: >
       If you ever loose access to your two-factor authenticator app, you will have to authenticate
-      using one of the two-factor backup codes.
+      using one of the two-factor backup codes or reset your account using the recovery token.
     enable-lead: >
       Scan the image below with your two-factor app.
     backup-ack-lead: >
@@ -145,6 +145,7 @@ recovery:
   waiting-time: Second step starts at %time%.
   reset-lead: You're now allowed to reset your password
   token-lead: New recovery token
+  information-extra: Two-factor authentication will be reset.
 navbar_left:
   about-us:
     text: About us
@@ -161,7 +162,7 @@ registration:
     We only allow registrations if a friend invites you with an invite code to our
     services.
   information-password-policy: >
-    <strong>Important:</strong> You need a password with at least 12 characters.
+    <strong>Password policy:</strong> At least 12 characters, no German umlauts.
     Passwords will be tested against a <a href="https://haveibeenpwned.com/Passwords">database
     of known bad passwords</a>.
   label-email: Your preferred e-mail address

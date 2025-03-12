@@ -126,8 +126,8 @@ account:
       welches du von deiner Zwei-Faktor-App bekommst. Dieses Extra-Passwort ist nur zum
       Login unter %app_url% nötig, nicht für andere Dienste wie etwa deine Mails.
     desc-lost: >
-      Falls du Zugang zu deiner Zwei-Faktor-App verlierst, musst du dich mit Hilfe eines der
-      Zwei-Faktor Backup Codes anmelden.
+      Falls du den Zugang zu deiner Zwei-Faktor-App verlierst, musst du dich mit Hilfe eines der
+      Zwei-Faktor Backup Codes anmelden oder den Account mit Hilfe des Wiederherstellungscodes zurücksetzen.
     enable-lead: >
       Scanne das Bild mit deiner Zwei-Faktor-App.
     backup-ack-lead: >
@@ -145,6 +145,7 @@ recovery:
   waiting-time: Der zweite Schritt ist möglich ab dem %time%.
   reset-lead: Du kannst nun dein Passwort zurücksetzen
   token-lead: Neuer Wiederherstellungscode
+  information-extra: Die Zwei-Faktor-Authentifizierung wird dadurch zurückgesetzt.
 navbar_left:
   about-us:
     text: Über uns
@@ -161,8 +162,8 @@ registration:
     Eine Registrierung ist nur möglich, wenn dich eine Freund:in zu unserem Dienst
     einlädt, dir also einen Einladungscode übergibt.
   information-password-policy: >
-    <strong>Wichtig:</strong> Du benötigst ein Passwort, das aus mindestens 12 Zeichen
-    besteht. Passwörter werden gegen eine <a href="https://haveibeenpwned.com/Passwords">Datenbank
+    <strong>Passwort-Anforderungen:</strong> Mindestens 12 Zeichen, keine deutschen Umlaute.
+    Passwörter werden gegen eine <a href="https://haveibeenpwned.com/Passwords">Datenbank
     bekannter schlechter Passwörter</a> getestet.
   label-email: Deine gewünschte E-Mail-Adresse
   recovery-token-headline: Wiederherstellungscode

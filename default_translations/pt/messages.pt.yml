@@ -125,8 +125,6 @@ registration:
   information-intro: >
     Gostaria de se cadastrar em <a href="%project_url%">%project_name%</a>? Você só
     pode se cadastrar se receber um convite para o nosso serviço.
-  information-password-policy: >
-    <strong>Importante:</strong> Sua senha deve ter pelo menos 12 caracteres.
   label-email: Seu endereço de email desejado
   recovery-token-headline: Token de recuperação
 welcome:

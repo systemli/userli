@@ -241,8 +241,8 @@ registration:
   information: Informations
   recovery-token-headline: Jeton de récupération
   title: Inscription à %project_name%
-  information-password-policy: "<strong>Important :</strong> Vous devez définir un\
-    \ mot de passe d'au moins 12 caractères. Les mots de passe seront testés avec\
+  information-password-policy: "<strong>Conditions pour le mot de passe :</strong> Au moins\
+    \ moins 12 caractères, pas des trémas allemands. Les mots de passe seront testés avec\
     \ une <a href=\"https://haveibeenpwned.com/Passwords\">base de données de mots\
     \ de passe compromis</a>.\n"
   label-email: Votre adresse électronique préférée

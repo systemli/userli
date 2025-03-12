@@ -116,8 +116,8 @@ navbar_right:
 registration:
   title: Registrering med %project_name%
   information: Info
-  information-password-policy: "<strong>Viktig:</strong> Du trenger et passord på\
-    \ minst 12 tegn. Passord vil bli testet mot <a href=\"https://haveibeenpwned.com/Passwords\"\
+  information-password-policy: "<strong>Krav til passord:</strong> Minst 12 tegn,\
+    \ ingen tyske omlaut. Passord vil bli testet mot <a href=\"https://haveibeenpwned.com/Passwords\"\
     >databasen over kjente dårlige passord</a>.\n"
   label-email: Din foretrukne e-postadresse
   recovery-token-headline: Gjenopprettingssymbol
