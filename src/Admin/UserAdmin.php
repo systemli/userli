@@ -3,6 +3,7 @@
 namespace App\Admin;
 
 use App\Entity\User;
+use App\Enum\MailCrypt;
 use App\Enum\Roles;
 use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
@@ -28,7 +29,7 @@ class UserAdmin extends Admin
 
     private PasswordUpdater $passwordUpdater;
     private MailCryptKeyHandler $mailCryptKeyHandler;
-    private int $mailCrypt;
+    private readonly MailCrypt $mailCrypt;
 
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {
@@ -177,7 +178,7 @@ class UserAdmin extends Admin
     {
         $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
         if (null !== $object->hasMailCrypt()) {
-            $this->mailCryptKeyHandler->create($object, $object->getPlainPassword());
+            $this->mailCryptKeyHandler->create($object, $object->getPlainPassword(), $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS));
         }
         if (null === $object->getDomain() && null !== $domain = $this->domainGuesser->guess($object->getEmail())) {
             $object->setDomain($domain);
@@ -217,6 +218,6 @@ class UserAdmin extends Admin
     }
     public function setMailCryptVar(string $mailCrypt): void
     {
-        $this->mailCrypt = (int) $mailCrypt;
+        $this->mailCrypt = MailCrypt::from((int) $mailCrypt);
     }
 }
