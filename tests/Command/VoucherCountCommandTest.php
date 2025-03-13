@@ -20,6 +20,7 @@ class VoucherCountCommandTest extends TestCase
     public function setUp(): void
     {
         $user = new User();
+        $user->setEmail('user@example.org');
         $userRepository = $this->createMock(UserRepository::class);
         $userRepository->method('findByEmail')->willReturnMap(
             [
@@ -74,17 +75,8 @@ class VoucherCountCommandTest extends TestCase
         $commandTester->assertCommandIsSuccessful();
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('2', $output);
-
-        // Test counting redeemed vouchers
-        $commandTester->execute([
-            '--user' => 'user@example.org',
-            '--redeemed' => true,
-        ]);
-
-        $commandTester->assertCommandIsSuccessful();
-
-        $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('5', $output);
+        $this->assertStringContainsString('Voucher count for user user@example.org', $output);
+        $this->assertStringContainsString('Used: 2', $output);
+        $this->assertStringContainsString('Unused: 5', $output);
     }
 }
