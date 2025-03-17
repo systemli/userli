@@ -25,199 +25,199 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserAdmin extends Admin
 {
-    use DomainGuesserAwareTrait;
+	use DomainGuesserAwareTrait;
 
-    private PasswordUpdater $passwordUpdater;
-    private MailCryptKeyHandler $mailCryptKeyHandler;
-    private readonly MailCrypt $mailCrypt;
+	private PasswordUpdater $passwordUpdater;
+	private MailCryptKeyHandler $mailCryptKeyHandler;
+	private readonly MailCrypt $mailCrypt;
 
-    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
-    {
-        return 'user';
-    }
+	protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+	{
+		return 'user';
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function alterNewInstance(object $object): void
-    {
-        $object->setRoles([Roles::USER]);
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function alterNewInstance(object $object): void
+	{
+		$object->setRoles([Roles::USER]);
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configureFormFields(FormMapper $form): void
-    {
-        $user = $this->getRoot()->getSubject();
-        $userId = $user->getId();
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function configureFormFields(FormMapper $form): void
+	{
+		$user = $this->getRoot()->getSubject();
+		$userId = $user->getId();
 
-        $form
-            ->add('email', EmailType::class, ['disabled' => !$this->isNewObject()])
-            ->add('plainPassword', PasswordType::class, [
-                'label' => 'form.password',
-                'required' => $this->isNewObject(),
-                'disabled' => (null !== $userId) ? $user->hasMailCryptSecretBox() : false,
-                'help' => (null !== $userId && $user->hasMailCryptSecretBox()) ?
-                    'Disabled because user has a MailCrypt key pair defined' : null,
-            ])
-            ->add('totp_confirmed', CheckboxType::class, [
-                'label' => 'form.twofactor',
-                'required' => false,
-                'data' => (null !== $userId) ? $user->isTotpAuthenticationEnabled() : false,
-                'disabled' => null === $userId || !$user->isTotpAuthenticationEnabled(),
-                'help' => 'Can only be enabled by user',
-            ])
-            ->add('roles', ChoiceType::class, [
-                'choices' => [Roles::getAll()],
-                'multiple' => true,
-                'expanded' => false,
-                'label' => 'form.roles',
-            ])
-            ->add('quota', null, [
-                'help' => 'Custom mailbox quota in MB',
-            ])
-            ->add('deleted', CheckboxType::class, ['disabled' => true]);
-    }
+		$form
+			->add('email', EmailType::class, ['disabled' => !$this->isNewObject()])
+			->add('plainPassword', PasswordType::class, [
+				'label' => 'form.password',
+				'required' => $this->isNewObject(),
+				'disabled' => (null !== $userId) ? $user->hasMailCryptSecretBox() : false,
+				'help' => (null !== $userId && $user->hasMailCryptSecretBox()) ?
+					'Disabled because user has a MailCrypt key pair defined' : null,
+			])
+			->add('totp_confirmed', CheckboxType::class, [
+				'label' => 'form.twofactor',
+				'required' => false,
+				'data' => (null !== $userId) ? $user->isTotpAuthenticationEnabled() : false,
+				'disabled' => null === $userId || !$user->isTotpAuthenticationEnabled(),
+				'help' => 'Can only be enabled by user',
+			])
+			->add('roles', ChoiceType::class, [
+				'choices' => [Roles::getAll()],
+				'multiple' => true,
+				'expanded' => false,
+				'label' => 'form.roles',
+			])
+			->add('quota', null, [
+				'help' => 'Custom mailbox quota in MB',
+			])
+			->add('deleted', CheckboxType::class, ['disabled' => true]);
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configureDatagridFilters(DatagridMapper $filter): void
-    {
-        $filter
-            ->add('email', null, [
-                'show_filter' => true,
-            ])
-            ->add('domain', null, [
-                'show_filter' => true,
-            ])
-            ->add('creationTime', DateTimeRangeFilter::class, [
-                'field_type' => DateRangePickerType::class,
-                'field_options' => [
-                    'field_options' => [
-                        'format' => 'dd.MM.yyyy'
-                    ]
-                ]
-            ])
-            ->add('roles', null, [
-                'field_options' => [
-                    'required' => false,
-                    'choices' => [Roles::getAll()],
-                ],
-                'field_type' => ChoiceType::class,
-                'show_filter' => true,
-            ])
-            ->add('recoverySecretBox', CallbackFilter::class, [
-                'field_type' => BooleanType::class,
-                'label' => 'Recovery Token',
-                'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
-                    if (is_array($value) && 2 === $value['value']) {
-                        $query = sprintf('%s.recoverySecretBox IS NULL', $alias);
-                    } else {
-                        $query = sprintf('%s.recoverySecretBox IS NOT NULL', $alias);
-                    }
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function configureDatagridFilters(DatagridMapper $filter): void
+	{
+		$filter
+			->add('email', null, [
+				'show_filter' => true,
+			])
+			->add('domain', null, [
+				'show_filter' => true,
+			])
+			->add('creationTime', DateTimeRangeFilter::class, [
+				'field_type' => DateRangePickerType::class,
+				'field_options' => [
+					'field_options' => [
+						'format' => 'dd.MM.yyyy'
+					]
+				]
+			])
+			->add('roles', null, [
+				'field_options' => [
+					'required' => false,
+					'choices' => [Roles::getAll()],
+				],
+				'field_type' => ChoiceType::class,
+				'show_filter' => true,
+			])
+			->add('recoverySecretBox', CallbackFilter::class, [
+				'field_type' => BooleanType::class,
+				'label' => 'Recovery Token',
+				'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
+					if (is_array($value) && 2 === $value['value']) {
+						$query = sprintf('%s.recoverySecretBox IS NULL', $alias);
+					} else {
+						$query = sprintf('%s.recoverySecretBox IS NOT NULL', $alias);
+					}
 
-                    $proxyQuery->getQueryBuilder()->andWhere($query);
+					$proxyQuery->getQueryBuilder()->andWhere($query);
 
-                    return true;
-                },
-            ])
-            ->add('mailCrypt')
-            ->add('deleted');
-    }
+					return true;
+				},
+			])
+			->add('mailCrypt')
+			->add('deleted');
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configureListFields(ListMapper $list): void
-    {
-        $list
-            ->addIdentifier('id', null, [
-                'route' => [
-                    'name' => 'edit',
-                ],
-            ])
-            ->addIdentifier('email', null, [
-                'route' => [
-                    'name' => 'edit',
-                ],
-            ])
-            ->add('creationTime')
-            ->add('updatedTime')
-            ->add('isTotpAuthenticationEnabled', 'boolean', [
-                'label' => 'form.twofactor-short',
-            ])
-            ->add('recoverySecretBox', 'boolean', [
-                'label' => 'Recovery Token',
-            ])
-            ->add('mailCrypt')
-            ->add('deleted');
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function configureListFields(ListMapper $list): void
+	{
+		$list
+			->addIdentifier('id', null, [
+				'route' => [
+					'name' => 'edit',
+				],
+			])
+			->addIdentifier('email', null, [
+				'route' => [
+					'name' => 'edit',
+				],
+			])
+			->add('creationTime')
+			->add('updatedTime')
+			->add('isTotpAuthenticationEnabled', 'boolean', [
+				'label' => 'form.twofactor-short',
+			])
+			->add('recoverySecretBox', 'boolean', [
+				'label' => 'Recovery Token',
+			])
+			->add('mailCryptEnabled')
+			->add('deleted');
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function configureBatchActions($actions): array
-    {
-        if ($this->hasRoute('edit') && $this->hasAccess('edit')) {
-            $actions['removeVouchers'] = [
-                'ask_confirmation' => true,
-            ];
-        }
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function configureBatchActions($actions): array
+	{
+		if ($this->hasRoute('edit') && $this->hasAccess('edit')) {
+			$actions['removeVouchers'] = [
+				'ask_confirmation' => true,
+			];
+		}
 
-        return $actions;
-    }
+		return $actions;
+	}
 
-    /**
-     * @param User $object
-     *
-     * @throws Exception
-     */
-    public function prePersist($object): void
-    {
-        $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
-        if (null !== $object->hasMailCrypt()) {
-            $this->mailCryptKeyHandler->create($object, $object->getPlainPassword(), $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS));
-        }
-        if (null === $object->getDomain() && null !== $domain = $this->domainGuesser->guess($object->getEmail())) {
-            $object->setDomain($domain);
-        }
-    }
+	/**
+	 * @param User $object
+	 *
+	 * @throws Exception
+	 */
+	public function prePersist($object): void
+	{
+		$this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
+		if (null !== $object->getMailCryptEnabled()) {
+			$this->mailCryptKeyHandler->create($object, $object->getPlainPassword(), $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS));
+		}
+		if (null === $object->getDomain() && null !== $domain = $this->domainGuesser->guess($object->getEmail())) {
+			$object->setDomain($domain);
+		}
+	}
 
-    /**
-     * @param User $object
-     */
-    public function preUpdate($object): void
-    {
-        // Only admins are allowed to set attributes of other admins
-        if (!$this->security->isGranted(Roles::ADMIN) && $object->hasRole(Roles::ADMIN)) {
-            throw new AccessDeniedException('Not allowed to edit admin user');
-        }
+	/**
+	 * @param User $object
+	 */
+	public function preUpdate($object): void
+	{
+		// Only admins are allowed to set attributes of other admins
+		if (!$this->security->isGranted(Roles::ADMIN) && $object->hasRole(Roles::ADMIN)) {
+			throw new AccessDeniedException('Not allowed to edit admin user');
+		}
 
-        if (!empty($object->getPlainPassword())) {
-            $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
-        } else {
-            $object->updateUpdatedTime();
-        }
+		if (!empty($object->getPlainPassword())) {
+			$this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
+		} else {
+			$object->updateUpdatedTime();
+		}
 
-        if (false === $object->getTotpConfirmed()) {
-            $object->setTotpSecret(null);
-            $object->setTotpConfirmed(false);
-            $object->clearBackupCodes();
-        }
-    }
+		if (false === $object->getTotpConfirmed()) {
+			$object->setTotpSecret(null);
+			$object->setTotpConfirmed(false);
+			$object->clearBackupCodes();
+		}
+	}
 
-    public function setPasswordUpdater(PasswordUpdater $passwordUpdater): void
-    {
-        $this->passwordUpdater = $passwordUpdater;
-    }
-    public function setMailCryptKeyHandler(MailCryptKeyHandler $mailCryptKeyHandler): void
-    {
-        $this->mailCryptKeyHandler = $mailCryptKeyHandler;
-    }
-    public function setMailCryptVar(string $mailCrypt): void
-    {
-        $this->mailCrypt = MailCrypt::from((int) $mailCrypt);
-    }
+	public function setPasswordUpdater(PasswordUpdater $passwordUpdater): void
+	{
+		$this->passwordUpdater = $passwordUpdater;
+	}
+	public function setMailCryptKeyHandler(MailCryptKeyHandler $mailCryptKeyHandler): void
+	{
+		$this->mailCryptKeyHandler = $mailCryptKeyHandler;
+	}
+	public function setMailCryptVar(string $mailCrypt): void
+	{
+		$this->mailCrypt = MailCrypt::from((int) $mailCrypt);
+	}
 }
