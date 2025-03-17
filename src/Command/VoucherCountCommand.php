@@ -25,9 +25,8 @@ class VoucherCountCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Get count of unredeemed vouchers for a specific user')
-            ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User whose vouchers are counted')
-            ->addOption('redeemed', 'r', InputOption::VALUE_NONE, 'Show count of redeemed vouchers');
+            ->setDescription('Get count of vouchers for a specific user')
+            ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User whose vouchers are counted');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -38,9 +37,11 @@ class VoucherCountCommand extends Command
             throw new UserNotFoundException(sprintf('User with email %s not found!', $email));
         }
 
-        $redeemed = $input->getOption('redeemed');
-        $count = $this->manager->getRepository(Voucher::class)->countVouchersByUser($user, $redeemed);
-        $output->write($count);
+        $usedCount = $this->manager->getRepository(Voucher::class)->countVouchersByUser($user, true);
+        $unusedCount = $this->manager->getRepository(Voucher::class)->countVouchersByUser($user, false);
+        $output->writeln(sprintf("Voucher count for user %s", $user->getEmail()));
+        $output->writeln(sprintf("Used: %d", $usedCount));
+        $output->writeln(sprintf("Unused: %d", $unusedCount));
 
         return 0;
     }
