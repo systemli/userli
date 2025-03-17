@@ -5,12 +5,8 @@ namespace App\Controller\Api;
 use App\Dto\PasswordDto;
 use App\Dto\TwoFactorDto;
 use App\Entity\User;
-use App\Handler\MailCryptKeyHandler;
-use App\Handler\DeleteHandler;
-use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
@@ -21,8 +17,7 @@ class TwoFactorController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $manager,
-    ) {
-    }
+    ) {}
 
     #[Route('/api/user/twofactor', name: 'get_two_factor', methods: ['GET'], stateless: true)]
     public function getTwoFactor(
@@ -45,9 +40,8 @@ class TwoFactorController extends AbstractController
     ): JsonResponse {
         if (true === $user->isTotpAuthenticationEnabled()) {
             return $this->json([
-                'status' => 'error',
-                'message' => 'nothing to do: totp is enabled.'
-            ], 404);
+                'status' => 'unchanged',
+            ], 304);
         }
 
         $user->setTotpSecret($totpAuthenticator->generateSecret());
@@ -70,9 +64,8 @@ class TwoFactorController extends AbstractController
     ): JsonResponse {
         if (true === $user->isTotpAuthenticationEnabled()) {
             return $this->json([
-                'status' => 'error',
-                'message' => 'nothing to do: totp is enabled.'
-            ], 404);
+                'status' => 'unchanged',
+            ], 304);
         }
 
         $user->setTotpConfirmed(true);
@@ -80,7 +73,7 @@ class TwoFactorController extends AbstractController
 
         return $this->json([
             'status' => 'success',
-            'twoFactorBackupCodes' => $user->getBackupCodes()
+            'backup-codes' => $user->getBackupCodes()
         ], 200);
 
         return $this->json(['status' => 'success'], 200);
@@ -96,9 +89,8 @@ class TwoFactorController extends AbstractController
     ): JsonResponse {
         if (false === $user->isTotpAuthenticationEnabled()) {
             return $this->json([
-                'status' => 'error',
-                'message' => 'nothing to do: totp is not enabled.'
-            ], 404);
+                'status' => 'unchanged',
+            ], 304);
         }
 
         $user->setTotpConfirmed(false);

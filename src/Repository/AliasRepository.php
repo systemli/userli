@@ -12,12 +12,14 @@ class AliasRepository extends EntityRepository
     /**
      * @return Alias|null
      */
-    public function findOneByUserAndSource(User $user, string $email, ?bool $random = null): ?Alias
+    public function findOneByUserAndSource(User $user, string $email): ?Alias
     {
-        if (isset($random)) {
-            return $this->findOneBy(['user' => $user, 'source' => $email, 'random' => $random, 'deleted' => false]);
-        }
-        return $this->findOneBy(['user' => $user, 'source' => $email, 'deleted' => false]);
+        return $this->findOneBy([
+            'user' => $user,
+            'source' => $email,
+            'destination' => $user->getEmail(),
+            'deleted' => false
+        ]);
     }
 
     /**
@@ -31,29 +33,44 @@ class AliasRepository extends EntityRepository
             return $this->findOneBy(['source' => $email]);
         }
 
-        return $this->findOneBy(['source' => $email, 'deleted' => false]);
+        return $this->findOneBy([
+            'source' => $email,
+            'deleted' => false
+        ]);
     }
 
     /**
-     * @param User $user
-     * @param bool|null $random
      * @return array|Alias[]
      */
     public function findByUser(User $user, ?bool $random = null): array
     {
         if (isset($random)) {
-            return $this->findBy(['user' => $user, 'random' => $random, 'deleted' => false]);
+            return $this->findBy([
+                'user' => $user,
+                'random' => $random,
+                'deleted' => false
+            ]);
         }
 
-        return $this->findBy(['user' => $user, 'deleted' => false]);
+        return $this->findBy([
+            'user' => $user,
+            'deleted' => false
+        ]);
     }
 
     public function countByUser(User $user, ?bool $random = null): int
     {
         if (isset($random)) {
-            return $this->count(['user' => $user, 'random' => $random, 'deleted' => false]);
+            return $this->count([
+                'user' => $user,
+                'random' => $random,
+                'deleted' => false
+            ]);
         }
 
-        return $this->count(['user' => $user, 'deleted' => false]);
+        return $this->count([
+            'user' => $user,
+            'deleted' => false
+        ]);
     }
 }

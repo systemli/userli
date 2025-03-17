@@ -46,6 +46,7 @@ class AliasController extends AbstractController
                 ];
             }, $customAliases);
         }
+
         $randomAliasData = [];
         if ($randomAliases = $this->aliasRepository->findByUser($user, true, false)) {
             $randomAliasData = array_map(function (Alias $alias) {
@@ -85,31 +86,37 @@ class AliasController extends AbstractController
 
         return $this->json([
             'status' => 'success',
-            'alias' => [
-                'id' => $alias->getId(),
-                'source' => $alias->getSource()
-            ]
+            'alias' =>  $alias->getSource()
         ], 200);
     }
 
     /**
      * Delegates password validation to Password
      */
-    #[Route('/api/user/aliases/{id}', name: 'delete_user_alias', methods: ['DELETE'], stateless: true)]
+    #[Route('/api/user/aliases/{email}', name: 'delete_user_alias', methods: ['DELETE'], stateless: true)]
     public function getAlias(
         #[MapRequestPayload] PasswordDto $request,
-        Alias $alias
+        #[CurrentUser] User $user,
+        string $email
     ): JsonResponse {
-        $violations = $this->validator->validate($alias, new AliasDelete());
-        if (count($violations) > 0) {
-            $message = "";
-            foreach ($violations as $violation) {
-                $message .= $violation->getMessage() . '\n';
-            }
-            return $this->json(['status' => 'error', 'message' => $message], 403);
+        if (null === $alias = $this->manager->getRepository(Alias::class)->findOneByUserAndSource($user, $email)) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'TODO'
+            ], 404);
+        }
+
+        if (false === $alias->isRandom()) {
+            return $this->json([
+                'status' => 'error',
+                'message' => 'TODO'
+            ], 403);
         }
 
         $this->deleteHandler->deleteAlias($alias);
-        return $this->json(['status' => 'success'], 200);
+
+        return $this->json([
+            'status' => 'success'
+        ], 200);
     }
 }

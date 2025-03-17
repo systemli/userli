@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller\Api;
+namespace App\Controller\Api\User;
 
-use DateTime;
+use DateTimeImmutable;
 use Exception;
 use App\Dto\PasswordDto;
 use App\Dto\RecoveryDto;
@@ -18,6 +18,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class RecoveryController extends AbstractController
@@ -32,23 +33,18 @@ class RecoveryController extends AbstractController
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly EntityManagerInterface   $manager,
         private readonly PasswordUpdater          $passwordUpdater,
-    ) {
-    }
+    ) {}
 
     #[Route('/api/user/recovery', name: 'set_recovery_token', methods: ['POST'], stateless: true)]
     public function setRecoveryToken(
         #[MapRequestPayload] PasswordDto $request,
         #[CurrentUser] User $user,
     ): JsonResponse {
-
         $user->setPlainPassword($request->getPassword());
 
-        // Check if user has a MailCrypt key
         if ($user->hasMailCryptSecretBox()) {
-            // Decrypt the MailCrypt key
             $user->setPlainMailCryptPrivateKey($this->mailCryptKeyHandler->decrypt($user, $request->getPassword()));
         } else {
-            // Create a new MailCrypt key if none existed before
             $this->mailCryptKeyHandler->create($user);
         }
 
@@ -56,7 +52,7 @@ class RecoveryController extends AbstractController
         $this->recoveryTokenHandler->create($user);
         if (null === $recoveryToken = $user->getPlainRecoveryToken()) {
             return $this->json([
-                'message' => 'error',
+                'status' => 'error',
                 'message' => 'unknown error occured when resetting token',
             ], 500);
         }
@@ -65,99 +61,132 @@ class RecoveryController extends AbstractController
         $user->eraseCredentials();
 
         return $this->json([
-            'message' => 'success',
+            'status' => 'success',
             'recoveryToken' => $recoveryToken
         ], 200);
     }
 
     #[Route('/api/recovery', name: 'recovery_get_status', methods: ['GET'], stateless: true)]
     public function getPasswordRecovery(
-        #[MapRequestPayload] RecoveryDto $request,
+        #[MapQueryParameter] string $email = '',
+
     ): JsonResponse {
-
-        /** @var User $user */
-        $user = $this->manager->getRepository(User::class)->findByEmail($request->email);
-
-        $recoveryStartTime = $user->getRecoveryStartTime();
-        $recoveryUnlockedTime = $recoveryStartTime->modify('+ 2 days');
-        if (null === $recoveryStartTime || new DateTime($this::PROCESS_EXPIRE) >= $recoveryStartTime) {
-            return $this->json([
-                'status' => 'success',
-                'recovery' => 'not started'
-            ], 200);
-        } elseif (new DateTime($this::PROCESS_DELAY) < $recoveryStartTime) {
-            return $this->json([
-                'status' => 'success',
-                'recovery' =>  'waitin-period',
-                'wait-until' => $recoveryUnlockedTime
-            ], 200);
+        // failure to get user does not return 404 in order not to allow user enumeration
+        if (null === $user = $this->manager->getRepository(User::class)->findByEmail($email)) {
+            $recoveryStartTime = null;
         } else {
+            $recoveryStartTime = $user->getRecoveryStartTime();
+        }
+
+        if (null === $recoveryStartTime || $this->getProcessExpireTime() >= $recoveryStartTime) {
             return $this->json([
                 'status' => 'success',
-                'stage' => 'password-reset',
+                'stage' => 'no-started',
+                'start-time' => null
             ], 200);
         }
+
+        if ($this->getProcessDelayTime() < $recoveryStartTime) {
+            return $this->json([
+                'status' => 'success',
+                'stage' =>  'waiting-period',
+                'start-time' => $recoveryStartTime
+            ], 200);
+        }
+
+        return $this->json([
+            'status' => 'success',
+            'stage' => 'password-reset',
+            'start-time' => null
+        ], 200);
     }
 
-    /** 
-     * TODO: refactor into smaller pieces 
-     * TODO: proper response messages
-     */
     #[Route('/api/recovery', name: 'recovery_start', methods: ['POST'], stateless: true)]
     public function postPasswordRecovery(
         #[MapRequestPayload] RecoveryDto $request,
     ): JsonResponse {
-        /** @var User $user */
         $user = $this->manager->getRepository(User::class)->findByEmail($request->email);
 
         $recoveryStartTime = $user->getRecoveryStartTime();
 
-        if (null === $recoveryStartTime || new DateTime($this::PROCESS_EXPIRE) >= $recoveryStartTime) {
-            // Recovery process gets started
-            $user->updateRecoveryStartTime();
-            $this->manager->flush();
-            $this->eventDispatcher->dispatch(new UserEvent($user), RecoveryProcessEvent::NAME);
-
+        if (null === $recoveryStartTime || $this->getProcessDelayTime() >= $recoveryStartTime) {
+            $recoveryStartTime = $this->startPasswordRecoveryProcess($user);
             return $this->json([
                 'status' => 'success',
-                'date' => $user->getRecoveryStartTime()
+                'start-time' => $recoveryStartTime
             ], 200);
-        } elseif (new DateTime($this::PROCESS_DELAY) < $recoveryStartTime) {
+        }
+
+        if ($this->getProcessDelayTime() < $recoveryStartTime) {
             return $this->json([
                 'status' => 'error',
                 'stage' => 'waiting-period',
-                'date' => $user->getRecoveryStartTime()
+                'start-time' => $user->getRecoveryStartTime()
             ], 403);
-        } else {
-            // Recovery process successful, go on with the form to reset password
-            $user->setPlainPassword($request->getNewPassword());
-            $this->passwordUpdater->updatePassword($user);
-
-            $mailCryptPrivateKey = $this->recoveryTokenHandler->decrypt($user, $request->lowerCaseRecoveryToken());
-
-            // Encrypt MailCrypt private key from recoverySecretBox with new password
-            $this->mailCryptKeyHandler->updateWithPrivateKey($user, $mailCryptPrivateKey);
-
-            // Clear old token
-            $user->eraseRecoveryStartTime();
-            $user->eraseRecoverySecretBox();
-
-            // Generate new token
-            $user->setPlainMailCryptPrivateKey($mailCryptPrivateKey);
-            $this->recoveryTokenHandler->create($user);
-            if (null === $newRecoveryToken = $user->getPlainRecoveryToken()) {
-                throw new Exception('PlainRecoveryToken should not be null');
-            }
-
-            // Clear sensitive plaintext data from User object
-            $user->eraseCredentials();
-            sodium_memzero($mailCryptPrivateKey);
-            $this->manager->flush();
-
-            return $this->json([
-                'message' => 'success',
-                'recoveryToken' => $newRecoveryToken
-            ], 200);
         }
+
+        try {
+            $newRecoveryToken = $this->finishPasswordRecoveryProcess($user, $request->getRecoveryToken(), $request->getNewPassword());
+        } catch (Exception $e) {
+            return $this->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+
+
+        return $this->json([
+            'status' => 'success',
+            'recoveryToken' => $newRecoveryToken
+        ], 200);
+    }
+
+
+    private function startPasswordRecoveryProcess(User $user): DateTimeImmutable
+    {
+        $user->updateRecoveryStartTime();
+        $this->manager->flush();
+        $this->eventDispatcher->dispatch(new UserEvent($user), RecoveryProcessEvent::NAME);
+        return $user->getRecoveryStartTime();
+    }
+
+    private function finishPasswordRecoveryProcess(User $user, string $recoveryToken, string $newPassword): string
+    {
+        $user->setPlainPassword($newPassword);
+        $this->passwordUpdater->updatePassword($user);
+
+        $mailCryptPrivateKey = $this->recoveryTokenHandler->decrypt($user, $recoveryToken);
+
+        // Encrypt MailCrypt private key from recoverySecretBox with new password
+        $this->mailCryptKeyHandler->updateWithPrivateKey($user, $mailCryptPrivateKey);
+
+        // Clear old token
+        $user->eraseRecoveryStartTime();
+        $user->eraseRecoverySecretBox();
+
+        // Generate new token
+        $user->setPlainMailCryptPrivateKey($mailCryptPrivateKey);
+        $this->recoveryTokenHandler->create($user);
+        if (null === $newRecoveryToken = $user->getPlainRecoveryToken()) {
+            throw new Exception('PlainRecoveryToken should not be null');
+        }
+
+        // Clear sensitive plaintext data from User object
+        $user->eraseCredentials();
+        sodium_memzero($mailCryptPrivateKey);
+        $this->manager->flush();
+
+        return $newRecoveryToken;
+    }
+
+    private function getProcessDelayTime(): DateTimeImmutable
+    {
+        return new DateTimeImmutable(self::PROCESS_DELAY);
+    }
+
+
+    private function getProcessExpireTime(): DateTimeImmutable
+    {
+        return new DateTimeImmutable(self::PROCESS_EXPIRE);
     }
 }

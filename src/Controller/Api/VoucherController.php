@@ -17,14 +17,14 @@ class VoucherController extends AbstractController
     public function __construct(
         private readonly VoucherHandler $voucherHandler,
         private readonly VoucherCreator $voucherCreator,
-    ) {
-    }
+    ) {}
 
     #[Route('/api/user/vouchers', name: 'get_user_voucher', methods: ['GET'], stateless: true)]
     public function getVouchers(
         #[CurrentUser] User $user
     ): JsonResponse {
         $vouchers = $this->voucherHandler->getVouchersByUser($user);
+
         $data = [];
         if ($vouchers) {
             foreach ($vouchers as $voucher) {
@@ -47,6 +47,7 @@ class VoucherController extends AbstractController
                 'message' => 'forbidden'
             ], 403);
         }
+
         try {
             $voucher = $this->voucherCreator->create($user);
         } catch (ValidationException) {

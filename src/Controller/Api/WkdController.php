@@ -39,10 +39,10 @@ class WkdController extends AbstractController
     #[Route('/api/user/wkd', methods: ['GET'], stateless: true)]
     public function getAllOpenPgpKeys(#[CurrentUser] User $user): JsonResponse
     {
-        $allowedUids = $this->getAllowedUserIdByUser($user);
+        $allowedMailHandles = $this->getMailHandles($user);
 
         $keyData = [];
-        if (null != $openPgpKeys = $this->repository->findByEmailList($allowedUids)) {
+        if (null != $openPgpKeys = $this->repository->findByEmailList($allowedMailHandles)) {
             $keyData = array_map(function (OpenPgpKey $openPgpKey) {
                 return $this->printOpenPgpKey($openPgpKey);
             }, $openPgpKeys);
@@ -50,7 +50,7 @@ class WkdController extends AbstractController
 
         return $this->json([
             'status' => 'success',
-            'allowedUids' => $allowedUids,
+            'allowedMailHandles' => $allowedMailHandles,
             'keyData' => $keyData
         ], 200);
     }
@@ -127,7 +127,7 @@ class WkdController extends AbstractController
     /**
      * get non-random mail handles owned by a user.
      */
-    public function getAllowedUserIdByUser(User $user): array
+    public function getMailHandles(User $user): array
     {
         $aliasSources = [];
         if ($aliases = $this->manager->getRepository(Alias::class)->findByUser($user, false, false)) {

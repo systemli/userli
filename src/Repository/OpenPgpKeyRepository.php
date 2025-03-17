@@ -33,6 +33,7 @@ class OpenPgpKeyRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
     public function countKeys(): int
     {
         return $this->count([]);

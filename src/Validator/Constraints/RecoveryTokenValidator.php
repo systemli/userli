@@ -17,8 +17,7 @@ class RecoveryTokenValidator extends ConstraintValidator
     public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly RecoveryTokenHandler $recoveryTokenHandler,
-    ) {
-    }
+    ) {}
 
     /**
      * Checks if recoveryToken matches User
@@ -32,14 +31,14 @@ class RecoveryTokenValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, RecoveryDto::class);
         }
 
-        if (!$value->email || !$value->lowerCaseRecoveryToken()) {
+        if (!$value->email || !$value->getRecoveryToken()) {
             throw new InvalidArgumentException('"email" and "recoveryToken" attributes cannot be null');
         }
 
         $user = $this->manager->getRepository(User::class)->findByEmail($value->email);
         if (!$user) {
             $this->context->buildViolation($constraint->message)->addViolation();
-        } elseif (!$this->recoveryTokenHandler->verify($user, $value->lowerCaseRecoveryToken())) {
+        } elseif (!$this->recoveryTokenHandler->verify($user, $value->getRecoveryToken())) {
             $this->context->buildViolation($constraint->message)->addViolation();
         }
     }
