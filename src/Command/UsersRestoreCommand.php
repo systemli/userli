@@ -103,7 +103,7 @@ class UsersRestoreCommand extends Command
         // Generate MailCrypt key with new password (overwrites old MailCrypt key)
         if ($this->mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS)) {
             $this->mailCryptKeyHandler->create($user, $password);
-            $user->setMailCrypt(true);
+            $user->setMailCryptEnabled(true);
 
             // Reset recovery token
             $this->recoveryTokenHandler->create($user);

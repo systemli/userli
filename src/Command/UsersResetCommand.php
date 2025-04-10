@@ -59,6 +59,10 @@ class UsersResetCommand extends Command
             throw new UserNotFoundException(sprintf('User with email %s not found!', $email));
         }
 
+        if ($user->isDeleted()) {
+            throw new UserNotFoundException(sprintf('User with email %s is deleted! Consider to restore the user instead.', $email));
+        }
+
         $questionHelper = $this->getHelper('question');
         $confirmQuest = new ConfirmationQuestion('Really reset user? This will clear their mailbox: (yes|no) ', false);
         if (!$questionHelper->ask($input, $output, $confirmQuest)) {

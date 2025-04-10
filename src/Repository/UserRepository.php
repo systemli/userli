@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Domain;
 use Doctrine\Common\Collections\AbstractLazyCollection;
-use Doctrine\Common\Collections\Collection;
 use DateTime;
 use DateInterval;
 use App\Entity\User;

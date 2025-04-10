@@ -75,7 +75,7 @@ class UsersRestoreCommandTest extends TestCase
 
         // Verify that user properties got restore
         self::assertFalse($this->user->isDeleted());
-        self::assertTrue($this->user->getMailCrypt());
+        self::assertTrue($this->user->getMailCryptEnabled());
 
         $output = $commandTester->getDisplay();
         $this->assertStringContainsString('Restoring user deleted@example.org', $output);
