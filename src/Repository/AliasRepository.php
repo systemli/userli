@@ -27,8 +27,14 @@ class AliasRepository extends EntityRepository
      * @param bool|null $random
      * @return array|Alias[]
      */
-    public function findByUser(User $user, ?bool $random = null): array
+    public function findByUser(User $user, ?bool $random = null, ?bool $disableDomainFilter = false): array
     {
+        $filters = $this->getEntityManager()->getFilters();
+
+        if ($filters->isEnabled('domain_filter') && $disableDomainFilter == true) {
+            $filters->disable('domain_filter');
+        }
+
         if (isset($random)) {
             return $this->findBy(['user' => $user, 'random' => $random, 'deleted' => false]);
         }

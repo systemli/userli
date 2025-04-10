@@ -18,6 +18,10 @@ class MailCryptKeyHandler
     // Use elliptic curve type 'secp521r1' for MailCrypt keys
     private const MAIL_CRYPT_PRIVATE_KEY_TYPE = OPENSSL_KEYTYPE_EC;
     private const MAIL_CRYPT_CURVE_NAME = 'secp521r1';
+    const MESSAGE_OPENSSL_EXITED_UNSUCCESSFULLY = 'Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: ';
+    const MESSAGE_OPENSSL_OUTPUT_INVALID = 'Transforming key to PKCS#8 with OpenSSL failed. OpenSSL output is no valid PKCS#8 key: ';
+    const MESSAGE_SECRET_IS_NULL = 'secret should not be null';
+    const MESSAGE_DECRYPTION_FAILED = 'decryption of mailCryptSecretBox failed';
 
     /**
      * MailCryptPrivateKeyHandler constructor.
@@ -49,10 +53,10 @@ class MailCryptKeyHandler
         sodium_memzero($privateKey);
 
         if (!$process->isSuccessful()) {
-            throw new Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: ' . $process->getErrorOutput());
+            throw new Exception(self::MESSAGE_OPENSSL_EXITED_UNSUCCESSFULLY . $process->getErrorOutput());
         }
         if (!str_starts_with($process->getOutput(), '-----BEGIN PRIVATE KEY-----')) {
-            throw new Exception('Transforming key to PKCS#8 with OpenSSL failed. OpenSSL output is no valid PKCS#8 key: ' . $process->getOutput());
+            throw new Exception(self::MESSAGE_OPENSSL_OUTPUT_INVALID . $process->getOutput());
         }
 
         return $process->getOutput();
@@ -61,7 +65,7 @@ class MailCryptKeyHandler
     /**
      * @throws Exception
      */
-    public function create(User $user, string $password): void
+    public function create(User $user, string $password, ?bool $mailCryptEnable = false): void
     {
         $pKey = openssl_pkey_new([
             'private_key_type' => self::MAIL_CRYPT_PRIVATE_KEY_TYPE,
@@ -80,6 +84,10 @@ class MailCryptKeyHandler
         // Clear variables with confidential content from memory
         $keyPair->erase();
 
+        if (true === $mailCryptEnable) {
+            $user->setMailCrypt(true);
+        }
+
         $this->manager->flush();
     }
 
@@ -89,11 +97,11 @@ class MailCryptKeyHandler
     public function update(User $user, string $oldPassword, string $newPassword): void
     {
         if (null === $secret = $user->getMailCryptSecretBox()) {
-            throw new Exception('secret should not be null');
+            throw new Exception(self::MESSAGE_SECRET_IS_NULL);
         }
 
         if (null === $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($secret), $oldPassword)) {
-            throw new Exception('decryption of mailCryptSecretBox failed');
+            throw new Exception(self::MESSAGE_DECRYPTION_FAILED);
         }
 
         $this->updateWithPrivateKey($user, $privateKey, $newPassword);
@@ -116,11 +124,11 @@ class MailCryptKeyHandler
     public function decrypt(User $user, string $password): string
     {
         if (null === $secret = $user->getMailCryptSecretBox()) {
-            throw new Exception('secret should not be null');
+            throw new Exception(self::MESSAGE_SECRET_IS_NULL);
         }
 
         if (null === $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($secret), $password)) {
-            throw new Exception('decryption of mailCryptSecretBox failed');
+            throw new Exception(self::MESSAGE_DECRYPTION_FAILED);
         }
 
         sodium_memzero($password);

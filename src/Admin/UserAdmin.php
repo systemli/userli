@@ -2,12 +2,13 @@
 
 namespace App\Admin;
 
-use Exception;
 use App\Entity\User;
+use App\Enum\MailCrypt;
 use App\Enum\Roles;
 use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use App\Traits\DomainGuesserAwareTrait;
+use Exception;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -25,6 +26,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class UserAdmin extends Admin
 {
     use DomainGuesserAwareTrait;
+
+    private PasswordUpdater $passwordUpdater;
+    private MailCryptKeyHandler $mailCryptKeyHandler;
+    private readonly MailCrypt $mailCrypt;
 
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {
@@ -49,6 +54,13 @@ class UserAdmin extends Admin
 
         $form
             ->add('email', EmailType::class, ['disabled' => !$this->isNewObject()])
+            ->add('plainPassword', PasswordType::class, [
+                'label' => 'form.password',
+                'required' => $this->isNewObject(),
+                'disabled' => (null !== $userId) ? $user->hasMailCryptSecretBox() : false,
+                'help' => (null !== $userId && $user->hasMailCryptSecretBox()) ?
+                    'Disabled because user has a MailCrypt key pair defined' : null,
+            ])
             ->add('totp_confirmed', CheckboxType::class, [
                 'label' => 'form.twofactor',
                 'required' => false,
@@ -74,8 +86,12 @@ class UserAdmin extends Admin
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
-            ->add('email')
-            ->add('domain')
+            ->add('email', null, [
+                'show_filter' => true,
+            ])
+            ->add('domain', null, [
+                'show_filter' => true,
+            ])
             ->add('creationTime', DateTimeRangeFilter::class, [
                 'field_type' => DateRangePickerType::class,
                 'field_options' => [
@@ -155,6 +171,22 @@ class UserAdmin extends Admin
 
     /**
      * @param User $object
+     *
+     * @throws Exception
+     */
+    public function prePersist($object): void
+    {
+        $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
+        if (null !== $object->hasMailCrypt()) {
+            $this->mailCryptKeyHandler->create($object, $object->getPlainPassword(), $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS));
+        }
+        if (null === $object->getDomain() && null !== $domain = $this->domainGuesser->guess($object->getEmail())) {
+            $object->setDomain($domain);
+        }
+    }
+
+    /**
+     * @param User $object
      */
     public function preUpdate($object): void
     {
@@ -163,12 +195,29 @@ class UserAdmin extends Admin
             throw new AccessDeniedException('Not allowed to edit admin user');
         }
 
-        $object->updateUpdatedTime();
+        if (!empty($object->getPlainPassword())) {
+            $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
+        } else {
+            $object->updateUpdatedTime();
+        }
 
         if (false === $object->getTotpConfirmed()) {
             $object->setTotpSecret(null);
             $object->setTotpConfirmed(false);
             $object->clearBackupCodes();
         }
+    }
+
+    public function setPasswordUpdater(PasswordUpdater $passwordUpdater): void
+    {
+        $this->passwordUpdater = $passwordUpdater;
+    }
+    public function setMailCryptKeyHandler(MailCryptKeyHandler $mailCryptKeyHandler): void
+    {
+        $this->mailCryptKeyHandler = $mailCryptKeyHandler;
+    }
+    public function setMailCryptVar(string $mailCrypt): void
+    {
+        $this->mailCrypt = MailCrypt::from((int) $mailCrypt);
     }
 }

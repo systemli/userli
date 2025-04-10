@@ -1,3 +1,55 @@
+# 3.12.1 (2025.02.28)
+
+* Fix Makefile
+
+# 3.12.0 (2025.02.28)
+
+* Release Userli-Dovecot-Adapter as own tarball
+* Remove container variable in Dovecot Dockerfile
+* Say goodbye to Vagrant
+* Lua script: fix typo
+* Simplify Command and Repository Method
+* Deprecate Munin
+* Add command to get voucher count for User
+* Upgrade Symfony
+* Update npm dependencies
+* Use sqlite DB in release process to not depend on MySQL
+* Various improvements to documentation
+
+# 3.11.1 (2024.12.27)
+
+* Fix displaying QR code when configuring 2FA
+* Dovecot lua auth: Fix encoding of payload
+* Dovecot lua auth: Fix quota attribute
+* Add docker image for human testing
+* Unify API access token handlers
+* Simplify apache config example
+* Improve documentation
+* Update dependencies
+
+# 3.11.0 (2024.11.30)
+
+* Add retention API to update last login time for users
+* Add retention API to list deleted users
+* Do not filter displayed aliases in /alias
+* Support trusted proxies for userli behind reverse proxy
+* Fix postfix controller
+* Fix userdb attributes in dovecot lua auth script
+* Migrate large parts of release process to Makefile
+* Add Deprecation for UsersCheckPasswordCommand
+* Update dependencies
+
+# 3.10.0 (2024.11.10)
+
+* Upgrade to Symfony 6.4.14 (#659)
+* Add API for Postfix (#644)
+* Add API for Dovecot (#651)
+
+# 3.9.1 (2024.09.29)
+
+* Fix adding Users in Admin
+* Show email and domain filters per default in admin user list
+
 # 3.9.0 (2024.09.27)
 
 * Add roundcube API endpoint to get list of aliases

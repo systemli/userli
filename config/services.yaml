@@ -79,6 +79,13 @@ services:
         arguments:
             $appUrl: "%env(APP_URL)%"
 
+    App\Controller\DovecotController:
+        arguments:
+            $mailCryptEnv: "%env(MAIL_CRYPT)%"
+            $mailLocation: "%env(DOVECOT_MAIL_LOCATION)%"
+            $mailUid: "%env(DOVECOT_MAIL_UID)%"
+            $mailGid: "%env(DOVECOT_MAIL_GID)%"
+
     App\EventListener\:
         resource: '../src/EventListener/*'
         tags:
@@ -164,9 +171,12 @@ services:
             - '@Doctrine\ORM\EntityManagerInterface'
         public: true
 
-    App\Security\KeycloakAccessTokenHandler:
+    App\Security\ApiAccessTokenHandler:
         arguments:
-            $keycloakApiAccessToken: "%env(KEYCLOAK_API_ACCESS_TOKEN)%"
+            $accessTokenDovecot: '%env(DOVECOT_API_ACCESS_TOKEN)%'
+            $accessTokenKeycloak: '%env(KEYCLOAK_API_ACCESS_TOKEN)%'
+            $accessTokenRetention: '%env(RETENTION_API_ACCESS_TOKEN)%'
+            $accessTokenPostfix: '%env(POSTFIX_API_ACCESS_TOKEN)%'
 
     App\Sender\WelcomeMessageSender:
         public: true
@@ -189,7 +199,10 @@ services:
             - App\Entity\User
             - App\Controller\UserCRUDController
         calls:
+            - [setPasswordUpdater, ['@App\Helper\PasswordUpdater']]
             - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
+            - [setMailCryptKeyHandler, ['@App\Handler\MailCryptKeyHandler']]
+            - [setMailCryptVar, ["%env(MAIL_CRYPT)%"]]
 
     userli.admin.domain:
         class: App\Admin\DomainAdmin

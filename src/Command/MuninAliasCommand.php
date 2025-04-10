@@ -12,6 +12,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
+ * @deprecated Use Prometheus exporter instead.
+ *
  * Class MuninAliasCommand.
  */
 #[AsCommand(name: 'app:munin:alias')]
@@ -41,6 +43,8 @@ class MuninAliasCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        trigger_error("MuninAliasCommand is deprecated. Use Prometheus exporter instead.", E_USER_DEPRECATED);
+
         if ($input->getOption('autoconf')) {
             $output->writeln('yes');
 

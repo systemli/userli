@@ -19,6 +19,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
+/**
+ * @deprecated Use dovecot API with Lua auth instead.
+ */
 #[AsCommand(name: 'app:users:checkpassword')]
 class UsersCheckPasswordCommand extends Command
 {
@@ -62,6 +65,8 @@ class UsersCheckPasswordCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
+        trigger_error("UsersCheckPasswordCommand is deprecated. Use dovecot API with Lua auth instead.", E_USER_DEPRECATED);
+
         $replyArgs = $input->getArgument('checkpassword-reply');
 
         $replyCommand = null;
@@ -142,13 +147,12 @@ class UsersCheckPasswordCommand extends Command
             $envVars['userdb_quota_rule'] = sprintf('*:storage=%dM', $user->getQuota());
         }
 
-        // Optionally create mail_crypt key pair and recovery token
-        // (when MAIL_CRYPT >= 3 and not $userDbLookup)
+        // Optionally create mail_crypt key pair (when MAIL_CRYPT >= 3 and not $userDbLookup)
         if ($this->mailCrypt >= 3 &&
             false === $userDbLookup &&
             false === $user->hasMailCrypt() &&
             null === $user->getMailCryptPublicKey()) {
-            $this->mailCryptKeyHandler->create($user, $password);
+            $this->mailCryptKeyHandler->create($user, $password, true);
         }
 
         // Optionally set mail_crypt environment variables for checkpassword-reply command

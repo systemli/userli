@@ -13,6 +13,7 @@ public/components/*
 .vagrant/
 ansible/playbook.retry
 translations/
+docker-compose.override.yml
 .php_cs.cache
 
 ###> symfony/phpunit-bridge ###

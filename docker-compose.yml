@@ -1,16 +1,49 @@
 ---
 services:
-  mysql:
-    image: mariadb:10.11
+  userli:
+    image: docker.io/systemli/userli:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/html
     ports:
-      - '3306:3306'
+      - 8000:80
+    networks:
+      - userli
+
+  mariadb:
+    image: docker.io/mariadb:10.11
     environment:
       MYSQL_USER: mail
       MYSQL_PASSWORD: password
       MYSQL_DATABASE: mail
-      MARIADB_RANDOM_ROOT_PASSWORD: true
+      MARIADB_RANDOM_ROOT_PASSWORD: 1
+    ports:
+      - 3306:3306
     volumes:
-      - mysql:/var/lib/mysql
+      - mariadb:/var/lib/mysql
+    networks:
+        - userli
+
+  dovecot:
+    build:
+      context: contrib/docker
+      dockerfile: Dockerfile.dovecot
+    environment:
+      MAIL_CRYPT: 2
+      USERLI_HOST: userli
+      USERLI_API_ACCESS_TOKEN: insecure
+      DOVECOT_LUA_INSECURE: 1
+    volumes:
+      - ./contrib/dovecot/dovecot.conf:/etc/dovecot/dovecot.conf:ro
+      - ./contrib/dovecot/conf.d:/etc/dovecot/conf.d:ro
+      - ./contrib/dovecot/userli-dovecot-adapter.lua:/usr/local/bin/userli-dovecot-adapter.lua:ro
+    networks:
+      - userli
+
+networks:
+  userli:
 
 volumes:
-  mysql:
+  mariadb:

@@ -78,9 +78,11 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
         return $this->matching(new Criteria($expression));
     }
 
-    public function findDeletedUsers(): array
+    public function findDeletedUsers(?Domain $domain = null): array
     {
-        return $this->findBy(['deleted' => true]);
+        return $domain
+            ? $this->findBy(['domain' => $domain, 'deleted' => true])
+            : $this->findBy(['deleted' => true]);
     }
 
     public function countUsers(): int

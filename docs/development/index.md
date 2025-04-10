@@ -1,85 +1,81 @@
-# Development
+# Getting started
 
-## Development with Vagrant
+We provide a `docker-compose.yml` file that starts Userli, Dovecot and MariaDB to set up a development environment.
 
-### Requirements
+## Requirements
 
-- [Vagrant](https://vagrantup.com/) to set up a virtual machine as development environment.
-- [VirtualBox](https://www.virtualbox.org/) as a [virtualisation provider](https://developer.hashicorp.com/vagrant/docs/providers/virtualbox) for Vagrant.
-- [Ansible](https://www.ansible.com/) for provisioning the virtual machine.
+- `docker-compose` or `podman-compose`
+- `yarn` (or `yarnpkg` on Ubuntu or Debian based systems)
+- `composer`
 
-!!! note
+!!! info
+    If you don't have podman or docker installed, you can find the installation instructions on the [podman website](https://podman.io/getting-started/installation) or the [docker website](https://docs.docker.com/get-docker/).
 
-    The provisioning of the development environment is defined in `.Vagrantfile` and `.ansible/playbook.yml`.
-    If you're unfamiliar with Vagrant, you might want to check out its [Quick Start guide](https://developer.hashicorp.com/vagrant/tutorials/getting-started).
+## Set up
 
-### Start Vagrant box
+Start the containers:
 
-````shell
-# pull ansible roles for provisioning:
-git submodule update --init
+=== "podman"
 
-# start vagrant box.
-# Implies "vagrant up --provision" when run for first time
-vagrant up
+    ```shell
+    podman compose up -d
+    ```
 
-## ssh into the virtual environment
-vagrant ssh
+=== "docker"
 
-# create database and schema
-bin/console doctrine:schema:create
+    ```shell
+    docker compose up -d
+    ```
 
-# get node modules
-yarn
+!!! info
+    This command will initiate building the containers on first run. Append `--build` to always force a full rebuild
 
-# update assets
-yarn encore dev
-````
 
-Visit you local instance at [http://192.168.60.99/](http://192.168.60.99).
+Install PHP dependencies, run composer scripts and update assets:
 
-## Development on macOS
-
-### Requirements
-
-- [Homebrew](https://brew.sh/index_de)
-- [Docker](https://www.docker.com/)
-
-### Start the environment
 
 ```shell
-# spin up mariadb
-docker-compose up -d
-
-brew install php@8.0
-export PATH="/opt/homebrew/opt/php@8.0/bin:$PATH"
-
-# install dependencies and run composer scripts
 composer install --ignore-platform-reqs
-
-# create database and schema
-bin/console doctrine:schema:create
-
-# get node modules
 yarn
-
-# update assets
 yarn encore dev
-
-# start the server
-bin/console server:run
 ```
 
-## Install sample data
+Initialize the database and install sample data:
 
-```shell
-bin/console doctrine:fixtures:load
+=== "podman"
+
+    ```shell
+    podman compose exec userli bin/console doctrine:schema:create
+    podman compose exec userli bin/console doctrine:fixtures:load
+    ```
+
+=== "docker"
+    ```shell
+    docker compose exec userli bin/console doctrine:schema:create
+    docker compose exec userli bin/console doctrine:fixtures:load
+    ```
+
+!!! info
+    The `doctrine:fixtures:load` command will create four new accounts with corresponding roles (`admin`, `user`, `support`, `suspicious`) as well as some random aliases and vouchers. The domain for all accounts is "example.org" and the password is "password".
+    
+    If you want to see more details about how the users are created, see `src/DataFixtures`.
+
+Open your browser and go to [http://localhost:8000](http://localhost:8000)
+
+## Troubleshooting
+
+On systems with SELinux enabled, the webserver might throw an error due to broken filesystem permissions.
+To fix this, create `docker-compose.override.yml` in the root directory with following content:
+
+```yaml
+---
+services:
+  userli:
+    security_opt:
+      - label=disable
+
+  dovecot:
+    security_opt:
+      - label=disable
 ```
 
-The `doctrine:fixtures:load` command will create four new accounts with
-corresponding roles (`admin`, `user`, `support`, `suspicious`) as well
-as some random aliases and vouchers. The domain for all accounts is
-"example.org" and the password is "password".
-
-If you want to see more details about how the users are created, see
-`src/DataFixtures`.

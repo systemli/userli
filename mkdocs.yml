@@ -6,32 +6,36 @@ repo_url: https://github.com/systemli/userli
 nav:
   - Home: index.md
   - Development:
-      - Development: development/index.md
+      - "Getting started": development/index.md
       - "Code of Conduct": development/code_of_conduct.md
+      - "Coding style": development/coding_style.md
       - Icons: development/icons.md
       - Release: development/release.md
       - Tests: development/tests.md
-  - "Getting started": getting-started/index.md
   - Installation:
       - Installation: installation/index.md
-      - Checkpassword: installation/checkpassword.md
+      - Code: installation/code.md
       - Commands: installation/commands.md
       - Configuration: installation/configuration.md
       - Customize: installation/customize.md
       - Database: installation/database.md
+      - Dovecot: installation/dovecot.md
       - Finalize: installation/finalize.md
       - Webserver: installation/webserver.md
-  - MailCrypt:
-      - MailCrypt: mail_crypt/index.md
-      - Details: mail_crypt/details.md
-      - Legacy: mail_crypt/legacy.md
-  - Screenshots: screenshots/index.md
   - Update: update/index.md
-  - "Web Key Directory": wkd/index.md
+  - Features:
+      - MailCrypt: features/mail_crypt.md
+      - "Web Key Directory": features/wkd.md
+      - Integrations: features/integrations.md
+  - Screenshots: screenshots/index.md
 
 theme:
   name: material
   features:
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
+    - content.tabs.link
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.sections
@@ -51,3 +55,11 @@ extra:
 
 markdown_extensions:
   - admonition
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
