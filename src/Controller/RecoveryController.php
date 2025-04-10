@@ -390,6 +390,11 @@ class RecoveryController extends AbstractController
             throw new Exception('PlainRecoveryToken should not be null');
         }
 
+        // Reset twofactor settings
+        $user->setTotpConfirmed(false);
+        $user->setTotpSecret(null);
+        $user->clearBackupCodes();
+
         // Clear sensitive plaintext data from User object
         $user->eraseCredentials();
         sodium_memzero($mailCryptPrivateKey);
