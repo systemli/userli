@@ -75,6 +75,10 @@ services:
         arguments:
             $mailLocation: "%env(DOVECOT_MAIL_LOCATION)%"
 
+    App\Command\UsersRestoreCommand:
+        arguments:
+            $mailCryptEnv: "%env(MAIL_CRYPT)%"
+
     App\Command\VoucherCreateCommand:
         arguments:
             $appUrl: "%env(APP_URL)%"
