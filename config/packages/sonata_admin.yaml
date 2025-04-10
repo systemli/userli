@@ -4,20 +4,22 @@ sonata_admin:
     show_mosaic_button: false
     dashboard:
         blocks:
-          - position: left
-            type: sonata.admin.block.admin_list
-          - position: right
-            type: userli.admin.block.statistics
+            -   position: left
+                type: sonata.admin.block.admin_list
+            -   position: right
+                type: userli.admin.block.statistics
     templates:
         layout: 'Admin/standard_layout.html.twig'
         user_block: 'Admin/user_block.html.twig'
     security:
-        handler: sonata.admin.security.handler.role
+        handler: sonata.admin.security.handler.noop
+        role_admin: ROLE_ADMIN
+        role_super_admin: ROLE_SUPER_ADMIN
 
 sonata_block:
     http_cache: false
-    default_contexts: [cms]
+    default_contexts: [ cms ]
     blocks:
         sonata.admin.block.admin_list:
-            contexts:   [admin]
+            contexts: [ admin ]
         userli.admin.block.statistics: ~

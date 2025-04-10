@@ -36,7 +36,7 @@ class RegistrationHandlerTest extends KernelTestCase
         );
 
         $this->expectException(Exception::class);
-        $handler->handle(new Registration());
+        $handler->handle('', '', '');
     }
 
     public function testHandleWithEnabledRegistration()
@@ -75,12 +75,7 @@ class RegistrationHandlerTest extends KernelTestCase
             false
         );
 
-        $registration = new Registration();
-        $registration->setPlainPassword('password');
-        $registration->setEmail('user@example.com');
-        $registration->setVoucher("voucher");
-
-        $handler->handle($registration);
+        $handler->handle('user@example.com', 'password', 'voucher');
 
         $this->assertNotNull($voucher->getRedeemedTime());
     }

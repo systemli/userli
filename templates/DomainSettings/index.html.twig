@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme registration 'Form/fields.html.twig' %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('start') }}">Start</a></li>
+        <li class="active">{{ "start.domain-settings"|trans }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>{{ "domain_settings.title"|trans }}</h2>
+
+            <p class="lead">{{ "domain_settings.intro"|trans }}</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-md-6">
+            <h3>{{ "domain_settings.new-account"|trans }}</h3>
+            {{ form_start(registration) }}
+            {{ form_errors(registration) }}
+            <div class="form-group">
+                {{ form_label(registration.email) }}
+                {{ form_errors(registration.email) }}
+                <div class="input-group">
+                    {{ form_widget(registration.email, {'attr': {'class': 'form-control input-md' }}) }}
+                    <div class="input-group-addon input-md">@{{ domain }}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form_label(registration.plainPassword.first) }}
+                {{ form_errors(registration.plainPassword.first) }}
+                {{ form_widget(registration.plainPassword.first, {'attr': {'class': 'form-control input-md' }}) }}
+                {{ form_label(registration.plainPassword.second) }}
+                {{ form_widget(registration.plainPassword.second, {'attr': {'class': 'form-control input-md' }}) }}
+            </div>
+            <div class="form-group">
+                {{ form_widget(registration.submit, {'attr': {'class': 'btn btn-md btn-primary btn-block' }}) }}
+            </div>
+            {{ form_end(registration) }}
+        </div>
+        <div class="col-xs-12 col-md-6">
+            <h3>{{ "domain_settings.new-alias"|trans }}</h3>
+            {{ form_start(alias) }}
+            {{ form_errors(alias) }}
+            <div class="form-group">
+                {{ form_label(alias.alias) }}
+                {{ form_errors(alias.alias) }}
+                <div class="input-group">
+                    {{ form_widget(alias.alias, {'attr': {'class': 'form-control input-md' }}) }}
+                    <div class="input-group-addon input-md">@{{ domain }}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form_label(alias.user) }}
+                {{ form_errors(alias.user) }}
+
+                    {{ form_widget(alias.user, {'attr': {'class': 'form-control input-md' }}) }}
+
+            </div>
+            <div class="form-group">
+                {{ form_widget(alias.submit, {'attr': {'class': 'btn btn-md btn-primary btn-block' }}) }}
+            </div>
+            {{ form_end(alias) }}
+        </div>
+    </div>
+
+{% endblock %}
