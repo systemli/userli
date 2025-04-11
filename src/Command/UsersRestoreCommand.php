@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Enum\MailCrypt;
 use Exception;
 use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
@@ -14,25 +15,22 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
-#[AsCommand(name: 'app:users:reset')]
-class UsersResetCommand extends Command
+#[AsCommand(name: 'app:users:restore')]
+class UsersRestoreCommand extends Command
 {
-    /**
-     * RegistrationMailCommand constructor.
-     */
+    private readonly MailCrypt $mailCrypt;
+
     public function __construct(private readonly EntityManagerInterface $manager,
                                 private readonly PasswordUpdater $passwordUpdater,
                                 private readonly MailCryptKeyHandler $mailCryptKeyHandler,
                                 private readonly RecoveryTokenHandler $recoveryTokenHandler,
-                                private readonly string $mailLocation)
+                                private readonly int $mailCryptEnv)
     {
         parent::__construct();
+        $this->mailCrypt = MailCrypt::from($this->mailCryptEnv);
     }
 
     /**
@@ -42,7 +40,7 @@ class UsersResetCommand extends Command
     {
         $this
             ->setDescription('Reset a user')
-            ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User to reset')
+            ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'Deleted user to restore')
             ->addOption('dry-run', null, InputOption::VALUE_NONE);
     }
 
@@ -55,19 +53,16 @@ class UsersResetCommand extends Command
     {
         $email = $input->getOption('user');
 
-        if (empty($email) || null === $user = $this->manager->getRepository(User::class)->findByEmail($email)) {
+        if (empty($email)
+            || null === $user = $this->manager->getRepository(User::class)->findByEmail($email)) {
             throw new UserNotFoundException(sprintf('User with email %s not found!', $email));
         }
 
-        if ($user->isDeleted()) {
-            throw new UserNotFoundException(sprintf('User with email %s is deleted! Consider to restore the user instead.', $email));
+        if (!$user->isDeleted()) {
+            throw new UserNotFoundException(sprintf('User with email %s is still active! Consider to reset the user instead.', $email));
         }
 
         $questionHelper = $this->getHelper('question');
-        $confirmQuest = new ConfirmationQuestion('Really reset user? This will clear their mailbox: (yes|no) ', false);
-        if (!$questionHelper->ask($input, $output, $confirmQuest)) {
-            return 0;
-        }
 
         $passwordQuest = new Question('New password: ');
         $passwordQuest->setValidator(function ($value) {
@@ -95,55 +90,30 @@ class UsersResetCommand extends Command
         }
 
         if ($input->getOption('dry-run')) {
-            $output->write(sprintf("\nWould reset user %s\n\n", $email));
+            $output->write(sprintf("\nWould restore user %s\n\n", $email));
 
             return 0;
         }
 
-        $output->write(sprintf("\nResetting user %s ...\n\n", $email));
+        $output->write(sprintf("\nRestoring user %s ...\n\n", $email));
 
+        $user->setDeleted(false);
         $this->passwordUpdater->updatePassword($user, $password);
 
         // Generate MailCrypt key with new password (overwrites old MailCrypt key)
-        if ($user->hasMailCryptSecretBox()) {
+        if ($this->mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS)) {
             $this->mailCryptKeyHandler->create($user, $password);
+            $user->setMailCryptEnabled(true);
 
             // Reset recovery token
             $this->recoveryTokenHandler->create($user);
             $output->write(sprintf("<info>New recovery token (please hand over to user): %s</info>\n\n", $user->getPlainRecoveryToken()));
         }
 
-        // Reset twofactor settings
-        $user->setTotpConfirmed(false);
-        $user->setTotpSecret(null);
-        $user->clearBackupCodes();
-
         // Clear sensitive plaintext data from User object
         $user->eraseCredentials();
 
         $this->manager->flush();
-
-        // Clear users mailbox
-        [$localPart, $domain] = explode('@', (string) $email);
-        $path = $this->mailLocation.DIRECTORY_SEPARATOR.$domain.DIRECTORY_SEPARATOR.$localPart.DIRECTORY_SEPARATOR.'Maildir';
-        $filesystem = new Filesystem();
-        if ($filesystem->exists($path)) {
-            $output->writeln(sprintf('Delete directory for user: %s', $email));
-
-            try {
-                $filesystem->remove($path);
-            } catch (IOException $e) {
-                $output->writeln('<error>'.$e->getMessage().'</error>');
-                $output->writeln(sprintf("<comment>Please manually clear the mailbox at '%s'</comment>", $path));
-
-                return 1;
-            }
-        } else {
-            $output->writeln(sprintf("<error>Error:</error> Directory for user '%s' not found (e.g. due to missing permissions).", $email));
-            $output->writeln(sprintf("<comment>Please manually clear the mailbox at '%s'</comment>", $path));
-
-            return 1;
-        }
 
         return 0;
     }
