@@ -39,7 +39,7 @@ class UsersCheckPasswordCommandTest extends TestCase
         $this->quotaUser->setQuota(1024);
         $this->mailCryptUser = new User();
         $this->mailCryptUser->setPassword('passwordhash');
-        $this->mailCryptUser->setMailCrypt(true);
+        $this->mailCryptUser->setMailCryptEnabled(true);
         $this->mailCryptUser->setMailCryptPublicKey('somePublicKey');
         $this->spamUser = new User();
         $this->spamUser->setPassword('passwordhash');
