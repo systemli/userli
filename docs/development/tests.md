@@ -1,27 +1,26 @@
 # Tests
 
+You will need to create the database schema once:
 
-Create sample test data:
+```shell
+bin/console doctrine:schema:create --env=test
+```
 
-=== "podman"
-     ```shell
-     podman compose exec userli bin/console doctrine:fixtures:load --group=basic --env=test --no-interaction
-     ```
+## PHPUnit
 
-=== "docker"
-     ```shell
-     docker compose exec userli bin/console doctrine:fixtures:load --group=basic --env=test --no-interaction
-     ```
+Create sample test data and run tests:
 
-Run tests:
+```shell
+make test
+```
 
-=== "podman"
-     ```shell
-     podman compose exec userli bin/phpunit
-     ```
+## Behat
 
-=== "docker"
-    ```shell
-    docker compose exec userli bin/phpunit
-    ```
-    
+Run Behat
+```shell
+make integration
+```
+
+!!! tip
+    See the contents of the `Makefile` if you are interested what each `make`-command does.
+
