@@ -148,7 +148,7 @@ class FeatureContext extends MinkContext
                         $user->setRecoverySecretBox($value);
                         break;
                     case 'mailCrypt':
-                        $user->setMailCrypt($value);
+                        $user->setMailCryptEnabled($value);
                         break;
                     case 'mailCryptSecretBox':
                         $user->setMailCryptSecretBox($value);

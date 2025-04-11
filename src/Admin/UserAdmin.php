@@ -151,7 +151,7 @@ class UserAdmin extends Admin
             ->add('recoverySecretBox', 'boolean', [
                 'label' => 'Recovery Token',
             ])
-            ->add('mailCrypt')
+            ->add('mailCryptEnabled')
             ->add('deleted');
     }
 
@@ -177,7 +177,7 @@ class UserAdmin extends Admin
     public function prePersist($object): void
     {
         $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
-        if (null !== $object->hasMailCrypt()) {
+        if (null !== $object->hasMailCryptEnabled()) {
             $this->mailCryptKeyHandler->create($object, $object->getPlainPassword(), $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS));
         }
         if (null === $object->getDomain() && null !== $domain = $this->domainGuesser->guess($object->getEmail())) {
