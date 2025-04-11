@@ -6,6 +6,7 @@ RELEASE_FILE_USERLI  := userli-${GIT_VERSION}.tar.gz
 RELEASE_FILE_ADAPTER := userli-dovecot-adapter-${GIT_VERSION}.tar.gz
 SHA_ALGORITHMS       := 256 512
 TMP_DIR              := userli-${GIT_VERSION}
+SQLITE_DB_URL        := DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
 
 clean:
 	rm -rf build
@@ -16,9 +17,9 @@ prepare: clean
 
 build: clean prepare
 	cd build/${TMP_DIR}; \
-	APP_ENV=prod DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db" \
+	APP_ENV=prod ${SQLITE_DB_URL} \
 		composer install --no-dev --ignore-platform-reqs; \
-	APP_ENV=prod DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db" \
+	APP_ENV=prod ${SQLITE_DB_URL} \
 		composer dump-autoload; \
 	yarn --pure-lockfile; \
 	yarn encore production
@@ -68,7 +69,7 @@ cs-fixer:
 lint:
 	php -l src/
 
-reset:
+reset: clean
 	rm -f php_cs.cache
 	rm -rf node-modules
 	rm -rf public/build
@@ -76,17 +77,23 @@ reset:
 	rm -rf public/components
 	rm -rf var/log/*
 	rm -rf var/cache/*
+	rm -f var/data.db
+	rm -f var/db_test.sqlite
 	rm -rf vendor
-	rm -rf userli-*
 
 vendors:
-	composer install
+	${SQLITE_DB_URL} composer install --ignore-platform-reqs
 
-integration: vendors lint
+assets: vendors
 	yarn
 	yarn encore dev
+
+integration: assets lint
 	bin/behat -f progress
 
 security-check: vendors
 	bin/local-php-security-checker
 
+test: vendors lint
+	bin/console doctrine:fixtures:load --group=basic --env=test --no-interaction
+	bin/phpunit

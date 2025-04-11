@@ -7,6 +7,7 @@ We provide a `docker-compose.yml` file that starts Userli, Dovecot and MariaDB t
 - `docker-compose` or `podman-compose`
 - `yarn` (or `yarnpkg` on Ubuntu or Debian based systems)
 - `composer`
+- `make`
 
 !!! info
     If you don't have podman or docker installed, you can find the installation instructions on the [podman website](https://podman.io/getting-started/installation) or the [docker website](https://docs.docker.com/get-docker/).
@@ -30,34 +31,44 @@ Start the containers:
 !!! info
     This command will initiate building the containers on first run. Append `--build` to always force a full rebuild
 
-
-Install PHP dependencies, run composer scripts and update assets:
-
+Install PHP dependencies, run composer scripts and update JavaScript assets:
 
 ```shell
-composer install --ignore-platform-reqs
-yarn
-yarn encore dev
+make assets
 ```
 
-Initialize the database and install sample data:
+!!! tip
+    See the contents of the `Makefile` if you are interested what each `make`-command does.
+
+Initialize the database:
 
 === "podman"
 
     ```shell
     podman compose exec userli bin/console doctrine:schema:create
-    podman compose exec userli bin/console doctrine:fixtures:load
     ```
 
 === "docker"
     ```shell
     docker compose exec userli bin/console doctrine:schema:create
+    ```
+
+Install sample data:
+
+=== "podman"
+
+    ```shell
+    podman compose exec userli bin/console doctrine:fixtures:load
+    ```
+
+=== "docker"
+    ```shell
     docker compose exec userli bin/console doctrine:fixtures:load
     ```
 
 !!! info
     The `doctrine:fixtures:load` command will create four new accounts with corresponding roles (`admin`, `user`, `support`, `suspicious`) as well as some random aliases and vouchers. The domain for all accounts is "example.org" and the password is "password".
-    
+
     If you want to see more details about how the users are created, see `src/DataFixtures`.
 
 Open your browser and go to [http://localhost:8000](http://localhost:8000)
