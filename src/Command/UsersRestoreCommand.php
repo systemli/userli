@@ -4,32 +4,29 @@ namespace App\Command;
 
 use App\Enum\MailCrypt;
 use Exception;
-use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\PasswordStrengthHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 #[AsCommand(name: 'app:users:restore')]
-class UsersRestoreCommand extends Command
+class UsersRestoreCommand extends AbstractUsersCommand
 {
     private readonly MailCrypt $mailCrypt;
 
-    public function __construct(private readonly EntityManagerInterface $manager,
+    public function __construct(EntityManagerInterface $manager,
                                 private readonly PasswordUpdater $passwordUpdater,
                                 private readonly MailCryptKeyHandler $mailCryptKeyHandler,
                                 private readonly RecoveryTokenHandler $recoveryTokenHandler,
                                 private readonly int $mailCryptEnv)
     {
-        parent::__construct();
+        parent::__construct($manager);
         $this->mailCrypt = MailCrypt::from($this->mailCryptEnv);
     }
 
@@ -38,10 +35,8 @@ class UsersRestoreCommand extends Command
      */
     protected function configure(): void
     {
-        $this
-            ->setDescription('Reset a user')
-            ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'Deleted user to restore')
-            ->addOption('dry-run', null, InputOption::VALUE_NONE);
+        parent::configure();
+        $this->setDescription('Reset a user');
     }
 
     /**
@@ -51,15 +46,10 @@ class UsersRestoreCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $email = $input->getOption('user');
-
-        if (empty($email)
-            || null === $user = $this->manager->getRepository(User::class)->findByEmail($email)) {
-            throw new UserNotFoundException(sprintf('User with email %s not found!', $email));
-        }
+        $user = $this->getUser($input);
 
         if (!$user->isDeleted()) {
-            throw new UserNotFoundException(sprintf('User with email %s is still active! Consider to reset the user instead.', $email));
+            throw new UserNotFoundException(sprintf('User with email %s is still active! Consider to reset the user instead.', $user->getEmail()));
         }
 
         $questionHelper = $this->getHelper('question');
@@ -90,12 +80,12 @@ class UsersRestoreCommand extends Command
         }
 
         if ($input->getOption('dry-run')) {
-            $output->write(sprintf("\nWould restore user %s\n\n", $email));
+            $output->write(sprintf("\nWould restore user %s\n\n", $user->getEmail()));
 
             return 0;
         }
 
-        $output->write(sprintf("\nRestoring user %s ...\n\n", $email));
+        $output->write(sprintf("\nRestoring user %s ...\n\n", $user->getEmail()));
 
         $user->setDeleted(false);
         $this->passwordUpdater->updatePassword($user, $password);

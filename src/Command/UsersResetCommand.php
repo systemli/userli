@@ -3,16 +3,13 @@
 namespace App\Command;
 
 use Exception;
-use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\PasswordStrengthHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
@@ -21,18 +18,18 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 #[AsCommand(name: 'app:users:reset')]
-class UsersResetCommand extends Command
+class UsersResetCommand extends AbstractUsersCommand
 {
     /**
      * RegistrationMailCommand constructor.
      */
-    public function __construct(private readonly EntityManagerInterface $manager,
+    public function __construct(EntityManagerInterface $manager,
                                 private readonly PasswordUpdater $passwordUpdater,
                                 private readonly MailCryptKeyHandler $mailCryptKeyHandler,
                                 private readonly RecoveryTokenHandler $recoveryTokenHandler,
                                 private readonly string $mailLocation)
     {
-        parent::__construct();
+        parent::__construct($manager);
     }
 
     /**
@@ -40,10 +37,8 @@ class UsersResetCommand extends Command
      */
     protected function configure(): void
     {
-        $this
-            ->setDescription('Reset a user')
-            ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User to reset')
-            ->addOption('dry-run', null, InputOption::VALUE_NONE);
+        parent::configure();
+        $this->setDescription('Reset a user');
     }
 
     /**
@@ -53,14 +48,10 @@ class UsersResetCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $email = $input->getOption('user');
-
-        if (empty($email) || null === $user = $this->manager->getRepository(User::class)->findByEmail($email)) {
-            throw new UserNotFoundException(sprintf('User with email %s not found!', $email));
-        }
+        $user = $this->getUser($input);
 
         if ($user->isDeleted()) {
-            throw new UserNotFoundException(sprintf('User with email %s is deleted! Consider to restore the user instead.', $email));
+            throw new UserNotFoundException(sprintf('User with email %s is deleted! Consider to restore the user instead.', $user->getEmail()));
         }
 
         $questionHelper = $this->getHelper('question');
@@ -95,12 +86,12 @@ class UsersResetCommand extends Command
         }
 
         if ($input->getOption('dry-run')) {
-            $output->write(sprintf("\nWould reset user %s\n\n", $email));
+            $output->write(sprintf("\nWould reset user %s\n\n", $user->getEmail()));
 
             return 0;
         }
 
-        $output->write(sprintf("\nResetting user %s ...\n\n", $email));
+        $output->write(sprintf("\nResetting user %s ...\n\n", $user->getEmail()));
 
         $this->passwordUpdater->updatePassword($user, $password);
 
@@ -124,11 +115,11 @@ class UsersResetCommand extends Command
         $this->manager->flush();
 
         // Clear users mailbox
-        [$localPart, $domain] = explode('@', (string) $email);
+        [$localPart, $domain] = explode('@', (string) $user->getEmail());
         $path = $this->mailLocation.DIRECTORY_SEPARATOR.$domain.DIRECTORY_SEPARATOR.$localPart.DIRECTORY_SEPARATOR.'Maildir';
         $filesystem = new Filesystem();
         if ($filesystem->exists($path)) {
-            $output->writeln(sprintf('Delete directory for user: %s', $email));
+            $output->writeln(sprintf('Delete directory for user: %s', $user->getEmail()));
 
             try {
                 $filesystem->remove($path);
@@ -139,7 +130,7 @@ class UsersResetCommand extends Command
                 return 1;
             }
         } else {
-            $output->writeln(sprintf("<error>Error:</error> Directory for user '%s' not found (e.g. due to missing permissions).", $email));
+            $output->writeln(sprintf("<error>Error:</error> Directory for user '%s' not found (e.g. due to missing permissions).", $user->getEmail()));
             $output->writeln(sprintf("<comment>Please manually clear the mailbox at '%s'</comment>", $path));
 
             return 1;
