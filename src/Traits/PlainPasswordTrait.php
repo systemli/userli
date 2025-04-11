@@ -23,12 +23,4 @@ trait PlainPasswordTrait
     {
         $this->plainPassword = $plainPassword;
     }
-
-    public function eraseCredentials(): void
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        $this->plainPassword = null;
-        $this->erasePlainMailCryptPrivateKey();
-        $this->erasePlainRecoveryToken();
-    }
 }

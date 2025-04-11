@@ -205,8 +205,6 @@ class RecoveryController extends AbstractController
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $user->setPlainPassword($recoveryTokenModel->password);
-
                 // Check if user has a MailCrypt key
                 if ($user->hasMailCryptSecretBox()) {
                     // Decrypt the MailCrypt key
