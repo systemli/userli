@@ -28,4 +28,4 @@ RUN apt-get update && \
     echo "memory_limit = 512M" > /usr/local/etc/php/conf.d/memory_limit.ini
 
 COPY --from=builder /var/www/html /var/www/html
-COPY contrib/apache.conf /etc/apache2/sites-available/000-default.conf
+COPY apache.conf /etc/apache2/sites-available/000-default.conf

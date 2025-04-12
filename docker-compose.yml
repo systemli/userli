@@ -3,7 +3,7 @@ services:
   userli:
     image: docker.io/systemli/userli:latest
     build:
-      context: .
+      context: docker/userli
       dockerfile: Dockerfile
     volumes:
       - ./:/var/www/html
@@ -28,16 +28,16 @@ services:
 
   dovecot:
     build:
-      context: contrib/docker
-      dockerfile: Dockerfile.dovecot
+      context: docker/dovecot
+      dockerfile: Dockerfile
     environment:
       MAIL_CRYPT: 2
       USERLI_HOST: userli
       USERLI_API_ACCESS_TOKEN: insecure
       DOVECOT_LUA_INSECURE: 1
     volumes:
-      - ./contrib/dovecot/dovecot.conf:/etc/dovecot/dovecot.conf:ro
-      - ./contrib/dovecot/conf.d:/etc/dovecot/conf.d:ro
+      - ./docker/dovecot/dovecot.conf:/etc/dovecot/dovecot.conf:ro
+      - ./docker/dovecot/conf.d:/etc/dovecot/conf.d:ro
       - ./contrib/dovecot/userli-dovecot-adapter.lua:/usr/local/bin/userli-dovecot-adapter.lua:ro
     networks:
       - userli
