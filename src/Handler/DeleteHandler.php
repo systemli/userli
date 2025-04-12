@@ -4,16 +4,23 @@ namespace App\Handler;
 
 use App\Entity\Alias;
 use App\Entity\User;
+use App\Event\UserDeletedEvent;
 use App\Helper\PasswordGenerator;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 class DeleteHandler
 {
     /**
      * DeleteHandler constructor.
      */
-    public function __construct(private readonly PasswordUpdater $passwordUpdater, private readonly EntityManagerInterface $manager, private readonly WkdHandler $wkdHandler)
+    public function __construct(
+        private readonly PasswordUpdater $passwordUpdater,
+        private readonly EntityManagerInterface $manager,
+        private readonly WkdHandler $wkdHandler,
+        private readonly EventDispatcherInterface $eventDispatcher,
+    )
     {
     }
 
@@ -58,5 +65,7 @@ class DeleteHandler
         $user->setDeleted(true);
 
         $this->manager->flush();
+
+        $this->eventDispatcher->dispatch(new UserDeletedEvent($user));
     }
 }
