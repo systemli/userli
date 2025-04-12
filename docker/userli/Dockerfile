@@ -1,6 +1,5 @@
 FROM docker.io/composer:2.8.3 AS composer
 
-
 FROM docker.io/php:8.2-cli AS builder
 
 RUN apt-get update && \
@@ -18,7 +17,6 @@ RUN composer install --no-scripts && \
     yarn encore production && \
     bin/console assets:install
 
-
 FROM docker.io/php:8.2-apache-bookworm
 
 RUN apt-get update && \
@@ -28,4 +26,4 @@ RUN apt-get update && \
     echo "memory_limit = 512M" > /usr/local/etc/php/conf.d/memory_limit.ini
 
 COPY --from=builder /var/www/html /var/www/html
-COPY apache.conf /etc/apache2/sites-available/000-default.conf
+COPY docker/userli/apache.conf /etc/apache2/sites-available/000-default.conf
