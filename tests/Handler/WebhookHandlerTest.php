@@ -39,17 +39,27 @@ class WebhookHandlerTest extends TestCase
         $webhookSecret = 'secret';
         $webhookHandler = new WebhookHandler($this->client, $webhookUrl, $webhookSecret);
 
-        $response = $this->createMock(ResponseInterface::class);
+        $payload = [
+            'type' => 'user.created',
+            'timestamp' => date(DATE_ATOM),
+            'data' => [
+                'email' => $this->user->getEmail(),
+            ],
+        ];
+        $signature = hash_hmac('sha256', json_encode($payload), $webhookSecret);
         $this->client->expects(self::once())
             ->method('request')
-            ->willReturnCallback(function (string $method, string $url, array $opts) use ($webhookUrl, $response) {
-                self::assertEquals('POST', $method);
-                self::assertEquals($webhookUrl, $url);
-                self::assertEquals('user.created', $opts['json']['type']);
-                self::assertEquals('test@example.org', $opts['json']['data']['email']);
-                self::assertNotEmpty($opts['headers']['X-Signature']);
-                return $response;
-            });
+            ->with(
+                'POST',
+                $webhookUrl,
+                [
+                    'headers' => [
+                        'X-Signature' => $signature,
+                        'Content-Type' => 'application/json',
+                    ],
+                    'json' => $payload,
+                ]
+            );
         $webhookHandler->send($this->user, 'user.created');
     }
 
