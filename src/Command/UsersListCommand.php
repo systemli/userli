@@ -19,7 +19,10 @@ class UsersListCommand extends Command
 {
     private readonly UserRepository $repository;
 
-    public function __construct(EntityManagerInterface $manager, private readonly RoleHierarchyInterface $roleHierarchy)
+    public function __construct(
+        readonly EntityManagerInterface $manager,
+        private readonly RoleHierarchyInterface $roleHierarchy,
+    )
     {
         $this->repository = $manager->getRepository(User::class);
         parent::__construct();

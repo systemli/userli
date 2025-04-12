@@ -2,63 +2,30 @@
 
 namespace App\Command;
 
-use App\Entity\User;
-use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:users:quota')]
-class UsersQuotaCommand extends Command
+class UsersQuotaCommand extends AbstractUsersCommand
 {
-    private readonly UserRepository $repository;
-
-    public function __construct(EntityManagerInterface $manager)
-    {
-        $this->repository = $manager->getRepository(User::class);
-        parent::__construct();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
-        $this
-            ->setDescription('Get quota of user if set')
-            ->addArgument(
-                'email',
-                InputOption::VALUE_REQUIRED,
-                'email to get quota of');
+        parent::configure();
+        $this->setDescription('Get quota of user if set');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // parse arguments
-        $email = $input->getArgument('email');
-
-        // Check if user exists
-        $user = $this->repository->findByEmail($email);
-
-        if (null === $user) {
-            return 1;
-        }
+        $user = $this->getUser($input);
 
         // get quota
         $quota = $user->getQuota();
-
         if (null === $quota) {
             return 0;
         }
 
         $output->writeln(sprintf('%u', $quota));
-
         return 0;
     }
 }

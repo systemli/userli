@@ -12,8 +12,8 @@ Feature: QuotaCommand
 
   @quotaCommand
   Scenario: Check that user has quota
-    When I run console command "app:users:quota quota@example.org"
+    When I run console command "app:users:quota --user quota@example.org"
     Then I should see "1000" in the console output
 
-    When I run console command "app:users:quota noquota@example.org"
+    When I run console command "app:users:quota --user noquota@example.org"
     Then I should not see "1000" in the console output
