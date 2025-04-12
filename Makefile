@@ -35,7 +35,7 @@ release: clean prepare build
 		--exclude='${TMP_DIR}/bin/github-release.sh' \
 		--exclude='${TMP_DIR}/build' \
 		--exclude='${TMP_DIR}/contrib' \
-		--exclude='${TMP_DIR}/Dockerfile' \
+		--exclude='${TMP_DIR}/docker' \
 		--exclude='${TMP_DIR}/docker-compose.yml' \
 		--exclude='${TMP_DIR}/features' \
 		--exclude='${TMP_DIR}/Makefile' \
@@ -53,7 +53,7 @@ release: clean prepare build
 		-czf build/${RELEASE_FILE_USERLI} \
 		../${TMP_DIR}
 	# Create a release tarball for adapter
-	tar --directory=build/${TMP_DIR}/contrib/dovecot/ \
+	tar --directory=build/${TMP_DIR}/contrib/ \
 		-czf build/${RELEASE_FILE_ADAPTER} \
 		userli-dovecot-adapter.lua
 	# Generate SHA hash sum files

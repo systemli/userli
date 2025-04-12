@@ -188,7 +188,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Docker Build
-        run: docker build -t docker.io/systemli/userli .
+        run: docker build -t docker.io/systemli/userli -f docker/userli/Dockerfile .
 
       - name: Docker Push
         if: github.ref == 'refs/heads/main'

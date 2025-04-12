@@ -2,7 +2,7 @@
 
 [![Integration](https://github.com/systemli/userli/actions/workflows/integration.yml/badge.svg)](https://github.com/systemli/userli/actions/workflows/integration.yml)
 [![Security](https://github.com/systemli/userli/actions/workflows/security-check.yml/badge.svg)](https://github.com/systemli/userli/actions/workflows/security-check.yml)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=systemli_userli&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=systemli_userli) 
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=systemli_userli&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=systemli_userli)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=systemli_userli&metric=alert_status)](https://sonarcloud.io/dashboard?id=systemli_userli)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=systemli_userli&metric=coverage)](https://sonarcloud.io/summary/new_code?id=systemli_userli)
 [![Translation Status](https://hosted.weblate.org/widgets/userli/-/svg-badge.svg)](https://hosted.weblate.org/widgets/userli/-/svg-badge.svg)
@@ -23,7 +23,7 @@ Web application to (self-) manage e-mail users and encrypt their mailboxes.
 
 ## Installation
 
-Find more information on [how to install Userli](https://systemli.github.io/userli/getting-started/) in
+Find more information on [how to install Userli](https://systemli.github.io/userli/installation) in
 our docs.
 
 ## Upgrading
@@ -56,10 +56,10 @@ in our docs.
 
 ## Copyright
 
-Files: *  
-Copyright: (c) 2015-2019 systemli.org  
-License: AGPL v3 or later  
+Files: *
+Copyright: (c) 2015-2025 systemli.org
+License: AGPL v3 or later
 
-Files: assets/images/*.svg  
-Copyright: (c) github.com  
+Files: assets/images/*.svg
+Copyright: (c) github.com
 License: MIT

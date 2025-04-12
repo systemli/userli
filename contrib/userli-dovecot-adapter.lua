@@ -14,7 +14,7 @@ local env_dovecot_insecure     = os.getenv("DOVECOT_LUA_INSECURE") or "false"
 local log_msg = {}
 log_msg["env_userli_host"]   = "Environment variable USERLI_HOST must not be empty"
 log_msg["env_userli_token"]  = "Environment variable USERLI_API_ACCESS_TOKEN must not be empty"
-log_msg["userli-error"]      = "Could not connect to Userli API: HTTP-status: "
+log_msg["userli-error"]      = "Could not connect to Userli API. "
 log_msg["http-ok"]           = "Lookup successfull"
 log_msg["http-ok-malformed"] = "Lookup failed: HTTP-status is 200, but HTTP-response is malformed."
 log_msg["http-failed"]       = "Lookup failed: HTTP-status "
@@ -63,7 +63,7 @@ function script_init()
     if http_response:status() == 200 then
         return 0
     else
-        dovecot.i_error(log_msg["userli-error"] .. http_response:status())
+        dovecot.i_error(log_msg["userli-error"] .. "HTTP-Status: " .. http_response:status() .. "; Reason: " .. http_response:reason())
         return 1
     end
 end

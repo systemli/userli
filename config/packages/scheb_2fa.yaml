@@ -1,18 +1,18 @@
 # See the configuration reference at https://symfony.com/bundles/SchebTwoFactorBundle/6.x/configuration.html
 scheb_two_factor:
-    # Google Authenticator config
-    totp:
-        enabled: true
-        server_name: "%env(APP_DOMAIN)%"
-        issuer: "%env(PROJECT_NAME)%"
-        template: Security/2fa_form.html.twig
-        parameters:
-            image: "%env(PROJECT_LOGO_URL)%"
-    # Backup codes config
-    backup_codes:
-        enabled: true
+  # Google Authenticator config
+  totp:
+    enabled: true
+    server_name: '%env(APP_DOMAIN)%'
+    issuer: '%env(PROJECT_NAME)%'
+    template: Security/2fa_form.html.twig
+    parameters:
+      image: '%env(PROJECT_LOGO_URL)%'
+  # Backup codes config
+  backup_codes:
+    enabled: true
 
-    # The security token classes, which trigger two-factor authentication.
-    security_tokens:
-        - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
-        - Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken
+  # The security token classes, which trigger two-factor authentication.
+  security_tokens:
+    - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
+    - Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken
