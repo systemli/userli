@@ -1,3 +1,46 @@
+# 4.0.0 (2025.04.12)
+
+* Remove UsersCheckPasswordCommand (**breaking change**)
+* Update README
+* Document how to test Dovecot integration
+* Userli-dovecot-adapter: Improve error logging
+* docker-compose: fix env vars
+* Move docker files into own directory
+* Add YAML, Markdown & Makefile to editorconfig
+* Remove obsolete ansible requirements.yml
+* Refactor: move user restore logic into its own handler
+* refactor: Add abstract UsersBaseCommand class
+* Don't allow to reset a deleted user
+* Add command to restore a deleted user
+* Rename MailCrypt trait to MailCryptEnabled
+* Update Makefile and documentation
+* Reset two-factor authentication with recovery process
+* Change booleans in docker compose env vars to integers
+* chore(deps): bump sonarsource/sonarqube-scan-action from 5.0.0 to 5.1.0
+* Add editorconfig
+* chore(deps-dev): bump the npm-dependencies group across 1 directory with 3 updates
+* VoucherCountCommand: Show both used and unused vouchers per default
+* fix: Enable mail_crypt for new users via admin backend
+* Dockerfile: Install gpg
+* Update and restructure documentation
+* Suppress deprecation warnings in 'fingers_crossed' log handler
+* Monolog: Fix config
+* Monolog: Log to syslog in prod env
+* Update GHA Runner to Ubuntu 24.04 (#736)
+* Makefile: Revert change done in #727
+* Docs: Fix broken links
+* Docs: How to docker/podman with SELinux
+* Docker compose: fix paths
+* Update dependencies
+* Fix typo in yarn package name on Debian/Ubuntu
+* Update to symfony 6.4.19
+* chore(deps-dev): bump the npm-dependencies group across 1 directory with 4 updates
+* Reintroduce make integration
+* Replace deprecated sonarcloud action
+* fix: Link to correct installation page
+* fix: Point to correct index.md
+* fix: Install correct Debian packages
+
 # 3.12.1 (2025.02.28)
 
 * Fix Makefile
