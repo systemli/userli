@@ -2,22 +2,21 @@
 
 namespace App\Command;
 
-use App\Entity\User;
 use App\Handler\DeleteHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 #[AsCommand(name: 'app:users:delete')]
-class UsersDeleteCommand extends Command
+class UsersDeleteCommand extends AbstractUsersCommand
 {
-    public function __construct(private readonly EntityManagerInterface $manager, private readonly DeleteHandler $deleteHandler)
+    public function __construct(
+        EntityManagerInterface $manager,
+        private readonly DeleteHandler $deleteHandler,
+    )
     {
-        parent::__construct();
+        parent::__construct($manager);
     }
 
     /**
@@ -25,10 +24,8 @@ class UsersDeleteCommand extends Command
      */
     protected function configure(): void
     {
-        $this
-            ->setDescription('Delete a user')
-            ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User to delete')
-            ->addOption('dry-run', null, InputOption::VALUE_NONE);
+        parent::configure();
+        $this->setDescription('Delete a user');
     }
 
     /**
@@ -36,16 +33,12 @@ class UsersDeleteCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $email = $input->getOption('user');
-
-        if (empty($email) || null === $user = $this->manager->getRepository(User::class)->findByEmail($email)) {
-            throw new UserNotFoundException(sprintf('User with email %s not found!', $email));
-        }
+        $user = $this->getUser($input);
 
         if ($input->getOption('dry-run')) {
-            $output->write(sprintf("Would delete user %s\n", $email));
+            $output->write(sprintf("Would delete user %s\n", $user->getEmail()));
         } else {
-            $output->write(sprintf("Deleting user %s\n", $email));
+            $output->write(sprintf("Deleting user %s\n", $user->getEmail()));
             $this->deleteHandler->deleteUser($user);
         }
 

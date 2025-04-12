@@ -3,22 +3,17 @@
 namespace App\Command;
 
 use Exception;
-use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:users:mailcrypt')]
-class UsersMailCryptCommand extends Command
+class UsersMailCryptCommand extends AbstractUsersCommand
 {
-    private readonly UserRepository $repository;
-
     public function __construct(
         EntityManagerInterface                     $manager,
         private readonly UserAuthenticationHandler $handler,
@@ -26,21 +21,14 @@ class UsersMailCryptCommand extends Command
         private readonly int                       $mailCrypt
     )
     {
-        $this->repository = $manager->getRepository(User::class);
-        parent::__construct();
+        parent::__construct($manager);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
+        parent::configure();
         $this
             ->setDescription('Get MailCrypt values for user')
-            ->addArgument(
-                'email',
-                InputOption::VALUE_REQUIRED,
-                'email to get MailCrypt values for')
             ->addArgument(
                 'password',
                 InputOption::VALUE_OPTIONAL,
@@ -59,13 +47,11 @@ class UsersMailCryptCommand extends Command
         }
 
         // parse arguments
-        $email = $input->getArgument('email');
         $password = $input->getArgument('password');
 
         // Check if user exists
-        $user = $this->repository->findByEmail($email);
-
-        if (null === $user || !$user->getMailCryptEnabled() || !$user->hasMailCryptPublicKey() || !$user->hasMailCryptSecretBox()) {
+        $user = $this->getUser($input);
+        if (!$user->getMailCryptEnabled() || !$user->hasMailCryptPublicKey() || !$user->hasMailCryptSecretBox()) {
             return 1;
         }
 

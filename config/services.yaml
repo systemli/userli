@@ -66,13 +66,9 @@ services:
     arguments:
       $mailLocation: '%env(DOVECOT_MAIL_LOCATION)%'
 
-  App\Command\UsersRestoreCommand:
-    arguments:
-      $mailCryptEnv: '%env(MAIL_CRYPT)%'
-
   App\Command\VoucherCreateCommand:
-    arguments:
-      $appUrl: '%env(APP_URL)%'
+      arguments:
+          $appUrl: "%env(APP_URL)%"
 
   App\Controller\DovecotController:
     arguments:
@@ -120,11 +116,15 @@ services:
     arguments:
       $to: '%env(NOTIFICATION_ADDRESS)%'
 
+  App\Handler\UserRestoreHandler:
+      arguments:
+          $mailCryptEnv: "%env(MAIL_CRYPT)%"
+
   App\Handler\RegistrationHandler:
-    public: true
-    arguments:
-      $registrationOpen: '%env(REGISTRATION_OPEN)%'
-      $mailCrypt: '%env(MAIL_CRYPT)%'
+      public: true
+      arguments:
+          $registrationOpen: "%env(REGISTRATION_OPEN)%"
+          $mailCrypt: '%env(MAIL_CRYPT)%'
 
   App\Handler\SuspiciousChildrenHandler:
     arguments:

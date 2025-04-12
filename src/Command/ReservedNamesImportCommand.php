@@ -15,14 +15,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:reservednames:import')]
 class ReservedNamesImportCommand extends Command
 {
-    public function __construct(private readonly EntityManagerInterface $manager, private readonly ReservedNameCreator $creator)
+    public function __construct(
+        private readonly EntityManagerInterface $manager,
+        private readonly ReservedNameCreator $creator,
+    )
     {
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this
@@ -37,8 +37,6 @@ class ReservedNamesImportCommand extends Command
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws ValidationException
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
