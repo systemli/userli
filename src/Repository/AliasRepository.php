@@ -8,6 +8,18 @@ use Doctrine\ORM\EntityRepository;
 
 class AliasRepository extends EntityRepository
 {
+
+    /**
+     * @return Alias|null
+     */
+    public function findOneByUserAndSource(User $user, string $email, ?bool $random = null): ?Alias
+    {
+        if (isset($random)) {
+            return $this->findOneBy(['user' => $user, 'source' => $email, 'random' => $random, 'deleted' => false]);
+        }
+        return $this->findOneBy(['user' => $user, 'source' => $email, 'deleted' => false]);
+    }
+
     /**
      * @param string    $email
      * @param bool|null $includeDeleted
@@ -40,5 +52,14 @@ class AliasRepository extends EntityRepository
         }
 
         return $this->findBy(['user' => $user, 'deleted' => false]);
+    }
+
+    public function countByUser(User $user, ?bool $random = null): int
+    {
+        if (isset($random)) {
+            return $this->count(['user' => $user, 'random' => $random, 'deleted' => false]);
+        }
+
+        return $this->count(['user' => $user, 'deleted' => false]);
     }
 }

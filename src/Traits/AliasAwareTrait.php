@@ -2,7 +2,9 @@
 
 namespace App\Traits;
 
+
 use App\Entity\Alias;
+
 
 trait AliasAwareTrait
 {

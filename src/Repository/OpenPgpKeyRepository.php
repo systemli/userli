@@ -21,6 +21,18 @@ class OpenPgpKeyRepository extends EntityRepository
         return $this->findOneBy(['email' => $email]);
     }
 
+    /**
+     * @return OpenPgpKey[]
+     */
+    public function findByEmailList(array $emails): array
+    {
+        $qb = $this->createQueryBuilder('e');
+
+        $qb->where($qb->expr()->in('e.email', ':emails'))
+            ->setParameter('emails', $emails);
+
+        return $qb->getQuery()->getResult();
+    }
     public function countKeys(): int
     {
         return $this->count([]);

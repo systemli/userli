@@ -13,8 +13,11 @@ class DeleteHandler
     /**
      * DeleteHandler constructor.
      */
-    public function __construct(private readonly PasswordUpdater $passwordUpdater, private readonly EntityManagerInterface $manager, private readonly WkdHandler $wkdHandler)
-    {
+    public function __construct(
+        private readonly PasswordUpdater $passwordUpdater,
+        private readonly EntityManagerInterface $manager,
+        private readonly WkdHandler $wkdHandler
+    ) {
     }
 
     public function deleteAlias(Alias $alias, User $user = null)
@@ -51,11 +54,13 @@ class DeleteHandler
         $user->eraseMailCryptPublicKey();
         $user->eraseMailCryptSecretBox();
 
-        // Delete OpenPGP key from WKD
-        $this->wkdHandler->deleteKey($user->getEmail());
-
         // Flag user as deleted
         $user->setDeleted(true);
+
+        // Delete OpenPGP key from WKD if no other user owns mail handle
+        if (!$this->wkdHandler->userToUserIdExists($user->getEmail())) {
+            $this->wkdHandler->deleteKey($user->getEmail());
+        }
 
         $this->manager->flush();
     }
