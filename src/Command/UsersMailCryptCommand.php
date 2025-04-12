@@ -42,8 +42,6 @@ class UsersMailCryptCommand extends AbstractUsersCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $user = $this->getUser($input);
-
         if ($this->mailCrypt <= 0) {
             return 1;
         }

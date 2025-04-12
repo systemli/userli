@@ -2,12 +2,9 @@
 
 namespace App\Command;
 
-use App\Enum\MailCrypt;
+use App\Handler\UserRestoreHandler;
 use Exception;
-use App\Handler\MailCryptKeyHandler;
 use App\Handler\PasswordStrengthHandler;
-use App\Handler\RecoveryTokenHandler;
-use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,16 +15,12 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 #[AsCommand(name: 'app:users:restore')]
 class UsersRestoreCommand extends AbstractUsersCommand
 {
-    private readonly MailCrypt $mailCrypt;
-
-    public function __construct(EntityManagerInterface $manager,
-                                private readonly PasswordUpdater $passwordUpdater,
-                                private readonly MailCryptKeyHandler $mailCryptKeyHandler,
-                                private readonly RecoveryTokenHandler $recoveryTokenHandler,
-                                private readonly int $mailCryptEnv)
+    public function __construct(
+        EntityManagerInterface $manager,
+        private readonly UserRestoreHandler $userRestoreHandler,
+    )
     {
         parent::__construct($manager);
-        $this->mailCrypt = MailCrypt::from($this->mailCryptEnv);
     }
 
     /**
@@ -87,23 +80,10 @@ class UsersRestoreCommand extends AbstractUsersCommand
 
         $output->write(sprintf("\nRestoring user %s ...\n\n", $user->getEmail()));
 
-        $user->setDeleted(false);
-        $this->passwordUpdater->updatePassword($user, $password);
-
-        // Generate MailCrypt key with new password (overwrites old MailCrypt key)
-        if ($this->mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS)) {
-            $this->mailCryptKeyHandler->create($user, $password);
-            $user->setMailCryptEnabled(true);
-
-            // Reset recovery token
-            $this->recoveryTokenHandler->create($user);
+        $recoveryToken = $this->userRestoreHandler->restoreUser($user, $password);
+        if ($recoveryToken) {
             $output->write(sprintf("<info>New recovery token (please hand over to user): %s</info>\n\n", $user->getPlainRecoveryToken()));
         }
-
-        // Clear sensitive plaintext data from User object
-        $user->eraseCredentials();
-
-        $this->manager->flush();
 
         return 0;
     }

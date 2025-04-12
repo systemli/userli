@@ -3,6 +3,7 @@
 namespace App\Tests\Command;
 
 use App\Command\UsersRestoreCommand;
+use App\Handler\UserRestoreHandler;
 use Exception;
 use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
@@ -37,21 +38,15 @@ class UsersRestoreCommandTest extends TestCase
             ->getMock();
         $manager->method('getRepository')->willReturn($repository);
 
-        $passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)
+        $userRestoreHandler = $this->getMockBuilder(UserRestoreHandler::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $userRestoreHandler->method('restoreUser')->willReturnCallback(function (User $user, string $password) {
+           $user->setDeleted(false);
+           $user->setMailCryptEnabled(true);
+        });
 
-        $mailCryptKeyHandler = $this->getMockBuilder(MailCryptKeyHandler::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $recoveryTokenHandler = $this->getMockBuilder(RecoveryTokenHandler::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $mailCryptEnv = 3;
-
-        $this->command = new UsersRestoreCommand($manager, $passwordUpdater, $mailCryptKeyHandler, $recoveryTokenHandler, $mailCryptEnv);
+        $this->command = new UsersRestoreCommand($manager, $userRestoreHandler);
     }
 
     public function testExecute(): void
