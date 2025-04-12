@@ -1,6 +1,7 @@
 # 4.0.0 (2025.04.12)
 
 * Remove UsersCheckPasswordCommand (**breaking change**)
+* Call webhook URLS on user created/deleted evens
 * Update README
 * Document how to test Dovecot integration
 * Userli-dovecot-adapter: Improve error logging
