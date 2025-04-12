@@ -25,29 +25,19 @@ class WebhookHandlerTest extends TestCase
     public function testSendWithoutWebhook(): void
     {
         $webhookUrl = '';
-        $webhookHandler = new WebhookHandler($this->client, $webhookUrl);
+        $webhookSecret = '';
+        $webhookHandler = new WebhookHandler($this->client, $webhookUrl, $webhookSecret);
 
         $this->client->expects(self::never())
             ->method('request');
         $webhookHandler->send($this->user, 'user.created');
     }
 
-    public function testSendWithException(): void
-    {
-        $webhookUrl = 'http://localhost:8080/userli';
-        $webhookHandler = new WebhookHandler($this->client, $webhookUrl);
-
-        $this->createMock(ResponseInterface::class);
-        $this->client->expects(self::once())
-            ->method('request')
-            ->willThrowException(new \RuntimeException());
-        $webhookHandler->send($this->user, 'user.created');
-    }
-
     public function testSend(): void
     {
         $webhookUrl = 'http://localhost:8080/userli';
-        $webhookHandler = new WebhookHandler($this->client, $webhookUrl);
+        $webhookSecret = 'secret';
+        $webhookHandler = new WebhookHandler($this->client, $webhookUrl, $webhookSecret);
 
         $response = $this->createMock(ResponseInterface::class);
         $this->client->expects(self::once())
@@ -57,8 +47,23 @@ class WebhookHandlerTest extends TestCase
                 self::assertEquals($webhookUrl, $url);
                 self::assertEquals('user.created', $opts['json']['type']);
                 self::assertEquals('test@example.org', $opts['json']['data']['email']);
+                self::assertNotEmpty($opts['headers']['X-Signature']);
                 return $response;
             });
+        $webhookHandler->send($this->user, 'user.created');
+    }
+
+    public function testSendWithException(): void
+    {
+        $webhookUrl = 'http://localhost:8080/userli';
+        $webhookSecret = 'secret';
+        $webhookHandler = new WebhookHandler($this->client, $webhookUrl, $webhookSecret);
+
+        $this->createMock(ResponseInterface::class);
+        $this->client->expects(self::once())
+            ->method('request')
+            ->willThrowException(new \RuntimeException());
+
         $webhookHandler->send($this->user, 'user.created');
     }
 }

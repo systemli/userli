@@ -94,6 +94,7 @@ services:
   App\Handler\WebhookHandler:
     arguments:
       $webhookUrl: "%env(WEBHOOK_URL)%"
+      $webhookSecret: "%env(WEBHOOK_SECRET)%"
 
   App\Form\PasswordChangeType:
     tags:
