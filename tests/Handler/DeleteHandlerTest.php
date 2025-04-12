@@ -10,6 +10,7 @@ use App\Helper\PasswordUpdater;
 use App\Repository\AliasRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 class DeleteHandlerTest extends TestCase
 {
@@ -33,7 +34,10 @@ class DeleteHandlerTest extends TestCase
         $wkdHandler = $this->getMockBuilder(WkdHandler::class)
             ->disableOriginalConstructor()->getMock();
 
-        return new DeleteHandler($passwordUpdater, $EntityManagerInterface, $wkdHandler);
+        $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
+            ->disableOriginalConstructor()->getMock();
+
+        return new DeleteHandler($passwordUpdater, $EntityManagerInterface, $wkdHandler, $eventDispatcher);
     }
 
     public function testDeleteAlias(): void

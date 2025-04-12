@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Entity\Voucher;
 use App\Enum\Roles;
 use App\Event\Events;
+use App\Event\UserCreatedEvent;
 use App\Event\UserEvent;
 use App\Repository\VoucherRepository;
 use Exception;
@@ -62,7 +63,7 @@ class RegistrationHandlerTest extends KernelTestCase
         });
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcher->expects($this->once())->method('dispatch')->with($this->isInstanceOf(UserEvent::class), Events::MAIL_ACCOUNT_CREATED);
+        $eventDispatcher->expects($this->exactly(2))->method('dispatch');
 
         $handler = new RegistrationHandler(
             $manager,

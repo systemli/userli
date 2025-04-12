@@ -91,6 +91,10 @@ services:
     resource: '../src/Handler/*'
     public: true
 
+  App\Handler\WebhookHandler:
+    arguments:
+      $webhookUrl: "%env(WEBHOOK_URL)%"
+
   App\Form\PasswordChangeType:
     tags:
       - { name: form.type, alias: password_change }

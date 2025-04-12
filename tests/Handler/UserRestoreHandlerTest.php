@@ -9,6 +9,7 @@ use App\Handler\UserRestoreHandler;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class UserRestoreHandlerTest extends TestCase
 {
@@ -28,6 +29,7 @@ class UserRestoreHandlerTest extends TestCase
             ->disableOriginalConstructor()->getMock();
         $mailCryptKeyHandler->method('create')->willReturnCallBack(function (User $user, string $password) {
             $user->setMailCryptSecretBox('MailCryptSecretBox');
+            $user->setMailCryptEnabled(true);
         });
 
         $recoveryTokenHandler = $this->getMockBuilder(RecoveryTokenHandler::class)
@@ -37,9 +39,12 @@ class UserRestoreHandlerTest extends TestCase
             $user->setPlainRecoveryToken('PlainRecoveryToken');
         });
 
+        $eventDispatcher = $this->getMockBuilder(EventDispatcher::class)
+            ->disableOriginalConstructor()->getMock();
+
         $mailCryptEnv = 2;
 
-        return new UserRestoreHandler($entityManagerInterface, $passwordUpdater, $mailCryptKeyHandler, $recoveryTokenHandler, $mailCryptEnv);
+        return new UserRestoreHandler($entityManagerInterface, $passwordUpdater, $mailCryptKeyHandler, $recoveryTokenHandler, $eventDispatcher, $mailCryptEnv);
     }
 
     public function testRestoreUserWithMailCrypt(): void
