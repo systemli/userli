@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\Traits\PlainPasswordTrait;
 use Stringable;
 use DateTime;
 use App\Enum\Roles;
@@ -19,7 +20,6 @@ use App\Traits\MailCryptEnabledTrait;
 use App\Traits\PasswordTrait;
 use App\Traits\PasswordVersionTrait;
 use App\Traits\PlainMailCryptPrivateKeyTrait;
-use App\Traits\PlainPasswordTrait;
 use App\Traits\PlainRecoveryTokenTrait;
 use App\Traits\QuotaTrait;
 use App\Traits\RecoverySecretBoxTrait;
@@ -53,12 +53,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     use SaltTrait;
     use DeleteTrait;
     use InvitationVoucherTrait;
-    use PlainPasswordTrait;
     use DomainAwareTrait;
     use LastLoginTimeTrait;
     use PasswordVersionTrait;
-    use RecoverySecretBoxTrait;
+    use PlainPasswordTrait;
     use PlainRecoveryTokenTrait;
+    use RecoverySecretBoxTrait;
     use RecoveryStartTimeTrait;
     use MailCryptEnabledTrait;
     use MailCryptSecretBoxTrait;
@@ -141,5 +141,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 
         // use default encoder
         return null;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        $this->plainPassword = null;
+        $this->erasePlainMailCryptPrivateKey();
+        $this->erasePlainRecoveryToken();
     }
 }
