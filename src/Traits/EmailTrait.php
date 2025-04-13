@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Validator\Constraints\Lowercase;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -10,6 +11,7 @@ trait EmailTrait
 {
     #[ORM\Column(unique: true)]
     #[Assert\NotNull]
+    #[Lowercase]
     #[Assert\Email]
     private ?string $email = '';
 
