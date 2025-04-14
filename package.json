@@ -13,7 +13,7 @@
     "@symfony/webpack-encore": "^5.1.0",
     "copy-webpack-plugin": "^13.0.0",
     "jquery": "^3.7.1",
-    "webpack": "^5.98.0",
+    "webpack": "^5.99.5",
     "webpack-cli": "^6.0.1"
   },
   "packageManager": "yarn@1.22.19"
