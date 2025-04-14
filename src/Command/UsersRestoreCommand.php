@@ -82,7 +82,7 @@ class UsersRestoreCommand extends AbstractUsersCommand
 
         $recoveryToken = $this->userRestoreHandler->restoreUser($user, $password);
         if ($recoveryToken) {
-            $output->write(sprintf("<info>New recovery token (please hand over to user): %s</info>\n\n", $user->getPlainRecoveryToken()));
+            $output->write(sprintf("<info>New recovery token (please hand over to user): %s</info>\n\n", $recoveryToken));
         }
 
         return 0;
