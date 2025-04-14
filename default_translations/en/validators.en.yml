@@ -11,6 +11,7 @@ form:
   invalid-token: "This token has an invalid format."
   twofactor-secret-invalid: "The verification code is not valid."
   twofactor-backup-ack-missing: "This needs to be checked."
+  lowercase: "The string must not contain uppercase letters."
 
 registration:
   voucher-invalid: "The invite code is invalid."
