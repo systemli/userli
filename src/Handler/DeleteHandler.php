@@ -18,7 +18,6 @@ class DeleteHandler
     public function __construct(
         private readonly PasswordUpdater $passwordUpdater,
         private readonly EntityManagerInterface $manager,
-        private readonly WkdHandler $wkdHandler,
         private readonly EventDispatcherInterface $eventDispatcher,
     )
     {
@@ -57,9 +56,6 @@ class DeleteHandler
         // Erase MailCrypt keys
         $user->eraseMailCryptPublicKey();
         $user->eraseMailCryptSecretBox();
-
-        // Delete OpenPGP key from WKD
-        $this->wkdHandler->deleteKey($user->getEmail());
 
         // Flag user as deleted
         $user->setDeleted(true);
