@@ -59,8 +59,7 @@ readonly class RegistrationHandler
         $this->manager->persist($user);
         $this->manager->flush();
 
-        $this->eventDispatcher->dispatch(new UserCreatedEvent($user));
-        $this->eventDispatcher->dispatch(new UserEvent($user), Events::MAIL_ACCOUNT_CREATED);
+        $this->eventDispatcher->dispatch(new UserCreatedEvent($user), UserCreatedEvent::REGISTRATION);
     }
 
     public function isRegistrationOpen(): bool

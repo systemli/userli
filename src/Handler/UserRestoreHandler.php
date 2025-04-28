@@ -43,7 +43,7 @@ class UserRestoreHandler
 
         $this->manager->flush();
 
-        $this->eventDispatcher->dispatch(new UserCreatedEvent($user));
+        $this->eventDispatcher->dispatch(new UserCreatedEvent($user), UserCreatedEvent::RESTORE);
 
         return $recoveryToken;
     }

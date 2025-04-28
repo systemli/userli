@@ -5,6 +5,7 @@ namespace App\Admin;
 use App\Entity\User;
 use App\Enum\MailCrypt;
 use App\Enum\Roles;
+use App\Event\UserCreatedEvent;
 use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use App\Traits\DomainGuesserAwareTrait;
@@ -206,6 +207,11 @@ class UserAdmin extends Admin
             $object->setTotpConfirmed(false);
             $object->clearBackupCodes();
         }
+    }
+
+    protected function postPersist(object $object): void
+    {
+        $this->eventDispatcher->dispatch(new UserCreatedEvent($object), UserCreatedEvent::ADMIN);
     }
 
     public function setPasswordUpdater(PasswordUpdater $passwordUpdater): void
