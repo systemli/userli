@@ -30,15 +30,6 @@ class UserChangedListenerTest extends TestCase
             ->willReturn($this->voucherRepository);
         $this->suspiciousChildrenHandler = $this->createMock(SuspiciousChildrenHandler::class);
         $this->listener = new UserChangedListener($manager, $this->suspiciousChildrenHandler);
-
-        $this->session = $this->createMock(Session::class);
-        $this->request = $this->createMock(Request::class);
-        $this->request->method('getSession')
-            ->willReturn($this->session);
-        $this->request->query = new InputBag();
-        $this->event = $this->createMock(RequestEvent::class);
-        $this->event->method('getRequest')
-            ->willReturn($this->request);
     }
 
     public function testPreUpdateNoRoleChanges(): void
