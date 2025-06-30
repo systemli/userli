@@ -1,0 +1,65 @@
+{% extends 'knp_menu_base.html.twig' %}
+
+{% block item %}
+{% if item.displayed %}
+{%- set attributes = item.attributes %}
+{%- set is_dropdown = attributes.dropdown|default(false) %}
+{%- set divider_prepend = attributes.divider_prepend|default(false) %}
+{%- set divider_append = attributes.divider_append|default(false) %}
+
+{%- if divider_prepend %}
+    {{ block('dividerElement') }}
+{%- endif %}
+
+{%- if is_dropdown %}
+    <li class="dropdown{{ item.current ? ' active' }}">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            {{ block('label') }} <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+            {{ block('list') }}
+        </ul>
+    </li>
+{%- else %}
+    <li{{ item.current ? ' class="active"' }}>
+        {%- if item.uri is not empty and (not item.current or options.currentAsLink) %}
+        {{ block('linkElement') }}
+        {%- else %}
+        {{ block('spanElement') }}
+        {%- endif %}
+    </li>
+{%- endif %}
+
+{%- if divider_append %}
+    {{ block('dividerElement') }}
+{%- endif %}
+{% endif %}
+{% endblock %}
+
+{% block dividerElement %}
+    <li class="divider"></li>
+{% endblock %}
+
+{% block linkElement %}
+    <a href="{{ item.uri }}"{{ block('attributes') }}>{{ block('label') }}</a>
+{% endblock %}
+
+{% block spanElement %}
+    <span{{ block('attributes') }}>{{ block('label') }}</span>
+{% endblock %}
+
+{% block label %}
+    {% if options.allow_safe_labels and item.getExtra('safe_label', false) %}
+        {{- item.label|raw -}}
+    {% else %}
+        {{- item.label|trans(item.getExtra('translation_params', {}), item.getExtra('translation_domain')) -}}
+    {% endif %}
+{% endblock %}
+
+{% block list %}
+    {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+        {% for item in item.children %}
+            {{ block('item') }}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

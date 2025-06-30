@@ -19,7 +19,8 @@ class MenuBuilder
 
     public function createNavbarLeft(): ItemInterface
     {
-        $menu = $this->factory->createItem('root', ['navbar' => true]);
+        $menu = $this->factory->createItem('root');
+        $menu->setChildrenAttribute('class', 'nav navbar-nav');
 
         if (!empty($this->navbarLeft)) {
             $menu = $this->menuHelper->build($this->navbarLeft, $menu);

@@ -3,15 +3,21 @@
 {% block subtitle %}{{ "error.title"|trans }}{% endblock %}
 
 {% block navbar %}
-    {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with { fixedTop: true, staticTop: true, inverse: true, fluid: true } %}
-        {% block brand %}
-            <a class="navbar-brand" href="https://www.{{ domain }}">{{ domain }}</a>
-        {% endblock %}
+    <nav class="navbar navbar-default navbar-static-top navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                {% block brand %}
+                    <a class="navbar-brand" href="https://www.{{ domain }}">{{ domain }}</a>
+                {% endblock %}
+            </div>
 
-        {% block menu %}
-            {{ mopa_bootstrap_menu('navbar-left') }}
-        {% endblock %}
-    {% endembed %}
+            <div class="navbar-collapse">
+                {% block menu %}
+                    {{ knp_menu_render('navbar-left', {'template': 'knp_menu.html.twig'}) }}
+                {% endblock %}
+            </div>
+        </div>
+    </nav>
 {% endblock %}
 
 {% block content %}

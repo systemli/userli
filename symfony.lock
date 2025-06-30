@@ -5,9 +5,6 @@
     "behat/gherkin": {
         "version": "v4.5.1"
     },
-    "behat/transliterator": {
-        "version": "v1.2.0"
-    },
     "brick/math": {
         "version": "0.9.1"
     },
@@ -121,12 +118,6 @@
     },
     "monolog/monolog": {
         "version": "1.23.0"
-    },
-    "mopa/bootstrap-bundle": {
-        "version": "v3.2.2"
-    },
-    "mopa/composer-bridge": {
-        "version": "v1.5.0"
     },
     "nelmio/security-bundle": {
         "version": "3.4",
@@ -570,9 +561,6 @@
     },
     "tuupola/base32": {
         "version": "1.0.0"
-    },
-    "twbs/bootstrap": {
-        "version": "v3.3.7"
     },
     "twig/string-extra": {
         "version": "v3.0.5"
