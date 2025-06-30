@@ -145,23 +145,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function toggleDropdown(toggle) {
     const dropdown = toggle.closest(".dropdown");
-    const isOpen = dropdown.classList.contains("open");
+    const dropdownMenu = dropdown.querySelector(".dropdown-menu");
+    const isOpen = dropdownMenu && !dropdownMenu.classList.contains("hidden");
 
     // Close all other dropdowns
     document
-      .querySelectorAll(".dropdown.open")
-      .forEach(function (openDropdown) {
-        openDropdown.classList.remove("open");
+      .querySelectorAll(".dropdown .dropdown-menu")
+      .forEach(function (menu) {
+        menu.classList.add("hidden");
       });
 
     // Toggle current dropdown
-    if (!isOpen) {
-      dropdown.classList.add("open");
+    if (!isOpen && dropdownMenu) {
+      dropdownMenu.classList.remove("hidden");
 
       // Close dropdown when clicking outside
       document.addEventListener("click", function closeDropdown(e) {
         if (!dropdown.contains(e.target)) {
-          dropdown.classList.remove("open");
+          dropdownMenu.classList.add("hidden");
           document.removeEventListener("click", closeDropdown);
         }
       });
@@ -170,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Fade out flash notifications (replacing jQuery fadeOut)
   function fadeOutFlashNotifications() {
-    const flashNotifications = document.querySelectorAll(".flash-notification");
+    const flashNotifications = document.querySelectorAll(".alert");
     flashNotifications.forEach(function (notification) {
       notification.style.transition = "opacity 0.5s";
       setTimeout(function () {

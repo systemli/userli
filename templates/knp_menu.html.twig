@@ -12,22 +12,21 @@
 {%- endif %}
 
 {%- if is_dropdown %}
-    <li class="dropdown{{ item.current ? ' active' }}">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            {{ block('label') }} <b class="caret"></b>
+    <div class="relative dropdown">
+        <a href="#" class="text-white hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium dropdown-toggle" data-toggle="dropdown">
+            {{ block('label') }}
+            <svg class="w-4 h-4 ml-1 inline" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
         </a>
-        <ul class="dropdown-menu">
+        <ul class="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10 hidden dropdown-menu">
             {{ block('list') }}
         </ul>
-    </li>
+    </div>
 {%- else %}
-    <li{{ item.current ? ' class="active"' }}>
-        {%- if item.uri is not empty and (not item.current or options.currentAsLink) %}
-        {{ block('linkElement') }}
-        {%- else %}
-        {{ block('spanElement') }}
-        {%- endif %}
-    </li>
+    <a href="{{ item.uri }}" class="text-white hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium{% if item.current %} bg-gray-900{% endif %}">
+        {{ block('label') }}
+    </a>
 {%- endif %}
 
 {%- if divider_append %}
@@ -37,15 +36,15 @@
 {% endblock %}
 
 {% block dividerElement %}
-    <li class="divider"></li>
+    <li class="border-t border-gray-200 my-1"></li>
 {% endblock %}
 
 {% block linkElement %}
-    <a href="{{ item.uri }}"{{ block('attributes') }}>{{ block('label') }}</a>
+    <a href="{{ item.uri }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">{{ block('label') }}</a>
 {% endblock %}
 
 {% block spanElement %}
-    <span{{ block('attributes') }}>{{ block('label') }}</span>
+    <span class="block px-4 py-2 text-gray-800">{{ block('label') }}</span>
 {% endblock %}
 
 {% block label %}

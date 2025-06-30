@@ -15,33 +15,35 @@
 </head>
 <body>
     {% block navbar %}
-        <nav class="navbar navbar-default navbar-static-top navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    {% block brand %}
-                        <a class="navbar-brand" href="{{ project_url }}" target="_self">{{ project_name }}</a>
-                    {% endblock %}
-                </div>
+        <nav class="bg-gray-800 border-gray-800 border-b">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        {% block brand %}
+                            <a class="text-white font-bold text-lg hover:text-gray-300" href="{{ project_url }}" target="_self">{{ project_name }}</a>
+                        {% endblock %}
+                    </div>
 
-                <div class="navbar-collapse">
-                    {% block menu %}
-                        {{ knp_menu_render('navbar-left', {'template': 'knp_menu.html.twig'}) }}
-                        {{ knp_menu_render('navbar-right', {'template': 'knp_menu.html.twig'}) }}
-                        {% include '_locale_switcher.html.twig' %}
-                    {% endblock %}
+                    <div class="flex items-center space-x-4">
+                        {% block menu %}
+                            {{ knp_menu_render('navbar-left', {'template': 'knp_menu.html.twig'}) }}
+                            {{ knp_menu_render('navbar-right', {'template': 'knp_menu.html.twig'}) }}
+                            {% include '_locale_switcher.html.twig' %}
+                        {% endblock %}
+                    </div>
                 </div>
             </div>
         </nav>
     {% endblock %}
 
     {% block container %}
-        <div class="container">
+        <div class="max-w-7xl mx-auto px-4 py-6">
             {% block flashes %}
                 {% if app.session.flashbag.peekAll|length > 0 %}
-                    <div class="flash-notification">
+                    <div class="mb-4">
                         {% for type, messages in app.session.flashbag.all %}
                             {% for message in messages %}
-                                <div class="alert alert-{{ type == 'error' ? 'danger' : type }}">
+                                <div class="alert p-4 mb-3 rounded-lg {% if type == 'error' %}bg-red-100 border border-red-400 text-red-700{% elseif type == 'success' %}bg-green-100 border border-green-400 text-green-700{% elseif type == 'info' %}bg-blue-100 border border-blue-400 text-blue-700{% elseif type == 'warning' %}bg-yellow-100 border border-yellow-400 text-yellow-700{% else %}bg-gray-100 border border-gray-400 text-gray-700{% endif %}">
                                     {{ message|trans|raw }}
                                 </div>
                             {% endfor %}

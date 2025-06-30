@@ -1,5 +1,8 @@
+@import "tailwindcss";
+
+/* Legacy styles for transition period - gradually remove these as we convert to Tailwind */
 body {
-  margin-top: 60px;
+  margin-top: 0; /* Remove fixed margin since we're not using fixed navbar anymore */
 }
 
 .footer {

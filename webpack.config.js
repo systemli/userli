@@ -37,6 +37,9 @@ Encore
   // uncomment if you use Sass/SCSS files
   //.enableSassLoader()
 
+  // Enable PostCSS support for Tailwind CSS
+  .enablePostCssLoader()
+
   .addPlugin(
     new CopyWebpackPlugin({
       patterns: [{ from: "./assets/images", to: "images" }],
