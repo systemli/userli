@@ -1,6 +1,6 @@
 require("../css/app.css");
 
-$(function () {
+document.addEventListener("DOMContentLoaded", function () {
   // Event handler that copies the value of element's [data-link]
   // attribute to clipboard.
   //
@@ -30,9 +30,164 @@ $(function () {
     document.body.removeChild(el);
   }
 
-  // initialize Bootstrap's tooltip and popover
-  $('[data-toggle="tooltip"]').tooltip();
-  $('[data-toggle="popover"]').popover();
+  // Initialize tooltips (replacing Bootstrap's jQuery tooltip)
+  function initializeTooltips() {
+    const tooltipElements = document.querySelectorAll(
+      '[data-toggle="tooltip"]'
+    );
+    tooltipElements.forEach(function (element) {
+      element.addEventListener("mouseenter", function () {
+        showTooltip(this);
+      });
+      element.addEventListener("mouseleave", function () {
+        hideTooltip(this);
+      });
+    });
+  }
+
+  function showTooltip(element) {
+    const title =
+      element.getAttribute("title") ||
+      element.getAttribute("data-original-title");
+    if (!title) return;
+
+    const tooltip = document.createElement("div");
+    tooltip.className = "tooltip fade in";
+    tooltip.innerHTML = `<div class="tooltip-inner">${title}</div>`;
+
+    // Position tooltip
+    const rect = element.getBoundingClientRect();
+    tooltip.style.position = "absolute";
+    tooltip.style.top = rect.top - 35 + "px";
+    tooltip.style.left = rect.left + rect.width / 2 - 50 + "px";
+    tooltip.style.zIndex = "1070";
+
+    element.setAttribute("data-original-title", title);
+    element.removeAttribute("title");
+    element.tooltip = tooltip;
+    document.body.appendChild(tooltip);
+  }
+
+  function hideTooltip(element) {
+    if (element.tooltip) {
+      document.body.removeChild(element.tooltip);
+      element.tooltip = null;
+      const originalTitle = element.getAttribute("data-original-title");
+      if (originalTitle) {
+        element.setAttribute("title", originalTitle);
+      }
+    }
+  }
+
+  // Initialize popovers (replacing Bootstrap's jQuery popover)
+  function initializePopovers() {
+    const popoverElements = document.querySelectorAll(
+      '[data-toggle="popover"]'
+    );
+    popoverElements.forEach(function (element) {
+      element.addEventListener("click", function (e) {
+        e.preventDefault();
+        togglePopover(this);
+      });
+    });
+  }
+
+  function togglePopover(element) {
+    const existingPopover = document.querySelector(".popover");
+    if (existingPopover) {
+      existingPopover.remove();
+      return;
+    }
+
+    const content = element.getAttribute("data-content");
+    const title =
+      element.getAttribute("data-title") || element.getAttribute("title");
+
+    if (!content) return;
+
+    const popover = document.createElement("div");
+    popover.className = "popover fade in";
+    popover.innerHTML = `
+      ${title ? `<h3 class="popover-title">${title}</h3>` : ""}
+      <div class="popover-content">${content}</div>
+    `;
+
+    // Position popover
+    const rect = element.getBoundingClientRect();
+    popover.style.position = "absolute";
+    popover.style.top = rect.bottom + 10 + "px";
+    popover.style.left = rect.left + "px";
+    popover.style.zIndex = "1070";
+
+    document.body.appendChild(popover);
+
+    // Close popover when clicking outside
+    document.addEventListener("click", function closePopover(e) {
+      if (!popover.contains(e.target) && e.target !== element) {
+        popover.remove();
+        document.removeEventListener("click", closePopover);
+      }
+    });
+  }
+
+  // Initialize dropdowns (replacing Bootstrap's jQuery dropdown)
+  function initializeDropdowns() {
+    const dropdownToggles = document.querySelectorAll(
+      '[data-toggle="dropdown"]'
+    );
+    dropdownToggles.forEach(function (toggle) {
+      toggle.addEventListener("click", function (e) {
+        e.preventDefault();
+        toggleDropdown(this);
+      });
+    });
+  }
+
+  function toggleDropdown(toggle) {
+    const dropdown = toggle.closest(".dropdown");
+    const isOpen = dropdown.classList.contains("open");
+
+    // Close all other dropdowns
+    document
+      .querySelectorAll(".dropdown.open")
+      .forEach(function (openDropdown) {
+        openDropdown.classList.remove("open");
+      });
+
+    // Toggle current dropdown
+    if (!isOpen) {
+      dropdown.classList.add("open");
+
+      // Close dropdown when clicking outside
+      document.addEventListener("click", function closeDropdown(e) {
+        if (!dropdown.contains(e.target)) {
+          dropdown.classList.remove("open");
+          document.removeEventListener("click", closeDropdown);
+        }
+      });
+    }
+  }
+
+  // Fade out flash notifications (replacing jQuery fadeOut)
+  function fadeOutFlashNotifications() {
+    const flashNotifications = document.querySelectorAll(".flash-notification");
+    flashNotifications.forEach(function (notification) {
+      notification.style.transition = "opacity 0.5s";
+      setTimeout(function () {
+        notification.style.opacity = "0";
+        setTimeout(function () {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 500);
+      }, 10000);
+    });
+  }
+
+  // Initialize all components
+  initializeTooltips();
+  initializePopovers();
+  initializeDropdowns();
 
   // initialize copy-to-clickboard buttons
   document
@@ -41,7 +196,6 @@ $(function () {
       el.addEventListener("click", copyToClipboard);
     });
 
-  setTimeout(function () {
-    $(".flash-notification").fadeOut();
-  }, 10000);
+  // Fade out flash notifications after 10 seconds
+  fadeOutFlashNotifications();
 });
