@@ -1,3 +1,7 @@
+nav:
+  language: Language
+  select_language: Select language
+
 start:
   title: Welcome to %domain%
   intro: Here you can set up and manage your e-mail account.

@@ -1,3 +1,7 @@
+nav:
+  language: Sprache
+  select_language: Sprache auswählen
+
 start:
   title: Willkommen bei %domain%
   intro: Hier kannst du dein E-Mail-Konto erstellen und verwalten.

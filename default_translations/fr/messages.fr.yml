@@ -1,3 +1,7 @@
+nav:
+  language: Langue
+  select_language: Choisir la langue
+
 form:
   remember-me: Rester connecté
   email: Courriel

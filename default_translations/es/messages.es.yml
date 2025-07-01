@@ -1,3 +1,7 @@
+nav:
+  language: Idioma
+  select_language: Seleccionar idioma
+
 start:
   title: Bienvenido %domain%
   intro: Aquí puedes crear y configurar tu cuenta de e-mail

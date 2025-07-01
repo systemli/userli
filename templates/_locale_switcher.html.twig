@@ -2,23 +2,164 @@
 {% set route_params = app.request.attributes.get('_route_params') %}
 {% set params = route_params|merge(app.request.query.all) %}
 
-<ul id=navbar-locale class="nav navbar-nav navbar-right">
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
+{# Modern language switcher with Tailwind CSS and vanilla JavaScript (no external dependencies) #}
+<div class="relative inline-block text-left" id="language-switcher">
+    <div>
+        <button 
+            type="button" 
+            class="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white rounded-md transition-colors duration-200"
+            id="language-menu-button" 
+            aria-expanded="false" 
+            aria-haspopup="true"
+        >
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+            </svg>
+            <span class="sr-only">{{ 'nav.language'|trans }}:</span>
             {{ app.request.locale|upper }}
-            <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu menu_level_1" role="menu">
-{% for locale in locales %}
-  {% if locale != app.request.locale %}
-            <li>
-                <a href="{{ path(route, params|merge({ _locale: locale })) }}">
-                    {{ locale|upper }}
-                </a>
-            </li>
-  {% endif %}
-{% endfor %}
-        </ul>
-    </li>
-</ul>
+            <svg 
+                class="w-4 h-4 ml-1 transition-transform duration-200"
+                id="language-arrow"
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24" 
+                aria-hidden="true"
+            >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </button>
+    </div>
+
+    {# Dropdown menu #}
+    <div 
+        id="language-menu"
+        class="absolute right-0 z-50 mt-2 w-40 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none opacity-0 scale-95 pointer-events-none transition-all duration-150"
+        role="menu" 
+        aria-orientation="vertical" 
+        aria-labelledby="language-menu-button"
+    >
+        <div class="py-1" role="none">
+            {% for locale in locales %}
+                {% if locale != app.request.locale %}
+                    <a 
+                        href="{{ path(route, params|merge({ _locale: locale })) }}"
+                        class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150"
+                        role="menuitem"
+                    >
+                        <span class="flex-shrink-0 w-5 h-5 mr-3 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600 group-hover:bg-gray-300 transition-colors duration-150">
+                            {{ locale|upper }}
+                        </span>
+                        {% set locale_names = {
+                            'en': 'English',
+                            'de': 'Deutsch', 
+                            'fr': 'Français',
+                            'es': 'Español',
+                            'it': 'Italiano',
+                            'pt': 'Português',
+                            'nb': 'Norsk',
+                            'gsw': 'Alemannisch'
+                        } %}
+                        {{ locale_names[locale] ?? locale|upper }}
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{# Fallback for browsers without JavaScript #}
+<noscript>
+    <div class="relative inline-block text-left">
+        <select 
+            onchange="window.location.href=this.value" 
+            class="bg-gray-800 text-white text-sm border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-white"
+            aria-label="{{ 'nav.select_language'|trans }}"
+        >
+            <option value="">{{ app.request.locale|upper }}</option>
+            {% for locale in locales %}
+                {% if locale != app.request.locale %}
+                    <option value="{{ path(route, params|merge({ _locale: locale })) }}">
+                        {% set locale_names = {
+                            'en': 'English',
+                            'de': 'Deutsch', 
+                            'fr': 'Français',
+                            'es': 'Español',
+                            'it': 'Italiano',
+                            'pt': 'Português',
+                            'nb': 'Norsk',
+                            'gsw': 'Alemannisch'
+                        } %}
+                        {{ locale_names[locale] ?? locale|upper }}
+                    </option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+</noscript>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const switcher = document.getElementById('language-switcher');
+    const button = document.getElementById('language-menu-button');
+    const menu = document.getElementById('language-menu');
+    const arrow = document.getElementById('language-arrow');
+    
+    if (!switcher || !button || !menu || !arrow) return;
+    
+    let isOpen = false;
+    
+    function openMenu() {
+        isOpen = true;
+        menu.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+        menu.classList.add('opacity-100', 'scale-100');
+        arrow.classList.add('rotate-180');
+        button.setAttribute('aria-expanded', 'true');
+    }
+    
+    function closeMenu() {
+        isOpen = false;
+        menu.classList.remove('opacity-100', 'scale-100');
+        menu.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+        arrow.classList.remove('rotate-180');
+        button.setAttribute('aria-expanded', 'false');
+    }
+    
+    function toggleMenu() {
+        if (isOpen) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    }
+    
+    // Toggle menu on button click
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMenu();
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!switcher.contains(e.target)) {
+            closeMenu();
+        }
+    });
+    
+    // Close menu on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && isOpen) {
+            closeMenu();
+            button.focus();
+        }
+    });
+    
+    // Close menu when clicking on a menu item
+    menu.addEventListener('click', function(e) {
+        if (e.target.tagName === 'A') {
+            closeMenu();
+        }
+    });
+});
+</script>
 
