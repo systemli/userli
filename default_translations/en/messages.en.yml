@@ -29,6 +29,10 @@ start:
 index:
   title: Manage your e-mail account
   voucher-headline: Your invite codes
+  voucher-subtitle: Invite your friends
+  voucher-explanation-short: >
+    Use your invite codes to invite friends. 
+    You have three invitations available by default.
   voucher-limit: You don't have any invite codes left.
   voucher-disable: >
     At %date% you will receive three invite codes.

@@ -29,6 +29,10 @@ start:
 index:
   title: Verwalte dein E-Mail-Konto
   voucher-headline: Deine Einladungscodes
+  voucher-subtitle: Lade Freund:innen ein
+  voucher-explanation-short: >
+    Nutze deine Einladungscodes um Freund:innen einzuladen. 
+    Du hast standardmäßig drei Einladungen zur Verfügung.
   voucher-limit: Du hast keine Einladungscodes mehr verfügbar.
   voucher-disable: >
     Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben.

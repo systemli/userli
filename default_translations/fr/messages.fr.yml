@@ -91,6 +91,10 @@ index:
     \ /><br /> Pour supprimer votre compte, vous devez confirmer votre mot de passe\
     \ actuel.\n"
   voucher-headline: Vos codes d'invitation
+  voucher-subtitle: Invitez vos amis
+  voucher-explanation-short: >
+    Utilisez vos codes d'invitation pour inviter des amis. 
+    Vous avez trois invitations disponibles par défaut.
   delete-headline: Supprimer le compte
   alias-limit:
     Vous avez atteint la limite autorisée de %alias_limit% %alias_type%

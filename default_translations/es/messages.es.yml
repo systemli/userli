@@ -28,6 +28,10 @@ start:
 index:
   title: Configuración
   voucher-headline: códigos amigo
+  voucher-subtitle: Invita a tus amigos
+  voucher-explanation-short: >
+    Usa tus códigos amigo para invitar amigos. 
+    Tienes tres invitaciones disponibles por defecto.
   voucher-limit: No tienes mas códigos amigo disponibles
   voucher-disable: >
     El %date% recibirás tres códigos amigo adicionales. Esto es para evitar registros
