@@ -78,7 +78,9 @@ form:
   signin: Sign in
   recovery-link: Password forgotten?
   auth-failed: Authentication failed
+  errors-found: Please correct the following errors
   no-account: Don't have an account?
+  have-account: Already have an account?
   create-account: Create one here
   roles: Roles
   submit: Submit

@@ -74,18 +74,20 @@ form:
   title: Registrarse
   signin-header: Crear sesión
   signin-subtitle: Bienvenido de vuelta a tu cuenta
-  email-help: Ingresa tu dirección de correo electrónico
-  password-help: Ingresa tu contraseña
-  auth-failed: Falló la autenticación
-  no-account: ¿No tienes una cuenta?
-  create-account: Crear una aquí
   register-header: Crear cuenta
   email: E-Mail
+  email-help: Ingresa tu dirección de correo electrónico
   password: Contraseña
+  password-help: Ingresa tu contraseña
   password_confirmation: Confirmar contraseña
   remember-me: Mantener la sesión abierta
   signin: Iniciar sesión
   recovery-link: ¿Olvidaste tu contraseña?
+  auth-failed: Falló la autenticación
+  errors-found: Por favor corrige los siguientes errores
+  no-account: ¿No tienes una cuenta?
+  have-account: ¿Ya tienes una cuenta?
+  create-account: Crear una aquí
   roles: Roles
   submit: Enviar
   voucher: Código amigo

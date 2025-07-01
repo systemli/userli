@@ -27,16 +27,18 @@ form:
   plain-password_confirmation: Confirmer le nouveau mot de passe
   signin-header: Se connecter
   signin-subtitle: Bienvenue sur votre compte
+  register-header: Créer un compte
   email-help: Entrez votre adresse e-mail
   password-help: Entrez votre mot de passe
   auth-failed: Échec de l'authentification
+  errors-found: Veuillez corriger les erreurs suivantes
   no-account: Vous n'avez pas de compte ?
+  have-account: Vous avez déjà un compte ?
   create-account: Créer un compte ici
   add: Ajouter
   actual-password: Mot de passe actuel
   title: S'inscrire
   roles: Rôles
-  register-header: Créer un compte
   oclock-by: par
   voucher: Code d'invitation
   new-custom-alias: Nouvel alias d'adresse

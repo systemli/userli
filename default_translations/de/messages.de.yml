@@ -78,7 +78,9 @@ form:
   signin: Anmelden
   recovery-link: Passwort vergessen?
   auth-failed: Authentifizierung fehlgeschlagen
+  errors-found: Bitte korrigiere die folgenden Fehler
   no-account: Noch kein Konto?
+  have-account: Bereits ein Konto?
   create-account: Hier erstellen
   roles: Rollen
   submit: Senden
