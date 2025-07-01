@@ -37,7 +37,8 @@ index:
   alias-headline: Your %alias_type% alias addresses
   alias-limit: You reached the allowed limit of %alias_limit% %alias_type% alias addresses.
   alias-deletion-custom: Write us in order to get addresses deleted.
-  alias-deletion-random: As soon as you delete old addresses, you can create new ones
+  alias-deletion-random:
+    As soon as you delete old addresses, you can create new ones
     again.
   alias-empty: You don't have any %alias_type% alias addresses defined.
   delete-headline: Delete account
@@ -49,7 +50,8 @@ index:
   delete-button: Delete account
   recovery-token-button: Manage recovery token
   logged_in_as: You are logged in as %user%.
-  alias-explanation: "<p>\n  Use alias addresses to hide your original e-mail address\
+  alias-explanation:
+    "<p>\n  Use alias addresses to hide your original e-mail address\
     \ from  people you don't know well, or companies you don't fully trust.\n</p>\n\
     <p>\n  <ul>\n    <li>All e-mails sent to alias addresses go to your normal mailbox.</li>\n\
     \    <li>To send from an alias address, you have to manually set up your e-mail\
@@ -61,13 +63,19 @@ index:
 form:
   title: Register
   signin-header: Sign in
+  signin-subtitle: Welcome back to your account
   register-header: Create account
   email: E-mail
+  email-help: Enter your email address
   password: Password
+  password-help: Enter your password
   password_confirmation: Confirm password
   remember-me: Stay logged in
   signin: Sign in
   recovery-link: Password forgotten?
+  auth-failed: Authentication failed
+  no-account: Don't have an account?
+  create-account: Create one here
   roles: Roles
   submit: Submit
   voucher: Invite code
@@ -137,10 +145,12 @@ recovery:
   header: Recover your account
   lead: Reset the password using your recovery token
   cancel: Cancel
-  started: "The first step to reset your password is done.\nNow wait for 48 hours.\
+  started:
+    "The first step to reset your password is done.\nNow wait for 48 hours.\
     \ Afterwards, you can set a new password in the second step.\nPlease keep your\
     \ recovery token until then.\n"
-  waiting-info: The waiting period is for your own security and cannot be shortened
+  waiting-info:
+    The waiting period is for your own security and cannot be shortened
     or skipped.
   waiting-time: Second step starts at %time%.
   reset-lead: You're now allowed to reset your password
@@ -180,7 +190,8 @@ welcome:
 closed:
   title: Registration closed
   headline: Registration closed
-  lead: Due to paragraph three TKÜV we decided to close our Registration. Sorry for
+  lead:
+    Due to paragraph three TKÜV we decided to close our Registration. Sorry for
     that.
   text: >
     <p>Due <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html"
@@ -200,7 +211,8 @@ delete:
     lead: We need to verify your password to delete your account.
   openpgp:
     headline: Delete OpenPGP key
-    lead: We need to verify your password to remove your OpenPGP key from the Web
+    lead:
+      We need to verify your password to remove your OpenPGP key from the Web
       Key Directory.
   cancel: Cancel
 recovery-token:
@@ -208,9 +220,10 @@ recovery-token:
   lead: The recovery token can be used to reset your password if you forget it.
   set: You already have a recovery token set.
   set-extra: Creating a new token will invalidate the current one.
-  unset: You don't have a recovery token set yet. We strongly recommend to create
+  unset:
+    You don't have a recovery token set yet. We strongly recommend to create
     one now.
-  created-headline: 'The following recovery token got created for you:'
+  created-headline: "The following recovery token got created for you:"
   created-info: >
     If you lost your password, the recovery token allows you to reset a new one.
     Write it down and store it at a secure place.
@@ -232,9 +245,11 @@ flashes:
   openpgp-deletion-successful: Your OpenPGP key was deleted.
   openpgp-key-upload-successful: Your OpenPGP key got uploaded.
   openpgp-key-upload-error-no-openpgp: The uploaded file doesn't contain OpenPGP data.
-  openpgp-key-upload-error-no-keys: No keys for your mail address found in uploaded
+  openpgp-key-upload-error-no-keys:
+    No keys for your mail address found in uploaded
     data.
-  openpgp-key-upload-error-multiple-keys: More than one key for your mail address
+  openpgp-key-upload-error-multiple-keys:
+    More than one key for your mail address
     found in uploaded data. Please upload only one key.
 flash_batch_remove_vouchers_success: Unredeemed invite codes deleted.
 error:
@@ -244,7 +259,8 @@ error:
   generic_error: An error occured. We're sorry.
 spam:
   title: Account locked
-  text: "Oh no! We believe your account has been misused by a spammer.\nE-mail access\
+  text:
+    "Oh no! We believe your account has been misused by a spammer.\nE-mail access\
     \ has been turned off.\nPlease contact support to unlock your account.\n"
 Bad credentials.: The presented password is invalid.
 custom: custom
@@ -311,18 +327,21 @@ Reserved Name: Reserved Name
 copy-to-clipboard: Copy to clipboard
 init.title: Creating initial configuration
 init_domain:
-  lead: Thank your for installing Userli. Currently, there are no domains or accounts
+  lead:
+    Thank your for installing Userli. Currently, there are no domains or accounts
     present.
   text: Please choose your primary domain, which Userli should handle.
 init_user:
   lead: You have created your primary domain.
-  text: "E-mail standards require the account postmaster@%domain% to be present. Please\
+  text:
+    "E-mail standards require the account postmaster@%domain% to be present. Please\
     \ pick a password for this first administrator account and log in afterwards."
 openpgp:
   key-info: Published OpenPGP key
   delete-button: Delete OpenPGP key
   information: Information
-  information-details: If you upload your OpenPGP key here, it will be published in
+  information-details:
+    If you upload your OpenPGP key here, it will be published in
     our <i><a target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key Directory</a></i>.
     You thereby help friends to discover your key automatically and securely.
   keyid-label: "Key ID:"

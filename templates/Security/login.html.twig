@@ -1,23 +1,165 @@
 {% extends 'base.html.twig' %}
 
-{% block subtitle %}{{ "form.title"|trans }}{% endblock %}
+{% block subtitle %}{{ "form.signin-header"|trans }}{% endblock %}
 
 {% block content %}
+    {# Modern, accessible login form with Tailwind CSS #}
+    <div class="min-h-[calc(100vh-4rem)] sm:min-h-[calc(100vh-6rem)] flex items-center justify-center py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full">
+            {# Login form card #}
+            <div class="bg-white shadow-xl rounded-2xl border border-gray-100 overflow-hidden">
+                {# Header section #}
+                <div class="px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+                    <div class="text-center">
+                        <h1 id="signin-heading" class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                            {{ "form.signin-header"|trans }}
+                        </h1>
+                        <p class="text-sm text-gray-600">
+                            {{ "form.signin-subtitle"|trans }}
+                        </p>
+                    </div>
+                </div>
 
-    <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
-            <form class="form-signin" role="form" action="{{ path('login') }}" method="post">
-                <h2 class="form-signin-heading">{{ "form.signin-header"|trans }}</h2>
-                {% if error %}
-                    <div class="alert alert-danger" role="alert">{{ error.message|trans }}</div>
-                {% endif %}
-                <input type="email" id="username" class="form-control" name="_username" placeholder="{{ "form.email"|trans }}" value="{{ last_username }}" required="" autofocus="" />
-                <input type="password" id="password" class="form-control" name="_password" placeholder="{{ "form.password"|trans }}" required="">
-                <div class="form-group"><a href="{{ path('recovery') }}">{{  "form.recovery-link"|trans }}</a></div>
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                <button class="btn btn-lg btn-primary btn-block" type="submit">{{ "form.signin"|trans }}</button>
-            </form>
+                {# Form section #}
+                <div class="px-4 pb-6 sm:px-6 sm:pb-8 lg:px-8">
+                    {# Error message with improved accessibility #}
+                    {% if error %}
+                        <div class="mb-6 p-4 rounded-lg bg-red-50 border border-red-200" role="alert" aria-live="polite">
+                            <div class="flex items-start">
+                                <svg class="w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                </svg>
+                                <div>
+                                    <h3 class="text-sm font-medium text-red-800 mb-1">{{ "form.auth-failed"|trans }}</h3>
+                                    <p class="text-sm text-red-700">{{ error.message|trans }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {# Login form with semantic HTML and accessibility features #}
+                    <form method="post" action="{{ path('login') }}" class="space-y-6" novalidate aria-labelledby="signin-heading">
+                        {# Email field #}
+                        <div>
+                            <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+                                {{ "form.email"|trans }}
+                                <span class="text-red-500" aria-label="required">*</span>
+                            </label>
+                            <div class="relative">
+                                <input
+                                    type="email"
+                                    id="username"
+                                    name="_username"
+                                    value="{{ last_username }}"
+                                    autocomplete="username email"
+                                    placeholder="{{ "form.email"|trans }}"
+                                    required
+                                    autofocus
+                                    class="block w-full px-3 py-3 sm:px-4 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-sm{% if error %} border-red-300{% endif %}"
+                                    aria-describedby="username-help{% if error %} username-error{% endif %}"
+                                    {% if error %}aria-invalid="true"{% endif %}
+                                >
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <p id="username-help" class="mt-1 text-xs text-gray-500">
+                                {{ "form.email-help"|trans }}
+                            </p>
+                        </div>
+
+                        {# Password field #}
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                                {{ "form.password"|trans }}
+                                <span class="text-red-500" aria-label="required">*</span>
+                            </label>
+                            <div class="relative">
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="_password"
+                                    autocomplete="current-password"
+                                    placeholder="{{ "form.password"|trans }}"
+                                    required
+                                    class="block w-full px-3 py-3 sm:px-4 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-sm{% if error %} border-red-300{% endif %}"
+                                    aria-describedby="password-help{% if error %} password-error{% endif %}"
+                                    {% if error %}aria-invalid="true"{% endif %}
+                                >
+                                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <p id="password-help" class="mt-1 text-xs text-gray-500">
+                                {{ "form.password-help"|trans }}
+                            </p>
+                        </div>
+
+                        {# CSRF token #}
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                        {# Remember me and forgot password #}
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <input
+                                    id="remember-me"
+                                    name="_remember_me"
+                                    type="checkbox"
+                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded transition-colors duration-200"
+                                >
+                                <label for="remember-me" class="ml-2 block text-sm text-gray-700">
+                                    {{ "form.remember-me"|trans }}
+                                </label>
+                            </div>
+
+                            <div class="text-sm">
+                                <a href="{{ path('recovery') }}" class="text-blue-600 hover:text-blue-500 focus:outline-none focus:underline transition-colors duration-200">
+                                    {{ "form.recovery-link"|trans }}
+                                </a>
+                            </div>
+                        </div>
+
+                        {# Submit button #}
+                        <div>
+                            <button
+                                type="submit"
+                                class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                                    <svg class="h-5 w-5 text-blue-500 group-hover:text-blue-400 transition-colors duration-200" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </span>
+                                {{ "form.signin"|trans }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                {# Footer section with registration link if available #}
+                <div class="px-4 py-4 bg-gray-50 border-t border-gray-100 sm:px-6 lg:px-8">
+                    <p class="text-center text-sm text-gray-600">
+                        {{ "form.no-account"|trans }}
+                        <a href="{{ path('register') }}" class="font-medium text-blue-600 hover:text-blue-500 focus:outline-none focus:underline transition-colors duration-200">
+                            {{ "form.create-account"|trans }}
+                        </a>
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
+    {# Add subtle background pattern #}
+    <style>
+        body {
+            background-image:
+                radial-gradient(circle at 25px 25px, rgba(59, 130, 246, 0.1) 2%, transparent 0%),
+                radial-gradient(circle at 75px 75px, rgba(59, 130, 246, 0.05) 2%, transparent 0%);
+            background-size: 100px 100px;
+        }
+    </style>
 {% endblock %}

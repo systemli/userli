@@ -17,10 +17,10 @@ start:
   vouchers-desc: Invita a un amigo
   webmail: Webmail
   webmail-desc: Leer y escribir e-mails
-  openpgp-delete: ''
-  openpgp-settings: ''
-  openpgp-settings-desc: ''
-  openpgp-settings-title: ''
+  openpgp-delete: ""
+  openpgp-settings: ""
+  openpgp-settings-desc: ""
+  openpgp-settings-title: ""
 index:
   title: Configuración
   voucher-headline: códigos amigo
@@ -33,13 +33,15 @@ index:
     Si necesitas mas, por favor contacta al administrador. Los datos sobre invitaciones
     serán guardados por un período corto de tiempo, como protección contra abusos.
   alias-headline: Tu cuenta alias %alias_type%
-  alias-limit: Alcanzaste el limite permitido de %alias_limit% %alias_type% cuentas
+  alias-limit:
+    Alcanzaste el limite permitido de %alias_limit% %alias_type% cuentas
     alias
   alias-deletion-custom: Contáctanos para poder borrar tu cuenta
   alias-deletion-random: En cuanto borres tu viejas cuentas, puedes crear nuevas.
   alias-empty: No tienes ninguna cuenta alias %alias_type% definida.
   delete-headline: Borrar cuenta
-  delete-description: "Puedes borrar tu %project_name% cuenta de e-mail. Esto eliminará\
+  delete-description:
+    "Puedes borrar tu %project_name% cuenta de e-mail. Esto eliminará\
     \ todo tus correos electrónicos. <strong>Una vez borrados no será posible recuperarlos</strong>\
     \ <br /><br /> Para borrar tu cuenta, es necesario que introduzcas tu contraseña\
     \ actual.\n"
@@ -67,6 +69,12 @@ index:
 form:
   title: Registrarse
   signin-header: Crear sesión
+  signin-subtitle: Bienvenido de vuelta a tu cuenta
+  email-help: Ingresa tu dirección de correo electrónico
+  password-help: Ingresa tu contraseña
+  auth-failed: Falló la autenticación
+  no-account: ¿No tienes una cuenta?
+  create-account: Crear una aquí
   register-header: Crear cuenta
   email: E-Mail
   password: Contraseña
@@ -93,19 +101,20 @@ form:
   generate-recovery-token: Crear nuevo token de recuperación
   recovery-token: Token de recuperación
   recovery-start: Recuperar
-  registration-recovery-token-ack: He guardado mi token de recuperación en un lugar
+  registration-recovery-token-ack:
+    He guardado mi token de recuperación en un lugar
     seguro.
   registration-recovery-token-next-button: Continuar
-  domain: ''
-  openpgp-key-text-placeholder: ''
-  openpgp-key-file-mimetype: ''
-  openpgp-key-upload-or: ''
-  openpgp-delete: ''
-  openpgp-key-select-one: ''
-  openpgp-key-file: ''
-  openpgp-key-submit: ''
-  openpgp-key-text: ''
-  add: ''
+  domain: ""
+  openpgp-key-text-placeholder: ""
+  openpgp-key-file-mimetype: ""
+  openpgp-key-upload-or: ""
+  openpgp-delete: ""
+  openpgp-key-select-one: ""
+  openpgp-key-file: ""
+  openpgp-key-submit: ""
+  openpgp-key-text: ""
+  add: ""
 recovery:
   header: Recuperar tu cuenta
   lead: Resetear tu contraseña usando el token de recuperación
@@ -114,7 +123,8 @@ recovery:
     ¡Ya casi lo lograste! El primer paso para resetear tu contraseña esta hecho.
     En 48 horas,el segundo paso empezará y podrás elegir tu nueva contraseña.
     Por favor guarda tu token de recuperación hasta entonces.
-  waiting-info: El periodo de espera es para tu propia seguridad y no puede ser omitido
+  waiting-info:
+    El periodo de espera es para tu propia seguridad y no puede ser omitido
     o reducido.
   waiting-time: Segundo paso empieza en %time%.
   reset-lead: Ahora puedes resetear tu contraseña.
@@ -142,16 +152,18 @@ welcome:
   headline: Bienvenido a %project_name%!
   lead: As creado tu cuenta de correo con nosotros satisfactoriamente!
   next-button: Tus próximos pasos.
-  text: "<h3>Ready to go</h3> <p>En nuestra web puedes en encontrar guías para instalar\
+  text:
+    "<h3>Ready to go</h3> <p>En nuestra web puedes en encontrar guías para instalar\
     \ tu cuenta de e-mail en diferentes programas de gestión de e-mail.</p> <p>En\
     \ una semana recibirás tres códigos amigo. Los encontrarás en <a href=\"%app_url%\"\
     >%app_url%</a>. Estos códigos sirven para invitar amigos a usar %project_name%.</p>\n"
 closed:
   title: Registro ha cerrado
   headline: Hemos cerrado el registro de cuentas.
-  lead: De acuerdo con el párrafo 3 de las normativa de Telecomunicaciones TKÜV hemos
+  lead:
+    De acuerdo con el párrafo 3 de las normativa de Telecomunicaciones TKÜV hemos
     decidido mantener un limite de 10.000 registros posibles. Lamentamos los inconvenientes.
-  text: ''
+  text: ""
 delete:
   alias:
     headline: Borrar cuenta alias %alias%
@@ -160,16 +172,16 @@ delete:
     headline: Borrar cuenta
     lead: Es necesario verificar tu contraseña para borrar tu cuenta.
   openpgp:
-    lead: ''
-    headline: ''
-  cancel: ''
+    lead: ""
+    headline: ""
+  cancel: ""
 recovery-token:
   headline: Configurar token de recuperación
   lead: El token de recuperación puede ser usado para recuperar tu contraseña.
   set: Ya tienes un token de recuperación.
   set-extra: Crear un nuevo token de recuperación invalidará el que ya tienes.
   unset: Aún no cuentas con un token de recuperación. Te recomendamos que crees uno.
-  created-headline: 'El siguiente token de recuperación fue creado para ti:'
+  created-headline: "El siguiente token de recuperación fue creado para ti:"
   created-info: >
     Si olvidas tu contraseña, el token de recuperación te permitirá resetear uno nuevo.
     Guardalo en un lugar seguro.
@@ -188,11 +200,11 @@ flashes:
   revocery-reauthenticate: ¡Algo salió mal. Por favor vuelve a autentificarte!
   recovery-password-changed: ¡Tu contraseña ha sido cambiada!
   recovery-next-login: Sigue con el inicio de sesión.
-  openpgp-key-upload-error-no-keys: ''
-  openpgp-key-upload-successful: ''
-  openpgp-key-upload-error-multiple-keys: ''
-  openpgp-deletion-successful: ''
-  openpgp-key-upload-error-no-openpgp: ''
+  openpgp-key-upload-error-no-keys: ""
+  openpgp-key-upload-successful: ""
+  openpgp-key-upload-error-multiple-keys: ""
+  openpgp-deletion-successful: ""
+  openpgp-key-upload-error-no-openpgp: ""
 flash_batch_remove_vouchers_success: Los códigos amigo han sido desactivados satisfactoriamente.
 error:
   title: Oops, algo salió mal.
@@ -255,28 +267,28 @@ mail:
     El equipo de %project_name%.
 copy-to-clipboard: Copiar en el portapapeles
 init_domain:
-  text: ''
-  lead: ''
+  text: ""
+  lead: ""
 openpgp:
-  information: ''
-  fingerprint-label: ''
-  keyid-label: ''
-  expiretime-label: ''
-  key-info: ''
-  information-details: ''
-  delete-button: ''
-Voucher: ''
-init.title: ''
-Reserved Name: ''
-Domain: ''
-User: ''
+  information: ""
+  fingerprint-label: ""
+  keyid-label: ""
+  expiretime-label: ""
+  key-info: ""
+  information-details: ""
+  delete-button: ""
+Voucher: ""
+init.title: ""
+Reserved Name: ""
+Domain: ""
+User: ""
 init_user:
-  text: ''
-  lead: ''
-Ratio: ''
+  text: ""
+  lead: ""
+Ratio: ""
 admin:
-  registered-accounts: ''
-  invite-codes-redeemed: ''
-  invite-codes: ''
-  registered-accounts-last-week: ''
-Alias: ''
+  registered-accounts: ""
+  invite-codes-redeemed: ""
+  invite-codes: ""
+  registered-accounts-last-week: ""
+Alias: ""
