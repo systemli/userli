@@ -26,8 +26,20 @@
 
                     <div class="flex items-center space-x-4">
                         {% block menu %}
-                            {{ knp_menu_render('navbar-left', {'template': 'knp_menu.html.twig'}) }}
-                            {{ knp_menu_render('navbar-right', {'template': 'knp_menu.html.twig'}) }}
+                            {% if not app.user %}
+                                <a href="{{ path('login') }}" class="text-white hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium">
+                                    {{ "navbar_right.login"|trans }}
+                                </a>
+                            {% else %}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('sonata_admin_dashboard') }}" class="text-white hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium">
+                                        {{ "navbar_right.admin"|trans }}
+                                    </a>
+                                {% endif %}
+                                <a href="{{ path('logout') }}" class="text-white hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium">
+                                    {{ "navbar_right.logout"|trans }}
+                                </a>
+                            {% endif %}
                             {% include '_locale_switcher.html.twig' %}
                         {% endblock %}
                     </div>

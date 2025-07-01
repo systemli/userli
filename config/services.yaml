@@ -4,12 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-  locale: 'en'
-  locales: 'en|de|es|fr|it|pt|nb|gsw'
-  supported_locales: ['en', 'de', 'es', 'fr', 'it', 'pt', 'nb', 'gsw']
-  navbar_left:
-    - name: 'navbar_left.about-us.text'
-      url: 'navbar_left.about-us.link'
+  locale: "en"
+  locales: "en|de|es|fr|it|pt|nb|gsw"
+  supported_locales: ["en", "de", "es", "fr", "it", "pt", "nb", "gsw"]
 
 services:
   # default configuration for services in *this* file
@@ -20,75 +17,75 @@ services:
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name
   App\:
-    resource: '../src/'
+    resource: "../src/"
     exclude:
-      - '../src/DependencyInjection/'
-      - '../src/Entity/'
-      - '../src/Kernel.php'
+      - "../src/DependencyInjection/"
+      - "../src/Entity/"
+      - "../src/Kernel.php"
 
   # controllers are imported separately to make sure services can be injected
   # as action arguments even if you don't extend any base controller class
   App\Controller\:
-    resource: '../src/Controller/'
-    tags: ['controller.service_arguments']
+    resource: "../src/Controller/"
+    tags: ["controller.service_arguments"]
 
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones
 
   App\Builder\AliasCreatedMessageBuilder:
     arguments:
-      $appUrl: '%env(APP_URL)%'
-      $projectName: '%env(PROJECT_NAME)%'
+      $appUrl: "%env(APP_URL)%"
+      $projectName: "%env(PROJECT_NAME)%"
 
   App\Builder\RecoveryProcessMessageBuilder:
     arguments:
-      $appUrl: '%env(APP_URL)%'
-      $projectName: '%env(PROJECT_NAME)%'
+      $appUrl: "%env(APP_URL)%"
+      $projectName: "%env(PROJECT_NAME)%"
 
   App\Builder\WelcomeMessageBuilder:
     arguments:
-      $appUrl: '%env(APP_URL)%'
-      $projectName: '%env(PROJECT_NAME)%'
+      $appUrl: "%env(APP_URL)%"
+      $projectName: "%env(PROJECT_NAME)%"
 
   App\Command\UsersMailCryptCommand:
     arguments:
-      $mailCrypt: '%env(MAIL_CRYPT)%'
+      $mailCrypt: "%env(MAIL_CRYPT)%"
 
   App\Command\UsersRegistrationMailCommand:
     arguments:
-      $defaultLocale: '%kernel.default_locale%'
+      $defaultLocale: "%kernel.default_locale%"
 
   App\Command\UsersRemoveCommand:
     arguments:
-      $mailLocation: '%env(DOVECOT_MAIL_LOCATION)%'
+      $mailLocation: "%env(DOVECOT_MAIL_LOCATION)%"
 
   App\Command\UsersResetCommand:
     arguments:
-      $mailLocation: '%env(DOVECOT_MAIL_LOCATION)%'
+      $mailLocation: "%env(DOVECOT_MAIL_LOCATION)%"
 
   App\Command\VoucherCreateCommand:
-      arguments:
-          $appUrl: "%env(APP_URL)%"
+    arguments:
+      $appUrl: "%env(APP_URL)%"
 
   App\Controller\DovecotController:
     arguments:
-      $mailCryptEnv: '%env(MAIL_CRYPT)%'
-      $mailLocation: '%env(DOVECOT_MAIL_LOCATION)%'
-      $mailUid: '%env(DOVECOT_MAIL_UID)%'
-      $mailGid: '%env(DOVECOT_MAIL_GID)%'
+      $mailCryptEnv: "%env(MAIL_CRYPT)%"
+      $mailLocation: "%env(DOVECOT_MAIL_LOCATION)%"
+      $mailUid: "%env(DOVECOT_MAIL_UID)%"
+      $mailGid: "%env(DOVECOT_MAIL_GID)%"
 
   App\EventListener\:
-    resource: '../src/EventListener/*'
+    resource: "../src/EventListener/*"
     tags:
       - { name: kernel.event_subscriber }
 
   App\EventListener\LocaleListener:
     arguments:
-      $defaultLocale: '%locale%'
-      $supportedLocales: '%supported_locales%'
+      $defaultLocale: "%locale%"
+      $supportedLocales: "%supported_locales%"
 
   App\Handler\:
-    resource: '../src/Handler/*'
+    resource: "../src/Handler/*"
     public: true
 
   App\Handler\WebhookHandler:
@@ -114,57 +111,53 @@ services:
 
   App\Handler\MailHandler:
     arguments:
-      $from: '%env(SENDER_ADDRESS)%'
-      $name: '%env(APP_NAME)%'
+      $from: "%env(SENDER_ADDRESS)%"
+      $name: "%env(APP_NAME)%"
 
   App\Handler\UserRegistrationInfoHandler:
     arguments:
-      $to: '%env(NOTIFICATION_ADDRESS)%'
+      $to: "%env(NOTIFICATION_ADDRESS)%"
 
   App\Handler\UserRestoreHandler:
-      arguments:
-          $mailCryptEnv: "%env(MAIL_CRYPT)%"
+    arguments:
+      $mailCryptEnv: "%env(MAIL_CRYPT)%"
 
   App\Handler\RegistrationHandler:
-      public: true
-      arguments:
-          $registrationOpen: "%env(REGISTRATION_OPEN)%"
-          $mailCrypt: '%env(MAIL_CRYPT)%'
+    public: true
+    arguments:
+      $registrationOpen: "%env(REGISTRATION_OPEN)%"
+      $mailCrypt: "%env(MAIL_CRYPT)%"
 
   App\Handler\SuspiciousChildrenHandler:
     arguments:
-      $to: '%env(NOTIFICATION_ADDRESS)%'
+      $to: "%env(NOTIFICATION_ADDRESS)%"
 
   App\Handler\UserAuthenticationHandler:
     arguments:
-      $passwordHasherFactory: '@security.password_hasher_factory'
+      $passwordHasherFactory: "@security.password_hasher_factory"
 
   App\Handler\WkdHandler:
     arguments:
-      $wkdDirectory: '%env(WKD_DIRECTORY)%'
-      $wkdFormat: '%env(WKD_FORMAT)%'
+      $wkdDirectory: "%env(WKD_DIRECTORY)%"
+      $wkdFormat: "%env(WKD_FORMAT)%"
 
   App\Helper\PasswordUpdater:
     public: true
 
   App\EventListener\AliasCreationListener:
     arguments:
-      $sendMail: '%env(SEND_MAIL)%'
-      $defaultLocale: '%kernel.default_locale%'
+      $sendMail: "%env(SEND_MAIL)%"
+      $defaultLocale: "%kernel.default_locale%"
 
   App\EventListener\RecoveryProcessListener:
     arguments:
-      $sendMail: '%env(SEND_MAIL)%'
-      $defaultLocale: '%kernel.default_locale%'
+      $sendMail: "%env(SEND_MAIL)%"
+      $defaultLocale: "%kernel.default_locale%"
 
   App\EventListener\RegistrationListener:
     arguments:
-      $sendMail: '%env(SEND_MAIL)%'
-      $defaultLocale: '%kernel.default_locale%'
-
-  App\Builder\MenuBuilder:
-    arguments:
-      $navbarLeft: '%navbar_left%'
+      $sendMail: "%env(SEND_MAIL)%"
+      $defaultLocale: "%kernel.default_locale%"
 
   App\Remover\VoucherRemover:
     arguments:
@@ -173,10 +166,10 @@ services:
 
   App\Security\ApiAccessTokenHandler:
     arguments:
-      $accessTokenDovecot: '%env(DOVECOT_API_ACCESS_TOKEN)%'
-      $accessTokenKeycloak: '%env(KEYCLOAK_API_ACCESS_TOKEN)%'
-      $accessTokenRetention: '%env(RETENTION_API_ACCESS_TOKEN)%'
-      $accessTokenPostfix: '%env(POSTFIX_API_ACCESS_TOKEN)%'
+      $accessTokenDovecot: "%env(DOVECOT_API_ACCESS_TOKEN)%"
+      $accessTokenKeycloak: "%env(KEYCLOAK_API_ACCESS_TOKEN)%"
+      $accessTokenRetention: "%env(RETENTION_API_ACCESS_TOKEN)%"
+      $accessTokenPostfix: "%env(POSTFIX_API_ACCESS_TOKEN)%"
 
   App\Sender\WelcomeMessageSender:
     public: true
@@ -193,7 +186,7 @@ services:
     class: App\Admin\UserAdmin
     public: true
     tags:
-      - { name: sonata.admin, manager_type: orm, group: 'Mail', label: 'User' }
+      - { name: sonata.admin, manager_type: orm, group: "Mail", label: "User" }
     arguments:
       - ~
       - App\Entity\User
@@ -202,26 +195,34 @@ services:
       - [setPasswordUpdater, ['@App\Helper\PasswordUpdater']]
       - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
       - [setMailCryptKeyHandler, ['@App\Handler\MailCryptKeyHandler']]
-      - [setMailCryptVar, ['%env(MAIL_CRYPT)%']]
+      - [setMailCryptVar, ["%env(MAIL_CRYPT)%"]]
 
   userli.admin.domain:
     class: App\Admin\DomainAdmin
     public: true
     tags:
-      - { name: sonata.admin, manager_type: orm, group: 'Mail', label: 'Domain' }
+      - {
+          name: sonata.admin,
+          manager_type: orm,
+          group: "Mail",
+          label: "Domain",
+        }
     arguments:
       - ~
       - App\Entity\Domain
       - ~
     calls:
       - [setDomainCreator, ['@App\Creator\DomainCreator']]
-      - [setEventDispatcher, ['@Symfony\Contracts\EventDispatcher\EventDispatcherInterface']]
+      - [
+          setEventDispatcher,
+          ['@Symfony\Contracts\EventDispatcher\EventDispatcherInterface'],
+        ]
 
   userli.admin.alias:
     class: App\Admin\AliasAdmin
     public: true
     tags:
-      - { name: sonata.admin, manager_type: orm, group: 'Mail', label: 'Alias' }
+      - { name: sonata.admin, manager_type: orm, group: "Mail", label: "Alias" }
     arguments:
       - ~
       - App\Entity\Alias
@@ -233,7 +234,12 @@ services:
     class: App\Admin\VoucherAdmin
     public: true
     tags:
-      - { name: sonata.admin, manager_type: orm, group: 'Mail', label: 'Voucher' }
+      - {
+          name: sonata.admin,
+          manager_type: orm,
+          group: "Mail",
+          label: "Voucher",
+        }
     arguments:
       - ~
       - App\Entity\Voucher
@@ -252,28 +258,16 @@ services:
     class: App\Admin\ReservedNameAdmin
     public: true
     tags:
-      - { name: sonata.admin, manager_type: orm, group: 'Mail', label: 'Reserved Name' }
+      - {
+          name: sonata.admin,
+          manager_type: orm,
+          group: "Mail",
+          label: "Reserved Name",
+        }
     arguments:
       - ~
       - App\Entity\ReservedName
       - ~
 
-  userli.menu.navbar_left:
-    class: Knp\Menu\MenuItem
-    public: true
-    factory: ['@App\Builder\MenuBuilder', createNavbarLeft]
-    tags:
-      - { name: knp_menu.menu, alias: navbar-left }
-
-  userli.menu.navbar_right:
-    class: Knp\Menu\MenuItem
-    public: true
-    factory: ['@App\Builder\MenuBuilder', createNavbarRight]
-    tags:
-      - { name: knp_menu.menu, alias: navbar-right }
-
   Symfony\Component\Security\Http\HttpUtils:
     alias: security.http_utils
-
-  Knp\Menu\FactoryInterface:
-    alias: knp_menu.factory

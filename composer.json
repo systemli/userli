@@ -15,7 +15,6 @@
     "doctrine/orm": "^2.13",
     "endroid/qr-code": "^6.0",
     "ircmaxell/password-compat": "~1.0.3",
-    "knplabs/knp-menu-bundle": "^3.0",
     "nelmio/security-bundle": "^3.0",
     "pear/crypt_gpg": "^1.6",
     "ramsey/uuid": "^4.1",

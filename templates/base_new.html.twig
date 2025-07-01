@@ -25,8 +25,20 @@
 
                 <div class="navbar-collapse">
                     {% block menu %}
-                        {{ knp_menu_render('navbar-left', {'template': 'knp_menu.html.twig'}) }}
-                        {{ knp_menu_render('navbar-right', {'template': 'knp_menu.html.twig'}) }}
+                        {# Static navbar menus without KnpMenuBundle #}
+                        <ul class="nav navbar-nav">
+                            {# Left side menu items can be added here if needed #}
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li><a href="{{ path('admin_dashboard') }}">{{ 'navbar_right.admin'|trans }}</a></li>
+                            {% endif %}
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                <li><a href="{{ path('logout') }}">{{ 'navbar_right.logout'|trans }}</a></li>
+                            {% else %}
+                                <li><a href="{{ path('login') }}">{{ 'navbar_right.login'|trans }}</a></li>
+                            {% endif %}
+                        </ul>
                         {% include '_locale_switcher.html.twig' %}
                     {% endblock %}
                 </div>
