@@ -1,8 +1,30 @@
+nav:navbar:
+  home: Hjem
+  vouchers: Koder
+  aliases: Alias
+  openpgp: OpenPGP
+  account: Konto
+  language: Språk
+  signed-in-as: Logget inn som
+  open-user-menu: Åpne brukermeny
+  open-main-menu: Åpne hovedmeny
+
+navbar:
+  home: Hjem
+  vouchers: Inviter
+  aliases: Alias
+  openpgp: OpenPGP
+  account: Konto
+  signed-in-as: Logget inn som
+  open-user-menu: Åpne brukermeny
+  open-main-menu: Åpne hovedmeny
+
 start:
   title: Velkommen til %domain%
   intro: Her kan du sette opp og håndtere din e-postkonto.
   registration-header: Registrering
-  registration-text: "Har du ikke en e-postkonto på %domain% enda? Ikke noe problem.\
+  registration-text:
+    "Har du ikke en e-postkonto på %domain% enda? Ikke noe problem.\
     \ Hvis én av vennene dine allerede har en konto, kan du få en invitasjonskode\
     \ fra vedkommende og sette opp egen konto omgående.\n"
   registration-button: Opprett konto
@@ -16,17 +38,19 @@ start:
   vouchers-desc: Inviter vennene dine
   webmail: Nettklients-e-post
   webmail-desc: Les og skriv e-poster
-  openpgp-settings-desc: ''
-  openpgp-delete: ''
-  openpgp-settings: ''
-  openpgp-settings-title: ''
+  openpgp-settings-desc: ""
+  openpgp-delete: ""
+  openpgp-settings: ""
+  openpgp-settings-title: ""
 index:
   title: Håndter din e-postkonto
   voucher-headline: Dine invitasjonskoder
   voucher-limit: Du har ingen invitasjonskoder igjen.
-  voucher-disable: "Den %date% vil du motta tre invitasjonskoder. Dette for å unngå\
+  voucher-disable:
+    "Den %date% vil du motta tre invitasjonskoder. Dette for å unngå\
     \ masseregistreringer og søppelpost.\n"
-  voucher-explanation: "Bruk dine invitasjonskoder for å invitere venner hit. Som\
+  voucher-explanation:
+    "Bruk dine invitasjonskoder for å invitere venner hit. Som\
     \ forvalg har du tre tilgjengelig. Kontakt administratorene hvis dette ikke rekker.\
     \ Din data lagres i en begrenset periode for å unngå misbruk.\n"
   alias-headline: Dine %alias_type% alias-adresser
@@ -35,13 +59,15 @@ index:
   alias-deletion-random: Så snart du sletter gamle adresser, kan du opprette nye igjen.
   alias-empty: Du har ikke noen %alias_type%-aliasadresser satt opp.
   delete-headline: Slett konto
-  delete-description: "Du kan slette din %project_name%-e-postkonto. Dette vil slette\
+  delete-description:
+    "Du kan slette din %project_name%-e-postkonto. Dette vil slette\
     \ alle dine e-poster. <strong>Gjenoppretting senere er ikke mulig</strong> <br\
     \ /><br /> For å slette kontoen din må du sende inn det faktiske passordet ditt.\n"
   delete-button: Slett konto
   recovery-token-button: Håndter gjenopprettingssymbol
   logged_in_as: Du er innlogget som %user%.
-  alias-explanation: "<p>\n  Bruk alias-adresser for å skjule din opprinnelige e-postadresse\
+  alias-explanation:
+    "<p>\n  Bruk alias-adresser for å skjule din opprinnelige e-postadresse\
     \ fra  folk du ikke kjenner godt, eller selskaper du ikke helt stoler på.\n</p>\n\
     <p>\n  <ul>\n    <li>Alle e-poster sendt til e-postadresse går til din normale\
     \ e-postboks.</li>\n    <li>For å sende fra en alias-adresse, må du sette opp\
@@ -77,21 +103,22 @@ form:
   generate-recovery-token: Opprett nytt gjenopprettingssymbol
   recovery-token: Gjenopprettingssymbol
   recovery-start: Gjenopprett
-  registration-recovery-token-ack: Jeg lagret gjenopprettingssymbolet på et sikkert
+  registration-recovery-token-ack:
+    Jeg lagret gjenopprettingssymbolet på et sikkert
     sted
   registration-recovery-token-next-button: Fortsett
   plain-password: Nytt passord
   plain-password_confirmation: Bekreft nytt passord
   domain: Domene
   add: Legg till
-  openpgp-key-text: ''
-  openpgp-key-submit: ''
-  openpgp-delete: ''
-  openpgp-key-file-mimetype: ''
-  openpgp-key-file: ''
-  openpgp-key-upload-or: ''
-  openpgp-key-select-one: ''
-  openpgp-key-text-placeholder: ''
+  openpgp-key-text: ""
+  openpgp-key-submit: ""
+  openpgp-delete: ""
+  openpgp-key-file-mimetype: ""
+  openpgp-key-file: ""
+  openpgp-key-upload-or: ""
+  openpgp-key-select-one: ""
+  openpgp-key-text-placeholder: ""
 recovery:
   header: Gjenopprett kontoen din
   lead: Tilbakestill passordet med ditt gjenopprettingssymbol
@@ -100,7 +127,8 @@ recovery:
   waiting-time: Andre steg starter %time%.
   reset-lead: Du kan nå tilbakestille passordet ditt
   token-lead: Nytt gjenopprettingssymbol
-  started: "Første steg i gjenoppretting av passordet ditt er ferdig.\nVent i 48 timer.\
+  started:
+    "Første steg i gjenoppretting av passordet ditt er ferdig.\nVent i 48 timer.\
     \ Deretter kan du sette et nytt passord i andre steg.\nBehold gjenopprettingssymbolet\
     \ dit til da.\n"
 navbar_left:
@@ -116,28 +144,33 @@ navbar_right:
 registration:
   title: Registrering med %project_name%
   information: Info
-  information-password-policy: "<strong>Krav til passord:</strong> Minst 12 tegn,\
+  information-password-policy:
+    "<strong>Krav til passord:</strong> Minst 12 tegn,\
     \ ingen tyske omlaut. Passord vil bli testet mot <a href=\"https://haveibeenpwned.com/Passwords\"\
     >databasen over kjente dårlige passord</a>.\n"
   label-email: Din foretrukne e-postadresse
   recovery-token-headline: Gjenopprettingssymbol
-  information-intro: "Ønsker du å registrere en e-postkonto med <a href=\"%project_url%\"\
+  information-intro:
+    "Ønsker du å registrere en e-postkonto med <a href=\"%project_url%\"\
     >%project_name%</a>? Registreringer tillates kun hvis en venn inviterer deg med\
     \ en invitasjonskode til tjenestene.\n"
 welcome:
   headline: Velkommen til %project_name%.
   lead: Du har nå satt opp en konto hos oss. Hva skal du foreta deg nå?
   next-button: Til oversikten
-  text: "<h3>Klar til bruk</h3> <p>På veven kan du finne veiledninger for å sette\
+  text:
+    "<h3>Klar til bruk</h3> <p>På veven kan du finne veiledninger for å sette\
     \ opp din e-postkonto med forskjellige klientprogrammer.</p> <p>Om én uke vil\
     \ du motta tre invitasjonskoder, som du kan samle på <a href=\"%app_url%\">%app_url%</a>.\
     \ Du kan gi disse til venner og invitere dem til å registrere seg på %project_name%.</p>\n"
 closed:
   title: Registrering stengt
   headline: Registrering stengt
-  lead: Som følge av paragraf tre i TKÜV, har vi besluttet å stenge registreringen.
+  lead:
+    Som følge av paragraf tre i TKÜV, har vi besluttet å stenge registreringen.
     Beklager.
-  text: "<p>Som følge av <a href=\"https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html\"\
+  text:
+    "<p>Som følge av <a href=\"https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html\"\
     \ target=\"_blank\">paragraf 3 av \"Verordnung über die technische und organisatorische\
     \ Umsetzung von Maßnahmen zur Überwachung der Telekommunikation\"</a> (kort: telekommunikasjonsovervåknings-dekret\
     \ - \"TKÜV\") er e-posttilbydere med mer enn 10000 brukere tvunget til å implementere\
@@ -153,20 +186,24 @@ delete:
     lead: Passordet ditt må bekreftes for å slette kontoen din.
   cancel: Avbryt
   openpgp:
-    lead: ''
-    headline: ''
+    lead: ""
+    headline: ""
 recovery-token:
   headline: Håndter gjenopprettingssymbol
-  lead: Gjenopprettingssymbolet kan brukes til å tilbakestille passordet ditt hvis
+  lead:
+    Gjenopprettingssymbolet kan brukes til å tilbakestille passordet ditt hvis
     du glemmer det.
   set: Du har allerede satt opp et gjenopprettingssymbol.
   set-extra: Oppretting av nytt symbol ugyldiggjør det nåværende symbolet.
-  unset: Du har ikke noe gjenopprettingssymbol satt opp enda. Det anbefales at du
+  unset:
+    Du har ikke noe gjenopprettingssymbol satt opp enda. Det anbefales at du
     oppretter et nå.
-  created-headline: 'Følgende gjenopprettingssymbol ble opprettet for deg:'
-  created-info: "Hvis du har mistet passordet ditt, vil gjenopprettingssymbolet tillate\
+  created-headline: "Følgende gjenopprettingssymbol ble opprettet for deg:"
+  created-info:
+    "Hvis du har mistet passordet ditt, vil gjenopprettingssymbolet tillate\
     \ deg å tilbakestille det. Skriv det ned og lagre det på en sikker plass.\n"
-  displayed-once: "Av sikkerhetshensyn, blir sikkerhetssymbolet kun vist én gang.\
+  displayed-once:
+    "Av sikkerhetshensyn, blir sikkerhetssymbolet kun vist én gang.\
     \ Ingen kan gjenopprette deg for deg.\n"
 flashes:
   logout-successful: Du har blitt utlogget.
@@ -180,11 +217,11 @@ flashes:
   recovery-token-ack: Du genererte et gjenopprettingssymbol.
   revocery-reauthenticate: Noe gikk galt. Identitetsbekreft deg igjen.
   recovery-password-changed: Du endret passordet ditt.
-  openpgp-key-upload-error-no-keys: ''
-  openpgp-key-upload-error-multiple-keys: ''
-  openpgp-deletion-successful: ''
-  openpgp-key-upload-successful: ''
-  openpgp-key-upload-error-no-openpgp: ''
+  openpgp-key-upload-error-no-keys: ""
+  openpgp-key-upload-error-multiple-keys: ""
+  openpgp-deletion-successful: ""
+  openpgp-key-upload-successful: ""
+  openpgp-key-upload-error-no-openpgp: ""
 error:
   page_not_found: Siden du forsøker å nå finnes ikke.
   generic_error: En feil inntraff.
@@ -192,7 +229,8 @@ error:
   back_link: Tilbake til hjemmesiden
 spam:
   title: Konto låst
-  text: "Oida. Det ser ut til at kontoen din har blitt misbrukt av en søppelposter.\n\
+  text:
+    "Oida. Det ser ut til at kontoen din har blitt misbrukt av en søppelposter.\n\
     E-posttilgang har blitt avskrudd.\nKontakt brukerstøtte for å låse opp kontoen\
     \ din.\n"
 Bad credentials.: Feil innloggingsdetaljer
@@ -264,13 +302,14 @@ init_domain:
   text: Velg ditt primære domene, som Userli skal håndtere.
 init_user:
   lead: Du har opprettet ditt primære domene.
-  text: E-poststandarder krever at kontoen postmaster@%domain% finnes. Velg et passord
+  text:
+    E-poststandarder krever at kontoen postmaster@%domain% finnes. Velg et passord
     for denne første administratorkontoen og logg inn etterpå.
 openpgp:
-  keyid-label: ''
-  delete-button: ''
-  expiretime-label: ''
-  information: ''
-  information-details: ''
-  fingerprint-label: ''
-  key-info: ''
+  keyid-label: ""
+  delete-button: ""
+  expiretime-label: ""
+  information: ""
+  information-details: ""
+  fingerprint-label: ""
+  key-info: ""

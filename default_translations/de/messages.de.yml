@@ -2,6 +2,17 @@ nav:
   language: Sprache
   select_language: Sprache auswählen
 
+navbar:
+  home: Home
+  vouchers: Invites
+  aliases: Aliase
+  openpgp: OpenPGP
+  account: Konto
+  language: Sprache
+  signed-in-as: Angemeldet als
+  open-user-menu: Benutzermenü öffnen
+  open-main-menu: Hauptmenü öffnen
+
 start:
   title: Willkommen bei %domain%
   intro: Hier kannst du dein E-Mail-Konto erstellen und verwalten.

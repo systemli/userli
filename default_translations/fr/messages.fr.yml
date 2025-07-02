@@ -2,6 +2,17 @@ nav:
   language: Langue
   select_language: Choisir la langue
 
+navbar:
+  home: Accueil
+  vouchers: Invitations
+  aliases: Alias
+  openpgp: OpenPGP
+  account: Compte
+  language: Langue
+  signed-in-as: Connecté en tant que
+  open-user-menu: Ouvrir le menu utilisateur
+  open-main-menu: Ouvrir le menu principal
+
 start:
   title: Bienvenue sur %domain%
   intro: Ici vous pouvez configurer et gérer vos comptes de messagerie.

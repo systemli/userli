@@ -2,6 +2,17 @@ nav:
   language: Language
   select_language: Select language
 
+navbar:
+  home: Home
+  vouchers: Invite codes
+  aliases: Aliases
+  openpgp: OpenPGP
+  account: Account
+  language: Language
+  signed-in-as: Signed in as
+  open-user-menu: Open user menu
+  open-main-menu: Open main menu
+
 start:
   title: Welcome to %domain%
   intro: Here you can set up and manage your e-mail account.

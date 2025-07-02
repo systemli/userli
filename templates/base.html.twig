@@ -15,37 +15,7 @@
 </head>
 <body>
     {% block navbar %}
-        <nav class="bg-gray-800 border-gray-800 border-b">
-            <div class="max-w-7xl mx-auto px-4">
-                <div class="flex items-center justify-between h-16">
-                    <div class="flex items-center">
-                        {% block brand %}
-                            <a class="text-white font-bold text-lg hover:text-gray-300" href="{{ project_url }}" target="_self">{{ project_name }}</a>
-                        {% endblock %}
-                    </div>
-
-                    <div class="flex items-center space-x-4">
-                        {% block menu %}
-                            {% if not app.user %}
-                                <a href="{{ path('login') }}" class="text-white hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium">
-                                    {{ "navbar_right.login"|trans }}
-                                </a>
-                            {% else %}
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    <a href="{{ path('sonata_admin_dashboard') }}" class="text-white hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium">
-                                        {{ "navbar_right.admin"|trans }}
-                                    </a>
-                                {% endif %}
-                                <a href="{{ path('logout') }}" class="text-white hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium">
-                                    {{ "navbar_right.logout"|trans }}
-                                </a>
-                            {% endif %}
-                            {% include '_locale_switcher.html.twig' %}
-                        {% endblock %}
-                    </div>
-                </div>
-            </div>
-        </nav>
+        {% include '_navbar.html.twig' %}
     {% endblock %}
 
     {% block container %}
