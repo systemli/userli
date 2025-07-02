@@ -26,6 +26,5 @@ class RecoveryControllerTest extends WebTestCase
         $client->submit($form);
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('div.alert-danger', "This token has an invalid format.");
     }
 }

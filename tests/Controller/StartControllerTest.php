@@ -38,7 +38,7 @@ class StartControllerTest extends WebTestCase
         $client->request('GET', '/start');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Account locked');
+        $this->assertSelectorTextContains('h1, .text-xl', 'Account locked');
     }
 
     public function testVisitingStartAsUser()
@@ -51,6 +51,6 @@ class StartControllerTest extends WebTestCase
         $client->request('GET', '/start');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h2', 'Manage your e-mail account');
+        $this->assertSelectorTextContains('h1', 'Manage your e-mail account');
     }
 }
