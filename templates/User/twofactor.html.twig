@@ -2,8 +2,12 @@
 
 {% form_theme form 'Form/fields.html.twig' %}
 {% form_theme disableForm 'Form/fields.html.twig' %}
-{% form_theme backupAckForm 'Form/fields.html.twig' %}
-{% form_theme confirmForm 'Form/fields.html.twig' %}
+{% if backupAckForm is defined %}
+    {% form_theme backupAckForm 'Form/fields.html.twig' %}
+{% endif %}
+{% if confirmForm is defined %}
+    {% form_theme confirmForm 'Form/fields.html.twig' %}
+{% endif %}
 
 {% block page_title %}{{ "account.twofactor.headline"|trans }}{% endblock %}
 
