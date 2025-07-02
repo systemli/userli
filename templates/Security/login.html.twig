@@ -1,26 +1,37 @@
-{% extends 'base_step.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block step_title %}{{ "form.signin-header"|trans }}{% endblock %}
+{% block content %}
+    <div class="min-h-[calc(100vh-8rem)] py-6 sm:py-8">
+        <div class="max-w-lg mx-auto px-4">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                {# Main content section #}
+                <div class="p-6 sm:p-8">
+                    {# Optional icon section #}
+                    <div class="flex justify-center mb-6">
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z"></path>
+                            </svg>
+                        </div>
+                    </div>
 
-{% block _step_description %}{{ "form.signin-subtitle"|trans }}{% endblock %}
+                    {# Step header #}
+                    <div class="text-center mb-8">
+                        <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+                            {{ "form.signin-header"|trans }}
+                        </h1>
+                        <p class="text-gray-600">
+                            {{ "form.signin-subtitle"|trans }}
+                        </p>
+                    </div>
 
-{% block step_icon %}
-    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z"></path>
-        </svg>
-    </div>
-{% endblock %}
-
-{% block step_content %}
-    <div>
-            {# Error message with improved accessibility #}
-            {% if error %}
-                <div class="mb-6 p-4 rounded-lg bg-red-50 border border-red-200" role="alert" aria-live="polite">
-                    <div class="flex items-start">
-                        <svg class="w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                        </svg>
+                    {# Error message with improved accessibility #}
+                    {% if error %}
+                        <div class="mb-6 p-4 rounded-lg bg-red-50 border border-red-200" role="alert" aria-live="polite">
+                            <div class="flex items-start">
+                                <svg class="w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                </svg>
                                 <div>
                                     <h3 class="text-sm font-medium text-red-800 mb-1">{{ "form.auth-failed"|trans }}</h3>
                                     <p class="text-sm text-red-700">{{ error.message|trans }}</p>
@@ -109,17 +120,17 @@
                             </button>
                         </div>
                     </form>
-        </div>
+                </div>
 
-        {# Footer section with registration link #}
-        <div class="-m-8 mt-8">
-            <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 rounded-b-xl">
-                <p class="text-center text-sm text-gray-600">
-                    {{ "form.no-account"|trans }}
-                    <a href="{{ path('register') }}" class="font-medium text-blue-600 hover:text-blue-500 focus:outline-none focus:underline transition-colors duration-200">
-                        {{ "form.create-account"|trans }}
-                    </a>
-                </p>
+                {# Footer section with registration link #}
+                <div class="px-6 py-4 sm:px-8 sm:py-6 bg-gray-50 border-t border-gray-100">
+                    <p class="text-center text-sm text-gray-600">
+                        {{ "form.no-account"|trans }}
+                        <a href="{{ path('register') }}" class="font-medium text-blue-600 hover:text-blue-500 focus:outline-none focus:underline transition-colors duration-200 ml-1">
+                            {{ "form.create-account"|trans }}
+                        </a>
+                    </p>
+                </div>
             </div>
         </div>
     </div>

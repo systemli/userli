@@ -187,15 +187,15 @@
                             </div>
 
                         {{ form_end(form) }}
+                    </div>
 
-                        {# Footer with login link #}
-                        <div class="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 bg-gray-50 border-t border-gray-100">
-                            <div class="text-center text-sm">
-                                <span class="text-gray-600">{{ "form.have-account"|trans }}</span>
-                                <a href="{{ path('login') }}" class="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200 ml-1">
-                                    {{ "form.signin"|trans }}
-                                </a>
-                            </div>
+                    {# Footer with login link #}
+                    <div class="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 bg-gray-50 border-t border-gray-100">
+                        <div class="text-center text-sm">
+                            <span class="text-gray-600">{{ "form.have-account"|trans }}</span>
+                            <a href="{{ path('login') }}" class="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200 ml-1">
+                                {{ "form.signin"|trans }}
+                            </a>
                         </div>
                     </div>
                 </div>
