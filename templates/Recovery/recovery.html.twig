@@ -4,14 +4,31 @@
 
 {% form_theme form 'Form/fields.html.twig' %}
 
+{% block breadcrumbs %}
+    {# No breadcrumbs in the new design #}
+{% endblock %}
+
 {% block content %}
-    <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
-            <h2>{{ "recovery.header"|trans }}</h2>
-            <p class="lead">{{ "recovery.lead"|trans }}</p>
-            {% block recovery_content %}
-            {% endblock %}
+    <div class="min-h-[calc(100vh-8rem)] py-6 sm:py-8">
+        <div class="max-w-lg mx-auto px-4">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4" aria-hidden="true">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z"></path>
+                        </svg>
+                    </div>
+                    <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+                        {{ "recovery.header"|trans }}
+                    </h1>
+                    <p class="text-gray-600">
+                        {{ "recovery.lead"|trans }}
+                    </p>
+                </div>
+
+                {% block recovery_content %}
+                {% endblock %}
+            </div>
         </div>
     </div>
-
 {% endblock %}

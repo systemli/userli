@@ -1,23 +1,63 @@
 {% extends 'Recovery/recovery.html.twig' %}
 
 {% block recovery_content %}
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
-    <div class="form-group">
-        {{ form_label(form.email) }}
-        {{ form_errors(form.email) }}
-        {{ form_widget(form.email, {'attr': {'class': 'form-control' }}) }}
+    {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+
+    {% set form_errors_content = form_errors(form) %}
+    {% if form_errors_content and form_errors_content|trim|length > 0 %}
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+            <div class="flex">
+                <svg class="w-5 h-5 text-red-400 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                </svg>
+                <div class="text-sm text-red-700">
+                    {{ form_errors_content|raw }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div>
+        {{ form_label(form.email, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+        {% set email_errors_content = form_errors(form.email) %}
+        {% if email_errors_content and email_errors_content|trim|length > 0 %}
+            <div class="text-sm text-red-600 mb-2">
+                {{ email_errors_content|raw }}
+            </div>
+        {% endif %}
+        {{ form_widget(form.email, {
+            'attr': {
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200'
+            }
+        }) }}
     </div>
 
-    <div class="form-group">
-        {{ form_label(form.recoveryToken) }}
-        {{ form_errors(form.recoveryToken) }}
-        {{ form_widget(form.recoveryToken, {'attr': {'class': 'form-control', 'placeholder': 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX' }}) }}
+    <div>
+        {{ form_label(form.recoveryToken, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+        {% set token_errors_content = form_errors(form.recoveryToken) %}
+        {% if token_errors_content and token_errors_content|trim|length > 0 %}
+            <div class="text-sm text-red-600 mb-2">
+                {{ token_errors_content|raw }}
+            </div>
+        {% endif %}
+        {{ form_widget(form.recoveryToken, {
+            'attr': {
+                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 font-mono',
+                'placeholder': 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX'
+            }
+        }) }}
     </div>
 
-    <div class="form-group">
-        {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary' }}) }}
-        <a href="{{ url('index') }}" class="btn btn-default">{{ "recovery.cancel"|trans }}</a>
+    <div class="pt-4 flex flex-col sm:flex-row gap-3">
+        {{ form_widget(form.submit, {
+            'attr': {
+                'class': 'w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200'
+            }
+        }) }}
+        <a href="{{ url('index') }}"
+           class="w-full sm:w-auto px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200 text-center">
+            {{ "recovery.cancel"|trans }}
+        </a>
     </div>
 
     {{ form_end(form) }}
