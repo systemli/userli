@@ -1,15 +1,19 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_page.html.twig' %}
 
 {% block subtitle %}{{ "spam.title"|trans({'%domain%': domain}) }}{% endblock %}
 
-{% block content %}
+{% block page_title %}{{ "spam.title"|trans({'%domain%': domain}) }}{% endblock %}
 
-    <div class="row">
-        <div class="col-xs-12 col-sm-10 col-md-10">
-            <h1>{{ "spam.title"|trans({'%domain%': domain}) }}</h1>
+{% block _page_subtitle %}{{ "spam.text"|trans }}{% endblock %}
 
-            <p class="lead">{{ "spam.text"|trans }}</p>
+{% block page_content %}
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 sm:p-12">
+            <div class="prose prose-lg max-w-none text-gray-700">
+                <p class="text-xl leading-relaxed">
+                    {{ "spam.text"|trans }}
+                </p>
+            </div>
         </div>
     </div>
-
 {% endblock %}

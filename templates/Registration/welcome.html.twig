@@ -1,19 +1,27 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_page.html.twig' %}
 
 {% block subtitle %}{{ "welcome.headline"|trans({'%domain%': domain, '%project_name%': project_name}) }}{% endblock %}
 
-{% block content %}
+{% block page_title %}{{ "welcome.headline"|trans({'%domain%': domain, '%project_name%': project_name}) }}{% endblock %}
 
-    <div class="row">
-        <div class="col-xs-12">
-            <h2>{{ "welcome.headline"|trans({'%domain%': domain, '%project_name%': project_name}) }}</h2>
+{% block _page_subtitle %}{{ "welcome.lead"|trans }}{% endblock %}
 
-            <p class="lead">{{ "welcome.lead"|trans }}</p>
+{% block page_content %}
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 sm:p-12">
+            <div class="prose prose-lg max-w-none">
+                {{ "welcome.text"|trans({'%project_name%': project_name, '%app_url%': app_url})|raw }}
+            </div>
 
-            {{ "welcome.text"|trans({'%project_name%': project_name, '%app_url%': app_url})|raw }}
-
-            <p><a href="{{ path('start') }}" class="btn btn-lg btn-primary pull-right">{{ "welcome.next-button"|trans }}</a></p>
+            <div class="mt-8 text-right">
+                <a href="{{ path('start') }}"
+                   class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
+                    {{ "welcome.next-button"|trans }}
+                    <svg class="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                    </svg>
+                </a>
+            </div>
         </div>
     </div>
-
 {% endblock %}

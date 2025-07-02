@@ -1,28 +1,13 @@
-{% extends 'base.html.twig' %}
-
-{% block subtitle %}{{ "recovery-token.headline"|trans }}{% endblock %}
+{% extends 'base_page.html.twig' %}
 
 {% form_theme form 'Form/fields.html.twig' %}
 
+{% block page_title %}{{ "recovery-token.headline"|trans }}{% endblock %}
 
+{% block _page_subtitle %}{{ "recovery-token.lead"|trans }}{% endblock %}
 
-{% block content %}
-    <div class="min-h-[calc(100vh-8rem)] py-6 sm:py-8">
-        <div class="max-w-6xl mx-auto px-4">
-            {# Header section #}
-            <div class="mb-8 sm:mb-12">
-                <div class="text-center">
-                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
-                        {{ "recovery-token.headline"|trans }}
-                    </h1>
-                    <p class="text-xl text-gray-600 font-medium">
-                        {{ "recovery-token.lead"|trans }}
-                    </p>
-                </div>
-            </div>
-
-            {# Main content area #}
-            <div class="max-w-5xl mx-auto">
+{% block page_content %}
+    <div class="max-w-5xl mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Left column: Form or Token -->
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">

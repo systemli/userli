@@ -1,26 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_page.html.twig' %}
 
-{% block subtitle %}{{ "start.title"|trans({'%domain%': domain}) }}{% endblock %}
+{% block page_title %}{{ "start.title"|trans({'%domain%': domain}) }}{% endblock %}
 
+{% block _page_subtitle %}{{ "start.intro"|trans }}{% endblock %}
 
-
-{% block content %}
-    <div class="min-h-[calc(100vh-8rem)] py-6 sm:py-8">
-        <div class="max-w-6xl mx-auto px-4">
-            {# Header section #}
-            <div class="mb-8 sm:mb-12">
-                <div class="text-center">
-                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
-                        {{ "start.title"|trans({'%domain%': domain}) }}
-                    </h1>
-                    <p class="text-xl text-gray-600 font-medium">
-                        {{ "start.intro"|trans }}
-                    </p>
-                </div>
-            </div>
-
-            {# Main content area #}
-            <div class="max-w-5xl mx-auto">
+{% block page_content %}
+    <div class="max-w-6xl mx-auto">
+        {# Main content area #}
+        <div class="max-w-5xl mx-auto">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {# Registration section #}
                     <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 sm:p-8">

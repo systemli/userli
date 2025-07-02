@@ -1,27 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_step.html.twig' %}
 
 {% form_theme form 'Form/fields.html.twig' %}
 
+{% block subtitle %}{{ "delete.alias.headline_generic"|trans }}{% endblock %}
+{% block step_title %}{{ "delete.alias.headline_generic"|trans }}{% endblock %}
 
+{% block _step_description %}{{ "delete.alias.lead_specific"|trans({'%alias%': alias.source})|raw }}{% endblock %}
 
-{% block content %}
-    <div class="max-w-lg mx-auto px-4">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
-            <div class="text-center mb-8">
-                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                    </svg>
-                </div>
-                <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-                    {{ "delete.alias.headline_generic"|trans }}
-                </h1>
-                <p class="text-gray-600">
-                    {{ "delete.alias.lead_specific"|trans({'%alias%': alias.source})|raw }}
-                </p>
-            </div>
+{% block step_icon %}
+    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+        </svg>
+    </div>
+{% endblock %}
 
-            {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+{% block step_content %}
+    {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
 
             {% set form_errors_content = form_errors(form) %}
             {% if form_errors_content and form_errors_content|trim|length > 0 %}
@@ -67,7 +62,5 @@
                 </div>
             </div>
 
-            {{ form_end(form) }}
-        </div>
-    </div>
+    {{ form_end(form) }}
 {% endblock %}

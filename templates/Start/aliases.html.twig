@@ -1,27 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_page.html.twig' %}
 
-{% block subtitle %}{{ "start.aliases"|trans }}{% endblock %}
+{% block page_title %}{{ "start.aliases"|trans }}{% endblock %}
 
+{% block _page_subtitle %}{{ "index.alias-subtitle"|trans }}{% endblock %}
 
-
-{% block content %}
-    {# Modern alias management with Tailwind CSS, semantic HTML, and accessibility #}
-    <div class="min-h-[calc(100vh-8rem)] py-6 sm:py-8">
-        <div class="max-w-6xl mx-auto">
-            {# Header section - centered title and subtitle #}
-            <div class="mb-8 sm:mb-12">
-                <div class="text-center">
-                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
-                        {{ "start.aliases"|trans }}
-                    </h1>
-                    <p class="text-xl text-gray-600 font-medium">
-                        {{ "index.alias-subtitle"|trans }}
-                    </p>
-                </div>
-            </div>
-
-            {# Main content area #}
-            <div class="max-w-5xl mx-auto">
+{% block page_content %}
+    <div class="max-w-5xl mx-auto">
+        {# Main content area #}
+        <div class="max-w-5xl mx-auto">
                 {# Brief motivational explanation #}
                 <div class="mb-8 text-center">
                     <p class="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">

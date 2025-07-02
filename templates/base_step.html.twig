@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{# Override title block to show smaller title in browser tab #}
+{% block title %}{{ domain }} - {% block subtitle %}{% endblock %}{% endblock %}
+
+{% block content %}
+    <div class="min-h-[calc(100vh-8rem)] py-6 sm:py-8">
+        <div class="max-w-lg mx-auto px-4">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
+                {# Optional icon section #}
+                <div class="flex justify-center mb-6">
+                    {% block step_icon %}{% endblock %}
+                </div>
+
+                {# Step header #}
+                <div class="text-center mb-8">
+                    <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+                        {% block step_title %}{% endblock %}
+                    </h1>
+                    {% block step_description %}
+                        {% if block('_step_description') is not empty %}
+                            <p class="text-gray-600">
+                                {{ block('_step_description')|raw }}
+                            </p>
+                        {% endif %}
+                    {% endblock %}
+                </div>
+
+                {# Step content #}
+                {% block step_content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

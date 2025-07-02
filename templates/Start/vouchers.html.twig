@@ -1,25 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_page.html.twig' %}
 
-{% block subtitle %}{{ "start.vouchers"|trans }}{% endblock %}
+{% block page_title %}{{ "start.vouchers"|trans }}{% endblock %}
 
-{% block content %}
-    {# Modern voucher management with Tailwind CSS, semantic HTML, and accessibility #}
-    <div class="min-h-[calc(100vh-8rem)] py-6 sm:py-8">
-        <div class="max-w-6xl mx-auto">
-            {# Header section - centered title and subtitle #}
-            <div class="mb-8 sm:mb-12">
-                <div class="text-center">
-                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
-                        {{ "start.vouchers"|trans }}
-                    </h1>
-                    <p class="text-xl text-gray-600 font-medium">
-                        {{ "index.voucher-subtitle"|trans }}
-                    </p>
-                </div>
-            </div>
+{% block _page_subtitle %}{{ "index.voucher-subtitle"|trans }}{% endblock %}
 
-            {# Main content card #}
-            <div class="max-w-4xl mx-auto">
+{% block page_content %}
+    {# Main content card #}
+    <div class="max-w-4xl mx-auto">
                 <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8">
                     {# Explanation text #}
                     <div class="mb-6">
@@ -41,7 +28,7 @@
                                             'class': 'space-y-4'
                                         }
                                     }) }}
-                                    
+
                                     {# Form errors #}
                                     {% if voucher_form.vars.errors|length > 0 %}
                                         <div class="p-4 rounded-lg bg-red-50 border border-red-200" role="alert" aria-live="polite">
@@ -102,7 +89,7 @@
                                                             {{ voucher.code }}
                                                         </p>
                                                     </div>
-                                                    <button type="button" 
+                                                    <button type="button"
                                                             class="inline-flex items-center px-3 py-2 border border-green-300 rounded-lg text-sm font-medium text-green-700 bg-white hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200 cursor-pointer"
                                                             title="{{ "copy-to-clipboard"|trans }}"
                                                             data-button="copy-to-clipboard"

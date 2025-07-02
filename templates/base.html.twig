@@ -65,7 +65,25 @@
             {% endblock flashes %}
 
             {% block content %}
-            {% endblock %}
+                {# Header section with standardized title and subtitle structure #}
+                <div class="mb-8 sm:mb-12">
+                    <div class="text-center">
+                        {% block page_title %}
+                            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+                                {{ block('subtitle')|raw }}
+                            </h1>
+                        {% endblock %}
+
+                        {% block page_subtitle %}
+                            {# Optional subtitle block that child templates can override #}
+                        {% endblock %}
+                    </div>
+                </div>
+
+                {% block page_content %}
+                    {# Main content goes here #}
+                {% endblock %}
+            {% endblock content %}
 
         </div>
     {% endblock %}

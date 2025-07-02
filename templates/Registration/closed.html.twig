@@ -1,14 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_page.html.twig' %}
 
-{% block subtitle %}{{ "closed.title"|trans }}{% endblock %}
+{% block page_title %}{{ "closed.headline"|trans }}{% endblock %}
 
-{% block content %}
-    <div class="row">
-        <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-            <h2>{{ "closed.headline"|trans }}</h2>
+{% block _page_subtitle %}{{ "closed.lead"|trans }}{% endblock %}
 
-            <p class="lead">{{ "closed.lead"|trans }}</p>
-
+{% block page_content %}
+    <div class="max-w-3xl mx-auto">
+        <div class="prose prose-blue max-w-none">
             {{ "closed.text"|trans|raw }}
         </div>
     </div>

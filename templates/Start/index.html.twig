@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_page.html.twig' %}
 
 {% if form is defined %}
     {% form_theme form 'Form/fields.html.twig' %}
@@ -7,19 +7,11 @@
     {% form_theme password_form 'Form/fields.html.twig' %}
 {% endif %}
 
-{% block content %}
-    {# Modern dashboard with Tailwind CSS, semantic HTML, and accessibility #}
-    <div class="min-h-[calc(100vh-8rem)] py-6 sm:py-8">
-        <div class="max-w-6xl mx-auto">
-            {# Header section #}
-            <div class="text-center mb-8 sm:mb-12">
-                <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-                    {{ "index.title"|trans }}
-                </h1>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                    {{ "start.intro"|trans }}
-                </p>
-            </div>
+{% block page_title %}{{ "index.title"|trans }}{% endblock %}
+
+{% block _page_subtitle %}{{ "start.intro"|trans }}{% endblock %}
+
+{% block page_content %}
 
             {# Dashboard cards grid #}
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

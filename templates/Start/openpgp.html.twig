@@ -1,24 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_page.html.twig' %}
 
-{% block subtitle %}{{ "start.openpgp-settings"|trans }}{% endblock %}
+{% block page_title %}{{ "start.openpgp-settings"|trans }}{% endblock %}
 
-{% block content %}
-    <div class="min-h-[calc(100vh-8rem)] py-6 sm:py-8">
-        <div class="max-w-6xl mx-auto">
-            {# Header section - centered title and subtitle #}
-            <div class="mb-8 sm:mb-12">
-                <div class="text-center">
-                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
-                        {{ "start.openpgp-settings"|trans }}
-                    </h1>
-                    <p class="text-xl text-gray-600 font-medium">
-                        {{ "openpgp.manage-subtitle"|trans }}
-                    </p>
-                </div>
-            </div>
+{% block _page_subtitle %}{{ "openpgp.manage-subtitle"|trans }}{% endblock %}
 
-            {# Main content area #}
-            <div class="max-w-5xl mx-auto">
+{% block page_content %}
+    <div class="max-w-5xl mx-auto">
                 {# Brief information explanation #}
                 <div class="mb-8 text-center">
                     <p class="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
