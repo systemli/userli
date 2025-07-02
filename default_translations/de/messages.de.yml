@@ -122,16 +122,6 @@ form:
   registration-recovery-token-next-button: Weiter
   domain: Domain
   add: Hinzufügen
-  openpgp-key-file: "Deinen Schlüssel als Datei hochladen:"
-  openpgp-key-file-mimetype: Die hochgeladende Datei enthält keine OpenPGP-Schlüssel.
-  openpgp-key-upload-or: oder
-  openpgp-key-text: "Deinen Schlüssel als Text einfügen:"
-  openpgp-key-text-placeholder: OpenPGP-Schlüssel im ASCII-Format
-  openpgp-key-select-one:
-    Bitte lade den Schlüssel entweder als Datei oder im ASCII
-    Format hoch.
-  openpgp-key-submit: OpenPGP-Schlüssel veröffentlichen
-  openpgp-delete: OpenPGP-Schlüssel löschen
   verify: Bestätigen
   twofactor: Zwei-Faktor-Authentifizierung
   twofactor-short: 2FA
@@ -144,6 +134,18 @@ form:
   twofactor-login-cancel: Login abbrechen
   twofactor-enable: Zwei-Faktor-Authentifizierung aktivieren
   twofactor-disable: Zwei-Faktor-Authentifizierung deaktivieren
+
+# OpenPGP Keys
+openpgp-key-file: "Deinen Schlüssel als Datei hochladen:"
+openpgp-key-file-mimetype: Die hochgeladende Datei enthält keine OpenPGP-Schlüssel.
+openpgp-key-upload-or: oder
+openpgp-key-text: "Deinen Schlüssel als Text einfügen:"
+openpgp-key-text-placeholder: OpenPGP-Schlüssel im ASCII-Format
+openpgp-key-select-one: >
+  Bitte lade den Schlüssel entweder als Datei oder im ASCII
+  Format hoch.
+openpgp-key-submit: OpenPGP-Schlüssel veröffentlichen
+openpgp-delete: OpenPGP-Schlüssel löschen
 
 account:
   twofactor:
@@ -380,7 +382,6 @@ init_user:
     Wähle ein Kennwort für dieses erste Administratorkonto aus und melde dich anschließend
     an.
 openpgp:
-  key-info: Veröffentlichter OpenPGP-Schlüssel
   delete-button: OpenPGP-Schlüssel löschen
   information: Information
   information-details:
@@ -391,6 +392,11 @@ openpgp:
   keyid-label: "Schlüssel-ID:"
   fingerprint-label: "Fingerprint:"
   expiretime-label: "Ablaufdatum:"
+  no-expiration: "Kein Ablaufdatum (unbegrenzt gültig)"
+  manage-subtitle: Verwalte deinen OpenPGP-Schlüssel
+  current-key: Aktueller OpenPGP-Schlüssel
+  no-key-uploaded: Noch kein OpenPGP-Schlüssel hochgeladen
+  upload-prompt: Lade einen Schlüssel über das Formular rechts hoch
 
 # Streamlined alias page structure
 index.alias-motivation: "Erstelle personalisierte E-Mail-Aliasse, um deinen Posteingang besser zu organisieren und deine Privatsphäre zu schützen."

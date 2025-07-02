@@ -15,6 +15,7 @@ ansible/playbook.retry
 translations/
 docker-compose.override.yml
 .php_cs.cache
+.well-known
 
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache

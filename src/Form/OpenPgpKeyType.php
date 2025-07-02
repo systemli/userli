@@ -28,8 +28,8 @@ class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
     {
         $builder
             ->add('keyFile', FileType::class, [
-                'label' => 'form.openpgp-key-file',
-                'help' => 'form.openpgp-key-file',
+                'label' => 'openpgp-key-file',
+                'help' => 'openpgp-key-file',
                 'required' => false,
                 'constraints' => [
                     new File([
@@ -38,16 +38,16 @@ class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
                             'application/pgp-keys',
                             'text/plain',
                         ],
-                        'mimeTypesMessage' => $this->translator->trans('form.openpgp-key-file-mimetype'),
+                        'mimeTypesMessage' => $this->translator->trans('openpgp-key-file-mimetype'),
                     ]),
                 ],
             ])
             ->add('keyText', TextareaType::class, [
-                'label' => 'form.openpgp-key-text',
+                'label' => 'openpgp-key-text',
                 'required' => false,
-                'attr' => ['placeholder' => 'form.openpgp-key-text-placeholder'],
+                'attr' => ['placeholder' => 'openpgp-key-text-placeholder'],
             ])
-            ->add('submit', SubmitType::class, ['label' => 'form.openpgp-key-submit']);
+            ->add('submit', SubmitType::class, ['label' => 'openpgp-key-submit']);
 
         $builder->addEventSubscriber($this);
     }
@@ -79,7 +79,7 @@ class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
 
         if ((null === $submittedData->getKeyFile() && null === $submittedData->getKeyText()) ||
             (null !== $submittedData->getKeyFile() && null !== $submittedData->getKeyText())) {
-            throw new TransformationFailedException('exactly one of keyFile or keyText must be set', 0, null, $this->translator->trans('form.openpgp-key-select-one'));
+            throw new TransformationFailedException('exactly one of keyFile or keyText must be set', 0, null, $this->translator->trans('openpgp-key-select-one'));
         }
     }
 }

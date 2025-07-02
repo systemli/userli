@@ -16,7 +16,7 @@ class OpenPgpDeleteType extends AbstractType
     {
         $builder
             ->add('password', PasswordType::class, ['label' => 'form.delete-password'])
-            ->add('submit', SubmitType::class, ['label' => 'form.openpgp-delete']);
+            ->add('submit', SubmitType::class, ['label' => 'openpgp-delete']);
     }
 
     /**

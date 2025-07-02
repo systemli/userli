@@ -2,77 +2,190 @@
 
 {% block subtitle %}{{ "start.openpgp-settings"|trans }}{% endblock %}
 
-{% block breadcrumbs %}
-    <ol class="breadcrumb">
-        <li><a href="{{ path('start') }}">Start</a></li>
-        <li class="active">{{ "start.openpgp-settings"|trans }}</li>
-    </ol>
-{% endblock %}
 {% block content %}
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <h3>{{ "start.openpgp-settings-title"|trans }}</h3>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-7">
-            {% form_theme openpgp_form 'Form/fields.html.twig' %}
-            {{ form_start(openpgp_form) }}
-            <div class="form-group">
-                {{ form_errors(openpgp_form) }}
-            </div>
-
-            <div class="form-group">
-                {{ form_label(openpgp_form.keyFile) }}
-                {{ form_errors(openpgp_form.keyFile) }}
-                {{ form_widget(openpgp_form.keyFile) }}
-            </div>
-
-            <div class="form-group">
-                <label><i>{{ "form.openpgp-key-upload-or"|trans }}</i></label>
-            </div>
-
-            <div class="form-group">
-                {{ form_label(openpgp_form.keyText) }}
-                {{ form_errors(openpgp_form.keyText) }}
-                {{ form_widget(openpgp_form.keyText, {'attr': {'class': 'form-control ascii', 'rows':'15'}}) }}
-            </div>
-
-            <div class="form-group">
-                {{ form_widget(openpgp_form.submit, {'attr': {'class': 'btn btn-primary' }}) }}
-            </div>
-
-            {{ form_end(openpgp_form) }}
-        </div>
-
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-5">
-            <div class="alert alert-info">
-                <p class="lead">{{ "openpgp.information"|trans }}</p>
-                <p>{{ "openpgp.information-details"|trans|raw }}</p>
-            </div>
-        </div>
-
-        {% if openpgp_id and openpgp_fingerprint %}
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-5">
-                <h4>{{ "openpgp.key-info"|trans }}</h4>
-                <div class="alert alert-info">
-                    <div>
-                        <label>{{ "openpgp.keyid-label"|trans }}</label>
-                        {{ openpgp_id }}
-                    </div>
-                    <div>
-                        <label>{{ "openpgp.fingerprint-label"|trans }}</label>
-                        {{ openpgp_fingerprint }}
-                    </div>
-                    {% if openpgp_expiretime %}
-                        <div>
-                            <label>{{ "openpgp.expiretime-label"|trans }}</label>
-                            {{ openpgp_expiretime|date("d.m.Y") }}
-                        </div>
-                    {% endif %}
+    <div class="min-h-[calc(100vh-8rem)] py-6 sm:py-8">
+        <div class="max-w-6xl mx-auto">
+            {# Header section - centered title and subtitle #}
+            <div class="mb-8 sm:mb-12">
+                <div class="text-center">
+                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+                        {{ "start.openpgp-settings"|trans }}
+                    </h1>
+                    <p class="text-xl text-gray-600 font-medium">
+                        {{ "openpgp.manage-subtitle"|trans }}
+                    </p>
                 </div>
-                <p><a class="btn btn-danger btn-primary" href="{{ url('openpgp_delete') }}">{{ "openpgp.delete-button"|trans }}</a></p>
             </div>
-        {% endif %}
+
+            {# Main content area #}
+            <div class="max-w-5xl mx-auto">
+                {# Brief information explanation #}
+                <div class="mb-8 text-center">
+                    <p class="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
+                        {{ "openpgp.information-details"|trans|raw }}
+                    </p>
+                </div>
+
+                <!-- Two-column Layout -->
+                <div class="max-w-4xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Left column: Current Key Information -->
+                        <section>
+                            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 h-full">
+                                <div class="p-6 sm:p-8 flex flex-col h-full">
+                                    <div class="flex items-center mb-6">
+                                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mr-4">
+                                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h2 class="text-xl font-semibold text-gray-900">{{ "openpgp.current-key"|trans }}</h2>
+                                        </div>
+                                    </div>
+
+                                    {% if openpgp_id and openpgp_fingerprint %}
+                                        <!-- Key information when available -->
+                                        <div>
+                                            <dl class="space-y-4 mb-6">
+                                                <div>
+                                                    <dt class="text-sm font-medium text-gray-500">
+                                                        {{ "openpgp.keyid-label"|trans }}
+                                                    </dt>
+                                                    <dd class="mt-1 text-sm text-gray-900 font-mono break-all bg-gray-50 rounded px-2 py-1">
+                                                        {{ openpgp_id }}
+                                                    </dd>
+                                                </div>
+
+                                                <div>
+                                                    <dt class="text-sm font-medium text-gray-500">
+                                                        {{ "openpgp.fingerprint-label"|trans }}
+                                                    </dt>
+                                                    <dd class="mt-1 text-sm text-gray-900 font-mono break-all bg-gray-50 rounded px-2 py-1">
+                                                        {{ openpgp_fingerprint }}
+                                                    </dd>
+                                                </div>
+
+                                                {% if openpgp_expiretime %}
+                                                    <div>
+                                                        <dt class="text-sm font-medium text-gray-500">
+                                                            {{ "openpgp.expiretime-label"|trans }}
+                                                        </dt>
+                                                        <dd class="mt-1 text-sm text-gray-900 font-medium">
+                                                            {{ openpgp_expiretime|date("d.m.Y") }}
+                                                        </dd>
+                                                    </div>
+                                                {% else %}
+                                                    <div>
+                                                        <dt class="text-sm font-medium text-gray-500">
+                                                            {{ "openpgp.expiretime-label"|trans }}
+                                                        </dt>
+                                                        <dd class="mt-1 text-sm text-gray-900 font-medium">
+                                                            {{ "openpgp.no-expiration"|trans }}
+                                                        </dd>
+                                                    </div>
+                                                {% endif %}
+                                            </dl>
+
+                                            <!-- Delete button (without border) -->
+                                            <a href="{{ url('openpgp_delete') }}"
+                                                class="inline-flex items-center justify-center w-full px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                </svg>
+                                                {{ "openpgp.delete-button"|trans }}
+                                            </a>
+                                        </div>
+                                    {% else %}
+                                        <!-- Placeholder when no key is available -->
+                                        <div class="flex-grow flex flex-col items-center justify-center text-center py-10 bg-gray-50 rounded-lg">
+                                            <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z"></path>
+                                            </svg>
+                                            <h3 class="text-lg font-medium text-gray-900 mb-3 px-4">{{ "openpgp.no-key-uploaded"|trans }}</h3>
+                                            <p class="text-gray-600 max-w-xs mx-auto px-4 pb-4">{{ "openpgp.upload-prompt"|trans }}</p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Right column: Upload Form -->
+                        <section>
+                            <div class="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+                                <div class="p-6 sm:p-8">
+                                    <div class="flex items-center mb-6">
+                                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-4">
+                                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h2 class="text-xl font-semibold text-gray-900">{{ "openpgp-key-file"|trans }}</h2>
+                                        </div>
+                                    </div>
+
+                                    {% form_theme openpgp_form 'Form/fields.html.twig' %}
+                                    {{ form_start(openpgp_form, {'attr': {'class': 'space-y-6'}}) }}
+
+                                    {% if openpgp_form.vars.errors|length > 0 %}
+                                        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6" role="alert">
+                                            <div class="flex">
+                                                <svg class="w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                                </svg>
+                                                <div class="text-sm text-red-700">
+                                                    {% for error in openpgp_form.vars.errors %}
+                                                        <p class="{% if not loop.last %}mb-2{% endif %}">{{ error.message }}</p>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="space-y-6">
+                                        <div>
+                                            {{ form_label(openpgp_form.keyFile, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+                                            {% if openpgp_form.keyFile.vars.errors|length > 0 %}
+                                                <div class="text-sm text-red-600 mb-2">
+                                                    {% for error in openpgp_form.keyFile.vars.errors %}
+                                                        <p class="{% if not loop.last %}mb-1{% endif %}">{{ error.message }}</p>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                            {{ form_widget(openpgp_form.keyFile, {'attr': {'class': 'block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent p-3 transition-colors duration-200'}}) }}
+                                        </div>
+
+                                        <div class="text-center">
+                                            <span class="inline-flex items-center px-3 py-1 text-sm text-gray-500 bg-gray-100 rounded-full">
+                                                {{ "openpgp-key-upload-or"|trans }}
+                                            </span>
+                                        </div>
+
+                                        <div>
+                                            {{ form_label(openpgp_form.keyText, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+                                            {% if openpgp_form.keyText.vars.errors|length > 0 %}
+                                                <div class="text-sm text-red-600 mb-2">
+                                                    {% for error in openpgp_form.keyText.vars.errors %}
+                                                        <p class="{% if not loop.last %}mb-1{% endif %}">{{ error.message }}</p>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                            {{ form_widget(openpgp_form.keyText, {'attr': {'class': 'block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 font-mono text-sm transition-colors duration-200', 'rows': '10', 'placeholder': 'openpgp-key-text-placeholder'|trans}}) }}
+                                        </div>
+
+                                        <div class="flex justify-end pt-4">
+                                            {{ form_widget(openpgp_form.submit, {'attr': {'class': 'inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'}}) }}
+                                        </div>
+                                    </div>
+
+                                    {{ form_end(openpgp_form) }}
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-{%  endblock %}
+{% endblock %}

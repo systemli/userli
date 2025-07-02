@@ -122,14 +122,6 @@ form:
   registration-recovery-token-next-button: Continue
   domain: Domain
   add: Add
-  openpgp-key-file: "Upload your key file:"
-  openpgp-key-file-mimetype: The uploaded file doesn't contain OpenPGP data.
-  openpgp-key-upload-or: or
-  openpgp-key-text: "Paste your key as text:"
-  openpgp-key-text-placeholder: OpenPGP key in ASCII format
-  openpgp-key-select-one: Please upload key either as file or as ASCII text.
-  openpgp-key-submit: Publish OpenPGP key
-  openpgp-delete: Delete OpenPGP key
   verify: Verify
   twofactor: Two-factor authentication
   twofactor-short: 2FA
@@ -142,6 +134,16 @@ form:
   twofactor-login-cancel: Cancel login
   twofactor-enable: Enable two-factor authentication
   twofactor-disable: Disable two-factor authentication
+
+# OpenPGP Keys
+openpgp-key-file: "Upload your key file:"
+openpgp-key-file-mimetype: The uploaded file doesn't contain OpenPGP data.
+openpgp-key-upload-or: or
+openpgp-key-text: "Paste your key as text:"
+openpgp-key-text-placeholder: OpenPGP key in ASCII format
+openpgp-key-select-one: Please upload key either as file or as ASCII text.
+openpgp-key-submit: Publish OpenPGP key
+openpgp-delete: Delete OpenPGP key
 
 account:
   twofactor:
@@ -368,7 +370,6 @@ init_user:
     "E-mail standards require the account postmaster@%domain% to be present. Please\
     \ pick a password for this first administrator account and log in afterwards."
 openpgp:
-  key-info: Published OpenPGP key
   delete-button: Delete OpenPGP key
   information: Information
   information-details:
@@ -378,6 +379,11 @@ openpgp:
   keyid-label: "Key ID:"
   fingerprint-label: "Fingerprint:"
   expiretime-label: "Expiry date:"
+  no-expiration: "No expiry date (valid indefinitely)"
+  manage-subtitle: Manage your OpenPGP key
+  current-key: Current OpenPGP Key
+  no-key-uploaded: No OpenPGP key uploaded yet
+  upload-prompt: Upload a key using the form on the right
 
 # Streamlined alias page structure
 index.alias-motivation: "Create personalized email aliases to better organize your inbox and protect your privacy."
