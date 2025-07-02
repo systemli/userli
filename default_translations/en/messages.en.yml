@@ -31,7 +31,7 @@ index:
   voucher-headline: Your invite codes
   voucher-subtitle: Invite your friends
   voucher-explanation-short: >
-    Use your invite codes to invite friends. 
+    Use your invite codes to invite friends.
     You have three invitations available by default.
   voucher-limit: You don't have any invite codes left.
   voucher-disable: >
@@ -42,13 +42,26 @@ index:
     By default, you have three invitations available.
     If you need invite more, please contact the administrators.
     We store invite data for a limited amount of time to protect against abuse.
+  alias-subtitle: Manage your e-mail aliases
   alias-headline: Your %alias_type% alias addresses
   alias-limit: You reached the allowed limit of %alias_limit% %alias_type% alias addresses.
+  alias-limit-reached: Limit reached
   alias-deletion-custom: Write us in order to get addresses deleted.
   alias-deletion-random:
     As soon as you delete old addresses, you can create new ones
     again.
   alias-empty: You don't have any %alias_type% alias addresses defined.
+  alias-custom-description: Create personalized e-mail addresses with your own name
+  alias-custom-create: Create new custom alias
+  alias-random-description: Generate random e-mail addresses automatically
+  alias-random-generate: Generate new random alias
+  alias-active-custom: Active custom aliases
+  alias-active-random: Active random aliases
+  alias-info-title: Important notes about e-mail aliases
+  alias-info-custom: "<strong>Custom aliases:</strong> Choose your own name for your e-mail address"
+  alias-info-random: "<strong>Random aliases:</strong> Automatically generated addresses for more anonymity"
+  alias-info-limits: "<strong>Limits:</strong> Maximum %alias_limit_custom% custom and %alias_limit_random% random aliases"
+  alias-info-management: "<strong>Management:</strong> Delete unused aliases to make room for new ones"
   delete-headline: Delete account
   delete-description: >
     You can delete your %project_name% e-mail account.
@@ -215,7 +228,12 @@ closed:
 delete:
   alias:
     headline: Delete alias address %alias%
+    headline_generic: Delete alias address
     lead: We need to verify your password to delete your alias address.
+    lead_specific: >
+      Are you sure you want to delete <strong>%alias%</strong>?
+      The address will be permanently deleted.
+    delete: Delete alias
   user:
     headline: Delete account
     lead: We need to verify your password to delete your account.
@@ -335,6 +353,9 @@ Alias: Alias address
 Voucher: Invite code
 Reserved Name: Reserved Name
 copy-to-clipboard: Copy to clipboard
+
+alias:
+  delete: Delete alias
 init.title: Creating initial configuration
 init_domain:
   lead:
@@ -357,3 +378,22 @@ openpgp:
   keyid-label: "Key ID:"
   fingerprint-label: "Fingerprint:"
   expiretime-label: "Expiry date:"
+
+# Streamlined alias page structure
+index.alias-motivation: "Create personalized email aliases to better organize your inbox and protect your privacy."
+
+custom-aliases.title: "Custom Aliases"
+custom-aliases.subtitle: "Create up to %alias_limit_custom% custom aliases"
+custom-aliases.feature-choose-name: "Choose your own memorable alias name"
+custom-aliases.feature-easy-remember: "Easy to remember and share with others"
+custom-aliases.limitation-permanent: "Cannot be deleted once created"
+custom-aliases.limitation-limited: "Limited to %alias_limit_custom% total aliases"
+custom-aliases.management-hint: "<strong>Tip:</strong> Choose your custom aliases carefully as they cannot be deleted later."
+
+random-aliases.title: "Random Aliases"
+random-aliases.subtitle: "Generate up to %alias_limit_random% random aliases"
+random-aliases.feature-secure: "Automatically generated secure names"
+random-aliases.feature-privacy: "Perfect for online shopping and registrations"
+random-aliases.feature-deletable: "Can be deleted anytime when no longer needed"
+random-aliases.limitation-random-name: "Random names that are harder to remember"
+random-aliases.management-hint: "<strong>Tip:</strong> Delete unused random aliases to make room for new ones."

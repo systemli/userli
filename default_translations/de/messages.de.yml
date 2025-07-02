@@ -31,7 +31,7 @@ index:
   voucher-headline: Deine Einladungscodes
   voucher-subtitle: Lade Freund:innen ein
   voucher-explanation-short: >
-    Nutze deine Einladungscodes um Freund:innen einzuladen. 
+    Nutze deine Einladungscodes um Freund:innen einzuladen.
     Du hast standardmäßig drei Einladungen zur Verfügung.
   voucher-limit: Du hast keine Einladungscodes mehr verfügbar.
   voucher-disable: >
@@ -42,13 +42,26 @@ index:
     Standardmäßig hast du drei Einladungen zur Verfügung. Wenn du mehr
     brauchst, wende dich an die Admins. Wir speichern Einladungsdaten für
     einen begrenzten Zeitraum um Missbrauch zu verhindern.
+  alias-subtitle: Verwalte deine E-Mail-Aliase
   alias-headline: Deine %alias_type% Alias-Adressen
   alias-limit:
     Du hast das Limit von %alias_limit% erlaubten %alias_type% Alias-Adressen
     erreicht.
+  alias-limit-reached: Limit erreicht
   alias-deletion-custom: Schreibe uns, um Adressen löschen zu lassen.
   alias-deletion-random: Wenn du alte Adressen löschst, kannst du wieder neue erstellen.
   alias-empty: Du hast noch keine %alias_type% Alias-Adressen definiert.
+  alias-custom-description: Erstelle personalisierte E-Mail-Adressen mit eigenem Namen
+  alias-custom-create: Neue benutzerdefinierte Alias erstellen
+  alias-random-description: Generiere automatisch zufällige E-Mail-Adressen
+  alias-random-generate: Neue zufällige Alias generieren
+  alias-active-custom: Aktive benutzerdefinierte Aliase
+  alias-active-random: Aktive zufällige Aliase
+  alias-info-title: Wichtige Hinweise zu E-Mail-Aliasen
+  alias-info-custom: "<strong>Benutzerdefinierte Aliase:</strong> Wähle einen eigenen Namen für deine E-Mail-Adresse"
+  alias-info-random: "<strong>Zufällige Aliase:</strong> Automatisch generierte Adressen für mehr Anonymität"
+  alias-info-limits: "<strong>Limits:</strong> Maximal %alias_limit_custom% benutzerdefinierte und %alias_limit_random% zufällige Aliase"
+  alias-info-management: "<strong>Verwaltung:</strong> Lösche nicht mehr benötigte Aliase, um Platz für neue zu schaffen"
   delete-headline: Konto löschen
   delete-description: >
     Du kannst dein Konto bei %project_name% löschen. Dadurch werden deine E-Mails
@@ -216,9 +229,14 @@ closed:
 delete:
   alias:
     headline: Alias-Adresse %alias% löschen
+    headline_generic: Alias-Adresse löschen
     lead:
       Mit der Bestätigung deines Passworts kannst du deine Alias-Adresse unwiderruflich
       löschen.
+    lead_specific: >
+      Bist du dir sicher, dass du <strong>%alias%</strong> löschen möchtest?
+      Die Adresse wird unwiderruflich gelöscht.
+    delete: Alias löschen
   user:
     headline: Konto löschen
     lead:
@@ -346,6 +364,9 @@ Alias: Alias-Adresse
 Voucher: Einladungscode
 Reserved Name: Reservierter Name
 copy-to-clipboard: In Zwischenablage kopieren
+
+alias:
+  delete: Alias löschen
 init.title: Erstellen der Erstkonfiguration
 init_domain:
   lead:
@@ -370,3 +391,22 @@ openpgp:
   keyid-label: "Schlüssel-ID:"
   fingerprint-label: "Fingerprint:"
   expiretime-label: "Ablaufdatum:"
+
+# Streamlined alias page structure
+index.alias-motivation: "Erstelle personalisierte E-Mail-Aliasse, um deinen Posteingang besser zu organisieren und deine Privatsphäre zu schützen."
+
+custom-aliases.title: "Benutzerdefinierte Aliasse"
+custom-aliases.subtitle: "Bis zu %alias_limit_custom% eigene Aliasse erstellen"
+custom-aliases.feature-choose-name: "Wähle deinen eigenen einprägsamen Alias-Namen"
+custom-aliases.feature-easy-remember: "Einfach zu merken und mit anderen zu teilen"
+custom-aliases.limitation-permanent: "Können nach der Erstellung nicht gelöscht werden"
+custom-aliases.limitation-limited: "Begrenzt auf %alias_limit_custom% Aliasse insgesamt"
+custom-aliases.management-hint: "<strong>Tipp:</strong> Wähle deine benutzerdefinierten Aliasse sorgfältig aus, da sie später nicht gelöscht werden können."
+
+random-aliases.title: "Zufällige Aliasse"
+random-aliases.subtitle: "Bis zu %alias_limit_random% zufällige Aliasse generieren"
+random-aliases.feature-secure: "Automatisch generierte sichere Namen"
+random-aliases.feature-privacy: "Perfekt für Online-Shopping und Registrierungen"
+random-aliases.feature-deletable: "Können jederzeit gelöscht werden, wenn sie nicht mehr benötigt werden"
+random-aliases.limitation-random-name: "Zufällige Namen, die schwerer zu merken sind"
+random-aliases.management-hint: "<strong>Tipp:</strong> Lösche ungenutzte zufällige Aliasse, um Platz für neue zu schaffen."

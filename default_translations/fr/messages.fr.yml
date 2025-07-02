@@ -55,6 +55,19 @@ form:
   openpgp-key-file: "Téléverser votre clé sous forme de fichier :"
 index:
   recovery-token-button: Gérer le jeton de récupération
+  alias-subtitle: Gérer vos alias e-mail
+  alias-limit-reached: Limite atteinte
+  alias-custom-description: Créer des adresses e-mail personnalisées avec votre propre nom
+  alias-custom-create: Créer un nouvel alias personnalisé
+  alias-random-description: Générer automatiquement des adresses e-mail aléatoires
+  alias-random-generate: Générer un nouvel alias aléatoire
+  alias-active-custom: Alias personnalisés actifs
+  alias-active-random: Alias aléatoires actifs
+  alias-info-title: Notes importantes sur les alias e-mail
+  alias-info-custom: "<strong>Alias personnalisés :</strong> Choisissez votre propre nom pour votre adresse e-mail"
+  alias-info-random: "<strong>Alias aléatoires :</strong> Adresses générées automatiquement pour plus d'anonymat"
+  alias-info-limits: "<strong>Limites :</strong> Maximum %alias_limit_custom% alias personnalisés et %alias_limit_random% alias aléatoires"
+  alias-info-management: "<strong>Gestion :</strong> Supprimez les alias inutilisés pour faire de la place aux nouveaux"
   alias-explanation:
     "<p>\nUtilisez des alias d'adresse pour dissimuler votre adresse\
     \ électronique réelle aux gens que vous ne connaissez pas bien ou aux entreprises\
@@ -93,7 +106,7 @@ index:
   voucher-headline: Vos codes d'invitation
   voucher-subtitle: Invitez vos amis
   voucher-explanation-short: >
-    Utilisez vos codes d'invitation pour inviter des amis. 
+    Utilisez vos codes d'invitation pour inviter des amis.
     Vous avez trois invitations disponibles par défaut.
   delete-headline: Supprimer le compte
   alias-limit:
@@ -108,7 +121,12 @@ Voucher: Code d'invitation
 delete:
   alias:
     headline: Supprimer l'alias d'adresse %alias%
+    headline_generic: Supprimer l'alias d'adresse
     lead: Nous devons vérifier votre mot de passe pour supprimer votre alias d'adresse.
+    lead_specific: >
+      Êtes-vous sûr de vouloir supprimer <strong>%alias%</strong> ?
+      L'adresse sera définitivement supprimée.
+    delete: Supprimer l'alias
   user:
     headline: Supprimer le compte
     lead: Nous devons vérifier votre mot de passe pour supprimer votre compte.
@@ -294,6 +312,9 @@ registration:
     \ <a href=\"%project_url%\">%project_name%</a> ? Nous n'autorisons que les inscriptions\
     \ via les codes d'invitation vers nos services.\n"
 copy-to-clipboard: Copier dans le presse-papiers
+
+alias:
+  delete: Supprimer l'alias
 init.title: Création de la configuration initiale
 Domain: Domaine
 closed:
@@ -339,3 +360,21 @@ openpgp:
   delete-button: "Supprimer la clé OpenPGP"
   key-info: "Clé OpenPGP publiée"
   expiretime-label: "Date d'expiration :"
+# Streamlined alias page structure
+index.alias-motivation: "Crée des alias de messagerie personnalisés pour mieux organiser ta boîte de réception et protéger ta vie privée."
+
+custom-aliases.title: "Alias personnalisés"
+custom-aliases.subtitle: "Créer jusqu'à %alias_limit_custom% alias personnalisés"
+custom-aliases.feature-choose-name: "Choisis ton propre nom d'alias mémorable"
+custom-aliases.feature-easy-remember: "Facile à retenir et à partager avec d'autres"
+custom-aliases.limitation-permanent: "Ne peuvent pas être supprimés une fois créés"
+custom-aliases.limitation-limited: "Limité à %alias_limit_custom% alias au total"
+custom-aliases.management-hint: "<strong>Conseil :</strong> Choisis tes alias personnalisés soigneusement car ils ne peuvent pas être supprimés plus tard."
+
+random-aliases.title: "Alias aléatoires"
+random-aliases.subtitle: "Générer jusqu'à %alias_limit_random% alias aléatoires"
+random-aliases.feature-secure: "Noms sécurisés générés automatiquement"
+random-aliases.feature-privacy: "Parfait pour les achats en ligne et les inscriptions"
+random-aliases.feature-deletable: "Peuvent être supprimés à tout moment lorsqu'ils ne sont plus nécessaires"
+random-aliases.limitation-random-name: "Noms aléatoires plus difficiles à retenir"
+random-aliases.management-hint: "<strong>Conseil :</strong> Supprime les alias aléatoires inutilisés pour faire de la place aux nouveaux."

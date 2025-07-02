@@ -30,7 +30,7 @@ index:
   voucher-headline: códigos amigo
   voucher-subtitle: Invita a tus amigos
   voucher-explanation-short: >
-    Usa tus códigos amigo para invitar amigos. 
+    Usa tus códigos amigo para invitar amigos.
     Tienes tres invitaciones disponibles por defecto.
   voucher-limit: No tienes mas códigos amigo disponibles
   voucher-disable: >
@@ -40,13 +40,26 @@ index:
     Usa tus códigos amigo para invitar amigos. Solo tienes tres códigos disponibles.
     Si necesitas mas, por favor contacta al administrador. Los datos sobre invitaciones
     serán guardados por un período corto de tiempo, como protección contra abusos.
+  alias-subtitle: Gestiona tus alias de correo
   alias-headline: Tu cuenta alias %alias_type%
   alias-limit:
     Alcanzaste el limite permitido de %alias_limit% %alias_type% cuentas
     alias
+  alias-limit-reached: Límite alcanzado
   alias-deletion-custom: Contáctanos para poder borrar tu cuenta
   alias-deletion-random: En cuanto borres tu viejas cuentas, puedes crear nuevas.
   alias-empty: No tienes ninguna cuenta alias %alias_type% definida.
+  alias-custom-description: Crear direcciones de correo personalizadas con tu propio nombre
+  alias-custom-create: Crear nuevo alias personalizado
+  alias-random-description: Generar automáticamente direcciones de correo aleatorias
+  alias-random-generate: Generar nuevo alias aleatorio
+  alias-active-custom: Alias personalizados activos
+  alias-active-random: Alias aleatorios activos
+  alias-info-title: Notas importantes sobre alias de correo
+  alias-info-custom: "<strong>Alias personalizados:</strong> Elige tu propio nombre para tu dirección de correo"
+  alias-info-random: "<strong>Alias aleatorios:</strong> Direcciones generadas automáticamente para más anonimato"
+  alias-info-limits: "<strong>Límites:</strong> Máximo %alias_limit_custom% alias personalizados y %alias_limit_random% alias aleatorios"
+  alias-info-management: "<strong>Gestión:</strong> Elimina alias no utilizados para hacer espacio para nuevos"
   delete-headline: Borrar cuenta
   delete-description:
     "Puedes borrar tu %project_name% cuenta de e-mail. Esto eliminará\
@@ -177,7 +190,12 @@ closed:
 delete:
   alias:
     headline: Borrar cuenta alias %alias%
+    headline_generic: Borrar cuenta alias
     lead: Es necesario verificar tu contraseña para borrar tu cuenta alias.
+    lead_specific: >
+      ¿Estás seguro de que quieres eliminar <strong>%alias%</strong>?
+      La dirección será eliminada permanentemente.
+    delete: Eliminar alias
   user:
     headline: Borrar cuenta
     lead: Es necesario verificar tu contraseña para borrar tu cuenta.
@@ -276,6 +294,8 @@ mail:
     Esperamos que estes disfrutando tu cuenta de e-mail.
     El equipo de %project_name%.
 copy-to-clipboard: Copiar en el portapapeles
+alias:
+  delete: Eliminar alias
 init_domain:
   text: ""
   lead: ""
@@ -302,3 +322,22 @@ admin:
   invite-codes: ""
   registered-accounts-last-week: ""
 Alias: ""
+
+# Streamlined alias page structure
+index.alias-motivation: "Crea alias de correo personalizados para organizar mejor tu bandeja de entrada y proteger tu privacidad."
+
+custom-aliases.title: "Alias personalizados"
+custom-aliases.subtitle: "Crear hasta %alias_limit_custom% alias personalizados"
+custom-aliases.feature-choose-name: "Elige tu propio nombre de alias memorable"
+custom-aliases.feature-easy-remember: "Fácil de recordar y compartir con otros"
+custom-aliases.limitation-permanent: "No se pueden eliminar una vez creados"
+custom-aliases.limitation-limited: "Limitado a %alias_limit_custom% alias en total"
+custom-aliases.management-hint: "<strong>Consejo:</strong> Elige tus alias personalizados cuidadosamente ya que no se pueden eliminar más tarde."
+
+random-aliases.title: "Alias aleatorios"
+random-aliases.subtitle: "Generar hasta %alias_limit_random% alias aleatorios"
+random-aliases.feature-secure: "Nombres seguros generados automáticamente"
+random-aliases.feature-privacy: "Perfecto para compras en línea y registros"
+random-aliases.feature-deletable: "Se pueden eliminar en cualquier momento cuando ya no se necesiten"
+random-aliases.limitation-random-name: "Nombres aleatorios más difíciles de recordar"
+random-aliases.management-hint: "<strong>Consejo:</strong> Elimina los alias aleatorios no utilizados para hacer espacio para nuevos."
