@@ -2,6 +2,8 @@
 
 {% form_theme form 'Form/fields.html.twig' %}
 {% form_theme disableForm 'Form/fields.html.twig' %}
+{% form_theme backupAckForm 'Form/fields.html.twig' %}
+{% form_theme confirmForm 'Form/fields.html.twig' %}
 
 {% block page_title %}{{ "account.twofactor.headline"|trans }}{% endblock %}
 
@@ -27,7 +29,6 @@
                             </div>
 
                             {{ form_start(backupAckForm, {'attr': {'class': 'space-y-6'}}) }}
-                            {{ form_errors(backupAckForm) }}
 
                             <div class="flex items-start mt-4">
                                 {{ form_widget(backupAckForm.ack, {
@@ -41,7 +42,6 @@
                                     }
                                 }) }}
                             </div>
-                            {{ form_errors(backupAckForm.ack) }}
 
                             <div class="mt-6">
                                 {{ form_widget(backupAckForm.submit, {
@@ -64,11 +64,9 @@
                             </div>
 
                             {{ form_start(confirmForm, {'attr': {'class': 'space-y-6'}}) }}
-                            {{ form_errors(confirmForm) }}
 
                             <div>
                                 {{ form_label(confirmForm.totpSecret, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
-                                {{ form_errors(confirmForm.totpSecret) }}
                                 {{ form_widget(confirmForm.totpSecret, {
                                     'attr': {
                                         'autofocus': '',
@@ -104,11 +102,9 @@
                                 </div>
 
                                 {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
-                                {{ form_errors(form) }}
 
                                 <div>
                                     {{ form_label(form.password, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
-                                    {{ form_errors(form.password) }}
                                     {{ form_widget(form.password, {
                                         'attr': {
                                             'placeholder': 'Password'|trans
@@ -138,11 +134,9 @@
                                 </div>
 
                                 {{ form_start(disableForm, {'attr': {'class': 'space-y-6'}}) }}
-                                {{ form_errors(disableForm) }}
 
                                 <div>
                                     {{ form_label(disableForm.password, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
-                                    {{ form_errors(disableForm.password) }}
                                     {{ form_widget(disableForm.password, {
                                         'attr': {
                                             'placeholder': 'Password'|trans

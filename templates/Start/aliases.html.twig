@@ -1,5 +1,8 @@
 {% extends 'base_page.html.twig' %}
 
+{% form_theme custom_alias_form 'Form/fields.html.twig' %}
+{% form_theme random_alias_form 'Form/fields.html.twig' %}
+
 {% block page_title %}{{ "start.aliases"|trans }}{% endblock %}
 
 {% block _page_subtitle %}{{ "index.alias-subtitle"|trans }}{% endblock %}
@@ -73,13 +76,6 @@
                             <div class="mb-6 h-24 flex items-center">
                                 {%  if alias_creation_custom %}
                                 {{ form_start(custom_alias_form) }}
-                                {% if form_errors(custom_alias_form) %}
-                                    <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-                                        <div class="text-sm text-red-700">
-                                            {{ form_errors(custom_alias_form) }}
-                                        </div>
-                                    </div>
-                                {% endif %}
                                 <div class="mb-6">
                                     <label class="block text-sm font-medium text-gray-700 mb-2">
                                         {{ "index.alias-custom-create"|trans }}
@@ -87,7 +83,7 @@
                                     <div class="flex rounded-md shadow-sm">
                                         {{ form_widget(custom_alias_form.alias, {
                                             'attr': {
-                                                'class': 'flex-1 min-w-0 px-3 py-2 border border-gray-300 rounded-l-md focus:ring-blue-500 focus:border-blue-500 focus:z-10 text-sm'
+                                                'class': 'flex-1 min-w-0 px-3 py-2 border-0 rounded-l-md focus:ring-blue-500 focus:border-blue-500 focus:z-10 text-sm'
                                             }
                                         }) }}
                                         <span class="inline-flex items-center px-3 py-2 border-t border-b border-gray-300 bg-gray-50 text-gray-500 text-sm -ml-px">
@@ -209,13 +205,6 @@
                             <div class="mb-6 h-24 flex items-center">
                                 {%  if alias_creation_random %}
                                 {{ form_start(random_alias_form) }}
-                                {% if form_errors(random_alias_form) %}
-                                    <div class="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-                                        <div class="text-sm text-red-700">
-                                            {{ form_errors(random_alias_form) }}
-                                        </div>
-                                    </div>
-                                {% endif %}
                                 <div class="mb-6">
                                     <label class="block text-sm font-medium text-gray-700 mb-2">
                                         {{ "index.alias-random-generate"|trans }}
