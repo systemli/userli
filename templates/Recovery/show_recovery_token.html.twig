@@ -1,15 +1,40 @@
-<p class="lead">{{ "recovery-token.created-headline"|trans }}</p>
-<p class="lead alert alert-warning recovery-token">{{ recovery_token }}</p>
-
-{{ form_start(form) }}
-            {{ form_errors(form) }}
-            {{ form_widget(form.recoveryToken) }}
-<div class="form-group">
-    {{ form_errors(form.ack) }}
-    {{ form_widget(form.ack) }}
-    {{ form_label(form.ack) }}
+<div class="mb-6">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ "recovery-token.created-headline"|trans }}</h2>
+    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+        <div class="flex items-start">
+            <svg class="w-5 h-5 text-yellow-400 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+            </svg>
+            <div class="text-yellow-800 font-mono text-lg font-semibold break-all">
+                {{ recovery_token }}
+            </div>
+        </div>
+    </div>
 </div>
-<div class="form-group">
-    {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary' } }) }}
+
+{{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+{{ form_errors(form) }}
+{{ form_widget(form.recoveryToken) }}
+
+<div class="flex items-start mt-4">
+    {{ form_widget(form.ack, {
+        'attr': {
+            'class': 'h-5 w-5 text-blue-600 border-gray-300 rounded mt-0.5 mr-2 focus:ring-blue-500'
+        }
+    }) }}
+    {{ form_label(form.ack, null, {
+        'label_attr': {
+            'class': 'text-sm text-gray-700'
+        }
+    }) }}
+</div>
+{{ form_errors(form.ack, {'attr': {'class': 'text-sm text-red-600 mt-1'}}) }}
+
+<div class="mt-6">
+    {{ form_widget(form.submit, {
+        'attr': {
+            'class': 'w-full px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200'
+        }
+    }) }}
 </div>
 {{ form_end(form) }}

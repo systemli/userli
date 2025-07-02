@@ -3,24 +3,55 @@
 {% block subtitle %}{{ "start.account-settings"|trans }}{% endblock %}
 
 {% block breadcrumbs %}
-    <ol class="breadcrumb">
-        <li><a href="{{ path('start') }}">Start</a></li>
-        <li class="active">{{ "start.account-settings"|trans }}</li>
-    </ol>
+    {# No breadcrumbs in the new design #}
 {% endblock %}
+
 {% block content %}
-    <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6">
-            {% include 'Start/change_password.html.twig' %}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6">
-            {% include 'Start/twofactor.html.twig' %}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6">
-            {% include 'Start/recovery_token.html.twig' %}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6">
-            {% include 'Start/delete_account.html.twig' %}
+    <div class="min-h-[calc(100vh-8rem)] py-6 sm:py-8">
+        <div class="max-w-6xl mx-auto px-4">
+            {# Header section #}
+            <div class="mb-8 sm:mb-12">
+                <div class="text-center">
+                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+                        {{ "start.account-settings"|trans }}
+                    </h1>
+                    <p class="text-xl text-gray-600 font-medium">
+                        {{ "start.account-settings-desc"|trans }}
+                    </p>
+                </div>
+            </div>
+
+            {# Main content area - Card layout #}
+            <div class="max-w-5xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">                    {# Change password card #}
+                    <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <div class="p-6 sm:p-8">
+                            {% include 'Start/change_password.html.twig' %}
+                        </div>
+                    </div>
+
+                    {# Two Factor Authentication card #}
+                    <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <div class="p-6 sm:p-8">
+                            {% include 'Start/twofactor.html.twig' %}
+                        </div>
+                    </div>
+
+                    {# Recovery Token card #}
+                    <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <div class="p-6 sm:p-8">
+                            {% include 'Start/recovery_token.html.twig' %}
+                        </div>
+                    </div>
+
+                    {# Delete account card #}
+                    <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
+                        <div class="p-6 sm:p-8">
+                            {% include 'Start/delete_account.html.twig' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {%  endblock %}

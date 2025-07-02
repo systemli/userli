@@ -5,47 +5,162 @@
 {% form_theme form 'Form/fields.html.twig' %}
 
 {% block breadcrumbs %}
-    <ol class="breadcrumb">
-        <li><a href="{{ path('start') }}">Start</a></li>
-        <li><a href="{{ path('account') }}">{{ "start.account-settings"|trans }}</a></li>
-        <li class="active">{{ "recovery-token.headline"|trans }}</li>
-    </ol>
+    {# No breadcrumbs in the new design #}
 {% endblock %}
+
 {% block content %}
-    <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6">
-            <h3>{{ "recovery-token.headline"|trans }}</h3>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6">
-            {% if recovery_token is defined %}
-                {% include 'Recovery/show_recovery_token.html.twig' %}
-            {% else %}
-                {% if recovery_secret_set %}
-                    <p class="alert alert-warning">{{ "recovery-token.set"|trans }} {{ 'recovery-token.set-extra'|trans }}</p>
-                {% else %}
-                    <p class="alert alert-danger">{{ "recovery-token.unset"|trans }}</p>
-                {% endif %}
-
-                {{ form_start(form) }}
-                {{ form_errors(form) }}
-                <div class="form-group">
-                    {{ form_label(form.password) }}
-                    {{ form_errors(form.password) }}
-                    {{ form_widget(form.password, {'attr': {'class': 'form-control' }}) }}
+    <div class="min-h-[calc(100vh-8rem)] py-6 sm:py-8">
+        <div class="max-w-6xl mx-auto px-4">
+            {# Header section #}
+            <div class="mb-8 sm:mb-12">
+                <div class="text-center">
+                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+                        {{ "recovery-token.headline"|trans }}
+                    </h1>
+                    <p class="text-xl text-gray-600 font-medium">
+                        {{ "recovery-token.lead"|trans }}
+                    </p>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary' }}) }}
+            {# Main content area #}
+            <div class="max-w-5xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left column: Form or Token -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
+                        {% if recovery_token is defined %}
+                            <!-- Token display -->
+                            <div class="mb-6">
+                                <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ "recovery-token.created-headline"|trans }}</h2>
+                                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                                    <div class="flex items-start">
+                                        <svg class="w-5 h-5 text-yellow-400 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <div class="text-yellow-800 font-mono text-lg font-semibold break-all">
+                                            {{ recovery_token }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Acknowledgment form -->
+                            {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+                            {{ form_errors(form) }}
+                            {{ form_widget(form.recoveryToken) }}
+
+                            <div class="flex items-start mt-4">
+                                {{ form_widget(form.ack, {
+                                    'attr': {
+                                        'class': 'h-5 w-5 text-blue-600 border-gray-300 rounded mt-0.5 mr-2 focus:ring-blue-500'
+                                    }
+                                }) }}
+                                {{ form_label(form.ack, null, {
+                                    'label_attr': {
+                                        'class': 'text-sm text-gray-700'
+                                    }
+                                }) }}
+                            </div>
+                            {{ form_errors(form.ack, {'attr': {'class': 'text-sm text-red-600 mt-1'}}) }}
+
+                            <div class="mt-6">
+                                {{ form_widget(form.submit, {
+                                    'attr': {
+                                        'class': 'w-full px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200'
+                                    }
+                                }) }}
+                            </div>
+                            {{ form_end(form) }}
+                        {% else %}
+                            <!-- Generate token form -->
+                            {% if recovery_secret_set %}
+                                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                                    <div class="flex">
+                                        <svg class="w-5 h-5 text-yellow-400 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <div class="text-sm text-yellow-800">
+                                            <p>{{ "recovery-token.set"|trans }}</p>
+                                            <p class="mt-1">{{ 'recovery-token.set-extra'|trans }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                                    <div class="flex">
+                                        <svg class="w-5 h-5 text-red-400 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <div class="text-sm text-red-800">
+                                            {{ "recovery-token.unset"|trans }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+
+                            {% set form_errors_content = form_errors(form) %}
+                            {% if form_errors_content and form_errors_content|trim|length > 0 %}
+                                <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                                    <div class="flex">
+                                        <svg class="w-5 h-5 text-red-400 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <div class="text-sm text-red-700">
+                                            {{ form_errors_content }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <div>
+                                {{ form_label(form.password, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+                                {% set password_errors_content = form_errors(form.password) %}
+                                {% if password_errors_content and password_errors_content|trim|length > 0 %}
+                                    <div class="text-sm text-red-600 mb-2">
+                                        {{ password_errors_content }}
+                                    </div>
+                                {% endif %}
+                                {{ form_widget(form.password, {
+                                    'attr': {
+                                        'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200',
+                                        'placeholder': 'Password'|trans
+                                    }
+                                }) }}
+                            </div>
+
+                            <div class="pt-4">
+                                {{ form_widget(form.submit, {
+                                    'attr': {
+                                        'class': 'w-full px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200'
+                                    }
+                                }) }}
+                            </div>
+
+                            {{ form_end(form) }}
+                        {% endif %}
+                    </div>
+
+                    <!-- Right column: Information -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <h2 class="text-xl font-semibold text-gray-900">{{ "openpgp.information"|trans }}</h2>
+                        </div>
+
+                        <div class="space-y-4 text-gray-700">
+                            <p class="font-medium">{{ "recovery-token.created-info"|trans }}</p>
+                            <hr class="my-4 border-gray-200" />
+                            <p>{{ "recovery-token.displayed-once"|trans }}</p>
+                        </div>
+                    </div>
                 </div>
-
-                {{ form_end(form) }}
-            {% endif %}
-
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6">
-            {% include 'Recovery/recovery_token_notes.html.twig' %}
+            </div>
         </div>
     </div>
 {% endblock %}
