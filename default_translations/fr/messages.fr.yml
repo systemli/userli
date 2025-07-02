@@ -44,7 +44,12 @@ index:
     Vous avez trois invitations disponibles par défaut.
   voucher-limit: Vous n'avez plus de code d’invitation.
   voucher-disable: >
-    Vous recevrez trois codes d'invitation le %date%, afin d’éviter les inscriptions de masse et le spam.
+    Vous recevrez trois codes d'invitation le %date%, afin d'éviter les inscriptions de masse et le spam.
+  voucher-waiting-title: En attente de nouveaux codes d'invitation
+  voucher-empty-title: Aucun code d'invitation créé pour le moment
+  voucher-empty-multiplier: >
+    Créez un nouveau code d'invitation pour inviter des amis.
+  voucher-limit-title: Limite de codes d'invitation atteinte
   voucher-explanation: >
     Utilisez vos codes d'invitation pour inviter des amis ici. Par défaut, vous avez trois invitations disponibles. Si vous avez besoin de plus de codes d'invitation, veuillez contacter les administrateurs. Nous stockons les données d'invitation pendant un temps limité afin de protéger des abus.
   alias-subtitle: Gérer vos alias e-mail

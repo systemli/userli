@@ -5,56 +5,54 @@
 {% block _page_subtitle %}{{ "index.voucher-subtitle"|trans }}{% endblock %}
 
 {% block page_content %}
-    {# Main content card #}
     <div class="max-w-4xl mx-auto">
-                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8">
-                    {# Explanation text #}
-                    <div class="mb-6">
-                        <p class="text-lg text-gray-600 leading-relaxed">
-                            {{ "index.voucher-explanation-short"|trans }}
-                        </p>
-                    </div>
-                    {# Voucher management section #}
-                    <div class="space-y-6">
-                        {% if domain == user_domain %}
-                            {# Create voucher form for multipliers #}
-                            {% if is_granted('ROLE_MULTIPLIER') %}
-                                <div class="bg-gray-50 rounded-xl border border-gray-200 p-6">
-                                    <h2 class="text-lg font-semibold text-gray-900 mb-4">
-                                        {{ "form.create-voucher"|trans }}
-                                    </h2>
-                                    {{ form_start(voucher_form, {
-                                        'attr': {
-                                            'class': 'space-y-4'
-                                        }
-                                    }) }}
+        {# Brief motivational explanation #}
+        <div class="mb-8 text-center">
+            <p class="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
+                {{ "index.voucher-explanation-short"|trans }}
+            </p>
+        </div>
 
-                                    {# Form errors #}
-                                    {% if voucher_form.vars.errors|length > 0 %}
-                                        <div class="p-4 rounded-lg bg-red-50 border border-red-200" role="alert" aria-live="polite">
-                                            <div class="flex items-start">
-                                                <svg class="w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                                                </svg>
-                                                <div>
-                                                    <ul class="text-sm text-red-700 space-y-1">
-                                                        {% for error in voucher_form.vars.errors %}
-                                                            <li>{{ error.message|trans }}</li>
-                                                        {% endfor %}
-                                                    </ul>
-                                                </div>
-                                            </div>
+        {# Main content card #}
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8">
+            {# Voucher management section #}
+            <div class="space-y-6">
+                {% if domain == user_domain %}
+                    {# Create voucher button for multipliers (only if vouchers exist) #}
+                    {% if is_granted('ROLE_MULTIPLIER') and vouchers is defined and vouchers|length > 0 %}
+                        <div class="flex justify-end">
+                            {{ form_start(voucher_form, {
+                                'attr': {
+                                    'class': 'inline-block'
+                                }
+                            }) }}
+
+                            {# Form errors (only show if there are errors) #}
+                            {% if voucher_form.vars.errors|length > 0 %}
+                                <div class="mb-4 p-3 rounded-lg bg-red-50 border border-red-200" role="alert" aria-live="polite">
+                                    <div class="flex items-start">
+                                        <svg class="w-4 h-4 text-red-400 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <div>
+                                            <ul class="text-xs text-red-700 space-y-1">
+                                                {% for error in voucher_form.vars.errors %}
+                                                    <li>{{ error.message|trans }}</li>
+                                                {% endfor %}
+                                            </ul>
                                         </div>
-                                    {% endif %}
-
-                                    {{ form_widget(voucher_form.submit, {
-                                        'attr': {
-                                            'class': 'w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
-                                        }
-                                    }) }}
-                                    {{ form_end(voucher_form) }}
+                                    </div>
                                 </div>
                             {% endif %}
+
+                            {{ form_widget(voucher_form.submit, {
+                                'attr': {
+                                    'class': 'inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
+                                }
+                            }) }}
+                            {{ form_end(voucher_form) }}
+                        </div>
+                    {% endif %}
 
                             {# Voucher list #}
                             {% if vouchers is defined and vouchers|length > 0 %}
@@ -105,35 +103,71 @@
                                         {% endif %}
                                     {% endfor %}
                                 </div>
-                            {% elseif user.creationTime|date('U') <= '-7 days'|date('U') %}
-                                {# Voucher limit reached #}
-                                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4" role="alert">
-                                    <div class="flex items-start">
-                                        <svg class="w-5 h-5 text-blue-400 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
-                                        </svg>
-                                        <p class="text-sm text-blue-700">
-                                            {{ "index.voucher-limit"|trans }}
-                                        </p>
-                                    </div>
+                            {% elseif user.creationTime|date('U') > '-7 days'|date('U') and not is_granted('ROLE_MULTIPLIER') %}
+                                {# Waiting period for regular users only #}
+                                <div class="text-center py-8 text-gray-500">
+                                    <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <p class="text-sm font-medium text-gray-900 mb-1">{{ "index.voucher-waiting-title"|trans }}</p>
+                                    <p class="text-sm text-gray-600">
+                                        {{ "index.voucher-disable"|trans({'%date%': user.creationTime|date_modify("+7 days")|date("d. F Y, H:i")}) }}
+                                    </p>
+                                </div>
+                            {% elseif is_granted('ROLE_MULTIPLIER') %}
+                                {# Empty state for multipliers with create button #}
+                                <div class="text-center py-8 text-gray-500">
+                                    <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
+                                    </svg>
+                                    <p class="text-sm font-medium text-gray-900 mb-1">{{ "index.voucher-empty-title"|trans }}</p>
+                                    <p class="text-sm text-gray-600 mb-6">{{ "index.voucher-empty-multiplier"|trans }}</p>
+
+                                    {# Create voucher button in empty state #}
+                                    {{ form_start(voucher_form, {
+                                        'attr': {
+                                            'class': 'inline-block'
+                                        }
+                                    }) }}
+
+                                    {# Form errors (only show if there are errors) #}
+                                    {% if voucher_form.vars.errors|length > 0 %}
+                                        <div class="mb-4 p-3 rounded-lg bg-red-50 border border-red-200" role="alert" aria-live="polite">
+                                            <div class="flex items-start">
+                                                <svg class="w-4 h-4 text-red-400 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                                </svg>
+                                                <div>
+                                                    <ul class="text-xs text-red-700 space-y-1">
+                                                        {% for error in voucher_form.vars.errors %}
+                                                            <li>{{ error.message|trans }}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {{ form_widget(voucher_form.submit, {
+                                        'attr': {
+                                            'class': 'inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
+                                        }
+                                    }) }}
+                                    {{ form_end(voucher_form) }}
                                 </div>
                             {% else %}
-                                {# Waiting period #}
-                                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4" role="alert">
-                                    <div class="flex items-start">
-                                        <svg class="w-5 h-5 text-blue-400 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
-                                        </svg>
-                                        <p class="text-sm text-blue-700">
-                                            {{ "index.voucher-disable"|trans({'%date%': user.creationTime|date_modify("+7 days")|date("d. F Y, H:i")}) }}
-                                        </p>
-                                    </div>
+                                {# Voucher limit reached for regular users #}
+                                <div class="text-center py-8 text-gray-500">
+                                    <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <p class="text-sm font-medium text-gray-900 mb-1">{{ "index.voucher-limit-title"|trans }}</p>
+                                    <p class="text-sm text-gray-600">{{ "index.voucher-limit"|trans }}</p>
                                 </div>
                             {% endif %}
                         {% endif %}
                     </div>
                 </div>
-            </div>
         </div>
     </div>
 {% endblock %}

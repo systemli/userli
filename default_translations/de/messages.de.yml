@@ -48,6 +48,11 @@ index:
   voucher-disable: >
     Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben.
     Dies dient der Vermeidung von Massenregistrierungen und Spam.
+  voucher-waiting-title: Wartezeit für neue Einladungscodes
+  voucher-empty-title: Noch keine Einladungscodes erstellt
+  voucher-empty-multiplier: >
+    Erstelle einen neuen Einladungscode um Freund:innen einzuladen.
+  voucher-limit-title: Einladungscode-Limit erreicht
   voucher-explanation: >
     Nutze deine Einladungscodes um Freund:innen hierher einzuladen.
     Standardmäßig hast du drei Einladungen zur Verfügung. Wenn du mehr

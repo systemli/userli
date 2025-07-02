@@ -38,6 +38,11 @@ start:
   account-delete: Elimina l'account
 index:
   voucher-limit: Non hai più codici di invito.
+  voucher-waiting-title: In attesa di nuovi codici di invito
+  voucher-empty-title: Nessun codice di invito creato ancora
+  voucher-empty-multiplier: >
+    Crea un nuovo codice di invito per invitare amici.
+  voucher-limit-title: Limite codici di invito raggiunto
   voucher-headline: I tuoi codici di invito
   title: Gestisci il tuo account di posta elettronica
   alias-deletion-custom: Scrivici per fare eliminare indirizzi.

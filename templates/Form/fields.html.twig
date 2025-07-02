@@ -43,10 +43,29 @@
 
 {% block form_widget_simple %}
     {% set type = type|default('text') %}
-    {% set attr = attr|merge({
-        'class': (attr.class|default('') ~ ' w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200')|trim
-    }) %}
-    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {% set suffix = attr.suffix|default('') %}
+
+    {% if suffix is not empty %}
+        {# Input with suffix #}
+        <div class="flex rounded-md shadow-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 transition-colors">
+            <input type="{{ type }}"
+                   id="{{ id }}"
+                   name="{{ full_name }}"
+                   class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md border-r-0 focus:outline-none focus:ring-0 focus:border-gray-300 text-sm"
+                   {% if value is not empty %}value="{{ value }}"{% endif %}
+                   {% if required %}required{% endif %}
+                   {% if disabled %}disabled{% endif %} />
+            <span class="inline-flex items-center px-3 py-2 border-t border-b border-r border-gray-300 bg-gray-50 text-gray-500 text-sm rounded-r-md">
+                {{ suffix }}
+            </span>
+        </div>
+    {% else %}
+        {# Normal input without suffix #}
+        {% set attr = attr|merge({
+            'class': (attr.class|default('') ~ ' w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200')|trim
+        }) %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {% endif %}
 {% endblock form_widget_simple %}
 
 {% block password_widget %}

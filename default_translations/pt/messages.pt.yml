@@ -46,6 +46,11 @@ index:
   title: Configurações
   voucher-headline: Seus convites
   voucher-limit: Você não tem mais convites disponíveis.
+  voucher-waiting-title: Aguardando novos códigos de convite
+  voucher-empty-title: Nenhum código de convite criado ainda
+  voucher-empty-multiplier: >
+    Crie um novo código de convite para convidar amigos.
+  voucher-limit-title: Limite de códigos de convite atingido
   voucher-disable: >
     No dia %date% você vai receber três códigos de convite. Isso é feito para evitar
     cadastros excessivos e spam.

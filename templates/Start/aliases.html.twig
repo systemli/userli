@@ -38,7 +38,7 @@
                             </div>
 
                             {# Features, limitations and management hint for custom aliases #}
-                            <div class="mb-6 space-y-3 h-56">
+                            <div class="mb-6 space-y-3">
                                 <div class="flex items-start">
                                     <svg class="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
@@ -73,39 +73,27 @@
                             </div>
 
                             {# Form section with consistent height #}
-                            <div class="mb-6 h-24 flex items-center">
+                            <div class="mb-6 flex items-center">
                                 {%  if alias_creation_custom %}
                                 {{ form_start(custom_alias_form, {'attr': {'class': 'w-full'}}) }}
                                 <div class="mb-6">
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        {{ "index.alias-custom-create"|trans }}
-                                    </label>
-                                    <div class="flex">
-                                        <input type="text"
-                                               name="{{ custom_alias_form.alias.vars.full_name }}"
-                                               id="{{ custom_alias_form.alias.vars.id }}"
-                                               value="{{ custom_alias_form.alias.vars.value|default('') }}"
-                                               class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:ring-blue-500 focus:border-blue-500 text-sm border-r-0"
-                                               {% if custom_alias_form.alias.vars.required %}required{% endif %}>
-                                        <span class="inline-flex items-center px-3 py-2 border-t border-b border-gray-300 bg-gray-50 text-gray-500 text-sm">
-                                            @{{ user_domain }}
-                                        </span>
-                                        <button type="submit"
-                                                name="{{ custom_alias_form.submit.vars.full_name }}"
-                                                class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-r-md border border-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors border-l-0">
-                                            {{ custom_alias_form.submit.vars.label|trans }}
-                                        </button>
+                                    {{ form_label(custom_alias_form.alias, "index.alias-custom-create"|trans, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+
+                                    <div class="mb-3">
+                                        {{ form_widget(custom_alias_form.alias, {
+                                            'attr': {
+                                                'suffix': '@' ~ user_domain
+                                            }
+                                        }) }}
                                     </div>
-                                    {# Render any validation errors manually #}
-                                    {% if custom_alias_form.alias.vars.errors|length > 0 %}
-                                        <div class="mt-2">
-                                            {% for error in custom_alias_form.alias.vars.errors %}
-                                                <p class="text-sm text-red-600">{{ error.message }}</p>
-                                            {% endfor %}
-                                        </div>
-                                    {% endif %}
+
+                                    {{ form_widget(custom_alias_form.submit, {
+                                        'attr': {
+                                            'class': 'w-full px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors'
+                                        }
+                                    }) }}
                                 </div>
-                                {{ form_end(custom_alias_form, {'render_rest': false}) }}
+                                {{ form_end(custom_alias_form) }}
                             {% else %}
                                 <div class="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-md">
                                     <div class="flex">
@@ -178,7 +166,7 @@
                             </div>
 
                             {# Features, limitations and management hint for random aliases #}
-                            <div class="mb-6 space-y-3 h-56">
+                            <div class="mb-6 space-y-3">
                                 <div class="flex items-start">
                                     <svg class="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
@@ -211,7 +199,7 @@
                             </div>
 
                             {# Form section with consistent height #}
-                            <div class="mb-6 h-24 flex items-center">
+                            <div class="mb-6 flex items-center">
                                 {%  if alias_creation_random %}
                                 {{ form_start(random_alias_form) }}
                                 <div class="mb-6">

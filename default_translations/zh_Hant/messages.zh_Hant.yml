@@ -22,3 +22,10 @@ navbar:
 start:
   title: 歡迎來到 %domain%
   intro: 您可以在此處設定和管理您的電子郵件帳戶。
+
+index:
+  voucher-waiting-title: 等待新的邀請碼
+  voucher-empty-title: 尚未創建邀請碼
+  voucher-empty-multiplier: >
+    創建新的邀請碼來邀請朋友。
+  voucher-limit-title: 已達邀請碼限制

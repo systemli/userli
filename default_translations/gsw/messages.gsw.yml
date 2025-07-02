@@ -77,6 +77,11 @@ index:
   alias-headline: Dini %alias_type% Alias Adrässene
   delete-button: Account lösche
   voucher-limit: Du hesch ke Invite Codes meh übrig.
+  voucher-waiting-title: Wartä uf nöii Invite Codes
+  voucher-empty-title: No keni Invite Codes ersteut
+  voucher-empty-multiplier: >
+    Ersteu e nöii Invite Code zum Fründe iiladä.
+  voucher-limit-title: Limite vo Invite Codes erreicht
   title: Di E-Mail Account verwaute
   logged_in_as: Du bisch igloggt aus %user%.
   voucher-disable:

@@ -45,6 +45,11 @@ index:
   voucher-limit: No te quedan códigos de invitación.
   voucher-disable: >
     En %date% recibirás tres códigos de invitación. Esto es para evitar registros masivos y spam.
+  voucher-waiting-title: Esperando nuevos códigos de invitación
+  voucher-empty-title: Aún no se han creado códigos de invitación
+  voucher-empty-multiplier: >
+    Crea un nuevo código de invitación para invitar a amigos.
+  voucher-limit-title: Límite de códigos de invitación alcanzado
   voucher-explanation: >
     Usa tus códigos de invitación para invitar a amigos aquí. Por defecto, tienes tres invitaciones disponibles. Si necesitas invitar a más, por favor contacta a los administradores. Almacenamos los datos de invitación por un tiempo limitado para protegernos contra abusos.
   alias-subtitle: Gestiona tus alias de e-mail

@@ -46,6 +46,11 @@ index:
   title: Håndter din e-postkonto
   voucher-headline: Dine invitasjonskoder
   voucher-limit: Du har ingen invitasjonskoder igjen.
+  voucher-waiting-title: Venter på nye invitasjonskoder
+  voucher-empty-title: Ingen invitasjonskoder opprettet ennå
+  voucher-empty-multiplier: >
+    Opprett en ny invitasjonskode for å invitere venner.
+  voucher-limit-title: Grense for invitasjonskoder nådd
   voucher-disable:
     "Den %date% vil du motta tre invitasjonskoder. Dette for å unngå\
     \ masseregistreringer og søppelpost.\n"
