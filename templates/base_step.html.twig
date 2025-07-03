@@ -18,11 +18,7 @@
                         {% block step_title %}{% endblock %}
                     </h1>
                     {% block step_description %}
-                        {% if block('_step_description') is not empty %}
-                            <p class="text-gray-600">
-                                {{ block('_step_description')|raw }}
-                            </p>
-                        {% endif %}
+                        {# Optional description that child templates can override #}
                     {% endblock %}
                 </div>
 
