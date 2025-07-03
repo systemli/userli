@@ -186,11 +186,15 @@ services:
     class: App\Admin\UserAdmin
     public: true
     tags:
-      - { name: sonata.admin, manager_type: orm, group: "Mail", label: "User" }
-    arguments:
-      - ~
-      - App\Entity\User
-      - App\Controller\UserCRUDController
+      - {
+          name: sonata.admin,
+          manager_type: orm,
+          group: "Mail",
+          label: "User",
+          code: userli.admin.user,
+          model_class: App\Entity\User,
+          controller: App\Controller\UserCRUDController,
+        }
     calls:
       - [setPasswordUpdater, ['@App\Helper\PasswordUpdater']]
       - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
@@ -206,11 +210,9 @@ services:
           manager_type: orm,
           group: "Mail",
           label: "Domain",
+          code: userli.admin.domain,
+          model_class: App\Entity\Domain,
         }
-    arguments:
-      - ~
-      - App\Entity\Domain
-      - ~
     calls:
       - [setDomainCreator, ['@App\Creator\DomainCreator']]
       - [
@@ -222,11 +224,15 @@ services:
     class: App\Admin\AliasAdmin
     public: true
     tags:
-      - { name: sonata.admin, manager_type: orm, group: "Mail", label: "Alias" }
-    arguments:
-      - ~
-      - App\Entity\Alias
-      - App\Controller\AliasCRUDController
+      - {
+          name: sonata.admin,
+          manager_type: orm,
+          group: "Mail",
+          label: "Alias",
+          code: userli.admin.alias,
+          model_class: App\Entity\Alias,
+          controller: App\Controller\AliasCRUDController,
+        }
     calls:
       - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
 
@@ -239,11 +245,9 @@ services:
           manager_type: orm,
           group: "Mail",
           label: "Voucher",
+          code: userli.admin.voucher,
+          model_class: App\Entity\Voucher,
         }
-    arguments:
-      - ~
-      - App\Entity\Voucher
-      - ~
 
   userli.admin.block.statistics:
     class: App\Block\StatisticsBlockService
@@ -263,11 +267,9 @@ services:
           manager_type: orm,
           group: "Mail",
           label: "Reserved Name",
+          code: userli.admin.reservedname,
+          model_class: App\Entity\ReservedName,
         }
-    arguments:
-      - ~
-      - App\Entity\ReservedName
-      - ~
 
   Symfony\Component\Security\Http\HttpUtils:
     alias: security.http_utils

@@ -11,9 +11,9 @@ abstract class Admin extends AbstractAdmin
     /**
      * Admin constructor.
      */
-    public function __construct(string $code, string $class, string $baseControllerName, protected Security $security)
+    public function __construct(protected Security $security)
     {
-        parent::__construct($code, $class, $baseControllerName);
+        parent::__construct();
     }
 
     protected function configureDefaultSortValues(array &$sortValues): void
