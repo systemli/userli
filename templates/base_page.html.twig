@@ -1,8 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{# Override title block to show full title in browser tab #}
-{% block title %}{{ domain }} - {% block subtitle %}{% endblock %}{% endblock %}
-
 {% block content %}
     <div class="min-h-[calc(100vh-8rem)] py-6 sm:py-8">
         <div class="max-w-6xl mx-auto px-4">
@@ -12,13 +9,13 @@
                     <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
                         {% block page_title %}{% endblock %}
                     </h1>
-                    {% block page_subtitle %}
-                        {% if block('_page_subtitle') is not empty %}
-                            <p class="text-xl text-gray-600 font-medium">
-                                {{ block('_page_subtitle')|raw }}
+                    {% if block('page_subtitle') is not empty %}
+                        <div>
+                            <p class="text-lg text-gray-600 max-w-3xl mx-auto font-medium">
+                                {% block page_subtitle %}{% endblock %}
                             </p>
-                        {% endif %}
-                    {% endblock %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 

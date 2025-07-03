@@ -4,16 +4,8 @@
 
 {% block page_title %}{{ "spam.title"|trans({'%domain%': domain}) }}{% endblock %}
 
-{% block _page_subtitle %}{{ "spam.text"|trans }}{% endblock %}
+{% block page_subtitle %}{{ "spam.text"|trans }}{% endblock %}
 
 {% block page_content %}
-    <div class="max-w-4xl mx-auto">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 sm:p-12">
-            <div class="prose prose-lg max-w-none text-gray-700">
-                <p class="text-xl leading-relaxed">
-                    {{ "spam.text"|trans }}
-                </p>
-            </div>
-        </div>
-    </div>
+    {# Content is displayed in the page subtitle above #}
 {% endblock %}

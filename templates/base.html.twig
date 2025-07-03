@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}{{ domain }} - {% block subtitle %}{{ "index.title"|trans }}{% endblock %}{% endblock %}</title>
+    <title>{% block title %}{{ domain }} - {{ "index.title"|trans }}{% endblock %}</title>
 
     {% block head_style %}
         <link rel="stylesheet" href="{{ asset('build/app.css') }}">
