@@ -14,7 +14,9 @@
 
 {% block step_title %}{{ "delete.openpgp.headline"|trans }}{% endblock %}
 
-{% block _step_description %}{{ "delete.openpgp.lead"|trans }}{% endblock %}
+{% block step_description %}
+    <p class="text-gray-600">{{ "delete.openpgp.lead"|trans }}</p>
+{% endblock %}
 
 {% block step_content %}
 

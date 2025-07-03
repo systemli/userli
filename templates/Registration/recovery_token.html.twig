@@ -7,9 +7,12 @@
 {% block step_title %}{{ "registration.recovery-token-headline"|trans }}{% endblock %}
 
 {% block step_icon %}
-    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-    </svg>
+    <div class="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center">
+        <!-- Heroicon: check-circle -->
+        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+    </div>
 {% endblock %}
 
 {% block step_description %}

@@ -6,7 +6,9 @@
 
 {% block step_title %}{{ "delete.alias.headline_generic"|trans }}{% endblock %}
 
-{% block _step_description %}{{ "delete.alias.lead_specific"|trans({'%alias%': alias.source})|safe_html }}{% endblock %}
+{% block step_description %}
+    <p class="text-gray-600">{{ "delete.alias.lead_specific"|trans({'%alias%': alias.source})|safe_html }}</p>
+{% endblock %}
 
 {% block step_icon %}
     <div class="w-16 h-16 bg-red-100 rounded-xl flex items-center justify-center mx-auto mb-4">
