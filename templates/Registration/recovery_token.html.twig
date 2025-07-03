@@ -5,20 +5,21 @@
 {% block step_title %}{{ "registration.recovery-token-headline"|trans }}{% endblock %}
 
 {% block step_icon %}
-    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z"></path>
-        </svg>
-    </div>
+    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+{% endblock %}
+
+{% block step_description %}
+    <p class="text-gray-600">
+        {{ "recovery-token.created-info"|trans }}
+    </p>
 {% endblock %}
 
 {% block step_content %}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-            {% include 'Recovery/show_recovery_token.html.twig' %}
-        </div>
-        <div>
-            {% include 'Recovery/recovery_token_notes.html.twig' %}
-        </div>
+    {% include 'Recovery/show_recovery_token.html.twig' %}
+
+    <div class="mt-8">
+        {% include 'Recovery/recovery_token_notes.html.twig' %}
     </div>
 {% endblock %}

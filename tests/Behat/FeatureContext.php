@@ -335,26 +335,6 @@ class FeatureContext extends MinkContext
     }
 
     /**
-     * @When /^I should see text matching regex "(?P<regex>[^"]*)" in element with selector "(?P<selector>[^"]*)"$/
-     */
-    public function iSeeNonemptyElement($regex, $selector): void
-    {
-        $element = $this->assertSession()->elementExists('css', $selector);
-        $actual = $element->getText();
-
-        $message = sprintf(
-            'The text with regex "%s" was not found in the text of element "%s", "%s"',
-            $regex,
-            $selector,
-            $actual
-        );
-
-        if (!preg_match($regex, $actual)) {
-            throw new ElementTextException($message, $this->getSession()->getDriver(), $element);
-        }
-    }
-
-    /**
      * @When /^I set the placeholder "([^"]*)" with property "([^"]*)" for "([^"]*)"$/
      */
     public function iSetPlaceholderForUser(string $name, string $key, string $email): void
