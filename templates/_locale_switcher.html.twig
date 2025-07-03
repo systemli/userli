@@ -2,21 +2,22 @@
 {% set route_params = app.request.attributes.get('_route_params') %}
 {% set params = route_params|merge(app.request.query.all) %}
 
+{% set locale_names = {
+    'en': 'English',
+    'de': 'Deutsch',
+    'fr': 'Français',
+    'es': 'Español',
+   'it': 'Italiano',
+   'pt': 'Português',
+   'nb': 'Norsk',
+   'gsw': 'Alemannisch',
+   'zh_Hant': '繁體中文'
+} %}
+
 {% if dropdown_mode is defined and dropdown_mode %}
     {# Language switcher for user dropdown context #}
     <div class="space-y-1">
         {% for locale in locales %}
-            {% set locale_names = {
-                'en': 'English',
-                'de': 'Deutsch',
-                'fr': 'Français',
-                'es': 'Español',
-                'it': 'Italiano',
-                'pt': 'Português',
-                'nb': 'Norsk',
-                'gsw': 'Alemannisch',
-                'zh_Hant': '繁體中文'
-            } %}
             <a
                 href="{{ path(route, params|merge({ _locale: locale })) }}"
                 class="flex items-center px-2 py-1.5 text-sm rounded-xl transition-all duration-200 {{ locale == app.request.locale ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}"
