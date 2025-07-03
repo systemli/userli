@@ -1,1 +1,41 @@
 @import "tailwindcss";
+
+/* Tooltip Styles */
+.tooltip {
+  @apply absolute z-50 px-2 py-1 text-sm text-white bg-gray-900 rounded shadow-lg pointer-events-none;
+  max-width: 200px;
+  word-wrap: break-word;
+}
+
+.tooltip.fade {
+  @apply opacity-0 transition-opacity duration-150;
+}
+
+.tooltip.fade.in {
+  @apply opacity-100;
+}
+
+.tooltip-inner {
+  @apply text-center;
+}
+
+/* Popover Styles */
+.popover {
+  @apply absolute z-50 max-w-xs bg-white border border-gray-200 rounded-lg shadow-lg;
+}
+
+.popover.fade {
+  @apply opacity-0 transition-opacity duration-150;
+}
+
+.popover.fade.in {
+  @apply opacity-100;
+}
+
+.popover-title {
+  @apply px-3 py-2 text-sm font-semibold text-gray-900 border-b border-gray-200 bg-gray-50 rounded-t-lg;
+}
+
+.popover-content {
+  @apply px-3 py-2 text-sm text-gray-700;
+}
