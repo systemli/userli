@@ -220,7 +220,7 @@ flashes:
   alias-deletion-successful: Din alias-adresse ble slettet.
   recovery-token-invalid: E-postadresse og/eller gjenopprettingssymbol er galt.
   recovery-token-ack: Du genererte et gjenopprettingssymbol.
-  revocery-reauthenticate: Noe gikk galt. Identitetsbekreft deg igjen.
+  recovery-reauthenticate: Noe gikk galt. Identitetsbekreft deg igjen.
   recovery-password-changed: Du endret passordet ditt.
   openpgp-key-upload-error-no-keys: ""
   openpgp-key-upload-error-multiple-keys: ""

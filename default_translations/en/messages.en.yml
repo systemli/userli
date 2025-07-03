@@ -285,7 +285,7 @@ flashes:
   alias-deletion-successful: Your alias address was deleted.
   recovery-token-invalid: E-mail address and/or recovery token are wrong!
   recovery-token-ack: You generated a recovery token.
-  revocery-reauthenticate: Something went wrong. Please re-authenticate!
+  recovery-reauthenticate: Something went wrong. Please re-authenticate!
   recovery-password-changed: You changed your password.
   recovery-next-login: Go on with the login.
   openpgp-deletion-successful: Your OpenPGP key was deleted.

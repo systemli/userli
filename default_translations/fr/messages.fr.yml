@@ -207,9 +207,9 @@ flashes:
   voucher-creation-successful: Nouveau code d'invitation créé.
   alias-creation-successful: Votre nouvel alias d'adresse a été créé.
   alias-deletion-successful: Votre alias d'adresse a été supprimé.
-  recovery-token-invalid: L'adresse électronique et/ou le jeton de récupération sont incorrects !
+  recovery-token-invalid: L'adresse électronique et/ou le jeton de récupération sont incorrects!
   recovery-token-ack: Vous avez généré un jeton de récupération.
-  revocery-reauthenticate: Une erreur s'est produite. Veuillez vous identifier à nouveau !
+  recovery-reauthenticate: Une erreur s'est produite. Veuillez vous identifier à nouveau!
   recovery-password-changed: Vous avez modifié votre mot de passe.
   recovery-next-login: Aller à l'écran de connexion.
   openpgp-deletion-successful: "Votre clé OpenPGP a été supprimée."

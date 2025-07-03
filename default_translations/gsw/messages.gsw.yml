@@ -235,7 +235,7 @@ flashes:
   alias-deletion-successful: Alias Adrässe isch glöscht.
   alias-creation-successful: Nöie Alias Adrässe isch erschtellt.
   password-change-successful: Dis nöie Passwort isch iz aktiv!
-  revocery-reauthenticate: Irgendöppis isch schief gloffe. Bitte nöi amäude!
+  recovery-reauthenticate: Irgendöppis isch schief gloffe. Bitte nöi amäude!
   registration-successful: Du bisch iz regischtriert.
   recovery-next-login: Witerfahre mittem Ilogge.
   openpgp-key-upload-error-no-openpgp: ""

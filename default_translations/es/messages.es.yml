@@ -221,7 +221,7 @@ flashes:
   alias-deletion-successful: Se ha eliminado tu dirección alias.
   recovery-token-invalid: ¡La dirección de e-mail y/o el token de recuperación son incorrectos!
   recovery-token-ack: Has generado un token de recuperación.
-  revocery-reauthenticate: ¡Algo salió mal. Por favor, vuelve a autenticarte!
+  recovery-reauthenticate: ¡Algo salió mal. Por favor, vuelve a autenticarte!
   recovery-password-changed: Has cambiado tu contraseña.
   recovery-next-login: Continúa con el inicio de sesión.
   openpgp-deletion-successful: Tu clave OpenPGP fue eliminada.

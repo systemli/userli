@@ -293,7 +293,7 @@ flashes:
   alias-deletion-successful: Deine Alias-Adresse wurde gelöscht.
   recovery-token-invalid: E-Mail-Adresse oder Wiederherstellungscode sind falsch!
   recovery-token-ack: Du hast einen Wiederherstellungscode erzeugt.
-  revocery-reauthenticate: Etwas ist schief gelaufen. Bitte erneut authentifizieren!
+  recovery-reauthenticate: Etwas ist schief gelaufen. Bitte erneut authentifizieren!
   recovery-password-changed: Dein Passwort wurde geändert.
   recovery-next-login: Du kannst dich nun einloggen.
   openpgp-deletion-successful: Dein OpenPGP-Schlüssel wurde gelöscht.

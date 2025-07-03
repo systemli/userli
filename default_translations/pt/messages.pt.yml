@@ -217,7 +217,7 @@ flashes:
   alias-deletion-successful: O seu endereço alias foi excluido com sucesso!
   recovery-token-invalid: O endereço de e-mail ou o token de recuperação está errado!
   recovery-token-ack: Você gerou um token de recuperação com sucesso!
-  revocery-reauthenticate: Algo deu errado. Por favor se autentique novamente!
+  recovery-reauthenticate: Algo deu errado. Por favor se autentique novamente!
   recovery-password-changed: Você mudou a sua senha com sucesso.
   recovery-next-login: Inicie sua sessão agora.
   openpgp-key-upload-error-no-keys: ""
