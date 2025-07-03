@@ -14,7 +14,7 @@
 
                     <div class="prose prose-gray max-w-none">
                         <p class="text-lg text-gray-600 mb-4">{{ "init_user.lead"|trans }}</p>
-                        <p class="text-gray-700">{{ "init_user.text"|trans({'%domain%': domain})|raw }}</p>
+                        <p class="text-gray-700">{{ "init_user.text"|trans({'%domain%': domain})|safe_html }}</p>
                     </div>
                 </div>
 

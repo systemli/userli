@@ -18,15 +18,25 @@ This project uses DOMPurify for client-side HTML sanitization to prevent XSS att
 #### In Twig Templates
 
 - **NEVER use `|raw` filter** for user-generated or dynamic content
-- **USE `|safe_html` filter** instead for secure HTML rendering:
+- **USE `|safe_html` filter** for dynamic/user content that needs HTML sanitization
+- **USE `|raw` filter ONLY** for trusted static translation strings that contain intentional HTML formatting
 
 ```twig
-{# ❌ DANGEROUS - Never do this #}
+{# ❌ DANGEROUS - Never do this for user content #}
 {{ user_content|raw }}
 
-{# ✅ SAFE - Use this instead #}
+{# ✅ SAFE - Use this for user/dynamic content #}
 {{ user_content|safe_html }}
+
+{# ✅ SAFE - Use this for trusted translation strings with HTML #}
+{{ "static.translation.with.html"|trans|raw }}
+{{ "user.provided.content"|trans({'%user_input%': user_data})|safe_html }}
 ```
+
+**When to use `|raw` vs `|safe_html`:**
+
+- **`|raw`**: Only for static translation strings from `messages.*.yml` that contain trusted HTML (like `<strong>`, `<a href>`, `<br>`)
+- **`|safe_html`**: For all dynamic content, user inputs, or when unsure about HTML source safety
 
 The `|safe_html` filter provides:
 

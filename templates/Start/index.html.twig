@@ -33,10 +33,10 @@
                            aria-describedby="webmail-desc">
                             <div class="p-6 text-center">
                                 <div class="w-16 h-16 mx-auto mb-4 p-3 bg-blue-50 rounded-xl group-hover:bg-blue-100 transition-colors duration-200">
-                                    <img src="{{ asset('build/images/mail-read.svg') }}"
-                                         alt=""
-                                         class="w-full h-full object-contain"
-                                         aria-hidden="true">
+                                    <!-- Heroicon: envelope -->
+                                    <svg class="w-full h-full text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                    </svg>
                                 </div>
                                 <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-200">
                                     {{ "start.webmail"|trans }}
@@ -57,10 +57,10 @@
                            aria-describedby="vouchers-desc">
                             <div class="p-6 text-center">
                                 <div class="w-16 h-16 mx-auto mb-4 p-3 bg-green-50 rounded-xl group-hover:bg-green-100 transition-colors duration-200">
-                                    <img src="{{ asset('build/images/diff-added.svg') }}"
-                                         alt=""
-                                         class="w-full h-full object-contain"
-                                         aria-hidden="true">
+                                    <!-- Heroicon: gift -->
+                                    <svg class="w-full h-full text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
+                                    </svg>
                                 </div>
                                 <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-green-600 transition-colors duration-200">
                                     {{ "start.vouchers"|trans }}
@@ -80,10 +80,10 @@
                        aria-describedby="aliases-desc">
                         <div class="p-6 text-center">
                             <div class="w-16 h-16 mx-auto mb-4 p-3 bg-purple-50 rounded-xl group-hover:bg-purple-100 transition-colors duration-200">
-                                <img src="{{ asset('build/images/gist-secret.svg') }}"
-                                     alt=""
-                                     class="w-full h-full object-contain"
-                                     aria-hidden="true">
+                                <!-- Heroicon: at-symbol -->
+                                <svg class="w-full h-full text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
+                                </svg>
                             </div>
                             <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors duration-200">
                                 {{ "start.aliases"|trans }}
@@ -102,10 +102,10 @@
                        aria-describedby="openpgp-desc">
                         <div class="p-6 text-center">
                             <div class="w-16 h-16 mx-auto mb-4 p-3 bg-amber-50 rounded-xl group-hover:bg-amber-100 transition-colors duration-200">
-                                <img src="{{ asset('build/images/key.svg') }}"
-                                     alt=""
-                                     class="w-full h-full object-contain"
-                                     aria-hidden="true">
+                                <!-- Heroicon: key -->
+                                <svg class="w-full h-full text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                                </svg>
                             </div>
                             <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-amber-600 transition-colors duration-200">
                                 {{ "start.openpgp-settings"|trans }}
@@ -124,10 +124,11 @@
                        aria-describedby="account-desc">
                         <div class="p-6 text-center">
                             <div class="w-16 h-16 mx-auto mb-4 p-3 bg-gray-50 rounded-xl group-hover:bg-gray-100 transition-colors duration-200">
-                                <img src="{{ asset('build/images/tools.svg') }}"
-                                     alt=""
-                                     class="w-full h-full object-contain"
-                                     aria-hidden="true">
+                                <!-- Heroicon: cog -->
+                                <svg class="w-full h-full text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
                             </div>
                             <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-gray-700 transition-colors duration-200">
                                 {{ "start.account-settings"|trans }}

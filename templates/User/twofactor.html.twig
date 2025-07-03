@@ -186,7 +186,7 @@
                         <div class="space-y-4 text-gray-700">
                             <ul class="space-y-3 list-disc pl-5">
                                 <li>{{ "account.twofactor.desc-login"|trans({'%app_url%': app_url}) }}</li>
-                                <li>{{ "account.twofactor.desc-lost"|trans({'%app_url%': app_url})|raw }}</li>
+                                <li>{{ "account.twofactor.desc-lost"|trans({'%app_url%': app_url})|safe_html }}</li>
                             </ul>
                         </div>
                     </div>
