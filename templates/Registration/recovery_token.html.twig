@@ -1,5 +1,7 @@
 {% extends 'base_step.html.twig' %}
 
+{% block title %}{{ domain }} - {{ "registration.recovery-token-headline"|trans }}{% endblock %}
+
 {% form_theme form 'Form/fields.html.twig' %}
 
 {% block step_title %}{{ "registration.recovery-token-headline"|trans }}{% endblock %}

@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% form_theme form 'Form/fields.html.twig' %}
+{% block title %}{{ domain }} - {{ "init.title"|trans }}{% endblock %}
 
-{% block subtitle %}{{ "init.title"|trans }}{% endblock %}
+{% form_theme form 'Form/fields.html.twig' %}
 
 {% block content %}
     <div class="min-h-[calc(100vh-8rem)] py-6 sm:py-8">

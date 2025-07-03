@@ -1,5 +1,7 @@
 {% extends 'base_page.html.twig' %}
 
+{% block title %}{{ domain }} - {{ "start.aliases"|trans }}{% endblock %}
+
 {% form_theme custom_alias_form 'Form/fields.html.twig' %}
 {% form_theme random_alias_form 'Form/fields.html.twig' %}
 

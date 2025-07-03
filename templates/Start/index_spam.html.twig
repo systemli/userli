@@ -1,6 +1,6 @@
 {% extends 'base_page.html.twig' %}
 
-{% block subtitle %}{{ "spam.title"|trans({'%domain%': domain}) }}{% endblock %}
+{% block title %}{{ domain }} - {{ "spam.title"|trans({'%domain%': domain}) }}{% endblock %}
 
 {% block page_title %}{{ "spam.title"|trans({'%domain%': domain}) }}{% endblock %}
 

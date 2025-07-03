@@ -1,6 +1,6 @@
 {% extends 'base_page.html.twig' %}
 
-{% block subtitle %}{{ "welcome.headline"|trans({'%domain%': domain, '%project_name%': project_name}) }}{% endblock %}
+{% block title %}{{ domain }} - {{ "welcome.headline"|trans({'%domain%': domain, '%project_name%': project_name}) }}{% endblock %}
 
 {% block page_title %}{{ "welcome.headline"|trans({'%domain%': domain, '%project_name%': project_name}) }}{% endblock %}
 
