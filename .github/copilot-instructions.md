@@ -132,6 +132,15 @@ The project uses a clean template hierarchy:
 - **Responsive utilities**: Use responsive prefixes (`sm:`, `md:`, `lg:`, `xl:`)
 - **Consistent spacing**: Use Tailwind spacing utilities for consistent layouts
 
+### Icon Design Consistency
+
+- **Icon Background Shapes**: Use consistent rounded corners based on icon size:
+  - **Small icons** (`w-10 h-10`): Use `rounded-full` for inline header icons
+  - **Medium icons** (`w-12 h-12`): Use `rounded-xl` for section headers
+  - **Large icons** (`w-16 h-16` and above): Use `rounded-xl` for cards and main features
+- **Icon Comments**: Always include Heroicon name comments above SVG icons
+- **Color Consistency**: Use semantic color schemes (blue for primary actions, green for success, red for danger, etc.)
+
 ### Content and Translations
 
 - **Use Symfony Translations**: Always use `{{ 'key'|trans }}` or `{% trans %}` for all user-facing text
