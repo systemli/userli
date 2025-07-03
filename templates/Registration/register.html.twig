@@ -102,18 +102,13 @@
                                     }
                                 }) }}
                                 <div class="relative">
-                                    <div class="flex">
-                                        {{ form_widget(form.email, {
-                                            'attr': {
-                                                'class': 'block w-full px-3 py-3 border border-gray-300 rounded-l-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors duration-200' ~ (form.email.vars.errors|length > 0 ? ' border-red-300 focus:ring-red-500 focus:border-red-500' : ''),
-                                                'autocomplete': 'email',
-                                                'aria-describedby': form.email.vars.errors|length > 0 ? 'email-error' : null
-                                            }
-                                        }) }}
-                                        <div class="inline-flex items-center px-3 py-3 border border-l-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm rounded-r-lg">
-                                            @{{ domain }}
-                                        </div>
-                                    </div>
+                                    {{ form_widget(form.email, {
+                                        'attr': {
+                                            'suffix': '@' ~ domain,
+                                            'autocomplete': 'email',
+                                            'aria-describedby': form.email.vars.errors|length > 0 ? 'email-error' : null
+                                        }
+                                    }) }}
                                 </div>
                                 {% if form.email.vars.errors|length > 0 %}
                                     <div id="email-error" class="text-sm text-red-600 mt-1" role="alert">

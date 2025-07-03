@@ -51,11 +51,11 @@
             <input type="{{ type }}"
                    id="{{ id }}"
                    name="{{ full_name }}"
-                   class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md border-r-0 focus:outline-none focus:ring-0 focus:border-gray-300 text-sm"
+                   class="flex-1 px-3 py-3 border border-gray-300 rounded-l-md border-r-0 focus:outline-none focus:ring-0 focus:border-gray-300 text-sm"
                    {% if value is not empty %}value="{{ value }}"{% endif %}
                    {% if required %}required{% endif %}
                    {% if disabled %}disabled{% endif %} />
-            <span class="inline-flex items-center px-3 py-2 border-t border-b border-r border-gray-300 bg-gray-50 text-gray-500 text-sm rounded-r-md">
+            <span class="inline-flex items-center px-3 py-3 border-t border-b border-r border-gray-300 bg-gray-50 text-gray-500 text-sm rounded-r-md">
                 {{ suffix }}
             </span>
         </div>
