@@ -15,9 +15,8 @@ class TextToEmailTransformer implements DataTransformerInterface
 
     /**
      * {@inheritdoc}
-     * @return false|string
      */
-    public function transform($value)
+    public function transform(mixed $value): mixed
     {
         if (null === $value) {
             return '';
@@ -29,7 +28,7 @@ class TextToEmailTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform($value): string
+    public function reverseTransform(mixed $value): mixed
     {
         if (null === $value || '' === $value) {
             return '';
