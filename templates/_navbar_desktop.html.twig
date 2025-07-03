@@ -1,0 +1,69 @@
+{# Desktop navigation with text labels (xl screens and up) #}
+<div class="hidden xl:flex flex-1 items-center justify-center">
+    <div class="flex items-center space-x-1">
+        {# Home #}
+        <a href="{{ path('start') }}"
+           class="flex items-center justify-center px-3 xl:px-4 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:scale-105 {{ current_route == 'start' ? 'bg-white/20 text-white shadow-lg' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}"
+           title="{{ "navbar.home"|trans }}">
+            <svg class="w-4 h-4 mr-1 xl:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+            </svg>
+            <span>{{ "navbar.home"|trans }}</span>
+        </a>
+
+        {# Einladungscodes (only for eligible users) #}
+        {% if app.user.domain == domain and not is_granted('ROLE_SUSPICIOUS') %}
+            <a href="{{ path('vouchers') }}"
+               class="flex items-center justify-center px-3 xl:px-4 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:scale-105 {{ current_route == 'vouchers' ? 'bg-white/20 text-white shadow-lg' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}"
+               title="{{ "navbar.vouchers"|trans }}">
+                <svg class="w-4 h-4 mr-1 xl:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                <span>{{ "navbar.vouchers"|trans }}</span>
+            </a>
+        {% endif %}
+
+        {# Aliases #}
+        <a href="{{ path('aliases') }}"
+           class="flex items-center justify-center px-3 xl:px-4 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:scale-105 {{ current_route == 'aliases' ? 'bg-white/20 text-white shadow-lg' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}"
+           title="{{ "navbar.aliases"|trans }}">
+            <svg class="w-4 h-4 mr-1 xl:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
+            </svg>
+            <span>{{ "navbar.aliases"|trans }}</span>
+        </a>
+
+        {# OpenPGP #}
+        <a href="{{ path('openpgp') }}"
+           class="flex items-center justify-center px-3 xl:px-4 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:scale-105 {{ current_route == 'openpgp' ? 'bg-white/20 text-white shadow-lg' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}"
+           title="{{ "navbar.openpgp"|trans }}">
+            <svg class="w-4 h-4 mr-1 xl:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z"></path>
+            </svg>
+            <span>{{ "navbar.openpgp"|trans }}</span>
+        </a>
+
+        {# Konto #}
+        <a href="{{ path('account') }}"
+           class="flex items-center justify-center px-3 xl:px-4 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:scale-105 {{ current_route == 'account' ? 'bg-white/20 text-white shadow-lg' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}"
+           title="{{ "navbar.account"|trans }}">
+            <svg class="w-4 h-4 mr-1 xl:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            <span>{{ "navbar.account"|trans }}</span>
+        </a>
+
+        {# Admin Link (if user has admin rights) #}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('sonata_admin_dashboard') }}"
+               class="flex items-center justify-center px-3 xl:px-4 py-2 rounded-2xl text-sm font-medium text-gray-300 hover:bg-white/10 hover:text-white transition-all duration-300 hover:scale-105"
+               title="{{ "navbar_right.admin"|trans }}">
+                <svg class="w-4 h-4 mr-1 xl:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
+                <span>{{ "navbar_right.admin"|trans }}</span>
+            </a>
+        {% endif %}
+    </div>
+</div>

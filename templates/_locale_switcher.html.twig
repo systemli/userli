@@ -74,17 +74,6 @@
         >
             <div class="py-2" role="none">
                 {% for locale in locales %}
-                    {% set locale_names = {
-                        'en': 'English',
-                        'de': 'Deutsch',
-                        'fr': 'Français',
-                        'es': 'Español',
-                        'it': 'Italiano',
-                        'pt': 'Português',
-                        'nb': 'Norsk',
-                        'gsw': 'Alemannisch',
-                        'zh_Hant': '繁體中文'
-                    } %}
                     <a
                         href="{{ path(route, params|merge({ _locale: locale })) }}"
                         class="group flex items-center px-4 py-3 text-sm transition-all duration-300 rounded-2xl mx-2 {{ locale == app.request.locale ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}"
