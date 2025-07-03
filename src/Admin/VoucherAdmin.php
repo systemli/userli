@@ -9,9 +9,15 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateTimeRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class VoucherAdmin extends Admin
 {
+    public function __construct(protected Security $security)
+    {
+        parent::__construct();
+    }
+
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {
         return 'voucher';
