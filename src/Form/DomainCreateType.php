@@ -12,14 +12,14 @@ class DomainCreateType extends AbstractType
 {
     public const NAME = 'create_domain';
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('domain', TextType::class, ['label' => 'form.domain'])
             ->add('submit', SubmitType::class, ['label' => 'form.add']);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => 'App\Form\Model\DomainCreate']);
     }
@@ -27,7 +27,7 @@ class DomainCreateType extends AbstractType
     /**
      * @return string
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }

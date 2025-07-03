@@ -12,7 +12,7 @@ class OpenPgpDeleteType extends AbstractType
 {
     public const NAME = 'delete_openpgp';
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('password', PasswordType::class, ['label' => 'form.delete-password'])
@@ -22,7 +22,7 @@ class OpenPgpDeleteType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => 'App\Form\Model\Delete']);
     }
@@ -30,7 +30,7 @@ class OpenPgpDeleteType extends AbstractType
     /**
      * @return string
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }
