@@ -10,7 +10,7 @@
     <div class="max-w-4xl mx-auto">
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 sm:p-12">
             <div class="prose prose-lg max-w-none">
-                {{ "welcome.text"|trans({'%project_name%': project_name, '%app_url%': app_url})|raw }}
+                {{ "welcome.text"|trans({'%project_name%': project_name, '%app_url%': app_url})|safe_html }}
             </div>
 
             <div class="mt-8 text-right">

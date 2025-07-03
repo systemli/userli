@@ -31,7 +31,7 @@
                     {# Message content #}
                     <div class="flex-1 min-w-0">
                         <p class="text-sm font-medium leading-5">
-                            {{ message|trans|raw }}
+                            {{ message|trans|safe_html }}
                         </p>
                     </div>
 

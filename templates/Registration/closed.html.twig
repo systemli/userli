@@ -7,7 +7,7 @@
 {% block page_content %}
     <div class="max-w-3xl mx-auto">
         <div class="prose prose-blue max-w-none">
-            {{ "closed.text"|trans|raw }}
+            {{ "closed.text"|trans|safe_html }}
         </div>
     </div>
 {% endblock %}
