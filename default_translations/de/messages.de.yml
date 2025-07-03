@@ -1,3 +1,18 @@
+nav:
+  language: Sprache
+  select_language: Sprache auswählen
+
+navbar:
+  home: Home
+  vouchers: Invites
+  aliases: Aliase
+  openpgp: OpenPGP
+  account: Konto
+  language: Sprache
+  signed-in-as: Angemeldet als
+  open-user-menu: Benutzermenü öffnen
+  open-main-menu: Hauptmenü öffnen
+
 start:
   title: Willkommen bei %domain%
   intro: Hier kannst du dein E-Mail-Konto erstellen und verwalten.
@@ -25,21 +40,44 @@ start:
 index:
   title: Verwalte dein E-Mail-Konto
   voucher-headline: Deine Einladungscodes
+  voucher-subtitle: Lade Freund:innen ein
+  voucher-explanation-short: >
+    Nutze deine Einladungscodes um Freund:innen einzuladen.
+    Du hast standardmäßig drei Einladungen zur Verfügung.
   voucher-limit: Du hast keine Einladungscodes mehr verfügbar.
   voucher-disable: >
     Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben.
     Dies dient der Vermeidung von Massenregistrierungen und Spam.
+  voucher-waiting-title: Wartezeit für neue Einladungscodes
+  voucher-empty-title: Noch keine Einladungscodes erstellt
+  voucher-empty-multiplier: >
+    Erstelle einen neuen Einladungscode um Freund:innen einzuladen.
+  voucher-limit-title: Einladungscode-Limit erreicht
   voucher-explanation: >
     Nutze deine Einladungscodes um Freund:innen hierher einzuladen.
     Standardmäßig hast du drei Einladungen zur Verfügung. Wenn du mehr
     brauchst, wende dich an die Admins. Wir speichern Einladungsdaten für
     einen begrenzten Zeitraum um Missbrauch zu verhindern.
+  alias-subtitle: Verwalte deine E-Mail-Aliase
   alias-headline: Deine %alias_type% Alias-Adressen
-  alias-limit: Du hast das Limit von %alias_limit% erlaubten %alias_type% Alias-Adressen
+  alias-limit:
+    Du hast das Limit von %alias_limit% erlaubten %alias_type% Alias-Adressen
     erreicht.
+  alias-limit-reached: Limit erreicht
   alias-deletion-custom: Schreibe uns, um Adressen löschen zu lassen.
   alias-deletion-random: Wenn du alte Adressen löschst, kannst du wieder neue erstellen.
   alias-empty: Du hast noch keine %alias_type% Alias-Adressen definiert.
+  alias-custom-description: Erstelle personalisierte E-Mail-Adressen mit eigenem Namen
+  alias-custom-create: Neue benutzerdefinierte Alias erstellen
+  alias-random-description: Generiere automatisch zufällige E-Mail-Adressen
+  alias-random-generate: Neue zufällige Alias generieren
+  alias-active-custom: Aktive benutzerdefinierte Aliase
+  alias-active-random: Aktive zufällige Aliase
+  alias-info-title: Wichtige Hinweise zu E-Mail-Aliasen
+  alias-info-custom: "<strong>Benutzerdefinierte Aliase:</strong> Wähle einen eigenen Namen für deine E-Mail-Adresse"
+  alias-info-random: "<strong>Zufällige Aliase:</strong> Automatisch generierte Adressen für mehr Anonymität"
+  alias-info-limits: "<strong>Limits:</strong> Maximal %alias_limit_custom% benutzerdefinierte und %alias_limit_random% zufällige Aliase"
+  alias-info-management: "<strong>Verwaltung:</strong> Lösche nicht mehr benötigte Aliase, um Platz für neue zu schaffen"
   delete-headline: Konto löschen
   delete-description: >
     Du kannst dein Konto bei %project_name% löschen. Dadurch werden deine E-Mails
@@ -48,7 +86,8 @@ index:
   delete-button: Konto löschen
   recovery-token-button: Wiederherstellungscode verwalten
   logged_in_as: Du bist angemeldet als %user%.
-  alias-explanation: "<p>\n  Verstecke mittels Alias-Adressen deine originale Mail-Adresse\
+  alias-explanation:
+    "<p>\n  Verstecke mittels Alias-Adressen deine originale Mail-Adresse\
     \ vor Personen,  die du nicht gut kennst oder Firmen, denen du nicht voll vertraust.\n\
     </p>\n<p>\n  <ul>\n    <li>Alle E-Mails, die an Alias-Adresse gesendet werden,\
     \ landen in deiner normalen Mailbox.</li>\n    <li>Um von einer Alias-Adresse\
@@ -61,13 +100,21 @@ index:
 form:
   title: Anmelden
   signin-header: Anmelden
+  signin-subtitle: Willkommen zurück zu deinem Konto
   register-header: Konto erstellen
   email: E-Mail
+  email-help: Gib deine E-Mail-Adresse ein
   password: Passwort
+  password-help: Gib dein Passwort ein
   password_confirmation: Passwort bestätigen
   remember-me: Angemeldet bleiben
   signin: Anmelden
   recovery-link: Passwort vergessen?
+  auth-failed: Authentifizierung fehlgeschlagen
+  errors-found: Bitte korrigiere die folgenden Fehler
+  no-account: Noch kein Konto?
+  have-account: Bereits ein Konto?
+  create-account: Hier erstellen
   roles: Rollen
   submit: Senden
   voucher: Einladungscode
@@ -91,15 +138,6 @@ form:
   registration-recovery-token-next-button: Weiter
   domain: Domain
   add: Hinzufügen
-  openpgp-key-file: "Deinen Schlüssel als Datei hochladen:"
-  openpgp-key-file-mimetype: Die hochgeladende Datei enthält keine OpenPGP-Schlüssel.
-  openpgp-key-upload-or: oder
-  openpgp-key-text: "Deinen Schlüssel als Text einfügen:"
-  openpgp-key-text-placeholder: OpenPGP-Schlüssel im ASCII-Format
-  openpgp-key-select-one: Bitte lade den Schlüssel entweder als Datei oder im ASCII
-    Format hoch.
-  openpgp-key-submit: OpenPGP-Schlüssel veröffentlichen
-  openpgp-delete: OpenPGP-Schlüssel löschen
   verify: Bestätigen
   twofactor: Zwei-Faktor-Authentifizierung
   twofactor-short: 2FA
@@ -112,6 +150,18 @@ form:
   twofactor-login-cancel: Login abbrechen
   twofactor-enable: Zwei-Faktor-Authentifizierung aktivieren
   twofactor-disable: Zwei-Faktor-Authentifizierung deaktivieren
+
+# OpenPGP Keys
+openpgp-key-file: "Deinen Schlüssel als Datei hochladen:"
+openpgp-key-file-mimetype: Die hochgeladende Datei enthält keine OpenPGP-Schlüssel.
+openpgp-key-upload-or: oder
+openpgp-key-text: "Deinen Schlüssel als Text einfügen:"
+openpgp-key-text-placeholder: OpenPGP-Schlüssel im ASCII-Format
+openpgp-key-select-one: >
+  Bitte lade den Schlüssel entweder als Datei oder im ASCII
+  Format hoch.
+openpgp-key-submit: OpenPGP-Schlüssel veröffentlichen
+openpgp-delete: OpenPGP-Schlüssel löschen
 
 account:
   twofactor:
@@ -137,10 +187,12 @@ recovery:
   header: Konto wiederherstellen
   lead: Passwort zurücksetzen mit Hilfe des Wiederherstellungscodes
   cancel: Abbrechen
-  started: "Der erste Schritt um dein Passwort zurückzusetzen, ist gemacht.\nJetzt\
+  started:
+    "Der erste Schritt um dein Passwort zurückzusetzen, ist gemacht.\nJetzt\
     \ musst du noch 48 Stunden warten. Anschließend kannst du im zweiten Schritt\n\
     ein neues Passwort setzen. Bitte behalte deinen Wiederherstellungscode bis dahin.\n"
-  waiting-info: Die Wartezeit dient deiner eigenen Sicherheit und kann nicht verkürzt
+  waiting-info:
+    Die Wartezeit dient deiner eigenen Sicherheit und kann nicht verkürzt
     oder umgangen werden.
   waiting-time: Der zweite Schritt ist möglich ab dem %time%.
   reset-lead: Du kannst nun dein Passwort zurücksetzen
@@ -180,7 +232,8 @@ welcome:
 closed:
   title: Registrierung deaktiviert
   headline: Registrierung deaktiviert
-  lead: Aufgrund des §3 TKÜV haben wir die Registrierung weiterer E-Mail Konten deaktiviert.
+  lead:
+    Aufgrund des §3 TKÜV haben wir die Registrierung weiterer E-Mail Konten deaktiviert.
     Das tut uns Leid.
   text: >
     <p>Der <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html"
@@ -194,26 +247,36 @@ closed:
 delete:
   alias:
     headline: Alias-Adresse %alias% löschen
-    lead: Mit der Bestätigung deines Passworts kannst du deine Alias-Adresse unwiderruflich
+    headline_generic: Alias-Adresse löschen
+    lead:
+      Mit der Bestätigung deines Passworts kannst du deine Alias-Adresse unwiderruflich
       löschen.
+    lead_specific: >
+      Bist du dir sicher, dass du <strong>%alias%</strong> löschen möchtest?
+      Die Adresse wird unwiderruflich gelöscht.
+    delete: Alias löschen
   user:
     headline: Konto löschen
-    lead: Mit der Bestätigung deines Passworts kannst du dein Konto unwiderruflich
+    lead:
+      Mit der Bestätigung deines Passworts kannst du dein Konto unwiderruflich
       löschen.
   openpgp:
     headline: OpenPGP-Schlüssel löschen
-    lead: Mit der Bestätigung deines Passworts kannst du deinen OpenPGP-Schlüssel
+    lead:
+      Mit der Bestätigung deines Passworts kannst du deinen OpenPGP-Schlüssel
       aus dem Web Key Directory löschen.
   cancel: Abbrechen
 recovery-token:
   headline: Wiederherstellungscode verwalten
-  lead: Mit dem Wiederherstellungscode kannst du dein Passwort zurücksetzen, wenn
+  lead:
+    Mit dem Wiederherstellungscode kannst du dein Passwort zurücksetzen, wenn
     du es vergessen hast.
   set: Du hast bereits einen Wiederherstellungscode gesetzt.
   set-extra: Wenn du einen neuen Code erstellst, wird der bisherige ungültig.
-  unset: Du hast noch keinen Wiederherstellungscode gesetzt. Wir empfehlen dir dringend,
+  unset:
+    Du hast noch keinen Wiederherstellungscode gesetzt. Wir empfehlen dir dringend,
     jetzt einen zu erstellen.
-  created-headline: 'Der folgende Wiederherstellungscode wurde für dich erstellt:'
+  created-headline: "Der folgende Wiederherstellungscode wurde für dich erstellt:"
   created-info: >
     Mit dem Wiederherstellungscode kannst du jederzeit dein Passwort zurücksetzen,
     wenn du dieses vergessen hast. Notiere ihn dir und speichere ihn an einem sicheren
@@ -230,15 +293,17 @@ flashes:
   alias-deletion-successful: Deine Alias-Adresse wurde gelöscht.
   recovery-token-invalid: E-Mail-Adresse oder Wiederherstellungscode sind falsch!
   recovery-token-ack: Du hast einen Wiederherstellungscode erzeugt.
-  revocery-reauthenticate: Etwas ist schief gelaufen. Bitte erneut authentifizieren!
+  recovery-reauthenticate: Etwas ist schief gelaufen. Bitte erneut authentifizieren!
   recovery-password-changed: Dein Passwort wurde geändert.
   recovery-next-login: Du kannst dich nun einloggen.
   openpgp-deletion-successful: Dein OpenPGP-Schlüssel wurde gelöscht.
   openpgp-key-upload-successful: Dein OpenPGP-Schlüssel wurde hochgeladen.
   openpgp-key-upload-error-no-openpgp: Die hochgadene Datei enthält keine OpenPGP-Schlüssel.
-  openpgp-key-upload-error-no-keys: Die hochgeladene Datei enthält keine Schlüssel
+  openpgp-key-upload-error-no-keys:
+    Die hochgeladene Datei enthält keine Schlüssel
     für deine E-Mail-Adresse.
-  openpgp-key-upload-error-multiple-keys: Die hochgeladene Datei enhält mehr als einen
+  openpgp-key-upload-error-multiple-keys:
+    Die hochgeladene Datei enhält mehr als einen
     Schlüssel für deine E-Mail-Adresse. Bitte lade nur einen Schlüssel hoch.
 flash_batch_remove_vouchers_success: Nicht eingelöste Einladungscodes gelöscht.
 error:
@@ -248,7 +313,8 @@ error:
   generic_error: Es ist ein Fehler passiert. Das tut uns leid.
 spam:
   title: Konto gesperrt
-  text: "Oh nein! Wir glauben, dein Konto wurde von einem Spammer missbraucht.\nDaher\
+  text:
+    "Oh nein! Wir glauben, dein Konto wurde von einem Spammer missbraucht.\nDaher\
     \ haben wir den E-Mail-Zugang deaktiviert.\nBitte kontaktiere den Support um dein\
     \ Konto freizuschalten.\n"
 Bad credentials.: Das angegebene Passwort ist ungültig.
@@ -316,24 +382,53 @@ Alias: Alias-Adresse
 Voucher: Einladungscode
 Reserved Name: Reservierter Name
 copy-to-clipboard: In Zwischenablage kopieren
+
+alias:
+  delete: Alias löschen
 init.title: Erstellen der Erstkonfiguration
 init_domain:
-  lead: Vielen Dank fürs installieren von Userli. Derzeit sind keine Domänen oder
+  lead:
+    Vielen Dank fürs installieren von Userli. Derzeit sind keine Domänen oder
     Konten vorhanden.
   text: Bitte wähle Deine primäre Domäne aus, die Userli behandeln soll.
 init_user:
   lead: Primäre Domäne wurde erstellt.
-  text: E-Mail-Standards erfordern, dass das Konto postmaster@%domain% vorhanden ist.
+  text:
+    E-Mail-Standards erfordern, dass das Konto postmaster@%domain% vorhanden ist.
     Wähle ein Kennwort für dieses erste Administratorkonto aus und melde dich anschließend
     an.
 openpgp:
-  key-info: Veröffentlichter OpenPGP-Schlüssel
   delete-button: OpenPGP-Schlüssel löschen
   information: Information
-  information-details: Hier kannst du deinen OpenPGP-Schlüssel hochladen, damit er
+  information-details:
+    Hier kannst du deinen OpenPGP-Schlüssel hochladen, damit er
     in unserem <i><a target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key
     Directory</a></i> veröffentlicht wird. Damit hilfst du Freund:innen, deinen Schlüssel
     automatisch und sicher zu finden.
   keyid-label: "Schlüssel-ID:"
   fingerprint-label: "Fingerprint:"
   expiretime-label: "Ablaufdatum:"
+  no-expiration: "Kein Ablaufdatum (unbegrenzt gültig)"
+  manage-subtitle: Verwalte deinen OpenPGP-Schlüssel
+  current-key: Aktueller OpenPGP-Schlüssel
+  no-key-uploaded: Noch kein OpenPGP-Schlüssel hochgeladen
+  upload-prompt: Lade einen Schlüssel über das Formular rechts hoch
+
+# Streamlined alias page structure
+index.alias-motivation: "Erstelle personalisierte E-Mail-Aliasse, um deinen Posteingang besser zu organisieren und deine Privatsphäre zu schützen."
+
+custom-aliases.title: "Benutzerdefinierte Aliasse"
+custom-aliases.subtitle: "Bis zu %alias_limit_custom% eigene Aliasse erstellen"
+custom-aliases.feature-choose-name: "Wähle deinen eigenen einprägsamen Alias-Namen"
+custom-aliases.feature-easy-remember: "Einfach zu merken und mit anderen zu teilen"
+custom-aliases.limitation-permanent: "Können nach der Erstellung nicht gelöscht werden"
+custom-aliases.limitation-limited: "Begrenzt auf %alias_limit_custom% Aliasse insgesamt"
+custom-aliases.management-hint: "<strong>Tipp:</strong> Wähle deine benutzerdefinierten Aliasse sorgfältig aus, da sie später nicht gelöscht werden können."
+
+random-aliases.title: "Zufällige Aliasse"
+random-aliases.subtitle: "Bis zu %alias_limit_random% zufällige Aliasse generieren"
+random-aliases.feature-secure: "Automatisch generierte sichere Namen"
+random-aliases.feature-privacy: "Perfekt für Online-Shopping und Registrierungen"
+random-aliases.feature-deletable: "Können jederzeit gelöscht werden, wenn sie nicht mehr benötigt werden"
+random-aliases.limitation-random-name: "Zufällige Namen, die schwerer zu merken sind"
+random-aliases.management-hint: "<strong>Tipp:</strong> Lösche ungenutzte zufällige Aliasse, um Platz für neue zu schaffen."

@@ -1,3 +1,18 @@
+nav:
+  language: Sprach
+  select_language: Sprach uswähle
+
+navbar:
+  home: Hei
+  vouchers: Iiladigscodes
+  aliases: Aliase
+  openpgp: OpenPGP
+  account: Chonto
+  language: Sprach
+  signed-in-as: Aameldet aus
+  open-user-menu: Benutzermenü ufmache
+  open-main-menu: Hauptmenü ufmache
+
 form:
   remember-me: Igloggt blibe
   email: E-Mail
@@ -29,19 +44,20 @@ form:
   plain-password_confirmation: Nöis Passwort beschtätige
   new-custom-alias: Nöii Alias Adrässe
   recovery-start: Wiederhärschteue
-  domain: ''
-  openpgp-delete: ''
-  openpgp-key-text-placeholder: ''
-  openpgp-key-select-one: ''
-  openpgp-key-text: ''
-  openpgp-key-file: ''
-  openpgp-key-submit: ''
-  openpgp-key-file-mimetype: ''
-  openpgp-key-upload-or: ''
-  add: ''
+  domain: ""
+  openpgp-delete: ""
+  openpgp-key-text-placeholder: ""
+  openpgp-key-select-one: ""
+  openpgp-key-text: ""
+  openpgp-key-file: ""
+  openpgp-key-submit: ""
+  openpgp-key-file-mimetype: ""
+  openpgp-key-upload-or: ""
+  add: ""
 index:
   recovery-token-button: Recovery Token verwaute
-  alias-explanation: "<p>\n  Alias Adrässene chasch bruuche zum dini urschprünglechi\
+  alias-explanation:
+    "<p>\n  Alias Adrässene chasch bruuche zum dini urschprünglechi\
     \ E-Mail Adrässe vor Lüt wo nid so guet kennsch oder Firmene wo nid vertrousch,\
     \ z verschtecke.\n</p>\n<p>\n  <ul>\n    <li>Aui E-Mails wo a Alias Adrässene\
     \ verschickt wärde lande i dire normale Mailbox.</li>\n    <li>Zum vonere Alias\
@@ -53,18 +69,26 @@ index:
     \ Alias Adrässene la z lösche.</li>\n  </ul>\n</p>\n"
   alias-deletion-random: Sobaud du auti Adrässene löschisch chasch wieder nöii alege.
   alias-deletion-custom: Schriib üs zum Adrässene la lösche.
-  voucher-explanation: "Bruch dini Invite Codes hie zum Fründe ilade. Schtandardmässig\
+  voucher-explanation:
+    "Bruch dini Invite Codes hie zum Fründe ilade. Schtandardmässig\
     \ hesch drü Iladige z guet. Wenn meh Fründe möchtsch ilade, wänd di bitte ad Adminischtratore.\
     \ Mir spichere Date beträffend Iladige nume e gwüssi Zyt um Missbruuch vorzböige.\n"
   alias-empty: Du hesch keni %alias_type% Alias Adrässene feschtgleit.
   alias-headline: Dini %alias_type% Alias Adrässene
   delete-button: Account lösche
   voucher-limit: Du hesch ke Invite Codes meh übrig.
+  voucher-waiting-title: Wartä uf nöii Invite Codes
+  voucher-empty-title: No keni Invite Codes ersteut
+  voucher-empty-multiplier: >
+    Ersteu e nöii Invite Code zum Fründe iiladä.
+  voucher-limit-title: Limite vo Invite Codes erreicht
   title: Di E-Mail Account verwaute
   logged_in_as: Du bisch igloggt aus %user%.
-  voucher-disable: "Am %date% bechunnsch drü Invite Codes. Das isch so glöst zum Masse-Regischtrierige\
+  voucher-disable:
+    "Am %date% bechunnsch drü Invite Codes. Das isch so glöst zum Masse-Regischtrierige\
     \ und Spam verhindere.\n"
-  delete-description: "Du chasch di %project_name% E-Mail Account lösche. Dadrmit\
+  delete-description:
+    "Du chasch di %project_name% E-Mail Account lösche. Dadrmit\
     \ wärde aui dini E-Mail glöscht. <strong>Es Wiederhärschteue zumne schpätere Zytpunkt\
     \ isch nid müglech.</strong> <br /><br /> Zum di Account lösche muesch dis iztige\
     \ Passwort igäh.\n"
@@ -86,15 +110,16 @@ delete:
     lead: Mir müesse dis Passwort verifiziere zum di Account chönne lösche.
   cancel: Abbräche
   openpgp:
-    headline: ''
-    lead: ''
+    headline: ""
+    lead: ""
 start:
   aliases: Alias Adrässene
   account-settings: Account Iischtellige
   aliases-desc: Dini Identität verschtecke
   registration-button: Account erschteue
   vouchers: Invite Codes
-  registration-text: "Du hesch no ke E-Mail Account bi %domain%? Kes Problem! We eine\
+  registration-text:
+    "Du hesch no ke E-Mail Account bi %domain%? Kes Problem! We eine\
     \ vo dine Fründe scho e Account het, frag ne doch umne Invite Code und erschteu\
     \ dr sofort di Account.\n"
   intro: Hie chasch e E-Mail Account erschteue und verwaute.
@@ -106,12 +131,13 @@ start:
   webmail-desc: E-Mails läse und schriibe
   title: Wiukomme bi %domain%
   webmail: Webmail
-  openpgp-delete: ''
-  openpgp-settings: ''
-  openpgp-settings-title: ''
-  openpgp-settings-desc: ''
+  openpgp-delete: ""
+  openpgp-settings: ""
+  openpgp-settings-title: ""
+  openpgp-settings-desc: ""
 welcome:
-  text: "<h3>Gschafft</h3> <p>Im Internet fingsch Aleitige wie du die E-Mail Account\
+  text:
+    "<h3>Gschafft</h3> <p>Im Internet fingsch Aleitige wie du die E-Mail Account\
     \ i verschiedenschte Programm konfiguriere chasch.</p> <p>I einere Wuche bechunnsch\
     \ du drü Invite Codes wo bi <a href=\"%app_url%\">%app_url%</a> chasch abhole.\
     \ Du chasch die dine Fründe witerleite und se drmit ilade e Account bi %project_name%\
@@ -123,23 +149,28 @@ recovery:
   lead: S Passwort mittem Recovery Token zrüggsetze
   token-lead: Nöis Recovery Token
   header: Di Account wiederhärschteue
-  waiting-info: Die Wartezyt isch für dini eigeti Sicherheit und cha weder verchürzt
+  waiting-info:
+    Die Wartezyt isch für dini eigeti Sicherheit und cha weder verchürzt
     no überschprunge wärde.
   waiting-time: Dr zwöit Schritt startet am %time%.
   reset-lead: Du hesch ke Berächtigung zum dis Passwort zrüggzsetze
-  started: "Dr erscht Schritt zum Passwort zrüggsetze isch erledigt.\nIz muesch 48\
+  started:
+    "Dr erscht Schritt zum Passwort zrüggsetze isch erledigt.\nIz muesch 48\
     \ Schtung warte. Ab denn chasch es nöis Passwort setze im zwöite Schritt.\nBitte\
     \ bewahr dis Recovery Token bis denn uf.\n"
   cancel: Abbbräche
 recovery-token:
   set: Du hesch bereits es Recovery Token gsetzt.
   set-extra: S Erschteue vomne nöie Token wird s aktuelle invalidiere.
-  created-headline: 'Das Token isch für di erschteut worde:'
-  lead: S Recovery Token cha drzue verwändet wärde dis Passwort zrüggzsetze wenns
+  created-headline: "Das Token isch für di erschteut worde:"
+  lead:
+    S Recovery Token cha drzue verwändet wärde dis Passwort zrüggzsetze wenns
     vergässe hesch.
-  created-info: "Wenn du dis Passwort verlore hesch, erloubt dir s Recovery Token\
+  created-info:
+    "Wenn du dis Passwort verlore hesch, erloubt dir s Recovery Token\
     \ es nöis z setze. Notier dr das Token und bewahrs amne sichere Ort uuf.\n"
-  displayed-once: "Us Sicherheitsgründ wird s Recovery Token nume einisch azeigt.\
+  displayed-once:
+    "Us Sicherheitsgründ wird s Recovery Token nume einisch azeigt.\
     \ Mir chöi das Token nid wiederhärschteue.\n"
   headline: Recovery Token verwaute
   unset: Du hesch no kes Recovery Token gsetzt. Mir emfpähle dringend iz eis z mache.
@@ -204,14 +235,14 @@ flashes:
   alias-deletion-successful: Alias Adrässe isch glöscht.
   alias-creation-successful: Nöie Alias Adrässe isch erschtellt.
   password-change-successful: Dis nöie Passwort isch iz aktiv!
-  revocery-reauthenticate: Irgendöppis isch schief gloffe. Bitte nöi amäude!
+  recovery-reauthenticate: Irgendöppis isch schief gloffe. Bitte nöi amäude!
   registration-successful: Du bisch iz regischtriert.
   recovery-next-login: Witerfahre mittem Ilogge.
-  openpgp-key-upload-error-no-openpgp: ''
-  openpgp-deletion-successful: ''
-  openpgp-key-upload-error-multiple-keys: ''
-  openpgp-key-upload-successful: ''
-  openpgp-key-upload-error-no-keys: ''
+  openpgp-key-upload-error-no-openpgp: ""
+  openpgp-deletion-successful: ""
+  openpgp-key-upload-error-multiple-keys: ""
+  openpgp-key-upload-successful: ""
+  openpgp-key-upload-error-no-keys: ""
 navbar_right:
   login: Ilogge
   logout: Uslogge
@@ -221,20 +252,24 @@ registration:
   information: Information
   recovery-token-headline: Recovery Token
   title: Regischtriere bi %project_name%
-  information-password-policy: "<strong>Passwort-Anforderungen:</strong> Mindeschtens 12 Zeiche, keine
+  information-password-policy:
+    "<strong>Passwort-Anforderungen:</strong> Mindeschtens 12 Zeiche, keine
     deutschen Umlaute. Passwörter wärde gäge ne  <a href=\"https://haveibeenpwned.com/Passwords\"\
     >Datebank mit bekannte schlächte Passwörter </a> teschtet.\n"
   label-email: Dini bevorzugti E-Mail Adrässe
-  information-intro: "Würdsch du gärn e E-Mail Account bi <a href=\"%project_url%\"\
+  information-intro:
+    "Würdsch du gärn e E-Mail Account bi <a href=\"%project_url%\"\
     >%project_name%</a> ha? Mir erloube Nöiregischtratione nume indäm e Fründ di mittemne\
     \ Invite Code iladt.\n"
 Domain: Domain
 closed:
   headline: Regischtrierig gschlosse
-  lead: Wägem Absatz drü TKÜV hei mir üs entschlosse d Regischtrierig z schliesse.
+  lead:
+    Wägem Absatz drü TKÜV hei mir üs entschlosse d Regischtrierig z schliesse.
     Sorry für dä.
   title: Regischtrierig gschlosse
-  text: "<p>Wägem <a href=\"https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html\"\
+  text:
+    "<p>Wägem <a href=\"https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html\"\
     \ target=\"_blank\">Absatz drü vor \"Verordnung über die technische und organisatorische\
     \ Umsetzung von Maßnahmen zur Überwachung der Telekommunikation\"</a> (churz \"\
     TKÜV\") müesse E-Mail Provider mit meh als 10'000 User e Überwachigsschnittschteu\
@@ -242,7 +277,8 @@ closed:
     \ d Regischtrierig z schliesse und damit s Erschteue vo nöiie Accounts z verhindere.<p>\n\
     <p><strong>Bishärigi Accounts si da drvo nid betroffe</strong></p>\n"
 spam:
-  text: "Oh nei! Mir hei s Gfüeu dass di Account vomene Spammer isch misbruucht worde.\n\
+  text:
+    "Oh nei! Mir hei s Gfüeu dass di Account vomene Spammer isch misbruucht worde.\n\
     E-Mail Zuegriff isch deaktiviert worde.\nBitte kontaktier dr Support zum di Account\
     \ entschperre.\n"
   title: Account isch gschperrt
@@ -256,19 +292,19 @@ random: zuefäuig
 flash_batch_remove_vouchers_success: Nid iglösti Invite Codes glöscht.
 custom: benutzerdefiniert
 Ratio: Verhäutnis
-init.title: ''
+init.title: ""
 init_domain:
-  lead: ''
-  text: ''
+  lead: ""
+  text: ""
 openpgp:
-  keyid-label: ''
-  key-info: ''
-  information-details: ''
-  delete-button: ''
-  expiretime-label: ''
-  fingerprint-label: ''
-  information: ''
+  keyid-label: ""
+  key-info: ""
+  information-details: ""
+  delete-button: ""
+  expiretime-label: ""
+  fingerprint-label: ""
+  information: ""
 init_user:
-  text: ''
-  lead: ''
-copy-to-clipboard: ''
+  text: ""
+  lead: ""
+copy-to-clipboard: ""

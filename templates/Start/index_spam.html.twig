@@ -1,15 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_page.html.twig' %}
 
-{% block subtitle %}{{ "spam.title"|trans({'%domain%': domain}) }}{% endblock %}
+{% block title %}{{ domain }} - {{ "spam.title"|trans({'%domain%': domain}) }}{% endblock %}
 
-{% block content %}
+{% block page_title %}{{ "spam.title"|trans({'%domain%': domain}) }}{% endblock %}
 
-    <div class="row">
-        <div class="col-xs-12 col-sm-10 col-md-10">
-            <h1>{{ "spam.title"|trans({'%domain%': domain}) }}</h1>
+{% block page_subtitle %}{{ "spam.text"|trans }}{% endblock %}
 
-            <p class="lead">{{ "spam.text"|trans }}</p>
-        </div>
-    </div>
-
+{% block page_content %}
+    {# Content is displayed in the page subtitle above #}
 {% endblock %}

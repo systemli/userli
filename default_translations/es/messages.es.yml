@@ -1,282 +1,330 @@
+nav:
+  language: Idioma
+  select_language: Seleccionar idioma
+
+navbar:
+  home: Inicio
+  vouchers: Códigos
+  aliases: Alias
+  openpgp: OpenPGP
+  account: Cuenta
+  language: Idioma
+  signed-in-as: Conectado como
+  open-user-menu: Abrir menú de usuario
+  open-main-menu: Abrir menú principal
+
 start:
-  title: Bienvenido %domain%
-  intro: Aquí puedes crear y configurar tu cuenta de e-mail
+  title: Bienvenido a %domain%
+  intro: Aquí puedes configurar y gestionar tu cuenta de e-mail.
   registration-header: Registro
   registration-text: >
-    ¿No tienes una cuenta de e-mail de %domain% aún? ¡No hay problema! ¿Algún amigo
-    tiene una cuenta? Pídele un código amigo y comienza enseguida a configurar tu
-    propia cuenta.
+    ¿No tienes una cuenta de e-mail con %domain% aún? ¡No hay problema! Si uno de tus amigos ya tiene una cuenta, puedes obtener un código de invitación de ellos y configurar inmediatamente tu propia cuenta.
   registration-button: Crear cuenta
-  account-settings: Configurar cuenta
-  account-settings-desc: Contraseña y mas
-  account-delete: Borrar cuenta
-  aliases: Cuentas Alias
-  aliases-delete: Borrar cuentas alias
-  aliases-desc: Ocultar tu identidad
-  vouchers: Código amigo
-  vouchers-desc: Invita a un amigo
+  account-settings: Configuración de la cuenta
+  account-settings-desc: Contraseñas y más
+  account-delete: Eliminar cuenta
+  aliases: Direcciones alias
+  aliases-delete: eliminar dirección alias
+  aliases-desc: Oculta tu identidad
+  vouchers: Códigos de invitación
+  vouchers-desc: Invita a tus amigos
   webmail: Webmail
   webmail-desc: Leer y escribir e-mails
-  openpgp-delete: ''
-  openpgp-settings: ''
-  openpgp-settings-desc: ''
-  openpgp-settings-title: ''
+  openpgp-delete: eliminar clave OpenPGP
+  openpgp-settings: OpenPGP
+  openpgp-settings-desc: Publica tu clave
+  openpgp-settings-title: Publicar tu clave OpenPGP en el Web Key Directory
+
 index:
-  title: Configuración
-  voucher-headline: códigos amigo
-  voucher-limit: No tienes mas códigos amigo disponibles
+  title: Gestiona tu cuenta de e-mail
+  voucher-headline: Tus códigos de invitación
+  voucher-subtitle: Invita a tus amigos
+  voucher-explanation-short: >
+    Usa tus códigos de invitación para invitar a amigos.
+    Tienes tres invitaciones disponibles por defecto.
+  voucher-limit: No te quedan códigos de invitación.
   voucher-disable: >
-    El %date% recibirás tres códigos amigo adicionales. Esto es para evitar registros
-    masivos y spam.
+    En %date% recibirás tres códigos de invitación. Esto es para evitar registros masivos y spam.
+  voucher-waiting-title: Esperando nuevos códigos de invitación
+  voucher-empty-title: Aún no se han creado códigos de invitación
+  voucher-empty-multiplier: >
+    Crea un nuevo código de invitación para invitar a amigos.
+  voucher-limit-title: Límite de códigos de invitación alcanzado
   voucher-explanation: >
-    Usa tus códigos amigo para invitar amigos. Solo tienes tres códigos disponibles.
-    Si necesitas mas, por favor contacta al administrador. Los datos sobre invitaciones
-    serán guardados por un período corto de tiempo, como protección contra abusos.
-  alias-headline: Tu cuenta alias %alias_type%
-  alias-limit: Alcanzaste el limite permitido de %alias_limit% %alias_type% cuentas
-    alias
-  alias-deletion-custom: Contáctanos para poder borrar tu cuenta
-  alias-deletion-random: En cuanto borres tu viejas cuentas, puedes crear nuevas.
-  alias-empty: No tienes ninguna cuenta alias %alias_type% definida.
-  delete-headline: Borrar cuenta
-  delete-description: "Puedes borrar tu %project_name% cuenta de e-mail. Esto eliminará\
-    \ todo tus correos electrónicos. <strong>Una vez borrados no será posible recuperarlos</strong>\
-    \ <br /><br /> Para borrar tu cuenta, es necesario que introduzcas tu contraseña\
-    \ actual.\n"
-  delete-button: Borrar cuenta
-  recovery-token-button: Configurar token de recuperación
+    Usa tus códigos de invitación para invitar a amigos aquí. Por defecto, tienes tres invitaciones disponibles. Si necesitas invitar a más, por favor contacta a los administradores. Almacenamos los datos de invitación por un tiempo limitado para protegernos contra abusos.
+  alias-subtitle: Gestiona tus alias de e-mail
+  alias-headline: Tus direcciones alias %alias_type%
+  alias-limit: Has alcanzado el límite permitido de %alias_limit% direcciones alias %alias_type%.
+  alias-limit-reached: Límite alcanzado
+  alias-deletion-custom: Escríbenos para que se eliminen las direcciones.
+  alias-deletion-random: Tan pronto como elimines direcciones antiguas, puedes crear nuevas de nuevo.
+  alias-empty: No tienes ninguna dirección alias %alias_type% definida.
+  alias-custom-description: Crea direcciones de e-mail personalizadas con tu propio nombre
+  alias-custom-create: Crear nuevo alias personalizado
+  alias-random-description: Genera direcciones de e-mail aleatorias automáticamente
+  alias-random-generate: Generar nuevo alias aleatorio
+  alias-active-custom: Alias personalizados activos
+  alias-active-random: Alias aleatorios activos
+  alias-info-title: Notas importantes sobre los alias de e-mail
+  alias-info-custom: "<strong>Alias personalizados:</strong> Elige tu propio nombre para tu dirección de e-mail"
+  alias-info-random: "<strong>Alias aleatorios:</strong> Direcciones generadas automáticamente para más anonimato"
+  alias-info-limits: "<strong>Límites:</strong> Máximo %alias_limit_custom% alias personalizados y %alias_limit_random% aleatorios"
+  alias-info-management: "<strong>Gestión:</strong> Elimina los alias no utilizados para hacer espacio para los nuevos"
+  delete-headline: Eliminar cuenta
+  delete-description: >
+    Puedes eliminar tu cuenta de e-mail de %project_name%. Esto eliminará todos tus e-mails. <strong>No es posible una recuperación en una fecha posterior.</strong> <br /><br />Para eliminar tu cuenta necesitas enviar tu contraseña actual.
+  delete-button: Eliminar cuenta
+  recovery-token-button: Gestionar token de recuperación
   logged_in_as: Has iniciado sesión como %user%.
-  alias-explanation: |
-    <p>
-      Usa tu cuenta alias para proteger tu cuenta de e-mail principal de personas
-      que no conoces o compañías en las que no confías.
-    </p>
-    <p>
-      <ul>
-        <li>Todos los correos enviados a tus cuentas alias serán dirigidos
-         a tu cuenta de e-mail principal </li>
-        <li>Para enviar e-mails desde una cuenta alias,
-        tienes que configurar manualmente tu programa de e-mail.</li>
-        <li>Puedes tener %alias_limit_custom% cuentas alias personalizadas</li>
-        <li>Puedes tener %alias_limit_random% cuentas alias aleatorias.</li>
-        <li>Cuentas alias aleatorias están pensadas para ser usadas con un solo propósito,
-        como forma de evitar tracking entre diferentes servicios o plataformas.</li>
-        <li>Ponte en contacto con nosotros para borrar tus cuentas alias.</li>
-      </ul>
-    </p>
+
 form:
   title: Registrarse
-  signin-header: Crear sesión
+  signin-header: Iniciar sesión
+  signin-subtitle: Bienvenido de nuevo a tu cuenta
   register-header: Crear cuenta
-  email: E-Mail
+  email: E-mail
+  email-help: Introduce tu dirección de e-mail
   password: Contraseña
+  password-help: Introduce tu contraseña
   password_confirmation: Confirmar contraseña
-  remember-me: Mantener la sesión abierta
+  remember-me: Mantener la sesión iniciada
   signin: Iniciar sesión
-  recovery-link: ¿Olvidaste tu contraseña?
+  recovery-link: ¿Contraseña olvidada?
+  auth-failed: Autenticación fallida
+  errors-found: Por favor corrige los siguientes errores
+  no-account: ¿No tienes una cuenta?
+  have-account: ¿Ya tienes una cuenta?
+  create-account: Crea una aquí
   roles: Roles
   submit: Enviar
-  voucher: Código amigo
-  voucher-redeemed-on: Usado el
+  voucher: Código de invitación
+  voucher-redeemed-on: Canjeado el
   oclock-by: por
   actual-password: Contraseña actual
-  new-custom-alias: Nueva cuenta alias
+  new-custom-alias: Nueva dirección alias
   plain-password: Nueva contraseña
   plain-password_confirmation: Confirmar nueva contraseña
   change-password: Cambiar tu contraseña
-  delete-account: Borrar cuenta
+  delete-account: Eliminar cuenta
   delete-password: Contraseña
-  create-voucher: Crear código amigo
-  create-custom-alias: Crear
-  create-random-alias: Generar cuenta alias aleatoria
-  delete-alias: Borrar cuenta alias
+  create-voucher: Crear código de invitación
+  create-custom-alias: Añadir
+  create-random-alias: Generar dirección alias aleatoria
+  delete-alias: Eliminar dirección alias
   generate-recovery-token: Crear nuevo token de recuperación
   recovery-token: Token de recuperación
   recovery-start: Recuperar
-  registration-recovery-token-ack: He guardado mi token de recuperación en un lugar
-    seguro.
+  registration-recovery-token-ack: He guardado el token de recuperación en un lugar seguro
   registration-recovery-token-next-button: Continuar
-  domain: ''
-  openpgp-key-text-placeholder: ''
-  openpgp-key-file-mimetype: ''
-  openpgp-key-upload-or: ''
-  openpgp-delete: ''
-  openpgp-key-select-one: ''
-  openpgp-key-file: ''
-  openpgp-key-submit: ''
-  openpgp-key-text: ''
-  add: ''
+  domain: Dominio
+  add: Añadir
+
+openpgp:
+  key-file: "Sube tu archivo de clave:"
+  key-file-mimetype: El archivo subido no contiene datos OpenPGP.
+  upload-or: o
+  key-text: "Pega tu clave como texto:"
+  key-text-placeholder: Clave OpenPGP en formato ASCII
+  select-one: Por favor, sube la clave como archivo o como texto ASCII.
+  submit: Publicar clave OpenPGP
+  delete: Eliminar clave OpenPGP
+  delete-button: Eliminar clave OpenPGP
+  information: Información
+  information-details: Si subes tu clave OpenPGP aquí, se publicará en nuestro <i><a target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key Directory</a></i>. De este modo, ayudas a tus amigos a descubrir tu clave de forma automática y segura.
+  keyid-label: "ID de la clave:"
+  fingerprint-label: "Huella dactilar:"
+  expiretime-label: "Fecha de caducidad:"
+  no-expiration: "Sin fecha de caducidad (válida indefinidamente)"
+  manage-subtitle: Gestiona tu clave OpenPGP
+  current-key: Clave OpenPGP actual
+  no-key-uploaded: Aún no se ha subido ninguna clave OpenPGP
+  upload-prompt: Sube una clave usando el formulario de la derecha
+
 recovery:
   header: Recuperar tu cuenta
-  lead: Resetear tu contraseña usando el token de recuperación
+  lead: Restablecer la contraseña usando tu token de recuperación
   cancel: Cancelar
-  started: |
-    ¡Ya casi lo lograste! El primer paso para resetear tu contraseña esta hecho.
-    En 48 horas,el segundo paso empezará y podrás elegir tu nueva contraseña.
-    Por favor guarda tu token de recuperación hasta entonces.
-  waiting-info: El periodo de espera es para tu propia seguridad y no puede ser omitido
-    o reducido.
-  waiting-time: Segundo paso empieza en %time%.
-  reset-lead: Ahora puedes resetear tu contraseña.
-  token-lead: Nuevo token de recuperación.
+  started: "El primer paso para restablecer tu contraseña está hecho. Ahora espera 48 horas. Después, puedes establecer una nueva contraseña en el segundo paso. Por favor, guarda tu token de recuperación hasta entonces."
+  waiting-info: El período de espera es por tu propia seguridad y no puede ser acortado ni omitido.
+  waiting-time: El segundo paso comienza a las %time%.
+  reset-lead: Ahora puedes restablecer tu contraseña
+  token-lead: Nuevo token de recuperación
+
 navbar_left:
   about-us:
-    text: Nosotros
-    link: https://www.example.org/en/about-us
+    text: Sobre nosotros
+    link: https://www.example.org/es/about-us
+
 navbar_right:
   login: Iniciar sesión
   logout: Cerrar sesión
-  admin: Administrador
+  admin: Admin
+
 registration:
-  title: Registro con %project_name%
+  title: Registrarse en %project_name%
   information: Información
   information-intro: >
-    ¿Te gustaría crear una cuenta de e-mail con <a href="%project_url%">%project_name%</a>?
-    Los registros son solo posibles con invitación de amigos que ya usen el servicio
-    por medio del uso de códigos- amigos.
+    ¿Te gustaría registrar una cuenta de e-mail con <a href="%project_url%">%project_name%</a>? Solo permitimos registros si un amigo te invita con un código de invitación a nuestros servicios.
   information-password-policy: >
-    <strong>Importante:</strong> Tu contraseña de contar con al menos 12 caracteres.
-  label-email: La cuenta de correo que prefieras
+    <strong>Política de contraseñas:</strong> Al menos 12 caracteres, sin umlauts alemanes. Las contraseñas se probarán contra una <a href="https://haveibeenpwned.com/Passwords">base de datos de contraseñas conocidas no seguras</a>.
+  label-email: Tu dirección de e-mail preferida
   recovery-token-headline: Token de recuperación
+
 welcome:
-  headline: Bienvenido a %project_name%!
-  lead: As creado tu cuenta de correo con nosotros satisfactoriamente!
-  next-button: Tus próximos pasos.
-  text: "<h3>Ready to go</h3> <p>En nuestra web puedes en encontrar guías para instalar\
-    \ tu cuenta de e-mail en diferentes programas de gestión de e-mail.</p> <p>En\
-    \ una semana recibirás tres códigos amigo. Los encontrarás en <a href=\"%app_url%\"\
-    >%app_url%</a>. Estos códigos sirven para invitar amigos a usar %project_name%.</p>\n"
+  headline: ¡Bienvenido a %project_name%!
+  lead: Has configurado una cuenta con nosotros con éxito. ¿Cuáles son los siguientes pasos?
+  next-button: Al resumen
+  text: >
+    <h3>Listo para empezar</h3> <p>En la web puedes encontrar guías para configurar tu cuenta de e-mail con varios programas cliente.</p> <p>En una semana recibirás tres códigos de invitación, que puedes recoger en <a href="%app_url%">%app_url%</a>. Puedes pasárselos a tus amigos e invitarlos a registrarse en %project_name%.</p>
+
 closed:
-  title: Registro ha cerrado
-  headline: Hemos cerrado el registro de cuentas.
-  lead: De acuerdo con el párrafo 3 de las normativa de Telecomunicaciones TKÜV hemos
-    decidido mantener un limite de 10.000 registros posibles. Lamentamos los inconvenientes.
-  text: ''
+  title: Registro cerrado
+  headline: Registro cerrado
+  lead: Debido al párrafo tres de TKÜV decidimos cerrar nuestro Registro. Disculpa las molestias.
+  text: >
+    <p>Debido al <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">párrafo tres de "Verordnung über die technische und organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (abreviado: decreto de vigilancia de las telecomunicaciones - "TKÜV"), los proveedores de e-mail con más de 10.000 usuarios están obligados a implementar una interfaz de vigilancia para las autoridades. Es por eso que decidimos bloquear el registro y no permitir la creación de nuevas cuentas.<p> <p><strong>Las cuentas existentes no se ven afectadas</strong></p>
+
 delete:
   alias:
-    headline: Borrar cuenta alias %alias%
-    lead: Es necesario verificar tu contraseña para borrar tu cuenta alias.
+    headline: Eliminar dirección alias %alias%
+    headline_generic: Eliminar dirección alias
+    lead: Necesitamos verificar tu contraseña para eliminar tu dirección alias.
+    lead_specific: >
+      ¿Estás seguro de que quieres eliminar <strong>%alias%</strong>? La dirección será eliminada permanentemente.
+    delete: Eliminar alias
   user:
-    headline: Borrar cuenta
-    lead: Es necesario verificar tu contraseña para borrar tu cuenta.
+    headline: Eliminar cuenta
+    lead: Necesitamos verificar tu contraseña para eliminar tu cuenta.
   openpgp:
-    lead: ''
-    headline: ''
-  cancel: ''
+    headline: Eliminar clave OpenPGP
+    lead: Necesitamos verificar tu contraseña para eliminar tu clave OpenPGP del Web Key Directory.
+  cancel: Cancelar
+
 recovery-token:
-  headline: Configurar token de recuperación
-  lead: El token de recuperación puede ser usado para recuperar tu contraseña.
-  set: Ya tienes un token de recuperación.
-  set-extra: Crear un nuevo token de recuperación invalidará el que ya tienes.
-  unset: Aún no cuentas con un token de recuperación. Te recomendamos que crees uno.
-  created-headline: 'El siguiente token de recuperación fue creado para ti:'
+  headline: Gestionar token de recuperación
+  lead: El token de recuperación se puede usar para restablecer tu contraseña si la olvidas.
+  set: Ya tienes un token de recuperación establecido.
+  set-extra: Crear un nuevo token invalidará el actual.
+  unset: Aún no tienes un token de recuperación establecido. Te recomendamos encarecidamente que crees uno ahora.
+  created-headline: "Se ha creado el siguiente token de recuperación para ti:"
   created-info: >
-    Si olvidas tu contraseña, el token de recuperación te permitirá resetear uno nuevo.
-    Guardalo en un lugar seguro.
+    Si perdiste tu contraseña, el token de recuperación te permite restablecer una nueva. Anótalo y guárdalo en un lugar seguro.
   displayed-once: >
-    Por razones de seguridad, el token de recuperación se mostrará una sola vez. El
-    token desconocido por nosotros y por ello no podemos recuperarlo para ti.
+    Por razones de seguridad, el token de recuperación se muestra solo una vez. No podemos recuperar este token por ti.
+
 flashes:
-  logout-successful: ¡Tu sesión ha sido cerrada!
-  password-change-successful: ¡Tu nueva contraseña está activa!
-  registration-successful: ¡Tu registro se completó satisfactoriamente!
-  voucher-creation-successful: ¡Has creado un nuevo código amigo!
-  alias-creation-successful: ¡Tu nueva cuenta alias ha sido creada!
-  alias-deletion-successful: ¡Tu nueva cuenta alias fue borrada con éxito!
-  recovery-token-invalid: ¡Tu cuenta de correo y/o token de seguridad son incorrectos!
-  recovery-token-ack: ¡Has generado un nuevo token de seguridad!
-  revocery-reauthenticate: ¡Algo salió mal. Por favor vuelve a autentificarte!
-  recovery-password-changed: ¡Tu contraseña ha sido cambiada!
-  recovery-next-login: Sigue con el inicio de sesión.
-  openpgp-key-upload-error-no-keys: ''
-  openpgp-key-upload-successful: ''
-  openpgp-key-upload-error-multiple-keys: ''
-  openpgp-deletion-successful: ''
-  openpgp-key-upload-error-no-openpgp: ''
-flash_batch_remove_vouchers_success: Los códigos amigo han sido desactivados satisfactoriamente.
+  logout-successful: Has cerrado la sesión.
+  password-change-successful: ¡Tu nueva contraseña ya está activa!
+  registration-successful: Ya estás registrado.
+  voucher-creation-successful: Nuevo código de invitación creado.
+  alias-creation-successful: Se ha creado tu nueva dirección alias.
+  alias-deletion-successful: Se ha eliminado tu dirección alias.
+  recovery-token-invalid: ¡La dirección de e-mail y/o el token de recuperación son incorrectos!
+  recovery-token-ack: Has generado un token de recuperación.
+  recovery-reauthenticate: ¡Algo salió mal. Por favor, vuelve a autenticarte!
+  recovery-password-changed: Has cambiado tu contraseña.
+  recovery-next-login: Continúa con el inicio de sesión.
+  openpgp-deletion-successful: Tu clave OpenPGP fue eliminada.
+  openpgp-key-upload-successful: Tu clave OpenPGP se ha subido.
+  openpgp-key-upload-error-no-openpgp: El archivo subido no contiene datos OpenPGP.
+  openpgp-key-upload-error-no-keys: No se encontraron claves para tu dirección de correo en los datos subidos.
+  openpgp-key-upload-error-multiple-keys: Se encontró más de una clave para tu dirección de correo en los datos subidos. Por favor, sube solo una clave.
+
+flash_batch_remove_vouchers_success: Códigos de invitación no canjeados eliminados.
+
 error:
-  title: Oops, algo salió mal.
-  back_link: Volver a homepage
-  page_not_found: Esta página no existe
-  generic_error: Algo salió mal. Lo sentimos.
+  title: Vaya, ha ocurrido un error.
+  back_link: Volver a inicio
+  page_not_found: La página que solicitaste no existe.
+  generic_error: Ha ocurrido un error. Lo sentimos.
+
 spam:
-  title: Cuenta boqueada
-  text: |
-    ¡Oh no! Creemos que tu cuenta a sido atacada por spammers.
-    Por ello, desactivamos el acceso de e-mails.
-    Por favor contáctanos para desbloquear tu cuenta.
-Bad credentials.: Detalles de inicio de sesión incorrectos.
+  title: Cuenta bloqueada
+  text: "¡Oh no! Creemos que tu cuenta ha sido utilizada indebidamente por un spammer. El acceso al e-mail ha sido desactivado. Por favor, contacta con el soporte para desbloquear tu cuenta."
+
+Bad credentials.: La contraseña presentada no es válida.
 custom: personalizada
 random: aleatoria
+
 mail:
   welcome-subject: Bienvenido a %domain%
   welcome-body: |
-    Querido usuario,
+    Estimado usuario,
 
-    Bienvenido a bordo. Aquí puedes encontrar guías para instalar tu cuenta de e-mail
-    and diferentes programas de gestión de e-mail.
+    Bienvenido a bordo. Puedes encontrar guías para configurar tu cuenta de e-mail con varios programas cliente en Internet.
 
-    Cuentas con una capacidad de 1GB en tu mailbox. Si pasas este límite,
-    tu cuenta puede reportar problemas de funcionamiento.
+    Obtienes un buzón con una cuota de 1 GB. Si excedes tu límite, tu cuenta de e-mail podría no funcionar correctamente.
 
-    En una semana recibirás tres códigos amigo.Los encontrarás en
-    %app_url%/voucher. Estos códigos sirven para invitar amigos a
-    usar %project_name%.
+    En una semana recibirás tres códigos de invitación, que puedes recoger en %app_url%/voucher. Puedes pasárselos a tus amigos e invitarlos a registrarse en %project_name%.
 
-    Saludos cordiales, el equipo de administración de %project_name%.
-  recovery-subject: La contraseña para tu cuenta de e-mail %email%será reseteada.
+    Atentamente,
+    tu equipo de administración de %project_name%.
+  recovery-subject: La contraseña de tu cuenta de e-mail %email% será restablecida
   recovery-body: |
     Hola %email%,
 
-    Alguien ha intentado resetear tu contraseña. Para ello, se han autentificado
-    con tu cuenta de e-mail y el token de seguridad en %app_url%/recovery.
+    Se ha intentado restablecer la contraseña de tu cuenta autenticándose con tu dirección de e-mail y el código de recuperación correspondiente en %app_url%/recovery.
 
-    ¿No fuiste tu? entonces alguien mas con acceso a tu token de seguridad ha estado intentado
-    tomar control de tu cuenta. Por favor entra a %app_url%/user/recovery_token de inmediato y
-    crea un nuevo token de recuperación. De esta manera el antiguo token quedará invalidado.
+    Si no fuiste tú, entonces alguien más con acceso to tu token de recuperación intentó apoderarse de tu cuenta. Ve a %app_url%/user/recovery_token inmediatamente y crea un nuevo token de recuperación. Esto invalidará el antiguo token de recuperación y detendrá el proceso.
 
-    Si fuiste tu quien inicio el proceso, las 48 horas de espera empezaron.
-    Este tiempo terminara en %time%. Luego, vas a poder configurar tu nueva contraseña
-    entrando a %app_url%/recovery.
+    Si tú mismo iniciaste el proceso, el período de espera de 48 horas ha comenzado ahora. Terminará a las %time%. Después, puedes establecer una nueva contraseña en %app_url%/recovery.
 
-    Esperamos que estés disfrutando tu cuenta de e-mail.
-
-    El equipo de %project_name%.
-  alias-created-subject: Nueva cuenta alias creada
+    Esperamos que sigas disfrutando de tu cuenta de e-mail.
+    Tu equipo de administración de %project_name%.
+  alias-created-subject: Nueva dirección alias creada
   alias-created-body: |
-    Hello %email%,
+    Hola %email%,
 
-    Una nueva cuenta alias ha sido creada para tu cuenta de e-mail %email%:
+    Para tu dirección de e-mail %email% se ha añadido un nuevo alias:
     %alias%
 
-    Configura tu cuenta alias aqui: %app_url%/alias
+    Gestiona tus alias de e-mail aquí: %app_url%/alias
 
-    Esperamos que estes disfrutando tu cuenta de e-mail.
-    El equipo de %project_name%.
-copy-to-clipboard: Copiar en el portapapeles
-init_domain:
-  text: ''
-  lead: ''
-openpgp:
-  information: ''
-  fingerprint-label: ''
-  keyid-label: ''
-  expiretime-label: ''
-  key-info: ''
-  information-details: ''
-  delete-button: ''
-Voucher: ''
-init.title: ''
-Reserved Name: ''
-Domain: ''
-User: ''
-init_user:
-  text: ''
-  lead: ''
-Ratio: ''
+    Esperamos que sigas disfrutando de tu cuenta de e-mail.
+    Tu equipo de administración de %project_name%.
+
 admin:
-  registered-accounts: ''
-  invite-codes-redeemed: ''
-  invite-codes: ''
-  registered-accounts-last-week: ''
-Alias: ''
+  registered-accounts: Cuentas registradas
+  registered-accounts-last-week: Cuentas registradas en los últimos 7 días
+  invite-codes: Códigos de invitación existentes
+  invite-codes-redeemed: Códigos de invitación canjeados
+
+Ratio: Ratio
+User: Usuario
+Domain: Dominio
+Alias: Dirección alias
+Voucher: Código de invitación
+Reserved Name: Nombre reservado
+copy-to-clipboard: Copiar al portapapeles
+
+alias:
+  delete: Eliminar alias
+
+init.title: Creando configuración inicial
+
+init_domain:
+  lead: Gracias por instalar Userli. Actualmente, no hay dominios ni cuentas presentes.
+  text: Por favor, elige tu dominio principal, que Userli debe gestionar.
+
+init_user:
+  lead: Has creado tu dominio principal.
+  text: "Los estándares de e-mail requieren que la cuenta postmaster@%domain% esté presente. Por favor, elige una contraseña para esta primera cuenta de administrador e inicia sesión después."
+
+# Streamlined alias page structure
+index.alias-motivation: "Crea alias de correo personalizados para organizar mejor tu bandeja de entrada y proteger tu privacidad."
+
+custom-aliases.title: "Alias personalizados"
+custom-aliases.subtitle: "Crear hasta %alias_limit_custom% alias personalizados"
+custom-aliases.feature-choose-name: "Elige tu propio nombre de alias memorable"
+custom-aliases.feature-easy-remember: "Fácil de recordar y compartir con otros"
+custom-aliases.limitation-permanent: "No se pueden eliminar una vez creados"
+custom-aliases.limitation-limited: "Limitado a %alias_limit_custom% alias en total"
+custom-aliases.management-hint: "<strong>Consejo:</strong> Elige tus alias personalizados cuidadosamente ya que no se pueden eliminar más tarde."
+
+random-aliases.title: "Alias aleatorios"
+random-aliases.subtitle: "Generar hasta %alias_limit_random% alias aleatorios"
+random-aliases.feature-secure: "Nombres seguros generados automáticamente"
+random-aliases.feature-privacy: "Perfecto para compras en línea y registros"
+random-aliases.feature-deletable: "Se pueden eliminar en cualquier momento cuando ya no se necesiten"
+random-aliases.limitation-random-name: "Nombres aleatorios más difíciles de recordar"
+random-aliases.management-hint: "<strong>Consejo:</strong> Elimina los alias aleatorios no utilizados para hacer espacio para nuevos."

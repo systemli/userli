@@ -1,11 +1,122 @@
 {% block form_errors %}
     {% apply spaceless %}
         {% if errors|length > 0 %}
-            <div class="alert alert-danger small">
-                {% for error in errors %}
-                    <p>{{ error.message }}</p>
-                {% endfor %}
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                <div class="flex">
+                    <svg class="w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                    </svg>
+                    <div class="text-sm text-red-800">
+                        {% for error in errors %}
+                            <p{% if not loop.last %} class="mb-1"{% endif %}>{{ error.message }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         {% endif %}
     {% endapply %}
 {% endblock form_errors %}
+
+{% block form_label %}
+    {% if label is not same as(false) %}
+        {% if not compound %}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {% endif %}
+        {% if required %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+        {% endif %}
+        {% if label is empty %}
+            {%- if label_format is not empty -%}
+                {% set label = label_format|replace({'%name%': name, '%id%': id}) %}
+            {%- else -%}
+                {% set label = name|humanize %}
+            {%- endif -%}
+        {% endif %}
+        <label{% if label_attr %} {% set attr = label_attr %}{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}{% endif %}>
+            {{ label|trans({}, translation_domain) }}
+            {% if required %}
+                <span class="text-red-500 ml-1">*</span>
+            {% endif %}
+        </label>
+    {% endif %}
+{% endblock form_label %}
+
+{% block form_widget_simple %}
+    {% set type = type|default('text') %}
+    {% set suffix = attr.suffix|default('') %}
+
+    {% if suffix is not empty %}
+        {# Input with suffix #}
+        <div class="w-full flex rounded-md shadow-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 transition-colors">
+            <input type="{{ type }}"
+                   id="{{ id }}"
+                   name="{{ full_name }}"
+                   class="flex-1 min-w-0 px-3 py-3 border border-gray-300 rounded-l-md border-r-0 focus:outline-none focus:ring-0 focus:border-gray-300 text-sm"
+                   {% if value is not empty %}value="{{ value }}"{% endif %}
+                   {% if required %}required{% endif %}
+                   {% if disabled %}disabled{% endif %} />
+            <span class="inline-flex items-center px-3 py-3 border-t border-b border-r border-gray-300 bg-gray-50 text-gray-500 text-sm rounded-r-md whitespace-nowrap">
+                {{ suffix }}
+            </span>
+        </div>
+    {% else %}
+        {# Normal input without suffix #}
+        {% set attr = attr|merge({
+            'class': (attr.class|default('') ~ ' w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200')|trim
+        }) %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {% endif %}
+{% endblock form_widget_simple %}
+
+{% block password_widget %}
+    {% set type = type|default('password') %}
+    {% set attr = attr|merge({
+        'class': (attr.class|default('') ~ ' w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200')|trim
+    }) %}
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{% endblock password_widget %}
+
+{% block email_widget %}
+    {% set type = type|default('email') %}
+    {% set attr = attr|merge({
+        'class': (attr.class|default('') ~ ' w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200')|trim
+    }) %}
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{% endblock email_widget %}
+
+{% block textarea_widget %}
+    {% set attr = attr|merge({
+        'class': (attr.class|default('') ~ ' w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 resize-y')|trim
+    }) %}
+    <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
+{% endblock textarea_widget %}
+
+{% block checkbox_widget %}
+    {% set attr = attr|merge({
+        'class': (attr.class|default('') ~ ' h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500')|trim
+    }) %}
+    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+{% endblock checkbox_widget %}
+
+{% block button_widget %}
+    {% if label is empty %}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({'%name%': name, '%id%': id}) %}
+        {%- elseif label is same as(false) -%}
+            {% set label = false %}
+        {%- else -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+    {% endif %}
+    {% set attr = attr|merge({
+        'class': (attr.class|default('') ~ ' px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed')|trim
+    }) %}
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>
+        {% if label is not same as(false) %}{{ label|trans({}, translation_domain) }}{% endif %}
+    </button>
+{% endblock button_widget %}
+
+{% block submit_widget %}
+    {% set type = type|default('submit') %}
+    {{ block('button_widget') }}
+{% endblock submit_widget %}

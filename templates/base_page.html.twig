@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="min-h-[calc(100vh-8rem)] py-6 sm:py-8">
+        <div class="max-w-6xl mx-auto px-4">
+            {# Standard page header #}
+            <div class="mb-8 sm:mb-12">
+                <div class="text-center">
+                    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+                        {% block page_title %}{% endblock %}
+                    </h1>
+                    {% if block('page_subtitle') is not empty %}
+                        <div>
+                            <p class="text-lg text-gray-600 max-w-3xl mx-auto font-medium">
+                                {% block page_subtitle %}{% endblock %}
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# Main content area #}
+            {% block page_content %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

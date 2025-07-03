@@ -17,7 +17,6 @@ updates:
     allow:
       - dependency-name: "endroid/qr-code"
       - dependency-name: "ircmaxell/password-compat"
-      - dependency-name: "mopa/bootstrap-bundle"
       - dependency-name: "nelmio/security-bundle"
       - dependency-name: "pear/crypt_gpg"
       - dependency-name: "ramsey/uuid"

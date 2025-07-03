@@ -1,28 +1,69 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_page.html.twig' %}
 
-{% block subtitle %}{{ "form.twofactor-login"|trans }}{% endblock %}
+{% block page_title %}{{ "form.twofactor-login"|trans }}{% endblock %}
 
-{% block content %}
+{% block page_subtitle %}{{ "form.twofactor-login-desc"|trans }}{% endblock %}
 
-    <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
-            <h2 class="form-signin-heading">{{ "form.twofactor-login"|trans }}</h2>
-            {% if authenticationError %}
-                <div class="alert alert-danger" role="alert">{{ authenticationError|trans(authenticationErrorData, 'SchebTwoFactorBundle') }}</div>
+{% block page_content %}
+    <div>
+        {% if authenticationError %}
+            <div class="mb-6 p-4 rounded-lg bg-red-50 border border-red-200" role="alert" aria-live="polite">
+                <div class="flex items-start">
+                    <svg class="w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                    </svg>
+                    <div>
+                        <p class="text-sm text-red-700">{{ authenticationError|trans(authenticationErrorData, 'SchebTwoFactorBundle') }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <form method="post" action="{{ checkPathUrl ? checkPathUrl : path(checkPathRoute) }}" class="space-y-6">
+            <div>
+                <label for="_auth_code" class="block text-sm font-medium text-gray-700 mb-2">
+                    {{ "form.twofactor-login-auth-code"|trans }}
+                    <span class="text-red-500" aria-label="required">*</span>
+                </label>
+                <div class="relative">
+                    <input
+                        type="text"
+                        id="_auth_code"
+                        name="{{ authCodeParameterName }}"
+                        autocomplete="off"
+                        required
+                        autofocus
+                        placeholder="{{ "form.twofactor-login-placeholder"|trans }}"
+                        class="block w-full px-3 py-3 sm:px-4 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 text-sm sm:text-sm{% if authenticationError %} border-red-300{% endif %}"
+                        {% if authenticationError %}aria-invalid="true"{% endif %}
+                    >
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            {% if isCsrfProtectionEnabled %}
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token(csrfTokenId) }}">
             {% endif %}
 
-            <form class="form" role="form" action="{{ checkPathUrl ? checkPathUrl : path(checkPathRoute) }}" method="post">
-                <label for="_auth_code">{{ "form.twofactor-login-auth-code"|trans }}</label>
-                <input type="text" id="_auth_code" name="{{  authCodeParameterName }}" autocomplete="off" class="form-control" autofocus="" placeholder="{{ "form.twofactor-login-placeholder"|trans }}" />
+            <div class="flex flex-col space-y-4">
+                <button
+                    type="submit"
+                    class="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    {{ "form.verify"|trans() }}
+                </button>
 
-                {% if isCsrfProtectionEnabled %}
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token(csrfTokenId) }}">
-                {% endif %}
-                <span class="help-block">{{ "form.twofactor-login-desc"|trans }}</span>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">{{ "form.verify"|trans() }}</button>
-                <a class="btn btn-lg btn-secondary btn-block" href="{{ logoutPath }}">{{ "form.twofactor-login-cancel"|trans() }}</a>
-            </form>
-        </div>
+                <a
+                    href="{{ logoutPath }}"
+                    class="w-full flex justify-center py-3 px-4 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+                >
+                    {{ "form.twofactor-login-cancel"|trans() }}
+                </a>
+            </div>
+        </form>
     </div>
-
 {% endblock %}

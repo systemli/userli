@@ -1,0 +1,181 @@
+{% set current_route = app.request.get('_route') %}
+
+{# Floating Navigation Bar #}
+<div class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-7xl px-4">
+    <nav class="bg-gray-900/95 backdrop-blur-md border border-gray-700/50 rounded-3xl shadow-2xl">
+        <div class="flex items-center h-16 px-4 lg:px-6">
+            {# Brand/Logo - Always left #}
+            <div class="flex items-center">
+                <a class="text-white font-bold text-lg hover:text-gray-200 transition-all duration-300 hover:scale-105"
+                   href="{{ path('start') }}">
+                    {{ project_name }}
+                </a>
+            </div>
+
+            {# Centered Navigation Items (when authenticated) #}
+            {% if app.user %}
+                {# Desktop Navigation (xl screens) #}
+                {% include '_navbar_desktop.html.twig' %}
+
+                {# Tablet Navigation (md to xl screens) #}
+                {% include '_navbar_tablet.html.twig' %}
+            {% endif %}
+
+            {# Right side navigation - User menu / Login #}
+            {% include '_navbar_user_menu.html.twig' %}
+        </div>
+
+        {# Mobile menu (only when authenticated) #}
+        {% if app.user %}
+            {% include '_navbar_mobile.html.twig' %}
+        {% endif %}
+    </nav>
+</div>
+
+{# Add padding to body to account for floating navbar #}
+<div class="h-20"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Desktop user dropdown functionality
+    const userMenu = document.getElementById('user-menu');
+    const userMenuButton = document.getElementById('user-menu-button');
+    const userMenuDropdown = document.getElementById('user-menu-dropdown');
+    const userMenuArrow = document.getElementById('user-menu-arrow');
+
+    if (userMenu && userMenuButton && userMenuDropdown && userMenuArrow) {
+        let isUserMenuOpen = false;
+
+        function openUserMenu() {
+            isUserMenuOpen = true;
+            userMenuDropdown.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+            userMenuDropdown.classList.add('opacity-100', 'scale-100');
+            userMenuArrow.classList.add('rotate-180');
+            userMenuButton.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeUserMenu() {
+            isUserMenuOpen = false;
+            userMenuDropdown.classList.remove('opacity-100', 'scale-100');
+            userMenuDropdown.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+            userMenuArrow.classList.remove('rotate-180');
+            userMenuButton.setAttribute('aria-expanded', 'false');
+        }
+
+        function toggleUserMenu() {
+            if (isUserMenuOpen) {
+                closeUserMenu();
+            } else {
+                openUserMenu();
+            }
+        }
+
+        userMenuButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleUserMenu();
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!userMenu.contains(e.target)) {
+                closeUserMenu();
+            }
+        });
+
+        // Close dropdown on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isUserMenuOpen) {
+                closeUserMenu();
+                userMenuButton.focus();
+            }
+        });
+    }
+
+    // Mobile user dropdown functionality
+    const mobileUserMenu = document.getElementById('mobile-user-menu');
+    const mobileUserMenuButton = document.getElementById('mobile-user-menu-button');
+    const mobileUserMenuDropdown = document.getElementById('mobile-user-menu-dropdown');
+    const mobileUserMenuArrow = document.getElementById('mobile-user-menu-arrow');
+
+    if (mobileUserMenu && mobileUserMenuButton && mobileUserMenuDropdown && mobileUserMenuArrow) {
+        let isMobileUserMenuOpen = false;
+
+        function openMobileUserMenu() {
+            isMobileUserMenuOpen = true;
+            mobileUserMenuDropdown.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+            mobileUserMenuDropdown.classList.add('opacity-100', 'scale-100');
+            mobileUserMenuArrow.classList.add('rotate-180');
+            mobileUserMenuButton.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeMobileUserMenu() {
+            isMobileUserMenuOpen = false;
+            mobileUserMenuDropdown.classList.remove('opacity-100', 'scale-100');
+            mobileUserMenuDropdown.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+            mobileUserMenuArrow.classList.remove('rotate-180');
+            mobileUserMenuButton.setAttribute('aria-expanded', 'false');
+        }
+
+        function toggleMobileUserMenu() {
+            if (isMobileUserMenuOpen) {
+                closeMobileUserMenu();
+            } else {
+                openMobileUserMenu();
+            }
+        }
+
+        mobileUserMenuButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleMobileUserMenu();
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!mobileUserMenu.contains(e.target)) {
+                closeMobileUserMenu();
+            }
+        });
+
+        // Close dropdown on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isMobileUserMenuOpen) {
+                closeMobileUserMenu();
+                mobileUserMenuButton.focus();
+            }
+        });
+    }
+
+    // Mobile menu functionality
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuIconOpen = document.getElementById('mobile-menu-icon-open');
+    const mobileMenuIconClose = document.getElementById('mobile-menu-icon-close');
+
+    if (mobileMenuButton && mobileMenu && mobileMenuIconOpen && mobileMenuIconClose) {
+        let isMobileMenuOpen = false;
+
+        function toggleMobileMenu() {
+            isMobileMenuOpen = !isMobileMenuOpen;
+
+            if (isMobileMenuOpen) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenuIconOpen.classList.add('hidden');
+                mobileMenuIconClose.classList.remove('hidden');
+                mobileMenuButton.setAttribute('aria-expanded', 'true');
+            } else {
+                mobileMenu.classList.add('hidden');
+                mobileMenuIconOpen.classList.remove('hidden');
+                mobileMenuIconClose.classList.add('hidden');
+                mobileMenuButton.setAttribute('aria-expanded', 'false');
+            }
+        }
+
+        mobileMenuButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            toggleMobileMenu();
+        });
+    }
+});
+</script>

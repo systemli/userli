@@ -1,54 +1,54 @@
-{% extends '@MopaBootstrap/base.html.twig' %}
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ domain }} - {{ "index.title"|trans }}{% endblock %}</title>
 
-{% from '@MopaBootstrap/flash.html.twig' import session_flash %}
+    {% block head_style %}
+        <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    {% endblock %}
 
-{% block head_style %}
-    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
-{% endblock %}
+    {% block head_script %}
+        <script src="{{ asset('build/app.js') }}"></script>
+    {% endblock %}
+</head>
+<body>
+    {% block navbar %}
+        {% include '_navbar.html.twig' %}
+    {% endblock %}
 
-{% block head_script %}
-    <script src="{{ asset('build/app.js') }}"></script>
-{% endblock %}
+    {% block container %}
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            {% block flashes %}
+                {% include '_flashes.html.twig' %}
+            {% endblock flashes %}
 
-{% block title %}
-    {{ domain }} - {% block subtitle %}{{ "index.title"|trans }}{% endblock %}
-{% endblock %}
+            {% block content %}
+                {# Header section with standardized title and subtitle structure #}
+                <div class="mb-8 sm:mb-12">
+                    <div class="text-center">
+                        {% block page_title %}
+                            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+                                {{ block('subtitle')|raw }}
+                            </h1>
+                        {% endblock %}
 
-{% block navbar %}
-    {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with { fixedTop: true, staticTop: true, inverse: true, fluid: true } %}
-        {% block brand %}
-            <a class="navbar-brand" href="{{  project_url }}" target="_self">{{ project_name }}</a>
-        {% endblock %}
-
-        {% block menu %}
-            {{ mopa_bootstrap_menu('navbar-left') }}
-            {{ mopa_bootstrap_menu('navbar-right') }}
-            {% include '_locale_switcher.html.twig' %}
-        {% endblock %}
-    {% endembed %}
-{% endblock %}
-
-{% block container %}
-    <div class="container">
-        {% block flashes %}
-            {% if app.session.flashbag.peekAll|length > 0 %}
-                <div class="flash-notification">
-                    {{ session_flash(true)|trans|raw }}
+                        {% block page_subtitle %}
+                            {# Optional subtitle block that child templates can override #}
+                        {% endblock %}
+                    </div>
                 </div>
-            {% endif %}
-        {% endblock flashes %}
 
-        {% block breadcrumbs %}
-        {% endblock %}
+                {% block page_content %}
+                    {# Main content goes here #}
+                {% endblock %}
+            {% endblock content %}
 
-        {% block content %}
+        </div>
+    {% endblock %}
 
-        {% endblock %}
-        {%  if user.email is defined %}
-            {%  include 'Footer/logged_in_footer.twig' %}
-        {% endif %}
-    </div>
-{% endblock %}
-
-{% block foot_script %}
-{% endblock foot_script %}
+    {% block foot_script %}
+    {% endblock foot_script %}
+</body>
+</html>

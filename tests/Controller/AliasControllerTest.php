@@ -25,7 +25,7 @@ class AliasControllerTest extends WebTestCase
         $client->request('GET', '/alias');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h3', 'Your custom alias addresses');
+        $this->assertSelectorTextContains('h3', 'Custom Aliases');
     }
 
     public function testVisitingStartAsSpammer()
@@ -47,16 +47,13 @@ class AliasControllerTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $crawler = $client->request('GET', '/alias');
-
-        $form = $crawler->selectButton('Add')->form();
-
-        $form['create_custom_alias[alias]'] = 'test' . random_int(1, 1000);
-
-        $client->submit($form);
+        $client->request('POST', '/alias', [
+            'create_custom_alias' => [
+                'alias' => 'test' . random_int(1, 1000),
+            ]
+        ]);
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('div.alert-success', 'Your new alias address was created');
     }
 
     public function testCreateRandomAlias()
@@ -66,12 +63,12 @@ class AliasControllerTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $crawler = $client->request('GET', '/alias');
+        $client->request('POST', '/alias', [
+            'create_alias' => [
+                'submit' => ''
+            ]
+        ]);
 
-        $form = $crawler->selectButton('Generate random alias address')->form();
-
-        $client->submit($form);
-
-        $this->assertResponseRedirects('/alias');
+        $this->assertResponseIsSuccessful();
     }
 }

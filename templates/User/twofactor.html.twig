@@ -1,71 +1,197 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_page.html.twig' %}
 
-{% block subtitle %}{{ "account.twofactor.headline"|trans }}{% endblock %}
+{% block title %}{{ domain }} - {{ "account.twofactor.headline"|trans }}{% endblock %}
 
 {% form_theme form 'Form/fields.html.twig' %}
 {% form_theme disableForm 'Form/fields.html.twig' %}
+{% if backupAckForm is defined %}
+    {% form_theme backupAckForm 'Form/fields.html.twig' %}
+{% endif %}
+{% if confirmForm is defined %}
+    {% form_theme confirmForm 'Form/fields.html.twig' %}
+{% endif %}
 
-{% block breadcrumbs %}
-    <ol class="breadcrumb">
-        <li><a href="{{ path('start') }}">Start</a></li>
-        <li><a href="{{ path('account') }}">{{ "start.account-settings"|trans }}</a></li>
-        <li class="active">{{ "account.twofactor.headline"|trans }}</li>
-    </ol>
-{% endblock %}
-{% block content %}
-    <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6">
-            <h3>{{ "account.twofactor.headline"|trans }}</h3>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6">
-            {% if twofactor_enable and twofactor_backup_codes is defined %}
-                {% include 'User/twofactor_backup_ack.html.twig' %}
-            {% elseif twofactor_enable %}
-                {% include 'User/twofactor_enable.html.twig' %}
-            {% else %}
-                {% if not twofactor_enabled %}
-                    <div class="alert alert-warning">
-                        <i class="glyphicon glyphicon-warning-sign" aria-hidden="true"></i>
-                        {{ "account.twofactor.unset"|trans }}
-                        {{ "account.twofactor.unset-extra"|trans }}
+{% block page_title %}{{ "account.twofactor.headline"|trans }}{% endblock %}
+
+{% block page_subtitle %}{{ "account.twofactor.lead"|trans }}{% endblock %}
+
+{% block page_content %}
+    <div class="max-w-6xl mx-auto">
+            {# Main content area #}
+            <div class="max-w-5xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left column: Form or 2FA setup -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
+                        {% if twofactor_enable and twofactor_backup_codes is defined %}
+                            {# Backup codes confirmation screen #}
+                            <div class="mb-6">
+                                <h2 class="text-xl font-semibold text-gray-900 mb-4">
+                                    {{ "account.twofactor.backup-ack-lead"|trans }}
+                                </h2>
+                                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6 font-mono">
+                                    <pre class="text-sm text-gray-800 whitespace-pre-wrap">{% for key, value in twofactor_backup_codes %}{{ value }}
+{% endfor %}</pre>
+                                </div>
+                            </div>
+
+                            {{ form_start(backupAckForm, {'attr': {'class': 'space-y-6'}}) }}
+                            {{ form_errors(backupAckForm) }}
+
+                            <div class="flex items-start mt-4">
+                                {{ form_widget(backupAckForm.ack, {
+                                    'attr': {
+                                        'class': 'mt-0.5 mr-2'
+                                    }
+                                }) }}
+                                {{ form_label(backupAckForm.ack, null, {
+                                    'label_attr': {
+                                        'class': 'text-sm text-gray-700'
+                                    }
+                                }) }}
+                                {{ form_errors(backupAckForm.ack) }}
+                            </div>
+
+                            <div class="mt-6">
+                                {{ form_widget(backupAckForm.submit, {
+                                    'attr': {
+                                        'class': 'w-full'
+                                    }
+                                }) }}
+                            </div>
+                            {{ form_end(backupAckForm) }}
+
+                        {% elseif twofactor_enable %}
+                            {# QR code setup screen #}
+                            <div class="mb-6">
+                                <h2 class="text-xl font-semibold text-gray-900 mb-4">
+                                    {{ "account.twofactor.enable-lead"|trans }}
+                                </h2>
+                                <div class="flex justify-center mb-6">
+                                    <img src="{{ url('user_twofactor_qrcode') }}" alt="QR Code for TOTP App" class="border border-gray-300 rounded-lg p-2">
+                                </div>
+                            </div>
+
+                            {{ form_start(confirmForm, {'attr': {'class': 'space-y-6'}}) }}
+                            {{ form_errors(confirmForm) }}
+
+                            <div>
+                                {{ form_label(confirmForm.totpSecret, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+                                {{ form_errors(confirmForm.totpSecret) }}
+                                {{ form_widget(confirmForm.totpSecret, {
+                                    'attr': {
+                                        'autofocus': '',
+                                        'placeholder': 'form.twofactor-login-placeholder'|trans,
+                                        'autocomplete': 'off'
+                                    }
+                                }) }}
+                            </div>
+
+                            <div class="pt-4">
+                                {{ form_widget(confirmForm.submit, {
+                                    'attr': {
+                                        'class': 'w-full'
+                                    }
+                                }) }}
+                            </div>
+
+                            {{ form_end(confirmForm) }}
+
+                        {% else %}
+                            {# Initial 2FA setup or disable screen #}
+                            {% if not twofactor_enabled %}
+                                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                                    <div class="flex">
+                                        <svg class="w-5 h-5 text-yellow-400 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <div class="text-sm text-yellow-800">
+                                            <p>{{ "account.twofactor.unset"|trans }}</p>
+                                            <p class="mt-1">{{ "account.twofactor.unset-extra"|trans }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+                                {{ form_errors(form) }}
+
+                                <div>
+                                    {{ form_label(form.password, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+                                    {{ form_errors(form.password) }}
+                                    {{ form_widget(form.password, {
+                                        'attr': {
+                                            'placeholder': 'Password'|trans
+                                        }
+                                    }) }}
+                                </div>
+
+                                <div class="pt-4">
+                                    {{ form_widget(form.submit, {
+                                        'attr': {
+                                            'class': 'w-full'
+                                        }
+                                    }) }}
+                                </div>
+
+                                {{ form_end(form) }}
+                            {% else %}
+                                <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                                    <div class="flex">
+                                        <svg class="w-5 h-5 text-green-500 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <div class="text-sm text-green-800">
+                                            {{ "account.twofactor.set"|trans }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{ form_start(disableForm, {'attr': {'class': 'space-y-6'}}) }}
+                                {{ form_errors(disableForm) }}
+
+                                <div>
+                                    {{ form_label(disableForm.password, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+                                    {{ form_errors(disableForm.password) }}
+                                    {{ form_widget(disableForm.password, {
+                                        'attr': {
+                                            'placeholder': 'Password'|trans
+                                        }
+                                    }) }}
+                                </div>
+
+                                <div class="pt-4">
+                                    {{ form_widget(disableForm.submit, {
+                                        'attr': {
+                                            'class': 'w-full bg-red-600 hover:bg-red-700 focus:ring-red-500'
+                                        },
+                                        'label': 'form.twofactor-disable'
+                                    }) }}
+                                </div>
+
+                                {{ form_end(disableForm) }}
+                            {% endif %}
+                        {% endif %}
                     </div>
 
-                    {{ form_start(form) }}
-                    {{ form_errors(form) }}
-                    <div class="form-group">
-                        {{ form_label(form.password) }}
-                        {{ form_errors(form.password) }}
-                        {{ form_widget(form.password, {'attr': {'class': 'form-control' }}) }}
-                    </div>
+                    <!-- Right column: Information -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <h2 class="text-xl font-semibold text-gray-900">{{ "openpgp.information"|trans }}</h2>
+                        </div>
 
-                    <div class="form-group">
-                        {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary' }}) }}
+                        <div class="space-y-4 text-gray-700">
+                            <ul class="space-y-3 list-disc pl-5">
+                                <li>{{ "account.twofactor.desc-login"|trans({'%app_url%': app_url}) }}</li>
+                                <li>{{ "account.twofactor.desc-lost"|trans({'%app_url%': app_url})|safe_html }}</li>
+                            </ul>
+                        </div>
                     </div>
-                    {{ form_end(form) }}
-                {% else %}
-                    <div class="alert alert-success">
-                        <i class="glyphicon glyphicon-ok" aria-hidden="true"></i>
-                        {{ "account.twofactor.set"|trans }}
-                    </div>
-                    {{ form_start(disableForm) }}
-                    {{ form_errors(disableForm) }}
-                    <div class="form-group">
-                        {{ form_label(disableForm.password) }}
-                        {{ form_errors(disableForm.password) }}
-                        {{ form_widget(disableForm.password, {'attr': {'class': 'form-control' }}) }}
-                    </div>
-
-                    <div class="form-group">
-                        {{ form_widget(disableForm.submit, {'attr': {'class': 'btn btn-primary btn-danger'}, 'label': 'form.twofactor-disable'}) }}
-                    </div>
-                    {{ form_end(disableForm) }}
-                {% endif %}
-            {% endif %}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6">
-            {% include 'Twofactor/twofactor_notes.html.twig' %}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

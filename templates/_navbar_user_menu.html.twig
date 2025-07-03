@@ -1,0 +1,145 @@
+{# User dropdown menu for authenticated users #}
+{% if app.user %}
+    <div class="flex items-center space-x-4 ml-auto">
+        {# User Dropdown - Visible on md screens and up #}
+        <div class="hidden md:block relative" id="user-menu">
+            <button type="button"
+                    class="bg-white/10 hover:bg-white/20 flex text-sm rounded-2xl focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+                    id="user-menu-button"
+                    aria-expanded="false"
+                    aria-haspopup="true">
+                <span class="sr-only">{{ "navbar.open-user-menu"|trans }}</span>
+                <div class="flex items-center px-2 lg:px-3 py-2 space-x-2">
+                    <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    <span class="text-gray-300 text-sm font-medium hidden lg:block">{{ app.user.email }}</span>
+                    <svg class="w-4 h-4 text-gray-300 transition-transform duration-200" id="user-menu-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+            </button>
+
+            {# Dropdown menu #}
+            <div class="absolute right-0 z-50 mt-3 w-56 origin-top-right bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl ring-1 ring-black/10 divide-y divide-gray-100/50 focus:outline-none opacity-0 scale-95 pointer-events-none transition-all duration-300"
+                 id="user-menu-dropdown"
+                 role="menu"
+                 aria-orientation="vertical"
+                 aria-labelledby="user-menu-button">
+                <div class="py-2" role="none">
+                    <div class="px-5 py-3 text-sm text-gray-700 border-b border-gray-100/50">
+                        <div class="font-semibold">{{ app.user.email }}</div>
+                        <div class="text-xs text-gray-500 mt-1">{{ "navbar.signed-in-as"|trans }}</div>
+                    </div>
+                </div>
+
+                <div class="py-2" role="none">
+                    {# Language Switcher in User Dropdown #}
+                    <div class="px-5 py-3 border-b border-gray-100/50">
+                        <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                            {{ "navbar.language"|trans }}
+                        </div>
+                        {% include '_locale_switcher.html.twig' with {'dropdown_mode': true} %}
+                    </div>
+
+                    <a href="{{ path('logout') }}"
+                       class="group flex items-center px-5 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all duration-300 rounded-2xl mx-2"
+                       role="menuitem">
+                        <svg class="w-4 h-4 mr-3 text-gray-400 group-hover:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                        {{ "navbar_right.logout"|trans }}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {# Mobile: User dropdown + Menu button (only on small screens) #}
+        <div class="md:hidden flex items-center space-x-2">
+            {# Mobile User Dropdown #}
+            <div class="relative" id="mobile-user-menu">
+                <button type="button"
+                        class="bg-white/10 hover:bg-white/20 flex text-sm rounded-2xl focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+                        id="mobile-user-menu-button"
+                        aria-expanded="false"
+                        aria-haspopup="true">
+                    <span class="sr-only">{{ "navbar.open-user-menu"|trans }}</span>
+                    <div class="flex items-center px-2 py-1 space-x-1">
+                        <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        <svg class="w-3 h-3 text-gray-300 transition-transform duration-200" id="mobile-user-menu-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </button>
+
+                {# Mobile Dropdown menu #}
+                <div class="absolute right-0 z-50 mt-3 w-56 origin-top-right bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl ring-1 ring-black/10 divide-y divide-gray-100/50 focus:outline-none opacity-0 scale-95 pointer-events-none transition-all duration-300"
+                     id="mobile-user-menu-dropdown"
+                     role="menu"
+                     aria-orientation="vertical"
+                     aria-labelledby="mobile-user-menu-button">
+                    <div class="py-2" role="none">
+                        <div class="px-5 py-3 text-sm text-gray-700 border-b border-gray-100/50">
+                            <div class="font-semibold">{{ app.user.email }}</div>
+                            <div class="text-xs text-gray-500 mt-1">{{ "navbar.signed-in-as"|trans }}</div>
+                        </div>
+                    </div>
+
+                    {# Language Switcher Section #}
+                    <div class="py-2" role="none">
+                        <div class="px-5 py-3 border-b border-gray-100/50">
+                            <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                                {{ "navbar.language"|trans }}
+                            </div>
+                            {% include '_locale_switcher.html.twig' with {'dropdown_mode': true} %}
+                        </div>
+                    </div>
+
+                    <div class="py-2" role="none">
+                        <a href="{{ path('logout') }}"
+                           class="group flex items-center px-5 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all duration-300 rounded-2xl mx-2"
+                           role="menuitem">
+                            <svg class="w-4 h-4 mr-3 text-gray-400 group-hover:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                            </svg>
+                            {{ "navbar_right.logout"|trans }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {# Mobile menu button #}
+            <button type="button"
+                    class="bg-white/10 hover:bg-white/20 inline-flex items-center justify-center p-2 rounded-2xl text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+                    id="mobile-menu-button"
+                    aria-controls="mobile-menu"
+                    aria-expanded="false">
+                <span class="sr-only">{{ "navbar.open-main-menu"|trans }}</span>
+                <svg class="block h-5 w-5" id="mobile-menu-icon-open" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+                <svg class="hidden h-5 w-5" id="mobile-menu-icon-close" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+{% else %}
+    {# Unauthenticated User Navigation - Brand left, Login + Language Switcher right #}
+    <div class="flex items-center space-x-3 ml-auto">
+        <a href="{{ path('login') }}"
+           class="flex items-center justify-center text-white hover:text-gray-200 px-3 lg:px-4 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:scale-105">
+            <!-- Heroicon: arrow-right-on-rectangle -->
+            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"></path>
+            </svg>
+            {{ "navbar_right.login"|trans }}
+        </a>
+
+        {# Language Switcher for non-authenticated users - always visible #}
+        {% include '_locale_switcher.html.twig' %}
+    </div>
+{% endif %}

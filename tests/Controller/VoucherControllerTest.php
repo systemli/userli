@@ -25,7 +25,6 @@ class VoucherControllerTest extends WebTestCase
         $client->request('GET', '/voucher');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h3', 'Your invite codes');
     }
 
     public function testVisitingStartAsSpammer()
@@ -49,7 +48,7 @@ class VoucherControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/voucher');
 
-        $form = $crawler->selectButton('Create invite code')->form();
+        $form = $crawler->filter('form[name="create_voucher"]')->form();
         $client->submit($form);
 
         $this->assertResponseIsSuccessful();

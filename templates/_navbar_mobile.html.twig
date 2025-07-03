@@ -1,0 +1,38 @@
+{# Mobile menu, show/hide based on menu state (only on small screens) #}
+<div class="md:hidden hidden mt-3" id="mobile-menu">
+    <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl ring-1 ring-black/10 p-4 space-y-2">
+        <a href="{{ path('start') }}"
+           class="block px-4 py-3 rounded-2xl text-base font-medium transition-all duration-300 {{ current_route == 'start' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+            {{ "navbar.home"|trans }}
+        </a>
+
+        {% if app.user.domain == domain and not is_granted('ROLE_SUSPICIOUS') %}
+            <a href="{{ path('vouchers') }}"
+               class="block px-4 py-3 rounded-2xl text-base font-medium transition-all duration-300 {{ current_route == 'vouchers' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                {{ "navbar.vouchers"|trans }}
+            </a>
+        {% endif %}
+
+        <a href="{{ path('aliases') }}"
+           class="block px-4 py-3 rounded-2xl text-base font-medium transition-all duration-300 {{ current_route == 'aliases' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+            {{ "navbar.aliases"|trans }}
+        </a>
+
+        <a href="{{ path('openpgp') }}"
+           class="block px-4 py-3 rounded-2xl text-base font-medium transition-all duration-300 {{ current_route == 'openpgp' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+            {{ "navbar.openpgp"|trans }}
+        </a>
+
+        <a href="{{ path('account') }}"
+           class="block px-4 py-3 rounded-2xl text-base font-medium transition-all duration-300 {{ current_route == 'account' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+            {{ "navbar.account"|trans }}
+        </a>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('sonata_admin_dashboard') }}"
+               class="block px-4 py-3 rounded-2xl text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-all duration-300">
+                {{ "navbar_right.admin"|trans }}
+            </a>
+        {% endif %}
+    </div>
+</div>
