@@ -4,18 +4,9 @@ namespace App\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
-use Symfony\Component\Security\Core\Security;
 
 abstract class Admin extends AbstractAdmin
 {
-    /**
-     * Admin constructor.
-     */
-    public function __construct(string $code, string $class, string $baseControllerName, protected Security $security)
-    {
-        parent::__construct($code, $class, $baseControllerName);
-    }
-
     protected function configureDefaultSortValues(array &$sortValues): void
     {
         $sortValues[DatagridInterface::PAGE] = 1;

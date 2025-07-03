@@ -15,7 +15,6 @@ sonata_admin:
     handler: sonata.admin.security.handler.role
 
 sonata_block:
-  http_cache: false
   default_contexts: [cms]
   blocks:
     sonata.admin.block.admin_list:

@@ -12,12 +12,18 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 class AliasAdmin extends Admin
 {
     use DomainGuesserAwareTrait;
+
+    public function __construct(protected Security $security)
+    {
+        parent::__construct();
+    }
 
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {

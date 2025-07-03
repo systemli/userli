@@ -18,6 +18,9 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class UserChangedListenerTest extends TestCase
 {
+    private Session $session;
+    private Request $request;
+    private RequestEvent $event;
     private SuspiciousChildrenHandler $suspiciousChildrenHandler;
     private VoucherRepository $voucherRepository;
     private UserChangedListener $listener;

@@ -12,7 +12,7 @@ class CustomAliasCreateType extends AbstractType
 {
     public const NAME = 'create_custom_alias';
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('alias', TextType::class, ['label' => 'form.new-custom-alias'])
@@ -22,7 +22,7 @@ class CustomAliasCreateType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => 'App\Form\Model\AliasCreate']);
     }
@@ -30,7 +30,7 @@ class CustomAliasCreateType extends AbstractType
     /**
      * @return string
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }
