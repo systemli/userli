@@ -25,7 +25,7 @@ class VoucherController extends AbstractController
     }
 
     #[Route(path: '/voucher', name: 'vouchers', methods: ['GET'])]
-    public function show(Request $request): Response
+    public function show(): Response
     {
         /** @var User $user */
         $user = $this->getUser();
