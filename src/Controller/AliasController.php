@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\Alias;
@@ -22,8 +24,8 @@ class AliasController extends AbstractController
         private readonly EntityManagerInterface $manager,
     ) {}
 
-    #[Route(path: '/alias', name: 'aliases')]
-    public function alias(Request $request): Response
+    #[Route(path: '/alias', name: 'aliases', methods: ['GET'])]
+    public function show(Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -32,33 +34,19 @@ class AliasController extends AbstractController
             RandomAliasCreateType::class,
             new AliasCreate(),
             [
-                'action' => $this->generateUrl('aliases'),
+                'action' => $this->generateUrl('aliases_create'),
                 'method' => 'post',
             ]
         );
 
-        $aliasCreate = new AliasCreate();
         $customAliasCreateForm = $this->createForm(
             CustomAliasCreateType::class,
-            $aliasCreate,
+            new AliasCreate(),
             [
-                'action' => $this->generateUrl('aliases'),
+                'action' => $this->generateUrl('aliases_create'),
                 'method' => 'post',
             ]
         );
-
-        if ('POST' === $request->getMethod()) {
-            $randomAliasCreateForm->handleRequest($request);
-            $customAliasCreateForm->handleRequest($request);
-
-            if ($randomAliasCreateForm->isSubmitted() && $randomAliasCreateForm->isValid()) {
-                $this->createRandomAlias($request, $user);
-                // force reload to not show bogus alias
-                return $this->redirect($request->getUri());
-            } elseif ($customAliasCreateForm->isSubmitted() && $customAliasCreateForm->isValid()) {
-                $this->createCustomAlias($request, $user, $aliasCreate->alias);
-            }
-        }
 
         $aliasRepository = $this->manager->getRepository(Alias::class);
         $aliasesRandom = $aliasRepository->findByUser($user, true, true);
@@ -79,25 +67,47 @@ class AliasController extends AbstractController
         );
     }
 
-    private function createRandomAlias(Request $request, User $user): void
+    #[Route(path: '/alias/create', name: 'aliases_create', methods: ['POST'])]
+    public function create(Request $request): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $randomAliasCreateForm = $this->createForm(RandomAliasCreateType::class, new AliasCreate());
+        $aliasCreate = new AliasCreate();
+        $customAliasCreateForm = $this->createForm(CustomAliasCreateType::class, $aliasCreate);
+
+        $randomAliasCreateForm->handleRequest($request);
+        $customAliasCreateForm->handleRequest($request);
+
+        if ($randomAliasCreateForm->isSubmitted() && $randomAliasCreateForm->isValid()) {
+            $this->processRandomAliasCreation($user);
+        } elseif ($customAliasCreateForm->isSubmitted() && $customAliasCreateForm->isValid()) {
+            $this->processCustomAliasCreation($user, $aliasCreate->alias);
+        }
+
+        return $this->redirectToRoute('aliases');
+    }
+
+    private function processRandomAliasCreation(User $user): void
     {
         try {
             if ($this->aliasHandler->create($user) instanceof Alias) {
-                $request->getSession()->getFlashBag()->add('success', 'flashes.alias-creation-successful');
+                $this->addFlash('success', 'flashes.alias-creation-successful');
             }
         } catch (ValidationException $e) {
-            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            $this->addFlash('error', $e->getMessage());
         }
     }
 
-    private function createCustomAlias(Request $request, User $user, string $alias): void
+    private function processCustomAliasCreation(User $user, string $alias): void
     {
         try {
             if ($this->aliasHandler->create($user, $alias) instanceof Alias) {
-                $request->getSession()->getFlashBag()->add('success', 'flashes.alias-creation-successful');
+                $this->addFlash('success', 'flashes.alias-creation-successful');
             }
         } catch (ValidationException $e) {
-            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            $this->addFlash('error', $e->getMessage());
         }
     }
 }
