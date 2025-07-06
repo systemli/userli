@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Creator\VoucherCreator;
@@ -19,16 +21,11 @@ class VoucherController extends AbstractController
     public function __construct(
         private readonly VoucherHandler $voucherHandler,
         private readonly VoucherCreator $voucherCreator
-    )
-    {
+    ) {
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
-    #[Route(path: '/voucher', name: 'vouchers')]
-    public function voucher(Request $request): Response
+    #[Route(path: '/voucher', name: 'vouchers', methods: ['GET'])]
+    public function show(): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -37,18 +34,10 @@ class VoucherController extends AbstractController
             VoucherCreateType::class,
             new VoucherCreate(),
             [
-                'action' => $this->generateUrl('vouchers'),
+                'action' => $this->generateUrl('vouchers_create'),
                 'method' => 'post',
             ]
         );
-
-        if ('POST' === $request->getMethod()) {
-            $voucherCreateForm->handleRequest($request);
-
-            if ($voucherCreateForm->isSubmitted() && $voucherCreateForm->isValid()) {
-                $this->createVoucher($request, $user);
-            }
-        }
 
         $vouchers = $this->voucherHandler->getVouchersByUser($user);
 
@@ -63,13 +52,28 @@ class VoucherController extends AbstractController
         );
     }
 
-    private function createVoucher(Request $request, User $user): void
+    #[Route(path: '/voucher/create', name: 'vouchers_create', methods: ['POST'])]
+    public function create(Request $request): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $voucherCreateForm = $this->createForm(VoucherCreateType::class, new VoucherCreate());
+        $voucherCreateForm->handleRequest($request);
+
+        if ($voucherCreateForm->isSubmitted() && $voucherCreateForm->isValid()) {
+            $this->processVoucherCreation($user);
+        }
+
+        return $this->redirectToRoute('vouchers');
+    }
+
+    private function processVoucherCreation(User $user): void
     {
         if ($this->isGranted(Roles::MULTIPLIER)) {
             try {
                 $this->voucherCreator->create($user);
-
-                $request->getSession()->getFlashBag()->add('success', 'flashes.voucher-creation-successful');
+                $this->addFlash('success', 'flashes.voucher-creation-successful');
             } catch (ValidationException) {
                 // Should not throw
             }
