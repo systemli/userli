@@ -25,9 +25,9 @@ class Registration
         return $this->voucher;
     }
 
-    public function setVoucher(string $voucher): void
+    public function setVoucher(?string $voucher): void
     {
-        $this->voucher = $voucher;
+        $this->voucher = $voucher ?? '';
     }
 
     public function getEmail(): ?string
