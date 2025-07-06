@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use App\Entity\User;
@@ -28,7 +30,7 @@ class AliasControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h3', 'Custom Aliases');
     }
 
-    public function testVisitingStartAsSpammer()
+    public function testVisitingStartAsSpammer(): void
     {
         $client = static::createClient();
         $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => 'spam@example.org']);
@@ -40,35 +42,98 @@ class AliasControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(403);
     }
 
-    public function testCreateCustomAlias()
+    public function testCreateCustomAlias(): void
     {
         $client = static::createClient();
         $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => 'user@example.org']);
 
         $client->loginUser($user);
 
-        $client->request('POST', '/alias', [
+        $client->request('POST', '/alias/create', [
             'create_custom_alias' => [
                 'alias' => 'test' . random_int(1, 1000),
+                'submit' => '',
             ]
         ]);
 
+        $this->assertResponseRedirects('/alias');
+        $client->followRedirect();
         $this->assertResponseIsSuccessful();
     }
 
-    public function testCreateRandomAlias()
+    public function testCreateRandomAlias(): void
     {
         $client = static::createClient();
         $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => 'user@example.org']);
 
         $client->loginUser($user);
 
-        $client->request('POST', '/alias', [
+        $client->request('POST', '/alias/create', [
             'create_alias' => [
                 'submit' => ''
             ]
         ]);
 
+        $this->assertResponseRedirects('/alias');
+        $client->followRedirect();
         $this->assertResponseIsSuccessful();
+    }
+
+    public function testCreateAliasUnauthenticated(): void
+    {
+        $client = static::createClient();
+        $client->request('POST', '/alias/create');
+
+        $this->assertResponseRedirects('/login');
+    }
+
+    public function testCreateAliasAsSpammer(): void
+    {
+        $client = static::createClient();
+        $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => 'spam@example.org']);
+
+        $client->loginUser($user);
+
+        $client->request('POST', '/alias/create', [
+            'create_custom_alias' => [
+                'alias' => 'test-alias',
+                'submit' => '',
+            ]
+        ]);
+
+        $this->assertResponseStatusCodeSame(403);
+    }
+
+    public function testCreateCustomAliasWithInvalidData(): void
+    {
+        $client = static::createClient();
+        $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => 'user@example.org']);
+
+        $client->loginUser($user);
+
+        // Test with empty alias
+        $client->request('POST', '/alias/create', [
+            'create_custom_alias' => [
+                'alias' => '',
+                'submit' => '',
+            ]
+        ]);
+
+        $this->assertResponseRedirects('/alias');
+        $client->followRedirect();
+        $this->assertResponseIsSuccessful();
+    }
+
+    public function testCreateAliasWithoutFormData(): void
+    {
+        $client = static::createClient();
+        $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => 'user@example.org']);
+
+        $client->loginUser($user);
+
+        // Test POST without any form data
+        $client->request('POST', '/alias/create');
+
+        $this->assertResponseRedirects('/alias');
     }
 }
