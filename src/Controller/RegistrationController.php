@@ -33,7 +33,7 @@ class RegistrationController extends AbstractController
      * @throws Exception
      */
     #[Route(path: '/register', name: 'register', methods: ['GET'])]
-    #[Route(path: '/register/{voucher}', name: 'register_voucher', methods: ['GET'])]
+    #[Route(path: '/register/{voucher}', name: 'register_voucher', requirements: ['voucher' => '[a-zA-Z0-9]{6}'], methods: ['GET'])]
     public function show(string $voucher = ''): Response
     {
         if (!$this->registrationHandler->isRegistrationOpen()) {
@@ -43,7 +43,14 @@ class RegistrationController extends AbstractController
         $registration = new Registration();
         $registration->setVoucher($voucher);
 
-        $form = $this->createForm(RegistrationType::class, $registration);
+        $form = $this->createForm(
+            RegistrationType::class,
+            $registration,
+            [
+                'action' => $this->generateUrl('register_submit'),
+                'method' => 'post',
+            ]
+        );
 
         return $this->render('Registration/register.html.twig', ['form' => $form->createView()]);
     }
