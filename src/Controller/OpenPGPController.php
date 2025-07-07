@@ -22,43 +22,16 @@ class OpenPGPController extends AbstractController
     {
     }
 
-    #[Route(path: '/openpgp', name: 'openpgp')]
-    public function openPgp(Request $request): Response
+    #[Route(path: '/openpgp', name: 'openpgp', methods: ['GET'])]
+    public function show(): Response
     {
         /** @var User $user */
         $user = $this->getUser();
 
         $openPgp = new OpenPgpKeyModel();
-        $openPgpKeyForm = $this->createForm(
-            OpenPgpKeyType::class,
-            $openPgp,
-            [
-                'action' => $this->generateUrl('openpgp'),
-                'method' => 'post',
-            ]
-        );
+        $openPgpKeyForm = $this->createForm(OpenPgpKeyType::class, $openPgp);
 
-        if ('POST' === $request->getMethod()) {
-            $openPgpKeyForm->handleRequest($request);
-
-            if ($openPgpKeyForm->isSubmitted() && $openPgpKeyForm->isValid()) {
-                /** @var UploadedFile $keyFile */
-                $keyFile = $openPgpKeyForm->get('keyFile')->getData();
-                /** @var string $keyText */
-                $keyText = $openPgpKeyForm->get('keyText')->getData();
-
-                if ($keyFile) {
-                    $content = file_get_contents($keyFile->getPathname());
-                    $openPgpKey = $this->importOpenPgpKey($request, $user, $content);
-                } elseif ($keyText) {
-                    $openPgpKey = $this->importOpenPgpKey($request, $user, $keyText);
-                }
-            }
-        }
-
-        if (!isset($openPgpKey) || null === $openPgpKey->getKeyId()) {
-            $openPgpKey = $this->wkdHandler->getKey($user);
-        }
+        $openPgpKey = $this->wkdHandler->getKey($user);
 
         return $this->render(
             'Start/openpgp.html.twig',
@@ -73,20 +46,58 @@ class OpenPGPController extends AbstractController
         );
     }
 
-    private function importOpenPgpKey(Request $request, User $user, string $key): OpenPgpKey
+    #[Route(path: '/openpgp', name: 'openpgp_submit', methods: ['POST'])]
+    public function submit(Request $request): Response
     {
-        $openPgpKey = new OpenPgpKey();
-        try {
-            $openPgpKey = $this->wkdHandler->importKey($key, $user);
-            $request->getSession()->getFlashBag()->add('success', 'flashes.openpgp-key-upload-successful');
-        } catch (NoGpgDataException) {
-            $request->getSession()->getFlashBag()->add('error', 'flashes.openpgp-key-upload-error-no-openpgp');
-        } catch (NoGpgKeyForUserException) {
-            $request->getSession()->getFlashBag()->add('error', 'flashes.openpgp-key-upload-error-no-keys');
-        } catch (MultipleGpgKeysForUserException) {
-            $request->getSession()->getFlashBag()->add('error', 'flashes.openpgp-key-upload-error-multiple-keys');
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $openPgp = new OpenPgpKeyModel();
+        $openPgpKeyForm = $this->createForm(OpenPgpKeyType::class, $openPgp);
+        $openPgpKeyForm->handleRequest($request);
+
+        if ($openPgpKeyForm->isSubmitted() && $openPgpKeyForm->isValid()) {
+            /** @var UploadedFile $keyFile */
+            $keyFile = $openPgpKeyForm->get('keyFile')->getData();
+            /** @var string $keyText */
+            $keyText = $openPgpKeyForm->get('keyText')->getData();
+
+            if ($keyFile) {
+                $content = file_get_contents($keyFile->getPathname());
+                $this->importOpenPgpKey($user, $content);
+            } elseif ($keyText) {
+                $this->importOpenPgpKey($user, $keyText);
+            }
+
+            return $this->redirectToRoute('openpgp');
         }
 
-        return $openPgpKey;
+        $openPgpKey = $this->wkdHandler->getKey($user);
+
+        return $this->render(
+            'Start/openpgp.html.twig',
+            [
+                'user' => $user,
+                'user_domain' => $user->getDomain(),
+                'openpgp_form' => $openPgpKeyForm->createView(),
+                'openpgp_id' => $openPgpKey->getKeyId(),
+                'openpgp_fingerprint' => $openPgpKey->getKeyFingerprint(),
+                'openpgp_expiretime' => $openPgpKey->getKeyExpireTime(),
+            ]
+        );
+    }
+
+    private function importOpenPgpKey(User $user, string $key): void
+    {
+        try {
+            $this->wkdHandler->importKey($key, $user);
+            $this->addFlash('success', 'flashes.openpgp-key-upload-successful');
+        } catch (NoGpgDataException) {
+            $this->addFlash('error', 'flashes.openpgp-key-upload-error-no-openpgp');
+        } catch (NoGpgKeyForUserException) {
+            $this->addFlash('error', 'flashes.openpgp-key-upload-error-no-keys');
+        } catch (MultipleGpgKeysForUserException) {
+            $this->addFlash('error', 'flashes.openpgp-key-upload-error-multiple-keys');
+        }
     }
 }
