@@ -1,37 +1,111 @@
-{% form_theme backupAckForm 'Form/fields.html.twig' %}
+{% extends 'base_page.html.twig' %}
 
-<div class="mb-6">
-    <h2 class="text-xl font-semibold text-gray-900 mb-4">
-        {{ "account.twofactor.backup-ack-lead"|trans }}
-    </h2>
-    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6 font-mono">
-        <pre class="text-sm text-gray-800 whitespace-pre-wrap">{% for key, value in twofactor_backup_codes %}{{ value }}
-{% endfor %}</pre>
+{% block title %}{{ domain }} - {{ "account.twofactor.headline"|trans }}{% endblock %}
+
+{% form_theme form 'Form/fields.html.twig' %}
+
+{% block page_title %}{{ "account.twofactor.headline"|trans }}{% endblock %}
+
+{% block page_subtitle %}{{ "account.twofactor.backup-ack-lead"|trans }}{% endblock %}
+
+{% block page_content %}
+    <div class="max-w-6xl mx-auto">
+        <div class="max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Left column: Backup Codes and Acknowledgment Form -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
+                    <div class="mb-6">
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <!-- Heroicon name: outline/key -->
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1721.75 8.25z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">
+                            {{ "account.twofactor.backup-ack-lead"|trans }}
+                        </h2>
+                    </div>
+
+                    <!-- Backup Codes Display -->
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                        <div class="mb-4 flex items-center justify-between">
+                            <button type="button"
+                                    class="text-xs text-blue-600 hover:text-blue-500 focus:outline-none focus:underline"
+                                    onclick="window.print()">
+                                <!-- Heroicon name: outline/printer -->
+                                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                                </svg>
+                                {{ "account.twofactor.print-codes"|trans }}
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 font-mono text-sm">
+                            {% for key, value in twofactor_backup_codes %}
+                                <div class="bg-white px-3 py-2 rounded border text-center tracking-wider">
+                                    {{ value }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Acknowledgment Form -->
+                    {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+                    {{ form_errors(form) }}
+
+                    <div class="flex items-start">
+                        {{ form_widget(form.ack, {
+                            'attr': {
+                                'class': 'mt-0.5 mr-3'
+                            }
+                        }) }}
+                        <div>
+                            {{ form_label(form.ack, null, {
+                                'label_attr': {
+                                    'class': 'text-sm text-gray-700 cursor-pointer'
+                                }
+                            }) }}
+                            {{ form_errors(form.ack) }}
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        {{ form_widget(form.submit, {
+                            'attr': {
+                                'class': 'w-full px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200'
+                            }
+                        }) }}
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+
+                <!-- Right column: Information -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                            <!-- Heroicon name: outline/information-circle -->
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold text-gray-900">{{ "openpgp.information"|trans }}</h2>
+                    </div>
+
+                    <div class="space-y-4 text-gray-700">
+                        <ul class="space-y-3 list-disc pl-5">
+                            <li>{{ "account.twofactor.desc-login"|trans({'%app_url%': app_url}) }}</li>
+                            <li>{{ "account.twofactor.desc-lost"|trans({'%app_url%': app_url})|safe_html }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-{{ form_start(backupAckForm, {'attr': {'class': 'space-y-6'}}) }}
-{{ form_errors(backupAckForm) }}
-
-<div class="flex items-start mt-4">
-    {{ form_widget(backupAckForm.ack, {
-        'attr': {
-            'class': 'mt-0.5 mr-2'
-        }
-    }) }}
-    {{ form_label(backupAckForm.ack, null, {
-        'label_attr': {
-            'class': 'text-sm text-gray-700'
-        }
-    }) }}
-</div>
-{{ form_errors(backupAckForm.ack) }}
-
-<div class="mt-6">
-    {{ form_widget(backupAckForm.submit, {
-        'attr': {
-            'class': 'w-full'
-        }
-    }) }}
-</div>
-{{ form_end(backupAckForm) }}
+    <!-- Print Styles -->
+    <style media="print">
+        .bg-gray-50 { background: white !important; border: 2px solid #000 !important; }
+        .grid-cols-2 > div { border: 1px solid #000 !important; }
+        button, .bg-red-50, .bg-blue-50 { display: none !important; }
+    </style>
+{% endblock %}

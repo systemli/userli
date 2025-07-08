@@ -12,24 +12,21 @@
     <div class="max-w-6xl mx-auto">
         <div class="max-w-5xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Left column: 2FA Setup Form -->
+                <!-- Left column: 2FA Status and Disable Form -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
                     <div class="mb-6">
-                        <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
-                            <!-- Heroicon name: outline/exclamation-triangle -->
-                            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"></path>
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4">
+                            <!-- Heroicon name: outline/shield-check -->
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                             </svg>
                         </div>
                         <h2 class="text-xl font-semibold text-gray-900 mb-4">
-                            {{ "account.twofactor.unset"|trans }}
+                            {{ "account.twofactor.set"|trans }}
                         </h2>
-                        <p class="text-gray-600 mb-6">
-                            {{ "account.twofactor.unset-extra"|trans }}
-                        </p>
                     </div>
 
-                    <!-- Setup Form -->
+                    <!-- Disable Form -->
                     {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
                     {{ form_errors(form) }}
 
@@ -41,7 +38,7 @@
                         {{ form_widget(form.password, {
                             'attr': {
                                 'placeholder': 'form.password'|trans,
-                                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200'
+                                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200'
                             }
                         }) }}
                     </div>
@@ -49,7 +46,7 @@
                     <div class="pt-4">
                         {{ form_widget(form.submit, {
                             'attr': {
-                                'class': 'w-full px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200'
+                                'class': 'w-full px-6 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors duration-200'
                             }
                         }) }}
                     </div>

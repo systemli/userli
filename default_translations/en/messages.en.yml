@@ -182,6 +182,7 @@ account:
       Scan the image below with your two-factor app.
     backup-ack-lead: >
       Backup codes for two-factor authentication. Copy and store them at a secure place.
+    print-codes: Print backup codes
 
 recovery:
   header: Recover your account

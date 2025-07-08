@@ -183,6 +183,7 @@ account:
       Scanne das Bild mit deiner Zwei-Faktor-App.
     backup-ack-lead: >
       Backup-Codes für die Zwei-Faktor-Authentifizierung. Kopiere und speichere sie an einem sicheren Ort.
+    print-codes: Backup-Codes drucken
 
 recovery:
   header: Konto wiederherstellen

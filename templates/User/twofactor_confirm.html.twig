@@ -6,44 +6,55 @@
 
 {% block page_title %}{{ "account.twofactor.headline"|trans }}{% endblock %}
 
-{% block page_subtitle %}{{ "account.twofactor.lead"|trans }}{% endblock %}
+{% block page_subtitle %}{{ "account.twofactor.enable-lead"|trans }}{% endblock %}
 
 {% block page_content %}
     <div class="max-w-6xl mx-auto">
         <div class="max-w-5xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Left column: 2FA Setup Form -->
+                <!-- Left column: QR Code and Verification Form -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
                     <div class="mb-6">
-                        <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mb-4">
-                            <!-- Heroicon name: outline/exclamation-triangle -->
-                            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"></path>
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
+                            <!-- Heroicon name: outline/qr-code -->
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 16a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H4a1 1 0 01-1-1v-4zM15 4a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V4zM13 7h1v1h-1V7zM13 9h1v1h-1V9zM13 11h1v1h-1v-1zM13 13h1v1h-1v-1zM13 15h1v1h-1v-1zM13 17h1v1h-1v-1zM13 19h1v1h-1v-1zM15 13h1v1h-1v-1zM15 15h1v1h-1v-1zM15 17h1v1h-1v-1zM15 19h1v1h-1v-1zM17 13h1v1h-1v-1zM17 15h1v1h-1v-1zM17 17h1v1h-1v-1zM17 19h1v1h-1v-1zM19 13h1v1h-1v-1zM19 15h1v1h-1v-1zM19 17h1v1h-1v-1zM19 19h1v1h-1v-1z"></path>
                             </svg>
                         </div>
                         <h2 class="text-xl font-semibold text-gray-900 mb-4">
-                            {{ "account.twofactor.unset"|trans }}
+                            {{ "account.twofactor.enable-lead"|trans }}
                         </h2>
-                        <p class="text-gray-600 mb-6">
-                            {{ "account.twofactor.unset-extra"|trans }}
-                        </p>
                     </div>
 
-                    <!-- Setup Form -->
+                    <!-- QR Code Display -->
+                    <div class="flex justify-center mb-8">
+                        <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
+                            <img src="{{ url('user_twofactor_qrcode') }}"
+                                 alt="{{ "account.twofactor.enable-lead"|trans }}"
+                                 class="">
+                        </div>
+                    </div>
+
+                    <!-- Verification Form -->
                     {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
                     {{ form_errors(form) }}
 
                     <div>
-                        {{ form_label(form.password, null, {
+                        {{ form_label(form.totpSecret, null, {
                             'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}
                         }) }}
-                        {{ form_errors(form.password) }}
-                        {{ form_widget(form.password, {
+                        {{ form_errors(form.totpSecret) }}
+                        {{ form_widget(form.totpSecret, {
                             'attr': {
-                                'placeholder': 'form.password'|trans,
-                                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200'
+                                'autofocus': '',
+                                'placeholder': 'form.twofactor-login-placeholder'|trans,
+                                'autocomplete': 'off',
+                                'class': 'w-full px-4 py-3 text-center text-lg tracking-widest border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200'
                             }
                         }) }}
+                        <p class="mt-1 text-xs text-gray-500">
+                            {{ "form.twofactor-login-help"|trans }}
+                        </p>
                     </div>
 
                     <div class="pt-4">
