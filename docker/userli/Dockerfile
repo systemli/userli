@@ -24,6 +24,8 @@ RUN apt-get update && \
     a2enmod rewrite && \
     docker-php-ext-configure intl && \
     docker-php-ext-install -j$(nproc) gd opcache pdo_mysql pdo_sqlite sodium zip intl && \
+    pecl install xdebug && \
+    docker-php-ext-enable xdebug && \
     echo "memory_limit = 512M" > /usr/local/etc/php/conf.d/memory_limit.ini
 
 COPY --from=builder /var/www/html /var/www/html
