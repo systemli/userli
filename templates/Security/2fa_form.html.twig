@@ -52,6 +52,14 @@
                 aria-describedby="auth-code-help{% if authenticationError %} auth-code-error{% endif %}"
                 {% if authenticationError %}aria-invalid="true"{% endif %}
             >
+            <p id="auth-code-help" class="mt-2 text-xs text-gray-500">
+                {{ "form.twofactor-login-help"|trans }}
+            </p>
+            {% if authenticationError %}
+                <div id="auth-code-error" class="mt-2 text-xs text-red-600">
+                    {{ authenticationError|trans }}
+                </div>
+            {% endif %}
         </div>
 
         {% if isCsrfProtectionEnabled %}

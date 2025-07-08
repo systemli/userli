@@ -150,6 +150,7 @@ form:
   twofactor-login-cancel: Cancel login
   twofactor-enable: Enable two-factor authentication
   twofactor-disable: Disable two-factor authentication
+  twofactor-login-help: Your two-factor authenticator app generates a 6-digit code that you need to enter here.
 
 # OpenPGP Keys
 openpgp-key-file: "Upload your key file:"
