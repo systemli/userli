@@ -150,6 +150,7 @@ form:
   twofactor-login-cancel: Login abbrechen
   twofactor-enable: Zwei-Faktor-Authentifizierung aktivieren
   twofactor-disable: Zwei-Faktor-Authentifizierung deaktivieren
+  twofactor-login-help: Deine Zwei-Faktor-Authentifikator-App generiert einen 6-stelligen Code, den du hier eingeben musst.
 
 # OpenPGP Keys
 openpgp-key-file: "Deinen Schlüssel als Datei hochladen:"
