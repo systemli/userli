@@ -17,6 +17,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\DateTimeRangeFilter;
 use Sonata\Form\Type\BooleanType;
 use Sonata\Form\Type\DateRangePickerType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -30,6 +31,7 @@ class UserAdmin extends Admin
     private PasswordUpdater $passwordUpdater;
     private MailCryptKeyHandler $mailCryptKeyHandler;
     private readonly MailCrypt $mailCrypt;
+    private readonly Security $security;
 
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {
@@ -219,5 +221,10 @@ class UserAdmin extends Admin
     public function setMailCryptVar(string $mailCrypt): void
     {
         $this->mailCrypt = MailCrypt::from((int) $mailCrypt);
+    }
+
+    public function setSecurity(Security $security): void
+    {
+        $this->security = $security;
     }
 }
