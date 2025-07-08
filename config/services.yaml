@@ -200,6 +200,7 @@ services:
       - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
       - [setMailCryptKeyHandler, ['@App\Handler\MailCryptKeyHandler']]
       - [setMailCryptVar, ["%env(MAIL_CRYPT)%"]]
+      - [setSecurity, ['@Symfony\Bundle\SecurityBundle\Security']]
 
   userli.admin.domain:
     class: App\Admin\DomainAdmin
