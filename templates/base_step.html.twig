@@ -3,24 +3,30 @@
 {% block content %}
     <div class="min-h-[calc(100vh-8rem)] py-6 sm:py-8">
         <div class="max-w-lg mx-auto px-4">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
-                {# Optional icon section #}
-                <div class="flex justify-center mb-6">
-                    {% block step_icon %}{% endblock %}
-                </div>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                {# Main content section #}
+                <div class="p-6 sm:p-8">
+                    {# Optional icon section #}
+                    <div class="flex justify-center mb-6">
+                        {% block step_icon %}{% endblock %}
+                    </div>
 
-                {# Step header #}
-                <div class="text-center mb-8">
-                    <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-                        {% block step_title %}{% endblock %}
-                    </h1>
-                    {% block step_description %}
-                        {# Optional description that child templates can override #}
-                    {% endblock %}
-                </div>
+                    {# Step header #}
+                    <div class="text-center mb-8">
+                        <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+                            {% block step_title %}{% endblock %}
+                        </h1>
+                        {% block step_description %}
+                            {# Optional description that child templates can override #}
+                        {% endblock %}
+                    </div>
 
-                {# Step content #}
-                {% block step_content %}{% endblock %}
+                    {# Step content #}
+                    {% block step_content %}{% endblock %}
+
+                    {# Optional footer content within main section #}
+                    {% block step_footer %}{% endblock %}
+                </div>
             </div>
         </div>
     </div>
