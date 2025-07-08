@@ -27,30 +27,18 @@ class AliasVoter extends Voter
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
-        if (!$user instanceof User) {
-            return false;
-        }
-
         $alias = $subject;
-        if (!$alias instanceof Alias) {
-            return false;
-        }
 
-        // Check if the alias is not deleted
-        if ($alias->isDeleted()) {
-            return false;
-        }
+        $isUserValid = $user instanceof User;
+        $isAliasValid = $alias instanceof Alias;
+        $isNotDeleted = $isAliasValid && !$alias->isDeleted();
+        $isRandom = $isAliasValid && $alias->isRandom();
+        $isOwner = $isAliasValid && $alias->getUser() === $user;
 
-        // It is only allowed to delete random aliases
-        if (!$alias->isRandom()) {
-            return false;
-        }
-
-        // Check if the alias belongs to the user
-        if ($alias->getUser() !== $user) {
-            return false;
-        }
-
-        return true;
+        return $isUserValid
+            && $isAliasValid
+            && $isNotDeleted
+            && $isRandom
+            && $isOwner;
     }
 }
