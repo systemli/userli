@@ -147,7 +147,7 @@ class AliasController extends AbstractController
 
     #[Route(path: '/alias/delete/{id}', name: 'alias_delete_submit', requirements: ['id' => '\d+'], methods: ['POST'])]
     #[IsGranted('delete', subject: 'alias')]
-    public function delete_submit(
+    public function deleteSubmit(
         Request $request,
         #[MapEntity(class: Alias::class, expr: 'repository.findOneBy({id: id, deleted: false})')]
         Alias   $alias): RedirectResponse|Response
