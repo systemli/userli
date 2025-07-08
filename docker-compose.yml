@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: docker/userli/Dockerfile
     volumes:
+      - ./docker/userli/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro
       - ./:/var/www/html
     ports:
       - 8000:80
