@@ -6,9 +6,9 @@ Feature: User
       | name        |
       | example.org |
     And the following User exists:
-      | email               | password | roles        |
-      | admin@example.org   | asdasd   | ROLE_ADMIN   |
-      | user@example.org    | asdasd   | ROLE_USER    |
+      | email               | password | roles           |
+      | admin@example.org   | asdasd   | ROLE_ADMIN      |
+      | user@example.org    | asdasd   | ROLE_USER       |
       | support@example.org | asdasd   | ROLE_MULTIPLIER |
     And the following Alias exists:
       | user_id | source                     | destination       | deleted | random |
@@ -22,9 +22,9 @@ Feature: User
     When I am authenticated as "user@example.org"
     And I am on "/account"
     And I fill in the following:
-      | password_change_password             | asdasd       |
-      | password_change_newPassword_first    | P4ssW0rd!!!1 |
-      | password_change_newPassword_second   | P4ssW0rd!!!1 |
+      | password_change_password           | asdasd       |
+      | password_change_newPassword_first  | P4ssW0rd!!!1 |
+      | password_change_newPassword_second | P4ssW0rd!!!1 |
     And I press "Submit"
 
     Then I should be on "/account"
@@ -78,45 +78,43 @@ Feature: User
     And the response status code should be 200
 
   @delete-alias
-  Scenario: Delete custom alias
+  Scenario: User tries to delete a custom alias
     When I am authenticated as "user@example.org"
     And I am on "/alias/delete/1"
 
-    Then I should be on "/alias"
-    And the response status code should not be 403
+    Then the response status code should be 403
 
   @delete-alias
   Scenario: Delete random alias
     When I am authenticated as "user@example.org"
     And I am on "/alias/delete/4"
-    And I fill in the following:
+    Then the response status code should be 200
+
+    When I fill in the following:
       | delete_alias_password | asdasd |
-    And I press "Delete alias"
+    And I press "Delete alias address"
 
     Then I should be on "/alias"
     And I should see text matching "Your alias address was deleted."
     And the response status code should not be 403
 
   @delete-alias
-  Scenario: Deleted alias redirect
+  Scenario: User tries to access a deleted alias
     When I am authenticated as "user@example.org"
     And I am on "/alias/delete/2"
-    Then I should be on "/alias"
-    And the response status code should not be 403
+    Then the response status code should be 404
 
   @delete-alias
-  Scenario: Foreign alias redirect
+  Scenario: User tries to access a alias that does not belong to them
     When I am authenticated as "user@example.org"
     And I am on "/alias/delete/3"
-    Then I should be on "/alias"
-    And the response status code should not be 403
+    Then the response status code should be 403
 
   @delete-alias
   Scenario: Nonexistent alias redirect
     When I am authenticated as "user@example.org"
     And I am on "/alias/delete/200"
-    Then I should be on "/alias"
-    And the response status code should not be 403
+    Then the response status code should be 404
 
   @delete-user
   Scenario: Delete Account

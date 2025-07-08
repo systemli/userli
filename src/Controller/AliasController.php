@@ -7,22 +7,31 @@ namespace App\Controller;
 use App\Entity\Alias;
 use App\Entity\User;
 use App\Exception\ValidationException;
+use App\Form\AliasDeleteType;
 use App\Form\CustomAliasCreateType;
 use App\Form\Model\AliasCreate;
+use App\Form\Model\Delete;
 use App\Form\RandomAliasCreateType;
 use App\Handler\AliasHandler;
+use App\Handler\DeleteHandler;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class AliasController extends AbstractController
 {
     public function __construct(
         private readonly AliasHandler           $aliasHandler,
+        private readonly DeleteHandler          $deleteHandler,
         private readonly EntityManagerInterface $manager,
-    ) {}
+    )
+    {
+    }
 
     #[Route(path: '/alias', name: 'aliases', methods: ['GET'])]
     public function show(): Response
@@ -109,5 +118,58 @@ class AliasController extends AbstractController
         } catch (ValidationException $e) {
             $this->addFlash('error', $e->getMessage());
         }
+    }
+
+    #[Route(path: '/alias/delete/{id}', name: 'alias_delete', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[IsGranted('delete', subject: 'alias')]
+    public function delete(
+        #[MapEntity(class: Alias::class, expr: 'repository.findOneBy({id: id, deleted: false})')]
+        Alias $alias): Response
+    {
+        $form = $this->createForm(
+            AliasDeleteType::class,
+            new Delete(),
+            [
+                'action' => $this->generateUrl('alias_delete_submit', ['id' => $alias->getId()]),
+                'method' => 'post',
+            ]
+        );
+
+        return $this->render(
+            'Alias/delete.html.twig',
+            [
+                'alias' => $alias,
+                'form' => $form->createView(),
+                'user' => $this->getUser(),
+            ]
+        );
+    }
+
+    #[Route(path: '/alias/delete/{id}', name: 'alias_delete_submit', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[IsGranted('delete', subject: 'alias')]
+    public function deleteSubmit(
+        Request $request,
+        #[MapEntity(class: Alias::class, expr: 'repository.findOneBy({id: id, deleted: false})')]
+        Alias   $alias): RedirectResponse|Response
+    {
+        $form = $this->createForm(AliasDeleteType::class, new Delete());
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $this->deleteHandler->deleteAlias($alias, $this->getUser());
+
+            $request->getSession()->getFlashBag()->add('success', 'flashes.alias-deletion-successful');
+
+            return $this->redirect($this->generateUrl('aliases'));
+        }
+
+        return $this->render(
+            'Alias/delete.html.twig',
+            [
+                'alias' => $alias,
+                'form' => $form->createView(),
+                'user' => $this->getUser(),
+            ]
+        );
     }
 }
