@@ -197,7 +197,7 @@ Feature: User
       | twofactor_password | asdasd |
     And I press "Enable two-factor authentication"
 
-    Then I should be on "/user/twofactor"
+    Then I should be on "/user/twofactor_confirm"
     And I should see text matching "Scan the image below with your two-factor app."
 
     And I fill in the following:
