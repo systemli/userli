@@ -49,15 +49,16 @@
                 autofocus
                 placeholder="{{ "form.twofactor-login-placeholder"|trans }}"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200{% if authenticationError %} border-red-300{% endif %}"
-                aria-describedby="auth-code-help{% if authenticationError %} auth-code-error{% endif %}"
+                aria-describedby="{% if authenticationError %}auth-code-error{% else %}auth-code-help{% endif %}"
                 {% if authenticationError %}aria-invalid="true"{% endif %}
             >
-            <p id="auth-code-help" class="mt-2 text-xs text-gray-500">
-                {{ "form.twofactor-login-help"|trans }}
-            </p>
             {% if authenticationError %}
                 <div id="auth-code-error" class="mt-2 text-xs text-red-600">
-                    {{ authenticationError|trans }}
+                    {{ authenticationError|trans(authenticationErrorData, 'SchebTwoFactorBundle') }}
+                </div>
+            {% else %}
+                <div id="auth-code-help" class="mt-2 text-xs text-gray-500">
+                    {{ "form.twofactor-login-help"|trans }}
                 </div>
             {% endif %}
         </div>
