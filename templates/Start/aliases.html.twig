@@ -265,7 +265,7 @@
                                                 </svg>
                                                     <span class="hidden sm:inline">{{ "copy-to-clipboard"|trans }}</span>
                                                 </button>
-                                                <a href="{{ url('alias_delete', {'aliasId': alias.id}) }}"
+                                                <a href="{{ url('alias_delete', {'id': alias.id}) }}"
                                                    class="inline-flex items-center px-2 py-1 text-xs font-medium text-red-700 bg-red-100 rounded hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 transition-colors"
                                                    title="{{ "alias.delete"|trans }}"
                                                    data-toggle="tooltip"

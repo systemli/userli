@@ -7,11 +7,14 @@ use App\Entity\User;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
+use App\Form\Model\Delete;
 use App\Form\Model\OpenPgpKey as OpenPgpKeyModel;
+use App\Form\OpenPgpDeleteType;
 use App\Form\OpenPgpKeyType;
 use App\Handler\WkdHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -99,5 +102,34 @@ class OpenPGPController extends AbstractController
         } catch (MultipleGpgKeysForUserException) {
             $this->addFlash('error', 'flashes.openpgp-key-upload-error-multiple-keys');
         }
+    }
+
+    #[Route(path: '/openpgp/delete', name: 'openpgp_delete', methods: ['GET'])]
+    public function delete(): RedirectResponse|Response
+    {
+        $form = $this->createForm(OpenPgpDeleteType::class, new Delete());
+
+        return $this->render(
+            'OpenPgp/delete.html.twig',
+            [
+                'form' => $form->createView(),
+                'user' => $this->getUser(),
+            ]
+        );
+    }
+
+    #[Route(path: '/openpgp/delete', name: 'openpgp_delete_submit', methods: ['POST'])]
+    public function deleteSubmit(Request $request): RedirectResponse
+    {
+        $form = $this->createForm(OpenPgpDeleteType::class, new Delete());
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $this->wkdHandler->deleteKey($this->getUser()->getEmail());
+
+            $request->getSession()->getFlashBag()->add('success', 'flashes.openpgp-deletion-successful');
+        }
+
+        return $this->redirectToRoute('openpgp');
     }
 }
