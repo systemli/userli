@@ -34,8 +34,6 @@ readonly class UserPasswordUpdateHandler
             $this->mailCryptKeyHandler->create($user, $newPassword, $mailCryptEnable);
         }
 
-        $user->eraseCredentials();
-
         $this->manager->flush();
     }
 }

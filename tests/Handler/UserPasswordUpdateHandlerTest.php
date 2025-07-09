@@ -44,8 +44,6 @@ class UserPasswordUpdateHandlerTest extends TestCase
         $user->expects($this->once())
             ->method('hasMailCryptSecretBox')
             ->willReturn(false);
-        $user->expects($this->once())
-            ->method('eraseCredentials');
 
         // Expect password update to be called
         $this->passwordUpdater
@@ -76,8 +74,6 @@ class UserPasswordUpdateHandlerTest extends TestCase
         $user->expects($this->once())
             ->method('hasMailCryptSecretBox')
             ->willReturn(true);
-        $user->expects($this->once())
-            ->method('eraseCredentials');
 
         // Expect password update to be called
         $this->passwordUpdater
@@ -107,8 +103,6 @@ class UserPasswordUpdateHandlerTest extends TestCase
         $user = $this->createMock(User::class);
         $user->expects($this->never())
             ->method('hasMailCryptSecretBox');
-        $user->expects($this->never())
-            ->method('eraseCredentials');
 
         // Password updater throws exception
         $this->passwordUpdater
@@ -142,8 +136,6 @@ class UserPasswordUpdateHandlerTest extends TestCase
         $user->expects($this->once())
             ->method('hasMailCryptSecretBox')
             ->willReturn(true);
-        $user->expects($this->never())
-            ->method('eraseCredentials');
 
         // Password updater succeeds
         $this->passwordUpdater
@@ -192,9 +184,6 @@ class UserPasswordUpdateHandlerTest extends TestCase
             ->method('update')
             ->with($user, $oldPassword, $newPassword);
 
-        $user->expects($this->once())
-            ->method('eraseCredentials');
-
         $this->manager
             ->expects($this->once())
             ->method('flush');
@@ -211,7 +200,6 @@ class UserPasswordUpdateHandlerTest extends TestCase
     ): void {
         $user = $this->createMock(User::class);
         $user->method('hasMailCryptSecretBox')->willReturn(false);
-        $user->method('eraseCredentials');
 
         $this->passwordUpdater
             ->expects($this->once())
