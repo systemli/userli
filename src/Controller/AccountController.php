@@ -12,7 +12,6 @@ use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -28,26 +27,49 @@ class AccountController extends AbstractController
     {
     }
 
-    #[Route(path: '/account', name: 'account')]
-    public function account(Request $request): Response
+    #[Route(path: '/account', name: 'account', methods: ['GET'])]
+    public function show(Request $request): Response
     {
         $user = $this->getUser();
-        $passwordChange = new PasswordChange();
-        $passwordChangeForm = $this->createForm(
-            PasswordChangeType::class,
-            $passwordChange,
+        $form = $this->createForm(PasswordChangeType::class, new PasswordChange(), [
+            'action' => $this->generateUrl('account_password'),
+            'method' => 'post',
+        ]);
+
+        return $this->render(
+            'Start/account.html.twig',
             [
-                'action' => $this->generateUrl('account'),
-                'method' => 'post',
+                'user' => $user,
+                'user_domain' => $user->getDomain(),
+                'password_form' => $form->createView(),
+                'recovery_secret_set' => $user->hasRecoverySecretBox(),
+                'twofactor_enabled' => $user->isTotpAuthenticationEnabled(),
             ]
         );
+    }
 
-        if ('POST' === $request->getMethod()) {
-            $passwordChangeForm->handleRequest($request);
+    #[Route(path: '/account/password', name: 'account_password', methods: ['POST'])]
+    public function changePassword(Request $request): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(PasswordChangeType::class, new PasswordChange());
+        $form->handleRequest($request);
 
-            if ($passwordChangeForm->isSubmitted() && $passwordChangeForm->isValid()) {
-                $this->changePassword($request, $user, $passwordChange);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->passwordUpdater->updatePassword($user, $form->getData()->getNewPassword());
+
+            // Reencrypt the MailCrypt key with new password
+            if ($user->hasMailCryptSecretBox()) {
+                $this->mailCryptKeyHandler->update($user, $form->getData()->getPassword(), $form->getData()->getNewPassword());
             }
+
+            $user->eraseCredentials();
+
+            $this->manager->flush();
+
+            $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
+
+            return $this->redirectToRoute('account');
         }
 
         return $this->render(
@@ -55,32 +77,15 @@ class AccountController extends AbstractController
             [
                 'user' => $user,
                 'user_domain' => $user->getDomain(),
-                'password_form' => $passwordChangeForm->createView(),
+                'password_form' => $form->createView(),
                 'recovery_secret_set' => $user->hasRecoverySecretBox(),
                 'twofactor_enabled' => $user->isTotpAuthenticationEnabled(),
             ]
         );
     }
 
-    /**
-     * @throws \Exception
-     */
-    private function changePassword(Request $request, User $user, PasswordChange $passwordChange): void
-    {
-        $this->passwordUpdater->updatePassword($user, $passwordChange->getNewPassword());
-        // Reencrypt the MailCrypt key with new password
-        if ($user->hasMailCryptSecretBox()) {
-            $this->mailCryptKeyHandler->update($user, $passwordChange->getPassword(), $passwordChange->getNewPassword());
-        }
-        $user->eraseCredentials();
-
-        $this->manager->flush();
-
-        $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
-    }
-
     #[Route(path: '/user/delete', name: 'user_delete', methods: ['GET'])]
-    public function delete(): RedirectResponse|Response
+    public function delete(): Response
     {
         $form = $this->createForm(UserDeleteType::class, new Delete());
 
@@ -94,7 +99,7 @@ class AccountController extends AbstractController
     }
 
     #[Route(path: '/user/delete', name: 'user_delete_submit', methods: ['POST'])]
-    public function deleteSubmit(Request $request): RedirectResponse|Response
+    public function deleteSubmit(Request $request): Response
     {
         $form = $this->createForm(UserDeleteType::class, new Delete());
         $form->handleRequest($request);
