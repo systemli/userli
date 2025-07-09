@@ -57,7 +57,7 @@ class AccountControllerTest extends WebTestCase
 
         $client->submit($form);
 
-        $this->assertResponseIsSuccessful();
+        $this->assertResponseRedirects('/account');
     }
 
     public function testChangePasswordIdentical()
