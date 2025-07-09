@@ -5,8 +5,7 @@ namespace App\Admin;
 use App\Entity\User;
 use App\Enum\MailCrypt;
 use App\Enum\Roles;
-use App\Handler\MailCryptKeyHandler;
-use App\Helper\PasswordUpdater;
+use App\Handler\UserPasswordUpdateHandler;
 use App\Traits\DomainGuesserAwareTrait;
 use Exception;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -28,8 +27,7 @@ class UserAdmin extends Admin
 {
     use DomainGuesserAwareTrait;
 
-    private PasswordUpdater $passwordUpdater;
-    private MailCryptKeyHandler $mailCryptKeyHandler;
+    private readonly UserPasswordUpdateHandler $userPasswordUpdateHandler;
     private readonly MailCrypt $mailCrypt;
     private readonly Security $security;
 
@@ -178,10 +176,8 @@ class UserAdmin extends Admin
      */
     public function prePersist($object): void
     {
-        $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
-        if (null !== $object->getMailCryptEnabled()) {
-            $this->mailCryptKeyHandler->create($object, $object->getPlainPassword(), $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS));
-        }
+        $this->userPasswordUpdateHandler->updatePassword($object, $object->getPlainPassword());
+
         if (null === $object->getDomain() && null !== $domain = $this->domainGuesser->guess($object->getEmail())) {
             $object->setDomain($domain);
         }
@@ -198,7 +194,7 @@ class UserAdmin extends Admin
         }
 
         if (!empty($object->getPlainPassword())) {
-            $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
+            $this->userPasswordUpdateHandler->updatePassword($object, $object->getPlainPassword());
         } else {
             $object->updateUpdatedTime();
         }
@@ -210,21 +206,13 @@ class UserAdmin extends Admin
         }
     }
 
-    public function setPasswordUpdater(PasswordUpdater $passwordUpdater): void
-    {
-        $this->passwordUpdater = $passwordUpdater;
-    }
-    public function setMailCryptKeyHandler(MailCryptKeyHandler $mailCryptKeyHandler): void
-    {
-        $this->mailCryptKeyHandler = $mailCryptKeyHandler;
-    }
-    public function setMailCryptVar(string $mailCrypt): void
-    {
-        $this->mailCrypt = MailCrypt::from((int) $mailCrypt);
-    }
-
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
+    }
+
+    public function setUserPasswordUpdateHandler(UserPasswordUpdateHandler $userPasswordUpdateHandler): void
+    {
+        $this->userPasswordUpdateHandler = $userPasswordUpdateHandler;
     }
 }

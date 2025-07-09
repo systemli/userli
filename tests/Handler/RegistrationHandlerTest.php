@@ -9,6 +9,7 @@ use App\Enum\Roles;
 use App\Event\Events;
 use App\Event\UserCreatedEvent;
 use App\Event\UserEvent;
+use App\Handler\UserPasswordUpdateHandler;
 use App\Repository\VoucherRepository;
 use Exception;
 use App\Form\Model\Registration;
@@ -29,8 +30,7 @@ class RegistrationHandlerTest extends KernelTestCase
             $this->createMock(EntityManagerInterface::class),
             $this->createMock(DomainGuesser::class),
             $this->createMock(EventDispatcherInterface::class),
-            $this->createMock(PasswordUpdater::class),
-            $this->createMock(MailCryptKeyHandler::class),
+            $this->createMock(UserPasswordUpdateHandler::class),
             $this->createMock(RecoveryTokenHandler::class),
             false,
             false
@@ -69,11 +69,9 @@ class RegistrationHandlerTest extends KernelTestCase
             $manager,
             $domainGuesser,
             $eventDispatcher,
-            $this->createMock(PasswordUpdater::class),
-            $this->createMock(MailCryptKeyHandler::class),
+            $this->createMock(UserPasswordUpdateHandler::class),
             $this->createMock(RecoveryTokenHandler::class),
-            true,
-            false
+            true
         );
 
         $registration = new Registration();

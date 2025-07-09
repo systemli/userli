@@ -8,9 +8,7 @@ use App\Form\Model\PasswordChange;
 use App\Form\PasswordChangeType;
 use App\Form\UserDeleteType;
 use App\Handler\DeleteHandler;
-use App\Handler\MailCryptKeyHandler;
-use App\Helper\PasswordUpdater;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Handler\UserPasswordUpdateHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,10 +17,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class AccountController extends AbstractController
 {
     public function __construct(
-        private readonly PasswordUpdater        $passwordUpdater,
-        private readonly MailCryptKeyHandler    $mailCryptKeyHandler,
-        private readonly EntityManagerInterface $manager,
-        private readonly DeleteHandler          $deleteHandler
+        private readonly UserPasswordUpdateHandler $userPasswordUpdateHandler,
+        private readonly DeleteHandler             $deleteHandler
     )
     {
     }
@@ -52,20 +48,12 @@ class AccountController extends AbstractController
     public function changePassword(Request $request): Response
     {
         $user = $this->getUser();
-        $form = $this->createForm(PasswordChangeType::class, new PasswordChange());
+        $data = new PasswordChange();
+        $form = $this->createForm(PasswordChangeType::class, $data);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->passwordUpdater->updatePassword($user, $form->getData()->getNewPassword());
-
-            // Reencrypt the MailCrypt key with new password
-            if ($user->hasMailCryptSecretBox()) {
-                $this->mailCryptKeyHandler->update($user, $form->getData()->getPassword(), $form->getData()->getNewPassword());
-            }
-
-            $user->eraseCredentials();
-
-            $this->manager->flush();
+            $this->userPasswordUpdateHandler->updatePassword($user, $data->getNewPassword(), $data->getPassword());
 
             $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
 

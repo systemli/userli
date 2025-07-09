@@ -2,11 +2,10 @@
 
 namespace App\Command;
 
+use App\Handler\UserPasswordUpdateHandler;
 use Exception;
-use App\Handler\MailCryptKeyHandler;
 use App\Handler\PasswordStrengthHandler;
 use App\Handler\RecoveryTokenHandler;
-use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,11 +22,10 @@ class UsersResetCommand extends AbstractUsersCommand
     /**
      * RegistrationMailCommand constructor.
      */
-    public function __construct(EntityManagerInterface $manager,
-                                private readonly PasswordUpdater $passwordUpdater,
-                                private readonly MailCryptKeyHandler $mailCryptKeyHandler,
-                                private readonly RecoveryTokenHandler $recoveryTokenHandler,
-                                private readonly string $mailLocation)
+    public function __construct(EntityManagerInterface                     $manager,
+                                private readonly UserPasswordUpdateHandler $userPasswordUpdateHandler,
+                                private readonly RecoveryTokenHandler      $recoveryTokenHandler,
+                                private readonly string                    $mailLocation)
     {
         parent::__construct($manager);
     }
@@ -93,16 +91,11 @@ class UsersResetCommand extends AbstractUsersCommand
 
         $output->write(sprintf("\nResetting user %s ...\n\n", $user->getEmail()));
 
-        $this->passwordUpdater->updatePassword($user, $password);
-
+        $this->userPasswordUpdateHandler->updatePassword($user, $password);
         // Generate MailCrypt key with new password (overwrites old MailCrypt key)
-        if ($user->hasMailCryptSecretBox()) {
-            $this->mailCryptKeyHandler->create($user, $password);
+        $this->recoveryTokenHandler->create($user);
+        $output->write(sprintf("<info>New recovery token (please hand over to user): %s</info>\n\n", $user->getPlainRecoveryToken()));
 
-            // Reset recovery token
-            $this->recoveryTokenHandler->create($user);
-            $output->write(sprintf("<info>New recovery token (please hand over to user): %s</info>\n\n", $user->getPlainRecoveryToken()));
-        }
 
         // Reset twofactor settings
         $user->setTotpConfirmed(false);
@@ -115,8 +108,8 @@ class UsersResetCommand extends AbstractUsersCommand
         $this->manager->flush();
 
         // Clear users mailbox
-        [$localPart, $domain] = explode('@', (string) $user->getEmail());
-        $path = $this->mailLocation.DIRECTORY_SEPARATOR.$domain.DIRECTORY_SEPARATOR.$localPart.DIRECTORY_SEPARATOR.'Maildir';
+        [$localPart, $domain] = explode('@', (string)$user->getEmail());
+        $path = $this->mailLocation . DIRECTORY_SEPARATOR . $domain . DIRECTORY_SEPARATOR . $localPart . DIRECTORY_SEPARATOR . 'Maildir';
         $filesystem = new Filesystem();
         if ($filesystem->exists($path)) {
             $output->writeln(sprintf('Delete directory for user: %s', $user->getEmail()));
@@ -124,7 +117,7 @@ class UsersResetCommand extends AbstractUsersCommand
             try {
                 $filesystem->remove($path);
             } catch (IOException $e) {
-                $output->writeln('<error>'.$e->getMessage().'</error>');
+                $output->writeln('<error>' . $e->getMessage() . '</error>');
                 $output->writeln(sprintf("<comment>Please manually clear the mailbox at '%s'</comment>", $path));
 
                 return 1;

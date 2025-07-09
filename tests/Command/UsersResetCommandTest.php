@@ -2,12 +2,11 @@
 
 namespace App\Tests\Command;
 
+use App\Handler\UserPasswordUpdateHandler;
 use Exception;
 use App\Command\UsersResetCommand;
 use App\Entity\User;
-use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
-use App\Helper\PasswordUpdater;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
@@ -39,11 +38,7 @@ class UsersResetCommandTest extends TestCase
             ->getMock();
         $manager->method('getRepository')->willReturn($repository);
 
-        $passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $mailCryptKeyHandler = $this->getMockBuilder(MailCryptKeyHandler::class)
+        $userPasswordUpdateHandler = $this->getMockBuilder(UserPasswordUpdateHandler::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -53,7 +48,7 @@ class UsersResetCommandTest extends TestCase
 
         $mailLocation = '/tmp/vmail';
 
-        $this->command = new UsersResetCommand($manager, $passwordUpdater, $mailCryptKeyHandler, $recoveryTokenHandler, $mailLocation);
+        $this->command = new UsersResetCommand($manager, $userPasswordUpdateHandler, $recoveryTokenHandler, $mailLocation);
     }
 
     public function testExecute(): void

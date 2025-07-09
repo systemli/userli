@@ -5,11 +5,15 @@ namespace App\Helper;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
+use App\Handler\UserPasswordUpdateHandler;
 use Doctrine\ORM\EntityManagerInterface;
 
-class AdminPasswordUpdater
+readonly class AdminPasswordUpdater
 {
-    public function __construct(private readonly EntityManagerInterface $manager, private readonly PasswordUpdater $updater)
+    public function __construct(
+        private EntityManagerInterface    $manager,
+        private UserPasswordUpdateHandler $userPasswordUpdateHandler
+    )
     {
     }
 
@@ -20,7 +24,7 @@ class AdminPasswordUpdater
     public function updateAdminPassword(string $password): void
     {
         $domain = $this->manager->getRepository(Domain::class)->getDefaultDomain();
-        $adminEmail = 'postmaster@'.$domain;
+        $adminEmail = 'postmaster@' . $domain;
         $admin = $this->manager->getRepository(User::class)->findByEmail($adminEmail);
         if (null === $admin) {
             // create admin user
@@ -29,7 +33,7 @@ class AdminPasswordUpdater
             $admin->setRoles([Roles::ADMIN]);
             $admin->setDomain($domain);
         }
-        $this->updater->updatePassword($admin, $password);
+        $this->userPasswordUpdateHandler->updatePassword($admin, $password);
         $this->manager->persist($admin);
         $this->manager->flush();
     }

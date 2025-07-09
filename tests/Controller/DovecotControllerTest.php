@@ -92,7 +92,7 @@ class DovecotControllerTest extends WebTestCase
         self::assertEquals($data['message'], 'success');
         self::assertEquals($data['body']['user'], 'user@example.org');
         self::assertEquals($data['body']['mailCrypt'], 0);
-        self::assertEquals($data['body']['mailCryptPublicKey'], "");
+        self::assertNotEmpty($data['body']['mailCryptPublicKey']);
         self::assertIsInt($data['body']['gid']);
         self::assertIsInt($data['body']['uid']);
         self::assertNotEquals($data['body']['home'], '');

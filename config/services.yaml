@@ -118,14 +118,14 @@ services:
     arguments:
       $to: "%env(NOTIFICATION_ADDRESS)%"
 
-  App\Handler\UserRestoreHandler:
-    arguments:
-      $mailCryptEnv: "%env(MAIL_CRYPT)%"
-
   App\Handler\RegistrationHandler:
     public: true
     arguments:
       $registrationOpen: "%env(REGISTRATION_OPEN)%"
+
+  App\Handler\UserPasswordUpdateHandler:
+    public: true
+    arguments:
       $mailCrypt: "%env(MAIL_CRYPT)%"
 
   App\Handler\SuspiciousChildrenHandler:
@@ -196,10 +196,8 @@ services:
           controller: App\Controller\UserCRUDController,
         }
     calls:
-      - [setPasswordUpdater, ['@App\Helper\PasswordUpdater']]
       - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
-      - [setMailCryptKeyHandler, ['@App\Handler\MailCryptKeyHandler']]
-      - [setMailCryptVar, ["%env(MAIL_CRYPT)%"]]
+      - [setUserPasswordUpdateHandler, ['@App\Handler\UserPasswordUpdateHandler']]
       - [setSecurity, ['@Symfony\Bundle\SecurityBundle\Security']]
 
   userli.admin.domain:

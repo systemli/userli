@@ -25,11 +25,9 @@ readonly class RegistrationHandler
         private EntityManagerInterface   $manager,
         private DomainGuesser            $domainGuesser,
         private EventDispatcherInterface $eventDispatcher,
-        private PasswordUpdater          $passwordUpdater,
-        private MailCryptKeyHandler      $mailCryptKeyHandler,
+        private UserPasswordUpdateHandler $userPasswordUpdateHandler,
         private RecoveryTokenHandler     $recoveryTokenHandler,
         private bool                     $registrationOpen,
-        private bool                     $mailCrypt
     )
     {
     }
@@ -46,11 +44,7 @@ readonly class RegistrationHandler
         // Create user
         $user = $this->buildUser($registration);
 
-        // Update password, generate MailCrypt keys, generate recovery token
-        // key material for mailCrypt is always generated, but only enabled if MAIL_CRYPT >= 2
-        $mailCryptEnable = $this->mailCrypt >= 2;
-        $this->passwordUpdater->updatePassword($user, $registration->getPlainPassword());
-        $this->mailCryptKeyHandler->create($user, $registration->getPlainPassword(), $mailCryptEnable);
+        $this->userPasswordUpdateHandler->updatePassword($user, $registration->getPlainPassword());
         $this->recoveryTokenHandler->create($user);
 
         // We used to erase sensitive data here, but it's now done in RegistrationController
