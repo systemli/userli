@@ -144,7 +144,7 @@ form:
   twofactor-login: Two-factor authentication
   twofactor-login-placeholder: 6-digit code
   twofactor-login-auth-code: Authentication code
-  twofactor-backup-code-ack: I stored the backup codes at a secure place
+  twofactor-backup-code-ack: Backup codes stored securely
   twofactor-login-desc: >
     Open your two-factor authenticator (TOTP) app to view your authentication code.
   twofactor-login-cancel: Cancel login
@@ -180,9 +180,22 @@ account:
       using one of the two-factor backup codes or reset your account using the recovery token.
     enable-lead: >
       Scan the image below with your two-factor app.
-    backup-ack-lead: >
-      Backup codes for two-factor authentication. Copy and store them at a secure place.
-    print-codes: Print backup codes
+    enable-title: Enable 2FA
+    enable-description: Two-factor authentication is currently not active. We recommend enabling it to significantly increase the security of your account.
+    disable-title: 2FA is active
+    disable-description: Two-factor authentication is currently active and protecting your account. If you need to disable it, you can do so below.
+    disable-button: Disable
+    setup-button: Set up
+    qr-code-lead: QR Code
+    qr-code-description: Scan the QR code below with your two-factor authenticator app.
+    backup-ack-lead: "Backup Codes"
+    backup-ack-description: "Backup codes for two-factor authentication. Copy and store them in a secure place."
+    setup-key: Setup Key
+    setup-key-description: "Enter this key manually in your authenticator app if you cannot scan the QR code"
+    info-title: Why Two-Factor Authentication?
+    info-security: "Adds an extra layer of security to protect your account from unauthorized access"
+    info-simple: "Simple to use with privacy-friendly apps like Aegis (Android) or Tofu (iOS), or any TOTP-compatible authenticator app"
+    info-backup: "Backup codes ensure you can always access your account, even if you lose your phone"
 
 recovery:
   header: Recover your account
@@ -421,3 +434,7 @@ random-aliases.feature-privacy: "Perfect for online shopping and registrations"
 random-aliases.feature-deletable: "Can be deleted anytime when no longer needed"
 random-aliases.limitation-random-name: "Random names that are harder to remember"
 random-aliases.management-hint: "<strong>Tip:</strong> Delete unused random aliases to make room for new ones."
+
+button:
+  copy: Copy
+  copied: Copied

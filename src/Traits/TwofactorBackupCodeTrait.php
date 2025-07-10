@@ -10,7 +10,7 @@ trait TwofactorBackupCodeTrait
     #[ORM\Column(type: Types::ARRAY)]
     private array $totpBackupCodes = [];
 
-    public function getBackupCodes(): array
+    public function getTotpBackupCodes(): array
     {
         return $this->totpBackupCodes ?: [];
     }
@@ -23,9 +23,6 @@ trait TwofactorBackupCodeTrait
         return in_array($code, $this->totpBackupCodes, true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function invalidateBackupCode(string $code): void
     {
         $key = array_search($code, $this->totpBackupCodes, true);

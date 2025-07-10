@@ -164,7 +164,7 @@ class FeatureContext extends MinkContext
                         break;
                     case 'totp_backup_codes':
                         $user->generateBackupCodes();
-                        $this->setPlaceholder('totp_backup_codes', $user->getBackupCodes());
+                        $this->setPlaceholder('totp_backup_codes', $user->getTotpBackupCodes());
                         break;
                 }
             }

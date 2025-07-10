@@ -44,6 +44,11 @@ trait TwofactorTrait
         $this->totpSecret = $totpSecret;
     }
 
+    public function getTotpSecret(): ?string
+    {
+        return $this->totpSecret;
+    }
+
     public function getTotpConfirmed(): bool
     {
         return (bool) $this->totpConfirmed;

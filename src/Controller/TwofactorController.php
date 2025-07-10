@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\Model\Twofactor;
 use App\Form\Model\TwofactorBackupAck;
 use App\Form\Model\TwofactorConfirm;
@@ -10,22 +11,19 @@ use App\Form\TwofactorConfirmType;
 use App\Form\TwofactorType;
 use Doctrine\ORM\EntityManagerInterface;
 use Endroid\QrCode\Builder\Builder;
-use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\ErrorCorrectionLevel;
-use Endroid\QrCode\RoundBlockSizeMode;
-use Endroid\QrCode\Writer\PngWriter;
-use RuntimeException;
-use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 class TwofactorController extends AbstractController
 {
-    public function __construct(private readonly EntityManagerInterface $manager)
+    public function __construct(
+        private readonly EntityManagerInterface $manager,
+        private readonly TotpAuthenticatorInterface $totpAuthenticator
+    )
     {
     }
 
@@ -39,7 +37,7 @@ class TwofactorController extends AbstractController
             ]);
             return $this->render('User/twofactor_enable.html.twig', [
                 'form' => $form,
-                'twofactor_enabled' => false,
+                'user' => $this->getUser(),
             ]);
         }
 
@@ -47,10 +45,11 @@ class TwofactorController extends AbstractController
             'action' => $this->generateUrl('user_twofactor_disable'),
             'method' => 'POST',
         ]);
+        $form->add('submit', SubmitType::class, ['label' => 'account.twofactor.disable-button']);
 
         return $this->render('User/twofactor_disable.html.twig', [
             'form' => $form,
-            'twofactor_enabled' => true,
+            'user' => $this->getUser(),
         ]);
     }
 
@@ -71,22 +70,28 @@ class TwofactorController extends AbstractController
 
         return $this->render('User/twofactor_enable.html.twig', [
             'form' => $form,
-            'twofactor_enabled' => false,
+            'user' => $this->getUser(),
         ]);
     }
 
     #[Route(path: '/user/twofactor_confirm', name: 'user_twofactor_confirm', methods: ['GET'])]
     public function confirm(): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
         $form = $this->createForm(TwofactorConfirmType::class, new TwofactorConfirm(), [
             'action' => $this->generateUrl('user_twofactor_confirm_submit'),
             'method' => 'POST',
         ]);
 
+        $qrContent = $this->totpAuthenticator->getQRContent($user);
+        $builder = new Builder(data: $qrContent, size: 512, margin: 0);
+
         return $this->render('User/twofactor_confirm.html.twig',
             [
                 'form' => $form,
-                'twofactor_enabled' => $this->getUser()->isTotpAuthenticationEnabled(),
+                'user' => $user,
+                'qr_code_data_uri' => $builder->build()->getDataUri(),
             ]
         );
     }
@@ -94,6 +99,8 @@ class TwofactorController extends AbstractController
     #[Route(path: '/user/twofactor_confirm', name: 'user_twofactor_confirm_submit', methods: ['POST'])]
     public function confirmSubmit(Request $request): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
         $form = $this->createForm(TwofactorConfirmType::class, new TwofactorConfirm());
         $form->handleRequest($request);
 
@@ -101,10 +108,14 @@ class TwofactorController extends AbstractController
             return $this->redirectToRoute('user_twofactor_backup_ack');
         }
 
+        $qrContent = $this->totpAuthenticator->getQRContent($user);
+        $builder = new Builder(data: $qrContent, size: 512, margin: 0);
+
         return $this->render('User/twofactor_confirm.html.twig',
             [
                 'form' => $form,
-                'twofactor_enabled' => $this->getUser()->isTotpAuthenticationEnabled(),
+                'user' => $user,
+                'qr_code_data_uri' => $builder->build()->getDataUri(),
             ]
         );
     }
@@ -112,6 +123,8 @@ class TwofactorController extends AbstractController
     #[Route(path: '/user/twofactor_backup_codes', name: 'user_twofactor_backup_ack', methods: ['GET'])]
     public function backupAck(): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
         $form = $this->createForm(TwofactorBackupAckType::class, new TwofactorBackupAck(), [
             'action' => $this->generateUrl('user_twofactor_backup_ack_submit'),
             'method' => 'POST',
@@ -120,8 +133,7 @@ class TwofactorController extends AbstractController
         return $this->render('User/twofactor_backup_ack.html.twig',
             [
                 'form' => $form,
-                'twofactor_enabled' => $this->getUser()->isTotpAuthenticationEnabled(),
-                'twofactor_backup_codes' => $this->getUser()->getBackupCodes(),
+                'user' => $user,
             ]
         );
     }
@@ -129,6 +141,7 @@ class TwofactorController extends AbstractController
     #[Route(path: '/user/twofactor_backup_codes', name: 'user_twofactor_backup_ack_submit', methods: ['POST'])]
     public function backupAckSubmit(Request $request): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         $form = $this->createForm(TwofactorBackupAckType::class, new TwofactorBackupAck());
         $form->handleRequest($request);
@@ -143,8 +156,7 @@ class TwofactorController extends AbstractController
         return $this->render('User/twofactor_backup_ack.html.twig',
             [
                 'form' => $form,
-                'twofactor_enabled' => $user->isTotpAuthenticationEnabled(),
-                'twofactor_backup_codes' => $user->getBackupCodes(),
+                'user' => $user,
             ]
         );
     }
@@ -167,34 +179,8 @@ class TwofactorController extends AbstractController
         return $this->render('User/twofactor_disable.html.twig',
             [
                 'form' => $form,
-                'twofactor_enabled' => $user->isTotpAuthenticationEnabled(),
+                'user' => $this->getUser(),
             ]
         );
-    }
-
-    #[Route(path: '/user/twofactor/qrcode', name: 'user_twofactor_qrcode')]
-    public function displayTotpQrCode(TotpAuthenticatorInterface $totpAuthenticator): Response
-    {
-        if (null === $user = $this->getUser()) {
-            throw new RuntimeException('User should not be null');
-        }
-
-        if (!($user instanceof TwoFactorInterface)) {
-            throw new NotFoundHttpException('Cannot display QR code');
-        }
-
-        $builder = new Builder(
-            writer: new PngWriter(),
-            writerOptions: [],
-            data: $totpAuthenticator->getQRContent($user),
-            encoding: new Encoding('UTF-8'),
-            errorCorrectionLevel: ErrorCorrectionLevel::High,
-            size: 320,
-            margin: 20,
-            roundBlockSizeMode: RoundBlockSizeMode::Margin,
-        );
-        $result = $builder->build();
-
-        return new Response($result->getString(), Response::HTTP_OK, ['Content-Type' => 'image/png']);
     }
 }

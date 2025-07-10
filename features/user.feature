@@ -184,7 +184,7 @@ Feature: User
     And I am on "/user/twofactor"
     And I fill in the following:
       | twofactor_password | wrong-password |
-    And I press "Enable two-factor authentication"
+    And I press "Set up"
 
     Then I should be on "/user/twofactor"
     And I should see text matching "Wrong password"
@@ -195,7 +195,7 @@ Feature: User
     And I am on "/user/twofactor"
     And I fill in the following:
       | twofactor_password | asdasd |
-    And I press "Enable two-factor authentication"
+    And I press "Set up"
 
     Then I should be on "/user/twofactor_confirm"
     And I should see text matching "Scan the image below with your two-factor app."
