@@ -7,7 +7,6 @@ use App\Form\DataTransformer\OptionalDomainEmailTransformer;
 use App\Form\Model\RecoveryProcess;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -36,7 +35,7 @@ class RecoveryProcessType extends AbstractType
                 'email',
                 TextType::class, ['label' => 'form.email']
             )->addViewTransformer($transformer))
-            ->add('recoveryToken', PasswordType::class, ['label' => 'form.recovery-token'])
+            ->add('recoveryToken', TextType::class, ['label' => 'form.recovery-token'])
             ->add('submit', SubmitType::class, ['label' => 'form.recovery-start']);
     }
 

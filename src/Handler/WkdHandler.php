@@ -101,13 +101,9 @@ class WkdHandler
         return $openPgpKey;
     }
 
-    public function getKey(string $email): OpenPgpKey
+    public function getKey(string $email): ?OpenPgpKey
     {
-        if (null === $openPgpKey = $this->repository->findByEmail($email)) {
-            $openPgpKey = new OpenPgpKey();
-        }
-
-        return $openPgpKey;
+        return $this->repository->findByEmail($email);
     }
 
     public function deleteKey(string $email): void
