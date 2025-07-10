@@ -29,21 +29,15 @@ class OpenPGPController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-
-        $openPgp = new OpenPgpKeyModel();
-        $openPgpKeyForm = $this->createForm(OpenPgpKeyType::class, $openPgp);
-
+        $form = $this->createForm(OpenPgpKeyType::class, new OpenPgpKeyModel());
         $openPgpKey = $this->wkdHandler->getKey($user);
 
         return $this->render(
             'Start/openpgp.html.twig',
             [
                 'user' => $user,
-                'user_domain' => $user->getDomain(),
-                'openpgp_form' => $openPgpKeyForm,
-                'openpgp_id' => $openPgpKey->getKeyId(),
-                'openpgp_fingerprint' => $openPgpKey->getKeyFingerprint(),
-                'openpgp_expiretime' => $openPgpKey->getKeyExpireTime(),
+                'form' => $form,
+                'openpgp_key' => $openPgpKey,
             ]
         );
     }
@@ -53,16 +47,14 @@ class OpenPGPController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
+        $form = $this->createForm(OpenPgpKeyType::class, new OpenPgpKeyModel());
+        $form->handleRequest($request);
 
-        $openPgp = new OpenPgpKeyModel();
-        $openPgpKeyForm = $this->createForm(OpenPgpKeyType::class, $openPgp);
-        $openPgpKeyForm->handleRequest($request);
-
-        if ($openPgpKeyForm->isSubmitted() && $openPgpKeyForm->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $keyFile */
-            $keyFile = $openPgpKeyForm->get('keyFile')->getData();
+            $keyFile = $form->get('keyFile')->getData();
             /** @var string $keyText */
-            $keyText = $openPgpKeyForm->get('keyText')->getData();
+            $keyText = $form->get('keyText')->getData();
 
             if ($keyFile) {
                 $content = file_get_contents($keyFile->getPathname());
@@ -80,11 +72,8 @@ class OpenPGPController extends AbstractController
             'Start/openpgp.html.twig',
             [
                 'user' => $user,
-                'user_domain' => $user->getDomain(),
-                'openpgp_form' => $openPgpKeyForm,
-                'openpgp_id' => $openPgpKey->getKeyId(),
-                'openpgp_fingerprint' => $openPgpKey->getKeyFingerprint(),
-                'openpgp_expiretime' => $openPgpKey->getKeyExpireTime(),
+                'form' => $form,
+                'openpgp_key' => $openPgpKey,
             ]
         );
     }
