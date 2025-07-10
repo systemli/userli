@@ -10,12 +10,10 @@ use App\Event\RecoveryProcessEvent;
 use App\Event\UserEvent;
 use App\Form\Model\RecoveryProcess;
 use App\Form\Model\RecoveryResetPassword;
-use App\Form\Model\RecoveryToken;
 use App\Form\Model\RecoveryTokenAck;
 use App\Form\RecoveryProcessType;
 use App\Form\RecoveryResetPasswordType;
 use App\Form\RecoveryTokenAckType;
-use App\Form\RecoveryTokenType;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
@@ -188,75 +186,6 @@ class RecoveryController extends AbstractController
     /**
      * @param Request $request
      * @return Response
-     * @throws Exception
-     */
-    #[Route(path: '/user/recovery_token', name: 'user_recovery_token')]
-    public function recoveryToken(Request $request): Response
-    {
-        /** @var User|null $user */
-        if (null === $user = $this->getUser()) {
-            throw new Exception('User should not be null');
-        }
-
-        $recoveryTokenModel = new RecoveryToken();
-        $form = $this->createForm(RecoveryTokenType::class, $recoveryTokenModel);
-
-        if ('POST' === $request->getMethod()) {
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                // Check if user has a MailCrypt key
-                if ($user->hasMailCryptSecretBox()) {
-                    // Decrypt the MailCrypt key
-                    $user->setPlainMailCryptPrivateKey($this->mailCryptKeyHandler->decrypt($user, $recoveryTokenModel->password));
-                } else {
-                    // Create a new MailCrypt key if none existed before
-                    $this->mailCryptKeyHandler->create($user, $recoveryTokenModel->password);
-                }
-
-                // Generate a new recovery token and encrypt the MailCrypt key with it
-                $this->recoveryTokenHandler->create($user);
-                if (null === $recoveryToken = $user->getPlainRecoveryToken()) {
-                    throw new Exception('recoveryToken should not be null');
-                }
-
-                // Clear sensitive plaintext data from User object
-                $user->eraseCredentials();
-
-                $recoveryTokenAck = new RecoveryTokenAck();
-                $recoveryTokenAck->setRecoveryToken($recoveryToken);
-                $recoveryTokenAckForm = $this->createForm(
-                    RecoveryTokenAckType::class,
-                    $recoveryTokenAck,
-                    [
-                        'action' => $this->generateUrl('user_recovery_token_ack'),
-                        'method' => 'post',
-                    ]
-                );
-
-                return $this->render('User/recovery_token.html.twig',
-                    [
-                        'form' => $recoveryTokenAckForm,
-                        'recovery_token' => $recoveryToken,
-                        'recovery_secret_set' => $user->hasRecoverySecretBox(),
-                        'user' => $user,
-                    ]
-                );
-            }
-        }
-
-        return $this->render('User/recovery_token.html.twig',
-            [
-                'form' => $form,
-                'recovery_secret_set' => $user->hasRecoverySecretBox(),
-                'user' => $user,
-            ]
-        );
-    }
-
-    /**
-     * @param Request $request
-     * @return Response
      */
     #[Route(path: '/recovery/recovery_token/ack', name: 'recovery_recovery_token_ack')]
     public function recoveryRecoveryTokenAck(Request $request): Response
@@ -290,43 +219,6 @@ class RecoveryController extends AbstractController
         }
 
         return $this->redirectToRoute('recovery');
-    }
-
-    /**
-     * @param Request $request
-     * @return Response
-     */
-    #[Route(path: '/user/recovery_token/ack', name: 'user_recovery_token_ack')]
-    public function recoveryTokenAck(Request $request): Response
-    {
-        $recoveryTokenAck = new RecoveryTokenAck();
-        $recoveryTokenAckForm = $this->createForm(
-            RecoveryTokenAckType::class,
-            $recoveryTokenAck,
-            [
-                'action' => $this->generateUrl('user_recovery_token_ack'),
-                'method' => 'post',
-            ]
-        );
-
-        if ('POST' === $request->getMethod()) {
-            $recoveryTokenAckForm->handleRequest($request);
-
-            if ($recoveryTokenAckForm->isSubmitted() and $recoveryTokenAckForm->isValid()) {
-                $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-token-ack');
-
-                return $this->redirectToRoute('start');
-            }
-
-            return $this->render('User/recovery_token.html.twig',
-                [
-                    'form' => $recoveryTokenAckForm,
-                    'recovery_token' => $recoveryTokenAck->getRecoveryToken(),
-                ]
-            );
-        }
-
-        return $this->redirectToRoute('register');
     }
 
     /**
