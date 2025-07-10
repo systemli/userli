@@ -52,7 +52,7 @@ class RegistrationController extends AbstractController
             ]
         );
 
-        return $this->render('Registration/register.html.twig', ['form' => $form->createView()]);
+        return $this->render('Registration/register.html.twig', ['form' => $form]);
     }
 
     /**
@@ -70,7 +70,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
-            return $this->render('Registration/register.html.twig', ['form' => $form->createView()]);
+            return $this->render('Registration/register.html.twig', ['form' => $form]);
         }
 
         $this->registrationHandler->handle($registration);
@@ -87,6 +87,7 @@ class RegistrationController extends AbstractController
 
         $recoveryTokenAck = new RecoveryTokenAck();
         $recoveryTokenAck->setRecoveryToken($recoveryToken);
+
         $recoveryTokenAckForm = $this->createForm(
             RecoveryTokenAckType::class,
             $recoveryTokenAck,
@@ -98,7 +99,7 @@ class RegistrationController extends AbstractController
 
         return $this->render('Registration/recovery_token.html.twig',
             [
-                'form' => $recoveryTokenAckForm->createView(),
+                'form' => $recoveryTokenAckForm,
                 'recovery_token' => $recoveryToken,
             ]
         );
@@ -121,7 +122,7 @@ class RegistrationController extends AbstractController
 
         return $this->render('Registration/recovery_token.html.twig',
             [
-                'form' => $recoveryTokenAckForm->createView(),
+                'form' => $recoveryTokenAckForm,
                 'recovery_token' => $recoveryTokenAck->getRecoveryToken(),
             ]
         );

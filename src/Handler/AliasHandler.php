@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class AliasHandler
 {
     public const ALIAS_LIMIT_CUSTOM = 3;
+
     public const ALIAS_LIMIT_RANDOM = 100;
 
     private readonly AliasRepository $repository;

@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class WeeklyReportCommand.
  */
-#[AsCommand(name: 'app:report:weekly')]
+#[AsCommand(name: 'app:report:weekly', description: 'Send weekly report to all admins')]
 class ReportWeeklyCommand extends Command
 {
     public function __construct(private readonly UserRegistrationInfoHandler $handler)
@@ -24,8 +24,6 @@ class ReportWeeklyCommand extends Command
      */
     protected function configure(): void
     {
-        $this
-            ->setDescription('Send weekly report to all admins');
     }
 
     /**

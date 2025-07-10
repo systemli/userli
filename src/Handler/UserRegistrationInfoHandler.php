@@ -2,6 +2,7 @@
 
 namespace App\Handler;
 
+use DateMalformedStringException;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -25,7 +26,7 @@ class UserRegistrationInfoHandler
     /**
      * @throws LoaderError
      * @throws RuntimeError
-     * @throws SyntaxError|\DateMalformedStringException
+     * @throws SyntaxError|DateMalformedStringException
      */
     public function sendReport(string $from = '-7 days'): void
     {

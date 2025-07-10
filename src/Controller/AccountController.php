@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Form\Model\Delete;
 use App\Form\Model\PasswordChange;
 use App\Form\PasswordChangeType;
@@ -41,7 +40,7 @@ class AccountController extends AbstractController
             [
                 'user' => $user,
                 'user_domain' => $user->getDomain(),
-                'password_form' => $form->createView(),
+                'password_form' => $form,
                 'recovery_secret_set' => $user->hasRecoverySecretBox(),
                 'twofactor_enabled' => $user->isTotpAuthenticationEnabled(),
             ]
@@ -77,7 +76,7 @@ class AccountController extends AbstractController
             [
                 'user' => $user,
                 'user_domain' => $user->getDomain(),
-                'password_form' => $form->createView(),
+                'password_form' => $form,
                 'recovery_secret_set' => $user->hasRecoverySecretBox(),
                 'twofactor_enabled' => $user->isTotpAuthenticationEnabled(),
             ]
@@ -92,7 +91,7 @@ class AccountController extends AbstractController
         return $this->render(
             'User/delete.html.twig',
             [
-                'form' => $form->createView(),
+                'form' => $form,
                 'user' => $this->getUser(),
             ]
         );
@@ -107,13 +106,13 @@ class AccountController extends AbstractController
         if ($form->isValid()) {
             $this->deleteHandler->deleteUser($this->getUser());
 
-            return $this->redirect($this->generateUrl('logout'));
+            return $this->redirectToRoute('logout');
         }
 
         return $this->render(
             'User/delete.html.twig',
             [
-                'form' => $form->createView(),
+                'form' => $form,
                 'user' => $this->getUser(),
             ]
         );

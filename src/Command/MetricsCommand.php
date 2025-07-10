@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Example for Cron:
  * * * * * * php /path/to/bin/console app:metrics | sponge /path/to/metrics/userli.prom
  */
-#[AsCommand(name: 'app:metrics')]
+#[AsCommand(name: 'app:metrics', description: 'Global Metrics for Userli')]
 class MetricsCommand extends Command
 {
     /**
@@ -39,9 +39,6 @@ class MetricsCommand extends Command
      */
     protected function configure(): void
     {
-        # TODO: Option for exposing metrics in different formats (prometheus, openmetrics, etc.)
-        $this
-            ->setDescription('Global Metrics for Userli');
     }
 
     /**

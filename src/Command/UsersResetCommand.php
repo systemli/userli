@@ -17,7 +17,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
-#[AsCommand(name: 'app:users:reset')]
+#[AsCommand(name: 'app:users:reset', description: 'Reset a user')]
 class UsersResetCommand extends AbstractUsersCommand
 {
     /**
@@ -38,7 +38,6 @@ class UsersResetCommand extends AbstractUsersCommand
     protected function configure(): void
     {
         parent::configure();
-        $this->setDescription('Reset a user');
     }
 
     /**
@@ -64,7 +63,7 @@ class UsersResetCommand extends AbstractUsersCommand
         $passwordQuest->setValidator(function ($value) {
             $validator = new PasswordStrengthHandler();
             if ($validator->validate($value)) {
-                throw new Exception('The password doesn\'t comply with our security policy.');
+                throw new Exception("The password doesn't comply with our security policy.");
             }
 
             return $value;
@@ -82,7 +81,7 @@ class UsersResetCommand extends AbstractUsersCommand
         $passwordConfirm = $questionHelper->ask($input, $output, $passwordConfirmQuest);
 
         if ($password !== $passwordConfirm) {
-            throw new Exception('The passwords don\'t match');
+            throw new Exception("The passwords don't match");
         }
 
         if ($input->getOption('dry-run')) {

@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'app:openpgp:show-key')]
+#[AsCommand(name: 'app:openpgp:show-key', description: 'Show OpenPGP key of email')]
 class OpenPgpShowKeyCommand extends Command
 {
     private readonly OpenPgpKeyRepository $repository;
@@ -28,7 +28,6 @@ class OpenPgpShowKeyCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Show OpenPGP key of email')
             ->addArgument(
                 'email',
                 InputOption::VALUE_REQUIRED,

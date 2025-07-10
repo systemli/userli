@@ -2,11 +2,12 @@
 
 namespace App\Traits;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 trait MailCryptPublicKeyTrait
 {
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $mailCryptPublicKey = null;
 
     public function getMailCryptPublicKey(): ?string

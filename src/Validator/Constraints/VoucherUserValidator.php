@@ -2,7 +2,6 @@
 
 namespace App\Validator\Constraints;
 
-use App\Entity\User;
 use App\Entity\Voucher;
 use App\Enum\Roles;
 use Symfony\Component\Validator\Constraint;

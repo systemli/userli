@@ -6,13 +6,12 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'app:users:quota')]
+#[AsCommand(name: 'app:users:quota', description: 'Get quota of user if set')]
 class UsersQuotaCommand extends AbstractUsersCommand
 {
     protected function configure(): void
     {
         parent::configure();
-        $this->setDescription('Get quota of user if set');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

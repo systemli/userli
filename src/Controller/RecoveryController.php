@@ -20,7 +20,6 @@ use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -30,6 +29,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class RecoveryController extends AbstractController
 {
     private const PROCESS_DELAY = '-2 days';
+
     private const PROCESS_EXPIRE = '-30 days';
 
     public function __construct(
@@ -88,7 +88,7 @@ class RecoveryController extends AbstractController
                     return $this->render(
                         'Recovery/recovery_started.html.twig',
                         [
-                            'form' => $recoveryForm->createView(),
+                            'form' => $recoveryForm,
                             'active_time' => $recoveryActiveTime,
                         ]
                     );
@@ -99,7 +99,7 @@ class RecoveryController extends AbstractController
         return $this->render(
             'Recovery/recovery_new.html.twig',
             [
-                'form' => $recoveryForm->createView(),
+                'form' => $recoveryForm,
             ]
         );
     }
@@ -156,7 +156,7 @@ class RecoveryController extends AbstractController
 
                         return $this->render('Recovery/recovery_token.html.twig',
                             [
-                                'form' => $recoveryTokenAckForm->createView(),
+                                'form' => $recoveryTokenAckForm,
                                 'recovery_token' => $newRecoveryToken,
                             ]
                         );
@@ -169,7 +169,7 @@ class RecoveryController extends AbstractController
                     return $this->render(
                         'Recovery/reset_password.html.twig',
                         [
-                            'form' => $recoveryResetPasswordForm->createView(),
+                            'form' => $recoveryResetPasswordForm,
                         ]
                     );
                 }
@@ -182,7 +182,7 @@ class RecoveryController extends AbstractController
             }
         }
 
-        return $this->redirect($this->generateUrl('recovery'));
+        return $this->redirectToRoute('recovery');
     }
 
     /**
@@ -236,7 +236,7 @@ class RecoveryController extends AbstractController
 
                 return $this->render('User/recovery_token.html.twig',
                     [
-                        'form' => $recoveryTokenAckForm->createView(),
+                        'form' => $recoveryTokenAckForm,
                         'recovery_token' => $recoveryToken,
                         'recovery_secret_set' => $user->hasRecoverySecretBox(),
                         'user' => $user,
@@ -247,7 +247,7 @@ class RecoveryController extends AbstractController
 
         return $this->render('User/recovery_token.html.twig',
             [
-                'form' => $form->createView(),
+                'form' => $form,
                 'recovery_secret_set' => $user->hasRecoverySecretBox(),
                 'user' => $user,
             ]
@@ -278,12 +278,12 @@ class RecoveryController extends AbstractController
                 $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-token-ack');
                 $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-next-login');
 
-                return $this->redirect($this->generateUrl('login'));
+                return $this->redirectToRoute('login');
             }
 
             return $this->render('Recovery/recovery_token.html.twig',
                 [
-                    'form' => $recoveryTokenAckForm->createView(),
+                    'form' => $recoveryTokenAckForm,
                     'recovery_token' => $recoveryTokenAck->getRecoveryToken(),
                 ]
             );
@@ -315,12 +315,12 @@ class RecoveryController extends AbstractController
             if ($recoveryTokenAckForm->isSubmitted() and $recoveryTokenAckForm->isValid()) {
                 $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-token-ack');
 
-                return $this->redirect($this->generateUrl('start'));
+                return $this->redirectToRoute('start');
             }
 
             return $this->render('User/recovery_token.html.twig',
                 [
-                    'form' => $recoveryTokenAckForm->createView(),
+                    'form' => $recoveryTokenAckForm,
                     'recovery_token' => $recoveryTokenAck->getRecoveryToken(),
                 ]
             );
@@ -342,8 +342,10 @@ class RecoveryController extends AbstractController
         if (null === $email = $user->getEmail()) {
             throw new Exception('email should not be null');
         }
+
         $recoveryResetPassword->setEmail($email);
         $recoveryResetPassword->setRecoveryToken($recoveryToken);
+
         $recoveryResetPasswordForm = $this->createForm(
             RecoveryResetPasswordType::class,
             $recoveryResetPassword,
@@ -356,7 +358,7 @@ class RecoveryController extends AbstractController
         return $this->render(
             'Recovery/reset_password.html.twig',
             [
-                'form' => $recoveryResetPasswordForm->createView(),
+                'form' => $recoveryResetPasswordForm,
             ]
         );
     }
@@ -383,6 +385,7 @@ class RecoveryController extends AbstractController
 
         // Generate new token
         $user->setPlainMailCryptPrivateKey($mailCryptPrivateKey);
+
         $this->recoveryTokenHandler->create($user);
         if (null === $newRecoveryToken = $user->getPlainRecoveryToken()) {
             throw new Exception('PlainRecoveryToken should not be null');

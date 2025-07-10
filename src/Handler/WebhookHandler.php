@@ -2,6 +2,7 @@
 
 namespace App\Handler;
 
+use RuntimeException;
 use App\Entity\User;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -37,7 +38,7 @@ readonly class WebhookHandler
                 ],
                 'json' => $payload,
             ]);
-        } catch (\RuntimeException | TransportExceptionInterface) {
+        } catch (RuntimeException | TransportExceptionInterface) {
             // Ignore failed requests
         }
     }

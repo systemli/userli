@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'app:alias:delete')]
+#[AsCommand(name: 'app:alias:delete', description: 'Delete an alias')]
 class AliasDeleteCommand extends Command
 {
     public function __construct(private readonly EntityManagerInterface $manager, private readonly DeleteHandler $deleteHandler)
@@ -26,7 +26,6 @@ class AliasDeleteCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Delete an alias')
             ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User who owns the alias (optional)')
             ->addOption('alias', 'a', InputOption::VALUE_REQUIRED, 'Alias address to delete')
             ->addOption('dry-run', null, InputOption::VALUE_NONE);

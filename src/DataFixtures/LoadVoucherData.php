@@ -48,6 +48,7 @@ class LoadVoucherData extends Fixture implements FixtureGroupInterface, Dependen
         $invitedUser = $users[random_int(0, count($users) - 1)];
         $voucher->setInvitedUser($invitedUser);
         $voucher->setRedeemedTime(new DateTime(sprintf('-%d days', 100)));
+
         $invitedUser->setInvitationVoucher($voucher);
         $manager->persist($voucher);
 

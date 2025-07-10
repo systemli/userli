@@ -237,7 +237,7 @@ Feature: OpenPGP
 
     Then I should be on "/openpgp"
     And I should see text matching "Please upload key either as file or as ASCII text."
-    And the response status code should be 200
+    And the response status code should be 422
 
   @upload-openpgp-both
   Scenario: Upload both OpenPGP keys
@@ -250,7 +250,7 @@ Feature: OpenPGP
 
     Then I should be on "/openpgp"
     And I should see text matching "Please upload key either as file or as ASCII text."
-    And the response status code should be 200
+    And the response status code should be 422
 
   @upload-openpgp-file-invalid
   Scenario: Upload invalid file

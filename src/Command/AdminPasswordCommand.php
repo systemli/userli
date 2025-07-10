@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
-#[AsCommand(name: 'app:admin:password')]
+#[AsCommand(name: 'app:admin:password', description: 'Set password of admin user')]
 class AdminPasswordCommand extends Command
 {
     /**
@@ -21,15 +21,14 @@ class AdminPasswordCommand extends Command
         parent::__construct();
     }
 
-    public function configure(): void
+    protected function configure(): void
     {
         $this
-            ->setDescription('Set password of admin user')
             ->setHelp('Set password of admin user. Create primary user and domain if not created before.')
             ->addArgument('password', InputArgument::OPTIONAL, 'Admin password');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $password = $input->getArgument('password');
         if (null === $password) {
@@ -37,6 +36,7 @@ class AdminPasswordCommand extends Command
             $question = new Question('Please enter new admin password:');
             $password = $helper->ask($input, $output, $question);
         }
+
         $this->updater->updateAdminPassword($password);
 
         return 0;

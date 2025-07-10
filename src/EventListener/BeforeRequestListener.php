@@ -21,7 +21,7 @@ class BeforeRequestListener implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event): void
     {
-        if ($user = $this->getNonAdminUser()) {
+        if (($user = $this->getNonAdminUser()) !== null) {
             $filter = $this->entityManager->getFilters()->enable('domain_filter');
             $filter->setParameter('domainId', $user->getDomain()->getId());
         }

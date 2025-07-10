@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'app:reservednames:import')]
+#[AsCommand(name: 'app:reservednames:import', description: 'Import reserved names from stdin or file')]
 class ReservedNamesImportCommand extends Command
 {
     public function __construct(
@@ -26,7 +26,6 @@ class ReservedNamesImportCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Import reserved names from stdin or file')
             ->addOption(
                 'file',
                 'f',

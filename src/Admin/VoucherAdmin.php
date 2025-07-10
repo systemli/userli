@@ -26,7 +26,7 @@ class VoucherAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    public function alterNewInstance(object $object): void
+    protected function alterNewInstance(object $object): void
     {
         $object->setUser($this->security->getUser());
         $object->setCode(RandomStringGenerator::generate(6, true));

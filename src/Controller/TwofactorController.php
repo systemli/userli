@@ -38,7 +38,7 @@ class TwofactorController extends AbstractController
                 'method' => 'POST',
             ]);
             return $this->render('User/twofactor_enable.html.twig', [
-                'form' => $form->createView(),
+                'form' => $form,
                 'twofactor_enabled' => false,
             ]);
         }
@@ -49,7 +49,7 @@ class TwofactorController extends AbstractController
         ]);
 
         return $this->render('User/twofactor_disable.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form,
             'twofactor_enabled' => true,
         ]);
     }
@@ -70,7 +70,7 @@ class TwofactorController extends AbstractController
         }
 
         return $this->render('User/twofactor_enable.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form,
             'twofactor_enabled' => false,
         ]);
     }
@@ -85,7 +85,7 @@ class TwofactorController extends AbstractController
 
         return $this->render('User/twofactor_confirm.html.twig',
             [
-                'form' => $form->createView(),
+                'form' => $form,
                 'twofactor_enabled' => $this->getUser()->isTotpAuthenticationEnabled(),
             ]
         );
@@ -103,7 +103,7 @@ class TwofactorController extends AbstractController
 
         return $this->render('User/twofactor_confirm.html.twig',
             [
-                'form' => $form->createView(),
+                'form' => $form,
                 'twofactor_enabled' => $this->getUser()->isTotpAuthenticationEnabled(),
             ]
         );
@@ -119,7 +119,7 @@ class TwofactorController extends AbstractController
 
         return $this->render('User/twofactor_backup_ack.html.twig',
             [
-                'form' => $form->createView(),
+                'form' => $form,
                 'twofactor_enabled' => $this->getUser()->isTotpAuthenticationEnabled(),
                 'twofactor_backup_codes' => $this->getUser()->getBackupCodes(),
             ]
@@ -142,7 +142,7 @@ class TwofactorController extends AbstractController
 
         return $this->render('User/twofactor_backup_ack.html.twig',
             [
-                'form' => $form->createView(),
+                'form' => $form,
                 'twofactor_enabled' => $user->isTotpAuthenticationEnabled(),
                 'twofactor_backup_codes' => $user->getBackupCodes(),
             ]
@@ -166,7 +166,7 @@ class TwofactorController extends AbstractController
 
         return $this->render('User/twofactor_disable.html.twig',
             [
-                'form' => $form->createView(),
+                'form' => $form,
                 'twofactor_enabled' => $user->isTotpAuthenticationEnabled(),
             ]
         );
@@ -178,6 +178,7 @@ class TwofactorController extends AbstractController
         if (null === $user = $this->getUser()) {
             throw new RuntimeException('User should not be null');
         }
+
         if (!($user instanceof TwoFactorInterface)) {
             throw new NotFoundHttpException('Cannot display QR code');
         }

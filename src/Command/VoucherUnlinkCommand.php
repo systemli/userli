@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'app:voucher:unlink')]
+#[AsCommand(name: 'app:voucher:unlink', description: 'Remove connection between vouchers and accounts after 3 months')]
 class VoucherUnlinkCommand extends Command
 {
     public function __construct(private readonly EntityManagerInterface $manager)
@@ -25,8 +25,7 @@ class VoucherUnlinkCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'dry run, without any changes')
-            ->setDescription('Remove connection between vouchers and accounts after 3 months');
+            ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'dry run, without any changes');
     }
 
     /**

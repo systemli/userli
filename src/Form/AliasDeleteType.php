@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Form\Model\Delete;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -24,7 +25,7 @@ class AliasDeleteType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => 'App\Form\Model\Delete']);
+        $resolver->setDefaults(['data_class' => Delete::class]);
     }
 
     /**

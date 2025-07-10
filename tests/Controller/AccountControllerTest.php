@@ -77,7 +77,7 @@ class AccountControllerTest extends WebTestCase
 
         $client->submit($form);
 
-        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(422);
     }
 
     public function testChangePasswordInsecure()
@@ -97,6 +97,6 @@ class AccountControllerTest extends WebTestCase
 
         $client->submit($form);
 
-        $this->assertResponseIsSuccessful();
+        $this->assertResponseStatusCodeSame(422);
     }
 }

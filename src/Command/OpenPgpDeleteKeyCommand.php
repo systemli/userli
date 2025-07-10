@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'app:openpgp:delete-key')]
+#[AsCommand(name: 'app:openpgp:delete-key', description: 'Delete OpenPGP key for email')]
 class OpenPgpDeleteKeyCommand extends Command
 {
     private readonly OpenPgpKeyRepository $repository;
@@ -29,7 +29,6 @@ class OpenPgpDeleteKeyCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Delete OpenPGP key for email')
             ->addArgument(
                 'email',
                 InputOption::VALUE_REQUIRED,

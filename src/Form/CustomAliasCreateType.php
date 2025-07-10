@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Form\Model\AliasCreate;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -24,7 +25,7 @@ class CustomAliasCreateType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => 'App\Form\Model\AliasCreate']);
+        $resolver->setDefaults(['data_class' => AliasCreate::class]);
     }
 
     /**

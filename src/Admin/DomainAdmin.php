@@ -14,6 +14,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class DomainAdmin extends Admin
 {
     private DomainCreator $domainCreator;
+
     private EventDispatcherInterface $eventDispatcher;
 
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string {

@@ -17,10 +17,15 @@ class MailCryptKeyHandler
 {
     // Use elliptic curve type 'secp521r1' for MailCrypt keys
     private const MAIL_CRYPT_PRIVATE_KEY_TYPE = OPENSSL_KEYTYPE_EC;
+
     private const MAIL_CRYPT_CURVE_NAME = 'secp521r1';
+
     const MESSAGE_OPENSSL_EXITED_UNSUCCESSFULLY = 'Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: ';
+
     const MESSAGE_OPENSSL_OUTPUT_INVALID = 'Transforming key to PKCS#8 with OpenSSL failed. OpenSSL output is no valid PKCS#8 key: ';
+
     const MESSAGE_SECRET_IS_NULL = 'secret should not be null';
+
     const MESSAGE_DECRYPTION_FAILED = 'decryption of mailCryptSecretBox failed';
 
     /**
@@ -46,8 +51,10 @@ class MailCryptKeyHandler
         $inputStream = new InputStream();
         $process->setInput($inputStream);
         $process->start();
+
         $inputStream->write($privateKey);
         $inputStream->close();
+
         $process->wait();
 
         sodium_memzero($privateKey);
@@ -55,6 +62,7 @@ class MailCryptKeyHandler
         if (!$process->isSuccessful()) {
             throw new Exception(self::MESSAGE_OPENSSL_EXITED_UNSUCCESSFULLY . $process->getErrorOutput());
         }
+
         if (!str_starts_with($process->getOutput(), '-----BEGIN PRIVATE KEY-----')) {
             throw new Exception(self::MESSAGE_OPENSSL_OUTPUT_INVALID . $process->getOutput());
         }

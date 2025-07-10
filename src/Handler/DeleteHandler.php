@@ -34,6 +34,7 @@ class DeleteHandler
 
         $alias->setDeleted(true);
         $alias->clearSensitiveData();
+
         $this->manager->flush();
     }
 

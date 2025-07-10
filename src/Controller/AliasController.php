@@ -70,8 +70,8 @@ class AliasController extends AbstractController
                 'alias_creation_custom' => $this->aliasHandler->checkAliasLimit($aliasesCustom),
                 'aliases_custom' => $aliasesCustom,
                 'aliases_random' => $aliasesRandom,
-                'random_alias_form' => $randomAliasCreateForm->createView(),
-                'custom_alias_form' => $customAliasCreateForm->createView(),
+                'random_alias_form' => $randomAliasCreateForm,
+                'custom_alias_form' => $customAliasCreateForm,
             ]
         );
     }
@@ -104,8 +104,8 @@ class AliasController extends AbstractController
             if ($this->aliasHandler->create($user) instanceof Alias) {
                 $this->addFlash('success', 'flashes.alias-creation-successful');
             }
-        } catch (ValidationException $e) {
-            $this->addFlash('error', $e->getMessage());
+        } catch (ValidationException $validationException) {
+            $this->addFlash('error', $validationException->getMessage());
         }
     }
 
@@ -115,8 +115,8 @@ class AliasController extends AbstractController
             if ($this->aliasHandler->create($user, $alias) instanceof Alias) {
                 $this->addFlash('success', 'flashes.alias-creation-successful');
             }
-        } catch (ValidationException $e) {
-            $this->addFlash('error', $e->getMessage());
+        } catch (ValidationException $validationException) {
+            $this->addFlash('error', $validationException->getMessage());
         }
     }
 
@@ -139,7 +139,7 @@ class AliasController extends AbstractController
             'Alias/delete.html.twig',
             [
                 'alias' => $alias,
-                'form' => $form->createView(),
+                'form' => $form,
                 'user' => $this->getUser(),
             ]
         );
@@ -160,14 +160,14 @@ class AliasController extends AbstractController
 
             $request->getSession()->getFlashBag()->add('success', 'flashes.alias-deletion-successful');
 
-            return $this->redirect($this->generateUrl('aliases'));
+            return $this->redirectToRoute('aliases');
         }
 
         return $this->render(
             'Alias/delete.html.twig',
             [
                 'alias' => $alias,
-                'form' => $form->createView(),
+                'form' => $form,
                 'user' => $this->getUser(),
             ]
         );

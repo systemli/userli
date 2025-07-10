@@ -13,10 +13,11 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'app:wkd:export-keys')]
+#[AsCommand(name: 'app:wkd:export-keys', description: 'Export all OpenPGP keys to WKD directory')]
 class OpenPgpExportKeysCommand extends Command
 {
     private readonly DomainRepository $domainRepository;
+
     private readonly OpenPgpKeyRepository $openPgpKeyRepository;
 
     public function __construct(EntityManagerInterface $manager, private readonly WkdHandler $handler)
@@ -31,8 +32,6 @@ class OpenPgpExportKeysCommand extends Command
      */
     protected function configure(): void
     {
-        $this
-            ->setDescription('Export all OpenPGP keys to WKD directory');
     }
 
     /**

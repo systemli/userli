@@ -8,7 +8,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'app:users:delete')]
+#[AsCommand(name: 'app:users:delete', description: 'Delete a user')]
 class UsersDeleteCommand extends AbstractUsersCommand
 {
     public function __construct(
@@ -25,7 +25,6 @@ class UsersDeleteCommand extends AbstractUsersCommand
     protected function configure(): void
     {
         parent::configure();
-        $this->setDescription('Delete a user');
     }
 
     /**

@@ -2,11 +2,12 @@
 
 namespace App\Traits;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 trait TwofactorBackupCodeTrait
 {
-    #[ORM\Column(type: 'array')]
+    #[ORM\Column(type: Types::ARRAY)]
     private array $totpBackupCodes = [];
 
     public function getBackupCodes(): array
@@ -54,6 +55,7 @@ trait TwofactorBackupCodeTrait
         for ($i = 0; $i < 6; ++$i) {
             $codes[] = (string) random_int(100000, 999999);
         }
+
         $this->totpBackupCodes = $codes;
 
         return $this->totpBackupCodes;
