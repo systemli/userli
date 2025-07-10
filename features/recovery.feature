@@ -30,7 +30,7 @@ Feature: Recovery
       | recovery_process[recoveryToken] | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
     And I press "recovery_process[submit]"
 
-    Then I should be on "/recovery"
+    Then I should be on "/recovery/reset_password"
     And I should see text matching "You're now allowed to reset your password"
     And the response status code should be 200
 
@@ -45,7 +45,7 @@ Feature: Recovery
       | recovery_reset_password[plainPassword][second] | XV7FxQWj9dApApN |
     And I press "recovery_reset_password[submit]"
 
-    Then I should be on "/recovery/reset_password"
+    Then I should be on "/recovery/recovery_token/ack"
     And I should see text matching "You changed your password."
     And the response status code should be 200
 

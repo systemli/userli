@@ -21,6 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -40,219 +41,177 @@ class RecoveryController extends AbstractController
     {
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     * @throws Exception
-     */
-    #[Route(path: '/recovery', name: 'recovery')]
-    public function recoveryProcess(Request $request): Response
+    #[Route(path: '/recovery', name: 'recovery', methods: ['GET'])]
+    public function recovery(): Response
     {
-        $recoveryProcess = new RecoveryProcess();
-        $recoveryForm = $this->createForm(RecoveryProcessType::class, $recoveryProcess);
+        $data = new RecoveryProcess();
+        $form = $this->createForm(RecoveryProcessType::class, $data, [
+            'action' => $this->generateUrl('recovery_submit'),
+            'method' => 'post',
+        ]);
 
-        if ('POST' === $request->getMethod()) {
-            $recoveryForm->handleRequest($request);
+        return $this->render('Recovery/recovery_new.html.twig', ['form' => $form]);
+    }
 
-            if ($recoveryForm->isSubmitted() && $recoveryForm->isValid()) {
-                $email = $recoveryProcess->email;
-                $recoveryToken = $recoveryProcess->recoveryToken;
+    #[Route(path: '/recovery', name: 'recovery_submit', methods: ['POST'])]
+    public function recoverySubmit(Request $request): Response
+    {
+        $data = new RecoveryProcess();
+        $form = $this->createForm(RecoveryProcessType::class, $data);
+        $form->handleRequest($request);
 
-                // Validate the passed email + recoveryToken
+        if ($form->isSubmitted() && $form->isValid()) {
+            $email = $data->email;
+            $recoveryToken = $data->recoveryToken;
 
-                $userRepository = $this->manager->getRepository(User::class);
-                $user = $userRepository->findByEmail($email);
+            // Validate the passed email + recoveryToken
+            $user = $this->manager->getRepository(User::class)->findByEmail($email);
 
-                if (null === $user || !$this->verifyEmailRecoveryToken($user, $recoveryToken)) {
-                    $request->getSession()->getFlashBag()->add('error', 'flashes.recovery-token-invalid');
+            if (null === $user || !$this->verifyEmailRecoveryToken($user, $recoveryToken)) {
+                $request->getSession()->getFlashBag()->add('error', 'flashes.recovery-token-invalid');
+            } else {
+                $recoveryStartTime = $user->getRecoveryStartTime();
+
+                if (null === $recoveryStartTime || new DateTime($this::PROCESS_EXPIRE) >= $recoveryStartTime) {
+                    // Recovery process gets started
+                    $user->updateRecoveryStartTime();
+                    $this->manager->flush();
+                    $this->eventDispatcher->dispatch(new UserEvent($user), RecoveryProcessEvent::NAME);
+                    // We don't have to add two days here, they will get added in `RecoveryProcessMessageSender`
+                    $recoveryActiveTime = $user->getRecoveryStartTime();
+                } elseif (new DateTime($this::PROCESS_DELAY) < $recoveryStartTime) {
+                    // Recovery process is pending, but waiting period didn't elapse yet
+                    $recoveryActiveTime = $recoveryStartTime->add(new DateInterval('P2D'));
                 } else {
-                    $recoveryStartTime = $user->getRecoveryStartTime();
-
-                    if (null === $recoveryStartTime || new DateTime($this::PROCESS_EXPIRE) >= $recoveryStartTime) {
-                        // Recovery process gets started
-                        $user->updateRecoveryStartTime();
-                        $this->manager->flush();
-                        $this->eventDispatcher->dispatch(new UserEvent($user), RecoveryProcessEvent::NAME);
-                        // We don't have to add two days here, they will get added in `RecoveryProcessMessageSender`
-                        $recoveryActiveTime = $user->getRecoveryStartTime();
-                    } elseif (new DateTime($this::PROCESS_DELAY) < $recoveryStartTime) {
-                        // Recovery process is pending, but waiting period didn't elapse yet
-                        $recoveryActiveTime = $recoveryStartTime->add(new DateInterval('P2D'));
-                    } else {
-                        // Recovery process successful, go on with the form to reset password
-                        return $this->renderResetPasswordForm($user, $recoveryToken);
-                    }
-
-                    return $this->render(
-                        'Recovery/recovery_started.html.twig',
-                        [
-                            'form' => $recoveryForm,
-                            'active_time' => $recoveryActiveTime,
-                        ]
-                    );
+                    // Recovery process successful, go on with the form to reset password
+                    return $this->redirectToRoute('recovery_reset_password', [
+                        'email' => $email,
+                        'recoveryToken' => $recoveryToken,
+                    ]);
                 }
+
+                return $this->render(
+                    'Recovery/recovery_started.html.twig',
+                    [
+                        'form' => $form,
+                        'active_time' => $recoveryActiveTime,
+                    ]
+                );
             }
         }
 
-        return $this->render(
-            'Recovery/recovery_new.html.twig',
-            [
-                'form' => $recoveryForm,
-            ]
-        );
+        return $this->render('Recovery/recovery_new.html.twig', ['form' => $form]);
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     * @throws Exception
-     */
-    #[Route(path: '/recovery/reset_password', name: 'recovery_reset_password')]
+    #[Route(path: '/recovery/reset_password', name: 'recovery_reset_password', methods: ['GET'])]
     public function recoveryResetPassword(Request $request): Response
     {
-        $recoveryResetPassword = new RecoveryResetPassword();
-        $recoveryResetPasswordForm = $this->createForm(
-            RecoveryResetPasswordType::class,
-            $recoveryResetPassword,
-            [
-                'action' => $this->generateUrl('recovery_reset_password'),
-                'method' => 'post',
-            ]
-        );
+        $email = $request->query->get('email');
+        $recoveryToken = $request->query->get('recoveryToken');
+        if (null === $email || null === $recoveryToken) {
+            throw new InvalidParameterException('Email and recoveryToken must be provided');
+        }
 
-        if ('POST' === $request->getMethod()) {
-            $recoveryResetPasswordForm->handleRequest($request);
+        $data = new RecoveryResetPassword();
+        $data->setEmail($email);
+        $data->setRecoveryToken($recoveryToken);
 
-            if ($recoveryResetPasswordForm->isSubmitted()) {
-                $email = $recoveryResetPassword->getEmail();
-                $recoveryToken = $recoveryResetPassword->getRecoveryToken();
+        $form = $this->createForm(RecoveryResetPasswordType::class, $data, [
+            'action' => $this->generateUrl('recovery_reset_password_submit'),
+            'method' => 'post',
+        ]);
 
-                // Validate the passed email + recoveryToken
+        return $this->render('Recovery/reset_password.html.twig', ['form' => $form]);
+    }
 
-                $userRepository = $this->manager->getRepository(User::class);
-                $user = $userRepository->findByEmail($email);
+    #[Route(path: '/recovery/reset_password', name: 'recovery_reset_password_submit', methods: ['POST'])]
+    public function recoveryResetPasswordSubmit(Request $request): Response
+    {
+        $data = new RecoveryResetPassword();
+        $form = $this->createForm(RecoveryResetPasswordType::class, $data);
+        $form->handleRequest($request);
 
-                if (null !== $user && $this->verifyEmailRecoveryToken($user, $recoveryToken, true)) {
-                    if ($recoveryResetPasswordForm->isValid()) {
-                        // Success: change the password
-                        $newRecoveryToken = $this->resetPassword($user, $recoveryResetPassword->getPlainPassword(), $recoveryToken);
-                        $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-password-changed');
+        if ($form->isSubmitted()) {
+            $email = $data->getEmail();
+            $recoveryToken = $data->getRecoveryToken();
 
-                        $recoveryTokenAck = new RecoveryTokenAck();
-                        $recoveryTokenAck->setRecoveryToken($recoveryToken);
-                        $recoveryTokenAckForm = $this->createForm(
-                            RecoveryTokenAckType::class,
-                            $recoveryTokenAck,
-                            [
-                                'action' => $this->generateUrl('recovery_recovery_token_ack'),
-                                'method' => 'post',
-                            ]
-                        );
+            // Validate the passed email + recoveryToken
+            $user = $this->manager->getRepository(User::class)->findByEmail($email);
 
-                        // Cleanup variables with confidential content
-                        sodium_memzero($recoveryToken);
-
-                        return $this->render('Recovery/recovery_token.html.twig',
-                            [
-                                'form' => $recoveryTokenAckForm,
-                                'recovery_token' => $newRecoveryToken,
-                            ]
-                        );
-                    }
+            if (null !== $user && $this->verifyEmailRecoveryToken($user, $recoveryToken, true)) {
+                if ($form->isValid()) {
+                    // Success: change the password
+                    $newRecoveryToken = $this->resetPassword($user, $data->getPlainPassword(), $recoveryToken);
+                    $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-password-changed');
 
                     // Cleanup variables with confidential content
                     sodium_memzero($recoveryToken);
 
-                    // Validation of new password pair failed, try again
-                    return $this->render(
-                        'Recovery/reset_password.html.twig',
-                        [
-                            'form' => $recoveryResetPasswordForm,
-                        ]
-                    );
+                    return $this->redirectToRoute('recovery_recovery_token_ack', ['recoveryToken' => $newRecoveryToken]);
                 }
 
                 // Cleanup variables with confidential content
                 sodium_memzero($recoveryToken);
 
-                // Verification of $email + $recoveryToken failed, start over
-                $request->getSession()->getFlashBag()->add('error', 'flashes.recovery-reauthenticate');
+                // Validation of new password pair failed, try again
+                return $this->render(
+                    'Recovery/reset_password.html.twig',
+                    [
+                        'form' => $form,
+                    ]
+                );
             }
+
+            // Cleanup variables with confidential content
+            sodium_memzero($recoveryToken);
+
+            // Verification of $email + $recoveryToken failed, start over
+            $request->getSession()->getFlashBag()->add('error', 'flashes.recovery-reauthenticate');
         }
 
-        return $this->redirectToRoute('recovery');
+        return $this->render('Recovery/reset_password.html.twig', ['form' => $form]);
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
-    #[Route(path: '/recovery/recovery_token/ack', name: 'recovery_recovery_token_ack')]
+    #[Route(path: '/recovery/recovery_token/ack', name: 'recovery_recovery_token_ack', methods: ['GET'])]
     public function recoveryRecoveryTokenAck(Request $request): Response
     {
-        $recoveryTokenAck = new RecoveryTokenAck();
-        $recoveryTokenAckForm = $this->createForm(
-            RecoveryTokenAckType::class,
-            $recoveryTokenAck,
-            [
-                'action' => $this->generateUrl('recovery_recovery_token_ack'),
-                'method' => 'post',
-            ]
-        );
-
-        if ('POST' === $request->getMethod()) {
-            $recoveryTokenAckForm->handleRequest($request);
-
-            if ($recoveryTokenAckForm->isSubmitted() and $recoveryTokenAckForm->isValid()) {
-                $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-token-ack');
-                $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-next-login');
-
-                return $this->redirectToRoute('login');
-            }
-
-            return $this->render('Recovery/recovery_token.html.twig',
-                [
-                    'form' => $recoveryTokenAckForm,
-                    'recovery_token' => $recoveryTokenAck->getRecoveryToken(),
-                ]
-            );
+        $recoveryToken = $request->query->get('recoveryToken');
+        if (null === $recoveryToken) {
+            throw new InvalidParameterException('Recovery token must be provided');
         }
 
-        return $this->redirectToRoute('recovery');
+        $data = new RecoveryTokenAck();
+        $data->setRecoveryToken($recoveryToken);
+
+        $form = $this->createForm(RecoveryTokenAckType::class, $data, [
+            'action' => $this->generateUrl('recovery_recovery_token_ack_submit'),
+            'method' => 'post',
+        ]);
+
+        return $this->render('Recovery/recovery_token.html.twig', [
+            'form' => $form,
+            'recovery_token' => $data->getRecoveryToken(),
+        ]);
     }
 
-    /**
-     * @param User $user
-     * @param string $recoveryToken
-     * @return Response
-     * @throws Exception
-     */
-    private function renderResetPasswordForm(User $user, string $recoveryToken): Response
+    #[Route(path: '/recovery/recovery_token/ack', name: 'recovery_recovery_token_ack_submit', methods: ['POST'])]
+    public function recoveryRecoveryTokenAckSubmit(Request $request): Response
     {
-        // Pass $email and $recoveryToken as hidden field values for verification by recoveryResetPasswordAction
-        $recoveryResetPassword = new RecoveryResetPassword();
-        if (null === $email = $user->getEmail()) {
-            throw new Exception('email should not be null');
+        $data = new RecoveryTokenAck();
+        $form = $this->createForm(RecoveryTokenAckType::class, $data);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() and $form->isValid()) {
+            $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-token-ack');
+            $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-next-login');
+
+            return $this->redirectToRoute('login');
         }
 
-        $recoveryResetPassword->setEmail($email);
-        $recoveryResetPassword->setRecoveryToken($recoveryToken);
-
-        $recoveryResetPasswordForm = $this->createForm(
-            RecoveryResetPasswordType::class,
-            $recoveryResetPassword,
-            [
-                'action' => $this->generateUrl('recovery_reset_password'),
-                'method' => 'post',
-            ]
-        );
-
-        return $this->render(
-            'Recovery/reset_password.html.twig',
-            [
-                'form' => $recoveryResetPasswordForm,
-            ]
-        );
+        return $this->render('Recovery/recovery_token.html.twig', [
+            'form' => $form,
+            'recovery_token' => $data->getRecoveryToken(),
+        ]);
     }
 
     /**
