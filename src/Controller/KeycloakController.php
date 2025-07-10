@@ -18,8 +18,11 @@ use Symfony\Component\Routing\Attribute\Route;
 class KeycloakController extends AbstractController
 {
     const MESSAGE_SUCCESS = 'success';
+
     const MESSAGE_AUTHENTICATION_FAILED = 'authentication failed';
+
     const MESSAGE_USER_NOT_FOUND = 'user not found';
+
     const MESSAGE_NOT_SUPPORTED = 'not supported';
 
     public function __construct(private readonly EntityManagerInterface $manager, private readonly UserAuthenticationHandler $handler, private readonly TotpAuthenticator $totpAuthenticator)

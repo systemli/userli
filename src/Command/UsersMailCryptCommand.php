@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'app:users:mailcrypt')]
+#[AsCommand(name: 'app:users:mailcrypt', description: 'Get MailCrypt values for user')]
 class UsersMailCryptCommand extends AbstractUsersCommand
 {
     public function __construct(
@@ -28,7 +28,6 @@ class UsersMailCryptCommand extends AbstractUsersCommand
     {
         parent::configure();
         $this
-            ->setDescription('Get MailCrypt values for user')
             ->addArgument(
                 'password',
                 InputOption::VALUE_OPTIONAL,

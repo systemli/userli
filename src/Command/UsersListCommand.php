@@ -14,7 +14,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
-#[AsCommand(name: 'app:users:list')]
+#[AsCommand(name: 'app:users:list', description: 'List users')]
 class UsersListCommand extends Command
 {
     private readonly UserRepository $repository;
@@ -34,7 +34,6 @@ class UsersListCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('List users')
             ->addOption(
                 'inactive-days',
                 'i',

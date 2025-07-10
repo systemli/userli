@@ -26,8 +26,9 @@ class DomainCreationListener implements EventSubscriberInterface
         $adminAddress = 'postmaster@'.$defaultDomain;
 
         if (null === $domain) {
-            throw new Exception('Domain shouldn\'t be null');
+            throw new Exception("Domain shouldn't be null");
         }
+
         if ($domain !== $defaultDomain) {
             // create postmaster alias
             // TODO: refactor this into AliasCreator

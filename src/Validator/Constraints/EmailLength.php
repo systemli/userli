@@ -2,14 +2,17 @@
 
 namespace App\Validator\Constraints;
 
+use Attribute;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
 
-#[\Attribute]
+#[Attribute]
 class EmailLength extends Constraint
 {
     public int $minLength;
+
     public int $maxLength;
+
     /**
      * {@inheritdoc}
      */

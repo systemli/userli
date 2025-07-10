@@ -38,6 +38,7 @@ class AliasCreationListener implements EventSubscriberInterface
         if (null === $user = $alias->getUser()) {
             throw new Exception('User should not be null');
         }
+
         $locale = $this->request->getSession()->get('_locale', $this->defaultLocale);
         $this->sender->send($user, $alias, $locale);
     }

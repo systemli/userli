@@ -2,9 +2,10 @@
 
 namespace App\Validator\Constraints;
 
+use Attribute;
 use Symfony\Component\Validator\Constraint;
 
-#[\Attribute]
+#[Attribute]
 class VoucherUser extends Constraint
 {
     public function getTargets(): string

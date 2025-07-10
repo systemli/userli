@@ -33,6 +33,7 @@ abstract class AbstractUsersCommand extends Command
         if (empty($email) || null === $user = $this->manager->getRepository(User::class)->findByEmail($email)) {
             throw new UserNotFoundException(sprintf('User with email %s not found!', $email));
         }
+
         return $user;
     }
 }

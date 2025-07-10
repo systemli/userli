@@ -29,8 +29,11 @@ class UserAdmin extends Admin
     use DomainGuesserAwareTrait;
 
     private PasswordUpdater $passwordUpdater;
+
     private MailCryptKeyHandler $mailCryptKeyHandler;
+
     private readonly MailCrypt $mailCrypt;
+
     private readonly Security $security;
 
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
@@ -41,7 +44,7 @@ class UserAdmin extends Admin
     /**
      * {@inheritdoc}
      */
-    public function alterNewInstance(object $object): void
+    protected function alterNewInstance(object $object): void
     {
         $object->setRoles([Roles::USER]);
     }
@@ -176,12 +179,13 @@ class UserAdmin extends Admin
      *
      * @throws Exception
      */
-    public function prePersist($object): void
+    protected function prePersist($object): void
     {
         $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
         if (null !== $object->getMailCryptEnabled()) {
             $this->mailCryptKeyHandler->create($object, $object->getPlainPassword(), $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS));
         }
+
         if (null === $object->getDomain() && null !== $domain = $this->domainGuesser->guess($object->getEmail())) {
             $object->setDomain($domain);
         }
@@ -190,7 +194,7 @@ class UserAdmin extends Admin
     /**
      * @param User $object
      */
-    public function preUpdate($object): void
+    protected function preUpdate($object): void
     {
         // Only admins are allowed to set attributes of other admins
         if (!$this->security->isGranted(Roles::ADMIN) && $object->hasRole(Roles::ADMIN)) {
@@ -214,10 +218,12 @@ class UserAdmin extends Admin
     {
         $this->passwordUpdater = $passwordUpdater;
     }
+
     public function setMailCryptKeyHandler(MailCryptKeyHandler $mailCryptKeyHandler): void
     {
         $this->mailCryptKeyHandler = $mailCryptKeyHandler;
     }
+
     public function setMailCryptVar(string $mailCrypt): void
     {
         $this->mailCrypt = MailCrypt::from((int) $mailCrypt);

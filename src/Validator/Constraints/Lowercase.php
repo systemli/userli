@@ -3,12 +3,14 @@
 namespace App\Validator\Constraints;
 
 
+use Attribute;
 use Symfony\Component\Validator\Constraint;
 
-#[\Attribute]
+#[Attribute]
 class Lowercase extends Constraint
 {
     public string $message = 'form.lowercase';
+
     public string $mode = 'strict';
 
     public function __construct(?string $mode = null, ?string $message = null, ?array $groups = null, $payload = null) {

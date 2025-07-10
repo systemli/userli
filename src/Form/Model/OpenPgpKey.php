@@ -2,8 +2,6 @@
 
 namespace App\Form\Model;
 
-use Doctrine\ORM\Mapping as ORM;
-
 class OpenPgpKey
 {
     private ?string $keyFile = null;

@@ -3,7 +3,6 @@
 namespace App\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -22,6 +21,7 @@ class LocaleListener implements EventSubscriberInterface
         if ($request->attributes->getBoolean('_stateless')) {
             return;
         }
+
         $session = $request->getSession();
         $sessionLocale = $session->get('_locale');
 

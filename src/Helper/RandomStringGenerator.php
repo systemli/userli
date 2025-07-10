@@ -19,6 +19,7 @@ class RandomStringGenerator
         if (true === $caseSensitive) {
             $chars .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         }
+
         $string = '';
 
         for ($i = 0; $i < $length; ++$i) {

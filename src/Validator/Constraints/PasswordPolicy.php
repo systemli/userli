@@ -2,9 +2,10 @@
 
 namespace App\Validator\Constraints;
 
+use Attribute;
 use Symfony\Component\Validator\Constraint;
 
-#[\Attribute]
+#[Attribute]
 class PasswordPolicy extends Constraint
 {
     public function validatedBy(): string

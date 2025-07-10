@@ -4,14 +4,12 @@ namespace App\Admin;
 
 use DateTime;
 use App\Entity\Alias;
-use App\Entity\User;
 use App\Enum\Roles;
 use App\Traits\DomainGuesserAwareTrait;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -101,13 +99,14 @@ class AliasAdmin extends Admin
     /**
      * @param Alias $object
      */
-    public function prePersist($object): void
+    protected function prePersist($object): void
     {
         if (null === $object->getDestination()) {
             if (null === $object->getUser()) {
                 // set user_id to current user if neither destination nor user_id is given
                 $object->setUser($this->security->getUser());
             }
+
             $object->setDestination($object->getUser());
         }
 
@@ -119,12 +118,13 @@ class AliasAdmin extends Admin
     /**
      * @param Alias $object
      */
-    public function preUpdate($object): void
+    protected function preUpdate($object): void
     {
         $object->setUpdatedTime(new DateTime());
         if (null === $object->getDestination()) {
             $object->setDestination($object->getUser());
         }
+
         if (null !== $domain = $this->getDomainGuesser()->guess($object->getSource())) {
             $object->setDomain($domain);
         }

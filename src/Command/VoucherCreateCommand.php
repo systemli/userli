@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-#[AsCommand(name: 'app:voucher:create')]
+#[AsCommand(name: 'app:voucher:create', description: 'Create voucher for a specific user')]
 class VoucherCreateCommand extends AbstractUsersCommand
 {
     public function __construct(
@@ -26,7 +26,6 @@ class VoucherCreateCommand extends AbstractUsersCommand
     {
         parent::configure();
         $this
-            ->setDescription('Create voucher for a specific user')
             ->addOption('count', 'c', InputOption::VALUE_OPTIONAL, 'How many voucher to create', 3)
             ->addOption('print', 'p', InputOption::VALUE_NONE, 'Show vouchers')
             ->addOption('print-links', 'l', InputOption::VALUE_NONE, 'Show links to vouchers');

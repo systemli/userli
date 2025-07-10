@@ -2,10 +2,11 @@
 
 namespace App\Validator\Constraints;
 
+use Attribute;
 use App\Validator\TotpSecretValidator;
 use Symfony\Component\Validator\Constraint;
 
-#[\Attribute]
+#[Attribute]
 class TotpSecret extends Constraint
 {
     public function validatedBy(): string

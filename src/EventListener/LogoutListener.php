@@ -4,7 +4,6 @@ namespace App\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
-use Symfony\Component\Security\Http\HttpUtils;
 
 class LogoutListener implements EventSubscriberInterface
 {

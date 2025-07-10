@@ -2,12 +2,13 @@
 
 namespace App\Validator\Constraints;
 
+use Attribute;
 use Symfony\Component\Validator\Constraint;
 
 /**
  * Class EmailDomain.
  */
-#[\Attribute]
+#[Attribute]
 class EmailDomain extends Constraint
 {
     public function getTargets(): string

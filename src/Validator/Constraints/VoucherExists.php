@@ -2,14 +2,15 @@
 
 namespace App\Validator\Constraints;
 
+use Attribute;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
-use Symfony\Component\Validator\Attribute\HasNamedArguments;
 
-#[\Attribute]
+#[Attribute]
 class VoucherExists extends Constraint
 {
     public bool $exists;
+
     /**
      * {@inheritdoc}
      */
@@ -22,6 +23,7 @@ class VoucherExists extends Constraint
                 sprintf('Option "exists" must be given for constraint %s', __CLASS__), ['min', 'max']
             );
         }
+
         $this->exists = $exists ?? $this->exists;
     }
 }

@@ -19,7 +19,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class DovecotController extends AbstractController
 {
     const MESSAGE_SUCCESS = 'success';
+
     const MESSAGE_AUTHENTICATION_FAILED = 'authentication failed';
+
     const MESSAGE_USER_NOT_FOUND = 'user not found';
 
     private readonly MailCrypt $mailCrypt;
@@ -115,6 +117,7 @@ class DovecotController extends AbstractController
             } catch (Exception $exception) {
                 return $this->json(['error' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
+
             $mailCryptReported = 2;
         } else {
             $mailCryptReported = 0;

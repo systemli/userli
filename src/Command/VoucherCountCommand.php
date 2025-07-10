@@ -7,13 +7,12 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'app:voucher:count')]
+#[AsCommand(name: 'app:voucher:count', description: 'Get count of vouchers for a specific user')]
 class VoucherCountCommand extends AbstractUsersCommand
 {
     protected function configure(): void
     {
         parent::configure();
-        $this->setDescription('Get count of vouchers for a specific user');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

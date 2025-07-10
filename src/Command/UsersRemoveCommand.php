@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
-#[AsCommand(name: 'app:users:remove')]
+#[AsCommand(name: 'app:users:remove', description: 'Removes all mailboxes from deleted users')]
 class UsersRemoveCommand extends Command
 {
     public function __construct(private readonly EntityManagerInterface $manager,
@@ -28,7 +28,6 @@ class UsersRemoveCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Removes all mailboxes from deleted users')
             ->addOption('dry-run', null, InputOption::VALUE_NONE)
             ->addOption('list', null, InputOption::VALUE_NONE);
     }
@@ -50,6 +49,7 @@ class UsersRemoveCommand extends Command
             if (null === $user->getDomain()) {
                 continue;
             }
+
             $domain = $user->getDomain()->getName();
             $name = str_replace('@'.$domain, '', (string) $user->getEmail());
             $path = $this->mailLocation.DIRECTORY_SEPARATOR.$domain.DIRECTORY_SEPARATOR.$name;

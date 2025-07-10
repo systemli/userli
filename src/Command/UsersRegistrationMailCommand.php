@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
-#[AsCommand(name: 'app:users:registration:mail')]
+#[AsCommand(name: 'app:users:registration:mail', description: 'Send a registration mail to a user')]
 class UsersRegistrationMailCommand extends Command
 {
     public function __construct(
@@ -31,7 +31,6 @@ class UsersRegistrationMailCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Send a registration mail to a user')
             ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User who get the voucher(s)')
             ->addOption('locale', 'l', InputOption::VALUE_OPTIONAL, 'the locale', $this->defaultLocale);
     }

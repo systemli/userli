@@ -48,13 +48,16 @@ class LoadUserData extends AbstractUserData implements DependentFixtureInterface
                 $user->setTotpSecret($this->totpAuthenticator->generateSecret());
                 $user->setTotpConfirmed(true);
             }
+
             if ($mailcryptEnabled) {
                 $this->mailCryptKeyHandler->create($user, self::PASSWORD);
                 $user->setMailCryptEnabled(true);
             }
+
             if ($deleted) {
                 $user->setDeleted(true);
             }
+
             $manager->persist($user);
         }
 

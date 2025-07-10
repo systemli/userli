@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use SensitiveParameter;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
@@ -15,7 +16,7 @@ class ApiAccessTokenHandler implements AccessTokenHandlerInterface
         private string $accessTokenRetention,
     ) {}
 
-    public function getUserBadgeFrom(#[\SensitiveParameter] string $accessToken): UserBadge
+    public function getUserBadgeFrom(#[SensitiveParameter] string $accessToken): UserBadge
     {
         switch ($accessToken) {
             case $this->accessTokenDovecot:

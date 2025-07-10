@@ -29,6 +29,7 @@ class AdminPasswordUpdater
             $admin->setRoles([Roles::ADMIN]);
             $admin->setDomain($domain);
         }
+
         $this->updater->updatePassword($admin, $password);
         $this->manager->persist($admin);
         $this->manager->flush();

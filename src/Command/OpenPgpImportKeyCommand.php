@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'app:openpgp:import-key')]
+#[AsCommand(name: 'app:openpgp:import-key', description: 'Import OpenPGP key for email')]
 class OpenPgpImportKeyCommand extends Command
 {
     public function __construct(private readonly WkdHandler $handler)
@@ -26,7 +26,6 @@ class OpenPgpImportKeyCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Import OpenPGP key for email')
             ->addArgument(
                 'email',
                 InputOption::VALUE_REQUIRED,
@@ -50,6 +49,7 @@ class OpenPgpImportKeyCommand extends Command
         if (!is_file($file)) {
             throw new RuntimeException('File not found: '.$file);
         }
+
         $content = file_get_contents($file);
 
         // Import the key

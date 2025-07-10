@@ -24,6 +24,7 @@ class ValidationException extends Exception
 
             $messages[] = $message;
         }
+
         $message = implode(PHP_EOL, $messages);
 
         parent::__construct($message);

@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
-#[AsCommand(name: 'app:users:restore')]
+#[AsCommand(name: 'app:users:restore', description: 'Reset a user')]
 class UsersRestoreCommand extends AbstractUsersCommand
 {
     public function __construct(
@@ -29,7 +29,6 @@ class UsersRestoreCommand extends AbstractUsersCommand
     protected function configure(): void
     {
         parent::configure();
-        $this->setDescription('Reset a user');
     }
 
     /**
@@ -51,7 +50,7 @@ class UsersRestoreCommand extends AbstractUsersCommand
         $passwordQuest->setValidator(function ($value) {
             $validator = new PasswordStrengthHandler();
             if ($validator->validate($value)) {
-                throw new Exception('The password doesn\'t comply with our security policy.');
+                throw new Exception("The password doesn't comply with our security policy.");
             }
 
             return $value;
@@ -69,7 +68,7 @@ class UsersRestoreCommand extends AbstractUsersCommand
         $passwordConfirm = $questionHelper->ask($input, $output, $passwordConfirmQuest);
 
         if ($password !== $passwordConfirm) {
-            throw new Exception('The passwords don\'t match');
+            throw new Exception("The passwords don't match");
         }
 
         if ($input->getOption('dry-run')) {

@@ -59,6 +59,7 @@ readonly class RecoveryTokenHandler
         if (!$user->hasRecoverySecretBox()) {
             return false;
         }
+
         $recoverySecretBoxEncoded = $user->getRecoverySecretBox();
 
         try {

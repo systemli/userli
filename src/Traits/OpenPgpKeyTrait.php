@@ -2,21 +2,22 @@
 
 namespace App\Traits;
 
+use Doctrine\DBAL\Types\Types;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 trait OpenPgpKeyTrait
 {
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: Types::TEXT)]
     public ?string $keyId = null;
 
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: Types::TEXT)]
     public ?string $keyFingerprint = null;
 
     #[ORM\Column(nullable: 'true')]
     public ?DateTime $keyExpireTime = null;
 
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: Types::TEXT)]
     public ?string $keyData = null;
 
     public function getKeyId(): ?string

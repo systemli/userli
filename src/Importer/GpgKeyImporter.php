@@ -31,6 +31,7 @@ class GpgKeyImporter implements OpenPgpKeyImporterInterface
                 if ('.' === $object || '..' === $object) {
                     continue;
                 }
+
                 $objectPath = $dir.DIRECTORY_SEPARATOR.$object;
                 if (is_dir($objectPath) && !is_link($objectPath)) {
                     self::recursiveRemoveDir($objectPath);
@@ -38,6 +39,7 @@ class GpgKeyImporter implements OpenPgpKeyImporterInterface
                     unlink($objectPath);
                 }
             }
+
             rmdir($dir);
         }
     }
@@ -75,9 +77,9 @@ class GpgKeyImporter implements OpenPgpKeyImporterInterface
         try {
             /** @var Crypt_GPG_Key[] $keys */
             $keys = $gpg->getKeys(sprintf('<%s>', $email));
-        } catch (Crypt_GPG_Exception $e) {
+        } catch (Crypt_GPG_Exception $cryptGPGException) {
             self::recursiveRemoveDir($tempDir);
-            throw new RuntimeException('Failed to read keys: '.$e->getMessage());
+            throw new RuntimeException('Failed to read keys: '.$cryptGPGException->getMessage());
         }
 
         if (count($keys) < 1) {
@@ -114,9 +116,9 @@ class GpgKeyImporter implements OpenPgpKeyImporterInterface
 
         try {
             $fingerprint = $gpg->getFingerprint($email, Crypt_GPG::FORMAT_CANONICAL);
-        } catch (Crypt_GPG_Exception $e) {
+        } catch (Crypt_GPG_Exception $cryptGPGException) {
             self::recursiveRemoveDir($tempDir);
-            throw new RuntimeException('Failed to get GnuPG key fingerprint: '.$e->getMessage());
+            throw new RuntimeException('Failed to get GnuPG key fingerprint: '.$cryptGPGException->getMessage());
         }
 
         self::recursiveRemoveDir($tempDir);

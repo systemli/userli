@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Dto\RetentionTouchUserDto;
 use App\Entity\Domain;
 use App\Entity\User;
@@ -27,9 +28,9 @@ class RetentionController extends AbstractController
         #[MapRequestPayload] RetentionTouchUserDto $requestData,
     ): Response
     {
-        $now = new \DateTime;
+        $now = new DateTime;
         $time = $requestData->getTimestamp()
-            ? new \DateTime('@' . $requestData->getTimestamp())
+            ? new DateTime('@' . $requestData->getTimestamp())
             : $now;
 
         // Check that timestamp is not in future

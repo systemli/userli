@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\OpenPgpKey;
 use App\Entity\User;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
@@ -41,7 +40,7 @@ class OpenPGPController extends AbstractController
             [
                 'user' => $user,
                 'user_domain' => $user->getDomain(),
-                'openpgp_form' => $openPgpKeyForm->createView(),
+                'openpgp_form' => $openPgpKeyForm,
                 'openpgp_id' => $openPgpKey->getKeyId(),
                 'openpgp_fingerprint' => $openPgpKey->getKeyFingerprint(),
                 'openpgp_expiretime' => $openPgpKey->getKeyExpireTime(),
@@ -82,7 +81,7 @@ class OpenPGPController extends AbstractController
             [
                 'user' => $user,
                 'user_domain' => $user->getDomain(),
-                'openpgp_form' => $openPgpKeyForm->createView(),
+                'openpgp_form' => $openPgpKeyForm,
                 'openpgp_id' => $openPgpKey->getKeyId(),
                 'openpgp_fingerprint' => $openPgpKey->getKeyFingerprint(),
                 'openpgp_expiretime' => $openPgpKey->getKeyExpireTime(),
@@ -112,7 +111,7 @@ class OpenPGPController extends AbstractController
         return $this->render(
             'OpenPgp/delete.html.twig',
             [
-                'form' => $form->createView(),
+                'form' => $form,
                 'user' => $this->getUser(),
             ]
         );

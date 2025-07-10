@@ -27,7 +27,7 @@ class InitController extends AbstractController
     }
 
     #[Route(path: '/init', name: 'init', methods: ['GET'])]
-    public function init(Request $request): Response
+    public function init() : Response
     {
         // redirect if already configured
         if (0 < $this->manager->getRepository(Domain::class)->count([])) {
@@ -38,8 +38,7 @@ class InitController extends AbstractController
             'action' => $this->generateUrl('init_submit'),
             'method' => 'post',
         ]);
-
-        return $this->render('Init/domain.html.twig', ['form' => $form->createView()]);
+        return $this->render('Init/domain.html.twig', ['form' => $form]);
     }
 
     #[Route(path: '/init', name: 'init_submit', methods: ['POST'])]
@@ -54,11 +53,11 @@ class InitController extends AbstractController
             return $this->redirectToRoute('init_user');
         }
 
-        return $this->render('Init/domain.html.twig', ['form' => $form->createView()]);
+        return $this->render('Init/domain.html.twig', ['form' => $form]);
     }
 
     #[Route(path: '/init/user', name: 'init_user', methods: ['GET'])]
-    public function user(Request $request): Response
+    public function user() : Response
     {
         // redirect if already configured
         if (0 < $this->manager->getRepository(User::class)->count([])) {
@@ -69,8 +68,7 @@ class InitController extends AbstractController
             'action' => $this->generateUrl('init_user'),
             'method' => 'post',
         ]);
-
-        return $this->render('Init/user.html.twig', ['form' => $form->createView()]);
+        return $this->render('Init/user.html.twig', ['form' => $form]);
     }
 
     #[Route(path: '/init/user', name: 'init_user_submit', methods: ['POST'])]
@@ -87,6 +85,6 @@ class InitController extends AbstractController
             return $this->redirectToRoute('index');
         }
 
-        return $this->render('Init/user.html.twig', ['form' => $form->createView()]);
+        return $this->render('Init/user.html.twig', ['form' => $form]);
     }
 }
