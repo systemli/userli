@@ -17,9 +17,7 @@
                     <div class="flex items-center mb-4">
                         <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-4">
                             {# Heroicon: qr-code #}
-                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 16a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H4a1 1 0 01-1-1v-4zM15 4a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V4zM13 7h1v1h-1V7zM13 9h1v1h-1V9zM13 11h1v1h-1v-1zM13 13h1v1h-1v-1zM13 15h1v1h-1v-1zM13 17h1v1h-1v-1zM13 19h1v1h-1v-1zM15 13h1v1h-1v-1zM15 15h1v1h-1v-1zM15 17h1v1h-1v-1zM15 19h1v1h-1v-1zM17 13h1v1h-1v-1zM17 15h1v1h-1v-1zM17 17h1v1h-1v-1zM17 19h1v1h-1v-1zM19 13h1v1h-1v-1zM19 15h1v1h-1v-1zM19 17h1v1h-1v-1zM19 19h1v1h-1v-1z"></path>
-                            </svg>
+                            {{ ux_icon('heroicons:qr-code', {'class': 'w-6 h-6 text-blue-600'}) }}
                         </div>
                         <h2 class="text-xl font-semibold text-gray-900">
                             {{ "account.twofactor.qr-code-lead"|trans }}
@@ -42,10 +40,7 @@
                         <div class="flex items-center justify-between mb-2">
                             <div class="flex items-center">
                                 <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mr-3">
-                                    {# Heroicon: key #}
-                                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
-                                    </svg>
+                                    {{ ux_icon('heroicons:key', {'class': 'w-5 h-5 text-blue-600'}) }}
                                 </div>
                                 <h3 class="text-lg font-semibold text-gray-900">
                                     {{ "account.twofactor.setup-key"|trans }}
@@ -55,9 +50,7 @@
                                     class="inline-flex items-center px-3 py-1 text-xs font-medium text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
                                     onclick="copyToClipboard('{{ user.totpSecret }}', this)">
                                 {# Heroicon: clipboard #}
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                                </svg>
+                                {{ ux_icon('heroicons:clipboard', {'class': 'w-4 h-4 mr-1'}) }}
                                 <span>{{ "button.copy"|trans }}</span>
                             </button>
                         </div>
@@ -113,9 +106,7 @@
                 // Update button text temporarily to show success
                 const originalContent = button.innerHTML;
                 button.innerHTML = `
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
+                    {{ ux_icon('heroicons:check', {'class': 'w-4 h-4 mr-1'}) }}
                     <span>{{ "button.copied"|trans }}</span>
                 `;
                 button.classList.add('text-green-600', 'border-green-300', 'bg-green-50');

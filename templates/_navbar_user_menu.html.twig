@@ -10,13 +10,9 @@
                     aria-haspopup="true">
                 <span class="sr-only">{{ "navbar.open-user-menu"|trans }}</span>
                 <div class="flex items-center px-2 lg:px-3 py-2 space-x-2">
-                    <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                    </svg>
+                    {{ ux_icon('heroicons:user-solid', {class: 'w-5 h-5 text-gray-300'}) }}
                     <span class="text-gray-300 text-sm font-medium hidden lg:block">{{ app.user.email }}</span>
-                    <svg class="w-4 h-4 text-gray-300 transition-transform duration-200" id="user-menu-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
+                    {{ ux_icon('heroicons:chevron-down', {class: 'w-4 h-4 text-gray-300 transition-transform duration-200', id: 'user-menu-arrow'}) }}
                 </div>
             </button>
 
@@ -45,9 +41,7 @@
                     <a href="{{ path('logout') }}"
                        class="group flex items-center px-5 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all duration-300 rounded-2xl mx-2"
                        role="menuitem">
-                        <svg class="w-4 h-4 mr-3 text-gray-400 group-hover:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                        </svg>
+                        {{ ux_icon('heroicons:arrow-right-on-rectangle', {class: 'w-4 h-4 mr-3 text-gray-400 group-hover:text-gray-500'}) }}
                         {{ "navbar_right.logout"|trans }}
                     </a>
                 </div>
@@ -65,12 +59,8 @@
                         aria-haspopup="true">
                     <span class="sr-only">{{ "navbar.open-user-menu"|trans }}</span>
                     <div class="flex items-center px-2 py-1 space-x-1">
-                        <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
-                        <svg class="w-3 h-3 text-gray-300 transition-transform duration-200" id="mobile-user-menu-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
+                        {{ ux_icon('heroicons:user-solid', {class: 'w-4 h-4 text-gray-300'}) }}
+                        {{ ux_icon('heroicons:chevron-down', {class: 'w-3 h-3 text-gray-300 transition-transform duration-200', id: 'mobile-user-menu-arrow'}) }}
                     </div>
                 </button>
 
@@ -101,9 +91,7 @@
                         <a href="{{ path('logout') }}"
                            class="group flex items-center px-5 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all duration-300 rounded-2xl mx-2"
                            role="menuitem">
-                            <svg class="w-4 h-4 mr-3 text-gray-400 group-hover:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                            </svg>
+                            {{ ux_icon('heroicons:arrow-right-on-rectangle', {class: 'w-4 h-4 mr-3 text-gray-400 group-hover:text-gray-500'}) }}
                             {{ "navbar_right.logout"|trans }}
                         </a>
                     </div>
@@ -117,12 +105,8 @@
                     aria-controls="mobile-menu"
                     aria-expanded="false">
                 <span class="sr-only">{{ "navbar.open-main-menu"|trans }}</span>
-                <svg class="block h-5 w-5" id="mobile-menu-icon-open" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-                <svg class="hidden h-5 w-5" id="mobile-menu-icon-close" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
+                {{ ux_icon('heroicons:bars-3-solid', {class: 'block h-5 w-5', id: 'mobile-menu-icon-open'}) }}
+                {{ ux_icon('heroicons:x-mark-solid', {class: 'hidden h-5 w-5', id: 'mobile-menu-icon-close'}) }}
             </button>
         </div>
     </div>
@@ -132,10 +116,7 @@
     <div class="flex items-center space-x-3 ml-auto">
         <a href="{{ path('login') }}"
            class="flex items-center justify-center text-white hover:text-gray-200 px-3 lg:px-4 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:scale-105">
-            <!-- Heroicon: arrow-right-on-rectangle -->
-            <svg class="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"></path>
-            </svg>
+            {{ ux_icon('heroicons:arrow-right-on-rectangle', {class: 'w-4 h-4 mr-2 flex-shrink-0'}) }}
             {{ "navbar_right.login"|trans }}
         </a>
 

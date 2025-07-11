@@ -4,10 +4,7 @@
 
 {% block step_icon %}
     <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-        <!-- Heroicon name: outline/shield-check -->
-        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-        </svg>
+        {{ ux_icon('heroicons:shield-check', {'class': 'w-6 h-6 text-blue-600'}) }}
     </div>
 {% endblock %}
 
@@ -23,9 +20,7 @@
     {% if authenticationError %}
         <div class="mb-6 p-4 rounded-lg bg-red-50 border border-red-200" role="alert" aria-live="polite">
             <div class="flex items-start">
-                <svg class="w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                </svg>
+                {{ ux_icon('heroicons:x-circle', {'class': 'w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0'}) }}
                 <div>
                     <h3 class="text-sm font-medium text-red-800 mb-1">{{ "form.auth-failed"|trans }}</h3>
                     <p class="text-sm text-red-700">{{ authenticationError|trans(authenticationErrorData, 'SchebTwoFactorBundle') }}</p>

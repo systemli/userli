@@ -27,9 +27,7 @@
                 </span>
                 <span class="text-xs">{{ locale_names[locale] ?? locale|upper }}</span>
                 {% if locale == app.request.locale %}
-                    <svg class="w-3 h-3 ml-auto text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
+                    {{ ux_icon('heroicons:check', {class: 'w-3 h-3 ml-auto text-blue-600'}) }}
                 {% endif %}
             </a>
         {% endfor %}
@@ -46,21 +44,10 @@
                 aria-haspopup="true"
                 title="{{ 'nav.language'|trans }}"
             >
-                <svg class="w-4 h-4 lg:mr-1 xl:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
-                </svg>
+                {{ ux_icon('heroicons:language', {class: 'w-4 h-4 lg:mr-1 xl:mr-2'}) }}
                 <span class="sr-only">{{ 'nav.language'|trans }}:</span>
                 <span class="hidden lg:inline xl:inline">{{ app.request.locale|upper }}</span>
-                <svg
-                    class="w-3 h-3 lg:ml-1 transition-transform duration-200"
-                    id="language-arrow"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                >
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
+                {{ ux_icon('heroicons:chevron-down', {class: 'w-3 h-3 lg:ml-1 transition-transform duration-200', id: 'language-arrow'}) }}
             </button>
         </div>
 
@@ -84,9 +71,7 @@
                         </span>
                         {{ locale_names[locale] ?? locale|upper }}
                         {% if locale == app.request.locale %}
-                            <svg class="w-4 h-4 ml-auto text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
+                            {{ ux_icon('heroicons:check', {class: 'w-4 h-4 ml-auto text-blue-600'}) }}
                         {% endif %}
                     </a>
                 {% endfor %}

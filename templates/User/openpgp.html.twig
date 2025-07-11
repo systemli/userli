@@ -24,9 +24,7 @@
                                 <div class="p-6 sm:p-8 flex flex-col h-full">
                                     <div class="flex items-center mb-6">
                                         <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mr-4">
-                                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z"></path>
-                                            </svg>
+                                            {{ ux_icon('heroicons:key', {'class': 'w-6 h-6 text-green-600'}) }}
                                         </div>
                                         <div>
                                             <h2 class="text-xl font-semibold text-gray-900">{{ "openpgp.current-key"|trans }}</h2>
@@ -79,18 +77,14 @@
                                             <!-- Delete button (without border) -->
                                             <a href="{{ url('openpgp_delete') }}"
                                                 class="inline-flex items-center justify-center w-full px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                                </svg>
+                                                {{ ux_icon('heroicons:trash', {'class': 'w-4 h-4 mr-2'}) }}
                                                 {{ "openpgp.delete-button"|trans }}
                                             </a>
                                         </div>
                                     {% else %}
                                         <!-- Placeholder when no key is available -->
                                         <div class="flex-grow flex flex-col items-center justify-center text-center py-10 bg-gray-50 rounded-lg">
-                                            <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z"></path>
-                                            </svg>
+                                            {{ ux_icon('heroicons:key', {'class': 'w-16 h-16 text-gray-400 mb-4'}) }}
                                             <h3 class="text-lg font-medium text-gray-900 mb-3 px-4">{{ "openpgp.no-key-uploaded"|trans }}</h3>
                                             <p class="text-gray-600 max-w-xs mx-auto px-4 pb-4">{{ "openpgp.upload-prompt"|trans }}</p>
                                         </div>
@@ -105,9 +99,7 @@
                                 <div class="p-6 sm:p-8">
                                     <div class="flex items-center mb-6">
                                         <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-4">
-                                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
-                                            </svg>
+                                            {{ ux_icon('heroicons:cloud-arrow-up', {'class': 'w-6 h-6 text-blue-600'}) }}
                                         </div>
                                         <div>
                                             <h2 class="text-xl font-semibold text-gray-900">{{ "openpgp-key-file"|trans }}</h2>
@@ -120,9 +112,7 @@
                                     {% if form.vars.errors|length > 0 %}
                                         <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6" role="alert">
                                             <div class="flex">
-                                                <svg class="w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
-                                                </svg>
+                                                {{ ux_icon('heroicons:x-circle-solid', {'class': 'w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0'}) }}
                                                 <div class="text-sm text-red-700">
                                                     {% for error in form.vars.errors %}
                                                         <p class="{% if not loop.last %}mb-2{% endif %}">{{ error.message }}</p>
