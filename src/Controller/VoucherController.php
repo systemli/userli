@@ -42,7 +42,7 @@ class VoucherController extends AbstractController
         $vouchers = $this->voucherHandler->getVouchersByUser($user);
 
         return $this->render(
-            'Start/vouchers.html.twig',
+            'Voucher/show.html.twig',
             [
                 'user' => $user,
                 'user_domain' => $user->getDomain(),

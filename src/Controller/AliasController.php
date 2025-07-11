@@ -62,7 +62,7 @@ class AliasController extends AbstractController
         $aliasesCustom = $aliasRepository->findByUser($user, false, true);
 
         return $this->render(
-            'Start/aliases.html.twig',
+            'Alias/show.html.twig',
             [
                 'user' => $user,
                 'user_domain' => $user->getDomain(),

@@ -177,6 +177,11 @@ Feature: User
     And I press "Create new recovery token"
 
     Then I should see text matching "The following recovery token got created for you"
+    And I fill in the following:
+      | recovery_token_ack_ack | 1 |
+    And I press "Continue"
+
+    Then I should be on "/start"
 
   @twofactor-auth
   Scenario: Enable two-factor authentication #1 and enter wrong password

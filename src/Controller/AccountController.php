@@ -41,14 +41,14 @@ class AccountController extends AbstractController
         $user = $this->getUser();
 
         return $this->render(
-            'Start/account.html.twig',
+            'Account/show.html.twig',
             [
                 'user' => $user,
             ]
         );
     }
 
-    #[Route(path: '/account/password', name: 'account_password_change', methods: ['GET'])]
+    #[Route(path: '/account/password', name: 'account_password', methods: ['GET'])]
     public function passwordChangeForm(): Response
     {
         /** @var User $user */
@@ -59,7 +59,7 @@ class AccountController extends AbstractController
         ]);
 
         return $this->render(
-            'Account/password_change.html.twig',
+            'Account/password.html.twig',
             [
                 'user' => $user,
                 'form' => $form,
@@ -93,7 +93,7 @@ class AccountController extends AbstractController
         }
 
         return $this->render(
-            'Account/password_change.html.twig',
+            'Account/password.html.twig',
             [
                 'user' => $user,
                 'form' => $form,
@@ -101,7 +101,7 @@ class AccountController extends AbstractController
         );
     }
 
-    #[Route(path: '/account/delete', name: 'user_delete', methods: ['GET'])]
+    #[Route(path: '/account/delete', name: 'account_delete', methods: ['GET'])]
     public function delete(): Response
     {
         /** @var User $user */
@@ -109,7 +109,7 @@ class AccountController extends AbstractController
         $form = $this->createForm(UserDeleteType::class, new Delete());
 
         return $this->render(
-            'User/delete.html.twig',
+            'Account/delete.html.twig',
             [
                 'form' => $form,
                 'user' => $user,
@@ -117,7 +117,7 @@ class AccountController extends AbstractController
         );
     }
 
-    #[Route(path: '/account/delete', name: 'user_delete_submit', methods: ['POST'])]
+    #[Route(path: '/account/delete', name: 'account_delete_submit', methods: ['POST'])]
     public function deleteSubmit(Request $request): Response
     {
         /** @var User $user */
@@ -132,7 +132,7 @@ class AccountController extends AbstractController
         }
 
         return $this->render(
-            'User/delete.html.twig',
+            'Account/delete.html.twig',
             [
                 'form' => $form,
                 'user' => $user,
@@ -140,17 +140,17 @@ class AccountController extends AbstractController
         );
     }
 
-    #[Route(path: '/account/recovery-token', name: 'user_recovery_token', methods: ['GET'])]
+    #[Route(path: '/account/recovery-token', name: 'account_recovery_token', methods: ['GET'])]
     public function recoveryToken(): Response
     {
         /** @var User $user */
         $user = $this->getUser();
         $form = $this->createForm(RecoveryTokenType::class, new RecoveryToken(), [
-            'action' => $this->generateUrl('user_recovery_token_submit'),
+            'action' => $this->generateUrl('account_recovery_token_submit'),
             'method' => 'post',
         ]);
 
-        return $this->render('User/recovery_token.html.twig',
+        return $this->render('Account/recovery_token.html.twig',
             [
                 'form' => $form,
                 'user' => $user,
@@ -158,7 +158,7 @@ class AccountController extends AbstractController
         );
     }
 
-    #[Route(path: '/account/recovery-token', name: 'user_recovery_token_submit', methods: ['POST'])]
+    #[Route(path: '/account/recovery-token', name: 'account_recovery_token_submit', methods: ['POST'])]
     public function recoveryTokenSubmit(Request $request): Response
     {
         /** @var User $user */
@@ -186,10 +186,10 @@ class AccountController extends AbstractController
             // Clear sensitive plaintext data from User object
             $user->eraseCredentials();
 
-            return $this->redirectToRoute('user_recovery_token_ack', ['recovery_token' => $recoveryToken]);
+            return $this->redirectToRoute('account_recovery_token_confirm', ['recovery_token' => $recoveryToken]);
         }
 
-        return $this->render('User/recovery_token.html.twig',
+        return $this->render('Account/recovery_token.html.twig',
             [
                 'form' => $form,
                 'user' => $user,
@@ -197,7 +197,7 @@ class AccountController extends AbstractController
         );
     }
 
-    #[Route(path: '/account/recovery-token/confirm', name: 'user_recovery_token_ack', methods: ['GET'])]
+    #[Route(path: '/account/recovery-token/confirm', name: 'account_recovery_token_confirm', methods: ['GET'])]
     public function recoveryTokenAck(Request $request): Response
     {
         /** @var User $user */
@@ -206,12 +206,12 @@ class AccountController extends AbstractController
             RecoveryTokenAckType::class,
             new RecoveryTokenAck(),
             [
-                'action' => $this->generateUrl('user_recovery_token_ack_submit'),
+                'action' => $this->generateUrl('account_recovery_token_confirm_submit'),
                 'method' => 'post',
             ]
         );
 
-        return $this->render('User/recovery_token.html.twig',
+        return $this->render('Account/recovery_token.html.twig',
             [
                 'form' => $form,
                 'user' => $user,
@@ -220,7 +220,7 @@ class AccountController extends AbstractController
         );
     }
 
-    #[Route(path: '/account/recovery-token/confirm', name: 'user_recovery_token_ack_submit', methods: ['POST'])]
+    #[Route(path: '/account/recovery-token/confirm', name: 'account_recovery_token_confirm_submit', methods: ['POST'])]
     public function recoveryTokenAckSubmit(Request $request): Response
     {
         $data = new RecoveryTokenAck();
@@ -233,7 +233,7 @@ class AccountController extends AbstractController
             return $this->redirectToRoute('start');
         }
 
-        return $this->render('User/recovery_token.html.twig',
+        return $this->render('Account/recovery_token.html.twig',
             [
                 'form' => $form,
                 'recovery_token' => $data->getRecoveryToken(),
