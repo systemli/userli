@@ -144,7 +144,7 @@ form:
   twofactor-login: Zwei-Faktor-Authentifizierung
   twofactor-login-placeholder: 6-stelliger Code
   twofactor-login-auth-code: Authentifizierungs-Code
-  twofactor-backup-code-ack: Ich habe die Backup-Codes an einem sicheren Ort abgelegt.
+  twofactor-backup-code-ack: Backup-Codes sicher abgelegt
   twofactor-login-desc: >
     Öffne deine Zwei-Faktor (TOTP) App für den Code.
   twofactor-login-cancel: Login abbrechen
@@ -181,9 +181,24 @@ account:
       Zwei-Faktor Backup Codes anmelden oder den Account mit Hilfe des Wiederherstellungscodes zurücksetzen.
     enable-lead: >
       Scanne das Bild mit deiner Zwei-Faktor-App.
+    enable-title: 2FA aktivieren
+    enable-description: Die Zwei-Faktor-Authentifizierung ist derzeit nicht aktiv. Wir empfehlen dir, sie zu aktivieren, um die Sicherheit deines Kontos deutlich zu erhöhen.
+    disable-title: 2FA ist aktiv
+    disable-description: Die Zwei-Faktor-Authentifizierung ist derzeit aktiv und schützt dein Konto. Falls du sie deaktivieren möchtest, kannst du das unten tun.
+    disable-button: Deaktivieren
+    setup-button: Einrichten
+    qr-code-lead: QR-Code
+    qr-code-description: Scanne den QR-Code mit deiner Zwei-Faktor-Authentifizierungs-App.
     backup-ack-lead: >
+      Backup-Codes
+    backup-ack-description: >
       Backup-Codes für die Zwei-Faktor-Authentifizierung. Kopiere und speichere sie an einem sicheren Ort.
-    print-codes: Backup-Codes drucken
+    setup-key: Setup Schlüssel
+    setup-key-description: "Gib den Schlüssel manuell in deine Authentifizierungs-App ein, wenn du den QR-Code nicht scannen kannst"
+    info-title: Warum Zwei-Faktor-Authentifizierung?
+    info-security: "Bietet eine zusätzliche Sicherheitsebene zum Schutz deines Kontos vor unbefugtem Zugriff"
+    info-simple: "Einfach zu verwenden mit datenschutzfreundlichen Apps wie Aegis (Android) oder Tofu (iOS), aber auch mit anderen TOTP-Apps"
+    info-backup: "Backup-Codes stellen sicher, dass du immer auf dein Konto zugreifen kannst, auch wenn du dein Handy verlierst"
 
 recovery:
   header: Konto wiederherstellen
@@ -434,3 +449,7 @@ random-aliases.feature-privacy: "Perfekt für Online-Shopping und Registrierunge
 random-aliases.feature-deletable: "Können jederzeit gelöscht werden, wenn sie nicht mehr benötigt werden"
 random-aliases.limitation-random-name: "Zufällige Namen, die schwerer zu merken sind"
 random-aliases.management-hint: "<strong>Tipp:</strong> Lösche ungenutzte zufällige Aliasse, um Platz für neue zu schaffen."
+
+button:
+  copy: Kopieren
+  copied: Kopiert

@@ -77,7 +77,7 @@ class UsersResetCommandTest extends TestCase
 
         // Verify that user properties got reset
         self::assertFalse($this->user->getTotpConfirmed());
-        self::assertEmpty($this->user->getBackupCodes());
+        self::assertEmpty($this->user->getTotpBackupCodes());
         self::assertFalse($this->user->isTotpAuthenticationEnabled());
 
         $output = $commandTester->getDisplay();

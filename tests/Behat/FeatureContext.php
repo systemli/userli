@@ -6,6 +6,8 @@ use App\Entity\Domain;
 use DateTime;
 use App\Entity\Voucher;
 use App\Entity\ReservedName;
+use Exception;
+use OTPHP\TOTP;
 use RuntimeException;
 use App\Entity\Alias;
 use App\Entity\User;
@@ -164,7 +166,7 @@ class FeatureContext extends MinkContext
                         break;
                     case 'totp_backup_codes':
                         $user->generateBackupCodes();
-                        $this->setPlaceholder('totp_backup_codes', $user->getBackupCodes());
+                        $this->setPlaceholder('totp_backup_codes', $user->getTotpBackupCodes());
                         break;
                 }
             }
@@ -365,6 +367,43 @@ class FeatureContext extends MinkContext
             }
         }
     }
+
+    /**
+     * @When /^I generate a TOTP code from "([^"]*)" and fill to field "([^"]*)"/
+     */
+    public function iGenerateTotpCodeFromSecret(string $placeholder, string $field): void
+    {
+        $secret = $this->getPlaceholder($placeholder);
+        $totp = TOTP::create($secret);
+        $code = $totp->now();
+
+        if (null === $code) {
+            throw new RuntimeException('Failed to generate TOTP code');
+        }
+
+        $this->fillField($field, $code);
+    }
+
+    /**
+     * @When /I set the placeholder "([^"]*)" from html element "([^"]*)"$/
+     * @throws Exception
+     */
+    public function iSetPlaceholderFromElement(string $name, string $selector): void
+    {
+        $element = $this->getSession()->getPage()->find('css', $selector);
+
+        if (null === $element) {
+            throw new Exception(sprintf('Element "%s" not found', $selector));
+        }
+
+        $value = $element->getText();
+        if (null === $value) {
+            throw new Exception(sprintf('Element "%s" not found', $selector));
+        }
+
+        $this->setPlaceholder($name, $value);
+    }
+
 
     /**
      * @When /^File "([^"]*)" exists with content:$/

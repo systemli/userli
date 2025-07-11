@@ -17,7 +17,7 @@ class TwofactorType extends AbstractType
     {
         $builder
             ->add('password', PasswordType::class, ['label' => 'form.password'])
-            ->add('submit', SubmitType::class, ['label' => 'form.twofactor-enable']);
+            ->add('submit', SubmitType::class, ['label' => 'account.twofactor.setup-button']);
     }
 
     /**

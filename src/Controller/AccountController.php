@@ -48,10 +48,7 @@ class AccountController extends AbstractController
             'Start/account.html.twig',
             [
                 'user' => $user,
-                'user_domain' => $user->getDomain(),
                 'password_form' => $form,
-                'recovery_secret_set' => $user->hasRecoverySecretBox(),
-                'twofactor_enabled' => $user->isTotpAuthenticationEnabled(),
             ]
         );
     }
@@ -85,10 +82,7 @@ class AccountController extends AbstractController
             'Start/account.html.twig',
             [
                 'user' => $user,
-                'user_domain' => $user->getDomain(),
                 'password_form' => $form,
-                'recovery_secret_set' => $user->hasRecoverySecretBox(),
-                'twofactor_enabled' => $user->isTotpAuthenticationEnabled(),
             ]
         );
     }
@@ -145,7 +139,6 @@ class AccountController extends AbstractController
         return $this->render('User/recovery_token.html.twig',
             [
                 'form' => $form,
-                'recovery_secret_set' => $user->hasRecoverySecretBox(),
                 'user' => $user,
             ]
         );
@@ -185,7 +178,6 @@ class AccountController extends AbstractController
         return $this->render('User/recovery_token.html.twig',
             [
                 'form' => $form,
-                'recovery_secret_set' => $user->hasRecoverySecretBox(),
                 'user' => $user,
             ]
         );
@@ -208,9 +200,8 @@ class AccountController extends AbstractController
         return $this->render('User/recovery_token.html.twig',
             [
                 'form' => $form,
-                'recovery_token' => $request->query->get('recovery_token'),
-                'recovery_secret_set' => $user->hasRecoverySecretBox(),
                 'user' => $user,
+                'recovery_token' => $request->query->get('recovery_token'),
             ]
         );
     }
