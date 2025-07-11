@@ -4,11 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\Model\Delete;
-use App\Form\Model\PasswordChange;
+use App\Form\Model\Password;
 use App\Form\Model\RecoveryToken;
-use App\Form\Model\RecoveryTokenAck;
-use App\Form\PasswordChangeType;
-use App\Form\RecoveryTokenAckType;
+use App\Form\Model\RecoveryTokenConfirm;
+use App\Form\PasswordType;
+use App\Form\RecoveryTokenConfirmType;
 use App\Form\RecoveryTokenType;
 use App\Form\UserDeleteType;
 use App\Handler\DeleteHandler;
@@ -53,7 +53,7 @@ class AccountController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $form = $this->createForm(PasswordChangeType::class, new PasswordChange(), [
+        $form = $this->createForm(PasswordType::class, new Password(), [
             'action' => $this->generateUrl('account_password_submit'),
             'method' => 'post',
         ]);
@@ -72,7 +72,7 @@ class AccountController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $form = $this->createForm(PasswordChangeType::class, new PasswordChange());
+        $form = $this->createForm(PasswordType::class, new Password());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -203,8 +203,8 @@ class AccountController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $form = $this->createForm(
-            RecoveryTokenAckType::class,
-            new RecoveryTokenAck(),
+            RecoveryTokenConfirmType::class,
+            new RecoveryTokenConfirm(),
             [
                 'action' => $this->generateUrl('account_recovery_token_confirm_submit'),
                 'method' => 'post',
@@ -223,8 +223,8 @@ class AccountController extends AbstractController
     #[Route(path: '/account/recovery-token/confirm', name: 'account_recovery_token_confirm_submit', methods: ['POST'])]
     public function recoveryTokenAckSubmit(Request $request): Response
     {
-        $data = new RecoveryTokenAck();
-        $form = $this->createForm(RecoveryTokenAckType::class, $data);
+        $data = new RecoveryTokenConfirm();
+        $form = $this->createForm(RecoveryTokenConfirmType::class, $data);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {

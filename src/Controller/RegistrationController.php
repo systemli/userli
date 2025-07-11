@@ -9,9 +9,9 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Exception;
 use App\Entity\User;
-use App\Form\Model\RecoveryTokenAck;
+use App\Form\Model\RecoveryTokenConfirm;
 use App\Form\Model\Registration;
-use App\Form\RecoveryTokenAckType;
+use App\Form\RecoveryTokenConfirmType;
 use App\Form\RegistrationType;
 use App\Handler\RegistrationHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -85,11 +85,11 @@ class RegistrationController extends AbstractController
         // all sensitive values from the user object
         $user->eraseCredentials();
 
-        $recoveryTokenAck = new RecoveryTokenAck();
+        $recoveryTokenAck = new RecoveryTokenConfirm();
         $recoveryTokenAck->setRecoveryToken($recoveryToken);
 
         $recoveryTokenAckForm = $this->createForm(
-            RecoveryTokenAckType::class,
+            RecoveryTokenConfirmType::class,
             $recoveryTokenAck,
             [
                 'action' => $this->generateUrl('register_recovery_token_submit'),
@@ -108,9 +108,9 @@ class RegistrationController extends AbstractController
     #[Route(path: '/register/recovery_token', name: 'register_recovery_token_submit', methods: ['POST'])]
     public function submitRecoveryToken(Request $request): Response
     {
-        $recoveryTokenAck = new RecoveryTokenAck();
+        $recoveryTokenAck = new RecoveryTokenConfirm();
         $recoveryTokenAckForm = $this->createForm(
-            RecoveryTokenAckType::class,
+            RecoveryTokenConfirmType::class,
             $recoveryTokenAck
         );
 

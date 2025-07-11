@@ -114,7 +114,7 @@ form:
   generate-recovery-token: Criar novo token de recuperação
   recovery-token: Token de recuperação
   recovery-start: Recuperar
-  registration-recovery-token-ack: Eu guardei o token de recuperação em um lugar seguro
+  registration-recovery-token-confirm: Eu guardei o token de recuperação em um lugar seguro
   registration-recovery-token-next-button: Continuar
   openpgp-key-submit: ""
   openpgp-key-select-one: ""

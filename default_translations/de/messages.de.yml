@@ -134,7 +134,7 @@ form:
   generate-recovery-token: Neuen Wiederherstellungscode generieren
   recovery-token: Wiederherstellungscode
   recovery-start: Wiederherstellen
-  registration-recovery-token-ack: Ich habe den Code an einem sicheren Ort abgespeichert
+  registration-recovery-token-confirm: Ich habe den Code an einem sicheren Ort abgespeichert
   registration-recovery-token-next-button: Weiter
   domain: Domain
   add: Hinzufügen
@@ -145,7 +145,7 @@ form:
   twofactor-login: Zwei-Faktor-Authentifizierung
   twofactor-login-placeholder: 6-stelliger Code
   twofactor-login-auth-code: Authentifizierungs-Code
-  twofactor-backup-code-ack: Backup-Codes sicher abgelegt
+  twofactor-backup-code-confirm: Backup-Codes sicher abgelegt
   twofactor-login-desc: >
     Öffne deine Zwei-Faktor (TOTP) App für den Code.
   twofactor-login-cancel: Login abbrechen

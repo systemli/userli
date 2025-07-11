@@ -108,7 +108,7 @@ form:
   generate-recovery-token: Opprett nytt gjenopprettingssymbol
   recovery-token: Gjenopprettingssymbol
   recovery-start: Gjenopprett
-  registration-recovery-token-ack:
+  registration-recovery-token-confirm:
     Jeg lagret gjenopprettingssymbolet på et sikkert
     sted
   registration-recovery-token-next-button: Fortsett

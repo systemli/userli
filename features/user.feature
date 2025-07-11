@@ -22,9 +22,9 @@ Feature: User
     When I am authenticated as "user@example.org"
     And I am on "/account/password"
     And I fill in the following:
-      | password_change_password           | asdasd       |
-      | password_change_newPassword_first  | P4ssW0rd!!!1 |
-      | password_change_newPassword_second | P4ssW0rd!!!1 |
+      | password_password           | asdasd       |
+      | password_newPassword_first  | P4ssW0rd!!!1 |
+      | password_newPassword_second | P4ssW0rd!!!1 |
     And I press "Submit"
 
     Then I should be on "/account"
@@ -178,7 +178,7 @@ Feature: User
 
     Then I should see text matching "The following recovery token got created for you"
     And I fill in the following:
-      | recovery_token_ack_ack | 1 |
+      | recovery_token_confirm_confirm | 1 |
     And I press "Continue"
 
     Then I should be on "/start"
@@ -206,19 +206,19 @@ Feature: User
     And I should see text matching "Scan the image below with your two-factor app."
 
     And I fill in the following:
-      | twofactor_confirm_totpSecret | invalid-secret |
+      | twofactor_confirm_code | invalid-secret |
     And I press "Verify"
 
     Then I should be on "/account/twofactor/confirm"
     And I should see text matching "The verification code is not valid."
-    And I set the placeholder "totpSecret" from html element "code#totp-secret"
-    And I generate a TOTP code from "totpSecret" and fill to field "twofactor_confirm_totpSecret"
+    And I set the placeholder "totpCode" from html element "code#totp-secret"
+    And I generate a TOTP code from "totpCode" and fill to field "twofactor_confirm_code"
     And I press "Verify"
 
     Then I should be on "/account/twofactor/backup-codes"
     And I should see text matching "Backup codes"
     And I fill in the following:
-      | twofactor_backup_ack_ack | 1 |
+      | twofactor_backup_confirm_confirm | 1 |
     And I press "Verify"
 
     Then I should be on "/account/twofactor"

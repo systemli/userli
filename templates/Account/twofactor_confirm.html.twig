@@ -67,11 +67,11 @@
                     {{ form_errors(form) }}
 
                     <div>
-                        {{ form_label(form.totpSecret, null, {
+                        {{ form_label(form.code, null, {
                             'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}
                         }) }}
-                        {{ form_errors(form.totpSecret) }}
-                        {{ form_widget(form.totpSecret, {
+                        {{ form_errors(form.code) }}
+                        {{ form_widget(form.code, {
                             'attr': {
                                 'autofocus': '',
                                 'placeholder': 'form.twofactor-login-placeholder'|trans,

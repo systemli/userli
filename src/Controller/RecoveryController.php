@@ -10,10 +10,10 @@ use App\Event\RecoveryProcessEvent;
 use App\Event\UserEvent;
 use App\Form\Model\RecoveryProcess;
 use App\Form\Model\RecoveryResetPassword;
-use App\Form\Model\RecoveryTokenAck;
+use App\Form\Model\RecoveryTokenConfirm;
 use App\Form\RecoveryProcessType;
 use App\Form\RecoveryResetPasswordType;
-use App\Form\RecoveryTokenAckType;
+use App\Form\RecoveryTokenConfirmType;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
@@ -180,10 +180,10 @@ class RecoveryController extends AbstractController
             throw new InvalidParameterException('Recovery token must be provided');
         }
 
-        $data = new RecoveryTokenAck();
+        $data = new RecoveryTokenConfirm();
         $data->setRecoveryToken($recoveryToken);
 
-        $form = $this->createForm(RecoveryTokenAckType::class, $data, [
+        $form = $this->createForm(RecoveryTokenConfirmType::class, $data, [
             'action' => $this->generateUrl('recovery_recovery_token_ack_submit'),
             'method' => 'post',
         ]);
@@ -197,8 +197,8 @@ class RecoveryController extends AbstractController
     #[Route(path: '/recovery/recovery_token/ack', name: 'recovery_recovery_token_ack_submit', methods: ['POST'])]
     public function recoveryRecoveryTokenAckSubmit(Request $request): Response
     {
-        $data = new RecoveryTokenAck();
-        $form = $this->createForm(RecoveryTokenAckType::class, $data);
+        $data = new RecoveryTokenConfirm();
+        $form = $this->createForm(RecoveryTokenConfirmType::class, $data);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {

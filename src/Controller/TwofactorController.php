@@ -4,9 +4,9 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\Model\Twofactor;
-use App\Form\Model\TwofactorBackupAck;
+use App\Form\Model\TwofactorBackupConfirm;
 use App\Form\Model\TwofactorConfirm;
-use App\Form\TwofactorBackupAckType;
+use App\Form\TwofactorBackupConfirmType;
 use App\Form\TwofactorConfirmType;
 use App\Form\TwofactorType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,12 +27,12 @@ class TwofactorController extends AbstractController
     {
     }
 
-    #[Route(path: '/account/twofactor', name: 'user_twofactor', methods: ['GET'])]
+    #[Route(path: '/account/twofactor', name: 'account_twofactor', methods: ['GET'])]
     public function show(): Response
     {
         if (!$this->getUser()->isTotpAuthenticationEnabled()) {
             $form = $this->createForm(TwofactorType::class, new Twofactor(), [
-                'action' => $this->generateUrl('user_twofactor_submit'),
+                'action' => $this->generateUrl('account_twofactor_submit'),
                 'method' => 'POST',
             ]);
             return $this->render('Account/twofactor_enable.html.twig', [
@@ -42,7 +42,7 @@ class TwofactorController extends AbstractController
         }
 
         $form = $this->createForm(TwofactorType::class, new Twofactor(), [
-            'action' => $this->generateUrl('user_twofactor_disable'),
+            'action' => $this->generateUrl('account_twofactor_disable'),
             'method' => 'POST',
         ]);
         $form->add('submit', SubmitType::class, ['label' => 'account.twofactor.disable-button']);
@@ -53,7 +53,7 @@ class TwofactorController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/account/twofactor', name: 'user_twofactor_submit', methods: ['POST'])]
+    #[Route(path: '/account/twofactor', name: 'account_twofactor_submit', methods: ['POST'])]
     public function submit(Request $request, TotpAuthenticatorInterface $totpAuthenticator): Response
     {
         $user = $this->getUser();
@@ -65,7 +65,7 @@ class TwofactorController extends AbstractController
             $user->generateBackupCodes();
             $this->manager->flush();
 
-            return $this->redirectToRoute('user_twofactor_confirm');
+            return $this->redirectToRoute('account_twofactor_confirm');
         }
 
         return $this->render('Account/twofactor_enable.html.twig', [
@@ -74,13 +74,13 @@ class TwofactorController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/account/twofactor/confirm', name: 'user_twofactor_confirm', methods: ['GET'])]
+    #[Route(path: '/account/twofactor/confirm', name: 'account_twofactor_confirm', methods: ['GET'])]
     public function confirm(): Response
     {
         /** @var User $user */
         $user = $this->getUser();
         $form = $this->createForm(TwofactorConfirmType::class, new TwofactorConfirm(), [
-            'action' => $this->generateUrl('user_twofactor_confirm_submit'),
+            'action' => $this->generateUrl('account_twofactor_confirm_submit'),
             'method' => 'POST',
         ]);
 
@@ -96,7 +96,7 @@ class TwofactorController extends AbstractController
         );
     }
 
-    #[Route(path: '/account/twofactor/confirm', name: 'user_twofactor_confirm_submit', methods: ['POST'])]
+    #[Route(path: '/account/twofactor/confirm', name: 'account_twofactor_confirm_submit', methods: ['POST'])]
     public function confirmSubmit(Request $request): Response
     {
         /** @var User $user */
@@ -105,7 +105,7 @@ class TwofactorController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->redirectToRoute('user_twofactor_backup_ack');
+            return $this->redirectToRoute('account_twofactor_backup_confirm');
         }
 
         $qrContent = $this->totpAuthenticator->getQRContent($user);
@@ -120,13 +120,13 @@ class TwofactorController extends AbstractController
         );
     }
 
-    #[Route(path: '/account/twofactor/backup-codes', name: 'user_twofactor_backup_ack', methods: ['GET'])]
+    #[Route(path: '/account/twofactor/backup-codes', name: 'account_twofactor_backup_confirm', methods: ['GET'])]
     public function backupAck(): Response
     {
         /** @var User $user */
         $user = $this->getUser();
-        $form = $this->createForm(TwofactorBackupAckType::class, new TwofactorBackupAck(), [
-            'action' => $this->generateUrl('user_twofactor_backup_ack_submit'),
+        $form = $this->createForm(TwofactorBackupConfirmType::class, new TwofactorBackupConfirm(), [
+            'action' => $this->generateUrl('account_twofactor_backup_confirm_submit'),
             'method' => 'POST',
         ]);
 
@@ -138,19 +138,19 @@ class TwofactorController extends AbstractController
         );
     }
 
-    #[Route(path: '/account/twofactor/backup-codes', name: 'user_twofactor_backup_ack_submit', methods: ['POST'])]
+    #[Route(path: '/account/twofactor/backup-codes', name: 'account_twofactor_backup_confirm_submit', methods: ['POST'])]
     public function backupAckSubmit(Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
-        $form = $this->createForm(TwofactorBackupAckType::class, new TwofactorBackupAck());
+        $form = $this->createForm(TwofactorBackupConfirmType::class, new TwofactorBackupConfirm());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setTotpConfirmed(true);
             $this->manager->flush();
 
-            return $this->redirectToRoute('user_twofactor');
+            return $this->redirectToRoute('account_twofactor');
         }
 
         return $this->render('Account/twofactor_backup_code_confirm.html.twig',
@@ -161,7 +161,7 @@ class TwofactorController extends AbstractController
         );
     }
 
-    #[Route(path: '/account/twofactor/disable', name: 'user_twofactor_disable', methods: ['POST'])]
+    #[Route(path: '/account/twofactor/disable', name: 'account_twofactor_disable', methods: ['POST'])]
     public function disable(Request $request): Response
     {
         $user = $this->getUser();
@@ -173,7 +173,7 @@ class TwofactorController extends AbstractController
             $user->setTotpSecret(null);
             $this->manager->flush();
 
-            return $this->redirectToRoute('user_twofactor');
+            return $this->redirectToRoute('account_twofactor');
         }
 
         return $this->render('Account/twofactor_disable.html.twig',

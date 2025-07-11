@@ -15,18 +15,18 @@
 {{ form_widget(form.recoveryToken) }}
 
 <div class="flex items-start mt-4">
-    {{ form_widget(form.ack, {
+    {{ form_widget(form.confirm, {
         'attr': {
             'class': 'mt-0.5 mr-2'
         }
     }) }}
-    {{ form_label(form.ack, null, {
+    {{ form_label(form.confirm, null, {
         'label_attr': {
             'class': 'text-sm text-gray-700'
         }
     }) }}
 </div>
-{{ form_errors(form.ack) }}
+{{ form_errors(form.confirm) }}
 
 <div class="mt-6">
     {{ form_widget(form.submit, {
