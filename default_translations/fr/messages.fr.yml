@@ -153,8 +153,6 @@ registration:
   information: Informations
   information-intro: >
     Souhaitez-vous enregistrer un nouveau compte de messagerie sur <a href=\"%project_url%\">%project_name%</a>? Nous n'autorisons que les inscriptions via les codes d'invitation vers nos services.
-  information-password-policy: >
-    <strong>Conditions pour le mot de passe :</strong> Au moins 12 caractères, pas des trémas allemands. Les mots de passe seront testés avec une <a href=\"https://haveibeenpwned.com/Passwords\">base de données de mots de passe compromis</a>.
   label-email: Votre adresse électronique préférée
   recovery-token-headline: Jeton de récupération
 

@@ -14,7 +14,7 @@
 {% block page_content %}
 
             {# Dashboard cards grid #}
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div class="flex flex-wrap justify-center gap-6 max-w-7xl mx-auto">
 
                 {# Webmail card #}
                 {% if webmail_url is defined and webmail_url is not empty %}
@@ -25,7 +25,7 @@
                     {% else %}
                         {% set url = webmail_url %}
                     {% endif %}
-                    <div class="group">
+                    <div class="group w-80 flex-shrink-0">
                         <a href="https://{{ url|escape("url") }}"
                            target="_blank"
                            rel="noopener noreferrer"
@@ -51,7 +51,7 @@
 
                 {# Invite Codes card #}
                 {% if domain == user_domain and not is_granted('ROLE_SUSPICIOUS') %}
-                    <div class="group">
+                    <div class="group w-80 flex-shrink-0">
                         <a href="{{ path('vouchers') }}"
                            class="block bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-green-300 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                            aria-describedby="vouchers-desc">
@@ -74,7 +74,7 @@
                 {% endif %}
 
                 {# Aliases card #}
-                <div class="group">
+                <div class="group w-80 flex-shrink-0">
                     <a href="{{ path('aliases') }}"
                        class="block bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-purple-300 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
                        aria-describedby="aliases-desc">
@@ -95,30 +95,8 @@
                     </a>
                 </div>
 
-                {# OpenPGP card #}
-                <div class="group">
-                    <a href="{{ path('openpgp') }}"
-                       class="block bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-amber-300 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
-                       aria-describedby="openpgp-desc">
-                        <div class="p-6 text-center">
-                            <div class="w-16 h-16 mx-auto mb-4 p-3 bg-amber-50 rounded-xl group-hover:bg-amber-100 transition-colors duration-200">
-                                <!-- Heroicon: key -->
-                                <svg class="w-full h-full text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
-                                </svg>
-                            </div>
-                            <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-amber-600 transition-colors duration-200">
-                                {{ "start.openpgp-settings"|trans }}
-                            </h2>
-                            <p id="openpgp-desc" class="text-sm text-gray-600 leading-relaxed">
-                                {{ "start.openpgp-settings-desc"|trans }}
-                            </p>
-                        </div>
-                    </a>
-                </div>
-
                 {# Account Settings card #}
-                <div class="group">
+                <div class="group w-80 flex-shrink-0">
                     <a href="{{ path('account') }}"
                        class="block bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-gray-400 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                        aria-describedby="account-desc">
@@ -139,7 +117,6 @@
                         </div>
                     </a>
                 </div>
-            </div>
         </div>
     </div>
 {% endblock %}

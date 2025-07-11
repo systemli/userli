@@ -25,7 +25,7 @@ class AccountControllerTest extends WebTestCase
         $client->request('GET', '/account');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h2', 'Change your password');
+        $this->assertSelectorTextContains('h1', 'Your account');
     }
 
     public function testVisitingStartAsSpammer()
@@ -47,7 +47,7 @@ class AccountControllerTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $crawler = $client->request('GET', '/account');
+        $crawler = $client->request('GET', '/account/password');
 
         $form = $crawler->selectButton('Submit')->form();
 
@@ -67,7 +67,7 @@ class AccountControllerTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $crawler = $client->request('GET', '/account');
+        $crawler = $client->request('GET', '/account/password');
 
         $form = $crawler->selectButton('Submit')->form();
 
@@ -87,7 +87,7 @@ class AccountControllerTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $crawler = $client->request('GET', '/account');
+        $crawler = $client->request('GET', '/account/password');
 
         $form = $crawler->selectButton('Submit')->form();
 

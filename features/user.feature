@@ -20,7 +20,7 @@ Feature: User
   @password-change
   Scenario: Change password
     When I am authenticated as "user@example.org"
-    And I am on "/account"
+    And I am on "/account/password"
     And I fill in the following:
       | password_change_password           | asdasd       |
       | password_change_newPassword_first  | P4ssW0rd!!!1 |
@@ -119,7 +119,7 @@ Feature: User
   @delete-user
   Scenario: Delete Account
     When I am authenticated as "user@example.org"
-    And I am on "/user/delete"
+    And I am on "/account/delete"
     And I fill in the following:
       | delete_user_password | asdasd |
     And I press "Delete account"
@@ -171,7 +171,7 @@ Feature: User
   @generate-recovery-token
   Scenario: Create a new recovery token
     When I am authenticated as "user@example.org"
-    And I am on "/user/recovery_token"
+    And I am on "/account/recovery-token"
     And I fill in the following:
       | recovery_token_password | asdasd |
     And I press "Create new recovery token"
@@ -181,39 +181,39 @@ Feature: User
   @twofactor-auth
   Scenario: Enable two-factor authentication #1 and enter wrong password
     When I am authenticated as "user@example.org"
-    And I am on "/user/twofactor"
+    And I am on "/account/twofactor"
     And I fill in the following:
       | twofactor_password | wrong-password |
     And I press "Set up"
 
-    Then I should be on "/user/twofactor"
+    Then I should be on "/account/twofactor"
     And I should see text matching "Wrong password"
 
   @twofactor-auth
   Scenario: Enable two-factor authentication
     When I am authenticated as "user@example.org"
-    And I am on "/user/twofactor"
+    And I am on "/account/twofactor"
     And I fill in the following:
       | twofactor_password | asdasd |
     And I press "Set up"
 
-    Then I should be on "/user/twofactor_confirm"
+    Then I should be on "/account/twofactor/confirm"
     And I should see text matching "Scan the image below with your two-factor app."
 
     And I fill in the following:
       | twofactor_confirm_totpSecret | invalid-secret |
     And I press "Verify"
 
-    Then I should be on "/user/twofactor_confirm"
+    Then I should be on "/account/twofactor/confirm"
     And I should see text matching "The verification code is not valid."
     And I set the placeholder "totpSecret" from html element "code#totp-secret"
     And I generate a TOTP code from "totpSecret" and fill to field "twofactor_confirm_totpSecret"
     And I press "Verify"
 
-    Then I should be on "/user/twofactor_backup_codes"
+    Then I should be on "/account/twofactor/backup-codes"
     And I should see text matching "Backup codes"
     And I fill in the following:
       | twofactor_backup_ack_ack | 1 |
     And I press "Verify"
 
-    Then I should be on "/user/twofactor"
+    Then I should be on "/account/twofactor"

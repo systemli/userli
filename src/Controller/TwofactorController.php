@@ -27,7 +27,7 @@ class TwofactorController extends AbstractController
     {
     }
 
-    #[Route(path: '/user/twofactor', name: 'user_twofactor', methods: ['GET'])]
+    #[Route(path: '/account/twofactor', name: 'user_twofactor', methods: ['GET'])]
     public function show(): Response
     {
         if (!$this->getUser()->isTotpAuthenticationEnabled()) {
@@ -53,7 +53,7 @@ class TwofactorController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/user/twofactor', name: 'user_twofactor_submit', methods: ['POST'])]
+    #[Route(path: '/account/twofactor', name: 'user_twofactor_submit', methods: ['POST'])]
     public function submit(Request $request, TotpAuthenticatorInterface $totpAuthenticator): Response
     {
         $user = $this->getUser();
@@ -74,7 +74,7 @@ class TwofactorController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/user/twofactor_confirm', name: 'user_twofactor_confirm', methods: ['GET'])]
+    #[Route(path: '/account/twofactor/confirm', name: 'user_twofactor_confirm', methods: ['GET'])]
     public function confirm(): Response
     {
         /** @var User $user */
@@ -96,7 +96,7 @@ class TwofactorController extends AbstractController
         );
     }
 
-    #[Route(path: '/user/twofactor_confirm', name: 'user_twofactor_confirm_submit', methods: ['POST'])]
+    #[Route(path: '/account/twofactor/confirm', name: 'user_twofactor_confirm_submit', methods: ['POST'])]
     public function confirmSubmit(Request $request): Response
     {
         /** @var User $user */
@@ -120,7 +120,7 @@ class TwofactorController extends AbstractController
         );
     }
 
-    #[Route(path: '/user/twofactor_backup_codes', name: 'user_twofactor_backup_ack', methods: ['GET'])]
+    #[Route(path: '/account/twofactor/backup-codes', name: 'user_twofactor_backup_ack', methods: ['GET'])]
     public function backupAck(): Response
     {
         /** @var User $user */
@@ -138,7 +138,7 @@ class TwofactorController extends AbstractController
         );
     }
 
-    #[Route(path: '/user/twofactor_backup_codes', name: 'user_twofactor_backup_ack_submit', methods: ['POST'])]
+    #[Route(path: '/account/twofactor/backup-codes', name: 'user_twofactor_backup_ack_submit', methods: ['POST'])]
     public function backupAckSubmit(Request $request): Response
     {
         /** @var User $user */
@@ -161,7 +161,7 @@ class TwofactorController extends AbstractController
         );
     }
 
-    #[Route(path: '/user/twofactor_disable', name: 'user_twofactor_disable', methods: ['POST'])]
+    #[Route(path: '/account/twofactor/disable', name: 'user_twofactor_disable', methods: ['POST'])]
     public function disable(Request $request): Response
     {
         $user = $this->getUser();

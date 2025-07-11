@@ -16,7 +16,7 @@ class OpenPGPControllerTest extends WebTestCase
     public function testVisitingUnauthenticated(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/openpgp');
+        $client->request('GET', '/account/openpgp');
 
         $this->assertResponseRedirects('/login');
     }
@@ -28,7 +28,7 @@ class OpenPGPControllerTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $client->request('GET', '/openpgp');
+        $client->request('GET', '/account/openpgp');
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'OpenPGP');
@@ -42,7 +42,7 @@ class OpenPGPControllerTest extends WebTestCase
         $client->loginUser($user);
 
         // First, get the form
-        $crawler = $client->request('GET', '/openpgp');
+        $crawler = $client->request('GET', '/account/openpgp');
         $form = $crawler->selectButton('Publish OpenPGP key')->form();
 
         // Fill in some test key text (this will likely fail validation, but tests the flow)
@@ -56,6 +56,6 @@ mQENBFxxxxx...
         $client->submit($form);
 
         // Should redirect back to the form (either success or validation error)
-        $this->assertResponseRedirects('/openpgp');
+        $this->assertResponseRedirects('/account/openpgp');
     }
 }

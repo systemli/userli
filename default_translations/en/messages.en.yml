@@ -6,7 +6,6 @@ navbar:
   home: Home
   vouchers: Invite codes
   aliases: Aliases
-  openpgp: OpenPGP
   account: Account
   language: Language
   signed-in-as: Signed in as
@@ -22,8 +21,8 @@ start:
     If one of your friends already has an account,
     you can get an invite code from them and immediately set up your own account.
   registration-button: Create account
-  account-settings: Account Settings
-  account-settings-desc: Passwords and more
+  account-settings: Your account
+  account-settings-desc: Manage your account
   account-delete: Delete account
   aliases: Alias addresses
   aliases-delete: delete alias address
@@ -139,6 +138,7 @@ form:
   domain: Domain
   add: Add
   verify: Verify
+  cancel: Cancel
   twofactor: Two-factor authentication
   twofactor-short: 2FA
   twofactor-login: Two-factor authentication
@@ -163,13 +163,25 @@ openpgp-key-submit: Publish OpenPGP key
 openpgp-delete: Delete OpenPGP key
 
 account:
+  password:
+    title: Password
+    desc: Update your password
+    subtitle: Update your password
+    help: >
+      <strong>Password policy:</strong> At least 12 characters, no German umlauts.
+      Passwords will be tested against a <a href="https://haveibeenpwned.com/Passwords">database
+      of known bad passwords</a>.
   twofactor:
+    title: Two-Factor Authentication
+    desc: Secure your account with 2FA
+    enabled: Enabled
+    disabled: Not configured
     headline: Two-factor authentication
     unset: You don't have two-factor authentication enabled yet.
     unset-extra: You need a TOTP app on your mobile device to enable two-factor authentication.
     set: Two-factor authentication is enabled.
     button: Configure two-factor authentication
-    lead: Two-factor authentication adds an additional layer of security to your account.
+    lead: Secure your account with a second factorUpdate your password
     desc-login: >
       With two-factor authentication, you have to provide a second password at login, that
       you get from your two-factor authenticator app. This extra password is only required
@@ -196,6 +208,19 @@ account:
     info-security: "Adds an extra layer of security to protect your account from unauthorized access"
     info-simple: "Simple to use with privacy-friendly apps like Aegis (Android) or Tofu (iOS), or any TOTP-compatible authenticator app"
     info-backup: "Backup codes ensure you can always access your account, even if you lose your phone"
+  recovery:
+    title: Recovery Token
+    desc: Backup access to your account
+    configured: Configured
+    not-configured: Not configured
+  openpgp:
+    title: OpenPGP Keys
+    desc: Publish your OpenPGP key
+    configured: Key uploaded
+    not-configured: No key
+  delete:
+    title: Delete Account
+    desc: Close and delete your account permanently
 
 recovery:
   header: Recover your account
@@ -227,10 +252,6 @@ registration:
     Would you like to register an e-mail account with <a href="%project_url%">%project_name%</a>?
     We only allow registrations if a friend invites you with an invite code to our
     services.
-  information-password-policy: >
-    <strong>Password policy:</strong> At least 12 characters, no German umlauts.
-    Passwords will be tested against a <a href="https://haveibeenpwned.com/Passwords">database
-    of known bad passwords</a>.
   label-email: Your preferred e-mail address
   recovery-token-headline: Recovery token
 welcome:

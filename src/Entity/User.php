@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Traits\OpenPgpKeyAwareTrait;
 use Doctrine\DBAL\Types\Types;
 use App\Repository\UserRepository;
 use App\Traits\PlainPasswordTrait;
@@ -41,7 +42,7 @@ use Doctrine\ORM\Mapping\Index;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'virtual_users')]
-#[Index(name: 'email_idx', columns: ['email'])]
+#[Index(columns: ['email'], name: 'email_idx')]
 #[EmailDomain]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface, Stringable
 {
@@ -67,6 +68,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     use MailCryptPublicKeyTrait;
     use TwofactorTrait;
     use TwofactorBackupCodeTrait;
+    use OpenPgpKeyAwareTrait;
 
     public const CURRENT_PASSWORD_VERSION = 2;
 

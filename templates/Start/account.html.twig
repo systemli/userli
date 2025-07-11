@@ -7,38 +7,185 @@
 {% block page_subtitle %}{{ "start.account-settings-desc"|trans }}{% endblock %}
 
 {% block page_content %}
-    {# Main content area - Card layout #}
-    <div class="max-w-5xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {# Change password card #}
-                    <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-                        <div class="p-6 sm:p-8">
-                            {% include 'Start/change_password.html.twig' %}
-                        </div>
-                    </div>
+    {# Dashboard cards grid #}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr place-content-center max-w-7xl mx-auto">
 
-                    {# Two Factor Authentication card #}
-                    <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-                        <div class="p-6 sm:p-8">
-                            {% include 'Start/twofactor.html.twig' %}
+        {# Password Change card #}
+        <div class="group h-full">
+            <a href="{{ path('account_password_change') }}"
+               class="flex flex-col h-full bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+               aria-describedby="password-desc">
+                <div class="flex flex-col h-full p-6 text-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 mx-auto mb-4 p-3 bg-blue-50 rounded-xl group-hover:bg-blue-100 transition-colors duration-200">
+                            <!-- Heroicon: key -->
+                            <svg class="w-full h-full text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1721 9z"></path>
+                            </svg>
                         </div>
+                        <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-200">
+                            {{ "account.password.title"|trans }}
+                        </h2>
+                        <p id="password-desc" class="text-sm text-gray-600 leading-relaxed">
+                            {{ "account.password.desc"|trans }}
+                        </p>
                     </div>
+                    <div class="flex-grow"></div>
+                </div>
+            </a>
+        </div>
 
-                    {# Recovery Token card #}
-                    <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-                        <div class="p-6 sm:p-8">
-                            {% include 'Start/recovery_token.html.twig' %}
+        {# Two Factor Authentication card #}
+        <div class="group h-full">
+            <a href="{{ path('user_twofactor') }}"
+               class="flex flex-col h-full bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+               aria-describedby="twofactor-desc">
+                <div class="flex flex-col h-full p-6 text-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 mx-auto mb-4 p-3 bg-blue-50 rounded-xl group-hover:bg-blue-100 transition-colors duration-200">
+                            <!-- Heroicon: lock-closed -->
+                            <svg class="w-full h-full text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                            </svg>
                         </div>
+                        <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-200">
+                            {{ "account.twofactor.title"|trans }}
+                        </h2>
+                        <p id="twofactor-desc" class="text-sm text-gray-600 leading-relaxed mb-4">
+                            {{ "account.twofactor.desc"|trans }}
+                        </p>
                     </div>
-
-                    {# Delete account card #}
-                    <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-                        <div class="p-6 sm:p-8">
-                            {% include 'Start/delete_account.html.twig' %}
+                    <div class="flex-grow flex justify-center items-end">
+                        <div class="flex-shrink-0">
+                            {% if user.totpAuthenticationEnabled %}
+                                <div class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    {{ "account.twofactor.enabled"|trans }}
+                                </div>
+                            {% else %}
+                                <div class="inline-flex items-center px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded-full">
+                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    {{ "account.twofactor.disabled"|trans }}
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
+        </div>
+
+        {# Recovery Token card #}
+        <div class="group h-full">
+            <a href="{{ path('user_recovery_token') }}"
+               class="flex flex-col h-full bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+               aria-describedby="recovery-desc">
+                <div class="flex flex-col h-full p-6 text-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 mx-auto mb-4 p-3 bg-blue-50 rounded-xl group-hover:bg-blue-100 transition-colors duration-200">
+                            <!-- Heroicon: shield-check -->
+                            <svg class="w-full h-full text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-200">
+                            {{ "account.recovery.title"|trans }}
+                        </h2>
+                        <p id="recovery-desc" class="text-sm text-gray-600 leading-relaxed mb-4">
+                            {{ "account.recovery.desc"|trans }}
+                        </p>
+                    </div>
+                    <div class="flex-grow flex justify-center items-end">
+                        <div class="flex-shrink-0">
+                            {% if user.hasRecoverySecretBox %}
+                                <div class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    {{ "account.recovery.configured"|trans }}
+                                </div>
+                            {% else %}
+                                <div class="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-800 text-xs font-medium rounded-full">
+                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    {{ "account.recovery.not-configured"|trans }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        {# OpenPGP card #}
+        <div class="group h-full">
+            <a href="{{ path('openpgp') }}"
+               class="flex flex-col h-full bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+               aria-describedby="openpgp-desc">
+                <div class="flex flex-col h-full p-6 text-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 mx-auto mb-4 p-3 bg-blue-50 rounded-xl group-hover:bg-blue-100 transition-colors duration-200">
+                            <!-- Heroicon: shield-exclamation -->
+                            <svg class="w-full h-full text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016zM12 9v2m0 4h.01"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-200">
+                            {{ "account.openpgp.title"|trans }}
+                        </h2>
+                        <p id="openpgp-desc" class="text-sm text-gray-600 leading-relaxed mb-4">
+                            {{ "account.openpgp.desc"|trans }}
+                        </p>
+                    </div>
+                    <div class="flex-grow flex justify-center items-end">
+                        <div class="flex-shrink-0">
+                            {% if user.hasOpenPgpKeys %}
+                                <div class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    {{ "account.openpgp.configured"|trans }}
+                                </div>
+                            {% else %}
+                                <div class="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-800 text-xs font-medium rounded-full">
+                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    {{ "account.openpgp.not-configured"|trans }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        {# Account Deletion card #}
+        <div class="group h-full">
+            <a href="{{ path('user_delete') }}"
+               class="flex flex-col h-full bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-red-300 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+               aria-describedby="delete-desc">
+                <div class="flex flex-col h-full p-6 text-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-12 h-12 mx-auto mb-4 p-3 bg-red-50 rounded-xl group-hover:bg-red-100 transition-colors duration-200">
+                            <!-- Heroicon: trash -->
+                            <svg class="w-full h-full text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-red-600 transition-colors duration-200">
+                            {{ "account.delete.title"|trans }}
+                        </h2>
+                        <p id="delete-desc" class="text-sm text-gray-600 leading-relaxed mb-4">
+                            {{ "account.delete.desc"|trans }}
+                        </p>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
-{%  endblock %}
+{% endblock %}
