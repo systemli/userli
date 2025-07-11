@@ -33,7 +33,7 @@ class OpenPGPController extends AbstractController
         $openPgpKey = $this->wkdHandler->getKey($user);
 
         return $this->render(
-            'User/openpgp.html.twig',
+            'Account/openpgp.html.twig',
             [
                 'user' => $user,
                 'form' => $form,
@@ -69,7 +69,7 @@ class OpenPGPController extends AbstractController
         $openPgpKey = $this->wkdHandler->getKey($user);
 
         return $this->render(
-            'User/openpgp.html.twig',
+            'Account/openpgp.html.twig',
             [
                 'user' => $user,
                 'form' => $form,
@@ -98,7 +98,7 @@ class OpenPGPController extends AbstractController
         $form = $this->createForm(OpenPgpDeleteType::class, new Delete());
 
         return $this->render(
-            'User/openpgp_delete.html.twig',
+            'Account/openpgp_delete.html.twig',
             [
                 'form' => $form,
                 'user' => $this->getUser(),

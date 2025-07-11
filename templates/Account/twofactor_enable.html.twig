@@ -12,23 +12,23 @@
     <div class="max-w-6xl mx-auto">
         <div class="max-w-5xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Left column: 2FA Status and Disable Form -->
+                <!-- Left column: 2FA Setup Form -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
                     <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mr-4">
-                            <!-- Heroicon name: outline/shield-check -->
-                            {{ ux_icon('heroicons:shield-check', {'class': 'w-6 h-6 text-green-600'}) }}
+                        <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mr-4">
+                            <!-- Heroicon name: outline/exclamation-triangle -->
+                            {{ ux_icon('heroicons:exclamation-triangle', {'class': 'w-6 h-6 text-yellow-600'}) }}
                         </div>
                         <h2 class="text-xl font-semibold text-gray-900">
-                            {{ "account.twofactor.disable-title"|trans }}
+                            {{ "account.twofactor.enable-title"|trans }}
                         </h2>
                     </div>
 
                     <p class="text-gray-600 mb-6">
-                        {{ "account.twofactor.disable-description"|trans }}
+                        {{ "account.twofactor.enable-description"|trans }}
                     </p>
 
-                    <!-- Disable Form -->
+                    <!-- Setup Form -->
                     {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
                     {{ form_errors(form) }}
 
@@ -40,7 +40,7 @@
                         {{ form_widget(form.password, {
                             'attr': {
                                 'placeholder': 'form.password'|trans,
-                                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors duration-200'
+                                'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200'
                             }
                         }) }}
                     </div>
@@ -48,7 +48,7 @@
                     <div class="pt-4">
                         {{ form_widget(form.submit, {
                             'attr': {
-                                'class': 'w-full px-6 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors duration-200'
+                                'class': 'w-full px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200'
                             }
                         }) }}
                     </div>
@@ -57,7 +57,7 @@
                 </div>
 
                 <!-- Right column: Information -->
-                {% include 'User/_twofactor_info.html.twig' %}
+                {% include 'Account/_twofactor_info.html.twig' %}
             </div>
         </div>
     </div>

@@ -35,7 +35,7 @@ class TwofactorController extends AbstractController
                 'action' => $this->generateUrl('user_twofactor_submit'),
                 'method' => 'POST',
             ]);
-            return $this->render('User/twofactor_enable.html.twig', [
+            return $this->render('Account/twofactor_enable.html.twig', [
                 'form' => $form,
                 'user' => $this->getUser(),
             ]);
@@ -47,7 +47,7 @@ class TwofactorController extends AbstractController
         ]);
         $form->add('submit', SubmitType::class, ['label' => 'account.twofactor.disable-button']);
 
-        return $this->render('User/twofactor_disable.html.twig', [
+        return $this->render('Account/twofactor_disable.html.twig', [
             'form' => $form,
             'user' => $this->getUser(),
         ]);
@@ -68,7 +68,7 @@ class TwofactorController extends AbstractController
             return $this->redirectToRoute('user_twofactor_confirm');
         }
 
-        return $this->render('User/twofactor_enable.html.twig', [
+        return $this->render('Account/twofactor_enable.html.twig', [
             'form' => $form,
             'user' => $this->getUser(),
         ]);
@@ -87,7 +87,7 @@ class TwofactorController extends AbstractController
         $qrContent = $this->totpAuthenticator->getQRContent($user);
         $builder = new Builder(data: $qrContent, size: 512, margin: 0);
 
-        return $this->render('User/twofactor_confirm.html.twig',
+        return $this->render('Account/twofactor_confirm.html.twig',
             [
                 'form' => $form,
                 'user' => $user,
@@ -111,7 +111,7 @@ class TwofactorController extends AbstractController
         $qrContent = $this->totpAuthenticator->getQRContent($user);
         $builder = new Builder(data: $qrContent, size: 512, margin: 0);
 
-        return $this->render('User/twofactor_confirm.html.twig',
+        return $this->render('Account/twofactor_confirm.html.twig',
             [
                 'form' => $form,
                 'user' => $user,
@@ -130,7 +130,7 @@ class TwofactorController extends AbstractController
             'method' => 'POST',
         ]);
 
-        return $this->render('User/twofactor_backup_ack.html.twig',
+        return $this->render('Account/twofactor_backup_code_confirm.html.twig',
             [
                 'form' => $form,
                 'user' => $user,
@@ -153,7 +153,7 @@ class TwofactorController extends AbstractController
             return $this->redirectToRoute('user_twofactor');
         }
 
-        return $this->render('User/twofactor_backup_ack.html.twig',
+        return $this->render('Account/twofactor_backup_code_confirm.html.twig',
             [
                 'form' => $form,
                 'user' => $user,
@@ -176,7 +176,7 @@ class TwofactorController extends AbstractController
             return $this->redirectToRoute('user_twofactor');
         }
 
-        return $this->render('User/twofactor_disable.html.twig',
+        return $this->render('Account/twofactor_disable.html.twig',
             [
                 'form' => $form,
                 'user' => $this->getUser(),

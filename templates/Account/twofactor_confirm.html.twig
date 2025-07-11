@@ -6,66 +6,82 @@
 
 {% block page_title %}{{ "account.twofactor.headline"|trans }}{% endblock %}
 
-{% block page_subtitle %}{{ "account.twofactor.backup-ack-lead"|trans }}{% endblock %}
+{% block page_subtitle %}{{ "account.twofactor.enable-lead"|trans }}{% endblock %}
 
 {% block page_content %}
     <div class="max-w-6xl mx-auto">
         <div class="max-w-5xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Left column: Backup Codes and Acknowledgment Form -->
+                <!-- Left column: QR Code and Verification Form -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
                     <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mr-4">
-                            <!-- Heroicon name: outline/key -->
-                            {{ ux_icon('heroicons:key', {'class': 'w-6 h-6 text-green-600'}) }}
+                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-4">
+                            {# Heroicon: qr-code #}
+                            {{ ux_icon('heroicons:qr-code', {'class': 'w-6 h-6 text-blue-600'}) }}
                         </div>
                         <h2 class="text-xl font-semibold text-gray-900">
-                            {{ "account.twofactor.backup-ack-lead"|trans }}
+                            {{ "account.twofactor.qr-code-lead"|trans }}
                         </h2>
                     </div>
 
                     <p class="text-gray-600 mb-6">
-                        {{ "account.twofactor.backup-ack-description"|trans }}
+                        {{ "account.twofactor.qr-code-description"|trans }}
                     </p>
 
-                    <!-- Backup Codes Display -->
-                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
-                        <div class="mb-4 flex items-center justify-start">
+                    <!-- QR Code Display -->
+                    <div class="mb-8 text-center">
+                        <div class="bg-white rounded-lg border border-gray-200">
+                            <img src="{{ qr_code_data_uri|raw }}" alt="" class="w-full" />
+                        </div>
+                    </div>
+
+                    <!-- Manual Entry Alternative -->
+                    <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mr-3">
+                                    {{ ux_icon('heroicons:key', {'class': 'w-5 h-5 text-blue-600'}) }}
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900">
+                                    {{ "account.twofactor.setup-key"|trans }}
+                                </h3>
+                            </div>
                             <button type="button"
                                     class="inline-flex items-center px-3 py-1 text-xs font-medium text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
-                                    onclick="copyBackupCodes()">
+                                    onclick="copyToClipboard('{{ user.totpSecret }}', this)">
                                 {# Heroicon: clipboard #}
                                 {{ ux_icon('heroicons:clipboard', {'class': 'w-4 h-4 mr-1'}) }}
                                 <span>{{ "button.copy"|trans }}</span>
                             </button>
                         </div>
-                        <div class="grid grid-cols-2 gap-2 font-mono text-sm">
-                            {% for key, value in user.totpBackupCodes %}
-                                <div class="bg-white px-3 py-2 rounded border text-center tracking-wider">
-                                    {{ value }}
-                                </div>
-                            {% endfor %}
+                        <p class="mb-3 text-sm text-gray-600">
+                            {{ "account.twofactor.setup-key-description"|trans }}
+                        </p>
+                        <div class="bg-white p-3 rounded border border-gray-200">
+                            <code id="totp-secret" class="text-sm font-mono text-gray-900 break-all">{{ user.totpSecret }}</code>
                         </div>
                     </div>
 
-                    <!-- Acknowledgment Form -->
+                    <!-- Verification Form -->
                     {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
                     {{ form_errors(form) }}
 
-                    <div class="flex items-start space-x-3">
-                        {{ form_widget(form.ack, {
+                    <div>
+                        {{ form_label(form.totpSecret, null, {
+                            'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}
+                        }) }}
+                        {{ form_errors(form.totpSecret) }}
+                        {{ form_widget(form.totpSecret, {
                             'attr': {
-                                'class': 'mt-1 flex-shrink-0'
+                                'autofocus': '',
+                                'placeholder': 'form.twofactor-login-placeholder'|trans,
+                                'autocomplete': 'off',
+                                'class': 'w-full px-4 py-3 text-center text-lg tracking-widest border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200'
                             }
                         }) }}
-                        <div class="flex-1">
-                            {{ form_label(form.ack, null, {
-                                'label_attr': {
-                                    'class': 'text-sm text-gray-700 cursor-pointer leading-5'
-                                }
-                            }) }}
-                            {{ form_errors(form.ack) }}
-                        </div>
+                        <p class="mt-1 text-xs text-gray-500">
+                            {{ "form.twofactor-login-help"|trans }}
+                        </p>
                     </div>
 
                     <div class="pt-4">
@@ -79,24 +95,14 @@
                     {{ form_end(form) }}
                 </div>
 
-                {% include 'User/_twofactor_info.html.twig' %}
+                {% include 'Account/_twofactor_info.html.twig' %}
             </div>
         </div>
     </div>
 
     <script>
-        function copyBackupCodes() {
-            // Collect all backup codes
-            const codes = [
-                {% for key, value in user.totpBackupCodes %}
-                    '{{ value }}'{{ not loop.last ? ',' : '' }}
-                {% endfor %}
-            ];
-
-            const codesText = codes.join('\n');
-            const button = event.target.closest('button');
-
-            navigator.clipboard.writeText(codesText).then(function() {
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(function() {
                 // Update button text temporarily to show success
                 const originalContent = button.innerHTML;
                 button.innerHTML = `
