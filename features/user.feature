@@ -206,3 +206,14 @@ Feature: User
 
     Then I should be on "/user/twofactor_confirm"
     And I should see text matching "The verification code is not valid."
+    And I set the placeholder "totpSecret" from html element "code#totp-secret"
+    And I generate a TOTP code from "totpSecret" and fill to field "twofactor_confirm_totpSecret"
+    And I press "Verify"
+
+    Then I should be on "/user/twofactor_backup_codes"
+    And I should see text matching "Backup codes"
+    And I fill in the following:
+      | twofactor_backup_ack_ack | 1 |
+    And I press "Verify"
+
+    Then I should be on "/user/twofactor"
