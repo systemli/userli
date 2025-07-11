@@ -81,7 +81,7 @@ class OpenPGPController extends AbstractController
     private function importOpenPgpKey(User $user, string $key): void
     {
         try {
-            $this->wkdHandler->importKey($key, $user);
+            $this->wkdHandler->importKey($key, $user->getEmail(), $user);
             $this->addFlash('success', 'flashes.openpgp-key-upload-successful');
         } catch (NoGpgDataException) {
             $this->addFlash('error', 'flashes.openpgp-key-upload-error-no-openpgp');
