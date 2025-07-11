@@ -114,7 +114,7 @@ form:
   generate-recovery-token: Créer un nouveau jeton de récupération
   recovery-token: Jeton de récupération
   recovery-start: Récupération
-  registration-recovery-token-ack: J'ai stocké le jeton de récupération de façon sécurisée
+  registration-recovery-token-confirm: J'ai stocké le jeton de récupération de façon sécurisée
   registration-recovery-token-next-button: Continuer
   domain: Domaine
   add: Ajouter

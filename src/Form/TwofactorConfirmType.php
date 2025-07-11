@@ -16,7 +16,7 @@ class TwofactorConfirmType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('totpSecret', TextType::class, [
+            ->add('code', TextType::class, [
                 'required' => true,
                 'label' => 'form.twofactor-login-auth-code',
             ])

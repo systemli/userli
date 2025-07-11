@@ -33,18 +33,18 @@
                             {{ form_widget(form.recoveryToken) }}
 
                             <div class="flex items-start mt-4">
-                                {{ form_widget(form.ack, {
+                                {{ form_widget(form.confirm, {
                                     'attr': {
                                         'class': 'h-5 w-5 text-blue-600 border-gray-300 rounded mt-0.5 mr-2 focus:ring-blue-500'
                                     }
                                 }) }}
-                                {{ form_label(form.ack, null, {
+                                {{ form_label(form.confirm, null, {
                                     'label_attr': {
                                         'class': 'text-sm text-gray-700'
                                     }
                                 }) }}
                             </div>
-                            {{ form_errors(form.ack, {'attr': {'class': 'text-sm text-red-600 mt-1'}}) }}
+                            {{ form_errors(form.confirm, {'attr': {'class': 'text-sm text-red-600 mt-1'}}) }}
 
                             <div class="mt-6">
                                 {{ form_widget(form.submit, {

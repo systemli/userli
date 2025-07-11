@@ -114,7 +114,7 @@ form:
   generate-recovery-token: Crear nuevo token de recuperación
   recovery-token: Token de recuperación
   recovery-start: Recuperar
-  registration-recovery-token-ack: He guardado el token de recuperación en un lugar seguro
+  registration-recovery-token-confirm: He guardado el token de recuperación en un lugar seguro
   registration-recovery-token-next-button: Continuar
   domain: Dominio
   add: Añadir

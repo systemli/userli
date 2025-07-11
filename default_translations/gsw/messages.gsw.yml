@@ -25,7 +25,7 @@ form:
   create-custom-alias: Hinzuefüege
   recovery-token: Recovery Token
   delete-password: Passwort
-  registration-recovery-token-ack: I ha s Recovery Token amne sichere Platz abgschpicheret
+  registration-recovery-token-confirm: I ha s Recovery Token amne sichere Platz abgschpicheret
   registration-recovery-token-next-button: Witerfahre
   generate-recovery-token: Nöis Recovery Token erschteue
   submit: Abschicke

@@ -11,12 +11,12 @@ class TwofactorConfirmTypeTest extends TypeTestCase
     public function testSubmitValidData(): void
     {
         $totpSecret = 'secret';
-        $formData = ['totpSecret' => $totpSecret];
+        $formData = ['code' => $totpSecret];
 
         $form = $this->factory->create(TwofactorConfirmType::class);
 
         $object = new TwofactorConfirm();
-        $object->totpSecret = $totpSecret;
+        $object->setCode($totpSecret);
 
         // submit the data to the form directly
         $form->submit($formData);

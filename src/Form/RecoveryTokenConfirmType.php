@@ -2,25 +2,27 @@
 
 namespace App\Form;
 
-use App\Form\Model\TwofactorBackupAck;
+use App\Form\Model\RecoveryTokenConfirm;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TwofactorBackupAckType extends AbstractType
+class RecoveryTokenConfirmType extends AbstractType
 {
-    public const NAME = 'twofactor_backup_ack';
+    public const NAME = 'recovery_token_confirm';
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('ack', CheckboxType::class, [
+            ->add('confirm', CheckboxType::class, [
                 'required' => true,
-                'label' => 'form.twofactor-backup-code-ack',
+                'label' => 'form.registration-recovery-token-confirm',
             ])
-            ->add('submit', SubmitType::class, ['label' => 'form.verify']);
+            ->add('recoveryToken', HiddenType::class)
+            ->add('submit', SubmitType::class, ['label' => 'form.registration-recovery-token-next-button']);
     }
 
     /**
@@ -28,7 +30,7 @@ class TwofactorBackupAckType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => TwofactorBackupAck::class]);
+        $resolver->setDefaults(['data_class' => RecoveryTokenConfirm::class]);
     }
 
     public function getBlockPrefix(): string

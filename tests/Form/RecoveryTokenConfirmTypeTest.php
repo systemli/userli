@@ -2,25 +2,25 @@
 
 namespace App\Tests\Form;
 
-use App\Form\Model\RecoveryTokenAck;
-use App\Form\RecoveryTokenAckType;
+use App\Form\Model\RecoveryTokenConfirm;
+use App\Form\RecoveryTokenConfirmType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class RecoveryTokenAckTypeTest extends TypeTestCase
+class RecoveryTokenConfirmTypeTest extends TypeTestCase
 {
     public function testSubmitValidData(): void
     {
         $uuid = '550e8400-e29b-11d4-a716-446655440000';
 
         $formData = [
-            'ack' => true,
+            'confirm' => true,
             'recoveryToken' => $uuid,
         ];
 
-        $form = $this->factory->create(RecoveryTokenAckType::class);
+        $form = $this->factory->create(RecoveryTokenConfirmType::class);
 
-        $object = new RecoveryTokenAck();
-        $object->ack = true;
+        $object = new RecoveryTokenConfirm();
+        $object->setConfirm(true);
         $object->setRecoveryToken($uuid);
 
         // submit the data to the form directly

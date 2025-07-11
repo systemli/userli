@@ -51,9 +51,9 @@ class AccountControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Submit')->form();
 
-        $form['password_change[password]'] = 'password';
-        $form['password_change[newPassword][first]'] = 'zr8cxfeeY9Qv5AR7tydM';
-        $form['password_change[newPassword][second]'] = 'zr8cxfeeY9Qv5AR7tydM';
+        $form['password[password]'] = 'password';
+        $form['password[newPassword][first]'] = 'zr8cxfeeY9Qv5AR7tydM';
+        $form['password[newPassword][second]'] = 'zr8cxfeeY9Qv5AR7tydM';
 
         $client->submit($form);
 
@@ -71,9 +71,9 @@ class AccountControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Submit')->form();
 
-        $form['password_change[password]'] = 'zr8cxfeeY9Qv5AR7tydM';
-        $form['password_change[newPassword][first]'] = 'zr8cxfeeY9Qv5AR7tydM';
-        $form['password_change[newPassword][second]'] = 'zr8cxfeeY9Qv5AR7tydM';
+        $form['password[password]'] = 'zr8cxfeeY9Qv5AR7tydM';
+        $form['password[newPassword][first]'] = 'zr8cxfeeY9Qv5AR7tydM';
+        $form['password[newPassword][second]'] = 'zr8cxfeeY9Qv5AR7tydM';
 
         $client->submit($form);
 
@@ -91,9 +91,9 @@ class AccountControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Submit')->form();
 
-        $form['password_change[password]'] = 'zr8cxfeeY9Qv5AR7tydM';
-        $form['password_change[newPassword][first]'] = 'password';
-        $form['password_change[newPassword][second]'] = 'password';
+        $form['password[password]'] = 'zr8cxfeeY9Qv5AR7tydM';
+        $form['password[newPassword][first]'] = 'password';
+        $form['password[newPassword][second]'] = 'password';
 
         $client->submit($form);
 

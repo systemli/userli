@@ -6,7 +6,7 @@ use App\Validator\Constraints\PasswordPolicy;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
-class PasswordChange
+class Password
 {
     #[UserPassword(message: 'form.wrong-password')]
     private string $password;

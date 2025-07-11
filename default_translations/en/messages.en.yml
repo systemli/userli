@@ -133,7 +133,7 @@ form:
   generate-recovery-token: Create new recovery token
   recovery-token: Recovery token
   recovery-start: Recover
-  registration-recovery-token-ack: I stored the recovery token at a secure place
+  registration-recovery-token-confirm: I stored the recovery token at a secure place
   registration-recovery-token-next-button: Continue
   domain: Domain
   add: Add
@@ -144,7 +144,7 @@ form:
   twofactor-login: Two-factor authentication
   twofactor-login-placeholder: 6-digit code
   twofactor-login-auth-code: Authentication code
-  twofactor-backup-code-ack: Backup codes stored securely
+  twofactor-backup-code-confirm: Backup codes stored securely
   twofactor-login-desc: >
     Open your two-factor authenticator (TOTP) app to view your authentication code.
   twofactor-login-cancel: Cancel login

@@ -2,11 +2,11 @@
 
 namespace App\Tests\Form;
 
-use App\Form\Model\PasswordChange;
-use App\Form\PasswordChangeType;
+use App\Form\Model\Password;
+use App\Form\PasswordType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-class PasswordChangeTypeTest extends TypeTestCase
+class PasswordTypeTest extends TypeTestCase
 {
 
     public function testSubmitValidData(): void
@@ -22,10 +22,10 @@ class PasswordChangeTypeTest extends TypeTestCase
             ],
         ];
 
-        $model = new PasswordChange();
-        $form = $this->factory->create(PasswordChangeType::class, $model);
+        $model = new Password();
+        $form = $this->factory->create(PasswordType::class, $model);
 
-        $expected = new PasswordChange();
+        $expected = new Password();
         $expected->setPassword($password);
         $expected->setNewPassword($newPassword);
 
