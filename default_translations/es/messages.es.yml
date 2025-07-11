@@ -165,8 +165,6 @@ registration:
   information: Información
   information-intro: >
     ¿Te gustaría registrar una cuenta de e-mail con <a href="%project_url%">%project_name%</a>? Solo permitimos registros si un amigo te invita con un código de invitación a nuestros servicios.
-  information-password-policy: >
-    <strong>Política de contraseñas:</strong> Al menos 12 caracteres, sin umlauts alemanes. Las contraseñas se probarán contra una <a href="https://haveibeenpwned.com/Passwords">base de datos de contraseñas conocidas no seguras</a>.
   label-email: Tu dirección de e-mail preferida
   recovery-token-headline: Token de recuperación
 

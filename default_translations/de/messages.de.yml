@@ -22,8 +22,8 @@ start:
     Lass dir von einer Freund:in einen Einladungscode schicken. Damit kannst
     du sofort ein Konto erstellen.
   registration-button: Konto anlegen
-  account-settings: Konto verwalten
-  account-settings-desc: Passwörter und mehr
+  account-settings: Dein Konto
+  account-settings-desc: Verwalte dein Konto
   account-delete: Konto löschen
   aliases: Alias-Adressen
   aliases-delete: Alias-Adresse löschen
@@ -138,7 +138,8 @@ form:
   registration-recovery-token-next-button: Weiter
   domain: Domain
   add: Hinzufügen
-  verify: Bestätigen
+  verify: Überprüfen
+  cancel: Abbrechen
   twofactor: Zwei-Faktor-Authentifizierung
   twofactor-short: 2FA
   twofactor-login: Zwei-Faktor-Authentifizierung
@@ -165,13 +166,25 @@ openpgp-key-submit: OpenPGP-Schlüssel veröffentlichen
 openpgp-delete: OpenPGP-Schlüssel löschen
 
 account:
+  password:
+    title: Passwort
+    desc: Aktualisiere dein Passwort
+    subtitle: Aktualisiere dein Passwort
+    help: >
+      <strong>Passwortrichtlinie:</strong> Mindestens 12 Zeichen, keine deutschen Umlaute.
+      Passwörter werden anhand einer <a href="https://haveibeenpwned.com/Passwords">Datenbank
+      mit bekannten fehlerhaften Passwörtern</a> geprüft.
   twofactor:
+    title: Zwei-Faktor-Authentifizierung
+    desc: Sichere dein Konto mit 2FA
+    enabled: Aktiviert
+    disabled: Nicht konfiguriert
     headline: Zwei-Faktor-Authentifizierung
     unset: Zwei-Faktor-Authentifizierung ist noch nicht aktiv.
     unset-extra: Du brauchst eine TOTP App auf deinem Smartphone um Zwei-Faktor-Authentifizierung zu aktivieren.
     set: Zwei-Faktor-Authentifizierung ist aktiv.
     button: Zwei-Faktor-Authentifizierung konfigurieren
-    lead: Zwei-Faktor-Authentifizierung bringt zusätzliche Sicherheit für deinen Account.
+    lead: Sichere dein Konto mit einem zweiten Faktor
     desc-login: >
       Mit Zwei-Faktor-Authentifizierung musst du beim Login ein zweites Passwort eingeben,
       welches du von deiner Zwei-Faktor-App bekommst. Dieses Extra-Passwort ist nur zum
@@ -199,6 +212,19 @@ account:
     info-security: "Bietet eine zusätzliche Sicherheitsebene zum Schutz deines Kontos vor unbefugtem Zugriff"
     info-simple: "Einfach zu verwenden mit datenschutzfreundlichen Apps wie Aegis (Android) oder Tofu (iOS), aber auch mit anderen TOTP-Apps"
     info-backup: "Backup-Codes stellen sicher, dass du immer auf dein Konto zugreifen kannst, auch wenn du dein Handy verlierst"
+  recovery:
+    title: Wiederherstellungscode
+    desc: Backup-Zugang zu deinem Konto
+    configured: Konfiguriert
+    not-configured: Nicht konfiguriert
+  openpgp:
+    title: OpenPGP-Schlüssel
+    desc: Veröffentliche deinen OpenPGP-Schlüssel
+    configured: Schlüssel hochgeladen
+    not-configured: Kein Schlüssel
+  delete:
+    title: Konto löschen
+    desc: Schließe und lösche dein Konto permanent
 
 recovery:
   header: Konto wiederherstellen
@@ -230,10 +256,6 @@ registration:
     Du möchtest ein E-Mail-Konto bei <a href="%project_url%">%project_name%</a> registrieren.
     Eine Registrierung ist nur möglich, wenn dich eine Freund:in zu unserem Dienst
     einlädt, dir also einen Einladungscode übergibt.
-  information-password-policy: >
-    <strong>Passwort-Anforderungen:</strong> Mindestens 12 Zeichen, keine deutschen Umlaute.
-    Passwörter werden gegen eine <a href="https://haveibeenpwned.com/Passwords">Datenbank
-    bekannter schlechter Passwörter</a> getestet.
   label-email: Deine gewünschte E-Mail-Adresse
   recovery-token-headline: Wiederherstellungscode
 welcome:

@@ -39,21 +39,35 @@ class AccountController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $form = $this->createForm(PasswordChangeType::class, new PasswordChange(), [
-            'action' => $this->generateUrl('account_password'),
-            'method' => 'post',
-        ]);
 
         return $this->render(
             'Start/account.html.twig',
             [
                 'user' => $user,
-                'password_form' => $form,
             ]
         );
     }
 
-    #[Route(path: '/account/password', name: 'account_password', methods: ['POST'])]
+    #[Route(path: '/account/password', name: 'account_password_change', methods: ['GET'])]
+    public function passwordChangeForm(): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $form = $this->createForm(PasswordChangeType::class, new PasswordChange(), [
+            'action' => $this->generateUrl('account_password_submit'),
+            'method' => 'post',
+        ]);
+
+        return $this->render(
+            'Account/password_change.html.twig',
+            [
+                'user' => $user,
+                'form' => $form,
+            ]
+        );
+    }
+
+    #[Route(path: '/account/password', name: 'account_password_submit', methods: ['POST'])]
     public function changePassword(Request $request): Response
     {
         /** @var User $user */
@@ -79,15 +93,15 @@ class AccountController extends AbstractController
         }
 
         return $this->render(
-            'Start/account.html.twig',
+            'Account/password_change.html.twig',
             [
                 'user' => $user,
-                'password_form' => $form,
+                'form' => $form,
             ]
         );
     }
 
-    #[Route(path: '/user/delete', name: 'user_delete', methods: ['GET'])]
+    #[Route(path: '/account/delete', name: 'user_delete', methods: ['GET'])]
     public function delete(): Response
     {
         /** @var User $user */
@@ -103,7 +117,7 @@ class AccountController extends AbstractController
         );
     }
 
-    #[Route(path: '/user/delete', name: 'user_delete_submit', methods: ['POST'])]
+    #[Route(path: '/account/delete', name: 'user_delete_submit', methods: ['POST'])]
     public function deleteSubmit(Request $request): Response
     {
         /** @var User $user */
@@ -126,7 +140,7 @@ class AccountController extends AbstractController
         );
     }
 
-    #[Route(path: '/user/recovery_token', name: 'user_recovery_token', methods: ['GET'])]
+    #[Route(path: '/account/recovery-token', name: 'user_recovery_token', methods: ['GET'])]
     public function recoveryToken(): Response
     {
         /** @var User $user */
@@ -144,7 +158,7 @@ class AccountController extends AbstractController
         );
     }
 
-    #[Route(path: '/user/recovery_token', name: 'user_recovery_token_submit', methods: ['POST'])]
+    #[Route(path: '/account/recovery-token', name: 'user_recovery_token_submit', methods: ['POST'])]
     public function recoveryTokenSubmit(Request $request): Response
     {
         /** @var User $user */
@@ -183,7 +197,7 @@ class AccountController extends AbstractController
         );
     }
 
-    #[Route(path: '/user/recovery_token/ack', name: 'user_recovery_token_ack', methods: ['GET'])]
+    #[Route(path: '/account/recovery-token/confirm', name: 'user_recovery_token_ack', methods: ['GET'])]
     public function recoveryTokenAck(Request $request): Response
     {
         /** @var User $user */
@@ -206,7 +220,7 @@ class AccountController extends AbstractController
         );
     }
 
-    #[Route(path: '/user/recovery_token/ack', name: 'user_recovery_token_ack_submit', methods: ['POST'])]
+    #[Route(path: '/account/recovery-token/confirm', name: 'user_recovery_token_ack_submit', methods: ['POST'])]
     public function recoveryTokenAckSubmit(Request $request): Response
     {
         $data = new RecoveryTokenAck();

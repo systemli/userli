@@ -24,7 +24,7 @@ class OpenPGPController extends AbstractController
     {
     }
 
-    #[Route(path: '/openpgp', name: 'openpgp', methods: ['GET'])]
+    #[Route(path: '/account/openpgp', name: 'openpgp', methods: ['GET'])]
     public function show(): Response
     {
         /** @var User $user */
@@ -33,7 +33,7 @@ class OpenPGPController extends AbstractController
         $openPgpKey = $this->wkdHandler->getKey($user);
 
         return $this->render(
-            'Start/openpgp.html.twig',
+            'User/openpgp.html.twig',
             [
                 'user' => $user,
                 'form' => $form,
@@ -42,7 +42,7 @@ class OpenPGPController extends AbstractController
         );
     }
 
-    #[Route(path: '/openpgp', name: 'openpgp_submit', methods: ['POST'])]
+    #[Route(path: '/account/openpgp', name: 'openpgp_submit', methods: ['POST'])]
     public function submit(Request $request): Response
     {
         /** @var User $user */
@@ -69,7 +69,7 @@ class OpenPGPController extends AbstractController
         $openPgpKey = $this->wkdHandler->getKey($user);
 
         return $this->render(
-            'Start/openpgp.html.twig',
+            'User/openpgp.html.twig',
             [
                 'user' => $user,
                 'form' => $form,
@@ -92,13 +92,13 @@ class OpenPGPController extends AbstractController
         }
     }
 
-    #[Route(path: '/openpgp/delete', name: 'openpgp_delete', methods: ['GET'])]
+    #[Route(path: '/account/openpgp/delete', name: 'openpgp_delete', methods: ['GET'])]
     public function delete(): RedirectResponse|Response
     {
         $form = $this->createForm(OpenPgpDeleteType::class, new Delete());
 
         return $this->render(
-            'OpenPgp/delete.html.twig',
+            'User/openpgp_delete.html.twig',
             [
                 'form' => $form,
                 'user' => $this->getUser(),
@@ -106,7 +106,7 @@ class OpenPGPController extends AbstractController
         );
     }
 
-    #[Route(path: '/openpgp/delete', name: 'openpgp_delete_submit', methods: ['POST'])]
+    #[Route(path: '/account/openpgp/delete', name: 'openpgp_delete_submit', methods: ['POST'])]
     public function deleteSubmit(Request $request): RedirectResponse
     {
         $form = $this->createForm(OpenPgpDeleteType::class, new Delete());

@@ -18,11 +18,6 @@
             {{ "navbar.aliases"|trans }}
         </a>
 
-        <a href="{{ path('openpgp') }}"
-           class="block px-4 py-3 rounded-2xl text-base font-medium transition-all duration-300 {{ current_route == 'openpgp' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-            {{ "navbar.openpgp"|trans }}
-        </a>
-
         <a href="{{ path('account') }}"
            class="block px-4 py-3 rounded-2xl text-base font-medium transition-all duration-300 {{ current_route == 'account' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
             {{ "navbar.account"|trans }}

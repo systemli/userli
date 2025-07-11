@@ -229,91 +229,91 @@ Feature: OpenPGP
   @upload-openpgp-both-empty
   Scenario: Upload empty OpenPGP key
     When I am authenticated as "alice@example.org"
-    And I am on "/openpgp"
+    And I am on "/account/openpgp"
     And I fill in the following:
       | upload_openpgp_key_keyFile       |              |
       | upload_openpgp_key_keyText       |              |
     And I press "Publish OpenPGP key"
 
-    Then I should be on "/openpgp"
+    Then I should be on "/account/openpgp"
     And I should see text matching "Please upload key either as file or as ASCII text."
     And the response status code should be 422
 
   @upload-openpgp-both
   Scenario: Upload both OpenPGP keys
     When I am authenticated as "alice@example.org"
-    And I am on "/openpgp"
+    And I am on "/account/openpgp"
     And I fill in the following:
       | upload_openpgp_key_keyFile       | /tmp/invalid.asc |
       | upload_openpgp_key_keyText       | text             |
     And I press "Publish OpenPGP key"
 
-    Then I should be on "/openpgp"
+    Then I should be on "/account/openpgp"
     And I should see text matching "Please upload key either as file or as ASCII text."
     And the response status code should be 422
 
   @upload-openpgp-file-invalid
   Scenario: Upload invalid file
     When I am authenticated as "alice@example.org"
-    And I am on "/openpgp"
+    And I am on "/account/openpgp"
     And I fill in the following:
       | upload_openpgp_key_keyFile       | /tmp/invalid.asc |
       | upload_openpgp_key_keyText       |                  |
     And I press "Publish OpenPGP key"
 
-    Then I should be on "/openpgp"
+    Then I should be on "/account/openpgp"
     And I should see text matching "The uploaded file doesn't contain OpenPGP data."
     And the response status code should be 200
 
   @upload-openpgp-text-invalid
   Scenario: Upload invalid text
     When I am authenticated as "alice@example.org"
-    And I am on "/openpgp"
+    And I am on "/account/openpgp"
     And I fill in the following:
       | upload_openpgp_key_keyFile       |              |
       | upload_openpgp_key_keyText       | text         |
     And I press "Publish OpenPGP key"
 
-    Then I should be on "/openpgp"
+    Then I should be on "/account/openpgp"
     And I should see text matching "The uploaded file doesn't contain OpenPGP data."
     And the response status code should be 200
 
   @upload-openpgp-file-wrong-key
   Scenario: Upload file with wrong key
     When I am authenticated as "alice@example.org"
-    And I am on "/openpgp"
+    And I am on "/account/openpgp"
     And I fill in the following:
       | upload_openpgp_key_keyFile       | /tmp/james.asc  |
       | upload_openpgp_key_keyText       |                 |
     And I press "Publish OpenPGP key"
 
-    Then I should be on "/openpgp"
+    Then I should be on "/account/openpgp"
     And I should see text matching " No keys for your mail address found in uploaded data."
     And the response status code should be 200
 
   @upload-openpgp-file-two-valid-keys
   Scenario: Upload file with two matching keys
     When I am authenticated as "alice@example.org"
-    And I am on "/openpgp"
+    And I am on "/account/openpgp"
     And I fill in the following:
       | upload_openpgp_key_keyFile       | /tmp/alice_two_keys.asc  |
       | upload_openpgp_key_keyText       |                          |
     And I press "Publish OpenPGP key"
 
-    Then I should be on "/openpgp"
+    Then I should be on "/account/openpgp"
     And I should see text matching "More than one key for your mail address found in uploaded data. Please upload only one key."
     And the response status code should be 200
 
   @upload-openpgp-file-valid-key
   Scenario: Upload file with matching key
     When I am authenticated as "alice@example.org"
-    And I am on "/openpgp"
+    And I am on "/account/openpgp"
     And I fill in the following:
       | upload_openpgp_key_keyFile       | /tmp/alice1.asc  |
       | upload_openpgp_key_keyText       |                  |
     And I press "Publish OpenPGP key"
 
-    Then I should be on "/openpgp"
+    Then I should be on "/account/openpgp"
     And I should see text matching "Your OpenPGP key got uploaded."
     And I should see text matching "Fingerprint: 7301 2547 C25D E2A0 D097 8C46 AD8D 52CD 2281 FEC2"
     And File "/tmp/.well-known/openpgpkey/example.org/hu/kei1q4tipxxu1yj79k9kfukdhfy631xe" should exist
@@ -322,13 +322,13 @@ Feature: OpenPGP
   @upload-openpgp-file-replace-valid-key
   Scenario: Upload file with another matching key
     When I am authenticated as "alice@example.org"
-    And I am on "/openpgp"
+    And I am on "/account/openpgp"
     And I fill in the following:
       | upload_openpgp_key_keyFile       | /tmp/alice2.asc  |
       | upload_openpgp_key_keyText       |                  |
     And I press "Publish OpenPGP key"
 
-    Then I should be on "/openpgp"
+    Then I should be on "/account/openpgp"
     And I should see text matching "Your OpenPGP key got uploaded."
     And I should see text matching "Fingerprint: 4964 21CF 18B5 0D8D 61DB 26BA D3CB BC7A 09CC 0EDF"
     And File "/tmp/.well-known/openpgpkey/example.org/hu/kei1q4tipxxu1yj79k9kfukdhfy631xe" should exist
@@ -337,17 +337,17 @@ Feature: OpenPGP
   @upload-openpgp-delete-key
   Scenario: Upload and delete key
     When I am authenticated as "alice@example.org"
-    And I am on "/openpgp"
+    And I am on "/account/openpgp"
     And I fill in the following:
       | upload_openpgp_key_keyFile       | /tmp/alice2.asc  |
       | upload_openpgp_key_keyText       |                  |
     And I press "Publish OpenPGP key"
-    And I am on "/openpgp/delete"
+    And I am on "/account/openpgp/delete"
     And I fill in the following:
       | delete_openpgp_password  | asdasd  |
     And I press "Delete OpenPGP key"
 
-    Then I should be on "/openpgp"
+    Then I should be on "/account/openpgp"
     And I should see text matching "Your OpenPGP key was deleted."
     And I should not see text matching "Fingerprint:"
     And File "/tmp/.well-known/openpgpkey/example.org/hu/kei1q4tipxxu1yj79k9kfukdhfy631xe" should not exist

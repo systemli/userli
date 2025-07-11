@@ -252,10 +252,6 @@ registration:
   information: Information
   recovery-token-headline: Recovery Token
   title: Regischtriere bi %project_name%
-  information-password-policy:
-    "<strong>Passwort-Anforderungen:</strong> Mindeschtens 12 Zeiche, keine
-    deutschen Umlaute. Passwörter wärde gäge ne  <a href=\"https://haveibeenpwned.com/Passwords\"\
-    >Datebank mit bekannte schlächte Passwörter </a> teschtet.\n"
   label-email: Dini bevorzugti E-Mail Adrässe
   information-intro:
     "Würdsch du gärn e E-Mail Account bi <a href=\"%project_url%\"\
