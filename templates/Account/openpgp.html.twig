@@ -112,7 +112,7 @@
                                     {% if form.vars.errors|length > 0 %}
                                         <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6" role="alert">
                                             <div class="flex">
-                                                {{ ux_icon('heroicons:x-circle-solid', {'class': 'w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0'}) }}
+                                                {{ ux_icon('heroicons:x-circle-20-solid', {'class': 'w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0'}) }}
                                                 <div class="text-sm text-red-700">
                                                     {% for error in form.vars.errors %}
                                                         <p class="{% if not loop.last %}mb-2{% endif %}">{{ error.message }}</p>
