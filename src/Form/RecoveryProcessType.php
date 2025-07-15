@@ -35,7 +35,7 @@ class RecoveryProcessType extends AbstractType
                 'email',
                 TextType::class, ['label' => 'form.email']
             )->addViewTransformer($transformer))
-            ->add('recoveryToken', TextType::class, ['label' => 'form.recovery-token'])
+            ->add('recoveryToken', TextType::class, ['label' => 'form.recovery-token', 'attr' => ['autocomplete' => 'off']])
             ->add('submit', SubmitType::class, ['label' => 'form.recovery-start']);
     }
 
