@@ -14,6 +14,7 @@ use App\Form\UserDeleteType;
 use App\Handler\DeleteHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
+use App\Handler\WkdHandler;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -30,6 +31,7 @@ class AccountController extends AbstractController
         private readonly EntityManagerInterface $manager,
         private readonly DeleteHandler          $deleteHandler,
         private readonly RecoveryTokenHandler   $recoveryTokenHandler,
+        private readonly WkdHandler             $wkdHandler,
     )
     {
     }
@@ -39,11 +41,13 @@ class AccountController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
+        $openPgpKey = $this->wkdHandler->getKey($user);
 
         return $this->render(
             'Account/show.html.twig',
             [
                 'user' => $user,
+                'openpgp_key' => $openPgpKey,
             ]
         );
     }
