@@ -81,18 +81,81 @@ document.addEventListener("DOMContentLoaded", function () {
   // After the value has been copied, the textarea is removed from
   // DOM again.
   function copyToClipboard(event) {
-    let el = document.createElement("textarea");
+    const button = event.currentTarget;
+    const textToCopy = button.dataset.value;
 
-    el.value = event.currentTarget.dataset.value;
+    // Use modern clipboard API with fallback
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard
+        .writeText(textToCopy)
+        .then(function () {
+          showCopySuccess(button);
+        })
+        .catch(function (err) {
+          console.error("Copy failed:", err);
+          fallbackCopy(textToCopy);
+          showCopySuccess(button);
+        });
+    } else {
+      // Fallback for older browsers or non-secure contexts
+      fallbackCopy(textToCopy);
+      showCopySuccess(button);
+    }
+  }
+
+  function fallbackCopy(text) {
+    let el = document.createElement("textarea");
+    el.value = text;
     el.setAttribute("readonly", "");
     el.style.position = "absolute";
     el.style.left = "-9999px";
     document.body.appendChild(el);
     el.select();
-
     document.execCommand("copy");
-
     document.body.removeChild(el);
+  }
+
+  function showCopySuccess(button) {
+    // Store original content and update button to show success
+    const originalContent = button.innerHTML;
+    button.innerHTML = `<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>`;
+
+    // Add success styling
+    button.classList.add("text-green-600", "border-green-300", "bg-green-50");
+    const originalClasses = [];
+
+    // Store and remove original color classes
+    if (button.classList.contains("text-gray-700")) {
+      originalClasses.push("text-gray-700");
+      button.classList.remove("text-gray-700");
+    }
+    if (button.classList.contains("text-green-700")) {
+      originalClasses.push("text-green-700");
+      button.classList.remove("text-green-700");
+    }
+    if (button.classList.contains("bg-gray-100")) {
+      originalClasses.push("bg-gray-100");
+      button.classList.remove("bg-gray-100");
+    }
+    if (button.classList.contains("bg-white")) {
+      originalClasses.push("bg-white");
+      button.classList.remove("bg-white");
+    }
+    if (button.classList.contains("border-gray-300")) {
+      originalClasses.push("border-gray-300");
+      button.classList.remove("border-gray-300");
+    }
+
+    // Reset after 2 seconds
+    setTimeout(function () {
+      button.innerHTML = originalContent;
+      button.classList.remove(
+        "text-green-600",
+        "border-green-300",
+        "bg-green-50"
+      );
+      originalClasses.forEach((cls) => button.classList.add(cls));
+    }, 2000);
   }
 
   // Initialize tooltips (replacing Bootstrap's jQuery tooltip)

@@ -305,7 +305,8 @@ recovery-token:
   unset:
     You don't have a recovery token set yet. We strongly recommend to create
     one now.
-  created-headline: "The following recovery token got created for you:"
+  created-headline: "Your new recovery token"
+  created-subtitle: "Please copy and securely store this recovery token"
   created-info: >
     If you lost your password, the recovery token allows you to reset a new one.
     Write it down and store it at a secure place.
@@ -455,7 +456,3 @@ random-aliases.feature-privacy: "Perfect for online shopping and registrations"
 random-aliases.feature-deletable: "Can be deleted anytime when no longer needed"
 random-aliases.limitation-random-name: "Random names that are harder to remember"
 random-aliases.management-hint: "<strong>Tip:</strong> Delete unused random aliases to make room for new ones."
-
-button:
-  copy: Copy
-  copied: Copied

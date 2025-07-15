@@ -47,18 +47,20 @@
                                 </h3>
                             </div>
                             <button type="button"
-                                    class="inline-flex items-center px-3 py-1 text-xs font-medium text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
-                                    onclick="copyToClipboard('{{ user.totpSecret }}', this)">
-                                {# Heroicon: clipboard #}
-                                {{ ux_icon('heroicons:clipboard', {'class': 'w-4 h-4 mr-1'}) }}
-                                <span>{{ "button.copy"|trans }}</span>
+                                    class="inline-flex items-center p-2 text-xs font-medium text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+                                    onclick="copyToClipboard('{{ user.totpSecret }}', this)"
+                                    data-button="copy-to-clipboard"
+                                    data-value="{{ user.totpSecret }}"
+                                    title="{{ "copy-to-clipboard"|trans }}"
+                                    aria-label="{{ "copy-to-clipboard"|trans }}">
+                                {{ ux_icon('heroicons:clipboard', {'class': 'w-4 h-4'}) }}
                             </button>
                         </div>
                         <p class="mb-3 text-sm text-gray-600">
                             {{ "account.twofactor.setup-key-description"|trans }}
                         </p>
                         <div class="bg-white p-3 rounded border border-gray-200">
-                            <code id="totp-secret" class="text-sm font-mono text-gray-900 break-all">{{ user.totpSecret }}</code>
+                            <code id="totp-secret" class="font-stretch-semi-condensed text-sm font-mono text-gray-900 break-all">{{ user.totpSecret }}</code>
                         </div>
                     </div>
 
@@ -99,27 +101,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        function copyToClipboard(text, button) {
-            navigator.clipboard.writeText(text).then(function() {
-                // Update button text temporarily to show success
-                const originalContent = button.innerHTML;
-                button.innerHTML = `
-                    {{ ux_icon('heroicons:check', {'class': 'w-4 h-4 mr-1'}) }}
-                    <span>{{ "button.copied"|trans }}</span>
-                `;
-                button.classList.add('text-green-600', 'border-green-300', 'bg-green-50');
-                button.classList.remove('text-gray-600', 'border-gray-300', 'bg-white');
-
-                setTimeout(function() {
-                    button.innerHTML = originalContent;
-                    button.classList.remove('text-green-600', 'border-green-300', 'bg-green-50');
-                    button.classList.add('text-gray-600', 'border-gray-300', 'bg-white');
-                }, 2000);
-            }).catch(function(err) {
-                console.error('{{ "error.copy-failed"|trans }}', err);
-            });
-        }
-    </script>
 {% endblock %}

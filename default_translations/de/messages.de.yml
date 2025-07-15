@@ -315,7 +315,8 @@ recovery-token:
   unset:
     Du hast noch keinen Wiederherstellungscode gesetzt. Wir empfehlen dir dringend,
     jetzt einen zu erstellen.
-  created-headline: "Der folgende Wiederherstellungscode wurde für dich erstellt:"
+  created-headline: "Dein neuer Wiederherstellungscode"
+  created-subtitle: "Bitte kopiere und speicher dein Wiederherstellungscode sicher."
   created-info: >
     Mit dem Wiederherstellungscode kannst du jederzeit dein Passwort zurücksetzen,
     wenn du dieses vergessen hast. Notiere ihn dir und speichere ihn an einem sicheren
@@ -471,7 +472,3 @@ random-aliases.feature-privacy: "Perfekt für Online-Shopping und Registrierunge
 random-aliases.feature-deletable: "Können jederzeit gelöscht werden, wenn sie nicht mehr benötigt werden"
 random-aliases.limitation-random-name: "Zufällige Namen, die schwerer zu merken sind"
 random-aliases.management-hint: "<strong>Tipp:</strong> Lösche ungenutzte zufällige Aliasse, um Platz für neue zu schaffen."
-
-button:
-  copy: Kopieren
-  copied: Kopiert

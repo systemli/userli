@@ -31,7 +31,7 @@ Feature: registration
     And I press "Submit"
 
     Then I should be on "/register"
-    And I should see text matching "The following recovery token got created for you"
+    And I should see text matching "Please copy and securely store this recovery token"
 
     When I am on "/logout"
     Then I should be on "/"
