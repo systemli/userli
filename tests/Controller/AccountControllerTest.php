@@ -25,7 +25,7 @@ class AccountControllerTest extends WebTestCase
         $client->request('GET', '/account');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Your account');
+        $this->assertSelectorTextContains('h1', 'Account settings');
     }
 
     public function testVisitingStartAsSpammer()

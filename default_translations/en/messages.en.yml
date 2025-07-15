@@ -21,7 +21,7 @@ start:
     If one of your friends already has an account,
     you can get an invite code from them and immediately set up your own account.
   registration-button: Create account
-  account-settings: Your account
+  account-settings: Account settings
   account-settings-desc: Manage your account
   account-delete: Delete account
   aliases: Alias addresses
