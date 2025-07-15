@@ -472,7 +472,3 @@ random-aliases.feature-privacy: "Perfekt für Online-Shopping und Registrierunge
 random-aliases.feature-deletable: "Können jederzeit gelöscht werden, wenn sie nicht mehr benötigt werden"
 random-aliases.limitation-random-name: "Zufällige Namen, die schwerer zu merken sind"
 random-aliases.management-hint: "<strong>Tipp:</strong> Lösche ungenutzte zufällige Aliasse, um Platz für neue zu schaffen."
-
-button:
-  copy: Kopieren
-  copied: Kopiert

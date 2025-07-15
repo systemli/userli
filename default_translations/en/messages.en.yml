@@ -456,7 +456,3 @@ random-aliases.feature-privacy: "Perfect for online shopping and registrations"
 random-aliases.feature-deletable: "Can be deleted anytime when no longer needed"
 random-aliases.limitation-random-name: "Random names that are harder to remember"
 random-aliases.management-hint: "<strong>Tip:</strong> Delete unused random aliases to make room for new ones."
-
-button:
-  copy: Copy
-  copied: Copied

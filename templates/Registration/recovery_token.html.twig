@@ -25,27 +25,4 @@
     <div class="mt-8">
         {% include 'Recovery/recovery_token_notes.html.twig' %}
     </div>
-
-    <script>
-        function copyRecoveryToken(text, button) {
-            navigator.clipboard.writeText(text).then(function() {
-                // Update button text temporarily to show success
-                const originalContent = button.innerHTML;
-                button.innerHTML = `
-                    {{ ux_icon('heroicons:check', {'class': 'w-4 h-4 mr-1'}) }}
-                    <span>{{ "button.copied"|trans }}</span>
-                `;
-                button.classList.add('text-green-600', 'border-green-300', 'bg-green-50');
-                button.classList.remove('text-gray-600', 'border-gray-300', 'bg-gray-50');
-
-                setTimeout(function() {
-                    button.innerHTML = originalContent;
-                    button.classList.remove('text-green-600', 'border-green-300', 'bg-green-50');
-                    button.classList.add('text-gray-600', 'border-gray-300', 'bg-gray-50');
-                }, 2000);
-            }).catch(function(err) {
-                console.error('{{ "error.copy-failed"|trans }}', err);
-            });
-        }
-    </script>
 {% endblock %}

@@ -176,7 +176,7 @@ Feature: User
       | recovery_token_password | asdasd |
     And I press "Create new recovery token"
 
-    Then I should see text matching "The following recovery token got created for you"
+    Then I should see text matching "Please copy and securely store this recovery token"
     And I fill in the following:
       | recovery_token_confirm_confirm | 1 |
     And I press "Continue"

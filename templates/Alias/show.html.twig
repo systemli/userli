@@ -117,15 +117,14 @@
                                         <div class="flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-md gap-3">
                                             <span class="font-mono text-sm text-gray-900 truncate min-w-0 max-w-[calc(100%-80px)]" title="{{ alias.source }}">{{ alias.source }}</span>
                                             <button type="button"
-                                                    class="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-700 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 transition-colors flex-shrink-0"
+                                                    class="inline-flex items-center p-2 text-xs font-medium text-gray-700 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 transition-colors flex-shrink-0"
                                                     data-button="copy-to-clipboard"
                                                     data-value="{{ alias.source }}"
                                                     title="{{ "copy-to-clipboard"|trans }}"
                                                     aria-label="{{ "copy-to-clipboard"|trans }}"
                                                     data-toggle="tooltip"
                                                     data-placement="top">
-                                                {{ ux_icon('heroicons:clipboard', {class: 'w-3 h-3 sm:mr-1'}) }}
-                                                <span class="hidden sm:inline">{{ "copy-to-clipboard"|trans }}</span>
+                                                {{ ux_icon('heroicons:clipboard', {class: 'w-4 h-4'}) }}
                                             </button>
                                         </div>
                                     {% endfor %}
@@ -221,22 +220,21 @@
                                             <span class="font-mono text-sm text-gray-900 truncate min-w-0 max-w-[calc(100%-120px)]" title="{{ alias.source }}">{{ alias.source }}</span>
                                             <div class="flex items-center space-x-2 flex-shrink-0">
                                                 <button type="button"
-                                                        class="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-700 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 transition-colors"
+                                                        class="inline-flex items-center p-2 text-xs font-medium text-gray-700 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 transition-colors"
                                                         data-button="copy-to-clipboard"
                                                         data-value="{{ alias.source }}"
                                                         title="{{ "copy-to-clipboard"|trans }}"
                                                         aria-label="{{ "copy-to-clipboard"|trans }}"
                                                         data-toggle="tooltip"
                                                         data-placement="top">
-                                                {{ ux_icon('heroicons:clipboard', {'class': 'w-3 h-3 sm:mr-1'}) }}
-                                                    <span class="hidden sm:inline">{{ "copy-to-clipboard"|trans }}</span>
+                                                {{ ux_icon('heroicons:clipboard', {'class': 'w-4 h-4'}) }}
                                                 </button>
                                                 <a href="{{ url('alias_delete', {'id': alias.id}) }}"
                                                    class="inline-flex items-center px-2 py-1 text-xs font-medium text-red-700 bg-red-100 rounded hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 transition-colors"
                                                    title="{{ "alias.delete"|trans }}"
                                                    data-toggle="tooltip"
                                                    data-placement="top">
-                                                    {{ ux_icon('heroicons:x-mark', {'class': 'w-3 h-3'}) }}
+                                                    {{ ux_icon('heroicons:x-mark', {'class': 'w-4 h-4'}) }}
                                                 </a>
                                             </div>
                                         </div>
