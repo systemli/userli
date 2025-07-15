@@ -305,7 +305,8 @@ recovery-token:
   unset:
     You don't have a recovery token set yet. We strongly recommend to create
     one now.
-  created-headline: "The following recovery token got created for you:"
+  created-headline: "Your new recovery token"
+  created-subtitle: "Please copy and securely store this recovery token"
   created-info: >
     If you lost your password, the recovery token allows you to reset a new one.
     Write it down and store it at a secure place.

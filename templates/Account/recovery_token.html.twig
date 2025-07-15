@@ -16,13 +16,28 @@
                         {% if recovery_token is defined %}
                             <!-- Token display -->
                             <div class="mb-6">
-                                <h2 class="text-xl font-semibold text-gray-900 mb-4">{{ "recovery-token.created-headline"|trans }}</h2>
-                                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-                                    <div class="flex items-start">
-                                        {{ ux_icon('heroicons:exclamation-triangle', {'class': 'w-5 h-5 text-yellow-400 mt-0.5 mr-3'}) }}
-                                        <div class="text-yellow-800 font-mono text-lg font-semibold break-all">
-                                            {{ recovery_token }}
-                                        </div>
+                                <div class="flex items-center mb-2">
+                                    <div class="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center mr-3">
+                                        {{ ux_icon('heroicons:exclamation-triangle', {'class': 'w-5 h-5 text-yellow-600'}) }}
+                                    </div>
+                                    <h3 class="text-lg font-semibold text-gray-900">
+                                        {{ "recovery-token.created-headline"|trans }}
+                                    </h3>
+                                </div>
+                                <p class="mb-3 text-sm text-gray-600">
+                                    {{ "recovery-token.created-subtitle"|trans }}
+                                </p>
+                                <div class="bg-white rounded border border-gray-200">
+                                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3">
+                                        <code class="text-sm font-mono text-gray-900 break-all select-all min-w-0 flex-1">{{ recovery_token }}</code>
+                                        <button type="button"
+                                                class="inline-flex items-center px-3 py-1 text-xs font-medium text-gray-600 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 self-end sm:self-auto flex-shrink-0"
+                                                onclick="copyRecoveryToken('{{ recovery_token }}', this)"
+                                                title="{{ "copy-to-clipboard"|trans }}"
+                                                aria-label="{{ "copy-to-clipboard"|trans }}">
+                                            {{ ux_icon('heroicons:clipboard', {'class': 'w-4 h-4 mr-1'}) }}
+                                            <span>{{ "button.copy"|trans }}</span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -121,4 +136,27 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function copyRecoveryToken(text, button) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Update button text temporarily to show success
+                const originalContent = button.innerHTML;
+                button.innerHTML = `
+                    {{ ux_icon('heroicons:check', {'class': 'w-4 h-4 mr-2'}) }}
+                    <span>{{ "button.copied"|trans }}</span>
+                `;
+                button.classList.add('text-green-600', 'border-green-300', 'bg-green-50');
+                button.classList.remove('text-gray-700', 'border-gray-300', 'bg-white');
+
+                setTimeout(function() {
+                    button.innerHTML = originalContent;
+                    button.classList.remove('text-green-600', 'border-green-300', 'bg-green-50');
+                    button.classList.add('text-gray-700', 'border-gray-300', 'bg-white');
+                }, 2000);
+            }).catch(function(err) {
+                console.error('{{ "error.copy-failed"|trans }}', err);
+            });
+        }
+    </script>
 {% endblock %}

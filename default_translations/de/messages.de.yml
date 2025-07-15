@@ -315,7 +315,8 @@ recovery-token:
   unset:
     Du hast noch keinen Wiederherstellungscode gesetzt. Wir empfehlen dir dringend,
     jetzt einen zu erstellen.
-  created-headline: "Der folgende Wiederherstellungscode wurde für dich erstellt:"
+  created-headline: "Dein neuer Wiederherstellungscode"
+  created-subtitle: "Bitte kopiere und speicher dein Wiederherstellungscode sicher."
   created-info: >
     Mit dem Wiederherstellungscode kannst du jederzeit dein Passwort zurücksetzen,
     wenn du dieses vergessen hast. Notiere ihn dir und speichere ihn an einem sicheren
