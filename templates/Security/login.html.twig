@@ -113,12 +113,12 @@
 {% endblock %}
 
 {% block step_footer %}
-    <div class="mt-6 pt-6 border-t border-gray-100">
-        <p class="text-center text-sm text-gray-600">
-            {{ "form.no-account"|trans }}
-            <a href="{{ path('register') }}" class="font-medium text-blue-600 hover:text-blue-500 focus:outline-none focus:underline transition-colors duration-200 ml-1">
+    <div class="-mx-6 sm:-mx-8 -mb-6 sm:-mb-8 mt-8 px-6 py-4 sm:px-8 sm:py-6 bg-gray-50 border-t border-gray-100">
+        <div class="text-center text-sm">
+            <span class="text-gray-600">{{ "form.no-account"|trans }}</span>
+            <a href="{{ path('register') }}" class="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200 ml-1">
                 {{ "form.create-account"|trans }}
             </a>
-        </p>
+        </div>
     </div>
 {% endblock %}
