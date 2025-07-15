@@ -23,8 +23,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
 use Doctrine\Persistence\ObjectRepository;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\TestBrowserToken;
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\Console\Input\StringInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionFactoryInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -436,7 +439,15 @@ class FeatureContext extends MinkContext
      */
     public function iRunConsoleCommand(string $command): void
     {
-        $this->output = shell_exec('php bin/console ' . $command);
+        $application = new Application($this->kernel);
+        $application->setAutoExit(false);
+
+        $input = new StringInput($command);
+        $output = new BufferedOutput();
+
+        $application->run($input, $output);
+
+        $this->output = $output->fetch();
     }
 
     /**
@@ -476,7 +487,7 @@ class FeatureContext extends MinkContext
      */
     public function iShouldSeeEmptyConsoleOutput(): void
     {
-        if (null !== $this->output) {
+        if (!empty($this->output)) {
             throw new RuntimeException(sprintf('Did not see empty console output: "%s"', $this->output));
         }
     }
