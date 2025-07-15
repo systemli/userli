@@ -46,6 +46,9 @@ class RecoveryProcessTypeTest extends TypeTestCase
         $view = $form->createView();
         $children = $view->children;
 
+        // Assert that the form field has the correct attributes
+        $this->assertSame('off', $children['recoveryToken']->vars['attr']['autocomplete']);
+
         foreach (array_keys($formData) as $key) {
             $this->assertArrayHasKey($key, $children);
         }
