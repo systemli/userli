@@ -111,9 +111,9 @@ form:
   recovery-link: Password forgotten?
   auth-failed: Authentication failed
   errors-found: Please correct the following errors
-  no-account: Don't have an account?
+  no-account: You have an invite code?
   have-account: Already have an account?
-  create-account: Create one here
+  create-account: Register here
   roles: Roles
   submit: Submit
   voucher: Invite code
