@@ -77,7 +77,7 @@ Feature: Recovery
   Scenario: Start recovery process with local part only
     When I am on "/recovery"
     And I fill in the following:
-      | recovery_process[email]         | user                                 |
+      | recovery_process[email]         | user@example.org                     |
       | recovery_process[recoveryToken] | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
     And I press "recovery_process[submit]"
 
