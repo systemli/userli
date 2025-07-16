@@ -12,22 +12,27 @@
 
 {% block step_icon %}
     <div class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center">
-        {# Heroicon: ticket #}
         {{ ux_icon('heroicons:ticket', {'class': 'w-8 h-8 text-blue-600'}) }}
     </div>
 {% endblock %}
 
 {% block step_content %}
-    {# Recovery Token Display - No nested cards, just notification styling #}
     <div class="mb-6">
         <h2 class="text-lg font-semibold text-gray-900 mb-4 text-center">{{ "recovery-token.created-headline"|trans }}</h2>
-        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-            <div class="flex items-start">
-                {# Heroicon: exclamation-triangle (solid) #}
-                {{ ux_icon('heroicons:exclamation-triangle-solid', {'class': 'w-5 h-5 text-yellow-400 mt-0.5 mr-3 flex-shrink-0'}) }}
-                <div class="text-yellow-800 font-mono text-lg font-semibold break-all">
-                    {{ recovery_token }}
-                </div>
+        <p class="mb-3 text-sm text-gray-600">
+            {{ "recovery-token.created-subtitle"|trans }}
+        </p>
+        <div class="bg-white rounded border border-gray-200">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3">
+                <code class="font-stretch-semi-condensed text-sm font-mono text-gray-900 break-all select-all min-w-0 flex-1">{{ recovery_token }}</code>
+                <button type="button"
+                        class="inline-flex items-center p-2 text-xs font-medium text-gray-600 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 self-end sm:self-auto flex-shrink-0"
+                        data-button="copy-to-clipboard"
+                        data-value="{{ recovery_token }}"
+                        title="{{ "copy-to-clipboard"|trans }}"
+                        aria-label="{{ "copy-to-clipboard"|trans }}">
+                    {{ ux_icon('heroicons:clipboard', {'class': 'w-4 h-4'}) }}
+                </button>
             </div>
         </div>
     </div>
@@ -68,7 +73,7 @@
                 {{ ux_icon('heroicons:information-circle-solid', {'class': 'w-5 h-5 text-blue-500 mt-0.5 mr-3 flex-shrink-0'}) }}
                 <div class="text-sm text-blue-800">
                     <p class="font-medium mb-2">{{ "recovery-token.displayed-once"|trans }}</p>
-                    <p>{{ "recovery-token.save-securely"|trans }}</p>
+                    <p>{{ "recovery-token.created-info"|trans }}</p>
                 </div>
             </div>
         </div>
