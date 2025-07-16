@@ -1,42 +1,41 @@
 # Screenshots
 
-Some screenshots of Userli features
+Here you can find screenshots of the web interface of Userli.
 
-## Account management
+## Start page
 
-Change password and delete account
+![start](../assets/images/start.png)
 
-![account](../assets/images/account.png)
+## Register
 
+![register](../assets/images/register.png)
 
-## Admin Frontend
+## Login
 
-Manage domains, users, aliases and more
+![login](../assets/images/login.png)
 
-![admin](../assets/images/admin.png)
-
-## Invite friends
-
-Invite codes
+## Invite codes
 
 ![voucher](../assets/images/voucher.png)
 
-## Alias addresses
-
-Manage alias addresses
+## Aliases
 
 ![alias](../assets/images/alias.png)
 
-## Recover lost password
+## Account settings
 
-Manage recovery token
+![account](../assets/images/account.png)
+
+## Account settings - Recovery Code
 
 ![manage_recovery_token](../assets/images/manage_recovery_token.png)
 
-Add recovery token
-
 ![new_recovery_token](../assets/images/new_recovery_token.png)
 
-Use recovery token
+## Password Recovery
 
 ![use_recovery_token](../assets/images/recovery.png)
+
+## Admin Frontend
+
+![admin](../assets/images/admin.png)
