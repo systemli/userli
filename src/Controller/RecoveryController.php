@@ -76,7 +76,8 @@ class RecoveryController extends AbstractController
                     // Recovery process gets started
                     $user->updateRecoveryStartTime();
                     $this->manager->flush();
-                    $this->eventDispatcher->dispatch(new UserEvent($user), RecoveryProcessEvent::NAME);
+                    $locale = $request->getSession()->get('_locale');
+                    $this->eventDispatcher->dispatch(new RecoveryProcessEvent($user, $locale));
                     // We don't have to add two days here, they will get added in `RecoveryProcessMessageSender`
                     $recoveryActiveTime = $user->getRecoveryStartTime();
                 } elseif (new DateTime($this::PROCESS_DELAY) < $recoveryStartTime) {

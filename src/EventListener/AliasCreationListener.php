@@ -3,24 +3,25 @@
 namespace App\EventListener;
 
 use Exception;
+use App\Entity\Alias;
+use App\Entity\Domain;
 use App\Event\AliasCreatedEvent;
+use App\Helper\RandomStringGenerator;
 use App\Sender\AliasCreatedMessageSender;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class AliasCreationListener implements EventSubscriberInterface
+readonly class AliasCreationListener implements EventSubscriberInterface
 {
-    /**
-     * AliasCreationListener constructor.
-     */
     public function __construct(
-        private readonly RequestStack $request,
-        private readonly AliasCreatedMessageSender $sender,
-        private readonly bool $sendMail,
-        private readonly string $defaultLocale,
+        private RequestStack              $request,
+        private AliasCreatedMessageSender $sender,
+        private EntityManagerInterface    $manager,
+        private bool                      $sendMail,
+        private string                    $defaultLocale,
     )
-    {
-    }
+    {}
 
     /**
      * @throws Exception
@@ -43,13 +44,24 @@ class AliasCreationListener implements EventSubscriberInterface
         $this->sender->send($user, $alias, $locale);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function onRandomAliasCreated(AliasCreatedEvent $event): void
+    {
+        /** @var Alias $alias */
+        $alias = $event->getAlias();
+
+        while (null !== $this->manager->getRepository(Alias::class)->findOneBySource($alias->getSource(), true)) {
+            $localPart = RandomStringGenerator::generate(24, false);
+            /** @var Domain $domain */
+            $domain = $alias->getDomain();
+            $alias->setSource($localPart.'@'.$domain->getName());
+        }
+    }
+
     public static function getSubscribedEvents(): array
     {
         return [
-            AliasCreatedEvent::NAME => 'onAliasCreated',
+            AliasCreatedEvent::CUSTOM => 'onAliasCreated',
+            AliasCreatedEvent::RANDOM => 'onRandomAliasCreated',
         ];
     }
 }

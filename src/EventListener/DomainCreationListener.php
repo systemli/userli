@@ -12,7 +12,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DomainCreationListener implements EventSubscriberInterface
 {
-    public function __construct(private readonly EntityManagerInterface $manager, private readonly WkdHandler $handler)
+    public function __construct(
+        private readonly EntityManagerInterface $manager,
+        private readonly WkdHandler $handler
+    )
     {
     }
 
@@ -21,11 +24,11 @@ class DomainCreationListener implements EventSubscriberInterface
      */
     public function onDomainCreated(DomainCreatedEvent $event): void
     {
-        $domain = $event->getDomain();
         $defaultDomain = $this->manager->getRepository(Domain::class)->getDefaultDomain();
         $adminAddress = 'postmaster@'.$defaultDomain;
 
-        if (null === $domain) {
+        ;
+        if (null === $domain = $event->getDomain()) {
             throw new Exception("Domain shouldn't be null");
         }
 

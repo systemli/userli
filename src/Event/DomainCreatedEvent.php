@@ -12,8 +12,8 @@ class DomainCreatedEvent extends Event
 
     public const NAME = 'domain.created';
 
-    public function __construct(Domain $domain)
-    {
-        $this->domain = $domain;
-    }
+    public function __construct(
+        private readonly Domain $domain
+    )
+    {}
 }

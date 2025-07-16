@@ -9,16 +9,12 @@ use App\Sender\RecoveryProcessMessageSender;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class RecoveryProcessListener implements EventSubscriberInterface
+readonly class RecoveryProcessListener implements EventSubscriberInterface
 {
-    /**
-     * RecoveryProcessListener constructor.
-     */
     public function __construct(
-        private readonly RequestStack $request,
-        private readonly RecoveryProcessMessageSender $sender,
-        private readonly bool $sendMail,
-        private readonly string $defaultLocale,
+        private RecoveryProcessMessageSender $sender,
+        private bool                         $sendMail,
+        private string                       $defaultLocale,
     )
     {
     }
@@ -36,7 +32,7 @@ class RecoveryProcessListener implements EventSubscriberInterface
     /**
      * @throws Exception
      */
-    public function onRecoveryProcessStarted(UserEvent $event): void
+    public function onRecoveryProcessStarted(RecoveryProcessEvent $event): void
     {
         if (!$this->sendMail) {
             return;
@@ -46,7 +42,7 @@ class RecoveryProcessListener implements EventSubscriberInterface
             throw new Exception('User should not be null');
         }
 
-        $locale = $this->request->getSession()->get('_locale', $this->defaultLocale);
+        $locale = $event->getLocale ?? $this->defaultLocale;
 
         $this->sender->send($user, $locale);
     }

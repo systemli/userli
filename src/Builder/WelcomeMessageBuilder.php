@@ -3,7 +3,7 @@
 namespace App\Builder;
 
 use App\Entity\Domain;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\DomainRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -12,13 +12,20 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class WelcomeMessageBuilder
 {
     private string $domain;
+    private readonly DomainRepository $domainRepository;
 
     /**
      * WelcomeMessageBuilder constructor.
      */
-    public function __construct(private readonly TranslatorInterface $translator, EntityManagerInterface $manager, private readonly string $appUrl, private readonly string $projectName)
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        DomainRepository $domainRepository,
+        private readonly string $appUrl,
+        private readonly string $projectName
+    )
     {
-        $domain = $manager->getRepository(Domain::class)->getDefaultDomain();
+        $this->domainRepository = $domainRepository;
+        $domain = $domainRepository->getDefaultDomain();
         $this->domain = null !== $domain ? $domain->getName() : '';
     }
 

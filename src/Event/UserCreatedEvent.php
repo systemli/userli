@@ -3,16 +3,18 @@
 namespace App\Event;
 
 use App\Entity\User;
+use App\Traits\LocaleTrait;
+use App\Traits\UserAwareTrait;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class UserCreatedEvent extends Event
 {
-    public function __construct(private readonly User $user)
-    {
-    }
+    use UserAwareTrait;
+    use LocaleTrait;
 
-    public function getUser(): User
-    {
-        return $this->user;
-    }
+    public function __construct(
+        private readonly User $user,
+        private readonly string $locale
+    )
+    {}
 }

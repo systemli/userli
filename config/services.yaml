@@ -158,7 +158,7 @@ services:
       $sendMail: "%env(SEND_MAIL)%"
       $defaultLocale: "%kernel.default_locale%"
 
-  App\EventListener\RegistrationListener:
+  App\EventListener\UserCreationListener:
     arguments:
       $sendMail: "%env(SEND_MAIL)%"
       $defaultLocale: "%kernel.default_locale%"

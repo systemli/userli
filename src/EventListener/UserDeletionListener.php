@@ -2,26 +2,26 @@
 
 namespace App\EventListener;
 
-use App\Event\UserCreatedEvent;
+use App\Event\UserDeletedEvent;
 use App\Handler\WebhookHandler;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-readonly class UserCreatedListener implements EventSubscriberInterface
+readonly class UserDeletionListener implements EventSubscriberInterface
 {
     public function __construct(
         private WebhookHandler $webhookHandler,
     ) {
     }
 
-    public function onUserCreated(UserCreatedEvent $event): void
+    public function onUserDeleted(UserDeletedEvent $event): void
     {
-        $this->webhookHandler->send($event->getUser(), 'user.created');
+        $this->webhookHandler->send($event->getUser(), 'user.deleted');
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            UserCreatedEvent::class => 'onUserCreated',
+            UserDeletedEvent::class => 'onUserDeleted',
         ];
     }
 }

@@ -3,23 +3,19 @@
 namespace App\Event;
 
 use App\Entity\User;
+use App\Traits\LocaleTrait;
 use App\Traits\UserAwareTrait;
 use Symfony\Contracts\EventDispatcher\Event;
 
-/**
- * Class RecoveryProcessEvent.
- */
 class RecoveryProcessEvent extends Event
 {
     use UserAwareTrait;
+    use LocaleTrait;
 
-    public const NAME = 'recovery_process_started';
+    const NAME = 'recovery_process_started';
 
-    /**
-     * Constructor.
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
+    public function __construct(
+        private readonly User $user
+    )
+    {}
 }

@@ -13,11 +13,9 @@ class AliasCreatedEvent extends Event
 {
     use AliasAwareTrait;
 
-    public const NAME = 'alias.custom_created';
+    public const CUSTOM = 'alias.custom_created';
+    public const RANDOM = 'alias.random_created';
 
-    /**
-     * Constructor.
-     */
     public function __construct(Alias $alias)
     {
         $this->alias = $alias;

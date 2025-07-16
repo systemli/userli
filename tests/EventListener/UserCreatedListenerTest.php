@@ -4,7 +4,7 @@ namespace App\Tests\EventListener;
 
 use App\Entity\User;
 use App\Event\UserCreatedEvent;
-use App\EventListener\UserCreatedListener;
+use App\EventListener\UserCreationListener;
 use App\Handler\WebhookHandler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -19,7 +19,7 @@ class UserCreatedListenerTest extends TestCase
         $webhookHandler = $this->createMock(WebhookHandler::class);
         $webhookHandler->expects($this->once())->method('send')->with($user, 'user.created');
 
-        $listener = new UserCreatedListener($webhookHandler);
+        $listener = new UserCreationListener($webhookHandler);
         $event = $this->createMock(UserCreatedEvent::class);
         $event->method('getUser')->willReturn($user);
         $listener->onUserCreated($event);

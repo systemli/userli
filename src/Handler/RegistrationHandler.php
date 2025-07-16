@@ -14,6 +14,7 @@ use App\Form\Model\Registration;
 use App\Guesser\DomainGuesser;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 readonly class RegistrationHandler
@@ -28,6 +29,7 @@ readonly class RegistrationHandler
         private PasswordUpdater          $passwordUpdater,
         private MailCryptKeyHandler      $mailCryptKeyHandler,
         private RecoveryTokenHandler     $recoveryTokenHandler,
+        private RequestStack             $request,
         private bool                     $registrationOpen,
         private bool                     $mailCrypt
     )
@@ -59,8 +61,10 @@ readonly class RegistrationHandler
         $this->manager->persist($user);
         $this->manager->flush();
 
-        $this->eventDispatcher->dispatch(new UserCreatedEvent($user));
-        $this->eventDispatcher->dispatch(new UserEvent($user), Events::MAIL_ACCOUNT_CREATED);
+        // locale can be null
+        $locale = $this->request->getSession()->get('_locale');
+
+        $this->eventDispatcher->dispatch(new UserCreatedEvent($user, $locale));
     }
 
     public function isRegistrationOpen(): bool

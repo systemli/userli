@@ -14,11 +14,9 @@ class LoginEvent extends Event
 
     public const NAME = 'user.login';
 
-
-
-    public function __construct(User $user, string $plainPassword)
-    {
-        $this->user = $user;
-        $this->plainPassword = $plainPassword;
-    }
+    public function __construct(
+        private readonly User $user,
+        private readonly string $plainPassword
+    )
+    {}
 }
