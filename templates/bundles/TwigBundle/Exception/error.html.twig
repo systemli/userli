@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|default('en') }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% if domain is defined %}{{ domain }} - {% endif %}{{ "error.title"|trans|default("Oops, an error occurred.") }}</title>
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+</head>
+<body>
+    <div class="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
+        <div class="max-w-md text-center">
+            {# Error icon and title #}
+            <div class="mb-8">
+                {# Heroicons: exclamation-triangle #}
+                <div class="w-24 h-24 mx-auto mb-6 bg-red-100 rounded-xl flex items-center justify-center">
+                    {{ ux_icon('heroicons:exclamation-triangle', {'class': 'w-12 h-12 text-red-600'}) }}
+                </div>
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">
+                    {{ "error.title"|trans|default("Oops, an error occurred.") }}
+                </h1>
+            </div>
+
+            {# Error message #}
+            <p class="text-lg text-gray-600 mb-8">
+                {{ "error.generic_error"|trans|default("An error occurred. We're sorry.") }}
+            </p>
+
+            {# Status code display if available #}
+            {% if status_code is defined and status_code %}
+                <p class="text-sm text-gray-500 mb-8">
+                    Error {{ status_code }}
+                </p>
+            {% endif %}
+
+            {# Back to home button #}
+            <a href="/"
+               class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                {# Heroicons: arrow-left #}
+                {{ ux_icon('heroicons:arrow-left', {'class': 'w-5 h-5 mr-2'}) }}
+                {{ "error.back_link"|trans|default("Back to home") }}
+            </a>
+        </div>
+    </div>
+</body>
+</html>
