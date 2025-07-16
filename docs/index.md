@@ -2,7 +2,7 @@
 
 Web application to (self-) manage e-mail users and encrypt their mailboxes.
 
-![index](./assets/images/index.png)
+![index](./assets/images/index.png){class="screenshot"}
 
 ## Features
 
