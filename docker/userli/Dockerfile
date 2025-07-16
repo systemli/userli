@@ -25,8 +25,7 @@ RUN apt-get update && \
     docker-php-ext-configure intl && \
     docker-php-ext-install -j$(nproc) gd opcache pdo_mysql pdo_sqlite sodium zip intl && \
     pecl install xdebug && \
-    docker-php-ext-enable xdebug && \
-    echo "memory_limit = 512M" > /usr/local/etc/php/conf.d/memory_limit.ini
+    docker-php-ext-enable xdebug
 
 COPY --from=builder /var/www/html /var/www/html
 COPY docker/userli/apache.conf /etc/apache2/sites-available/000-default.conf
