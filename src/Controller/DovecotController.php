@@ -97,19 +97,6 @@ class DovecotController extends AbstractController
             return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
         }
 
-        // If mailCrypt is enforced for all users, optionally create mailCrypt keypair for user
-        if (
-            $this->mailCrypt === MailCrypt::ENABLED_ENFORCE_ALL_USERS &&
-            false === $user->getMailCryptEnabled() &&
-            null === $user->getMailCryptPublicKey()
-        ) {
-            try {
-                $this->mailCryptKeyHandler->create($user, $request->getPassword(), true);
-            } catch (Exception $exception) {
-                return $this->json(['error' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
-            }
-        }
-
         // If mailCrypt is enabled and enabled for user, derive mailCryptPrivateKey
         if ($this->mailCrypt->isAtLeast(MailCrypt::ENABLED_OPTIONAL) && $user->getMailCryptEnabled()) {
             try {

@@ -79,6 +79,10 @@ services:
     tags:
       - { name: kernel.event_subscriber }
 
+  App\EventListener\LoginListener:
+    arguments:
+      $mailCryptEnv: "%env(MAIL_CRYPT)%"
+
   App\EventListener\LocaleListener:
     arguments:
       $defaultLocale: "%locale%"

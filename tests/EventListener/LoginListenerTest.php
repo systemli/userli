@@ -5,40 +5,87 @@ namespace App\Tests\EventListener;
 use App\Entity\User;
 use App\Event\LoginEvent;
 use App\EventListener\LoginListener;
-use App\Helper\PasswordUpdater;
+use App\Handler\MailCryptKeyHandler;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
+use PHPUnit\Framework\assertCount;
+use PHPUnit\Framework\assertEquals;
+use Psr\Log\LoggerInterface;
 
 class LoginListenerTest extends TestCase
 {
     private EntityManagerInterface $manager;
+    private LoggerInterface $logger;
     private LoginListener $listener;
+    private LoginListener $listenerMailCrypt;
+    private MailCryptKeyHandler $mailCryptKeyHandler;
 
     public function setUp(): void
     {
         $this->manager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->listener = new LoginListener($this->manager);
+        $this->mailCryptKeyHandler = $this->getMockBuilder(MailCryptKeyHandler::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->logger = $this->getMockBuilder(LoggerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->listener = new LoginListener(
+            $this->manager,
+            $this->mailCryptKeyHandler,
+            $this->logger,
+            2
+        );
+        // Enforces creation of mailCrypt on Login
+        $this->listenerMailCrypt = new LoginListener(
+            $this->manager,
+            $this->mailCryptKeyHandler,
+            $this->logger,
+            3
+        );
     }
 
-    public function testOnSecurityInteractiveLogin(): void
+    /**
+     * @dataProvider provider
+     */
+    public function testOnSecurityInteractiveLogin(User $user, bool $shouldCreateMailCryptKey): void
     {
-        $user = new User();
         $this->manager->expects($this->once())->method('flush');
-        $event = $this->getEvent($user);
+        $this->mailCryptKeyHandler->expects($this->never())->method('create');
+
+        $event = $this->getInteractiveEvent($user);
 
         $this->listener->onSecurityInteractiveLogin($event);
     }
 
     /**
+     * @dataProvider provider
+     */
+    public function testOnSecurityInteractiveLoginMailCrypt(User $user, bool $shouldCreateMailCryptKey): void
+    {
+        $this->manager->expects($this->once())->method('flush');
+
+        if ($shouldCreateMailCryptKey) {
+            $this->mailCryptKeyHandler->expects($this->once())->method('create');
+        } else {
+            $this->mailCryptKeyHandler->expects($this->never())->method('create');
+        }
+
+        $event = $this->getInteractiveEvent($user);
+
+        $this->listenerMailCrypt->onSecurityInteractiveLogin($event);
+    }
+
+    /**
      * @return \PHPUnit_Framework_MockObject_MockObject|InteractiveLoginEvent
      */
-    private function getEvent(User $user): InteractiveLoginEvent
+    private function getInteractiveEvent(User $user): InteractiveLoginEvent
     {
         $request = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
@@ -60,12 +107,79 @@ class LoginListenerTest extends TestCase
         return $event;
     }
 
+
+    /**
+     * @dataProvider provider
+     */
+    public function testOnAuthenticationHandlerSuccess(User $user, bool $shouldCreateMailCryptKey): void
+    {
+        $this->manager->expects($this->once())->method('flush');
+        $this->mailCryptKeyHandler->expects($this->never())->method('create');
+
+        $event = $this->getLoginEvent($user);
+
+        $this->listener->onAuthenticationHandlerSuccess($event);
+    }
+
+    /**
+     * @dataProvider provider
+     */
+    public function testOnAuthenticationHandlerSuccessMailCrypt(User $user, bool $shouldCreateMailCryptKey): void
+    {
+        $this->manager->expects($this->once())->method('flush');
+
+        if ($shouldCreateMailCryptKey) {
+            $this->mailCryptKeyHandler->expects($this->once())->method('create');
+        } else {
+            $this->mailCryptKeyHandler->expects($this->never())->method('create');
+        }
+
+        $event = $this->getLoginEvent($user);
+
+        $this->listenerMailCrypt->onAuthenticationHandlerSuccess($event);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|LoginEvent
+     */
+    private function getLoginEvent(User $user): LoginEvent
+    {
+        $event = $this->getMockBuilder(LoginEvent::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $event->method('getUser')->willReturn($user);
+        $event->method('getPlainPassword')->willReturn('password');
+
+        return $event;
+    }
+
+    public static function provider(): array
+    {
+        $enableMailCrypt = [null, false, true];
+        $shouldCreateMailCryptKeys = [true, true, false];
+
+        return array_map(
+            function ($enable, $create) {
+                $user = new User();
+                if ($enable === false || $enable === true) {
+                    $user->setMailCryptEnabled($enable);
+                }
+                return [$user, $create];
+            },
+            $enableMailCrypt,
+            $shouldCreateMailCryptKeys
+        );
+    }
+
     public function testGetSubscribedEvents(): void
     {
-        $this->assertEquals([
-            SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
-            LoginEvent::NAME => 'onLogin',
-        ],
-            $this->listener::getSubscribedEvents());
+        $this->assertEquals(
+            [
+                SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
+                LoginEvent::NAME => 'onAuthenticationHandlerSuccess',
+            ],
+            $this->listener::getSubscribedEvents()
+        );
     }
 }

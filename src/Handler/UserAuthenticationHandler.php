@@ -7,17 +7,12 @@ use App\Event\LoginEvent;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-/**
- * Class UserAuthenticationHandler.
- */
 class UserAuthenticationHandler
 {
-    /**
-     * UserAuthenticationHandler constructor.
-     */
-    public function __construct(private readonly PasswordHasherFactoryInterface $passwordHasherFactory, protected EventDispatcherInterface $eventDispatcher)
-    {
-    }
+    public function __construct(
+        private readonly PasswordHasherFactoryInterface $passwordHasherFactory,
+        protected EventDispatcherInterface $eventDispatcher
+    ) {}
 
     public function authenticate(User $user, string $password): ?User
     {
@@ -26,8 +21,10 @@ class UserAuthenticationHandler
             return null;
         }
 
-        $this->eventDispatcher->dispatch(new LoginEvent($user), LoginEvent::NAME);
-
+        $this->eventDispatcher->dispatch(
+            new LoginEvent($user, $password),
+            LoginEvent::NAME
+        );
         return $user;
     }
 }
