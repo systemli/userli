@@ -234,6 +234,7 @@ error:
   title: Vaya, ha ocurrido un error.
   back_link: Volver a inicio
   page_not_found: La página que solicitaste no existe.
+  access_denied: Acceso denegado. No tienes permisos para acceder a este recurso.
   generic_error: Ha ocurrido un error. Lo sentimos.
 
 spam:

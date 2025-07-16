@@ -574,6 +574,9 @@
     "tuupola/base32": {
         "version": "1.0.0"
     },
+    "twig/extra-bundle": {
+        "version": "v3.21.0"
+    },
     "twig/string-extra": {
         "version": "v3.0.5"
     },

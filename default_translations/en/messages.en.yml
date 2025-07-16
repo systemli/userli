@@ -339,6 +339,7 @@ error:
   title: Oops, an error occured.
   back_link: Back to home
   page_not_found: The page you requested does not exist.
+  access_denied: Access denied. You don't have permission to access this resource.
   generic_error: An error occured. We're sorry.
 spam:
   title: Account locked

@@ -350,6 +350,7 @@ error:
   title: Oops, es ist ein Fehler passiert.
   back_link: Zurück zur Startseite
   page_not_found: Die Seite die du aufgerufen hast, existiert nicht.
+  access_denied: Zugriff verweigert. Du hast keine Berechtigung für diese Ressource.
   generic_error: Es ist ein Fehler passiert. Das tut uns leid.
 spam:
   title: Konto gesperrt

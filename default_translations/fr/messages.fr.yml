@@ -222,6 +222,7 @@ error:
   title: Oups, une erreur s'est produite.
   back_link: Retour à l'accueil
   page_not_found: La page que vous avez demandé n'existe pas.
+  access_denied: Accès refusé. Vous n'avez pas la permission d'accéder à cette ressource.
   generic_error: Une erreur s'est produite. Nous sommes désolés.
 
 spam:
