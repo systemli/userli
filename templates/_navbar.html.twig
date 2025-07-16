@@ -92,61 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Mobile user dropdown functionality
-    const mobileUserMenu = document.getElementById('mobile-user-menu');
-    const mobileUserMenuButton = document.getElementById('mobile-user-menu-button');
-    const mobileUserMenuDropdown = document.getElementById('mobile-user-menu-dropdown');
-    const mobileUserMenuArrow = document.getElementById('mobile-user-menu-arrow');
-
-    if (mobileUserMenu && mobileUserMenuButton && mobileUserMenuDropdown && mobileUserMenuArrow) {
-        let isMobileUserMenuOpen = false;
-
-        function openMobileUserMenu() {
-            isMobileUserMenuOpen = true;
-            mobileUserMenuDropdown.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
-            mobileUserMenuDropdown.classList.add('opacity-100', 'scale-100');
-            mobileUserMenuArrow.classList.add('rotate-180');
-            mobileUserMenuButton.setAttribute('aria-expanded', 'true');
-        }
-
-        function closeMobileUserMenu() {
-            isMobileUserMenuOpen = false;
-            mobileUserMenuDropdown.classList.remove('opacity-100', 'scale-100');
-            mobileUserMenuDropdown.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
-            mobileUserMenuArrow.classList.remove('rotate-180');
-            mobileUserMenuButton.setAttribute('aria-expanded', 'false');
-        }
-
-        function toggleMobileUserMenu() {
-            if (isMobileUserMenuOpen) {
-                closeMobileUserMenu();
-            } else {
-                openMobileUserMenu();
-            }
-        }
-
-        mobileUserMenuButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleMobileUserMenu();
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!mobileUserMenu.contains(e.target)) {
-                closeMobileUserMenu();
-            }
-        });
-
-        // Close dropdown on escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && isMobileUserMenuOpen) {
-                closeMobileUserMenu();
-                mobileUserMenuButton.focus();
-            }
-        });
-    }
-
     // Mobile menu functionality
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');

@@ -1,33 +1,71 @@
 {# Mobile menu, show/hide based on menu state (only on small screens) #}
 <div class="md:hidden hidden mt-3" id="mobile-menu">
-    <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl ring-1 ring-black/10 p-4 space-y-2">
-        <a href="{{ path('start') }}"
-           class="block px-4 py-3 rounded-2xl text-base font-medium transition-all duration-300 {{ current_route == 'start' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-            {{ "navbar.home"|trans }}
-        </a>
+    <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl ring-1 ring-black/10 divide-y divide-gray-100/50 max-h-[calc(100vh-8rem)] overflow-y-auto">
+        {# User Info Section #}
+        <div class="p-3 sm:p-4">
+            <div class="flex items-center space-x-3">
+                <div class="flex-shrink-0">
+                    {{ ux_icon('heroicons:user-solid', {class: 'w-6 h-6 sm:w-8 sm:h-8 text-gray-500'}) }}
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="font-semibold text-gray-900 break-all text-xs sm:text-sm leading-4 sm:leading-5">{{ app.user.email }}</div>
+                    <div class="text-xs text-gray-500">{{ "navbar.signed-in-as"|trans }}</div>
+                </div>
+            </div>
+        </div>
 
-        {% if app.user.domain == domain and not is_granted('ROLE_SUSPICIOUS') %}
-            <a href="{{ path('vouchers') }}"
-               class="block px-4 py-3 rounded-2xl text-base font-medium transition-all duration-300 {{ current_route == 'vouchers' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-                {{ "navbar.vouchers"|trans }}
+        {# Main Navigation #}
+        <div class="p-3 sm:p-4 space-y-1 sm:space-y-2">
+            <a href="{{ path('start') }}"
+               class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route == 'start' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                {{ ux_icon('heroicons:home-solid', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
+                {{ "navbar.home"|trans }}
             </a>
-        {% endif %}
 
-        <a href="{{ path('aliases') }}"
-           class="block px-4 py-3 rounded-2xl text-base font-medium transition-all duration-300 {{ current_route == 'aliases' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-            {{ "navbar.aliases"|trans }}
-        </a>
+            {% if app.user.domain == domain and not is_granted('ROLE_SUSPICIOUS') %}
+                <a href="{{ path('vouchers') }}"
+                   class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route == 'vouchers' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                    {{ ux_icon('heroicons:ticket-solid', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
+                    {{ "navbar.vouchers"|trans }}
+                </a>
+            {% endif %}
 
-        <a href="{{ path('account') }}"
-           class="block px-4 py-3 rounded-2xl text-base font-medium transition-all duration-300 {{ current_route == 'account' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
-            {{ "navbar.account"|trans }}
-        </a>
-
-        {% if is_granted('ROLE_ADMIN') %}
-            <a href="{{ path('sonata_admin_dashboard') }}"
-               class="block px-4 py-3 rounded-2xl text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-all duration-300">
-                {{ "navbar_right.admin"|trans }}
+            <a href="{{ path('aliases') }}"
+               class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route == 'aliases' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                {{ ux_icon('heroicons:at-symbol', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
+                {{ "navbar.aliases"|trans }}
             </a>
-        {% endif %}
+
+            <a href="{{ path('account') }}"
+               class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route == 'account' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                {{ ux_icon('heroicons:cog-6-tooth-solid', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
+                {{ "navbar.account"|trans }}
+            </a>
+
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('sonata_admin_dashboard') }}"
+                   class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-all duration-300">
+                    {{ ux_icon('heroicons:shield-check-solid', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
+                    {{ "navbar_right.admin"|trans }}
+                </a>
+            {% endif %}
+        </div>
+
+        {# Language Switcher Section #}
+        <div class="p-3 sm:p-4">
+            <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 sm:mb-3">
+                {{ "navbar.language"|trans }}
+            </div>
+            {% include '_locale_switcher.html.twig' with {'dropdown_mode': true} %}
+        </div>
+
+        {# Logout Section #}
+        <div class="p-3 sm:p-4">
+            <a href="{{ path('logout') }}"
+               class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium text-red-600 hover:bg-red-50 hover:text-red-700 transition-all duration-300">
+                {{ ux_icon('heroicons:arrow-right-on-rectangle', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
+                {{ "navbar_right.logout"|trans }}
+            </a>
+        </div>
     </div>
 </div>
