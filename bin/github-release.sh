@@ -38,16 +38,16 @@ gh_auth="Authorization: token $GITHUB_API_TOKEN"
 curl_args="--location --remote-header-name --remote-name #"
 
 # parse CHANGELOG.md
-if ! grep -qx "# $version (.*)" CHANGELOG.md; then
+if ! grep -qx "## $version (.*)" CHANGELOG.md; then
     printf "Error: Couldn't find section for version %s in CHANGELOG.md\n" "$version" >&2
     exit 1
-elif ! grep -qx "# $version ($today)" CHANGELOG.md; then
-    date="$(sed -n "s/# $version (\(.*\))/\1/p" CHANGELOG.md)"
+elif ! grep -qx "## $version ($today)" CHANGELOG.md; then
+    date="$(sed -n "s/## $version (\(.*\))/\1/p" CHANGELOG.md)"
     printf "Error: Release date \"%s\" != \"%s\" (today) for version %s in CHANGELOG.md\n" "$date" "$today" "$version" >&2
     exit 1
 fi
 
-gh_notes="$(awk "/^# $version/{flag=1; next} /^# [0-9]+/{flag=0} flag" CHANGELOG.md | grep '[^[:blank:]]' | awk -vORS='\\n' 1)"
+gh_notes="$(awk "/^## $version/{flag=1; next} /^## [0-9]+/{flag=0} flag" CHANGELOG.md | grep '[^[:blank:]]' | awk -vORS='\\n' 1)"
 
 # make a gpg-signed tag for the release
 git tag --sign --message "Release $version" "$version"
