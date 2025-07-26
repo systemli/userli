@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Validator\Constraints;
+namespace App\Validator;
 
 use Attribute;
 use Symfony\Component\Validator\Constraint;
 
+/**
+ * Class EmailDomain.
+ */
 #[Attribute]
-class VoucherUser extends Constraint
+class EmailDomain extends Constraint
 {
     public function getTargets(): string
     {

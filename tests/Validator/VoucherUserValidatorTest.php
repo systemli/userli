@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Tests\Validator\Constraints;
+namespace App\Tests\Validator;
 
 use App\Entity\User;
 use App\Entity\Voucher;
 use App\Enum\Roles;
-use App\Repository\VoucherRepository;
-use App\Validator\Constraints\VoucherExists;
-use App\Validator\Constraints\VoucherUser;
-use App\Validator\Constraints\VoucherUserValidator;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Validator\VoucherUser;
+use App\Validator\VoucherUserValidator;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;

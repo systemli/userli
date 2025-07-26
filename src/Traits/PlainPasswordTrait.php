@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Validator\Constraints\PasswordPolicy;
+use App\Validator\PasswordPolicy;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

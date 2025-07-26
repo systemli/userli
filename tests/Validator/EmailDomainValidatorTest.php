@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tests\Validator\Constraints;
+namespace App\Tests\Validator;
 
 use App\Entity\User;
 use App\Repository\DomainRepository;
-use App\Validator\Constraints\EmailDomain;
-use App\Validator\Constraints\EmailDomainValidator;
+use App\Validator\EmailDomain;
+use App\Validator\EmailDomainValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 

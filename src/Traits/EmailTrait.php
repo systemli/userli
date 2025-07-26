@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Validator\Constraints\Lowercase;
+use App\Validator\Lowercase;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 

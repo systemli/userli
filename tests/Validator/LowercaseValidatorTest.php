@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Validator\Constraints;
+namespace App\Tests\Validator;
 
-use App\Validator\Constraints\Lowercase;
-use App\Validator\Constraints\LowercaseValidator;
+use App\Validator\Lowercase;
+use App\Validator\LowercaseValidator;
 use stdClass;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
