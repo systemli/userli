@@ -2,13 +2,8 @@
 
 namespace App\Entity;
 
-use App\Traits\OpenPgpKeyAwareTrait;
-use Doctrine\DBAL\Types\Types;
-use App\Repository\UserRepository;
-use App\Traits\PlainPasswordTrait;
-use Stringable;
-use DateTime;
 use App\Enum\Roles;
+use App\Repository\UserRepository;
 use App\Traits\CreationTimeTrait;
 use App\Traits\DeleteTrait;
 use App\Traits\DomainAwareTrait;
@@ -16,12 +11,14 @@ use App\Traits\EmailTrait;
 use App\Traits\IdTrait;
 use App\Traits\InvitationVoucherTrait;
 use App\Traits\LastLoginTimeTrait;
+use App\Traits\MailCryptEnabledTrait;
 use App\Traits\MailCryptPublicKeyTrait;
 use App\Traits\MailCryptSecretBoxTrait;
-use App\Traits\MailCryptEnabledTrait;
+use App\Traits\OpenPgpKeyAwareTrait;
 use App\Traits\PasswordTrait;
 use App\Traits\PasswordVersionTrait;
 use App\Traits\PlainMailCryptPrivateKeyTrait;
+use App\Traits\PlainPasswordTrait;
 use App\Traits\PlainRecoveryTokenTrait;
 use App\Traits\QuotaTrait;
 use App\Traits\RecoverySecretBoxTrait;
@@ -30,15 +27,18 @@ use App\Traits\SaltTrait;
 use App\Traits\TwofactorBackupCodeTrait;
 use App\Traits\TwofactorTrait;
 use App\Traits\UpdatedTimeTrait;
-use App\Validator\Constraints\EmailDomain;
+use App\Validator\EmailDomain;
+use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
+use Stringable;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\ORM\Mapping\Index;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'virtual_users')]

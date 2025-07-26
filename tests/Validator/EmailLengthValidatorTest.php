@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tests\Validator\Constraints;
+namespace App\Tests\Validator;
 
+use App\Validator\EmailLength;
+use App\Validator\EmailLengthValidator;
 use stdClass;
-use App\Validator\Constraints\EmailLength;
-use App\Validator\Constraints\EmailLengthValidator;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

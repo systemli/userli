@@ -3,9 +3,9 @@
 namespace App\Form\Model;
 
 use App\Traits\PlainPasswordTrait;
-use App\Validator\Constraints\EmailAddress;
-use App\Validator\Constraints\EmailLength;
-use App\Validator\Constraints\VoucherExists;
+use App\Validator\EmailAddress;
+use App\Validator\EmailLength;
+use App\Validator\VoucherExists;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class Registration

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Validator\Constraints;
+namespace App\Validator;
 
 use App\Entity\Domain;
 use App\Entity\User;

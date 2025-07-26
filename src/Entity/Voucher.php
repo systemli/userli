@@ -3,14 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\VoucherRepository;
-use Stringable;
-use DateTime;
 use App\Traits\CreationTimeTrait;
 use App\Traits\IdTrait;
 use App\Traits\UserAwareTrait;
-use App\Validator\Constraints\VoucherUser;
+use App\Validator\VoucherUser;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
+use Stringable;
 
 
 #[ORM\Entity(repositoryClass: VoucherRepository::class)]

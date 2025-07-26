@@ -2,11 +2,11 @@
 
 namespace App\Tests\Validator;
 
-use stdClass;
 use App\Entity\User;
-use App\Validator\Constraints\TotpSecret;
+use App\Validator\TotpSecret;
 use App\Validator\TotpSecretValidator;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
+use stdClass;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Validator\Constraints\Valid;

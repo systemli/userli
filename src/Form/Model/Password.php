@@ -2,9 +2,9 @@
 
 namespace App\Form\Model;
 
-use App\Validator\Constraints\PasswordPolicy;
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\PasswordPolicy;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class Password
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Validator\Constraints;
+namespace App\Tests\Validator;
 
 use App\Handler\PasswordStrengthHandler;
-use App\Validator\Constraints\PasswordPolicy;
+use App\Validator\PasswordPolicy;
 use App\Validator\PasswordPolicyValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 

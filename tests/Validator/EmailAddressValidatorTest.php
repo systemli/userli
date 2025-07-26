@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Tests\Validator\Constraints;
+namespace App\Tests\Validator;
 
-use stdClass;
 use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\ReservedName;
@@ -11,9 +10,10 @@ use App\Repository\AliasRepository;
 use App\Repository\DomainRepository;
 use App\Repository\ReservedNameRepository;
 use App\Repository\UserRepository;
-use App\Validator\Constraints\EmailAddress;
-use App\Validator\Constraints\EmailAddressValidator;
+use App\Validator\EmailAddress;
+use App\Validator\EmailAddressValidator;
 use Doctrine\ORM\EntityManagerInterface;
+use stdClass;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;

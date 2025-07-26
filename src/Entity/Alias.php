@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\AliasRepository;
-use Stringable;
-use DateTime;
 use App\Traits\CreationTimeTrait;
 use App\Traits\DeleteTrait;
 use App\Traits\DomainAwareTrait;
@@ -12,11 +10,13 @@ use App\Traits\IdTrait;
 use App\Traits\RandomTrait;
 use App\Traits\UpdatedTimeTrait;
 use App\Traits\UserAwareTrait;
-use App\Validator\Constraints\EmailAddress;
-use App\Validator\Constraints\EmailLength;
+use App\Validator\EmailAddress;
+use App\Validator\EmailLength;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\AssociationOverride;
 use Doctrine\ORM\Mapping\Index;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AliasRepository::class)]

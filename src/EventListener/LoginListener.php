@@ -64,6 +64,7 @@ readonly class LoginListener implements EventSubscriberInterface
         if ($user->getMailCryptEnabled() || null !== $user->getMailCryptPublicKey()) {
             return;
         }
+
         $this->mailCryptKeyHandler->create($user, $password, true);
     }
 

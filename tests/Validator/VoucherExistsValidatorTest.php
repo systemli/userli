@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Tests\Validator\Constraints;
+namespace App\Tests\Validator;
 
 use App\Entity\User;
 use App\Entity\Voucher;
 use App\Enum\Roles;
 use App\Repository\VoucherRepository;
-use App\Validator\Constraints\VoucherExists;
-use App\Validator\Constraints\VoucherExistsValidator;
+use App\Validator\VoucherExists;
+use App\Validator\VoucherExistsValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use stdClass;
 use Symfony\Component\Validator\Constraints\Valid;
