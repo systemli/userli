@@ -61,8 +61,8 @@ readonly class JsonExceptionSubscriber implements EventSubscriberInterface
 
     private function wantsJson(Request $request): bool
     {
-        return str_starts_with($request->getRequestUri(), '/api/')
-            || $request->headers->get('Accept') === 'application/json'
+        return str_starts_with($request->getPathInfo(), '/api/')
+            || in_array('application/json', $request->getAcceptableContentTypes())
             || $request->headers->get('Content-Type') === 'application/json'
             || $request->getRequestFormat() === 'json';
     }
