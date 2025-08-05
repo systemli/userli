@@ -15,7 +15,7 @@ local log_msg = {}
 log_msg["env_userli_host"]   = "Environment variable USERLI_HOST must not be empty"
 log_msg["env_userli_token"]  = "Environment variable USERLI_API_ACCESS_TOKEN must not be empty"
 log_msg["userli-error"]      = "Could not connect to Userli API. "
-log_msg["http-ok"]           = "Lookup successfull"
+log_msg["http-ok"]           = "Lookup successful"
 log_msg["http-ok-malformed"] = "Lookup failed: HTTP-status is 200, but HTTP-response is malformed."
 log_msg["http-failed"]       = "Lookup failed: HTTP-status "
 log_msg["http-unexpected"]   = "Lookup failed: Unexpected HTTP-status: "
@@ -82,11 +82,15 @@ function auth_userdb_lookup(request)
     local http_response = http_request:submit()
 
     if http_response:status() == 200 then
-        local data = json.decode(http_response:payload())
+        local success, data = pcall(json.decode, http_response:payload())
+        if not success then
+            request:log_error(log_msg['http-ok-malformed'])
+            return dovecot.auth.USERDB_RESULT_INTERNAL_FAILURE, ""
+        end
 
         if not(data and data.body and data.body.user and data.body.home and data.body.gid and data.body.uid and data.body.quota and data.body.mailCrypt and data.body.mailCryptPublicKey) then
             request:log_error(log_msg['http-ok-malformed'])
-            return dovecot.auth.PASSDB_RESULT_INTERNAL_FAILURE, ""
+            return dovecot.auth.USERDB_RESULT_INTERNAL_FAILURE, ""
         end
 
         local attributes = {}
@@ -127,7 +131,11 @@ function auth_password_verify(request, password)
     local http_response = http_request:submit()
 
     if http_response:status() == 200 then
-        local data = json.decode(http_response:payload())
+        local success, data = pcall(json.decode, http_response:payload())
+        if not success then
+            request:log_error(log_msg['http-ok-malformed'])
+            return dovecot.auth.PASSDB_RESULT_INTERNAL_FAILURE, ""
+        end
 
         -- mailCryptPrivateKey may be empty, but cannot be nil
         if not(data and data.body and data.body.mailCrypt and data.body.mailCryptPrivateKey and data.body.mailCryptPublicKey) then
