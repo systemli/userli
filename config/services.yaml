@@ -88,6 +88,12 @@ services:
       $defaultLocale: "%locale%"
       $supportedLocales: "%supported_locales%"
 
+  App\EventSubscriber\JsonExceptionSubscriber:
+    arguments:
+      $environment: '%kernel.environment%'
+    tags:
+      - { name: kernel.event_subscriber }
+
   App\Handler\WebhookHandler:
     arguments:
       $webhookUrl: "%env(WEBHOOK_URL)%"
