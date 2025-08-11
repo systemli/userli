@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.1.1 (2025.08.11)
+
+- ♻️ Recognize JSON Requests and return JSON responses
+- 🐛 Improve JSON Decoding for Dovecot Lua Auth Script
+
 ## 4.1.0 (2025.07.21)
 
 ### Features and Improvements
