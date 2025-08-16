@@ -1,0 +1,82 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity;
+
+use App\Repository\UserNotificationRepository;
+use DateTimeImmutable;
+use App\Enum\UserNotificationType;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: UserNotificationRepository::class)]
+#[ORM\Table(name: 'user_notification')]
+#[ORM\Index(columns: ['user_id', 'type', 'creation_time'], name: 'idx_user_type_sent_at')]
+#[ORM\Index(columns: ['user_id', 'type'], name: 'idx_user_type')]
+class UserNotification
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
+    private User $user;
+
+    #[ORM\Column(type: 'string', length: 50)]
+    private string $type;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    private DateTimeImmutable $creationTime;
+
+    #[ORM\Column(type: 'string', length: 10)]
+    private string $locale;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $metadata;
+
+    public function __construct(User $user, UserNotificationType $type, string $locale, ?array $metadata = null)
+    {
+        $this->user = $user;
+        $this->type = $type->value;
+        $this->locale = $locale;
+        $this->metadata = $metadata;
+        $this->creationTime = new DateTimeImmutable();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function getType(): UserNotificationType
+    {
+        return UserNotificationType::from($this->type);
+    }
+
+    public function getCreationTime(): DateTimeImmutable
+    {
+        return $this->creationTime;
+    }
+
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    public function getMetadata(): ?array
+    {
+        return $this->metadata;
+    }
+
+    public function setMetadata(?array $metadata): void
+    {
+        $this->metadata = $metadata;
+    }
+}

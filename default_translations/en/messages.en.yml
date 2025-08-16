@@ -397,6 +397,24 @@ mail:
 
     We hope you continue to enjoy your e-mail account.
     Your %project_name% admin team.
+  compromised-password-subject: Security Alert - Your password may be compromised
+  compromised-password-body: |
+    Hello %email%,
+
+    We've detected that you recently logged into your %project_name% account using a password that appears in known data breaches. This means your password may be compromised and could be used by attackers to access your account.
+
+    For your security, we strongly recommend that you change your password immediately by visiting:
+    %app_url%/user/password
+
+    When choosing a new password:
+    - Use a unique password that you don't use anywhere else
+    - Make it long and complex with a mix of letters, numbers, and symbols
+    - Consider using a password manager to generate and store secure passwords
+
+    If you need help or have any questions, please don't hesitate to contact us.
+
+    Stay safe,
+    Your %project_name% admin team.
 admin:
   registered-accounts: Registered accounts
   registered-accounts-last-week: Registered accounts in last 7 days

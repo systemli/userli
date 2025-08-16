@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Handler;
 
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 
-class MailHandler
+readonly class MailHandler
 {
-    public function __construct(private readonly MailerInterface $mailer, private readonly string $from, private readonly string $name)
+    public function __construct(private MailerInterface $mailer, private string $from, private string $name)
     {
     }
 
