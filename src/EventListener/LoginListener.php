@@ -5,7 +5,7 @@ namespace App\EventListener;
 use App\Entity\User;
 use App\Enum\MailCrypt;
 use App\Event\LoginEvent;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\UserLastLoginUpdateService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
@@ -14,14 +14,15 @@ use Psr\Log\LoggerInterface;
 
 readonly class LoginListener implements EventSubscriberInterface
 {
-    private readonly MailCrypt $mailCrypt;
+    private MailCrypt $mailCrypt;
 
     public function __construct(
-        private readonly EntityManagerInterface $manager,
-        private readonly MailCryptKeyHandler $mailCryptKeyHandler,
-        private readonly LoggerInterface $logger,
-        private readonly int $mailCryptEnv,
-    ) {
+        private UserLastLoginUpdateService $userLastLoginUpdateService,
+        private MailCryptKeyHandler        $mailCryptKeyHandler,
+        private LoggerInterface            $logger,
+        private int                        $mailCryptEnv,
+    )
+    {
         $this->mailCrypt = MailCrypt::from($this->mailCryptEnv);
     }
 
@@ -56,7 +57,7 @@ readonly class LoginListener implements EventSubscriberInterface
             $this->enableMailCrypt($user, $password);
         }
 
-        $this->updateLastLogin($user);
+        $this->userLastLoginUpdateService->updateLastLogin($user);
     }
 
     private function enableMailCrypt(User $user, string $password): void
@@ -66,13 +67,6 @@ readonly class LoginListener implements EventSubscriberInterface
         }
 
         $this->mailCryptKeyHandler->create($user, $password, true);
-    }
-
-    private function updateLastLogin(User $user): void
-    {
-        $user->updateLastLoginTime();
-        $this->manager->persist($user);
-        $this->manager->flush();
     }
 
     public static function getSubscribedEvents(): array
