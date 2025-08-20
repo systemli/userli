@@ -415,7 +415,8 @@ mail:
   compromised-password-body: |
     Hallo %email%,
 
-    Wir haben festgestellt, dass du dich kürzlich in dein %project_name%-Konto mit einem Passwort eingeloggt hast, das in bekannten Datenlecks auftaucht.
+    Wir haben festgestellt, dass du dich kürzlich in dein %project_name%-Konto mit einem Passwort eingeloggt hast,
+    das in bekannten Datenlecks auftaucht.
 
     Zu deiner Sicherheit empfehlen wir dir dringend, dein Passwort zu ändern unter:
     %app_url%/user/password
@@ -426,9 +427,9 @@ mail:
     - Erwäge einen Passwort-Manager zu verwenden, um sichere Passwörter zu generieren und zu speichern
 
     Zögere nicht uns zu kontaktieren, falls du Hilfe brauchst.
-    
+
     Solidarische Grüße,
-    Dein %project_name% admin team.
+    Dein %project_name% admin team
 admin:
   registered-accounts: Registrierte Nutzer
   registered-accounts-last-week: Registrierte Nuter in den letzten 7 Tagen

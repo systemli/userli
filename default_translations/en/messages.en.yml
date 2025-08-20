@@ -401,20 +401,21 @@ mail:
   compromised-password-body: |
     Hello %email%,
 
-    We've detected that you recently logged into your %project_name% account using a password that appears in known data breaches. This means your password may be compromised and could be used by attackers to access your account.
+    We noticed that you recently logged into your %project_name% account with a password that appears
+    in known data breaches.
 
-    For your security, we strongly recommend that you change your password immediately by visiting:
+    For your security, we strongly recommend changing your password at:
     %app_url%/user/password
 
-    When choosing a new password:
+    When choosing a new password, please note the following:
     - Use a unique password that you don't use anywhere else
     - Make it long and complex with a mix of letters, numbers, and symbols
     - Consider using a password manager to generate and store secure passwords
 
-    If you need help or have any questions, please don't hesitate to contact us.
+    Don't hesitate to contact us if you need help.
 
-    Stay safe,
-    Your %project_name% admin team.
+    Best regards,
+    Your %project_name% admin team
 admin:
   registered-accounts: Registered accounts
   registered-accounts-last-week: Registered accounts in last 7 days
