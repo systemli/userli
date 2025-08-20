@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\EventListener;
 
 use Exception;
-use App\Enum\UserNotificationType;
 use App\Event\UserNotificationEvent;
 use App\Sender\CompromisedPasswordMessageSender;
 use Psr\Log\LoggerInterface;
@@ -23,16 +22,12 @@ readonly class UserNotificationListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            UserNotificationEvent::NAME => 'onUserNotification',
+            UserNotificationEvent::COMPROMISED_PASSWORD => 'onCompromisedPassword',
         ];
     }
 
-    public function onUserNotification(UserNotificationEvent $event): void
+    public function onCompromisedPassword(UserNotificationEvent $event): void
     {
-        if ($event->getNotificationType() !== UserNotificationType::PASSWORD_COMPROMISED) {
-            return;
-        }
-
         try {
             $this->sender->send($event->getUser(), $event->getLocale());
         } catch (Exception $exception) {

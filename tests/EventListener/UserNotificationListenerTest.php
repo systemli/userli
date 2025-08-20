@@ -38,8 +38,8 @@ class UserNotificationListenerTest extends TestCase
     {
         $events = UserNotificationListener::getSubscribedEvents();
 
-        $this->assertArrayHasKey(UserNotificationEvent::NAME, $events);
-        $this->assertEquals('onUserNotification', $events[UserNotificationEvent::NAME]);
+        $this->assertArrayHasKey(UserNotificationEvent::COMPROMISED_PASSWORD, $events);
+        $this->assertEquals('onCompromisedPassword', $events[UserNotificationEvent::COMPROMISED_PASSWORD]);
     }
 
     public function testOnUserNotificationWithPasswordCompromisedType(): void
@@ -60,7 +60,7 @@ class UserNotificationListenerTest extends TestCase
         // Logger should not be called when sending succeeds
         $this->logger->expects($this->never())->method('error');
 
-        $this->listener->onUserNotification($event);
+        $this->listener->onCompromisedPassword($event);
     }
 
     public function testOnUserNotificationWithPasswordCompromisedTypeDifferentLocales(): void
@@ -80,7 +80,7 @@ class UserNotificationListenerTest extends TestCase
                 ->method('send')
                 ->with($this->user, $locale);
 
-            $this->listener->onUserNotification($event);
+            $this->listener->onCompromisedPassword($event);
 
             // Reset mocks for next iteration
             $this->setUp();
@@ -92,7 +92,7 @@ class UserNotificationListenerTest extends TestCase
         // Test verifies that the listener specifically checks for PASSWORD_COMPROMISED type
         // This ensures that when new notification types are added in the future,
         // they won't be handled by this listener unless explicitly added
-        
+
         $locale = 'en';
         $event = new UserNotificationEvent(
             $this->user,
@@ -107,7 +107,7 @@ class UserNotificationListenerTest extends TestCase
             ->method('send')
             ->with($this->user, $locale);
 
-        $this->listener->onUserNotification($event);
+        $this->listener->onCompromisedPassword($event);
     }
 
     public function testOnUserNotificationWithSenderException(): void
@@ -141,7 +141,7 @@ class UserNotificationListenerTest extends TestCase
             );
 
         // Exception should be caught and not re-thrown
-        $this->listener->onUserNotification($event);
+        $this->listener->onCompromisedPassword($event);
     }
 
     public function testOnUserNotificationWithDifferentUsers(): void
@@ -167,7 +167,7 @@ class UserNotificationListenerTest extends TestCase
                 ->method('send')
                 ->with($user, 'en');
 
-            $this->listener->onUserNotification($event);
+            $this->listener->onCompromisedPassword($event);
 
             // Reset mocks for next iteration
             $this->setUp();
@@ -201,7 +201,7 @@ class UserNotificationListenerTest extends TestCase
                 ]
             );
 
-        $this->listener->onUserNotification($event);
+        $this->listener->onCompromisedPassword($event);
     }
 
     public function testOnUserNotificationWithInvalidArgumentException(): void
@@ -231,7 +231,7 @@ class UserNotificationListenerTest extends TestCase
                 ]
             );
 
-        $this->listener->onUserNotification($event);
+        $this->listener->onCompromisedPassword($event);
     }
 
     public function testOnUserNotificationSuccessfulSendingDoesNotLog(): void
@@ -254,7 +254,7 @@ class UserNotificationListenerTest extends TestCase
         $this->logger->expects($this->never())->method('info');
         $this->logger->expects($this->never())->method('debug');
 
-        $this->listener->onUserNotification($event);
+        $this->listener->onCompromisedPassword($event);
     }
 
     public function testEventHandlingIsolation(): void
@@ -287,7 +287,7 @@ class UserNotificationListenerTest extends TestCase
             );
 
         // Process both events
-        $this->listener->onUserNotification($events[0]); // Should succeed
-        $this->listener->onUserNotification($events[1]); // Should fail and log
+        $this->listener->onCompromisedPassword($events[0]); // Should succeed
+        $this->listener->onCompromisedPassword($events[1]); // Should fail and log
     }
 }

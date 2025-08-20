@@ -11,6 +11,7 @@ use App\Service\PasswordCompromisedService;
 use App\Service\UserNotificationRateLimiter;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
@@ -22,17 +23,20 @@ class PasswordCompromisedServiceTest extends TestCase
     private EventDispatcherInterface|MockObject $eventDispatcher;
     private ValidatorInterface|MockObject $validator;
     private PasswordCompromisedService $service;
+    private LoggerInterface|MockObject $logger;
 
     protected function setUp(): void
     {
         $this->rateLimiter = $this->createMock(UserNotificationRateLimiter::class);
         $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $this->validator = $this->createMock(ValidatorInterface::class);
+        $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->service = new PasswordCompromisedService(
             $this->rateLimiter,
             $this->eventDispatcher,
-            $this->validator
+            $this->validator,
+            $this->logger
         );
     }
 
@@ -84,7 +88,7 @@ class PasswordCompromisedServiceTest extends TestCase
             ->expects($this->once())
             ->method('validate')
             ->with($password, $this->callback(function ($constraint) {
-                return $constraint instanceof NotCompromisedPassword && $constraint->skipOnError === true;
+                return $constraint instanceof NotCompromisedPassword;
             }))
             ->willReturn($violations);
 
@@ -119,7 +123,7 @@ class PasswordCompromisedServiceTest extends TestCase
             ->expects($this->once())
             ->method('validate')
             ->with($password, $this->callback(function ($constraint) {
-                return $constraint instanceof NotCompromisedPassword && $constraint->skipOnError === true;
+                return $constraint instanceof NotCompromisedPassword;
             }))
             ->willReturn($violations);
 
@@ -127,7 +131,7 @@ class PasswordCompromisedServiceTest extends TestCase
         $this->rateLimiter
             ->expects($this->once())
             ->method('save')
-            ->with($user, UserNotificationType::PASSWORD_COMPROMISED, $locale);
+            ->with($user, UserNotificationType::PASSWORD_COMPROMISED);
 
         // Event dispatcher should be called with correct event
         $this->eventDispatcher
@@ -140,7 +144,7 @@ class PasswordCompromisedServiceTest extends TestCase
                            $event->getNotificationType() === UserNotificationType::PASSWORD_COMPROMISED &&
                            $event->getLocale() === $locale;
                 }),
-                UserNotificationEvent::NAME
+                UserNotificationEvent::COMPROMISED_PASSWORD
             );
 
         $this->service->checkAndNotify($user, $password, $locale);

@@ -69,16 +69,15 @@ class UserNotificationRateLimiter
      *
      * @param User $user The user for whom the notification is saved.
      * @param UserNotificationType $type The type of notification.
-     * @param string $locale The locale for the notification.
      * @param int $rateLimitHours The number of hours for the rate limit. Defaults to 24 hours.
      * @param array|null $metadata Optional metadata associated with the notification.
      *
      * @return void
      */
-    public function save(User $user, UserNotificationType $type, string $locale, int $rateLimitHours = 24, ?array $metadata = null): void
+    public function save(User $user, UserNotificationType $type, int $rateLimitHours = 24, ?array $metadata = null): void
     {
         try {
-            $notification = new UserNotification($user, $type, $locale, $metadata);
+            $notification = new UserNotification($user, $type, $metadata);
             $this->repository->save($notification);
 
             $this->setCacheItem($user, $type, $rateLimitHours);

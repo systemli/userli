@@ -175,7 +175,6 @@ class UserNotificationRateLimiterTest extends TestCase
             ->with($this->callback(function ($notification) use ($locale, $metadata) {
                 return $notification instanceof UserNotification &&
                        $notification->getUser() === $this->user &&
-                       $notification->getLocale() === $locale &&
                        $notification->getMetadata() === $metadata;
             }));
 
@@ -197,7 +196,6 @@ class UserNotificationRateLimiterTest extends TestCase
         $this->rateLimiter->save(
             $this->user,
             UserNotificationType::PASSWORD_COMPROMISED,
-            $locale,
             24,
             $metadata
         );
@@ -213,7 +211,6 @@ class UserNotificationRateLimiterTest extends TestCase
             ->with($this->callback(function ($notification) use ($locale) {
                 return $notification instanceof UserNotification &&
                        $notification->getUser() === $this->user &&
-                       $notification->getLocale() === $locale &&
                        $notification->getMetadata() === null;
             }));
 
@@ -227,7 +224,6 @@ class UserNotificationRateLimiterTest extends TestCase
         $this->rateLimiter->save(
             $this->user,
             UserNotificationType::PASSWORD_COMPROMISED,
-            $locale,
             48
         );
     }
@@ -259,7 +255,6 @@ class UserNotificationRateLimiterTest extends TestCase
         $this->rateLimiter->save(
             $this->user,
             UserNotificationType::PASSWORD_COMPROMISED,
-            $locale
         );
     }
 
@@ -291,7 +286,6 @@ class UserNotificationRateLimiterTest extends TestCase
         $this->rateLimiter->save(
             $this->user,
             UserNotificationType::PASSWORD_COMPROMISED,
-            $locale
         );
     }
 

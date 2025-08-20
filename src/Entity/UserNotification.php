@@ -30,17 +30,13 @@ class UserNotification
     #[ORM\Column(type: 'datetime_immutable')]
     private DateTimeImmutable $creationTime;
 
-    #[ORM\Column(type: 'string', length: 10)]
-    private string $locale;
-
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $metadata;
 
-    public function __construct(User $user, UserNotificationType $type, string $locale, ?array $metadata = null)
+    public function __construct(User $user, UserNotificationType $type, ?array $metadata = null)
     {
         $this->user = $user;
         $this->type = $type->value;
-        $this->locale = $locale;
         $this->metadata = $metadata;
         $this->creationTime = new DateTimeImmutable();
     }
@@ -63,11 +59,6 @@ class UserNotification
     public function getCreationTime(): DateTimeImmutable
     {
         return $this->creationTime;
-    }
-
-    public function getLocale(): string
-    {
-        return $this->locale;
     }
 
     public function getMetadata(): ?array

@@ -17,8 +17,7 @@ class UserNotificationAdmin extends Admin
             ])
             ->add('type', null, [
                 'show_filter' => true,
-            ])
-            ->add('locale');
+            ]);
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -32,7 +31,6 @@ class UserNotificationAdmin extends Admin
                     return $object->getType()->value;
                 },
             ])
-            ->add('creationTime')
-            ->add('locale');
+            ->add('creationTime');
     }
 }

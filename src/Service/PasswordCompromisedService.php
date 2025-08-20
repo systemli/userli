@@ -7,6 +7,8 @@ namespace App\Service;
 use App\Entity\User;
 use App\Enum\UserNotificationType;
 use App\Event\UserNotificationEvent;
+use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -18,7 +20,8 @@ readonly class PasswordCompromisedService
     public function __construct(
         private UserNotificationRateLimiter $rateLimiter,
         private EventDispatcherInterface    $eventDispatcher,
-        private ValidatorInterface          $validator
+        private ValidatorInterface          $validator,
+        private LoggerInterface             $logger
     )
     {
     }
@@ -40,14 +43,23 @@ readonly class PasswordCompromisedService
             return;
         }
 
-        $constraint = new NotCompromisedPassword(skipOnError: true);
-        $violations = $this->validator->validate($password, $constraint);
+        try {
+            $constraint = new NotCompromisedPassword();
+            $violations = $this->validator->validate($password, $constraint);
 
-        if (count($violations) === 0) {
+            if (count($violations) === 0) {
+                return;
+            }
+        } catch (Exception $exception) {
+            $this->logger->error('Error validating compromised password', [
+                'email' => $user->getEmail(),
+                'error' => $exception->getMessage()
+            ]);
+
             return;
         }
 
-        $this->rateLimiter->save($user, UserNotificationType::PASSWORD_COMPROMISED, $locale);
-        $this->eventDispatcher->dispatch(new UserNotificationEvent($user, UserNotificationType::PASSWORD_COMPROMISED, $locale), UserNotificationEvent::NAME);
+        $this->rateLimiter->save($user, UserNotificationType::PASSWORD_COMPROMISED);
+        $this->eventDispatcher->dispatch(new UserNotificationEvent($user, UserNotificationType::PASSWORD_COMPROMISED, $locale), UserNotificationEvent::COMPROMISED_PASSWORD);
     }
 }
