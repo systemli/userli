@@ -415,20 +415,20 @@ mail:
   compromised-password-body: |
     Hallo %email%,
 
-    Wir haben festgestellt, dass du dich kürzlich in dein %project_name%-Konto mit einem Passwort eingeloggt hast, das in bekannten Datenlecks auftaucht. Das bedeutet, dass dein Passwort kompromittiert sein könnte und von Angreifern verwendet werden könnte, um auf dein Konto zuzugreifen.
+    Wir haben festgestellt, dass du dich kürzlich in dein %project_name%-Konto mit einem Passwort eingeloggt hast, das in bekannten Datenlecks auftaucht.
 
-    Zu deiner Sicherheit empfehlen wir dir dringend, dein Passwort sofort zu ändern unter:
+    Zu deiner Sicherheit empfehlen wir dir dringend, dein Passwort zu ändern unter:
     %app_url%/user/password
 
-    Bei der Wahl eines neuen Passworts:
+    Beachte bei der Wahl eines neuen Passworts:
     - Verwende ein einzigartiges Passwort, das du nirgendwo anders benutzt
     - Mache es lang und komplex mit einer Mischung aus Buchstaben, Zahlen und Symbolen
     - Erwäge einen Passwort-Manager zu verwenden, um sichere Passwörter zu generieren und zu speichern
 
-    Falls du Hilfe brauchst oder Fragen hast, zögere nicht, uns zu kontaktieren.
-
-    Bleib sicher,
-    Dein %project_name%-Verwaltungsteam.
+    Zögere nicht uns zu kontaktieren, falls du Hilfe brauchst.
+    
+    Solidarische Grüße,
+    Dein %project_name% admin team.
 admin:
   registered-accounts: Registrierte Nutzer
   registered-accounts-last-week: Registrierte Nuter in den letzten 7 Tagen
