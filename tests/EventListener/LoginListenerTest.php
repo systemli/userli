@@ -57,23 +57,13 @@ class LoginListenerTest extends TestCase
      */
     public function testOnSecurityInteractiveLogin(User $user, bool $shouldCreateMailCryptKey): void
     {
-        $this->mailCryptKeyHandler->expects($this->never())->method('create');
-
-        $event = $this->getInteractiveEvent($user);
-
-        $this->listener->onSecurityInteractiveLogin($event);
-    }
-
-    /**
-     * @dataProvider provider
-     */
-    public function testOnSecurityInteractiveLoginMailCrypt(User $user, bool $shouldCreateMailCryptKey): void
-    {
         if ($shouldCreateMailCryptKey) {
             $this->mailCryptKeyHandler->expects($this->once())->method('create');
         } else {
             $this->mailCryptKeyHandler->expects($this->never())->method('create');
         }
+
+        $this->userLastLoginUpdateService->expects($this->once())->method('updateLastLogin');
 
         $event = $this->getInteractiveEvent($user);
 
@@ -105,29 +95,18 @@ class LoginListenerTest extends TestCase
         return $event;
     }
 
-
     /**
      * @dataProvider provider
      */
     public function testOnAuthenticationHandlerSuccess(User $user, bool $shouldCreateMailCryptKey): void
-    {
-        $this->mailCryptKeyHandler->expects($this->never())->method('create');
-
-        $event = $this->getLoginEvent($user);
-
-        $this->listener->onAuthenticationHandlerSuccess($event);
-    }
-
-    /**
-     * @dataProvider provider
-     */
-    public function testOnAuthenticationHandlerSuccessMailCrypt(User $user, bool $shouldCreateMailCryptKey): void
     {
         if ($shouldCreateMailCryptKey) {
             $this->mailCryptKeyHandler->expects($this->once())->method('create');
         } else {
             $this->mailCryptKeyHandler->expects($this->never())->method('create');
         }
+
+        $this->userLastLoginUpdateService->expects($this->once())->method('updateLastLogin');
 
         $event = $this->getLoginEvent($user);
 
