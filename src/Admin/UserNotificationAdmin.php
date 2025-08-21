@@ -10,6 +10,11 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
 class UserNotificationAdmin extends Admin
 {
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+    {
+        return 'user-notification';
+    }
+
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
@@ -24,7 +29,7 @@ class UserNotificationAdmin extends Admin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->addIdentifier('id')
+            ->add('id')
             ->add('user')
             ->add('type', null, [
                 'label' => 'Type',
