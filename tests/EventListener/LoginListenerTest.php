@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Event\LoginEvent;
 use App\EventListener\LoginListener;
 use App\Handler\MailCryptKeyHandler;
+use App\Service\UserLastLoginUpdateService;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
@@ -19,7 +20,7 @@ use Psr\Log\LoggerInterface;
 
 class LoginListenerTest extends TestCase
 {
-    private EntityManagerInterface $manager;
+    private UserLastLoginUpdateService $userLastLoginUpdateService;
     private LoggerInterface $logger;
     private LoginListener $listener;
     private LoginListener $listenerMailCrypt;
@@ -27,7 +28,7 @@ class LoginListenerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->manager = $this->getMockBuilder(EntityManagerInterface::class)
+        $this->userLastLoginUpdateService = $this->getMockBuilder(UserLastLoginUpdateService::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->mailCryptKeyHandler = $this->getMockBuilder(MailCryptKeyHandler::class)
@@ -37,14 +38,14 @@ class LoginListenerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->listener = new LoginListener(
-            $this->manager,
+            $this->userLastLoginUpdateService,
             $this->mailCryptKeyHandler,
             $this->logger,
             2
         );
         // Enforces creation of mailCrypt on Login
         $this->listenerMailCrypt = new LoginListener(
-            $this->manager,
+            $this->userLastLoginUpdateService,
             $this->mailCryptKeyHandler,
             $this->logger,
             3
@@ -56,26 +57,13 @@ class LoginListenerTest extends TestCase
      */
     public function testOnSecurityInteractiveLogin(User $user, bool $shouldCreateMailCryptKey): void
     {
-        $this->manager->expects($this->once())->method('flush');
-        $this->mailCryptKeyHandler->expects($this->never())->method('create');
-
-        $event = $this->getInteractiveEvent($user);
-
-        $this->listener->onSecurityInteractiveLogin($event);
-    }
-
-    /**
-     * @dataProvider provider
-     */
-    public function testOnSecurityInteractiveLoginMailCrypt(User $user, bool $shouldCreateMailCryptKey): void
-    {
-        $this->manager->expects($this->once())->method('flush');
-
         if ($shouldCreateMailCryptKey) {
             $this->mailCryptKeyHandler->expects($this->once())->method('create');
         } else {
             $this->mailCryptKeyHandler->expects($this->never())->method('create');
         }
+
+        $this->userLastLoginUpdateService->expects($this->once())->method('updateLastLogin');
 
         $event = $this->getInteractiveEvent($user);
 
@@ -107,32 +95,18 @@ class LoginListenerTest extends TestCase
         return $event;
     }
 
-
     /**
      * @dataProvider provider
      */
     public function testOnAuthenticationHandlerSuccess(User $user, bool $shouldCreateMailCryptKey): void
     {
-        $this->manager->expects($this->once())->method('flush');
-        $this->mailCryptKeyHandler->expects($this->never())->method('create');
-
-        $event = $this->getLoginEvent($user);
-
-        $this->listener->onAuthenticationHandlerSuccess($event);
-    }
-
-    /**
-     * @dataProvider provider
-     */
-    public function testOnAuthenticationHandlerSuccessMailCrypt(User $user, bool $shouldCreateMailCryptKey): void
-    {
-        $this->manager->expects($this->once())->method('flush');
-
         if ($shouldCreateMailCryptKey) {
             $this->mailCryptKeyHandler->expects($this->once())->method('create');
         } else {
             $this->mailCryptKeyHandler->expects($this->never())->method('create');
         }
+
+        $this->userLastLoginUpdateService->expects($this->once())->method('updateLastLogin');
 
         $event = $this->getLoginEvent($user);
 
