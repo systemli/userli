@@ -33,4 +33,10 @@ class UserNotificationAdmin extends Admin
             ])
             ->add('creationTime');
     }
+    
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
+        $collection->remove('create');
+        $collection->remove('edit');
+    }
 }
