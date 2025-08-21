@@ -14,10 +14,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'app:user:notification:cleanup',
+    name: 'app:users:notification:cleanup',
     description: 'Clean up old user notifications'
 )]
-class UserNotificationCleanupCommand extends Command
+class UsersNotificationCleanupCommand extends Command
 {
     public function __construct(
         private readonly UserNotificationRepository $repository

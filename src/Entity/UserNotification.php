@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserNotificationRepository::class)]
 #[ORM\Table(name: 'user_notification')]
-#[ORM\Index(columns: ['user_id', 'type', 'creation_time'], name: 'idx_user_type_sent_at')]
+#[ORM\Index(columns: ['user_id', 'type', 'creation_time'], name: 'idx_user_type_creation_time')]
 #[ORM\Index(columns: ['user_id', 'type'], name: 'idx_user_type')]
 class UserNotification
 {

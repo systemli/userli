@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Command;
 
-use App\Command\UserNotificationCleanupCommand;
+use App\Command\UsersNotificationCleanupCommand;
 use App\Repository\UserNotificationRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -12,16 +12,16 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class UserNotificationCleanupCommandTest extends TestCase
+class UsersNotificationCleanupCommandTest extends TestCase
 {
     private UserNotificationRepository|MockObject $repository;
-    private UserNotificationCleanupCommand $command;
+    private UsersNotificationCleanupCommand $command;
     private CommandTester $commandTester;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(UserNotificationRepository::class);
-        $this->command = new UserNotificationCleanupCommand($this->repository);
+        $this->command = new UsersNotificationCleanupCommand($this->repository);
 
         $application = new Application();
         $application->add($this->command);
@@ -213,11 +213,11 @@ class UserNotificationCleanupCommandTest extends TestCase
     {
         $command = $this->command;
 
-        $this->assertEquals('app:user:notification:cleanup', $command->getName());
+        $this->assertEquals('app:users:notification:cleanup', $command->getName());
         $this->assertEquals('Clean up old user notifications', $command->getDescription());
 
         $definition = $command->getDefinition();
-        
+
         // Test days option
         $this->assertTrue($definition->hasOption('days'));
         $daysOption = $definition->getOption('days');
