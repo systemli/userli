@@ -58,6 +58,7 @@ function script_init()
         method = "GET";
     }
     http_request:add_header("Content-Type","application/json")
+    http_request:add_header("Accept","application/json")
     http_request:add_header("Authorization","Bearer " .. env_userli_token)
     local http_response = http_request:submit()
     if http_response:status() == 200 then
@@ -78,6 +79,7 @@ function auth_userdb_lookup(request)
         method = "GET";
     }
     http_request:add_header("Content-Type","application/json")
+    http_request:add_header("Accept","application/json")
     http_request:add_header("Authorization","Bearer " .. env_userli_token)
     local http_response = http_request:submit()
 
@@ -126,6 +128,7 @@ function auth_password_verify(request, password)
         method = "POST"
     }
     http_request:add_header("Content-Type","application/json")
+    http_request:add_header("Accept","application/json")
     http_request:add_header("Authorization","Bearer " .. env_userli_token)
     http_request:set_payload(json.encode({password = password}))
     local http_response = http_request:submit()
