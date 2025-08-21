@@ -6,6 +6,7 @@ namespace App\Admin;
 
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
 class UserNotificationAdmin extends Admin
@@ -19,6 +20,17 @@ class UserNotificationAdmin extends Admin
             ->add('type', null, [
                 'show_filter' => true,
             ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $show): void
+    {
+        $show
+            ->add('id')
+            ->add('user')
+            ->add('creationTime');
     }
 
     protected function configureListFields(ListMapper $list): void
