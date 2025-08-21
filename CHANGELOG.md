@@ -1,10 +1,33 @@
 # Changelog
 
-## 4.2.0 (UNRELEASED)
+## 4.2.0 (2025.08.21)
 
 ### Features and Improvements
 
 - ✨ Send email notification when a user has compromised password
+- 🔒️ Obfuscate last login time
+
+### Database Changes
+
+- Add `user_notification` table to store user notifications
+
+```sql
+CREATE TABLE user_notification
+(
+    id            INT AUTO_INCREMENT NOT NULL,
+    user_id       INT         NOT NULL,
+    type          VARCHAR(50) NOT NULL,
+    creation_time DATETIME    NOT NULL COMMENT '(DC2Type:datetime_immutable)',
+    metadata      JSON DEFAULT NULL COMMENT '(DC2Type:json)',
+    INDEX         IDX_3F980AC8A76ED395 (user_id),
+    INDEX         idx_user_type_creation_time (user_id, type, creation_time),
+    INDEX         idx_user_type (user_id, type),
+    PRIMARY KEY (id)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;
+
+ALTER TABLE user_notification
+    ADD CONSTRAINT FK_3F980AC8A76ED395 FOREIGN KEY (user_id) REFERENCES virtual_users (id) ON DELETE CASCADE;
+```
 
 ## 4.1.1 (2025.08.11)
 
