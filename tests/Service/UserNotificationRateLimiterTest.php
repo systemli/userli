@@ -40,7 +40,6 @@ class UserNotificationRateLimiterTest extends TestCase
         // Set an ID through reflection since it's normally set by Doctrine
         $reflection = new \ReflectionClass($this->user);
         $idProperty = $reflection->getProperty('id');
-        $idProperty->setAccessible(true);
         $idProperty->setValue($this->user, 123);
     }
 
@@ -153,8 +152,8 @@ class UserNotificationRateLimiterTest extends TestCase
                 'Error checking notification rate limit',
                 $this->callback(function ($context) {
                     return $context['email'] === 'test@example.org' &&
-                           $context['type'] === UserNotificationType::PASSWORD_COMPROMISED &&
-                           $context['error'] === 'Cache error';
+                        $context['type'] === UserNotificationType::PASSWORD_COMPROMISED &&
+                        $context['error'] === 'Cache error';
                 })
             );
 
@@ -166,16 +165,15 @@ class UserNotificationRateLimiterTest extends TestCase
 
     public function testSaveSuccess(): void
     {
-        $locale = 'de';
         $metadata = ['source' => 'login'];
 
         $this->repository
             ->expects($this->once())
             ->method('save')
-            ->with($this->callback(function ($notification) use ($locale, $metadata) {
+            ->with($this->callback(function ($notification) use ($metadata) {
                 return $notification instanceof UserNotification &&
-                       $notification->getUser() === $this->user &&
-                       $notification->getMetadata() === $metadata;
+                    $notification->getUser() === $this->user &&
+                    $notification->getMetadata() === $metadata;
             }));
 
         $cacheItem = $this->createMock(CacheItemInterface::class);
@@ -203,15 +201,13 @@ class UserNotificationRateLimiterTest extends TestCase
 
     public function testSaveWithoutMetadata(): void
     {
-        $locale = 'en';
-
         $this->repository
             ->expects($this->once())
             ->method('save')
-            ->with($this->callback(function ($notification) use ($locale) {
+            ->with($this->callback(function ($notification) {
                 return $notification instanceof UserNotification &&
-                       $notification->getUser() === $this->user &&
-                       $notification->getMetadata() === null;
+                    $notification->getUser() === $this->user &&
+                    $notification->getMetadata() === null;
             }));
 
         $cacheItem = $this->createMock(CacheItemInterface::class);
@@ -230,8 +226,6 @@ class UserNotificationRateLimiterTest extends TestCase
 
     public function testSaveWithRepositoryException(): void
     {
-        $locale = 'fr';
-
         $this->repository
             ->expects($this->once())
             ->method('save')
@@ -244,8 +238,8 @@ class UserNotificationRateLimiterTest extends TestCase
                 'Error recording notification rate limit',
                 $this->callback(function ($context) {
                     return $context['email'] === 'test@example.org' &&
-                           $context['type'] === UserNotificationType::PASSWORD_COMPROMISED &&
-                           $context['error'] === 'Database error';
+                        $context['type'] === UserNotificationType::PASSWORD_COMPROMISED &&
+                        $context['error'] === 'Database error';
                 })
             );
 
@@ -260,8 +254,6 @@ class UserNotificationRateLimiterTest extends TestCase
 
     public function testSaveWithCacheException(): void
     {
-        $locale = 'es';
-
         $this->repository
             ->expects($this->once())
             ->method('save');
@@ -278,8 +270,8 @@ class UserNotificationRateLimiterTest extends TestCase
                 'Error caching rate limit',
                 $this->callback(function ($context) {
                     return $context['email'] === 'test@example.org' &&
-                           $context['type'] === UserNotificationType::PASSWORD_COMPROMISED &&
-                           $context['error'] === 'Cache error';
+                        $context['type'] === UserNotificationType::PASSWORD_COMPROMISED &&
+                        $context['error'] === 'Cache error';
                 })
             );
 
@@ -296,7 +288,6 @@ class UserNotificationRateLimiterTest extends TestCase
         $user2->setEmail('user2@example.org');
         $reflection = new \ReflectionClass($user2);
         $idProperty = $reflection->getProperty('id');
-        $idProperty->setAccessible(true);
         $idProperty->setValue($user2, 456);
 
         $cacheItem1 = $this->createMock(CacheItemInterface::class);
@@ -308,11 +299,13 @@ class UserNotificationRateLimiterTest extends TestCase
         $this->cache
             ->expects($this->exactly(2))
             ->method('getItem')
-            ->withConsecutive(
-                ['user_notification_123_password_compromised'],
-                ['user_notification_456_password_compromised']
-            )
-            ->willReturnOnConsecutiveCalls($cacheItem1, $cacheItem2);
+            ->willReturnCallback(function ($key) use ($cacheItem1, $cacheItem2) {
+                return match ($key) {
+                    'user_notification_123_password_compromised' => $cacheItem1,
+                    'user_notification_456_password_compromised' => $cacheItem2,
+                    default => throw new \InvalidArgumentException("Unexpected cache key: $key")
+                };
+            });
 
         $this->repository
             ->method('hasRecentNotification')
