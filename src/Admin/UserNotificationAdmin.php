@@ -6,6 +6,7 @@ namespace App\Admin;
 
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
 class UserNotificationAdmin extends Admin
 {
@@ -33,7 +34,7 @@ class UserNotificationAdmin extends Admin
             ])
             ->add('creationTime');
     }
-    
+
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('create');
