@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.2.0 (UNRELEASED)
+
+### Features and Improvements
+
+- ✨ Send email notification when a user has compromised password
+
 ## 4.1.1 (2025.08.11)
 
 - ♻️ Recognize JSON Requests and return JSON responses

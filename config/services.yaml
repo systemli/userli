@@ -37,6 +37,11 @@ services:
       $appUrl: "%env(APP_URL)%"
       $projectName: "%env(PROJECT_NAME)%"
 
+  App\Builder\CompromisedPasswordMessageBuilder:
+    arguments:
+      $appUrl: "%env(APP_URL)%"
+      $projectName: "%env(PROJECT_NAME)%"
+
   App\Builder\RecoveryProcessMessageBuilder:
     arguments:
       $appUrl: "%env(APP_URL)%"
@@ -78,6 +83,10 @@ services:
     resource: "../src/EventListener/*"
     tags:
       - { name: kernel.event_subscriber }
+
+  App\EventListener\CompromisedPasswordListener:
+    arguments:
+      $defaultLocale: "%locale%"
 
   App\EventListener\LoginListener:
     arguments:
@@ -167,6 +176,19 @@ services:
       - [setMailCryptKeyHandler, ['@App\Handler\MailCryptKeyHandler']]
       - [setMailCryptVar, ["%env(MAIL_CRYPT)%"]]
       - [setSecurity, ['@Symfony\Bundle\SecurityBundle\Security']]
+
+  userli.admin.user_notification:
+    class: App\Admin\UserNotificationAdmin
+    public: true
+    tags:
+      - {
+          name: sonata.admin,
+          manager_type: orm,
+          group: "Mail",
+          label: "User Notification",
+          code: userli.admin.user_notification,
+          model_class: App\Entity\UserNotification,
+        }
 
   userli.admin.domain:
     class: App\Admin\DomainAdmin
