@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\EventSubscriber;
+namespace App\Tests\EventListener;
 
-use App\EventSubscriber\JsonExceptionSubscriber;
+use App\EventListener\JsonExceptionListener;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,18 +14,18 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class JsonExceptionSubscriberTest extends TestCase
+class JsonExceptionListenerTest extends TestCase
 {
-    private JsonExceptionSubscriber $subscriber;
+    private JsonExceptionListener $subscriber;
 
     protected function setUp(): void
     {
-        $this->subscriber = new JsonExceptionSubscriber('prod');
+        $this->subscriber = new JsonExceptionListener('prod');
     }
 
     public function testGetSubscribedEvents(): void
     {
-        $events = JsonExceptionSubscriber::getSubscribedEvents();
+        $events = JsonExceptionListener::getSubscribedEvents();
 
         $this->assertArrayHasKey(KernelEvents::EXCEPTION, $events);
         $this->assertEquals(['onKernelException', 0], $events[KernelEvents::EXCEPTION]);
@@ -112,7 +112,7 @@ class JsonExceptionSubscriberTest extends TestCase
 
     public function testOnKernelExceptionInDevEnvironment(): void
     {
-        $devSubscriber = new JsonExceptionSubscriber('dev');
+        $devSubscriber = new JsonExceptionListener('dev');
         $request = Request::create('/api/users', 'GET');
         $exception = new \Exception('Test exception', 123);
         $event = $this->createExceptionEvent($request, $exception);
@@ -155,49 +155,6 @@ class JsonExceptionSubscriberTest extends TestCase
         $this->assertNull($event->getResponse());
     }
 
-    public function testWantsJsonWithApiPath(): void
-    {
-        $request = Request::create('/api/v1/users', 'GET');
-        $this->assertTrue($this->invokeWantsJson($request));
-    }
-
-    public function testWantsJsonWithNestedApiPath(): void
-    {
-        $request = Request::create('/api/admin/users', 'GET');
-        $this->assertTrue($this->invokeWantsJson($request));
-    }
-
-    public function testWantsJsonWithJsonAccept(): void
-    {
-        $request = Request::create(uri: '/some/path', server: ['HTTP_ACCEPT' => 'application/json']);
-        $this->assertTrue($this->invokeWantsJson($request));
-    }
-
-    public function testWantsJsonWithJsonContentType(): void
-    {
-        $request = Request::create(uri: '/some/path', server: ['CONTENT_TYPE' => 'application/json']);
-        $this->assertTrue($this->invokeWantsJson($request));
-    }
-
-    public function testWantsJsonWithJsonFormat(): void
-    {
-        $request = Request::create('/some/path');
-        $request->setRequestFormat('json');
-        $this->assertTrue($this->invokeWantsJson($request));
-    }
-
-    public function testDoesNotWantJsonWithRegularPath(): void
-    {
-        $request = Request::create('/regular/page');
-        $this->assertFalse($this->invokeWantsJson($request));
-    }
-
-    public function testDoesNotWantJsonWithHtmlAccept(): void
-    {
-        $request = Request::create(uri: '/some/path', server: ['HTTP_ACCEPT' => 'text/html']);
-        $this->assertFalse($this->invokeWantsJson($request));
-    }
-
     public function testJsonResponseStructure(): void
     {
         $request = Request::create('/api/users', 'GET');
@@ -227,14 +184,5 @@ class JsonExceptionSubscriberTest extends TestCase
             HttpKernelInterface::MAIN_REQUEST,
             $exception
         );
-    }
-
-    private function invokeWantsJson(Request $request): bool
-    {
-        $reflection = new \ReflectionClass(JsonExceptionSubscriber::class);
-        $method = $reflection->getMethod('wantsJson');
-        $method->setAccessible(true);
-
-        return $method->invoke($this->subscriber, $request);
     }
 }

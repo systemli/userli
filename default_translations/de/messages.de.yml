@@ -174,6 +174,10 @@ account:
       <strong>Passwortrichtlinie:</strong> Mindestens 12 Zeichen, keine deutschen Umlaute.
       Passwörter werden anhand einer <a href="https://haveibeenpwned.com/Passwords">Datenbank
       mit bekannten fehlerhaften Passwörtern</a> geprüft.
+    change_required: >
+      <strong>Passwortänderung erforderlich:</strong> Zu deiner Sicherheit musst du jetzt dein Passwort ändern.
+      Bitte wähle ein sicheres Passwort, das nur du kennst.
+      Nach der Änderung deines Passworts kannst du dein Konto wie gewohnt weiter nutzen.
   twofactor:
     title: Zwei-Faktor-Authentifizierung
     desc: Sichere dein Konto mit 2FA

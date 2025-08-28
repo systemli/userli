@@ -87,6 +87,7 @@ class AccountController extends AbstractController
                 $this->mailCryptKeyHandler->update($user, $form->getData()->getPassword(), $form->getData()->getNewPassword());
             }
 
+            $user->setPasswordChangeRequired(false);
             $user->eraseCredentials();
 
             $this->manager->flush();

@@ -77,6 +77,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     #[Assert\NotBlank]
     private array $roles = [];
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $passwordChangeRequired;
+
     /**
      * User constructor.
      */
@@ -84,6 +87,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     {
         $this->deleted = false;
         $this->passwordVersion = self::CURRENT_PASSWORD_VERSION;
+        $this->passwordChangeRequired = false;
         $currentDateTime = new DateTime();
         $this->creationTime = $currentDateTime;
         $this->updatedTime = $currentDateTime;
@@ -152,5 +156,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         $this->plainPassword = null;
         $this->erasePlainMailCryptPrivateKey();
         $this->erasePlainRecoveryToken();
+    }
+
+    public function isPasswordChangeRequired(): bool
+    {
+        return $this->passwordChangeRequired;
+    }
+
+    public function setPasswordChangeRequired(bool $passwordChangeRequired): void
+    {
+        $this->passwordChangeRequired = $passwordChangeRequired;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Dto\DovecotPassdbDto;
@@ -88,8 +90,8 @@ class DovecotController extends AbstractController
         #[MapEntity(mapping: ['email' => 'email'])] User $user,
         #[MapRequestPayload] DovecotPassdbDto $request,
     ): JsonResponse {
-        // Spammers are excluded from login
-        if ($user->isDeleted() || $user->hasRole(Roles::SPAM)) {
+        // Authentication is not possible for deleted users, spammers and users required to change password
+        if ($user->isDeleted() || $user->hasRole(Roles::SPAM) || $user->isPasswordChangeRequired()) {
             return $this->json(['message' => self::MESSAGE_USER_NOT_FOUND], Response::HTTP_NOT_FOUND);
         }
 

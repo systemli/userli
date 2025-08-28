@@ -46,7 +46,9 @@ class UserAdmin extends Admin
      */
     protected function alterNewInstance(object $object): void
     {
+        /** @var $object User */
         $object->setRoles([Roles::USER]);
+        $object->setPasswordChangeRequired(true);
     }
 
     /**
@@ -81,6 +83,10 @@ class UserAdmin extends Admin
             ])
             ->add('quota', null, [
                 'help' => 'Custom mailbox quota in MB',
+            ])
+            ->add('passwordChangeRequired', CheckboxType::class, [
+                'required' => false,
+                'help' => 'User must change password on next login',
             ])
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
     }
@@ -128,7 +134,8 @@ class UserAdmin extends Admin
                     return true;
                 },
             ])
-            ->add('mailCrypt')
+            ->add('mailCryptEnabled')
+            ->add('passwordChangeRequired')
             ->add('deleted');
     }
 
@@ -226,7 +233,7 @@ class UserAdmin extends Admin
 
     public function setMailCryptVar(string $mailCrypt): void
     {
-        $this->mailCrypt = MailCrypt::from((int) $mailCrypt);
+        $this->mailCrypt = MailCrypt::from((int)$mailCrypt);
     }
 
     public function setSecurity(Security $security): void

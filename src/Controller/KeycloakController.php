@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Dto\KeycloakUserValidateDto;
@@ -20,6 +22,8 @@ class KeycloakController extends AbstractController
     const MESSAGE_SUCCESS = 'success';
 
     const MESSAGE_AUTHENTICATION_FAILED = 'authentication failed';
+
+    const MESSAGE_PASSWORD_CHANGE_REQUIRED = 'password change required';
 
     const MESSAGE_USER_NOT_FOUND = 'user not found';
 
@@ -103,6 +107,10 @@ class KeycloakController extends AbstractController
             return $this->json([
                 'message' => self::MESSAGE_USER_NOT_FOUND,
             ], Response::HTTP_NOT_FOUND);
+        }
+
+        if ($user->isPasswordChangeRequired()) {
+            return $this->json(['message' => self::MESSAGE_PASSWORD_CHANGE_REQUIRED], Response::HTTP_FORBIDDEN);
         }
 
         return match ($credentialType) {
