@@ -131,6 +131,10 @@ account:
       <strong>Password policy:</strong> At least 12 characters, no German umlauts.
       Passwords will be tested against a <a href="https://haveibeenpwned.com/Passwords">database
       of known bad passwords</a>.
+    change_required: >
+      <strong>Password change required:</strong> For your security, you must now change your password.
+      Please choose a secure password that only you know.
+      After changing your password, you can continue to use your account as usual.
   twofactor:
     title: Two-Factor Authentication
     desc: Secure your account with 2FA

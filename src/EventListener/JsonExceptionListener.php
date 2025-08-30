@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\EventSubscriber;
+namespace App\EventListener;
 
+use App\Helper\JsonRequestHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-readonly class JsonExceptionSubscriber implements EventSubscriberInterface
+readonly class JsonExceptionListener implements EventSubscriberInterface
 {
     public function __construct(
         private string $environment
@@ -30,7 +30,7 @@ readonly class JsonExceptionSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
-        if (!$this->wantsJson($request)) {
+        if (!JsonRequestHelper::wantsJson($request)) {
             return;
         }
 
@@ -57,13 +57,5 @@ readonly class JsonExceptionSubscriber implements EventSubscriberInterface
 
         $response = new JsonResponse($data, $statusCode);
         $event->setResponse($response);
-    }
-
-    private function wantsJson(Request $request): bool
-    {
-        return str_starts_with($request->getPathInfo(), '/api/')
-            || in_array('application/json', $request->getAcceptableContentTypes())
-            || $request->headers->get('Content-Type') === 'application/json'
-            || $request->getRequestFormat() === 'json';
     }
 }
