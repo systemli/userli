@@ -11,10 +11,9 @@ start:
   title: Velkommen til %domain%
   intro: Her kan du sette opp og håndtere din e-postkonto.
   registration-header: Registrering
-  registration-text:
-    "Har du ikke en e-postkonto på %domain% enda? Ikke noe problem.\
-    \ Hvis én av vennene dine allerede har en konto, kan du få en invitasjonskode\
-    \ fra vedkommende og sette opp egen konto omgående.\n"
+  registration-text: >
+    Har du ikke en e-postkonto på %domain% enda? Ikke noe problem.
+    Hvis én av vennene dine allerede har en konto, kan du få en invitasjonskode fra vedkommende og sette opp egen konto omgående.
   registration-button: Opprett konto
   account-settings: Kontoinnstillinger
   account-settings-desc: Passord og mer
@@ -29,12 +28,9 @@ index:
   voucher-limit: Du har ingen invitasjonskoder igjen.
   voucher-waiting-title: Venter på nye invitasjonskoder
   voucher-empty-title: Ingen invitasjonskoder opprettet ennå
-  voucher-empty-multiplier: >
-    Opprett en ny invitasjonskode for å invitere venner.
+  voucher-empty-multiplier: Opprett en ny invitasjonskode for å invitere venner.
   voucher-limit-title: Grense for invitasjonskoder nådd
-  voucher-disable:
-    "Den %date% vil du motta tre invitasjonskoder. Dette for å unngå\
-    \ masseregistreringer og søppelpost.\n"
+  voucher-disable: Den %date% vil du motta tre invitasjonskoder. Dette for å unngå masseregistreringer og søppelpost.
   alias-limit: Du har nådd tillatt grense på %alias_limit% %alias_type% alias-adresser.
   alias-deletion-custom: Skriv til oss for å få adresser slettet.
   alias-deletion-random: Så snart du sletter gamle adresser, kan du opprette nye igjen.
@@ -65,9 +61,7 @@ form:
   generate-recovery-token: Opprett nytt gjenopprettingssymbol
   recovery-token: Gjenopprettingssymbol
   recovery-start: Gjenopprett
-  registration-recovery-token-confirm:
-    Jeg lagret gjenopprettingssymbolet på et sikkert
-    sted
+  registration-recovery-token-confirm: Jeg lagret gjenopprettingssymbolet på et sikkert sted
   registration-recovery-token-next-button: Fortsett
   plain-password: Nytt passord
   plain-password_confirmation: Bekreft nytt passord
@@ -81,10 +75,10 @@ recovery:
   waiting-time: Andre steg starter %time%.
   reset-lead: Du kan nå tilbakestille passordet ditt
   token-lead: Nytt gjenopprettingssymbol
-  started:
-    "Første steg i gjenoppretting av passordet ditt er ferdig.\nVent i 48 timer.\
-    \ Deretter kan du sette et nytt passord i andre steg.\nBehold gjenopprettingssymbolet\
-    \ dit til da.\n"
+  started: >
+    Første steg i gjenoppretting av passordet ditt er ferdig.
+    Vent i 48 timer. Deretter kan du sette et nytt passord i andre steg.
+    Behold gjenopprettingssymbolet dit til da.
 navbar_right:
   login: Logg inn
   logout: Logg ut
@@ -96,32 +90,24 @@ registration:
   information: Info
   label-email: Din foretrukne e-postadresse
   recovery-token-headline: Gjenopprettingssymbol
-  information-intro:
-    "Ønsker du å registrere en e-postkonto med <a href=\"%project_url%\"\
-    >%project_name%</a>? Registreringer tillates kun hvis en venn inviterer deg med\
-    \ en invitasjonskode til tjenestene.\n"
+  information-intro: >
+    Ønsker du å registrere en e-postkonto med <a href="%project_url%">%project_name%</a>?
+    Registreringer tillates kun hvis en venn inviterer deg med en invitasjonskode til tjenestene.
 welcome:
   headline: Velkommen til %project_name%.
   lead: Du har nå satt opp en konto hos oss. Hva skal du foreta deg nå?
   next-button: Til oversikten
-  text:
-    "<h3>Klar til bruk</h3> <p>På veven kan du finne veiledninger for å sette\
-    \ opp din e-postkonto med forskjellige klientprogrammer.</p> <p>Om én uke vil\
-    \ du motta tre invitasjonskoder, som du kan samle på <a href=\"%app_url%\">%app_url%</a>.\
-    \ Du kan gi disse til venner og invitere dem til å registrere seg på %project_name%.</p>\n"
+  text: >
+    <h3>Klar til bruk</h3>
+    På veven kan du finne veiledninger for å sette opp din e-postkonto med forskjellige klientprogrammer.
+    Om én uke vil du motta tre invitasjonskoder, som du kan samle på <a href="%app_url%">%app_url%</a>.
+    Du kan gi disse til venner og invitere dem til å registrere seg på %project_name%.
 closed:
   headline: Registrering stengt
-  lead:
-    Som følge av paragraf tre i TKÜV, har vi besluttet å stenge registreringen.
-    Beklager.
-  text:
-    "<p>Som følge av <a href=\"https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html\"\
-    \ target=\"_blank\">paragraf 3 av \"Verordnung über die technische und organisatorische\
-    \ Umsetzung von Maßnahmen zur Überwachung der Telekommunikation\"</a> (kort: telekommunikasjonsovervåknings-dekret\
-    \ - \"TKÜV\") er e-posttilbydere med mer enn 10000 brukere tvunget til å implementere\
-    \ et overvåkningsgrensesnitt for myndighetene. Derfor har vi besluttet å låse\
-    \ registreringen, og ikke tillate opprettelse av nye kontoer.<p>\n<p><strong>Dette\
-    \ har ingen innvirkning på eksisterende kontoer</strong></p>\n"
+  lead: Som følge av paragraf tre i TKÜV, har vi besluttet å stenge registreringen. Beklager.
+  text: >
+    Som følge av <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">paragraf 3 av "Verordnung über die technische und organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (kort: telekommunikasjonsovervåknings-dekret - "TKÜV") er e-posttilbydere med mer enn 10000 brukere tvunget til å implementere et overvåkningsgrensesnitt for myndighetene. Derfor har vi besluttet å låse registreringen, og ikke tillate opprettelse av nye kontoer.
+    <strong>Dette har ingen innvirkning på eksisterende kontoer</strong>
 delete:
   user:
     headline: Slett konto
@@ -129,21 +115,15 @@ delete:
   cancel: Avbryt
 recovery-token:
   headline: Håndter gjenopprettingssymbol
-  lead:
-    Gjenopprettingssymbolet kan brukes til å tilbakestille passordet ditt hvis
-    du glemmer det.
+  lead: Gjenopprettingssymbolet kan brukes til å tilbakestille passordet ditt hvis du glemmer det.
   set: Du har allerede satt opp et gjenopprettingssymbol.
   set-extra: Oppretting av nytt symbol ugyldiggjør det nåværende symbolet.
-  unset:
-    Du har ikke noe gjenopprettingssymbol satt opp enda. Det anbefales at du
-    oppretter et nå.
+  unset: Du har ikke noe gjenopprettingssymbol satt opp enda. Det anbefales at du oppretter et nå.
   created-headline: "Følgende gjenopprettingssymbol ble opprettet for deg:"
-  created-info:
-    "Hvis du har mistet passordet ditt, vil gjenopprettingssymbolet tillate\
-    \ deg å tilbakestille det. Skriv det ned og lagre det på en sikker plass.\n"
-  displayed-once:
-    "Av sikkerhetshensyn, blir sikkerhetssymbolet kun vist én gang.\
-    \ Ingen kan gjenopprette deg for deg.\n"
+  created-info: >
+    Hvis du har mistet passordet ditt, vil gjenopprettingssymbolet tillate deg å tilbakestille det.
+    Skriv det ned og lagre det på en sikker plass.
+  displayed-once: Av sikkerhetshensyn, blir sikkerhetssymbolet kun vist én gang. Ingen kan gjenopprette deg for deg.
 flashes:
   logout-successful: Du har blitt utlogget.
   voucher-creation-successful: Ny invitasjonskode opprettet.
@@ -163,17 +143,17 @@ error:
   back_link: Tilbake til hjemmesiden
 spam:
   title: Konto låst
-  text:
-    "Oida. Det ser ut til at kontoen din har blitt misbrukt av en søppelposter.\n\
-    E-posttilgang har blitt avskrudd.\nKontakt brukerstøtte for å låse opp kontoen\
-    \ din.\n"
+  text: >
+    Oida. Det ser ut til at kontoen din har blitt misbrukt av en søppelposter.
+    E-posttilgang har blitt avskrudd.
+    Kontakt brukerstøtte for å låse opp kontoen din.
 Bad credentials.: Feil innloggingsdetaljer
 custom: egendefinert
 random: tilfeldig
 mail:
   welcome-subject: Velkommen til %domain%
   alias-created-subject: Ny alias-adresse opprettet
-  welcome-body: |
+  welcome-body: >
     Kjære bruker,
 
     Velkommen om bord. Du kan finne veiledninger for oppsett av din e-postkonto
@@ -188,7 +168,7 @@ mail:
 
     Ærbødigst, ditt %project_name%-administratorlag.
   recovery-subject: Passordet for din e-postkonto %email% vil bli tilbakestilt
-  recovery-body: |
+  recovery-body: >
     Hei %email%,
 
     Noen har forsøkt å tilbakestille ditt kontopassord. For å gjøre dette,
@@ -207,7 +187,7 @@ mail:
 
     Vi håper du vil fortsette å ha glede av din e-postkonto.
     Ditt %project_name%-administratorlag.
-  alias-created-body: |
+  alias-created-body: >
     Hei %email%,
 
     Et nytt alias har blitt satt opp for %email% e-postkontoen din:
@@ -236,6 +216,4 @@ init_domain:
   text: Velg ditt primære domene, som Userli skal håndtere.
 init_user:
   lead: Du har opprettet ditt primære domene.
-  text:
-    E-poststandarder krever at kontoen postmaster@%domain% finnes. Velg et passord
-    for denne første administratorkontoen og logg inn etterpå.
+  text: E-poststandarder krever at kontoen postmaster@%domain% finnes. Velg et passord for denne første administratorkontoen og logg inn etterpå.

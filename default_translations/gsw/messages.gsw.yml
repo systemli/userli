@@ -48,13 +48,10 @@ index:
   voucher-limit: Du hesch ke Invite Codes meh übrig.
   voucher-waiting-title: Wartä uf nöii Invite Codes
   voucher-empty-title: No keni Invite Codes ersteut
-  voucher-empty-multiplier: >
-    Ersteu e nöii Invite Code zum Fründe iiladä.
+  voucher-empty-multiplier: Ersteu e nöii Invite Code zum Fründe iiladä.
   voucher-limit-title: Limite vo Invite Codes erreicht
   title: Di E-Mail Account verwaute
-  voucher-disable:
-    "Am %date% bechunnsch drü Invite Codes. Das isch so glöst zum Masse-Regischtrierige\
-    \ und Spam verhindere.\n"
+  voucher-disable: Am %date% bechunnsch drü Invite Codes. Das isch so glöst zum Masse-Regischtrierige und Spam verhindere.
   alias-limit: Du hesch s Limit vo %alias_limit% %alias_type% Alias Adrässene erreicht.
 admin:
   registered-accounts-last-week: Regischtrierti Accounts ide letschte 7 Täg
@@ -67,19 +64,15 @@ delete:
     headline: Account lösche
     lead: Mir müesse dis Passwort verifiziere zum di Account chönne lösche.
   cancel: Abbräche
-  openpgp:
-    headline: ""
-    lead: ""
 start:
   aliases: Alias Adrässene
   account-settings: Account Iischtellige
   aliases-desc: Dini Identität verschtecke
   registration-button: Account erschteue
   vouchers: Invite Codes
-  registration-text:
-    "Du hesch no ke E-Mail Account bi %domain%? Kes Problem! We eine\
-    \ vo dine Fründe scho e Account het, frag ne doch umne Invite Code und erschteu\
-    \ dr sofort di Account.\n"
+  registration-text: >
+    Du hesch no ke E-Mail Account bi %domain%? Kes Problem!
+    We eine vo dine Fründe scho e Account het, frag ne doch umne Invite Code und erschteu dr sofort di Account.
   intro: Hie chasch e E-Mail Account erschteue und verwaute.
   registration-header: Regischtration
   vouchers-desc: Lad dini Fründe ii
@@ -88,12 +81,11 @@ start:
   title: Wiukomme bi %domain%
   webmail: Webmail
 welcome:
-  text:
-    "<h3>Gschafft</h3> <p>Im Internet fingsch Aleitige wie du die E-Mail Account\
-    \ i verschiedenschte Programm konfiguriere chasch.</p> <p>I einere Wuche bechunnsch\
-    \ du drü Invite Codes wo bi <a href=\"%app_url%\">%app_url%</a> chasch abhole.\
-    \ Du chasch die dine Fründe witerleite und se drmit ilade e Account bi %project_name%\
-    \ z erschteue.</p>\n"
+  text: >
+    <h3>Gschafft</h3>
+    Im Internet fingsch Aleitige wie du die E-Mail Account i verschiedenschte Programm konfiguriere chasch.
+    I einere Wuche bechunnsch du drü Invite Codes wo bi <a href=\"%app_url%\">%app_url%</a> chasch abhole.
+    Du chasch die dine Fründe witerleite und se drmit ilade e Account bi %project_name% z erschteue.
   lead: Du hesch erfougriich e Account bi üs erschteut. Was si die nächschte Schritte?
   headline: Wiukomme bi %project_name%!
   next-button: Zur Übersicht
@@ -101,29 +93,23 @@ recovery:
   lead: S Passwort mittem Recovery Token zrüggsetze
   token-lead: Nöis Recovery Token
   header: Di Account wiederhärschteue
-  waiting-info:
+  waiting-info: >
     Die Wartezyt isch für dini eigeti Sicherheit und cha weder verchürzt
     no überschprunge wärde.
   waiting-time: Dr zwöit Schritt startet am %time%.
   reset-lead: Du hesch ke Berächtigung zum dis Passwort zrüggzsetze
-  started:
-    "Dr erscht Schritt zum Passwort zrüggsetze isch erledigt.\nIz muesch 48\
-    \ Schtung warte. Ab denn chasch es nöis Passwort setze im zwöite Schritt.\nBitte\
-    \ bewahr dis Recovery Token bis denn uf.\n"
+  started: >
+    Dr erscht Schritt zum Passwort zrüggsetze isch erledigt.
+    Iz muesch 48 Schtung warte. Ab denn chasch es nöis Passwort setze im zwöite Schritt.
+    Bitte bewahr dis Recovery Token bis denn uf.
   cancel: Abbbräche
 recovery-token:
   set: Du hesch bereits es Recovery Token gsetzt.
   set-extra: S Erschteue vomne nöie Token wird s aktuelle invalidiere.
   created-headline: "Das Token isch für di erschteut worde:"
-  lead:
-    S Recovery Token cha drzue verwändet wärde dis Passwort zrüggzsetze wenns
-    vergässe hesch.
-  created-info:
-    "Wenn du dis Passwort verlore hesch, erloubt dir s Recovery Token\
-    \ es nöis z setze. Notier dr das Token und bewahrs amne sichere Ort uuf.\n"
-  displayed-once:
-    "Us Sicherheitsgründ wird s Recovery Token nume einisch azeigt.\
-    \ Mir chöi das Token nid wiederhärschteue.\n"
+  lead: S Recovery Token cha drzue verwändet wärde dis Passwort zrüggzsetze wenns vergässe hesch.
+  created-info: Wenn du dis Passwort verlore hesch, erloubt dir s Recovery Token es nöis z setze. Notier dr das Token und bewahrs amne sichere Ort uuf.
+  displayed-once: Us Sicherheitsgründ wird s Recovery Token nume einisch azeigt. Mir chöi das Token nid wiederhärschteue.
   headline: Recovery Token verwaute
   unset: Du hesch no kes Recovery Token gsetzt. Mir emfpähle dringend iz eis z mache.
 Reserved Name: Reservierte Name
@@ -200,30 +186,23 @@ registration:
   recovery-token-headline: Recovery Token
   title: Regischtriere bi %project_name%
   label-email: Dini bevorzugti E-Mail Adrässe
-  information-intro:
-    "Würdsch du gärn e E-Mail Account bi <a href=\"%project_url%\"\
-    >%project_name%</a> ha? Mir erloube Nöiregischtratione nume indäm e Fründ di mittemne\
-    \ Invite Code iladt.\n"
+  information-intro: >
+    Würdsch du gärn e E-Mail Account bi <a href="%project_url%">%project_name%</a> ha?
+    Mir erloube Nöiregischtratione nume indäm e Fründ di mittemne Invite Code iladt.
 Domain: Domain
 closed:
   headline: Regischtrierig gschlosse
-  lead:
-    Wägem Absatz drü TKÜV hei mir üs entschlosse d Regischtrierig z schliesse.
-    Sorry für dä.
+  lead: Wägem Absatz drü TKÜV hei mir üs entschlosse d Regischtrierig z schliesse. Sorry für dä.
   title: Regischtrierig gschlosse
-  text:
-    "<p>Wägem <a href=\"https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html\"\
-    \ target=\"_blank\">Absatz drü vor \"Verordnung über die technische und organisatorische\
-    \ Umsetzung von Maßnahmen zur Überwachung der Telekommunikation\"</a> (churz \"\
-    TKÜV\") müesse E-Mail Provider mit meh als 10'000 User e Überwachigsschnittschteu\
-    \ fürd Behördene implementiere. Das isch dr Grund wieso mir üs hei entschlosse\
-    \ d Regischtrierig z schliesse und damit s Erschteue vo nöiie Accounts z verhindere.<p>\n\
-    <p><strong>Bishärigi Accounts si da drvo nid betroffe</strong></p>\n"
+  text: >
+    Wägem <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">Absatz drü vor "Verordnung über die technische und organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (churz "TKÜV") müesse E-Mail Provider mit meh als 10'000 User e Überwachigsschnittschteu fürd Behördene implementiere.
+    Das isch dr Grund wieso mir üs hei entschlosse d Regischtrierig z schliesse und damit s Erschteue vo nöiie Accounts z verhindere.
+    <strong>Bishärigi Accounts si da drvo nid betroffe</strong>
 spam:
-  text:
-    "Oh nei! Mir hei s Gfüeu dass di Account vomene Spammer isch misbruucht worde.\n\
-    E-Mail Zuegriff isch deaktiviert worde.\nBitte kontaktier dr Support zum di Account\
-    \ entschperre.\n"
+  text: >
+    Oh nei! Mir hei s Gfüeu dass di Account vomene Spammer isch misbruucht worde.
+    E-Mail Zuegriff isch deaktiviert worde.
+    Bitte kontaktier dr Support zum di Account entschperre.
   title: Account isch gschperrt
 User: User
 Alias: Alias Adrässe

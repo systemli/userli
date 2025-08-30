@@ -100,6 +100,7 @@ class DovecotController extends AbstractController
         if ($user->hasRole(Roles::SPAM)){
             return $this->json(['message' => self::MESSAGE_USER_DISABLED], Response::HTTP_FORBIDDEN);
         }
+
         if ($user->isPasswordChangeRequired()) {
             return $this->json(['message' => self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED], Response::HTTP_FORBIDDEN);
         }
