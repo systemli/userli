@@ -17,8 +17,10 @@ start:
   intro: Ici vous pouvez configurer et gérer vos comptes de messagerie.
   registration-header: Inscription
   registration-text: >
-    Vous n'avez pas encore de compte de messagerie avec le domaine %domain%? Aucun problème!
-    Si l'un de vos amis a déjà un compte, vous pouvez obtenir un code d'invitation et configurer votre compte immédiatement.
+    Vous n'avez pas encore de compte de messagerie avec le domaine %domain%? Aucun
+    problème!
+    Si l'un de vos amis a déjà un compte, vous pouvez obtenir un code d'invitation
+    et configurer votre compte immédiatement.
   registration-button: Créer un compte
   account-settings: Paramètres du compte
   account-settings-desc: Mots de passe et plus
@@ -39,16 +41,20 @@ index:
     Vous avez trois invitations disponibles par défaut.
   voucher-limit: Vous n'avez plus de code d’invitation.
   voucher-disable: >
-    Vous recevrez trois codes d'invitation le %date%, afin d'éviter les inscriptions de masse et le spam.
+    Vous recevrez trois codes d'invitation le %date%, afin d'éviter les inscriptions
+    de masse et le spam.
   voucher-waiting-title: En attente de nouveaux codes d'invitation
   voucher-empty-title: Aucun code d'invitation créé pour le moment
-  voucher-empty-multiplier: Créez un nouveau code d'invitation pour inviter des amis.
+  voucher-empty-multiplier: Créez un nouveau code d'invitation pour inviter des 
+    amis.
   voucher-limit-title: Limite de codes d'invitation atteinte
   alias-subtitle: Gérer vos alias e-mail
-  alias-limit: Vous avez atteint la limite autorisée de %alias_limit% %alias_type% alias d'adresse.
+  alias-limit: Vous avez atteint la limite autorisée de %alias_limit% 
+    %alias_type% alias d'adresse.
   alias-limit-reached: Limite atteinte
   alias-deletion-custom: Écrivez-nous pour supprimer des adresses.
-  alias-deletion-random: Dès que vous supprimez d'anciennes adresses, vous pouvez de nouveau en créer de nouvelles.
+  alias-deletion-random: Dès que vous supprimez d'anciennes adresses, vous 
+    pouvez de nouveau en créer de nouvelles.
   alias-empty: Vous n'avez aucun alias d'adresse %alias_type% défini.
   alias-custom-create: Créer un nouvel alias personnalisé
   alias-random-generate: Générer un nouvel alias aléatoire
@@ -90,7 +96,8 @@ form:
   generate-recovery-token: Créer un nouveau jeton de récupération
   recovery-token: Jeton de récupération
   recovery-start: Récupération
-  registration-recovery-token-confirm: J'ai stocké le jeton de récupération de façon sécurisée
+  registration-recovery-token-confirm: J'ai stocké le jeton de récupération de 
+    façon sécurisée
   registration-recovery-token-next-button: Continuer
   domain: Domaine
   add: Ajouter
@@ -100,7 +107,8 @@ openpgp-key-file-mimetype: "Le fichier téléversé ne contient pas de données 
 openpgp-key-upload-or: "ou"
 openpgp-key-text: "Collez votre clé sous forme texte:"
 openpgp-key-text-placeholder: "Clé OpenPGP au format ASCII"
-openpgp-key-select-one: "Veuillez téléverser la clé soit sous forme de fichier, soit sous forme de texte ASCII."
+openpgp-key-select-one: "Veuillez téléverser la clé soit sous forme de fichier, soit
+  sous forme de texte ASCII."
 openpgp-key-submit: "Publier la clé OpenPGP"
 openpgp-delete: "Supprimer la clé OpenPGP"
 
@@ -113,7 +121,8 @@ recovery:
     Veuillez maintenant attendre 48 heures.
     Par la suite, vous pouvez définir un nouveau mot de passe dans une deuxième étape.
     Veuillez conserver votre jeton de récupération jusque là.
-  waiting-info: Cette période d'attente est mise en place pour votre propre sécurité et ne peut pas être réduite ou passée.
+  waiting-info: Cette période d'attente est mise en place pour votre propre 
+    sécurité et ne peut pas être réduite ou passée.
   waiting-time: La deuxième étape commence à %time%.
   reset-lead: Vous n'êtes pas autorisé à réinitialiser votre mot de passe
   token-lead: Nouveau jeton de récupération
@@ -134,44 +143,60 @@ registration:
 
 welcome:
   headline: Bienvenue dans %project_name% !
-  lead: Vous avez bien créé un compte chez nous. Quelles sont les étapes suivantes ?
+  lead: Vous avez bien créé un compte chez nous. Quelles sont les étapes 
+    suivantes ?
   next-button: Vers le tableau de bord
   text: >
     <h3>Vous êtes fin prêt(e)</h3>
-    Sur le Web, vous pouvez trouvez des instructions pour configurer votre compte de messagerie avec différents programmes clients
-    Dans une semaine, vous recevrez trois codes d'invitation que vous pourrez récupérer à <a href="%app_url%">%app_url%</a>.
+    Sur le Web, vous pouvez trouvez des instructions pour configurer votre compte
+    de messagerie avec différents programmes clients
+    Dans une semaine, vous recevrez trois codes d'invitation que vous pourrez récupérer
+    à <a href="%app_url%">%app_url%</a>.
     Vous pouvez les donner à vos amis et les inviter à s'inscrire sur %project_name%.
 
 closed:
   headline: Inscription fermée
-  lead: En raison du paragraphe trois du TKÜV nous avons décidé de fermer les inscriptions. Nous sommes désolés.
+  lead: En raison du paragraphe trois du TKÜV nous avons décidé de fermer les 
+    inscriptions. Nous sommes désolés.
   text: >
-    En raison du <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">paragraphe trois du « Verordnung über die technische und organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation »</a> (abrégé telecommuicationen-surveillance-decree ou « TKÜV »), les fournisseurs de messagerie avec plus de 10 000 utilisateurs sont dans l'obligation de mettre en place une interface de surveillance pour les autorités. C'est pourquoi nous avons décidé de bloquer les inscriptions et de ne pas autoriser la création de nouveaux comptes.
+    En raison du <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html"
+    target="_blank">paragraphe trois du « Verordnung über die technische und organisatorische
+    Umsetzung von Maßnahmen zur Überwachung der Telekommunikation »</a> (abrégé telecommuicationen-surveillance-decree
+    ou « TKÜV »), les fournisseurs de messagerie avec plus de 10 000 utilisateurs
+    sont dans l'obligation de mettre en place une interface de surveillance pour les
+    autorités. C'est pourquoi nous avons décidé de bloquer les inscriptions et de
+    ne pas autoriser la création de nouveaux comptes.
     <strong>Les comptes existants ne sont pas affectés</strong>
 
 delete:
   alias:
     headline_generic: Supprimer l'alias d'adresse
-    lead_specific: Êtes-vous sûr de vouloir supprimer <strong>%alias%</strong> ? L'adresse sera définitivement supprimée.
+    lead_specific: Êtes-vous sûr de vouloir supprimer <strong>%alias%</strong> ?
+      L'adresse sera définitivement supprimée.
   user:
     headline: Supprimer le compte
     lead: Nous devons vérifier votre mot de passe pour supprimer votre compte.
   openpgp:
     headline: Supprimer la clé OpenPGP
-    lead: Nous devons vérifier votre mot de passe pour supprimer votre clé OpenPGP du Web Key Directory.
+    lead: Nous devons vérifier votre mot de passe pour supprimer votre clé 
+      OpenPGP du Web Key Directory.
   cancel: Annuler
 
 recovery-token:
   headline: Gérer les jetons de récupération
-  lead: Le jeton de récupération peut être utilisé pour réinitialiser votre mot de passe si vous l'oubliez.
+  lead: Le jeton de récupération peut être utilisé pour réinitialiser votre mot 
+    de passe si vous l'oubliez.
   set: Vous avez déjà défini un jeton de récupération.
   set-extra: Créer un nouveau jeton invalidera le jeton actuel.
-  unset: Vous n'avez pas encore défini de jeton de récupération. Nous vous recommandons fortement d'en créer un maintenant.
+  unset: Vous n'avez pas encore défini de jeton de récupération. Nous vous 
+    recommandons fortement d'en créer un maintenant.
   created-headline: "Le jeton de récupération suivant a été créé pour vous:"
   created-info: >
-    Si vous perdez votre mot de passe, le jeton de récupération vous permet de le réinitialiser. Notez le et stocker le de façon sécurisée.
+    Si vous perdez votre mot de passe, le jeton de récupération vous permet de le
+    réinitialiser. Notez le et stocker le de façon sécurisée.
   displayed-once: >
-    Pour des raisons de sécurité, le jeton de récupération ne sera affiché qu'une seule fois. Nous ne pouvons pas récupérer ce jeton pour vous.
+    Pour des raisons de sécurité, le jeton de récupération ne sera affiché qu'une
+    seule fois. Nous ne pouvons pas récupérer ce jeton pour vous.
 
 flashes:
   logout-successful: Vous vous êtes déconnecté.
@@ -180,17 +205,22 @@ flashes:
   voucher-creation-successful: Nouveau code d'invitation créé.
   alias-creation-successful: Votre nouvel alias d'adresse a été créé.
   alias-deletion-successful: Votre alias d'adresse a été supprimé.
-  recovery-token-invalid: L'adresse électronique et/ou le jeton de récupération sont incorrects!
+  recovery-token-invalid: L'adresse électronique et/ou le jeton de récupération 
+    sont incorrects!
   recovery-token-ack: Vous avez généré un jeton de récupération.
-  recovery-reauthenticate: Une erreur s'est produite. Veuillez vous identifier à nouveau!
+  recovery-reauthenticate: Une erreur s'est produite. Veuillez vous identifier à
+    nouveau!
   recovery-password-changed: Vous avez modifié votre mot de passe.
   recovery-next-login: Aller à l'écran de connexion.
   openpgp-deletion-successful: Votre clé OpenPGP a été supprimée.
   openpgp-key-upload-successful: Votre clé OpenPGP a été téléversée.
-  openpgp-key-upload-error-no-openpgp: Le fichier téléversé ne contient pas de données OpenPGP.
-  openpgp-key-upload-error-no-keys: Aucune clé pour votre adresse électronique n'a été trouvée dans les données téléversées.
+  openpgp-key-upload-error-no-openpgp: Le fichier téléversé ne contient pas de 
+    données OpenPGP.
+  openpgp-key-upload-error-no-keys: Aucune clé pour votre adresse électronique 
+    n'a été trouvée dans les données téléversées.
   openpgp-key-upload-error-multiple-keys: >
-    Plus d'une clé pour votre adresse électronique a été trouvée dans les données téléversées.
+    Plus d'une clé pour votre adresse électronique a été trouvée dans les données
+    téléversées.
     Veuillez téléverser une seule clé.
 
 flash_batch_remove_vouchers_success: Codes d'invitation non demandés supprimés.
@@ -199,14 +229,17 @@ error:
   title: Oups, une erreur s'est produite.
   back_link: Retour à l'accueil
   page_not_found: La page que vous avez demandé n'existe pas.
-  access_denied: Accès refusé. Vous n'avez pas la permission d'accéder à cette ressource.
+  access_denied: Accès refusé. Vous n'avez pas la permission d'accéder à cette 
+    ressource.
   generic_error: Une erreur s'est produite. Nous sommes désolés.
 
 spam:
   title: Compte bloqué
   text: >
-    Oh non! Nous pensons que votre compte a été utilisé pour générer des courriers indésirables.
-    L'accès au compte de messagerie a été désactivé. Veuillez contacter l'assistance pour débloquer votre compte.
+    Oh non! Nous pensons que votre compte a été utilisé pour générer des courriers
+    indésirables.
+    L'accès au compte de messagerie a été désactivé. Veuillez contacter l'assistance
+    pour débloquer votre compte.
 
 Bad credentials.: Le mot de passe saisi n'est pas valide.
 custom: personnalisé
@@ -225,7 +258,8 @@ mail:
 
     Cordialement,
     votre équipe d'administration de %project_name%.
-  recovery-subject: Le mot de passe pour votre compte de messagerie %email% va être réinitialisé
+  recovery-subject: Le mot de passe pour votre compte de messagerie %email% va 
+    être réinitialisé
   recovery-body: |
     Bonjour %email%,
 
@@ -269,17 +303,23 @@ alias:
 init.title: Création de la configuration initiale
 
 init_domain:
-  lead: Merci d'avoir installé Userli. Pour le moment il n'y a aucun domaine et aucune compte.
+  lead: Merci d'avoir installé Userli. Pour le moment il n'y a aucun domaine et 
+    aucune compte.
   text: Veuillez choisir votre domaine principal, celui que Userli doit gérer.
 
 init_user:
   lead: Vous avez créé votre domaine principal.
-  text: Les standards de courrier électronique nécessitent la présence du compte postmaster@%domain%. Veuillez définir un mot de passe pour ce premier compte administrateur puis vous y connecter.
+  text: Les standards de courrier électronique nécessitent la présence du compte
+    postmaster@%domain%. Veuillez définir un mot de passe pour ce premier compte
+    administrateur puis vous y connecter.
 
 openpgp:
   delete-button: "Supprimer la clé OpenPGP"
   information: "Informations"
-  information-details: 'Si vous téléversez votre clé OpenPGP ici, elle sera publiée dans notre <i><a target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key Directory</a></i>. Vous aiderez ainsi vos amis à découvrir votre clé automatiquement et en toute sécurité.'
+  information-details: 'Si vous téléversez votre clé OpenPGP ici, elle sera publiée
+    dans notre <i><a target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key
+    Directory</a></i>. Vous aiderez ainsi vos amis à découvrir votre clé automatiquement
+    et en toute sécurité.'
   keyid-label: "Identifiant de la clé:"
   fingerprint-label: "Empreinte:"
   expiretime-label: "Date d'expiration:"
@@ -289,20 +329,27 @@ openpgp:
   no-key-uploaded: "Aucune clé OpenPGP téléversée"
   upload-prompt: "Téléversez une clé en utilisant le formulaire à droite"
 
-index.alias-motivation: Crée des alias de messagerie personnalisés pour mieux organiser ta boîte de réception et protéger ta vie privée.
+index.alias-motivation: Crée des alias de messagerie personnalisés pour mieux 
+  organiser ta boîte de réception et protéger ta vie privée.
 
 custom-aliases.title: Alias personnalisés
 custom-aliases.subtitle: Créer jusqu'à %alias_limit_custom% alias personnalisés
 custom-aliases.feature-choose-name: Choisis ton propre nom d'alias mémorable
-custom-aliases.feature-easy-remember: Facile à retenir et à partager avec d'autres
-custom-aliases.limitation-permanent: Ne peuvent pas être supprimés une fois créés
+custom-aliases.feature-easy-remember: Facile à retenir et à partager avec 
+  d'autres
+custom-aliases.limitation-permanent: Ne peuvent pas être supprimés une fois 
+  créés
 custom-aliases.limitation-limited: Limité à %alias_limit_custom% alias au total
-custom-aliases.management-hint: <strong>Conseil :</strong> Choisis tes alias personnalisés soigneusement car ils ne peuvent pas être supprimés plus tard.
+custom-aliases.management-hint: <strong>Conseil :</strong> Choisis tes alias 
+  personnalisés soigneusement car ils ne peuvent pas être supprimés plus tard.
 
 random-aliases.title: Alias aléatoires
 random-aliases.subtitle: Générer jusqu'à %alias_limit_random% alias aléatoires
 random-aliases.feature-secure: Noms sécurisés générés automatiquement
-random-aliases.feature-privacy: Parfait pour les achats en ligne et les inscriptions
-random-aliases.feature-deletable: Peuvent être supprimés à tout moment lorsqu'ils ne sont plus nécessaires
+random-aliases.feature-privacy: Parfait pour les achats en ligne et les 
+  inscriptions
+random-aliases.feature-deletable: Peuvent être supprimés à tout moment 
+  lorsqu'ils ne sont plus nécessaires
 random-aliases.limitation-random-name: Noms aléatoires plus difficiles à retenir
-random-aliases.management-hint: <strong>Conseil :</strong> Supprime les alias aléatoires inutilisés pour faire de la place aux nouveaux.
+random-aliases.management-hint: <strong>Conseil :</strong> Supprime les alias 
+  aléatoires inutilisés pour faire de la place aux nouveaux.
