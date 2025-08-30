@@ -6,7 +6,6 @@ navbar:
   home: Accueil
   vouchers: Invitations
   aliases: Alias
-  openpgp: OpenPGP
   account: Compte
   language: Langue
   signed-in-as: Connecté en tant que
@@ -22,9 +21,7 @@ start:
   registration-button: Créer un compte
   account-settings: Paramètres du compte
   account-settings-desc: Mots de passe et plus
-  account-delete: Supprimer le compte
   aliases: Alias d'adresses
-  aliases-delete: supprimer l'alias d'adresse
   aliases-desc: Masquez votre identité
   vouchers: Codes d'invitation
   vouchers-desc: Invitez vos amis
@@ -32,12 +29,9 @@ start:
   webmail-desc: Lisez et écrivez des courriels
   openpgp-delete: supprimer la clé OpenPGP
   openpgp-settings: OpenPGP
-  openpgp-settings-desc: Publiez votre clé
-  openpgp-settings-title: Publier votre clé OpenPGP dans le Web Key Directory
 
 index:
   title: Gérez votre compte de messagerie
-  voucher-headline: Vos codes d'invitation
   voucher-subtitle: Invitez vos amis
   voucher-explanation-short: >
     Utilisez vos codes d'invitation pour inviter des amis.
@@ -50,35 +44,18 @@ index:
   voucher-empty-multiplier: >
     Créez un nouveau code d'invitation pour inviter des amis.
   voucher-limit-title: Limite de codes d'invitation atteinte
-  voucher-explanation: >
-    Utilisez vos codes d'invitation pour inviter des amis ici. Par défaut, vous avez trois invitations disponibles. Si vous avez besoin de plus de codes d'invitation, veuillez contacter les administrateurs. Nous stockons les données d'invitation pendant un temps limité afin de protéger des abus.
   alias-subtitle: Gérer vos alias e-mail
-  alias-headline: Votre adresse d'alias %alias_type%
   alias-limit: Vous avez atteint la limite autorisée de %alias_limit% %alias_type% alias d'adresse.
   alias-limit-reached: Limite atteinte
   alias-deletion-custom: Écrivez-nous pour supprimer des adresses.
   alias-deletion-random: Dès que vous supprimez d'anciennes adresses, vous pouvez de nouveau en créer de nouvelles.
   alias-empty: Vous n'avez aucun alias d'adresse %alias_type% défini.
-  alias-custom-description: Créer des adresses e-mail personnalisées avec votre propre nom
   alias-custom-create: Créer un nouvel alias personnalisé
-  alias-random-description: Générer automatiquement des adresses e-mail aléatoires
   alias-random-generate: Générer un nouvel alias aléatoire
   alias-active-custom: Alias personnalisés actifs
   alias-active-random: Alias aléatoires actifs
-  alias-info-title: Notes importantes sur les alias e-mail
-  alias-info-custom: "<strong>Alias personnalisés :</strong> Choisissez votre propre nom pour votre adresse e-mail"
-  alias-info-random: "<strong>Alias aléatoires :</strong> Adresses générées automatiquement pour plus d'anonymat"
-  alias-info-limits: "<strong>Limites :</strong> Maximum %alias_limit_custom% alias personnalisés et %alias_limit_random% alias aléatoires"
-  alias-info-management: "<strong>Gestion :</strong> Supprimez les alias inutilisés pour faire de la place aux nouveaux"
-  delete-headline: Supprimer le compte
-  delete-description: >
-    Vous pouvez supprimer votre compte de messagerie %project_name%. Ceci supprimera tous vos courriels. <strong>Il sera impossible de les récupérer</strong><br /><br /> Pour supprimer votre compte, vous devez confirmer votre mot de passe actuel.
-  delete-button: Supprimer le compte
-  recovery-token-button: Gérer le jeton de récupération
-  logged_in_as: Vous êtes connecté(e) en tant que %user%.
 
 form:
-  title: S'inscrire
   signin-header: Se connecter
   signin-subtitle: Bienvenue sur votre compte
   register-header: Créer un compte
@@ -99,7 +76,6 @@ form:
   submit: Valider
   voucher: Code d'invitation
   voucher-redeemed-on: Demandé le
-  oclock-by: par
   actual-password: Mot de passe actuel
   new-custom-alias: Nouvel alias d'adresse
   plain-password: Nouveau mot de passe
@@ -138,11 +114,6 @@ recovery:
   reset-lead: Vous n'êtes pas autorisé à réinitialiser votre mot de passe
   token-lead: Nouveau jeton de récupération
 
-navbar_left:
-  about-us:
-    text: À propos de nous
-    link: https://www.exemple.org/fr/a-propos-de-nous
-
 navbar_right:
   login: Se connecter
   logout: Se déconnecter
@@ -164,7 +135,6 @@ welcome:
     <h3>Vous êtes fin prêt(e)</h3> <p>Sur le Web, vous pouvez trouvez des instructions pour configurer votre compte de messagerie avec différents programmes clients</p> <p>Dans une semaine, vous recevrez trois codes d'invitation que vous pourrez récupérer à <a href=\"%app_url%\">%app_url%</a>. Vous pouvez les donner à vos amis et les inviter à s'inscrire sur %project_name%.</p>
 
 closed:
-  title: Inscription fermée
   headline: Inscription fermée
   lead: En raison du paragraphe trois du TKÜV nous avons décidé de fermer les inscriptions. Nous sommes désolés.
   text: >
@@ -172,12 +142,9 @@ closed:
 
 delete:
   alias:
-    headline: Supprimer l'alias d'adresse %alias%
     headline_generic: Supprimer l'alias d'adresse
-    lead: Nous devons vérifier votre mot de passe pour supprimer votre alias d'adresse.
     lead_specific: >
       Êtes-vous sûr de vouloir supprimer <strong>%alias%</strong> ? L'adresse sera définitivement supprimée.
-    delete: Supprimer l'alias
   user:
     headline: Supprimer le compte
     lead: Nous devons vérifier votre mot de passe pour supprimer votre compte.

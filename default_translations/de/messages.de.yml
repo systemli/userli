@@ -6,7 +6,6 @@ navbar:
   home: Home
   vouchers: Invites
   aliases: Aliase
-  openpgp: OpenPGP
   account: Konto
   language: Sprache
   signed-in-as: Angemeldet als
@@ -24,9 +23,7 @@ start:
   registration-button: Konto anlegen
   account-settings: Konto-Einstellungen
   account-settings-desc: Verwalte dein Konto
-  account-delete: Konto löschen
   aliases: Alias-Adressen
-  aliases-delete: Alias-Adresse löschen
   aliases-desc: Verschleiere deine Identität
   vouchers: Einladungscodes
   vouchers-desc: Lade Freund:innen ein
@@ -34,12 +31,9 @@ start:
   webmail-desc: Lies und schreib E-Mails
   openpgp-delete: OpenPGP-Schlüssel löschen
   openpgp-settings: OpenPGP
-  openpgp-settings-desc: Veröffentliche deinen Schlüssel
-  openpgp-settings-title: OpenPGP-Schlüssel im Web Key Directory veröffentlichen
 
 index:
   title: Verwalte dein E-Mail-Konto
-  voucher-headline: Deine Einladungscodes
   voucher-subtitle: Lade Freund:innen ein
   voucher-explanation-short: >
     Nutze deine Einladungscodes um Freund:innen einzuladen.
@@ -53,13 +47,7 @@ index:
   voucher-empty-multiplier: >
     Erstelle einen neuen Einladungscode um Freund:innen einzuladen.
   voucher-limit-title: Einladungscode-Limit erreicht
-  voucher-explanation: >
-    Nutze deine Einladungscodes um Freund:innen hierher einzuladen.
-    Standardmäßig hast du drei Einladungen zur Verfügung. Wenn du mehr
-    brauchst, wende dich an die Admins. Wir speichern Einladungsdaten für
-    einen begrenzten Zeitraum um Missbrauch zu verhindern.
   alias-subtitle: Verwalte deine E-Mail-Aliase
-  alias-headline: Deine %alias_type% Alias-Adressen
   alias-limit:
     Du hast das Limit von %alias_limit% erlaubten %alias_type% Alias-Adressen
     erreicht.
@@ -67,38 +55,12 @@ index:
   alias-deletion-custom: Schreibe uns, um Adressen löschen zu lassen.
   alias-deletion-random: Wenn du alte Adressen löschst, kannst du wieder neue erstellen.
   alias-empty: Du hast noch keine %alias_type% Alias-Adressen definiert.
-  alias-custom-description: Erstelle personalisierte E-Mail-Adressen mit eigenem Namen
   alias-custom-create: Neue benutzerdefinierte Alias erstellen
-  alias-random-description: Generiere automatisch zufällige E-Mail-Adressen
   alias-random-generate: Neue zufällige Alias generieren
   alias-active-custom: Aktive benutzerdefinierte Aliase
   alias-active-random: Aktive zufällige Aliase
-  alias-info-title: Wichtige Hinweise zu E-Mail-Aliasen
-  alias-info-custom: "<strong>Benutzerdefinierte Aliase:</strong> Wähle einen eigenen Namen für deine E-Mail-Adresse"
-  alias-info-random: "<strong>Zufällige Aliase:</strong> Automatisch generierte Adressen für mehr Anonymität"
-  alias-info-limits: "<strong>Limits:</strong> Maximal %alias_limit_custom% benutzerdefinierte und %alias_limit_random% zufällige Aliase"
-  alias-info-management: "<strong>Verwaltung:</strong> Lösche nicht mehr benötigte Aliase, um Platz für neue zu schaffen"
-  delete-headline: Konto löschen
-  delete-description: >
-    Du kannst dein Konto bei %project_name% löschen. Dadurch werden deine E-Mails
-    unwiderruflich gelöscht. Eine <strong>spätere Wiederherstellung ist nicht möglich.</strong>
-    <br /><br />Um dein Konto zu löschen, wirst du aufgefordert dein Passwort einzugeben.
-  delete-button: Konto löschen
-  recovery-token-button: Wiederherstellungscode verwalten
-  logged_in_as: Du bist angemeldet als %user%.
-  alias-explanation:
-    "<p>\n  Verstecke mittels Alias-Adressen deine originale Mail-Adresse\
-    \ vor Personen,  die du nicht gut kennst oder Firmen, denen du nicht voll vertraust.\n\
-    </p>\n<p>\n  <ul>\n    <li>Alle E-Mails, die an Alias-Adresse gesendet werden,\
-    \ landen in deiner normalen Mailbox.</li>\n    <li>Um von einer Alias-Adresse\
-    \ zu senden, musst du deinen Mail-Client manuell konfigurieren.</li>\n    <li>Du\
-    \ kannst %alias_limit_custom% gewählte Alias-Adressen haben.</li>\n    <li>Du\
-    \ kannst %alias_limit_random% zufällige Alias-Adressen haben.</li>\n    <li>Zufällige\
-    \ Alias-Adressen sollten nur für einen Zweck verwendet werden, um Verfolgung zwischen\
-    \ verschiedenen Diensten zu verhindern.</li>\n    <li>Kontaktiere uns um gewählte\
-    \ Alias-Adressen zu löschen.</li>\n  </ul>\n</p>\n"
+
 form:
-  title: Anmelden
   signin-header: Anmelden
   signin-subtitle: Willkommen zurück zu deinem Konto
   register-header: Konto erstellen
@@ -119,7 +81,6 @@ form:
   submit: Senden
   voucher: Einladungscode
   voucher-redeemed-on: Eingelöst am
-  oclock-by: Uhr von
   actual-password: Aktuelles Passwort
   new-custom-alias: Neue Alias-Adresse
   plain-password: Neues Passwort
@@ -139,7 +100,6 @@ form:
   domain: Domain
   add: Hinzufügen
   verify: Überprüfen
-  cancel: Abbrechen
   twofactor: Zwei-Faktor-Authentifizierung
   twofactor-short: 2FA
   twofactor-login: Zwei-Faktor-Authentifizierung
@@ -149,7 +109,6 @@ form:
   twofactor-login-desc: >
     Öffne deine Zwei-Faktor (TOTP) App für den Code.
   twofactor-login-cancel: Login abbrechen
-  twofactor-enable: Zwei-Faktor-Authentifizierung aktivieren
   twofactor-disable: Zwei-Faktor-Authentifizierung deaktivieren
   twofactor-login-help: Deine Zwei-Faktor-Authentifikator-App generiert einen 6-stelligen Code, den du hier eingeben musst.
 
@@ -183,15 +142,7 @@ account:
     unset: Zwei-Faktor-Authentifizierung ist noch nicht aktiv.
     unset-extra: Du brauchst eine TOTP App auf deinem Smartphone um Zwei-Faktor-Authentifizierung zu aktivieren.
     set: Zwei-Faktor-Authentifizierung ist aktiv.
-    button: Zwei-Faktor-Authentifizierung konfigurieren
     lead: Sichere dein Konto mit einem zweiten Faktor
-    desc-login: >
-      Mit Zwei-Faktor-Authentifizierung musst du beim Login ein zweites Passwort eingeben,
-      welches du von deiner Zwei-Faktor-App bekommst. Dieses Extra-Passwort ist nur zum
-      Login unter %app_url% nötig, nicht für andere Dienste wie etwa deine Mails.
-    desc-lost: >
-      Falls du den Zugang zu deiner Zwei-Faktor-App verlierst, musst du dich mit Hilfe eines der
-      Zwei-Faktor Backup Codes anmelden oder den Account mit Hilfe des Wiederherstellungscodes zurücksetzen.
     enable-lead: >
       Scanne das Bild mit deiner Zwei-Faktor-App.
     enable-title: 2FA aktivieren
@@ -241,10 +192,6 @@ recovery:
   reset-lead: Du kannst nun dein Passwort zurücksetzen
   token-lead: Neuer Wiederherstellungscode
   information-extra: Die Zwei-Faktor-Authentifizierung wird dadurch zurückgesetzt.
-navbar_left:
-  about-us:
-    text: Über uns
-    link: https://www.example.org/de/about-us
 navbar_right:
   login: Anmelden
   logout: Abmelden
@@ -269,7 +216,6 @@ welcome:
     Diese kannst du an Freundinnen und Freunde weiterleiten und sie so zu %project_name%
     einladen.</p>
 closed:
-  title: Registrierung deaktiviert
   headline: Registrierung deaktiviert
   lead:
     Aufgrund des §3 TKÜV haben wir die Registrierung weiterer E-Mail Konten deaktiviert.
@@ -285,15 +231,10 @@ closed:
     <p><strong>Für bestehende Konten ändert sich nichts.</strong></p>
 delete:
   alias:
-    headline: Alias-Adresse %alias% löschen
     headline_generic: Alias-Adresse löschen
-    lead:
-      Mit der Bestätigung deines Passworts kannst du deine Alias-Adresse unwiderruflich
-      löschen.
     lead_specific: >
       Bist du dir sicher, dass du <strong>%alias%</strong> löschen möchtest?
       Die Adresse wird unwiderruflich gelöscht.
-    delete: Alias löschen
   user:
     headline: Konto löschen
     lead:

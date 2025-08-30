@@ -1,19 +1,7 @@
-nav:navbar:
-  home: Hjem
-  vouchers: Koder
-  aliases: Alias
-  openpgp: OpenPGP
-  account: Konto
-  language: Språk
-  signed-in-as: Logget inn som
-  open-user-menu: Åpne brukermeny
-  open-main-menu: Åpne hovedmeny
-
 navbar:
   home: Hjem
   vouchers: Inviter
   aliases: Alias
-  openpgp: OpenPGP
   account: Konto
   signed-in-as: Logget inn som
   open-user-menu: Åpne brukermeny
@@ -30,21 +18,14 @@ start:
   registration-button: Opprett konto
   account-settings: Kontoinnstillinger
   account-settings-desc: Passord og mer
-  account-delete: Slett konto
   aliases: Alias-adresser
-  aliases-delete: slett alias-adresse
   aliases-desc: Skjul din identitet
   vouchers: Invitasjonskoder
   vouchers-desc: Inviter vennene dine
   webmail: Nettklients-e-post
   webmail-desc: Les og skriv e-poster
-  openpgp-settings-desc: ""
-  openpgp-delete: ""
-  openpgp-settings: ""
-  openpgp-settings-title: ""
 index:
   title: Håndter din e-postkonto
-  voucher-headline: Dine invitasjonskoder
   voucher-limit: Du har ingen invitasjonskoder igjen.
   voucher-waiting-title: Venter på nye invitasjonskoder
   voucher-empty-title: Ingen invitasjonskoder opprettet ennå
@@ -54,35 +35,12 @@ index:
   voucher-disable:
     "Den %date% vil du motta tre invitasjonskoder. Dette for å unngå\
     \ masseregistreringer og søppelpost.\n"
-  voucher-explanation:
-    "Bruk dine invitasjonskoder for å invitere venner hit. Som\
-    \ forvalg har du tre tilgjengelig. Kontakt administratorene hvis dette ikke rekker.\
-    \ Din data lagres i en begrenset periode for å unngå misbruk.\n"
-  alias-headline: Dine %alias_type% alias-adresser
   alias-limit: Du har nådd tillatt grense på %alias_limit% %alias_type% alias-adresser.
   alias-deletion-custom: Skriv til oss for å få adresser slettet.
   alias-deletion-random: Så snart du sletter gamle adresser, kan du opprette nye igjen.
   alias-empty: Du har ikke noen %alias_type%-aliasadresser satt opp.
-  delete-headline: Slett konto
-  delete-description:
-    "Du kan slette din %project_name%-e-postkonto. Dette vil slette\
-    \ alle dine e-poster. <strong>Gjenoppretting senere er ikke mulig</strong> <br\
-    \ /><br /> For å slette kontoen din må du sende inn det faktiske passordet ditt.\n"
-  delete-button: Slett konto
-  recovery-token-button: Håndter gjenopprettingssymbol
-  logged_in_as: Du er innlogget som %user%.
-  alias-explanation:
-    "<p>\n  Bruk alias-adresser for å skjule din opprinnelige e-postadresse\
-    \ fra  folk du ikke kjenner godt, eller selskaper du ikke helt stoler på.\n</p>\n\
-    <p>\n  <ul>\n    <li>Alle e-poster sendt til e-postadresse går til din normale\
-    \ e-postboks.</li>\n    <li>For å sende fra en alias-adresse, må du sette opp\
-    \ din e-postklient manuelt.</li>\n    <li>Du kan ha %alias_limit_custom% egendefinerte\
-    \ alias-adresser.</li>\n    <li>Du kan ha %alias_limit_random% tilfeldige alias-adresser.</li>\n\
-    \    <li>Tilfeldige alias-adresser er tiltenkt bruk for ett formål for å unngå\
-    \ sporing mellom ulike tjenester.</li>\n    <li>Kontakt oss for å slette egendefinerte\
-    \ alias-adresser.</li>\n  </ul>\n</p>\n"
+
 form:
-  title: Registrer
   signin-header: Logg inn
   register-header: Opprett konto
   email: E-post
@@ -95,7 +53,6 @@ form:
   submit: Send inn
   voucher: Invitasjonskode
   voucher-redeemed-on: Innløst
-  oclock-by: av
   actual-password: Nåværende passord
   new-custom-alias: Ny alias-adresse
   change-password: Endre passordet ditt
@@ -116,14 +73,6 @@ form:
   plain-password_confirmation: Bekreft nytt passord
   domain: Domene
   add: Legg till
-  openpgp-key-text: ""
-  openpgp-key-submit: ""
-  openpgp-delete: ""
-  openpgp-key-file-mimetype: ""
-  openpgp-key-file: ""
-  openpgp-key-upload-or: ""
-  openpgp-key-select-one: ""
-  openpgp-key-text-placeholder: ""
 recovery:
   header: Gjenopprett kontoen din
   lead: Tilbakestill passordet med ditt gjenopprettingssymbol
@@ -136,10 +85,6 @@ recovery:
     "Første steg i gjenoppretting av passordet ditt er ferdig.\nVent i 48 timer.\
     \ Deretter kan du sette et nytt passord i andre steg.\nBehold gjenopprettingssymbolet\
     \ dit til da.\n"
-navbar_left:
-  about-us:
-    text: Om oss
-    link: https://www.example.org/nb/om-oss
 navbar_right:
   login: Logg inn
   logout: Logg ut
@@ -165,7 +110,6 @@ welcome:
     \ du motta tre invitasjonskoder, som du kan samle på <a href=\"%app_url%\">%app_url%</a>.\
     \ Du kan gi disse til venner og invitere dem til å registrere seg på %project_name%.</p>\n"
 closed:
-  title: Registrering stengt
   headline: Registrering stengt
   lead:
     Som følge av paragraf tre i TKÜV, har vi besluttet å stenge registreringen.
@@ -179,16 +123,10 @@ closed:
     \ registreringen, og ikke tillate opprettelse av nye kontoer.<p>\n<p><strong>Dette\
     \ har ingen innvirkning på eksisterende kontoer</strong></p>\n"
 delete:
-  alias:
-    headline: Slett alias-adresse %alias%
-    lead: Passordet ditt må bekreftes for å slette din alias-adresse.
   user:
     headline: Slett konto
     lead: Passordet ditt må bekreftes for å slette kontoen din.
   cancel: Avbryt
-  openpgp:
-    lead: ""
-    headline: ""
 recovery-token:
   headline: Håndter gjenopprettingssymbol
   lead:
@@ -218,11 +156,6 @@ flashes:
   recovery-token-ack: Du genererte et gjenopprettingssymbol.
   recovery-reauthenticate: Noe gikk galt. Identitetsbekreft deg igjen.
   recovery-password-changed: Du endret passordet ditt.
-  openpgp-key-upload-error-no-keys: ""
-  openpgp-key-upload-error-multiple-keys: ""
-  openpgp-deletion-successful: ""
-  openpgp-key-upload-successful: ""
-  openpgp-key-upload-error-no-openpgp: ""
 error:
   page_not_found: Siden du forsøker å nå finnes ikke.
   generic_error: En feil inntraff.
@@ -306,11 +239,3 @@ init_user:
   text:
     E-poststandarder krever at kontoen postmaster@%domain% finnes. Velg et passord
     for denne første administratorkontoen og logg inn etterpå.
-openpgp:
-  keyid-label: ""
-  delete-button: ""
-  expiretime-label: ""
-  information: ""
-  information-details: ""
-  fingerprint-label: ""
-  key-info: ""

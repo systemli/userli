@@ -17,12 +17,12 @@ registration:
   voucher-invalid: Der Einladungscode ist ungültig.
   email-domain-not-exists: Die E-Mail-Adresse ist ungültig.
   voucher-already-redeemed: Der Einladungscode wurde bereits verwendet.
-  email-domain-invalid: Die E-Mail-Adresse ist ungültig.
   email-already-taken: Die E-Mail Adresse ist bereits vergeben.
   email-too-short: Der eingegebene Benutzername muss mindestens %min% Zeichen enthalten.
   email-too-long: Der eingegebene Benutzername darf nicht mehr als %max% Zeichen enthalten.
-  email-unexpected-characters: 'Der eingegebene Benutzername enthält nicht erlaubte
-    Zeichen. Erlaubt sind: Buchstaben und Zahlen, sowie -, _ und .'
+  email-unexpected-characters:
+    "Der eingegebene Benutzername enthält nicht erlaubte
+    Zeichen. Erlaubt sind: Buchstaben und Zahlen, sowie -, _ und ."
 
 voucher:
   suspicious-user: "Nicht erlaubt, Einladungscodes für verdächtige Benutzer:innen anzulegen."
