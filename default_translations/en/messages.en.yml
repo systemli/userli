@@ -23,9 +23,7 @@ start:
   registration-button: Create account
   account-settings: Account settings
   account-settings-desc: Manage your account
-  account-delete: Delete account
   aliases: Alias addresses
-  aliases-delete: delete alias address
   aliases-desc: Hide your identity
   vouchers: Invite codes
   vouchers-desc: Invite your friends
@@ -33,12 +31,9 @@ start:
   webmail-desc: Read and write e-mails
   openpgp-delete: delete OpenPGP key
   openpgp-settings: OpenPGP
-  openpgp-settings-desc: Publish your key
-  openpgp-settings-title: Publish your OpenPGP key in the Web Key Directory
 
 index:
   title: Manage your e-mail account
-  voucher-headline: Your invite codes
   voucher-subtitle: Invite your friends
   voucher-explanation-short: >
     Use your invite codes to invite friends.
@@ -52,13 +47,7 @@ index:
   voucher-empty-multiplier: >
     Create a new invite code to invite friends.
   voucher-limit-title: Invite code limit reached
-  voucher-explanation: >
-    Use your invite codes to invite friends here.
-    By default, you have three invitations available.
-    If you need invite more, please contact the administrators.
-    We store invite data for a limited amount of time to protect against abuse.
   alias-subtitle: Manage your e-mail aliases
-  alias-headline: Your %alias_type% alias addresses
   alias-limit: You reached the allowed limit of %alias_limit% %alias_type% alias addresses.
   alias-limit-reached: Limit reached
   alias-deletion-custom: Write us in order to get addresses deleted.
@@ -66,38 +55,12 @@ index:
     As soon as you delete old addresses, you can create new ones
     again.
   alias-empty: You don't have any %alias_type% alias addresses defined.
-  alias-custom-description: Create personalized e-mail addresses with your own name
   alias-custom-create: Create new custom alias
-  alias-random-description: Generate random e-mail addresses automatically
   alias-random-generate: Generate new random alias
   alias-active-custom: Active custom aliases
   alias-active-random: Active random aliases
-  alias-info-title: Important notes about e-mail aliases
-  alias-info-custom: "<strong>Custom aliases:</strong> Choose your own name for your e-mail address"
-  alias-info-random: "<strong>Random aliases:</strong> Automatically generated addresses for more anonymity"
-  alias-info-limits: "<strong>Limits:</strong> Maximum %alias_limit_custom% custom and %alias_limit_random% random aliases"
-  alias-info-management: "<strong>Management:</strong> Delete unused aliases to make room for new ones"
-  delete-headline: Delete account
-  delete-description: >
-    You can delete your %project_name% e-mail account.
-    This will delete all your e-mails.
-    <strong>A recovery at a later date is not possible.</strong>
-    <br /><br />To delete your account you need to submit your actual password.
-  delete-button: Delete account
-  recovery-token-button: Manage recovery token
-  logged_in_as: You are logged in as %user%.
-  alias-explanation:
-    "<p>\n  Use alias addresses to hide your original e-mail address\
-    \ from  people you don't know well, or companies you don't fully trust.\n</p>\n\
-    <p>\n  <ul>\n    <li>All e-mails sent to alias addresses go to your normal mailbox.</li>\n\
-    \    <li>To send from an alias address, you have to manually set up your e-mail\
-    \ client to do so.</li>\n    <li>You can have %alias_limit_custom% custom alias\
-    \ addresses.</li>\n    <li>You can have %alias_limit_random% random alias addresses.</li>\n\
-    \    <li>Random alias addresses are supposed to be used for a single purpose \
-    \ to avoid tracking between different services.</li>\n    <li>Contact us to delete\
-    \ custom alias addresses.</li>\n  </ul>\n</p>\n"
+
 form:
-  title: Register
   signin-header: Sign in
   signin-subtitle: Welcome back to your account
   register-header: Create account
@@ -118,7 +81,6 @@ form:
   submit: Submit
   voucher: Invite code
   voucher-redeemed-on: Redeemed on
-  oclock-by: by
   actual-password: Current password
   new-custom-alias: New alias address
   plain-password: New password
@@ -138,7 +100,6 @@ form:
   domain: Domain
   add: Add
   verify: Verify
-  cancel: Cancel
   twofactor: Two-factor authentication
   twofactor-short: 2FA
   twofactor-login: Two-factor authentication
@@ -148,7 +109,6 @@ form:
   twofactor-login-desc: >
     Open your two-factor authenticator (TOTP) app to view your authentication code.
   twofactor-login-cancel: Cancel login
-  twofactor-enable: Enable two-factor authentication
   twofactor-disable: Disable two-factor authentication
   twofactor-login-help: Your two-factor authenticator app generates a 6-digit code that you need to enter here.
 
@@ -180,16 +140,7 @@ account:
     unset: You don't have two-factor authentication enabled yet.
     unset-extra: You need a TOTP app on your mobile device to enable two-factor authentication.
     set: Two-factor authentication is enabled.
-    button: Configure two-factor authentication
     lead: Secure your account with a second factorUpdate your password
-    desc-login: >
-      With two-factor authentication, you have to provide a second password at login, that
-      you get from your two-factor authenticator app. This extra password is only required
-      when logging into %app_url%. It's not required for accessing other services like
-      your mails.
-    desc-lost: >
-      If you ever loose access to your two-factor authenticator app, you will have to authenticate
-      using one of the two-factor backup codes or reset your account using the recovery token.
     enable-lead: >
       Scan the image below with your two-factor app.
     enable-title: Enable 2FA
@@ -237,10 +188,6 @@ recovery:
   reset-lead: You're now allowed to reset your password
   token-lead: New recovery token
   information-extra: Two-factor authentication will be reset.
-navbar_left:
-  about-us:
-    text: About us
-    link: https://www.example.org/en/about-us
 navbar_right:
   login: Log in
   logout: Log out
@@ -265,7 +212,6 @@ welcome:
     href="%app_url%">%app_url%</a>. You can pass these on to friends and invite them
     to register with %project_name%.</p>
 closed:
-  title: Registration closed
   headline: Registration closed
   lead:
     Due to paragraph three TKÜV we decided to close our Registration. Sorry for
@@ -281,13 +227,10 @@ closed:
     <p><strong>Existing accounts aren't effected</strong></p>
 delete:
   alias:
-    headline: Delete alias address %alias%
     headline_generic: Delete alias address
-    lead: We need to verify your password to delete your alias address.
     lead_specific: >
       Are you sure you want to delete <strong>%alias%</strong>?
       The address will be permanently deleted.
-    delete: Delete alias
   user:
     headline: Delete account
     lead: We need to verify your password to delete your account.

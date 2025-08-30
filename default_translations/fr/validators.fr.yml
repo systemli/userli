@@ -1,11 +1,11 @@
 registration:
-  email-unexpected-characters: "Le nom d'utilisateur contient des caractères inattendus.\
+  email-unexpected-characters:
+    "Le nom d'utilisateur contient des caractères inattendus.\
     \ Les seuls caractères valides : les lettres et les chiffres, ainsi que -, _ et\
     \ ."
   email-too-long: Le nom d'utilisateur doit contenir au maximum %max% caractères.
   email-too-short: Le nom d'utilisateur doit contenir au moins %min% caractères.
   email-already-taken: L'adresse électronique est déjà prise.
-  email-domain-invalid: L'adresse électronique n'est pas valide.
   voucher-already-redeemed: Le code d'invitation a déjà été utilisé.
   email-domain-not-exists: L'adresse électronique n'est pas valide.
   voucher-invalid: Le code d'invitation n'est pas valide.

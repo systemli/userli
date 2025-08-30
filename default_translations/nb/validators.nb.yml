@@ -1,9 +1,9 @@
 registration:
   email-too-short: Brukernavnet må inneholdet minst %min% tegn.
   voucher-already-redeemed: Invitasjonskoden har allerede blitt brukt.
-  email-domain-invalid: E-posten er ugydlig.
-  email-unexpected-characters: 'Brukernavnet inneholder uventede tegn. Gyldig: Nummer
-    og tall, sågar også -, _ og .'
+  email-unexpected-characters:
+    "Brukernavnet inneholder uventede tegn. Gyldig: Nummer
+    og tall, sågar også -, _ og ."
   email-already-taken: E-postadressen er allerede i brukt.
   email-domain-not-exists: E-posten er ugyldig.
   voucher-invalid: Invitasjonskoden er ugyldig.

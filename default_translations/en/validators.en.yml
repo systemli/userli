@@ -17,7 +17,6 @@ registration:
   voucher-invalid: "The invite code is invalid."
   email-domain-not-exists: "The e-mail is invalid."
   voucher-already-redeemed: "The invite code has already been used."
-  email-domain-invalid: "The e-mail is invalid."
   email-already-taken: "The e-mail address is already taken."
   email-too-short: "The username must contain at least %min% characters."
   email-too-long: "The username must contain at most %max% characters."

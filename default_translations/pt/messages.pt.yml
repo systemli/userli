@@ -1,19 +1,7 @@
-nav:navbar:
-  home: Home
-  vouchers: Convites
-  aliases: Alias
-  openpgp: OpenPGP
-  account: Conta
-  language: Idioma
-  signed-in-as: Conectado como
-  open-user-menu: Abrir menu do usuário
-  open-main-menu: Abrir menu principal
-
 navbar:
   home: Início
   vouchers: Convites
   aliases: Alias
-  openpgp: OpenPGP
   account: Conta
   signed-in-as: Conectado como
   open-user-menu: Abrir menu do usuário
@@ -30,21 +18,14 @@ start:
   registration-button: Criar conta
   account-settings: Configurar conta
   account-settings-desc: Senhas e mais
-  account-delete: Apagar conta
   aliases: Endereços alias
-  aliases-delete: apagar endereço alias
   aliases-desc: Oculte sua identidade
   vouchers: Convites
   vouchers-desc: Convide seus contatos
   webmail: Webmail
   webmail-desc: Leia e escreva e-mails
-  openpgp-delete: ""
-  openpgp-settings: ""
-  openpgp-settings-desc: ""
-  openpgp-settings-title: ""
 index:
   title: Configurações
-  voucher-headline: Seus convites
   voucher-limit: Você não tem mais convites disponíveis.
   voucher-waiting-title: Aguardando novos códigos de convite
   voucher-empty-title: Nenhum código de convite criado ainda
@@ -54,39 +35,14 @@ index:
   voucher-disable: >
     No dia %date% você vai receber três códigos de convite. Isso é feito para evitar
     cadastros excessivos e spam.
-  voucher-explanation: >
-    Use os seus códigos para convidar seus contatos para cá. Por padrão, você tem
-    três convites. Se precisar convidar mais pessoas, entre em contato com os administradores.
-    Os dados sobre os convites serão guardados por um tempo limitado como proteção
-    contra abusos.
-  alias-headline: Seus endereços alias %alias_type%
   alias-limit:
     Você atingiu o limite de %alias_limit% endereços alias %alias_type%
     permitidos.
   alias-deletion-custom: Entre em contacto connosco para apagar endereços.
   alias-deletion-random: Assim que apagar endereços antigos, poderá criar endereços.
   alias-empty: Você não tem nenhum endereço alias %alias_type% definido.
-  delete-headline: Apagar conta
-  delete-description: >
-    Você pode excluir sua conta %project_name%. Isso irá deletar todos os seus e-mails.
-    <strong>Eles não poderão ser recuperados no futuro.</strong> <br /><br /> Para
-    excluir sua conta você deve inserir sua senha atual.
-  delete-button: Apagar conta
-  recovery-token-button: Configurar token de recuperação
-  logged_in_as: Você entrou como %user%.
-  alias-explanation:
-    "<p>\n  Use endereços alias para esconder o seu endereço original\
-    \ de\n  pessoas que você não conhece bem ou empresas em que você não confia.\n\
-    </p>\n<p>\n  <ul>\n    <li>Todas as mensagens enviadas para endereços alias chegam\
-    \ na sua caixa de entrada original.</li>\n    <li>Para enviar a partir de um endereço\
-    \ alias, você deve configurar o seu gerenciador de email manualmente.</li>\n \
-    \   <li>Você pode ter até %alias_limit_custom% endereços personalizados.</li>\n\
-    \    <li>Você pode ter até %alias_limit_random% endereços aleatórios.</li>\n \
-    \   <li>Endereços aleatórios devem ser usados para situações únicas,\n    como\
-    \ uma forma de evitar rastreamento entre diferentes serviços.</li>\n    <li>Entre\
-    \ em contato conosco para deletar endereços personalizados.</li>\n  </ul>\n</p>\n"
+
 form:
-  title: Cadastro
   signin-header: Login
   register-header: Criar conta
   email: E-mail
@@ -99,7 +55,6 @@ form:
   submit: Enviar
   voucher: Código de convite
   voucher-redeemed-on: Resgatado em
-  oclock-by: por
   actual-password: Senha atual
   new-custom-alias: Novo endereço alias
   plain-password: Nova senha
@@ -116,16 +71,6 @@ form:
   recovery-start: Recuperar
   registration-recovery-token-confirm: Eu guardei o token de recuperação em um lugar seguro
   registration-recovery-token-next-button: Continuar
-  openpgp-key-submit: ""
-  openpgp-key-select-one: ""
-  openpgp-key-file-mimetype: ""
-  domain: ""
-  openpgp-key-text: ""
-  openpgp-key-text-placeholder: ""
-  openpgp-key-file: ""
-  openpgp-delete: ""
-  openpgp-key-upload-or: ""
-  add: ""
 recovery:
   header: Recuperar sua conta
   lead: Redefina a sua palavra-passe usando o seu token de recuperação
@@ -140,10 +85,6 @@ recovery:
   waiting-time: O segundo passo começa %time%.
   reset-lead: Agora você pode redefinir sua senha
   token-lead: Novo token de recuperação
-navbar_left:
-  about-us:
-    text: Sobre nós
-    link: https://www.example.org/en/about-us
 navbar_right:
   login: Entrar
   logout: Sair
@@ -166,7 +107,6 @@ welcome:
     vai receber três códigos de convite, os quais você pode pegar em <a href="%app_url%">%app_url%</a>.
     Você pode enviá-los a seus contatos e chamá-los para se cadastrar no %project_name%.</p>
 closed:
-  title: Cadastros fechados
   headline: Cadastros fechados
   lead:
     De acordo com o parágrafo 3 das normas de telecomunicação TKÜV decidimos manter
@@ -180,17 +120,10 @@ closed:
     \ de vigilância para as autoridades. Foi por isso que decidimos bloquear o registo\
     \ e não permitir a criação de novas contas.<p>\n<p><strong>As contas existentes\
     \ não são afetadas</strong><</p>\n"
-delete:
-  alias:
-    headline: Apagar o endereço alias %alias%
-    lead: Precisamos verificar a sua palavra-passe para apagar o seu endereço alias.
   user:
     headline: Apagar a conta
     lead: Precisamos verificar a sua palavra-passe para apagar a sua conta.
   cancel: Cancelar
-  openpgp:
-    lead: ""
-    headline: ""
 recovery-token:
   headline: Gerenciar token de recuperação
   lead:
@@ -288,29 +221,3 @@ mail:
     Esperamos que continue a tirar proveito da sua conta.
     Time %project_name%.
 copy-to-clipboard: Copiar para a área de transferência
-Reserved Name: ""
-Domain: ""
-init_user:
-  text: ""
-  lead: ""
-init_domain:
-  lead: ""
-  text: ""
-User: ""
-Ratio: ""
-admin:
-  registered-accounts-last-week: ""
-  invite-codes: ""
-  invite-codes-redeemed: ""
-  registered-accounts: ""
-openpgp:
-  expiretime-label: ""
-  fingerprint-label: ""
-  keyid-label: ""
-  information-details: ""
-  information: ""
-  delete-button: ""
-  key-info: ""
-init.title: ""
-Voucher: ""
-Alias: ""

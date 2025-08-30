@@ -6,7 +6,6 @@ navbar:
   home: Hei
   vouchers: Iiladigscodes
   aliases: Aliase
-  openpgp: OpenPGP
   account: Chonto
   language: Sprach
   signed-in-as: Aameldet aus
@@ -35,47 +34,17 @@ form:
   delete-alias: Alias Adrässe lösche
   signin-header: Ilogge
   actual-password: Momentans Passwort
-  title: Regischtriere
   roles: Rouene
   register-header: Account erschteue
-  oclock-by: vo
   voucher: Invite Code
   plain-password: Nöis Passwort
   plain-password_confirmation: Nöis Passwort beschtätige
   new-custom-alias: Nöii Alias Adrässe
   recovery-start: Wiederhärschteue
-  domain: ""
-  openpgp-delete: ""
-  openpgp-key-text-placeholder: ""
-  openpgp-key-select-one: ""
-  openpgp-key-text: ""
-  openpgp-key-file: ""
-  openpgp-key-submit: ""
-  openpgp-key-file-mimetype: ""
-  openpgp-key-upload-or: ""
-  add: ""
 index:
-  recovery-token-button: Recovery Token verwaute
-  alias-explanation:
-    "<p>\n  Alias Adrässene chasch bruuche zum dini urschprünglechi\
-    \ E-Mail Adrässe vor Lüt wo nid so guet kennsch oder Firmene wo nid vertrousch,\
-    \ z verschtecke.\n</p>\n<p>\n  <ul>\n    <li>Aui E-Mails wo a Alias Adrässene\
-    \ verschickt wärde lande i dire normale Mailbox.</li>\n    <li>Zum vonere Alias\
-    \ Adrässe us z versände muesch di E-Mail Client manuell entsprächend ischteue.</li>\n\
-    \    <li>Du chasch %alias_limit_custom% benutzerdefinierti Alias Adrässene ha.</li>\n\
-    \    <li>Du chasch %alias_limit_random% zuefäuigi Alias Adrässene ha.</li>\n \
-    \   <li>Zuefäuigi Alias Adrässene si drzue dänkt, für verschidnigi Services azmäude\
-    \ zum nid chönne trackt z wärde.</li>\n    <li>Bitte kontaktier üs zum benutzerdefinierti\
-    \ Alias Adrässene la z lösche.</li>\n  </ul>\n</p>\n"
   alias-deletion-random: Sobaud du auti Adrässene löschisch chasch wieder nöii alege.
   alias-deletion-custom: Schriib üs zum Adrässene la lösche.
-  voucher-explanation:
-    "Bruch dini Invite Codes hie zum Fründe ilade. Schtandardmässig\
-    \ hesch drü Iladige z guet. Wenn meh Fründe möchtsch ilade, wänd di bitte ad Adminischtratore.\
-    \ Mir spichere Date beträffend Iladige nume e gwüssi Zyt um Missbruuch vorzböige.\n"
   alias-empty: Du hesch keni %alias_type% Alias Adrässene feschtgleit.
-  alias-headline: Dini %alias_type% Alias Adrässene
-  delete-button: Account lösche
   voucher-limit: Du hesch ke Invite Codes meh übrig.
   voucher-waiting-title: Wartä uf nöii Invite Codes
   voucher-empty-title: No keni Invite Codes ersteut
@@ -83,17 +52,9 @@ index:
     Ersteu e nöii Invite Code zum Fründe iiladä.
   voucher-limit-title: Limite vo Invite Codes erreicht
   title: Di E-Mail Account verwaute
-  logged_in_as: Du bisch igloggt aus %user%.
   voucher-disable:
     "Am %date% bechunnsch drü Invite Codes. Das isch so glöst zum Masse-Regischtrierige\
     \ und Spam verhindere.\n"
-  delete-description:
-    "Du chasch di %project_name% E-Mail Account lösche. Dadrmit\
-    \ wärde aui dini E-Mail glöscht. <strong>Es Wiederhärschteue zumne schpätere Zytpunkt\
-    \ isch nid müglech.</strong> <br /><br /> Zum di Account lösche muesch dis iztige\
-    \ Passwort igäh.\n"
-  voucher-headline: Dini Invite Codes
-  delete-headline: Account lösche
   alias-limit: Du hesch s Limit vo %alias_limit% %alias_type% Alias Adrässene erreicht.
 admin:
   registered-accounts-last-week: Regischtrierti Accounts ide letschte 7 Täg
@@ -102,9 +63,6 @@ admin:
   invite-codes: Exischtierendi Invite Codes
 Voucher: Invite Code
 delete:
-  alias:
-    headline: Alias %alias% lösche
-    lead: Mir müesse dis Passwort verifiziere zum dä Alias chönne lösche.
   user:
     headline: Account lösche
     lead: Mir müesse dis Passwort verifiziere zum di Account chönne lösche.
@@ -123,18 +81,12 @@ start:
     \ vo dine Fründe scho e Account het, frag ne doch umne Invite Code und erschteu\
     \ dr sofort di Account.\n"
   intro: Hie chasch e E-Mail Account erschteue und verwaute.
-  account-delete: Account lösche
-  aliases-delete: Alias Adrässe lösche
   registration-header: Regischtration
   vouchers-desc: Lad dini Fründe ii
   account-settings-desc: Passwörter und meh
   webmail-desc: E-Mails läse und schriibe
   title: Wiukomme bi %domain%
   webmail: Webmail
-  openpgp-delete: ""
-  openpgp-settings: ""
-  openpgp-settings-title: ""
-  openpgp-settings-desc: ""
 welcome:
   text:
     "<h3>Gschafft</h3> <p>Im Internet fingsch Aleitige wie du die E-Mail Account\
@@ -238,11 +190,6 @@ flashes:
   recovery-reauthenticate: Irgendöppis isch schief gloffe. Bitte nöi amäude!
   registration-successful: Du bisch iz regischtriert.
   recovery-next-login: Witerfahre mittem Ilogge.
-  openpgp-key-upload-error-no-openpgp: ""
-  openpgp-deletion-successful: ""
-  openpgp-key-upload-error-multiple-keys: ""
-  openpgp-key-upload-successful: ""
-  openpgp-key-upload-error-no-keys: ""
 navbar_right:
   login: Ilogge
   logout: Uslogge
@@ -280,27 +227,7 @@ spam:
   title: Account isch gschperrt
 User: User
 Alias: Alias Adrässe
-navbar_left:
-  about-us:
-    text: Über üs
-    link: https://www.example.org/de-ch/ueber-ues
 random: zuefäuig
 flash_batch_remove_vouchers_success: Nid iglösti Invite Codes glöscht.
 custom: benutzerdefiniert
 Ratio: Verhäutnis
-init.title: ""
-init_domain:
-  lead: ""
-  text: ""
-openpgp:
-  keyid-label: ""
-  key-info: ""
-  information-details: ""
-  delete-button: ""
-  expiretime-label: ""
-  fingerprint-label: ""
-  information: ""
-init_user:
-  text: ""
-  lead: ""
-copy-to-clipboard: ""
