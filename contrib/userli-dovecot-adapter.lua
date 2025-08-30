@@ -161,6 +161,23 @@ function auth_password_verify(request, password)
         return dovecot.auth.PASSDB_RESULT_PASSWORD_MISMATCH, ""
     end
 
+    if http_response:status() == 403 then
+        local data = json.decode(http_response:payload())
+        local message = data['message'] or "unknown http forbidden error"
+
+        request:log_warning("Lookup failed: " .. message)
+
+        if message == "user disabled due to spam role" then
+            return dovecot.auth.PASSDB_RESULT_USER_DISABLED, ""
+        end
+
+        if message == "user password change required" then
+            return dovecot.auth.PASSDB_RESULT_PASS_EXPIRED, ""
+        end
+
+        return dovecot.auth.PASSDB_RESULT_INTERNAL_FAILURE
+    end
+
     if http_response:status() == 404 then
         request:log_warning(log_msg['http-failed'] .. http_response:status())
         return dovecot.auth.PASSDB_RESULT_USER_UNKNOWN, ""
