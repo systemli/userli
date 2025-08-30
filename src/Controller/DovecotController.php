@@ -26,6 +26,10 @@ class DovecotController extends AbstractController
 
     const MESSAGE_USER_NOT_FOUND = 'user not found';
 
+    const MESSAGE_USER_DISABLED = 'user disabled due to spam role';
+
+    const MESSAGE_USER_PASSWORD_CHANGE_REQUIRED = 'user password change required';
+
     private readonly MailCrypt $mailCrypt;
 
     public function __construct(
@@ -51,7 +55,6 @@ class DovecotController extends AbstractController
     public function lookup(
         #[MapEntity(mapping: ['email' => 'email'])] User $user,
     ): JsonResponse {
-        // Spammers are not excluded from lookup
         if ($user->isDeleted()) {
             return $this->json(['message' => self::MESSAGE_USER_NOT_FOUND], Response::HTTP_NOT_FOUND);
         }
@@ -90,9 +93,15 @@ class DovecotController extends AbstractController
         #[MapEntity(mapping: ['email' => 'email'])] User $user,
         #[MapRequestPayload] DovecotPassdbDto $request,
     ): JsonResponse {
-        // Authentication is not possible for deleted users, spammers and users required to change password
-        if ($user->isDeleted() || $user->hasRole(Roles::SPAM) || $user->isPasswordChangeRequired()) {
+        if ($user->isDeleted()) {
             return $this->json(['message' => self::MESSAGE_USER_NOT_FOUND], Response::HTTP_NOT_FOUND);
+        }
+
+        if ($user->hasRole(Roles::SPAM)){
+            return $this->json(['message' => self::MESSAGE_USER_DISABLED], Response::HTTP_FORBIDDEN);
+        }
+        if ($user->isPasswordChangeRequired()) {
+            return $this->json(['message' => self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED], Response::HTTP_FORBIDDEN);
         }
 
         if (null === $this->authHandler->authenticate($user, $request->getPassword())) {

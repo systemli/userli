@@ -63,7 +63,7 @@ class DovecotControllerTest extends WebTestCase
         ]);
         $client->request('POST', '/api/dovecot/spam@example.org', ['password' => 'password']);
 
-        self::assertResponseStatusCodeSame(404);
+        self::assertResponseStatusCodeSame(403);
     }
 
     public function testPassdbMailCrypt(): void
