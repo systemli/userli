@@ -25,24 +25,20 @@ start:
   openpgp-delete: elimina la chiave OpenPGP
   openpgp-settings: OpenPGP
   intro: Qui puoi impostare e gestire il tuo account di posta elettronica.
-  registration-text:
-    "Non hai ancora un account di posta elettronica con %domain%?\
-    \ Nessun problema! Se uno dei tuoi amici ha già un account, puoi ottenere un codice\
-    \ invito da loro e creare immediatamente il tuo account.\n"
+  registration-text: >
+    Non hai ancora un account di posta elettronica con %domain%?
+    Nessun problema! Se uno dei tuoi amici ha già un account, puoi ottenere un codice invito da loro e creare immediatamente il tuo account.
   account-settings: Impostazioni dell'account
   account-settings-desc: Password e altro
 index:
   voucher-limit: Non hai più codici di invito.
   voucher-waiting-title: In attesa di nuovi codici di invito
   voucher-empty-title: Nessun codice di invito creato ancora
-  voucher-empty-multiplier: >
-    Crea un nuovo codice di invito per invitare amici.
+  voucher-empty-multiplier: Crea un nuovo codice di invito per invitare amici.
   voucher-limit-title: Limite codici di invito raggiunto
   title: Gestisci il tuo account di posta elettronica
   alias-deletion-custom: Scrivici per fare eliminare indirizzi.
-  voucher-disable:
-    "Il %date% riceverai tre codici di invito. Questo per evitare registrazioni\
-    \ di massa e spam.\n"
+  voucher-disable: Il %date% riceverai tre codici di invito. Questo per evitare registrazioni di massa e spam.
 form:
   email: E-mail
   signin-header: Accedi
@@ -74,12 +70,11 @@ form:
   openpgp-key-text: "Incolla la tua chiave come testo:"
   openpgp-key-upload-or: o
 welcome:
-  text:
-    "<h3>Pronto a partire</h3> <p> Nel web puoi trovare delle guide per impostare\
-    \ il tuo account di posta elettronica con diversi programmi client.</p> <p> In\
-    \ una settimana riceverai tre codici invito, che potrai raccogliere a <a href=\"\
-    %app_url%\">%app_url%</a>. Puoi passarli ai tuoi amici e invitarli a registrarsi\
-    \ con %project_name%.</p>\n"
+  text: >
+    <h3>Pronto a partire</h3>
+    Nel web puoi trovare delle guide per impostare il tuo account di posta elettronica con diversi programmi client.
+    In una settimana riceverai tre codici invito, che potrai raccogliere a <a href="%app_url%">%app_url%</a>.
+    Puoi passarli ai tuoi amici e invitarli a registrarsi con %project_name%.
   headline: Benvenuto/a a %project_name%!
   next-button: Alla panoramica
 navbar_right:
@@ -90,65 +85,80 @@ registration:
   title: Registrazione su %project_name%
   information: Informazioni
   recovery-token-headline: Gettone di recupero
-  information-intro:
-    "Vuoi registrare un account di posta elettronica con <a href=\"\
-    %project_url%\">%project_name%</a>? Permettiamo le registrazioni solo se un amico\
-    \ ti invita con un codice di invito ai nostri servizi.\n"
+  information-intro: >
+    Vuoi registrare un account di posta elettronica con <a href="%project_url%">%project_name%</a>?
+    Permettiamo le registrazioni solo se un amico ti invita con un codice di invito ai nostri servizi.
   label-email: Il tuo indirizzo e-mail preferito
 delete:
   user:
     headline: Elimina l'account
     lead: Abbiamo bisogno di verificare la tua password per eliminare il tuo account.
 flashes:
-  openpgp-key-upload-error-no-keys:
-    Nessuna chiave per il tuo indirizzo e-mail trovata
-    nei dati caricati.
-  openpgp-key-upload-error-multiple-keys:
-    Nei dati caricati è stata trovata più di
-    una chiave per il tuo indirizzo e-mail. Si prega di caricare solo una chiave.
+  openpgp-key-upload-error-no-keys: Nessuna chiave per il tuo indirizzo e-mail trovata nei dati caricati.
+  openpgp-key-upload-error-multiple-keys: >
+    Nei dati caricati è stata trovata più di una chiave per il tuo indirizzo e-mail.
+    Si prega di caricare solo una chiave.
   recovery-token-invalid: L'indirizzo e-mail e/o il gettone di recupero sono sbagliati!
 spam:
   title: Account bloccato
-  text:
-    "Oh no, crediamo che il tuo account sia stato usato impropriamente da uno\
-    \ spammer.\nL'accesso alla posta elettronica è stato disattivato.\nContatta il\
-    \ supporto per sbloccare il tuo account.\n"
+  text: >
+    Oh no, crediamo che il tuo account sia stato usato impropriamente da uno spammer.
+    L'accesso alla posta elettronica è stato disattivato.
+    Contatta il supporto per sbloccare il tuo account.
 mail:
   welcome-subject: Benvenuto/a su %domain%
   alias-created-subject: Nuovo indirizzo alias creato
-  alias-created-body:
-    "Ciao %email%,\n\nPer il tuo indirizzo e-mail %email% è stato\
-    \ aggiunto un nuovo alias:\n%alias%\n\nGestisci i tuoi alias di posta elettronica\
-    \ qui: %app_url%/alias\n\nCi auguriamo che tu continui a goderti il tuo account\
-    \ di posta elettronica.\nLa tua squadra gestione %project_name%.\n"
-  welcome-body:
-    "Caro utente,\n\nBenvenuto a bordo. Puoi trovare guide per impostare\
-    \ il tuo account di posta elettronica\ncon diversi programmi client su Internet.\n\
-    \nAvrai una casella di posta elettronica con una quota di 1 GB. Se superi il tuo\
-    \ limite,\nil tuo account di posta elettronica potrebbe non funzionare correttamente.\n\
-    \nIn una settimana riceverai tre codici invito, che potrai ritirare\nsu %app_url%/voucher.\
-    \ Puoi passarli ai tuoi amici e\ninvitarli a registrarsi con %project_name%.\n\
-    \nSinceramente,\nil tuo team di amministrazione di %project_name%.\n"
-  recovery-subject:
-    La password del tuo account di posta elettronica %email% sarà
-    reimpostata
-  recovery-body:
-    "Ciao %email%,\n\nLa password del tuo account è stata tentata di\
-    \ resettare l'autenticazione con\nil tuo indirizzo e-mail e il codice di recupero\
-    \ corrispondente a\n%app_url%/recupero.\n\nSe non sei stato/a tu, allora qualcun\
-    \ altro con accesso al tuo gettone di recupero\nha tentato di entrare in possesso\
-    \ del tuo account. Vai su\n%app_url%/user/recovery_token immediatamente e crea\
-    \ un\nnuovo token di recupero. Questo invaliderà il vecchio token di recupero\
-    \ e fermerà\nil processo.\n\nSe hai attivato il processo da solo, il periodo di\
-    \ attesa di 48 ore è iniziato\nora. Finirà a %time%. In seguito, puoi impostare\
-    \ una nuova password su\n%app_url%/recupero.\n\nSperiamo che tu continui a goderti\
-    \ il tuo account di posta elettronica.\nIl tuo %project_name% admin team.\n"
+  alias-created-body: >
+    Ciao %email%,
+
+    Per il tuo indirizzo e-mail %email% è stato aggiunto un nuovo alias:
+    %alias%
+
+    Gestisci i tuoi alias di posta elettronica qui: %app_url%/alias
+
+    Ci auguriamo che tu continui a goderti il tuo account di posta elettronica.
+    La tua squadra gestione %project_name%.
+  welcome-body: >
+    Caro utente,
+
+    Benvenuto a bordo. Puoi trovare guide per impostare il tuo account di posta elettronica
+    con diversi programmi client su Internet.
+
+    Avrai una casella di posta elettronica con una quota di 1 GB. Se superi il tuo limite,
+    il tuo account di posta elettronica potrebbe non funzionare correttamente.
+
+    In una settimana riceverai tre codici invito, che potrai ritirare
+    su %app_url%/voucher. Puoi passarli ai tuoi amici e
+    invitarli a registrarsi con %project_name%.
+
+    Sinceramente,
+    il tuo team di amministrazione di %project_name%.
+  recovery-subject: La password del tuo account di posta elettronica %email% sarà reimpostata
+  recovery-body: >
+    Ciao %email%,
+
+    La password del tuo account è stata tentata di resettare l'autenticazione con
+    il tuo indirizzo e-mail e il codice di recupero corrispondente a
+    %app_url%/recupero.
+
+    Se non sei stato/a tu, allora qualcun altro con accesso al tuo gettone di recupero
+    ha tentato di entrare in possesso del tuo account. Vai su
+    %app_url%/user/recovery_token immediatamente e crea un
+    nuovo token di recupero. Questo invaliderà il vecchio token di recupero e fermerà
+    il processo.
+
+    Se hai attivato il processo da solo, il periodo di attesa di 48 ore è iniziato
+    ora. Finirà a %time%. In seguito, puoi impostare una nuova password su
+    %app_url%/recupero.
+
+    Speriamo che tu continui a goderti il tuo account di posta elettronica.
+    Il tuo %project_name% admin team.
 admin:
   registered-accounts: Account registrati
 User: Utente
 init_user:
   lead: Hai creato il tuo dominio primario.
-  text:
+  text: >
     Gli standard di posta elettronica richiedono la presenza dell'account postmaster@%dominio%.
     Scegli una password per questo primo account di amministratore e accedi successivamente.
 openpgp:

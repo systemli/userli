@@ -17,7 +17,8 @@ start:
   intro: Ici vous pouvez configurer et gérer vos comptes de messagerie.
   registration-header: Inscription
   registration-text: >
-    Vous n'avez pas encore de compte de messagerie avec le domaine %domain%? Aucun problème! Si l'un de vos amis a déjà un compte, vous pouvez obtenir un code d'invitation et configurer votre compte immédiatement.
+    Vous n'avez pas encore de compte de messagerie avec le domaine %domain%? Aucun problème!
+    Si l'un de vos amis a déjà un compte, vous pouvez obtenir un code d'invitation et configurer votre compte immédiatement.
   registration-button: Créer un compte
   account-settings: Paramètres du compte
   account-settings-desc: Mots de passe et plus
@@ -41,8 +42,7 @@ index:
     Vous recevrez trois codes d'invitation le %date%, afin d'éviter les inscriptions de masse et le spam.
   voucher-waiting-title: En attente de nouveaux codes d'invitation
   voucher-empty-title: Aucun code d'invitation créé pour le moment
-  voucher-empty-multiplier: >
-    Créez un nouveau code d'invitation pour inviter des amis.
+  voucher-empty-multiplier: Créez un nouveau code d'invitation pour inviter des amis.
   voucher-limit-title: Limite de codes d'invitation atteinte
   alias-subtitle: Gérer vos alias e-mail
   alias-limit: Vous avez atteint la limite autorisée de %alias_limit% %alias_type% alias d'adresse.
@@ -95,10 +95,10 @@ form:
   domain: Domaine
   add: Ajouter
 
-openpgp-key-file: "Téléverser votre clé sous forme de fichier :"
+openpgp-key-file: "Téléverser votre clé sous forme de fichier:"
 openpgp-key-file-mimetype: "Le fichier téléversé ne contient pas de données OpenPGP."
 openpgp-key-upload-or: "ou"
-openpgp-key-text: "Collez votre clé sous forme texte :"
+openpgp-key-text: "Collez votre clé sous forme texte:"
 openpgp-key-text-placeholder: "Clé OpenPGP au format ASCII"
 openpgp-key-select-one: "Veuillez téléverser la clé soit sous forme de fichier, soit sous forme de texte ASCII."
 openpgp-key-submit: "Publier la clé OpenPGP"
@@ -108,7 +108,11 @@ recovery:
   header: Récupérer votre compte
   lead: Réinitialisez le mot de passe en utilisant le jeton de récupération
   cancel: Annuler
-  started: "La première étape pour réinitialiser votre mot de passe est faite. Veuillez maintenant attendre 48 heures. Par la suite, vous pouvez définir un nouveau mot de passe dans une deuxième étape. Veuillez conserver votre jeton de récupération jusque là."
+  started: >
+    La première étape pour réinitialiser votre mot de passe est faite.
+    Veuillez maintenant attendre 48 heures.
+    Par la suite, vous pouvez définir un nouveau mot de passe dans une deuxième étape.
+    Veuillez conserver votre jeton de récupération jusque là.
   waiting-info: Cette période d'attente est mise en place pour votre propre sécurité et ne peut pas être réduite ou passée.
   waiting-time: La deuxième étape commence à %time%.
   reset-lead: Vous n'êtes pas autorisé à réinitialiser votre mot de passe
@@ -123,7 +127,8 @@ registration:
   title: Inscription à %project_name%
   information: Informations
   information-intro: >
-    Souhaitez-vous enregistrer un nouveau compte de messagerie sur <a href=\"%project_url%\">%project_name%</a>? Nous n'autorisons que les inscriptions via les codes d'invitation vers nos services.
+    Souhaitez-vous enregistrer un nouveau compte de messagerie sur <a href="%project_url%">%project_name%</a>?
+    Nous n'autorisons que les inscriptions via les codes d'invitation vers nos services.
   label-email: Votre adresse électronique préférée
   recovery-token-headline: Jeton de récupération
 
@@ -132,25 +137,28 @@ welcome:
   lead: Vous avez bien créé un compte chez nous. Quelles sont les étapes suivantes ?
   next-button: Vers le tableau de bord
   text: >
-    <h3>Vous êtes fin prêt(e)</h3> <p>Sur le Web, vous pouvez trouvez des instructions pour configurer votre compte de messagerie avec différents programmes clients</p> <p>Dans une semaine, vous recevrez trois codes d'invitation que vous pourrez récupérer à <a href=\"%app_url%\">%app_url%</a>. Vous pouvez les donner à vos amis et les inviter à s'inscrire sur %project_name%.</p>
+    <h3>Vous êtes fin prêt(e)</h3>
+    Sur le Web, vous pouvez trouvez des instructions pour configurer votre compte de messagerie avec différents programmes clients
+    Dans une semaine, vous recevrez trois codes d'invitation que vous pourrez récupérer à <a href="%app_url%">%app_url%</a>.
+    Vous pouvez les donner à vos amis et les inviter à s'inscrire sur %project_name%.
 
 closed:
   headline: Inscription fermée
   lead: En raison du paragraphe trois du TKÜV nous avons décidé de fermer les inscriptions. Nous sommes désolés.
   text: >
-    <p>En raison du <a href=\"https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html\" target=\"_blank\">paragraphe trois du « Verordnung über die technische und organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation »</a> (abrégé telecommuicationen-surveillance-decree ou « TKÜV »), les fournisseurs de messagerie avec plus de 10 000 utilisateurs sont dans l'obligation de mettre en place une interface de surveillance pour les autorités. C'est pourquoi nous avons décidé de bloquer les inscriptions et de ne pas autoriser la création de nouveaux comptes.</p> <p><strong>Les comptes existants ne sont pas affectés</strong></p>
+    En raison du <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">paragraphe trois du « Verordnung über die technische und organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation »</a> (abrégé telecommuicationen-surveillance-decree ou « TKÜV »), les fournisseurs de messagerie avec plus de 10 000 utilisateurs sont dans l'obligation de mettre en place une interface de surveillance pour les autorités. C'est pourquoi nous avons décidé de bloquer les inscriptions et de ne pas autoriser la création de nouveaux comptes.
+    <strong>Les comptes existants ne sont pas affectés</strong>
 
 delete:
   alias:
     headline_generic: Supprimer l'alias d'adresse
-    lead_specific: >
-      Êtes-vous sûr de vouloir supprimer <strong>%alias%</strong> ? L'adresse sera définitivement supprimée.
+    lead_specific: Êtes-vous sûr de vouloir supprimer <strong>%alias%</strong> ? L'adresse sera définitivement supprimée.
   user:
     headline: Supprimer le compte
     lead: Nous devons vérifier votre mot de passe pour supprimer votre compte.
   openpgp:
-    headline: "Supprimer la clé OpenPGP"
-    lead: "Nous devons vérifier votre mot de passe pour supprimer votre clé OpenPGP du Web Key Directory."
+    headline: Supprimer la clé OpenPGP
+    lead: Nous devons vérifier votre mot de passe pour supprimer votre clé OpenPGP du Web Key Directory.
   cancel: Annuler
 
 recovery-token:
@@ -159,7 +167,7 @@ recovery-token:
   set: Vous avez déjà défini un jeton de récupération.
   set-extra: Créer un nouveau jeton invalidera le jeton actuel.
   unset: Vous n'avez pas encore défini de jeton de récupération. Nous vous recommandons fortement d'en créer un maintenant.
-  created-headline: "Le jeton de récupération suivant a été créé pour vous :"
+  created-headline: "Le jeton de récupération suivant a été créé pour vous:"
   created-info: >
     Si vous perdez votre mot de passe, le jeton de récupération vous permet de le réinitialiser. Notez le et stocker le de façon sécurisée.
   displayed-once: >
@@ -177,11 +185,13 @@ flashes:
   recovery-reauthenticate: Une erreur s'est produite. Veuillez vous identifier à nouveau!
   recovery-password-changed: Vous avez modifié votre mot de passe.
   recovery-next-login: Aller à l'écran de connexion.
-  openpgp-deletion-successful: "Votre clé OpenPGP a été supprimée."
-  openpgp-key-upload-successful: "Votre clé OpenPGP a été téléversée."
-  openpgp-key-upload-error-no-openpgp: "Le fichier téléversé ne contient pas de données OpenPGP."
-  openpgp-key-upload-error-no-keys: "Aucune clé pour votre adresse électronique n'a été trouvée dans les données téléversées."
-  openpgp-key-upload-error-multiple-keys: "Plus d'une clé pour votre adresse électronique a été trouvée dans les données téléversées. Veuillez téléverser une seule clé."
+  openpgp-deletion-successful: Votre clé OpenPGP a été supprimée.
+  openpgp-key-upload-successful: Votre clé OpenPGP a été téléversée.
+  openpgp-key-upload-error-no-openpgp: Le fichier téléversé ne contient pas de données OpenPGP.
+  openpgp-key-upload-error-no-keys: Aucune clé pour votre adresse électronique n'a été trouvée dans les données téléversées.
+  openpgp-key-upload-error-multiple-keys: >
+    Plus d'une clé pour votre adresse électronique a été trouvée dans les données téléversées.
+    Veuillez téléverser une seule clé.
 
 flash_batch_remove_vouchers_success: Codes d'invitation non demandés supprimés.
 
@@ -194,7 +204,9 @@ error:
 
 spam:
   title: Compte bloqué
-  text: "Oh non ! Nous pensons que votre compte a été utilisé pour générer des courriers indésirables. L'accès au compte de messagerie a été désactivé. Veuillez contacter l'assistance pour débloquer votre compte."
+  text: >
+    Oh non! Nous pensons que votre compte a été utilisé pour générer des courriers indésirables.
+    L'accès au compte de messagerie a été désactivé. Veuillez contacter l'assistance pour débloquer votre compte.
 
 Bad credentials.: Le mot de passe saisi n'est pas valide.
 custom: personnalisé
@@ -268,30 +280,29 @@ openpgp:
   delete-button: "Supprimer la clé OpenPGP"
   information: "Informations"
   information-details: 'Si vous téléversez votre clé OpenPGP ici, elle sera publiée dans notre <i><a target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key Directory</a></i>. Vous aiderez ainsi vos amis à découvrir votre clé automatiquement et en toute sécurité.'
-  keyid-label: "Identifiant de la clé :"
-  fingerprint-label: "Empreinte :"
-  expiretime-label: "Date d'expiration :"
+  keyid-label: "Identifiant de la clé:"
+  fingerprint-label: "Empreinte:"
+  expiretime-label: "Date d'expiration:"
   no-expiration: "Pas de date d'expiration (validité indéfinie)"
   manage-subtitle: "Gérer votre clé OpenPGP"
   current-key: "Clé OpenPGP actuelle"
   no-key-uploaded: "Aucune clé OpenPGP téléversée"
   upload-prompt: "Téléversez une clé en utilisant le formulaire à droite"
 
-# Streamlined alias page structure
-index.alias-motivation: "Crée des alias de messagerie personnalisés pour mieux organiser ta boîte de réception et protéger ta vie privée."
+index.alias-motivation: Crée des alias de messagerie personnalisés pour mieux organiser ta boîte de réception et protéger ta vie privée.
 
-custom-aliases.title: "Alias personnalisés"
-custom-aliases.subtitle: "Créer jusqu'à %alias_limit_custom% alias personnalisés"
-custom-aliases.feature-choose-name: "Choisis ton propre nom d'alias mémorable"
-custom-aliases.feature-easy-remember: "Facile à retenir et à partager avec d'autres"
-custom-aliases.limitation-permanent: "Ne peuvent pas être supprimés une fois créés"
-custom-aliases.limitation-limited: "Limité à %alias_limit_custom% alias au total"
-custom-aliases.management-hint: "<strong>Conseil :</strong> Choisis tes alias personnalisés soigneusement car ils ne peuvent pas être supprimés plus tard."
+custom-aliases.title: Alias personnalisés
+custom-aliases.subtitle: Créer jusqu'à %alias_limit_custom% alias personnalisés
+custom-aliases.feature-choose-name: Choisis ton propre nom d'alias mémorable
+custom-aliases.feature-easy-remember: Facile à retenir et à partager avec d'autres
+custom-aliases.limitation-permanent: Ne peuvent pas être supprimés une fois créés
+custom-aliases.limitation-limited: Limité à %alias_limit_custom% alias au total
+custom-aliases.management-hint: <strong>Conseil :</strong> Choisis tes alias personnalisés soigneusement car ils ne peuvent pas être supprimés plus tard.
 
-random-aliases.title: "Alias aléatoires"
-random-aliases.subtitle: "Générer jusqu'à %alias_limit_random% alias aléatoires"
-random-aliases.feature-secure: "Noms sécurisés générés automatiquement"
-random-aliases.feature-privacy: "Parfait pour les achats en ligne et les inscriptions"
-random-aliases.feature-deletable: "Peuvent être supprimés à tout moment lorsqu'ils ne sont plus nécessaires"
-random-aliases.limitation-random-name: "Noms aléatoires plus difficiles à retenir"
-random-aliases.management-hint: "<strong>Conseil :</strong> Supprime les alias aléatoires inutilisés pour faire de la place aux nouveaux."
+random-aliases.title: Alias aléatoires
+random-aliases.subtitle: Générer jusqu'à %alias_limit_random% alias aléatoires
+random-aliases.feature-secure: Noms sécurisés générés automatiquement
+random-aliases.feature-privacy: Parfait pour les achats en ligne et les inscriptions
+random-aliases.feature-deletable: Peuvent être supprimés à tout moment lorsqu'ils ne sont plus nécessaires
+random-aliases.limitation-random-name: Noms aléatoires plus difficiles à retenir
+random-aliases.management-hint: <strong>Conseil :</strong> Supprime les alias aléatoires inutilisés pour faire de la place aux nouveaux.

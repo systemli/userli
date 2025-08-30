@@ -35,22 +35,15 @@ start:
 index:
   title: Verwalte dein E-Mail-Konto
   voucher-subtitle: Lade Freund:innen ein
-  voucher-explanation-short: >
-    Nutze deine Einladungscodes um Freund:innen einzuladen.
-    Du hast standardmäßig drei Einladungen zur Verfügung.
+  voucher-explanation-short: Nutze deine Einladungscodes um Freund:innen einzuladen. Du hast standardmäßig drei Einladungen zur Verfügung.
   voucher-limit: Du hast keine Einladungscodes mehr verfügbar.
-  voucher-disable: >
-    Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben.
-    Dies dient der Vermeidung von Massenregistrierungen und Spam.
+  voucher-disable: Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben. Dies dient der Vermeidung von Massenregistrierungen und Spam.
   voucher-waiting-title: Wartezeit für neue Einladungscodes
   voucher-empty-title: Noch keine Einladungscodes erstellt
-  voucher-empty-multiplier: >
-    Erstelle einen neuen Einladungscode um Freund:innen einzuladen.
+  voucher-empty-multiplier: Erstelle einen neuen Einladungscode um Freund:innen einzuladen.
   voucher-limit-title: Einladungscode-Limit erreicht
   alias-subtitle: Verwalte deine E-Mail-Aliase
-  alias-limit:
-    Du hast das Limit von %alias_limit% erlaubten %alias_type% Alias-Adressen
-    erreicht.
+  alias-limit: Du hast das Limit von %alias_limit% erlaubten %alias_type% Alias-Adressen erreicht.
   alias-limit-reached: Limit erreicht
   alias-deletion-custom: Schreibe uns, um Adressen löschen zu lassen.
   alias-deletion-random: Wenn du alte Adressen löschst, kannst du wieder neue erstellen.
@@ -106,8 +99,7 @@ form:
   twofactor-login-placeholder: 6-stelliger Code
   twofactor-login-auth-code: Authentifizierungs-Code
   twofactor-backup-code-confirm: Backup-Codes sicher abgelegt
-  twofactor-login-desc: >
-    Öffne deine Zwei-Faktor (TOTP) App für den Code.
+  twofactor-login-desc: Öffne deine Zwei-Faktor (TOTP) App für den Code.
   twofactor-login-cancel: Login abbrechen
   twofactor-disable: Zwei-Faktor-Authentifizierung deaktivieren
   twofactor-login-help: Deine Zwei-Faktor-Authentifikator-App generiert einen 6-stelligen Code, den du hier eingeben musst.
@@ -118,9 +110,7 @@ openpgp-key-file-mimetype: Die hochgeladende Datei enthält keine OpenPGP-Schlü
 openpgp-key-upload-or: oder
 openpgp-key-text: "Deinen Schlüssel als Text einfügen:"
 openpgp-key-text-placeholder: OpenPGP-Schlüssel im ASCII-Format
-openpgp-key-select-one: >
-  Bitte lade den Schlüssel entweder als Datei oder im ASCII
-  Format hoch.
+openpgp-key-select-one: Bitte lade den Schlüssel entweder als Datei oder im ASCII Format hoch.
 openpgp-key-submit: OpenPGP-Schlüssel veröffentlichen
 openpgp-delete: OpenPGP-Schlüssel löschen
 
@@ -147,8 +137,7 @@ account:
     unset-extra: Du brauchst eine TOTP App auf deinem Smartphone um Zwei-Faktor-Authentifizierung zu aktivieren.
     set: Zwei-Faktor-Authentifizierung ist aktiv.
     lead: Sichere dein Konto mit einem zweiten Faktor
-    enable-lead: >
-      Scanne das Bild mit deiner Zwei-Faktor-App.
+    enable-lead: Scanne das Bild mit deiner Zwei-Faktor-App.
     enable-title: 2FA aktivieren
     enable-description: Die Zwei-Faktor-Authentifizierung ist derzeit nicht aktiv. Wir empfehlen dir, sie zu aktivieren, um die Sicherheit deines Kontos deutlich zu erhöhen.
     disable-title: 2FA ist aktiv
@@ -157,16 +146,14 @@ account:
     setup-button: Einrichten
     qr-code-lead: QR-Code
     qr-code-description: Scanne den QR-Code mit deiner Zwei-Faktor-Authentifizierungs-App.
-    backup-ack-lead: >
-      Backup-Codes
-    backup-ack-description: >
-      Backup-Codes für die Zwei-Faktor-Authentifizierung. Kopiere und speichere sie an einem sicheren Ort.
+    backup-ack-lead: Backup-Codes
+    backup-ack-description: Backup-Codes für die Zwei-Faktor-Authentifizierung. Kopiere und speichere sie an einem sicheren Ort.
     setup-key: Setup Schlüssel
-    setup-key-description: "Gib den Schlüssel manuell in deine Authentifizierungs-App ein, wenn du den QR-Code nicht scannen kannst"
+    setup-key-description: Gib den Schlüssel manuell in deine Authentifizierungs-App ein, wenn du den QR-Code nicht scannen kannst
     info-title: Warum Zwei-Faktor-Authentifizierung?
-    info-security: "Bietet eine zusätzliche Sicherheitsebene zum Schutz deines Kontos vor unbefugtem Zugriff"
-    info-simple: "Einfach zu verwenden mit datenschutzfreundlichen Apps wie Aegis (Android) oder Tofu (iOS), aber auch mit anderen TOTP-Apps"
-    info-backup: "Backup-Codes stellen sicher, dass du immer auf dein Konto zugreifen kannst, auch wenn du dein Handy verlierst"
+    info-security: Bietet eine zusätzliche Sicherheitsebene zum Schutz deines Kontos vor unbefugtem Zugriff
+    info-simple: Einfach zu verwenden mit datenschutzfreundlichen Apps wie Aegis (Android) oder Tofu (iOS), aber auch mit anderen TOTP-Apps
+    info-backup: Backup-Codes stellen sicher, dass du immer auf dein Konto zugreifen kannst, auch wenn du dein Handy verlierst
   recovery:
     title: Wiederherstellungscode
     desc: Backup-Zugang zu deinem Konto
@@ -185,13 +172,11 @@ recovery:
   header: Konto wiederherstellen
   lead: Passwort zurücksetzen mit Hilfe des Wiederherstellungscodes
   cancel: Abbrechen
-  started:
-    "Der erste Schritt um dein Passwort zurückzusetzen, ist gemacht.\nJetzt\
-    \ musst du noch 48 Stunden warten. Anschließend kannst du im zweiten Schritt\n\
-    ein neues Passwort setzen. Bitte behalte deinen Wiederherstellungscode bis dahin.\n"
-  waiting-info:
-    Die Wartezeit dient deiner eigenen Sicherheit und kann nicht verkürzt
-    oder umgangen werden.
+  started: >
+    Der erste Schritt um dein Passwort zurückzusetzen, ist gemacht.
+    Jetzt musst du noch 48 Stunden warten. Anschließend kannst du im zweiten Schritt
+    ein neues Passwort setzen. Bitte behalte deinen Wiederherstellungscode bis dahin.
+  waiting-info: Die Wartezeit dient deiner eigenen Sicherheit und kann nicht verkürzt oder umgangen werden.
   waiting-time: Der zweite Schritt ist möglich ab dem %time%.
   reset-lead: Du kannst nun dein Passwort zurücksetzen
   token-lead: Neuer Wiederherstellungscode
@@ -214,25 +199,22 @@ welcome:
   lead: Du hast erfolgreich ein E-Mail-Konto bei uns erstellt! Wie geht es weiter?
   next-button: Zur Übersicht
   text: >
-    <h3>Los geht's</h3> <p>Im Web findest du Anleitungen zur Einrichtung deines E-Mail-Kontos
-    mit verschiedenen Client-Programmen.</p> <p>In einer Woche bekommst du drei Einladungscodes
-    gutgeschrieben, die du unter <a href="%app_url%">%app_url%</a> abrufen kannst.
-    Diese kannst du an Freundinnen und Freunde weiterleiten und sie so zu %project_name%
-    einladen.</p>
+    <h3>Los geht's</h3>
+    Im Web findest du Anleitungen zur Einrichtung deines E-Mail-Kontos mit verschiedenen Client-Programmen.
+    In einer Woche bekommst du drei Einladungscodes gutgeschrieben, die du unter <a href="%app_url%">%app_url%</a> abrufen kannst.
+    Diese kannst du an Freundinnen und Freunde weiterleiten und sie so zu %project_name% einladen.
 closed:
   headline: Registrierung deaktiviert
   lead:
     Aufgrund des §3 TKÜV haben wir die Registrierung weiterer E-Mail Konten deaktiviert.
     Das tut uns Leid.
   text: >
-    <p>Der <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html"
-    target="_blank">Paragraph 3 der „Verordnung über die technische und organisatorische
+    Der <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">Paragraph 3 der „Verordnung über die technische und organisatorische
     Umsetzung von Maßnahmen zur Überwachung der Telekommunikation“</a> (kurz: Telekommunikations-Überwachungsverordnung
-    - TKÜV) zwingt Anbieter ab 10.000 Konten eine Schnittstelle zur Überwachung der
-    Kommunikation einzubauen. Daher haben wir uns entschieden keine weiteren Konten
-    mehr anzulegen.<p>
+    - TKÜV) zwingt Anbieter ab 10.000 Konten eine Schnittstelle zur Überwachung der Kommunikation einzubauen.
+    Daher haben wir uns entschieden keine weiteren Konten mehr anzulegen.
 
-    <p><strong>Für bestehende Konten ändert sich nichts.</strong></p>
+    <strong>Für bestehende Konten ändert sich nichts.</strong>
 delete:
   alias:
     headline_generic: Alias-Adresse löschen
@@ -241,34 +223,21 @@ delete:
       Die Adresse wird unwiderruflich gelöscht.
   user:
     headline: Konto löschen
-    lead:
-      Mit der Bestätigung deines Passworts kannst du dein Konto unwiderruflich
-      löschen.
+    lead: Mit der Bestätigung deines Passworts kannst du dein Konto unwiderruflich löschen.
   openpgp:
     headline: OpenPGP-Schlüssel löschen
-    lead:
-      Mit der Bestätigung deines Passworts kannst du deinen OpenPGP-Schlüssel
-      aus dem Web Key Directory löschen.
+    lead: Mit der Bestätigung deines Passworts kannst du deinen OpenPGP-Schlüssel aus dem Web Key Directory löschen.
   cancel: Abbrechen
 recovery-token:
   headline: Wiederherstellungscode verwalten
-  lead:
-    Mit dem Wiederherstellungscode kannst du dein Passwort zurücksetzen, wenn
-    du es vergessen hast.
+  lead: Mit dem Wiederherstellungscode kannst du dein Passwort zurücksetzen, wenn du es vergessen hast.
   set: Du hast bereits einen Wiederherstellungscode gesetzt.
   set-extra: Wenn du einen neuen Code erstellst, wird der bisherige ungültig.
-  unset:
-    Du hast noch keinen Wiederherstellungscode gesetzt. Wir empfehlen dir dringend,
-    jetzt einen zu erstellen.
-  created-headline: "Dein neuer Wiederherstellungscode"
-  created-subtitle: "Bitte kopiere und speicher dein Wiederherstellungscode sicher."
-  created-info: >
-    Mit dem Wiederherstellungscode kannst du jederzeit dein Passwort zurücksetzen,
-    wenn du dieses vergessen hast. Notiere ihn dir und speichere ihn an einem sicheren
-    Ort ab.
-  displayed-once: >
-    Der Wiederherstellungscode wird aus Sicherheitsgründen nur einmal angezeigt. Wir
-    können ihn nicht für dich wiederherstellen.
+  unset: Du hast noch keinen Wiederherstellungscode gesetzt. Wir empfehlen dir dringend, jetzt einen zu erstellen.
+  created-headline: Dein neuer Wiederherstellungscode
+  created-subtitle: Bitte kopiere und speicher dein Wiederherstellungscode sicher.
+  created-info: Mit dem Wiederherstellungscode kannst du jederzeit dein Passwort zurücksetzen, wenn du dieses vergessen hast. Notiere ihn dir und speichere ihn an einem sicheren Ort ab.
+  displayed-once: Der Wiederherstellungscode wird aus Sicherheitsgründen nur einmal angezeigt. Wir können ihn nicht für dich wiederherstellen.
 flashes:
   logout-successful: Du bist jetzt abgemeldet.
   password-change-successful: Dein neues Passwort ist ab sofort aktiv!
@@ -284,12 +253,8 @@ flashes:
   openpgp-deletion-successful: Dein OpenPGP-Schlüssel wurde gelöscht.
   openpgp-key-upload-successful: Dein OpenPGP-Schlüssel wurde hochgeladen.
   openpgp-key-upload-error-no-openpgp: Die hochgadene Datei enthält keine OpenPGP-Schlüssel.
-  openpgp-key-upload-error-no-keys:
-    Die hochgeladene Datei enthält keine Schlüssel
-    für deine E-Mail-Adresse.
-  openpgp-key-upload-error-multiple-keys:
-    Die hochgeladene Datei enhält mehr als einen
-    Schlüssel für deine E-Mail-Adresse. Bitte lade nur einen Schlüssel hoch.
+  openpgp-key-upload-error-no-keys: Die hochgeladene Datei enthält keine Schlüssel für deine E-Mail-Adresse.
+  openpgp-key-upload-error-multiple-keys: Die hochgeladene Datei enhält mehr als einen Schlüssel für deine E-Mail-Adresse. Bitte lade nur einen Schlüssel hoch.
 flash_batch_remove_vouchers_success: Nicht eingelöste Einladungscodes gelöscht.
 error:
   title: Oops, es ist ein Fehler passiert.
@@ -299,10 +264,10 @@ error:
   generic_error: Es ist ein Fehler passiert. Das tut uns leid.
 spam:
   title: Konto gesperrt
-  text:
-    "Oh nein! Wir glauben, dein Konto wurde von einem Spammer missbraucht.\nDaher\
-    \ haben wir den E-Mail-Zugang deaktiviert.\nBitte kontaktiere den Support um dein\
-    \ Konto freizuschalten.\n"
+  text: >
+    Oh nein! Wir glauben, dein Konto wurde von einem Spammer missbraucht.
+    Daher haben wir den E-Mail-Zugang deaktiviert.
+    Bitte kontaktiere den Support um dein  Konto freizuschalten.
 Bad credentials.: Das angegebene Passwort ist ungültig.
 custom: gewählten
 random: zufälligen
@@ -392,48 +357,43 @@ alias:
   delete: Alias löschen
 init.title: Erstellen der Erstkonfiguration
 init_domain:
-  lead:
-    Vielen Dank fürs installieren von Userli. Derzeit sind keine Domänen oder
-    Konten vorhanden.
+  lead: Vielen Dank fürs installieren von Userli. Derzeit sind keine Domänen oder Konten vorhanden.
   text: Bitte wähle Deine primäre Domäne aus, die Userli behandeln soll.
 init_user:
   lead: Primäre Domäne wurde erstellt.
-  text:
+  text: >
     E-Mail-Standards erfordern, dass das Konto postmaster@%domain% vorhanden ist.
-    Wähle ein Kennwort für dieses erste Administratorkonto aus und melde dich anschließend
-    an.
+    Wähle ein Kennwort für dieses erste Administratorkonto aus und melde dich anschließend an.
 openpgp:
   delete-button: OpenPGP-Schlüssel löschen
   information: Information
-  information-details:
-    Hier kannst du deinen OpenPGP-Schlüssel hochladen, damit er
-    in unserem <i><a target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key
-    Directory</a></i> veröffentlicht wird. Damit hilfst du Freund:innen, deinen Schlüssel
-    automatisch und sicher zu finden.
+  information-details: >
+    Hier kannst du deinen OpenPGP-Schlüssel hochladen, damit er in unserem <a target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key
+    Directory</a> veröffentlicht wird.
+    Damit hilfst du Freund:innen, deinen Schlüssel automatisch und sicher zu finden.
   keyid-label: "Schlüssel-ID:"
   fingerprint-label: "Fingerprint:"
   expiretime-label: "Ablaufdatum:"
-  no-expiration: "Kein Ablaufdatum (unbegrenzt gültig)"
+  no-expiration: Kein Ablaufdatum (unbegrenzt gültig)
   manage-subtitle: Verwalte deinen OpenPGP-Schlüssel
   current-key: Aktueller OpenPGP-Schlüssel
   no-key-uploaded: Noch kein OpenPGP-Schlüssel hochgeladen
   upload-prompt: Lade einen Schlüssel über das Formular rechts hoch
 
-# Streamlined alias page structure
-index.alias-motivation: "Erstelle personalisierte E-Mail-Aliasse, um deinen Posteingang besser zu organisieren und deine Privatsphäre zu schützen."
+index.alias-motivation: Erstelle personalisierte E-Mail-Aliasse, um deinen Posteingang besser zu organisieren und deine Privatsphäre zu schützen.
 
-custom-aliases.title: "Benutzerdefinierte Aliasse"
-custom-aliases.subtitle: "Bis zu %alias_limit_custom% eigene Aliasse erstellen"
-custom-aliases.feature-choose-name: "Wähle deinen eigenen einprägsamen Alias-Namen"
-custom-aliases.feature-easy-remember: "Einfach zu merken und mit anderen zu teilen"
-custom-aliases.limitation-permanent: "Können nach der Erstellung nicht gelöscht werden"
-custom-aliases.limitation-limited: "Begrenzt auf %alias_limit_custom% Aliasse insgesamt"
-custom-aliases.management-hint: "<strong>Tipp:</strong> Wähle deine benutzerdefinierten Aliasse sorgfältig aus, da sie später nicht gelöscht werden können."
+custom-aliases.title: Benutzerdefinierte Aliasse
+custom-aliases.subtitle: Bis zu %alias_limit_custom% eigene Aliasse erstellen
+custom-aliases.feature-choose-name: Wähle deinen eigenen einprägsamen Alias-Namen
+custom-aliases.feature-easy-remember: Einfach zu merken und mit anderen zu teilen
+custom-aliases.limitation-permanent: Können nach der Erstellung nicht gelöscht werden
+custom-aliases.limitation-limited: Begrenzt auf %alias_limit_custom% Aliasse insgesamt
+custom-aliases.management-hint: <strong>Tipp:</strong> Wähle deine benutzerdefinierten Aliasse sorgfältig aus, da sie später nicht gelöscht werden können.
 
-random-aliases.title: "Zufällige Aliasse"
-random-aliases.subtitle: "Bis zu %alias_limit_random% zufällige Aliasse generieren"
-random-aliases.feature-secure: "Automatisch generierte sichere Namen"
-random-aliases.feature-privacy: "Perfekt für Online-Shopping und Registrierungen"
-random-aliases.feature-deletable: "Können jederzeit gelöscht werden, wenn sie nicht mehr benötigt werden"
-random-aliases.limitation-random-name: "Zufällige Namen, die schwerer zu merken sind"
-random-aliases.management-hint: "<strong>Tipp:</strong> Lösche ungenutzte zufällige Aliasse, um Platz für neue zu schaffen."
+random-aliases.title: Zufällige Aliasse
+random-aliases.subtitle: Bis zu %alias_limit_random% zufällige Aliasse generieren
+random-aliases.feature-secure: Automatisch generierte sichere Namen
+random-aliases.feature-privacy: Perfekt für Online-Shopping und Registrierungen
+random-aliases.feature-deletable: Können jederzeit gelöscht werden, wenn sie nicht mehr benötigt werden
+random-aliases.limitation-random-name: Zufällige Namen, die schwerer zu merken sind
+random-aliases.management-hint: <strong>Tipp:</strong> Lösche ungenutzte zufällige Aliasse, um Platz für neue zu schaffen.

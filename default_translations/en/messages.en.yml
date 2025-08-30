@@ -44,16 +44,13 @@ index:
     This is to avoid mass registrations and spam.
   voucher-waiting-title: Waiting for new invite codes
   voucher-empty-title: No invite codes created yet
-  voucher-empty-multiplier: >
-    Create a new invite code to invite friends.
+  voucher-empty-multiplier: Create a new invite code to invite friends.
   voucher-limit-title: Invite code limit reached
   alias-subtitle: Manage your e-mail aliases
   alias-limit: You reached the allowed limit of %alias_limit% %alias_type% alias addresses.
   alias-limit-reached: Limit reached
   alias-deletion-custom: Write us in order to get addresses deleted.
-  alias-deletion-random:
-    As soon as you delete old addresses, you can create new ones
-    again.
+  alias-deletion-random: As soon as you delete old addresses, you can create new ones again.
   alias-empty: You don't have any %alias_type% alias addresses defined.
   alias-custom-create: Create new custom alias
   alias-random-generate: Generate new random alias
@@ -106,8 +103,7 @@ form:
   twofactor-login-placeholder: 6-digit code
   twofactor-login-auth-code: Authentication code
   twofactor-backup-code-confirm: Backup codes stored securely
-  twofactor-login-desc: >
-    Open your two-factor authenticator (TOTP) app to view your authentication code.
+  twofactor-login-desc: Open your two-factor authenticator (TOTP) app to view your authentication code.
   twofactor-login-cancel: Cancel login
   twofactor-disable: Disable two-factor authentication
   twofactor-login-help: Your two-factor authenticator app generates a 6-digit code that you need to enter here.
@@ -145,8 +141,7 @@ account:
     unset-extra: You need a TOTP app on your mobile device to enable two-factor authentication.
     set: Two-factor authentication is enabled.
     lead: Secure your account with a second factorUpdate your password
-    enable-lead: >
-      Scan the image below with your two-factor app.
+    enable-lead: Scan the image below with your two-factor app.
     enable-title: Enable 2FA
     enable-description: Two-factor authentication is currently not active. We recommend enabling it to significantly increase the security of your account.
     disable-title: 2FA is active
@@ -155,14 +150,14 @@ account:
     setup-button: Set up
     qr-code-lead: QR Code
     qr-code-description: Scan the QR code below with your two-factor authenticator app.
-    backup-ack-lead: "Backup Codes"
-    backup-ack-description: "Backup codes for two-factor authentication. Copy and store them in a secure place."
+    backup-ack-lead: Backup Codes
+    backup-ack-description: Backup codes for two-factor authentication. Copy and store them in a secure place.
     setup-key: Setup Key
-    setup-key-description: "Enter this key manually in your authenticator app if you cannot scan the QR code"
+    setup-key-description: Enter this key manually in your authenticator app if you cannot scan the QR code
     info-title: Why Two-Factor Authentication?
-    info-security: "Adds an extra layer of security to protect your account from unauthorized access"
-    info-simple: "Simple to use with privacy-friendly apps like Aegis (Android) or Tofu (iOS), or any TOTP-compatible authenticator app"
-    info-backup: "Backup codes ensure you can always access your account, even if you lose your phone"
+    info-security: Adds an extra layer of security to protect your account from unauthorized access
+    info-simple: Simple to use with privacy-friendly apps like Aegis (Android) or Tofu (iOS), or any TOTP-compatible authenticator app
+    info-backup: Backup codes ensure you can always access your account, even if you lose your phone
   recovery:
     title: Recovery Token
     desc: Backup access to your account
@@ -181,13 +176,11 @@ recovery:
   header: Recover your account
   lead: Reset the password using your recovery token
   cancel: Cancel
-  started:
-    "The first step to reset your password is done.\nNow wait for 48 hours.\
-    \ Afterwards, you can set a new password in the second step.\nPlease keep your\
-    \ recovery token until then.\n"
-  waiting-info:
-    The waiting period is for your own security and cannot be shortened
-    or skipped.
+  started: >
+    The first step to reset your password is done.
+    Now wait for 48 hours. Afterwards, you can set a new password in the second step.
+    Please keep your recovery token until then.
+  waiting-info: The waiting period is for your own security and cannot be shortened or skipped.
   waiting-time: Second step starts at %time%.
   reset-lead: You're now allowed to reset your password
   token-lead: New recovery token
@@ -210,50 +203,39 @@ welcome:
   lead: You have set up an account with us successfully. What are the next steps?
   next-button: To the overview
   text: >
-    <h3>Ready to go</h3> <p>In the web you can find guides for settting up your e-mail
-    account with several client programs.</p>
-    <p>In one week you will receive three invite codes, which you can collect at <a
-    href="%app_url%">%app_url%</a>. You can pass these on to friends and invite them
-    to register with %project_name%.</p>
+    <h3>Ready to go</h3>
+    In the web you can find guides for settting up your e-mail account with several client programs.
+    In one week you will receive three invite codes, which you can collect at <a href="%app_url%">%app_url%</a>.
+    You can pass these on to friends and invite them to register with %project_name%.
 closed:
   headline: Registration closed
-  lead:
-    Due to paragraph three TKÜV we decided to close our Registration. Sorry for
-    that.
+  lead: Due to paragraph three TKÜV we decided to close our Registration. Sorry for that.
   text: >
-    <p>Due <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html"
-    target="_blank">to paragraph three of "Verordnung über die technische und organisatorische
+    Due <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">to paragraph three of "Verordnung über die technische und organisatorische
     Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (short: telecommuicationen-surveillance-decree
-    - "TKÜV") e-mail providers with more than 10.000 users are forced to implement
-    an surveillance interface for the authorities. That's why we decided to lock down
-    the registration and do not allow any creation of new accounts.<p>
+    - "TKÜV") e-mail providers with more than 10.000 users are forced to implement an surveillance interface for the authorities.
+    That's why we decided to lock down the registration and do not allow any creation of new accounts.<p>
 
-    <p><strong>Existing accounts aren't effected</strong></p>
+    <strong>Existing accounts aren't effected</strong>
 delete:
   alias:
     headline_generic: Delete alias address
-    lead_specific: >
-      Are you sure you want to delete <strong>%alias%</strong>?
-      The address will be permanently deleted.
+    lead_specific: Are you sure you want to delete <strong>%alias%</strong>? The address will be permanently deleted.
   user:
     headline: Delete account
     lead: We need to verify your password to delete your account.
   openpgp:
     headline: Delete OpenPGP key
-    lead:
-      We need to verify your password to remove your OpenPGP key from the Web
-      Key Directory.
+    lead: We need to verify your password to remove your OpenPGP key from the Web Key Directory.
   cancel: Cancel
 recovery-token:
   headline: Manage recovery token
   lead: The recovery token can be used to reset your password if you forget it.
   set: You already have a recovery token set.
   set-extra: Creating a new token will invalidate the current one.
-  unset:
-    You don't have a recovery token set yet. We strongly recommend to create
-    one now.
-  created-headline: "Your new recovery token"
-  created-subtitle: "Please copy and securely store this recovery token"
+  unset: You don't have a recovery token set yet. We strongly recommend to create one now.
+  created-headline: Your new recovery token
+  created-subtitle: Please copy and securely store this recovery token
   created-info: >
     If you lost your password, the recovery token allows you to reset a new one.
     Write it down and store it at a secure place.
@@ -275,12 +257,8 @@ flashes:
   openpgp-deletion-successful: Your OpenPGP key was deleted.
   openpgp-key-upload-successful: Your OpenPGP key got uploaded.
   openpgp-key-upload-error-no-openpgp: The uploaded file doesn't contain OpenPGP data.
-  openpgp-key-upload-error-no-keys:
-    No keys for your mail address found in uploaded
-    data.
-  openpgp-key-upload-error-multiple-keys:
-    More than one key for your mail address
-    found in uploaded data. Please upload only one key.
+  openpgp-key-upload-error-no-keys: No keys for your mail address found in uploaded data.
+  openpgp-key-upload-error-multiple-keys: More than one key for your mail address found in uploaded data. Please upload only one key.
 flash_batch_remove_vouchers_success: Unredeemed invite codes deleted.
 error:
   title: Oops, an error occured.
@@ -290,9 +268,10 @@ error:
   generic_error: An error occured. We're sorry.
 spam:
   title: Account locked
-  text:
-    "Oh no! We believe your account has been misused by a spammer.\nE-mail access\
-    \ has been turned off.\nPlease contact support to unlock your account.\n"
+  text: >
+    Oh no! We believe your account has been misused by a spammer.
+    E-mail access has been turned off.
+    Please contact support to unlock your account.
 Bad credentials.: The presented password is invalid.
 custom: custom
 random: random
@@ -380,46 +359,40 @@ alias:
   delete: Delete alias
 init.title: Creating initial configuration
 init_domain:
-  lead:
-    Thank your for installing Userli. Currently, there are no domains or accounts
-    present.
+  lead: Thank your for installing Userli. Currently, there are no domains or accounts present.
   text: Please choose your primary domain, which Userli should handle.
 init_user:
   lead: You have created your primary domain.
-  text:
-    "E-mail standards require the account postmaster@%domain% to be present. Please\
-    \ pick a password for this first administrator account and log in afterwards."
+  text: E-mail standards require the account postmaster@%domain% to be present. Please pick a password for this first administrator account and log in afterwards."
 openpgp:
   delete-button: Delete OpenPGP key
   information: Information
-  information-details:
-    If you upload your OpenPGP key here, it will be published in
-    our <i><a target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key Directory</a></i>.
+  information-details: >
+    If you upload your OpenPGP key here, it will be published in our <a target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key Directory</a>.
     You thereby help friends to discover your key automatically and securely.
   keyid-label: "Key ID:"
   fingerprint-label: "Fingerprint:"
   expiretime-label: "Expiry date:"
-  no-expiration: "No expiry date (valid indefinitely)"
+  no-expiration: No expiry date (valid indefinitely)
   manage-subtitle: Manage your OpenPGP key
   current-key: Current OpenPGP Key
   no-key-uploaded: No OpenPGP key uploaded yet
   upload-prompt: Upload a key using the form on the right
 
-# Streamlined alias page structure
-index.alias-motivation: "Create personalized email aliases to better organize your inbox and protect your privacy."
+index.alias-motivation: Create personalized email aliases to better organize your inbox and protect your privacy.
 
-custom-aliases.title: "Custom Aliases"
-custom-aliases.subtitle: "Create up to %alias_limit_custom% custom aliases"
-custom-aliases.feature-choose-name: "Choose your own memorable alias name"
-custom-aliases.feature-easy-remember: "Easy to remember and share with others"
-custom-aliases.limitation-permanent: "Cannot be deleted once created"
-custom-aliases.limitation-limited: "Limited to %alias_limit_custom% total aliases"
-custom-aliases.management-hint: "<strong>Tip:</strong> Choose your custom aliases carefully as they cannot be deleted later."
+custom-aliases.title: Custom Aliases
+custom-aliases.subtitle: Create up to %alias_limit_custom% custom aliases
+custom-aliases.feature-choose-name: Choose your own memorable alias name
+custom-aliases.feature-easy-remember: Easy to remember and share with others
+custom-aliases.limitation-permanent: Cannot be deleted once created
+custom-aliases.limitation-limited: Limited to %alias_limit_custom% total aliases
+custom-aliases.management-hint: <strong>Tip:</strong> Choose your custom aliases carefully as they cannot be deleted later.
 
-random-aliases.title: "Random Aliases"
-random-aliases.subtitle: "Generate up to %alias_limit_random% random aliases"
-random-aliases.feature-secure: "Automatically generated secure names"
-random-aliases.feature-privacy: "Perfect for online shopping and registrations"
-random-aliases.feature-deletable: "Can be deleted anytime when no longer needed"
-random-aliases.limitation-random-name: "Random names that are harder to remember"
-random-aliases.management-hint: "<strong>Tip:</strong> Delete unused random aliases to make room for new ones."
+random-aliases.title: Random Aliases
+random-aliases.subtitle: Generate up to %alias_limit_random% random aliases
+random-aliases.feature-secure: Automatically generated secure names
+random-aliases.feature-privacy: Perfect for online shopping and registrations
+random-aliases.feature-deletable: Can be deleted anytime when no longer needed
+random-aliases.limitation-random-name: Random names that are harder to remember
+random-aliases.management-hint: <strong>Tip:</strong> Delete unused random aliases to make room for new ones.

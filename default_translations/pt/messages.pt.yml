@@ -29,15 +29,10 @@ index:
   voucher-limit: Você não tem mais convites disponíveis.
   voucher-waiting-title: Aguardando novos códigos de convite
   voucher-empty-title: Nenhum código de convite criado ainda
-  voucher-empty-multiplier: >
-    Crie um novo código de convite para convidar amigos.
+  voucher-empty-multiplier: Crie um novo código de convite para convidar amigos.
   voucher-limit-title: Limite de códigos de convite atingido
-  voucher-disable: >
-    No dia %date% você vai receber três códigos de convite. Isso é feito para evitar
-    cadastros excessivos e spam.
-  alias-limit:
-    Você atingiu o limite de %alias_limit% endereços alias %alias_type%
-    permitidos.
+  voucher-disable: No dia %date% você vai receber três códigos de convite. Isso é feito para evitar cadastros excessivos e spam.
+  alias-limit: Você atingiu o limite de %alias_limit% endereços alias %alias_type% permitidos.
   alias-deletion-custom: Entre em contacto connosco para apagar endereços.
   alias-deletion-random: Assim que apagar endereços antigos, poderá criar endereços.
   alias-empty: Você não tem nenhum endereço alias %alias_type% definido.
@@ -75,13 +70,11 @@ recovery:
   header: Recuperar sua conta
   lead: Redefina a sua palavra-passe usando o seu token de recuperação
   cancel: Cancelar
-  started: |
+  started: >
     Quase lá. Esse foi o primeiro passo para redefinir sua senha.
     Agora você precisa esperar por 48 horas. Depois disso, no segundo passo, você pode criar uma nova senha.
     Por favor mantenha seu token guardado até lá.
-  waiting-info:
-    Esse tempo de espera é pela sua segurança e não pode ser encurtado
-    ou ignorado.
+  waiting-info: Esse tempo de espera é pela sua segurança e não pode ser encurtado ou ignorado.
   waiting-time: O segundo passo começa %time%.
   reset-lead: Agora você pode redefinir sua senha
   token-lead: Novo token de recuperação
@@ -102,38 +95,27 @@ welcome:
   lead: Você criou sua conta com sucesso. E agora?
   next-button: Seus próximos passos
   text: >
-    <h3>Tudo pronto</h3> <p>Pela web você pode encontrar guias de como configurar
-    sua conta de e-mail com diferentes programas de e-mail.</p> <p>Em uma semana você
-    vai receber três códigos de convite, os quais você pode pegar em <a href="%app_url%">%app_url%</a>.
-    Você pode enviá-los a seus contatos e chamá-los para se cadastrar no %project_name%.</p>
+    <h3>Tudo pronto</h3>
+    Pela web você pode encontrar guias de como configurar sua conta de e-mail com diferentes programas de e-mail.</a
+    Em uma semana você vai receber três códigos de convite, os quais você pode pegar em <a href="%app_url%">%app_url%</a>.
+    Você pode enviá-los a seus contatos e chamá-los para se cadastrar no %project_name%.
 closed:
   headline: Cadastros fechados
-  lead:
-    De acordo com o parágrafo 3 das normas de telecomunicação TKÜV decidimos manter
-    um limite de 10.000 registos. Lamentamos a inconveniência.
-  text:
-    "<p>Devido<a href=\"https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html\"\
-    \ target=\"_blank\">ao parágrafo três da \"Verordnung über die technische und\
-    \ organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation\"\
-    </a> (curto: Decreto de vigilância de telecommunicações - \"TKÜV\") provedores\
-    \ de e-mail com mais de 10.000 utilizadores são obrigados a implementar uma interface\
-    \ de vigilância para as autoridades. Foi por isso que decidimos bloquear o registo\
-    \ e não permitir a criação de novas contas.<p>\n<p><strong>As contas existentes\
-    \ não são afetadas</strong><</p>\n"
+  lead: De acordo com o parágrafo 3 das normas de telecomunicação TKÜV decidimos manter um limite de 10.000 registos. Lamentamos a inconveniência.
+  text: >
+    Devido<a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">ao parágrafo três da "Verordnung über die technische und organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (curto: Decreto de vigilância de telecommunicações - "TKÜV") provedores de e-mail com mais de 10.000 utilizadores são obrigados a implementar uma interface de vigilância para as autoridades.
+    Foi por isso que decidimos bloquear o registo e não permitir a criação de novas contas.
+    <strong>As contas existentes não são afetadas</strong>
   user:
     headline: Apagar a conta
     lead: Precisamos verificar a sua palavra-passe para apagar a sua conta.
   cancel: Cancelar
 recovery-token:
   headline: Gerenciar token de recuperação
-  lead:
-    O token de recuperação pode ser usado para redefinir a sua palavra-passe se
-    esquecê-la.
+  lead: O token de recuperação pode ser usado para redefinir a sua palavra-passe se esquecê-la.
   set: Você já tem um token configurado.
   set-extra: Se você criar um novo token de recuperação o seu token atual será invalidado.
-  unset:
-    Você ainda não tem um token de recuperação configurado. Recomendamos fortemente
-    que crie um agora mesmo.
+  unset: Você ainda não tem um token de recuperação configurado. Recomendamos fortemente que crie um agora mesmo.
   created-headline: "O seguinte token foi gerado para você:"
   created-info: >
     Se você perder sua senha, o token de recuperação permite que você crie uma nova.
@@ -166,7 +148,7 @@ error:
   generic_error: Desculpe, um erro ocorreu.
 spam:
   title: Conta bloqueada
-  text: |
+  text: >
     Ah não! Acreditamos que a sua conta tenha sido usada por um spammer.
     Nós bloqueamos o acesso ao e-mail por essa razão.
     Por favor entre em contato com o suporte para desbloquear a sua conta.
@@ -175,7 +157,7 @@ custom: personalizado
 random: aleatório
 mail:
   welcome-subject: Te damos as boas-vindas a %domain%
-  welcome-body: |
+  welcome-body: >
     Caro usuário,
 
     Boas-vindas. Você pode encontrar guias sobre como configurar sua conta
@@ -190,7 +172,7 @@ mail:
 
     Sinceramente, time %project_name%.
   recovery-subject: A senha do seu email %email% será redefinida
-  recovery-body: |
+  recovery-body: >
     Olá %email%,
 
     Alguém tentou redefinir a senha da sua conta. E para isso, esse alguém
@@ -210,7 +192,7 @@ mail:
     Esperamos que continue a tirar proveito da sua conta.
     Time %project_name%.
   alias-created-subject: Novo endereço alias criado
-  alias-created-body: |
+  alias-created-body: >
     Olá %email%,
 
     Um novo endereço alias foi criado para o seu email %email%:
