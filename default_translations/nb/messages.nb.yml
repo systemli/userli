@@ -13,7 +13,8 @@ start:
   registration-header: Registrering
   registration-text: >
     Har du ikke en e-postkonto på %domain% enda? Ikke noe problem.
-    Hvis én av vennene dine allerede har en konto, kan du få en invitasjonskode fra vedkommende og sette opp egen konto omgående.
+    Hvis én av vennene dine allerede har en konto, kan du få en invitasjonskode fra
+    vedkommende og sette opp egen konto omgående.
   registration-button: Opprett konto
   account-settings: Kontoinnstillinger
   account-settings-desc: Passord og mer
@@ -30,10 +31,13 @@ index:
   voucher-empty-title: Ingen invitasjonskoder opprettet ennå
   voucher-empty-multiplier: Opprett en ny invitasjonskode for å invitere venner.
   voucher-limit-title: Grense for invitasjonskoder nådd
-  voucher-disable: Den %date% vil du motta tre invitasjonskoder. Dette for å unngå masseregistreringer og søppelpost.
-  alias-limit: Du har nådd tillatt grense på %alias_limit% %alias_type% alias-adresser.
+  voucher-disable: Den %date% vil du motta tre invitasjonskoder. Dette for å 
+    unngå masseregistreringer og søppelpost.
+  alias-limit: Du har nådd tillatt grense på %alias_limit% %alias_type% 
+    alias-adresser.
   alias-deletion-custom: Skriv til oss for å få adresser slettet.
-  alias-deletion-random: Så snart du sletter gamle adresser, kan du opprette nye igjen.
+  alias-deletion-random: Så snart du sletter gamle adresser, kan du opprette nye
+    igjen.
   alias-empty: Du har ikke noen %alias_type%-aliasadresser satt opp.
 
 form:
@@ -61,7 +65,8 @@ form:
   generate-recovery-token: Opprett nytt gjenopprettingssymbol
   recovery-token: Gjenopprettingssymbol
   recovery-start: Gjenopprett
-  registration-recovery-token-confirm: Jeg lagret gjenopprettingssymbolet på et sikkert sted
+  registration-recovery-token-confirm: Jeg lagret gjenopprettingssymbolet på et 
+    sikkert sted
   registration-recovery-token-next-button: Fortsett
   plain-password: Nytt passord
   plain-password_confirmation: Bekreft nytt passord
@@ -71,7 +76,8 @@ recovery:
   header: Gjenopprett kontoen din
   lead: Tilbakestill passordet med ditt gjenopprettingssymbol
   cancel: Avbryt
-  waiting-info: Ventetiden opprettholder din sikkerhet, og kan ikke forkortes eller
+  waiting-info: Ventetiden opprettholder din sikkerhet, og kan ikke forkortes 
+    eller
   waiting-time: Andre steg starter %time%.
   reset-lead: Du kan nå tilbakestille passordet ditt
   token-lead: Nytt gjenopprettingssymbol
@@ -92,21 +98,29 @@ registration:
   recovery-token-headline: Gjenopprettingssymbol
   information-intro: >
     Ønsker du å registrere en e-postkonto med <a href="%project_url%">%project_name%</a>?
-    Registreringer tillates kun hvis en venn inviterer deg med en invitasjonskode til tjenestene.
+    Registreringer tillates kun hvis en venn inviterer deg med en invitasjonskode
+    til tjenestene.
 welcome:
   headline: Velkommen til %project_name%.
   lead: Du har nå satt opp en konto hos oss. Hva skal du foreta deg nå?
   next-button: Til oversikten
   text: >
     <h3>Klar til bruk</h3>
-    På veven kan du finne veiledninger for å sette opp din e-postkonto med forskjellige klientprogrammer.
+    På veven kan du finne veiledninger for å sette opp din e-postkonto med forskjellige
+    klientprogrammer.
     Om én uke vil du motta tre invitasjonskoder, som du kan samle på <a href="%app_url%">%app_url%</a>.
     Du kan gi disse til venner og invitere dem til å registrere seg på %project_name%.
 closed:
   headline: Registrering stengt
-  lead: Som følge av paragraf tre i TKÜV, har vi besluttet å stenge registreringen. Beklager.
+  lead: Som følge av paragraf tre i TKÜV, har vi besluttet å stenge 
+    registreringen. Beklager.
   text: >
-    Som følge av <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">paragraf 3 av "Verordnung über die technische und organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (kort: telekommunikasjonsovervåknings-dekret - "TKÜV") er e-posttilbydere med mer enn 10000 brukere tvunget til å implementere et overvåkningsgrensesnitt for myndighetene. Derfor har vi besluttet å låse registreringen, og ikke tillate opprettelse av nye kontoer.
+    Som følge av <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html"
+    target="_blank">paragraf 3 av "Verordnung über die technische und organisatorische
+    Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (kort: telekommunikasjonsovervåknings-dekret
+    - "TKÜV") er e-posttilbydere med mer enn 10000 brukere tvunget til å implementere
+    et overvåkningsgrensesnitt for myndighetene. Derfor har vi besluttet å låse registreringen,
+    og ikke tillate opprettelse av nye kontoer.
     <strong>Dette har ingen innvirkning på eksisterende kontoer</strong>
 delete:
   user:
@@ -115,15 +129,19 @@ delete:
   cancel: Avbryt
 recovery-token:
   headline: Håndter gjenopprettingssymbol
-  lead: Gjenopprettingssymbolet kan brukes til å tilbakestille passordet ditt hvis du glemmer det.
+  lead: Gjenopprettingssymbolet kan brukes til å tilbakestille passordet ditt 
+    hvis du glemmer det.
   set: Du har allerede satt opp et gjenopprettingssymbol.
   set-extra: Oppretting av nytt symbol ugyldiggjør det nåværende symbolet.
-  unset: Du har ikke noe gjenopprettingssymbol satt opp enda. Det anbefales at du oppretter et nå.
+  unset: Du har ikke noe gjenopprettingssymbol satt opp enda. Det anbefales at 
+    du oppretter et nå.
   created-headline: "Følgende gjenopprettingssymbol ble opprettet for deg:"
   created-info: >
-    Hvis du har mistet passordet ditt, vil gjenopprettingssymbolet tillate deg å tilbakestille det.
+    Hvis du har mistet passordet ditt, vil gjenopprettingssymbolet tillate deg å tilbakestille
+    det.
     Skriv det ned og lagre det på en sikker plass.
-  displayed-once: Av sikkerhetshensyn, blir sikkerhetssymbolet kun vist én gang. Ingen kan gjenopprette deg for deg.
+  displayed-once: Av sikkerhetshensyn, blir sikkerhetssymbolet kun vist én gang.
+    Ingen kan gjenopprette deg for deg.
 flashes:
   logout-successful: Du har blitt utlogget.
   voucher-creation-successful: Ny invitasjonskode opprettet.
@@ -212,8 +230,10 @@ Reserved Name: Reservert navn
 copy-to-clipboard: Kopier til utklippstavle
 init.title: Skaper grunnleggende oppsett
 init_domain:
-  lead: Takk for installasjonen av Userli. Ingen domener eller kontoer er satt opp.
+  lead: Takk for installasjonen av Userli. Ingen domener eller kontoer er satt 
+    opp.
   text: Velg ditt primære domene, som Userli skal håndtere.
 init_user:
   lead: Du har opprettet ditt primære domene.
-  text: E-poststandarder krever at kontoen postmaster@%domain% finnes. Velg et passord for denne første administratorkontoen og logg inn etterpå.
+  text: E-poststandarder krever at kontoen postmaster@%domain% finnes. Velg et 
+    passord for denne første administratorkontoen og logg inn etterpå.
