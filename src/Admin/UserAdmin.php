@@ -56,8 +56,14 @@ class UserAdmin extends Admin
      */
     protected function configureFormFields(FormMapper $form): void
     {
+        /** @var User $currentUser */
+        $currentUser = $this->security->getUser();
         $user = $this->getRoot()->getSubject();
         $userId = $user->getId();
+
+        // Determine which roles the current user is allowed to assign
+        $availableRoles = Roles::getReachableRoles($currentUser?->getRoles() ?? []);
+        $availableRoleChoices = array_combine($availableRoles, $availableRoles) ?: [];
 
         $form
             ->add('email', EmailType::class, ['disabled' => !$this->isNewObject()])
@@ -76,7 +82,7 @@ class UserAdmin extends Admin
                 'help' => 'Can only be enabled by user',
             ])
             ->add('roles', ChoiceType::class, [
-                'choices' => [Roles::getAll()],
+                'choices' => $availableRoleChoices,
                 'multiple' => true,
                 'expanded' => false,
                 'label' => 'form.roles',
