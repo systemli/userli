@@ -1,13 +1,10 @@
-nav:
-  language: Sprach
-  select_language: Sprach uswähle
-
 navbar:
   home: Hei
   vouchers: Iiladigscodes
   aliases: Aliase
   account: Chonto
   language: Sprach
+  select-language: Sprach uswähle
   signed-in-as: Aameldet aus
   open-user-menu: Benutzermenü ufmache
   open-main-menu: Hauptmenü ufmache

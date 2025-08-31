@@ -1,13 +1,10 @@
-nav:
-  language: Language
-  select_language: Select language
-
 navbar:
+  language: Language
+  select-language: Select language
   home: Home
   vouchers: Invite codes
   aliases: Aliases
   account: Account
-  language: Language
   signed-in-as: Signed in as
   open-user-menu: Open user menu
   open-main-menu: Open main menu
