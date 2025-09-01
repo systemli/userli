@@ -1,0 +1,45 @@
+{# Settings Navigation Component #}
+{# Parameters: current_section (string) - The current active section #}
+
+{% set current_section = current_section|default('overview') %}
+
+<div class="mb-8">
+    {# Floating navigation bar style - inspired by the main navbar #}
+    <nav class="bg-gray-50/80 backdrop-blur-sm border border-gray-200/60 rounded-2xl shadow-sm p-1"
+         aria-label="{{ 'settings.navigation.aria-label'|trans }}">
+        <div class="flex space-x-1">
+            {# Overview/Home Link #}
+            <a href="{{ path('settings_show') }}"
+               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'overview' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900 hover:bg-white/50' }}">
+                <!-- heroicons:squares-2x2 -->
+                {{ ux_icon('heroicons:squares-2x2', {class: 'w-4 h-4 mr-2'}) }}
+                {{ "settings.navigation.overview"|trans }}
+            </a>
+
+            {# API Tokens Link #}
+            <a href="{{ path('settings_api_show') }}"
+               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'api' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900 hover:bg-white/50' }}">
+                <!-- heroicons:key -->
+                {{ ux_icon('heroicons:key', {class: 'w-4 h-4 mr-2'}) }}
+                {{ "settings.navigation.api"|trans }}
+            </a>
+
+            <a href="{{ path('sonata_admin_dashboard') }}"
+                class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'admin' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900 hover:bg-white/50' }}">
+                <!-- heroicons:shield-check -->
+                {{ ux_icon('heroicons:shield-check', {class: 'w-4 h-4 mr-2'}) }}
+                Admin
+            </a>
+
+            {# Future settings sections can be added here #}
+            {#
+            <a href="#"
+               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium text-gray-400 cursor-not-allowed">
+                {{ ux_icon('heroicons:cog-6-tooth', {class: 'w-4 h-4 mr-2'}) }}
+                {{ "settings.navigation.general"|trans }}
+                <span class="ml-2 text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded">{{ "settings.coming-soon"|trans }}</span>
+            </a>
+            #}
+        </div>
+    </nav>
+</div>

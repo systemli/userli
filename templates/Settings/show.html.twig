@@ -1,0 +1,24 @@
+{% extends 'base_page.html.twig' %}
+
+{% block title %}{{ domain }} - {{ "settings.title"|trans }}{% endblock %}
+{% block page_title %}{{ "settings.title"|trans }}{% endblock %}
+{% block page_subtitle %}{{ "settings.subtitle"|trans }}{% endblock %}
+
+{% block page_content %}
+    <div class="max-w-5xl mx-auto">
+        {# Settings Navigation #}
+        {% include 'Settings/_navigation.html.twig' with {'current_section': 'overview'} %}
+
+        {# Settings Content Area #}
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+            <div class="px-6 py-8">
+                <div class="text-center">
+                    <!-- heroicons:adjustments-horizontal -->
+                    {{ ux_icon('heroicons:adjustments-horizontal', {class: 'w-16 h-16 mx-auto mb-4 text-gray-300'}) }}
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">{{ "settings.overview.title"|trans }}</h3>
+                    <p class="text-gray-500 max-w-md mx-auto mb-6">{{ "settings.overview.description"|trans }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

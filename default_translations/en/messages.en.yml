@@ -186,6 +186,7 @@ navbar_right:
   login: Log in
   logout: Log out
   admin: Admin
+  settings: Settings
 registration:
   title: Registering with %project_name%
   information: Information
@@ -374,3 +375,53 @@ random-aliases.feature-privacy: Perfect for online shopping and registrations
 random-aliases.feature-deletable: Can be deleted anytime when no longer needed
 random-aliases.limitation-random-name: Random names that are harder to remember
 random-aliases.management-hint: <strong>Tip:</strong> Delete unused random aliases to make room for new ones.
+
+settings:
+  title: Settings
+  subtitle: Manage system settings and integrations
+  navigation:
+    aria-label: Settings navigation
+    overview: Overview
+    api: API Tokens
+    general: General Settings
+  overview:
+    title: Settings Overview
+    description: Configure and manage system settings and integrations from here.
+  coming-soon: Coming Soon
+  api:
+    title: API Tokens
+    subtitle: Manage your API tokens
+    table:
+      title: API Tokens
+      description: List of your existing API tokens
+      empty-title: No API tokens created yet
+      empty-description: Create an API token to allow access for integrations (Dovecot, KeyCloak, ...)
+      id: ID
+      name: Name
+      scopes: Scopes
+      created: Created
+      last-used: Last Used
+      never-used: Never used
+      actions: Actions
+      delete: Delete
+    create:
+      title: Create API Token
+      subtitle: Generate a new API token for secure access
+      button: Create new API token
+      form:
+        title: New API Token
+        description: Provide a name and scope for the new API token
+        name:
+          label: Name
+          placeholder: e.g. "My Dovecot Integration"
+          help: Enter a descriptive name for the token
+        scopes:
+          label: Scopes
+          help: Select the permissions for this token
+        cancel: Cancel
+        submit: Create
+    created:
+      title: New API token created. Please copy and store it securely now. This token will not be shown again!
+    delete:
+      confirm: Are you sure you want to delete this API token?
+      success: API token deleted successfully.

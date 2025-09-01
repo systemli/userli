@@ -94,6 +94,34 @@
     <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
 {% endblock checkbox_widget %}
 
+{% block choice_widget_expanded %}
+    {% if multiple %}
+        <div class="space-y-3">
+            {% for child in form %}
+                <div class="flex items-center">
+                    {{ form_widget(child, {'attr': {'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500'}}) }}
+                    {{ form_label(child, null, {
+                        'label_attr': {'class': 'ml-3 text-sm font-medium text-gray-700 cursor-pointer'},
+                        'translation_domain': translation_domain
+                    }) }}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="space-y-3">
+            {% for child in form %}
+                <div class="flex items-center">
+                    {{ form_widget(child, {'attr': {'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500'}}) }}
+                    {{ form_label(child, null, {
+                        'label_attr': {'class': 'ml-3 text-sm font-medium text-gray-700 cursor-pointer'},
+                        'translation_domain': translation_domain
+                    }) }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock choice_widget_expanded %}
+
 {% block button_widget %}
     {% if label is empty %}
         {%- if label_format is not empty -%}

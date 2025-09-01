@@ -7,7 +7,9 @@ namespace App\Controller;
 use App\Dto\KeycloakUserValidateDto;
 use App\Entity\Domain;
 use App\Entity\User;
+use App\Enum\ApiScope;
 use App\Handler\UserAuthenticationHandler;
+use App\Security\RequireApiScope;
 use Doctrine\ORM\EntityManagerInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticator;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -17,6 +19,7 @@ use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[RequireApiScope(scope: ApiScope::KEYCLOAK)]
 class KeycloakController extends AbstractController
 {
     const MESSAGE_SUCCESS = 'success';
@@ -29,11 +32,15 @@ class KeycloakController extends AbstractController
 
     const MESSAGE_NOT_SUPPORTED = 'not supported';
 
-    public function __construct(private readonly EntityManagerInterface $manager, private readonly UserAuthenticationHandler $handler, private readonly TotpAuthenticator $totpAuthenticator)
+    public function __construct(
+        private readonly EntityManagerInterface $manager,
+        private readonly UserAuthenticationHandler $handler,
+        private readonly TotpAuthenticator $totpAuthenticator
+    )
     {
     }
 
-    #[Route(path: '/api/keycloak/{domainUrl}', name: 'api_keycloak_index', methods: ['GET'], stateless: true)]
+    #[Route(path: '/api/keycloak/{domainUrl}', name: 'api_keycloak_get_users_search', methods: ['GET'], stateless: true)]
     public function getUsersSearch(
         #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
         #[MapQueryParameter] string                           $search = '',
@@ -50,13 +57,13 @@ class KeycloakController extends AbstractController
         return $this->json($users);
     }
 
-    #[Route(path: '/api/keycloak/{domainUrl}/count', name: 'api_keycloak_count', methods: ['GET'], stateless: true)]
+    #[Route(path: '/api/keycloak/{domainUrl}/count', name: 'api_keycloak_get_users_count', methods: ['GET'], stateless: true)]
     public function getUsersCount(#[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain): Response
     {
         return $this->json($this->manager->getRepository(User::class)->countDomainUsers($domain));
     }
 
-    #[Route(path: '/api/keycloak/{domainUrl}/user/{email}', name: 'api_keycloak_user', methods: ['GET'], stateless: true)]
+    #[Route(path: '/api/keycloak/{domainUrl}/user/{email}', name: 'api_keycloak_get_one_user', methods: ['GET'], stateless: true)]
     public function getOneUser(
         #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
         string                                                $email,
@@ -78,7 +85,7 @@ class KeycloakController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/api/keycloak/{domainUrl}/validate/{email}', name: 'api_keycloak_user_validate', methods: ['POST'], stateless: true)]
+    #[Route(path: '/api/keycloak/{domainUrl}/validate/{email}', name: 'api_keycloak_post_user_validate', methods: ['POST'], stateless: true)]
     public function postUserValidate(
         #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
         #[MapRequestPayload] KeycloakUserValidateDto          $requestData,
@@ -100,7 +107,7 @@ class KeycloakController extends AbstractController
         };
     }
 
-    #[Route(path: '/api/keycloak/{domainUrl}/configured/{credentialType}/{email}', name: 'api_keycloak_user_configured', methods: ['GET'], stateless: true)]
+    #[Route(path: '/api/keycloak/{domainUrl}/configured/{credentialType}/{email}', name: 'api_keycloak_get_is_configured_for', methods: ['GET'], stateless: true)]
     public function getIsConfiguredFor(#[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain, string $credentialType, string $email): Response
     {
         if (null === $user = $this->manager->getRepository(User::class)->findByDomainAndEmail($domain, $email)) {

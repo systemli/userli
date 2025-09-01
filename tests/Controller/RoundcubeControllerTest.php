@@ -2,7 +2,7 @@
 
 namespace App\Tests\Controller;
 
-use App\Entity\User;
+use App\DataFixtures\LoadApiTokenData;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RoundcubeControllerTest extends WebTestCase
@@ -10,17 +10,33 @@ class RoundcubeControllerTest extends WebTestCase
     public function testGetUserAliasesWrongCredentials(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/api/roundcube');
+        $client->request('POST', '/api/roundcube/aliases');
 
         self::assertResponseStatusCodeSame(401);
     }
 
+    public function testInvalidRequestFormat(): void
+    {
+        $client = static::createClient([], [
+            'HTTP_AUTHORIZATION' => 'Bearer ' . LoadApiTokenData::ROUNDCUBE_TOKEN_PLAIN,
+        ]);
+        $client->request(method: 'POST', uri: '/api/roundcube/aliases', content: json_encode([
+            'email' => 'user2@example.org', 'password' => 'password'
+        ]));
+
+        self::assertResponseStatusCodeSame(400);
+    }
+
     public function testGetUserAliases(): void
     {
-        $client = static::createClient();
-        $userRepository = static::getContainer()->get('doctrine')->getRepository(User::class);
-        $client->loginUser($userRepository->findOneByEmail('user2@example.org'));
-        $client->request('GET', '/api/roundcube');
+        $client = static::createClient([], [
+            'HTTP_AUTHORIZATION' => 'Bearer ' . LoadApiTokenData::ROUNDCUBE_TOKEN_PLAIN,
+            'ACCEPT' => 'application/json',
+            'CONTENT_TYPE' => 'application/json',
+        ]);
+        $client->request(method: 'POST', uri: '/api/roundcube/aliases', content: json_encode([
+            'email' => 'user2@example.org', 'password' => 'password'
+        ]));
 
         self::assertResponseIsSuccessful();
 
@@ -30,5 +46,22 @@ class RoundcubeControllerTest extends WebTestCase
         ];
         $data = json_decode($client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
         self::assertEquals($expected, $data);
+    }
+
+    public function testEmptyUserAliases(): void
+    {
+        $client = static::createClient([], [
+            'HTTP_AUTHORIZATION' => 'Bearer ' . LoadApiTokenData::ROUNDCUBE_TOKEN_PLAIN,
+            'ACCEPT' => 'application/json',
+            'CONTENT_TYPE' => 'application/json',
+        ]);
+        $client->request(method: 'POST', uri: '/api/roundcube/aliases', content: json_encode([
+            'email' => 'support@example.org', 'password' => 'password'
+        ]));
+
+        self::assertResponseIsSuccessful();
+
+        $data = json_decode($client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        self::assertEquals([], $data);
     }
 }

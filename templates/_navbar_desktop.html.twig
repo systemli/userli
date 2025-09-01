@@ -35,8 +35,15 @@
             <span>{{ "navbar.account"|trans }}</span>
         </a>
 
-        {# Admin Link (if user has admin rights) #}
-        {% if is_granted('ROLE_DOMAIN_ADMIN') %}
+        {# Admin Link (conditional based on role) #}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('settings_show') }}"
+               class="flex items-center justify-center px-3 xl:px-4 py-2 rounded-2xl text-sm font-medium text-gray-300 hover:bg-white/10 hover:text-white transition-all duration-300 hover:scale-105"
+               title="{{ "navbar_right.settings"|trans }}">
+                {{ ux_icon('heroicons:adjustments-horizontal', {class: 'w-4 h-4 mr-1 xl:mr-2 flex-shrink-0'}) }}
+                <span>{{ "navbar_right.settings"|trans }}</span>
+            </a>
+        {% elseif is_granted('ROLE_DOMAIN_ADMIN') %}
             <a href="{{ path('sonata_admin_dashboard') }}"
                class="flex items-center justify-center px-3 xl:px-4 py-2 rounded-2xl text-sm font-medium text-gray-300 hover:bg-white/10 hover:text-white transition-all duration-300 hover:scale-105"
                title="{{ "navbar_right.admin"|trans }}">

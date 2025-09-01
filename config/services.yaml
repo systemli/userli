@@ -139,13 +139,6 @@ services:
       $sendMail: "%env(SEND_MAIL)%"
       $defaultLocale: "%kernel.default_locale%"
 
-  App\Security\ApiAccessTokenHandler:
-    arguments:
-      $accessTokenDovecot: "%env(DOVECOT_API_ACCESS_TOKEN)%"
-      $accessTokenKeycloak: "%env(KEYCLOAK_API_ACCESS_TOKEN)%"
-      $accessTokenRetention: "%env(RETENTION_API_ACCESS_TOKEN)%"
-      $accessTokenPostfix: "%env(POSTFIX_API_ACCESS_TOKEN)%"
-
   userli.admin.user:
     class: App\Admin\UserAdmin
     public: true
