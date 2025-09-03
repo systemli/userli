@@ -1,12 +1,9 @@
-nav:
-  language: Sprache
-  select_language: Sprache auswählen
-
 navbar:
   home: Home
   vouchers: Invites
   aliases: Aliase
   account: Konto
+  select-language: Sprache auswählen
   language: Sprache
   signed-in-as: Angemeldet als
   open-user-menu: Benutzermenü öffnen
