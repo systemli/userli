@@ -6,14 +6,15 @@ namespace App\Command;
 
 use Exception;
 use App\Enum\ApiScope;
+use App\Form\Model\ApiToken as ApiTokenModel;
 use App\Service\ApiTokenManager;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[AsCommand(
     name: 'app:api-token:create',
@@ -22,45 +23,23 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class ApiTokenCreateCommand extends Command
 {
     public function __construct(
-        private readonly ApiTokenManager $apiTokenManager
-    ) {
+        private readonly ApiTokenManager    $apiTokenManager,
+        private readonly ValidatorInterface $validator
+    )
+    {
         parent::__construct();
     }
 
     protected function configure(): void
     {
         $this
-            ->addArgument('name', InputArgument::REQUIRED, 'Name for the API token')
+            ->addOption('name', 't', InputOption::VALUE_REQUIRED, 'Name for the API token')
             ->addOption(
                 'scopes',
                 's',
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'Scopes for the API token (available: ' . implode(', ', ApiScope::all()) . ')',
                 []
-            )
-            ->addOption(
-                'all-scopes',
-                'a',
-                InputOption::VALUE_NONE,
-                'Grant all available scopes to the token'
-            )
-            ->setHelp(
-                <<<'HELP'
-The <info>%command.name%</info> command creates a new API token:
-
-<info>php %command.full_name% "My Integration Token" --scopes=keycloak --scopes=dovecot</info>
-
-You can specify multiple scopes:
-<info>php %command.full_name% "Multi Scope Token" --scopes=keycloak --scopes=dovecot --scopes=postfix</info>
-
-Or grant all available scopes:
-<info>php %command.full_name% "Admin Token" --all-scopes</info>
-
-The generated token will be displayed once and cannot be retrieved again.
-
-Available scopes: %s
-HELP,
-                implode(', ', ApiScope::all())
             );
     }
 
@@ -68,51 +47,37 @@ HELP,
     {
         $io = new SymfonyStyle($input, $output);
 
-        $name = $input->getArgument('name');
-        $scopes = $input->getOption('scopes');
-        $allScopes = $input->getOption('all-scopes');
+        $name = (string)$input->getOption('name');
+        $scopes = (array)$input->getOption('scopes');
 
-        // Validate and prepare scopes
-        if ($allScopes) {
-            $scopes = ApiScope::all();
-            $io->info('Using all available scopes: ' . implode(', ', $scopes));
-        } elseif (empty($scopes)) {
-            $io->error('You must specify at least one scope or use --all-scopes option.');
-            $io->note('Available scopes: ' . implode(', ', ApiScope::all()));
-            return Command::FAILURE;
-        } else {
-            // Validate provided scopes
-            $availableScopes = ApiScope::all();
-            $invalidScopes = array_diff($scopes, $availableScopes);
+        $model = new ApiTokenModel();
+        $model->setName($name);
+        $model->setScopes($scopes);
 
-            if (!empty($invalidScopes)) {
-                $io->error('Invalid scope(s): ' . implode(', ', $invalidScopes));
-                $io->note('Available scopes: ' . implode(', ', $availableScopes));
-                return Command::FAILURE;
+        $violations = $this->validator->validate($model);
+        if (count($violations) > 0) {
+            $io->error('Validation failed:');
+            foreach ($violations as $violation) {
+                $io->writeln(sprintf(' - %s: %s', $violation->getPropertyPath(), $violation->getMessage()));
             }
+
+            return Command::FAILURE;
         }
 
         try {
-            // Generate token
             $plainToken = $this->apiTokenManager->generateToken();
 
-            // Create API token
-            $apiToken = $this->apiTokenManager->create($plainToken, $name, $scopes);
+            $this->apiTokenManager->create($plainToken, $name, $scopes);
 
-            $io->success('API token created successfully!');
-
-            // Always display the token (since it can only be shown once)
-            $io->warning('SECURITY WARNING: The token below will only be shown once!');
-            $io->note('Store this token securely - it cannot be retrieved again.');
+            $io->info('Store this token securely - it cannot be retrieved again.');
             $io->writeln('');
             $io->writeln('<fg=green>Token:</> <comment>' . $plainToken . '</comment>');
             $io->writeln('');
-
-            return Command::SUCCESS;
-
         } catch (Exception $exception) {
             $io->error('Failed to create API token: ' . $exception->getMessage());
             return Command::FAILURE;
         }
+
+        return Command::SUCCESS;
     }
 }
