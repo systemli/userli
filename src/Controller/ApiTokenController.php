@@ -24,7 +24,11 @@ class ApiTokenController extends AbstractController
     #[Route('/settings/api/', name: 'settings_api_show', methods: ['GET'])]
     public function show(Request $request): Response
     {
-        $newToken = $request->get('new_token');
+        $newToken = null;
+        if ($request->getSession()->getFlashBag()->has('newToken')) {
+            $newToken = $request->getSession()->getFlashBag()->get('newToken')[0];
+        }
+
         $tokens = $this->apiTokenManager->findAll();
 
         return $this->render('Settings/Api/show.html.twig', [
@@ -58,9 +62,9 @@ class ApiTokenController extends AbstractController
             $plainToken = $this->apiTokenManager->generateToken();
             $this->apiTokenManager->create($plainToken, $data->getName(), $data->getScopes());
 
-            return $this->redirectToRoute('settings_api_show', [
-                'new_token' => $plainToken,
-            ]);
+            $this->addFlash('newToken', $plainToken);
+
+            return $this->redirectToRoute('settings_api_show');
         }
 
         return $this->redirectToRoute('settings_api_show');
