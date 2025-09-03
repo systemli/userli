@@ -44,7 +44,7 @@
 
             {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('settings_show') }}"
-                   class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-all duration-300">
+                   class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route starts with 'settings' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
                     {{ ux_icon('heroicons:adjustments-horizontal', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
                     {{ "navbar_right.settings"|trans }}
                 </a>
