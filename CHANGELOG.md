@@ -1,18 +1,19 @@
 # Changelog
 
-## 4.2.0 (2025.08.21)
+## 4.2.0 (2025.09.03)
 
 ### Features and Improvements
 
-- ✨ Send email notification when a user has compromised password
+- ✨ Store User Notifications (compromised passwords)
 - 🔒️ Obfuscate last login time
+- ✨ Implement role hierarchy and reachable roles functionality
 
 ### Database Changes
 
-- Add `user_notification` table to store user notifications
+- Add `user_notifications` table to store user notifications
 
 ```sql
-CREATE TABLE user_notification
+CREATE TABLE user_notifications
 (
     id            INT AUTO_INCREMENT NOT NULL,
     user_id       INT         NOT NULL,
