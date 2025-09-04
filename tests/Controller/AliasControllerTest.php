@@ -79,6 +79,31 @@ class AliasControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
     }
 
+    public function testCreateRandomAliasWithNote(): void
+    {
+        $client = static::createClient();
+        $container = $client->getContainer();
+        $user = $container->get('doctrine')->getRepository(User::class)->findOneBy(['email' => 'user@example.org']);
+
+        $client->loginUser($user);
+
+        $note = 'Random note ' . uniqid();
+
+        $client->request('POST', '/alias/create', [
+            'create_alias' => [
+                'note' => $note,
+                'submit' => ''
+            ]
+        ]);
+
+        $this->assertResponseRedirects('/alias');
+        $client->followRedirect();
+        $this->assertResponseIsSuccessful();
+
+        // Verify note appears in page (badge text)
+        $this->assertSelectorTextContains('body', $note);
+    }
+
     public function testCreateAliasUnauthenticated(): void
     {
         $client = static::createClient();

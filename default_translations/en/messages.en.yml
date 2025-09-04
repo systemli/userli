@@ -85,7 +85,7 @@ form:
   actual-password: Current password
   new-custom-alias: New alias address
   alias-note: Note (optional)
-  alias-note-placeholder: Short note to remember usage (e.g. "Used for newsletter")
+  alias-note-placeholder: Optional short note to remember purpose
   new-password: New password
   new-password_confirmation: Confirm new password
   change-password: Change your password
