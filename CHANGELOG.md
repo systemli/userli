@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+### Added
+- Optional note field for aliases (`virtual_aliases.note` VARCHAR(255) NULL). Allows users to store a short description for each alias.
+
 ## 5.4.1 (2026.01.23)
 
 ### Bug Fixes

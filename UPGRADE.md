@@ -2,6 +2,11 @@
 
 ## Upgrade from 3.1.0 or lower
 
+Optional note field for aliases was added. Update your database schema:
+
+    ALTER TABLE virtual_aliases
+    ADD note VARCHAR(255) DEFAULT NULL;
+
 Userli migrated from swiftmailer-bundle to symfony/mailer. Remove environment
 variable `MAILER_URL` and replace it with `MAILER_DSN`. See `.env` file for the
 syntax.
@@ -68,19 +73,19 @@ Database schema changed and needs to be updated:
     CHANGE updatedTime updated_time DATETIME NOT NULL,
     CHANGE lastlogin last_login_time DATETIME DEFAULT NULL,
     CHANGE passwordversion password_version INT NOT NULL;
-    
+
     ALTER TABLE virtual_aliases
     CHANGE creationTime creation_time DATETIME NOT NULL,
     CHANGE updatedTime updated_time DATETIME NOT NULL;
-    
+
     ALTER TABLE virtual_vouchers
     CHANGE creationTime creation_time DATETIME NOT NULL,
     CHANGE redeemedTime redeemed_time DATETIME DEFAULT NULL;
-    
+
     ALTER TABLE virtual_reserved_names
     CHANGE creationTime creation_time DATETIME NOT NULL,
     CHANGE updatedTime updated_time DATETIME NOT NULL;
-    
+
     ALTER TABLE virtual_domains
     CHANGE creationTime creation_time DATETIME NOT NULL,
     CHANGE updatedTime updated_time DATETIME NOT NULL;

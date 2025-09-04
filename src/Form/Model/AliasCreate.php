@@ -7,4 +7,5 @@ namespace App\Form\Model;
 final class AliasCreate
 {
     public string $alias;
+    public ?string $note = null;
 }

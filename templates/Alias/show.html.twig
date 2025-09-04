@@ -77,6 +77,12 @@
                                                 'suffix': '@' ~ user_domain
                                             }
                                         }) }}
+                                        <div class="mt-4">
+                                            {{ form_row(custom_alias_form.note, {
+                                                'row_attr': {'class': 'mb-2'},
+                                                'attr': {'class': 'w-full'}
+                                            }) }}
+                                        </div>
                                     </div>
 
                                     {{ form_widget(custom_alias_form.submit, {
@@ -114,8 +120,13 @@
                                 {%  else %}
                                     <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{{ "index.alias-active-custom"|trans }}</h3>
                                     {% for alias in aliases_custom %}
-                                        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-md gap-3">
-                                            <span class="font-mono text-sm text-gray-900 dark:text-gray-100 truncate min-w-0 flex-1 font-stretch-semi-condensed" title="{{ alias.source }}">{{ alias.source }}</span>
+                                        <div class="flex items-start justify-between p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-md gap-3">
+                                            <div class="flex-1 min-w-0">
+                                                <span class="font-mono text-sm text-gray-900 dark:text-gray-100 truncate block font-stretch-semi-condensed" title="{{ alias.source }}">{{ alias.source }}</span>
+                                                {% if alias.note %}
+                                                    <span class="mt-1 inline-flex items-center px-2 py-0.5 rounded text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200" title="{{ alias.note }}">{{ alias.note|u.truncate(40, '…') }}</span>
+                                                {% endif %}
+                                            </div>
                                             <button type="button"
                                                     class="inline-flex items-center p-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-600 rounded hover:bg-gray-200 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 dark:focus:ring-offset-gray-700 transition-colors flex-shrink-0"
                                                     data-button="copy-to-clipboard"
@@ -216,8 +227,13 @@
                                 {%  else %}
                                     <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">{{ "index.alias-active-random"|trans }}</h3>
                                     {% for alias in aliases_random %}
-                                        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-md gap-3">
-                                            <span class="font-mono text-sm text-gray-900 dark:text-gray-100 truncate min-w-0 flex-1 font-stretch-semi-condensed" title="{{ alias.source }}">{{ alias.source }}</span>
+                                        <div class="flex items-start justify-between p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-md gap-3">
+                                            <div class="flex-1 min-w-0">
+                                                <span class="font-mono text-sm text-gray-900 dark:text-gray-100 truncate block font-stretch-semi-condensed" title="{{ alias.source }}">{{ alias.source }}</span>
+                                                {% if alias.note %}
+                                                    <span class="mt-1 inline-flex items-center px-2 py-0.5 rounded text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200" title="{{ alias.note }}">{{ alias.note|u.truncate(40, '…') }}</span>
+                                                {% endif %}
+                                            </div>
                                             <div class="flex items-center space-x-2 flex-shrink-0">
                                                 <button type="button"
                                                         class="inline-flex items-center p-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-600 rounded hover:bg-gray-200 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 dark:focus:ring-offset-gray-700 transition-colors"

@@ -9,6 +9,7 @@ use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,6 +25,14 @@ final class CustomAliasCreateType extends AbstractType
     {
         $builder
             ->add('alias', TextType::class, ['label' => 'form.new-custom-alias'])
+            ->add('note', TextareaType::class, [
+                'label' => 'form.alias-note',
+                'required' => false,
+                'attr' => [
+                    'rows' => 1,
+                    'placeholder' => 'form.alias-note-placeholder'
+                ]
+            ])
             ->add('submit', SubmitType::class, ['label' => 'form.create-custom-alias']);
     }
 

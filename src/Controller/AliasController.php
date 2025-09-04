@@ -91,7 +91,7 @@ final class AliasController extends AbstractController
         if ($randomAliasCreateForm->isSubmitted() && $randomAliasCreateForm->isValid()) {
             $this->processRandomAliasCreation($user);
         } elseif ($customAliasCreateForm->isSubmitted() && $customAliasCreateForm->isValid()) {
-            $this->processCustomAliasCreation($user, $aliasCreate->alias);
+            $this->processCustomAliasCreation($user, $aliasCreate->alias, $aliasCreate->note);
         }
 
         return $this->redirectToRoute('aliases');
@@ -108,10 +108,15 @@ final class AliasController extends AbstractController
         }
     }
 
-    private function processCustomAliasCreation(User $user, string $alias): void
+    private function processCustomAliasCreation(User $user, string $alias, ?string $note = null): void
     {
         try {
-            if ($this->aliasHandler->create($user, $alias) instanceof Alias) {
+            $created = $this->aliasHandler->create($user, $alias);
+            if ($created instanceof Alias) {
+                if ($note) {
+                    $created->setNote($note);
+                    $this->getDoctrine()->getManager()->flush();
+                }
                 $this->addFlash('success', 'flashes.alias-creation-successful');
             }
         } catch (ValidationException $validationException) {
