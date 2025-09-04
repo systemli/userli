@@ -6,10 +6,12 @@ namespace App\Voter;
 
 use App\Entity\Alias;
 use App\Entity\User;
+use App\Enum\Roles;
 use Override;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @extends Voter<string, Alias>
@@ -17,6 +19,10 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 final class AliasVoter extends Voter
 {
     public const DELETE = 'delete';
+
+    public function __construct(private readonly Security $security)
+    {
+    }
 
     #[Override]
     protected function supports(string $attribute, mixed $subject): bool
@@ -38,16 +44,14 @@ final class AliasVoter extends Voter
         $user = $token->getUser();
         $alias = $subject;
 
-        $isUserValid = $user instanceof User;
-        $isAliasValid = $alias instanceof Alias;
-        $isNotDeleted = $isAliasValid && !$alias->isDeleted();
-        $isRandom = $isAliasValid && $alias->isRandom();
-        $isOwner = $isAliasValid && $alias->getUser() === $user;
+        if (!$user instanceof User || !$alias instanceof Alias || $alias->isDeleted()) {
+            return false;
+        }
 
-        return $isUserValid
-            && $isAliasValid
-            && $isNotDeleted
-            && $isRandom
-            && $isOwner;
+        $isOwner = $alias->getUser() === $user;
+        $canDeleteRandom = $alias->isRandom() && $isOwner;
+        $canDeleteAsAdmin = $isOwner && ($this->security->isGranted(Roles::ADMIN) || $this->security->isGranted(Roles::DOMAIN_ADMIN));
+
+        return $canDeleteRandom || $canDeleteAsAdmin;
     }
 }
