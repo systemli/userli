@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Form\Model\AliasCreate;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,6 +16,14 @@ class RandomAliasCreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('note', TextType::class, [
+                'required' => false,
+                'label' => false, // hide visual label
+                'attr' => [
+                    'placeholder' => 'form.alias-note-placeholder',
+                    'aria-label' => 'form.alias-note-placeholder'
+                ]
+            ])
             ->add('submit', SubmitType::class, ['label' => 'form.create-random-alias']);
     }
 
