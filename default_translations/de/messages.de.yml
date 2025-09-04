@@ -182,6 +182,7 @@ navbar_right:
   login: Anmelden
   logout: Abmelden
   admin: Admin
+  settings: Einstellungen
 registration:
   title: Bei %project_name% registrieren
   information: Hinweis
@@ -375,3 +376,53 @@ random-aliases.feature-privacy: Perfekt für Online-Shopping und Registrierungen
 random-aliases.feature-deletable: Können jederzeit gelöscht werden, wenn sie nicht mehr benötigt werden
 random-aliases.limitation-random-name: Zufällige Namen, die schwerer zu merken sind
 random-aliases.management-hint: <strong>Tipp:</strong> Lösche ungenutzte zufällige Aliasse, um Platz für neue zu schaffen.
+
+settings:
+  title: Einstellungen
+  subtitle: Systemeinstellungen und Integrationen verwalten
+  navigation:
+    aria-label: Einstellungen Navigation
+    overview: Übersicht
+    api: API Tokens
+    general: Allgemeine Einstellungen
+  overview:
+    title: Einstellungen Übersicht
+    description: Konfiguriere und verwalte Systemeinstellungen und Integrationen von hier aus.
+  coming-soon: Demnächst verfügbar
+  api:
+    title: API Tokens
+    subtitle: Verwalte deine API Tokens
+    table:
+      title: API Tokens
+      description: Liste der vorhandenen API Tokens
+      empty-title: Keine API Tokens vorhanden
+      empty-description: Erstelle einen API-Token, um den Zugriff für Integrationen (Dovecot, KeyCloak, ...) zu ermöglichen.
+      id: ID
+      name: Name
+      scopes: Berechtigungen
+      created: Erstellt
+      last-used: Zuletzt verwendet
+      never-used: Nie verwendet
+      actions: Aktionen
+      delete: Löschen
+    create:
+      title: Neuen API Token erstellen
+      subtitle: Generiere einen neuen API-Token
+      button: Neuen API Token erstellen
+      form:
+        title: API Token erstellen
+        description: Gib einen Namen und Umfang für den neuen API-Token an
+        name:
+          label: Name
+          placeholder: z.B. „Meine Dovecot-Integration“
+          help: Gib einen aussagekräftigen Namen für den Token ein
+        scopes:
+          label: Berechtigungen
+          help: Wähle die Berechtigungen für dieses Token aus
+        cancel: Abbrechen
+        submit: Erstellen
+    created:
+      title: Neuer API-Token erstellt. Bitte kopieren und sicher speichern. Dieser Token wird nicht nochmal angezeigt!
+    delete:
+      confirm: Möchtest du diesen API-Token wirklich löschen?
+      success: API-Token erfolgreich gelöscht.

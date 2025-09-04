@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Enum\ApiScope;
+use App\Security\RequireApiScope;
 use DateTime;
 use App\Dto\RetentionTouchUserDto;
 use App\Entity\Domain;
@@ -13,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[RequireApiScope(scope: ApiScope::RETENTION)]
 class RetentionController extends AbstractController
 {
     const MESSAGE_TIMESTAMP_IN_FUTURE = 'timestamp in future';
@@ -22,7 +25,7 @@ class RetentionController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/api/retention/{email}/touch', name: 'retention_touch', methods: ['PUT'], stateless: true)]
+    #[Route(path: '/api/retention/{email}/touch', name: 'api_retention_put_touch_user', methods: ['PUT'], stateless: true)]
     public function putTouchUser(
         #[MapEntity(mapping: ['email' => 'email'])] User $user,
         #[MapRequestPayload] RetentionTouchUserDto $requestData,
@@ -52,7 +55,7 @@ class RetentionController extends AbstractController
     /**
      * List deleted users
      */
-    #[Route(path: '/api/retention/{domainUrl}/users', name: 'retention_users', methods: ['GET'], stateless: true)]
+    #[Route(path: '/api/retention/{domainUrl}/users', name: 'api_retention_get_deleted_users', methods: ['GET'], stateless: true)]
     public function getDeletedUsers(
         #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
     ): Response

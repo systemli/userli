@@ -6,10 +6,12 @@ namespace App\Controller;
 
 use App\Dto\DovecotPassdbDto;
 use App\Entity\User;
+use App\Enum\ApiScope;
 use App\Enum\MailCrypt;
 use App\Enum\Roles;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
+use App\Security\RequireApiScope;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,6 +20,7 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[RequireApiScope(scope: ApiScope::DOVECOT)]
 class DovecotController extends AbstractController
 {
     const MESSAGE_SUCCESS = 'success';
