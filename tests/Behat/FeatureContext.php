@@ -4,7 +4,10 @@ namespace App\Tests\Behat;
 
 use App\Entity\Domain;
 use App\Entity\UserNotification;
+use App\Entity\WebhookDelivery;
+use App\Entity\WebhookEndpoint;
 use App\Enum\UserNotificationType;
+use App\Enum\WebhookEvent;
 use DateTime;
 use App\Entity\Voucher;
 use App\Entity\ReservedName;
@@ -271,6 +274,56 @@ class FeatureContext extends MinkContext
             }
 
             $this->manager->persist($reservedName);
+            $this->manager->flush();
+        }
+    }
+
+    /**
+     * @When the following WebhookEndpoint exists:
+     */
+    public function theFollowingWebhookEndpointExists(TableNode $table): void
+    {
+        foreach ($table->getColumnsHash() as $data) {
+            $url = $data['url'] ?? null;
+            $secret = $data['secret'] ?? null;
+
+            $events = isset($data['events']) ? explode(',', $data['events']) : null;
+            $enabled = !isset($data['enabled']) || $data['enabled'];
+            $endpoint = new WebhookEndpoint($url, $secret);
+            $endpoint->setEvents($events);
+            $endpoint->setEnabled($enabled);
+
+            $this->manager->persist($endpoint);
+            $this->manager->flush();
+        }
+    }
+
+    /**
+     * @When the following WebhookDelivery exists:
+     */
+    public function theFollowingWebhookDeliveryExists(TableNode $table): void
+    {
+        foreach ($table->getColumnsHash() as $data) {
+            $endpointId = $data['endpoint_id'] ?? null;
+            $type = WebhookEvent::from($data['type']);
+            $requestBody = isset($data['request_body']) ? json_decode($data['request_body'], true) : null;
+            $requestHeaders = isset($data['request_headers']) ? json_decode($data['request_headers'], true) : null;
+            $responseCode = $data['response_code'] ?? null;
+            $responseBody = $data['response_body'] ?? null;
+
+            $endpoint = $this->manager->getRepository(WebhookEndpoint::class)->find($endpointId);
+            if (null === $endpoint) {
+                throw new RuntimeException(sprintf('WebhookEndpoint with id %s not found', $endpointId));
+            }
+
+            $delivery = new WebhookDelivery($endpoint, $type, $requestBody, $requestHeaders);
+
+            $delivery->setResponseCode($responseCode);
+            $delivery->setResponseBody($responseBody);
+            $delivery->setSuccess($responseCode >= 200 && $responseCode < 300);
+            $delivery->setError($delivery->isSuccess() ? null : 'Unknown error');
+
+            $this->manager->persist($delivery);
             $this->manager->flush();
         }
     }

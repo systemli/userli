@@ -1,0 +1,114 @@
+{% extends 'base_page.html.twig' %}
+{% block title %}{{ domain }} - {{ 'settings.webhook.delivery.title'|trans({'%id%': delivery.id}) }}{% endblock %}
+{% block page_title %}{{ 'settings.title'|trans }}{% endblock %}
+{% block page_subtitle %}{{ 'settings.subtitle'|trans }}{% endblock %}
+{% block page_content %}
+    <div class="max-w-5xl mx-auto">
+        {% include 'Settings/_navigation.html.twig' with {'current_section': 'webhooks'} %}
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+            <div class="p-6 sm:p-8 space-y-8">
+                <div class="flex items-start justify-between">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mr-4">
+                            {{ ux_icon('heroicons:paper-airplane', {class: 'w-6 h-6 text-indigo-600'}) }}
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">{{ 'settings.webhook.delivery.heading'|trans({'%id%': delivery.id}) }}</h3>
+                            <p class="text-sm text-gray-500 mt-1">{{ 'settings.webhook.delivery.subtitle'|trans({'%endpoint%': endpoint.url}) }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 pt-2">
+                    <a href="{{ path('settings_webhook_delivery_index', {id: endpoint.id}) }}"
+                       class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                        {{ ux_icon('heroicons:arrow-left', {class: 'w-4 h-4 mr-1'}) }} {{ 'settings.webhook.delivery.actions.back'|trans }}
+                    </a>
+                    {% if delivery.error and not delivery.success %}
+                        <form method="post"
+                              action="{{ path('settings_webhook_delivery_retry', {id: delivery.id}) }}"
+                              onsubmit="return confirm('{{ 'settings.webhook.deliveries.retry.confirm'|trans }}')">
+                            <input type="hidden" name="_token"
+                                   value="{{ csrf_token('retry_delivery_' ~ delivery.id) }}">
+                            <button class="inline-flex items-center px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                                {{ ux_icon('heroicons:arrow-path', {class: 'w-4 h-4 mr-1'}) }} {{ 'settings.webhook.deliveries.retry.action'|trans }}
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+
+                <div class="grid gap-8 md:grid-cols-2">
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-700 mb-2">{{ 'settings.webhook.delivery.meta'|trans }}</h4>
+                            <dl class="text-sm divide-y divide-gray-100 border border-gray-200 rounded-lg overflow-hidden">
+                                <div class="flex justify-between gap-4 px-4 py-2 bg-gray-50">
+                                    <dt class="font-medium text-gray-600">{{ 'settings.webhook.delivery.event'|trans }}</dt>
+                                    <dd class="text-gray-900"><span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">{{ delivery.type }}</span>
+                                    </dd>
+                                </div>
+                                <div class="flex justify-between gap-4 px-4 py-2">
+                                    <dt class="font-medium text-gray-600">{{ 'settings.webhook.delivery.status'|trans }}</dt>
+                                    <dd>
+                                        {% if delivery.success %}
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">{{ 'settings.webhook.deliveries.status.delivered'|trans }}</span>
+                                        {% elseif delivery.error %}
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">{{ 'settings.webhook.deliveries.status.failed'|trans }}</span>
+                                        {% else %}
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">{{ 'settings.webhook.deliveries.status.pending'|trans }}</span>
+                                        {% endif %}
+                                    </dd>
+                                </div>
+                                <div class="flex justify-between gap-4 px-4 py-2 bg-gray-50">
+                                    <dt class="font-medium text-gray-600">{{ 'settings.webhook.delivery.attempt'|trans }}</dt>
+                                    <dd class="text-gray-900">{{ delivery.attempts }}</dd>
+                                </div>
+                                <div class="flex justify-between gap-4 px-4 py-2">
+                                    <dt class="font-medium text-gray-600">{{ 'settings.webhook.delivery.dispatched'|trans }}</dt>
+                                    <dd class="text-gray-900">{{ delivery.dispatchedTime|date('Y-m-d H:i:s') }}</dd>
+                                </div>
+                                <div class="flex justify-between gap-4 px-4 py-2 bg-gray-50">
+                                    <dt class="font-medium text-gray-600">{{ 'settings.webhook.delivery.delivered'|trans }}</dt>
+                                    <dd class="text-gray-900">{{ delivery.deliveredTime ? delivery.deliveredTime|date('Y-m-d H:i:s') : '—' }}</dd>
+                                </div>
+                                <div class="flex justify-between gap-4 px-4 py-2 bg-gray-50">
+                                    <dt class="font-medium text-gray-600">{{ 'settings.webhook.delivery.response_status'|trans }}</dt>
+                                    <dd class="text-gray-900">{{ delivery.responseCode ?? '—' }}</dd>
+                                </div>
+                            </dl>
+                        </div>
+
+                    </div>
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-700 mb-2">{{ 'settings.webhook.delivery.request_headers'|trans }}</h4>
+                            <pre class="p-3 bg-gray-50 border border-gray-200 rounded-lg text-xs overflow-x-auto">{{ delivery.requestHeaders|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-700 mb-2">{{ 'settings.webhook.delivery.request_body'|trans }}</h4>
+                            <pre class="p-3 bg-gray-50 border border-gray-200 rounded-lg text-xs overflow-x-auto">{{ delivery.requestBody|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+                        </div>
+                    </div>
+                </div>
+
+                {% if delivery.responseBody or delivery.error %}
+                    <div class="mt-8 space-y-6">
+                        {% if delivery.responseBody %}
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-700 mb-2">{{ 'settings.webhook.delivery.response_body'|trans }}</h4>
+                                <pre class="p-3 bg-gray-50 border border-gray-200 rounded-lg text-xs overflow-x-auto">{{ delivery.responseBody }}</pre>
+                            </div>
+                        {% endif %}
+                        {% if delivery.error %}
+                            <div>
+                                <h4 class="text-sm font-medium text-red-700 mb-2">{{ 'settings.webhook.delivery.error'|trans }}</h4>
+                                <pre class="p-3 bg-red-50 border border-red-200 rounded-lg text-xs overflow-x-auto">{{ delivery.error }}</pre>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

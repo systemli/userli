@@ -24,6 +24,12 @@
                 {{ "settings.navigation.api"|trans }}
             </a>
 
+            <a href="{{ path('settings_webhook_endpoint_index') }}"
+               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'webhooks' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900 hover:bg-white/50' }}">
+                {{ ux_icon('heroicons:cursor-arrow-rays', {class: 'w-4 h-4 mr-2'}) }}
+                {{ 'settings.navigation.webhooks'|trans }}
+            </a>
+
             <a href="{{ path('sonata_admin_dashboard') }}"
                 class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'admin' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900 hover:bg-white/50' }}">
                 <!-- heroicons:shield-check -->
