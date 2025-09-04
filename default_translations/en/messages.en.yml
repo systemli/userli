@@ -77,8 +77,7 @@ form:
   voucher-redeemed-on: Redeemed on
   actual-password: Current password
   new-custom-alias: New alias address
-  alias-note: Note (optional)
-  alias-note-placeholder: Short note to remember usage (e.g. "Used for newsletter")
+  alias-note-placeholder: Optional short note to remember purpose
   plain-password: New password
   plain-password_confirmation: Confirm new password
   change-password: Change your password
