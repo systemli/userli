@@ -67,7 +67,9 @@ class ApiTokenController extends AbstractController
             return $this->redirectToRoute('settings_api_show');
         }
 
-        return $this->redirectToRoute('settings_api_show');
+        return $this->render('Settings/Api/create.html.twig', [
+            'form' => $form,
+        ]);
     }
 
     #[Route('/settings/api/delete/{id}', name: 'settings_api_delete', methods: ['POST'])]
