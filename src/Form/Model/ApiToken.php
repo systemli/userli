@@ -6,6 +6,7 @@ namespace App\Form\Model;
 
 use App\Enum\ApiScope;
 use Symfony\Component\Validator\Constraints\Choice;
+use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -16,6 +17,7 @@ class ApiToken
     private string $name;
 
     #[Choice(callback: [ApiScope::class, 'all'], multiple: true)]
+    #[Count(min: 1)]
     private array $scopes = [];
 
     public function getName(): string
