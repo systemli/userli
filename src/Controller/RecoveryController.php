@@ -83,10 +83,11 @@ class RecoveryController extends AbstractController
                     // Recovery process is pending, but waiting period didn't elapse yet
                     $recoveryActiveTime = $recoveryStartTime->add(new DateInterval('P2D'));
                 } else {
+                    $this->addFlash('recoveryToken', $recoveryToken);
+
                     // Recovery process successful, go on with the form to reset password
                     return $this->redirectToRoute('recovery_reset_password', [
                         'email' => $email,
-                        'recoveryToken' => $recoveryToken,
                     ]);
                 }
 
@@ -107,7 +108,7 @@ class RecoveryController extends AbstractController
     public function recoveryResetPassword(Request $request): Response
     {
         $email = $request->query->get('email');
-        $recoveryToken = $request->query->get('recoveryToken');
+        $recoveryToken = $request->getSession()->getFlashBag()->get('recoveryToken')[0];
         if (null === $email || null === $recoveryToken) {
             throw new InvalidParameterException('Email and recoveryToken must be provided');
         }
