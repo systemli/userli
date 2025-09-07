@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Tests\EventListener;
 
 use App\Entity\User;
+use App\Event\UserEvent;
 use App\EventListener\PasswordChangeListener;
 use App\Helper\JsonRequestHelper;
+use App\Repository\UserNotificationRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,6 +23,7 @@ class PasswordChangeListenerTest extends TestCase
 {
     private Security $security;
     private UrlGeneratorInterface $urlGenerator;
+    private EntityManagerInterface $entityManager;
     private PasswordChangeListener $listener;
 
     protected function setUp(): void
@@ -28,10 +32,12 @@ class PasswordChangeListenerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+        $this->entityManager = $this->createMock(EntityManagerInterface::class);
 
         $this->listener = new PasswordChangeListener(
             $this->security,
-            $this->urlGenerator
+            $this->urlGenerator,
+            $this->entityManager
         );
     }
 
@@ -39,6 +45,7 @@ class PasswordChangeListenerTest extends TestCase
     {
         $this->assertEquals([
             KernelEvents::REQUEST => [["onRequest", 0]],
+            UserEvent::PASSWORD_CHANGED => [["onPasswordChanged", 0]],
         ], PasswordChangeListener::getSubscribedEvents());
     }
 
@@ -183,6 +190,20 @@ class PasswordChangeListenerTest extends TestCase
             }));
 
         $this->listener->onRequest($event);
+    }
+
+    public function testOnPasswordChanged(): void
+    {
+        $user = new User();
+        $event = new UserEvent($user);
+        $repo = $this->createMock(UserNotificationRepository::class);
+
+        $this->entityManager->method('getRepository')->willReturn($repo);
+        $repo->expects($this->once())
+            ->method('deleteByUserAndType')
+            ->with($user, 'password_compromised');
+
+        $this->listener->onPasswordChanged($event);
     }
 }
 

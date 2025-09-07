@@ -1,0 +1,18 @@
+{% if hasNotifications('password_compromised') %}
+    <div class="mb-6 bg-red-50 border border-red-200 rounded-lg p-4" role="alert" aria-live="polite">
+        <div class="flex items-start">
+            {{ ux_icon('heroicons:exclamation-triangle', {'class': 'w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0'}) }}
+            <div class="flex-1 text-sm text-red-700 leading-relaxed">
+                <p class="mb-3 sm:mb-0">
+                    <strong class="font-semibold">{{ 'notifications.password_compromised.title'|trans }}:</strong>
+                    {{ 'notifications.password_compromised.message'|trans }}
+                </p>
+                <div class="sm:inline-flex sm:items-center sm:ml-0">
+                    <a href="{{ path('account_password') }}"
+                       class="inline-flex w-full sm:w-auto justify-center items-center px-3 py-1.5 rounded-md bg-red-600 text-white text-xs font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+                    >{{ 'notifications.password_compromised.button'|trans }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

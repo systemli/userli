@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace App\EventListener;
 
 use App\Entity\User;
+use App\Entity\UserNotification;
+use App\Enum\UserNotificationType;
+use App\Event\UserEvent;
 use App\Helper\JsonRequestHelper;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,8 +21,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 readonly class PasswordChangeListener implements EventSubscriberInterface
 {
     public function __construct(
-        private Security              $security,
-        private UrlGeneratorInterface $urlGenerator,
+        private Security               $security,
+        private UrlGeneratorInterface  $urlGenerator,
+        private EntityManagerInterface $entityManager,
     )
     {
 
@@ -27,7 +32,8 @@ readonly class PasswordChangeListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::REQUEST => [['onRequest', 0]]
+            KernelEvents::REQUEST => [['onRequest', 0]],
+            UserEvent::PASSWORD_CHANGED => [['onPasswordChanged', 0]],
         ];
     }
 
@@ -57,5 +63,13 @@ readonly class PasswordChangeListener implements EventSubscriberInterface
 
         // Redirect to the password change page
         $event->setResponse(new RedirectResponse($this->urlGenerator->generate('account_password')));
+    }
+
+    public function onPasswordChanged(UserEvent $event): void
+    {
+        $user = $event->getUser();
+        $repo = $this->entityManager->getRepository(UserNotification::class);
+
+        $repo->deleteByUserAndType($user, UserNotificationType::PASSWORD_COMPROMISED->value);
     }
 }

@@ -24,6 +24,10 @@
                 {% include '_flashes.html.twig' %}
             {% endblock flashes %}
 
+            {% block notifications %}
+                {% include '_notifications.html.twig' %}
+            {% endblock notifications %}
+
             {% block content %}
                 {# Header section with standardized title and subtitle structure #}
                 <div class="mb-8 sm:mb-12">

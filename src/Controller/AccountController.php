@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Event\UserEvent;
 use App\Form\Model\Delete;
 use App\Form\Model\Password;
 use App\Form\Model\RecoveryToken;
@@ -19,6 +20,7 @@ use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -26,12 +28,13 @@ use Symfony\Component\Routing\Attribute\Route;
 class AccountController extends AbstractController
 {
     public function __construct(
-        private readonly PasswordUpdater        $passwordUpdater,
-        private readonly MailCryptKeyHandler    $mailCryptKeyHandler,
-        private readonly EntityManagerInterface $manager,
-        private readonly DeleteHandler          $deleteHandler,
-        private readonly RecoveryTokenHandler   $recoveryTokenHandler,
-        private readonly WkdHandler             $wkdHandler,
+        private readonly PasswordUpdater          $passwordUpdater,
+        private readonly MailCryptKeyHandler      $mailCryptKeyHandler,
+        private readonly EntityManagerInterface   $manager,
+        private readonly DeleteHandler            $deleteHandler,
+        private readonly RecoveryTokenHandler     $recoveryTokenHandler,
+        private readonly WkdHandler               $wkdHandler,
+        private readonly EventDispatcherInterface $eventDispatcher,
     )
     {
     }
@@ -91,6 +94,8 @@ class AccountController extends AbstractController
             $user->eraseCredentials();
 
             $this->manager->flush();
+
+            $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::PASSWORD_CHANGED);
 
             $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
 

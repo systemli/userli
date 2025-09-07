@@ -222,3 +222,30 @@ Feature: User
     And I press "Verify"
 
     Then I should be on "/account/twofactor"
+
+  @password-compromised
+  Scenario: User sees password compromised message
+    Given the following UserNotification exists:
+      | email            | type                 |
+      | user@example.org | password_compromised |
+
+    When I am authenticated as "user@example.org"
+    And I am on "/"
+
+    Then I should see text matching "Your password has been found in a database of known compromised passwords."
+
+  @password-compromised
+  Scenario: User Notification is removed after password change
+    Given the following UserNotification exists:
+      | email            | type                 |
+      | user@example.org | password_compromised |
+
+    When I am authenticated as "user@example.org"
+    And I am on "/account/password"
+    And I fill in the following:
+      | password_password           | asdasd       |
+      | password_newPassword_first  | P4ssW0rd!!!1 |
+      | password_newPassword_second | P4ssW0rd!!!1 |
+    And I press "Submit"
+
+    Then the user "user@example.org" should not have a "password_compromised" notification
