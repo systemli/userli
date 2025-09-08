@@ -27,7 +27,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v5
         with:
-          node-version: "lts/*"
+          node-version-file: ".nvmrc"
           cache: "yarn"
 
       - name: Get composer cache directory
@@ -101,7 +101,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v5
         with:
-          node-version: "lts/*"
+          node-version-file: ".nvmrc"
           cache: "yarn"
 
       - name: Get composer cache directory
@@ -153,7 +153,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v5
         with:
-          node-version: "lts/*"
+          node-version-file: ".nvmrc"
           cache: "yarn"
 
       - name: Get composer cache directory
