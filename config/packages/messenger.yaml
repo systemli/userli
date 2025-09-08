@@ -6,8 +6,8 @@ framework:
         retry_strategy:
           max_retries: 3
           delay: 10000
-          multiplier: 2
-          max_delay: 0
+          multiplier: 6
+          max_delay: 180000
     routing:
       'App\Message\SendWebhook': async
     reset_on_message: true

@@ -55,7 +55,7 @@ class SendWebhookHandlerTest extends TestCase
         $this->assertInstanceOf(DateTimeImmutable::class, $delivery->getDeliveredTime());
     }
 
-    public function testFailedDeliveryOnException(): void
+    public function testFailedDeliveryThrowsExceptionForRetry(): void
     {
         $delivery = $this->createDelivery();
         $id = (string)$delivery->getId();
@@ -65,19 +65,20 @@ class SendWebhookHandlerTest extends TestCase
         $repo->method('getClassName')->willReturn(WebhookDelivery::class);
 
         $http = $this->createMock(HttpClientInterface::class);
-        $http->expects($this->once())->method('request')->willThrowException(new \RuntimeException('Boom Failure Happens For A Very Long Error Message That Should Be Trimmed'));
+        $http
+            ->expects($this->once())
+            ->method('request')
+            ->willThrowException(new \RuntimeException('Boom Failure Happens For A Very Long Error Message That Should Be Trimmed'));
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->method('getRepository')->willReturn($repo);
         $em->expects($this->once())->method('flush');
 
         $handler = new SendWebhookHandler($em, $http);
-        $handler(new SendWebhook($id));
 
-        $this->assertFalse($delivery->isSuccess());
-        $this->assertNotNull($delivery->getError());
-        $this->assertEquals(1, $delivery->getAttempts());
-        $this->assertInstanceOf(DateTimeImmutable::class, $delivery->getDeliveredTime());
+        $this->expectException(\RuntimeException::class);
+
+        $handler(new SendWebhook($id));
     }
 
     public function testNoDeliveryFoundEarlyReturn(): void

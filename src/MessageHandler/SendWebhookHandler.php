@@ -51,6 +51,8 @@ final readonly class SendWebhookHandler
         } catch (TransportExceptionInterface|Throwable $e) {
             $delivery->setSuccess(false);
             $delivery->setError(substr($e->getMessage(), 0, 4096));
+
+            throw $e;
         } finally {
             $delivery->setDeliveredTime(new DateTimeImmutable());
             $this->em->flush();
