@@ -6,8 +6,8 @@ use App\Entity\WebhookDelivery;
 use App\Message\SendWebhook;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Sonata\Doctrine\Exception\TransactionException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
 
@@ -48,7 +48,7 @@ final readonly class SendWebhookHandler
             $delivery->setResponseBody($body);
             $delivery->setSuccess($status >= 200 && $status < 300);
             $delivery->setError(null);
-        } catch (TransactionException|Throwable $e) {
+        } catch (TransportExceptionInterface|Throwable $e) {
             $delivery->setSuccess(false);
             $delivery->setError(substr($e->getMessage(), 0, 4096));
         } finally {
