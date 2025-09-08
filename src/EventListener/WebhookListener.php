@@ -15,12 +15,12 @@ readonly class WebhookListener implements EventSubscriberInterface
 
     public function onUserCreated(UserEvent $event): void
     {
-    $this->dispatcher->dispatchUserEvent($event->getUser(), WebhookEvent::USER_CREATED);
+        $this->dispatcher->dispatchUserEvent($event->getUser(), WebhookEvent::USER_CREATED);
     }
 
     public function onUserDeleted(UserEvent $event): void
     {
-    $this->dispatcher->dispatchUserEvent($event->getUser(), WebhookEvent::USER_DELETED);
+        $this->dispatcher->dispatchUserEvent($event->getUser(), WebhookEvent::USER_DELETED);
     }
 
     public static function getSubscribedEvents(): array

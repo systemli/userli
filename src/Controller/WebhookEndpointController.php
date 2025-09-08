@@ -26,7 +26,7 @@ class WebhookEndpointController extends AbstractController
     {
         $endpoints = $this->manager->findAll();
 
-    return $this->render('Settings/Webhook/Endpoint/index.html.twig', [
+        return $this->render('Settings/Webhook/Endpoint/index.html.twig', [
             'endpoints' => $endpoints,
         ]);
     }
@@ -39,7 +39,7 @@ class WebhookEndpointController extends AbstractController
             'method' => 'POST',
         ]);
 
-    return $this->render('Settings/Webhook/Endpoint/form.html.twig', [
+        return $this->render('Settings/Webhook/Endpoint/form.html.twig', [
             'form' => $form,
         ]);
     }
@@ -57,7 +57,7 @@ class WebhookEndpointController extends AbstractController
             return $this->redirectToRoute('settings_webhook_endpoint_index');
         }
 
-    return $this->render('Settings/Webhook/Endpoint/form.html.twig', [
+        return $this->render('Settings/Webhook/Endpoint/form.html.twig', [
             'form' => $form,
         ]);
     }
@@ -76,7 +76,7 @@ class WebhookEndpointController extends AbstractController
             'method' => 'POST',
         ]);
 
-    return $this->render('Settings/Webhook/Endpoint/form.html.twig', [
+        return $this->render('Settings/Webhook/Endpoint/form.html.twig', [
             'form' => $form,
             'endpoint' => $endpoint,
         ]);
@@ -96,7 +96,7 @@ class WebhookEndpointController extends AbstractController
             return $this->redirectToRoute('settings_webhook_endpoint_index');
         }
 
-    return $this->render('Settings/Webhook/Endpoint/form.html.twig', [
+        return $this->render('Settings/Webhook/Endpoint/form.html.twig', [
             'form' => $form,
         ]);
     }

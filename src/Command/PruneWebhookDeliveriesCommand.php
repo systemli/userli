@@ -12,7 +12,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'app:webhooks:prune', description: 'Delete webhook deliveries.html.twig older than 14 days')]
+#[AsCommand(name: 'app:webhooks:prune', description: 'Delete webhook deliveries older than 14 days')]
 final class PruneWebhookDeliveriesCommand extends Command
 {
     public function __construct(private readonly EntityManagerInterface $em)

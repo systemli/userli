@@ -26,7 +26,7 @@ class WebhookDeliveryController extends AbstractController
     {
         $deliveries = $this->manager->findAllByEndpoint($endpoint);
 
-    return $this->render('Settings/Webhook/Delivery/index.html.twig', [
+        return $this->render('Settings/Webhook/Delivery/index.html.twig', [
             'deliveries' => $deliveries,
             'endpoint' => $endpoint,
         ]);
@@ -35,7 +35,7 @@ class WebhookDeliveryController extends AbstractController
     #[Route('/settings/webhooks/deliveries/{id}', name: 'settings_webhook_delivery_show', methods: ['GET'])]
     public function show(#[MapEntity] WebhookDelivery $delivery): Response
     {
-    return $this->render('Settings/Webhook/Delivery/show.html.twig', [
+        return $this->render('Settings/Webhook/Delivery/show.html.twig', [
             'delivery' => $delivery,
             'endpoint' => $delivery->getEndpoint(),
         ]);
@@ -44,12 +44,12 @@ class WebhookDeliveryController extends AbstractController
     #[Route('/settings/webhooks/deliveries/{id}/retry', name: 'settings_webhook_delivery_retry', methods: ['POST'])]
     public function retry(#[MapEntity] WebhookDelivery $delivery, Request $request): RedirectResponse
     {
-    if (!$this->isCsrfTokenValid('retry_delivery_' . $delivery->getId(), $request->request->get('_token'))) {
+        if (!$this->isCsrfTokenValid('retry_delivery_' . $delivery->getId(), $request->request->get('_token'))) {
             return $this->redirectToRoute('settings_webhook_delivery_show', ['id' => $delivery->getId()]);
         }
 
         $this->manager->retry($delivery);
-    $this->addFlash('success', 'settings.webhook.deliveries.retry.queued');
+        $this->addFlash('success', 'settings.webhook.deliveries.retry.queued');
 
         return $this->redirectToRoute('settings_webhook_delivery_show', ['id' => $delivery->getId()]);
     }
