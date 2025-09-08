@@ -1,7 +1,13 @@
 framework:
   messenger:
     transports:
-      async: '%env(MESSENGER_TRANSPORT_DSN)%'
+      async:
+        dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+        retry_strategy:
+          max_retries: 3
+          delay: 10000
+          multiplier: 2
+          max_delay: 0
     routing:
       'App\Message\SendWebhook': async
     reset_on_message: true
