@@ -10,6 +10,8 @@ class UserEvent extends Event
 {
     use UserAwareTrait;
 
+    public const PASSWORD_CHANGED = 'user.password_changed';
+
     /**
      * Constructor.
      */

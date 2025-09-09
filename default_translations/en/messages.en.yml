@@ -425,3 +425,9 @@ settings:
     delete:
       confirm: Are you sure you want to delete this API token?
       success: API token deleted successfully.
+
+notifications:
+  password_compromised:
+    title: Security Alert
+    message: Your password has been found in a database of known compromised passwords. Please change it to secure your account.
+    button: Change Password

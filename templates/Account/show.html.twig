@@ -23,11 +23,20 @@
                         <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-200">
                             {{ "account.password.title"|trans }}
                         </h2>
-                        <p id="password-desc" class="text-sm text-gray-600 leading-relaxed">
+                        <p id="password-desc" class="text-sm text-gray-600 leading-relaxed mb-4">
                             {{ "account.password.desc"|trans }}
                         </p>
                     </div>
-                    <div class="flex-grow"></div>
+                    <div class="flex-grow flex justify-center items-end">
+                        <div class="flex-shrink-0">
+                            {% if hasNotifications('password_compromised') %}
+                                <div class="inline-flex items-center px-2 py-1 bg-red-100 text-red-800 text-xs font-medium rounded-full">
+                                    {{ ux_icon('heroicons:exclamation-triangle-20-solid', {class: 'w-3 h-3 mr-1'}) }}
+                                    {{ 'notifications.password_compromised.title'|trans }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </a>
         </div>

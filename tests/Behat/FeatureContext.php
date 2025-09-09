@@ -3,6 +3,8 @@
 namespace App\Tests\Behat;
 
 use App\Entity\Domain;
+use App\Entity\UserNotification;
+use App\Enum\UserNotificationType;
 use DateTime;
 use App\Entity\Voucher;
 use App\Entity\ReservedName;
@@ -16,7 +18,6 @@ use App\Helper\PasswordUpdater;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
-use Behat\Mink\Exception\ElementTextException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\MinkContext;
 use Doctrine\ORM\EntityManagerInterface;
@@ -271,6 +272,36 @@ class FeatureContext extends MinkContext
 
             $this->manager->persist($reservedName);
             $this->manager->flush();
+        }
+    }
+
+    /**
+     * @When the following UserNotification exists:
+     */
+    public function theFollowingUserNotificationExists(TableNode $table): void
+    {
+        foreach ($table->getColumnsHash() as $data) {
+            $user = $this->getUserRepository()->findByEmail($data['email']);
+            $type = UserNotificationType::from($data['type']);
+            $notification = new UserNotification($user, $type);
+
+            $this->manager->persist($notification);
+            $this->manager->flush();
+        }
+    }
+
+    /**
+     * @Then /^the user "([^"]*)" should not have a "([^"]*)" notification$/
+     */
+    public function theUserShouldNotHaveAUserNotification(string $email, string $type): void
+    {
+        $user = $this->getUserRepository()->findByEmail($email);
+        $repo = $this->manager->getRepository(UserNotification::class);
+
+        $notifications = $repo->findBy(['user' => $user, 'type' => $type]);
+
+        if (count($notifications) > 0) {
+            throw new RuntimeException(sprintf('User "%s" has %d notification(s) of type "%s"', $email, count($notifications), $type));
         }
     }
 

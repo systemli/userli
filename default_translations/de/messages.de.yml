@@ -426,3 +426,9 @@ settings:
     delete:
       confirm: Möchtest du diesen API-Token wirklich löschen?
       success: API-Token erfolgreich gelöscht.
+
+notifications:
+  password_compromised:
+    title: Sicherheitswarnung
+    message: Dein Passwort wurde in einer Datenbank mit bekannten kompromittierten Passwörtern gefunden. Bitte ändere es, um dein Konto zu schützen.
+    button: Passwort ändern
