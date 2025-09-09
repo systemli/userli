@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\EventListener;
 
 use App\Entity\User;
+use App\Enum\UserNotificationType;
 use App\Event\UserEvent;
 use App\EventListener\PasswordChangeListener;
 use App\Helper\JsonRequestHelper;
@@ -201,7 +202,7 @@ class PasswordChangeListenerTest extends TestCase
         $this->entityManager->method('getRepository')->willReturn($repo);
         $repo->expects($this->once())
             ->method('deleteByUserAndType')
-            ->with($user, 'password_compromised');
+            ->with($user, UserNotificationType::PASSWORD_COMPROMISED);
 
         $this->listener->onPasswordChanged($event);
     }

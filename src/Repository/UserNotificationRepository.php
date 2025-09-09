@@ -71,14 +71,14 @@ class UserNotificationRepository extends ServiceEntityRepository
         return $qb->getQuery()->execute();
     }
 
-    public function deleteByUserAndType(User $user, string $type): void
+    public function deleteByUserAndType(User $user, UserNotificationType $type): void
     {
         $this->createQueryBuilder('un')
             ->delete()
             ->where('un.user = :user')
             ->andWhere('un.type = :type')
             ->setParameter('user', $user)
-            ->setParameter('type', $type)
+            ->setParameter('type', $type->value)
             ->getQuery()
             ->execute();
     }

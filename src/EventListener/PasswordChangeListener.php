@@ -70,6 +70,6 @@ readonly class PasswordChangeListener implements EventSubscriberInterface
         $user = $event->getUser();
         $repo = $this->entityManager->getRepository(UserNotification::class);
 
-        $repo->deleteByUserAndType($user, UserNotificationType::PASSWORD_COMPROMISED->value);
+        $repo->deleteByUserAndType($user, UserNotificationType::PASSWORD_COMPROMISED);
     }
 }
