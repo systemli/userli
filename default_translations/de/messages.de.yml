@@ -384,6 +384,7 @@ settings:
     aria-label: Einstellungen Navigation
     overview: Übersicht
     api: API Tokens
+    webhooks: Webhooks
     general: Allgemeine Einstellungen
   overview:
     title: Einstellungen Übersicht
@@ -426,6 +427,100 @@ settings:
     delete:
       confirm: Möchtest du diesen API-Token wirklich löschen?
       success: API-Token erfolgreich gelöscht.
+  webhook:
+    title: Webhooks
+    enabled: Aktiv
+    disabled: Deaktiviert
+    table:
+      title: Webhooks
+      description: Liste deiner vorhandenen Webhooks
+      empty-title: Noch keine Webhooks vorhanden
+      empty-description: Erstelle einen Webhook um Echtzeit-Benachrichtigungen über Systemereignisse zu erhalten.
+      id: ID
+      url: URL
+      secret: Secret
+      events: Ereignisse
+      enabled: Aktiv
+    create:
+      button: Webhook erstellen
+      title: Webhook erstellen
+      success: Webhook erfolgreich erstellt.
+    edit:
+      title: Webhook bearbeiten
+      success: Webhook erfolgreich aktualisiert.
+    delete:
+      label: Löschen
+      confirm: Möchtest du den Webhook wirklich löschen?
+      success: Webhook erfolgreich gelöscht.
+    actions:
+      edit: Bearbeiten
+      delete: Löschen
+      deliveries: Zustellungen
+      back: Zurück zu Webhooks
+    form:
+      title:
+        create: Neuen Webhook erstellen
+        edit: Webhook bearbeiten
+      description:
+        create: Gib URL, Secret und die Ereignisse an, die du empfangen möchtest.
+      url:
+        label: URL
+        placeholder: z.B. "https://example.com/webhook"
+        help: Ziel-URL für den Webhook
+      secret:
+        label: Secret
+        placeholder: z.B. "meinsecret"
+        help: Ein geheimer Schlüssel zum Signieren der Payloads
+      events:
+        label: Ereignisse
+        help: Wähle die Ereignisse, die einen Webhook senden
+      enabled:
+        label: Aktiv
+      submit:
+        create: Erstellen
+        save: Speichern
+      cancel: Abbrechen
+
+    # Neue vereinfachte Schlüssel für reorganisierte Templates (Delivery Liste & Detail)
+    deliveries:
+      title: Zustellungen
+      heading: Zustellungen
+      subtitle: Kürzliche Webhook-Zustellungen
+      table:
+        id: ID
+        event: Ereignis
+        status: Status
+        dispatched: Gesendet
+        actions: Aktionen
+      status:
+        delivered: Zugestellt
+        failed: Fehlgeschlagen
+        pending: Ausstehend
+      retry:
+        confirm: Zustellung erneut versuchen?
+        action: Erneut senden
+        queued: Zustellung zur erneuten Ausführung eingeplant.
+      detail:
+        action: Details
+      empty: Noch keine Zustellungen
+    delivery:
+      actions:
+        back: Zurück zu Zustellungen
+      title: Zustellung %id%
+      heading: Zustellung %id%
+      subtitle: Detaillierte Informationen zu dieser Webhook-Übermittlung
+      meta: Meta
+      event: Ereignis
+      status: Status
+      attempt: Versuch
+      dispatched: Gesendet
+      delivered: Zugestellt
+      request_headers: Request-Header
+      request_body: Request-Body
+      response_status: Response-Status
+      response_headers: Response-Header
+      response_body: Response-Body
+      error: Fehler
 
 notifications:
   password_compromised:

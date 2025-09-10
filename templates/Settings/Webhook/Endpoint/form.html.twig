@@ -1,0 +1,107 @@
+{% extends 'base_page.html.twig' %}
+
+{% form_theme form 'Form/fields.html.twig' %}
+{% set is_edit = endpoint is defined %}
+
+{# Dynamic page title: use specific create/edit keys #}
+{% block title %}
+    {{ domain }} - {{ is_edit ? 'settings.webhook.edit.title'|trans : 'settings.webhook.create.title'|trans }}
+{% endblock %}
+{% block page_title %}{{ 'settings.title'|trans }}{% endblock %}
+{% block page_subtitle %}{{ 'settings.subtitle'|trans }}{% endblock %}
+
+{% block page_content %}
+    <div class="max-w-5xl mx-auto">
+        {% include 'Settings/_navigation.html.twig' with {'current_section': 'webhooks'} %}
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+                <div class="p-6 sm:p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 {{ is_edit ? 'bg-indigo-100' : 'bg-blue-100' }} rounded-xl flex items-center justify-center mr-4">
+                            {% if is_edit %}
+                                {{ ux_icon('heroicons:pencil-square', {class: 'w-6 h-6 text-indigo-600'}) }}
+                            {% else %}
+                                {{ ux_icon('heroicons:plus', {class: 'w-6 h-6 text-blue-600'}) }}
+                            {% endif %}
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900">
+                                {% if is_edit %}
+                                    {{ 'settings.webhook.form.title.edit'|trans }}
+                                {% else %}
+                                    {{ 'settings.webhook.form.title.create'|trans }}
+                                {% endif %}
+                            </h3>
+                            {% if not is_edit %}
+                                <p class="text-sm text-gray-500 mt-1">{{ 'settings.webhook.form.description.create'|trans }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {{ form_start(form) }}
+                    {{ form_errors(form) }}
+
+                    <div class="space-y-6">
+                        <div>
+                            {{ form_label(form.url, 'settings.webhook.form.url.label', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+                            {{ form_errors(form.url) }}
+                            {{ form_widget(form.url, {
+                                attr: {
+                                    placeholder: 'settings.webhook.form.url.placeholder',
+                                    class: 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors'
+                                }
+                            }) }}
+                            <p class="mt-2 text-sm text-gray-500">
+                                {{ 'settings.webhook.form.url.help'|trans }}
+                            </p>
+                        </div>
+
+                        <div>
+                            {{ form_label(form.secret, 'settings.webhook.form.secret.label', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+                            {{ form_errors(form.secret) }}
+                            {{ form_widget(form.secret, {
+                                attr: {
+                                    placeholder: 'settings.webhook.form.secret.placeholder',
+                                    class: 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors'
+                                }
+                            }) }}
+                            <p class="mt-2 text-sm text-gray-500">
+                                {{ 'settings.webhook.form.secret.help'|trans }}
+                            </p>
+                        </div>
+
+                        <div>
+                            {{ form_label(form.events, 'settings.webhook.form.events.label', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+                            {{ form_errors(form.events) }}
+                            {{ form_widget(form.events, { attr: { class: 'w-full' } }) }}
+                            <p class="mt-2 text-sm text-gray-500">
+                                {{ 'settings.webhook.form.events.help'|trans }}
+                            </p>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            {{ form_widget(form.enabled, { attr: { class: 'h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500' } }) }}
+                            {{ form_label(form.enabled, 'settings.webhook.form.enabled.label', {'label_attr': {'class': 'text-sm font-medium text-gray-700'}}) }}
+                            {{ form_errors(form.enabled) }}
+                        </div>
+
+                        <div class="flex items-center justify-between pt-6">
+                            <a href="{{ path('settings_webhook_endpoint_index') }}"
+                               class="inline-flex items-center px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                                {{ ux_icon('heroicons:arrow-left', {class: 'w-4 h-4 mr-2'}) }}
+                                {{ 'settings.webhook.form.cancel'|trans }}
+                            </a>
+                            {{ form_widget(form.submit, {
+                                label: is_edit ? 'settings.webhook.form.submit.save' : 'settings.webhook.form.submit.create',
+                                attr: {
+                                    class: 'inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors'
+                                }
+                            }) }}
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

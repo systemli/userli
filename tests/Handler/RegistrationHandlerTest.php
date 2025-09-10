@@ -7,7 +7,6 @@ use App\Entity\User;
 use App\Entity\Voucher;
 use App\Enum\Roles;
 use App\Event\Events;
-use App\Event\UserCreatedEvent;
 use App\Event\UserEvent;
 use App\Repository\VoucherRepository;
 use Exception;

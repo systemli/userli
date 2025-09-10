@@ -2,7 +2,6 @@
 
 namespace App\Handler;
 
-use App\Event\UserCreatedEvent;
 use Exception;
 use DateTime;
 use App\Entity\User;
@@ -59,7 +58,7 @@ readonly class RegistrationHandler
         $this->manager->persist($user);
         $this->manager->flush();
 
-        $this->eventDispatcher->dispatch(new UserCreatedEvent($user));
+        $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_CREATED);
         $this->eventDispatcher->dispatch(new UserEvent($user), Events::MAIL_ACCOUNT_CREATED);
     }
 

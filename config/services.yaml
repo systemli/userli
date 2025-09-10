@@ -92,11 +92,6 @@ services:
     arguments:
       $environment: '%kernel.environment%'
 
-  App\Handler\WebhookHandler:
-    arguments:
-      $webhookUrl: "%env(WEBHOOK_URL)%"
-      $webhookSecret: "%env(WEBHOOK_SECRET)%"
-
   App\Handler\MailHandler:
     arguments:
       $from: "%env(SENDER_ADDRESS)%"

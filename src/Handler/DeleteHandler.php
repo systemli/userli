@@ -4,7 +4,7 @@ namespace App\Handler;
 
 use App\Entity\Alias;
 use App\Entity\User;
-use App\Event\UserDeletedEvent;
+use App\Event\UserEvent;
 use App\Helper\PasswordGenerator;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
@@ -67,6 +67,6 @@ class DeleteHandler
 
         $this->manager->flush();
 
-        $this->eventDispatcher->dispatch(new UserDeletedEvent($user));
+        $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_DELETED);
     }
 }

@@ -10,6 +10,10 @@ class UserEvent extends Event
 {
     use UserAwareTrait;
 
+    public const USER_CREATED = 'user.created';
+
+    public const USER_DELETED = 'user.deleted';
+
     public const PASSWORD_CHANGED = 'user.password_changed';
 
     /**

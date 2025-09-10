@@ -383,6 +383,7 @@ settings:
     aria-label: Settings navigation
     overview: Overview
     api: API Tokens
+    webhooks: Webhooks
     general: General Settings
   overview:
     title: Settings Overview
@@ -425,6 +426,100 @@ settings:
     delete:
       confirm: Are you sure you want to delete this API token?
       success: API token deleted successfully.
+  webhook:
+    title: Webhooks
+    enabled: Enabled
+    disabled: Disabled
+    table:
+      title: Webhooks
+      description: List of your existing webhooks
+      empty-title: No webhooks created yet
+      empty-description: Create a webhook to receive real-time notifications about system events.
+      id: ID
+      url: URL
+      secret: Secret
+      events: Events
+      enabled: Enabled
+    create:
+      button: Create Webhook
+      title: Create Webhook
+      success: Webhook created successfully.
+    edit:
+      title: Edit Webhook
+      success: Webhook updated successfully.
+    delete:
+      label: Delete
+      confirm: Are you sure you want to delete webhook?
+      success: Webhook deleted successfully.
+    actions:
+      edit: Edit
+      delete: Delete
+      deliveries: Deliveries
+      back: Back to Webhooks
+    form:
+      title:
+        create: Create new Webhook
+        edit: Edit Webhook
+      description:
+        create: Provide the url, secret and events you want to receive.
+      url:
+        label: URL
+        placeholder: e.g. "https://example.com/webhook"
+        help: Enter the destination URL for the webhook
+      secret:
+        label: Secret
+        placeholder: e.g. "mysecret"
+        help: A secret key to sign the webhook payloads
+      events:
+        label: Events
+        help: Select the events that will send a webhook
+      enabled:
+        label: Enabled
+      submit:
+        create: Create
+        save: Save
+      cancel: Cancel
+
+    # New simplified key namespace used by reorganized templates (Delivery list & detail)
+    deliveries:
+      title: Deliveries
+      heading: Deliveries
+      subtitle: Recent webhook deliveries
+      table:
+        id: ID
+        event: Event
+        status: Status
+        dispatched: Dispatched
+        actions: Actions
+      status:
+        delivered: Delivered
+        failed: Failed
+        pending: Pending
+      retry:
+        confirm: Retry this delivery?
+        action: Retry
+        queued: Delivery retry queued.
+      detail:
+        action: Details
+      empty: No deliveries yet
+    delivery:
+      actions:
+        back: Back to Deliveries
+      title: Delivery %id%
+      heading: Delivery %id%
+      subtitle: Detailed information about this webhook delivery
+      meta: Meta
+      event: Event
+      status: Status
+      attempt: Attempt
+      dispatched: Dispatched
+      delivered: Delivered
+      request_headers: Request Headers
+      request_body: Request Body
+      response_status: Response Status
+      response_headers: Response Headers
+      response_body: Response Body
+      error: Error
 
 notifications:
   password_compromised:

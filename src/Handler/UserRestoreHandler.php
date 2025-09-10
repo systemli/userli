@@ -4,7 +4,7 @@ namespace App\Handler;
 
 use App\Entity\User;
 use App\Enum\MailCrypt;
-use App\Event\UserCreatedEvent;
+use App\Event\UserEvent;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -43,7 +43,7 @@ class UserRestoreHandler
 
         $this->manager->flush();
 
-        $this->eventDispatcher->dispatch(new UserCreatedEvent($user));
+    $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_CREATED);
 
         return $recoveryToken;
     }

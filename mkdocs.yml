@@ -28,6 +28,7 @@ nav:
       - MailCrypt: features/mail_crypt.md
       - "Web Key Directory": features/wkd.md
       - Integrations: features/integrations.md
+      - Webhooks: features/webhooks.md
   - Screenshots: screenshots/index.md
 
 theme:

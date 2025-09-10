@@ -712,8 +712,8 @@ class UserService implements UserServiceInterface
         $this->userRepository->save($user);
 
         $this->eventDispatcher->dispatch(
-            new UserCreatedEvent($user),
-            UserCreatedEvent::NAME
+            new UserEvent($user),
+            UserEvent::USER_CREATED
         );
 
         return $user;
@@ -725,9 +725,9 @@ class UserService implements UserServiceInterface
 
 ```php
 // Event
-class UserCreatedEvent
+class UserEvent
 {
-    public const NAME = 'user.created';
+    public const USER_CREATED = 'user.created';
 
     public function __construct(
         private readonly User $user
@@ -751,11 +751,11 @@ class UserEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            UserCreatedEvent::NAME => 'onUserCreated',
+            UserEvent::USER_CREATED => 'onUserCreated',
         ];
     }
 
-    public function onUserCreated(UserCreatedEvent $event): void
+    public function onUserCreated(UserEvent $event): void
     {
         $this->emailSender->sendWelcomeEmail($event->getUser());
     }
