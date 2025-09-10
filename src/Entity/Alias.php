@@ -46,6 +46,10 @@ class Alias implements SoftDeletableInterface, Stringable
     #[ORM\Column(nullable: true)]
     protected ?string $destination = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    protected ?string $note = null;
+
     /**
      * Alias constructor.
      */
@@ -76,6 +80,16 @@ class Alias implements SoftDeletableInterface, Stringable
     public function setDestination(?string $destination): void
     {
         $this->destination = $destination;
+    }
+
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    public function setNote(?string $note): void
+    {
+        $this->note = $note;
     }
 
     public function clearSensitiveData(): void

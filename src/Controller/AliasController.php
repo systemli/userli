@@ -89,19 +89,26 @@ class AliasController extends AbstractController
         $randomAliasCreateForm->handleRequest($request);
         $customAliasCreateForm->handleRequest($request);
 
-        if ($randomAliasCreateForm->isSubmitted() && $randomAliasCreateForm->isValid()) {
-            $this->processRandomAliasCreation($user);
+        if ($randomAliasCreateForm->isSubmitted()) {
+            /** @var AliasCreate $randomData */
+            $randomData = $randomAliasCreateForm->getData();
+            $this->processRandomAliasCreation($user, $randomData->note ?? null);
         } elseif ($customAliasCreateForm->isSubmitted() && $customAliasCreateForm->isValid()) {
-            $this->processCustomAliasCreation($user, $aliasCreate->alias);
+            $this->processCustomAliasCreation($user, $aliasCreate->alias, $aliasCreate->note);
         }
 
         return $this->redirectToRoute('aliases');
     }
 
-    private function processRandomAliasCreation(User $user): void
+    private function processRandomAliasCreation(User $user, ?string $note = null): void
     {
         try {
-            if ($this->aliasHandler->create($user) instanceof Alias) {
+            $created = $this->aliasHandler->create($user);
+            if ($created instanceof Alias) {
+                if ($note) {
+                    $created->setNote($note);
+                    $this->manager->flush();
+                }
                 $this->addFlash('success', 'flashes.alias-creation-successful');
             }
         } catch (ValidationException $validationException) {
@@ -109,10 +116,15 @@ class AliasController extends AbstractController
         }
     }
 
-    private function processCustomAliasCreation(User $user, string $alias): void
+    private function processCustomAliasCreation(User $user, string $alias, ?string $note = null): void
     {
         try {
-            if ($this->aliasHandler->create($user, $alias) instanceof Alias) {
+            $created = $this->aliasHandler->create($user, $alias);
+            if ($created instanceof Alias) {
+                if ($note) {
+                    $created->setNote($note);
+                    $this->manager->flush();
+                }
                 $this->addFlash('success', 'flashes.alias-creation-successful');
             }
         } catch (ValidationException $validationException) {

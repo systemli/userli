@@ -73,6 +73,7 @@ form:
   voucher-redeemed-on: Eingelöst am
   actual-password: Aktuelles Passwort
   new-custom-alias: Neue Alias-Adresse
+  alias-note-placeholder: Optionale Notiz um den Zweck zu merken
   plain-password: Neues Passwort
   plain-password_confirmation: Neues Passwort bestätigen
   change-password: Passwort ändern
