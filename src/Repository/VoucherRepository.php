@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use DateTime;
 use App\Entity\User;
 use App\Entity\Voucher;
 use Doctrine\Common\Collections\Criteria;
@@ -77,22 +76,6 @@ class VoucherRepository extends EntityRepository
             ->where('voucher.user = :user')
             ->setParameter('user', $user)
             ->andWhere('voucher.redeemedTime IS NOT NULL')
-            ->orderBy('voucher.redeemedTime')
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * Get all redeemed vouchers that are older than 3 months.
-     *
-     * @return Voucher[]|array
-     */
-    public function getOldVouchers(): array
-    {
-        return $this->createQueryBuilder('voucher')
-            ->join('voucher.invitedUser', 'invitedUser')
-            ->where('voucher.redeemedTime < :date')
-            ->setParameter('date', new DateTime('-3 months'))
             ->orderBy('voucher.redeemedTime')
             ->getQuery()
             ->getResult();
