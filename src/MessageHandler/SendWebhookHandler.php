@@ -30,6 +30,9 @@ final readonly class SendWebhookHandler
 
         $endpoint = $delivery->getEndpoint();
         $delivery->setAttempts($delivery->getAttempts() + 1);
+        $headers = $delivery->getRequestHeaders();
+        $headers['X-Webhook-Attempt'] = (string)$delivery->getAttempts();
+        $delivery->setRequestHeaders($headers);
 
         try {
             $response = $this->httpClient->request('POST', $endpoint->getUrl(), [

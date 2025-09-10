@@ -42,6 +42,7 @@ readonly class WebhookDispatcher
             $headers = [
                 'Content-Type' => 'application/json',
                 'X-Webhook-Signature' => $signature,
+                'X-Webhook-Attempt' => '1',
             ];
 
             $delivery = new WebhookDelivery($endpoint, $type, $payload, $headers);
