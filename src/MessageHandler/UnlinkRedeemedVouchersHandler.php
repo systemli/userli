@@ -34,8 +34,14 @@ final readonly class UnlinkRedeemedVouchersHandler
         $this->logger->info('Unlinked redeemed vouchers', ['count' => count($vouchers)]);
 
         foreach ($vouchers as $voucher) {
+            if ($voucher->getInvitedUser() === null) {
+                continue;
+            }
+
             // Unlink the invited user after 3 months for privacy reasons
-            $voucher->setInvitedUser();
+            $user = $voucher->getInvitedUser();
+            $user->setInvitationVoucher();
+            $this->entityManager->persist($user);
         }
 
         $this->entityManager->flush();

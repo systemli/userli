@@ -21,17 +21,23 @@ class UnlinkRedeemedVouchersHandlerTest extends TestCase
         $voucher1 = new Voucher();
         $voucher1->setCode('A');
         $voucher1->setRedeemedTime((new DateTime('-4 months'))); // old
-        $voucher1->setInvitedUser(new User());
+        $user1 = new User();
+        $user1->setInvitationVoucher($voucher1);
+        $voucher1->setInvitedUser($user1);
 
         $voucher2 = new Voucher();
         $voucher2->setCode('B');
         $voucher2->setRedeemedTime(new DateTime('-5 months')); // old
-        $voucher2->setInvitedUser(new User());
+        $user2 = new User();
+        $user2->setInvitationVoucher($voucher2);
+        $voucher2->setInvitedUser($user2);
 
         $voucherRecent = new Voucher();
         $voucherRecent->setCode('C');
         $voucherRecent->setRedeemedTime(new DateTime('-1 month')); // recent (should not appear in result set)
-        $voucherRecent->setInvitedUser(new User());
+        $recentUser = new User();
+        $recentUser->setInvitationVoucher($voucherRecent);
+        $voucherRecent->setInvitedUser($recentUser);
 
         $expectedResultSet = [$voucher1, $voucher2];
 
@@ -39,14 +45,14 @@ class UnlinkRedeemedVouchersHandlerTest extends TestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['createQueryBuilder'])
             ->getMock();
-        $repo->method('createQueryBuilder')->willReturnCallback(function() use (&$qb) {
+        $repo->method('createQueryBuilder')->willReturnCallback(function () use (&$qb) {
             return $qb;
         });
 
         // We'll mock the QueryBuilder chain similarly as in other handler tests
         $qb = $this->getMockBuilder(\Doctrine\ORM\QueryBuilder::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['join','where','setParameter','orderBy','getQuery'])
+            ->onlyMethods(['join', 'where', 'setParameter', 'orderBy', 'getQuery'])
             ->getMock();
 
         // Because handler starts from repository->createQueryBuilder('voucher') we skip verifying alias there
@@ -66,6 +72,7 @@ class UnlinkRedeemedVouchersHandlerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->method('getRepository')->willReturn($repo);
         $em->expects($this->once())->method('flush');
+        $em->expects($this->exactly(2))->method('persist')->with($this->isInstanceOf(User::class));
 
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())->method('info')->with('Unlinked redeemed vouchers', ['count' => 2]);
@@ -73,8 +80,8 @@ class UnlinkRedeemedVouchersHandlerTest extends TestCase
         $handler = new UnlinkRedeemedVouchersHandler($em, $logger);
         $handler(new UnlinkRedeemedVouchers());
 
-        $this->assertNull($voucher1->getInvitedUser());
-        $this->assertNull($voucher2->getInvitedUser());
-        $this->assertNotNull($voucherRecent->getInvitedUser(), 'Recent voucher should not be touched (not in result set)');
+        $this->assertNull($user1->getInvitationVoucher());
+        $this->assertNull($user2->getInvitationVoucher());
+        $this->assertNotNull($recentUser->getInvitationVoucher(), 'Recent voucher user should still have invitation voucher (not processed)');
     }
 }

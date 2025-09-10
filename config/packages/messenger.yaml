@@ -11,6 +11,7 @@ framework:
       'App\Message\SendWebhook': async
       'App\Message\PruneUserNotifications': async
       'App\Message\PruneWebhookDeliveries': async
+      'App\Message\UnlinkRedeemedVouchers': async
 
 # when@test:
 #    framework:
