@@ -37,6 +37,7 @@
     "symfony/polyfill-apcu": "^1.0",
     "symfony/process": "6.4.*",
     "symfony/runtime": "6.4.*",
+    "symfony/scheduler": "6.4.*",
     "symfony/security-bundle": "*",
     "symfony/security-csrf": "*",
     "symfony/translation": "*",

@@ -148,3 +148,31 @@ Feature: Settings
     When I follow "Details"
 
     Then I should see "Detailed information about this webhook delivery"
+
+  @maintenance
+  Scenario: Admin can access maintenance page
+    Given I am authenticated as "louis@example.org"
+    When I am on "/settings/maintenance"
+
+    Then I should see "Maintenance"
+    And the response status code should be 200
+
+  @maintenance
+  Scenario: User cannot access maintenance page
+    Given I am authenticated as "user@example.org"
+    When I am on "/settings/maintenance"
+
+    Then I should see "Access Denied"
+    And the response status code should be 403
+
+  @maintenance
+  Scenario: Admin can trigger maintenance tasks
+    Given I am authenticated as "louis@example.org"
+    When I am on "/settings/maintenance"
+
+    Then I should see "Maintenance"
+    And the response status code should be 200
+
+    When I press "Unlink vouchers"
+
+    Then I should see "Maintenance task dispatched successfully."

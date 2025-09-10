@@ -377,6 +377,23 @@ random-aliases.limitation-random-name: Random names that are harder to remember
 random-aliases.management-hint: <strong>Tip:</strong> Delete unused random aliases to make room for new ones.
 
 settings:
+  maintenance:
+    title: Maintenance
+    subtitle: Run on-demand maintenance tasks
+    pruneUserNotifications:
+      title: Prune User Notifications
+      description: Remove user notifications older than 30 days.
+      button: Run pruning
+    pruneWebhookDeliveries:
+      title: Prune Webhook Deliveries
+      description: Remove webhook delivery logs older than 14 days.
+      button: Run pruning
+    unlinkRedeemedVouchers:
+      title: Unlink Redeemed Vouchers
+      description: Anonymize redeemed vouchers by unlinking invited users after 3 months.
+      button: Unlink vouchers
+    unknown_task: Unknown maintenance task.
+    dispatched: Maintenance task dispatched successfully.
   title: Settings
   subtitle: Manage system settings and integrations
   navigation:
@@ -384,6 +401,7 @@ settings:
     overview: Overview
     api: API Tokens
     webhooks: Webhooks
+    maintenance: Maintenance
     general: General Settings
   overview:
     title: Settings Overview

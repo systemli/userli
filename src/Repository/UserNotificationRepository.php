@@ -51,26 +51,6 @@ class UserNotificationRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
-    /**
-     * Clean up old notifications (older than specified days)
-     */
-    public function cleanupOldNotifications(int $days = 30, ?string $type = null): int
-    {
-        $daysAgo = new DateTimeImmutable(sprintf('-%d days', $days));
-
-        $qb = $this->createQueryBuilder('un')
-            ->delete()
-            ->where('un.creationTime < :daysAgo')
-            ->setParameter('daysAgo', $daysAgo);
-
-        if ($type) {
-            $qb->andWhere('un.type = :type')
-                ->setParameter('type', $type);
-        }
-
-        return $qb->getQuery()->execute();
-    }
-
     public function deleteByUserAndType(User $user, UserNotificationType $type): void
     {
         $this->createQueryBuilder('un')
