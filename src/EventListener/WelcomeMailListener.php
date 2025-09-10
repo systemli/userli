@@ -31,7 +31,7 @@ readonly class WelcomeMailListener implements EventSubscriberInterface
     {
         /** @var User $user */
         $user = $event->getUser();
-        $locale = $this->request->getSession()->get('_locale');
+        $locale = $this->request->getCurrentRequest()?->getSession()->get('_locale') ?? 'en';
 
         $this->bus->dispatch(new WelcomeMail($user->getEmail(), $locale));
     }

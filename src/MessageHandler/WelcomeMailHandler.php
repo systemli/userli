@@ -18,7 +18,6 @@ final readonly class WelcomeMailHandler
         private WelcomeMessageSender   $sender
     )
     {
-
     }
 
     public function __invoke(WelcomeMail $message): void
