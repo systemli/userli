@@ -62,7 +62,7 @@ class RegistrationHandlerTest extends KernelTestCase
         });
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $eventDispatcher->expects($this->exactly(2))->method('dispatch');
+        $eventDispatcher->expects($this->once())->method('dispatch');
 
         $handler = new RegistrationHandler(
             $manager,
