@@ -386,6 +386,24 @@ settings:
     api: API Tokens
     webhooks: Webhooks
     general: Allgemeine Einstellungen
+    maintenance: Wartung
+  maintenance:
+    title: Wartung
+    subtitle: Führe Wartungsaufgaben bei Bedarf aus
+    pruneUserNotifications:
+      title: Alte Benachrichtigungen aufräumen
+      description: Löscht Benachrichtigungen, die älter als 30 Tage sind.
+      button: Aufräumen starten
+    pruneWebhookDeliveries:
+      title: Webhook-Zustellungen bereinigen
+      description: Entfernt Webhook-Zustellungsprotokolle, die älter als 14 Tage sind.
+      button: Bereinigung starten
+    unlinkRedeemedVouchers:
+      title: Eingelöste Einladungen anonymisieren
+      description: Trennt eingelöste Einladungs-Codes nach 3 Monaten von eingeladenen Nutzer:innen.
+      button: Anonymisieren
+    unknown_task: Unbekannte Wartungsaufgabe.
+    dispatched: Wartungsaufgabe erfolgreich gestartet.
   overview:
     title: Einstellungen Übersicht
     description: Konfiguriere und verwalte Systemeinstellungen und Integrationen von hier aus.
@@ -480,8 +498,6 @@ settings:
         create: Erstellen
         save: Speichern
       cancel: Abbrechen
-
-    # Neue vereinfachte Schlüssel für reorganisierte Templates (Delivery Liste & Detail)
     deliveries:
       title: Zustellungen
       heading: Zustellungen

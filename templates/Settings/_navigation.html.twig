@@ -30,6 +30,13 @@
                 {{ 'settings.navigation.webhooks'|trans }}
             </a>
 
+            <a href="{{ path('settings_maintenance_show') }}"
+               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'maintenance' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900 hover:bg-white/50' }}">
+                {# heroicons:building-library chosen per request #}
+                {{ ux_icon('heroicons:building-library', {class: 'w-4 h-4 mr-2'}) }}
+                {{ 'settings.navigation.maintenance'|trans }}
+            </a>
+
             <a href="{{ path('sonata_admin_dashboard') }}"
                 class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'admin' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900 hover:bg-white/50' }}">
                 <!-- heroicons:shield-check -->

@@ -9,6 +9,9 @@ framework:
           multiplier: 6
     routing:
       'App\Message\SendWebhook': async
+      'App\Message\PruneUserNotifications': async
+      'App\Message\PruneWebhookDeliveries': async
+      'App\Message\UnlinkRedeemedVouchers': async
       'App\Message\WelcomeMail': async
 
 # when@test:
