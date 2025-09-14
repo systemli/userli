@@ -7,7 +7,6 @@ use DateTime;
 use App\Entity\User;
 use App\Entity\Voucher;
 use App\Enum\Roles;
-use App\Event\Events;
 use App\Event\UserEvent;
 use App\Form\Model\Registration;
 use App\Guesser\DomainGuesser;
@@ -59,7 +58,6 @@ readonly class RegistrationHandler
         $this->manager->flush();
 
         $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_CREATED);
-        $this->eventDispatcher->dispatch(new UserEvent($user), Events::MAIL_ACCOUNT_CREATED);
     }
 
     public function isRegistrationOpen(): bool

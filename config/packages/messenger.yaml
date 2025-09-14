@@ -12,6 +12,7 @@ framework:
       'App\Message\PruneUserNotifications': async
       'App\Message\PruneWebhookDeliveries': async
       'App\Message\UnlinkRedeemedVouchers': async
+      'App\Message\WelcomeMail': async
 
 # when@test:
 #    framework:
