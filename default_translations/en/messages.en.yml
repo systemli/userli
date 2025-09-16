@@ -396,6 +396,8 @@ settings:
     dispatched: Maintenance task dispatched successfully.
   title: Settings
   subtitle: Manage system settings and integrations
+  flash:
+    updated_successfully: Settings have been updated successfully
   navigation:
     aria-label: Settings navigation
     overview: Overview
