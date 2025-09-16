@@ -32,7 +32,7 @@ class SettingsType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $definitions = $this->configService->getDefinitions();
+        $definitions = $this->configService->getSettings();
 
         foreach ($definitions as $name => $definition) {
             $this->addSettingField($builder, $name, $definition);

@@ -30,10 +30,10 @@ class SettingsService
         $settings = $this->getAllSettings();
         $value = $settings[$name] ?? null;
 
-        // If not found in database, get default from definitions
+        // If not found in database, get default from defaults
         if ($value === null) {
-            $definitions = $this->configService->getDefinitions();
-            $value = $definitions[$name]['default'] ?? $default;
+            $defaults = $this->configService->getSettings();
+            $value = $defaults[$name]['default'] ?? $default;
         }
 
         // Convert value based on type definition
@@ -62,11 +62,11 @@ class SettingsService
 
     public function setAll(array $settings): void
     {
-        $definitions = $this->configService->getDefinitions();
+        $defaults = $this->configService->getSettings();
 
         foreach ($settings as $name => $value) {
             // Skip undefined settings
-            if (!isset($definitions[$name])) {
+            if (!isset($defaults[$name])) {
                 continue;
             }
 
@@ -136,8 +136,8 @@ class SettingsService
             return null;
         }
 
-        $definitions = $this->configService->getDefinitions();
-        $type = $definitions[$name]['type'] ?? 'string';
+        $defaults = $this->configService->getSettings();
+        $type = $defaults[$name]['type'] ?? 'string';
 
         // If value is already the correct type (from default values), return as-is
         if ($type === 'boolean' && is_bool($value)) {

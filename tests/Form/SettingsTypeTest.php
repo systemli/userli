@@ -55,7 +55,7 @@ class SettingsTypeTest extends TestCase
         ];
 
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn($definitions);
 
         $this->settingsService->expects($this->exactly(2))
@@ -150,7 +150,7 @@ class SettingsTypeTest extends TestCase
         ];
 
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn($definitions);
 
         $this->settingsService->expects($this->once())
@@ -168,7 +168,7 @@ class SettingsTypeTest extends TestCase
     public function testEmptyDefinitionsHandling(): void
     {
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn([]);
 
         // Should only add submit button
@@ -192,7 +192,7 @@ class SettingsTypeTest extends TestCase
         ];
 
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn($definitions);
 
         $this->settingsService->expects($this->once())
@@ -246,7 +246,7 @@ class SettingsTypeTest extends TestCase
         ];
 
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn($definitions);
 
         $this->settingsService->expects($this->once())

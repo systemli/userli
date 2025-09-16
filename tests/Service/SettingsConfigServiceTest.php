@@ -18,7 +18,7 @@ class SettingsConfigServiceTest extends TestCase
     {
         // Create temporary directory structure
         $this->tempDir = sys_get_temp_dir() . '/settings_config_test_' . uniqid();
-        $this->configDir = $this->tempDir . '/config/definitions';
+        $this->configDir = $this->tempDir . '/config';
         $this->configFile = $this->configDir . '/settings.yaml';
 
         mkdir($this->configDir, 0777, true);
@@ -45,68 +45,64 @@ class SettingsConfigServiceTest extends TestCase
     {
         $configData = [
             'settings' => [
-                'definitions' => [
-                    'app_name' => [
-                        'type' => 'string',
-                        'default' => 'Userli',
-                        'validation' => [
-                            'min_length' => 1,
-                            'max_length' => 255,
-                        ]
-                    ],
-                    'registration_enabled' => [
-                        'type' => 'boolean',
-                        'default' => true,
-                    ],
-                    'max_users' => [
-                        'type' => 'integer',
-                        'default' => 1000,
-                        'validation' => [
-                            'min' => 1,
-                            'max' => 10000,
-                        ]
-                    ],
-                ]
+                'app_name' => [
+                    'type' => 'string',
+                    'default' => 'Userli',
+                    'validation' => [
+                        'min_length' => 1,
+                        'max_length' => 255,
+                    ]
+                ],
+                'registration_enabled' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                ],
+                'max_users' => [
+                    'type' => 'integer',
+                    'default' => 1000,
+                    'validation' => [
+                        'min' => 1,
+                        'max' => 10000,
+                    ]
+                ],
             ]
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));
 
         $service = new SettingsConfigService($this->tempDir);
-        $definitions = $service->getDefinitions();
+        $settings = $service->getSettings();
 
-        self::assertIsArray($definitions);
-        self::assertCount(3, $definitions);
+        self::assertIsArray($settings);
+        self::assertCount(3, $settings);
 
         // Test app_name definition
-        self::assertArrayHasKey('app_name', $definitions);
-        self::assertEquals('string', $definitions['app_name']['type']);
-        self::assertEquals('Userli', $definitions['app_name']['default']);
-        self::assertEquals(1, $definitions['app_name']['validation']['min_length']);
-        self::assertEquals(255, $definitions['app_name']['validation']['max_length']);
+        self::assertArrayHasKey('app_name', $settings);
+        self::assertEquals('string', $settings['app_name']['type']);
+        self::assertEquals('Userli', $settings['app_name']['default']);
+        self::assertEquals(1, $settings['app_name']['validation']['min_length']);
+        self::assertEquals(255, $settings['app_name']['validation']['max_length']);
 
         // Test registration_enabled definition
-        self::assertArrayHasKey('registration_enabled', $definitions);
-        self::assertEquals('boolean', $definitions['registration_enabled']['type']);
-        self::assertTrue($definitions['registration_enabled']['default']);
+        self::assertArrayHasKey('registration_enabled', $settings);
+        self::assertEquals('boolean', $settings['registration_enabled']['type']);
+        self::assertTrue($settings['registration_enabled']['default']);
 
         // Test max_users definition
-        self::assertArrayHasKey('max_users', $definitions);
-        self::assertEquals('integer', $definitions['max_users']['type']);
-        self::assertEquals(1000, $definitions['max_users']['default']);
-        self::assertEquals(1, $definitions['max_users']['validation']['min']);
-        self::assertEquals(10000, $definitions['max_users']['validation']['max']);
+        self::assertArrayHasKey('max_users', $settings);
+        self::assertEquals('integer', $settings['max_users']['type']);
+        self::assertEquals(1000, $settings['max_users']['default']);
+        self::assertEquals(1, $settings['max_users']['validation']['min']);
+        self::assertEquals(10000, $settings['max_users']['validation']['max']);
     }
 
     public function testLoadDefinitionsWithMinimalConfig(): void
     {
         $configData = [
             'settings' => [
-                'definitions' => [
-                    'simple_setting' => [
-                        'type' => 'string',
-                        'default' => 'value',
-                    ]
+                'simple_setting' => [
+                    'type' => 'string',
+                    'default' => 'value',
                 ]
             ]
         ];
@@ -114,133 +110,129 @@ class SettingsConfigServiceTest extends TestCase
         file_put_contents($this->configFile, Yaml::dump($configData));
 
         $service = new SettingsConfigService($this->tempDir);
-        $definitions = $service->getDefinitions();
+        $settings = $service->getSettings();
 
-        self::assertCount(1, $definitions);
-        self::assertArrayHasKey('simple_setting', $definitions);
-        self::assertEquals('string', $definitions['simple_setting']['type']);
-        self::assertEquals('value', $definitions['simple_setting']['default']);
-        self::assertArrayNotHasKey('validation', $definitions['simple_setting']);
+        self::assertCount(1, $settings);
+        self::assertArrayHasKey('simple_setting', $settings);
+        self::assertEquals('string', $settings['simple_setting']['type']);
+        self::assertEquals('value', $settings['simple_setting']['default']);
+        self::assertArrayNotHasKey('validation', $settings['simple_setting']);
     }
 
     public function testLoadDefinitionsWithAllSupportedTypes(): void
     {
         $configData = [
             'settings' => [
-                'definitions' => [
-                    'string_setting' => [
-                        'type' => 'string',
-                        'default' => 'text',
-                    ],
-                    'email_setting' => [
-                        'type' => 'email',
-                        'default' => 'test@example.com',
-                    ],
-                    'url_setting' => [
-                        'type' => 'url',
-                        'default' => 'https://example.com',
-                    ],
-                    'password_setting' => [
-                        'type' => 'password',
-                        'default' => 'secret',
-                    ],
-                    'textarea_setting' => [
-                        'type' => 'textarea',
-                        'default' => 'long text',
-                    ],
-                    'integer_setting' => [
-                        'type' => 'integer',
-                        'default' => 42,
-                    ],
-                    'float_setting' => [
-                        'type' => 'float',
-                        'default' => 3.14,
-                    ],
-                    'boolean_setting' => [
-                        'type' => 'boolean',
-                        'default' => true,
-                    ],
-                    'array_setting' => [
-                        'type' => 'array',
-                        'default' => '["a","b","c"]', // Array as JSON string for scalar compatibility
-                    ],
-                ]
+                'string_setting' => [
+                    'type' => 'string',
+                    'default' => 'text',
+                ],
+                'email_setting' => [
+                    'type' => 'email',
+                    'default' => 'test@example.com',
+                ],
+                'url_setting' => [
+                    'type' => 'url',
+                    'default' => 'https://example.com',
+                ],
+                'password_setting' => [
+                    'type' => 'password',
+                    'default' => 'secret',
+                ],
+                'textarea_setting' => [
+                    'type' => 'textarea',
+                    'default' => 'long text',
+                ],
+                'integer_setting' => [
+                    'type' => 'integer',
+                    'default' => 42,
+                ],
+                'float_setting' => [
+                    'type' => 'float',
+                    'default' => 3.14,
+                ],
+                'boolean_setting' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                ],
+                'array_setting' => [
+                    'type' => 'array',
+                    'default' => '["a","b","c"]', // Array as JSON string for scalar compatibility
+                ],
             ]
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));
 
         $service = new SettingsConfigService($this->tempDir);
-        $definitions = $service->getDefinitions();
+        $settings = $service->getSettings();
 
-        self::assertCount(9, $definitions);
+        self::assertCount(9, $settings);
 
         // Verify all types are preserved
-        self::assertEquals('string', $definitions['string_setting']['type']);
-        self::assertEquals('email', $definitions['email_setting']['type']);
-        self::assertEquals('url', $definitions['url_setting']['type']);
-        self::assertEquals('password', $definitions['password_setting']['type']);
-        self::assertEquals('textarea', $definitions['textarea_setting']['type']);
-        self::assertEquals('integer', $definitions['integer_setting']['type']);
-        self::assertEquals('float', $definitions['float_setting']['type']);
-        self::assertEquals('boolean', $definitions['boolean_setting']['type']);
-        self::assertEquals('array', $definitions['array_setting']['type']);
+        self::assertEquals('string', $settings['string_setting']['type']);
+        self::assertEquals('email', $settings['email_setting']['type']);
+        self::assertEquals('url', $settings['url_setting']['type']);
+        self::assertEquals('password', $settings['password_setting']['type']);
+        self::assertEquals('textarea', $settings['textarea_setting']['type']);
+        self::assertEquals('integer', $settings['integer_setting']['type']);
+        self::assertEquals('float', $settings['float_setting']['type']);
+        self::assertEquals('boolean', $settings['boolean_setting']['type']);
+        self::assertEquals('array', $settings['array_setting']['type']);
 
         // Verify default values are preserved with correct types
-        self::assertEquals('text', $definitions['string_setting']['default']);
-        self::assertEquals('test@example.com', $definitions['email_setting']['default']);
-        self::assertEquals('https://example.com', $definitions['url_setting']['default']);
-        self::assertEquals('secret', $definitions['password_setting']['default']);
-        self::assertEquals('long text', $definitions['textarea_setting']['default']);
-        self::assertEquals(42, $definitions['integer_setting']['default']);
-        self::assertEquals(3.14, $definitions['float_setting']['default']);
-        self::assertTrue($definitions['boolean_setting']['default']);
-        self::assertEquals('["a","b","c"]', $definitions['array_setting']['default']); // JSON string
+        self::assertEquals('text', $settings['string_setting']['default']);
+        self::assertEquals('test@example.com', $settings['email_setting']['default']);
+        self::assertEquals('https://example.com', $settings['url_setting']['default']);
+        self::assertEquals('secret', $settings['password_setting']['default']);
+        self::assertEquals('long text', $settings['textarea_setting']['default']);
+        self::assertEquals(42, $settings['integer_setting']['default']);
+        self::assertEquals(3.14, $settings['float_setting']['default']);
+        self::assertTrue($settings['boolean_setting']['default']);
+        self::assertEquals('["a","b","c"]', $settings['array_setting']['default']); // JSON string
     }
 
     public function testLoadDefinitionsWithComplexValidation(): void
     {
         $configData = [
             'settings' => [
-                'definitions' => [
-                    'complex_setting' => [
-                        'type' => 'string',
-                        'default' => 'test',
-                        'validation' => [
-                            'min_length' => 2,
-                            'max_length' => 50,
-                            'regex' => '/^[a-zA-Z]+$/',
-                            'choices' => ['option1', 'option2', 'option3'],
-                        ]
-                    ],
-                    'numeric_setting' => [
-                        'type' => 'integer',
-                        'default' => 10,
-                        'validation' => [
-                            'min' => 5,
-                            'max' => 100,
-                        ]
-                    ],
-                ]
+                'complex_setting' => [
+                    'type' => 'string',
+                    'default' => 'test',
+                    'validation' => [
+                        'min_length' => 2,
+                        'max_length' => 50,
+                        'regex' => '/^[a-zA-Z]+$/',
+                        'choices' => ['option1', 'option2', 'option3'],
+                    ]
+                ],
+                'numeric_setting' => [
+                    'type' => 'integer',
+                    'default' => 10,
+                    'validation' => [
+                        'min' => 5,
+                        'max' => 100,
+                    ]
+                ],
             ]
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));
 
         $service = new SettingsConfigService($this->tempDir);
-        $definitions = $service->getDefinitions();
+        $settings = $service->getSettings();
 
-        self::assertCount(2, $definitions);
+        self::assertCount(2, $settings);
 
         // Test complex validation
-        $validation = $definitions['complex_setting']['validation'];
+        $validation = $settings['complex_setting']['validation'];
         self::assertEquals(2, $validation['min_length']);
         self::assertEquals(50, $validation['max_length']);
         self::assertEquals('/^[a-zA-Z]+$/', $validation['regex']);
         self::assertEquals(['option1', 'option2', 'option3'], $validation['choices']);
 
         // Test numeric validation
-        $numericValidation = $definitions['numeric_setting']['validation'];
+        $numericValidation = $settings['numeric_setting']['validation'];
         self::assertEquals(5, $numericValidation['min']);
         self::assertEquals(100, $numericValidation['max']);
     }
@@ -248,18 +240,16 @@ class SettingsConfigServiceTest extends TestCase
     public function testLoadDefinitionsWithEmptySettings(): void
     {
         $configData = [
-            'settings' => [
-                'definitions' => []
-            ]
+            'settings' => []
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));
 
         $service = new SettingsConfigService($this->tempDir);
-        $definitions = $service->getDefinitions();
+        $settings = $service->getSettings();
 
-        self::assertIsArray($definitions);
-        self::assertEmpty($definitions);
+        self::assertIsArray($settings);
+        self::assertEmpty($settings);
     }
 
     public function testLoadDefinitionsWithMissingSettingsKey(): void
@@ -273,7 +263,7 @@ class SettingsConfigServiceTest extends TestCase
         file_put_contents($this->configFile, Yaml::dump($configData));
 
         $service = new SettingsConfigService($this->tempDir);
-        $definitions = $service->getDefinitions();
+        $definitions = $service->getSettings();
 
         self::assertIsArray($definitions);
         self::assertEmpty($definitions);
@@ -282,28 +272,26 @@ class SettingsConfigServiceTest extends TestCase
     public function testLoadDefinitionsWithMissingDefinitionsKey(): void
     {
         $configData = [
-            'settings' => [
-                'definitions' => [] // Valid but empty definitions
-            ]
+            'settings' => []
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));
 
         $service = new SettingsConfigService($this->tempDir);
-        $definitions = $service->getDefinitions();
+        $settings = $service->getSettings();
 
-        self::assertIsArray($definitions);
-        self::assertEmpty($definitions);
+        self::assertIsArray($settings);
+        self::assertEmpty($settings);
     }
 
     public function testLoadDefinitionsWithNonExistentConfigFile(): void
     {
         // Don't create the config file
         $service = new SettingsConfigService($this->tempDir);
-        $definitions = $service->getDefinitions();
+        $settings = $service->getSettings();
 
-        self::assertIsArray($definitions);
-        self::assertEmpty($definitions);
+        self::assertIsArray($settings);
+        self::assertEmpty($settings);
     }
 
     public function testLoadDefinitionsWithInvalidYaml(): void
@@ -335,13 +323,11 @@ class SettingsConfigServiceTest extends TestCase
         // Test that the Symfony Configuration component processes the config correctly
         $configData = [
             'settings' => [
-                'definitions' => [
-                    'test_setting' => [
-                        'type' => 'string',
-                        'default' => 'test_value',
-                        'validation' => [
-                            'min_length' => 1,
-                        ]
+                'test_setting' => [
+                    'type' => 'string',
+                    'default' => 'test_value',
+                    'validation' => [
+                        'min_length' => 1,
                     ]
                 ]
             ]
@@ -350,25 +336,23 @@ class SettingsConfigServiceTest extends TestCase
         file_put_contents($this->configFile, Yaml::dump($configData));
 
         $service = new SettingsConfigService($this->tempDir);
-        $definitions = $service->getDefinitions();
+        $settings = $service->getSettings();
 
         // Verify the configuration was processed through SettingsConfiguration
-        self::assertArrayHasKey('test_setting', $definitions);
-        self::assertEquals('string', $definitions['test_setting']['type']);
-        self::assertEquals('test_value', $definitions['test_setting']['default']);
-        self::assertArrayHasKey('validation', $definitions['test_setting']);
-        self::assertEquals(1, $definitions['test_setting']['validation']['min_length']);
+        self::assertArrayHasKey('test_setting', $settings);
+        self::assertEquals('string', $settings['test_setting']['type']);
+        self::assertEquals('test_value', $settings['test_setting']['default']);
+        self::assertArrayHasKey('validation', $settings['test_setting']);
+        self::assertEquals(1, $settings['test_setting']['validation']['min_length']);
     }
 
     public function testGetDefinitionsReturnsSameDataMultipleTimes(): void
     {
         $configData = [
             'settings' => [
-                'definitions' => [
-                    'cached_setting' => [
-                        'type' => 'string',
-                        'default' => 'cached_value',
-                    ]
+                'cached_setting' => [
+                    'type' => 'string',
+                    'default' => 'cached_value',
                 ]
             ]
         ];
@@ -377,22 +361,20 @@ class SettingsConfigServiceTest extends TestCase
 
         $service = new SettingsConfigService($this->tempDir);
 
-        $definitions1 = $service->getDefinitions();
-        $definitions2 = $service->getDefinitions();
+        $settings1 = $service->getSettings();
+        $settings2 = $service->getSettings();
 
-        self::assertEquals($definitions1, $definitions2);
-        self::assertSame($definitions1, $definitions2); // Should be the same reference
+        self::assertEquals($settings1, $settings2);
+        self::assertSame($settings1, $settings2); // Should be the same reference
     }
 
     public function testConstructorLoadsDefinitionsImmediately(): void
     {
         $configData = [
             'settings' => [
-                'definitions' => [
-                    'immediate_setting' => [
-                        'type' => 'boolean',
-                        'default' => false,
-                    ]
+                'immediate_setting' => [
+                    'type' => 'boolean',
+                    'default' => false,
                 ]
             ]
         ];
@@ -405,82 +387,80 @@ class SettingsConfigServiceTest extends TestCase
         // Delete the config file after construction
         unlink($this->configFile);
 
-        // Should still return the definitions that were loaded during construction
-        $definitions = $service->getDefinitions();
-        self::assertArrayHasKey('immediate_setting', $definitions);
-        self::assertEquals('boolean', $definitions['immediate_setting']['type']);
-        self::assertFalse($definitions['immediate_setting']['default']);
+        // Should still return the settings that were loaded during construction
+        $settings = $service->getSettings();
+        self::assertArrayHasKey('immediate_setting', $settings);
+        self::assertEquals('boolean', $settings['immediate_setting']['type']);
+        self::assertFalse($settings['immediate_setting']['default']);
     }
 
     public function testWithRealWorldConfig(): void
     {
         $configData = [
             'settings' => [
-                'definitions' => [
-                    'app_name' => [
-                        'type' => 'string',
-                        'default' => 'My Email Service',
-                        'validation' => [
-                            'min_length' => 1,
-                            'max_length' => 100,
-                        ]
-                    ],
-                    'registration_enabled' => [
-                        'type' => 'boolean',
-                        'default' => true,
-                    ],
-                    'max_quota_mb' => [
-                        'type' => 'integer',
-                        'default' => 1024,
-                        'validation' => [
-                            'min' => 100,
-                            'max' => 10240,
-                        ]
-                    ],
-                    'admin_email' => [
-                        'type' => 'email',
-                        'default' => 'admin@example.com',
-                        'validation' => [
-                            'min_length' => 5,
-                            'max_length' => 100,
-                        ]
-                    ],
-                    'support_url' => [
-                        'type' => 'url',
-                        'default' => 'https://support.example.com',
-                    ],
-                    'welcome_message' => [
-                        'type' => 'textarea',
-                        'default' => 'Welcome to our email service!',
-                        'validation' => [
-                            'max_length' => 1000,
-                        ]
-                    ],
-                    'theme' => [
-                        'type' => 'string',
-                        'default' => 'default',
-                        'validation' => [
-                            'choices' => ['default', 'dark', 'light', 'custom'],
-                        ]
-                    ],
-                ]
+                'app_name' => [
+                    'type' => 'string',
+                    'default' => 'My Email Service',
+                    'validation' => [
+                        'min_length' => 1,
+                        'max_length' => 100,
+                    ]
+                ],
+                'registration_enabled' => [
+                    'type' => 'boolean',
+                    'default' => true,
+                ],
+                'max_quota_mb' => [
+                    'type' => 'integer',
+                    'default' => 1024,
+                    'validation' => [
+                        'min' => 100,
+                        'max' => 10240,
+                    ]
+                ],
+                'admin_email' => [
+                    'type' => 'email',
+                    'default' => 'admin@example.com',
+                    'validation' => [
+                        'min_length' => 5,
+                        'max_length' => 100,
+                    ]
+                ],
+                'support_url' => [
+                    'type' => 'url',
+                    'default' => 'https://support.example.com',
+                ],
+                'welcome_message' => [
+                    'type' => 'textarea',
+                    'default' => 'Welcome to our email service!',
+                    'validation' => [
+                        'max_length' => 1000,
+                    ]
+                ],
+                'theme' => [
+                    'type' => 'string',
+                    'default' => 'default',
+                    'validation' => [
+                        'choices' => ['default', 'dark', 'light', 'custom'],
+                    ]
+                ],
             ]
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));
 
         $service = new SettingsConfigService($this->tempDir);
-        $definitions = $service->getDefinitions();
+        $settings = $service->getSettings();
 
-        self::assertCount(7, $definitions);
+        self::assertCount(7, $settings);
 
         // Validate all real-world settings
-        self::assertEquals('My Email Service', $definitions['app_name']['default']);
-        self::assertTrue($definitions['registration_enabled']['default']);
-        self::assertEquals(1024, $definitions['max_quota_mb']['default']);
-        self::assertEquals('admin@example.com', $definitions['admin_email']['default']);
-        self::assertEquals('https://support.example.com', $definitions['support_url']['default']);
-        self::assertEquals('Welcome to our email service!', $definitions['welcome_message']['default']);
-        self::assertEquals(['default', 'dark', 'light', 'custom'], $definitions['theme']['validation']['choices']);
+        self::assertEquals('My Email Service', $settings['app_name']['default']);
+        self::assertTrue($settings['registration_enabled']['default']);
+        self::assertEquals(1024, $settings['max_quota_mb']['default']);
+        self::assertEquals('admin@example.com', $settings['admin_email']['default']);
+        self::assertEquals('https://support.example.com', $settings['support_url']['default']);
+        self::assertEquals('Welcome to our email service!', $settings['welcome_message']['default']);
+        self::assertEquals(['default', 'dark', 'light', 'custom'], $settings['theme']['validation']['choices']);
     }
 }

@@ -128,7 +128,7 @@ class SettingsServiceTest extends TestCase
     public function testSetAll(): void
     {
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn([
                 'setting1' => ['type' => 'string'],
                 'setting2' => ['type' => 'integer'],
@@ -176,7 +176,7 @@ class SettingsServiceTest extends TestCase
     public function testSetAllSkipsUndefinedSettings(): void
     {
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn([
                 'defined_setting' => ['type' => 'string'],
             ]);
@@ -254,7 +254,7 @@ class SettingsServiceTest extends TestCase
         $method->setAccessible(true);
 
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'string']
             ]);
@@ -271,7 +271,7 @@ class SettingsServiceTest extends TestCase
         $method->setAccessible(true);
 
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'integer']
             ]);
@@ -289,7 +289,7 @@ class SettingsServiceTest extends TestCase
         $method->setAccessible(true);
 
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'float']
             ]);
@@ -307,7 +307,7 @@ class SettingsServiceTest extends TestCase
         $method->setAccessible(true);
 
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'boolean']
             ]);
@@ -324,7 +324,7 @@ class SettingsServiceTest extends TestCase
         $method->setAccessible(true);
 
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'array']
             ]);
@@ -342,7 +342,7 @@ class SettingsServiceTest extends TestCase
         $method->setAccessible(true);
 
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'string']
             ]);
@@ -359,7 +359,7 @@ class SettingsServiceTest extends TestCase
         $method->setAccessible(true);
 
         $this->configService->expects($this->never())
-            ->method('getDefinitions');
+            ->method('getSettings');
 
         $result = $method->invoke($this->settingsService, 'test_setting', null);
 
@@ -373,7 +373,7 @@ class SettingsServiceTest extends TestCase
         $method->setAccessible(true);
 
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'boolean']
             ]);
@@ -393,7 +393,7 @@ class SettingsServiceTest extends TestCase
         $method->setAccessible(true);
 
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'boolean']
             ]);
@@ -466,7 +466,7 @@ class SettingsServiceTest extends TestCase
             ->willReturn(['test_setting' => 'database_value']);
 
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'string']
             ]);
@@ -494,7 +494,7 @@ class SettingsServiceTest extends TestCase
             ->willReturn([]); // Empty database
 
         $this->configService->expects($this->exactly(2))
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn([
                 'test_setting' => [
                     'type' => 'string',
@@ -525,7 +525,7 @@ class SettingsServiceTest extends TestCase
             ->willReturn([]);
 
         $this->configService->expects($this->exactly(2))
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn([
                 'test_setting' => [
                     'type' => 'string'
@@ -556,7 +556,7 @@ class SettingsServiceTest extends TestCase
             ->willReturn([]);
 
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn([]); // No definition exists
 
         $result = $settingsService->get('nonexistent_setting');
@@ -582,7 +582,7 @@ class SettingsServiceTest extends TestCase
             ->willReturn(['bool_setting' => '1']); // String from database
 
         $this->configService->expects($this->once())
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn([
                 'bool_setting' => ['type' => 'boolean']
             ]);
@@ -611,7 +611,7 @@ class SettingsServiceTest extends TestCase
             ->willReturn([]);
 
         $this->configService->expects($this->exactly(2))
-            ->method('getDefinitions')
+            ->method('getSettings')
             ->willReturn([
                 'int_setting' => [
                     'type' => 'integer',
