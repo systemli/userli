@@ -391,13 +391,6 @@ settings:
       app: Anwendungseinstellungen
       project: Projekteinstellungen
       email: E-Mail Einstellungen
-    validation:
-      regex_mismatch: Der Wert entspricht nicht dem erforderlichen Format
-      min_length: Der Wert ist zu kurz (mindestens %limit% Zeichen)
-      max_length: Der Wert ist zu lang (maximal %limit% Zeichen)
-      min_value: Der Wert muss mindestens %compared_value% betragen
-      max_value: Der Wert darf höchstens %compared_value% betragen
-      invalid_choice: Der ausgewählte Wert ist ungültig
     app_name:
       label: Anwendungsname
       help: Der im Anwendungsheader und Browsertitel angezeigte Name

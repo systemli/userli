@@ -407,13 +407,6 @@ settings:
       app: Application Settings
       project: Project Settings
       email: Email Configuration
-    validation:
-      regex_mismatch: The value does not match the required format
-      min_length: The value is too short (minimum %limit% characters)
-      max_length: The value is too long (maximum %limit% characters)
-      min_value: The value must be at least %compared_value%
-      max_value: The value must be at most %compared_value%
-      invalid_choice: The selected value is not valid
     app_name:
       label: Application Name
       help: The name displayed in the application header and browser title
