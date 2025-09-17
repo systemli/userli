@@ -29,12 +29,9 @@
 
                     {# Group settings by category #}
                     {% set categories = {
-                        'app': ['app_name', 'app_url', 'app_domain'],
+                        'app': ['app_name', 'app_url'],
                         'project': ['project_name', 'project_url'],
                         'email': ['email_sender_address', 'email_notification_address'],
-                        'localization': ['locale'],
-                        'registration': ['registration_enabled'],
-                        'user': ['user_quota_default']
                     } %}
 
                     {% for category, fields in categories %}
