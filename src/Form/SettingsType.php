@@ -131,9 +131,11 @@ class SettingsType extends AbstractType
             if (isset($validation['min_length'])) {
                 $lengthOptions['min'] = $validation['min_length'];
             }
+
             if (isset($validation['max_length'])) {
                 $lengthOptions['max'] = $validation['max_length'];
             }
+
             $constraints[] = new Assert\Length($lengthOptions);
         }
 

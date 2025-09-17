@@ -14,7 +14,7 @@ class SettingsConfigService
     private array $settings = [];
 
     public function __construct(
-        #[Autowire('%kernel.project_dir%')] private readonly string $projectDir,
+        #[Autowire(param: 'kernel.project_dir')] private readonly string $projectDir,
     )
     {
         $this->loadDefaults();

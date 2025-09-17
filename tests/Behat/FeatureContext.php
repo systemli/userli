@@ -3,6 +3,7 @@
 namespace App\Tests\Behat;
 
 use App\Entity\Domain;
+use App\Entity\Setting;
 use App\Entity\UserNotification;
 use App\Entity\WebhookDelivery;
 use App\Entity\WebhookEndpoint;
@@ -652,17 +653,16 @@ class FeatureContext extends MinkContext
      */
     public function theFollowingSettingsExist(TableNode $table): void
     {
-        $settingRepository = $this->manager->getRepository(\App\Entity\Setting::class);
+        $settingRepository = $this->manager->getRepository(Setting::class);
 
         foreach ($table->getColumnsHash() as $row) {
             $setting = $settingRepository->findOneBy(['name' => $row['key']]);
 
             if (!$setting) {
-                $setting = new \App\Entity\Setting();
-                $setting->setName($row['key']);
+                $setting = new Setting($row['name'], $row['value']);
+            } else {
+                $setting->setValue($row['value']);
             }
-
-            $setting->setValue($row['value']);
 
             $this->manager->persist($setting);
         }

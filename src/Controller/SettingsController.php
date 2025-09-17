@@ -25,7 +25,7 @@ class SettingsController extends AbstractController
         $form = $this->createForm(SettingsType::class);
 
         return $this->render('Settings/show.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 
@@ -48,7 +48,7 @@ class SettingsController extends AbstractController
         }
 
         return $this->render('Settings/show.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 }

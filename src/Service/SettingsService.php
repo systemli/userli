@@ -13,6 +13,7 @@ use Symfony\Contracts\Cache\ItemInterface;
 class SettingsService
 {
     private const CACHE_KEY = 'app.settings';
+
     private const CACHE_TTL = 3600;
 
     public function __construct(
@@ -143,12 +144,15 @@ class SettingsService
         if ($type === 'boolean' && is_bool($value)) {
             return $value;
         }
+
         if ($type === 'integer' && is_int($value)) {
             return $value;
         }
+
         if ($type === 'float' && (is_float($value) || is_int($value))) {
             return (float)$value;
         }
+
         if ($type === 'array' && is_array($value)) {
             return $value;
         }
