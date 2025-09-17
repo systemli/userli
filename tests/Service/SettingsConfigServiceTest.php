@@ -116,7 +116,7 @@ class SettingsConfigServiceTest extends TestCase
         self::assertArrayHasKey('simple_setting', $settings);
         self::assertEquals('string', $settings['simple_setting']['type']);
         self::assertEquals('value', $settings['simple_setting']['default']);
-        self::assertArrayNotHasKey('validation', $settings['simple_setting']);
+        self::assertArrayHasKey('validation', $settings['simple_setting']);
     }
 
     public function testLoadDefinitionsWithAllSupportedTypes(): void
