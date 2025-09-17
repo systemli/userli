@@ -5,7 +5,7 @@
 Optional note field for aliases was added. Update your database schema:
 
     ALTER TABLE virtual_aliases
-    ADD note VARCHAR(255) DEFAULT NULL;
+    ADD note VARCHAR(40) DEFAULT NULL;
 
 Userli migrated from swiftmailer-bundle to symfony/mailer. Remove environment
 variable `MAILER_URL` and replace it with `MAILER_DSN`. See `.env` file for the

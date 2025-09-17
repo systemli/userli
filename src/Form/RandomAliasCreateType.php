@@ -28,7 +28,8 @@ final class RandomAliasCreateType extends AbstractType
                 'label' => false, // hide visual label
                 'attr' => [
                     'placeholder' => 'form.alias-note-placeholder',
-                    'aria-label' => 'form.alias-note-placeholder'
+                    'aria-label' => 'form.alias-note-placeholder',
+                    'maxlength' => 40
                 ]
             ])
             ->add('submit', SubmitType::class, ['label' => 'form.create-random-alias']);
