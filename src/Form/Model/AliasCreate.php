@@ -14,6 +14,6 @@ class AliasCreate
     #[EmailLength(minLength: 3, maxLength: 24)]
     public string $alias;
 
-    #[Assert\Length(max: 50)]
+    #[Assert\Length(max: 40)]
     public ?string $note = null;
 }

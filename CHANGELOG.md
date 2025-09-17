@@ -2,7 +2,7 @@
 
 ## Unreleased
 ### Added
-- Optional note field for aliases (`virtual_aliases.note` VARCHAR(255) NULL). Allows users to store a short description for each alias.
+- Optional note field for aliases (`virtual_aliases.note` VARCHAR(40) NULL). Allows users to store a short description for each alias (max 40 characters).
 
 ## 4.2.0 (2025.09.03)
 
