@@ -380,12 +380,47 @@ random-aliases.management-hint: <strong>Tipp:</strong> Lösche ungenutzte zufäl
 settings:
   title: Einstellungen
   subtitle: Systemeinstellungen und Integrationen verwalten
+  flash:
+    updated_successfully: Die Einstellungen wurden erfolgreich aktualisiert
+    update_error: Beim Aktualisieren der Einstellungen ist ein Fehler aufgetreten
+  form:
+    title: Anwendungseinstellungen
+    description: Konfiguriere die globalen Anwendungseinstellungen, die alle Benutzer:innen betreffen
+    save: Einstellungen speichern
+    category:
+      app: Anwendungseinstellungen
+      project: Projekteinstellungen
+      email: E-Mail Einstellungen
+    validation:
+      regex_mismatch: Der Wert entspricht nicht dem erforderlichen Format
+      min_length: Der Wert ist zu kurz (mindestens %limit% Zeichen)
+      max_length: Der Wert ist zu lang (maximal %limit% Zeichen)
+      min_value: Der Wert muss mindestens %compared_value% betragen
+      max_value: Der Wert darf höchstens %compared_value% betragen
+      invalid_choice: Der ausgewählte Wert ist ungültig
+    app_name:
+      label: Anwendungsname
+      help: Der im Anwendungsheader und Browsertitel angezeigte Name
+    app_url:
+      label: Anwendungs-URL
+      help: Die Haupt-URL deiner Anwendung (z. B. https://users.example.org)
+    project_name:
+      label: Projekt Name
+      help: Der Name deines Projekts oder Organisation
+    project_url:
+      label: Projekt URL
+      help: Die URL deines Projekts (z. B. https://www.example.org)
+    email_sender_address:
+      label: E-Mail-Adresse des Absenders
+      help: Die E-Mail-Adresse, die als Absender für System-E-Mails verwendet wird
+    email_notification_address:
+      label: E-Mail-Adresse für Benachrichtigungen
+      help: Die E-Mail-Adresse, die Systembenachrichtigungen erhält
   navigation:
     aria-label: Einstellungen Navigation
-    overview: Übersicht
     api: API Tokens
     webhooks: Webhooks
-    general: Allgemeine Einstellungen
+    general: Allgemein
     maintenance: Wartung
   maintenance:
     title: Wartung
@@ -404,10 +439,6 @@ settings:
       button: Anonymisieren
     unknown_task: Unbekannte Wartungsaufgabe.
     dispatched: Wartungsaufgabe erfolgreich gestartet.
-  overview:
-    title: Einstellungen Übersicht
-    description: Konfiguriere und verwalte Systemeinstellungen und Integrationen von hier aus.
-  coming-soon: Demnächst verfügbar
   api:
     title: API Tokens
     subtitle: Verwalte deine API Tokens

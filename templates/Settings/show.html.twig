@@ -9,7 +9,7 @@
 {% block page_content %}
     <div class="max-w-5xl mx-auto">
         {# Settings Navigation #}
-        {% include 'Settings/_navigation.html.twig' with {'current_section': 'overview'} %}
+        {% include 'Settings/_navigation.html.twig' with {'current_section': 'general'} %}
 
         {# Main content area #}
         <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
@@ -41,16 +41,13 @@
                                     'app': 'heroicons:computer-desktop',
                                     'project': 'heroicons:building-office',
                                     'email': 'heroicons:envelope',
-                                    'localization': 'heroicons:language',
-                                    'registration': 'heroicons:user-plus',
-                                    'user': 'heroicons:users'
                                 }[category] %}
 
                                 <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
                                     {{ ux_icon(category_icon, {class: 'w-4 h-4 text-gray-600'}) }}
                                 </div>
                                 <h4 class="text-lg font-medium text-gray-900">
-                                    {{ ("settings.category." ~ category)|trans }}
+                                    {{ ("settings.form.category." ~ category)|trans }}
                                 </h4>
                             </div>
 
@@ -58,12 +55,12 @@
                                 {% for fieldName in fields %}
                                     {% if form[fieldName] is defined %}
                                         <div class="space-y-2">
-                                            {{ form_label(form[fieldName], ("settings." ~ fieldName ~ ".label")|trans, {
+                                            {{ form_label(form[fieldName], null, {
                                                 'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}
                                             }) }}
                                             {{ form_errors(form[fieldName]) }}
                                             {{ form_widget(form[fieldName]) }}
-                                            <p class="mt-2 text-sm text-gray-500">{{ ("settings." ~ fieldName ~ ".help")|trans }}</p>
+                                            <p class="mt-2 text-sm text-gray-500">{{ ("settings.form." ~ fieldName ~ ".help")|trans }}</p>
                                         </div>
                                     {% endif %}
                                 {% endfor %}

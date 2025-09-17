@@ -398,16 +398,46 @@ settings:
   subtitle: Manage system settings and integrations
   flash:
     updated_successfully: Settings have been updated successfully
+    update_error: There was an error updating the settings
+  form:
+    title: Application Settings
+    description: Configure global application settings that affect all users
+    save: Save Settings
+    category:
+      app: Application Settings
+      project: Project Settings
+      email: Email Configuration
+    validation:
+      regex_mismatch: The value does not match the required format
+      min_length: The value is too short (minimum %limit% characters)
+      max_length: The value is too long (maximum %limit% characters)
+      min_value: The value must be at least %compared_value%
+      max_value: The value must be at most %compared_value%
+      invalid_choice: The selected value is not valid
+    app_name:
+      label: Application Name
+      help: The name displayed in the application header and browser title
+    app_url:
+      label: Application URL
+      help: The main URL of your application (e.g., https://users.example.org)
+    project_name:
+      label: Project Name"
+      help: The name of your project or organization
+    project_url:
+      label: Project URL
+      help: The main website URL of your project (e.g., https://www.example.org)
+    email_sender_address:
+      label: Sender Email Address
+      help: The email address used as sender for system emails
+    email_notification_address:
+      label: Notification Email Address
+      help: The email address that receives system notifications
   navigation:
     aria-label: Settings navigation
-    overview: Overview
     api: API Tokens
     webhooks: Webhooks
     maintenance: Maintenance
-    general: General Settings
-  overview:
-    title: Settings Overview
-    description: Configure and manage system settings and integrations from here.
+    general: General
   coming-soon: Coming Soon
   api:
     title: API Tokens

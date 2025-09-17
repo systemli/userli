@@ -58,8 +58,8 @@ class SettingsType extends AbstractType
         }
 
         $options = [
-            'label' => sprintf('settings.%s.label', $name),
-            'help' => sprintf('settings.%s.help', $name),
+            'label' => sprintf('settings.form.%s.label', $name),
+            'help' => sprintf('settings.form.%s.help', $name),
             'required' => false,
             'data' => $currentValue,
             'constraints' => $this->buildConstraints($validation, $type),
@@ -111,13 +111,13 @@ class SettingsType extends AbstractType
 
         if ($type === 'email') {
             $constraints[] = new Assert\Email([
-                'message' => 'settings.validation.invalid_email',
+                'message' => 'settings.form.validation.invalid_email',
             ]);
         }
 
         if ($type === 'url') {
             $constraints[] = new Assert\Url([
-                'message' => 'settings.validation.invalid_url',
+                'message' => 'settings.form.validation.invalid_url',
             ]);
         }
 
@@ -126,11 +126,11 @@ class SettingsType extends AbstractType
             $lengthOptions = [];
             if (isset($validation['min_length'])) {
                 $lengthOptions['min'] = $validation['min_length'];
-                $lengthOptions['minMessage'] = 'settings.validation.min_length';
+                $lengthOptions['minMessage'] = 'settings.form.validation.min_length';
             }
             if (isset($validation['max_length'])) {
                 $lengthOptions['max'] = $validation['max_length'];
-                $lengthOptions['maxMessage'] = 'settings.validation.max_length';
+                $lengthOptions['maxMessage'] = 'settings.form.validation.max_length';
             }
             $constraints[] = new Assert\Length($lengthOptions);
         }
@@ -139,14 +139,14 @@ class SettingsType extends AbstractType
         if (isset($validation['min'])) {
             $constraints[] = new Assert\GreaterThanOrEqual([
                 'value' => $validation['min'],
-                'message' => 'settings.validation.min_value',
+                'message' => 'settings.form.validation.min_value',
             ]);
         }
 
         if (isset($validation['max'])) {
             $constraints[] = new Assert\LessThanOrEqual([
                 'value' => $validation['max'],
-                'message' => 'settings.validation.max_value',
+                'message' => 'settings.form.validation.max_value',
             ]);
         }
 
@@ -154,7 +154,7 @@ class SettingsType extends AbstractType
         if (isset($validation['choices']) && !empty($validation['choices'])) {
             $constraints[] = new Assert\Choice([
                 'choices' => $validation['choices'],
-                'message' => 'settings.validation.invalid_choice',
+                'message' => 'settings.form.validation.invalid_choice',
             ]);
         }
 
