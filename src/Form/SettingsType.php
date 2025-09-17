@@ -104,6 +104,16 @@ class SettingsType extends AbstractType
     {
         $constraints = [];
 
+        // String-like types that should not be empty
+        $stringLikeTypes = ['string', 'email', 'url', 'password', 'textarea'];
+
+        // Add NotBlank constraint for all string-like types
+        if (in_array($type, $stringLikeTypes, true)) {
+            $constraints[] = new Assert\NotBlank([
+                'message' => 'settings.form.validation.not_blank',
+            ]);
+        }
+
         // Type-specific constraints
         if ($type === 'integer') {
             $constraints[] = new Assert\Type(['type' => 'integer']);

@@ -3,8 +3,8 @@ settings:
     type: string
     default: "Userli"
     validation:
-      min_length: 1
-      max_length: 255
+      min_length: 3
+      max_length: 30
 
   app_url:
     type: url

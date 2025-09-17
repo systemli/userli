@@ -120,12 +120,18 @@ class SettingsTypeTest extends TestCase
     public function constraintProvider(): array
     {
         return [
-            'no validation' => [[], 'string', 0], // No constraints added
-            'string with length' => [['min_length' => 1, 'max_length' => 10], 'string', 1], // Length constraint
-            'string with regex' => [['regex' => '/test/'], 'string', 0], // Regex skipped due to delimiter issue
-            'integer with min/max' => [['min' => 0, 'max' => 100], 'integer', 3], // Type + Min + Max
-            'choices' => [['choices' => ['a', 'b']], 'string', 1], // Choice constraint
-            'empty choices ignored' => [['choices' => []], 'string', 0], // No constraints
+            'string type default' => [[], 'string', 1], // NotBlank constraint for string types
+            'string with length' => [['min_length' => 1, 'max_length' => 10], 'string', 2], // NotBlank + Length constraint
+            'string with only max length' => [['max_length' => 10], 'string', 2], // NotBlank + Length constraint
+            'string with regex' => [['regex' => '/test/'], 'string', 1], // NotBlank (regex skipped due to delimiter issue)
+            'integer with min/max' => [['min' => 0, 'max' => 100], 'integer', 3], // Type + Min + Max (no NotBlank for integers)
+            'boolean type' => [[], 'boolean', 0], // No constraints for boolean types
+            'choices' => [['choices' => ['a', 'b']], 'string', 2], // NotBlank + Choice constraint
+            'empty choices ignored' => [['choices' => []], 'string', 1], // Only NotBlank constraint
+            'url type' => [[], 'url', 2], // NotBlank + URL constraint
+            'email type' => [[], 'email', 2], // NotBlank + Email constraint
+            'password type' => [[], 'password', 1], // NotBlank constraint
+            'textarea type' => [[], 'textarea', 1], // NotBlank constraint
         ];
     }
 
@@ -232,8 +238,8 @@ class SettingsTypeTest extends TestCase
 
         $constraints = $method->invoke($this->formType, $validation, 'string');
 
-        // Should contain Length, GreaterThanOrEqual, LessThanOrEqual, Choice
-        self::assertCount(4, $constraints);
+        // Should contain NotBlank, Length, GreaterThanOrEqual, LessThanOrEqual, Choice
+        self::assertCount(5, $constraints);
     }
 
     public function testBooleanFieldSpecialHandling(): void
@@ -264,5 +270,47 @@ class SettingsTypeTest extends TestCase
             });
 
         $this->formType->buildForm($this->formBuilder, []);
+    }
+
+    public function testNotBlankConstraintForStringTypes(): void
+    {
+        $reflection = new \ReflectionClass($this->formType);
+        $method = $reflection->getMethod('buildConstraints');
+        $method->setAccessible(true);
+
+        // Test string type: should always add NotBlank
+        $validation = [];
+        $constraints = $method->invoke($this->formType, $validation, 'string');
+        self::assertCount(1, $constraints); // NotBlank
+
+        // Test email type: should add NotBlank + Email
+        $validation = [];
+        $constraints = $method->invoke($this->formType, $validation, 'email');
+        self::assertCount(2, $constraints); // NotBlank + Email
+
+        // Test url type: should add NotBlank + URL
+        $validation = [];
+        $constraints = $method->invoke($this->formType, $validation, 'url');
+        self::assertCount(2, $constraints); // NotBlank + URL
+
+        // Test password type: should add NotBlank
+        $validation = [];
+        $constraints = $method->invoke($this->formType, $validation, 'password');
+        self::assertCount(1, $constraints); // NotBlank
+
+        // Test textarea type: should add NotBlank
+        $validation = [];
+        $constraints = $method->invoke($this->formType, $validation, 'textarea');
+        self::assertCount(1, $constraints); // NotBlank
+
+        // Test integer type: should NOT add NotBlank
+        $validation = [];
+        $constraints = $method->invoke($this->formType, $validation, 'integer');
+        self::assertCount(1, $constraints); // Only Type constraint
+
+        // Test boolean type: should NOT add NotBlank
+        $validation = [];
+        $constraints = $method->invoke($this->formType, $validation, 'boolean');
+        self::assertCount(0, $constraints); // No constraints
     }
 }

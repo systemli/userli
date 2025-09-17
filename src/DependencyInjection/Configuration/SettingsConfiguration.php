@@ -23,6 +23,7 @@ class SettingsConfiguration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('default')->defaultNull()->end()
                     ->arrayNode('validation')
+                        ->addDefaultsIfNotSet()
                         ->children()
                             ->scalarNode('regex')->defaultNull()->end()
                             ->integerNode('min_length')->defaultNull()->end()

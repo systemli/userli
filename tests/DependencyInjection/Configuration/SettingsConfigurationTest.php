@@ -36,8 +36,10 @@ class SettingsConfigurationTest extends TestCase
         self::assertArrayHasKey('app_name', $processedConfig);
         self::assertEquals('string', $processedConfig['app_name']['type']);
         self::assertEquals('Userli', $processedConfig['app_name']['default']);
-        // Validation array is only added when validation rules are specified
-        self::assertArrayNotHasKey('validation', $processedConfig['app_name']);
+        // Validation array is always present with default values
+        self::assertArrayHasKey('validation', $processedConfig['app_name']);
+        self::assertNull($processedConfig['app_name']['validation']['min_length']);
+        self::assertNull($processedConfig['app_name']['validation']['max_length']);
     }
 
     public function testDefaultValues(): void
@@ -58,8 +60,11 @@ class SettingsConfigurationTest extends TestCase
         // Check default value is null
         self::assertNull($setting['default']);
 
-        // Validation array is not present when no validation is specified
-        self::assertArrayNotHasKey('validation', $setting);
+        // Validation array is always present with default values
+        self::assertArrayHasKey('validation', $setting);
+        self::assertNull($setting['validation']['min_length']);
+        self::assertNull($setting['validation']['max_length']);
+        self::assertEmpty($setting['validation']['choices']);
     }
 
     public function testValidationDefaultValues(): void
@@ -247,5 +252,29 @@ class SettingsConfigurationTest extends TestCase
         self::assertArrayHasKey('custom_key', $processedConfig);
         self::assertEquals('string', $processedConfig['custom_key']['type']);
         self::assertEquals('custom_value', $processedConfig['custom_key']['default']);
+    }
+
+    public function testValidationWithoutAllowEmpty(): void
+    {
+        $config = [
+            'settings' => [
+                'test_field' => [
+                    'type' => 'string',
+                    'default' => 'test',
+                    'validation' => [
+                        'max_length' => 100,
+                        'min_length' => 1
+                    ]
+                ]
+            ]
+        ];
+
+        $processedConfig = $this->processor->processConfiguration($this->configuration, [$config['settings']]);
+
+        self::assertArrayHasKey('test_field', $processedConfig);
+        self::assertEquals(100, $processedConfig['test_field']['validation']['max_length']);
+        self::assertEquals(1, $processedConfig['test_field']['validation']['min_length']);
+        // allow_empty should not exist anymore
+        self::assertArrayNotHasKey('allow_empty', $processedConfig['test_field']['validation']);
     }
 }
