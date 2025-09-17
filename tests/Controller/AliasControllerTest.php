@@ -87,13 +87,13 @@ class AliasControllerTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $note = 'Random note ' . uniqid();
+        $note = 'Random note '.uniqid();
 
         $client->request('POST', '/alias/create', [
             'create_alias' => [
                 'note' => $note,
-                'submit' => ''
-            ]
+                'submit' => '',
+            ],
         ]);
 
         $this->assertResponseRedirects('/alias');
