@@ -241,6 +241,7 @@ recovery-token:
     For security reasons, the recovery token gets displayed only once.
     We can't recover this token for you.
 flashes:
+  dismiss: Dismiss
   logout-successful: You are now logged out.
   password-change-successful: Your new password is now active!
   registration-successful: You are now registered.
@@ -398,7 +399,6 @@ settings:
   subtitle: Manage system settings and integrations
   flash:
     updated_successfully: Settings have been updated successfully
-    update_error: There was an error updating the settings
   form:
     title: Application Settings
     description: Configure global application settings that affect all users
@@ -414,7 +414,7 @@ settings:
       label: Application URL
       help: The main URL of your application (e.g., https://users.example.org)
     project_name:
-      label: Project Name"
+      label: Project Name
       help: The name of your project or organization
     project_url:
       label: Project URL

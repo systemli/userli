@@ -27,7 +27,7 @@
 
                     {# Dismiss button #}
                     <div class="flex-shrink-0 ml-4">
-                        <button type="button" class="flash-dismiss inline-flex rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent transition-colors {% if type == 'error' %}text-red-500 hover:bg-red-100 focus:ring-red-600{% elseif type == 'success' %}text-green-500 hover:bg-green-100 focus:ring-green-600{% elseif type == 'info' %}text-blue-500 hover:bg-blue-100 focus:ring-blue-600{% elseif type == 'warning' %}text-yellow-500 hover:bg-yellow-100 focus:ring-yellow-600{% else %}text-gray-500 hover:bg-gray-100 focus:ring-gray-600{% endif %}" aria-label="{{ 'flash.dismiss'|trans }}">
+                        <button type="button" class="flash-dismiss inline-flex rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent transition-colors {% if type == 'error' %}text-red-500 hover:bg-red-100 focus:ring-red-600{% elseif type == 'success' %}text-green-500 hover:bg-green-100 focus:ring-green-600{% elseif type == 'info' %}text-blue-500 hover:bg-blue-100 focus:ring-blue-600{% elseif type == 'warning' %}text-yellow-500 hover:bg-yellow-100 focus:ring-yellow-600{% else %}text-gray-500 hover:bg-gray-100 focus:ring-gray-600{% endif %}" aria-label="{{ 'flashes.dismiss'|trans }}">
                             {{ ux_icon('heroicons:x-mark', {'class': 'w-4 h-4'}) }}
                         </button>
                     </div>

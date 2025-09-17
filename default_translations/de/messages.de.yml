@@ -237,6 +237,7 @@ recovery-token:
   created-info: Mit dem Wiederherstellungscode kannst du jederzeit dein Passwort zurücksetzen, wenn du dieses vergessen hast. Notiere ihn dir und speichere ihn an einem sicheren Ort ab.
   displayed-once: Der Wiederherstellungscode wird aus Sicherheitsgründen nur einmal angezeigt. Wir können ihn nicht für dich wiederherstellen.
 flashes:
+  dismiss: Schließen
   logout-successful: Du bist jetzt abgemeldet.
   password-change-successful: Dein neues Passwort ist ab sofort aktiv!
   registration-successful: Du bist nun registriert.
@@ -382,7 +383,6 @@ settings:
   subtitle: Systemeinstellungen und Integrationen verwalten
   flash:
     updated_successfully: Die Einstellungen wurden erfolgreich aktualisiert
-    update_error: Beim Aktualisieren der Einstellungen ist ein Fehler aufgetreten
   form:
     title: Anwendungseinstellungen
     description: Konfiguriere die globalen Anwendungseinstellungen, die alle Benutzer:innen betreffen
