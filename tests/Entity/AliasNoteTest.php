@@ -15,7 +15,19 @@ class AliasNoteTest extends TestCase
         $this->assertNull($alias->getNote());
         $alias->setNote('Test note');
         $this->assertSame('Test note', $alias->getNote());
-        $alias->setNote(null);
-        $this->assertNull($alias->getNote());
+    }
+
+    public function testNoteIsLimitedToFortyCharacters(): void
+    {
+        $alias = new Alias();
+
+        $long = str_repeat('x', 60);
+
+        $alias->setNote($long);
+
+        $note = $alias->getNote();
+        $this->assertNotNull($note);
+        $this->assertLessThanOrEqual(40, mb_strlen($note));
+        $this->assertSame(mb_substr($long, 0, 40), $note);
     }
 }
