@@ -40,17 +40,12 @@ class Alias implements SoftDeletableInterface, Stringable
     use UserAwareTrait;
 
     #[ORM\Column]
-    #[Assert\NotNull]
-    #[Assert\Email(mode: 'strict')]
-    #[EmailAddress(groups: ['unique'])]
-    #[EmailLength(minLength: 3, maxLength: 24)]
     protected ?string $source = null;
 
     #[ORM\Column(nullable: true)]
     protected ?string $destination = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Length(max: 255)]
     protected ?string $note = null;
 
     /**
