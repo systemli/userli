@@ -73,10 +73,6 @@ services:
     arguments:
       $environment: "%kernel.environment%"
 
-  App\Handler\UserRegistrationInfoHandler:
-    arguments:
-      $to: "%env(NOTIFICATION_ADDRESS)%"
-
   App\Handler\UserRestoreHandler:
     arguments:
       $mailCryptEnv: "%env(MAIL_CRYPT)%"
@@ -91,10 +87,6 @@ services:
     arguments:
       $registrationOpen: "%env(REGISTRATION_OPEN)%"
       $mailCrypt: "%env(MAIL_CRYPT)%"
-
-  App\Handler\SuspiciousChildrenHandler:
-    arguments:
-      $to: "%env(NOTIFICATION_ADDRESS)%"
 
   App\Handler\WkdHandler:
     arguments:

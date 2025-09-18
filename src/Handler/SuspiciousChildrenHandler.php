@@ -1,31 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Handler;
 
+use App\Service\SettingsService;
 use Twig\Environment;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
-/**
- * Class SuspiciousChildrenHandler.
- */
-class SuspiciousChildrenHandler
+
+final readonly class SuspiciousChildrenHandler
 {
-    /**
-     * SuspiciousChildrenHandler constructor.
-     */
-    public function __construct(private readonly MailHandler $handler, private readonly Environment $twig, private readonly string $to)
-    {
+    public function __construct(
+        private MailHandler     $handler,
+        private Environment     $twig,
+        private SettingsService $settingsService,
+    ) {
     }
 
-    /**
-     * @throws LoaderError
-     * @throws RuntimeError
-     * @throws SyntaxError
-     */
     public function sendReport(array $suspiciousChildren): void
     {
         $message = $this->twig->render('Email/suspicious_children.twig', ['suspiciousChildren' => $suspiciousChildren]);
-        $this->handler->send($this->to, $message, 'Suspicious users invited more users');
+        $email = $this->settingsService->get('email_notification_address');
+
+        $this->handler->send($email, $message, 'Suspicious users invited more users');
     }
 }
