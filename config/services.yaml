@@ -92,11 +92,6 @@ services:
     arguments:
       $environment: '%kernel.environment%'
 
-  App\Handler\MailHandler:
-    arguments:
-      $from: "%env(SENDER_ADDRESS)%"
-      $name: "%env(APP_NAME)%"
-
   App\Handler\UserRegistrationInfoHandler:
     arguments:
       $to: "%env(NOTIFICATION_ADDRESS)%"
