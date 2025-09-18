@@ -8,11 +8,9 @@ the following values.
 ```
 APP_ENV=prod
 APP_SECRET=<random secret string>
-APP_URL=https://users.example.org
 DATABASE_URL=mysql://userli:<password>@127.0.0.1:3306/userli
 MAILER_DSN=smtp://localhost:25
 PROJECT_NAME=example.org
-PROJECT_URL=https://www.example.org
 NOTIFICATION_ADDRESS=admin@example.org
 ```
 

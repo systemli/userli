@@ -1,9 +1,6 @@
 twig:
   default_path: '%kernel.project_dir%/templates'
   globals:
-    app_url: '%env(APP_URL)%'
-    project_name: '%env(PROJECT_NAME)%'
-    project_url: '%env(PROJECT_URL)%'
     webmail_url: '%env(WEBMAIL_URL)%'
     locales: '%supported_locales%'
   file_name_pattern: '*.twig'

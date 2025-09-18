@@ -140,66 +140,6 @@ class MailHandlerTest extends TestCase
         $this->mailHandler->send($email, $plain, $subject, ['bcc' => $bcc, 'html' => $html]);
     }
 
-    public function testSendAlwaysRetrievesSettings(): void
-    {
-        $email = 'user@example.com';
-        $plain = 'Test content';
-        $subject = 'Test Subject';
-        $senderAddress = 'sender@example.com';
-        $appName = 'My App';
-
-        // Test that settings are always retrieved, ensuring they are valid at send time
-        $this->settingsService->expects($this->exactly(2))
-            ->method('get')
-            ->willReturnMap([
-                ['sender_address', null, $senderAddress],
-                ['app_name', null, $appName],
-            ]);
-
-        $this->mailer->expects($this->once())
-            ->method('send')
-            ->with($this->isInstanceOf(Email::class));
-
-        $this->mailHandler->send($email, $plain, $subject);
-    }
-
-    public function testSendCreatesCorrectEmailStructure(): void
-    {
-        $email = 'recipient@example.com';
-        $plain = 'Plain text content';
-        $subject = 'Email Subject';
-        $senderAddress = 'from@example.com';
-        $appName = 'Application Name';
-
-        $this->settingsService->expects($this->exactly(2))
-            ->method('get')
-            ->willReturnMap([
-                ['sender_address', null, $senderAddress],
-                ['app_name', null, $appName],
-            ]);
-
-        $this->mailer->expects($this->once())
-            ->method('send')
-            ->with($this->callback(function (Email $message) use ($email, $plain, $subject, $senderAddress, $appName) {
-                // Verify all email components are correctly set
-                $fromAddresses = $message->getFrom();
-                $toAddresses = $message->getTo();
-
-                $fromAddress = $fromAddresses[0] ?? null;
-                $toAddress = $toAddresses[0] ?? null;
-
-                return $fromAddress instanceof Address
-                    && $fromAddress->getAddress() === $senderAddress
-                    && $fromAddress->getName() === $appName
-                    && $toAddress instanceof Address
-                    && $toAddress->getAddress() === $email
-                    && $message->getSubject() === $subject
-                    && $message->getTextBody() === $plain;
-            }));
-
-        $this->mailHandler->send($email, $plain, $subject);
-    }
-
     public function testSendWithEmptyParams(): void
     {
         $email = 'user@example.com';

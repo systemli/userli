@@ -1,48 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Builder;
 
 use App\Entity\Domain;
+use App\Service\SettingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class WelcomeMessageBuilder.
- */
-class WelcomeMessageBuilder
+final readonly class WelcomeMessageBuilder
 {
-    private string $domain;
-
-    /**
-     * WelcomeMessageBuilder constructor.
-     */
-    public function __construct(private readonly TranslatorInterface $translator, EntityManagerInterface $manager, private readonly string $appUrl, private readonly string $projectName)
-    {
-        $domain = $manager->getRepository(Domain::class)->getDefaultDomain();
-        $this->domain = null !== $domain ? $domain->getName() : '';
+    public function __construct(
+        private TranslatorInterface $translator,
+        private SettingsService     $settingsService
+    ) {
     }
 
-    /**
-     * @param $locale
-     */
     public function buildBody($locale): string
     {
         return $this->translator->trans(
             'mail.welcome-body',
-            ['%app_url%' => $this->appUrl, '%project_name%' => $this->projectName],
+            [
+                '%app_url%' => $this->settingsService->get('app_url'),
+                '%project_name%' => $this->settingsService->get('project_name')
+            ],
             null,
             $locale
         );
     }
 
-    /**
-     * @param $locale
-     */
     public function buildSubject($locale): string
     {
         return $this->translator->trans(
             'mail.welcome-subject',
-            ['%domain%' => $this->domain],
+            ['%project_name%' => $this->settingsService->get('project_name')],
             null,
             $locale
         );
