@@ -71,7 +71,7 @@ services:
 
   App\EventListener\JsonExceptionListener:
     arguments:
-      $environment: '%kernel.environment%'
+      $environment: "%kernel.environment%"
 
   App\Handler\UserRegistrationInfoHandler:
     arguments:
@@ -80,6 +80,12 @@ services:
   App\Handler\UserRestoreHandler:
     arguments:
       $mailCryptEnv: "%env(MAIL_CRYPT)%"
+
+  # Custom TOTP Authenticator that uses settings instead of environment variables
+  App\Service\SettingsAwareTotpAuthenticator:
+    decorates: "scheb_two_factor.security.totp_authenticator"
+    arguments:
+      $decoratedAuthenticator: '@App\Service\SettingsAwareTotpAuthenticator.inner'
 
   App\Handler\RegistrationHandler:
     arguments:
