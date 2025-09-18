@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Helper\PasswordUpdater;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticator;
 use App\Handler\MailCryptKeyHandler;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
 
 abstract class AbstractUserData extends Fixture
 {
@@ -15,8 +17,11 @@ abstract class AbstractUserData extends Fixture
 
     protected string $passwordHash;
 
-    public function __construct(readonly PasswordUpdater $passwordUpdater, readonly TotpAuthenticator $totpAuthenticator, readonly MailCryptKeyHandler $mailCryptKeyHandler)
-    {
+    public function __construct(
+        public readonly PasswordUpdater $passwordUpdater,
+        public readonly TotpAuthenticatorInterface $totpAuthenticator,
+        public readonly MailCryptKeyHandler $mailCryptKeyHandler
+    ) {
         $user = new User();
         $passwordUpdater->updatePassword($user, self::PASSWORD);
         $this->passwordHash = $user->getPassword();

@@ -11,7 +11,7 @@ use App\Enum\ApiScope;
 use App\Handler\UserAuthenticationHandler;
 use App\Security\RequireApiScope;
 use Doctrine\ORM\EntityManagerInterface;
-use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticator;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,9 +35,8 @@ class KeycloakController extends AbstractController
     public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly UserAuthenticationHandler $handler,
-        private readonly TotpAuthenticator $totpAuthenticator
-    )
-    {
+        private readonly TotpAuthenticatorInterface $totpAuthenticator
+    ) {
     }
 
     #[Route(path: '/api/keycloak/{domainUrl}', name: 'api_keycloak_get_users_search', methods: ['GET'], stateless: true)]
@@ -46,8 +45,7 @@ class KeycloakController extends AbstractController
         #[MapQueryParameter] string                           $search = '',
         #[MapQueryParameter] int                              $max = 10,
         #[MapQueryParameter] int                              $first = 0,
-    ): Response
-    {
+    ): Response {
         $users = $this->manager->getRepository(User::class)->findUsersByString($domain, $search, $max, $first)->map(function (User $user) {
             return [
                 'id' => explode('@', $user->getEmail())[0],
@@ -67,8 +65,7 @@ class KeycloakController extends AbstractController
     public function getOneUser(
         #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
         string                                                $email,
-    ): Response
-    {
+    ): Response {
         if (!str_contains($email, '@')) {
             $email .= '@' . $domain->getName();
         }
@@ -90,8 +87,7 @@ class KeycloakController extends AbstractController
         #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
         #[MapRequestPayload] KeycloakUserValidateDto          $requestData,
         string                                                $email,
-    ): Response
-    {
+    ): Response {
         if (null === $user = $this->manager->getRepository(User::class)->findByDomainAndEmail($domain, $email)) {
             return $this->json([
                 'message' => self::MESSAGE_AUTHENTICATION_FAILED,

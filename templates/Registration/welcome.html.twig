@@ -1,5 +1,8 @@
 {% extends 'base_page.html.twig' %}
 
+{% set project_name = setting('project_name') %}
+{% set app_url = setting('app_url') %}
+
 {% block title %}{{ domain }} - {{ "welcome.headline"|trans({'%domain%': domain, '%project_name%': project_name}) }}{% endblock %}
 
 {% block page_title %}{{ "welcome.headline"|trans({'%domain%': domain, '%project_name%': project_name}) }}{% endblock %}

@@ -3,11 +3,7 @@ scheb_two_factor:
   # Google Authenticator config
   totp:
     enabled: true
-    server_name: '%env(APP_DOMAIN)%'
-    issuer: '%env(PROJECT_NAME)%'
     template: Security/2fa_form.html.twig
-    parameters:
-      image: '%env(PROJECT_LOGO_URL)%'
   # Backup codes config
   backup_codes:
     enabled: true

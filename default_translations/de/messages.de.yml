@@ -271,7 +271,7 @@ Bad credentials.: Das angegebene Passwort ist ungültig.
 custom: gewählten
 random: zufälligen
 mail:
-  welcome-subject: Willkommen bei %domain%
+  welcome-subject: Willkommen bei %project_name%
   welcome-body: |
     Liebe Nutzer:in,
 

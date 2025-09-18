@@ -217,7 +217,7 @@ custom: personalizada
 random: aleatoria
 
 mail:
-  welcome-subject: Bienvenido a %domain%
+  welcome-subject: Bienvenido a %project_name%
   welcome-body: |
     Estimado usuario,
 

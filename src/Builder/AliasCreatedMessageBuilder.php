@@ -1,19 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Builder;
 
+use App\Service\SettingsService;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class AliasCreatedMessageBuilder.
- */
-class AliasCreatedMessageBuilder
+final readonly class AliasCreatedMessageBuilder
 {
-    /**
-     * AliasCreatedMessageBuilder constructor.
-     */
-    public function __construct(private readonly TranslatorInterface $translator, private readonly string $appUrl, private readonly string $projectName)
-    {
+    public function __construct(
+        private TranslatorInterface $translator,
+        private SettingsService     $settingsService,
+    ) {
     }
 
     public function buildBody(string $locale, string $email, string $alias): string
@@ -21,8 +20,8 @@ class AliasCreatedMessageBuilder
         return $this->translator->trans(
             'mail.alias-created-body',
             [
-                '%app_url%' => $this->appUrl,
-                '%project_name%' => $this->projectName,
+                '%app_url%' => $this->settingsService->get('app_url'),
+                '%project_name%' => $this->settingsService->get('project_name'),
                 '%email%' => $email,
                 '%alias%' => $alias,
             ],
@@ -34,7 +33,10 @@ class AliasCreatedMessageBuilder
     public function buildSubject(string $locale, string $email): string
     {
         return $this->translator->trans(
-            'mail.alias-created-subject', ['%email%' => $email], null, $locale
+            'mail.alias-created-subject',
+            ['%email%' => $email],
+            null,
+            $locale
         );
     }
 }

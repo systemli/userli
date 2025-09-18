@@ -103,7 +103,7 @@ spam:
     L'accesso alla posta elettronica è stato disattivato.
     Contatta il supporto per sbloccare il tuo account.
 mail:
-  welcome-subject: Benvenuto/a su %domain%
+  welcome-subject: Benvenuto/a su %project_name%
   alias-created-subject: Nuovo indirizzo alias creato
   alias-created-body: >
     Ciao %email%,

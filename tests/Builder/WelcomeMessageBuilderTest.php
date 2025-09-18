@@ -1,84 +1,89 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Builder;
 
 use App\Builder\WelcomeMessageBuilder;
-use App\Entity\Domain;
-use App\Repository\DomainRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\SettingsService;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class WelcomeMessageBuilderTest.
- */
 class WelcomeMessageBuilderTest extends TestCase
 {
-    private const BODY_TEMPLATE = 'Domain: %s'.PHP_EOL.'APP URL: %s'.PHP_EOL.'Project Name: %s';
+    private MockObject $translator;
+    private MockObject $settingsService;
+    private WelcomeMessageBuilder $builder;
+
+    protected function setUp(): void
+    {
+        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->settingsService = $this->createMock(SettingsService::class);
+
+        $this->builder = new WelcomeMessageBuilder(
+            $this->translator,
+            $this->settingsService
+        );
+    }
 
     public function testBuildBody(): void
     {
-        $domain = 'example.com';
+        $locale = 'de';
         $appUrl = 'https://www.example.com';
-        $projectUrl = 'https://users.example.com';
+        $projectName = 'Test Project';
+        $expectedBody = 'Welcome to Test Project! Visit: https://www.example.com';
 
-        $builder = $this->getBuilder($domain, $appUrl, $projectUrl);
-        $expected = sprintf(self::BODY_TEMPLATE, $domain, $appUrl, $projectUrl);
+        // Settings service should always return valid values
+        $this->settingsService->expects(self::exactly(2))
+            ->method('get')
+            ->willReturnMap([
+                ['app_url', null, $appUrl],
+                ['project_name', null, $projectName],
+            ]);
 
-        self::assertEquals($expected, $builder->buildBody('de'));
+        $this->translator->expects(self::once())
+            ->method('trans')
+            ->with(
+                'mail.welcome-body',
+                [
+                    '%app_url%' => $appUrl,
+                    '%project_name%' => $projectName,
+                ],
+                null,
+                $locale
+            )
+            ->willReturn($expectedBody);
+
+        $result = $this->builder->buildBody($locale);
+
+        self::assertEquals($expectedBody, $result);
     }
 
     public function testBuildSubject(): void
     {
-        $domain = 'example.com';
-        $appUrl = 'https://www.example.com';
-        $projectUrl = 'https://users.example.com';
+        $locale = 'en';
+        $projectName = 'Test Project';
+        $expectedSubject = 'Welcome to Test Project';
 
-        $builder = $this->getBuilder($domain, $appUrl, $projectUrl);
-        $expected = sprintf(self::BODY_TEMPLATE, $domain, $appUrl, $projectUrl);
+        // Settings service should always return valid project_name
+        $this->settingsService->expects(self::once())
+            ->method('get')
+            ->with('project_name')
+            ->willReturn($projectName);
 
-        self::assertEquals($expected, $builder->buildSubject('en'));
-    }
+        $this->translator->expects(self::once())
+            ->method('trans')
+            ->with(
+                'mail.welcome-subject',
+                ['%project_name%' => $projectName],
+                null,
+                $locale
+            )
+            ->willReturn($expectedSubject);
 
-    /**
-     * @param $domain
-     * @param $appUrl
-     * @param $projectName
-     */
-    private function getBuilder($domain, $appUrl, $projectName): WelcomeMessageBuilder
-    {
-        $translator = $this->getMockBuilder(TranslatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $result = $this->builder->buildSubject($locale);
 
-        $message = sprintf(self::BODY_TEMPLATE, $domain, $appUrl, $projectName);
-
-        $translator->method('trans')->willReturn($message);
-
-        return new WelcomeMessageBuilder($translator, $this->getManager(), $appUrl, $projectName);
-    }
-
-    /**
-     * Manager that returns default domain.
-     */
-    public function getManager(): EntityManagerInterface
-    {
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $repository = $this->getMockBuilder(DomainRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $domain = new Domain();
-        $domain->setName('example.com');
-
-        $repository->method('getDefaultDomain')
-            ->willReturn($domain);
-
-        $manager->method('getRepository')->willReturn($repository);
-
-        return $manager;
+        self::assertEquals($expectedSubject, $result);
     }
 }
