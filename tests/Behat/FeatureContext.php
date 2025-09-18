@@ -647,26 +647,4 @@ class FeatureContext extends MinkContext
     {
         return $this->manager->getRepository(User::class);
     }
-
-    /**
-     * @Given the following Settings exist:
-     */
-    public function theFollowingSettingsExist(TableNode $table): void
-    {
-        $settingRepository = $this->manager->getRepository(Setting::class);
-
-        foreach ($table->getColumnsHash() as $row) {
-            $setting = $settingRepository->findOneBy(['name' => $row['key']]);
-
-            if (!$setting) {
-                $setting = new Setting($row['name'], $row['value']);
-            } else {
-                $setting->setValue($row['value']);
-            }
-
-            $this->manager->persist($setting);
-        }
-
-        $this->manager->flush();
-    }
 }
