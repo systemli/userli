@@ -37,7 +37,7 @@ class MailHandlerTest extends TestCase
         $this->settingsService->expects($this->exactly(2))
             ->method('get')
             ->willReturnMap([
-                ['sender_address', null, $senderAddress],
+                ['email_sender_address', null, $senderAddress],
                 ['app_name', null, $appName],
             ]);
 
@@ -72,7 +72,7 @@ class MailHandlerTest extends TestCase
         $this->settingsService->expects($this->exactly(2))
             ->method('get')
             ->willReturnMap([
-                ['sender_address', null, $senderAddress],
+                ['email_sender_address', null, $senderAddress],
                 ['app_name', null, $appName],
             ]);
 
@@ -98,7 +98,7 @@ class MailHandlerTest extends TestCase
         $this->settingsService->expects($this->exactly(2))
             ->method('get')
             ->willReturnMap([
-                ['sender_address', null, $senderAddress],
+                ['email_sender_address', null, $senderAddress],
                 ['app_name', null, $appName],
             ]);
 
@@ -124,7 +124,7 @@ class MailHandlerTest extends TestCase
         $this->settingsService->expects($this->exactly(2))
             ->method('get')
             ->willReturnMap([
-                ['sender_address', null, $senderAddress],
+                ['email_sender_address', null, $senderAddress],
                 ['app_name', null, $appName],
             ]);
 
@@ -151,7 +151,7 @@ class MailHandlerTest extends TestCase
         $this->settingsService->expects($this->exactly(2))
             ->method('get')
             ->willReturnMap([
-                ['sender_address', null, $senderAddress],
+                ['email_sender_address', null, $senderAddress],
                 ['app_name', null, $appName],
             ]);
 

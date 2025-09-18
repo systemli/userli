@@ -19,7 +19,7 @@ final readonly class MailHandler
 
     public function send(string $email, string $plain, string $subject, array $params = []): void
     {
-        $from = $this->settingsService->get('sender_address');
+        $from = $this->settingsService->get('email_sender_address');
         $name = $this->settingsService->get('app_name');
 
         $message = (new Email())
