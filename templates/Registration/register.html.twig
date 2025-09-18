@@ -1,12 +1,14 @@
 {% extends 'base_page.html.twig' %}
 
+
+
 {% block title %}{{ domain }} - {{ "form.register-header"|trans }}{% endblock %}
 
 {% form_theme form 'Form/fields.html.twig' %}
 
 {% block page_title %}{{ "form.register-header"|trans }}{% endblock %}
 
-{% block page_subtitle %}{{ "registration.title"|trans({'%project_name%': project_name}) }}{% endblock %}
+{% block page_subtitle %}{{ "registration.title"|trans({'%project_name%': setting('project_name')}) }}{% endblock %}
 
 {% block page_content %}
     <div class="max-w-4xl mx-auto">
@@ -20,7 +22,7 @@
                     </h2>
                     <div class="space-y-4">
                         <p class="text-sm text-gray-700 leading-relaxed">
-                            {{ "registration.information-intro"|trans({'%domain%': domain, '%project_name%': project_name, '%project_url%': project_url})|raw }}
+                            {{ "registration.information-intro"|trans({'%domain%': domain, '%project_name%': setting('project_name'), '%project_url%': setting('project_url')})|raw }}
                         </p>
                         <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
                             <div class="flex items-start">
