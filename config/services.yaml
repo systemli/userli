@@ -32,21 +32,6 @@ services:
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones
 
-  App\Builder\AliasCreatedMessageBuilder:
-    arguments:
-      $appUrl: "%env(APP_URL)%"
-      $projectName: "%env(PROJECT_NAME)%"
-
-  App\Builder\RecoveryProcessMessageBuilder:
-    arguments:
-      $appUrl: "%env(APP_URL)%"
-      $projectName: "%env(PROJECT_NAME)%"
-
-  App\Builder\WelcomeMessageBuilder:
-    arguments:
-      $appUrl: "%env(APP_URL)%"
-      $projectName: "%env(PROJECT_NAME)%"
-
   App\Command\UsersMailCryptCommand:
     arguments:
       $mailCrypt: "%env(MAIL_CRYPT)%"
@@ -62,10 +47,6 @@ services:
   App\Command\UsersResetCommand:
     arguments:
       $mailLocation: "%env(DOVECOT_MAIL_LOCATION)%"
-
-  App\Command\VoucherCreateCommand:
-    arguments:
-      $appUrl: "%env(APP_URL)%"
 
   App\Controller\DovecotController:
     arguments:
@@ -90,29 +71,22 @@ services:
 
   App\EventListener\JsonExceptionListener:
     arguments:
-      $environment: '%kernel.environment%'
-
-  App\Handler\MailHandler:
-    arguments:
-      $from: "%env(SENDER_ADDRESS)%"
-      $name: "%env(APP_NAME)%"
-
-  App\Handler\UserRegistrationInfoHandler:
-    arguments:
-      $to: "%env(NOTIFICATION_ADDRESS)%"
+      $environment: "%kernel.environment%"
 
   App\Handler\UserRestoreHandler:
     arguments:
       $mailCryptEnv: "%env(MAIL_CRYPT)%"
 
+  # Custom TOTP Authenticator that uses settings instead of environment variables
+  App\Service\SettingsAwareTotpAuthenticator:
+    decorates: "scheb_two_factor.security.totp_authenticator"
+    arguments:
+      $decoratedAuthenticator: '@App\Service\SettingsAwareTotpAuthenticator.inner'
+
   App\Handler\RegistrationHandler:
     arguments:
       $registrationOpen: "%env(REGISTRATION_OPEN)%"
       $mailCrypt: "%env(MAIL_CRYPT)%"
-
-  App\Handler\SuspiciousChildrenHandler:
-    arguments:
-      $to: "%env(NOTIFICATION_ADDRESS)%"
 
   App\Handler\WkdHandler:
     arguments:

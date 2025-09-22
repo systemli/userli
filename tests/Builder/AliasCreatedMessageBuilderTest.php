@@ -1,53 +1,86 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Builder;
 
 use App\Builder\AliasCreatedMessageBuilder;
+use App\Service\SettingsService;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class AliasCreatedMessageBuilderTest.
- */
 class AliasCreatedMessageBuilderTest extends TestCase
 {
-    private const BODY_TEMPLATE = 'APP URL: %s'.PHP_EOL.'Project Name: %s';
+    private AliasCreatedMessageBuilder $builder;
+    private MockObject $translator;
+    private MockObject $settingsService;
 
-    private $email = 'user@example.org';
-    private $alias = 'alias@example.org';
-    private $appUrl = 'https://www.example.org';
-    private $projectName = 'example.org';
+    protected function setUp(): void
+    {
+        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->settingsService = $this->createMock(SettingsService::class);
+
+        $this->builder = new AliasCreatedMessageBuilder(
+            $this->translator,
+            $this->settingsService
+        );
+    }
 
     public function testBuildBody(): void
     {
-        $builder = $this->getBuilder($this->appUrl, $this->projectName);
-        $expected = sprintf(self::BODY_TEMPLATE, $this->appUrl, $this->projectName);
+        $locale = 'en';
+        $email = 'user@example.com';
+        $alias = 'alias@example.com';
+        $appUrl = 'https://mail.example.com';
+        $projectName = 'Example Mail';
+        $expectedBody = 'Your alias alias@example.com has been created for user@example.com';
 
-        self::assertEquals($expected, $builder->buildBody('de', $this->email, $this->alias));
+        $this->settingsService->expects(self::exactly(2))
+            ->method('get')
+            ->willReturnMap([
+                ['app_url', null, $appUrl],
+                ['project_name', null, $projectName],
+            ]);
+
+        $this->translator->expects(self::once())
+            ->method('trans')
+            ->with(
+                'mail.alias-created-body',
+                [
+                    '%app_url%' => $appUrl,
+                    '%project_name%' => $projectName,
+                    '%email%' => $email,
+                    '%alias%' => $alias,
+                ],
+                null,
+                $locale
+            )
+            ->willReturn($expectedBody);
+
+        $result = $this->builder->buildBody($locale, $email, $alias);
+
+        self::assertEquals($expectedBody, $result);
     }
 
     public function testBuildSubject(): void
     {
-        $builder = $this->getBuilder($this->appUrl, $this->projectName);
-        $expected = sprintf(self::BODY_TEMPLATE, $this->appUrl, $this->projectName);
+        $locale = 'de';
+        $email = 'test@example.org';
+        $expectedSubject = 'Alias erstellt für test@example.org';
 
-        self::assertEquals($expected, $builder->buildSubject('de', $this->email));
-    }
+        $this->translator->expects(self::once())
+            ->method('trans')
+            ->with(
+                'mail.alias-created-subject',
+                ['%email%' => $email],
+                null,
+                $locale
+            )
+            ->willReturn($expectedSubject);
 
-    /**
-     * @param $appUrl
-     * @param $projectName
-     */
-    private function getBuilder($appUrl, $projectName): AliasCreatedMessageBuilder
-    {
-        $translator = $this->getMockBuilder(TranslatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $result = $this->builder->buildSubject($locale, $email);
 
-        $message = sprintf(self::BODY_TEMPLATE, $appUrl, $projectName);
-
-        $translator->method('trans')->willReturn($message);
-
-        return new AliasCreatedMessageBuilder($translator, $appUrl, $projectName);
+        self::assertEquals($expectedSubject, $result);
     }
 }

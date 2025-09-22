@@ -6,15 +6,15 @@ Feature: registration
       | name        |
       | example.org |
     And the following User exists:
-      | email             | password | roles      |
-      | louis@example.org | asdasd   | ROLE_ADMIN |
+      | email                  | password | roles           |
+      | louis@example.org      | asdasd   | ROLE_ADMIN      |
       | suspicious@example.org | asdasd   | ROLE_SUSPICIOUS |
     And the following Voucher exists:
-      | code | user              |
-      | TEST | louis@example.org |
+      | code | user                   |
+      | TEST | louis@example.org      |
       | ABCD | suspicious@example.org |
     And the following Alias exists:
-      | source            | destination       |
+      | source            | destination      |
       | alias@example.org | goto@example.org |
     And the following ReservedName exists:
       | name      |
@@ -200,3 +200,11 @@ Feature: registration
 
     Then I should be on "/register"
     And I should see "The username contains unexpected characters. Only valid: Letters and numbers, as well as -, _ and ."
+
+    @registration
+    Scenario: Welcome page is accessible
+      When I am authenticated as "louis@example.org"
+      And I am on "/register/welcome"
+
+      Then I should see "Welcome to example.org!"
+      And I should see "You have set up an account with us successfully. What are the next steps?"

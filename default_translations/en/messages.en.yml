@@ -275,7 +275,7 @@ Bad credentials.: The presented password is invalid.
 custom: custom
 random: random
 mail:
-  welcome-subject: Welcome to %domain%
+  welcome-subject: Welcome to %project_name%
   welcome-body: |
     Dear user,
 

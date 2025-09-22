@@ -156,7 +156,7 @@ Bad credentials.: Detalhes de login errados
 custom: personalizado
 random: aleatório
 mail:
-  welcome-subject: Te damos as boas-vindas a %domain%
+  welcome-subject: Te damos as boas-vindas a %project_name%
   welcome-body: >
     Caro usuário,
 

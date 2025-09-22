@@ -146,7 +146,7 @@ mail:
     Mir hoffe dass du witerhin Fröid a dim E-Mail Account hesch.
     Dis %project_name% Admin Team.
   alias-created-subject: Nöii Alias Adrässe erscheut
-  welcome-subject: Wiukomme bi %domain%
+  welcome-subject: Wiukomme bi %project_name%
   welcome-body: |
     Liebe Benutzer,
 

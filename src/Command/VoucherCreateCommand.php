@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Creator\VoucherCreator;
+use App\Service\SettingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,8 +20,8 @@ class VoucherCreateCommand extends AbstractUsersCommand
         EntityManagerInterface $manager,
         private readonly RouterInterface $router,
         private readonly VoucherCreator $creator,
-        private readonly string $appUrl)
-    {
+        private readonly SettingsService $settingsService,
+    ) {
         parent::__construct($manager);
     }
 
@@ -37,7 +40,7 @@ class VoucherCreateCommand extends AbstractUsersCommand
 
         // Set
         $context = $this->router->getContext();
-        $context->setBaseUrl($this->appUrl);
+        $context->setBaseUrl($this->settingsService->get('app_url'));
 
         for ($i = 1; $i <= $input->getOption('count'); ++$i) {
             $voucher = $this->creator->create($user);
