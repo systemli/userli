@@ -12,13 +12,11 @@ use App\Form\Model\Registration;
 use App\Guesser\DomainGuesser;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 readonly class RegistrationHandler
 {
-    /**
-     * Constructor.
-     */
     public function __construct(
         private EntityManagerInterface   $manager,
         private DomainGuesser            $domainGuesser,
@@ -26,10 +24,11 @@ readonly class RegistrationHandler
         private PasswordUpdater          $passwordUpdater,
         private MailCryptKeyHandler      $mailCryptKeyHandler,
         private RecoveryTokenHandler     $recoveryTokenHandler,
+        #[Autowire(env: 'REGISTRATION_OPEN')]
         private bool                     $registrationOpen,
+        #[Autowire(env: 'MAIL_CRYPT')]
         private bool                     $mailCrypt
-    )
-    {
+    ) {
     }
 
     /**

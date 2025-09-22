@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\EventListener;
 
 use App\Helper\JsonRequestHelper;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -14,9 +15,9 @@ use Symfony\Component\HttpKernel\KernelEvents;
 readonly class JsonExceptionListener implements EventSubscriberInterface
 {
     public function __construct(
+        #[Autowire('kernel.environment')]
         private string $environment
-    )
-    {
+    ) {
     }
 
     public static function getSubscribedEvents(): array

@@ -6,21 +6,18 @@ use Exception;
 use App\Event\RecoveryProcessEvent;
 use App\Event\UserEvent;
 use App\Sender\RecoveryProcessMessageSender;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class RecoveryProcessListener implements EventSubscriberInterface
+readonly class RecoveryProcessListener implements EventSubscriberInterface
 {
-    /**
-     * RecoveryProcessListener constructor.
-     */
     public function __construct(
-        private readonly RequestStack $request,
-        private readonly RecoveryProcessMessageSender $sender,
-        private readonly bool $sendMail,
-        private readonly string $defaultLocale,
-    )
-    {
+        private RequestStack $request,
+        private RecoveryProcessMessageSender $sender,
+        #[Autowire('kernel.default_locale')]
+        private string $defaultLocale,
+    ) {
     }
 
     /**
@@ -38,10 +35,6 @@ class RecoveryProcessListener implements EventSubscriberInterface
      */
     public function onRecoveryProcessStarted(UserEvent $event): void
     {
-        if (!$this->sendMail) {
-            return;
-        }
-
         if (null === $user = $event->getUser()) {
             throw new Exception('User should not be null');
         }

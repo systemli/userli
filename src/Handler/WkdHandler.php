@@ -11,19 +11,20 @@ use App\Importer\GpgKeyImporter;
 use App\Repository\OpenPgpKeyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Tuupola\Base32;
 
-class WkdHandler
+readonly class WkdHandler
 {
-    private readonly OpenPgpKeyRepository $repository;
+    private OpenPgpKeyRepository $repository;
 
-    /**
-     * WkdHandler constructor.
-     */
-    public function __construct(private readonly EntityManagerInterface $manager,
-                                private readonly string $wkdDirectory,
-                                private readonly string $wkdFormat)
-    {
+    public function __construct(
+        private EntityManagerInterface $manager,
+        #[Autowire(env: 'WKD_DIRECTORY')]
+        private string $wkdDirectory,
+        #[Autowire(env: 'WKD_FORMAT')]
+        private string $wkdFormat
+    ) {
         $this->repository = $manager->getRepository(OpenPgpKey::class);
     }
 

@@ -11,6 +11,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 #[AsCommand(name: 'app:users:registration:mail', description: 'Send a registration mail to a user')]
@@ -19,10 +20,10 @@ class UsersRegistrationMailCommand extends Command
     public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly WelcomeMessageSender $welcomeMessageSender,
-        private readonly string $defaultLocale,
-        ?string $name = null)
-    {
-        parent::__construct($name);
+        #[Autowire('kernel.default_locale')]
+        private readonly string $defaultLocale
+    ) {
+        parent::__construct();
     }
 
     /**

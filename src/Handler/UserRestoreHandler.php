@@ -8,23 +8,26 @@ use App\Event\UserEvent;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-class UserRestoreHandler
+readonly class UserRestoreHandler
 {
     private MailCrypt $mailCrypt;
 
     public function __construct(
-        private readonly EntityManagerInterface $manager,
-        private readonly PasswordUpdater $passwordUpdater,
-        private readonly MailCryptKeyHandler $mailCryptKeyHandler,
-        private readonly RecoveryTokenHandler $recoveryTokenHandler,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        readonly int $mailCryptEnv,
+        private EntityManagerInterface $manager,
+        private PasswordUpdater $passwordUpdater,
+        private MailCryptKeyHandler $mailCryptKeyHandler,
+        private RecoveryTokenHandler $recoveryTokenHandler,
+        private EventDispatcherInterface $eventDispatcher,
+        #[Autowire(env: 'MAIL_CRYPT')]
+        int $mailCryptEnv,
     ) {
         $this->mailCrypt = MailCrypt::from($mailCryptEnv);
     }
 
-    public function restoreUser(User $user, string $password): ?string {
+    public function restoreUser(User $user, string $password): ?string
+    {
         $user->setDeleted(false);
         $this->passwordUpdater->updatePassword($user, $password);
 
@@ -43,7 +46,7 @@ class UserRestoreHandler
 
         $this->manager->flush();
 
-    $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_CREATED);
+        $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_CREATED);
 
         return $recoveryToken;
     }
