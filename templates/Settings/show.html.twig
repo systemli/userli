@@ -1,5 +1,7 @@
 {% extends 'base_page.html.twig' %}
 
+{% form_theme form 'Form/fields.html.twig' %}
+
 {% block title %}{{ domain }} - {{ "settings.title"|trans }}{% endblock %}
 {% block page_title %}{{ "settings.title"|trans }}{% endblock %}
 {% block page_subtitle %}{{ "settings.subtitle"|trans }}{% endblock %}
@@ -7,17 +9,73 @@
 {% block page_content %}
     <div class="max-w-5xl mx-auto">
         {# Settings Navigation #}
-        {% include 'Settings/_navigation.html.twig' with {'current_section': 'overview'} %}
+        {% include 'Settings/_navigation.html.twig' with {'current_section': 'general'} %}
 
-        {# Settings Content Area #}
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200">
-            <div class="px-6 py-8">
-                <div class="text-center">
-                    <!-- heroicons:adjustments-horizontal -->
-                    {{ ux_icon('heroicons:adjustments-horizontal', {class: 'w-16 h-16 mx-auto mb-4 text-gray-300'}) }}
-                    <h3 class="text-lg font-medium text-gray-900 mb-2">{{ "settings.overview.title"|trans }}</h3>
-                    <p class="text-gray-500 max-w-md mx-auto mb-6">{{ "settings.overview.description"|trans }}</p>
+        {# Main content area #}
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+            <div class="p-6 sm:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-4">
+                        <!-- heroicons:cog-6-tooth -->
+                        {{ ux_icon('heroicons:cog-6-tooth', {class: 'w-6 h-6 text-blue-600'}) }}
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900">{{ "settings.form.title"|trans }}</h3>
+                        <p class="text-sm text-gray-500 mt-1">{{ "settings.form.description"|trans }}</p>
+                    </div>
                 </div>
+                {{ form_start(form, {'attr': {'class': 'space-y-6', 'action': path('settings_update')}}) }}
+                    {{ form_errors(form) }}
+
+                    {# Group settings by category #}
+                    {% set categories = {
+                        'app': ['app_name', 'app_url'],
+                        'project': ['project_name', 'project_url'],
+                        'email': ['email_sender_address', 'email_notification_address'],
+                    } %}
+
+                    {% for category, fields in categories %}
+                        <div class="space-y-6 border-b border-gray-200 pb-8">
+                            <div class="flex items-center mb-6">
+                                {% set category_icon = {
+                                    'app': 'heroicons:computer-desktop',
+                                    'project': 'heroicons:building-office',
+                                    'email': 'heroicons:envelope',
+                                }[category] %}
+
+                                <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
+                                    {{ ux_icon(category_icon, {class: 'w-4 h-4 text-gray-600'}) }}
+                                </div>
+                                <h4 class="text-lg font-medium text-gray-900">
+                                    {{ ("settings.form.category." ~ category)|trans }}
+                                </h4>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {% for fieldName in fields %}
+                                    {% if form[fieldName] is defined %}
+                                        <div class="space-y-2">
+                                            {{ form_label(form[fieldName], null, {
+                                                'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}
+                                            }) }}
+                                            {{ form_errors(form[fieldName]) }}
+                                            {{ form_widget(form[fieldName]) }}
+                                            <p class="mt-2 text-sm text-gray-500">{{ ("settings.form." ~ fieldName ~ ".help")|trans }}</p>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    {# Submit Button #}
+                    <div class="flex justify-end pt-6">
+                        {{ form_widget(form.save, {
+                            'attr': {'class': 'inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200'}
+                        }) }}
+                    </div>
+
+                {{ form_end(form) }}
             </div>
         </div>
     </div>

@@ -3,6 +3,7 @@
 namespace App\Tests\Behat;
 
 use App\Entity\Domain;
+use App\Entity\Setting;
 use App\Entity\UserNotification;
 use App\Entity\WebhookDelivery;
 use App\Entity\WebhookEndpoint;
