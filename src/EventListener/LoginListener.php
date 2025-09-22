@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Enum\MailCrypt;
 use App\Event\LoginEvent;
 use App\Service\UserLastLoginUpdateService;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
@@ -20,9 +21,9 @@ readonly class LoginListener implements EventSubscriberInterface
         private UserLastLoginUpdateService $userLastLoginUpdateService,
         private MailCryptKeyHandler        $mailCryptKeyHandler,
         private LoggerInterface            $logger,
+        #[Autowire(env: 'MAIL_CRYPT')]
         private int                        $mailCryptEnv,
-    )
-    {
+    ) {
         $this->mailCrypt = MailCrypt::from($this->mailCryptEnv);
     }
 

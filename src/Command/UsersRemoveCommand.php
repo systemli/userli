@@ -9,17 +9,19 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
 #[AsCommand(name: 'app:users:remove', description: 'Removes all mailboxes from deleted users')]
 class UsersRemoveCommand extends Command
 {
-    public function __construct(private readonly EntityManagerInterface $manager,
-                                private readonly string $mailLocation,
-                                ?string $name = null)
-    {
-        parent::__construct($name);
+    public function __construct(
+        private readonly EntityManagerInterface $manager,
+        #[Autowire(env: 'DOVECOT_MAIL_LOCATION')]
+        private readonly string                 $mailLocation,
+    ) {
+        parent::__construct();
     }
 
     /**
@@ -51,8 +53,8 @@ class UsersRemoveCommand extends Command
             }
 
             $domain = $user->getDomain()->getName();
-            $name = str_replace('@'.$domain, '', (string) $user->getEmail());
-            $path = $this->mailLocation.DIRECTORY_SEPARATOR.$domain.DIRECTORY_SEPARATOR.$name;
+            $name = str_replace('@' . $domain, '', (string)$user->getEmail());
+            $path = $this->mailLocation . DIRECTORY_SEPARATOR . $domain . DIRECTORY_SEPARATOR . $name;
 
             if ($input->getOption('dry-run')) {
                 $output->writeln(sprintf('Would delete directory for user: %s', $user));
@@ -70,7 +72,7 @@ class UsersRemoveCommand extends Command
                 try {
                     $filesystem->remove($path);
                 } catch (IOException $e) {
-                    $output->writeln('<error>'.$e->getMessage().'</error>');
+                    $output->writeln('<error>' . $e->getMessage() . '</error>');
                 }
             } else {
                 $output->writeln(sprintf('Directory for user does not exist: %s', $user));

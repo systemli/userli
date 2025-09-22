@@ -10,6 +10,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 #[AsCommand(name: 'app:users:mailcrypt', description: 'Get MailCrypt values for user')]
 class UsersMailCryptCommand extends AbstractUsersCommand
@@ -18,9 +19,9 @@ class UsersMailCryptCommand extends AbstractUsersCommand
         EntityManagerInterface                     $manager,
         private readonly UserAuthenticationHandler $handler,
         private readonly MailCryptKeyHandler       $mailCryptKeyHandler,
+        #[Autowire(env: 'MAIL_CRYPT')]
         private readonly int                       $mailCrypt
-    )
-    {
+    ) {
         parent::__construct($manager);
     }
 
@@ -31,7 +32,8 @@ class UsersMailCryptCommand extends AbstractUsersCommand
             ->addArgument(
                 'password',
                 InputOption::VALUE_OPTIONAL,
-                'password of supplied email address');
+                'password of supplied email address'
+            );
     }
 
     /**

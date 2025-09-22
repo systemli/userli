@@ -47,50 +47,14 @@ services:
       $appUrl: "%env(APP_URL)%"
       $projectName: "%env(PROJECT_NAME)%"
 
-  App\Command\UsersMailCryptCommand:
-    arguments:
-      $mailCrypt: "%env(MAIL_CRYPT)%"
-
-  App\Command\UsersRegistrationMailCommand:
-    arguments:
-      $defaultLocale: "%kernel.default_locale%"
-
-  App\Command\UsersRemoveCommand:
-    arguments:
-      $mailLocation: "%env(DOVECOT_MAIL_LOCATION)%"
-
-  App\Command\UsersResetCommand:
-    arguments:
-      $mailLocation: "%env(DOVECOT_MAIL_LOCATION)%"
-
   App\Command\VoucherCreateCommand:
     arguments:
       $appUrl: "%env(APP_URL)%"
-
-  App\Controller\DovecotController:
-    arguments:
-      $mailCryptEnv: "%env(MAIL_CRYPT)%"
-      $mailLocation: "%env(DOVECOT_MAIL_LOCATION)%"
-      $mailUid: "%env(DOVECOT_MAIL_UID)%"
-      $mailGid: "%env(DOVECOT_MAIL_GID)%"
 
   App\EventListener\:
     resource: "../src/EventListener/*"
     tags:
       - { name: kernel.event_subscriber }
-
-  App\EventListener\LoginListener:
-    arguments:
-      $mailCryptEnv: "%env(MAIL_CRYPT)%"
-
-  App\EventListener\LocaleListener:
-    arguments:
-      $defaultLocale: "%locale%"
-      $supportedLocales: "%supported_locales%"
-
-  App\EventListener\JsonExceptionListener:
-    arguments:
-      $environment: '%kernel.environment%'
 
   App\Handler\MailHandler:
     arguments:
@@ -101,33 +65,9 @@ services:
     arguments:
       $to: "%env(NOTIFICATION_ADDRESS)%"
 
-  App\Handler\UserRestoreHandler:
-    arguments:
-      $mailCryptEnv: "%env(MAIL_CRYPT)%"
-
-  App\Handler\RegistrationHandler:
-    arguments:
-      $registrationOpen: "%env(REGISTRATION_OPEN)%"
-      $mailCrypt: "%env(MAIL_CRYPT)%"
-
   App\Handler\SuspiciousChildrenHandler:
     arguments:
       $to: "%env(NOTIFICATION_ADDRESS)%"
-
-  App\Handler\WkdHandler:
-    arguments:
-      $wkdDirectory: "%env(WKD_DIRECTORY)%"
-      $wkdFormat: "%env(WKD_FORMAT)%"
-
-  App\EventListener\AliasCreationListener:
-    arguments:
-      $sendMail: "%env(SEND_MAIL)%"
-      $defaultLocale: "%kernel.default_locale%"
-
-  App\EventListener\RecoveryProcessListener:
-    arguments:
-      $sendMail: "%env(SEND_MAIL)%"
-      $defaultLocale: "%kernel.default_locale%"
 
   userli.admin.user:
     class: App\Admin\UserAdmin

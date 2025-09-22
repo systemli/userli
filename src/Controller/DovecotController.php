@@ -14,6 +14,7 @@ use App\Handler\UserAuthenticationHandler;
 use App\Security\RequireApiScope;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -38,9 +39,13 @@ class DovecotController extends AbstractController
     public function __construct(
         private readonly MailCryptKeyHandler $mailCryptKeyHandler,
         private readonly UserAuthenticationHandler $authHandler,
+        #[Autowire(env: 'DOVECOT_MAIL_LOCATION')]
         private readonly string $mailLocation,
+        #[Autowire(env: 'MAIL_CRYPT')]
         private readonly int $mailCryptEnv,
+        #[Autowire(env: 'DOVECOT_MAIL_UID')]
         private readonly int $mailUid,
+        #[Autowire(env: 'DOVECOT_MAIL_GID')]
         private readonly int $mailGid,
     ) {
         $this->mailCrypt = MailCrypt::from($this->mailCryptEnv);

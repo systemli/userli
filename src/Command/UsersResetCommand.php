@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
@@ -23,12 +24,14 @@ class UsersResetCommand extends AbstractUsersCommand
     /**
      * RegistrationMailCommand constructor.
      */
-    public function __construct(EntityManagerInterface $manager,
-                                private readonly PasswordUpdater $passwordUpdater,
-                                private readonly MailCryptKeyHandler $mailCryptKeyHandler,
-                                private readonly RecoveryTokenHandler $recoveryTokenHandler,
-                                private readonly string $mailLocation)
-    {
+    public function __construct(
+        EntityManagerInterface $manager,
+        private readonly PasswordUpdater $passwordUpdater,
+        private readonly MailCryptKeyHandler $mailCryptKeyHandler,
+        private readonly RecoveryTokenHandler $recoveryTokenHandler,
+        #[Autowire(env: 'DOVECOT_MAIL_LOCATION')]
+        private readonly string $mailLocation
+    ) {
         parent::__construct($manager);
     }
 
