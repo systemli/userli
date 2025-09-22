@@ -1,19 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Builder;
 
+use App\Service\SettingsService;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class RecoveryProcessMessageBuilder.
- */
-class RecoveryProcessMessageBuilder
+final readonly class RecoveryProcessMessageBuilder
 {
-    /**
-     * RecoveryProcessMessageBuilder constructor.
-     */
-    public function __construct(private readonly TranslatorInterface $translator, private readonly string $appUrl, private readonly string $projectName)
-    {
+    public function __construct(
+        private TranslatorInterface $translator,
+        private SettingsService $settingsService,
+    ) {
     }
 
     public function buildBody(string $locale, string $email, string $time): string
@@ -21,8 +20,8 @@ class RecoveryProcessMessageBuilder
         return $this->translator->trans(
             'mail.recovery-body',
             [
-                '%app_url%' => $this->appUrl,
-                '%project_name%' => $this->projectName,
+                '%app_url%' => $this->settingsService->get('app_url'),
+                '%project_name%' => $this->settingsService->get('project_name'),
                 '%email%' => $email,
                 '%time%' => $time,
             ],
@@ -34,7 +33,10 @@ class RecoveryProcessMessageBuilder
     public function buildSubject(string $locale, string $email): string
     {
         return $this->translator->trans(
-            'mail.recovery-subject', ['%email%' => $email], null, $locale
+            'mail.recovery-subject',
+            ['%email%' => $email],
+            null,
+            $locale
         );
     }
 }

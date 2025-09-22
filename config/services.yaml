@@ -32,42 +32,16 @@ services:
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones
 
-  App\Builder\AliasCreatedMessageBuilder:
-    arguments:
-      $appUrl: "%env(APP_URL)%"
-      $projectName: "%env(PROJECT_NAME)%"
-
-  App\Builder\RecoveryProcessMessageBuilder:
-    arguments:
-      $appUrl: "%env(APP_URL)%"
-      $projectName: "%env(PROJECT_NAME)%"
-
-  App\Builder\WelcomeMessageBuilder:
-    arguments:
-      $appUrl: "%env(APP_URL)%"
-      $projectName: "%env(PROJECT_NAME)%"
-
-  App\Command\VoucherCreateCommand:
-    arguments:
-      $appUrl: "%env(APP_URL)%"
-
   App\EventListener\:
     resource: "../src/EventListener/*"
     tags:
       - { name: kernel.event_subscriber }
 
-  App\Handler\MailHandler:
+  # Custom TOTP Authenticator that uses settings instead of environment variables
+  App\Service\SettingsAwareTotpAuthenticator:
+    decorates: "scheb_two_factor.security.totp_authenticator"
     arguments:
-      $from: "%env(SENDER_ADDRESS)%"
-      $name: "%env(APP_NAME)%"
-
-  App\Handler\UserRegistrationInfoHandler:
-    arguments:
-      $to: "%env(NOTIFICATION_ADDRESS)%"
-
-  App\Handler\SuspiciousChildrenHandler:
-    arguments:
-      $to: "%env(NOTIFICATION_ADDRESS)%"
+      $decoratedAuthenticator: '@App\Service\SettingsAwareTotpAuthenticator.inner'
 
   userli.admin.user:
     class: App\Admin\UserAdmin

@@ -19,6 +19,7 @@ Welcome, 🤖 AI assistant! Please follow these guidelines when contributing to 
 - `templates/` - Twig templates for rendering views
 - `config/` - Configuration files (services, routes, packages, etc.)
 - `public/` - Publicly accessible files (entry point, assets, etc.)
+- `default_translations/` - Default translation files
 - `tests/` - Unit tests
 - `docs/` - Documentation files (mkdocs with Material theme)
 - `Dockerfile` & `docker-compose.yml` - Containerization and development environment setup

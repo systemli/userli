@@ -1,0 +1,27 @@
+settings:
+  app_name:
+    type: string
+    default: "Userli"
+    validation:
+      min_length: 3
+      max_length: 30
+
+  app_url:
+    type: url
+    default: "https://users.example.org"
+
+  project_name:
+    type: string
+    default: "example.org"
+
+  project_url:
+    type: url
+    default: "https://www.example.org"
+
+  email_sender_address:
+    type: email
+    default: "admin@example.org"
+
+  email_notification_address:
+    type: email
+    default: "monitoring@example.org"

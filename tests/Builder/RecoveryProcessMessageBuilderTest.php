@@ -1,54 +1,86 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Builder;
 
 use App\Builder\RecoveryProcessMessageBuilder;
+use App\Service\SettingsService;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * Class RecoveryProcessMessageBuilderTest.
- */
 class RecoveryProcessMessageBuilderTest extends TestCase
 {
-    private const BODY_TEMPLATE = 'APP URL: %s'.PHP_EOL.'Project Name: %s';
+    private RecoveryProcessMessageBuilder $builder;
+    private MockObject $translator;
+    private MockObject $settingsService;
 
-    private string $email = 'user@example.org';
-    private string $appUrl = 'https://www.example.org';
-    private string $projectName = 'example.org';
+    protected function setUp(): void
+    {
+        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->settingsService = $this->createMock(SettingsService::class);
+
+        $this->builder = new RecoveryProcessMessageBuilder(
+            $this->translator,
+            $this->settingsService
+        );
+    }
 
     public function testBuildBody(): void
     {
-        $time = 'NOW';
+        $locale = 'en';
+        $email = 'user@example.com';
+        $time = '2025-09-18 10:30:00';
+        $appUrl = 'https://mail.example.com';
+        $projectName = 'Example Mail';
+        $expectedBody = 'Recovery process initiated for user@example.com at 2025-09-18 10:30:00';
 
-        $builder = $this->getBuilder($this->appUrl, $this->projectName);
-        $expected = sprintf(self::BODY_TEMPLATE, $this->appUrl, $this->projectName);
+        $this->settingsService->expects(self::exactly(2))
+            ->method('get')
+            ->willReturnMap([
+                ['app_url', null, $appUrl],
+                ['project_name', null, $projectName],
+            ]);
 
-        self::assertEquals($expected, $builder->buildBody('de', $this->email, $time));
+        $this->translator->expects(self::once())
+            ->method('trans')
+            ->with(
+                'mail.recovery-body',
+                [
+                    '%app_url%' => $appUrl,
+                    '%project_name%' => $projectName,
+                    '%email%' => $email,
+                    '%time%' => $time,
+                ],
+                null,
+                $locale
+            )
+            ->willReturn($expectedBody);
+
+        $result = $this->builder->buildBody($locale, $email, $time);
+
+        self::assertEquals($expectedBody, $result);
     }
 
     public function testBuildSubject(): void
     {
-        $builder = $this->getBuilder($this->appUrl, $this->projectName);
-        $expected = sprintf(self::BODY_TEMPLATE, $this->appUrl, $this->projectName);
+        $locale = 'fr';
+        $email = 'test@example.org';
+        $expectedSubject = 'Processus de récupération pour test@example.org';
 
-        self::assertEquals($expected, $builder->buildSubject('de', $this->email));
-    }
+        $this->translator->expects(self::once())
+            ->method('trans')
+            ->with(
+                'mail.recovery-subject',
+                ['%email%' => $email],
+                null,
+                $locale
+            )
+            ->willReturn($expectedSubject);
 
-    /**
-     * @param $appUrl
-     * @param $projectName
-     */
-    private function getBuilder($appUrl, $projectName): RecoveryProcessMessageBuilder
-    {
-        $translator = $this->getMockBuilder(TranslatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $result = $this->builder->buildSubject($locale, $email);
 
-        $message = sprintf(self::BODY_TEMPLATE, $appUrl, $projectName);
-
-        $translator->method('trans')->willReturn($message);
-
-        return new RecoveryProcessMessageBuilder($translator, $appUrl, $projectName);
+        self::assertEquals($expectedSubject, $result);
     }
 }

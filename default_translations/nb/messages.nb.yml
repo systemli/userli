@@ -151,7 +151,7 @@ Bad credentials.: Feil innloggingsdetaljer
 custom: egendefinert
 random: tilfeldig
 mail:
-  welcome-subject: Velkommen til %domain%
+  welcome-subject: Velkommen til %project_name%
   alias-created-subject: Ny alias-adresse opprettet
   welcome-body: >
     Kjære bruker,

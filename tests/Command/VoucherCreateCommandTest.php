@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Command;
 
 use App\Command\VoucherCreateCommand;
@@ -8,39 +10,59 @@ use App\Entity\User;
 use App\Entity\Voucher;
 use App\Exception\ValidationException;
 use App\Repository\UserRepository;
+use App\Service\SettingsService;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class VoucherCreateCommandTest extends TestCase
 {
     private VoucherCreateCommand $command;
-    private UserRepository $repository;
-    private RouterInterface $router;
-    private VoucherCreator $creator;
-    private string $baseUrl = 'https://users.example.org/register';
-    private string $voucherCode = 'code';
+    private MockObject $repository;
+    private MockObject $router;
+    private MockObject $creator;
+    private MockObject $settingsService;
+    private MockObject $requestContext;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $manager = $this->createMock(EntityManagerInterface::class);
         $this->repository = $this->createMock(UserRepository::class);
         $manager->method('getRepository')->willReturn($this->repository);
 
         $this->router = $this->createMock(RouterInterface::class);
-
         $this->creator = $this->createMock(VoucherCreator::class);
+        $this->settingsService = $this->createMock(SettingsService::class);
+        $this->requestContext = $this->createMock(RequestContext::class);
 
-        $this->command = new VoucherCreateCommand($manager, $this->router, $this->creator, $this->baseUrl);
+        // Setup router context
+        $this->router->method('getContext')->willReturn($this->requestContext);
+
+        $this->command = new VoucherCreateCommand(
+            $manager,
+            $this->router,
+            $this->creator,
+            $this->settingsService
+        );
     }
 
     public function testExecuteWithUnknownUser(): void
     {
         $this->repository->method('findByEmail')
             ->willReturn(null);
+
+        // Settings service should not be called when user doesn't exist
+        // because UserNotFoundException is thrown before settings are accessed
+        $this->settingsService->expects(self::never())
+            ->method('get');
+
+        $this->requestContext->expects(self::never())
+            ->method('setBaseUrl');
 
         $application = new Application();
         $application->add($this->command);
@@ -61,16 +83,29 @@ class VoucherCreateCommandTest extends TestCase
 
     public function testExecuteWithUser(): void
     {
+        $baseUrl = 'https://users.example.org';
+        $voucherCode = 'code';
+
         $user = new User();
         $user->setEmail('user@example.org');
         $this->repository->method('findByEmail')
             ->willReturn($user);
 
+        // Settings service should always return valid app_url
+        $this->settingsService->expects(self::atLeastOnce())
+            ->method('get')
+            ->with('app_url')
+            ->willReturn($baseUrl);
+
+        $this->requestContext->expects(self::atLeastOnce())
+            ->method('setBaseUrl')
+            ->with($baseUrl);
+
         $this->router->method('generate')
-            ->willReturn($this->baseUrl . '/' . $this->voucherCode);
+            ->willReturn($baseUrl . '/register/' . $voucherCode);
 
         $voucher = new Voucher();
-        $voucher->setCode($this->voucherCode);
+        $voucher->setCode($voucherCode);
         $this->creator->method('create')
             ->willReturn($voucher);
 
@@ -91,7 +126,7 @@ class VoucherCreateCommandTest extends TestCase
         $commandTester->assertCommandIsSuccessful();
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString($this->voucherCode, $output);
+        self::assertStringContainsString($voucherCode, $output);
 
         // Test show links to vouchers
 
@@ -104,18 +139,31 @@ class VoucherCreateCommandTest extends TestCase
         $commandTester->assertCommandIsSuccessful();
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString($this->baseUrl . '/' . $this->voucherCode, $output);
+        self::assertStringContainsString($baseUrl . '/register/' . $voucherCode, $output);
     }
 
     public function testExecuteWithSuspiciousUser(): void
     {
+        $baseUrl = 'https://users.example.org';
+        $voucherCode = 'code';
+
         $user = new User();
         $user->setEmail('suspicious@example.org');
         $this->repository->method('findByEmail')
             ->willReturn($user);
 
+        // Settings service should always return valid app_url
+        $this->settingsService->expects(self::once())
+            ->method('get')
+            ->with('app_url')
+            ->willReturn($baseUrl);
+
+        $this->requestContext->expects(self::once())
+            ->method('setBaseUrl')
+            ->with($baseUrl);
+
         $voucher = new Voucher();
-        $voucher->setCode($this->voucherCode);
+        $voucher->setCode($voucherCode);
         $exception = $this->createMock(ValidationException::class);
         $this->creator->method('create')
             ->willThrowException($exception);
@@ -130,6 +178,6 @@ class VoucherCreateCommandTest extends TestCase
         $commandTester->execute([
             '--user' => $user->getEmail(),
             '--count' => 1,
-            ]);
+        ]);
     }
 }
