@@ -18,6 +18,7 @@ class PostfixControllerTest extends WebTestCase
             'CONTENT_TYPE' => 'application/json',
         ]);
     }
+
     public function testGetAliasUsersWrongApiToken(): void
     {
         $this->client->request(method:'GET', uri:'/api/postfix/alias/alias@example.org', server: [
@@ -92,5 +93,35 @@ class PostfixControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         self::assertJsonStringEqualsJsonString('["user2@example.org"]', $this->client->getResponse()->getContent());
+    }
+
+    public function testGetMailboxWithPlusAddress(): void
+    {
+        // Test that user+anything@example.org is treated as user@example.org
+        $this->client->request('GET', '/api/postfix/mailbox/user+keyword@example.org');
+
+        self::assertResponseIsSuccessful();
+        self::assertJsonStringEqualsJsonString('true', $this->client->getResponse()->getContent());
+
+        // Test with a non-existent base user
+        $this->client->request('GET', '/api/postfix/mailbox/nonexistent+keyword@example.org');
+
+        self::assertResponseIsSuccessful();
+        self::assertJsonStringEqualsJsonString('false', $this->client->getResponse()->getContent());
+    }
+
+    public function testGetAliasUsersWithPlusAddress(): void
+    {
+        // Test that alias+anything@example.org is treated as alias@example.org
+        $this->client->request('GET', '/api/postfix/alias/alias+keyword@example.org');
+
+        self::assertResponseIsSuccessful();
+        self::assertJsonStringEqualsJsonString('["user2@example.org"]', $this->client->getResponse()->getContent());
+
+        // Test with a non-existent base alias
+        $this->client->request('GET', '/api/postfix/alias/nonexistent+keyword@example.org');
+
+        self::assertResponseIsSuccessful();
+        self::assertJsonStringEqualsJsonString('[]', $this->client->getResponse()->getContent());
     }
 }
