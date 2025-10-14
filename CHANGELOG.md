@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.2.1 (2025.10.14)
+
+### Bug fixes
+
+- 🐛 Backport Postfix adapter fix: Handle '+'-delimiter in email local part
+
 ## 4.2.0 (2025.08.21)
 
 ### Features and Improvements

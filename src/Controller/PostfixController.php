@@ -16,9 +16,10 @@ class PostfixController extends AbstractController
     {
     }
 
-    #[Route(path: '/api/postfix/alias/{alias}', name: 'api_postfix_alias', methods: ['GET'], stateless: true)]
-    public function getAliasUsers(string $alias): Response
+    #[Route(path: '/api/postfix/alias/{rawAlias}', name: 'api_postfix_alias', methods: ['GET'], stateless: true)]
+    public function getAliasUsers(string $rawAlias): Response
     {
+        $alias = $this->normalizeEmailForLookup($rawAlias);
         $users = $this->manager->getRepository(Alias::class)->findBy(['deleted' => false, 'source' => $alias]);
 
         return $this->json(array_map(function (Alias $alias) {
@@ -34,9 +35,10 @@ class PostfixController extends AbstractController
         return $this->json($exists);
     }
 
-    #[Route(path: '/api/postfix/mailbox/{email}', name: 'api_postfix_mailbox', methods: ['GET'], stateless: true)]
-    public function getMailbox(string $email): Response
+    #[Route(path: '/api/postfix/mailbox/{rawEmail}', name: 'api_postfix_mailbox', methods: ['GET'], stateless: true)]
+    public function getMailbox(string $rawEmail): Response
     {
+        $email = $this->normalizeEmailForLookup($rawEmail);
         $user = $this->manager->getRepository(User::class)->findOneBy(['email' => $email, 'deleted' => false]);
         $exists = $user !== null;
         return $this->json($exists);
@@ -62,5 +64,23 @@ class PostfixController extends AbstractController
         $senders = array_unique($senders);
 
         return $this->json($senders);
+    }
+
+    /**
+     * Normalize mail address by removing anything starting with "+" in the local part before performing lookup.
+     */
+    private function normalizeEmailForLookup(string $email): string
+    {
+        $atPos = strpos($email, '@');
+        if ($atPos === false) {
+            return $email;
+        }
+        $local = substr($email, 0, $atPos);
+        $domain = substr($email, $atPos + 1);
+        $plusPos = strpos($local, '+');
+        if ($plusPos !== false) {
+            $local = substr($local, 0, $plusPos);
+        }
+        return $local . '@' . $domain;
     }
 }
