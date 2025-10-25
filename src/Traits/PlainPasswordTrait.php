@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 trait PlainPasswordTrait
 {
     #[PasswordPolicy]
+    #[Assert\NotBlank]
     #[Assert\NotCompromisedPassword( skipOnError: 'true')]
     private ?string $plainPassword = null;
 
