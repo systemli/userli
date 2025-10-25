@@ -59,6 +59,19 @@ Feature: registration
     And I should see "The invite code is invalid."
 
   @registration
+  Scenario: Register with empty password
+    When I am on "/register"
+    And I fill in the following:
+      | registration[voucher]               | ABCD         |
+      | registration[email]                 | user1        |
+      | registration[plainPassword][first]  |              |
+      | registration[plainPassword][second] |              |
+    And I press "Submit"
+
+    Then I should be on "/register"
+    And I should see "This value should not be blank."
+
+  @registration
   Scenario: Register with invalid voucher
     When I am on "/register"
     And I fill in the following:
