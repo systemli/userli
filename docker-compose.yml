@@ -54,7 +54,7 @@ services:
     volumes:
       - mariadb:/var/lib/mysql
     networks:
-        - userli
+      - userli
 
   dovecot:
     build:
@@ -63,12 +63,44 @@ services:
     environment:
       MAIL_CRYPT: 2
       USERLI_HOST: userli
-      USERLI_API_ACCESS_TOKEN: dovecot
+      USERLI_API_ACCESS_TOKEN: 727eb7d3ad310bc510f5fa17c223572c
       DOVECOT_LUA_INSECURE: 'true'
     volumes:
       - ./docker/dovecot/dovecot.conf:/etc/dovecot/dovecot.conf:ro
       - ./docker/dovecot/conf.d:/etc/dovecot/conf.d:ro
       - ./contrib/userli-dovecot-adapter.lua:/usr/local/bin/userli-dovecot-adapter.lua:ro
+    networks:
+      - userli
+
+  postfix:
+    hostname: postfix
+    image: boky/postfix:latest
+    environment:
+      RELAYHOST: "[mailcatcher]:1025"
+      ALLOWED_SENDER_DOMAINS: "example.org example.com"
+    networks:
+      - userli
+
+  mailcatcher:
+    hostname: mailcatcher
+    image: schickling/mailcatcher:latest
+    ports:
+      - "1025:1025" # SMTP port for testing
+      - "1080:1080" # Web UI to view caught emails
+    networks:
+      - userli
+
+  roundcube:
+    image: docker.io/roundcube/roundcubemail:1.6.11-apache
+    environment:
+      ROUNDCUBEMAIL_DEFAULT_HOST: dovecot
+      ROUNDCUBEMAIL_DEFAULT_PORT: 143
+      ROUNDCUBEMAIL_SMTP_SERVER: postfix
+      ROUNDCUBEMAIL_SMTP_PORT: 25
+      ROUNDCUBEMAIL_USERNAME_DOMAIN: example.org
+      ROUNDCUBEMAIL_DB_TYPE: sqlite
+    ports:
+      - 8001:80
     networks:
       - userli
 
