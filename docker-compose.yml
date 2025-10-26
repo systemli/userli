@@ -54,7 +54,7 @@ services:
     volumes:
       - mariadb:/var/lib/mysql
     networks:
-        - userli
+      - userli
 
   dovecot:
     build:
