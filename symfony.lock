@@ -43,12 +43,12 @@
         "version": "v0.5.3"
     },
     "doctrine/doctrine-bundle": {
-        "version": "2.11",
+        "version": "2.15",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
             "version": "2.10",
-            "ref": "c170ded8fc587d6bd670550c43dafcf093762245"
+            "ref": "d1778a69711a9b06bb4e202977ca6c4a0d16933d"
         },
         "files": [
             "config/packages/doctrine.yaml",
@@ -158,7 +158,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "main",
             "version": "9.6",
-            "ref": "7364a21d87e658eb363c5020c072ecfdc12e2326"
+            "ref": "6a9341aa97d441627f8bd424ae85dc04c944f8b4"
         },
         "files": [
             ".env.test",
@@ -227,7 +227,7 @@
             "repo": "github.com/symfony/recipes-contrib",
             "branch": "main",
             "version": "1.0",
-            "ref": "0f18b4decdf5695d692c1d0dfd65516a07a6adf1"
+            "ref": "5d454ec6cc4c700ed3d963f3803e1d427d9669fb"
         },
         "files": [
             "public/.htaccess"
@@ -323,7 +323,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "main",
             "version": "6.4",
-            "ref": "a91c965766ad3ff2ae15981801643330eb42b6a5"
+            "ref": "32126346f25e1cee607cc4aa6783d46034920554"
         },
         "files": [
             "config/packages/cache.yaml",
@@ -506,12 +506,12 @@
         "version": "v5.1.5"
     },
     "symfony/translation": {
-        "version": "6.0",
+        "version": "6.4",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
-            "version": "5.3",
-            "ref": "e28e27f53663cc34f0be2837aba18e3a1bef8e7b"
+            "version": "6.3",
+            "ref": "620a1b84865ceb2ba304c8f8bf2a185fbf32a843"
         },
         "files": [
             "config/packages/translation.yaml",
@@ -585,7 +585,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "main",
             "version": "6.1",
-            "ref": "e42b3f0177df239add25373083a564e5ead4e13a"
+            "ref": "8b51135b84f4266e3b4c8a6dc23c9d1e32e543b7"
         },
         "files": [
             "config/packages/web_profiler.yaml",
