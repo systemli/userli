@@ -18,12 +18,12 @@ RUN apt-get -y update && apt-get -y install \
   ca-certificates \
   ssl-cert && \
   rm -rf /var/lib/apt/lists && \
-  groupadd -g 1000 vmail && \
-  useradd -u 1000 -g 1000 vmail -d /srv/vmail && \
+  groupadd -g 5000 vmail && \
+  useradd -u 5000 -g 5000 vmail -d /srv/vmail && \
   passwd -l vmail && \
   rm -rf /etc/dovecot && \
-  mkdir /srv/mail && \
-  chown vmail:vmail /srv/mail && \
+  mkdir /var/vmail && \
+  chown vmail:vmail /var/vmail && \
   make-ssl-cert generate-default-snakeoil && \
   mkdir /etc/dovecot && \
   mkdir /etc/dovecot/conf.d && \
