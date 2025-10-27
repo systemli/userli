@@ -1,4 +1,4 @@
-FROM docker.io/composer:2.8.3 AS composer
+FROM docker.io/composer:2.8.12 AS composer
 
 FROM docker.io/php:8.2-cli AS builder
 
@@ -20,10 +20,10 @@ RUN composer install --no-scripts && \
 FROM docker.io/php:8.2-apache-bookworm
 
 RUN apt-get update && \
-    apt-get install -y libpng-dev libsodium-dev libsqlite3-dev libzip-dev zlib1g-dev zip gpg libicu-dev && \
+    apt-get install -y libpng-dev libsodium-dev libzip-dev zlib1g-dev zip gpg libicu-dev && \
     a2enmod rewrite && \
     docker-php-ext-configure intl && \
-    docker-php-ext-install -j$(nproc) gd opcache pdo_mysql pdo_sqlite sodium zip intl && \
+    docker-php-ext-install -j$(nproc) gd opcache pdo_mysql sodium zip intl && \
     pecl install xdebug && \
     docker-php-ext-enable xdebug
 
