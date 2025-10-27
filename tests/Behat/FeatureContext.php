@@ -217,6 +217,26 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @When the following Setting exists:
+     */
+    public function theFollowingSettingExists(TableNode $table): void
+    {
+        foreach ($table->getColumnsHash() as $data) {
+            $name = $data['name'] ?? '';
+            $value = $data['value'] ?? '';
+
+            if (empty($name)) {
+                continue;
+            }
+
+            $setting = new Setting($name, $value);
+
+            $this->manager->persist($setting);
+            $this->manager->flush();
+        }
+    }
+
+    /**
      * @When the following Alias exists:
      */
     public function theFollowingAliasExists(TableNode $table): void

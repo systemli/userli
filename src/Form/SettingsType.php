@@ -33,9 +33,10 @@ class SettingsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $definitions = $this->configService->getSettings();
+        $formData = $builder->getData() ?? [];
 
         foreach ($definitions as $name => $definition) {
-            $this->addSettingField($builder, $name, $definition);
+            $this->addSettingField($builder, $name, $definition, $formData);
         }
 
         $builder->add('save', SubmitType::class, [
@@ -43,18 +44,26 @@ class SettingsType extends AbstractType
         ]);
     }
 
-    private function addSettingField(FormBuilderInterface $builder, string $name, array $definition): void
+    private function addSettingField(FormBuilderInterface $builder, string $name, array $definition, array $formData): void
     {
         $type = $definition['type'] ?? 'text';
         $validation = $definition['validation'] ?? [];
         $default = $definition['default'] ?? null;
 
-        // Get current value from database or use default from definition
-        $currentValue = $this->settingsService->get($name);
+        // Priority: 1. Form data (from controller), 2. Database value, 3. Definition default
+        $currentValue = null;
 
-        // If no value was found, use the default from definition
-        if ($currentValue === null) {
-            $currentValue = $default;
+        if (isset($formData[$name])) {
+            // Use value passed from controller
+            $currentValue = $formData[$name];
+        } else {
+            // Get current value from database or use default from definition
+            $currentValue = $this->settingsService->get($name);
+
+            // If no value was found, use the default from definition
+            if ($currentValue === null) {
+                $currentValue = $default;
+            }
         }
 
         $options = [
