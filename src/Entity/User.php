@@ -43,6 +43,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'virtual_users')]
 #[Index(columns: ['email'], name: 'email_idx')]
+#[Index(columns: ['creation_time'], name: 'creation_time_idx')]
+#[Index(columns: ['deleted'], name: 'deleted_idx')]
+#[Index(columns: ['email', 'deleted'], name: 'email_deleted_idx')]
+#[Index(columns: ['domain_id', 'deleted'], name: 'domain_deleted_idx')]
+#[Index(columns: ['email', 'domain_id'], name: 'email_domain_idx')]
 #[EmailDomain]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface, Stringable
 {
