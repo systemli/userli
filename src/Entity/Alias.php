@@ -23,9 +23,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\AssociationOverrides([new AssociationOverride(name: 'domain', joinColumns: new ORM\JoinColumn(nullable: true))])]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'virtual_aliases')]
-#[Index(name: 'source_deleted_idx', columns: ['source', 'deleted'])]
-#[Index(name: 'destination_deleted_idx', columns: ['destination', 'deleted'])]
-#[Index(name: 'user_deleted_idx', columns: ['user_id', 'deleted'])]
+#[Index(columns: ['source', 'deleted'], name: 'source_deleted_idx')]
+#[Index(columns: ['destination', 'deleted'], name: 'destination_deleted_idx')]
+#[Index(columns: ['user_id', 'deleted'], name: 'user_deleted_idx')]
 class Alias implements SoftDeletableInterface, Stringable
 {
     use IdTrait;
