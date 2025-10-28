@@ -9,6 +9,7 @@ services:
       - ./docker/userli/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro
       - ./docker/userli/php-override.ini:/usr/local/etc/php/conf.d/override.ini:ro
       - ./:/var/www/html
+    restart: always
     ports:
       - 8000:80
     networks:
@@ -53,8 +54,9 @@ services:
       - 3306:3306
     volumes:
       - mariadb:/var/lib/mysql
+    restart: always
     networks:
-        - userli
+      - userli
 
   dovecot:
     build:
@@ -63,12 +65,40 @@ services:
     environment:
       MAIL_CRYPT: 2
       USERLI_HOST: userli
-      USERLI_API_ACCESS_TOKEN: dovecot
-      DOVECOT_LUA_INSECURE: 'true'
+      USERLI_API_ACCESS_TOKEN: 727eb7d3ad310bc510f5fa17c223572c
+      DOVECOT_LUA_INSECURE: "true"
     volumes:
       - ./docker/dovecot/dovecot.conf:/etc/dovecot/dovecot.conf:ro
       - ./docker/dovecot/conf.d:/etc/dovecot/conf.d:ro
       - ./contrib/userli-dovecot-adapter.lua:/usr/local/bin/userli-dovecot-adapter.lua:ro
+    restart: always
+    networks:
+      - userli
+
+  mailcatcher:
+    hostname: mailcatcher
+    image: schickling/mailcatcher:latest
+    ports:
+      - "1025:1025" # SMTP port for testing
+      - "1080:1080" # Web UI to view caught emails
+    restart: always
+    networks:
+      - userli
+
+  roundcube:
+    image: docker.io/roundcube/roundcubemail:1.6.11-apache
+    environment:
+      ROUNDCUBEMAIL_DEFAULT_HOST: dovecot
+      ROUNDCUBEMAIL_DEFAULT_PORT: 143
+      ROUNDCUBEMAIL_SMTP_SERVER: smtp://mailcatcher
+      ROUNDCUBEMAIL_SMTP_PORT: 1025
+      ROUNDCUBEMAIL_USERNAME_DOMAIN: example.org
+      ROUNDCUBEMAIL_DB_TYPE: sqlite
+    volumes:
+      - ./docker/roundcube/config:/var/roundcube/config:ro
+    ports:
+      - 8001:80
+    restart: always
     networks:
       - userli
 

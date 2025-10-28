@@ -1,6 +1,8 @@
 # Getting started
 
-We provide a `docker-compose.yml` file that starts Userli, Dovecot and MariaDB to set up a development environment.
+We provide a `docker-compose.yml` file that starts Userli with MariaDB, Dovecot, Roundcube and Mailcatcher to set up a development environment.
+Userli will be available at [http://localhost:8000](http://localhost:8000) and Roundcube at [http://localhost:8001](http://localhost:8001).
+Mails will be caught by Mailcatcher and can be viewed at [http://localhost:1080](http://localhost:1080).
 
 ## Requirements
 
@@ -62,6 +64,7 @@ Install sample data:
     ```
 
 === "docker"
+
     ```shell
     docker compose exec userli bin/console doctrine:fixtures:load
     ```
@@ -89,4 +92,3 @@ services:
     security_opt:
       - label=disable
 ```
-
