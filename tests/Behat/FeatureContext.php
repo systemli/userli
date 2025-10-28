@@ -50,7 +50,6 @@ class FeatureContext extends MinkContext
 {
     private readonly string $dbPlatform;
     private array $placeholders = [];
-    private ?string $output;
     private array $requestParams = [];
     private SessionFactoryInterface $sessionFactory;
 
@@ -517,64 +516,6 @@ class FeatureContext extends MinkContext
     public function setHttpHeaderto(string $name, string $value): void
     {
         $this->getSession()->setRequestHeader($name, $value);
-    }
-
-    /**
-     * @When I run console command :command
-     */
-    public function iRunConsoleCommand(string $command): void
-    {
-        $application = new Application($this->kernel);
-        $application->setAutoExit(false);
-
-        $input = new StringInput($command);
-        $output = new BufferedOutput();
-
-        $application->run($input, $output);
-
-        $this->output = $output->fetch();
-    }
-
-    /**
-     * @Then I should see :string in the console output
-     */
-    public function iShouldSeeInTheConsoleOutput(string $string): void
-    {
-        $output = preg_replace('/\r\n|\r|\n/', '\\n', (string)$this->output);
-        if (!str_contains((string)$output, $string)) {
-            throw new RuntimeException(sprintf('Did not see "%s" in console output "%s"', $string, $output));
-        }
-    }
-
-    /**
-     * @Then I should see regex :string in the console output
-     */
-    public function iShouldSeeRegexInTheConsoleOutput(string $string): void
-    {
-        if (!preg_match($string, (string)$this->output)) {
-            throw new RuntimeException(sprintf('Did not see regex "%s" in console output "%s"', $string, $this->output));
-        }
-    }
-
-    /**
-     * @Then I should not see :string in the console output
-     */
-    public function iShouldNotSeeInTheConsoleOutput(string $string): void
-    {
-        $output = preg_replace('/\r\n|\r|\n/', '\\n', (string)$this->output);
-        if (true === strpos((string)$output, $string)) {
-            throw new RuntimeException(sprintf('Did see "%s" in console output "%s"', $string, $output));
-        }
-    }
-
-    /**
-     * @Then I should see empty console output
-     */
-    public function iShouldSeeEmptyConsoleOutput(): void
-    {
-        if (!empty($this->output)) {
-            throw new RuntimeException(sprintf('Did not see empty console output: "%s"', $this->output));
-        }
     }
 
     /**

@@ -180,4 +180,109 @@ class VoucherCreateCommandTest extends TestCase
             '--count' => 1,
         ]);
     }
+
+    public function testExecuteWithPrintOption(): void
+    {
+        $email = 'user@example.org';
+        $baseUrl = 'https://users.example.org';
+        $voucherCode = 'abc123';
+
+        $user = new User();
+        $user->setEmail($email);
+
+        $this->repository->expects(self::once())
+            ->method('findByEmail')
+            ->with($email)
+            ->willReturn($user);
+
+        $this->settingsService->expects(self::once())
+            ->method('get')
+            ->with('app_url')
+            ->willReturn($baseUrl);
+
+        $this->requestContext->expects(self::once())
+            ->method('setBaseUrl')
+            ->with($baseUrl);
+
+        $voucher = new Voucher();
+        $voucher->setCode($voucherCode);
+
+        $this->creator->expects(self::once())
+            ->method('create')
+            ->with($user)
+            ->willReturn($voucher);
+
+        $application = new Application();
+        $application->add($this->command);
+
+        $command = $application->find('app:voucher:create');
+        $commandTester = new CommandTester($command);
+
+        $commandTester->execute([
+            '--user' => $email,
+            '--count' => 1,
+            '--print' => true,
+        ]);
+
+        $commandTester->assertCommandIsSuccessful();
+
+        $output = $commandTester->getDisplay();
+        self::assertMatchesRegularExpression('/^[a-z_\-0-9]{6}$/i', trim($output));
+        self::assertStringContainsString($voucherCode, $output);
+    }
+
+    public function testExecuteWithPrintLinksOption(): void
+    {
+        $email = 'user@example.org';
+        $baseUrl = 'https://users.example.org';
+        $voucherCode = 'xyz789';
+
+        $user = new User();
+        $user->setEmail($email);
+
+        $this->repository->expects(self::once())
+            ->method('findByEmail')
+            ->with($email)
+            ->willReturn($user);
+
+        $this->settingsService->expects(self::once())
+            ->method('get')
+            ->with('app_url')
+            ->willReturn($baseUrl);
+
+        $this->requestContext->expects(self::once())
+            ->method('setBaseUrl')
+            ->with($baseUrl);
+
+        $voucher = new Voucher();
+        $voucher->setCode($voucherCode);
+
+        $this->creator->expects(self::once())
+            ->method('create')
+            ->with($user)
+            ->willReturn($voucher);
+
+        $this->router->expects(self::once())
+            ->method('generate')
+            ->with('register_voucher', ['voucher' => $voucherCode])
+            ->willReturn($baseUrl . '/register/' . $voucherCode);
+
+        $application = new Application();
+        $application->add($this->command);
+
+        $command = $application->find('app:voucher:create');
+        $commandTester = new CommandTester($command);
+
+        $commandTester->execute([
+            '--user' => $email,
+            '--count' => 1,
+            '--print-links' => true,
+        ]);
+
+        $commandTester->assertCommandIsSuccessful();
+
+        $output = $commandTester->getDisplay();
+        self::assertMatchesRegularExpression('|^https://users\.example\.org/register/[a-z_\-0-9]{6}$|i', trim($output));
+        self::assertStringContainsString($baseUrl . '/register/' . $voucherCode, $output);
+    }
 }
