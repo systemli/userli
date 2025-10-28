@@ -19,7 +19,6 @@ docker-compose.override.yml
 
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache
-/phpunit.xml
 ###< symfony/phpunit-bridge ###
 
 ###> symfony/framework-bundle ###

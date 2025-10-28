@@ -28,6 +28,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
 use Doctrine\Persistence\ObjectRepository;
+use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\TestBrowserToken;
 use Symfony\Component\BrowserKit\Cookie;
@@ -52,6 +53,7 @@ class FeatureContext extends MinkContext
     private array $placeholders = [];
     private array $requestParams = [];
     private SessionFactoryInterface $sessionFactory;
+    private CacheItemPoolInterface $cache;
 
     public function __construct(
         private readonly KernelInterface        $kernel,
@@ -62,6 +64,7 @@ class FeatureContext extends MinkContext
     )
     {
         $this->sessionFactory = $this->getContainer()->get('session.factory');
+        $this->cache = $this->getContainer()->get('cache.app');
         $this->dbPlatform = $this->manager->getConnection()->getDatabasePlatform()->getName();
     }
 
@@ -89,6 +92,9 @@ class FeatureContext extends MinkContext
             $schemaTool->dropSchema($metadata);
         }
         $schemaTool->createSchema($metadata);
+
+        // Clear the cache to ensure settings are not cached between tests
+        $this->cache->clear();
     }
 
     /**
@@ -212,6 +218,26 @@ class FeatureContext extends MinkContext
             }
 
             $this->manager->persist($voucher);
+            $this->manager->flush();
+        }
+    }
+
+    /**
+     * @When the following Setting exists:
+     */
+    public function theFollowingSettingExists(TableNode $table): void
+    {
+        foreach ($table->getColumnsHash() as $data) {
+            $name = $data['name'] ?? '';
+            $value = $data['value'] ?? '';
+
+            if (empty($name)) {
+                continue;
+            }
+
+            $setting = new Setting($name, $value);
+
+            $this->manager->persist($setting);
             $this->manager->flush();
         }
     }

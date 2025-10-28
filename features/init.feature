@@ -4,10 +4,11 @@ Feature: Initialization
     Given the database is clean
 
   @init
-  Scenario: Initialize the domain and user
+  Scenario: Initialize the installation
     When I am on homepage
 
     Then I should be on "/init"
+    And print last response
 
     When I fill in the following:
       | create_domain_domain | example.org |
@@ -20,18 +21,16 @@ Feature: Initialization
       | plain_password[plainPassword][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
-    Then I should be on "/"
+    Then I should be on "/init/settings"
 
-  @init
-  Scenario: Input admin password
-    When the following Domain exists:
-      | name        |
-      | example.org |
-    And I am on "/init/user"
-    And I fill in the following:
-      | plain_password[plainPassword][first]  | P4ssW0rt!!!1 |
-      | plain_password[plainPassword][second] | P4ssW0rt!!!1 |
-    And I press "Submit"
+    When I fill in the following:
+      | settings[app_name]                   | Example Mail Service     |
+      | settings[app_url]                    | https://mail.example.org |
+      | settings[project_name]               | Example Project          |
+      | settings[project_url]                | https://example.org      |
+      | settings[email_sender_address]       | noreply@example.org      |
+      | settings[email_notification_address] | admin@example.org        |
+    And I press "settings_save"
 
     Then I should be on "/"
 
@@ -43,6 +42,10 @@ Feature: Initialization
     And the following User exists:
       | email                  | password |
       | postmaster@example.org | P4ssW0rt |
+    And the following Setting exists:
+      | name     | value                    |
+      | app_name | Example Mail Service     |
+      | app_url  | https://mail.example.org |
     And I am on homepage
 
     Then I should be on "/"
@@ -55,8 +58,15 @@ Feature: Initialization
     And the following User exists:
       | email                  | password |
       | postmaster@example.org | P4ssW0rt |
+    And the following Setting exists:
+      | name     | value                    |
+      | app_name | Example Mail Service     |
+      | app_url  | https://mail.example.org |
     And I am on "/init"
     Then I should be on "/"
 
     When I am on "/init/user"
+    Then I should be on "/"
+
+    When I am on "/init/settings"
     Then I should be on "/"

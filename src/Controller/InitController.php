@@ -4,12 +4,15 @@ namespace App\Controller;
 
 use App\Creator\DomainCreator;
 use App\Entity\Domain;
+use App\Entity\Setting;
 use App\Entity\User;
 use App\Form\DomainCreateType;
 use App\Form\Model\DomainCreate;
 use App\Form\Model\PlainPassword;
 use App\Form\PlainPasswordType;
+use App\Form\SettingsType;
 use App\Helper\AdminPasswordUpdater;
+use App\Service\SettingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +24,8 @@ class InitController extends AbstractController
     public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly AdminPasswordUpdater   $updater,
-        private readonly DomainCreator          $creator
+        private readonly DomainCreator          $creator,
+        private readonly SettingsService        $settingsService
     )
     {
     }
@@ -61,11 +65,11 @@ class InitController extends AbstractController
     {
         // redirect if already configured
         if (0 < $this->manager->getRepository(User::class)->count([])) {
-            return $this->redirectToRoute('index');
+            return $this->redirectToRoute('init_settings');
         }
 
         $form = $this->createForm(PlainPasswordType::class, new PlainPassword(), [
-            'action' => $this->generateUrl('init_user'),
+            'action' => $this->generateUrl('init_user_submit'),
             'method' => 'post',
         ]);
         return $this->render('Init/user.html.twig', ['form' => $form]);
@@ -82,9 +86,64 @@ class InitController extends AbstractController
 
             $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
 
-            return $this->redirectToRoute('index');
+            return $this->redirectToRoute('init_settings');
         }
 
         return $this->render('Init/user.html.twig', ['form' => $form]);
+    }
+
+    #[Route(path: '/init/settings', name: 'init_settings', methods: ['GET'])]
+    public function settings(): Response
+    {
+        // redirect if already configured
+        if (0 < $this->manager->getRepository(Setting::class)->count([])) {
+            return $this->redirectToRoute('index');
+        }
+
+        // Get the first domain for default values
+        $domain = $this->manager->getRepository(Domain::class)->findOneBy([]);
+        $domainName = $domain?->getName() ?? '';
+
+        // Prepare default data based on domain
+        $defaultData = [
+            'app_url' => $domainName ? 'https://users.' . $domainName : null,
+            'project_url' => $domainName ? 'https://' . $domainName : null,
+            'email_sender_address' => $domainName ? 'noreply@' . $domainName : null,
+            'email_notification_address' => $domainName ? 'admin@' . $domainName : null,
+        ];
+
+        $form = $this->createForm(SettingsType::class, $defaultData, [
+            'action' => $this->generateUrl('init_settings_submit'),
+            'method' => 'post',
+        ]);
+
+        return $this->render('Init/settings.html.twig', [
+            'form' => $form,
+            'primary_domain' => $domainName,
+        ]);
+    }
+
+    #[Route(path: '/init/settings', name: 'init_settings_submit', methods: ['POST'])]
+    public function settingsSubmit(Request $request): Response
+    {
+        $form = $this->createForm(SettingsType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            // Filter out null values and save only provided settings
+            $data = array_filter($data, fn($value) => $value !== null);
+
+            $this->settingsService->setAll($data);
+
+            $request->getSession()->getFlashBag()->add('success', 'init_settings.flash.configured_successfully');
+
+            return $this->redirectToRoute('index');
+        }
+
+        return $this->render('Init/settings.html.twig', [
+            'form' => $form,
+        ]);
     }
 }
