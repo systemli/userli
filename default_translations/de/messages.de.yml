@@ -344,6 +344,15 @@ init_user:
   text: >
     E-Mail-Standards erfordern, dass das Konto postmaster@%domain% vorhanden ist.
     Wähle ein Kennwort für dieses erste Administratorkonto aus und melde dich anschließend an.
+init_settings:
+  lead: Konfiguriere deine Userli-Installation
+  text: Bevor du Userli verwenden kannst, konfiguriere bitte die grundlegenden Einstellungen. Diese Einstellungen definieren, wie dein E-Mail-Dienst funktioniert und wie Benutzer damit interagieren.
+  info: Du kannst diese Einstellungen später im Admin-Panel unter Einstellungen ändern.
+  form:
+    title: Grundeinstellungen
+    description: Konfiguriere die wesentlichen Einstellungen für deinen E-Mail-Dienst
+  flash:
+    configured_successfully: Die Einstellungen wurden erfolgreich konfiguriert. Deine Userli-Installation ist jetzt einsatzbereit!
 openpgp:
   delete-button: OpenPGP-Schlüssel löschen
   information: Information
