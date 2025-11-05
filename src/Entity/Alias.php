@@ -37,14 +37,13 @@ class Alias implements SoftDeletableInterface, Stringable
     use RandomTrait;
 
     #[ORM\Column]
-    #[Assert\NotNull]
-    #[Assert\Email(mode: 'strict')]
-    #[EmailAddress(groups: ['unique'])]
-    #[EmailLength(minLength: 3, maxLength: 24)]
     protected ?string $source = null;
 
     #[ORM\Column(nullable: true)]
     protected ?string $destination = null;
+
+    #[ORM\Column(length: 40, nullable: true)]
+    protected ?string $note = null;
 
     /**
      * Alias constructor.
@@ -76,6 +75,28 @@ class Alias implements SoftDeletableInterface, Stringable
     public function setDestination(?string $destination): void
     {
         $this->destination = $destination;
+    }
+
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    public function setNote(?string $note): void
+    {
+        if ($note === null) {
+            $this->note = null;
+            return;
+        }
+
+        $note = trim($note);
+
+        // enforce max length of 40 to match database column and validation
+        if (mb_strlen($note) > 40) {
+            $note = mb_substr($note, 0, 40);
+        }
+
+        $this->note = $note;
     }
 
     public function clearSensitiveData(): void
