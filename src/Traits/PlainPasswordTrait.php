@@ -14,7 +14,7 @@ trait PlainPasswordTrait
 {
     #[PasswordPolicy]
     #[Assert\NotBlank]
-    #[Assert\NotCompromisedPassword(skipOnError: 'true')]
+    #[Assert\NotCompromisedPassword(skipOnError: true)]
     private ?string $plainPassword = null;
 
     public function getPlainPassword(): ?string
