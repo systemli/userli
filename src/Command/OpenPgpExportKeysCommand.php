@@ -29,10 +29,6 @@ class OpenPgpExportKeysCommand extends Command
         parent::__construct();
     }
 
-    protected function configure(): void
-    {
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // create Web Key Directories (WKD) for all domains
