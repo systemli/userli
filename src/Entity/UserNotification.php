@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\UserNotificationType;
 use App\Repository\UserNotificationRepository;
 use DateTimeImmutable;
-use App\Enum\UserNotificationType;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserNotificationRepository::class)]

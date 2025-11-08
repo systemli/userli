@@ -13,26 +13,28 @@ use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
 use App\Security\RequireApiScope;
 use Exception;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\Routing\Attribute\Route;
+
+use const DIRECTORY_SEPARATOR;
 
 #[RequireApiScope(scope: ApiScope::DOVECOT)]
 class DovecotController extends AbstractController
 {
-    const MESSAGE_SUCCESS = 'success';
+    public const MESSAGE_SUCCESS = 'success';
 
-    const MESSAGE_AUTHENTICATION_FAILED = 'authentication failed';
+    public const MESSAGE_AUTHENTICATION_FAILED = 'authentication failed';
 
-    const MESSAGE_USER_NOT_FOUND = 'user not found';
+    public const MESSAGE_USER_NOT_FOUND = 'user not found';
 
-    const MESSAGE_USER_DISABLED = 'user disabled due to spam role';
+    public const MESSAGE_USER_DISABLED = 'user disabled due to spam role';
 
-    const MESSAGE_USER_PASSWORD_CHANGE_REQUIRED = 'user password change required';
+    public const MESSAGE_USER_PASSWORD_CHANGE_REQUIRED = 'user password change required';
 
     private readonly MailCrypt $mailCrypt;
 
@@ -68,9 +70,9 @@ class DovecotController extends AbstractController
         }
 
         if (
-            $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_OPTIONAL) &&
-            $user->getMailCryptEnabled() &&
-            $user->hasMailCryptPublicKey()
+            $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_OPTIONAL)
+            && $user->getMailCryptEnabled()
+            && $user->hasMailCryptPublicKey()
         ) {
             $mailCryptReported = 2;
         } else {
@@ -80,19 +82,19 @@ class DovecotController extends AbstractController
         [$username, $domain] = explode('@', $user->getEmail());
 
         $customQuota = $user->getQuota();
-        $customQuotaString = $customQuota !== null ? sprintf('*:storage=%dM', $customQuota) : "";
+        $customQuotaString = $customQuota !== null ? sprintf('*:storage=%dM', $customQuota) : '';
 
         return $this->json([
             'message' => self::MESSAGE_SUCCESS,
             'body' => [
                 'user' => $user->getEmail(),
-                'home' => $this->mailLocation . DIRECTORY_SEPARATOR . $domain . DIRECTORY_SEPARATOR . $username,
+                'home' => $this->mailLocation.DIRECTORY_SEPARATOR.$domain.DIRECTORY_SEPARATOR.$username,
                 'mailCrypt' => $mailCryptReported,
-                'mailCryptPublicKey' =>  $user->getMailCryptPublicKey() ?? "",
+                'mailCryptPublicKey' => $user->getMailCryptPublicKey() ?? '',
                 'gid' => $this->mailGid,
                 'uid' => $this->mailUid,
                 'quota' => $customQuotaString,
-            ]
+            ],
         ], Response::HTTP_OK);
     }
 
@@ -105,7 +107,7 @@ class DovecotController extends AbstractController
             return $this->json(['message' => self::MESSAGE_USER_NOT_FOUND], Response::HTTP_NOT_FOUND);
         }
 
-        if ($user->hasRole(Roles::SPAM)){
+        if ($user->hasRole(Roles::SPAM)) {
             return $this->json(['message' => self::MESSAGE_USER_DISABLED], Response::HTTP_FORBIDDEN);
         }
 
@@ -134,9 +136,9 @@ class DovecotController extends AbstractController
             'message' => self::MESSAGE_SUCCESS,
             'body' => [
                 'mailCrypt' => $mailCryptReported,
-                'mailCryptPrivateKey' => $privateKey ?? "",
-                'mailCryptPublicKey' => $user->getMailCryptPublicKey() ?? "",
-            ]
+                'mailCryptPrivateKey' => $privateKey ?? '',
+                'mailCryptPublicKey' => $user->getMailCryptPublicKey() ?? '',
+            ],
         ], Response::HTTP_OK);
     }
 }

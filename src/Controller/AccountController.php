@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\User;
@@ -28,15 +30,14 @@ use Symfony\Component\Routing\Attribute\Route;
 class AccountController extends AbstractController
 {
     public function __construct(
-        private readonly PasswordUpdater          $passwordUpdater,
-        private readonly MailCryptKeyHandler      $mailCryptKeyHandler,
-        private readonly EntityManagerInterface   $manager,
-        private readonly DeleteHandler            $deleteHandler,
-        private readonly RecoveryTokenHandler     $recoveryTokenHandler,
-        private readonly WkdHandler               $wkdHandler,
+        private readonly PasswordUpdater $passwordUpdater,
+        private readonly MailCryptKeyHandler $mailCryptKeyHandler,
+        private readonly EntityManagerInterface $manager,
+        private readonly DeleteHandler $deleteHandler,
+        private readonly RecoveryTokenHandler $recoveryTokenHandler,
+        private readonly WkdHandler $wkdHandler,
         private readonly EventDispatcherInterface $eventDispatcher,
-    )
-    {
+    ) {
     }
 
     #[Route(path: '/account', name: 'account', methods: ['GET'])]
@@ -237,7 +238,7 @@ class AccountController extends AbstractController
         $form = $this->createForm(RecoveryTokenConfirmType::class, $data);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() and $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-token-ack');
 
             return $this->redirectToRoute('start');

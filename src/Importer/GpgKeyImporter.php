@@ -1,22 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Importer;
 
-use PEAR_Exception;
-use Crypt_GPG_BadPassphraseException;
-use Crypt_GPG_KeyNotFoundException;
-use Exception;
 use App\Entity\OpenPgpKey;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
 use Crypt_GPG;
+use Crypt_GPG_BadPassphraseException;
 use Crypt_GPG_Exception;
 use Crypt_GPG_FileException;
 use Crypt_GPG_Key;
+use Crypt_GPG_KeyNotFoundException;
 use Crypt_GPG_NoDataException;
 use DateTime;
+use Exception;
+use PEAR_Exception;
 use RuntimeException;
+
+use const DIRECTORY_SEPARATOR;
 
 /**
  * Class GpgKeyImporter.

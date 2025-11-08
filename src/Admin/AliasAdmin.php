@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin;
 
-use DateTime;
 use App\Entity\Alias;
 use App\Enum\Roles;
 use App\Traits\DomainGuesserAwareTrait;
+use DateTime;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -28,9 +30,6 @@ class AliasAdmin extends Admin
         return 'alias';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureFormFields(FormMapper $form): void
     {
         $form
@@ -44,9 +43,6 @@ class AliasAdmin extends Admin
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
@@ -56,9 +52,6 @@ class AliasAdmin extends Admin
             ->add('deleted');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureListFields(ListMapper $list): void
     {
         $list
@@ -88,9 +81,6 @@ class AliasAdmin extends Admin
             ->add('deleted');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureBatchActions($actions): array
     {
         return [];

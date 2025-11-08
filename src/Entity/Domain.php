@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\DomainRepository;
-use Stringable;
-use DateTime;
 use App\Traits\CreationTimeTrait;
 use App\Traits\IdTrait;
 use App\Traits\NameTrait;
 use App\Traits\UpdatedTimeTrait;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: DomainRepository::class)]
@@ -18,10 +20,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[UniqueEntity('name')]
 class Domain implements Stringable
 {
-    use IdTrait;
     use CreationTimeTrait;
-    use UpdatedTimeTrait;
+    use IdTrait;
     use NameTrait;
+    use UpdatedTimeTrait;
 
     public function __construct()
     {

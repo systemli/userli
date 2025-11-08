@@ -9,6 +9,7 @@ use App\Security\ApiTokenAuthenticator;
 use App\Security\Badge\ApiTokenBadge;
 use App\Service\ApiTokenManager;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,7 +60,7 @@ class ApiTokenAuthenticatorTest extends TestCase
         $apiToken = $this->createApiToken();
 
         $request = new Request();
-        $request->headers->set('Authorization', 'Bearer ' . $plainToken);
+        $request->headers->set('Authorization', 'Bearer '.$plainToken);
 
         $this->apiTokenManager
             ->expects($this->once())
@@ -77,11 +78,11 @@ class ApiTokenAuthenticatorTest extends TestCase
         $this->assertInstanceOf(SelfValidatingPassport::class, $passport);
         $this->assertInstanceOf(UserBadge::class, $passport->getBadge(UserBadge::class));
         $this->assertEquals('api_user', $passport->getBadge(UserBadge::class)->getUserIdentifier());
-        
+
         $apiTokenBadge = $passport->getBadge(ApiTokenBadge::class);
         $this->assertInstanceOf(ApiTokenBadge::class, $apiTokenBadge);
         $this->assertSame($apiToken, $apiTokenBadge->getApiToken());
-        
+
         $this->assertSame($apiToken, $request->attributes->get('api_token'));
     }
 
@@ -116,7 +117,7 @@ class ApiTokenAuthenticatorTest extends TestCase
         $apiToken = $this->createApiToken();
 
         $request = new Request();
-        $request->headers->set('Authorization', 'bearer ' . $plainToken); // lowercase
+        $request->headers->set('Authorization', 'bearer '.$plainToken); // lowercase
 
         $this->apiTokenManager
             ->expects($this->once())
@@ -142,7 +143,7 @@ class ApiTokenAuthenticatorTest extends TestCase
         $apiToken = $this->createApiToken();
 
         $request = new Request();
-        $request->headers->set('Authorization', 'Bearer ' . $bearerToken);
+        $request->headers->set('Authorization', 'Bearer '.$bearerToken);
         $request->headers->set('X-API-Token', $xApiToken);
 
         // Should use Bearer token, not X-API-Token
@@ -224,7 +225,7 @@ class ApiTokenAuthenticatorTest extends TestCase
         $plainToken = 'invalid-token';
 
         $request = new Request();
-        $request->headers->set('Authorization', 'Bearer ' . $plainToken);
+        $request->headers->set('Authorization', 'Bearer '.$plainToken);
 
         $this->apiTokenManager
             ->expects($this->once())
@@ -261,7 +262,7 @@ class ApiTokenAuthenticatorTest extends TestCase
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
-        
+
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('error', $content);
         $this->assertEquals('Custom error message', $content['error']);
@@ -276,7 +277,7 @@ class ApiTokenAuthenticatorTest extends TestCase
 
         $this->assertInstanceOf(JsonResponse::class, $response);
         $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
-        
+
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('error', $content);
         $this->assertEquals('No API token provided', $content['error']);
@@ -293,7 +294,7 @@ class ApiTokenAuthenticatorTest extends TestCase
         }
 
         // Use reflection to access private method
-        $reflection = new \ReflectionClass($this->authenticator);
+        $reflection = new ReflectionClass($this->authenticator);
         $method = $reflection->getMethod('extractToken');
         $method->setAccessible(true);
 
@@ -307,49 +308,49 @@ class ApiTokenAuthenticatorTest extends TestCase
         return [
             'Bearer token' => [
                 ['Authorization' => 'Bearer abc123'],
-                'abc123'
+                'abc123',
             ],
             'Bearer token with extra spaces' => [
                 ['Authorization' => 'Bearer   token-with-spaces   '],
-                'token-with-spaces   '
+                'token-with-spaces   ',
             ],
             'Bearer token case insensitive' => [
                 ['Authorization' => 'bearer token123'],
-                'token123'
+                'token123',
             ],
             'X-API-Token header' => [
                 ['X-API-Token' => 'xyz789'],
-                'xyz789'
+                'xyz789',
             ],
             'Both headers - Bearer takes precedence' => [
                 [
                     'Authorization' => 'Bearer priority-token',
-                    'X-API-Token' => 'fallback-token'
+                    'X-API-Token' => 'fallback-token',
                 ],
-                'priority-token'
+                'priority-token',
             ],
             'Invalid Authorization format falls back to X-API-Token' => [
                 [
                     'Authorization' => 'Basic username:password',
-                    'X-API-Token' => 'fallback-token'
+                    'X-API-Token' => 'fallback-token',
                 ],
-                'fallback-token'
+                'fallback-token',
             ],
             'No token headers' => [
                 [],
-                null
+                null,
             ],
             'Empty Authorization header' => [
                 ['Authorization' => ''],
-                null
+                null,
             ],
             'Empty X-API-Token header' => [
                 ['X-API-Token' => ''],
-                ''
+                '',
             ],
             'Authorization without Bearer' => [
                 ['Authorization' => 'sometoken'],
-                null
+                null,
             ],
         ];
     }
@@ -361,7 +362,7 @@ class ApiTokenAuthenticatorTest extends TestCase
 
         $request = new Request();
         $request->server->set('REQUEST_URI', '/api/test');
-        $request->headers->set('Authorization', 'Bearer ' . $plainToken);
+        $request->headers->set('Authorization', 'Bearer '.$plainToken);
 
         // Test supports
         $this->assertTrue($this->authenticator->supports($request));

@@ -10,11 +10,12 @@ use App\Enum\WebhookEvent;
 use App\Message\SendWebhook;
 use App\MessageHandler\SendWebhookHandler;
 use DateTimeImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 class SendWebhookHandlerTest extends TestCase
 {
@@ -28,7 +29,7 @@ class SendWebhookHandlerTest extends TestCase
     public function testSuccessfulDelivery(): void
     {
         $delivery = $this->createDelivery();
-        $id = (string)$delivery->getId();
+        $id = (string) $delivery->getId();
 
         $repo = $this->createMock(ObjectRepository::class);
         $repo->method('find')->with($id)->willReturn($delivery);
@@ -58,7 +59,7 @@ class SendWebhookHandlerTest extends TestCase
     public function testFailedDeliveryThrowsExceptionForRetry(): void
     {
         $delivery = $this->createDelivery();
-        $id = (string)$delivery->getId();
+        $id = (string) $delivery->getId();
 
         $repo = $this->createMock(ObjectRepository::class);
         $repo->method('find')->with($id)->willReturn($delivery);
@@ -68,7 +69,7 @@ class SendWebhookHandlerTest extends TestCase
         $http
             ->expects($this->once())
             ->method('request')
-            ->willThrowException(new \RuntimeException('Boom Failure Happens For A Very Long Error Message That Should Be Trimmed'));
+            ->willThrowException(new RuntimeException('Boom Failure Happens For A Very Long Error Message That Should Be Trimmed'));
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->method('getRepository')->willReturn($repo);
@@ -76,7 +77,7 @@ class SendWebhookHandlerTest extends TestCase
 
         $handler = new SendWebhookHandler($em, $http);
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
 
         $handler(new SendWebhook($id));
     }

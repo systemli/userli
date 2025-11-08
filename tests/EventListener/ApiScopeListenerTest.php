@@ -9,7 +9,6 @@ use App\Enum\ApiScope;
 use App\EventListener\ApiScopeListener;
 use App\Security\RequireApiScope;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -49,7 +48,7 @@ class ApiScopeListenerTest extends TestCase
         $request = new Request();
         $request->server->set('REQUEST_URI', '/api/test');
 
-        $event = $this->createControllerArgumentsEvent($request, function() { return 'test'; });
+        $event = $this->createControllerArgumentsEvent($request, function () { return 'test'; });
 
         // Should not throw any exception
         $this->listener->onKernelControllerArguments($event);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Form\Model\DomainCreate;
@@ -25,9 +27,6 @@ class DomainCreateType extends AbstractType
         $resolver->setDefaults(['data_class' => DomainCreate::class]);
     }
 
-    /**
-     * @return string
-     */
     public function getBlockPrefix(): string
     {
         return self::NAME;

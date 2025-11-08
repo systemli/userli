@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Form\Model\Twofactor;
@@ -20,9 +22,6 @@ class TwofactorType extends AbstractType
             ->add('submit', SubmitType::class, ['label' => 'account.twofactor.setup-button']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => Twofactor::class]);

@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
-use App\Entity\WebhookEndpoint;
 use App\Entity\WebhookDelivery;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
+use App\Entity\WebhookEndpoint;
 use App\Service\WebhookDeliveryManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -16,14 +18,12 @@ class WebhookDeliveryController extends AbstractController
 {
     public function __construct(private readonly WebhookDeliveryManager $manager)
     {
-
     }
 
     #[Route('/settings/webhooks/{id}/deliveries', name: 'settings_webhook_delivery_index', methods: ['GET'])]
     public function index(
-        #[MapEntity] WebhookEndpoint $endpoint
-    ): Response
-    {
+        #[MapEntity] WebhookEndpoint $endpoint,
+    ): Response {
         $deliveries = $this->manager->findAllByEndpoint($endpoint);
 
         return $this->render('Settings/Webhook/Delivery/index.html.twig', [
@@ -44,7 +44,7 @@ class WebhookDeliveryController extends AbstractController
     #[Route('/settings/webhooks/deliveries/{id}/retry', name: 'settings_webhook_delivery_retry', methods: ['POST'])]
     public function retry(#[MapEntity] WebhookDelivery $delivery, Request $request): RedirectResponse
     {
-        if (!$this->isCsrfTokenValid('retry_delivery_' . $delivery->getId(), $request->request->get('_token'))) {
+        if (!$this->isCsrfTokenValid('retry_delivery_'.$delivery->getId(), $request->request->get('_token'))) {
             return $this->redirectToRoute('settings_webhook_delivery_show', ['id' => $delivery->getId()]);
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Enum\Roles;
@@ -51,29 +53,29 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[EmailDomain]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface, Stringable
 {
-    use IdTrait;
     use CreationTimeTrait;
-    use UpdatedTimeTrait;
-    use EmailTrait;
-    use QuotaTrait;
-    use PasswordTrait;
-    use SaltTrait;
     use DeleteTrait;
-    use InvitationVoucherTrait;
     use DomainAwareTrait;
+    use EmailTrait;
+    use IdTrait;
+    use InvitationVoucherTrait;
     use LastLoginTimeTrait;
+    use MailCryptEnabledTrait;
+    use MailCryptPublicKeyTrait;
+    use MailCryptSecretBoxTrait;
+    use OpenPgpKeyAwareTrait;
+    use PasswordTrait;
     use PasswordVersionTrait;
+    use PlainMailCryptPrivateKeyTrait;
     use PlainPasswordTrait;
     use PlainRecoveryTokenTrait;
+    use QuotaTrait;
     use RecoverySecretBoxTrait;
     use RecoveryStartTimeTrait;
-    use MailCryptEnabledTrait;
-    use MailCryptSecretBoxTrait;
-    use PlainMailCryptPrivateKeyTrait;
-    use MailCryptPublicKeyTrait;
-    use TwofactorTrait;
+    use SaltTrait;
     use TwofactorBackupCodeTrait;
-    use OpenPgpKeyAwareTrait;
+    use TwofactorTrait;
+    use UpdatedTimeTrait;
 
     public const CURRENT_PASSWORD_VERSION = 2;
 
@@ -103,9 +105,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         return ($this->getEmail()) ?: '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRoles(): array
     {
         return !empty($this->roles) ? $this->roles : [Roles::USER];
@@ -116,35 +115,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         $this->roles = $roles;
     }
 
-    /**
-     * @param $role
-     *
-     * @return bool
-     */
     public function hasRole($role): bool
     {
         return in_array($role, $this->getRoles(), true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUsername(): ?string
     {
         return $this->getUserIdentifier();
     }
 
-    /**
-     * @return string
-     */
     public function getUserIdentifier(): string
     {
         return $this->email;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPasswordHasherName(): ?string
     {
         if ($this->getPasswordVersion() < self::CURRENT_PASSWORD_VERSION) {

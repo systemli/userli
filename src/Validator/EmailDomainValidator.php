@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Validator;
 
 use App\Entity\Domain;
@@ -20,7 +22,7 @@ class EmailDomainValidator extends ConstraintValidator
             return;
         }
 
-        $name = substr(strrchr((string)$value->getEmail(), '@'), 1);
+        $name = substr(strrchr((string) $value->getEmail(), '@'), 1);
         $domain = $this->manager->getRepository(Domain::class)->findOneBy(['name' => $name]);
 
         if (null === $domain) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use Doctrine\DBAL\Types\Types;
@@ -15,9 +17,6 @@ trait TwofactorBackupCodeTrait
         return $this->totpBackupCodes ?: [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isBackupCode(string $code): bool
     {
         return in_array($code, $this->totpBackupCodes, true);
@@ -36,9 +35,6 @@ trait TwofactorBackupCodeTrait
         $this->totpBackupCodes = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addBackupCode(string $backupCode): void
     {
         if (!in_array($backupCode, $this->totpBackupCodes)) {

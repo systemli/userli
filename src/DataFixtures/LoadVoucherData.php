@@ -1,21 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Exception;
-use DateTime;
 use App\Entity\User;
 use App\Factory\VoucherFactory;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
 
 class LoadVoucherData extends Fixture implements FixtureGroupInterface, DependentFixtureInterface
 {
     /**
-     * {@inheritdoc}
-     *
      * @throws Exception
      */
     public function load(ObjectManager $manager): void

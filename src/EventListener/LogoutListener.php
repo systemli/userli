@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -12,9 +14,6 @@ class LogoutListener implements EventSubscriberInterface
         $event->getRequest()->getSession()->getFlashBag()->add('success', 'flashes.logout-successful');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [

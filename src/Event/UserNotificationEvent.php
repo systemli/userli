@@ -13,11 +13,10 @@ class UserNotificationEvent extends Event
     public const COMPROMISED_PASSWORD = 'user.notification.compromised_password';
 
     public function __construct(
-        private readonly User                 $user,
+        private readonly User $user,
         private readonly UserNotificationType $notificationType,
-        private readonly string               $locale
-    )
-    {
+        private readonly string $locale,
+    ) {
     }
 
     public function getUser(): User

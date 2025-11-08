@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
@@ -13,9 +15,6 @@ class TextToEmailTransformer implements DataTransformerInterface
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform(mixed $value): mixed
     {
         if (null === $value) {
@@ -25,9 +24,6 @@ class TextToEmailTransformer implements DataTransformerInterface
         return substr((string) $value, 0, strpos((string) $value, '@'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reverseTransform(mixed $value): mixed
     {
         if (null === $value || '' === $value) {

@@ -16,7 +16,7 @@ readonly class JsonExceptionListener implements EventSubscriberInterface
 {
     public function __construct(
         #[Autowire('kernel.environment')]
-        private string $environment
+        private string $environment,
     ) {
     }
 
@@ -41,7 +41,7 @@ readonly class JsonExceptionListener implements EventSubscriberInterface
             'error' => [
                 'message' => $exception->getMessage(),
                 'code' => $exception->getCode(),
-            ]
+            ],
         ];
 
         $statusCode = 500;
@@ -50,7 +50,7 @@ readonly class JsonExceptionListener implements EventSubscriberInterface
         }
 
         if ($this->environment === 'dev') {
-            $data['error']['exception'] = get_class($exception);
+            $data['error']['exception'] = $exception::class;
             $data['error']['file'] = $exception->getFile();
             $data['error']['line'] = $exception->getLine();
             $data['error']['trace'] = $exception->getTrace();

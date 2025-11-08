@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Handler\DeleteHandler;
@@ -14,22 +16,15 @@ class UsersDeleteCommand extends AbstractUsersCommand
     public function __construct(
         EntityManagerInterface $manager,
         private readonly DeleteHandler $deleteHandler,
-    )
-    {
+    ) {
         parent::__construct($manager);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         parent::configure();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $user = $this->getUser($input);

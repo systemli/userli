@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\MessageHandler;
 
-use DateTimeImmutable;
 use App\Entity\UserNotification;
 use App\Message\PruneUserNotifications;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -16,10 +16,8 @@ final class PruneUserNotificationsHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly LoggerInterface        $logger,
-    )
-    {
-
+        private readonly LoggerInterface $logger,
+    ) {
     }
 
     public function __invoke(PruneUserNotifications $message): void

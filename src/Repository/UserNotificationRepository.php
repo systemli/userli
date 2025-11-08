@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use DateTimeImmutable;
-use App\Entity\UserNotification;
 use App\Entity\User;
+use App\Entity\UserNotification;
 use App\Enum\UserNotificationType;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -22,7 +22,7 @@ class UserNotificationRepository extends ServiceEntityRepository
     }
 
     /**
-     * Check if a user received notification of a specific type within specified hours
+     * Check if a user received notification of a specific type within specified hours.
      */
     public function hasRecentNotification(User $user, UserNotificationType $type, int $hours = 24): bool
     {
@@ -39,11 +39,11 @@ class UserNotificationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
 
-        return (int)$result > 0;
+        return (int) $result > 0;
     }
 
     /**
-     * Save a new notification record
+     * Save a new notification record.
      */
     public function save(UserNotification $notification): void
     {

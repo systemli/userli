@@ -1,19 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use App\DataFixtures\LoadApiTokenData;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+use const JSON_THROW_ON_ERROR;
+
 class DovecotControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->client = static::createClient(server: [
-            'HTTP_AUTHORIZATION' => 'Bearer ' . LoadApiTokenData::DOVECOT_TOKEN_PLAIN,
+            'HTTP_AUTHORIZATION' => 'Bearer '.LoadApiTokenData::DOVECOT_TOKEN_PLAIN,
             'ACCEPT' => 'application/json',
             'CONTENT_TYPE' => 'application/json',
         ]);
@@ -21,7 +25,6 @@ class DovecotControllerTest extends WebTestCase
 
     public function testStatus(): void
     {
-
         $this->client->request('GET', '/api/dovecot/status');
 
         self::assertResponseStatusCodeSame(200);
@@ -29,8 +32,8 @@ class DovecotControllerTest extends WebTestCase
 
     public function testStatusWrongApiToken(): void
     {
-        $this->client->request(method:'GET',uri: '/api/dovecot/status', server: [
-            'HTTP_AUTHORIZATION' => 'Bearer wrongtoken'
+        $this->client->request(method: 'GET', uri: '/api/dovecot/status', server: [
+            'HTTP_AUTHORIZATION' => 'Bearer wrongtoken',
         ]);
 
         self::assertResponseStatusCodeSame(401);
@@ -71,7 +74,7 @@ class DovecotControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(200);
         $data = json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
         self::assertNotNull($data['body']['mailCryptPrivateKey']);
-        self::assertNotEquals($data['body']['mailCryptPrivateKey'], "");
+        self::assertNotEquals($data['body']['mailCryptPrivateKey'], '');
     }
 
     public function testUserdbUser(): void
@@ -84,7 +87,7 @@ class DovecotControllerTest extends WebTestCase
         self::assertEquals($data['message'], 'success');
         self::assertEquals($data['body']['user'], 'user@example.org');
         self::assertEquals($data['body']['mailCrypt'], 0);
-        self::assertEquals($data['body']['mailCryptPublicKey'], "");
+        self::assertEquals($data['body']['mailCryptPublicKey'], '');
         self::assertIsInt($data['body']['gid']);
         self::assertIsInt($data['body']['uid']);
         self::assertNotEquals($data['body']['home'], '');

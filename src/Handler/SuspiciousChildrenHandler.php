@@ -10,8 +10,8 @@ use Twig\Environment;
 final readonly class SuspiciousChildrenHandler
 {
     public function __construct(
-        private MailHandler     $handler,
-        private Environment     $twig,
+        private MailHandler $handler,
+        private Environment $twig,
         private SettingsService $settingsService,
     ) {
     }

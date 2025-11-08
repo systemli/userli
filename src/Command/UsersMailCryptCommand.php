@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
-use Exception;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -16,11 +18,11 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 class UsersMailCryptCommand extends AbstractUsersCommand
 {
     public function __construct(
-        EntityManagerInterface                     $manager,
+        EntityManagerInterface $manager,
         private readonly UserAuthenticationHandler $handler,
-        private readonly MailCryptKeyHandler       $mailCryptKeyHandler,
+        private readonly MailCryptKeyHandler $mailCryptKeyHandler,
         #[Autowire(env: 'MAIL_CRYPT')]
-        private readonly int                       $mailCrypt
+        private readonly int $mailCrypt,
     ) {
         parent::__construct($manager);
     }
@@ -37,8 +39,6 @@ class UsersMailCryptCommand extends AbstractUsersCommand
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int

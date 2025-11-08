@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Filter;
 
-use InvalidArgumentException;
 use App\Entity\Domain;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
+use InvalidArgumentException;
 
 class DomainFilter extends SQLFilter
 {

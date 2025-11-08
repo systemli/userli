@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Creator;
 
 use App\Exception\ValidationException;
@@ -20,11 +22,9 @@ abstract class AbstractCreator
     }
 
     /**
-     * @param $entity
-     *
      * @throws ValidationException
      */
-    public function validate($entity, array $validationGroups = null): void
+    public function validate($entity, ?array $validationGroups = null): void
     {
         $violations = $this->validator->validate($entity, null, $validationGroups);
 
@@ -33,9 +33,6 @@ abstract class AbstractCreator
         }
     }
 
-    /**
-     * @param $entity
-     */
     protected function save($entity): void
     {
         $this->manager->persist($entity);

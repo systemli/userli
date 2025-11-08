@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
-use Traversable;
 use App\Handler\DeleteHandler;
 use App\Remover\VoucherRemover;
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -10,6 +11,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Traversable;
 
 class UserCRUDController extends CRUDController
 {

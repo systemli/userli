@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Form\Model\RecoveryToken;
@@ -20,9 +22,6 @@ class RecoveryTokenType extends AbstractType
             ->add('submit', SubmitType::class, ['label' => 'form.generate-recovery-token']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => RecoveryToken::class]);

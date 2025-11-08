@@ -17,12 +17,11 @@ class SettingsService
     private const CACHE_TTL = 3600;
 
     public function __construct(
-        private readonly SettingRepository      $repository,
+        private readonly SettingRepository $repository,
         private readonly EntityManagerInterface $entityManager,
         private readonly CacheItemPoolInterface $cache,
-        private readonly SettingsConfigService  $configService,
-    )
-    {
+        private readonly SettingsConfigService $configService,
+    ) {
     }
 
     public function get(string $name, mixed $default = null): mixed
@@ -128,7 +127,7 @@ class SettingsService
             return json_encode($value);
         }
 
-        return (string)$value;
+        return (string) $value;
     }
 
     private function convertValueFromString(string $name, mixed $value): mixed
@@ -150,7 +149,7 @@ class SettingsService
         }
 
         if ($type === 'float' && (is_float($value) || is_int($value))) {
-            return (float)$value;
+            return (float) $value;
         }
 
         if ($type === 'array' && is_array($value)) {
@@ -164,10 +163,10 @@ class SettingsService
 
         return match ($type) {
             'boolean' => in_array($value, ['1', 'true', true, 1], true),
-            'integer' => (int)$value,
-            'float' => (float)$value,
+            'integer' => (int) $value,
+            'float' => (float) $value,
             'array' => is_string($value) ? json_decode($value, true) : $value, // These are string-based field types
-            default => (string)$value,
+            default => (string) $value,
         };
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Form;
 
 use App\Form\Model\Password;
@@ -8,7 +10,6 @@ use Symfony\Component\Form\Test\TypeTestCase;
 
 class PasswordTypeTest extends TypeTestCase
 {
-
     public function testSubmitValidData(): void
     {
         $password = 'password';

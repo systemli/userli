@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Sender;
 
-use Exception;
 use App\Builder\AliasCreatedMessageBuilder;
 use App\Entity\Alias;
 use App\Entity\User;
 use App\Handler\MailHandler;
+use Exception;
 
 /**
  * Class AliasCreatedMessageSender.

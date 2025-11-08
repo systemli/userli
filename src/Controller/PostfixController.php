@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[RequireApiScope(scope: ApiScope::POSTFIX)]
 class PostfixController extends AbstractController
 {
-    public function __construct(readonly private EntityManagerInterface $manager)
+    public function __construct(private readonly EntityManagerInterface $manager)
     {
     }
 
@@ -37,6 +37,7 @@ class PostfixController extends AbstractController
     {
         $domain = $this->manager->getRepository(Domain::class)->findOneBy(['name' => $name]);
         $exists = $domain !== null;
+
         return $this->json($exists);
     }
 
@@ -46,6 +47,7 @@ class PostfixController extends AbstractController
         $email = $this->normalizeEmailForLookup($rawEmail);
         $user = $this->manager->getRepository(User::class)->findOneBy(['email' => $email, 'deleted' => false]);
         $exists = $user !== null;
+
         return $this->json($exists);
     }
 
@@ -86,6 +88,7 @@ class PostfixController extends AbstractController
         if ($plusPos !== false) {
             $local = substr($local, 0, $plusPos);
         }
-        return $local . '@' . $domain;
+
+        return $local.'@'.$domain;
     }
 }

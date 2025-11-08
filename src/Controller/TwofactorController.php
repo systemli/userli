@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\User;
@@ -22,9 +24,8 @@ class TwofactorController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $manager,
-        private readonly TotpAuthenticatorInterface $totpAuthenticator
-    )
-    {
+        private readonly TotpAuthenticatorInterface $totpAuthenticator,
+    ) {
     }
 
     #[Route(path: '/account/twofactor', name: 'account_twofactor', methods: ['GET'])]
@@ -35,6 +36,7 @@ class TwofactorController extends AbstractController
                 'action' => $this->generateUrl('account_twofactor_submit'),
                 'method' => 'POST',
             ]);
+
             return $this->render('Account/twofactor_enable.html.twig', [
                 'form' => $form,
                 'user' => $this->getUser(),

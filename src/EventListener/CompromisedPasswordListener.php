@@ -16,10 +16,9 @@ readonly class CompromisedPasswordListener implements EventSubscriberInterface
 {
     public function __construct(
         private PasswordCompromisedService $passwordCompromisedService,
-        private RequestStack               $requestStack,
-        private string                     $defaultLocale = 'en',
-    )
-    {
+        private RequestStack $requestStack,
+        private string $defaultLocale = 'en',
+    ) {
     }
 
     public static function getSubscribedEvents(): array

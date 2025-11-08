@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Handler;
 
 use App\Entity\Domain;
@@ -10,6 +12,8 @@ use App\Repository\OpenPgpKeyRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
+
+use const DIRECTORY_SEPARATOR;
 
 class WkdHandlerTest extends TestCase
 {

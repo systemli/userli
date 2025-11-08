@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
 use App\Creator\ReservedNameCreator;
@@ -18,15 +20,13 @@ class LoadReservedNameData extends Fixture implements FixtureGroupInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws ValidationException
      */
     public function load(ObjectManager $manager): void
     {
         $handle = fopen(
-            dirname(__FILE__) . '/../../config/reserved_names.txt',
-            'rb'
+            __DIR__.'/../../config/reserved_names.txt',
+            'r'
         );
 
         while ($line = fgets($handle)) {

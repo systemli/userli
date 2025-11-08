@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Helper;
 
 use App\Entity\Domain;
@@ -8,19 +10,17 @@ use App\Helper\AdminPasswordUpdater;
 use App\Helper\PasswordUpdater;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
-use App\Security\Encoder\LegacyPasswordHasher;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\Hasher\PlaintextPasswordHasher;
-use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
 class AdminPasswordUpdaterTest extends TestCase
 {
     private string $defaultDomain;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->defaultDomain = 'example.org';
     }

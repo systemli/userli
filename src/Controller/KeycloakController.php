@@ -22,29 +22,29 @@ use Symfony\Component\Routing\Attribute\Route;
 #[RequireApiScope(scope: ApiScope::KEYCLOAK)]
 class KeycloakController extends AbstractController
 {
-    const MESSAGE_SUCCESS = 'success';
+    public const MESSAGE_SUCCESS = 'success';
 
-    const MESSAGE_AUTHENTICATION_FAILED = 'authentication failed';
+    public const MESSAGE_AUTHENTICATION_FAILED = 'authentication failed';
 
-    const MESSAGE_PASSWORD_CHANGE_REQUIRED = 'password change required';
+    public const MESSAGE_PASSWORD_CHANGE_REQUIRED = 'password change required';
 
-    const MESSAGE_USER_NOT_FOUND = 'user not found';
+    public const MESSAGE_USER_NOT_FOUND = 'user not found';
 
-    const MESSAGE_NOT_SUPPORTED = 'not supported';
+    public const MESSAGE_NOT_SUPPORTED = 'not supported';
 
     public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly UserAuthenticationHandler $handler,
-        private readonly TotpAuthenticatorInterface $totpAuthenticator
+        private readonly TotpAuthenticatorInterface $totpAuthenticator,
     ) {
     }
 
     #[Route(path: '/api/keycloak/{domainUrl}', name: 'api_keycloak_get_users_search', methods: ['GET'], stateless: true)]
     public function getUsersSearch(
         #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
-        #[MapQueryParameter] string                           $search = '',
-        #[MapQueryParameter] int                              $max = 10,
-        #[MapQueryParameter] int                              $first = 0,
+        #[MapQueryParameter] string $search = '',
+        #[MapQueryParameter] int $max = 10,
+        #[MapQueryParameter] int $first = 0,
     ): Response {
         $users = $this->manager->getRepository(User::class)->findUsersByString($domain, $search, $max, $first)->map(function (User $user) {
             return [
@@ -52,6 +52,7 @@ class KeycloakController extends AbstractController
                 'email' => $user->getEmail(),
             ];
         });
+
         return $this->json($users);
     }
 
@@ -64,10 +65,10 @@ class KeycloakController extends AbstractController
     #[Route(path: '/api/keycloak/{domainUrl}/user/{email}', name: 'api_keycloak_get_one_user', methods: ['GET'], stateless: true)]
     public function getOneUser(
         #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
-        string                                                $email,
+        string $email,
     ): Response {
         if (!str_contains($email, '@')) {
-            $email .= '@' . $domain->getName();
+            $email .= '@'.$domain->getName();
         }
 
         if (null === $foundUser = $this->manager->getRepository(User::class)->findByDomainAndEmail($domain, $email)) {
@@ -85,8 +86,8 @@ class KeycloakController extends AbstractController
     #[Route(path: '/api/keycloak/{domainUrl}/validate/{email}', name: 'api_keycloak_post_user_validate', methods: ['POST'], stateless: true)]
     public function postUserValidate(
         #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
-        #[MapRequestPayload] KeycloakUserValidateDto          $requestData,
-        string                                                $email,
+        #[MapRequestPayload] KeycloakUserValidateDto $requestData,
+        string $email,
     ): Response {
         if (null === $user = $this->manager->getRepository(User::class)->findByDomainAndEmail($domain, $email)) {
             return $this->json([

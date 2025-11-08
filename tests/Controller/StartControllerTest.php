@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use App\Entity\User;
@@ -28,7 +30,7 @@ class StartControllerTest extends WebTestCase
         $this->assertResponseRedirects('/start');
     }
 
-    public function testVisitingStartAsSpammer()
+    public function testVisitingStartAsSpammer(): void
     {
         $client = static::createClient();
         $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => 'spam@example.org']);
@@ -41,7 +43,7 @@ class StartControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h1, .text-xl', 'Account locked');
     }
 
-    public function testVisitingStartAsUser()
+    public function testVisitingStartAsUser(): void
     {
         $client = static::createClient();
         $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => 'user@example.org']);

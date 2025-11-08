@@ -1,20 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Entity\WebhookDelivery;
 use App\Entity\WebhookEndpoint;
 use App\Message\SendWebhook;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 readonly class WebhookDeliveryManager
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private MessageBusInterface    $bus
-    )
-    {
+        private MessageBusInterface $bus,
+    ) {
     }
 
     public function findAllByEndpoint(WebhookEndpoint $endpoint): array
@@ -40,11 +41,11 @@ readonly class WebhookDeliveryManager
 
         // Annotate attempt header (next attempt number is current attempts + 1, increment happens in handler)
         $headers = $delivery->getRequestHeaders();
-        $headers['X-Webhook-Attempt'] = (string)($delivery->getAttempts() + 1);
+        $headers['X-Webhook-Attempt'] = (string) ($delivery->getAttempts() + 1);
         $delivery->setRequestHeaders($headers);
 
         $this->em->flush();
 
-        $this->bus->dispatch(new SendWebhook((string)$delivery->getId()));
+        $this->bus->dispatch(new SendWebhook((string) $delivery->getId()));
     }
 }

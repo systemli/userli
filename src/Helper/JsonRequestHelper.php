@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Helper;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -11,9 +13,6 @@ readonly class JsonRequestHelper
      * This is determined by checking if the request path starts with '/api/',
      * if the 'Accept' header includes 'application/json', if the 'Content-Type'
      * header is 'application/json', or if the request format is set to 'json'.
-     *
-     * @param Request $request
-     * @return bool
      */
     public static function wantsJson(Request $request): bool
     {

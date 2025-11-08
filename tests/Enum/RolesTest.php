@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Enum;
 
 use App\Enum\Roles;
@@ -62,4 +64,3 @@ class RolesTest extends TestCase
         ], $reachable);
     }
 }
-

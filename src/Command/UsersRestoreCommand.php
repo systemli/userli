@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
-use App\Handler\UserRestoreHandler;
-use Exception;
 use App\Handler\PasswordStrengthHandler;
+use App\Handler\UserRestoreHandler;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,22 +20,16 @@ class UsersRestoreCommand extends AbstractUsersCommand
     public function __construct(
         EntityManagerInterface $manager,
         private readonly UserRestoreHandler $userRestoreHandler,
-    )
-    {
+    ) {
         parent::__construct($manager);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         parent::configure();
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int

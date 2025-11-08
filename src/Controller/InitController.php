@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Creator\DomainCreator;
@@ -23,15 +25,14 @@ class InitController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $manager,
-        private readonly AdminPasswordUpdater   $updater,
-        private readonly DomainCreator          $creator,
-        private readonly SettingsService        $settingsService
-    )
-    {
+        private readonly AdminPasswordUpdater $updater,
+        private readonly DomainCreator $creator,
+        private readonly SettingsService $settingsService,
+    ) {
     }
 
     #[Route(path: '/init', name: 'init', methods: ['GET'])]
-    public function init() : Response
+    public function init(): Response
     {
         // redirect if already configured
         if (0 < $this->manager->getRepository(Domain::class)->count([])) {
@@ -42,6 +43,7 @@ class InitController extends AbstractController
             'action' => $this->generateUrl('init_submit'),
             'method' => 'post',
         ]);
+
         return $this->render('Init/domain.html.twig', ['form' => $form]);
     }
 
@@ -61,7 +63,7 @@ class InitController extends AbstractController
     }
 
     #[Route(path: '/init/user', name: 'init_user', methods: ['GET'])]
-    public function user() : Response
+    public function user(): Response
     {
         // redirect if already configured
         if (0 < $this->manager->getRepository(User::class)->count([])) {
@@ -72,6 +74,7 @@ class InitController extends AbstractController
             'action' => $this->generateUrl('init_user_submit'),
             'method' => 'post',
         ]);
+
         return $this->render('Init/user.html.twig', ['form' => $form]);
     }
 
@@ -106,10 +109,10 @@ class InitController extends AbstractController
 
         // Prepare default data based on domain
         $defaultData = [
-            'app_url' => $domainName ? 'https://users.' . $domainName : null,
-            'project_url' => $domainName ? 'https://' . $domainName : null,
-            'email_sender_address' => $domainName ? 'noreply@' . $domainName : null,
-            'email_notification_address' => $domainName ? 'admin@' . $domainName : null,
+            'app_url' => $domainName ? 'https://users.'.$domainName : null,
+            'project_url' => $domainName ? 'https://'.$domainName : null,
+            'email_sender_address' => $domainName ? 'noreply@'.$domainName : null,
+            'email_notification_address' => $domainName ? 'admin@'.$domainName : null,
         ];
 
         $form = $this->createForm(SettingsType::class, $defaultData, [
@@ -133,7 +136,7 @@ class InitController extends AbstractController
             $data = $form->getData();
 
             // Filter out null values and save only provided settings
-            $data = array_filter($data, fn($value) => $value !== null);
+            $data = array_filter($data, fn ($value) => $value !== null);
 
             $this->settingsService->setAll($data);
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\AliasRepository;
@@ -28,13 +30,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Index(columns: ['user_id', 'deleted'], name: 'user_deleted_idx')]
 class Alias implements SoftDeletableInterface, Stringable
 {
-    use IdTrait;
     use CreationTimeTrait;
-    use UpdatedTimeTrait;
     use DeleteTrait;
-    use UserAwareTrait;
     use DomainAwareTrait;
+    use IdTrait;
     use RandomTrait;
+    use UpdatedTimeTrait;
+    use UserAwareTrait;
 
     #[ORM\Column]
     #[Assert\NotNull]
@@ -91,9 +93,9 @@ class Alias implements SoftDeletableInterface, Stringable
         }
 
         if ($this->random) {
-            return $this->source . ' -> ' . $this->destination . ' (random)';
+            return $this->source.' -> '.$this->destination.' (random)';
         }
 
-        return $this->source . ' -> ' . $this->destination;
+        return $this->source.' -> '.$this->destination;
     }
 }

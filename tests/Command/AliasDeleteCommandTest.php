@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Command;
 
 use App\Command\AliasDeleteCommand;
@@ -12,13 +14,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class AliasDeleteCommandTest extends TestCase
 {
     private AliasDeleteCommand $command;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $user = new User();
         $user->setEmail('user@example.org');

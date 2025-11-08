@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use App\Validator\PasswordPolicy;
@@ -12,7 +14,7 @@ trait PlainPasswordTrait
 {
     #[PasswordPolicy]
     #[Assert\NotBlank]
-    #[Assert\NotCompromisedPassword( skipOnError: 'true')]
+    #[Assert\NotCompromisedPassword(skipOnError: 'true')]
     private ?string $plainPassword = null;
 
     public function getPlainPassword(): ?string

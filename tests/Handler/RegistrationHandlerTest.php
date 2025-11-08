@@ -1,28 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Handler;
 
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Entity\Voucher;
 use App\Enum\Roles;
-use App\Event\Events;
-use App\Event\UserEvent;
-use App\Repository\VoucherRepository;
-use Exception;
 use App\Form\Model\Registration;
 use App\Guesser\DomainGuesser;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Handler\RegistrationHandler;
 use App\Helper\PasswordUpdater;
+use App\Repository\VoucherRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RegistrationHandlerTest extends KernelTestCase
 {
-    public function testHandleWithDisabledRegistration()
+    public function testHandleWithDisabledRegistration(): void
     {
         $handler = new RegistrationHandler(
             $this->createMock(EntityManagerInterface::class),
@@ -39,7 +39,7 @@ class RegistrationHandlerTest extends KernelTestCase
         $handler->handle(new Registration());
     }
 
-    public function testHandleWithEnabledRegistration()
+    public function testHandleWithEnabledRegistration(): void
     {
         $domain = new Domain();
         $domainGuesser = $this->createMock(DomainGuesser::class);
@@ -54,7 +54,7 @@ class RegistrationHandlerTest extends KernelTestCase
             [Voucher::class, $voucherRepository],
         ]);
         $manager->method('persist')->willReturnCallback(function (User $user) use ($voucher, $domain): void {
-            $this->assertEquals("user@example.com", $user->getEmail());
+            $this->assertEquals('user@example.com', $user->getEmail());
             $this->assertEquals([Roles::USER], $user->getRoles());
             $this->assertEquals($domain, $user->getDomain());
             $this->assertEquals($voucher, $user->getInvitationVoucher());
@@ -78,7 +78,7 @@ class RegistrationHandlerTest extends KernelTestCase
         $registration = new Registration();
         $registration->setPlainPassword('password');
         $registration->setEmail('user@example.com');
-        $registration->setVoucher("voucher");
+        $registration->setVoucher('voucher');
 
         $handler->handle($registration);
 

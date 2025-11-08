@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\EventListener;
 
-use Exception;
 use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Event\DomainCreatedEvent;
 use App\Handler\WkdHandler;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DomainCreationListener implements EventSubscriberInterface

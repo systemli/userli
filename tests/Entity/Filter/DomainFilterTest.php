@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Entity\Filter;
 
 use App\Entity\Domain;
@@ -8,7 +10,6 @@ use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\FilterCollection;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -20,7 +21,7 @@ class DomainFilterTest extends TestCase
     private EntityManager $manager;
     private ClassMetadata $targetEntity;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $filterCollection = $this->getMockBuilder(FilterCollection::class)
             ->disableOriginalConstructor()
@@ -49,7 +50,7 @@ class DomainFilterTest extends TestCase
     public function testGetDomainId(): void
     {
         $filter = new DomainFilter($this->manager);
-        self::assertEquals(null, $filter->getDomainId());
+        self::assertNull($filter->getDomainId());
         self::assertNotEquals(1, $filter->getDomainId());
 
         $filter->setParameter('domainId', '1');
@@ -73,8 +74,8 @@ class DomainFilterTest extends TestCase
     {
         $this->targetEntity->method('getName')->willReturn('xyz');
         $this->targetEntity->method('getAssociationMappings')->willReturn([
-                'domain' => 1,
-                'other' => 2, ]
+            'domain' => 1,
+            'other' => 2, ]
         );
 
         self::assertEquals(
@@ -87,8 +88,8 @@ class DomainFilterTest extends TestCase
     {
         $this->targetEntity->method('getName')->willReturn('xyz');
         $this->targetEntity->method('getAssociationMappings')->willReturn([
-                'user' => 1,
-                'other' => 2, ]
+            'user' => 1,
+            'other' => 2, ]
         );
 
         self::assertEquals('', $this->filter->addFilterConstraint($this->targetEntity, 'xyz')

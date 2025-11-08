@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Form\Model\OpenPgpKey;
@@ -52,9 +54,6 @@ class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
         $builder->addEventSubscriber($this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => OpenPgpKey::class]);
@@ -77,8 +76,8 @@ class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
         /** @var OpenPgpKey $submittedData */
         $submittedData = $event->getData();
 
-        if ((null === $submittedData->getKeyFile() && null === $submittedData->getKeyText()) ||
-            (null !== $submittedData->getKeyFile() && null !== $submittedData->getKeyText())) {
+        if ((null === $submittedData->getKeyFile() && null === $submittedData->getKeyText())
+            || (null !== $submittedData->getKeyFile() && null !== $submittedData->getKeyText())) {
             throw new TransformationFailedException('exactly one of keyFile or keyText must be set', 0, null, $this->translator->trans('openpgp-key-select-one'));
         }
     }

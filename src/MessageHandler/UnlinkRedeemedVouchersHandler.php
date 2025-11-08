@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\MessageHandler;
 
 use App\Entity\Voucher;
@@ -14,9 +16,8 @@ final readonly class UnlinkRedeemedVouchersHandler
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private LoggerInterface        $logger,
-    )
-    {
+        private LoggerInterface $logger,
+    ) {
     }
 
     public function __invoke(UnlinkRedeemedVouchers $message): void

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Handler;
 
 use App\Entity\User;
@@ -27,20 +29,20 @@ class UserRestoreHandlerTest extends TestCase
 
         $this->passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)
             ->disableOriginalConstructor()->getMock();
-        $this->passwordUpdater->method('updatePassword')->willReturnCallback(function (User $user) {
+        $this->passwordUpdater->method('updatePassword')->willReturnCallback(function (User $user): void {
             $user->setPassword('new_password');
         });
 
         $this->mailCryptKeyHandler = $this->getMockBuilder(MailCryptKeyHandler::class)
             ->disableOriginalConstructor()->getMock();
-        $this->mailCryptKeyHandler->method('create')->willReturnCallBack(function (User $user, string $password) {
+        $this->mailCryptKeyHandler->method('create')->willReturnCallBack(function (User $user, string $password): void {
             $user->setMailCryptSecretBox('MailCryptSecretBox');
             $user->setMailCryptEnabled(true);
         });
 
         $this->recoveryTokenHandler = $this->getMockBuilder(RecoveryTokenHandler::class)
             ->disableOriginalConstructor()->getMock();
-        $this->recoveryTokenHandler->method('create')->willReturnCallBack(function (User $user) {
+        $this->recoveryTokenHandler->method('create')->willReturnCallBack(function (User $user): void {
             $user->setRecoverySecretBox('RecoverySecretBox');
             $user->setPlainRecoveryToken('PlainRecoveryToken');
         });

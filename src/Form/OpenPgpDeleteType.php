@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Form\Model\Delete;
@@ -20,17 +22,11 @@ class OpenPgpDeleteType extends AbstractType
             ->add('submit', SubmitType::class, ['label' => 'openpgp-delete']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => Delete::class]);
     }
 
-    /**
-     * @return string
-     */
     public function getBlockPrefix(): string
     {
         return self::NAME;

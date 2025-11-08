@@ -10,7 +10,7 @@ readonly class SettingsAwareTotpAuthenticator implements TotpAuthenticatorInterf
 {
     public function __construct(
         private TotpAuthenticatorInterface $decoratedAuthenticator,
-        private SettingsService            $settingsService,
+        private SettingsService $settingsService,
     ) {
     }
 
@@ -56,13 +56,13 @@ readonly class SettingsAwareTotpAuthenticator implements TotpAuthenticatorInterf
 
     private function buildUrl(array $parsedUrl): string
     {
-        $scheme = isset($parsedUrl['scheme']) ? $parsedUrl['scheme'] . '://' : '';
+        $scheme = isset($parsedUrl['scheme']) ? $parsedUrl['scheme'].'://' : '';
         $host = $parsedUrl['host'] ?? '';
-        $port = isset($parsedUrl['port']) ? ':' . $parsedUrl['port'] : '';
+        $port = isset($parsedUrl['port']) ? ':'.$parsedUrl['port'] : '';
         $path = $parsedUrl['path'] ?? '';
-        $query = isset($parsedUrl['query']) ? '?' . $parsedUrl['query'] : '';
-        $fragment = isset($parsedUrl['fragment']) ? '#' . $parsedUrl['fragment'] : '';
+        $query = isset($parsedUrl['query']) ? '?'.$parsedUrl['query'] : '';
+        $fragment = isset($parsedUrl['fragment']) ? '#'.$parsedUrl['fragment'] : '';
 
-        return $scheme . $host . $port . $path . $query . $fragment;
+        return $scheme.$host.$port.$path.$query.$fragment;
     }
 }

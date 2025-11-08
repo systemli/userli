@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Form\Model\Password;
@@ -27,9 +29,6 @@ class PasswordType extends AbstractType
             ->add('submit', SubmitType::class, ['label' => 'form.submit']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => Password::class]);

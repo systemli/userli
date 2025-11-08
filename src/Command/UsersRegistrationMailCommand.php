@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
-use Exception;
 use App\Entity\User;
 use App\Sender\WelcomeMessageSender;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,14 +23,11 @@ class UsersRegistrationMailCommand extends Command
         private readonly EntityManagerInterface $manager,
         private readonly WelcomeMessageSender $welcomeMessageSender,
         #[Autowire('kernel.default_locale')]
-        private readonly string $defaultLocale
+        private readonly string $defaultLocale,
     ) {
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this
@@ -37,8 +36,6 @@ class UsersRegistrationMailCommand extends Command
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Creator;
 
 use App\Creator\AliasCreator;
@@ -20,7 +22,7 @@ class AliasCreatorTest extends TestCase
     {
         $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('persist')->willReturnCallback(
-            function (Alias $alias) {
+            function (Alias $alias): void {
                 $alias->setId(1);
             }
         );

@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
+use ReflectionClass;
 
 class SettingsServiceTest extends TestCase
 {
@@ -249,14 +250,14 @@ class SettingsServiceTest extends TestCase
 
     public function testConvertValueFromStringWithString(): void
     {
-        $reflection = new \ReflectionClass($this->settingsService);
+        $reflection = new ReflectionClass($this->settingsService);
         $method = $reflection->getMethod('convertValueFromString');
         $method->setAccessible(true);
 
         $this->configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
-                'test_setting' => ['type' => 'string']
+                'test_setting' => ['type' => 'string'],
             ]);
 
         $result = $method->invoke($this->settingsService, 'test_setting', 'test_value');
@@ -266,14 +267,14 @@ class SettingsServiceTest extends TestCase
 
     public function testConvertValueFromStringWithInteger(): void
     {
-        $reflection = new \ReflectionClass($this->settingsService);
+        $reflection = new ReflectionClass($this->settingsService);
         $method = $reflection->getMethod('convertValueFromString');
         $method->setAccessible(true);
 
         $this->configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
-                'test_setting' => ['type' => 'integer']
+                'test_setting' => ['type' => 'integer'],
             ]);
 
         $result = $method->invoke($this->settingsService, 'test_setting', '42');
@@ -284,14 +285,14 @@ class SettingsServiceTest extends TestCase
 
     public function testConvertValueFromStringWithFloat(): void
     {
-        $reflection = new \ReflectionClass($this->settingsService);
+        $reflection = new ReflectionClass($this->settingsService);
         $method = $reflection->getMethod('convertValueFromString');
         $method->setAccessible(true);
 
         $this->configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
-                'test_setting' => ['type' => 'float']
+                'test_setting' => ['type' => 'float'],
             ]);
 
         $result = $method->invoke($this->settingsService, 'test_setting', '3.14');
@@ -302,14 +303,14 @@ class SettingsServiceTest extends TestCase
 
     public function testConvertValueFromStringWithBoolean(): void
     {
-        $reflection = new \ReflectionClass($this->settingsService);
+        $reflection = new ReflectionClass($this->settingsService);
         $method = $reflection->getMethod('convertValueFromString');
         $method->setAccessible(true);
 
         $this->configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
-                'test_setting' => ['type' => 'boolean']
+                'test_setting' => ['type' => 'boolean'],
             ]);
 
         $result = $method->invoke($this->settingsService, 'test_setting', '1');
@@ -319,14 +320,14 @@ class SettingsServiceTest extends TestCase
 
     public function testConvertValueFromStringWithArray(): void
     {
-        $reflection = new \ReflectionClass($this->settingsService);
+        $reflection = new ReflectionClass($this->settingsService);
         $method = $reflection->getMethod('convertValueFromString');
         $method->setAccessible(true);
 
         $this->configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
-                'test_setting' => ['type' => 'array']
+                'test_setting' => ['type' => 'array'],
             ]);
 
         $result = $method->invoke($this->settingsService, 'test_setting', '["a","b","c"]');
@@ -337,14 +338,14 @@ class SettingsServiceTest extends TestCase
 
     public function testConvertValueFromStringWithEmptyString(): void
     {
-        $reflection = new \ReflectionClass($this->settingsService);
+        $reflection = new ReflectionClass($this->settingsService);
         $method = $reflection->getMethod('convertValueFromString');
         $method->setAccessible(true);
 
         $this->configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
-                'test_setting' => ['type' => 'string']
+                'test_setting' => ['type' => 'string'],
             ]);
 
         $result = $method->invoke($this->settingsService, 'test_setting', '');
@@ -354,7 +355,7 @@ class SettingsServiceTest extends TestCase
 
     public function testConvertValueFromStringWithAlreadyCorrectType(): void
     {
-        $reflection = new \ReflectionClass($this->settingsService);
+        $reflection = new ReflectionClass($this->settingsService);
         $method = $reflection->getMethod('convertValueFromString');
         $method->setAccessible(true);
 
@@ -368,14 +369,14 @@ class SettingsServiceTest extends TestCase
 
     public function testConvertValueFromStringWithBooleanAlreadyCorrect(): void
     {
-        $reflection = new \ReflectionClass($this->settingsService);
+        $reflection = new ReflectionClass($this->settingsService);
         $method = $reflection->getMethod('convertValueFromString');
         $method->setAccessible(true);
 
         $this->configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
-                'test_setting' => ['type' => 'boolean']
+                'test_setting' => ['type' => 'boolean'],
             ]);
 
         $result = $method->invoke($this->settingsService, 'test_setting', true);
@@ -388,14 +389,14 @@ class SettingsServiceTest extends TestCase
      */
     public function testBooleanStringConversion(mixed $input, bool $expected): void
     {
-        $reflection = new \ReflectionClass($this->settingsService);
+        $reflection = new ReflectionClass($this->settingsService);
         $method = $reflection->getMethod('convertValueFromString');
         $method->setAccessible(true);
 
         $this->configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
-                'test_setting' => ['type' => 'boolean']
+                'test_setting' => ['type' => 'boolean'],
             ]);
 
         $result = $method->invoke($this->settingsService, 'test_setting', $input);
@@ -419,7 +420,7 @@ class SettingsServiceTest extends TestCase
 
     public function testConvertValueToStringPrivateMethod(): void
     {
-        $reflection = new \ReflectionClass($this->settingsService);
+        $reflection = new ReflectionClass($this->settingsService);
         $method = $reflection->getMethod('convertValueToString');
         $method->setAccessible(true);
 
@@ -456,7 +457,7 @@ class SettingsServiceTest extends TestCase
                 $this->repository,
                 $this->entityManager,
                 $this->cache,
-                $this->configService
+                $this->configService,
             ])
             ->onlyMethods(['getAllSettings'])
             ->getMock();
@@ -468,7 +469,7 @@ class SettingsServiceTest extends TestCase
         $this->configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
-                'test_setting' => ['type' => 'string']
+                'test_setting' => ['type' => 'string'],
             ]);
 
         $result = $settingsService->get('test_setting');
@@ -484,7 +485,7 @@ class SettingsServiceTest extends TestCase
                 $this->repository,
                 $this->entityManager,
                 $this->cache,
-                $this->configService
+                $this->configService,
             ])
             ->onlyMethods(['getAllSettings'])
             ->getMock();
@@ -498,8 +499,8 @@ class SettingsServiceTest extends TestCase
             ->willReturn([
                 'test_setting' => [
                     'type' => 'string',
-                    'default' => 'default_value'
-                ]
+                    'default' => 'default_value',
+                ],
             ]);
 
         $result = $settingsService->get('test_setting');
@@ -515,7 +516,7 @@ class SettingsServiceTest extends TestCase
                 $this->repository,
                 $this->entityManager,
                 $this->cache,
-                $this->configService
+                $this->configService,
             ])
             ->onlyMethods(['getAllSettings'])
             ->getMock();
@@ -528,9 +529,9 @@ class SettingsServiceTest extends TestCase
             ->method('getSettings')
             ->willReturn([
                 'test_setting' => [
-                    'type' => 'string'
+                    'type' => 'string',
                     // No default value in definition
-                ]
+                ],
             ]);
 
         $result = $settingsService->get('test_setting', 'fallback_value');
@@ -546,7 +547,7 @@ class SettingsServiceTest extends TestCase
                 $this->repository,
                 $this->entityManager,
                 $this->cache,
-                $this->configService
+                $this->configService,
             ])
             ->onlyMethods(['getAllSettings'])
             ->getMock();
@@ -572,7 +573,7 @@ class SettingsServiceTest extends TestCase
                 $this->repository,
                 $this->entityManager,
                 $this->cache,
-                $this->configService
+                $this->configService,
             ])
             ->onlyMethods(['getAllSettings'])
             ->getMock();
@@ -584,7 +585,7 @@ class SettingsServiceTest extends TestCase
         $this->configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
-                'bool_setting' => ['type' => 'boolean']
+                'bool_setting' => ['type' => 'boolean'],
             ]);
 
         $result = $settingsService->get('bool_setting');
@@ -601,7 +602,7 @@ class SettingsServiceTest extends TestCase
                 $this->repository,
                 $this->entityManager,
                 $this->cache,
-                $this->configService
+                $this->configService,
             ])
             ->onlyMethods(['getAllSettings'])
             ->getMock();
@@ -615,8 +616,8 @@ class SettingsServiceTest extends TestCase
             ->willReturn([
                 'int_setting' => [
                     'type' => 'integer',
-                    'default' => 42 // Already correct type
-                ]
+                    'default' => 42, // Already correct type
+                ],
             ]);
 
         $result = $settingsService->get('int_setting');

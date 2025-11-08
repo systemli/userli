@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Handler;
 
-use Exception;
 use App\Entity\User;
 use App\Model\CryptoSecret;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Ramsey\Uuid\Uuid;
 
 /**

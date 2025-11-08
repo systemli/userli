@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\EventListener;
 
 use App\EventListener\LocaleListener;
@@ -17,7 +19,7 @@ class LocaleListenerTest extends TestCase
     private Request $request;
     private RequestEvent $event;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->listener = new LocaleListener('en', ['de', 'en']);
 

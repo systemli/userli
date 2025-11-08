@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Handler;
 
-use DateTime;
 use App\Creator\VoucherCreator;
 use App\Entity\User;
 use App\Entity\Voucher;
 use App\Enum\Roles;
 use App\Exception\ValidationException;
 use App\Repository\VoucherRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**

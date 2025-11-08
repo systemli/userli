@@ -1,9 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Handler;
 
-use Exception;
 use App\Model\CryptoSecret;
+use Exception;
+
+use const SODIUM_CRYPTO_PWHASH_MEMLIMIT_INTERACTIVE;
+use const SODIUM_CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE;
+use const SODIUM_CRYPTO_PWHASH_SALTBYTES;
+use const SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
 
 class CryptoSecretHandler
 {

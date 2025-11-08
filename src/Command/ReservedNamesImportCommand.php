@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Creator\ReservedNameCreator;
@@ -12,14 +14,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use const STDIN;
+
 #[AsCommand(name: 'app:reservednames:import', description: 'Import reserved names from stdin or file')]
 class ReservedNamesImportCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly ReservedNameCreator $creator,
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -31,7 +34,7 @@ class ReservedNamesImportCommand extends Command
                 'f',
                 InputOption::VALUE_REQUIRED,
                 'Simple text file with a list of reserved names. Give "-" to read from STDIN.',
-                dirname(__FILE__).'/../../config/reserved_names.txt'
+                __DIR__.'/../../config/reserved_names.txt'
             );
     }
 
@@ -47,7 +50,7 @@ class ReservedNamesImportCommand extends Command
         if ('-' === $file) {
             $handle = STDIN;
         } else {
-            $handle = fopen($file, 'rb');
+            $handle = fopen($file, 'r');
         }
 
         while ($line = fgets($handle)) {

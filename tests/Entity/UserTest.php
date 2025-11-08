@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Entity;
 
-use DateTime;
 use App\Entity\User;
 use App\Enum\Roles;
+use DateTime;
 use PHPUnit\Framework\TestCase;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
 
@@ -50,7 +52,7 @@ class UserTest extends TestCase
     public function testGetPasswordHasherName(): void
     {
         $user = new User();
-        self::assertEquals(null, $user->getPasswordHasherName());
+        self::assertNull($user->getPasswordHasherName());
         $user->setPasswordVersion(1);
         self::assertEquals('legacy', $user->getPasswordHasherName());
     }
@@ -66,11 +68,11 @@ class UserTest extends TestCase
     public function testPlainRecoveryToken(): void
     {
         $user = new User();
-        self::assertEquals(null, $user->getPlainRecoveryToken());
+        self::assertNull($user->getPlainRecoveryToken());
         $user->setPlainRecoveryToken('testtoken');
         self::assertEquals('testtoken', $user->getPlainRecoveryToken());
         $user->erasePlainRecoveryToken();
-        self::assertEquals(null, $user->getPlainRecoveryToken());
+        self::assertNull($user->getPlainRecoveryToken());
     }
 
     public function testHasCreationTimeSet(): void
@@ -92,13 +94,13 @@ class UserTest extends TestCase
         // totpSecret and totpConfirmed
         $totpSecret = 'secret';
         $user = new User();
-        self::assertEquals(false, $user->getTotpConfirmed());
-        self::assertEquals(false, $user->isTotpAuthenticationEnabled());
+        self::assertFalse($user->getTotpConfirmed());
+        self::assertFalse($user->isTotpAuthenticationEnabled());
         $user->setTotpSecret($totpSecret);
-        self::assertEquals(false, $user->isTotpAuthenticationEnabled());
+        self::assertFalse($user->isTotpAuthenticationEnabled());
         $user->setTotpConfirmed(true);
-        self::assertEquals(true, $user->getTotpConfirmed());
-        self::assertEquals(true, $user->isTotpAuthenticationEnabled());
+        self::assertTrue($user->getTotpConfirmed());
+        self::assertTrue($user->isTotpAuthenticationEnabled());
 
         // getTotpAuthenticationUsername
         $email = 'user@example.org';

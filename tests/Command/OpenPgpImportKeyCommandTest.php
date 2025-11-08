@@ -1,19 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Command;
 
-use RuntimeException;
 use App\Command\OpenPgpImportKeyCommand;
 use App\Entity\OpenPgpKey;
 use App\Handler\WkdHandler;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class OpenPgpImportKeyCommandTest extends TestCase
 {
     private OpenPgpImportKeyCommand $command;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $openPgpKey = new OpenPgpKey();
         $openPgpKey->setEmail('alice@example.org');

@@ -1,10 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
-use DateTime;
-use DateInterval;
-use Exception;
 use App\Entity\User;
 use App\Event\RecoveryProcessEvent;
 use App\Event\UserEvent;
@@ -17,13 +16,16 @@ use App\Form\RecoveryTokenConfirmType;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
+use DateInterval;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 class RecoveryController extends AbstractController
 {
@@ -32,13 +34,12 @@ class RecoveryController extends AbstractController
     private const PROCESS_EXPIRE = '-30 days';
 
     public function __construct(
-        private readonly PasswordUpdater          $passwordUpdater,
-        private readonly MailCryptKeyHandler      $mailCryptKeyHandler,
-        private readonly RecoveryTokenHandler     $recoveryTokenHandler,
+        private readonly PasswordUpdater $passwordUpdater,
+        private readonly MailCryptKeyHandler $mailCryptKeyHandler,
+        private readonly RecoveryTokenHandler $recoveryTokenHandler,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly EntityManagerInterface   $manager,
-    )
-    {
+        private readonly EntityManagerInterface $manager,
+    ) {
     }
 
     #[Route(path: '/recovery', name: 'recovery', methods: ['GET'])]
@@ -202,7 +203,7 @@ class RecoveryController extends AbstractController
         $form = $this->createForm(RecoveryTokenConfirmType::class, $data);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() and $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-token-ack');
             $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-next-login');
 
@@ -216,10 +217,6 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @param User $user
-     * @param string $password
-     * @param string $recoveryToken
-     * @return string
      * @throws Exception
      */
     private function resetPassword(User $user, string $password, string $recoveryToken): string
@@ -258,10 +255,6 @@ class RecoveryController extends AbstractController
     }
 
     /**
-     * @param User $user
-     * @param string $recoveryToken
-     * @param bool $verifyTime
-     * @return bool
      * @throws Exception
      */
     private function verifyEmailRecoveryToken(User $user, string $recoveryToken, bool $verifyTime = false): bool

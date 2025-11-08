@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Validator;
 
 use App\Handler\PasswordStrengthHandler;
@@ -12,6 +14,7 @@ class PasswordPolicyValidatorTest extends ConstraintValidatorTestCase
     protected function createValidator(): PasswordPolicyValidator
     {
         $passwordStrengthHandler = new PasswordStrengthHandler();
+
         return new PasswordPolicyValidator($passwordStrengthHandler);
     }
 

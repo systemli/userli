@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use App\Entity\User;
@@ -28,7 +30,7 @@ class AccountControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h1', 'Account settings');
     }
 
-    public function testVisitingStartAsSpammer()
+    public function testVisitingStartAsSpammer(): void
     {
         $client = static::createClient();
         $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => 'spam@example.org']);
@@ -40,7 +42,7 @@ class AccountControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(403);
     }
 
-    public function testChangePassword()
+    public function testChangePassword(): void
     {
         $client = static::createClient();
         $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => 'user@example.org']);
@@ -60,7 +62,7 @@ class AccountControllerTest extends WebTestCase
         $this->assertResponseRedirects('/account');
     }
 
-    public function testChangePasswordIdentical()
+    public function testChangePasswordIdentical(): void
     {
         $client = static::createClient();
         $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => 'user@example.org']);
@@ -80,7 +82,7 @@ class AccountControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(422);
     }
 
-    public function testChangePasswordInsecure()
+    public function testChangePasswordInsecure(): void
     {
         $client = static::createClient();
         $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => 'user@example.org']);

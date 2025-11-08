@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\EventListener;
 
 use App\Entity\ApiToken;
@@ -52,9 +54,7 @@ class ApiScopeListener implements EventSubscriberInterface
         }
 
         if ($attribute && !in_array($attribute->scope->value, $apiToken->getScopes(), true)) {
-            throw new AccessDeniedHttpException(
-                sprintf('Token does not have required scope: %s', $attribute->scope->value)
-            );
+            throw new AccessDeniedHttpException(sprintf('Token does not have required scope: %s', $attribute->scope->value));
         }
     }
 }

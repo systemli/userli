@@ -11,7 +11,6 @@ readonly class ApiTokenBadge implements BadgeInterface
 {
     public function __construct(private ApiToken $apiToken)
     {
-
     }
 
     public function getApiToken(): ApiToken

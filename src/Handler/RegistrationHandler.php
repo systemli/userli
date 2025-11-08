@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Handler;
 
-use Exception;
-use DateTime;
 use App\Entity\User;
 use App\Entity\Voucher;
 use App\Enum\Roles;
@@ -11,23 +11,25 @@ use App\Event\UserEvent;
 use App\Form\Model\Registration;
 use App\Guesser\DomainGuesser;
 use App\Helper\PasswordUpdater;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 readonly class RegistrationHandler
 {
     public function __construct(
-        private EntityManagerInterface   $manager,
-        private DomainGuesser            $domainGuesser,
+        private EntityManagerInterface $manager,
+        private DomainGuesser $domainGuesser,
         private EventDispatcherInterface $eventDispatcher,
-        private PasswordUpdater          $passwordUpdater,
-        private MailCryptKeyHandler      $mailCryptKeyHandler,
-        private RecoveryTokenHandler     $recoveryTokenHandler,
+        private PasswordUpdater $passwordUpdater,
+        private MailCryptKeyHandler $mailCryptKeyHandler,
+        private RecoveryTokenHandler $recoveryTokenHandler,
         #[Autowire(env: 'REGISTRATION_OPEN')]
-        private bool                     $registrationOpen,
+        private bool $registrationOpen,
         #[Autowire(env: 'MAIL_CRYPT')]
-        private bool                     $mailCrypt
+        private bool $mailCrypt,
     ) {
     }
 
@@ -67,7 +69,7 @@ readonly class RegistrationHandler
     private function buildUser(Registration $registration): User
     {
         $user = new User();
-        $user->setEmail(strtolower((string)$registration->getEmail()));
+        $user->setEmail(strtolower((string) $registration->getEmail()));
         $user->setRoles([Roles::USER]);
 
         if (null !== $domain = $this->domainGuesser->guess($registration->getEmail())) {

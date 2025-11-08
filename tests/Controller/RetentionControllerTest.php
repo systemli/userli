@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use App\DataFixtures\LoadApiTokenData;
@@ -10,10 +12,10 @@ class RetentionControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->client = static::createClient(server: [
-            'HTTP_AUTHORIZATION' => 'Bearer ' . LoadApiTokenData::RETENTION_TOKEN_PLAIN,
+            'HTTP_AUTHORIZATION' => 'Bearer '.LoadApiTokenData::RETENTION_TOKEN_PLAIN,
             'ACCEPT' => 'application/json',
             'CONTENT_TYPE' => 'application/json',
         ]);
@@ -22,7 +24,7 @@ class RetentionControllerTest extends WebTestCase
     public function testPutTouchUserWrongApiToken(): void
     {
         $this->client->request(method: 'PUT', uri: '/api/retention/nonexistant@example.org/touch', server: [
-            'HTTP_AUTHORIZATION' => 'Bearer wrongtoken'
+            'HTTP_AUTHORIZATION' => 'Bearer wrongtoken',
         ]);
 
         self::assertResponseStatusCodeSame(401);
@@ -31,7 +33,7 @@ class RetentionControllerTest extends WebTestCase
     public function testPutTouchUserWithWrongScope(): void
     {
         $this->client->request(method: 'PUT', uri: '/api/retention/user@example.org/touch', server: [
-            'HTTP_AUTHORIZATION' => 'Bearer ' . LoadApiTokenData::DOVECOT_TOKEN_PLAIN,
+            'HTTP_AUTHORIZATION' => 'Bearer '.LoadApiTokenData::DOVECOT_TOKEN_PLAIN,
         ]);
 
         self::assertResponseStatusCodeSame(403);
@@ -75,7 +77,7 @@ class RetentionControllerTest extends WebTestCase
     public function testGetDeletedUsersWithWrongScope(): void
     {
         $this->client->request(method: 'GET', uri: '/api/retention/example.org/users', server: [
-            'HTTP_AUTHORIZATION' => 'Bearer ' . LoadApiTokenData::DOVECOT_TOKEN_PLAIN,
+            'HTTP_AUTHORIZATION' => 'Bearer '.LoadApiTokenData::DOVECOT_TOKEN_PLAIN,
         ]);
         self::assertResponseStatusCodeSame(403);
     }

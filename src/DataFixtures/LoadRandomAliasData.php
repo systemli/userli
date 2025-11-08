@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
 use App\Entity\User;
@@ -11,9 +13,6 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadRandomAliasData extends Fixture implements FixtureGroupInterface, DependentFixtureInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(ObjectManager $manager): void
     {
         $user = $manager->getRepository(User::class)->findByEmail('admin@example.org');
@@ -27,7 +26,7 @@ class LoadRandomAliasData extends Fixture implements FixtureGroupInterface, Depe
         $users = $manager->getRepository(User::class)->findAll();
 
         for ($i = 1; $i < 500; ++$i) {
-            $alias = AliasFactory::create($users[random_int(0, count($users) - 1)], 'alias' . $i);
+            $alias = AliasFactory::create($users[random_int(0, count($users) - 1)], 'alias'.$i);
 
             $manager->persist($alias);
 

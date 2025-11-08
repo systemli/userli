@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Guesser;
 
 use App\Entity\Domain;
@@ -7,6 +9,7 @@ use App\Guesser\DomainGuesser;
 use App\Repository\DomainRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
 class DomainGuesserTest extends TestCase
 {
@@ -24,7 +27,7 @@ class DomainGuesserTest extends TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
+     * @return PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
      */
     private function getManager(): EntityManagerInterface
     {

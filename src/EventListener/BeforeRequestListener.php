@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\EventListener;
 
 use App\Entity\User;
 use App\Enum\Roles;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Bundle\SecurityBundle\Security;
 
 class BeforeRequestListener implements EventSubscriberInterface
 {
@@ -39,9 +41,6 @@ class BeforeRequestListener implements EventSubscriberInterface
         return $this->entityManager->getRepository(User::class)->findByEmail($user->getUserIdentifier());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [KernelEvents::REQUEST => [['onKernelRequest']]];

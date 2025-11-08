@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin;
 
 use App\Helper\RandomStringGenerator;
@@ -23,18 +25,12 @@ class VoucherAdmin extends Admin
         return 'voucher';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function alterNewInstance(object $object): void
     {
         $object->setUser($this->security->getUser());
         $object->setCode(RandomStringGenerator::generate(6, true));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureFormFields(FormMapper $form): void
     {
         $disabled = true;
@@ -47,9 +43,6 @@ class VoucherAdmin extends Admin
             ->add('code', null, ['disabled' => !$this->isNewObject()]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureListFields(ListMapper $list): void
     {
         $list
@@ -64,9 +57,6 @@ class VoucherAdmin extends Admin
             ->add('redeemedTime');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
@@ -76,23 +66,20 @@ class VoucherAdmin extends Admin
                 'field_type' => DateRangePickerType::class,
                 'field_options' => [
                     'field_options' => [
-                        'format' => 'dd.MM.yyyy'
-                    ]
-                ]
+                        'format' => 'dd.MM.yyyy',
+                    ],
+                ],
             ])
             ->add('redeemedTime', DateTimeRangeFilter::class, [
                 'field_type' => DateRangePickerType::class,
                 'field_options' => [
                     'field_options' => [
-                        'format' => 'dd.MM.yyyy'
-                    ]
-                ]
+                        'format' => 'dd.MM.yyyy',
+                    ],
+                ],
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureBatchActions($actions): array
     {
         return [];

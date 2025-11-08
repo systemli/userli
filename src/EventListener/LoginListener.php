@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\EventListener;
 
 use App\Entity\User;
 use App\Enum\MailCrypt;
 use App\Event\LoginEvent;
+use App\Handler\MailCryptKeyHandler;
 use App\Service\UserLastLoginUpdateService;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
-use App\Handler\MailCryptKeyHandler;
-use Psr\Log\LoggerInterface;
 
 readonly class LoginListener implements EventSubscriberInterface
 {
@@ -19,10 +21,10 @@ readonly class LoginListener implements EventSubscriberInterface
 
     public function __construct(
         private UserLastLoginUpdateService $userLastLoginUpdateService,
-        private MailCryptKeyHandler        $mailCryptKeyHandler,
-        private LoggerInterface            $logger,
+        private MailCryptKeyHandler $mailCryptKeyHandler,
+        private LoggerInterface $logger,
         #[Autowire(env: 'MAIL_CRYPT')]
-        private int                        $mailCryptEnv,
+        private int $mailCryptEnv,
     ) {
         $this->mailCrypt = MailCrypt::from($this->mailCryptEnv);
     }
@@ -41,6 +43,7 @@ readonly class LoginListener implements EventSubscriberInterface
                 '"_password" should not be null.',
                 ['email' => $user->getEmail()]
             );
+
             return;
         }
 

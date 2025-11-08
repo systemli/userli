@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Validator;
 
 use App\Entity\User;
@@ -73,7 +75,7 @@ class VoucherExistsValidatorTest extends ConstraintValidatorTestCase
     public function testConstraintGetDefaultOption(): void
     {
         $constraint = new VoucherExists(true);
-        self::assertEquals(true, $constraint->exists);
+        self::assertTrue($constraint->exists);
     }
 
     public function testValidateVoucherInvalid(): void

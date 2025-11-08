@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Handler;
 
 use App\Handler\PasswordStrengthHandler;
@@ -9,9 +11,6 @@ class PasswordStrengthHandlerTest extends TestCase
 {
     /**
      * @dataProvider dataProvider
-     *
-     * @param $input
-     * @param $expected
      */
     public function testValidate($input, $expected): void
     {

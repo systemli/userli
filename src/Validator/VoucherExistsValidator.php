@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Validator;
 
 use App\Entity\User;
@@ -30,11 +32,12 @@ class VoucherExistsValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, 'string');
         }
 
-        $stringValue = (string)$value;
+        $stringValue = (string) $value;
 
         if (true === $constraint->exists) {
             if (null === $voucher = $this->voucherRepository->findByCode($stringValue)) {
                 $this->context->addViolation('registration.voucher-invalid');
+
                 return;
             }
 

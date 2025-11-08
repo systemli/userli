@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Voter;
 
-use ReflectionMethod;
-use ReflectionClass;
 use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\User;
@@ -11,8 +11,10 @@ use App\Repository\UserRepository;
 use App\Voter\DomainVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use ReflectionClass;
+use ReflectionMethod;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class DomainVoterTest extends TestCase
 {
@@ -28,7 +30,7 @@ class DomainVoterTest extends TestCase
         return $method;
     }
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->domain = new Domain();
         $user = new User();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\OpenPgpKeyRepository;
@@ -12,8 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'virtual_openpgp_keys')]
 class OpenPgpKey
 {
-    use IdTrait;
     use EmailTrait;
+    use IdTrait;
     use OpenPgpKeyTrait;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'openPgpKeys')]

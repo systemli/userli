@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\ApiToken;
 use App\Form\ApiTokenType;
 use App\Service\ApiTokenManager;
@@ -13,12 +12,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ApiTokenController extends AbstractController
 {
     public function __construct(private readonly ApiTokenManager $apiTokenManager)
     {
-
     }
 
     #[Route('/settings/api/', name: 'settings_api_show', methods: ['GET'])]
@@ -74,9 +73,8 @@ class ApiTokenController extends AbstractController
 
     #[Route('/settings/api/delete/{id}', name: 'settings_api_delete', methods: ['POST'])]
     public function delete(
-        #[MapEntity(class: ApiToken::class, mapping: ['id' => 'id'])] ?ApiToken $apiToken
-    ): RedirectResponse
-    {
+        #[MapEntity(class: ApiToken::class, mapping: ['id' => 'id'])] ?ApiToken $apiToken,
+    ): RedirectResponse {
         $this->apiTokenManager->delete($apiToken);
 
         $this->addFlash('success', 'settings.api.delete.success');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Handler;
 
 use App\Entity\OpenPgpKey;
@@ -14,6 +16,8 @@ use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Tuupola\Base32;
 
+use const DIRECTORY_SEPARATOR;
+
 readonly class WkdHandler
 {
     private OpenPgpKeyRepository $repository;
@@ -23,7 +27,7 @@ readonly class WkdHandler
         #[Autowire(env: 'WKD_DIRECTORY')]
         private string $wkdDirectory,
         #[Autowire(env: 'WKD_FORMAT')]
-        private string $wkdFormat
+        private string $wkdFormat,
     ) {
         $this->repository = $manager->getRepository(OpenPgpKey::class);
     }

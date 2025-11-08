@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Command;
 
-use Exception;
 use App\Command\UsersResetCommand;
 use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
@@ -10,6 +11,7 @@ use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -20,7 +22,7 @@ class UsersResetCommandTest extends TestCase
     private UsersResetCommand $command;
     private User $user;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->user = new User();
         $this->user->setEmail('user@example.org');

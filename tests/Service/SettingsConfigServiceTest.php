@@ -7,6 +7,7 @@ namespace App\Tests\Service;
 use App\Service\SettingsConfigService;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
+use Throwable;
 
 class SettingsConfigServiceTest extends TestCase
 {
@@ -17,9 +18,9 @@ class SettingsConfigServiceTest extends TestCase
     protected function setUp(): void
     {
         // Create temporary directory structure
-        $this->tempDir = sys_get_temp_dir() . '/settings_config_test_' . uniqid();
-        $this->configDir = $this->tempDir . '/config';
-        $this->configFile = $this->configDir . '/settings.yaml';
+        $this->tempDir = sys_get_temp_dir().'/settings_config_test_'.uniqid();
+        $this->configDir = $this->tempDir.'/config';
+        $this->configFile = $this->configDir.'/settings.yaml';
 
         mkdir($this->configDir, 0777, true);
     }
@@ -51,7 +52,7 @@ class SettingsConfigServiceTest extends TestCase
                     'validation' => [
                         'min_length' => 1,
                         'max_length' => 255,
-                    ]
+                    ],
                 ],
                 'registration_enabled' => [
                     'type' => 'boolean',
@@ -63,9 +64,9 @@ class SettingsConfigServiceTest extends TestCase
                     'validation' => [
                         'min' => 1,
                         'max' => 10000,
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));
@@ -103,8 +104,8 @@ class SettingsConfigServiceTest extends TestCase
                 'simple_setting' => [
                     'type' => 'string',
                     'default' => 'value',
-                ]
-            ]
+                ],
+            ],
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));
@@ -159,7 +160,7 @@ class SettingsConfigServiceTest extends TestCase
                     'type' => 'array',
                     'default' => '["a","b","c"]', // Array as JSON string for scalar compatibility
                 ],
-            ]
+            ],
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));
@@ -204,7 +205,7 @@ class SettingsConfigServiceTest extends TestCase
                         'max_length' => 50,
                         'regex' => '/^[a-zA-Z]+$/',
                         'choices' => ['option1', 'option2', 'option3'],
-                    ]
+                    ],
                 ],
                 'numeric_setting' => [
                     'type' => 'integer',
@@ -212,9 +213,9 @@ class SettingsConfigServiceTest extends TestCase
                     'validation' => [
                         'min' => 5,
                         'max' => 100,
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));
@@ -240,7 +241,7 @@ class SettingsConfigServiceTest extends TestCase
     public function testLoadDefinitionsWithEmptySettings(): void
     {
         $configData = [
-            'settings' => []
+            'settings' => [],
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));
@@ -256,8 +257,8 @@ class SettingsConfigServiceTest extends TestCase
     {
         $configData = [
             'other_config' => [
-                'value' => 'test'
-            ]
+                'value' => 'test',
+            ],
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));
@@ -272,7 +273,7 @@ class SettingsConfigServiceTest extends TestCase
     public function testLoadDefinitionsWithMissingDefinitionsKey(): void
     {
         $configData = [
-            'settings' => []
+            'settings' => [],
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));
@@ -300,7 +301,7 @@ class SettingsConfigServiceTest extends TestCase
         file_put_contents($this->configFile, "invalid: yaml: content: [\n  - incomplete");
 
         // This should handle the parsing error gracefully
-        $this->expectException(\Throwable::class);
+        $this->expectException(Throwable::class);
         new SettingsConfigService($this->tempDir);
     }
 
@@ -308,8 +309,8 @@ class SettingsConfigServiceTest extends TestCase
     {
         $configData = [
             'settings' => [
-                'invalid_key' => 'value' // This should trigger a configuration error
-            ]
+                'invalid_key' => 'value', // This should trigger a configuration error
+            ],
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));
@@ -328,9 +329,9 @@ class SettingsConfigServiceTest extends TestCase
                     'default' => 'test_value',
                     'validation' => [
                         'min_length' => 1,
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));
@@ -353,8 +354,8 @@ class SettingsConfigServiceTest extends TestCase
                 'cached_setting' => [
                     'type' => 'string',
                     'default' => 'cached_value',
-                ]
-            ]
+                ],
+            ],
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));
@@ -375,8 +376,8 @@ class SettingsConfigServiceTest extends TestCase
                 'immediate_setting' => [
                     'type' => 'boolean',
                     'default' => false,
-                ]
-            ]
+                ],
+            ],
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));
@@ -404,7 +405,7 @@ class SettingsConfigServiceTest extends TestCase
                     'validation' => [
                         'min_length' => 1,
                         'max_length' => 100,
-                    ]
+                    ],
                 ],
                 'registration_enabled' => [
                     'type' => 'boolean',
@@ -416,7 +417,7 @@ class SettingsConfigServiceTest extends TestCase
                     'validation' => [
                         'min' => 100,
                         'max' => 10240,
-                    ]
+                    ],
                 ],
                 'admin_email' => [
                     'type' => 'email',
@@ -424,7 +425,7 @@ class SettingsConfigServiceTest extends TestCase
                     'validation' => [
                         'min_length' => 5,
                         'max_length' => 100,
-                    ]
+                    ],
                 ],
                 'support_url' => [
                     'type' => 'url',
@@ -435,16 +436,16 @@ class SettingsConfigServiceTest extends TestCase
                     'default' => 'Welcome to our email service!',
                     'validation' => [
                         'max_length' => 1000,
-                    ]
+                    ],
                 ],
                 'theme' => [
                     'type' => 'string',
                     'default' => 'default',
                     'validation' => [
                         'choices' => ['default', 'dark', 'light', 'custom'],
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ];
 
         file_put_contents($this->configFile, Yaml::dump($configData));

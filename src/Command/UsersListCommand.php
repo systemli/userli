@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
-use RuntimeException;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,17 +22,13 @@ class UsersListCommand extends Command
     private readonly UserRepository $repository;
 
     public function __construct(
-        readonly EntityManagerInterface $manager,
+        public readonly EntityManagerInterface $manager,
         private readonly RoleHierarchyInterface $roleHierarchy,
-    )
-    {
+    ) {
         $this->repository = $manager->getRepository(User::class);
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this
@@ -41,9 +39,6 @@ class UsersListCommand extends Command
                 'List users inactive for X days (ignores admins and users with ROLE_PERMANENT)');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $inactiveDays = $input->getOption('inactive-days');

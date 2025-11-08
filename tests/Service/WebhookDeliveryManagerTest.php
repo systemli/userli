@@ -9,11 +9,12 @@ use App\Entity\WebhookEndpoint;
 use App\Enum\WebhookEvent;
 use App\Message\SendWebhook;
 use App\Service\WebhookDeliveryManager;
+use DateTimeImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Envelope;
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class WebhookDeliveryManagerTest extends TestCase
 {
@@ -65,7 +66,7 @@ class WebhookDeliveryManagerTest extends TestCase
         $delivery->setResponseCode(500);
         $delivery->setResponseBody('error');
         $delivery->setError('Timeout');
-        $delivery->setDeliveredTime(new \DateTimeImmutable('-1 minute'));
+        $delivery->setDeliveredTime(new DateTimeImmutable('-1 minute'));
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects($this->once())->method('flush');
@@ -78,9 +79,10 @@ class WebhookDeliveryManagerTest extends TestCase
                 $inner = $message;
             }
             $this->assertInstanceOf(SendWebhook::class, $inner);
-            $this->assertEquals((string)$delivery->getId(), $inner->deliveryId);
+            $this->assertEquals((string) $delivery->getId(), $inner->deliveryId);
+
             return true;
-        }))->willReturnCallback(fn($m) => $m instanceof Envelope ? $m : new Envelope($m));
+        }))->willReturnCallback(fn ($m) => $m instanceof Envelope ? $m : new Envelope($m));
 
         $manager = new WebhookDeliveryManager($em, $bus);
         $manager->retry($delivery);

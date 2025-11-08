@@ -15,14 +15,13 @@ class SettingsConfigService
 
     public function __construct(
         #[Autowire(param: 'kernel.project_dir')] private readonly string $projectDir,
-    )
-    {
+    ) {
         $this->loadDefaults();
     }
 
     private function loadDefaults(): void
     {
-        $configFile = $this->projectDir . '/config/settings.yaml';
+        $configFile = $this->projectDir.'/config/settings.yaml';
 
         if (!file_exists($configFile)) {
             return;
@@ -34,7 +33,7 @@ class SettingsConfigService
 
         // Pass the 'settings' part of the config to the processor
         $settingsConfig = $config['settings'] ?? [];
-        $this->settings =  $processor->processConfiguration($configuration, [$settingsConfig]);
+        $this->settings = $processor->processConfiguration($configuration, [$settingsConfig]);
     }
 
     public function getSettings(): array

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Command;
 
 use App\Command\UsersDeleteCommand;
@@ -16,7 +18,7 @@ class UsersDeleteCommandTest extends TestCase
 {
     private UsersDeleteCommand $command;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $user = new User();
         $user->setEmail('user@example.org');

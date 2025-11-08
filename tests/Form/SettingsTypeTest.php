@@ -9,6 +9,7 @@ use App\Service\SettingsConfigService;
 use App\Service\SettingsService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -46,12 +47,12 @@ class SettingsTypeTest extends TestCase
                 'validation' => [
                     'min_length' => 1,
                     'max_length' => 255,
-                ]
+                ],
             ],
             'registration_enabled' => [
                 'type' => 'boolean',
                 'default' => true,
-            ]
+            ],
         ];
 
         $this->configService->expects($this->once())
@@ -78,7 +79,7 @@ class SettingsTypeTest extends TestCase
      */
     public function testDetermineFieldType(string $type, array $validation, string $expectedClass): void
     {
-        $reflection = new \ReflectionClass($this->formType);
+        $reflection = new ReflectionClass($this->formType);
         $method = $reflection->getMethod('determineFieldType');
         $method->setAccessible(true);
 
@@ -108,7 +109,7 @@ class SettingsTypeTest extends TestCase
      */
     public function testBuildConstraints(array $validation, string $type, int $expectedCount): void
     {
-        $reflection = new \ReflectionClass($this->formType);
+        $reflection = new ReflectionClass($this->formType);
         $method = $reflection->getMethod('buildConstraints');
         $method->setAccessible(true);
 
@@ -152,7 +153,7 @@ class SettingsTypeTest extends TestCase
             'simple_setting' => [
                 'type' => 'string',
                 'default' => 'value',
-            ]
+            ],
         ];
 
         $this->configService->expects($this->once())
@@ -192,9 +193,9 @@ class SettingsTypeTest extends TestCase
             'locale' => [
                 'type' => 'string',
                 'validation' => [
-                    'choices' => ['en', 'de', 'fr']
-                ]
-            ]
+                    'choices' => ['en', 'de', 'fr'],
+                ],
+            ],
         ];
 
         $this->configService->expects($this->once())
@@ -216,6 +217,7 @@ class SettingsTypeTest extends TestCase
                     $expectedChoices = ['en' => 'en', 'de' => 'de', 'fr' => 'fr'];
                     self::assertEquals($expectedChoices, $options['choices']);
                 }
+
                 return $this->formBuilder;
             });
 
@@ -229,10 +231,10 @@ class SettingsTypeTest extends TestCase
             'max_length' => 10,
             'min' => 1,
             'max' => 100,
-            'choices' => ['a', 'b', 'c']
+            'choices' => ['a', 'b', 'c'],
         ];
 
-        $reflection = new \ReflectionClass($this->formType);
+        $reflection = new ReflectionClass($this->formType);
         $method = $reflection->getMethod('buildConstraints');
         $method->setAccessible(true);
 
@@ -248,7 +250,7 @@ class SettingsTypeTest extends TestCase
             'enabled' => [
                 'type' => 'boolean',
                 'default' => false,
-            ]
+            ],
         ];
 
         $this->configService->expects($this->once())
@@ -266,6 +268,7 @@ class SettingsTypeTest extends TestCase
                     self::assertEquals(CheckboxType::class, $type);
                     self::assertTrue($options['data']);
                 }
+
                 return $this->formBuilder;
             });
 
@@ -274,7 +277,7 @@ class SettingsTypeTest extends TestCase
 
     public function testNotBlankConstraintForStringTypes(): void
     {
-        $reflection = new \ReflectionClass($this->formType);
+        $reflection = new ReflectionClass($this->formType);
         $method = $reflection->getMethod('buildConstraints');
         $method->setAccessible(true);
 

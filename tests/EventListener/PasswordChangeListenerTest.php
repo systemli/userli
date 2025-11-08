@@ -8,7 +8,6 @@ use App\Entity\User;
 use App\Enum\UserNotificationType;
 use App\Event\UserEvent;
 use App\EventListener\PasswordChangeListener;
-use App\Helper\JsonRequestHelper;
 use App\Repository\UserNotificationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
@@ -16,8 +15,8 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PasswordChangeListenerTest extends TestCase
@@ -45,8 +44,8 @@ class PasswordChangeListenerTest extends TestCase
     public function testGetSubscribedEvents(): void
     {
         $this->assertEquals([
-            KernelEvents::REQUEST => [["onRequest", 0]],
-            UserEvent::PASSWORD_CHANGED => [["onPasswordChanged", 0]],
+            KernelEvents::REQUEST => [['onRequest', 0]],
+            UserEvent::PASSWORD_CHANGED => [['onPasswordChanged', 0]],
         ], PasswordChangeListener::getSubscribedEvents());
     }
 
@@ -207,4 +206,3 @@ class PasswordChangeListenerTest extends TestCase
         $this->listener->onPasswordChanged($event);
     }
 }
-

@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Command;
 
 use App\Command\UsersRestoreCommand;
-use App\Handler\UserRestoreHandler;
-use Exception;
 use App\Entity\User;
+use App\Handler\UserRestoreHandler;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -19,7 +21,7 @@ class UsersRestoreCommandTest extends TestCase
     private UserRestoreHandler $userRestoreHandler;
     private User $user;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->user = new User();
         $this->user->setEmail('deleted@example.org');
@@ -47,6 +49,7 @@ class UsersRestoreCommandTest extends TestCase
     {
         $this->userRestoreHandler->method('restoreUser')->willReturnCallback(function (User $user, string $password) {
             $user->setDeleted(false);
+
             return null;
         });
 
@@ -81,6 +84,7 @@ class UsersRestoreCommandTest extends TestCase
         $this->userRestoreHandler->method('restoreUser')->willReturnCallback(function (User $user, string $password) {
             $user->setDeleted(false);
             $user->setMailCryptEnabled(true);
+
             return 'RecoverySecret';
         });
 

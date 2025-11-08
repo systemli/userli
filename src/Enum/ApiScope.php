@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Enum;
 
 enum ApiScope: string
@@ -14,6 +16,6 @@ enum ApiScope: string
     {
         $scopes = self::cases();
 
-        return array_map(fn(ApiScope $scope) => $scope->value, $scopes);
+        return array_map(fn (ApiScope $scope) => $scope->value, $scopes);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Validator;
 
 use App\Validator\EmailLength;
@@ -73,15 +75,15 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
     {
         $this->validator->validate($address, new EmailLength($this->minLength, $this->maxLength));
         $this->buildViolation($violationMessage)
-            ->setParameter('%' . $operator . '%', $limit)
+            ->setParameter('%'.$operator.'%', $limit)
             ->assertRaised();
     }
 
     public function getShortLongAddresses(): array
     {
         return [
-            ['s@' . $this->domain, 'registration.email-too-short', 'min', $this->minLength],
-            ['thisaddressiswaytoolong@' . $this->domain, 'registration.email-too-long', 'max', $this->maxLength],
+            ['s@'.$this->domain, 'registration.email-too-short', 'min', $this->minLength],
+            ['thisaddressiswaytoolong@'.$this->domain, 'registration.email-too-long', 'max', $this->maxLength],
         ];
     }
 }

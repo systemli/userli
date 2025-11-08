@@ -49,8 +49,8 @@ class TotpAuthenticatorIntegrationTest extends KernelTestCase
         $projectName = $this->settingsService->get('project_name');
 
         // Verify the QR content contains the dynamic values
-        self::assertStringContainsString('issuer=' . urlencode($projectName), $qrContent);
-        self::assertStringContainsString('secret=' . $secret, $qrContent);
+        self::assertStringContainsString('issuer='.urlencode($projectName), $qrContent);
+        self::assertStringContainsString('secret='.$secret, $qrContent);
     }
 
     public function testSecretGenerationWorks(): void
@@ -94,7 +94,7 @@ class TotpAuthenticatorIntegrationTest extends KernelTestCase
         $originalProjectName = $this->settingsService->get('project_name');
 
         // Change settings
-        $newProjectName = 'Test Project ' . uniqid();
+        $newProjectName = 'Test Project '.uniqid();
         $this->settingsService->set('project_name', $newProjectName);
 
         // Get QR content again
@@ -102,7 +102,7 @@ class TotpAuthenticatorIntegrationTest extends KernelTestCase
 
         // Verify the content changed
         self::assertNotEquals($initialQrContent, $updatedQrContent);
-        self::assertStringContainsString('issuer=' . urlencode($newProjectName), $updatedQrContent);
+        self::assertStringContainsString('issuer='.urlencode($newProjectName), $updatedQrContent);
 
         // Clean up: reset to original value
         $this->settingsService->set('project_name', $originalProjectName);
@@ -120,7 +120,7 @@ class TotpAuthenticatorIntegrationTest extends KernelTestCase
 
         // Should contain a valid TOTP URL structure
         self::assertStringStartsWith('otpauth://totp/', $qrContent);
-        self::assertStringContainsString('secret=' . $secret, $qrContent);
+        self::assertStringContainsString('secret='.$secret, $qrContent);
 
         // Should contain some issuer from settings
         self::assertStringContainsString('issuer=', $qrContent);

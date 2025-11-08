@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Factory;
 
-use Exception;
 use App\Entity\User;
 use App\Entity\Voucher;
 use App\Helper\RandomStringGenerator;
+use Exception;
 
 /**
  * Interface VoucherFactory.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Handler;
 
 class PasswordStrengthHandler
@@ -8,11 +10,6 @@ class PasswordStrengthHandler
 
     private array $errors = [];
 
-    /**
-     * @param $value
-     *
-     * @return array
-     */
     public function validate($value): array
     {
         if (preg_match(self::REGEX_FORBIDDEN_CHARS, (string) $value)) {

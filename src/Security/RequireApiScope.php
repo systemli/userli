@@ -11,8 +11,7 @@ use Attribute;
 class RequireApiScope
 {
     public function __construct(
-        public ApiScope $scope
-    )
-    {
+        public ApiScope $scope,
+    ) {
     }
 }

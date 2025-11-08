@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Handler;
 
 use App\Entity\Alias;
@@ -18,7 +20,7 @@ class DeleteHandlerTest extends TestCase
     {
         $passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)
             ->disableOriginalConstructor()->getMock();
-        $passwordUpdater->method('updatePassword')->willReturnCallback(function (User $user) {
+        $passwordUpdater->method('updatePassword')->willReturnCallback(function (User $user): void {
             $user->setPassword('new_password');
         });
 
@@ -58,7 +60,7 @@ class DeleteHandlerTest extends TestCase
 
         self::assertTrue($alias->isDeleted());
         self::assertNotEquals($alias->getUser(), $user);
-        self::assertEquals(null, $alias->getDestination());
+        self::assertNull($alias->getDestination());
     }
 
     public function testDeleteUser(): void

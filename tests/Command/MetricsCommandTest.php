@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Command;
 
 use App\Command\MetricsCommand;
@@ -69,15 +71,15 @@ class MetricsCommandTest extends TestCase
 
         $output = $commandTester->getDisplay();
 
-        self::assertStringContainsString("userli_users_total 10", $output);
-        self::assertStringContainsString("userli_users_deleted_total 3", $output);
-        self::assertStringContainsString("userli_users_recovery_token_total 5", $output);
-        self::assertStringContainsString("userli_users_mailcrypt_total 7", $output);
-        self::assertStringContainsString("userli_users_twofactor_total 9", $output);
-        self::assertStringContainsString("userli_vouchers_total{type=\"unredeemed\"} 7", $output);
-        self::assertStringContainsString("userli_vouchers_total{type=\"redeemed\"} 1", $output);
-        self::assertStringContainsString("userli_domains_total 6", $output);
-        self::assertStringContainsString("userli_aliases_total 4", $output);
-        self::assertStringContainsString("userli_openpgpkeys_total 2", $output);
+        self::assertStringContainsString('userli_users_total 10', $output);
+        self::assertStringContainsString('userli_users_deleted_total 3', $output);
+        self::assertStringContainsString('userli_users_recovery_token_total 5', $output);
+        self::assertStringContainsString('userli_users_mailcrypt_total 7', $output);
+        self::assertStringContainsString('userli_users_twofactor_total 9', $output);
+        self::assertStringContainsString('userli_vouchers_total{type="unredeemed"} 7', $output);
+        self::assertStringContainsString('userli_vouchers_total{type="redeemed"} 1', $output);
+        self::assertStringContainsString('userli_domains_total 6', $output);
+        self::assertStringContainsString('userli_aliases_total 4', $output);
+        self::assertStringContainsString('userli_openpgpkeys_total 2', $output);
     }
 }
