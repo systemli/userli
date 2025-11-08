@@ -57,6 +57,7 @@
     "friends-of-behat/mink-browserkit-driver": "^1.6",
     "friends-of-behat/mink-extension": "^2.7",
     "friends-of-behat/symfony-extension": "^2.0",
+    "friendsofphp/php-cs-fixer": "*",
     "phpunit/phpunit": "^9.5",
     "rector/rector": "^2.1.0",
     "symfony/browser-kit": "6.4.*",
@@ -113,7 +114,11 @@
     ],
     "post-update-cmd": [
       "@auto-scripts"
-    ]
+    ],
+    "cs-check": "php-cs-fixer fix --dry-run --diff",
+    "cs-fix": "php-cs-fixer fix",
+    "rector-check": "rector process --dry-run",
+    "rector-fix": "rector process"
   },
   "conflict": {
     "symfony/symfony": "*"
