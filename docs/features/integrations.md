@@ -14,13 +14,13 @@ CLI:
 
 Scopes control which API areas the token can call:
 
-| Scope     | Endpoint prefix     | Description                                              |
-|-----------|----------------------|----------------------------------------------------------|
-| keycloak  | /api/keycloak/       | Keycloak user lookup, count, and validation              |
-| dovecot   | /api/dovecot/        | Dovecot passdb auth and lookup                           |
-| postfix   | /api/postfix/        | Postfix helpers (domain/mailbox/alias/senders)           |
-| retention | /api/retention/      | Update last login and list deleted users                 |
-| roundcube | /api/roundcube/      | Roundcube helpers (e.g., list user aliases after auth)   |
+| Scope       | Endpoint prefix       | Description                                              |
+|-------------|-----------------------|----------------------------------------------------------|
+| `keycloak`  | `/api/keycloak/`      | Keycloak user lookup, count, and validation              |
+| `dovecot`   | `/api/dovecot/`       | Dovecot passdb auth and lookup                           |
+| `postfix`   | `/api/postfix/`       | Postfix helpers (domain/mailbox/alias/senders)           |
+| `retention` | `/api/retention/`     | Update last login and list deleted users                 |
+| `roundcube` | `/api/roundcube/`     | Roundcube helpers (e.g., list user aliases after auth)   | 
 
 !!! tip "How to send the token"
     Preferred header:
@@ -41,44 +41,46 @@ Scopes control which API areas the token can call:
 
 ## Keycloak
 
-Userli exposes `/api/keycloak/` for user lookup and verification, intended for use with a Keycloak user storage provider. See the
-[Keycloak User Provider for Userli](https://github.com/systemli/userli-keycloak-provider) and Keycloak's official docs on
-[user storage providers](https://www.keycloak.org/docs/latest/server_development/#_user-storage) for reference.
+Userli exposes `/api/keycloak/` endpoints for user lookup and verification, intended for use with a Keycloak user storage provider.
 
-Authentication: Use an API token that includes the `keycloak` scope.
+See the [Keycloak User Provider for Userli](https://github.com/systemli/userli-keycloak-provider) and Keycloak's official docs on [user storage providers](https://www.keycloak.org/docs/latest/server_development/#_user-storage) for reference.
 
-Example (search users):
+### Examples
+
+Search users:
 
     GET /api/keycloak/<domain>/?search=john&max=10&first=0
     Authorization: Bearer <PLAIN_TOKEN_WITH_keycloak_SCOPE>
 
+
 ## Dovecot
 
-A Lua adapter is available to use the `/api/dovecot/` endpoints for userdb/passdb in Dovecot.
+Userli exposes `/api/dovecot/` endpoints for Dovecot userdb and passdb lookups, intended to be consumed by the [Lua adapter script](https://github.com/systemli/userli/blob/main/contrib/userli-dovecot-adapter.lua).
 
-!!! tip "Lua adapter in this repository"
+See the step-by-step setup guide at [Installation › Dovecot](../installation/dovecot.md) and Dovecot' official docs on [Lua-based authentication](https://doc.dovecot.org/latest/core/config/auth/databases/lua.html#lua-authentication-database-lua).
 
-    - The adapter lives at `contrib/userli-dovecot-adapter.lua` and adds the Authorization header automatically (`Bearer <TOKEN>`).
-    - It expects the environment variables `USERLI_API_ACCESS_TOKEN` (plain API token) and `USERLI_HOST` on the Dovecot host.
-    - A step-by-step setup, including importing the environment variables in Dovecot, is documented here: [Installation › Dovecot](../installation/dovecot.md).
-    - Learn more in Dovecot’s official docs: [Lua-based authentication](https://doc.dovecot.org/latest/core/config/auth/databases/lua.html#lua-authentication-database-lua).
+## Roundcube
+
+Userli exposes `/api/roundcube/` endpoints to assist Roundcube in user alias lookups after authentication, intended to be consumed by the [Roundcube Userli Plugin](https://packagist.org/packages/systemli/userli).
+
+## Postfix
+
+User exposes `/api/postfix/` endpoints for Postfix integration, intended to be consumed by the [Postfix Userli Adapter](https://github.com/systemli/userli-postfix-adapter).
 
 ## Retention
-
-Each time a user authenticates (classic login, or via Keycloak/Dovecot APIs), Userli updates the user's last login time.
-Some services issue long-lived tokens and won’t re-authenticate regularly, which can make last-login based retention inaccurate
-and complicate invalidation of stale client tokens.
 
 Userli provides generic API methods at `/api/retention/` to:
 
 - Touch a user’s last login timestamp independent of authentication
 - List deleted users for a domain
 
-See [userli-synapse-user-retention](https://github.com/systemli/userli-synapse-user-retention) for an example.
+Background: Each time a user authenticates (classic login, or via Keycloak/Dovecot APIs), Userli updates the user's last login time.
+Some services issue long-lived tokens and won’t re-authenticate regularly, which can make last-login based retention inaccurate
+and complicate invalidation of stale client tokens.
 
-Authentication: Use an API token that includes the `retention` scope.
+See [userli-synapse-user-retention](https://github.com/systemli/userli-synapse-user-retention) for an example client implementation for Matrix Synapse.
 
-Examples:
+### Examples
 
 Touch last login (optional unix timestamp, must not be in the future):
 
