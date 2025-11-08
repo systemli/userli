@@ -1,5 +1,42 @@
 # Changelog
 
+## 5.0.0 (2025.11.08)
+
+### Features and Improvements
+
+- ✨ Add option to force password update for users (#858)
+- ✨ Implement role hierarchy and reachable roles functionality (#866)
+- ✨ Introduce API Token Settings (#868)
+- 🔒️ Use session instead of query to transport the new recovery token (#876)
+- 🔒️ Show notification to the user and remove it after the password change (#877)
+- ✨ Introduce Webhook Settings (#874)
+- ♻️ Use Symfony Scheduler for recurring tasks (#882)
+- ♻️ Send welcome mails asynchronously (#883)
+- ✨ Introduce configurable Settings (#887, #888, #892)
+- 🐳 Build Docker Image for multiple platforms (#893)
+- 🐛 Postfix adapter: Handle '+'-delimiter in email local part
+- ⬆️ Update to symfony 6.4.26 (#895)
+- ✨ Add Settings to Userli Initialization (#911)
+
+### Database Changes
+
+```sql
+CREATE TABLE api_tokens (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, scopes JSON NOT NULL COMMENT '(DC2Type:json)', token VARCHAR(64) NOT NULL, creation_time DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)', last_used_time DATETIME DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)', UNIQUE INDEX UNIQ_2CAD560E5F37A13B (token), INDEX idx_token (token), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;
+CREATE TABLE webhook_deliveries (id BINARY(16) NOT NULL COMMENT '(DC2Type:ulid)', endpoint_id INT NOT NULL, type VARCHAR(100) NOT NULL, request_body JSON NOT NULL COMMENT '(DC2Type:json)', request_headers JSON NOT NULL COMMENT '(DC2Type:json)', response_code INT DEFAULT NULL, response_body LONGTEXT DEFAULT NULL, success TINYINT(1) DEFAULT 0 NOT NULL, error LONGTEXT DEFAULT NULL, attempts INT DEFAULT 0 NOT NULL, dispatched_time DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)', delivered_time DATETIME DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)', INDEX IDX_3681F32D21AF7E36 (endpoint_id), INDEX IDX_3681F32DA80E9988 (dispatched_time), INDEX IDX_3681F32D6F00DFB2 (success), INDEX IDX_3681F32D8CDE5729 (type), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;
+CREATE TABLE user_notifications (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, type VARCHAR(50) NOT NULL, creation_time DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)', metadata JSON DEFAULT NULL COMMENT '(DC2Type:json)', INDEX IDX_8E8E1D83A76ED395 (user_id), INDEX idx_user_type_creation_time (user_id, type, creation_time), INDEX idx_user_type (user_id, type), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;
+CREATE TABLE webhook_endpoints (id INT AUTO_INCREMENT NOT NULL, url VARCHAR(2048) NOT NULL, secret VARCHAR(255) NOT NULL, events JSON DEFAULT NULL COMMENT '(DC2Type:json)', enabled TINYINT(1) DEFAULT 1 NOT NULL, creation_time DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)', updated_time DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)', INDEX IDX_E95677CC50F9BB84 (enabled), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;
+CREATE TABLE settings (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, value LONGTEXT DEFAULT NULL, creation_time DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)', updated_time DATETIME DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)', UNIQUE INDEX UNIQ_SETTING_NAME (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;
+CREATE TABLE messenger_messages (id BIGINT AUTO_INCREMENT NOT NULL, body LONGTEXT NOT NULL, headers LONGTEXT NOT NULL, queue_name VARCHAR(190) NOT NULL, created_at DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)', available_at DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)', delivered_at DATETIME DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)', INDEX IDX_75EA56E0FB7336F0 (queue_name), INDEX IDX_75EA56E0E3BD61CE (available_at), INDEX IDX_75EA56E016BA31DB (delivered_at), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;
+ALTER TABLE webhook_deliveries ADD CONSTRAINT FK_3681F32D21AF7E36 FOREIGN KEY (endpoint_id) REFERENCES webhook_endpoints (id) ON DELETE CASCADE;
+ALTER TABLE user_notifications ADD CONSTRAINT FK_8E8E1D83A76ED395 FOREIGN KEY (user_id) REFERENCES virtual_users (id) ON DELETE CASCADE;
+ALTER TABLE virtual_users ADD password_change_required TINYINT(1) DEFAULT 0 NOT NULL;
+CREATE INDEX creation_time_idx ON virtual_users (creation_time);
+CREATE INDEX deleted_idx ON virtual_users (deleted);
+CREATE INDEX email_deleted_idx ON virtual_users (email, deleted);
+CREATE INDEX domain_deleted_idx ON virtual_users (domain_id, deleted);
+CREATE INDEX email_domain_idx ON virtual_users (email, domain_id);
+```
+
 ## 4.2.0 (2025.09.03)
 
 ### Features and Improvements
