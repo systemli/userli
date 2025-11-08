@@ -60,6 +60,7 @@ class UserRegistrationInfoHandlerTest extends TestCase
                 // Verify that the date is approximately 7 days ago
                 $expectedDate = (new DateTime())->modify('-7 days');
                 $diff = abs($date->getTimestamp() - $expectedDate->getTimestamp());
+
                 return $diff < 5; // Allow 5 seconds tolerance
             }))
             ->willReturn($users);
@@ -97,6 +98,7 @@ class UserRegistrationInfoHandlerTest extends TestCase
                 // Verify that the date is approximately 30 days ago
                 $expectedDate = (new DateTime())->modify($customTimeframe);
                 $diff = abs($date->getTimestamp() - $expectedDate->getTimestamp());
+
                 return $diff < 5; // Allow 5 seconds tolerance
             }))
             ->willReturn($users);
@@ -150,6 +152,7 @@ class UserRegistrationInfoHandlerTest extends TestCase
     {
         $user = $this->createMock(User::class);
         $user->method('getEmail')->willReturn($email);
+
         return $user;
     }
 }

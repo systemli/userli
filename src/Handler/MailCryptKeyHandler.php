@@ -1,14 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Handler;
 
-use Exception;
 use App\Entity\User;
 use App\Model\CryptoSecret;
 use App\Model\MailCryptKeyPair;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Process\InputStream;
 use Symfony\Component\Process\Process;
+
+use const OPENSSL_KEYTYPE_EC;
 
 /**
  * Class AliasHandler.
@@ -20,13 +24,13 @@ class MailCryptKeyHandler
 
     private const MAIL_CRYPT_CURVE_NAME = 'secp521r1';
 
-    const MESSAGE_OPENSSL_EXITED_UNSUCCESSFULLY = 'Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: ';
+    public const MESSAGE_OPENSSL_EXITED_UNSUCCESSFULLY = 'Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: ';
 
-    const MESSAGE_OPENSSL_OUTPUT_INVALID = 'Transforming key to PKCS#8 with OpenSSL failed. OpenSSL output is no valid PKCS#8 key: ';
+    public const MESSAGE_OPENSSL_OUTPUT_INVALID = 'Transforming key to PKCS#8 with OpenSSL failed. OpenSSL output is no valid PKCS#8 key: ';
 
-    const MESSAGE_SECRET_IS_NULL = 'secret should not be null';
+    public const MESSAGE_SECRET_IS_NULL = 'secret should not be null';
 
-    const MESSAGE_DECRYPTION_FAILED = 'decryption of mailCryptSecretBox failed';
+    public const MESSAGE_DECRYPTION_FAILED = 'decryption of mailCryptSecretBox failed';
 
     /**
      * MailCryptPrivateKeyHandler constructor.
@@ -60,11 +64,11 @@ class MailCryptKeyHandler
         sodium_memzero($privateKey);
 
         if (!$process->isSuccessful()) {
-            throw new Exception(self::MESSAGE_OPENSSL_EXITED_UNSUCCESSFULLY . $process->getErrorOutput());
+            throw new Exception(self::MESSAGE_OPENSSL_EXITED_UNSUCCESSFULLY.$process->getErrorOutput());
         }
 
         if (!str_starts_with($process->getOutput(), '-----BEGIN PRIVATE KEY-----')) {
-            throw new Exception(self::MESSAGE_OPENSSL_OUTPUT_INVALID . $process->getOutput());
+            throw new Exception(self::MESSAGE_OPENSSL_OUTPUT_INVALID.$process->getOutput());
         }
 
         return $process->getOutput();
@@ -81,7 +85,7 @@ class MailCryptKeyHandler
         ]);
         openssl_pkey_export($pKey, $privateKey);
         $privateKey = base64_encode($this->toPkcs8($privateKey));
-        $keyPair = new MailCryptKeyPair($privateKey, base64_encode((string)openssl_pkey_get_details($pKey)['key']));
+        $keyPair = new MailCryptKeyPair($privateKey, base64_encode((string) openssl_pkey_get_details($pKey)['key']));
         sodium_memzero($privateKey);
 
         $mailCryptSecretBox = CryptoSecretHandler::create($keyPair->getPrivateKey(), $password);

@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
 use Twig\Markup;
+use Twig\TwigFilter;
 
 class SafeHtmlExtension extends AbstractExtension
 {

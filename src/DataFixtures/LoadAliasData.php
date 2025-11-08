@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
 use App\Entity\User;
@@ -11,9 +13,6 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadAliasData extends Fixture implements FixtureGroupInterface, DependentFixtureInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(ObjectManager $manager): void
     {
         $user = $manager->getRepository(User::class)->findByEmail('user2@example.org');

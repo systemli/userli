@@ -12,8 +12,7 @@ class SettingsExtension extends AbstractExtension
 {
     public function __construct(
         private readonly SettingsService $settings,
-    )
-    {
+    ) {
     }
 
     public function getFunctions(): array

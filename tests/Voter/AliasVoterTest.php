@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Voter;
 
 use App\Entity\Alias;
 use App\Entity\User;
 use App\Voter\AliasVoter;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class AliasVoterTest extends TestCase
@@ -67,17 +70,19 @@ class AliasVoterTest extends TestCase
 
     private function invokeSupports(AliasVoter $voter, string $attribute, $subject): bool
     {
-        $ref = new \ReflectionClass($voter);
+        $ref = new ReflectionClass($voter);
         $method = $ref->getMethod('supports');
         $method->setAccessible(true);
+
         return $method->invoke($voter, $attribute, $subject);
     }
 
     private function invokeVoteOnAttribute(AliasVoter $voter, string $attribute, $subject, TokenInterface $token): bool
     {
-        $ref = new \ReflectionClass($voter);
+        $ref = new ReflectionClass($voter);
         $method = $ref->getMethod('voteOnAttribute');
         $method->setAccessible(true);
+
         return $method->invoke($voter, $attribute, $subject, $token);
     }
 }

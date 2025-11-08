@@ -1,18 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
-use DateTime;
 use App\Entity\User;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
 readonly class UserLastLoginUpdateService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-    )
-    {
-
+    ) {
     }
 
     /**
@@ -20,9 +20,6 @@ readonly class UserLastLoginUpdateService
      *
      * The update is obfuscated by only updating the last login time if it is not already set to the start
      * of the current week.
-     *
-     * @param User $user
-     * @return void
      */
     public function updateLastLogin(User $user): void
     {

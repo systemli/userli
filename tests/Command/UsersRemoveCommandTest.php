@@ -14,6 +14,8 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
+use const DIRECTORY_SEPARATOR;
+
 class UsersRemoveCommandTest extends TestCase
 {
     private UsersRemoveCommand $command;
@@ -103,7 +105,7 @@ class UsersRemoveCommandTest extends TestCase
         $commandTester->assertCommandIsSuccessful();
 
         $output = $commandTester->getDisplay();
-        $expectedPath = $this->mailLocation . DIRECTORY_SEPARATOR . 'example.org' . DIRECTORY_SEPARATOR . 'testuser';
+        $expectedPath = $this->mailLocation.DIRECTORY_SEPARATOR.'example.org'.DIRECTORY_SEPARATOR.'testuser';
         self::assertStringContainsString($expectedPath, $output);
         self::assertStringNotContainsString('Found', $output); // List mode doesn't show count
     }
@@ -193,7 +195,7 @@ class UsersRemoveCommandTest extends TestCase
         $commandTester->assertCommandIsSuccessful();
 
         $output = $commandTester->getDisplay();
-        $expectedPath = $this->mailLocation . DIRECTORY_SEPARATOR . 'test.org' . DIRECTORY_SEPARATOR . 'myuser';
+        $expectedPath = $this->mailLocation.DIRECTORY_SEPARATOR.'test.org'.DIRECTORY_SEPARATOR.'myuser';
         self::assertStringContainsString($expectedPath, $output);
     }
 }

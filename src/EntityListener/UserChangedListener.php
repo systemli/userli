@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\EntityListener;
 
 use App\Entity\User;
@@ -20,8 +22,7 @@ class UserChangedListener
     public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly SuspiciousChildrenHandler $suspiciousChildrenHandler,
-    )
-    {
+    ) {
         $this->voucherRepository = $this->manager->getRepository(Voucher::class);
     }
 

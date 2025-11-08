@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
-use Doctrine\DBAL\Types\Types;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 trait OpenPgpKeyTrait
@@ -14,7 +16,7 @@ trait OpenPgpKeyTrait
     #[ORM\Column(type: Types::TEXT)]
     public ?string $keyFingerprint = null;
 
-    #[ORM\Column(nullable: 'true')]
+    #[ORM\Column(nullable: true)]
     public ?DateTime $keyExpireTime = null;
 
     #[ORM\Column(type: Types::TEXT)]

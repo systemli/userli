@@ -1,9 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Model;
 
-use Exception;
 use App\Traits\SaltTrait;
+use Exception;
+
+use const SODIUM_CRYPTO_PWHASH_SALTBYTES;
+use const SODIUM_CRYPTO_SECRETBOX_MACBYTES;
+use const SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
 
 class CryptoSecret
 {
@@ -53,6 +59,6 @@ class CryptoSecret
         $nonce = mb_substr($decoded, SODIUM_CRYPTO_PWHASH_SALTBYTES, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit');
         $secret = mb_substr($decoded, SODIUM_CRYPTO_PWHASH_SALTBYTES + SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit');
 
-        return new CryptoSecret($salt, $nonce, $secret);
+        return new self($salt, $nonce, $secret);
     }
 }

@@ -26,11 +26,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class AliasController extends AbstractController
 {
     public function __construct(
-        private readonly AliasHandler           $aliasHandler,
-        private readonly DeleteHandler          $deleteHandler,
+        private readonly AliasHandler $aliasHandler,
+        private readonly DeleteHandler $deleteHandler,
         private readonly EntityManagerInterface $manager,
-    )
-    {
+    ) {
     }
 
     #[Route(path: '/alias', name: 'aliases', methods: ['GET'])]
@@ -150,7 +149,7 @@ class AliasController extends AbstractController
     public function deleteSubmit(
         Request $request,
         #[MapEntity(class: Alias::class, expr: 'repository.findOneBy({id: id, deleted: false})')]
-        Alias   $alias): RedirectResponse|Response
+        Alias $alias): RedirectResponse|Response
     {
         $form = $this->createForm(AliasDeleteType::class, new Delete());
         $form->handleRequest($request);

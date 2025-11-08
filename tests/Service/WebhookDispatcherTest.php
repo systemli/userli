@@ -10,11 +10,11 @@ use App\Entity\WebhookEndpoint;
 use App\Enum\WebhookEvent;
 use App\Message\SendWebhook;
 use App\Service\WebhookDispatcher;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Envelope;
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class WebhookDispatcherTest extends TestCase
 {
@@ -39,6 +39,7 @@ class WebhookDispatcherTest extends TestCase
         $em->expects($this->exactly(2))->method('persist')->with($this->callback(function ($entity) use (&$persisted) {
             $this->assertInstanceOf(WebhookDelivery::class, $entity);
             $persisted[] = $entity;
+
             return true;
         }));
         $em->expects($this->exactly(4))->method('flush');
@@ -53,8 +54,9 @@ class WebhookDispatcherTest extends TestCase
                 $this->assertInstanceOf(SendWebhook::class, $message);
                 $inner = $message;
             }
-            $ids = array_map(fn(WebhookDelivery $d) => (string)$d->getId(), $persisted);
+            $ids = array_map(fn (WebhookDelivery $d) => (string) $d->getId(), $persisted);
             $this->assertContains($inner->deliveryId, $ids);
+
             return true;
         }))->willReturnCallback(function ($message) {
             // Always return an Envelope as messenger expects

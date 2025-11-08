@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Block;
 
-use DateTime;
 use App\Entity\User;
 use App\Entity\Voucher;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\BlockServiceInterface;
@@ -22,7 +24,7 @@ class StatisticsBlockService implements BlockServiceInterface
     {
     }
 
-    public function execute(BlockContextInterface $blockContext, Response $response = null): Response
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
     {
         $settings = $blockContext->getSettings();
 

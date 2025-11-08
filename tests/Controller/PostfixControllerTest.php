@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use App\DataFixtures\LoadApiTokenData;
@@ -10,10 +12,10 @@ class PostfixControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->client = static::createClient(server: [
-            'HTTP_AUTHORIZATION' => 'Bearer ' . LoadApiTokenData::POSTFIX_TOKEN_PLAIN,
+            'HTTP_AUTHORIZATION' => 'Bearer '.LoadApiTokenData::POSTFIX_TOKEN_PLAIN,
             'ACCEPT' => 'application/json',
             'CONTENT_TYPE' => 'application/json',
         ]);
@@ -21,7 +23,7 @@ class PostfixControllerTest extends WebTestCase
 
     public function testGetAliasUsersWrongApiToken(): void
     {
-        $this->client->request(method:'GET', uri:'/api/postfix/alias/alias@example.org', server: [
+        $this->client->request(method: 'GET', uri: '/api/postfix/alias/alias@example.org', server: [
             'HTTP_Authorization' => 'Bearer wrong',
         ]);
 
@@ -41,7 +43,7 @@ class PostfixControllerTest extends WebTestCase
 
     public function testGetDomainWrongApiToken(): void
     {
-        $this->client->request(method: 'GET', uri:'/api/postfix/domain/example.org', server: [
+        $this->client->request(method: 'GET', uri: '/api/postfix/domain/example.org', server: [
             'HTTP_Authorization' => 'Bearer wrong',
         ]);
 
@@ -58,7 +60,7 @@ class PostfixControllerTest extends WebTestCase
 
     public function testGetMailboxWrongApiToken(): void
     {
-        $this->client->request(method:'GET', uri:'/api/postfix/mailbox/user@example.org', server: [
+        $this->client->request(method: 'GET', uri: '/api/postfix/mailbox/user@example.org', server: [
             'HTTP_Authorization' => 'Bearer wrong',
         ]);
 
@@ -75,8 +77,8 @@ class PostfixControllerTest extends WebTestCase
 
     public function testGetSendersWrongApiToken(): void
     {
-        $this->client->request(method:'GET',uri: '/api/postfix/senders/user@example.org', server: [
-            'HTTP_AUTHORIZATION' => 'Bearer wrongtoken'
+        $this->client->request(method: 'GET', uri: '/api/postfix/senders/user@example.org', server: [
+            'HTTP_AUTHORIZATION' => 'Bearer wrongtoken',
         ]);
 
         self::assertResponseStatusCodeSame(401);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -9,10 +11,6 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    /**
-     * @param AuthenticationUtils $authenticationUtils
-     * @return Response
-     */
     #[Route(path: '/login', name: 'login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -27,12 +25,8 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    /**
-     * @return void
-     */
     #[Route(path: '/logout', name: 'logout', methods: ['GET'])]
     public function logout(): void
     {
-
     }
 }

@@ -20,7 +20,7 @@ class VoucherController extends AbstractController
 {
     public function __construct(
         private readonly VoucherHandler $voucherHandler,
-        private readonly VoucherCreator $voucherCreator
+        private readonly VoucherCreator $voucherCreator,
     ) {
     }
 

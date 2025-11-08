@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin;
 
 use App\Creator\DomainCreator;
@@ -17,31 +19,23 @@ class DomainAdmin extends Admin
 
     private EventDispatcherInterface $eventDispatcher;
 
-    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string {
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+    {
         return 'domain';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->add('name', TextType::class, ['disabled' => !$this->isNewObject()]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('name');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureListFields(ListMapper $list): void
     {
         $list
@@ -59,9 +53,6 @@ class DomainAdmin extends Admin
             ->add('updatedTime');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('delete');

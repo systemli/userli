@@ -54,6 +54,7 @@ class WebhookEndpointController extends AbstractController
             $data = $form->getData();
             $this->manager->create($data->getUrl(), $data->getSecret(), $data->getEvents(), $data->isEnabled());
             $this->addFlash('success', 'settings.webhook.create.success');
+
             return $this->redirectToRoute('settings_webhook_endpoint_index');
         }
 

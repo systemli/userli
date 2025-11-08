@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Twig;
 
 use App\Entity\UserNotification;
@@ -11,10 +13,9 @@ use Twig\TwigFunction;
 class UserNotificationExtension extends AbstractExtension
 {
     public function __construct(
-        readonly private Security               $security,
-        readonly private EntityManagerInterface $entityManager,
-    )
-    {
+        private readonly Security $security,
+        private readonly EntityManagerInterface $entityManager,
+    ) {
     }
 
     public function getFunctions(): array
@@ -24,7 +25,7 @@ class UserNotificationExtension extends AbstractExtension
         ];
     }
 
-    public function hasNotifications(string $type = null): bool
+    public function hasNotifications(?string $type = null): bool
     {
         $user = $this->security->getUser();
         if ($user === null) {

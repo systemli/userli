@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Sender;
 
-use Exception;
-use IntlDateFormatter;
-use DateInterval;
 use App\Builder\RecoveryProcessMessageBuilder;
 use App\Entity\User;
 use App\Handler\MailHandler;
+use DateInterval;
+use Exception;
+use IntlDateFormatter;
 
 /**
  * Class RecoveryProcessMessageSender.

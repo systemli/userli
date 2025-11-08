@@ -16,10 +16,8 @@ final class PruneWebhookDeliveriesHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly LoggerInterface        $logger,
-    )
-    {
-
+        private readonly LoggerInterface $logger,
+    ) {
     }
 
     public function __invoke(PruneWebhookDeliveries $message): void

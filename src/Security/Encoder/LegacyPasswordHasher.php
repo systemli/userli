@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security\Encoder;
 
 use LogicException;
@@ -22,18 +24,11 @@ class LegacyPasswordHasher implements PasswordHasherInterface
     {
     }
 
-    /**
-     * @param string $hashedPassword
-     *
-     * @return bool
-     */
-    public function needsRehash(string $hashedPassword): bool {
+    public function needsRehash(string $hashedPassword): bool
+    {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hash(string $plainPassword): string
     {
         if ($this->isPasswordTooLong($plainPassword)) {
@@ -46,16 +41,13 @@ class LegacyPasswordHasher implements PasswordHasherInterface
             default => throw new LogicException(sprintf('The algorithm "%s" is not supported.', $this->algorithm)),
         };
 
-        $salt = uniqid(mt_rand(), true);
+        $salt = uniqid((string) mt_rand(), true);
 
         $digest = crypt($plainPassword, sprintf('$%d$rounds=%d$%s$', $hashId, $this->iterations, $salt));
 
         return $this->encodeHashAsBase64 ? base64_encode($digest) : $digest;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function verify(string $hashedPassword, $plainPassword): bool
     {
         if ('' === $plainPassword || $this->isPasswordTooLong($plainPassword)) {

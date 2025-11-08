@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Form\Model\RecoveryTokenConfirm;
@@ -25,9 +27,6 @@ class RecoveryTokenConfirmType extends AbstractType
             ->add('submit', SubmitType::class, ['label' => 'form.registration-recovery-token-next-button']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => RecoveryTokenConfirm::class]);

@@ -1,22 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Behat;
 
+use App\Entity\Alias;
 use App\Entity\Domain;
+use App\Entity\ReservedName;
 use App\Entity\Setting;
+use App\Entity\User;
 use App\Entity\UserNotification;
+use App\Entity\Voucher;
 use App\Entity\WebhookDelivery;
 use App\Entity\WebhookEndpoint;
 use App\Enum\UserNotificationType;
 use App\Enum\WebhookEvent;
-use DateTime;
-use App\Entity\Voucher;
-use App\Entity\ReservedName;
-use Exception;
-use OTPHP\TOTP;
-use RuntimeException;
-use App\Entity\Alias;
-use App\Entity\User;
 use App\Guesser\DomainGuesser;
 use App\Helper\PasswordUpdater;
 use Behat\Gherkin\Node\PyStringNode;
@@ -24,22 +22,25 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\MinkContext;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
 use Doctrine\Persistence\ObjectRepository;
+use Exception;
+use OTPHP\TOTP;
 use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Test\TestBrowserToken;
 use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\Console\Input\StringInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionFactoryInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+
+use const PHP_URL_QUERY;
 
 /**
  * This context class contains the definitions of the steps used by the demo
@@ -56,13 +57,12 @@ class FeatureContext extends MinkContext
     private CacheItemPoolInterface $cache;
 
     public function __construct(
-        private readonly KernelInterface        $kernel,
+        private readonly KernelInterface $kernel,
         private readonly EntityManagerInterface $manager,
-        private readonly PasswordUpdater        $passwordUpdater,
-        private readonly DomainGuesser          $domainGuesser,
-        private readonly TokenStorageInterface  $tokenStorage,
-    )
-    {
+        private readonly PasswordUpdater $passwordUpdater,
+        private readonly DomainGuesser $domainGuesser,
+        private readonly TokenStorageInterface $tokenStorage,
+    ) {
         $this->sessionFactory = $this->getContainer()->get('session.factory');
         $this->cache = $this->getContainer()->get('cache.app');
         $this->dbPlatform = $this->manager->getConnection()->getDatabasePlatform()->getName();
@@ -143,7 +143,7 @@ class FeatureContext extends MinkContext
                         $this->passwordUpdater->updatePassword($user, $value);
                         break;
                     case 'roles':
-                        $roles = explode(',', (string)$value);
+                        $roles = explode(',', (string) $value);
                         $user->setRoles($roles);
                         break;
                     case 'hash':
@@ -163,7 +163,7 @@ class FeatureContext extends MinkContext
                         $user->setRecoverySecretBox($value);
                         break;
                     case 'mailCrypt':
-                        $user->setMailCryptEnabled($value);
+                        $user->setMailCryptEnabled((bool) $value);
                         break;
                     case 'mailCryptSecretBox':
                         $user->setMailCryptSecretBox($value);
@@ -172,7 +172,7 @@ class FeatureContext extends MinkContext
                         $user->setMailCryptPublicKey($value);
                         break;
                     case 'totpConfirmed':
-                        $user->setTotpConfirmed($value);
+                        $user->setTotpConfirmed((bool) $value);
                         break;
                     case 'totpSecret':
                         $user->setTotpSecret($value);
@@ -267,10 +267,10 @@ class FeatureContext extends MinkContext
                         $alias->setDestination($value);
                         break;
                     case 'deleted':
-                        $alias->setDeleted($value);
+                        $alias->setDeleted((bool) $value);
                         break;
                     case 'random':
-                        $alias->setRandom($value);
+                        $alias->setRandom((bool) $value);
                         break;
                 }
 
@@ -317,7 +317,7 @@ class FeatureContext extends MinkContext
             $enabled = !isset($data['enabled']) || $data['enabled'];
             $endpoint = new WebhookEndpoint($url, $secret);
             $endpoint->setEvents($events);
-            $endpoint->setEnabled($enabled);
+            $endpoint->setEnabled((bool) $enabled);
 
             $this->manager->persist($endpoint);
             $this->manager->flush();
@@ -344,7 +344,7 @@ class FeatureContext extends MinkContext
 
             $delivery = new WebhookDelivery($endpoint, $type, $requestBody, $requestHeaders);
 
-            $delivery->setResponseCode($responseCode);
+            $delivery->setResponseCode((int) $responseCode);
             $delivery->setResponseBody($responseBody);
             $delivery->setSuccess($responseCode >= 200 && $responseCode < 300);
             $delivery->setError($delivery->isSuccess() ? null : 'Unknown error');
@@ -396,14 +396,13 @@ class FeatureContext extends MinkContext
             throw new UnsupportedDriverActionException('This step is only supported by the BrowserKitDriver', $driver);
         }
 
-
         $user = $this->getUserRepository()->findByEmail($username);
         $token = new TestBrowserToken($user->getRoles(), $user, 'main');
 
         $this->tokenStorage->setToken($token);
 
         $session = $this->sessionFactory->createSession();
-        $session->set('_security_' . 'main', serialize($token));
+        $session->set('_security_main', serialize($token));
         $session->save();
 
         $client = $driver->getClient();
@@ -499,6 +498,7 @@ class FeatureContext extends MinkContext
 
     /**
      * @When /I set the placeholder "([^"]*)" from html element "([^"]*)"$/
+     *
      * @throws Exception
      */
     public function iSetPlaceholderFromElement(string $name, string $selector): void
@@ -517,7 +517,6 @@ class FeatureContext extends MinkContext
         $this->setPlaceholder($name, $value);
     }
 
-
     /**
      * @When /^File "([^"]*)" exists with content:$/
      */
@@ -526,9 +525,6 @@ class FeatureContext extends MinkContext
         file_put_contents($path, $content);
     }
 
-    /**
-     * @param $page
-     */
     public function visit($page): void
     {
         $page = $this->replacePlaceholders($page);
@@ -576,19 +572,11 @@ class FeatureContext extends MinkContext
         }
     }
 
-    /**
-     * @param $value
-     */
     public function setPlaceholder(string $key, $value): void
     {
         $this->placeholders[$key] = $value;
     }
 
-    /**
-     * @param $key
-     *
-     * @return mixed
-     */
     public function getPlaceholder(string $key)
     {
         return $this->placeholders[$key] ?? null;

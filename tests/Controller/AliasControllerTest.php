@@ -51,9 +51,9 @@ class AliasControllerTest extends WebTestCase
 
         $client->request('POST', '/alias/create', [
             'create_custom_alias' => [
-                'alias' => 'test' . random_int(1, 1000),
+                'alias' => 'test'.random_int(1, 1000),
                 'submit' => '',
-            ]
+            ],
         ]);
 
         $this->assertResponseRedirects('/alias');
@@ -70,8 +70,8 @@ class AliasControllerTest extends WebTestCase
 
         $client->request('POST', '/alias/create', [
             'create_alias' => [
-                'submit' => ''
-            ]
+                'submit' => '',
+            ],
         ]);
 
         $this->assertResponseRedirects('/alias');
@@ -98,7 +98,7 @@ class AliasControllerTest extends WebTestCase
             'create_custom_alias' => [
                 'alias' => 'test-alias',
                 'submit' => '',
-            ]
+            ],
         ]);
 
         $this->assertResponseStatusCodeSame(403);
@@ -116,7 +116,7 @@ class AliasControllerTest extends WebTestCase
             'create_custom_alias' => [
                 'alias' => '',
                 'submit' => '',
-            ]
+            ],
         ]);
 
         $this->assertResponseRedirects('/alias');

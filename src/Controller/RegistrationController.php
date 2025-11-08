@@ -4,29 +4,28 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Exception;
 use App\Entity\User;
 use App\Form\Model\RecoveryTokenConfirm;
 use App\Form\Model\Registration;
 use App\Form\RecoveryTokenConfirmType;
 use App\Form\RegistrationType;
 use App\Handler\RegistrationHandler;
+use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class RegistrationController extends AbstractController
 {
     public function __construct(
-        private readonly RegistrationHandler   $registrationHandler,
-        private readonly ManagerRegistry       $manager,
-        private readonly TokenStorageInterface $tokenStorage
-    )
-    {
+        private readonly RegistrationHandler $registrationHandler,
+        private readonly ManagerRegistry $manager,
+        private readonly TokenStorageInterface $tokenStorage,
+    ) {
     }
 
     /**

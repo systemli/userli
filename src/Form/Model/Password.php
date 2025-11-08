@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\Model;
 
 use App\Validator\PasswordPolicy;
@@ -12,7 +14,7 @@ class Password
     private string $password;
 
     #[PasswordPolicy]
-    #[Assert\NotCompromisedPassword(skipOnError: 'true')]
+    #[Assert\NotCompromisedPassword(skipOnError: true)]
     #[Assert\NotIdenticalTo(propertyPath: 'password', message: 'form.identical-passwords')]
     private string $newPassword;
 

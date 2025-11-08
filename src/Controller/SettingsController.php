@@ -14,9 +14,8 @@ use Symfony\Component\Routing\Attribute\Route;
 class SettingsController extends AbstractController
 {
     public function __construct(
-        private readonly SettingsService $settingsService
-    )
-    {
+        private readonly SettingsService $settingsService,
+    ) {
     }
 
     #[Route('/settings', name: 'settings_show', methods: ['GET'])]
@@ -39,7 +38,7 @@ class SettingsController extends AbstractController
             $data = $form->getData();
 
             // Filter out null values and save only changed settings
-            $data = array_filter($data, fn($value) => $value !== null);
+            $data = array_filter($data, fn ($value) => $value !== null);
 
             $this->settingsService->setAll($data);
             $this->addFlash('success', 'settings.flash.updated_successfully');

@@ -9,9 +9,9 @@ use App\Enum\UserNotificationType;
 use App\Event\UserNotificationEvent;
 use Exception;
 use Psr\Log\LoggerInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 readonly class PasswordCompromisedService
 {
@@ -19,11 +19,10 @@ readonly class PasswordCompromisedService
 
     public function __construct(
         private UserNotificationRateLimiter $rateLimiter,
-        private EventDispatcherInterface    $eventDispatcher,
-        private ValidatorInterface          $validator,
-        private LoggerInterface             $logger
-    )
-    {
+        private EventDispatcherInterface $eventDispatcher,
+        private ValidatorInterface $validator,
+        private LoggerInterface $logger,
+    ) {
     }
 
     /**
@@ -33,9 +32,9 @@ readonly class PasswordCompromisedService
      * against a "Not Compromised Password" constraint. If violations are detected, the rate limiter records the
      * event, and a user notification event is dispatched.
      *
-     * @param User $user The user for whom the password is being verified.
-     * @param string $password The password to check against compromise constraints.
-     * @param string $locale The locale used for sending the notification.
+     * @param User   $user     the user for whom the password is being verified
+     * @param string $password the password to check against compromise constraints
+     * @param string $locale   the locale used for sending the notification
      */
     public function checkAndNotify(User $user, string $password, string $locale): void
     {
@@ -53,7 +52,7 @@ readonly class PasswordCompromisedService
         } catch (Exception $exception) {
             $this->logger->error('Error validating compromised password', [
                 'email' => $user->getEmail(),
-                'error' => $exception->getMessage()
+                'error' => $exception->getMessage(),
             ]);
 
             return;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Service;
 
 use App\Entity\User;
@@ -11,13 +13,15 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+use const DATE_ATOM;
+use const JSON_UNESCAPED_SLASHES;
+
 readonly class WebhookDispatcher
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private MessageBusInterface    $bus,
-    )
-    {
+        private MessageBusInterface $bus,
+    ) {
     }
 
     public function dispatchUserEvent(User $user, WebhookEvent $type): void
@@ -50,12 +54,11 @@ readonly class WebhookDispatcher
             $this->em->persist($delivery);
             $this->em->flush();
 
-            $delivery->setRequestHeaders(array_merge($headers, ['X-Webhook-Id' => (string)$delivery->getId()]));
+            $delivery->setRequestHeaders(array_merge($headers, ['X-Webhook-Id' => (string) $delivery->getId()]));
 
             $this->em->flush();
 
-            $this->bus->dispatch(new SendWebhook((string)$delivery->getId()));
+            $this->bus->dispatch(new SendWebhook((string) $delivery->getId()));
         }
     }
-
 }

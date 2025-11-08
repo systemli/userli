@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use App\DataFixtures\LoadApiTokenData;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
+use const JSON_THROW_ON_ERROR;
 
 class RoundcubeControllerTest extends WebTestCase
 {
@@ -18,10 +22,10 @@ class RoundcubeControllerTest extends WebTestCase
     public function testInvalidRequestFormat(): void
     {
         $client = static::createClient([], [
-            'HTTP_AUTHORIZATION' => 'Bearer ' . LoadApiTokenData::ROUNDCUBE_TOKEN_PLAIN,
+            'HTTP_AUTHORIZATION' => 'Bearer '.LoadApiTokenData::ROUNDCUBE_TOKEN_PLAIN,
         ]);
         $client->request(method: 'POST', uri: '/api/roundcube/aliases', content: json_encode([
-            'email' => 'user2@example.org', 'password' => 'password'
+            'email' => 'user2@example.org', 'password' => 'password',
         ]));
 
         self::assertResponseStatusCodeSame(400);
@@ -30,12 +34,12 @@ class RoundcubeControllerTest extends WebTestCase
     public function testGetUserAliases(): void
     {
         $client = static::createClient([], [
-            'HTTP_AUTHORIZATION' => 'Bearer ' . LoadApiTokenData::ROUNDCUBE_TOKEN_PLAIN,
+            'HTTP_AUTHORIZATION' => 'Bearer '.LoadApiTokenData::ROUNDCUBE_TOKEN_PLAIN,
             'ACCEPT' => 'application/json',
             'CONTENT_TYPE' => 'application/json',
         ]);
         $client->request(method: 'POST', uri: '/api/roundcube/aliases', content: json_encode([
-            'email' => 'user2@example.org', 'password' => 'password'
+            'email' => 'user2@example.org', 'password' => 'password',
         ]));
 
         self::assertResponseIsSuccessful();
@@ -51,12 +55,12 @@ class RoundcubeControllerTest extends WebTestCase
     public function testEmptyUserAliases(): void
     {
         $client = static::createClient([], [
-            'HTTP_AUTHORIZATION' => 'Bearer ' . LoadApiTokenData::ROUNDCUBE_TOKEN_PLAIN,
+            'HTTP_AUTHORIZATION' => 'Bearer '.LoadApiTokenData::ROUNDCUBE_TOKEN_PLAIN,
             'ACCEPT' => 'application/json',
             'CONTENT_TYPE' => 'application/json',
         ]);
         $client->request(method: 'POST', uri: '/api/roundcube/aliases', content: json_encode([
-            'email' => 'support@example.org', 'password' => 'password'
+            'email' => 'support@example.org', 'password' => 'password',
         ]));
 
         self::assertResponseIsSuccessful();

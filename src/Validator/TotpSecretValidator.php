@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Validator;
 
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
@@ -15,12 +17,6 @@ class TotpSecretValidator extends ConstraintValidator
     {
     }
 
-    /**
-     * @param            $value
-     * @param Constraint $constraint
-     *
-     * @return bool
-     */
     public function validate($value, Constraint $constraint): bool
     {
         if (!$constraint instanceof TotpSecret) {
@@ -35,7 +31,7 @@ class TotpSecretValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        /** @var $user TwoFactorInterface */
+        /** @var TwoFactorInterface $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
         if (!$this->totpAuthenticator->checkCode($user, $value)) {

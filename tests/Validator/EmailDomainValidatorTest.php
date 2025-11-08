@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Validator;
 
 use App\Entity\User;
@@ -16,12 +18,12 @@ class EmailDomainValidatorTest extends ConstraintValidatorTestCase
         $repository = $this->createMock(DomainRepository::class);
         $repository->expects($this->any())
             ->method('findOneBy')
-            ->will($this->returnValue(null));
+            ->willReturn(null);
 
         $manager = $this->createMock(EntityManagerInterface::class);
         $manager->expects($this->any())
             ->method('getRepository')
-            ->will($this->returnValue($repository));
+            ->willReturn($repository);
 
         return new EmailDomainValidator($manager);
     }

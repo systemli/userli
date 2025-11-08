@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Security;
 
 use App\Entity\User;
@@ -9,7 +11,8 @@ use PHPUnit\Framework\TestCase;
 class UserCheckerTest extends TestCase
 {
     private UserChecker $userChecker;
-    public function setUp(): void
+
+    protected function setUp(): void
     {
         $this->userChecker = new UserChecker();
     }

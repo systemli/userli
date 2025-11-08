@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\MessageHandler;
 
 use App\Entity\WebhookDelivery;
@@ -16,9 +18,8 @@ final readonly class SendWebhookHandler
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private HttpClientInterface    $httpClient,
-    )
-    {
+        private HttpClientInterface $httpClient,
+    ) {
     }
 
     public function __invoke(SendWebhook $message): void
@@ -31,7 +32,7 @@ final readonly class SendWebhookHandler
         $endpoint = $delivery->getEndpoint();
         $delivery->setAttempts($delivery->getAttempts() + 1);
         $headers = $delivery->getRequestHeaders();
-        $headers['X-Webhook-Attempt'] = (string)$delivery->getAttempts();
+        $headers['X-Webhook-Attempt'] = (string) $delivery->getAttempts();
         $delivery->setRequestHeaders($headers);
 
         try {

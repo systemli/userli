@@ -51,7 +51,7 @@ class VoucherControllerTest extends WebTestCase
         $client->request('POST', '/voucher/create', [
             'create_voucher' => [
                 'submit' => '',
-            ]
+            ],
         ]);
 
         $this->assertResponseRedirects('/voucher');
@@ -77,7 +77,7 @@ class VoucherControllerTest extends WebTestCase
         $client->request('POST', '/voucher/create', [
             'create_voucher' => [
                 'submit' => '',
-            ]
+            ],
         ]);
 
         $this->assertResponseStatusCodeSame(403);
@@ -93,7 +93,7 @@ class VoucherControllerTest extends WebTestCase
         $client->request('POST', '/voucher/create', [
             'create_voucher' => [
                 'submit' => '',
-            ]
+            ],
         ]);
 
         $this->assertResponseRedirects('/voucher');

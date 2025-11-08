@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Handler;
 
 use App\Entity\User;
@@ -15,7 +17,7 @@ class UserAuthenticationHandlerTest extends TestCase
     private string $wrong = 'wrong';
     private User $user;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->user = new User();
         $this->user->setPassword($this->password);
@@ -49,6 +51,6 @@ class UserAuthenticationHandlerTest extends TestCase
         $handler = $this->createHandler();
 
         self::assertEquals($this->user, $handler->authenticate($this->user, $this->password));
-        self::assertEquals(null, $handler->authenticate($this->user, $this->wrong));
+        self::assertNull($handler->authenticate($this->user, $this->wrong));
     }
 }

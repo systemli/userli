@@ -25,9 +25,8 @@ class SettingsType extends AbstractType
 {
     public function __construct(
         private readonly SettingsConfigService $configService,
-        private readonly SettingsService       $settingsService
-    )
-    {
+        private readonly SettingsService $settingsService,
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -83,7 +82,7 @@ class SettingsType extends AbstractType
 
         if ($type === 'boolean') {
             $options['required'] = false;
-            $options['data'] = (bool)$currentValue;
+            $options['data'] = (bool) $currentValue;
         }
 
         $builder->add($name, $fieldType, $options);

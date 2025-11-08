@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\VoucherRepository;
@@ -12,15 +14,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
 use Stringable;
 
-
 #[ORM\Entity(repositoryClass: VoucherRepository::class)]
 #[ORM\Table(name: 'virtual_vouchers')]
 #[Index(name: 'code_idx', columns: ['code'])]
 #[VoucherUser]
 class Voucher implements Stringable
 {
-    use IdTrait;
     use CreationTimeTrait;
+    use IdTrait;
     use UserAwareTrait;
 
     #[ORM\Column(nullable: true)]
@@ -68,7 +69,7 @@ class Voucher implements Stringable
         return $this->invitedUser;
     }
 
-    public function setInvitedUser(User $invitedUser = null): void
+    public function setInvitedUser(?User $invitedUser = null): void
     {
         $this->invitedUser = $invitedUser;
     }

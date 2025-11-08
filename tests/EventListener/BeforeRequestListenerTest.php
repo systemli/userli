@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\EventListener;
 
 use App\Entity\Domain;
@@ -10,8 +12,8 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\FilterCollection;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class BeforeRequestListenerTest extends TestCase
 {
@@ -20,7 +22,7 @@ class BeforeRequestListenerTest extends TestCase
     private Security $security;
     private BeforeRequestListener $listener;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->repo = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()

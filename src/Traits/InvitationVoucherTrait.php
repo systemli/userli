@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use App\Entity\Voucher;
@@ -18,7 +20,7 @@ trait InvitationVoucherTrait
         return $this->invitationVoucher;
     }
 
-    public function setInvitationVoucher(Voucher $invitationVoucher = null): void
+    public function setInvitationVoucher(?Voucher $invitationVoucher = null): void
     {
         $this->invitationVoucher = $invitationVoucher;
     }

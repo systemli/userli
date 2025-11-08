@@ -20,9 +20,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class ApiTokenDeleteCommand extends Command
 {
     public function __construct(
-        private readonly ApiTokenManager $apiTokenManager
-    )
-    {
+        private readonly ApiTokenManager $apiTokenManager,
+    ) {
         parent::__construct();
     }
 
@@ -37,11 +36,12 @@ class ApiTokenDeleteCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         try {
-            $plainToken = (string)$input->getOption('token');
+            $plainToken = (string) $input->getOption('token');
             $apiToken = $this->apiTokenManager->findOne($plainToken);
 
             if ($apiToken === null) {
                 $io->error('API token not found.');
+
                 return Command::FAILURE;
             }
 
@@ -49,7 +49,8 @@ class ApiTokenDeleteCommand extends Command
 
             $io->success('API token deleted successfully.');
         } catch (Exception $exception) {
-            $io->error('Failed to delete API token: ' . $exception->getMessage());
+            $io->error('Failed to delete API token: '.$exception->getMessage());
+
             return Command::FAILURE;
         }
 

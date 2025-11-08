@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
-use Exception;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\PasswordStrengthHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,6 +19,8 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+
+use const DIRECTORY_SEPARATOR;
 
 #[AsCommand(name: 'app:users:reset', description: 'Reset a user')]
 class UsersResetCommand extends AbstractUsersCommand
@@ -30,22 +34,17 @@ class UsersResetCommand extends AbstractUsersCommand
         private readonly MailCryptKeyHandler $mailCryptKeyHandler,
         private readonly RecoveryTokenHandler $recoveryTokenHandler,
         #[Autowire(env: 'DOVECOT_MAIL_LOCATION')]
-        private readonly string $mailLocation
+        private readonly string $mailLocation,
     ) {
         parent::__construct($manager);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         parent::configure();
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int

@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
-use App\Enum\ApiScope;
-use App\Security\RequireApiScope;
-use DateTime;
 use App\Dto\RetentionTouchUserDto;
 use App\Entity\Domain;
 use App\Entity\User;
+use App\Enum\ApiScope;
+use App\Security\RequireApiScope;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +20,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[RequireApiScope(scope: ApiScope::RETENTION)]
 class RetentionController extends AbstractController
 {
-    const MESSAGE_TIMESTAMP_IN_FUTURE = 'timestamp in future';
+    public const MESSAGE_TIMESTAMP_IN_FUTURE = 'timestamp in future';
 
     public function __construct(
         private readonly EntityManagerInterface $manager,
@@ -29,11 +31,10 @@ class RetentionController extends AbstractController
     public function putTouchUser(
         #[MapEntity(mapping: ['email' => 'email'])] User $user,
         #[MapRequestPayload] RetentionTouchUserDto $requestData,
-    ): Response
-    {
-        $now = new DateTime;
+    ): Response {
+        $now = new DateTime();
         $time = $requestData->getTimestamp()
-            ? new DateTime('@' . $requestData->getTimestamp())
+            ? new DateTime('@'.$requestData->getTimestamp())
             : $now;
 
         // Check that timestamp is not in future
@@ -53,15 +54,15 @@ class RetentionController extends AbstractController
     }
 
     /**
-     * List deleted users
+     * List deleted users.
      */
     #[Route(path: '/api/retention/{domainUrl}/users', name: 'api_retention_get_deleted_users', methods: ['GET'], stateless: true)]
     public function getDeletedUsers(
         #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
-    ): Response
-    {
+    ): Response {
         $deletedUsers = $this->manager->getRepository(User::class)->findDeletedUsers($domain);
         $deletedUsernames = array_map(static function ($user) { return $user->getEmail(); }, $deletedUsers);
+
         return $this->json($deletedUsernames);
     }
 }

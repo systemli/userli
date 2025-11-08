@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Domain;
-use Doctrine\Common\Collections\AbstractLazyCollection;
-use DateTime;
-use DateInterval;
 use App\Entity\User;
+use DateInterval;
+use DateTime;
+use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\EntityRepository;
@@ -38,6 +40,7 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
         $criteria->andWhere(Criteria::expr()->contains('email', $string));
         $criteria->setMaxResults($max);
         $criteria->setFirstResult($first);
+
         return $this->matching($criteria);
     }
 
@@ -51,6 +54,7 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
 
     /**
      * @return AbstractLazyCollection|(AbstractLazyCollection&Selectable)|LazyCriteriaCollection
+     *
      * @throws Exception
      */
     public function findInactiveUsers(int $days)

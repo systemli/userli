@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Form;
 
 use App\Entity\Domain;
@@ -29,7 +31,7 @@ class RecoveryProcessTypeTest extends TypeTestCase
         $formData = [
             'email' => $email,
             'recoveryToken' => $recoveryToken,
-            ];
+        ];
 
         $form = $this->factory->create(RecoveryProcessType::class);
 

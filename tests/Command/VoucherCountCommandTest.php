@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Command;
 
 use App\Command\VoucherCountCommand;
@@ -17,7 +19,7 @@ class VoucherCountCommandTest extends TestCase
 {
     private VoucherCountCommand $command;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $user = new User();
         $user->setEmail('user@example.org');

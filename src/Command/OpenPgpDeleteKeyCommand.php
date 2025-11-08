@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Entity\OpenPgpKey;
@@ -23,9 +25,6 @@ class OpenPgpDeleteKeyCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this
@@ -35,9 +34,6 @@ class OpenPgpDeleteKeyCommand extends Command
                 'email address of the OpenPGP key');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // parse arguments

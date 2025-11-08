@@ -23,9 +23,8 @@ class LoadApiTokenData extends Fixture implements FixtureGroupInterface
     public const ROUNDCUBE_TOKEN_PLAIN = '3ea02d4e9490e2a4d065ede69d6741a6';
 
     public function __construct(
-        private readonly ApiTokenManager $apiTokenManager
-    )
-    {
+        private readonly ApiTokenManager $apiTokenManager,
+    ) {
     }
 
     public function load(ObjectManager $manager): void

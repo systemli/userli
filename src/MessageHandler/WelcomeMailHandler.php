@@ -15,9 +15,8 @@ final readonly class WelcomeMailHandler
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private WelcomeMessageSender   $sender
-    )
-    {
+        private WelcomeMessageSender $sender,
+    ) {
     }
 
     public function __invoke(WelcomeMail $message): void

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Voter;
 
 use App\Entity\Alias;
@@ -7,9 +9,9 @@ use App\Entity\User;
 use App\Enum\Roles;
 use App\Guesser\DomainGuesser;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Bundle\SecurityBundle\Security;
 
 class DomainVoter extends Voter
 {
@@ -56,7 +58,6 @@ class DomainVoter extends Voter
      * It is safe to assume that $attribute and $subject already passed the "supports()" method check.
      *
      * @param string $attribute
-     * @param mixed  $subject
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
@@ -96,14 +97,14 @@ class DomainVoter extends Voter
         if (in_array($attribute, [
             'ROLE_USERLI_ADMIN_USER_CREATE',
             'ROLE_USERLI_ADMIN_USER_EDIT',
-            ]) && ($userDomain === $guesser->guess($subject->getEmail()))) {
+        ]) && ($userDomain === $guesser->guess($subject->getEmail()))) {
             return true;
         }
 
         if (in_array($attribute, [
-                'ROLE_USERLI_ADMIN_ALIAS_CREATE',
-                'ROLE_USERLI_ADMIN_ALIAS_EDIT',
-            ]) && ($userDomain === $guesser->guess($subject->getSource()))) {
+            'ROLE_USERLI_ADMIN_ALIAS_CREATE',
+            'ROLE_USERLI_ADMIN_ALIAS_EDIT',
+        ]) && ($userDomain === $guesser->guess($subject->getSource()))) {
             return true;
         }
 

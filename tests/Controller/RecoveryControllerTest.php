@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RecoveryControllerTest extends WebTestCase
 {
-    public function testVisitRecoveryUnauthenticated()
+    public function testVisitRecoveryUnauthenticated(): void
     {
         $client = static::createClient();
         $client->request('GET', '/recovery');
@@ -14,7 +16,7 @@ class RecoveryControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
     }
 
-    public function testVisitRecoveryWitInvalidRecoveryToken()
+    public function testVisitRecoveryWitInvalidRecoveryToken(): void
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/recovery');

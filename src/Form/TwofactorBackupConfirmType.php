@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Form\Model\TwofactorBackupConfirm;
@@ -23,9 +25,6 @@ class TwofactorBackupConfirmType extends AbstractType
             ->add('submit', SubmitType::class, ['label' => 'form.verify']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => TwofactorBackupConfirm::class]);

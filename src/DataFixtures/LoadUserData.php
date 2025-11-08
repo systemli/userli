@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Exception;
 use App\Entity\Domain;
 use App\Enum\Roles;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
 
 class LoadUserData extends AbstractUserData implements DependentFixtureInterface, FixtureGroupInterface
 {
@@ -27,15 +29,13 @@ class LoadUserData extends AbstractUserData implements DependentFixtureInterface
     ];
 
     /**
-     * {@inheritdoc}
-     *
      * @throws Exception
      */
     public function load(ObjectManager $manager): void
     {
         foreach ($this->users as $user) {
             $email = $user['email'];
-            $splitted = explode('@', (string)$email);
+            $splitted = explode('@', (string) $email);
             $roles = $user['roles'];
             $domain = $manager->getRepository(Domain::class)->findOneBy(['name' => $splitted[1]]);
             $deleted = array_key_exists('deleted', $user) && $user['deleted'];

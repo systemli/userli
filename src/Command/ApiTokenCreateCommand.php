@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use Exception;
 use App\Enum\ApiScope;
 use App\Form\Model\ApiToken as ApiTokenModel;
 use App\Service\ApiTokenManager;
+use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,10 +23,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ApiTokenCreateCommand extends Command
 {
     public function __construct(
-        private readonly ApiTokenManager    $apiTokenManager,
-        private readonly ValidatorInterface $validator
-    )
-    {
+        private readonly ApiTokenManager $apiTokenManager,
+        private readonly ValidatorInterface $validator,
+    ) {
         parent::__construct();
     }
 
@@ -38,7 +37,7 @@ class ApiTokenCreateCommand extends Command
                 'scopes',
                 's',
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Scopes for the API token (available: ' . implode(', ', ApiScope::all()) . ')',
+                'Scopes for the API token (available: '.implode(', ', ApiScope::all()).')',
                 []
             );
     }
@@ -47,8 +46,8 @@ class ApiTokenCreateCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $name = (string)$input->getOption('name');
-        $scopes = (array)$input->getOption('scopes');
+        $name = (string) $input->getOption('name');
+        $scopes = (array) $input->getOption('scopes');
 
         $model = new ApiTokenModel();
         $model->setName($name);
@@ -71,10 +70,11 @@ class ApiTokenCreateCommand extends Command
 
             $io->info('Store this token securely - it cannot be retrieved again.');
             $io->writeln('');
-            $io->writeln('<fg=green>Token:</> <comment>' . $plainToken . '</comment>');
+            $io->writeln('<fg=green>Token:</> <comment>'.$plainToken.'</comment>');
             $io->writeln('');
         } catch (Exception $exception) {
-            $io->error('Failed to create API token: ' . $exception->getMessage());
+            $io->error('Failed to create API token: '.$exception->getMessage());
+
             return Command::FAILURE;
         }
 

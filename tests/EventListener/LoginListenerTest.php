@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\EventListener;
 
 use App\Entity\User;
@@ -7,16 +9,13 @@ use App\Event\LoginEvent;
 use App\EventListener\LoginListener;
 use App\Handler\MailCryptKeyHandler;
 use App\Service\UserLastLoginUpdateService;
-use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
-use PHPUnit\Framework\assertCount;
-use PHPUnit\Framework\assertEquals;
-use Psr\Log\LoggerInterface;
 
 class LoginListenerTest extends TestCase
 {
@@ -26,7 +25,7 @@ class LoginListenerTest extends TestCase
     private LoginListener $listenerMailCrypt;
     private MailCryptKeyHandler $mailCryptKeyHandler;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->userLastLoginUpdateService = $this->getMockBuilder(UserLastLoginUpdateService::class)
             ->disableOriginalConstructor()
@@ -71,7 +70,7 @@ class LoginListenerTest extends TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|InteractiveLoginEvent
+     * @return PHPUnit_Framework_MockObject_MockObject|InteractiveLoginEvent
      */
     private function getInteractiveEvent(User $user): InteractiveLoginEvent
     {
@@ -114,7 +113,7 @@ class LoginListenerTest extends TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|LoginEvent
+     * @return PHPUnit_Framework_MockObject_MockObject|LoginEvent
      */
     private function getLoginEvent(User $user): LoginEvent
     {
@@ -139,6 +138,7 @@ class LoginListenerTest extends TestCase
                 if ($enable === false || $enable === true) {
                     $user->setMailCryptEnabled($enable);
                 }
+
                 return [$user, $create];
             },
             $enableMailCrypt,

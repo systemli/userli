@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Command;
 
 use App\Command\OpenPgpDeleteKeyCommand;
@@ -14,7 +16,7 @@ class OpenPgpDeleteKeyCommandTest extends TestCase
 {
     private OpenPgpDeleteKeyCommand $command;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $openPgpKey = new OpenPgpKey();
         $openPgpKey->setEmail('alice@example.org');

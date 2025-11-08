@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity\Filter;
 
-use InvalidArgumentException;
 use App\Entity\Domain;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
+use InvalidArgumentException;
 
 class DomainFilter extends SQLFilter
 {
@@ -30,7 +32,9 @@ class DomainFilter extends SQLFilter
     public function getDomainId(): ?string
     {
         try {
-            return $this->getParameter('domainId');
+            $domainId = $this->getParameter('domainId');
+
+            return null === $domainId ? null : (string) $domainId;
         } catch (InvalidArgumentException) {
             return null;
         }

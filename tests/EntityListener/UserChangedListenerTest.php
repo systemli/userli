@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\EntityListener;
 
 use App\Entity\User;
@@ -25,7 +27,7 @@ class UserChangedListenerTest extends TestCase
     private VoucherRepository $voucherRepository;
     private UserChangedListener $listener;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->voucherRepository = $this->createMock(VoucherRepository::class);
         $manager = $this->createMock(EntityManagerInterface::class);

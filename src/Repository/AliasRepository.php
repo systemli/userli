@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Alias;
@@ -8,11 +10,6 @@ use Doctrine\ORM\EntityRepository;
 
 class AliasRepository extends EntityRepository
 {
-    /**
-     * @param string    $email
-     * @param bool|null $includeDeleted
-     * @return Alias|null
-     */
     public function findOneBySource(string $email, ?bool $includeDeleted = false): ?Alias
     {
         if ($includeDeleted) {
@@ -23,8 +20,6 @@ class AliasRepository extends EntityRepository
     }
 
     /**
-     * @param User $user
-     * @param bool|null $random
      * @return array|Alias[]
      */
     public function findByUser(User $user, ?bool $random = null, ?bool $disableDomainFilter = false): array

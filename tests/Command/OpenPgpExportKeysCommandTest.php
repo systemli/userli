@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Command;
 
 use App\Command\OpenPgpExportKeysCommand;
@@ -16,7 +18,7 @@ class OpenPgpExportKeysCommandTest extends TestCase
 {
     private OpenPgpExportKeysCommand $command;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $openPgpKey = new OpenPgpKey();
         $openPgpKey->setEmail('admin@example.org');

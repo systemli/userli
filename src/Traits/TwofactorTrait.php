@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -14,25 +16,16 @@ trait TwofactorTrait
     #[ORM\Column(options: ['default' => false])]
     private bool $totpConfirmed = false;
 
-    /**
-     * {@inheritdoc}
-     */
     public function isTotpAuthenticationEnabled(): bool
     {
         return (bool) $this->totpConfirmed;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTotpAuthenticationUsername(): string
     {
         return $this->getUserIdentifier();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTotpAuthenticationConfiguration(): ?TotpConfigurationInterface
     {
         // Settings that are compatible with Google Authenticator specification

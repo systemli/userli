@@ -27,8 +27,8 @@ class SettingsConfigurationTest extends TestCase
                 'app_name' => [
                     'type' => 'string',
                     'default' => 'Userli',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $processedConfig = $this->processor->processConfiguration($this->configuration, [$config['settings']]);
@@ -46,8 +46,8 @@ class SettingsConfigurationTest extends TestCase
     {
         $config = [
             'settings' => [
-                'simple_setting' => []
-            ]
+                'simple_setting' => [],
+            ],
         ];
 
         $processedConfig = $this->processor->processConfiguration($this->configuration, [$config['settings']]);
@@ -72,9 +72,9 @@ class SettingsConfigurationTest extends TestCase
         $config = [
             'settings' => [
                 'setting_with_validation' => [
-                    'validation' => [] // Empty validation block
-                ]
-            ]
+                    'validation' => [], // Empty validation block
+                ],
+            ],
         ];
 
         $processedConfig = $this->processor->processConfiguration($this->configuration, [$config['settings']]);
@@ -100,8 +100,8 @@ class SettingsConfigurationTest extends TestCase
                     "test_{$type}" => [
                         'type' => $type,
                         'default' => 'test_value',
-                    ]
-                ]
+                    ],
+                ],
             ];
 
             $processedConfig = $this->processor->processConfiguration($this->configuration, [$config['settings']]);
@@ -116,8 +116,8 @@ class SettingsConfigurationTest extends TestCase
             'settings' => [
                 'invalid_setting' => [
                     'type' => 'invalid_type',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $this->expectException(InvalidConfigurationException::class);
@@ -137,14 +137,14 @@ class SettingsConfigurationTest extends TestCase
                         'regex' => '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
                         'min_length' => 5,
                         'max_length' => 100,
-                    ]
+                    ],
                 ],
                 'choice_setting' => [
                     'type' => 'string',
                     'default' => 'en',
                     'validation' => [
-                        'choices' => ['en', 'de', 'fr', 'es']
-                    ]
+                        'choices' => ['en', 'de', 'fr', 'es'],
+                    ],
                 ],
                 'numeric_setting' => [
                     'type' => 'integer',
@@ -152,9 +152,9 @@ class SettingsConfigurationTest extends TestCase
                     'validation' => [
                         'min' => 0,
                         'max' => 100,
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
 
         $processedConfig = $this->processor->processConfiguration($this->configuration, [$config['settings']]);
@@ -184,7 +184,7 @@ class SettingsConfigurationTest extends TestCase
     public function testEmptyDefinitionsAreAllowed(): void
     {
         $config = [
-            'settings' => []
+            'settings' => [],
         ];
 
         $processedConfig = $this->processor->processConfiguration($this->configuration, [$config['settings']]);
@@ -199,9 +199,9 @@ class SettingsConfigurationTest extends TestCase
                 'test_setting' => [
                     'validation' => [
                         'min_length' => 'invalid', // Should be integer
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
 
         $this->expectException(InvalidConfigurationException::class);
@@ -221,8 +221,8 @@ class SettingsConfigurationTest extends TestCase
                 'setting2' => [
                     'type' => 'boolean',
                     'default' => true,
-                ]
-            ]
+                ],
+            ],
         ];
 
         $processedConfig = $this->processor->processConfiguration($this->configuration, [$config['settings']]);
@@ -242,8 +242,8 @@ class SettingsConfigurationTest extends TestCase
                 'custom_key' => [
                     'type' => 'string',
                     'default' => 'custom_value',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $processedConfig = $this->processor->processConfiguration($this->configuration, [$config['settings']]);
@@ -263,10 +263,10 @@ class SettingsConfigurationTest extends TestCase
                     'default' => 'test',
                     'validation' => [
                         'max_length' => 100,
-                        'min_length' => 1
-                    ]
-                ]
-            ]
+                        'min_length' => 1,
+                    ],
+                ],
+            ],
         ];
 
         $processedConfig = $this->processor->processConfiguration($this->configuration, [$config['settings']]);

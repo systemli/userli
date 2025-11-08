@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Handler;
 
 use App\Entity\Alias;
@@ -20,11 +22,10 @@ class DeleteHandler
         private readonly EntityManagerInterface $manager,
         private readonly WkdHandler $wkdHandler,
         private readonly EventDispatcherInterface $eventDispatcher,
-    )
-    {
+    ) {
     }
 
-    public function deleteAlias(Alias $alias, User $user = null)
+    public function deleteAlias(Alias $alias, ?User $user = null): void
     {
         if (null !== $user) {
             if ($alias->getUser() !== $user) {
@@ -38,7 +39,7 @@ class DeleteHandler
         $this->manager->flush();
     }
 
-    public function deleteUser(User $user)
+    public function deleteUser(User $user): void
     {
         // Delete aliases of user
         $aliasRepository = $this->manager->getRepository(Alias::class);

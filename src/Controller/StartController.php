@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\Domain;
@@ -14,13 +16,9 @@ class StartController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $manager,
-    )
-    {
+    ) {
     }
 
-    /**
-     * @return Response
-     */
     #[Route(path: '/', name: 'index')]
     public function index(): Response
     {
@@ -36,9 +34,6 @@ class StartController extends AbstractController
         return $this->render('Start/index_anonymous.html.twig');
     }
 
-    /**
-     * @return Response
-     */
     #[Route(path: '/start', name: 'start')]
     public function start(): Response
     {

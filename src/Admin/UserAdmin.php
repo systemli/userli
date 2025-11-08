@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admin;
 
 use App\Entity\User;
@@ -41,19 +43,13 @@ class UserAdmin extends Admin
         return 'user';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function alterNewInstance(object $object): void
     {
-        /** @var $object User */
+        /* @var $object User */
         $object->setRoles([Roles::USER]);
         $object->setPasswordChangeRequired(true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureFormFields(FormMapper $form): void
     {
         /** @var User $currentUser */
@@ -97,9 +93,6 @@ class UserAdmin extends Admin
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
@@ -113,9 +106,9 @@ class UserAdmin extends Admin
                 'field_type' => DateRangePickerType::class,
                 'field_options' => [
                     'field_options' => [
-                        'format' => 'dd.MM.yyyy'
-                    ]
-                ]
+                        'format' => 'dd.MM.yyyy',
+                    ],
+                ],
             ])
             ->add('roles', null, [
                 'field_options' => [
@@ -145,9 +138,6 @@ class UserAdmin extends Admin
             ->add('deleted');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureListFields(ListMapper $list): void
     {
         $list
@@ -173,9 +163,6 @@ class UserAdmin extends Admin
             ->add('deleted');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureBatchActions($actions): array
     {
         if ($this->hasRoute('edit') && $this->hasAccess('edit')) {
@@ -239,7 +226,7 @@ class UserAdmin extends Admin
 
     public function setMailCryptVar(string $mailCrypt): void
     {
-        $this->mailCrypt = MailCrypt::from((int)$mailCrypt);
+        $this->mailCrypt = MailCrypt::from((int) $mailCrypt);
     }
 
     public function setSecurity(Security $security): void

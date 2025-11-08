@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Creator;
 
 use App\Creator\ReservedNameCreator;
@@ -16,7 +18,7 @@ class ReservedNameCreatorTest extends TestCase
     {
         $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('persist')->willReturnCallback(
-            function (ReservedName $reservedName) {
+            function (ReservedName $reservedName): void {
                 $reservedName->setId(1);
             }
         );

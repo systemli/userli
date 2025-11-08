@@ -9,7 +9,6 @@ use App\Service\SettingsService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 
 class MailHandlerTest extends TestCase
@@ -80,6 +79,7 @@ class MailHandlerTest extends TestCase
             ->method('send')
             ->with($this->callback(function (Email $message) use ($bcc) {
                 $bccAddresses = $message->getBcc();
+
                 return count($bccAddresses) === 1 && $bccAddresses[0]->getAddress() === $bcc;
             }));
 
@@ -132,6 +132,7 @@ class MailHandlerTest extends TestCase
             ->method('send')
             ->with($this->callback(function (Email $message) use ($bcc, $html) {
                 $bccAddresses = $message->getBcc();
+
                 return count($bccAddresses) === 1
                     && $bccAddresses[0]->getAddress() === $bcc
                     && $message->getHtmlBody() === $html;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use App\DataFixtures\LoadApiTokenData;
@@ -7,14 +9,16 @@ use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+use const JSON_THROW_ON_ERROR;
+
 class KeycloakControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->client = static::createClient(server: [
-            'HTTP_AUTHORIZATION' => 'Bearer ' . LoadApiTokenData::KEYCLOAK_TOKEN_PLAIN,
+            'HTTP_AUTHORIZATION' => 'Bearer '.LoadApiTokenData::KEYCLOAK_TOKEN_PLAIN,
             'ACCEPT' => 'application/json',
             'CONTENT_TYPE' => 'application/json',
         ]);
@@ -22,8 +26,8 @@ class KeycloakControllerTest extends WebTestCase
 
     public function testGetUsersSearchWrongApiToken(): void
     {
-        $this->client->request(method:'GET', uri:'/api/keycloak/example.org?search=example&max=2', server: [
-            'HTTP_AUTHORIZATION' => 'Bearer wrongtoken'
+        $this->client->request(method: 'GET', uri: '/api/keycloak/example.org?search=example&max=2', server: [
+            'HTTP_AUTHORIZATION' => 'Bearer wrongtoken',
         ]);
 
         self::assertResponseStatusCodeSame(401);
@@ -37,7 +41,7 @@ class KeycloakControllerTest extends WebTestCase
 
         $expected = [
             ['id' => 'admin', 'email' => 'admin@example.org'],
-            ['id' => 'user', 'email' => 'user@example.org']
+            ['id' => 'user', 'email' => 'user@example.org'],
         ];
         $data = json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
         self::assertEquals($expected, $data);

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use DateTimeImmutable;
 use App\Entity\WebhookEndpoint;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 
 readonly class WebhookEndpointManager

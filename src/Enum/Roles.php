@@ -82,6 +82,7 @@ final class Roles
      *   // -> ['ROLE_USER', 'ROLE_PERMANENT']
      *
      * @param array<int, string> $roles List of role names
+     *
      * @return string[] List of role names implied by any given role
      */
     public static function getReachableRoles(array $roles): array

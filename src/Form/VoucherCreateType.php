@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Form\Model\VoucherCreate;
@@ -18,9 +20,6 @@ class VoucherCreateType extends AbstractType
             ->add('submit', SubmitType::class, ['label' => 'form.create-voucher']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => VoucherCreate::class]);

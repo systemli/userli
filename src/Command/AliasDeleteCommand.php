@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Entity\Alias;
@@ -20,9 +22,6 @@ class AliasDeleteCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this
@@ -31,9 +30,6 @@ class AliasDeleteCommand extends Command
             ->addOption('dry-run', null, InputOption::VALUE_NONE);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $email = $input->getOption('user');
@@ -42,11 +38,13 @@ class AliasDeleteCommand extends Command
         $user = null;
         if ($email && null === $user = $this->manager->getRepository(User::class)->findByEmail($email)) {
             $output->writeln(sprintf("<error>User with email '%s' not found!</error>", $email));
+
             return 1;
         }
 
         if (empty($source) || null === $alias = $this->manager->getRepository(Alias::class)->findOneBySource($source)) {
             $output->writeln(sprintf("<error>Alias with address '%s' not found!</error>", $source));
+
             return 1;
         }
 

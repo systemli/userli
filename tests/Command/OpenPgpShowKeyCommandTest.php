@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Command;
 
 use App\Command\OpenPgpShowKeyCommand;
@@ -14,7 +16,7 @@ class OpenPgpShowKeyCommandTest extends TestCase
 {
     private OpenPgpShowKeyCommand $command;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $openPgpKey = new OpenPgpKey();
         $openPgpKey->setEmail('alice@example.org');

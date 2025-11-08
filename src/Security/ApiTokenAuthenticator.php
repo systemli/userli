@@ -19,9 +19,8 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 
 class ApiTokenAuthenticator extends AbstractAuthenticator
 {
-    public function __construct(readonly private ApiTokenManager $apiTokenManager)
+    public function __construct(private readonly ApiTokenManager $apiTokenManager)
     {
-
     }
 
     public function supports(Request $request): ?bool
@@ -60,7 +59,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         return new JsonResponse([
-            'error' => $exception->getMessage()
+            'error' => $exception->getMessage(),
         ], Response::HTTP_UNAUTHORIZED);
     }
 
@@ -75,5 +74,4 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
         // X-API-Token Header
         return $request->headers->get('X-API-Token');
     }
-
 }

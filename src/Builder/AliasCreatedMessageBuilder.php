@@ -11,7 +11,7 @@ final readonly class AliasCreatedMessageBuilder
 {
     public function __construct(
         private TranslatorInterface $translator,
-        private SettingsService     $settingsService,
+        private SettingsService $settingsService,
     ) {
     }
 

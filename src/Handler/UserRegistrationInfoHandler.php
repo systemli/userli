@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
-use App\Service\SettingsService;
-use Twig\Environment;
-use DateTime;
 use App\Entity\User;
+use App\Service\SettingsService;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Twig\Environment;
 
 final readonly class UserRegistrationInfoHandler
 {
     public function __construct(
         private EntityManagerInterface $manager,
-        private MailHandler            $handler,
-        private Environment            $twig,
-        private SettingsService        $settingsService,
+        private MailHandler $handler,
+        private Environment $twig,
+        private SettingsService $settingsService,
     ) {
     }
 

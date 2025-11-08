@@ -21,12 +21,10 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 readonly class PasswordChangeListener implements EventSubscriberInterface
 {
     public function __construct(
-        private Security               $security,
-        private UrlGeneratorInterface  $urlGenerator,
+        private Security $security,
+        private UrlGeneratorInterface $urlGenerator,
         private EntityManagerInterface $entityManager,
-    )
-    {
-
+    ) {
     }
 
     public static function getSubscribedEvents(): array
@@ -58,7 +56,7 @@ readonly class PasswordChangeListener implements EventSubscriberInterface
 
         // Deny access when trying to access API or JSON endpoints
         if (JsonRequestHelper::wantsJson($event->getRequest())) {
-            throw new AccessDeniedHttpException("You must change your password before accessing other resources.");
+            throw new AccessDeniedHttpException('You must change your password before accessing other resources.');
         }
 
         // Redirect to the password change page

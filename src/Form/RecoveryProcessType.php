@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Form\Model\RecoveryProcess;
@@ -21,9 +23,6 @@ class RecoveryProcessType extends AbstractType
             ->add('submit', SubmitType::class, ['label' => 'form.recovery-start']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => RecoveryProcess::class]);

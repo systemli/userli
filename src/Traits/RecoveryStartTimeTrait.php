@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use DateTime;
-use Exception;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 
 trait RecoveryStartTimeTrait
 {

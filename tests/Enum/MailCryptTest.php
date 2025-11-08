@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Enum;
 
 use App\Enum\MailCrypt;
@@ -8,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class MailCryptTest extends TestCase
 {
-    public function testFromString()
+    public function testFromString(): void
     {
         $this->assertSame(MailCrypt::DISABLED, MailCrypt::fromString('0'));
         $this->assertSame(MailCrypt::ENABLED_OPTIONAL, MailCrypt::fromString('1'));
@@ -16,11 +18,11 @@ class MailCryptTest extends TestCase
         $this->assertSame(MailCrypt::ENABLED_ENFORCE_ALL_USERS, MailCrypt::fromString('3'));
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Invalid MailCrypt value: invalid");
+        $this->expectExceptionMessage('Invalid MailCrypt value: invalid');
         MailCrypt::fromString('invalid');
     }
 
-    public function testIsAtLeast()
+    public function testIsAtLeast(): void
     {
         $this->assertTrue(MailCrypt::ENABLED_OPTIONAL->isAtLeast(MailCrypt::DISABLED));
         $this->assertTrue(MailCrypt::ENABLED_ENFORCE_NEW_USERS->isAtLeast(MailCrypt::ENABLED_OPTIONAL));
@@ -30,4 +32,3 @@ class MailCryptTest extends TestCase
         $this->assertFalse(MailCrypt::ENABLED_OPTIONAL->isAtLeast(MailCrypt::ENABLED_ENFORCE_ALL_USERS));
     }
 }
-

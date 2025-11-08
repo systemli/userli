@@ -11,11 +11,9 @@ use Doctrine\ORM\EntityManagerInterface;
 readonly class ApiTokenManager
 {
     public function __construct(
-        private ApiTokenRepository     $apiTokenRepository,
-        private EntityManagerInterface $entityManager
-    )
-    {
-
+        private ApiTokenRepository $apiTokenRepository,
+        private EntityManagerInterface $entityManager,
+    ) {
     }
 
     public function create(string $plainToken, string $name, array $scopes): ApiToken

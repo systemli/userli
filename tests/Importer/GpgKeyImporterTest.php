@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Importer;
 
 use App\Entity\OpenPgpKey;
@@ -266,7 +268,7 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
         $expected->setEmail($this->email);
         $expected->setKeyId($this->validKeyId);
         $expected->setKeyFingerprint($this->validKeyFingerprint);
-        $expected->setKeyExpireTime(new DateTime($this->validExpireTime));
+        $expected->setKeyExpireTime(new Datetime($this->validExpireTime));
         $expected->setKeyData($this->validKeyBinary);
 
         self::assertEquals($expected, $openPgpKey);

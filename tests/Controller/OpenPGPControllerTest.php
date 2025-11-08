@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller;
 
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
- * OpenPGPController tests
+ * OpenPGPController tests.
  *
  * NOTE: Before running these tests, ensure fixtures are loaded:
  * bin/console doctrine:fixtures:load --group=basic --env=test --no-interaction

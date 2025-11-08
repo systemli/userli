@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\User;
@@ -11,9 +13,6 @@ class VoucherRepository extends EntityRepository
 {
     /**
      * Finds a voucher by its code.
-     *
-     * @param $code
-     * @return Voucher|null
      */
     public function findByCode($code): ?Voucher
     {
@@ -22,8 +21,6 @@ class VoucherRepository extends EntityRepository
 
     /**
      * Returns the number of redeemed vouchers.
-     *
-     * @return int
      */
     public function countRedeemedVouchers(): int
     {
@@ -32,8 +29,6 @@ class VoucherRepository extends EntityRepository
 
     /**
      * Returns the number of unredeemed vouchers.
-     *
-     * @return int
      */
     public function countUnredeemedVouchers(): int
     {
@@ -42,7 +37,7 @@ class VoucherRepository extends EntityRepository
 
     /**
      * Returns the number of unredeemed vouchers per user, per default
-     * Optionally return the number of redeemed vouchers
+     * Optionally return the number of redeemed vouchers.
      */
     public function countVouchersByUser(User $user, ?bool $redeemed): int
     {

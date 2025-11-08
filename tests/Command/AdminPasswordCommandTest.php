@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Command;
 
 use App\Command\AdminPasswordCommand;
@@ -10,7 +12,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class AdminPasswordCommandTest extends TestCase
 {
-    public function testExecute()
+    public function testExecute(): void
     {
         $updater = $this->getMockBuilder(AdminPasswordUpdater::class)
             ->disableOriginalConstructor()

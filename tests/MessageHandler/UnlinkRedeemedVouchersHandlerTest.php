@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Tests\MessageHandler;
 
-use App\Entity\Voucher;
 use App\Entity\User;
+use App\Entity\Voucher;
 use App\Message\UnlinkRedeemedVouchers;
 use App\MessageHandler\UnlinkRedeemedVouchersHandler;
+use App\Repository\VoucherRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\VoucherRepository;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
@@ -20,7 +20,7 @@ class UnlinkRedeemedVouchersHandlerTest extends TestCase
     {
         $voucher1 = new Voucher();
         $voucher1->setCode('A');
-        $voucher1->setRedeemedTime((new DateTime('-4 months'))); // old
+        $voucher1->setRedeemedTime(new DateTime('-4 months')); // old
         $user1 = new User();
         $user1->setInvitationVoucher($voucher1);
         $voucher1->setInvitedUser($user1);
@@ -57,8 +57,8 @@ class UnlinkRedeemedVouchersHandlerTest extends TestCase
 
         // Because handler starts from repository->createQueryBuilder('voucher') we skip verifying alias there
         $qb->method('join')->willReturnSelf();
-        $qb->method('where')->with($this->callback(fn($expr) => str_contains($expr, 'voucher.redeemedTime')))->willReturnSelf();
-        $qb->method('setParameter')->with('date', $this->callback(fn($dt) => $dt instanceof DateTime))->willReturnSelf();
+        $qb->method('where')->with($this->callback(fn ($expr) => str_contains($expr, 'voucher.redeemedTime')))->willReturnSelf();
+        $qb->method('setParameter')->with('date', $this->callback(fn ($dt) => $dt instanceof DateTime))->willReturnSelf();
         $qb->method('orderBy')->with('voucher.redeemedTime')->willReturnSelf();
 
         $query = $this->getMockBuilder(\Doctrine\ORM\AbstractQuery::class)

@@ -16,8 +16,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class VoucherCreateCommandTest extends TestCase
@@ -74,7 +74,7 @@ class VoucherCreateCommandTest extends TestCase
         $commandTester->execute([
             '--user' => 'user@example.org',
             '--count' => 1,
-            '--print'
+            '--print',
         ]);
 
         $output = $commandTester->getDisplay();
@@ -102,7 +102,7 @@ class VoucherCreateCommandTest extends TestCase
             ->with($baseUrl);
 
         $this->router->method('generate')
-            ->willReturn($baseUrl . '/register/' . $voucherCode);
+            ->willReturn($baseUrl.'/register/'.$voucherCode);
 
         $voucher = new Voucher();
         $voucher->setCode($voucherCode);
@@ -139,7 +139,7 @@ class VoucherCreateCommandTest extends TestCase
         $commandTester->assertCommandIsSuccessful();
 
         $output = $commandTester->getDisplay();
-        self::assertStringContainsString($baseUrl . '/register/' . $voucherCode, $output);
+        self::assertStringContainsString($baseUrl.'/register/'.$voucherCode, $output);
     }
 
     public function testExecuteWithSuspiciousUser(): void
@@ -265,7 +265,7 @@ class VoucherCreateCommandTest extends TestCase
         $this->router->expects(self::once())
             ->method('generate')
             ->with('register_voucher', ['voucher' => $voucherCode])
-            ->willReturn($baseUrl . '/register/' . $voucherCode);
+            ->willReturn($baseUrl.'/register/'.$voucherCode);
 
         $application = new Application();
         $application->add($this->command);
@@ -283,6 +283,6 @@ class VoucherCreateCommandTest extends TestCase
 
         $output = $commandTester->getDisplay();
         self::assertMatchesRegularExpression('|^https://users\.example\.org/register/[a-z_\-0-9]{6}$|i', trim($output));
-        self::assertStringContainsString($baseUrl . '/register/' . $voucherCode, $output);
+        self::assertStringContainsString($baseUrl.'/register/'.$voucherCode, $output);
     }
 }

@@ -7,6 +7,7 @@ namespace App\Tests\MessageHandler;
 use App\Entity\WebhookDelivery;
 use App\Message\PruneWebhookDeliveries;
 use App\MessageHandler\PruneWebhookDeliveriesHandler;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -24,7 +25,7 @@ class PruneWebhookDeliveriesHandlerTest extends TestCase
 
         $qb = $this->getMockBuilder(\Doctrine\ORM\QueryBuilder::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['delete','where','setParameter','getQuery'])
+            ->onlyMethods(['delete', 'where', 'setParameter', 'getQuery'])
             ->getMock();
 
         $qb->expects($this->once())
@@ -33,12 +34,12 @@ class PruneWebhookDeliveriesHandlerTest extends TestCase
             ->willReturnSelf();
         $qb->expects($this->once())
             ->method('where')
-            ->with($this->callback(fn($expr) => str_contains($expr, 'd.dispatchedTime')))
+            ->with($this->callback(fn ($expr) => str_contains($expr, 'd.dispatchedTime')))
             ->willReturnSelf();
         $qb->expects($this->once())
             ->method('setParameter')
             ->with('before', $this->callback(function ($dt) {
-                return $dt instanceof \DateTimeImmutable; // precise interval already tested implicitly
+                return $dt instanceof DateTimeImmutable; // precise interval already tested implicitly
             }))
             ->willReturnSelf();
         $qb->expects($this->once())

@@ -6,10 +6,11 @@ namespace App\Tests\Command;
 
 use App\Command\ApiTokenCreateCommand;
 use App\Entity\ApiToken;
-use App\Enum\ApiScope;
 use App\Service\ApiTokenManager;
+use DateTimeImmutable;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -112,7 +113,7 @@ class ApiTokenCreateCommandTest extends TestCase
                 '',
                 'name',
                 'abc'
-            )
+            ),
         ]));
 
         $command = new ApiTokenCreateCommand($this->apiTokenManager, $validator);
@@ -127,7 +128,7 @@ class ApiTokenCreateCommandTest extends TestCase
         ]);
 
         $this->assertEquals(Command::FAILURE, $exitCode);
-    $output = $tester->getDisplay();
+        $output = $tester->getDisplay();
         $this->assertStringContainsString('Validation failed:', $output);
     }
 
@@ -143,7 +144,7 @@ class ApiTokenCreateCommandTest extends TestCase
                 '',
                 'scopes',
                 ['keycloak', 'invalid-scope', 'dovecot']
-            )
+            ),
         ]));
 
         $command = new ApiTokenCreateCommand($this->apiTokenManager, $validator);
@@ -158,7 +159,7 @@ class ApiTokenCreateCommandTest extends TestCase
         ]);
 
         $this->assertEquals(Command::FAILURE, $exitCode);
-    $output = $tester->getDisplay();
+        $output = $tester->getDisplay();
         $this->assertStringContainsString('Validation failed:', $output);
     }
 
@@ -177,7 +178,7 @@ class ApiTokenCreateCommandTest extends TestCase
             ->expects($this->once())
             ->method('create')
             ->with($plainToken, $tokenName, $scopes)
-            ->willThrowException(new \RuntimeException('Database error'));
+            ->willThrowException(new RuntimeException('Database error'));
 
         $exitCode = $this->commandTester->execute([
             '--name' => $tokenName,
@@ -214,7 +215,7 @@ class ApiTokenCreateCommandTest extends TestCase
         $apiToken->method('getId')->willReturn($id);
         $apiToken->method('getName')->willReturn($name);
         $apiToken->method('getScopes')->willReturn($scopes);
-        $apiToken->method('getCreationTime')->willReturn(new \DateTimeImmutable('2025-09-03 10:00:00'));
+        $apiToken->method('getCreationTime')->willReturn(new DateTimeImmutable('2025-09-03 10:00:00'));
 
         return $apiToken;
     }

@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Model;
 
-use SodiumException;
 use App\Traits\PrivateKeyTrait;
 use App\Traits\PublicKeyTrait;
+use SodiumException;
 
 class MailCryptKeyPair
 {

@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Sender;
 
-use Exception;
 use App\Builder\WelcomeMessageBuilder;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Handler\MailHandler;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 
 /**
  * Class WelcomeMessageSender.

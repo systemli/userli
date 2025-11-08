@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Form\Model\AliasCreate;
@@ -20,17 +22,11 @@ class CustomAliasCreateType extends AbstractType
             ->add('submit', SubmitType::class, ['label' => 'form.create-custom-alias']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => AliasCreate::class]);
     }
 
-    /**
-     * @return string
-     */
     public function getBlockPrefix(): string
     {
         return self::NAME;

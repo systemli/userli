@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Creator;
 
 use App\Creator\VoucherCreator;
@@ -19,7 +21,7 @@ class VoucherCreatorTest extends TestCase
     {
         $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('persist')->willReturnCallback(
-            function (Voucher $voucher) {
+            function (Voucher $voucher): void {
                 $voucher->setId(1);
             }
         );

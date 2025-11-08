@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Creator;
 
 use App\Creator\DomainCreator;
@@ -14,7 +16,7 @@ class DomainCreatorTest extends TestCase
     private function createCreator(): DomainCreator
     {
         $manager = $this->createMock(EntityManagerInterface::class);
-        $manager->method('persist')->willReturnCallback(function ($entity) {
+        $manager->method('persist')->willReturnCallback(function ($entity): void {
             $entity->setId(1);
         });
         $manager->method('flush')->willReturn(true);
@@ -27,7 +29,7 @@ class DomainCreatorTest extends TestCase
         return new DomainCreator($manager, $validator, $eventDispatcher);
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $creator = $this->createCreator();
         $entity = $creator->create('test');

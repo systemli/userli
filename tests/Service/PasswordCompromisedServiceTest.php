@@ -12,10 +12,10 @@ use App\Service\UserNotificationRateLimiter;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class PasswordCompromisedServiceTest extends TestCase
 {
@@ -139,10 +139,10 @@ class PasswordCompromisedServiceTest extends TestCase
             ->method('dispatch')
             ->with(
                 $this->callback(function ($event) use ($user, $locale) {
-                    return $event instanceof UserNotificationEvent &&
-                           $event->getUser() === $user &&
-                           $event->getNotificationType() === UserNotificationType::PASSWORD_COMPROMISED &&
-                           $event->getLocale() === $locale;
+                    return $event instanceof UserNotificationEvent
+                           && $event->getUser() === $user
+                           && $event->getNotificationType() === UserNotificationType::PASSWORD_COMPROMISED
+                           && $event->getLocale() === $locale;
                 }),
                 UserNotificationEvent::COMPROMISED_PASSWORD
             );

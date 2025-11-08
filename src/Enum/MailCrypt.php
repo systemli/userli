@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Enum;
 
 use InvalidArgumentException;
@@ -18,7 +20,7 @@ enum MailCrypt: int
             '1' => self::ENABLED_OPTIONAL,
             '2' => self::ENABLED_ENFORCE_NEW_USERS,
             '3' => self::ENABLED_ENFORCE_ALL_USERS,
-            default => throw new InvalidArgumentException('Invalid MailCrypt value: ' . $value),
+            default => throw new InvalidArgumentException('Invalid MailCrypt value: '.$value),
         };
     }
 
