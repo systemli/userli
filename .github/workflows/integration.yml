@@ -44,6 +44,9 @@ jobs:
       - name: Install dependencies
         run: composer install --no-scripts
 
+      - name: Check Code Style
+        run: composer cs-check
+
       - name: Prepare Database Schema
         run: bin/console doctrine:schema:create --env=test
 
