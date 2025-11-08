@@ -16,7 +16,7 @@ trait OpenPgpKeyTrait
     #[ORM\Column(type: Types::TEXT)]
     public ?string $keyFingerprint = null;
 
-    #[ORM\Column(nullable: 'true')]
+    #[ORM\Column(nullable: true)]
     public ?DateTime $keyExpireTime = null;
 
     #[ORM\Column(type: Types::TEXT)]
