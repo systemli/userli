@@ -28,16 +28,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:metrics', description: 'Global Metrics for Userli')]
 class MetricsCommand extends Command
 {
-    /**
-     * MetricsCommand constructor.
-     */
     public function __construct(private readonly EntityManagerInterface $manager)
     {
         parent::__construct();
-    }
-
-    protected function configure(): void
-    {
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
