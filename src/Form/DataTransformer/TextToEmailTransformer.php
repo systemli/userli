@@ -21,7 +21,9 @@ class TextToEmailTransformer implements DataTransformerInterface
             return '';
         }
 
-        return substr((string) $value, 0, strpos((string) $value, '@'));
+        $pos = strpos((string) $value, '@');
+
+        return false === $pos ? (string) $value : substr((string) $value, 0, $pos);
     }
 
     public function reverseTransform(mixed $value): mixed

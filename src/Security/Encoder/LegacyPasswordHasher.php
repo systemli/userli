@@ -41,7 +41,7 @@ class LegacyPasswordHasher implements PasswordHasherInterface
             default => throw new LogicException(sprintf('The algorithm "%s" is not supported.', $this->algorithm)),
         };
 
-        $salt = uniqid(mt_rand(), true);
+        $salt = uniqid((string) mt_rand(), true);
 
         $digest = crypt($plainPassword, sprintf('$%d$rounds=%d$%s$', $hashId, $this->iterations, $salt));
 

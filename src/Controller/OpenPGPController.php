@@ -68,7 +68,7 @@ class OpenPGPController extends AbstractController
             return $this->redirectToRoute('openpgp');
         }
 
-        $openPgpKey = $this->wkdHandler->getKey($user);
+        $openPgpKey = $this->wkdHandler->getKey($user->getEmail());
 
         return $this->render(
             'Account/openpgp.html.twig',
@@ -83,7 +83,7 @@ class OpenPGPController extends AbstractController
     private function importOpenPgpKey(User $user, string $key): void
     {
         try {
-            $this->wkdHandler->importKey($key, $user);
+            $this->wkdHandler->importKey($key, $user->getEmail());
             $this->addFlash('success', 'flashes.openpgp-key-upload-successful');
         } catch (NoGpgDataException) {
             $this->addFlash('error', 'flashes.openpgp-key-upload-error-no-openpgp');

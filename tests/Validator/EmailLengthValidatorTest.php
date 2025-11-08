@@ -75,7 +75,7 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
     {
         $this->validator->validate($address, new EmailLength($this->minLength, $this->maxLength));
         $this->buildViolation($violationMessage)
-            ->setParameter('%'.$operator.'%', $limit)
+            ->setParameter('%'.$operator.'%', (string) $limit)
             ->assertRaised();
     }
 

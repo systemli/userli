@@ -32,7 +32,9 @@ class DomainFilter extends SQLFilter
     public function getDomainId(): ?string
     {
         try {
-            return $this->getParameter('domainId');
+            $domainId = $this->getParameter('domainId');
+
+            return null === $domainId ? null : (string) $domainId;
         } catch (InvalidArgumentException) {
             return null;
         }
