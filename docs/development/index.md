@@ -91,4 +91,8 @@ services:
   dovecot:
     security_opt:
       - label=disable
+
+  roundcube:
+    security_opt:
+      - label=disable
 ```
