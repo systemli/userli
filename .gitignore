@@ -39,3 +39,9 @@ phpstan.neon
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
+
+###> psalm/plugin-symfony ###
+psalm-baseline.xml
+psalm.sarif
+.psalm/
+###< psalm/plugin-symfony ###
