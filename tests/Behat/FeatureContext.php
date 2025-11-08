@@ -163,7 +163,7 @@ class FeatureContext extends MinkContext
                         $user->setRecoverySecretBox($value);
                         break;
                     case 'mailCrypt':
-                        $user->setMailCryptEnabled($value);
+                        $user->setMailCryptEnabled((bool) $value);
                         break;
                     case 'mailCryptSecretBox':
                         $user->setMailCryptSecretBox($value);
@@ -172,7 +172,7 @@ class FeatureContext extends MinkContext
                         $user->setMailCryptPublicKey($value);
                         break;
                     case 'totpConfirmed':
-                        $user->setTotpConfirmed($value);
+                        $user->setTotpConfirmed((bool) $value);
                         break;
                     case 'totpSecret':
                         $user->setTotpSecret($value);
@@ -267,10 +267,10 @@ class FeatureContext extends MinkContext
                         $alias->setDestination($value);
                         break;
                     case 'deleted':
-                        $alias->setDeleted($value);
+                        $alias->setDeleted((bool) $value);
                         break;
                     case 'random':
-                        $alias->setRandom($value);
+                        $alias->setRandom((bool) $value);
                         break;
                 }
 
@@ -317,7 +317,7 @@ class FeatureContext extends MinkContext
             $enabled = !isset($data['enabled']) || $data['enabled'];
             $endpoint = new WebhookEndpoint($url, $secret);
             $endpoint->setEvents($events);
-            $endpoint->setEnabled($enabled);
+            $endpoint->setEnabled((bool) $enabled);
 
             $this->manager->persist($endpoint);
             $this->manager->flush();
@@ -344,7 +344,7 @@ class FeatureContext extends MinkContext
 
             $delivery = new WebhookDelivery($endpoint, $type, $requestBody, $requestHeaders);
 
-            $delivery->setResponseCode($responseCode);
+            $delivery->setResponseCode((int) $responseCode);
             $delivery->setResponseBody($responseBody);
             $delivery->setSuccess($responseCode >= 200 && $responseCode < 300);
             $delivery->setError($delivery->isSuccess() ? null : 'Unknown error');
