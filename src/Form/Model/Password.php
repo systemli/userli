@@ -14,7 +14,7 @@ class Password
     private string $password;
 
     #[PasswordPolicy]
-    #[Assert\NotCompromisedPassword(skipOnError: 'true')]
+    #[Assert\NotCompromisedPassword(skipOnError: true)]
     #[Assert\NotIdenticalTo(propertyPath: 'password', message: 'form.identical-passwords')]
     private string $newPassword;
 

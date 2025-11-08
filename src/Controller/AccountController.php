@@ -45,7 +45,7 @@ class AccountController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $openPgpKey = $this->wkdHandler->getKey($user);
+        $openPgpKey = $this->wkdHandler->getKey($user->getEmail());
 
         return $this->render(
             'Account/show.html.twig',
