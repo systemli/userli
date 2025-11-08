@@ -1,6 +1,10 @@
 name: Psalm Static analysis
 
-on: [pull_request]
+on:
+  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
   psalm:
@@ -10,13 +14,37 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Psalm
-        uses: docker://ghcr.io/psalm/psalm-github-actions
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          security_analysis: true
-          report_file: results.sarif
+          php-version: "8.2"
+          extensions: ctype, iconv, openssl, sodium
+          coverage: none
+          tools: composer:v2
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-scripts
+
+      - name: Run Psalm
+        run: composer psalm-check
+
+      - name: Run Psalm with SARIF output
+        run: bin/psalm --output-format=sarif --no-cache --report=psalm.sarif
+        continue-on-error: true
 
       - name: Upload Security Analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v4
+        if: always()
         with:
-          sarif_file: results.sarif
+          sarif_file: psalm.sarif

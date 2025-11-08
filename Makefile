@@ -94,6 +94,9 @@ integration: assets lint
 security-check: vendors
 	bin/local-php-security-checker
 
+psalm: vendors
+	bin/psalm --no-cache --show-info=true
+
 test: vendors lint
 	bin/console doctrine:fixtures:load --group=basic --env=test --no-interaction
 	bin/phpunit

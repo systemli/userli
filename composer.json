@@ -58,6 +58,7 @@
     "friends-of-behat/symfony-extension": "^2.0",
     "friendsofphp/php-cs-fixer": "*",
     "phpunit/phpunit": "^9.5",
+    "psalm/plugin-symfony": "^5.2",
     "rector/rector": "^2.1.0",
     "symfony/browser-kit": "6.4.*",
     "symfony/css-selector": "6.4.*",
@@ -65,7 +66,8 @@
     "symfony/phpunit-bridge": "*",
     "symfony/stopwatch": "*",
     "symfony/var-dumper": "6.4.*",
-    "symfony/web-profiler-bundle": "*"
+    "symfony/web-profiler-bundle": "*",
+    "vimeo/psalm": "^6.0"
   },
   "config": {
     "bin-dir": "bin",
@@ -76,7 +78,7 @@
     },
     "sort-packages": true,
     "platform": {
-      "php": "8.2.0"
+      "php": "8.2.29"
     },
     "allow-plugins": {
       "composer/package-versions-deprecated": true,
@@ -117,7 +119,9 @@
     "cs-check": "php-cs-fixer fix --dry-run --diff",
     "cs-fix": "php-cs-fixer fix",
     "rector-check": "rector process --dry-run",
-    "rector-fix": "rector process"
+    "rector-fix": "rector process",
+    "psalm": "psalm",
+    "psalm-check": "psalm --no-cache --show-info=true"
   },
   "conflict": {
     "symfony/symfony": "*"
