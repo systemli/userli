@@ -32,7 +32,7 @@ class OpenPGPController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $form = $this->createForm(OpenPgpKeyType::class, new OpenPgpKeyModel());
-        $openPgpKey = $this->wkdHandler->getKey($user);
+        $openPgpKey = $this->wkdHandler->getKey($user->getEmail());
 
         return $this->render(
             'Account/openpgp.html.twig',
