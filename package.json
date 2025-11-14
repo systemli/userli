@@ -11,7 +11,7 @@
     "@hotwired/stimulus": "^3.0.0",
     "@symfony/stimulus-bridge": "^4.0.1",
     "@symfony/webpack-encore": "^5.2.0",
-    "@tailwindcss/postcss": "^4.1.16",
+    "@tailwindcss/postcss": "^4.1.17",
     "copy-webpack-plugin": "^13.0.1",
     "dompurify": "^3.3.0",
     "postcss": "^8.5.6",
