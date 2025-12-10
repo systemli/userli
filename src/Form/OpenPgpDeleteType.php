@@ -11,6 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<Delete>
+ */
 class OpenPgpDeleteType extends AbstractType
 {
     public const NAME = 'delete_openpgp';

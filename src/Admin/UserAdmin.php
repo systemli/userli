@@ -26,6 +26,9 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * @extends Admin<User>
+ */
 class UserAdmin extends Admin
 {
     use DomainGuesserAwareTrait;

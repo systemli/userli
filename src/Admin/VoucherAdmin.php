@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\Entity\Voucher;
 use App\Helper\RandomStringGenerator;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -13,6 +14,9 @@ use Sonata\DoctrineORMAdminBundle\Filter\DateTimeRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bundle\SecurityBundle\Security;
 
+/**
+ * @extends Admin<Voucher>
+ */
 class VoucherAdmin extends Admin
 {
     public function __construct(protected Security $security)

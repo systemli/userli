@@ -11,6 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<AliasCreate>
+ */
 class CustomAliasCreateType extends AbstractType
 {
     public const NAME = 'create_custom_alias';

@@ -11,6 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<TwofactorConfirm>
+ */
 class TwofactorConfirmType extends AbstractType
 {
     public const NAME = 'twofactor_confirm';

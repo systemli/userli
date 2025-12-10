@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Handler\DeleteHandler;
 use App\Remover\VoucherRemover;
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -13,6 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Traversable;
 
+/**
+ * @extends CRUDController<User>
+ */
 class UserCRUDController extends CRUDController
 {
     public function __construct(private readonly DeleteHandler $deleteHandler, private readonly VoucherRemover $voucherRemover)

@@ -12,6 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<RecoveryTokenConfirm>
+ */
 class RecoveryTokenConfirmType extends AbstractType
 {
     public const NAME = 'recovery_token_confirm';

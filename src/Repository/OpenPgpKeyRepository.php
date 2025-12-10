@@ -8,6 +8,9 @@ use App\Entity\OpenPgpKey;
 use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
+/**
+ * @extends EntityRepository<OpenPgpKey>
+ */
 class OpenPgpKeyRepository extends EntityRepository
 {
     /**

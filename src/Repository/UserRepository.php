@@ -17,6 +17,9 @@ use Exception;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
+/**
+ * @extends EntityRepository<User>
+ */
 class UserRepository extends EntityRepository implements PasswordUpgraderInterface
 {
     public function findById(int $id): ?User

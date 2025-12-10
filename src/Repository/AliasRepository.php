@@ -8,6 +8,9 @@ use App\Entity\Alias;
 use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
+/**
+ * @extends EntityRepository<Alias>
+ */
 class AliasRepository extends EntityRepository
 {
     public function findOneBySource(string $email, ?bool $includeDeleted = false): ?Alias

@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\Entity\UserNotification;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
+/**
+ * @extends Admin<UserNotification>
+ */
 class UserNotificationAdmin extends Admin
 {
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string

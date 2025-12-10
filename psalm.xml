@@ -36,9 +36,7 @@
             - LOW: MissingOverrideAttribute, PropertyNotSetInConstructor
         -->
 
-        <!-- MEDIUM PRIORITY - Type-Safety Improvements (34 MissingTemplateParam, 32
-        UndefinedInterfaceMethod) -->
-        <MissingTemplateParam errorLevel="suppress" />
+        <!-- MEDIUM PRIORITY - Type-Safety Improvements (32 UndefinedInterfaceMethod) -->
         <UndefinedInterfaceMethod errorLevel="suppress" />
         <UndefinedDocblockClass errorLevel="suppress" />
 

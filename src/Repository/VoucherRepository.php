@@ -9,6 +9,9 @@ use App\Entity\Voucher;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 
+/**
+ * @extends EntityRepository<Voucher>
+ */
 class VoucherRepository extends EntityRepository
 {
     /**

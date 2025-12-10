@@ -7,6 +7,11 @@ namespace App\Admin;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 
+/**
+ * @template T of object
+ *
+ * @extends AbstractAdmin<T>
+ */
 abstract class Admin extends AbstractAdmin
 {
     protected function configureDefaultSortValues(array &$sortValues): void

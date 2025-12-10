@@ -6,6 +6,9 @@ namespace App\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 
+/**
+ * @implements DataTransformerInterface<string, string>
+ */
 class TextToEmailTransformer implements DataTransformerInterface
 {
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Admin;
 
 use App\Creator\DomainCreator;
+use App\Entity\Domain;
 use App\Event\DomainCreatedEvent;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -13,6 +14,9 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @extends Admin<Domain>
+ */
 class DomainAdmin extends Admin
 {
     private DomainCreator $domainCreator;

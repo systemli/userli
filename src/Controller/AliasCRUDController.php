@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Alias;
 use App\Handler\DeleteHandler;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -11,6 +12,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @extends CRUDController<Alias>
+ */
 class AliasCRUDController extends CRUDController
 {
     public function __construct(private readonly DeleteHandler $deleteHandler)
