@@ -31,7 +31,7 @@ class TotpSecretValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        /** @var TwoFactorInterface $user */
+        /** @var \Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
         if (!$this->totpAuthenticator->checkCode($user, $value)) {
