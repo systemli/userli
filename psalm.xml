@@ -32,18 +32,13 @@
             3. Remove the handler completely when all issues are fixed
 
             Recommended activation priority:
-            - HIGH: NullableReturnStatement
             - MEDIUM: MissingTemplateParam, MoreSpecificImplementedParamType
             - LOW: MissingOverrideAttribute, PropertyNotSetInConstructor
         -->
 
-        <!-- HIGH PRIORITY - Potential Bugs (3 UninitializedProperty) -->
-        <UninitializedProperty errorLevel="suppress" />
-
         <!-- MEDIUM PRIORITY - Type-Safety Improvements (34 MissingTemplateParam, 32
-        UndefinedInterfaceMethod, 4 MoreSpecificImplementedParamType) -->
+        UndefinedInterfaceMethod) -->
         <MissingTemplateParam errorLevel="suppress" />
-        <MoreSpecificImplementedParamType errorLevel="suppress" />
         <UndefinedInterfaceMethod errorLevel="suppress" />
         <UndefinedDocblockClass errorLevel="suppress" />
 

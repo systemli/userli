@@ -175,12 +175,11 @@ class UserAdmin extends Admin
     }
 
     /**
-     * @param User $object
-     *
      * @throws Exception
      */
-    protected function prePersist($object): void
+    protected function prePersist(object $object): void
     {
+        assert($object instanceof User);
         $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
         if (null !== $object->getMailCryptEnabled()) {
             $this->mailCryptKeyHandler->create($object, $object->getPlainPassword(), $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS));
@@ -191,11 +190,9 @@ class UserAdmin extends Admin
         }
     }
 
-    /**
-     * @param User $object
-     */
-    protected function preUpdate($object): void
+    protected function preUpdate(object $object): void
     {
+        assert($object instanceof User);
         // Only admins are allowed to set attributes of other admins
         if (!$this->security->isGranted(Roles::ADMIN) && $object->hasRole(Roles::ADMIN)) {
             throw new AccessDeniedException('Not allowed to edit admin user');
