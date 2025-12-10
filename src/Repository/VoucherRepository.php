@@ -24,7 +24,7 @@ class VoucherRepository extends EntityRepository
      */
     public function countRedeemedVouchers(): int
     {
-        return $this->matching(Criteria::create()->where(Criteria::expr()->neq('redeemedTime', null)))->count();
+        return $this->matching(Criteria::create(true)->where(Criteria::expr()->neq('redeemedTime', null)))->count();
     }
 
     /**
@@ -32,7 +32,7 @@ class VoucherRepository extends EntityRepository
      */
     public function countUnredeemedVouchers(): int
     {
-        return $this->matching(Criteria::create()->where(Criteria::expr()->eq('redeemedTime', null)))->count();
+        return $this->matching(Criteria::create(true)->where(Criteria::expr()->eq('redeemedTime', null)))->count();
     }
 
     /**
@@ -43,7 +43,7 @@ class VoucherRepository extends EntityRepository
     {
         $criteria = $redeemed ? Criteria::expr()->neq('redeemedTime', null) : Criteria::expr()->eq('redeemedTime', null);
 
-        return $this->matching(Criteria::create()
+        return $this->matching(Criteria::create(true)
             ->where(Criteria::expr()->eq('user', $user))
             ->andWhere($criteria))
             ->count();

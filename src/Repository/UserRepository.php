@@ -36,7 +36,7 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
 
     public function findUsersByString(Domain $domain, string $string, int $max, int $first): AbstractLazyCollection|LazyCriteriaCollection
     {
-        $criteria = Criteria::create()->where(Criteria::expr()->eq('domain', $domain));
+        $criteria = Criteria::create(true)->where(Criteria::expr()->eq('domain', $domain));
         $criteria->andWhere(Criteria::expr()->contains('email', $string));
         $criteria->setMaxResults($max);
         $criteria->setFirstResult($first);
@@ -49,7 +49,7 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
      */
     public function findUsersSince(DateTime $dateTime)
     {
-        return $this->matching(Criteria::create()->where(Criteria::expr()->gte('creationTime', $dateTime)));
+        return $this->matching(Criteria::create(true)->where(Criteria::expr()->gte('creationTime', $dateTime)));
     }
 
     /**
@@ -78,7 +78,7 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
             );
         }
 
-        return $this->matching(new Criteria($expression));
+        return $this->matching(new Criteria($expression, accessRawFieldValues: true));
     }
 
     public function findDeletedUsers(?Domain $domain = null): array
@@ -90,13 +90,13 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
 
     public function countUsers(): int
     {
-        return $this->matching(Criteria::create()
+        return $this->matching(Criteria::create(true)
             ->where(Criteria::expr()->eq('deleted', false)))->count();
     }
 
     public function countDomainUsers(Domain $domain): int
     {
-        return $this->matching(Criteria::create()
+        return $this->matching(Criteria::create(true)
             ->where(Criteria::expr()->eq('domain', $domain))
             ->andWhere(Criteria::expr()->eq('deleted', false)))
             ->count();
@@ -104,13 +104,13 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
 
     public function countDeletedUsers(): int
     {
-        return $this->matching(Criteria::create()
+        return $this->matching(Criteria::create(true)
             ->where(Criteria::expr()->eq('deleted', true)))->count();
     }
 
     public function countUsersWithRecoveryToken(): int
     {
-        return $this->matching(Criteria::create()
+        return $this->matching(Criteria::create(true)
             ->where(Criteria::expr()->eq('deleted', false))
             ->andWhere(Criteria::expr()->neq('recoverySecretBox', null))
         )->count();
@@ -118,7 +118,7 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
 
     public function countUsersWithMailCrypt(): int
     {
-        return $this->matching(Criteria::create()
+        return $this->matching(Criteria::create(true)
             ->where(Criteria::expr()->eq('deleted', false))
             ->andWhere(Criteria::expr()->eq('mailCryptEnabled', true))
         )->count();
@@ -126,7 +126,7 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
 
     public function countUsersWithTwofactor(): int
     {
-        return $this->matching(Criteria::create()
+        return $this->matching(Criteria::create(true)
             ->where(Criteria::expr()->eq('deleted', false))
             ->andWhere(Criteria::expr()->eq('totpConfirmed', 1))
             ->andWhere(Criteria::expr()->neq('totpSecret', null))
