@@ -17,7 +17,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class RegistrationType.
+ * @extends AbstractType<Registration>
  */
 class RegistrationType extends AbstractType
 {

@@ -16,6 +16,9 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
+/**
+ * @extends Admin<Alias>
+ */
 class AliasAdmin extends Admin
 {
     use DomainGuesserAwareTrait;

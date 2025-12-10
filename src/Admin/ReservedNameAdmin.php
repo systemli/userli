@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\Entity\ReservedName;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
+/**
+ * @extends Admin<ReservedName>
+ */
 class ReservedNameAdmin extends Admin
 {
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
