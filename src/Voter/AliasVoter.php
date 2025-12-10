@@ -6,6 +6,8 @@ namespace App\Voter;
 
 use App\Entity\Alias;
 use App\Entity\User;
+use App\Enum\Roles;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -15,6 +17,10 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 class AliasVoter extends Voter
 {
     public const DELETE = 'delete';
+
+    public function __construct(private readonly Security $security)
+    {
+    }
 
     protected function supports(string $attribute, mixed $subject): bool
     {
@@ -32,18 +38,28 @@ class AliasVoter extends Voter
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
-        $alias = $subject;
+        $alias = $subject; // already ensured to be Alias by supports()
 
-        $isUserValid = $user instanceof User;
-        $isAliasValid = $alias instanceof Alias;
-        $isNotDeleted = $isAliasValid && !$alias->isDeleted();
-        $isRandom = $isAliasValid && $alias->isRandom();
-        $isOwner = $isAliasValid && $alias->getUser() === $user;
+        if (!$user instanceof User || !$alias instanceof Alias) {
+            return false; // sanity check
+        }
 
-        return $isUserValid
-            && $isAliasValid
-            && $isNotDeleted
-            && $isRandom
-            && $isOwner;
+        if ($alias->isDeleted()) {
+            return false; // cannot delete already deleted
+        }
+
+        $isOwner = $alias->getUser() === $user;
+
+        // owner can delete own random alias
+        if ($alias->isRandom() && $isOwner) {
+            return true;
+        }
+
+        // ADMIN or DOMAIN_ADMIN can delete their own custom aliases
+        if ($isOwner && ($this->security->isGranted(Roles::ADMIN) || $this->security->isGranted(Roles::DOMAIN_ADMIN))) {
+            return true;
+        }
+
+        return false;
     }
 }
