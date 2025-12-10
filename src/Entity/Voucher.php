@@ -56,7 +56,7 @@ class Voucher implements Stringable
 
     public function getCode(): string
     {
-        return $this->code;
+        return $this->code ?? '';
     }
 
     public function setCode(string $code): void
