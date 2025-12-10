@@ -40,7 +40,7 @@ class AliasCreatorTest extends TestCase
     {
         $domain = new Domain();
         $domain->setName('example.org');
-        $user = new User();
+        $user = new User('user@example.org');
         $user->setDomain($domain);
 
         return $user;

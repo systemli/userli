@@ -611,8 +611,7 @@ class CreateUserCommandHandler
 
     public function __invoke(CreateUserCommand $command): User
     {
-        $user = new User();
-        $user->setEmail($command->email);
+        $user = new User($command->email);
         $user->setPassword(
             $this->passwordHasher->hashPassword($user, $command->password)
         );

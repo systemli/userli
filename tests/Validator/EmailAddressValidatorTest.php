@@ -47,7 +47,7 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $userRepository->method('findOneBy')->willReturnMap([
-            [['email' => $this->userUsed], null, true, new User()],
+            [['email' => $this->userUsed], null, true, new User($this->userUsed)],
         ]);
         $reservedNameRepository = $this->getMockBuilder(ReservedNameRepository::class)
             ->disableOriginalConstructor()

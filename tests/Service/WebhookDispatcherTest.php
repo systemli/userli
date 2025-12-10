@@ -20,8 +20,7 @@ class WebhookDispatcherTest extends TestCase
 {
     public function testDispatchUserEventPersistsAndDispatchesForMatchingEndpoints(): void
     {
-        $user = new User();
-        $user->setEmail('user@example.org');
+        $user = new User('user@example.org');
 
         $endpointAll = new WebhookEndpoint('https://example.test/a', 'secret-a');
         $endpointFilteredMatch = new WebhookEndpoint('https://example.test/b', 'secret-b');

@@ -19,11 +19,11 @@ class UserCheckerTest extends TestCase
 
     public function testPreAuth(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
 
         $this->userChecker->checkPreAuth($user);
 
-        $deletedUser = new User();
+        $deletedUser = new User('deleted@example.org');
         $deletedUser->setDeleted(true);
 
         $this->expectException('Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException');
@@ -32,7 +32,7 @@ class UserCheckerTest extends TestCase
 
     public function testPostAuth(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
 
         $this->userChecker->checkPostAuth($user);
 

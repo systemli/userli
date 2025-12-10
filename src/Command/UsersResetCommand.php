@@ -121,7 +121,7 @@ final class UsersResetCommand extends AbstractUsersCommand
         $this->manager->flush();
 
         // Clear users mailbox
-        [$localPart, $domain] = explode('@', (string) $user->getEmail());
+        [$localPart, $domain] = explode('@', $user->getEmail());
         $path = $this->mailLocation.DIRECTORY_SEPARATOR.$domain.DIRECTORY_SEPARATOR.$localPart.DIRECTORY_SEPARATOR.'Maildir';
         $filesystem = new Filesystem();
         if ($filesystem->exists($path)) {

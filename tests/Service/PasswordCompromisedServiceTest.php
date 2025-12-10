@@ -42,8 +42,7 @@ class PasswordCompromisedServiceTest extends TestCase
 
     public function testCheckAndNotifyWhenRateLimitNotAllowed(): void
     {
-        $user = new User();
-        $user->setEmail('test@example.org');
+        $user = new User('test@example.org');
         $password = 'compromised_password';
         $locale = 'en';
 
@@ -68,8 +67,7 @@ class PasswordCompromisedServiceTest extends TestCase
 
     public function testCheckAndNotifyWhenPasswordNotCompromised(): void
     {
-        $user = new User();
-        $user->setEmail('test@example.org');
+        $user = new User('test@example.org');
         $password = 'secure_password';
         $locale = 'de';
 
@@ -103,8 +101,7 @@ class PasswordCompromisedServiceTest extends TestCase
 
     public function testCheckAndNotifyWhenPasswordIsCompromised(): void
     {
-        $user = new User();
-        $user->setEmail('test@example.org');
+        $user = new User('test@example.org');
         $password = 'compromised_password';
         $locale = 'fr';
 

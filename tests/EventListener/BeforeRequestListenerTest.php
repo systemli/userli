@@ -92,7 +92,7 @@ class BeforeRequestListenerTest extends TestCase
     {
         $domain = new Domain();
         $domain->setId(1);
-        $user = new User();
+        $user = new User('test@example.org');
         $user->setDomain($domain);
 
         return $user;

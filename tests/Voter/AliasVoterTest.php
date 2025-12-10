@@ -30,14 +30,14 @@ class AliasVoterTest extends TestCase
     public function testSupportsReturnsFalseForNonAliasSubject(): void
     {
         $voter = new AliasVoter();
-        $user = new User();
+        $user = new User('test@example.org');
         $this->assertFalse($this->invokeSupports($voter, AliasVoter::DELETE, $user));
     }
 
     public function testVoteOnAttributeReturnsTrueIfUserOwnsAlias(): void
     {
         $voter = new AliasVoter();
-        $user = new User();
+        $user = new User('test@example.org');
         $alias = new Alias();
         $alias->setRandom(true);
         $alias->setUser($user);
@@ -49,8 +49,8 @@ class AliasVoterTest extends TestCase
     public function testVoteOnAttributeReturnsFalseIfUserDoesNotOwnAlias(): void
     {
         $voter = new AliasVoter();
-        $user = new User();
-        $otherUser = new User();
+        $user = new User('user@example.org');
+        $otherUser = new User('other@example.org');
         $alias = new Alias();
         $alias->setRandom(true);
         $alias->setUser($otherUser);

@@ -20,7 +20,7 @@ class PasswordUpdaterTest extends TestCase
         $passwordHasherFactory->method('getPasswordHasher')->willReturn($hasher);
         $updater = new PasswordUpdater($passwordHasherFactory);
 
-        $user = new User();
+        $user = new User('test@example.org');
         $updater->updatePassword($user, 'password');
 
         $password = $user->getPassword();

@@ -33,7 +33,7 @@ class VoucherUserValidatorTest extends ConstraintValidatorTestCase
 
     public function testNoSuspiciousUser(): void
     {
-        $user = new User();
+        $user = new User('suspicious@example.org');
         $user->setRoles([Roles::USER, Roles::SUSPICIOUS]);
         $this->voucher->setUser($user);
         $this->validator->validate($this->voucher, new VoucherUser());
@@ -43,7 +43,7 @@ class VoucherUserValidatorTest extends ConstraintValidatorTestCase
 
     public function testValidVoucherUser(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         $user->setRoles([Roles::USER]);
         $this->voucher->setUser($user);
         $this->validator->validate($this->voucher, new VoucherUser());

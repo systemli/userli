@@ -56,7 +56,7 @@ class UserRestoreHandlerTest extends TestCase
         $mailCryptEnv = 0;
         $handler = new UserRestoreHandler($this->entityManagerInterface, $this->passwordUpdater, $this->mailCryptKeyHandler, $this->recoveryTokenHandler, $this->eventDispatcher, $mailCryptEnv);
 
-        $user = new User();
+        $user = new User('deleted@example.org');
         $user->setDeleted(true);
 
         $recoveryToken = $handler->restoreUser($user, 'new_password');
@@ -75,7 +75,7 @@ class UserRestoreHandlerTest extends TestCase
         $mailCryptEnv = 2;
         $handler = new UserRestoreHandler($this->entityManagerInterface, $this->passwordUpdater, $this->mailCryptKeyHandler, $this->recoveryTokenHandler, $this->eventDispatcher, $mailCryptEnv);
 
-        $user = new User();
+        $user = new User('deleted@example.org');
         $user->setDeleted(true);
 
         $recoveryToken = $handler->restoreUser($user, 'new_password');

@@ -54,7 +54,7 @@ final class UsersRemoveCommand extends Command
             }
 
             $domain = $user->getDomain()->getName();
-            $name = str_replace('@'.$domain, '', (string) $user->getEmail());
+            $name = str_replace('@'.$domain, '', $user->getEmail());
             $path = $this->mailLocation.DIRECTORY_SEPARATOR.$domain.DIRECTORY_SEPARATOR.$name;
 
             if ($input->getOption('dry-run')) {

@@ -34,7 +34,7 @@ class VoucherCreatorTest extends TestCase
 
         $creator = new VoucherCreator($manager, $validator, $eventDispatcher);
 
-        $user = new User();
+        $user = new User('test@example.org');
 
         $voucher = $creator->create($user);
 
@@ -54,7 +54,7 @@ class VoucherCreatorTest extends TestCase
 
         $creator = new VoucherCreator($manager, $validator, $eventDispatcher);
 
-        $user = new User();
+        $user = new User('test@example.org');
 
         $this->expectException(ValidationException::class);
 

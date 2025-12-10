@@ -24,8 +24,7 @@ class UsersResetCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->user = new User();
-        $this->user->setEmail('user@example.org');
+        $this->user = new User('user@example.org');
         $this->user->setTotpSecret('secret');
         $this->user->setTotpConfirmed(true);
         $this->user->addBackupCode('123456');

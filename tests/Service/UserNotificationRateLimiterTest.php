@@ -38,8 +38,7 @@ class UserNotificationRateLimiterTest extends TestCase
             $this->logger
         );
 
-        $this->user = new User();
-        $this->user->setEmail('test@example.org');
+        $this->user = new User('test@example.org');
         // Set an ID through reflection since it's normally set by Doctrine
         $reflection = new ReflectionClass($this->user);
         $idProperty = $reflection->getProperty('id');
@@ -287,8 +286,7 @@ class UserNotificationRateLimiterTest extends TestCase
     public function testCacheKeyGeneration(): void
     {
         // Test that different users generate different cache keys
-        $user2 = new User();
-        $user2->setEmail('user2@example.org');
+        $user2 = new User('user2@example.org');
         $reflection = new ReflectionClass($user2);
         $idProperty = $reflection->getProperty('id');
         $idProperty->setValue($user2, 456);

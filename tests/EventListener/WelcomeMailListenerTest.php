@@ -25,8 +25,7 @@ class WelcomeMailListenerTest extends TestCase
 
     public function testOnUserCreatedDispatchesWelcomeMailWithLocale(): void
     {
-        $user = new User();
-        $user->setEmail('newuser@example.test');
+        $user = new User('newuser@example.test');
         $locale = 'fr';
 
         $session = $this->createMock(SessionInterface::class);
@@ -56,8 +55,7 @@ class WelcomeMailListenerTest extends TestCase
 
     public function testOnUserCreatedWithSessionReturningNullLocaleFallsBackToDefault(): void
     {
-        $user = new User();
-        $user->setEmail('newuser@example.test');
+        $user = new User('newuser@example.test');
 
         $session = $this->createMock(SessionInterface::class);
         $session->expects($this->once())
@@ -86,8 +84,7 @@ class WelcomeMailListenerTest extends TestCase
 
     public function testOnUserCreatedWithNoRequestFallsBackToDefaultLocale(): void
     {
-        $user = new User();
-        $user->setEmail('newuser@example.test');
+        $user = new User('newuser@example.test');
 
         $requestStack = $this->createMock(RequestStack::class);
         $requestStack->method('getCurrentRequest')->willReturn(null);

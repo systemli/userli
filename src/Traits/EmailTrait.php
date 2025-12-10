@@ -14,9 +14,9 @@ trait EmailTrait
     #[Assert\NotNull]
     #[Lowercase]
     #[Assert\Email]
-    private ?string $email = '';
+    private string $email;
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }

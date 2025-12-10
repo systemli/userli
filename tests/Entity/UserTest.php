@@ -17,7 +17,7 @@ class UserTest extends TestCase
 {
     public function testGetRoles(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         $this->hasOnlyValidRoles($user->getRoles());
 
         $user->setRoles([Roles::SUSPICIOUS]);
@@ -37,13 +37,13 @@ class UserTest extends TestCase
 
     public function testUserIsUserByDefault(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         self::assertTrue($user->hasRole(Roles::USER));
     }
 
     public function testHasRole(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         $user->setRoles([Roles::DOMAIN_ADMIN]);
         self::assertTrue($user->hasRole(Roles::DOMAIN_ADMIN));
         self::assertFalse($user->hasRole(Roles::ADMIN));
@@ -51,7 +51,7 @@ class UserTest extends TestCase
 
     public function testGetPasswordHasherName(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         self::assertNull($user->getPasswordHasherName());
         $user->setPasswordVersion(1);
         self::assertEquals('legacy', $user->getPasswordHasherName());
@@ -59,7 +59,7 @@ class UserTest extends TestCase
 
     public function testHasRecoverySecretBox(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         self::assertFalse($user->hasRecoverySecretBox());
         $user->setRecoverySecretBox('testsecret');
         self::assertTrue($user->hasRecoverySecretBox());
@@ -67,7 +67,7 @@ class UserTest extends TestCase
 
     public function testPlainRecoveryToken(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         self::assertNull($user->getPlainRecoveryToken());
         $user->setPlainRecoveryToken('testtoken');
         self::assertEquals('testtoken', $user->getPlainRecoveryToken());
@@ -77,14 +77,14 @@ class UserTest extends TestCase
 
     public function testHasCreationTimeSet(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         $today = new DateTime();
         self::assertEquals($user->getCreationTime()->format('Y-m-d'), $today->format('Y-m-d'));
     }
 
     public function testHasUpdatedTimeSet(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         $today = new DateTime();
         self::assertEquals($user->getUpdatedTime()->format('Y-m-d'), $today->format('Y-m-d'));
     }
@@ -93,7 +93,7 @@ class UserTest extends TestCase
     {
         // totpSecret and totpConfirmed
         $totpSecret = 'secret';
-        $user = new User();
+        $user = new User('user@example.org');
         self::assertFalse($user->getTotpConfirmed());
         self::assertFalse($user->isTotpAuthenticationEnabled());
         $user->setTotpSecret($totpSecret);
@@ -104,7 +104,6 @@ class UserTest extends TestCase
 
         // getTotpAuthenticationUsername
         $email = 'user@example.org';
-        $user->setEmail($email);
         self::assertEquals($email, $user->getTotpAuthenticationUsername());
 
         // getTotpAuthenticationConfiguration

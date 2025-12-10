@@ -24,8 +24,8 @@ class UserProviderTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $userRepository->method('findByEmail')->willReturnMap([
-            ['admin@example.org', new User()],
-            ['admin', new User()],
+            ['admin@example.org', new User('admin@example.org')],
+            ['admin', new User('admin@example.org')],
         ]);
 
         $domain = new Domain();
@@ -56,8 +56,8 @@ class UserProviderTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $repository->method('findByEmail')->willReturnMap([
-            ['admin@example.org', new User()],
-            ['admin', new User()],
+            ['admin@example.org', new User('admin@example.org')],
+            ['admin', new User('admin@example.org')],
         ]);
 
         $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
@@ -70,7 +70,7 @@ class UserProviderTest extends TestCase
 
     public function testRefreshUserSuccessful(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         $user->setId(1);
 
         $repository = $this->getMockBuilder(UserRepository::class)
@@ -122,7 +122,7 @@ class UserProviderTest extends TestCase
 
     public function userProvider(): array
     {
-        $user = new User();
+        $user = new User('test@example.org');
         $user->setId(1);
 
         return [

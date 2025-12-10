@@ -123,7 +123,12 @@ class FeatureContext extends MinkContext
     public function theFollowingUserExists(TableNode $table): void
     {
         foreach ($table->getColumnsHash() as $data) {
-            $user = new User();
+            $email = $data['email'] ?? '';
+            $user = new User($email);
+
+            if (null !== $domain = $this->domainGuesser->guess($email)) {
+                $user->setDomain($domain);
+            }
 
             foreach ($data as $key => $value) {
                 if (empty($value)) {
@@ -132,12 +137,7 @@ class FeatureContext extends MinkContext
 
                 switch ($key) {
                     case 'email':
-                        $user->setEmail($value);
-
-                        if (null !== $domain = $this->domainGuesser->guess($value)) {
-                            $user->setDomain($domain);
-                        }
-
+                        // Already handled above
                         break;
                     case 'password':
                         $this->passwordUpdater->updatePassword($user, $value);
