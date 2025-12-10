@@ -9,7 +9,7 @@ use Twig\Extension\AbstractExtension;
 use Twig\Markup;
 use Twig\TwigFilter;
 
-class SafeHtmlExtension extends AbstractExtension
+final class SafeHtmlExtension extends AbstractExtension
 {
     #[Override]
     public function getFilters(): array

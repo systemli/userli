@@ -14,7 +14,7 @@ use Exception;
 /**
  * Class WelcomeMessageSender.
  */
-class WelcomeMessageSender
+final class WelcomeMessageSender
 {
     private string $domain;
 

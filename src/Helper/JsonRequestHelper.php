@@ -6,7 +6,7 @@ namespace App\Helper;
 
 use Symfony\Component\HttpFoundation\Request;
 
-readonly class JsonRequestHelper
+final readonly class JsonRequestHelper
 {
     /**
      * Returns true if the request is likely to expect a JSON response.

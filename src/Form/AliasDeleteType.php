@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @extends AbstractType<Delete>
  */
-class AliasDeleteType extends AbstractType
+final class AliasDeleteType extends AbstractType
 {
     public const NAME = 'delete_alias';
 

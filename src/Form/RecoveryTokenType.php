@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @extends AbstractType<RecoveryToken>
  */
-class RecoveryTokenType extends AbstractType
+final class RecoveryTokenType extends AbstractType
 {
     public const NAME = 'recovery_token';
 

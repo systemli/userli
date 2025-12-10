@@ -11,7 +11,7 @@ use const SODIUM_CRYPTO_PWHASH_SALTBYTES;
 use const SODIUM_CRYPTO_SECRETBOX_MACBYTES;
 use const SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
 
-class CryptoSecret
+final class CryptoSecret
 {
     use SaltTrait;
 

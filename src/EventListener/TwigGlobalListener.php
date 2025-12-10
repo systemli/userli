@@ -15,7 +15,7 @@ use Twig\Environment;
 /**
  * Class TwigGlobalListener.
  */
-class TwigGlobalListener implements EventSubscriberInterface
+final class TwigGlobalListener implements EventSubscriberInterface
 {
     public function __construct(private readonly Environment $twig, private readonly EntityManagerInterface $manager)
     {

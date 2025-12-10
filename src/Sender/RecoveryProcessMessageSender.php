@@ -14,7 +14,7 @@ use IntlDateFormatter;
 /**
  * Class RecoveryProcessMessageSender.
  */
-class RecoveryProcessMessageSender
+final class RecoveryProcessMessageSender
 {
     /**
      * RecoveryProcessMessageSender constructor.

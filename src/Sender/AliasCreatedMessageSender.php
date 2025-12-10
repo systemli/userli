@@ -13,7 +13,7 @@ use Exception;
 /**
  * Class AliasCreatedMessageSender.
  */
-class AliasCreatedMessageSender
+final class AliasCreatedMessageSender
 {
     /**
      * AliasCreatedMessageSender constructor.

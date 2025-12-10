@@ -8,7 +8,7 @@ use App\Entity\ApiToken;
 use Override;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\BadgeInterface;
 
-readonly class ApiTokenBadge implements BadgeInterface
+final readonly class ApiTokenBadge implements BadgeInterface
 {
     public function __construct(private ApiToken $apiToken)
     {

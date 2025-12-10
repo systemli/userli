@@ -9,7 +9,7 @@ use Override;
 use Symfony\Component\Validator\Constraint;
 
 #[Attribute]
-class VoucherUser extends Constraint
+final class VoucherUser extends Constraint
 {
     #[Override]
     public function getTargets(): string

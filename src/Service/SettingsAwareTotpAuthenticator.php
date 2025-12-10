@@ -7,7 +7,7 @@ namespace App\Service;
 use Override;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
 
-readonly class SettingsAwareTotpAuthenticator implements TotpAuthenticatorInterface
+final readonly class SettingsAwareTotpAuthenticator implements TotpAuthenticatorInterface
 {
     public function __construct(
         private TotpAuthenticatorInterface $decoratedAuthenticator,

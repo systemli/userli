@@ -19,7 +19,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use const DIRECTORY_SEPARATOR;
 
 #[AsCommand(name: 'app:users:remove', description: 'Removes all mailboxes from deleted users')]
-class UsersRemoveCommand extends Command
+final class UsersRemoveCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $manager,

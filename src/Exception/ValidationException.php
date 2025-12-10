@@ -13,7 +13,7 @@ use const PHP_EOL;
 /**
  * Class ValidationException.
  */
-class ValidationException extends Exception
+final class ValidationException extends Exception
 {
     public function __construct(private readonly ConstraintViolationListInterface $constraints)
     {

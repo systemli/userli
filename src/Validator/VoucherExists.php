@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
 
 #[Attribute]
-class VoucherExists extends Constraint
+final class VoucherExists extends Constraint
 {
     public bool $exists;
 

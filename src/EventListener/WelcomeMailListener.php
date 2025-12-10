@@ -12,7 +12,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-readonly class WelcomeMailListener implements EventSubscriberInterface
+final readonly class WelcomeMailListener implements EventSubscriberInterface
 {
     public function __construct(
         private RequestStack $request,

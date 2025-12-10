@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:openpgp:import-key', description: 'Import OpenPGP key for email')]
-class OpenPgpImportKeyCommand extends Command
+final class OpenPgpImportKeyCommand extends Command
 {
     public function __construct(private readonly WkdHandler $handler)
     {

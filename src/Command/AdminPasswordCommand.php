@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
 #[AsCommand(name: 'app:admin:password', description: 'Set password of admin user')]
-class AdminPasswordCommand extends Command
+final class AdminPasswordCommand extends Command
 {
     /**
      * AdminPasswordCommand constructor.

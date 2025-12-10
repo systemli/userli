@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Attribute\Route;
 
-class ApiTokenController extends AbstractController
+final class ApiTokenController extends AbstractController
 {
     public function __construct(private readonly ApiTokenManager $apiTokenManager)
     {

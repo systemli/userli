@@ -18,7 +18,7 @@ use Tuupola\Base32;
 
 use const DIRECTORY_SEPARATOR;
 
-readonly class WkdHandler
+final readonly class WkdHandler
 {
     private OpenPgpKeyRepository $repository;
 

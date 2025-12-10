@@ -12,7 +12,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Override;
 
-class LoadRandomAliasData extends Fixture implements FixtureGroupInterface, DependentFixtureInterface
+final class LoadRandomAliasData extends Fixture implements FixtureGroupInterface, DependentFixtureInterface
 {
     #[Override]
     public function load(ObjectManager $manager): void

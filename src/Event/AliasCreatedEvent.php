@@ -11,7 +11,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 /**
  * Class AliasCreatedEvent.
  */
-class AliasCreatedEvent extends Event
+final class AliasCreatedEvent extends Event
 {
     use AliasAwareTrait;
 

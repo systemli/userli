@@ -8,7 +8,7 @@ use App\Entity\Domain;
 use App\Repository\DomainRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-class DomainGuesser
+final class DomainGuesser
 {
     private readonly DomainRepository $repository;
 

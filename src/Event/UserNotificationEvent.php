@@ -8,7 +8,7 @@ use App\Entity\User;
 use App\Enum\UserNotificationType;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class UserNotificationEvent extends Event
+final class UserNotificationEvent extends Event
 {
     public const COMPROMISED_PASSWORD = 'user.notification.compromised_password';
 

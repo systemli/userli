@@ -11,7 +11,7 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Override;
 
-class LoadRandomUserData extends AbstractUserData implements FixtureGroupInterface
+final class LoadRandomUserData extends AbstractUserData implements FixtureGroupInterface
 {
     #[Override]
     public function load(ObjectManager $manager): void

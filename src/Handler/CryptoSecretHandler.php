@@ -12,7 +12,7 @@ use const SODIUM_CRYPTO_PWHASH_OPSLIMIT_INTERACTIVE;
 use const SODIUM_CRYPTO_PWHASH_SALTBYTES;
 use const SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
 
-class CryptoSecretHandler
+final class CryptoSecretHandler
 {
     /**
      * Using PHP sodium implementation for crypto stuff. Commands taken from:

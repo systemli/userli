@@ -17,7 +17,7 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 #[AsCommand(name: 'app:users:restore', description: 'Reset a user')]
-class UsersRestoreCommand extends AbstractUsersCommand
+final class UsersRestoreCommand extends AbstractUsersCommand
 {
     public function __construct(
         EntityManagerInterface $manager,

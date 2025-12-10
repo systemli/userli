@@ -6,7 +6,7 @@ namespace App\Dto;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class DovecotPassdbDto
+final class DovecotPassdbDto
 {
     #[Assert\NotBlank]
     private string $password = '';

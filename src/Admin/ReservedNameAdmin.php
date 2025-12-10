@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 /**
  * @extends Admin<ReservedName>
  */
-class ReservedNameAdmin extends Admin
+final class ReservedNameAdmin extends Admin
 {
     #[Override]
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string

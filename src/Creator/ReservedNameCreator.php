@@ -11,7 +11,7 @@ use App\Factory\ReservedNameFactory;
 /**
  * Class ReservedNameCreator.
  */
-class ReservedNameCreator extends AbstractCreator
+final class ReservedNameCreator extends AbstractCreator
 {
     /**
      * @throws ValidationException

@@ -12,7 +12,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-class ApiScopeListener implements EventSubscriberInterface
+final class ApiScopeListener implements EventSubscriberInterface
 {
     #[Override]
     public static function getSubscribedEvents(): array

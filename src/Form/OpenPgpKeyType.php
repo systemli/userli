@@ -22,7 +22,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * @extends AbstractType<OpenPgpKey>
  */
-class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
+final class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
 {
     public const NAME = 'upload_openpgp_key';
 

@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:voucher:count', description: 'Get count of vouchers for a specific user')]
-class VoucherCountCommand extends AbstractUsersCommand
+final class VoucherCountCommand extends AbstractUsersCommand
 {
     #[Override]
     protected function configure(): void

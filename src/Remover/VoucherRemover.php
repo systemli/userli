@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * Class VoucherRemover.
  */
-class VoucherRemover
+final class VoucherRemover
 {
     /**
      * VoucherRemover constructor.

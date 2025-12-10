@@ -17,7 +17,7 @@ use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-readonly class RegistrationHandler
+final readonly class RegistrationHandler
 {
     public function __construct(
         private EntityManagerInterface $manager,

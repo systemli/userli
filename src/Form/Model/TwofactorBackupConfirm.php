@@ -6,7 +6,7 @@ namespace App\Form\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class TwofactorBackupConfirm
+final class TwofactorBackupConfirm
 {
     #[Assert\IsTrue(message: 'form.twofactor-backup-ack-missing')]
     private bool $confirm = false;

@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
 
-class StatisticsBlockService implements BlockServiceInterface
+final class StatisticsBlockService implements BlockServiceInterface
 {
     /**
      * StatisticsBlockService constructor.

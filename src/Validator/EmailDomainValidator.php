@@ -11,7 +11,7 @@ use Override;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class EmailDomainValidator extends ConstraintValidator
+final class EmailDomainValidator extends ConstraintValidator
 {
     public function __construct(private readonly EntityManagerInterface $manager)
     {

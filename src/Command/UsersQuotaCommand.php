@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:users:quota', description: 'Get quota of user if set')]
-class UsersQuotaCommand extends AbstractUsersCommand
+final class UsersQuotaCommand extends AbstractUsersCommand
 {
     #[Override]
     protected function configure(): void

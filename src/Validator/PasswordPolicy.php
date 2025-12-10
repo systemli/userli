@@ -8,6 +8,6 @@ use Attribute;
 use Symfony\Component\Validator\Constraint;
 
 #[Attribute]
-class PasswordPolicy extends Constraint
+final class PasswordPolicy extends Constraint
 {
 }

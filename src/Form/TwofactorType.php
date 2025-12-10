@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @extends AbstractType<Twofactor>
  */
-class TwofactorType extends AbstractType
+final class TwofactorType extends AbstractType
 {
     public const NAME = 'twofactor';
 

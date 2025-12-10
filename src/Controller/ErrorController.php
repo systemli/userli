@@ -9,7 +9,7 @@ use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 
-class ErrorController extends AbstractController
+final class ErrorController extends AbstractController
 {
     public function show(FlattenException $exception, ?DebugLoggerInterface $logger = null): Response
     {

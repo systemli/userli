@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @extends AbstractType<Delete>
  */
-class UserDeleteType extends AbstractType
+final class UserDeleteType extends AbstractType
 {
     public const NAME = 'delete_user';
 

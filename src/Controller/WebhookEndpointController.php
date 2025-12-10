@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class WebhookEndpointController extends AbstractController
+final class WebhookEndpointController extends AbstractController
 {
     public function __construct(private readonly WebhookEndpointManager $manager)
     {

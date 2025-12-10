@@ -6,7 +6,7 @@ namespace App\Dto;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class KeycloakUserValidateDto
+final class KeycloakUserValidateDto
 {
     #[Assert\NotBlank]
     private string $password = '';

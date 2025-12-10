@@ -26,7 +26,7 @@ use const DIRECTORY_SEPARATOR;
 /**
  * Class GpgKeyImporter.
  */
-class GpgKeyImporter implements OpenPgpKeyImporterInterface
+final class GpgKeyImporter implements OpenPgpKeyImporterInterface
 {
     private static function recursiveRemoveDir(string $dir): void
     {

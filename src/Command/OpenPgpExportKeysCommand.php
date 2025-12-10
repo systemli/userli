@@ -17,7 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:wkd:export-keys', description: 'Export all OpenPGP keys to WKD directory')]
-class OpenPgpExportKeysCommand extends Command
+final class OpenPgpExportKeysCommand extends Command
 {
     private readonly DomainRepository $domainRepository;
 

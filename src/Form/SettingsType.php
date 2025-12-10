@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @extends AbstractType<array<string, mixed>>
  */
-class SettingsType extends AbstractType
+final class SettingsType extends AbstractType
 {
     public function __construct(
         private readonly SettingsConfigService $configService,

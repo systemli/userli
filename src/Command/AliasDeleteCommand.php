@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:alias:delete', description: 'Delete an alias')]
-class AliasDeleteCommand extends Command
+final class AliasDeleteCommand extends Command
 {
     public function __construct(private readonly EntityManagerInterface $manager, private readonly DeleteHandler $deleteHandler)
     {

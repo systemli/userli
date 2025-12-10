@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
-class SettingsService
+final class SettingsService
 {
     private const CACHE_KEY = 'app.settings';
 

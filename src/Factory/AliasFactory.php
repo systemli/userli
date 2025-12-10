@@ -12,7 +12,7 @@ use Exception;
 /**
  * Interface AliasFactory.
  */
-class AliasFactory
+final class AliasFactory
 {
     public const RANDOM_ALIAS_LENGTH = 24;
 

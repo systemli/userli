@@ -10,7 +10,7 @@ use App\Message\SendWebhook;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-readonly class WebhookDeliveryManager
+final readonly class WebhookDeliveryManager
 {
     public function __construct(
         private EntityManagerInterface $em,

@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     name: 'app:api-token:create',
     description: 'Create a new API token with specified name and scopes'
 )]
-class ApiTokenCreateCommand extends Command
+final class ApiTokenCreateCommand extends Command
 {
     public function __construct(
         private readonly ApiTokenManager $apiTokenManager,

@@ -6,7 +6,7 @@ namespace App\Dto;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class RoundcubeUserAliasesDto
+final class RoundcubeUserAliasesDto
 {
     #[Assert\NotBlank]
     #[Assert\Email]

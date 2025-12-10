@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 #[AsCommand(name: 'app:users:registration:mail', description: 'Send a registration mail to a user')]
-class UsersRegistrationMailCommand extends Command
+final class UsersRegistrationMailCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $manager,

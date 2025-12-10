@@ -6,7 +6,7 @@ namespace App\Factory;
 
 use App\Entity\Domain;
 
-class DomainFactory
+final class DomainFactory
 {
     public static function create(string $name): Domain
     {

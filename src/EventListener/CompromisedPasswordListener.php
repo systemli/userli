@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
-readonly class CompromisedPasswordListener implements EventSubscriberInterface
+final readonly class CompromisedPasswordListener implements EventSubscriberInterface
 {
     public function __construct(
         private PasswordCompromisedService $passwordCompromisedService,

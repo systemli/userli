@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:report:weekly', description: 'Send weekly report to all admins')]
-class ReportWeeklyCommand extends Command
+final class ReportWeeklyCommand extends Command
 {
     public function __construct(private readonly UserRegistrationInfoHandler $handler)
     {

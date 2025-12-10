@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 #[AsCommand(name: 'app:users:list', description: 'List users')]
-class UsersListCommand extends Command
+final class UsersListCommand extends Command
 {
     private readonly UserRepository $repository;
 

@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[RequireApiScope(scope: ApiScope::KEYCLOAK)]
-class KeycloakController extends AbstractController
+final class KeycloakController extends AbstractController
 {
     public const MESSAGE_SUCCESS = 'success';
 

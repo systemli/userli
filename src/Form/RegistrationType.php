@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @extends AbstractType<Registration>
  */
-class RegistrationType extends AbstractType
+final class RegistrationType extends AbstractType
 {
     public const NAME = 'registration';
 

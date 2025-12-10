@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 #[AsCommand(name: 'app:users:mailcrypt', description: 'Get MailCrypt values for user')]
-class UsersMailCryptCommand extends AbstractUsersCommand
+final class UsersMailCryptCommand extends AbstractUsersCommand
 {
     public function __construct(
         EntityManagerInterface $manager,

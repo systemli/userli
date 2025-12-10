@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @extends AbstractType<RecoveryProcess>
  */
-class RecoveryProcessType extends AbstractType
+final class RecoveryProcessType extends AbstractType
 {
     public const NAME = 'recovery_process';
 

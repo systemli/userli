@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-readonly class AliasCreationListener implements EventSubscriberInterface
+final readonly class AliasCreationListener implements EventSubscriberInterface
 {
     public function __construct(
         private RequestStack $request,

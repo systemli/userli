@@ -18,7 +18,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'app:api-token:delete',
     description: 'Delete an API token by its plain token'
 )]
-class ApiTokenDeleteCommand extends Command
+final class ApiTokenDeleteCommand extends Command
 {
     public function __construct(
         private readonly ApiTokenManager $apiTokenManager,

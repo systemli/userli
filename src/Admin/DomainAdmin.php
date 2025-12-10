@@ -18,7 +18,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 /**
  * @extends Admin<Domain>
  */
-class DomainAdmin extends Admin
+final class DomainAdmin extends Admin
 {
     private DomainCreator $domainCreator;
 

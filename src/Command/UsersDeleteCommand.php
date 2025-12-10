@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:users:delete', description: 'Delete a user')]
-class UsersDeleteCommand extends AbstractUsersCommand
+final class UsersDeleteCommand extends AbstractUsersCommand
 {
     public function __construct(
         EntityManagerInterface $manager,

@@ -18,7 +18,7 @@ use Traversable;
 /**
  * @extends CRUDController<User>
  */
-class UserCRUDController extends CRUDController
+final class UserCRUDController extends CRUDController
 {
     public function __construct(private readonly DeleteHandler $deleteHandler, private readonly VoucherRemover $voucherRemover)
     {

@@ -8,7 +8,7 @@ use Attribute;
 use Symfony\Component\Validator\Constraint;
 
 #[Attribute]
-class Lowercase extends Constraint
+final class Lowercase extends Constraint
 {
     public string $message = 'form.lowercase';
 

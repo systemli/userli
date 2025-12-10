@@ -8,6 +8,6 @@ use Attribute;
 use Symfony\Component\Validator\Constraint;
 
 #[Attribute]
-class EmailAddress extends Constraint
+final class EmailAddress extends Constraint
 {
 }

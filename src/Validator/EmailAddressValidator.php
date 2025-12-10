@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class EmailAddressValidator extends ConstraintValidator
+final class EmailAddressValidator extends ConstraintValidator
 {
     public function __construct(private readonly EntityManagerInterface $manager)
     {

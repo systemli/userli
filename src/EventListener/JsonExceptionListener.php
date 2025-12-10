@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-readonly class JsonExceptionListener implements EventSubscriberInterface
+final readonly class JsonExceptionListener implements EventSubscriberInterface
 {
     public function __construct(
         #[Autowire('kernel.environment')]

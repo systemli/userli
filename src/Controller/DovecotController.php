@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use const DIRECTORY_SEPARATOR;
 
 #[RequireApiScope(scope: ApiScope::DOVECOT)]
-class DovecotController extends AbstractController
+final class DovecotController extends AbstractController
 {
     public const MESSAGE_SUCCESS = 'success';
 

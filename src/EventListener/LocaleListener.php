@@ -10,7 +10,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-readonly class LocaleListener implements EventSubscriberInterface
+final readonly class LocaleListener implements EventSubscriberInterface
 {
     public function __construct(
         #[Autowire(param: 'locale')]

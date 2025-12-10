@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:openpgp:delete-key', description: 'Delete OpenPGP key for email')]
-class OpenPgpDeleteKeyCommand extends Command
+final class OpenPgpDeleteKeyCommand extends Command
 {
     private readonly OpenPgpKeyRepository $repository;
 

@@ -9,7 +9,7 @@ use App\Entity\ReservedName;
 /**
  * Interface ReservedNameFactory.
  */
-class ReservedNameFactory
+final class ReservedNameFactory
 {
     public static function create(string $name): ReservedName
     {

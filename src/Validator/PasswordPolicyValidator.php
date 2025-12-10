@@ -9,7 +9,7 @@ use Override;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class PasswordPolicyValidator extends ConstraintValidator
+final class PasswordPolicyValidator extends ConstraintValidator
 {
     public function __construct(private readonly PasswordStrengthHandler $handler)
     {

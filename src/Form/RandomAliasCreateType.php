@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @extends AbstractType<AliasCreate>
  */
-class RandomAliasCreateType extends AbstractType
+final class RandomAliasCreateType extends AbstractType
 {
     public const NAME = 'create_alias';
 

@@ -10,7 +10,7 @@ use App\Service\WebhookDispatcher;
 use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-readonly class WebhookListener implements EventSubscriberInterface
+final readonly class WebhookListener implements EventSubscriberInterface
 {
     public function __construct(private WebhookDispatcher $dispatcher)
     {

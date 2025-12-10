@@ -8,7 +8,7 @@ use App\Entity\User;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
-readonly class UserLastLoginUpdateService
+final readonly class UserLastLoginUpdateService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,

@@ -7,7 +7,7 @@ namespace App\Form\Model;
 use App\Validator\TotpSecret;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class TwofactorConfirm
+final class TwofactorConfirm
 {
     #[Assert\NotNull]
     #[TotpSecret]

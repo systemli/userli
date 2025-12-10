@@ -12,7 +12,7 @@ use Exception;
 /**
  * Interface VoucherFactory.
  */
-class VoucherFactory
+final class VoucherFactory
 {
     /**
      * @throws Exception

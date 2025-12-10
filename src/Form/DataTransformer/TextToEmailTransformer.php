@@ -10,7 +10,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 /**
  * @implements DataTransformerInterface<string, string>
  */
-class TextToEmailTransformer implements DataTransformerInterface
+final class TextToEmailTransformer implements DataTransformerInterface
 {
     /**
      * Constructor.

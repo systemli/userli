@@ -12,7 +12,7 @@ use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
-class DeleteHandler
+final class DeleteHandler
 {
     /**
      * DeleteHandler constructor.

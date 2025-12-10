@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 /**
  * @extends EntityRepository<User>
  */
-class UserRepository extends EntityRepository implements PasswordUpgraderInterface
+final class UserRepository extends EntityRepository implements PasswordUpgraderInterface
 {
     public function findById(int $id): ?User
     {
