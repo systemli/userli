@@ -8,6 +8,7 @@ use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -27,6 +28,7 @@ class UsersMailCryptCommand extends AbstractUsersCommand
         parent::__construct($manager);
     }
 
+    #[Override]
     protected function configure(): void
     {
         parent::configure();
@@ -41,6 +43,7 @@ class UsersMailCryptCommand extends AbstractUsersCommand
     /**
      * @throws Exception
      */
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($this->mailCrypt <= 0) {

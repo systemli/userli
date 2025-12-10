@@ -6,6 +6,7 @@ namespace App\Admin;
 
 use App\Entity\Voucher;
 use App\Helper\RandomStringGenerator;
+use Override;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -24,17 +25,20 @@ class VoucherAdmin extends Admin
         parent::__construct();
     }
 
+    #[Override]
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {
         return 'voucher';
     }
 
+    #[Override]
     protected function alterNewInstance(object $object): void
     {
         $object->setUser($this->security->getUser());
         $object->setCode(RandomStringGenerator::generate(6, true));
     }
 
+    #[Override]
     protected function configureFormFields(FormMapper $form): void
     {
         $disabled = true;
@@ -47,6 +51,7 @@ class VoucherAdmin extends Admin
             ->add('code', null, ['disabled' => !$this->isNewObject()]);
     }
 
+    #[Override]
     protected function configureListFields(ListMapper $list): void
     {
         $list
@@ -61,6 +66,7 @@ class VoucherAdmin extends Admin
             ->add('redeemedTime');
     }
 
+    #[Override]
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
@@ -84,6 +90,7 @@ class VoucherAdmin extends Admin
             ]);
     }
 
+    #[Override]
     protected function configureBatchActions($actions): array
     {
         return [];

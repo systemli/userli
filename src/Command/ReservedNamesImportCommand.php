@@ -8,6 +8,7 @@ use App\Creator\ReservedNameCreator;
 use App\Entity\ReservedName;
 use App\Exception\ValidationException;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,6 +27,7 @@ class ReservedNamesImportCommand extends Command
         parent::__construct();
     }
 
+    #[Override]
     protected function configure(): void
     {
         $this
@@ -41,6 +43,7 @@ class ReservedNamesImportCommand extends Command
     /**
      * @throws ValidationException
      */
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $repository = $this->manager->getRepository(ReservedName::class);

@@ -12,6 +12,7 @@ use App\Validator\VoucherUser;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
+use Override;
 use Stringable;
 
 #[ORM\Entity(repositoryClass: VoucherRepository::class)]
@@ -74,6 +75,7 @@ class Voucher implements Stringable
         $this->invitedUser = $invitedUser;
     }
 
+    #[Override]
     public function __toString(): string
     {
         return (string) $this->code;

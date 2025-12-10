@@ -8,6 +8,7 @@ use App\Entity\Domain;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
+use Override;
 
 class LoadDomainData extends Fixture implements FixtureGroupInterface
 {
@@ -16,6 +17,7 @@ class LoadDomainData extends Fixture implements FixtureGroupInterface
         'example.com',
     ];
 
+    #[Override]
     public function load(ObjectManager $manager): void
     {
         foreach ($this->domains as $name) {
@@ -29,6 +31,7 @@ class LoadDomainData extends Fixture implements FixtureGroupInterface
         $manager->clear();
     }
 
+    #[Override]
     public static function getGroups(): array
     {
         return ['basic'];

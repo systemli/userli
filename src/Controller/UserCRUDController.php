@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Handler\DeleteHandler;
 use App\Remover\VoucherRemover;
+use Override;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -40,6 +41,7 @@ class UserCRUDController extends CRUDController
         return $this->redirectToList();
     }
 
+    #[Override]
     public function deleteAction(Request $request): Response
     {
         $object = $this->assertObjectExists($request, true);
@@ -68,6 +70,7 @@ class UserCRUDController extends CRUDController
         return $this->redirectToList();
     }
 
+    #[Override]
     public function batchActionDelete(ProxyQueryInterface $query): RedirectResponse
     {
         $this->admin->checkAccess('batchDelete');

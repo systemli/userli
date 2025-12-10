@@ -9,6 +9,7 @@ use App\Entity\Domain;
 use App\Event\RandomAliasCreatedEvent;
 use App\Helper\RandomStringGenerator;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class RandomAliasCreationListener implements EventSubscriberInterface
@@ -33,6 +34,7 @@ class RandomAliasCreationListener implements EventSubscriberInterface
         }
     }
 
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         return [

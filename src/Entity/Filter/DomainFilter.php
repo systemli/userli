@@ -8,9 +8,11 @@ use App\Entity\Domain;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 use InvalidArgumentException;
+use Override;
 
 class DomainFilter extends SQLFilter
 {
+    #[Override]
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string
     {
         if (null === $domainId = $this->getDomainId()) {

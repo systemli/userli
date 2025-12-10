@@ -36,9 +36,7 @@
             - LOW: MissingOverrideAttribute, PropertyNotSetInConstructor
         -->
 
-        <!-- LOW PRIORITY - Code Style / Modernization (230 MissingOverrideAttribute, 17
-        PropertyNotSetInConstructor) -->
-        <MissingOverrideAttribute errorLevel="suppress" />
+        <!-- LOW PRIORITY - Code Style / Modernization (17 PropertyNotSetInConstructor) -->
         <PropertyNotSetInConstructor errorLevel="suppress" />
 
         <!-- Symfony Psalm Plugin Issues (e.g. QueryBuilderSetParameter) -->

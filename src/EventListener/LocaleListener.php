@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -47,6 +48,7 @@ readonly class LocaleListener implements EventSubscriberInterface
         $request->setLocale($sessionLocale);
     }
 
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         // must be registered before (i.e. with a higher priority than) the default Locale listener

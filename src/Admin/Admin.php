@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use Override;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 
@@ -14,6 +15,7 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
  */
 abstract class Admin extends AbstractAdmin
 {
+    #[Override]
     protected function configureDefaultSortValues(array &$sortValues): void
     {
         $sortValues[DatagridInterface::PAGE] = 1;

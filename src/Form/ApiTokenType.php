@@ -6,6 +6,7 @@ namespace App\Form;
 
 use App\Enum\ApiScope;
 use App\Form\Model\ApiToken;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -17,6 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ApiTokenType extends AbstractType
 {
+    #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $choices = array_combine(ApiScope::all(), ApiScope::all());
@@ -31,6 +33,7 @@ class ApiTokenType extends AbstractType
             ->add('submit', SubmitType::class);
     }
 
+    #[Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

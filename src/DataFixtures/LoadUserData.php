@@ -10,6 +10,7 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
+use Override;
 
 class LoadUserData extends AbstractUserData implements DependentFixtureInterface, FixtureGroupInterface
 {
@@ -31,6 +32,7 @@ class LoadUserData extends AbstractUserData implements DependentFixtureInterface
     /**
      * @throws Exception
      */
+    #[Override]
     public function load(ObjectManager $manager): void
     {
         foreach ($this->users as $user) {
@@ -65,6 +67,7 @@ class LoadUserData extends AbstractUserData implements DependentFixtureInterface
         $manager->clear();
     }
 
+    #[Override]
     public function getDependencies(): array
     {
         return [
@@ -72,6 +75,7 @@ class LoadUserData extends AbstractUserData implements DependentFixtureInterface
         ];
     }
 
+    #[Override]
     public static function getGroups(): array
     {
         return ['basic'];

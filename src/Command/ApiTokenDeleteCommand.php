@@ -6,6 +6,7 @@ namespace App\Command;
 
 use App\Service\ApiTokenManager;
 use Exception;
+use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,12 +26,14 @@ class ApiTokenDeleteCommand extends Command
         parent::__construct();
     }
 
+    #[Override]
     protected function configure(): void
     {
         $this
             ->addOption('token', 't', InputOption::VALUE_REQUIRED, 'The plain API token to delete');
     }
 
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);

@@ -8,6 +8,7 @@ use App\Enum\ApiScope;
 use App\Form\Model\ApiToken as ApiTokenModel;
 use App\Service\ApiTokenManager;
 use Exception;
+use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,6 +30,7 @@ class ApiTokenCreateCommand extends Command
         parent::__construct();
     }
 
+    #[Override]
     protected function configure(): void
     {
         $this
@@ -42,6 +44,7 @@ class ApiTokenCreateCommand extends Command
             );
     }
 
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);

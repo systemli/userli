@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
@@ -17,6 +18,7 @@ class LogoutListener implements EventSubscriberInterface
         $session->getFlashBag()->add('success', 'flashes.logout-successful');
     }
 
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         return [

@@ -6,6 +6,7 @@ namespace App\Voter;
 
 use App\Entity\Alias;
 use App\Entity\User;
+use Override;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -16,6 +17,7 @@ class AliasVoter extends Voter
 {
     public const DELETE = 'delete';
 
+    #[Override]
     protected function supports(string $attribute, mixed $subject): bool
     {
         if ($attribute !== self::DELETE) {
@@ -29,6 +31,7 @@ class AliasVoter extends Voter
         return true;
     }
 
+    #[Override]
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();

@@ -9,6 +9,7 @@ use App\Entity\Voucher;
 use App\Enum\Roles;
 use App\Repository\VoucherRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -22,6 +23,7 @@ class VoucherExistsValidator extends ConstraintValidator
         $this->voucherRepository = $manager->getRepository(Voucher::class);
     }
 
+    #[Override]
     public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof VoucherExists) {

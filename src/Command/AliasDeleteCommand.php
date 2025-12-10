@@ -8,6 +8,7 @@ use App\Entity\Alias;
 use App\Entity\User;
 use App\Handler\DeleteHandler;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,6 +23,7 @@ class AliasDeleteCommand extends Command
         parent::__construct();
     }
 
+    #[Override]
     protected function configure(): void
     {
         $this
@@ -30,6 +32,7 @@ class AliasDeleteCommand extends Command
             ->addOption('dry-run', null, InputOption::VALUE_NONE);
     }
 
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $email = $input->getOption('user');

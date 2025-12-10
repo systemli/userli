@@ -8,6 +8,7 @@ use App\Event\RecoveryProcessEvent;
 use App\Event\UserEvent;
 use App\Sender\RecoveryProcessMessageSender;
 use Exception;
+use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -22,6 +23,7 @@ readonly class RecoveryProcessListener implements EventSubscriberInterface
     ) {
     }
 
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         return [

@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Enum\Roles;
 use App\Guesser\DomainGuesser;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -33,6 +34,7 @@ class DomainVoter extends Voter
      *
      * @return bool True if the attribute and subject are supported, false otherwise
      */
+    #[Override]
     protected function supports($attribute, $subject): bool
     {
         // only vote on User and Alias objects inside this voter
@@ -62,6 +64,7 @@ class DomainVoter extends Voter
      *
      * @param string $attribute
      */
+    #[Override]
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         // normal admins can do everything

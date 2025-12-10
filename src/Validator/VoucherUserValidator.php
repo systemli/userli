@@ -6,12 +6,14 @@ namespace App\Validator;
 
 use App\Entity\Voucher;
 use App\Enum\Roles;
+use Override;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class VoucherUserValidator extends ConstraintValidator
 {
+    #[Override]
     public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof VoucherUser) {

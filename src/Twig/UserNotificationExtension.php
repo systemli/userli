@@ -6,6 +6,7 @@ namespace App\Twig;
 
 use App\Entity\UserNotification;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Bundle\SecurityBundle\Security;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -18,6 +19,7 @@ class UserNotificationExtension extends AbstractExtension
     ) {
     }
 
+    #[Override]
     public function getFunctions(): array
     {
         return [

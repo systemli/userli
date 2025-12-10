@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Enum\Roles;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -29,6 +30,7 @@ class UsersListCommand extends Command
         parent::__construct();
     }
 
+    #[Override]
     protected function configure(): void
     {
         $this
@@ -39,6 +41,7 @@ class UsersListCommand extends Command
                 'List users inactive for X days (ignores admins and users with ROLE_PERMANENT)');
     }
 
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $inactiveDays = $input->getOption('inactive-days');

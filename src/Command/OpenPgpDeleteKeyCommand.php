@@ -8,6 +8,7 @@ use App\Entity\OpenPgpKey;
 use App\Handler\WkdHandler;
 use App\Repository\OpenPgpKeyRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,6 +26,7 @@ class OpenPgpDeleteKeyCommand extends Command
         parent::__construct();
     }
 
+    #[Override]
     protected function configure(): void
     {
         $this
@@ -34,6 +36,7 @@ class OpenPgpDeleteKeyCommand extends Command
                 'email address of the OpenPGP key');
     }
 
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // parse arguments

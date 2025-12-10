@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Form\Model\TwofactorBackupConfirm;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -18,6 +19,7 @@ class TwofactorBackupConfirmType extends AbstractType
 {
     public const NAME = 'twofactor_backup_confirm';
 
+    #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -28,11 +30,13 @@ class TwofactorBackupConfirmType extends AbstractType
             ->add('submit', SubmitType::class, ['label' => 'form.verify']);
     }
 
+    #[Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => TwofactorBackupConfirm::class]);
     }
 
+    #[Override]
     public function getBlockPrefix(): string
     {
         return self::NAME;

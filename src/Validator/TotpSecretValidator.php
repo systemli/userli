@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Validator;
 
+use Override;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
@@ -17,6 +18,7 @@ class TotpSecretValidator extends ConstraintValidator
     {
     }
 
+    #[Override]
     public function validate($value, Constraint $constraint): bool
     {
         if (!$constraint instanceof TotpSecret) {

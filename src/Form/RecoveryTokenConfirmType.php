@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Form\Model\RecoveryTokenConfirm;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -19,6 +20,7 @@ class RecoveryTokenConfirmType extends AbstractType
 {
     public const NAME = 'recovery_token_confirm';
 
+    #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -30,11 +32,13 @@ class RecoveryTokenConfirmType extends AbstractType
             ->add('submit', SubmitType::class, ['label' => 'form.registration-recovery-token-next-button']);
     }
 
+    #[Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => RecoveryTokenConfirm::class]);
     }
 
+    #[Override]
     public function getBlockPrefix(): string
     {
         return self::NAME;

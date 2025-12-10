@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Security\Encoder;
 
 use LogicException;
+use Override;
 use Symfony\Component\PasswordHasher\Exception\InvalidPasswordException;
 use Symfony\Component\PasswordHasher\Hasher\CheckPasswordLengthTrait;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
@@ -24,11 +25,13 @@ class LegacyPasswordHasher implements PasswordHasherInterface
     {
     }
 
+    #[Override]
     public function needsRehash(string $hashedPassword): bool
     {
         return true;
     }
 
+    #[Override]
     public function hash(string $plainPassword): string
     {
         if ($this->isPasswordTooLong($plainPassword)) {
@@ -48,6 +51,7 @@ class LegacyPasswordHasher implements PasswordHasherInterface
         return $this->encodeHashAsBase64 ? base64_encode($digest) : $digest;
     }
 
+    #[Override]
     public function verify(string $hashedPassword, $plainPassword): bool
     {
         if ('' === $plainPassword || $this->isPasswordTooLong($plainPassword)) {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Helper\AdminPasswordUpdater;
+use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -24,6 +25,7 @@ class AdminPasswordCommand extends Command
         parent::__construct();
     }
 
+    #[Override]
     protected function configure(): void
     {
         $this
@@ -31,6 +33,7 @@ class AdminPasswordCommand extends Command
             ->addArgument('password', InputArgument::OPTIONAL, 'Admin password');
     }
 
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $password = $input->getArgument('password');

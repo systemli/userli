@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Form\Model\OpenPgpKey;
+use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -29,6 +30,7 @@ class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
     {
     }
 
+    #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -57,16 +59,19 @@ class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
         $builder->addEventSubscriber($this);
     }
 
+    #[Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => OpenPgpKey::class]);
     }
 
+    #[Override]
     public function getBlockPrefix(): string
     {
         return self::NAME;
     }
 
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         return [

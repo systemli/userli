@@ -12,12 +12,14 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
+use Override;
 
 class LoadVoucherData extends Fixture implements FixtureGroupInterface, DependentFixtureInterface
 {
     /**
      * @throws Exception
      */
+    #[Override]
     public function load(ObjectManager $manager): void
     {
         $users = $manager->getRepository(User::class)->findAll();
@@ -56,11 +58,13 @@ class LoadVoucherData extends Fixture implements FixtureGroupInterface, Dependen
         $manager->clear();
     }
 
+    #[Override]
     public static function getGroups(): array
     {
         return ['advanced'];
     }
 
+    #[Override]
     public function getDependencies(): array
     {
         return [

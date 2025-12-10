@@ -7,6 +7,7 @@ namespace App\EventListener;
 use App\Event\AliasCreatedEvent;
 use App\Sender\AliasCreatedMessageSender;
 use Exception;
+use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -38,6 +39,7 @@ readonly class AliasCreationListener implements EventSubscriberInterface
         $this->sender->send($user, $alias, $locale);
     }
 
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         return [

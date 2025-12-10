@@ -6,6 +6,7 @@ namespace App\EventListener;
 
 use App\Entity\ApiToken;
 use App\Security\RequireApiScope;
+use Override;
 use ReflectionClass;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
@@ -13,6 +14,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class ApiScopeListener implements EventSubscriberInterface
 {
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         return [

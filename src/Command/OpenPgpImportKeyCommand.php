@@ -7,6 +7,7 @@ namespace App\Command;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgKeyForUserException;
 use App\Handler\WkdHandler;
+use Override;
 use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -22,6 +23,7 @@ class OpenPgpImportKeyCommand extends Command
         parent::__construct();
     }
 
+    #[Override]
     protected function configure(): void
     {
         $this
@@ -35,6 +37,7 @@ class OpenPgpImportKeyCommand extends Command
                 'file to read the key from');
     }
 
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // parse arguments

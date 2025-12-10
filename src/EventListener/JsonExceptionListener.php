@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\EventListener;
 
 use App\Helper\JsonRequestHelper;
+use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,6 +21,7 @@ readonly class JsonExceptionListener implements EventSubscriberInterface
     ) {
     }
 
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         return [

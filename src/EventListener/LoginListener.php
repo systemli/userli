@@ -9,6 +9,7 @@ use App\Enum\MailCrypt;
 use App\Event\LoginEvent;
 use App\Handler\MailCryptKeyHandler;
 use App\Service\UserLastLoginUpdateService;
+use Override;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -73,6 +74,7 @@ readonly class LoginListener implements EventSubscriberInterface
         $this->mailCryptKeyHandler->create($user, $password, true);
     }
 
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         return [

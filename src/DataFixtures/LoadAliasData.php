@@ -10,9 +10,11 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Override;
 
 class LoadAliasData extends Fixture implements FixtureGroupInterface, DependentFixtureInterface
 {
+    #[Override]
     public function load(ObjectManager $manager): void
     {
         $user = $manager->getRepository(User::class)->findByEmail('user2@example.org');
@@ -26,11 +28,13 @@ class LoadAliasData extends Fixture implements FixtureGroupInterface, DependentF
         $manager->clear();
     }
 
+    #[Override]
     public static function getGroups(): array
     {
         return ['basic'];
     }
 
+    #[Override]
     public function getDependencies(): array
     {
         return [
