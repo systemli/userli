@@ -28,7 +28,7 @@ class VoucherRemover
 
     public function removeUnredeemedVouchersByUsers(array $users): void
     {
-        $criteria = Criteria::create()
+        $criteria = Criteria::create(true)
             ->where(Criteria::expr()->isNull('redeemedTime'))
             ->andWhere(Criteria::expr()->in('user', $users));
 
