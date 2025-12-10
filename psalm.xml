@@ -31,14 +31,13 @@
             3. Remove the handler completely when all issues are fixed
 
             Recommended activation priority:
-            - HIGH: InvalidArgument, InvalidNullableReturnType, NullableReturnStatement
+            - HIGH: InvalidNullableReturnType, NullableReturnStatement
             - MEDIUM: MissingTemplateParam, MoreSpecificImplementedParamType
             - LOW: MissingOverrideAttribute, PropertyNotSetInConstructor
         -->
 
-        <!-- HIGH PRIORITY - Potential Bugs (4 InvalidArgument, 2 InvalidNullableReturnType, 2
+        <!-- HIGH PRIORITY - Potential Bugs (2 InvalidNullableReturnType, 2
         NullableReturnStatement, 1 FalsableReturnStatement) -->
-        <InvalidArgument errorLevel="suppress" />
         <InvalidNullableReturnType errorLevel="suppress" />
         <NullableReturnStatement errorLevel="suppress" />
         <FalsableReturnStatement errorLevel="suppress" />

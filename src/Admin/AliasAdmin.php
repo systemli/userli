@@ -97,7 +97,7 @@ class AliasAdmin extends Admin
                 $object->setUser($this->security->getUser());
             }
 
-            $object->setDestination($object->getUser());
+            $object->setDestination($object->getUser()?->getEmail());
         }
 
         if (null !== $domain = $this->getDomainGuesser()->guess($object->getSource())) {
@@ -112,7 +112,7 @@ class AliasAdmin extends Admin
     {
         $object->setUpdatedTime(new DateTime());
         if (null === $object->getDestination()) {
-            $object->setDestination($object->getUser());
+            $object->setDestination($object->getUser()?->getEmail());
         }
 
         if (null !== $domain = $this->getDomainGuesser()->guess($object->getSource())) {
@@ -121,7 +121,7 @@ class AliasAdmin extends Admin
 
         // domain admins are only allowed to set alias to existing user
         if (!$this->security->isGranted(Roles::ADMIN)) {
-            $object->setDestination($object->getUser());
+            $object->setDestination($object->getUser()?->getEmail());
         }
     }
 }
