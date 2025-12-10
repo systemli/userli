@@ -13,6 +13,7 @@
         <ignoreFiles>
             <directory name="vendor" />
             <directory name="var" />
+            <directory name="tests" />
         </ignoreFiles>
     </projectFiles>
 
@@ -36,9 +37,7 @@
             - LOW: MissingOverrideAttribute, PropertyNotSetInConstructor
         -->
 
-        <!-- HIGH PRIORITY - Potential Bugs (2 NullableReturnStatement, 1 FalsableReturnStatement) -->
-        <NullableReturnStatement errorLevel="suppress" />
-        <FalsableReturnStatement errorLevel="suppress" />
+        <!-- HIGH PRIORITY - Potential Bugs (2 InaccessibleProperty) -->
         <InaccessibleProperty errorLevel="suppress" />
         <UninitializedProperty errorLevel="suppress" />
 

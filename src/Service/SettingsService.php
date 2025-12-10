@@ -124,7 +124,9 @@ class SettingsService
         }
 
         if (is_array($value)) {
-            return json_encode($value);
+            $encoded = json_encode($value);
+
+            return $encoded === false ? '' : $encoded;
         }
 
         return (string) $value;
