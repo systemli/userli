@@ -86,11 +86,9 @@ class AliasAdmin extends Admin
         return [];
     }
 
-    /**
-     * @param Alias $object
-     */
-    protected function prePersist($object): void
+    protected function prePersist(object $object): void
     {
+        assert($object instanceof Alias);
         if (null === $object->getDestination()) {
             if (null === $object->getUser()) {
                 // set user_id to current user if neither destination nor user_id is given
@@ -105,11 +103,9 @@ class AliasAdmin extends Admin
         }
     }
 
-    /**
-     * @param Alias $object
-     */
-    protected function preUpdate($object): void
+    protected function preUpdate(object $object): void
     {
+        assert($object instanceof Alias);
         $object->setUpdatedTime(new DateTime());
         if (null === $object->getDestination()) {
             $object->setDestination($object->getUser()?->getEmail());
