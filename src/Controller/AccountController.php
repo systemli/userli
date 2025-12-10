@@ -98,7 +98,7 @@ class AccountController extends AbstractController
 
             $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::PASSWORD_CHANGED);
 
-            $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
+            $this->addFlash('success', 'flashes.password-change-successful');
 
             return $this->redirectToRoute('account');
         }
@@ -239,7 +239,7 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-token-ack');
+            $this->addFlash('success', 'flashes.recovery-token-ack');
 
             return $this->redirectToRoute('start');
         }

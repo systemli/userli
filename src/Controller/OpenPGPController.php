@@ -115,9 +115,11 @@ class OpenPGPController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $this->wkdHandler->deleteKey($this->getUser()->getEmail());
+            $user = $this->getUser();
+            assert($user instanceof User);
+            $this->wkdHandler->deleteKey($user->getEmail());
 
-            $request->getSession()->getFlashBag()->add('success', 'flashes.openpgp-deletion-successful');
+            $this->addFlash('success', 'flashes.openpgp-deletion-successful');
         }
 
         return $this->redirectToRoute('openpgp');

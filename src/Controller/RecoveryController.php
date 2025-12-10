@@ -23,6 +23,7 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -69,7 +70,7 @@ class RecoveryController extends AbstractController
             $user = $this->manager->getRepository(User::class)->findByEmail($email);
 
             if (null === $user || !$this->verifyEmailRecoveryToken($user, $recoveryToken)) {
-                $request->getSession()->getFlashBag()->add('error', 'flashes.recovery-token-invalid');
+                $this->addFlash('error', 'flashes.recovery-token-invalid');
             } else {
                 $recoveryStartTime = $user->getRecoveryStartTime();
 
@@ -109,7 +110,9 @@ class RecoveryController extends AbstractController
     public function recoveryResetPassword(Request $request): Response
     {
         $email = $request->query->get('email');
-        $recoveryToken = $request->getSession()->getFlashBag()->get('recoveryToken')[0];
+        $session = $request->getSession();
+        assert($session instanceof Session);
+        $recoveryToken = $session->getFlashBag()->get('recoveryToken')[0];
         if (null === $email || null === $recoveryToken) {
             throw new InvalidParameterException('Email and recoveryToken must be provided');
         }
@@ -144,7 +147,7 @@ class RecoveryController extends AbstractController
                 if ($form->isValid()) {
                     // Success: change the password
                     $newRecoveryToken = $this->resetPassword($user, $data->getPlainPassword(), $recoveryToken);
-                    $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-password-changed');
+                    $this->addFlash('success', 'flashes.recovery-password-changed');
 
                     // Cleanup variables with confidential content
                     sodium_memzero($recoveryToken);
@@ -168,7 +171,7 @@ class RecoveryController extends AbstractController
             sodium_memzero($recoveryToken);
 
             // Verification of $email + $recoveryToken failed, start over
-            $request->getSession()->getFlashBag()->add('error', 'flashes.recovery-reauthenticate');
+            $this->addFlash('error', 'flashes.recovery-reauthenticate');
         }
 
         return $this->render('Recovery/reset_password.html.twig', ['form' => $form]);
@@ -204,8 +207,8 @@ class RecoveryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-token-ack');
-            $request->getSession()->getFlashBag()->add('success', 'flashes.recovery-next-login');
+            $this->addFlash('success', 'flashes.recovery-token-ack');
+            $this->addFlash('success', 'flashes.recovery-next-login');
 
             return $this->redirectToRoute('login');
         }

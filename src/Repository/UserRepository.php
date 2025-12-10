@@ -138,6 +138,7 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
 
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
+        assert($user instanceof User);
         $user->setPassword($newHashedPassword);
         $this->getEntityManager()->flush($user);
     }

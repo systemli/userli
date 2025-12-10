@@ -10,6 +10,7 @@ use App\Form\Model\Registration;
 use App\Form\RecoveryTokenConfirmType;
 use App\Form\RegistrationType;
 use App\Handler\RegistrationHandler;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -73,7 +74,9 @@ class RegistrationController extends AbstractController
         }
 
         $this->registrationHandler->handle($registration);
-        $user = $this->manager->getRepository(User::class)->findByEmail($registration->getEmail());
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->manager->getRepository(User::class);
+        $user = $userRepository->findByEmail($registration->getEmail());
         if (null !== $user) {
             $token = new UsernamePasswordToken($user, 'default', $user->getRoles());
             $this->tokenStorage->setToken($token);

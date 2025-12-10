@@ -31,7 +31,9 @@ class TwofactorController extends AbstractController
     #[Route(path: '/account/twofactor', name: 'account_twofactor', methods: ['GET'])]
     public function show(): Response
     {
-        if (!$this->getUser()->isTotpAuthenticationEnabled()) {
+        $user = $this->getUser();
+        assert($user instanceof User);
+        if (!$user->isTotpAuthenticationEnabled()) {
             $form = $this->createForm(TwofactorType::class, new Twofactor(), [
                 'action' => $this->generateUrl('account_twofactor_submit'),
                 'method' => 'POST',
@@ -39,7 +41,7 @@ class TwofactorController extends AbstractController
 
             return $this->render('Account/twofactor_enable.html.twig', [
                 'form' => $form,
-                'user' => $this->getUser(),
+                'user' => $user,
             ]);
         }
 
@@ -51,7 +53,7 @@ class TwofactorController extends AbstractController
 
         return $this->render('Account/twofactor_disable.html.twig', [
             'form' => $form,
-            'user' => $this->getUser(),
+            'user' => $user,
         ]);
     }
 
@@ -59,6 +61,7 @@ class TwofactorController extends AbstractController
     public function submit(Request $request, TotpAuthenticatorInterface $totpAuthenticator): Response
     {
         $user = $this->getUser();
+        assert($user instanceof User);
         $form = $this->createForm(TwofactorType::class, new Twofactor());
         $form->handleRequest($request);
 
@@ -72,7 +75,7 @@ class TwofactorController extends AbstractController
 
         return $this->render('Account/twofactor_enable.html.twig', [
             'form' => $form,
-            'user' => $this->getUser(),
+            'user' => $user,
         ]);
     }
 
@@ -167,6 +170,7 @@ class TwofactorController extends AbstractController
     public function disable(Request $request): Response
     {
         $user = $this->getUser();
+        assert($user instanceof User);
         $form = $this->createForm(TwofactorType::class, new Twofactor());
         $form->handleRequest($request);
 
@@ -181,7 +185,7 @@ class TwofactorController extends AbstractController
         return $this->render('Account/twofactor_disable.html.twig',
             [
                 'form' => $form,
-                'user' => $this->getUser(),
+                'user' => $user,
             ]
         );
     }

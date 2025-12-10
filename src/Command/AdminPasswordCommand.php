@@ -7,6 +7,7 @@ namespace App\Command;
 use App\Helper\AdminPasswordUpdater;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -35,6 +36,7 @@ class AdminPasswordCommand extends Command
         $password = $input->getArgument('password');
         if (null === $password) {
             $helper = $this->getHelper('question');
+            assert($helper instanceof QuestionHelper);
             $question = new Question('Please enter new admin password:');
             $password = $helper->ask($input, $output, $question);
         }

@@ -8,6 +8,7 @@ use App\Entity\Setting;
 use App\Repository\SettingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Cache\CacheItemPoolInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
 class SettingsService
@@ -19,7 +20,7 @@ class SettingsService
     public function __construct(
         private readonly SettingRepository $repository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly CacheItemPoolInterface $cache,
+        private readonly CacheItemPoolInterface&CacheInterface $cache,
         private readonly SettingsConfigService $configService,
     ) {
     }
