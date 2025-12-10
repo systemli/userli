@@ -34,9 +34,9 @@ class UserAdmin extends Admin
 
     private MailCryptKeyHandler $mailCryptKeyHandler;
 
-    private readonly MailCrypt $mailCrypt;
+    private MailCrypt $mailCrypt;
 
-    private readonly Security $security;
+    private Security $security;
 
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {
