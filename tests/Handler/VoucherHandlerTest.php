@@ -30,7 +30,7 @@ class VoucherHandlerTest extends TestCase
 
         $handler = new VoucherHandler($manager, $creator);
 
-        $user = new User();
+        $user = new User('suspicious@example.org');
         $user->setRoles([Roles::SUSPICIOUS]);
 
         $vouchers = $handler->getVouchersByUser($user);
@@ -50,7 +50,7 @@ class VoucherHandlerTest extends TestCase
 
         $handler = new VoucherHandler($manager, $creator);
 
-        $user = new User();
+        $user = new User('new@example.org');
         $user->setCreationTime(new DateTime());
 
         $vouchers = $handler->getVouchersByUser($user);
@@ -70,7 +70,7 @@ class VoucherHandlerTest extends TestCase
 
         $handler = new VoucherHandler($manager, $creator);
 
-        $user = new User();
+        $user = new User('test@example.org');
         $user->setCreationTime(new DateTime('-8 days'));
 
         $vouchers = $handler->getVouchersByUser($user);
@@ -97,7 +97,7 @@ class VoucherHandlerTest extends TestCase
 
         $handler = new VoucherHandler($manager, $creator);
 
-        $user = new User();
+        $user = new User('test@example.org');
         $user->setCreationTime(new DateTime('-8 days'));
 
         $vouchers = $handler->getVouchersByUser($user);

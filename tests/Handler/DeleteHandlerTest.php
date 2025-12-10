@@ -46,11 +46,11 @@ class DeleteHandlerTest extends TestCase
     {
         $handler = $this->createHandler();
 
-        $user = new User();
+        $user = new User('alice@example.org');
         $alias = new Alias();
         $alias->setUser($user);
 
-        $user2 = new User();
+        $user2 = new User('bob@example.org');
         $handler->deleteAlias($alias, $user2);
 
         self::assertNotTrue($alias->isDeleted());
@@ -69,9 +69,8 @@ class DeleteHandlerTest extends TestCase
 
         $oldPassword = 'old_password';
 
-        $user = new User();
+        $user = new User('alice@example.org');
         $user->setPassword($oldPassword);
-        $user->setEmail('alice@example.org');
 
         $handler->deleteUser($user);
 

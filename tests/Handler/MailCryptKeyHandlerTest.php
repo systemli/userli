@@ -48,7 +48,7 @@ UQ==
     public function testCreate(): void
     {
         $handler = $this->createHandler();
-        $user = new User();
+        $user = new User('test@example.org');
         $handler->create($user, 'password');
 
         self::assertNotEmpty($user->getMailCryptPublicKey());
@@ -61,7 +61,7 @@ UQ==
         $this->expectException(Exception::class);
         $this->expectExceptionMessage(MailCryptKeyHandler::MESSAGE_SECRET_IS_NULL);
         $handler = $this->createHandler();
-        $user = new User();
+        $user = new User('test@example.org');
         $handler->update($user, 'oldPassword', 'newPassword');
     }
 
@@ -70,7 +70,7 @@ UQ==
         $this->expectException(Exception::class);
         $this->expectExceptionMessage(MailCryptKeyHandler::MESSAGE_DECRYPTION_FAILED);
         $handler = $this->createHandler();
-        $user = new User();
+        $user = new User('test@example.org');
         $handler->create($user, 'password');
 
         $handler->update($user, 'wrongPassword', 'newPassword');
@@ -79,7 +79,7 @@ UQ==
     public function testUpdate(): void
     {
         $handler = $this->createHandler();
-        $user = new User();
+        $user = new User('test@example.org');
         $handler->create($user, 'password');
         $secret = $user->getMailCryptSecretBox();
 
@@ -92,7 +92,7 @@ UQ==
     public function testUpdateWithPrivateKey(): void
     {
         $handler = $this->createHandler();
-        $user = new User();
+        $user = new User('test@example.org');
         $handler->create($user, 'password');
         $secret = $user->getMailCryptSecretBox();
 
@@ -107,7 +107,7 @@ UQ==
         $this->expectException(Exception::class);
         $this->expectExceptionMessage(MailCryptKeyHandler::MESSAGE_SECRET_IS_NULL);
         $handler = $this->createHandler();
-        $user = new User();
+        $user = new User('test@example.org');
 
         $handler->decrypt($user, 'password');
     }
@@ -117,7 +117,7 @@ UQ==
         $this->expectException(Exception::class);
         $this->expectExceptionMessage(MailCryptKeyHandler::MESSAGE_DECRYPTION_FAILED);
         $handler = $this->createHandler();
-        $user = new User();
+        $user = new User('test@example.org');
         $handler->create($user, 'password');
         $handler->decrypt($user, 'wrong_password');
     }
@@ -125,7 +125,7 @@ UQ==
     public function testDecrypt(): void
     {
         $handler = $this->createHandler();
-        $user = new User();
+        $user = new User('test@example.org');
         $handler->create($user, 'password');
 
         self::assertNotNull($handler->decrypt($user, 'password'));

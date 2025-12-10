@@ -19,8 +19,7 @@ class WelcomeMailHandlerTest extends TestCase
         $email = 'user@example.test';
         $locale = 'de';
 
-        $user = new User();
-        $user->setEmail($email);
+        $user = new User($email);
 
         $repo = $this->createMock(ObjectRepository::class);
         $repo->expects($this->once())

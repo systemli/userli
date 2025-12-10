@@ -26,8 +26,7 @@ final class AdminPasswordUpdater
         $admin = $this->manager->getRepository(User::class)->findByEmail($adminEmail);
         if (null === $admin) {
             // create admin user
-            $admin = new User();
-            $admin->setEmail($adminEmail);
+            $admin = new User($adminEmail);
             $admin->setRoles([Roles::ADMIN]);
             $admin->setDomain($domain);
         }

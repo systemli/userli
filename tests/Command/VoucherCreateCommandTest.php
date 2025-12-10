@@ -86,8 +86,7 @@ class VoucherCreateCommandTest extends TestCase
         $baseUrl = 'https://users.example.org';
         $voucherCode = 'code';
 
-        $user = new User();
-        $user->setEmail('user@example.org');
+        $user = new User('user@example.org');
         $this->repository->method('findByEmail')
             ->willReturn($user);
 
@@ -147,8 +146,7 @@ class VoucherCreateCommandTest extends TestCase
         $baseUrl = 'https://users.example.org';
         $voucherCode = 'code';
 
-        $user = new User();
-        $user->setEmail('suspicious@example.org');
+        $user = new User('suspicious@example.org');
         $this->repository->method('findByEmail')
             ->willReturn($user);
 
@@ -187,8 +185,7 @@ class VoucherCreateCommandTest extends TestCase
         $baseUrl = 'https://users.example.org';
         $voucherCode = 'abc123';
 
-        $user = new User();
-        $user->setEmail($email);
+        $user = new User($email);
 
         $this->repository->expects(self::once())
             ->method('findByEmail')
@@ -237,8 +234,7 @@ class VoucherCreateCommandTest extends TestCase
         $baseUrl = 'https://users.example.org';
         $voucherCode = 'xyz789';
 
-        $user = new User();
-        $user->setEmail($email);
+        $user = new User($email);
 
         $this->repository->expects(self::once())
             ->method('findByEmail')

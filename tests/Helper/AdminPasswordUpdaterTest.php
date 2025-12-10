@@ -27,7 +27,7 @@ class AdminPasswordUpdaterTest extends TestCase
 
     public function testUpdateAdminPassword(): void
     {
-        $admin = new User();
+        $admin = new User('postmaster@example.org');
         $admin->setPassword('impossible_login');
 
         $adminPasswordUpdater = new AdminPasswordUpdater(

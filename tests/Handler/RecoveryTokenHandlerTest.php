@@ -26,7 +26,7 @@ class RecoveryTokenHandlerTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('plainMailCryptPrivateKey should not be null');
         $handler = $this->createHandler();
-        $user = new User();
+        $user = new User('test@example.org');
 
         $handler->create($user);
     }
@@ -34,7 +34,7 @@ class RecoveryTokenHandlerTest extends TestCase
     public function testCreate(): void
     {
         $handler = $this->createHandler();
-        $user = new User();
+        $user = new User('test@example.org');
 
         $user->setPlainMailCryptPrivateKey('dummyKey');
         $handler->create($user);
@@ -45,7 +45,7 @@ class RecoveryTokenHandlerTest extends TestCase
     public function testVerify(): void
     {
         $handler = $this->createHandler();
-        $user = new User();
+        $user = new User('test@example.org');
 
         self::assertFalse($handler->verify($user, 'recoveryToken'));
 
@@ -66,7 +66,7 @@ class RecoveryTokenHandlerTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('secret should not be null');
         $handler = $this->createHandler();
-        $user = new User();
+        $user = new User('test@example.org');
 
         $handler->decrypt($user, 'recoveryToken');
     }
@@ -76,7 +76,7 @@ class RecoveryTokenHandlerTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('decryption of recoverySecretBox failed');
         $handler = $this->createHandler();
-        $user = new User();
+        $user = new User('test@example.org');
         $user->setPlainMailCryptPrivateKey('privateKey');
         $handler->create($user);
 
@@ -86,7 +86,7 @@ class RecoveryTokenHandlerTest extends TestCase
     public function testDecrypt(): void
     {
         $handler = $this->createHandler();
-        $user = new User();
+        $user = new User('test@example.org');
         $user->setPlainMailCryptPrivateKey('privateKey');
         $handler->create($user);
         $recoveryToken = $user->getPlainRecoveryToken();

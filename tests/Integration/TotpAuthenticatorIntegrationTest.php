@@ -129,8 +129,7 @@ class TotpAuthenticatorIntegrationTest extends KernelTestCase
     private function createTestUser(): User
     {
         // Create a minimal User instance for testing
-        $user = new User();
-        $user->setEmail('test@example.com');
+        $user = new User('test@example.com');
 
         return $user;
     }

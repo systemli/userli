@@ -91,8 +91,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     /**
      * User constructor.
      */
-    public function __construct()
+    public function __construct(string $email)
     {
+        $this->email = $email;
         $this->deleted = false;
         $this->passwordVersion = self::CURRENT_PASSWORD_VERSION;
         $this->passwordChangeRequired = false;
@@ -104,7 +105,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     #[Override]
     public function __toString(): string
     {
-        return ($this->getEmail()) ?: '';
+        return $this->getEmail();
     }
 
     #[Override]
@@ -134,7 +135,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     #[Override]
     public function getUserIdentifier(): string
     {
-        return $this->email ?? '';
+        return $this->email;
     }
 
     #[Override]

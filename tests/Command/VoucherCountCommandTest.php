@@ -21,8 +21,7 @@ class VoucherCountCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        $user = new User();
-        $user->setEmail('user@example.org');
+        $user = new User('user@example.org');
         $userRepository = $this->createMock(UserRepository::class);
         $userRepository->method('findByEmail')->willReturnMap(
             [

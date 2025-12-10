@@ -33,7 +33,7 @@ class DomainVoterTest extends TestCase
     protected function setUp(): void
     {
         $this->domain = new Domain();
-        $user = new User();
+        $user = new User('test@example.org');
         $user->setDomain($this->domain);
         $repo = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()
@@ -56,13 +56,13 @@ class DomainVoterTest extends TestCase
     public function testSupports(): void
     {
         $method = self::getMethod('supports');
-        $this->assertTrue($method->invokeArgs($this->voter, ['ROLE_USERLI_ADMIN_USER_LIST', new User()]));
+        $this->assertTrue($method->invokeArgs($this->voter, ['ROLE_USERLI_ADMIN_USER_LIST', new User('test@example.org')]));
         $this->assertTrue($method->invokeArgs($this->voter, ['ROLE_USERLI_ADMIN_ALIAS_VIEW', new Alias()]));
     }
 
     public function testVoteOnAttribute(): void
     {
-        $otherUser = new User();
+        $otherUser = new User('other@example.org');
         $otherUser->setDomain($this->domain);
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()

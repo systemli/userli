@@ -22,7 +22,7 @@ class TotpSecretValidatorTest extends ConstraintValidatorTestCase
 
     protected function createValidator(): TotpSecretValidator
     {
-        $this->user = new User();
+        $this->user = new User('test@example.org');
         $tokenInterface = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()
             ->getMock();

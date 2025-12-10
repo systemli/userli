@@ -15,7 +15,7 @@ class WebhookListenerTest extends TestCase
 {
     public function testOnUserCreated(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         $dispatcher = $this->createMock(WebhookDispatcher::class);
         $dispatcher->expects($this->once())->method('dispatchUserEvent')->with($user, WebhookEvent::USER_CREATED);
         $listener = new WebhookListener($dispatcher);
@@ -24,7 +24,7 @@ class WebhookListenerTest extends TestCase
 
     public function testOnUserDeleted(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         $dispatcher = $this->createMock(WebhookDispatcher::class);
         $dispatcher->expects($this->once())->method('dispatchUserEvent')->with($user, WebhookEvent::USER_DELETED);
         $listener = new WebhookListener($dispatcher);

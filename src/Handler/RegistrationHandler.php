@@ -68,8 +68,7 @@ final readonly class RegistrationHandler
 
     private function buildUser(Registration $registration): User
     {
-        $user = new User();
-        $user->setEmail(strtolower((string) $registration->getEmail()));
+        $user = new User(strtolower((string) $registration->getEmail()));
         $user->setRoles([Roles::USER]);
 
         if (null !== $domain = $this->domainGuesser->guess($registration->getEmail())) {

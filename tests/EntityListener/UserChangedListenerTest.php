@@ -48,7 +48,7 @@ class UserChangedListenerTest extends TestCase
 
     public function testPreUpdateNoRoleChanges(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         $args = $this->createMock(PreUpdateEventArgs::class);
         $args->method('getEntityChangeSet')
             ->willReturn(['someField' => [0, 1]]);
@@ -61,7 +61,7 @@ class UserChangedListenerTest extends TestCase
 
     public function testPreUpdateOtherRoleChanges(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         $args = $this->createMock(PreUpdateEventArgs::class);
         $args->method('getEntityChangeSet')
             ->willReturn(['roles' => [[Roles::USER], [Roles::USER, Roles::PERMANENT]]]);
@@ -74,7 +74,7 @@ class UserChangedListenerTest extends TestCase
 
     public function testPreUpdateRoleSuspiciousRemoved(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         $args = $this->createMock(PreUpdateEventArgs::class);
         $args->method('getEntityChangeSet')
             ->willReturn(['roles' => [[Roles::USER, Roles::SUSPICIOUS], [Roles::USER]]]);
@@ -87,18 +87,15 @@ class UserChangedListenerTest extends TestCase
 
     public function testPreUpdateRoleSuspiciousAdded(): void
     {
-        $user = new User();
-        $user->setEmail('user@example.org');
+        $user = new User('user@example.org');
         $args = $this->createMock(PreUpdateEventArgs::class);
         $args->method('getEntityChangeSet')
             ->willReturn(['roles' => [[Roles::USER], [Roles::USER, Roles::SUSPICIOUS]]]);
 
-        $invitedUser1 = new User();
-        $invitedUser1->setEmail('invited1@example.org');
+        $invitedUser1 = new User('invited1@example.org');
         $voucher1 = new Voucher();
         $voucher1->setInvitedUser($invitedUser1);
-        $invitedUser2 = new User();
-        $invitedUser2->setEmail('invited2@example.org');
+        $invitedUser2 = new User('invited2@example.org');
         $voucher2 = new Voucher();
         $voucher2->setInvitedUser($invitedUser2);
         $this->voucherRepository->method('getRedeemedVouchersByUser')

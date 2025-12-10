@@ -12,7 +12,7 @@ class VoucherFactoryTest extends TestCase
 {
     public function testCreate(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
 
         $voucher = VoucherFactory::create($user);
 

@@ -22,16 +22,15 @@ abstract class AbstractUserData extends Fixture
         public readonly TotpAuthenticatorInterface $totpAuthenticator,
         public readonly MailCryptKeyHandler $mailCryptKeyHandler,
     ) {
-        $user = new User();
+        $user = new User('');
         $passwordUpdater->updatePassword($user, self::PASSWORD);
         $this->passwordHash = $user->getPassword();
     }
 
     protected function buildUser(Domain $domain, string $email, array $roles): User
     {
-        $user = new User();
+        $user = new User($email);
         $user->setDomain($domain);
-        $user->setEmail($email);
         $user->setRoles($roles);
         $user->setPassword($this->passwordHash);
 

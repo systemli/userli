@@ -64,7 +64,7 @@ class PasswordChangeListenerTest extends TestCase
 
     public function testReturnsWhenNotFullyAuthenticated(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         $user->setPasswordChangeRequired(true);
 
         $this->security->method('getUser')->willReturn($user);
@@ -85,7 +85,7 @@ class PasswordChangeListenerTest extends TestCase
 
     public function testReturnsWhenUserDoesNotRequirePasswordChange(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         $user->setPasswordChangeRequired(false);
 
         $this->security->method('getUser')->willReturn($user);
@@ -109,7 +109,7 @@ class PasswordChangeListenerTest extends TestCase
      */
     public function testAllowsAccessToPasswordRoutes(string $routeName): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         $user->setPasswordChangeRequired(true);
 
         $this->security->method('getUser')->willReturn($user);
@@ -140,7 +140,7 @@ class PasswordChangeListenerTest extends TestCase
     {
         $this->expectException(AccessDeniedHttpException::class);
 
-        $user = new User();
+        $user = new User('test@example.org');
         $user->setPasswordChangeRequired(true);
 
         $this->security->method('getUser')->willReturn($user);
@@ -161,7 +161,7 @@ class PasswordChangeListenerTest extends TestCase
 
     public function testRedirectsToPasswordPage(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         $user->setPasswordChangeRequired(true);
 
         $this->security->method('getUser')->willReturn($user);
@@ -194,7 +194,7 @@ class PasswordChangeListenerTest extends TestCase
 
     public function testOnPasswordChanged(): void
     {
-        $user = new User();
+        $user = new User('test@example.org');
         $event = new UserEvent($user);
         $repo = $this->createMock(UserNotificationRepository::class);
 

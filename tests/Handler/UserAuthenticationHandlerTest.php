@@ -19,7 +19,7 @@ class UserAuthenticationHandlerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->user = new User();
+        $this->user = new User('test@example.org');
         $this->user->setPassword($this->password);
     }
 

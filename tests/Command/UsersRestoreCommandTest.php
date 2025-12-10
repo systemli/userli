@@ -23,8 +23,7 @@ class UsersRestoreCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->user = new User();
-        $this->user->setEmail('deleted@example.org');
+        $this->user = new User('deleted@example.org');
         $this->user->setDeleted(true);
 
         $repository = $this->getMockBuilder(UserRepository::class)

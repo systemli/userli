@@ -24,7 +24,7 @@ class VoucherExistsValidatorTest extends ConstraintValidatorTestCase
 
     protected function createValidator(): VoucherExistsValidator
     {
-        $this->user = new User();
+        $this->user = new User('test@example.org');
         $this->voucher = new Voucher();
         $this->voucher->setCode('code');
         $this->voucher->setUser($this->user);

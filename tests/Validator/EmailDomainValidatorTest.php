@@ -44,8 +44,7 @@ class EmailDomainValidatorTest extends ConstraintValidatorTestCase
 
     public function testDomainNotFound(): void
     {
-        $user = new User();
-        $user->setEmail('user@example.com');
+        $user = new User('user@example.com');
         $this->validator->validate($user, new EmailDomain());
 
         $this->buildViolation('form.missing-domain')

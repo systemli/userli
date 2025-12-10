@@ -134,7 +134,7 @@ class LoginListenerTest extends TestCase
 
         return array_map(
             function ($enable, $create) {
-                $user = new User();
+                $user = new User('test@example.org');
                 if ($enable === false || $enable === true) {
                     $user->setMailCryptEnabled($enable);
                 }

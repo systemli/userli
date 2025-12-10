@@ -25,7 +25,7 @@ class UserLastLoginUpdateServiceTest extends TestCase
     public function testUpdateLastLoginWithNoExistingLastLogin(): void
     {
         // Arrange
-        $user = new User();
+        $user = new User('test@example.org');
         $user->setLastLoginTime(null);
 
         // Assert that persist is called exactly once
@@ -56,7 +56,7 @@ class UserLastLoginUpdateServiceTest extends TestCase
     public function testUpdateLastLoginWithOldLastLogin(): void
     {
         // Arrange
-        $user = new User();
+        $user = new User('test@example.org');
         $oldLastLogin = (new DateTime())->modify('-1 week'); // Last week
         $user->setLastLoginTime($oldLastLogin);
 
@@ -89,7 +89,7 @@ class UserLastLoginUpdateServiceTest extends TestCase
     public function testUpdateLastLoginDoesNotUpdateWhenAlreadyCurrentWeek(): void
     {
         // Arrange
-        $user = new User();
+        $user = new User('test@example.org');
 
         // Set to current week start (same timestamp)
         $currentWeekStart = new DateTime();

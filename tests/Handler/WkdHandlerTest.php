@@ -75,9 +75,8 @@ class WkdHandlerTest extends TestCase
     {
         $domain = new Domain();
         $domain->setName(explode('@', (string) $this->email)[1]);
-        $user = new User();
+        $user = new User($this->email);
         $user->setDomain($domain);
-        $user->setEmail($this->email);
         $expected = new OpenPgpKey();
         $expected->setEmail($this->email);
         $expected->setKeyId($this->keyId);
