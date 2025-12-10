@@ -11,8 +11,8 @@ use App\Service\SettingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Cache\CacheItemPoolInterface;
 use ReflectionClass;
+use Symfony\Contracts\Cache\CacheInterface;
 
 class SettingsServiceTest extends TestCase
 {
@@ -26,7 +26,7 @@ class SettingsServiceTest extends TestCase
     {
         $this->repository = $this->createMock(SettingRepository::class);
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->cache = $this->createMock(CacheItemPoolInterface::class);
+        $this->cache = $this->createMock(CacheInterface::class);
         $this->configService = $this->createMock(SettingsConfigService::class);
 
         $this->settingsService = new SettingsService(
@@ -52,7 +52,7 @@ class SettingsServiceTest extends TestCase
             ->method('flush');
 
         $this->cache->expects($this->once())
-            ->method('deleteItem')
+            ->method('delete')
             ->with('app.settings');
 
         $this->settingsService->set('new_setting', 'test_value');
@@ -77,7 +77,7 @@ class SettingsServiceTest extends TestCase
             ->method('flush');
 
         $this->cache->expects($this->once())
-            ->method('deleteItem')
+            ->method('delete')
             ->with('app.settings');
 
         $this->settingsService->set('existing_setting', 'test_value');
@@ -99,7 +99,7 @@ class SettingsServiceTest extends TestCase
             ->method('flush');
 
         $this->cache->expects($this->once())
-            ->method('deleteItem');
+            ->method('delete');
 
         $this->settingsService->set('bool_setting', true);
     }
@@ -121,7 +121,7 @@ class SettingsServiceTest extends TestCase
             ->method('flush');
 
         $this->cache->expects($this->once())
-            ->method('deleteItem');
+            ->method('delete');
 
         $this->settingsService->set('array_setting', ['a', 'b', 'c']);
     }
@@ -163,7 +163,7 @@ class SettingsServiceTest extends TestCase
             ->method('flush');
 
         $this->cache->expects($this->once())
-            ->method('deleteItem')
+            ->method('delete')
             ->with('app.settings');
 
         $this->settingsService->setAll([
@@ -194,7 +194,7 @@ class SettingsServiceTest extends TestCase
             ->method('flush');
 
         $this->cache->expects($this->once())
-            ->method('deleteItem');
+            ->method('delete');
 
         $this->settingsService->setAll([
             'defined_setting' => 'value',
@@ -205,7 +205,7 @@ class SettingsServiceTest extends TestCase
     public function testClearCache(): void
     {
         $this->cache->expects($this->once())
-            ->method('deleteItem')
+            ->method('delete')
             ->with('app.settings');
 
         $this->settingsService->clearCache();
@@ -230,7 +230,7 @@ class SettingsServiceTest extends TestCase
             ->method('flush');
 
         $this->cache->expects($this->once())
-            ->method('deleteItem');
+            ->method('delete');
 
         $this->settingsService->set('test_setting', $input);
     }

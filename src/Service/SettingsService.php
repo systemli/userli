@@ -7,7 +7,6 @@ namespace App\Service;
 use App\Entity\Setting;
 use App\Repository\SettingRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
@@ -20,7 +19,7 @@ class SettingsService
     public function __construct(
         private readonly SettingRepository $repository,
         private readonly EntityManagerInterface $entityManager,
-        private readonly CacheItemPoolInterface&CacheInterface $cache,
+        private readonly CacheInterface $cache,
         private readonly SettingsConfigService $configService,
     ) {
     }
@@ -58,7 +57,7 @@ class SettingsService
         $this->entityManager->flush();
 
         // Clear cache
-        $this->cache->deleteItem(self::CACHE_KEY);
+        $this->cache->delete(self::CACHE_KEY);
     }
 
     public function setAll(array $settings): void
@@ -88,7 +87,7 @@ class SettingsService
         $this->entityManager->flush();
 
         // Clear cache once after all changes
-        $this->cache->deleteItem(self::CACHE_KEY);
+        $this->cache->delete(self::CACHE_KEY);
     }
 
     /**
@@ -111,7 +110,7 @@ class SettingsService
 
     public function clearCache(): void
     {
-        $this->cache->deleteItem(self::CACHE_KEY);
+        $this->cache->delete(self::CACHE_KEY);
     }
 
     private function convertValueToString(mixed $value): string
