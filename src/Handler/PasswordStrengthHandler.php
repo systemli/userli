@@ -10,7 +10,7 @@ class PasswordStrengthHandler
 
     private array $errors = [];
 
-    public function validate($value): array
+    public function validate(string $value): array
     {
         if (preg_match(self::REGEX_FORBIDDEN_CHARS, (string) $value)) {
             $this->errors[] = 'form.forbidden_char';

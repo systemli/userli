@@ -115,7 +115,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         $this->roles = $roles;
     }
 
-    public function hasRole($role): bool
+    /**
+     * @psalm-param 'ROLE_ADMIN'|'ROLE_SPAM'|'ROLE_SUSPICIOUS' $role
+     */
+    public function hasRole(string $role): bool
     {
         return in_array($role, $this->getRoles(), true);
     }

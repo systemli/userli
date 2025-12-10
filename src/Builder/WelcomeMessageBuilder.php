@@ -15,7 +15,7 @@ final readonly class WelcomeMessageBuilder
     ) {
     }
 
-    public function buildBody($locale): string
+    public function buildBody(string $locale): string
     {
         return $this->translator->trans(
             'mail.welcome-body',
@@ -28,7 +28,7 @@ final readonly class WelcomeMessageBuilder
         );
     }
 
-    public function buildSubject($locale): string
+    public function buildSubject(string $locale): string
     {
         return $this->translator->trans(
             'mail.welcome-subject',
