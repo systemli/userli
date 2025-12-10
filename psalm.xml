@@ -36,9 +36,6 @@
             - LOW: MissingOverrideAttribute, PropertyNotSetInConstructor
         -->
 
-        <!-- MEDIUM PRIORITY - Type-Safety Improvements (1 UndefinedDocblockClass) -->
-        <UndefinedDocblockClass errorLevel="suppress" />
-
         <!-- LOW PRIORITY - Code Style / Modernization (230 MissingOverrideAttribute, 17
         PropertyNotSetInConstructor) -->
         <MissingOverrideAttribute errorLevel="suppress" />
