@@ -87,7 +87,7 @@ class InitController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->updater->updateAdminPassword($form->getData()->getPlainPassword());
 
-            $request->getSession()->getFlashBag()->add('success', 'flashes.password-change-successful');
+            $this->addFlash('success', 'flashes.password-change-successful');
 
             return $this->redirectToRoute('init_settings');
         }
@@ -140,7 +140,7 @@ class InitController extends AbstractController
 
             $this->settingsService->setAll($data);
 
-            $request->getSession()->getFlashBag()->add('success', 'init_settings.flash.configured_successfully');
+            $this->addFlash('success', 'init_settings.flash.configured_successfully');
 
             return $this->redirectToRoute('index');
         }

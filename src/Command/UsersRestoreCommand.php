@@ -9,6 +9,7 @@ use App\Handler\UserRestoreHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
@@ -41,6 +42,7 @@ class UsersRestoreCommand extends AbstractUsersCommand
         }
 
         $questionHelper = $this->getHelper('question');
+        assert($questionHelper instanceof QuestionHelper);
 
         $passwordQuest = new Question('New password: ');
         $passwordQuest->setValidator(function ($value) {

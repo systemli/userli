@@ -11,6 +11,7 @@ use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -56,6 +57,7 @@ class UsersResetCommand extends AbstractUsersCommand
         }
 
         $questionHelper = $this->getHelper('question');
+        assert($questionHelper instanceof QuestionHelper);
         $confirmQuest = new ConfirmationQuestion('Really reset user? This will clear their mailbox: (yes|no) ', false);
         if (!$questionHelper->ask($input, $output, $confirmQuest)) {
             return 0;

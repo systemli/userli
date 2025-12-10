@@ -32,12 +32,11 @@
             3. Remove the handler completely when all issues are fixed
 
             Recommended activation priority:
-            - MEDIUM: MissingTemplateParam, MoreSpecificImplementedParamType
+            - MEDIUM: MoreSpecificImplementedParamType
             - LOW: MissingOverrideAttribute, PropertyNotSetInConstructor
         -->
 
-        <!-- MEDIUM PRIORITY - Type-Safety Improvements (32 UndefinedInterfaceMethod) -->
-        <UndefinedInterfaceMethod errorLevel="suppress" />
+        <!-- MEDIUM PRIORITY - Type-Safety Improvements (1 UndefinedDocblockClass) -->
         <UndefinedDocblockClass errorLevel="suppress" />
 
         <!-- LOW PRIORITY - Code Style / Modernization (230 MissingOverrideAttribute, 17

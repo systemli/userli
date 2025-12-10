@@ -157,7 +157,7 @@ class AliasController extends AbstractController
         if ($form->isValid()) {
             $this->deleteHandler->deleteAlias($alias, $this->getUser());
 
-            $request->getSession()->getFlashBag()->add('success', 'flashes.alias-deletion-successful');
+            $this->addFlash('success', 'flashes.alias-deletion-successful');
 
             return $this->redirectToRoute('aliases');
         }

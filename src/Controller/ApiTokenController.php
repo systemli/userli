@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Attribute\Route;
 
 class ApiTokenController extends AbstractController
@@ -24,8 +25,10 @@ class ApiTokenController extends AbstractController
     public function show(Request $request): Response
     {
         $newToken = null;
-        if ($request->getSession()->getFlashBag()->has('newToken')) {
-            $newToken = $request->getSession()->getFlashBag()->get('newToken')[0];
+        $session = $request->getSession();
+        assert($session instanceof Session);
+        if ($session->getFlashBag()->has('newToken')) {
+            $newToken = $session->getFlashBag()->get('newToken')[0];
         }
 
         $tokens = $this->apiTokenManager->findAll();
