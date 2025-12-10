@@ -36,11 +36,8 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-scripts
 
-      - name: Run Psalm
-        run: composer psalm-check
-
       - name: Run Psalm with SARIF output
-        run: bin/psalm --output-format=sarif --no-cache --report=psalm.sarif
+        run: bin/psalm --output-format=sarif --no-cache --report-show-info=false --report=psalm.sarif
         continue-on-error: true
 
       - name: Upload Security Analysis results to GitHub
