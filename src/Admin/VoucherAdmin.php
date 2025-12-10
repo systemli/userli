@@ -18,7 +18,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 /**
  * @extends Admin<Voucher>
  */
-class VoucherAdmin extends Admin
+final class VoucherAdmin extends Admin
 {
     public function __construct(protected Security $security)
     {

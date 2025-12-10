@@ -23,23 +23,25 @@
 
     <issueHandlers>
         <!--
-            PSALM ISSUE HANDLERS - Gradual Activation
-            ==========================================
-            These issues are currently suppressed (errorLevel="suppress").
-            To gradually improve the code:
-            1. Change errorLevel="suppress" to errorLevel="info" to see issues as hints
-            2. Remove the errorLevel attribute completely to treat issues as errors
-            3. Remove the handler completely when all issues are fixed
-
-            Recommended activation priority:
-            - MEDIUM: MoreSpecificImplementedParamType
-            - LOW: MissingOverrideAttribute, PropertyNotSetInConstructor
+            Symfony Psalm Plugin Issues
+            ============================
+            QueryBuilderSetParameter: False positives from the Symfony plugin
+            when using DQL parameters. These are safe to suppress.
         -->
-
-        <!-- LOW PRIORITY - Code Style / Modernization (17 PropertyNotSetInConstructor) -->
-        <PropertyNotSetInConstructor errorLevel="suppress" />
-
-        <!-- Symfony Psalm Plugin Issues (e.g. QueryBuilderSetParameter) -->
         <PluginIssue name="QueryBuilderSetParameter" errorLevel="suppress" />
+
+        <!--
+            ClassMustBeFinal - Doctrine Entity Exception
+            =============================================
+            Doctrine entities cannot be final because Doctrine needs to create
+            lazy loading proxy classes that extend the entity classes.
+
+            Suppressing ClassMustBeFinal for the entire Entity directory.
+        -->
+        <ClassMustBeFinal>
+            <errorLevel type="suppress">
+                <directory name="src/Entity" />
+            </errorLevel>
+        </ClassMustBeFinal>
     </issueHandlers>
 </psalm>

@@ -16,7 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * Class VoucherHandler.
  */
-class VoucherHandler
+final class VoucherHandler
 {
     private const VOUCHER_LIMIT = 3;
 

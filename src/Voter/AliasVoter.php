@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 /**
  * @extends Voter<string, Alias>
  */
-class AliasVoter extends Voter
+final class AliasVoter extends Voter
 {
     public const DELETE = 'delete';
 

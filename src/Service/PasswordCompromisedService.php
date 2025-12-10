@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-readonly class PasswordCompromisedService
+final readonly class PasswordCompromisedService
 {
     private const RATE_LIMIT_HOURS = 24 * 7; // 7 days
 

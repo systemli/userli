@@ -6,6 +6,6 @@ namespace App\Exception;
 
 use RuntimeException;
 
-class NoGpgKeyForUserException extends RuntimeException
+final class NoGpgKeyForUserException extends RuntimeException
 {
 }

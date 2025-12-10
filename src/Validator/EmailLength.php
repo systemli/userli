@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
 
 #[Attribute]
-class EmailLength extends Constraint
+final class EmailLength extends Constraint
 {
     public int $minLength;
 

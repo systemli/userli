@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @extends AbstractType<Delete>
  */
-class OpenPgpDeleteType extends AbstractType
+final class OpenPgpDeleteType extends AbstractType
 {
     public const NAME = 'delete_openpgp';
 

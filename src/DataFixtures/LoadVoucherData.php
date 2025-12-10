@@ -14,7 +14,7 @@ use Doctrine\Persistence\ObjectManager;
 use Exception;
 use Override;
 
-class LoadVoucherData extends Fixture implements FixtureGroupInterface, DependentFixtureInterface
+final class LoadVoucherData extends Fixture implements FixtureGroupInterface, DependentFixtureInterface
 {
     /**
      * @throws Exception

@@ -13,7 +13,7 @@ use Exception;
 use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class DomainCreationListener implements EventSubscriberInterface
+final class DomainCreationListener implements EventSubscriberInterface
 {
     public function __construct(private readonly EntityManagerInterface $manager, private readonly WkdHandler $handler)
     {

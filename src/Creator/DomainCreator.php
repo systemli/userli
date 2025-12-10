@@ -9,7 +9,7 @@ use App\Event\DomainCreatedEvent;
 use App\Exception\ValidationException;
 use App\Factory\DomainFactory;
 
-class DomainCreator extends AbstractCreator
+final class DomainCreator extends AbstractCreator
 {
     /**
      * @throws ValidationException

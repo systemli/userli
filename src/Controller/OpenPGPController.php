@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class OpenPGPController extends AbstractController
+final class OpenPGPController extends AbstractController
 {
     public function __construct(private readonly WkdHandler $wkdHandler)
     {

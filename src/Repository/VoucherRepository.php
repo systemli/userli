@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
 /**
  * @extends EntityRepository<Voucher>
  */
-class VoucherRepository extends EntityRepository
+final class VoucherRepository extends EntityRepository
 {
     /**
      * @TODO: Remove nullable

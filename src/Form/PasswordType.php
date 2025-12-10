@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @extends AbstractType<Password>
  */
-class PasswordType extends AbstractType
+final class PasswordType extends AbstractType
 {
     public const NAME = 'password';
 

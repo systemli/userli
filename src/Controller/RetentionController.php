@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[RequireApiScope(scope: ApiScope::RETENTION)]
-class RetentionController extends AbstractController
+final class RetentionController extends AbstractController
 {
     public const MESSAGE_TIMESTAMP_IN_FUTURE = 'timestamp in future';
 

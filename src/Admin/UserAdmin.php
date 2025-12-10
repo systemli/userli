@@ -30,7 +30,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 /**
  * @extends Admin<User>
  */
-class UserAdmin extends Admin
+final class UserAdmin extends Admin
 {
     use DomainGuesserAwareTrait;
 

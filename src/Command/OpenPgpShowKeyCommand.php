@@ -15,7 +15,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:openpgp:show-key', description: 'Show OpenPGP key of email')]
-class OpenPgpShowKeyCommand extends Command
+final class OpenPgpShowKeyCommand extends Command
 {
     private readonly OpenPgpKeyRepository $repository;
 

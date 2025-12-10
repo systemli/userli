@@ -8,7 +8,7 @@ use App\Entity\WebhookEndpoint;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 
-readonly class WebhookEndpointManager
+final readonly class WebhookEndpointManager
 {
     public function __construct(private EntityManagerInterface $em)
     {

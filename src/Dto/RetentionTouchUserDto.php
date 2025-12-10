@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Dto;
 
-class RetentionTouchUserDto
+final class RetentionTouchUserDto
 {
     private int $timestamp = 0;
 

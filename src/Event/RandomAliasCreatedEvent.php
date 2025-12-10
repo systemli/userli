@@ -11,7 +11,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 /**
  * Class RandomAliasCreatedEvent.
  */
-class RandomAliasCreatedEvent extends Event
+final class RandomAliasCreatedEvent extends Event
 {
     use AliasAwareTrait;
 

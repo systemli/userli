@@ -10,7 +10,7 @@ use App\Validator\EmailLength;
 use App\Validator\VoucherExists;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class Registration
+final class Registration
 {
     use PlainPasswordTrait;
 

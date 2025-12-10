@@ -14,7 +14,7 @@ use App\Factory\AliasFactory;
 /**
  * Class AliasCreator.
  */
-class AliasCreator extends AbstractCreator
+final class AliasCreator extends AbstractCreator
 {
     /**
      * @throws ValidationException

@@ -8,7 +8,7 @@ use App\Traits\EmailTrait;
 use App\Traits\PlainPasswordTrait;
 use App\Traits\RecoveryTokenTrait;
 
-class RecoveryResetPassword
+final class RecoveryResetPassword
 {
     use EmailTrait;
     use PlainPasswordTrait;

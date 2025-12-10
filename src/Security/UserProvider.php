@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 /**
  * @implements UserProviderInterface<User>
  */
-class UserProvider implements UserProviderInterface
+final class UserProvider implements UserProviderInterface
 {
     public function __construct(private readonly EntityManagerInterface $manager)
     {

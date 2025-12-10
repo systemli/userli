@@ -10,7 +10,7 @@ use Symfony\Component\PasswordHasher\Exception\InvalidPasswordException;
 use Symfony\Component\PasswordHasher\Hasher\CheckPasswordLengthTrait;
 use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
-class LegacyPasswordHasher implements PasswordHasherInterface
+final class LegacyPasswordHasher implements PasswordHasherInterface
 {
     use CheckPasswordLengthTrait;
 

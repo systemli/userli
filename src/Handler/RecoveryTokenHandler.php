@@ -13,7 +13,7 @@ use Ramsey\Uuid\Uuid;
 /**
  * Class RecoveryTokenHandler.
  */
-readonly class RecoveryTokenHandler
+final readonly class RecoveryTokenHandler
 {
     /**
      * RecoveryTokenHandler constructor.

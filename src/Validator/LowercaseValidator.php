@@ -10,7 +10,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
-class LowercaseValidator extends ConstraintValidator
+final class LowercaseValidator extends ConstraintValidator
 {
     #[Override]
     public function validate(mixed $value, Constraint $constraint): void

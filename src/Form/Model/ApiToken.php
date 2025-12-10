@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class ApiToken
+final class ApiToken
 {
     #[NotBlank]
     #[Length(min: 5, max: 32)]

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class SettingsController extends AbstractController
+final class SettingsController extends AbstractController
 {
     public function __construct(
         private readonly SettingsService $settingsService,

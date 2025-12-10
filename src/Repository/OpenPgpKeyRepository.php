@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityRepository;
 /**
  * @extends EntityRepository<OpenPgpKey>
  */
-class OpenPgpKeyRepository extends EntityRepository
+final class OpenPgpKeyRepository extends EntityRepository
 {
     /**
      * @return OpenPgpKey[]

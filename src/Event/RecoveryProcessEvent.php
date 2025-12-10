@@ -11,7 +11,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 /**
  * Class RecoveryProcessEvent.
  */
-class RecoveryProcessEvent extends Event
+final class RecoveryProcessEvent extends Event
 {
     use UserAwareTrait;
 

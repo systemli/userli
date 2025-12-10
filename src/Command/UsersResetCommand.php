@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use const DIRECTORY_SEPARATOR;
 
 #[AsCommand(name: 'app:users:reset', description: 'Reset a user')]
-class UsersResetCommand extends AbstractUsersCommand
+final class UsersResetCommand extends AbstractUsersCommand
 {
     /**
      * RegistrationMailCommand constructor.

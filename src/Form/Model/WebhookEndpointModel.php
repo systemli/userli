@@ -7,7 +7,7 @@ namespace App\Form\Model;
 use App\Enum\WebhookEvent;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class WebhookEndpointModel
+final class WebhookEndpointModel
 {
     #[Assert\NotBlank]
     #[Assert\Url]

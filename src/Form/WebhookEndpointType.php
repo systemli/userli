@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @extends AbstractType<WebhookEndpointModel>
  */
-class WebhookEndpointType extends AbstractType
+final class WebhookEndpointType extends AbstractType
 {
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void

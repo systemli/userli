@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-readonly class PasswordChangeListener implements EventSubscriberInterface
+final readonly class PasswordChangeListener implements EventSubscriberInterface
 {
     public function __construct(
         private Security $security,

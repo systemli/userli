@@ -17,7 +17,7 @@ use const OPENSSL_KEYTYPE_EC;
 /**
  * Class AliasHandler.
  */
-class MailCryptKeyHandler
+final class MailCryptKeyHandler
 {
     // Use elliptic curve type 'secp521r1' for MailCrypt keys
     private const MAIL_CRYPT_PRIVATE_KEY_TYPE = OPENSSL_KEYTYPE_EC;

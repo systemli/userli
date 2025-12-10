@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Model;
 
-class OpenPgpKey
+final class OpenPgpKey
 {
     private ?string $keyFile = null;
 

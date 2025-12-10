@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityRepository;
 /**
  * @extends EntityRepository<Domain>
  */
-class DomainRepository extends EntityRepository
+final class DomainRepository extends EntityRepository
 {
     public function findByName(string $name): ?Domain
     {

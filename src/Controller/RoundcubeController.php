@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 #[RequireApiScope(scope: ApiScope::ROUNDCUBE)]
-class RoundcubeController extends AbstractController
+final class RoundcubeController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $manager,

@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class TwofactorController extends AbstractController
+final class TwofactorController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $manager,

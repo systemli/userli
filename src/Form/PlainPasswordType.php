@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @extends AbstractType<PlainPassword>
  */
-class PlainPasswordType extends AbstractType
+final class PlainPasswordType extends AbstractType
 {
     public const NAME = 'plain_password';
 

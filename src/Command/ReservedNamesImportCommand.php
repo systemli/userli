@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use const STDIN;
 
 #[AsCommand(name: 'app:reservednames:import', description: 'Import reserved names from stdin or file')]
-class ReservedNamesImportCommand extends Command
+final class ReservedNamesImportCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $manager,

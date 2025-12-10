@@ -10,7 +10,7 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Override;
 
-class LoadDomainData extends Fixture implements FixtureGroupInterface
+final class LoadDomainData extends Fixture implements FixtureGroupInterface
 {
     private array $domains = [
         'example.org',

@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 #[AsCommand(name: 'app:voucher:create', description: 'Create voucher for a specific user')]
-class VoucherCreateCommand extends AbstractUsersCommand
+final class VoucherCreateCommand extends AbstractUsersCommand
 {
     public function __construct(
         EntityManagerInterface $manager,

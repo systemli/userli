@@ -8,6 +8,6 @@ use Attribute;
 use Symfony\Component\Validator\Constraint;
 
 #[Attribute]
-class TotpSecret extends Constraint
+final class TotpSecret extends Constraint
 {
 }

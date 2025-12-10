@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @extends AbstractType<RecoveryResetPassword>
  */
-class RecoveryResetPasswordType extends AbstractType
+final class RecoveryResetPasswordType extends AbstractType
 {
     public const NAME = 'recovery_reset_password';
 

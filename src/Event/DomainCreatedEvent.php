@@ -8,7 +8,7 @@ use App\Entity\Domain;
 use App\Traits\DomainAwareTrait;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class DomainCreatedEvent extends Event
+final class DomainCreatedEvent extends Event
 {
     use DomainAwareTrait;
 

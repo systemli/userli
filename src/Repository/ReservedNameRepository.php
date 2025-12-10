@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityRepository;
 /**
  * @extends EntityRepository<ReservedName>
  */
-class ReservedNameRepository extends EntityRepository
+final class ReservedNameRepository extends EntityRepository
 {
     public function findByName(string $name): ?ReservedName
     {

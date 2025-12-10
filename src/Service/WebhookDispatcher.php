@@ -16,7 +16,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use const DATE_ATOM;
 use const JSON_UNESCAPED_SLASHES;
 
-readonly class WebhookDispatcher
+final readonly class WebhookDispatcher
 {
     public function __construct(
         private EntityManagerInterface $em,

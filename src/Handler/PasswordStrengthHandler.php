@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
-class PasswordStrengthHandler
+final class PasswordStrengthHandler
 {
     private const REGEX_FORBIDDEN_CHARS = '/[äöüÄÖÜß\'"]/u';
 

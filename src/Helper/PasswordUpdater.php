@@ -7,7 +7,7 @@ namespace App\Helper;
 use App\Entity\User;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
-readonly class PasswordUpdater
+final readonly class PasswordUpdater
 {
     public function __construct(private PasswordHasherFactoryInterface $passwordHasherFactory)
     {

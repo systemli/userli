@@ -8,7 +8,7 @@ use App\Traits\PrivateKeyTrait;
 use App\Traits\PublicKeyTrait;
 use SodiumException;
 
-class MailCryptKeyPair
+final class MailCryptKeyPair
 {
     use PrivateKeyTrait;
     use PublicKeyTrait;

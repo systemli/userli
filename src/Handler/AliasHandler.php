@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * Class AliasHandler.
  */
-class AliasHandler
+final class AliasHandler
 {
     public const ALIAS_LIMIT_CUSTOM = 3;
 

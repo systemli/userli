@@ -8,7 +8,7 @@ use App\Entity\ApiToken;
 use App\Repository\ApiTokenRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
-readonly class ApiTokenManager
+final readonly class ApiTokenManager
 {
     public function __construct(
         private ApiTokenRepository $apiTokenRepository,

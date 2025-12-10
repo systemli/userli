@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-readonly class RecoveryProcessListener implements EventSubscriberInterface
+final readonly class RecoveryProcessListener implements EventSubscriberInterface
 {
     public function __construct(
         private RequestStack $request,

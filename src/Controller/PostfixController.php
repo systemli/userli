@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[RequireApiScope(scope: ApiScope::POSTFIX)]
-class PostfixController extends AbstractController
+final class PostfixController extends AbstractController
 {
     public function __construct(private readonly EntityManagerInterface $manager)
     {

@@ -7,7 +7,7 @@ namespace App\Form\Model;
 use App\Traits\RecoveryTokenTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class RecoveryTokenConfirm
+final class RecoveryTokenConfirm
 {
     use RecoveryTokenTrait;
 

@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @extends AbstractType<ApiToken>
  */
-class ApiTokenType extends AbstractType
+final class ApiTokenType extends AbstractType
 {
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void

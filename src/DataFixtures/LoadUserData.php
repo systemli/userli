@@ -12,7 +12,7 @@ use Doctrine\Persistence\ObjectManager;
 use Exception;
 use Override;
 
-class LoadUserData extends AbstractUserData implements DependentFixtureInterface, FixtureGroupInterface
+final class LoadUserData extends AbstractUserData implements DependentFixtureInterface, FixtureGroupInterface
 {
     private const PASSWORD = 'password';
 

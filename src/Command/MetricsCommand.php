@@ -27,7 +27,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * * * * * * php /path/to/bin/console app:metrics | sponge /path/to/metrics/userli.prom
  */
 #[AsCommand(name: 'app:metrics', description: 'Global Metrics for Userli')]
-class MetricsCommand extends Command
+final class MetricsCommand extends Command
 {
     public function __construct(private readonly EntityManagerInterface $manager)
     {

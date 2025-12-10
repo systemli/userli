@@ -12,7 +12,7 @@ use Exception;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
 
-class UserNotificationRateLimiter
+final class UserNotificationRateLimiter
 {
     private const CACHE_KEY_PREFIX = 'user_notification_';
 

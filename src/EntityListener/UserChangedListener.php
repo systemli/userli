@@ -15,7 +15,7 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 
 #[AsEntityListener(event: Events::preUpdate, method: 'preUpdate', entity: User::class)]
-class UserChangedListener
+final class UserChangedListener
 {
     private VoucherRepository $voucherRepository;
 

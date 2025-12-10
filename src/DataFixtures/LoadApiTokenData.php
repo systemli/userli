@@ -11,7 +11,7 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Override;
 
-class LoadApiTokenData extends Fixture implements FixtureGroupInterface
+final class LoadApiTokenData extends Fixture implements FixtureGroupInterface
 {
     public const RETENTION_TOKEN_PLAIN = 'b26b306e7c65785d9c5ad8821b59ce33';
 

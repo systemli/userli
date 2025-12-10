@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @extends AbstractType<DomainCreate>
  */
-class DomainCreateType extends AbstractType
+final class DomainCreateType extends AbstractType
 {
     public const NAME = 'create_domain';
 

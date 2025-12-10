@@ -28,7 +28,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class RecoveryController extends AbstractController
+final class RecoveryController extends AbstractController
 {
     private const PROCESS_DELAY = '-2 days';
 

@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class VoucherExistsValidator extends ConstraintValidator
+final class VoucherExistsValidator extends ConstraintValidator
 {
     private readonly VoucherRepository $voucherRepository;
 

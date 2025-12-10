@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @extends AbstractType<VoucherCreate>
  */
-class VoucherCreateType extends AbstractType
+final class VoucherCreateType extends AbstractType
 {
     public const NAME = 'create_voucher';
 

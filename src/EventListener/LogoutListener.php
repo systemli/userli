@@ -9,7 +9,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
 
-class LogoutListener implements EventSubscriberInterface
+final class LogoutListener implements EventSubscriberInterface
 {
     public function onLogoutSuccess(LogoutEvent $event): void
     {

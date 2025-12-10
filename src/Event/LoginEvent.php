@@ -9,7 +9,7 @@ use App\Traits\PlainPasswordTrait;
 use App\Traits\UserAwareTrait;
 use Symfony\Contracts\EventDispatcher\Event;
 
-class LoginEvent extends Event
+final class LoginEvent extends Event
 {
     use PlainPasswordTrait;
     use UserAwareTrait;

@@ -11,7 +11,7 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Override;
 
-class LoadReservedNameData extends Fixture implements FixtureGroupInterface
+final class LoadReservedNameData extends Fixture implements FixtureGroupInterface
 {
     /**
      * LoadReservedNameData constructor.

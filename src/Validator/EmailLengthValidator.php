@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class EmailLengthValidator extends ConstraintValidator
+final class EmailLengthValidator extends ConstraintValidator
 {
     #[Override]
     public function validate(mixed $value, Constraint $constraint): void

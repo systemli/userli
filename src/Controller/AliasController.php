@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-class AliasController extends AbstractController
+final class AliasController extends AbstractController
 {
     public function __construct(
         private readonly AliasHandler $aliasHandler,

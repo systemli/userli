@@ -6,7 +6,7 @@ namespace App\Form\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class RecoveryProcess
+final class RecoveryProcess
 {
     #[Assert\Email(mode: 'strict')]
     public string $email;

@@ -11,7 +11,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-class UserNotificationExtension extends AbstractExtension
+final class UserNotificationExtension extends AbstractExtension
 {
     public function __construct(
         private readonly Security $security,

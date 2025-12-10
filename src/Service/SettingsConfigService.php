@@ -9,7 +9,7 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Yaml\Yaml;
 
-class SettingsConfigService
+final class SettingsConfigService
 {
     private array $settings = [];
 

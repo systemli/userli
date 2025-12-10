@@ -12,7 +12,7 @@ use App\Factory\VoucherFactory;
 /**
  * Class VoucherCreator.
  */
-class VoucherCreator extends AbstractCreator
+final class VoucherCreator extends AbstractCreator
 {
     /**
      * @throws ValidationException

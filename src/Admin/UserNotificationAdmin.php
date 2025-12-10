@@ -13,7 +13,7 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
 /**
  * @extends Admin<UserNotification>
  */
-class UserNotificationAdmin extends Admin
+final class UserNotificationAdmin extends Admin
 {
     #[Override]
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string

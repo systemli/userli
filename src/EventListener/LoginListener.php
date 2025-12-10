@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
-readonly class LoginListener implements EventSubscriberInterface
+final readonly class LoginListener implements EventSubscriberInterface
 {
     private MailCrypt $mailCrypt;
 

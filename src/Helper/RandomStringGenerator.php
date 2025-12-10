@@ -9,7 +9,7 @@ use Exception;
 /**
  * Class RandomStringGenerator.
  */
-class RandomStringGenerator
+final class RandomStringGenerator
 {
     public const LENGTH = 6;
 

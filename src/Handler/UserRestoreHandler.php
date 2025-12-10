@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-readonly class UserRestoreHandler
+final readonly class UserRestoreHandler
 {
     private MailCrypt $mailCrypt;
 
