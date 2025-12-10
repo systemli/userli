@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<psalm
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    errorLevel="5"
+    resolveFromConfigFile="true"
+    findUnusedCode="false"
+    phpVersion="8.2"
+>
+    <projectFiles>
+        <directory name="src" />
+        <ignoreFiles>
+            <directory name="vendor" />
+            <directory name="var" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <plugins>
+        <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin" />
+    </plugins>
+
+    <issueHandlers>
+        <!--
+            PSALM ISSUE HANDLERS - Gradual Activation
+            ==========================================
+            These issues are currently suppressed (errorLevel="suppress").
+            To gradually improve the code:
+            1. Change errorLevel="suppress" to errorLevel="info" to see issues as hints
+            2. Remove the errorLevel attribute completely to treat issues as errors
+            3. Remove the handler completely when all issues are fixed
+
+            Recommended activation priority:
+            - HIGH: InvalidArgument, InvalidNullableReturnType, NullableReturnStatement
+            - MEDIUM: MissingTemplateParam, MoreSpecificImplementedParamType
+            - LOW: MissingOverrideAttribute, PropertyNotSetInConstructor
+        -->
+
+        <!-- HIGH PRIORITY - Potential Bugs (4 InvalidArgument, 2 InvalidNullableReturnType, 2
+        NullableReturnStatement, 1 FalsableReturnStatement) -->
+        <InvalidArgument errorLevel="suppress" />
+        <InvalidNullableReturnType errorLevel="suppress" />
+        <NullableReturnStatement errorLevel="suppress" />
+        <FalsableReturnStatement errorLevel="suppress" />
+        <InaccessibleProperty errorLevel="suppress" />
+        <UninitializedProperty errorLevel="suppress" />
+
+        <!-- MEDIUM PRIORITY - Type-Safety Improvements (34 MissingTemplateParam, 32
+        UndefinedInterfaceMethod, 4 MoreSpecificImplementedParamType) -->
+        <MissingTemplateParam errorLevel="suppress" />
+        <MoreSpecificImplementedParamType errorLevel="suppress" />
+        <UndefinedInterfaceMethod errorLevel="suppress" />
+        <UndefinedDocblockClass errorLevel="suppress" />
+
+        <!-- LOW PRIORITY - Code Style / Modernization (230 MissingOverrideAttribute, 17
+        PropertyNotSetInConstructor) -->
+        <MissingOverrideAttribute errorLevel="suppress" />
+        <PropertyNotSetInConstructor errorLevel="suppress" />
+
+        <!-- Symfony Psalm Plugin Issues (e.g. QueryBuilderSetParameter) -->
+        <PluginIssue name="QueryBuilderSetParameter" errorLevel="suppress" />
+    </issueHandlers>
+</psalm>
