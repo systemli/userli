@@ -6,6 +6,7 @@ namespace App\Security;
 
 use App\Security\Badge\ApiTokenBadge;
 use App\Service\ApiTokenManager;
+use Override;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,11 +24,13 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
     {
     }
 
+    #[Override]
     public function supports(Request $request): ?bool
     {
         return str_starts_with($request->getPathInfo(), '/api/');
     }
 
+    #[Override]
     public function authenticate(Request $request): Passport
     {
         $plainToken = $this->extractToken($request);
@@ -51,11 +54,13 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
         );
     }
 
+    #[Override]
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         return null;
     }
 
+    #[Override]
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         return new JsonResponse([

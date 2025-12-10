@@ -7,6 +7,7 @@ namespace App\EventListener;
 use App\Entity\User;
 use App\Enum\Roles;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -41,6 +42,7 @@ class BeforeRequestListener implements EventSubscriberInterface
         return $this->entityManager->getRepository(User::class)->findByEmail($user->getUserIdentifier());
     }
 
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         return [KernelEvents::REQUEST => [['onKernelRequest']]];

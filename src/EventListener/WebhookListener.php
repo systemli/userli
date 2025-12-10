@@ -7,6 +7,7 @@ namespace App\EventListener;
 use App\Enum\WebhookEvent;
 use App\Event\UserEvent;
 use App\Service\WebhookDispatcher;
+use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 readonly class WebhookListener implements EventSubscriberInterface
@@ -25,6 +26,7 @@ readonly class WebhookListener implements EventSubscriberInterface
         $this->dispatcher->dispatchUserEvent($event->getUser(), WebhookEvent::USER_DELETED);
     }
 
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         return [

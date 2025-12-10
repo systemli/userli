@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use Override;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
 
 readonly class SettingsAwareTotpAuthenticator implements TotpAuthenticatorInterface
@@ -14,6 +15,7 @@ readonly class SettingsAwareTotpAuthenticator implements TotpAuthenticatorInterf
     ) {
     }
 
+    #[Override]
     public function getQRContent($user): string
     {
         // Get the original QR content
@@ -44,11 +46,13 @@ readonly class SettingsAwareTotpAuthenticator implements TotpAuthenticatorInterf
         return $this->buildUrl($parsedUrl);
     }
 
+    #[Override]
     public function generateSecret(): string
     {
         return $this->decoratedAuthenticator->generateSecret();
     }
 
+    #[Override]
     public function checkCode($user, string $code): bool
     {
         return $this->decoratedAuthenticator->checkCode($user, $code);

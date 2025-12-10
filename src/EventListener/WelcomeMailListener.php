@@ -7,6 +7,7 @@ namespace App\EventListener;
 use App\Entity\User;
 use App\Event\UserEvent;
 use App\Message\WelcomeMail;
+use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -19,6 +20,7 @@ readonly class WelcomeMailListener implements EventSubscriberInterface
     ) {
     }
 
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         return [

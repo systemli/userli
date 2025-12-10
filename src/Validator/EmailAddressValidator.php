@@ -9,6 +9,7 @@ use App\Entity\Domain;
 use App\Entity\ReservedName;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -19,6 +20,7 @@ class EmailAddressValidator extends ConstraintValidator
     {
     }
 
+    #[Override]
     public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof EmailAddress) {

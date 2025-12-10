@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Entity\Voucher;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\BlockServiceInterface;
 use Sonata\BlockBundle\Model\BlockInterface;
@@ -24,6 +25,7 @@ class StatisticsBlockService implements BlockServiceInterface
     {
     }
 
+    #[Override]
     public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
     {
         $settings = $blockContext->getSettings();
@@ -46,6 +48,7 @@ class StatisticsBlockService implements BlockServiceInterface
         return $response->setContent($rendered);
     }
 
+    #[Override]
     public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
@@ -57,6 +60,7 @@ class StatisticsBlockService implements BlockServiceInterface
         );
     }
 
+    #[Override]
     public function getCacheKeys(BlockInterface $block): array
     {
         return [
@@ -65,6 +69,7 @@ class StatisticsBlockService implements BlockServiceInterface
         ];
     }
 
+    #[Override]
     public function load(BlockInterface $block): void
     {
     }

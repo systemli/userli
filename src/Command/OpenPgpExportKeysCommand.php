@@ -10,6 +10,7 @@ use App\Handler\WkdHandler;
 use App\Repository\DomainRepository;
 use App\Repository\OpenPgpKeyRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,6 +30,7 @@ class OpenPgpExportKeysCommand extends Command
         parent::__construct();
     }
 
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // create Web Key Directories (WKD) for all domains

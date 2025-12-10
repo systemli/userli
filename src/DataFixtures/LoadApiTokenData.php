@@ -9,6 +9,7 @@ use App\Service\ApiTokenManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
+use Override;
 
 class LoadApiTokenData extends Fixture implements FixtureGroupInterface
 {
@@ -27,6 +28,7 @@ class LoadApiTokenData extends Fixture implements FixtureGroupInterface
     ) {
     }
 
+    #[Override]
     public function load(ObjectManager $manager): void
     {
         // Create retention token
@@ -65,6 +67,7 @@ class LoadApiTokenData extends Fixture implements FixtureGroupInterface
         );
     }
 
+    #[Override]
     public static function getGroups(): array
     {
         return ['basic'];

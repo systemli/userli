@@ -11,6 +11,7 @@ use App\Traits\NameTrait;
 use App\Traits\UpdatedTimeTrait;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Override;
 use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -32,6 +33,7 @@ class Domain implements Stringable
         $this->updatedTime = $currentDateTime;
     }
 
+    #[Override]
     public function __toString(): string
     {
         return ($this->getName()) ?: '';

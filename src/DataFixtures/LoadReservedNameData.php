@@ -9,6 +9,7 @@ use App\Exception\ValidationException;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
+use Override;
 
 class LoadReservedNameData extends Fixture implements FixtureGroupInterface
 {
@@ -22,6 +23,7 @@ class LoadReservedNameData extends Fixture implements FixtureGroupInterface
     /**
      * @throws ValidationException
      */
+    #[Override]
     public function load(ObjectManager $manager): void
     {
         $handle = fopen(
@@ -44,6 +46,7 @@ class LoadReservedNameData extends Fixture implements FixtureGroupInterface
         }
     }
 
+    #[Override]
     public static function getGroups(): array
     {
         return ['basic'];

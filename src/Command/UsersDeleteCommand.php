@@ -6,6 +6,7 @@ namespace App\Command;
 
 use App\Handler\DeleteHandler;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,11 +21,13 @@ class UsersDeleteCommand extends AbstractUsersCommand
         parent::__construct($manager);
     }
 
+    #[Override]
     protected function configure(): void
     {
         parent::configure();
     }
 
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $user = $this->getUser($input);

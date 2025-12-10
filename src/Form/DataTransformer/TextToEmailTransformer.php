@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\DataTransformer;
 
+use Override;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
@@ -18,6 +19,7 @@ class TextToEmailTransformer implements DataTransformerInterface
     {
     }
 
+    #[Override]
     public function transform(mixed $value): mixed
     {
         if (null === $value) {
@@ -29,6 +31,7 @@ class TextToEmailTransformer implements DataTransformerInterface
         return false === $pos ? (string) $value : substr((string) $value, 0, $pos);
     }
 
+    #[Override]
     public function reverseTransform(mixed $value): mixed
     {
         if (null === $value || '' === $value) {

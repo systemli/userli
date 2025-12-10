@@ -7,6 +7,7 @@ namespace App\Security;
 use App\Entity\Domain;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -26,6 +27,7 @@ class UserProvider implements UserProviderInterface
         return $this->loadUserByIdentifier($username);
     }
 
+    #[Override]
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         if (!str_contains($identifier, '@')) {
@@ -42,6 +44,7 @@ class UserProvider implements UserProviderInterface
         return $user;
     }
 
+    #[Override]
     public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof User) {
@@ -56,6 +59,7 @@ class UserProvider implements UserProviderInterface
         return $reloadedUser;
     }
 
+    #[Override]
     public function supportsClass($class): bool
     {
         $userClass = User::class;

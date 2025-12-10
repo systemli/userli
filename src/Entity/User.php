@@ -34,6 +34,7 @@ use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
+use Override;
 use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
 use Stringable;
@@ -100,11 +101,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         $this->updatedTime = $currentDateTime;
     }
 
+    #[Override]
     public function __toString(): string
     {
         return ($this->getEmail()) ?: '';
     }
 
+    #[Override]
     public function getRoles(): array
     {
         return !empty($this->roles) ? $this->roles : [Roles::USER];
@@ -128,11 +131,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         return $this->getUserIdentifier();
     }
 
+    #[Override]
     public function getUserIdentifier(): string
     {
         return $this->email ?? '';
     }
 
+    #[Override]
     public function getPasswordHasherName(): ?string
     {
         if ($this->getPasswordVersion() < self::CURRENT_PASSWORD_VERSION) {
@@ -143,6 +148,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         return null;
     }
 
+    #[Override]
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here

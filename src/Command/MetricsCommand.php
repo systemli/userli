@@ -10,6 +10,7 @@ use App\Entity\OpenPgpKey;
 use App\Entity\User;
 use App\Entity\Voucher;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,6 +34,7 @@ class MetricsCommand extends Command
         parent::__construct();
     }
 
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $usersTotal = $this->manager->getRepository(User::class)->countUsers();

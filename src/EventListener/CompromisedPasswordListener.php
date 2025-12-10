@@ -7,6 +7,7 @@ namespace App\EventListener;
 use App\Entity\User;
 use App\Event\LoginEvent;
 use App\Service\PasswordCompromisedService;
+use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
@@ -21,6 +22,7 @@ readonly class CompromisedPasswordListener implements EventSubscriberInterface
     ) {
     }
 
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         return [

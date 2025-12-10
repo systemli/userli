@@ -7,6 +7,7 @@ namespace App\Admin;
 use App\Creator\DomainCreator;
 use App\Entity\Domain;
 use App\Event\DomainCreatedEvent;
+use Override;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -23,23 +24,27 @@ class DomainAdmin extends Admin
 
     private EventDispatcherInterface $eventDispatcher;
 
+    #[Override]
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {
         return 'domain';
     }
 
+    #[Override]
     protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->add('name', TextType::class, ['disabled' => !$this->isNewObject()]);
     }
 
+    #[Override]
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('name');
     }
 
+    #[Override]
     protected function configureListFields(ListMapper $list): void
     {
         $list
@@ -57,16 +62,19 @@ class DomainAdmin extends Admin
             ->add('updatedTime');
     }
 
+    #[Override]
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('delete');
     }
 
+    #[Override]
     protected function prePersist(object $object): void
     {
         $this->domainCreator->validate($object, ['Default', 'unique']);
     }
 
+    #[Override]
     protected function postPersist(object $object): void
     {
         $this->eventDispatcher->dispatch(new DomainCreatedEvent($object), DomainCreatedEvent::NAME);

@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Alias;
 use App\Handler\DeleteHandler;
+use Override;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,6 +22,7 @@ class AliasCRUDController extends CRUDController
     {
     }
 
+    #[Override]
     public function deleteAction(Request $request): Response
     {
         $object = $this->assertObjectExists($request, true);
@@ -49,6 +51,7 @@ class AliasCRUDController extends CRUDController
         return $this->redirectToList();
     }
 
+    #[Override]
     public function batchActionDelete(ProxyQueryInterface $query): RedirectResponse
     {
         $this->admin->checkAccess('batchDelete');

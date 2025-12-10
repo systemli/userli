@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Form\Model\RecoveryToken;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -18,6 +19,7 @@ class RecoveryTokenType extends AbstractType
 {
     public const NAME = 'recovery_token';
 
+    #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -25,11 +27,13 @@ class RecoveryTokenType extends AbstractType
             ->add('submit', SubmitType::class, ['label' => 'form.generate-recovery-token']);
     }
 
+    #[Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => RecoveryToken::class]);
     }
 
+    #[Override]
     public function getBlockPrefix(): string
     {
         return self::NAME;

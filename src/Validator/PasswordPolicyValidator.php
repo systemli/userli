@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Validator;
 
 use App\Handler\PasswordStrengthHandler;
+use Override;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -14,6 +15,7 @@ class PasswordPolicyValidator extends ConstraintValidator
     {
     }
 
+    #[Override]
     public function validate(mixed $value, Constraint $constraint): void
     {
         if (empty($value) || !is_string($value)) {

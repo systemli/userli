@@ -18,6 +18,7 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\AssociationOverride;
 use Doctrine\ORM\Mapping\Index;
+use Override;
 use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -86,6 +87,7 @@ class Alias implements SoftDeletableInterface, Stringable
         $this->destination = null;
     }
 
+    #[Override]
     public function __toString(): string
     {
         if ($this->source === null) {

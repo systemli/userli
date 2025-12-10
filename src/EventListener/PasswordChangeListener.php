@@ -10,6 +10,7 @@ use App\Enum\UserNotificationType;
 use App\Event\UserEvent;
 use App\Helper\JsonRequestHelper;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,6 +28,7 @@ readonly class PasswordChangeListener implements EventSubscriberInterface
     ) {
     }
 
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         return [

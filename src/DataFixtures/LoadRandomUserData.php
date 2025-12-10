@@ -9,9 +9,11 @@ use App\Enum\Roles;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
+use Override;
 
 class LoadRandomUserData extends AbstractUserData implements FixtureGroupInterface
 {
+    #[Override]
     public function load(ObjectManager $manager): void
     {
         $domainRepository = $manager->getRepository(Domain::class);
@@ -43,6 +45,7 @@ class LoadRandomUserData extends AbstractUserData implements FixtureGroupInterfa
         $manager->clear();
     }
 
+    #[Override]
     public static function getGroups(): array
     {
         return ['advanced'];

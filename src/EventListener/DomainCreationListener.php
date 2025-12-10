@@ -10,6 +10,7 @@ use App\Event\DomainCreatedEvent;
 use App\Handler\WkdHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DomainCreationListener implements EventSubscriberInterface
@@ -46,6 +47,7 @@ class DomainCreationListener implements EventSubscriberInterface
         $this->handler->getDomainWkdPath($domain->getName());
     }
 
+    #[Override]
     public static function getSubscribedEvents(): array
     {
         return [

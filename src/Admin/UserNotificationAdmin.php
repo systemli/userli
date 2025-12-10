@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Admin;
 
 use App\Entity\UserNotification;
+use Override;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
@@ -14,11 +15,13 @@ use Sonata\AdminBundle\Route\RouteCollectionInterface;
  */
 class UserNotificationAdmin extends Admin
 {
+    #[Override]
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {
         return 'user-notification';
     }
 
+    #[Override]
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
@@ -30,6 +33,7 @@ class UserNotificationAdmin extends Admin
             ]);
     }
 
+    #[Override]
     protected function configureListFields(ListMapper $list): void
     {
         $list
@@ -44,6 +48,7 @@ class UserNotificationAdmin extends Admin
             ->add('creationTime');
     }
 
+    #[Override]
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('create');

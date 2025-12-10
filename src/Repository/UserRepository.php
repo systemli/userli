@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\LazyCriteriaCollection;
 use Exception;
+use Override;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
@@ -136,6 +137,7 @@ class UserRepository extends EntityRepository implements PasswordUpgraderInterfa
         )->count();
     }
 
+    #[Override]
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
         assert($user instanceof User);

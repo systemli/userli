@@ -10,6 +10,7 @@ use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -40,6 +41,7 @@ class UsersResetCommand extends AbstractUsersCommand
         parent::__construct($manager);
     }
 
+    #[Override]
     protected function configure(): void
     {
         parent::configure();
@@ -48,6 +50,7 @@ class UsersResetCommand extends AbstractUsersCommand
     /**
      * @throws Exception
      */
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $user = $this->getUser($input);

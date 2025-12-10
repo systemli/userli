@@ -8,6 +8,7 @@ use App\Message\PruneUserNotifications;
 use App\Message\PruneWebhookDeliveries;
 use App\Message\UnlinkRedeemedVouchers;
 use DateTimeImmutable;
+use Override;
 use Symfony\Component\Scheduler\Attribute\AsSchedule;
 use Symfony\Component\Scheduler\RecurringMessage;
 use Symfony\Component\Scheduler\Schedule;
@@ -16,6 +17,7 @@ use Symfony\Component\Scheduler\ScheduleProviderInterface;
 #[AsSchedule('maintenance')]
 final class MaintenanceSchedule implements ScheduleProviderInterface
 {
+    #[Override]
     public function getSchedule(): Schedule
     {
         return (new Schedule())

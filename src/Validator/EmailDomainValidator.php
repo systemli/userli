@@ -7,6 +7,7 @@ namespace App\Validator;
 use App\Entity\Domain;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -16,6 +17,7 @@ class EmailDomainValidator extends ConstraintValidator
     {
     }
 
+    #[Override]
     public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$value instanceof User) {

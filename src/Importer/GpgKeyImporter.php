@@ -17,6 +17,7 @@ use Crypt_GPG_KeyNotFoundException;
 use Crypt_GPG_NoDataException;
 use DateTime;
 use Exception;
+use Override;
 use PEAR_Exception;
 use RuntimeException;
 
@@ -54,6 +55,7 @@ class GpgKeyImporter implements OpenPgpKeyImporterInterface
      * @throws MultipleGpgKeysForUserException
      * @throws RuntimeException
      */
+    #[Override]
     public static function import(string $email, string $data): OpenPgpKey
     {
         $tempDir = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'userli_'.mt_rand().microtime(true);

@@ -11,6 +11,7 @@ use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use App\Traits\DomainGuesserAwareTrait;
 use Exception;
+use Override;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -41,11 +42,13 @@ class UserAdmin extends Admin
 
     private Security $security;
 
+    #[Override]
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {
         return 'user';
     }
 
+    #[Override]
     protected function alterNewInstance(object $object): void
     {
         /* @var $object User */
@@ -53,6 +56,7 @@ class UserAdmin extends Admin
         $object->setPasswordChangeRequired(true);
     }
 
+    #[Override]
     protected function configureFormFields(FormMapper $form): void
     {
         /** @var User $currentUser */
@@ -96,6 +100,7 @@ class UserAdmin extends Admin
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
     }
 
+    #[Override]
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
@@ -141,6 +146,7 @@ class UserAdmin extends Admin
             ->add('deleted');
     }
 
+    #[Override]
     protected function configureListFields(ListMapper $list): void
     {
         $list
@@ -166,6 +172,7 @@ class UserAdmin extends Admin
             ->add('deleted');
     }
 
+    #[Override]
     protected function configureBatchActions($actions): array
     {
         if ($this->hasRoute('edit') && $this->hasAccess('edit')) {
@@ -180,6 +187,7 @@ class UserAdmin extends Admin
     /**
      * @throws Exception
      */
+    #[Override]
     protected function prePersist(object $object): void
     {
         assert($object instanceof User);
@@ -193,6 +201,7 @@ class UserAdmin extends Admin
         }
     }
 
+    #[Override]
     protected function preUpdate(object $object): void
     {
         assert($object instanceof User);

@@ -8,6 +8,7 @@ use App\Entity\Domain;
 use App\Form\DataTransformer\TextToEmailTransformer;
 use App\Form\Model\Registration;
 use Doctrine\ORM\EntityManagerInterface;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -33,6 +34,7 @@ class RegistrationType extends AbstractType
         $this->domain = $manager->getRepository(Domain::class)->getDefaultDomain()->getName();
     }
 
+    #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $transformer = new TextToEmailTransformer($this->domain);
@@ -59,11 +61,13 @@ class RegistrationType extends AbstractType
             ->add('submit', SubmitType::class, ['label' => 'form.submit']);
     }
 
+    #[Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => Registration::class]);
     }
 
+    #[Override]
     public function getBlockPrefix(): string
     {
         return self::NAME;

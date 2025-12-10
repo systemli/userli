@@ -6,6 +6,7 @@ namespace App\Form;
 
 use App\Enum\WebhookEvent;
 use App\Form\Model\WebhookEndpointModel;
+use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -19,6 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class WebhookEndpointType extends AbstractType
 {
+    #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $events = WebhookEvent::all();
@@ -37,6 +39,7 @@ class WebhookEndpointType extends AbstractType
             ->add('submit', SubmitType::class);
     }
 
+    #[Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
