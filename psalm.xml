@@ -37,8 +37,7 @@
             - LOW: MissingOverrideAttribute, PropertyNotSetInConstructor
         -->
 
-        <!-- HIGH PRIORITY - Potential Bugs (2 InaccessibleProperty) -->
-        <InaccessibleProperty errorLevel="suppress" />
+        <!-- HIGH PRIORITY - Potential Bugs (3 UninitializedProperty) -->
         <UninitializedProperty errorLevel="suppress" />
 
         <!-- MEDIUM PRIORITY - Type-Safety Improvements (34 MissingTemplateParam, 32
