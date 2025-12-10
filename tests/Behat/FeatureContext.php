@@ -195,7 +195,8 @@ class FeatureContext extends MinkContext
     public function theFollowingVoucherExists(TableNode $table): void
     {
         foreach ($table->getColumnsHash() as $data) {
-            $voucher = new Voucher();
+            $code = $data['code'] ?? 'default';
+            $voucher = new Voucher($code);
 
             foreach ($data as $key => $value) {
                 if (empty($value)) {
@@ -203,9 +204,6 @@ class FeatureContext extends MinkContext
                 }
 
                 switch ($key) {
-                    case 'code':
-                        $voucher->setCode($value);
-                        break;
                     case 'user':
                         $user = $this->getUserRepository()->findByEmail($value);
 

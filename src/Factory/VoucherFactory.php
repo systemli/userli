@@ -19,9 +19,8 @@ final class VoucherFactory
      */
     public static function create(User $user): Voucher
     {
-        $voucher = new Voucher();
+        $voucher = new Voucher(RandomStringGenerator::generate(6, true));
         $voucher->setUser($user);
-        $voucher->setCode(RandomStringGenerator::generate(6, true));
 
         return $voucher;
     }

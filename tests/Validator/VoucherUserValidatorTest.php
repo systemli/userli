@@ -19,8 +19,7 @@ class VoucherUserValidatorTest extends ConstraintValidatorTestCase
 
     protected function createValidator(): VoucherUserValidator
     {
-        $this->voucher = new Voucher();
-        $this->voucher->setCode('code');
+        $this->voucher = new Voucher('code');
 
         return new VoucherUserValidator();
     }

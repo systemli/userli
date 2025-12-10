@@ -15,10 +15,9 @@ use Doctrine\ORM\EntityRepository;
 final class VoucherRepository extends EntityRepository
 {
     /**
-     * @TODO: Remove nullable
      * Finds a voucher by its code.
      */
-    public function findByCode(?string $code): ?Voucher
+    public function findByCode(string $code): ?Voucher
     {
         return $this->findOneBy(['code' => $code]);
     }

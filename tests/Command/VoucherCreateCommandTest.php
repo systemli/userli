@@ -103,8 +103,7 @@ class VoucherCreateCommandTest extends TestCase
         $this->router->method('generate')
             ->willReturn($baseUrl.'/register/'.$voucherCode);
 
-        $voucher = new Voucher();
-        $voucher->setCode($voucherCode);
+        $voucher = new Voucher($voucherCode);
         $this->creator->method('create')
             ->willReturn($voucher);
 
@@ -160,8 +159,7 @@ class VoucherCreateCommandTest extends TestCase
             ->method('setBaseUrl')
             ->with($baseUrl);
 
-        $voucher = new Voucher();
-        $voucher->setCode($voucherCode);
+        $voucher = new Voucher($voucherCode);
         $exception = $this->createMock(ValidationException::class);
         $this->creator->method('create')
             ->willThrowException($exception);
@@ -201,8 +199,7 @@ class VoucherCreateCommandTest extends TestCase
             ->method('setBaseUrl')
             ->with($baseUrl);
 
-        $voucher = new Voucher();
-        $voucher->setCode($voucherCode);
+        $voucher = new Voucher($voucherCode);
 
         $this->creator->expects(self::once())
             ->method('create')
@@ -250,8 +247,7 @@ class VoucherCreateCommandTest extends TestCase
             ->method('setBaseUrl')
             ->with($baseUrl);
 
-        $voucher = new Voucher();
-        $voucher->setCode($voucherCode);
+        $voucher = new Voucher($voucherCode);
 
         $this->creator->expects(self::once())
             ->method('create')

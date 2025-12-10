@@ -93,10 +93,10 @@ class UserChangedListenerTest extends TestCase
             ->willReturn(['roles' => [[Roles::USER], [Roles::USER, Roles::SUSPICIOUS]]]);
 
         $invitedUser1 = new User('invited1@example.org');
-        $voucher1 = new Voucher();
+        $voucher1 = new Voucher('code1');
         $voucher1->setInvitedUser($invitedUser1);
         $invitedUser2 = new User('invited2@example.org');
-        $voucher2 = new Voucher();
+        $voucher2 = new Voucher('code2');
         $voucher2->setInvitedUser($invitedUser2);
         $this->voucherRepository->method('getRedeemedVouchersByUser')
             ->willReturn([$voucher1, $voucher2]);
