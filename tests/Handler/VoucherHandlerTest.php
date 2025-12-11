@@ -61,7 +61,7 @@ class VoucherHandlerTest extends TestCase
     public function testFindEnoughVouchers(): void
     {
         $repository = $this->getMockBuilder(VoucherRepository::class)->disableOriginalConstructor()->getMock();
-        $repository->method('findByUser')->willReturn([new Voucher(), new Voucher(), new Voucher()]);
+        $repository->method('findByUser')->willReturn([new Voucher('code1'), new Voucher('code2'), new Voucher('code3')]);
 
         $manager = $this->getMockBuilder(EntityManagerInterface::class)->disableOriginalConstructor()->getMock();
         $manager->method('getRepository')->willReturn($repository);
@@ -87,13 +87,13 @@ class VoucherHandlerTest extends TestCase
     public function testNeedToCreateVouchers(): void
     {
         $repository = $this->getMockBuilder(VoucherRepository::class)->disableOriginalConstructor()->getMock();
-        $repository->method('findByUser')->willReturn([new Voucher(), new Voucher()]);
+        $repository->method('findByUser')->willReturn([new Voucher('code1'), new Voucher('code2')]);
 
         $manager = $this->getMockBuilder(EntityManagerInterface::class)->disableOriginalConstructor()->getMock();
         $manager->method('getRepository')->willReturn($repository);
 
         $creator = $this->getMockBuilder(VoucherCreator::class)->disableOriginalConstructor()->getMock();
-        $creator->method('create')->willReturn(new Voucher());
+        $creator->method('create')->willReturn(new Voucher('code3'));
 
         $handler = new VoucherHandler($manager, $creator);
 

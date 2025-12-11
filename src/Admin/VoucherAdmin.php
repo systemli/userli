@@ -32,10 +32,15 @@ final class VoucherAdmin extends Admin
     }
 
     #[Override]
+    protected function createNewInstance(): object
+    {
+        return new Voucher(RandomStringGenerator::generate(6, true));
+    }
+
+    #[Override]
     protected function alterNewInstance(object $object): void
     {
         $object->setUser($this->security->getUser());
-        $object->setCode(RandomStringGenerator::generate(6, true));
     }
 
     #[Override]

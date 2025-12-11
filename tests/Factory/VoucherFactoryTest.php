@@ -18,6 +18,6 @@ class VoucherFactoryTest extends TestCase
 
         self::assertNotNull($voucher->getCreationTime());
         self::assertNotNull($voucher->getUser());
-        self::assertNotNull($voucher->getCode());
+        self::assertSame(6, strlen($voucher->getCode()));
     }
 }

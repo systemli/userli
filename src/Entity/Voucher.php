@@ -29,13 +29,14 @@ class Voucher implements Stringable
     protected ?DateTime $redeemedTime = null;
 
     #[ORM\Column(unique: true)]
-    protected ?string $code = null;
+    protected string $code;
 
     #[ORM\OneToOne(targetEntity: User::class, mappedBy: 'invitationVoucher')]
     protected ?User $invitedUser = null;
 
-    public function __construct()
+    public function __construct(string $code)
     {
+        $this->code = $code;
         $currentDateTime = new DateTime();
         $this->creationTime = $currentDateTime;
     }
@@ -57,7 +58,7 @@ class Voucher implements Stringable
 
     public function getCode(): string
     {
-        return $this->code ?? '';
+        return $this->code;
     }
 
     public function setCode(string $code): void
@@ -78,6 +79,6 @@ class Voucher implements Stringable
     #[Override]
     public function __toString(): string
     {
-        return (string) $this->code;
+        return $this->code;
     }
 }

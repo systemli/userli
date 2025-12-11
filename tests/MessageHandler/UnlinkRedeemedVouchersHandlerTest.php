@@ -18,22 +18,19 @@ class UnlinkRedeemedVouchersHandlerTest extends TestCase
 {
     public function testUnlinksRedeemedVouchersOlderThanThreeMonths(): void
     {
-        $voucher1 = new Voucher();
-        $voucher1->setCode('A');
+        $voucher1 = new Voucher('A');
         $voucher1->setRedeemedTime(new DateTime('-4 months')); // old
         $user1 = new User('user1@example.org');
         $user1->setInvitationVoucher($voucher1);
         $voucher1->setInvitedUser($user1);
 
-        $voucher2 = new Voucher();
-        $voucher2->setCode('B');
+        $voucher2 = new Voucher('B');
         $voucher2->setRedeemedTime(new DateTime('-5 months')); // old
         $user2 = new User('user2@example.org');
         $user2->setInvitationVoucher($voucher2);
         $voucher2->setInvitedUser($user2);
 
-        $voucherRecent = new Voucher();
-        $voucherRecent->setCode('C');
+        $voucherRecent = new Voucher('C');
         $voucherRecent->setRedeemedTime(new DateTime('-1 month')); // recent (should not appear in result set)
         $recentUser = new User('recent@example.org');
         $recentUser->setInvitationVoucher($voucherRecent);

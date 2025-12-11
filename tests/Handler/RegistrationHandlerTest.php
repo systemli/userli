@@ -45,7 +45,7 @@ class RegistrationHandlerTest extends KernelTestCase
         $domainGuesser = $this->createMock(DomainGuesser::class);
         $domainGuesser->method('guess')->willReturn($domain);
 
-        $voucher = new Voucher();
+        $voucher = new Voucher('code');
         $voucherRepository = $this->createMock(VoucherRepository::class);
         $voucherRepository->method('findByCode')->willReturn($voucher);
 
