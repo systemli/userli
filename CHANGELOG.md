@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.1.1 (2025.12.11)
+
+### Bug Fixes
+
+- 🚑 Fix user creation in admin (#946)
+
 ## 5.1.0 (2025.12.11)
 
 ### Features and Improvements
