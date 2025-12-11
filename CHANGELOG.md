@@ -1,5 +1,18 @@
 # Changelog
 
+## 5.1.0 (2025.12.11)
+
+### Features and Improvements
+
+- ✨ Use PHP CS Fixer (#917)
+- 📝 Update documentation for integrations
+- ⬆️ Update Symfony to 6.4.30 (#928)
+- 🔥 Remove Email Normalization in Postfix Controller (#930)
+- 🔒️ Add Psalm configuration file for static analysis (#918)
+- 🚨 Various fixes found by Psalm static analysis (#931, #932, #933, #934, #935, #936, #937, #938, #939, #940, #940)
+- ♻️ Email is required in User constructor (#943)
+- ♻️ Code is required in Voucher constructor (#944)
+
 ## 5.0.0 (2025.11.08)
 
 ### Features and Improvements
