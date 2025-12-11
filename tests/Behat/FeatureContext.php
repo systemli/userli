@@ -570,6 +570,21 @@ class FeatureContext extends MinkContext
         }
     }
 
+    /**
+     * @Then /^the user "([^"]*)" should exist$/
+     */
+    public function theUserShouldExist(string $email): void
+    {
+        // Clear the entity manager to ensure we fetch fresh data
+        $this->manager->clear();
+
+        $user = $this->getUserRepository()->findByEmail($email);
+
+        if (null === $user) {
+            throw new RuntimeException(sprintf('User "%s" does not exist', $email));
+        }
+    }
+
     public function setPlaceholder(string $key, $value): void
     {
         $this->placeholders[$key] = $value;

@@ -49,11 +49,13 @@ final class UserAdmin extends Admin
     }
 
     #[Override]
-    protected function alterNewInstance(object $object): void
+    protected function createNewInstance(): User
     {
-        /* @var $object User */
-        $object->setRoles([Roles::USER]);
-        $object->setPasswordChangeRequired(true);
+        $user = new User('');
+        $user->setRoles([Roles::USER]);
+        $user->setPasswordChangeRequired(true);
+
+        return $user;
     }
 
     #[Override]
