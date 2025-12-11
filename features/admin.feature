@@ -10,7 +10,7 @@ Feature: Admin
       | email               | password | roles             |
       | louis@example.org   | asdasd   | ROLE_ADMIN        |
       | domain@example.com  | asdasd   | ROLE_DOMAIN_ADMIN |
-      | support@example.org | asdasd   | ROLE_MULTIPLIER      |
+      | support@example.org | asdasd   | ROLE_MULTIPLIER   |
       | user@example.org    | asdasd   | ROLE_USER         |
     And the following Voucher exists:
       | code | user             |
@@ -63,6 +63,17 @@ Feature: Admin
 
     When I am on "/admin/user/create"
     Then the response status code should be 200
+
+  @admin
+  Scenario: Create a new User as Admin
+    When I am authenticated as "louis@example.org"
+    And I am on "/admin/user/create"
+    And I fill in the following:
+      | Email    | newuser@example.org |
+      | Password | P4ssW0rd!!!1        |
+    And I press "btn_create_and_list"
+    Then the response status code should be 200
+    And the user "newuser@example.org" should exist
 
   @admin
   Scenario: Access User List and able to create a User as Domain Admin
