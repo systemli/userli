@@ -10,6 +10,7 @@ enum UserCacheKey: string
 
     case DOVECOT_LOOKUP = 'dovecot_lookup_';
     case POSTFIX_MAILBOX = 'postfix_mailbox_';
+    case POSTFIX_QUOTA = 'postfix_quota_';
     case POSTFIX_SENDERS = 'postfix_senders_';
 
     public function ttl(): int

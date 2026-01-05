@@ -435,6 +435,7 @@ settings:
       project: Project Settings
       email: Email Configuration
       reports: Reports
+      smtp_quota: SMTP Quota Limits
     app_name:
       label: Application Name
       help: The name displayed in the application header and browser title
@@ -459,6 +460,12 @@ settings:
     weekly_report_enabled:
       label: Weekly Report
       help: Send a weekly report with new registrations to the notification email address
+    smtp_quota_limit_per_hour:
+      label: Limit per Hour
+      help: Default maximum number of emails a user can send per hour (0 = unlimited)
+    smtp_quota_limit_per_day:
+      label: Limit per Day
+      help: Default maximum number of emails a user can send per day (0 = unlimited)
   navigation:
     aria-label: Settings navigation
     api: API Tokens
