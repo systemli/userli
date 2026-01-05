@@ -32,6 +32,7 @@
                         'app': ['app_name', 'app_url'],
                         'project': ['project_name', 'project_url'],
                         'email': ['email_sender_address', 'email_notification_address'],
+                        'smtp_quota': ['smtp_quota_limit_per_hour', 'smtp_quota_limit_per_day'],
                     } %}
 
                     {% for category, fields in categories %}
@@ -41,6 +42,7 @@
                                     'app': 'heroicons:computer-desktop',
                                     'project': 'heroicons:building-office',
                                     'email': 'heroicons:envelope',
+                                    'smtp_quota': 'heroicons:arrow-up-tray',
                                 }[category] %}
 
                                 <div class="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mr-3">
