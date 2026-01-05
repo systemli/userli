@@ -33,6 +33,7 @@
                         'project': ['project_name', 'project_url'],
                         'email': ['email_sender_address', 'email_notification_address'],
                         'reports': ['weekly_report_enabled'],
+                        'smtp_quota': ['smtp_quota_limit_per_hour', 'smtp_quota_limit_per_day'],
                     } %}
 
                     {% for category, fields in categories %}
@@ -43,6 +44,7 @@
                                     'project': 'heroicons:building-office',
                                     'email': 'heroicons:envelope',
                                     'reports': 'heroicons:document-chart-bar',
+                                    'smtp_quota': 'heroicons:arrow-up-tray',
                                 }[category] %}
 
                                 <div class="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mr-3">
