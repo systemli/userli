@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.2.0 (2026.01.09)
+
+### Features and Improvements
+
+- 💄 Add Dark Mode (#957)
+- ♿️ Improve accessibility (#960)
+
 ## 5.1.1 (2025.12.11)
 
 ### Bug Fixes
