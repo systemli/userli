@@ -14,7 +14,7 @@
                         </div>
                         <div>
                             <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ 'settings.webhook.delivery.heading'|trans({'%id%': delivery.id}) }}</h3>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ 'settings.webhook.delivery.subtitle'|trans({'%endpoint%': endpoint.url}) }}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ 'settings.webhook.delivery.subtitle'|trans({'%endpoint%': endpoint.url}) }}</p>
                         </div>
                     </div>
                 </div>
@@ -43,13 +43,13 @@
                             <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ 'settings.webhook.delivery.meta'|trans }}</h4>
                             <dl class="text-sm divide-y divide-gray-100 dark:divide-gray-700 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
                                 <div class="flex justify-between gap-4 px-4 py-2 bg-gray-50 dark:bg-gray-700">
-                                    <dt class="font-medium text-gray-600 dark:text-gray-400">{{ 'settings.webhook.delivery.event'|trans }}</dt>
+                                    <dt class="font-medium text-gray-600 dark:text-gray-300">{{ 'settings.webhook.delivery.event'|trans }}</dt>
                                     <dd class="text-gray-900 dark:text-gray-100"><span
                                                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200">{{ delivery.type }}</span>
                                     </dd>
                                 </div>
                                 <div class="flex justify-between gap-4 px-4 py-2 dark:bg-gray-800">
-                                    <dt class="font-medium text-gray-600 dark:text-gray-400">{{ 'settings.webhook.delivery.status'|trans }}</dt>
+                                    <dt class="font-medium text-gray-600 dark:text-gray-300">{{ 'settings.webhook.delivery.status'|trans }}</dt>
                                     <dd>
                                         {% if delivery.success %}
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">{{ 'settings.webhook.deliveries.status.delivered'|trans }}</span>
@@ -61,19 +61,19 @@
                                     </dd>
                                 </div>
                                 <div class="flex justify-between gap-4 px-4 py-2 bg-gray-50 dark:bg-gray-700">
-                                    <dt class="font-medium text-gray-600 dark:text-gray-400">{{ 'settings.webhook.delivery.attempt'|trans }}</dt>
+                                    <dt class="font-medium text-gray-600 dark:text-gray-300">{{ 'settings.webhook.delivery.attempt'|trans }}</dt>
                                     <dd class="text-gray-900 dark:text-gray-100">{{ delivery.attempts }}</dd>
                                 </div>
                                 <div class="flex justify-between gap-4 px-4 py-2 dark:bg-gray-800">
-                                    <dt class="font-medium text-gray-600 dark:text-gray-400">{{ 'settings.webhook.delivery.dispatched'|trans }}</dt>
+                                    <dt class="font-medium text-gray-600 dark:text-gray-300">{{ 'settings.webhook.delivery.dispatched'|trans }}</dt>
                                     <dd class="text-gray-900 dark:text-gray-100">{{ delivery.dispatchedTime|date('Y-m-d H:i:s') }}</dd>
                                 </div>
                                 <div class="flex justify-between gap-4 px-4 py-2 bg-gray-50 dark:bg-gray-700">
-                                    <dt class="font-medium text-gray-600 dark:text-gray-400">{{ 'settings.webhook.delivery.delivered'|trans }}</dt>
+                                    <dt class="font-medium text-gray-600 dark:text-gray-300">{{ 'settings.webhook.delivery.delivered'|trans }}</dt>
                                     <dd class="text-gray-900 dark:text-gray-100">{{ delivery.deliveredTime ? delivery.deliveredTime|date('Y-m-d H:i:s') : '—' }}</dd>
                                 </div>
                                 <div class="flex justify-between gap-4 px-4 py-2 bg-gray-50 dark:bg-gray-700">
-                                    <dt class="font-medium text-gray-600 dark:text-gray-400">{{ 'settings.webhook.delivery.response_status'|trans }}</dt>
+                                    <dt class="font-medium text-gray-600 dark:text-gray-300">{{ 'settings.webhook.delivery.response_status'|trans }}</dt>
                                     <dd class="text-gray-900 dark:text-gray-100">{{ delivery.responseCode ?? '—' }}</dd>
                                 </div>
                             </dl>

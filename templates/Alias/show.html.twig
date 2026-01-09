@@ -15,7 +15,7 @@
         <div class="max-w-5xl mx-auto">
                 {# Brief motivational explanation #}
                 <div class="mb-8 text-center">
-                    <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl mx-auto">
+                    <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto">
                         {{ "index.alias-motivation"|trans|safe_html }}
                     </p>
                 </div>
@@ -31,7 +31,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ "custom-aliases.title"|trans }}</h3>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ "custom-aliases.subtitle"|trans({
+                                    <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ "custom-aliases.subtitle"|trans({
                                         '%alias_limit_custom%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_CUSTOM')
                                     }) }}</p>
                                 </div>
@@ -60,7 +60,7 @@
 
                                 {# Management hint #}
                                 <div class="mt-4 pt-3">
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ "custom-aliases.management-hint"|trans|raw }}</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-300">{{ "custom-aliases.management-hint"|trans|raw }}</p>
                                 </div>
                             </div>
 
@@ -107,7 +107,7 @@
                             {# Alias list section - flexible height #}
                             <div class="space-y-2">
                                 {%  if aliases_custom is empty %}
-                                    <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                                    <div class="text-center py-8 text-gray-500 dark:text-gray-300">
                                         {{ ux_icon('heroicons:inbox', {class: 'w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600'}) }}
                                         <p class="text-sm">{{ "index.alias-empty"|trans({'%alias_type%': 'custom'|trans}) }}</p>
                                     </div>
@@ -142,7 +142,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ "random-aliases.title"|trans }}</h3>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ "random-aliases.subtitle"|trans({
+                                    <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ "random-aliases.subtitle"|trans({
                                         '%alias_limit_random%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_RANDOM')
                                     }) }}</p>
                                 </div>
@@ -169,7 +169,7 @@
 
                                 {# Management hint #}
                                 <div class="mt-4 pt-3">
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ "random-aliases.management-hint"|trans|raw }}</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-300">{{ "random-aliases.management-hint"|trans|raw }}</p>
                                 </div>
                             </div>
 
@@ -209,7 +209,7 @@
                             {# Alias list section - flexible height #}
                             <div class="space-y-2">
                                 {%  if aliases_random is empty %}
-                                    <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                                    <div class="text-center py-8 text-gray-500 dark:text-gray-300">
                                         {{ ux_icon('heroicons:inbox', {'class': 'w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600'}) }}
                                         <p class="text-sm">{{ "index.alias-empty"|trans({'%alias_type%': 'random'|trans}) }}</p>
                                     </div>

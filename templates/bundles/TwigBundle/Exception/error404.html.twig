@@ -39,7 +39,7 @@
             </div>
 
             {# Error message #}
-            <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
+            <p class="text-lg text-gray-600 dark:text-gray-300 mb-8">
                 {% if status_code == 404 %}
                     {{ "error.page_not_found"|trans|default("The page you requested does not exist.") }}
                 {% else %}

@@ -4,7 +4,8 @@
         {# Home #}
         <a href="{{ path('start') }}"
            class="flex items-center justify-center px-2 md:px-3 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:scale-105 {{ current_route == 'start' ? 'bg-white/20 text-white shadow-lg' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}"
-           title="{{ "navbar.home"|trans }}">
+           title="{{ "navbar.home"|trans }}"
+           {{ current_route == 'start' ? 'aria-current="page"' : '' }}>
             {{ ux_icon('heroicons:home-solid', {'class': 'w-4 h-4 mr-1 flex-shrink-0'}) }}
             <span class="text-xs md:text-sm">{{ "navbar.home"|trans }}</span>
         </a>
@@ -13,7 +14,8 @@
         {% if app.user.domain == domain and not is_granted('ROLE_SUSPICIOUS') %}
             <a href="{{ path('vouchers') }}"
                class="flex items-center justify-center px-2 md:px-3 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:scale-105 {{ current_route == 'vouchers' ? 'bg-white/20 text-white shadow-lg' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}"
-               title="{{ "navbar.vouchers"|trans }}">
+               title="{{ "navbar.vouchers"|trans }}"
+               {{ current_route == 'vouchers' ? 'aria-current="page"' : '' }}>
                 {{ ux_icon('heroicons:ticket-solid', {'class': 'w-4 h-4 mr-1 flex-shrink-0'}) }}
                 <span class="text-xs md:text-sm">{{ "navbar.vouchers"|trans }}</span>
             </a>
@@ -22,7 +24,8 @@
         {# Aliases #}
         <a href="{{ path('aliases') }}"
            class="flex items-center justify-center px-2 md:px-3 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:scale-105 {{ current_route == 'aliases' ? 'bg-white/20 text-white shadow-lg' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}"
-           title="{{ "navbar.aliases"|trans }}">
+           title="{{ "navbar.aliases"|trans }}"
+           {{ current_route == 'aliases' ? 'aria-current="page"' : '' }}>
             {{ ux_icon('heroicons:at-symbol', {'class': 'w-4 h-4 mr-1 flex-shrink-0'}) }}
             <span class="text-xs md:text-sm">{{ "navbar.aliases"|trans }}</span>
         </a>
@@ -30,7 +33,8 @@
         {# Konto #}
         <a href="{{ path('account') }}"
            class="flex items-center justify-center px-2 md:px-3 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:scale-105 {{ current_route == 'account' ? 'bg-white/20 text-white shadow-lg' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}"
-           title="{{ "navbar.account"|trans }}">
+           title="{{ "navbar.account"|trans }}"
+           {{ current_route == 'account' ? 'aria-current="page"' : '' }}>
             {{ ux_icon('heroicons:cog-6-tooth-solid', {'class': 'w-4 h-4 mr-1 flex-shrink-0'}) }}
             <span class="text-xs md:text-sm">{{ "navbar.account"|trans }}</span>
         </a>
@@ -39,7 +43,8 @@
         {% if is_granted('ROLE_ADMIN') %}
             <a href="{{ path('settings_show') }}"
                class="flex items-center justify-center px-2 md:px-3 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:scale-105 {{ current_route starts with 'settings' ? 'bg-white/20 text-white shadow-lg' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}"
-               title="{{ "navbar_right.settings"|trans }}">
+               title="{{ "navbar_right.settings"|trans }}"
+               {{ current_route starts with 'settings' ? 'aria-current="page"' : '' }}>
                 {{ ux_icon('heroicons:adjustments-horizontal', {'class': 'w-4 h-4 mr-1 flex-shrink-0'}) }}
                 <span class="text-xs md:text-sm">{{ "navbar_right.settings"|trans }}</span>
             </a>

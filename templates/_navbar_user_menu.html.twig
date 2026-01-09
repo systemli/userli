@@ -6,7 +6,8 @@
                 id="dark-mode-toggle"
                 class="hidden sm:inline-flex items-center justify-center p-2 rounded-2xl text-gray-300 hover:text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300 hover:scale-105"
                 title="{{ 'navbar.toggle-dark-mode'|trans|default('Toggle Dark Mode') }}"
-                aria-label="{{ 'navbar.toggle-dark-mode'|trans|default('Toggle Dark Mode') }}">
+                aria-label="{{ 'navbar.toggle-dark-mode'|trans|default('Toggle Dark Mode') }}"
+                aria-pressed="false">
             {# Sun icon (shown in dark mode) #}
             {{ ux_icon('heroicons:sun', {class: 'icon-sun w-5 h-5 hidden'}) }}
             {# Moon icon (shown in light mode) #}
@@ -35,13 +36,13 @@
                  aria-orientation="vertical"
                  aria-labelledby="user-menu-button">
                 <div class="px-5 py-4" role="none">
-                    <div class="text-xs text-gray-500 dark:text-gray-400">{{ "navbar.signed-in-as"|trans }}</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-300">{{ "navbar.signed-in-as"|trans }}</div>
                     <div class="font-semibold break-all text-sm leading-5 text-gray-700 dark:text-gray-300 mt-1">{{ app.user.email }}</div>
                 </div>
 
                 <div class="px-5 py-3" role="none">
                     {# Language Switcher in User Dropdown #}
-                    <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
+                    <div class="text-xs font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wider mb-2">
                         {{ "navbar.language"|trans }}
                     </div>
                     {% include '_locale_switcher.html.twig' with {'dropdown_mode': true} %}

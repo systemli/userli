@@ -10,7 +10,7 @@
     <div class="max-w-5xl mx-auto">
                 {# Brief information explanation #}
                 <div class="mb-8 text-center">
-                    <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl mx-auto">
+                    <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto">
                         {{ "openpgp.information-details"|trans|raw }}
                     </p>
                 </div>
@@ -36,7 +36,7 @@
                                         <div>
                                             <dl class="space-y-4 mb-6">
                                                 <div>
-                                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-300">
                                                         {{ "openpgp.keyid-label"|trans }}
                                                     </dt>
                                                     <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100 font-mono break-all bg-gray-50 dark:bg-gray-700 rounded px-2 py-1">
@@ -45,7 +45,7 @@
                                                 </div>
 
                                                 <div>
-                                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-300">
                                                         {{ "openpgp.fingerprint-label"|trans }}
                                                     </dt>
                                                     <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100 font-mono break-all bg-gray-50 dark:bg-gray-700 rounded px-2 py-1">
@@ -55,7 +55,7 @@
 
                                                 {% if openpgp_key.keyExpireTime %}
                                                     <div>
-                                                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-300">
                                                             {{ "openpgp.expiretime-label"|trans }}
                                                         </dt>
                                                         <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100 font-medium">
@@ -64,7 +64,7 @@
                                                     </div>
                                                 {% else %}
                                                     <div>
-                                                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-300">
                                                             {{ "openpgp.expiretime-label"|trans }}
                                                         </dt>
                                                         <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100 font-medium">
@@ -86,7 +86,7 @@
                                         <div class="flex-grow flex flex-col items-center justify-center text-center py-10 bg-gray-50 dark:bg-gray-700 rounded-lg">
                                             {{ ux_icon('heroicons:key', {'class': 'w-16 h-16 text-gray-400 dark:text-gray-500 mb-4'}) }}
                                             <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-3 px-4">{{ "openpgp.no-key-uploaded"|trans }}</h3>
-                                            <p class="text-gray-600 dark:text-gray-400 max-w-xs mx-auto px-4 pb-4">{{ "openpgp.upload-prompt"|trans }}</p>
+                                            <p class="text-gray-600 dark:text-gray-300 max-w-xs mx-auto px-4 pb-4">{{ "openpgp.upload-prompt"|trans }}</p>
                                         </div>
                                     {% endif %}
                                 </div>
@@ -136,7 +136,7 @@
                                         </div>
 
                                         <div class="text-center">
-                                            <span class="inline-flex items-center px-3 py-1 text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 rounded-full">
+                                            <span class="inline-flex items-center px-3 py-1 text-sm text-gray-500 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-full">
                                                 {{ "openpgp-key-upload-or"|trans }}
                                             </span>
                                         </div>

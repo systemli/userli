@@ -20,7 +20,7 @@
         {% for locale in locales %}
             <a
                 href="{{ path(route, params|merge({ _locale: locale })) }}"
-                class="flex items-center px-2 py-1.5 text-sm rounded-xl transition-all duration-200 {{ locale == app.request.locale ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 font-medium' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-200' }}"
+                class="flex items-center px-2 py-1.5 text-sm rounded-xl transition-all duration-200 {{ locale == app.request.locale ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 font-medium' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-200' }}"
             >
                 <span class="flex-shrink-0 w-5 h-5 mr-2 rounded-full {{ locale == app.request.locale ? 'bg-blue-100 dark:bg-blue-800 text-blue-600 dark:text-blue-300' : 'bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300' }} flex items-center justify-center text-xs font-medium transition-colors duration-200">
                     {{ locale|upper }}

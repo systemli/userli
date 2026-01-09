@@ -13,7 +13,7 @@
                     <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">{{ "init.title"|trans }}</h1>
 
                     <div class="prose prose-gray dark:prose-invert max-w-none">
-                        <p class="text-lg text-gray-600 dark:text-gray-400 mb-4">{{ "init_settings.lead"|trans }}</p>
+                        <p class="text-lg text-gray-600 dark:text-gray-300 mb-4">{{ "init_settings.lead"|trans }}</p>
                         <p class="text-gray-700 dark:text-gray-300">{{ "init_settings.text"|trans }}</p>
                     </div>
 
@@ -42,7 +42,7 @@
                             </div>
                             <div>
                                 <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ "init_settings.form.title"|trans }}</h3>
-                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ "init_settings.form.description"|trans }}</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ "init_settings.form.description"|trans }}</p>
                             </div>
                         </div>
 
@@ -66,7 +66,7 @@
                                         }[category] %}
 
                                         <div class="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mr-3">
-                                            {{ ux_icon(category_icon, {class: 'w-4 h-4 text-gray-600 dark:text-gray-400'}) }}
+                                            {{ ux_icon(category_icon, {class: 'w-4 h-4 text-gray-600 dark:text-gray-300'}) }}
                                         </div>
                                         <h4 class="text-base font-medium text-gray-900 dark:text-gray-100">
                                             {{ ("settings.form.category." ~ category)|trans }}
@@ -82,7 +82,7 @@
                                                     }) }}
                                                     {{ form_errors(form[fieldName]) }}
                                                     {{ form_widget(form[fieldName]) }}
-                                                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ ("settings.form." ~ fieldName ~ ".help")|trans }}</p>
+                                                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-300">{{ ("settings.form." ~ fieldName ~ ".help")|trans }}</p>
                                                 </div>
                                             {% endif %}
                                         {% endfor %}

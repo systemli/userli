@@ -1,3 +1,6 @@
+accessibility:
+  skip-to-content: Zum Inhalt springen
+
 navbar:
   home: Home
   vouchers: Invites
@@ -54,6 +57,7 @@ index:
   alias-active-random: Aktive zufällige Aliase
 
 form:
+  required: Pflichtfeld
   signin-header: Anmelden
   signin-subtitle: Willkommen zurück zu deinem Konto
   register-header: Konto erstellen
@@ -146,6 +150,7 @@ account:
     setup-button: Einrichten
     qr-code-lead: QR-Code
     qr-code-description: Scanne den QR-Code mit deiner Zwei-Faktor-Authentifizierungs-App.
+    qr-code-alt: QR-Code für die Zwei-Faktor-Authentifizierungs-Einrichtung. Falls du ihn nicht scannen kannst, nutze den Setup-Schlüssel unten.
     backup-ack-lead: Backup-Codes
     backup-ack-description: Backup-Codes für die Zwei-Faktor-Authentifizierung. Kopiere und speichere sie an einem sicheren Ort.
     setup-key: Setup Schlüssel
