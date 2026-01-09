@@ -1,33 +1,43 @@
 <!DOCTYPE html>
-<html lang="{{ app.request.locale|default('en') }}">
+<html lang="{{ app.request.locale|default('en') }}" class="dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% if domain is defined %}{{ domain }} - {% endif %}{{ "error.title"|trans|default("Oops, an error occurred.") }}</title>
     <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
 </head>
-<body>
-    <div class="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
+<body class="bg-gray-50 dark:bg-gray-900">
+    <div class="min-h-screen flex flex-col items-center justify-center px-4">
         <div class="max-w-md text-center">
             {# Error icon and title #}
             <div class="mb-8">
                 {# Heroicons: shield-exclamation #}
-                <div class="w-24 h-24 mx-auto mb-6 bg-red-100 rounded-xl flex items-center justify-center">
-                    {{ ux_icon('heroicons:shield-exclamation', {'class': 'w-12 h-12 text-red-600'}) }}
+                <div class="w-24 h-24 mx-auto mb-6 bg-red-100 dark:bg-red-900/50 rounded-xl flex items-center justify-center">
+                    {{ ux_icon('heroicons:shield-exclamation', {'class': 'w-12 h-12 text-red-600 dark:text-red-400'}) }}
                 </div>
-                <h1 class="text-4xl font-bold text-gray-900 mb-4">
+                <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                     {{ "error.title"|trans|default("Oops, an error occurred.") }}
                 </h1>
             </div>
 
             {# Error message #}
-            <p class="text-lg text-gray-600 mb-8">
+            <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
                 {{ "error.access_denied"|trans|default("Access denied. You don't have permission to access this resource.") }}
             </p>
 
             {# Back to home button #}
             <a href="/"
-               class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
+               class="inline-flex items-center px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors duration-200">
                 {# Heroicons: arrow-left #}
                 {{ ux_icon('heroicons:arrow-left', {'class': 'w-5 h-5 mr-2'}) }}
                 {{ "error.back_link"|trans|default("Back to home") }}

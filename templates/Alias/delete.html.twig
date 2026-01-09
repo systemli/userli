@@ -7,12 +7,12 @@
 {% block step_title %}{{ "delete.alias.headline_generic"|trans }}{% endblock %}
 
 {% block step_description %}
-    <p class="text-gray-600">{{ "delete.alias.lead_specific"|trans({'%alias%': alias.source})|safe_html }}</p>
+    <p class="text-gray-600 dark:text-gray-400">{{ "delete.alias.lead_specific"|trans({'%alias%': alias.source})|safe_html }}</p>
 {% endblock %}
 
 {% block step_icon %}
-    <div class="w-16 h-16 bg-red-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-        {{ ux_icon('heroicons:trash', {'class': 'w-8 h-8 text-red-600'}) }}
+    <div class="w-16 h-16 bg-red-100 dark:bg-red-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+        {{ ux_icon('heroicons:trash', {'class': 'w-8 h-8 text-red-600 dark:text-red-400'}) }}
     </div>
 {% endblock %}
 
@@ -22,7 +22,7 @@
 
     <div class="space-y-4">
         <div>
-            {{ form_label(form.password, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+            {{ form_label(form.password, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
             {{ form_errors(form.password) }}
             {{ form_widget(form.password, {
                 'attr': {
@@ -34,11 +34,11 @@
         <div class="flex flex-col sm:flex-row gap-3 pt-4">
             {{ form_widget(form.submit, {
                 'attr': {
-                    'class': 'w-full sm:w-auto bg-red-600 hover:bg-red-700 focus:ring-red-500'
+                    'class': 'w-full sm:w-auto bg-red-600 dark:bg-red-500 hover:bg-red-700 dark:hover:bg-red-600 focus:ring-red-500'
                 }
             }) }}
             <a href="{{ path('aliases') }}"
-               class="w-full sm:w-auto px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200 text-center">
+               class="w-full sm:w-auto px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200 text-center">
                 {{ "delete.cancel"|trans }}
             </a>
         </div>

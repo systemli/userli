@@ -16,18 +16,18 @@
 
             {# Information sidebar #}
             <div class="order-2 lg:order-1">
-                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 sm:p-8">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-4">
+                <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 sm:p-8">
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
                         {{ "registration.information"|trans }}
                     </h2>
                     <div class="space-y-4">
-                        <p class="text-sm text-gray-700 leading-relaxed">
+                        <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
                             {{ "registration.information-intro"|trans({'%domain%': domain, '%project_name%': setting('project_name'), '%project_url%': setting('project_url')})|raw }}
                         </p>
-                        <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                        <div class="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
                             <div class="flex items-start">
-                                {{ ux_icon('heroicons:exclamation-triangle', {'class': 'w-5 h-5 text-amber-400 mt-0.5 mr-3 flex-shrink-0'}) }}
-                                <div class="text-sm text-amber-700 leading-relaxed">
+                                {{ ux_icon('heroicons:exclamation-triangle', {'class': 'w-5 h-5 text-amber-400 dark:text-amber-500 mt-0.5 mr-3 flex-shrink-0'}) }}
+                                <div class="text-sm text-amber-700 dark:text-amber-200 leading-relaxed">
                                     {{ "account.password.help"|trans|raw }}
                                 </div>
                             </div>
@@ -38,17 +38,17 @@
 
             {# Registration form card #}
             <div class="order-1 lg:order-2">
-                <div class="bg-white shadow-xl rounded-2xl border border-gray-100 overflow-hidden">
+                <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl border border-gray-100 dark:border-gray-700 overflow-hidden">
                     {# Form section #}
                     <div class="px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
                         {# Form errors with improved accessibility #}
                         {% if form.vars.errors|length > 0 %}
-                            <div class="mb-6 p-4 rounded-lg bg-red-50 border border-red-200" role="alert" aria-live="polite">
+                            <div class="mb-6 p-4 rounded-lg bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800" role="alert" aria-live="polite">
                                 <div class="flex items-start">
-                                    {{ ux_icon('heroicons:x-circle', {'class': 'w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0'}) }}
+                                    {{ ux_icon('heroicons:x-circle', {'class': 'w-5 h-5 text-red-400 dark:text-red-500 mt-0.5 mr-3 flex-shrink-0'}) }}
                                     <div>
-                                        <h3 class="text-sm font-medium text-red-800 mb-1">{{ "form.errors-found"|trans }}</h3>
-                                        <ul class="text-sm text-red-700 space-y-1">
+                                        <h3 class="text-sm font-medium text-red-800 dark:text-red-200 mb-1">{{ "form.errors-found"|trans }}</h3>
+                                        <ul class="text-sm text-red-700 dark:text-red-300 space-y-1">
                                             {% for error in form.vars.errors %}
                                                 <li>{{ error.message|trans }}</li>
                                             {% endfor %}
@@ -70,13 +70,13 @@
                             <div class="space-y-2">
                                 {{ form_label(form.voucher, null, {
                                     'label_attr': {
-                                        'class': 'block text-sm font-medium text-gray-700'
+                                        'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300'
                                     }
                                 }) }}
                                 <div class="relative">
                                     {{ form_widget(form.voucher, {
                                         'attr': {
-                                            'class': 'block w-full px-3 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors duration-200' ~ (form.voucher.vars.errors|length > 0 ? ' border-red-300 focus:ring-red-500 focus:border-red-500' : ''),
+                                            'class': 'block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors duration-200' ~ (form.voucher.vars.errors|length > 0 ? ' border-red-300 dark:border-red-600 focus:ring-red-500 focus:border-red-500' : ''),
                                             'autofocus': '',
                                             'autocomplete': 'off',
                                             'aria-describedby': form.voucher.vars.errors|length > 0 ? 'voucher-error' : null
@@ -84,7 +84,7 @@
                                     }) }}
                                 </div>
                                 {% if form.voucher.vars.errors|length > 0 %}
-                                    <div id="voucher-error" class="text-sm text-red-600 mt-1" role="alert">
+                                    <div id="voucher-error" class="text-sm text-red-600 dark:text-red-400 mt-1" role="alert">
                                         {% for error in form.voucher.vars.errors %}
                                             <p>{{ error.message|trans }}</p>
                                         {% endfor %}
@@ -96,7 +96,7 @@
                             <div class="space-y-2">
                                 {{ form_label(form.email, null, {
                                     'label_attr': {
-                                        'class': 'block text-sm font-medium text-gray-700'
+                                        'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300'
                                     }
                                 }) }}
                                 <div class="relative">
@@ -109,7 +109,7 @@
                                     }) }}
                                 </div>
                                 {% if form.email.vars.errors|length > 0 %}
-                                    <div id="email-error" class="text-sm text-red-600 mt-1" role="alert">
+                                    <div id="email-error" class="text-sm text-red-600 dark:text-red-400 mt-1" role="alert">
                                         {% for error in form.email.vars.errors %}
                                             <p>{{ error.message|trans }}</p>
                                         {% endfor %}
@@ -123,20 +123,20 @@
                                 <div class="space-y-2">
                                     {{ form_label(form.plainPassword.first, null, {
                                         'label_attr': {
-                                            'class': 'block text-sm font-medium text-gray-700'
+                                            'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300'
                                         }
                                     }) }}
                                     <div class="relative">
                                         {{ form_widget(form.plainPassword.first, {
                                             'attr': {
-                                                'class': 'block w-full px-3 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors duration-200' ~ (form.plainPassword.first.vars.errors|length > 0 ? ' border-red-300 focus:ring-red-500 focus:border-red-500' : ''),
+                                                'class': 'block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors duration-200' ~ (form.plainPassword.first.vars.errors|length > 0 ? ' border-red-300 dark:border-red-600 focus:ring-red-500 focus:border-red-500' : ''),
                                                 'autocomplete': 'new-password',
                                                 'aria-describedby': form.plainPassword.first.vars.errors|length > 0 ? 'password-error' : null
                                             }
                                         }) }}
                                     </div>
                                     {% if form.plainPassword.first.vars.errors|length > 0 %}
-                                        <div id="password-error" class="text-sm text-red-600 mt-1" role="alert">
+                                        <div id="password-error" class="text-sm text-red-600 dark:text-red-400 mt-1" role="alert">
                                             {% for error in form.plainPassword.first.vars.errors %}
                                                 <p>{{ error.message|trans }}</p>
                                             {% endfor %}
@@ -148,20 +148,20 @@
                                 <div class="space-y-2">
                                     {{ form_label(form.plainPassword.second, null, {
                                         'label_attr': {
-                                            'class': 'block text-sm font-medium text-gray-700'
+                                            'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300'
                                         }
                                     }) }}
                                     <div class="relative">
                                         {{ form_widget(form.plainPassword.second, {
                                             'attr': {
-                                                'class': 'block w-full px-3 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors duration-200' ~ (form.plainPassword.second.vars.errors|length > 0 ? ' border-red-300 focus:ring-red-500 focus:border-red-500' : ''),
+                                                'class': 'block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors duration-200' ~ (form.plainPassword.second.vars.errors|length > 0 ? ' border-red-300 dark:border-red-600 focus:ring-red-500 focus:border-red-500' : ''),
                                                 'autocomplete': 'new-password',
                                                 'aria-describedby': form.plainPassword.second.vars.errors|length > 0 ? 'password-confirm-error' : null
                                             }
                                         }) }}
                                     </div>
                                     {% if form.plainPassword.second.vars.errors|length > 0 %}
-                                        <div id="password-confirm-error" class="text-sm text-red-600 mt-1" role="alert">
+                                        <div id="password-confirm-error" class="text-sm text-red-600 dark:text-red-400 mt-1" role="alert">
                                             {% for error in form.plainPassword.second.vars.errors %}
                                                 <p>{{ error.message|trans }}</p>
                                             {% endfor %}
@@ -174,7 +174,7 @@
                             <div class="pt-4">
                                 {{ form_widget(form.submit, {
                                     'attr': {
-                                        'class': 'w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
+                                        'class': 'w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 focus:ring-blue-500 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
                                     }
                                 }) }}
                             </div>
@@ -183,15 +183,16 @@
                     </div>
 
                     {# Footer with login link #}
-                    <div class="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 bg-gray-50 border-t border-gray-100">
+                    <div class="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 bg-gray-50 dark:bg-gray-700 border-t border-gray-100 dark:border-gray-600">
                         <div class="text-center text-sm">
-                            <span class="text-gray-600">{{ "form.have-account"|trans }}</span>
-                            <a href="{{ path('login') }}" class="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200 ml-1">
+                            <span class="text-gray-600 dark:text-gray-400">{{ "form.have-account"|trans }}</span>
+                            <a href="{{ path('login') }}" class="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 transition-colors duration-200 ml-1">
                                 {{ "form.signin"|trans }}
                             </a>
                         </div>
                     </div>
                 </div>
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -5,13 +5,13 @@
     {{ form_errors(form) }}
 
     <div>
-        {{ form_label(form.email, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+        {{ form_label(form.email, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
         {{ form_errors(form.email) }}
         {{ form_widget(form.email) }}
     </div>
 
     <div>
-        {{ form_label(form.recoveryToken, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+        {{ form_label(form.recoveryToken, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
         {{ form_errors(form.recoveryToken) }}
         {{ form_widget(form.recoveryToken, {
             'attr': {
@@ -28,7 +28,7 @@
             }
         }) }}
         <a href="{{ url('index') }}"
-           class="w-full sm:w-auto px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200 text-center">
+           class="w-full sm:w-auto px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200 text-center">
             {{ "recovery.cancel"|trans }}
         </a>
     </div>

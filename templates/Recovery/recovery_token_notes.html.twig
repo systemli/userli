@@ -1,9 +1,9 @@
-<div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+<div class="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
     <div class="flex items-start">
-        {{ ux_icon('heroicons:information-circle-solid', {'class': 'w-5 h-5 text-blue-500 mt-0.5 mr-3'}) }}
-        <div class="text-sm text-blue-800">
+        {{ ux_icon('heroicons:information-circle-solid', {'class': 'w-5 h-5 text-blue-500 dark:text-blue-400 mt-0.5 mr-3'}) }}
+        <div class="text-sm text-blue-800 dark:text-blue-200">
             <p class="font-medium mb-2">{{ "recovery-token.created-info"|trans }}</p>
-            <hr class="my-2 border-blue-200" />
+            <hr class="my-2 border-blue-200 dark:border-blue-700" />
             <p>{{ "recovery-token.displayed-once"|trans }}</p>
         </div>
     </div>

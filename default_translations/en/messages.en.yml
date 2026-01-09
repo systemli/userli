@@ -8,6 +8,9 @@ navbar:
   signed-in-as: Signed in as
   open-user-menu: Open user menu
   open-main-menu: Open main menu
+  toggle-dark-mode: Toggle dark mode
+  dark-mode: Dark mode
+  light-mode: Light mode
 
 start:
   title: Welcome to %domain%

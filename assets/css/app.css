@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
+/* Dark Mode Configuration - Uses system preference by default */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Tooltip Styles */
 .tooltip {
   @apply absolute z-50 px-2 py-1 text-sm text-white bg-gray-900 rounded shadow-lg pointer-events-none;
+  @apply dark:bg-gray-700 dark:text-gray-100;
   max-width: 200px;
   word-wrap: break-word;
 }
@@ -22,6 +26,7 @@
 /* Popover Styles */
 .popover {
   @apply absolute z-50 max-w-xs bg-white border border-gray-200 rounded-lg shadow-lg;
+  @apply dark:bg-gray-800 dark:border-gray-700;
 }
 
 .popover.fade {
@@ -34,8 +39,10 @@
 
 .popover-title {
   @apply px-3 py-2 text-sm font-semibold text-gray-900 border-b border-gray-200 bg-gray-50 rounded-t-lg;
+  @apply dark:text-gray-100 dark:border-gray-700 dark:bg-gray-700;
 }
 
 .popover-content {
   @apply px-3 py-2 text-sm text-gray-700;
+  @apply dark:text-gray-300;
 }

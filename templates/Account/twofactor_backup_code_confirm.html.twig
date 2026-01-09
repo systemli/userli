@@ -13,26 +13,26 @@
         <div class="max-w-5xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Left column: Backup Codes and Acknowledgment Form -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-8">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 sm:p-8">
                     <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mr-4">
+                        <div class="w-12 h-12 bg-green-100 dark:bg-green-900/50 rounded-xl flex items-center justify-center mr-4">
                             <!-- Heroicon name: outline/key -->
-                            {{ ux_icon('heroicons:key', {'class': 'w-6 h-6 text-green-600'}) }}
+                            {{ ux_icon('heroicons:key', {'class': 'w-6 h-6 text-green-600 dark:text-green-400'}) }}
                         </div>
-                        <h2 class="text-xl font-semibold text-gray-900">
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
                             {{ "account.twofactor.backup-ack-lead"|trans }}
                         </h2>
                     </div>
 
-                    <p class="text-gray-600 mb-6">
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">
                         {{ "account.twofactor.backup-ack-description"|trans }}
                     </p>
 
                     <!-- Backup Codes Display -->
-                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
+                    <div class="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-6 mb-8">
                         <div class="mb-4 flex items-center justify-start">
                             <button type="button"
-                                    class="inline-flex items-center p-2 text-xs font-medium text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+                                    class="inline-flex items-center p-2 text-xs font-medium text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-md hover:bg-gray-50 dark:hover:bg-gray-500 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-700 transition-colors duration-200"
                                     data-button="copy-to-clipboard"
                                     data-value="{% for key, value in user.totpBackupCodes %}{{ value }}{{ not loop.last ? '\n' : '' }}{% endfor %}"
                                     title="{{ "copy-to-clipboard"|trans }}"
@@ -42,7 +42,7 @@
                         </div>
                         <div class="grid grid-cols-2 gap-2 font-mono text-sm">
                             {% for key, value in user.totpBackupCodes %}
-                                <div class="bg-white px-3 py-2 rounded border text-center tracking-wider">
+                                <div class="bg-white dark:bg-gray-600 px-3 py-2 rounded border dark:border-gray-500 text-center tracking-wider text-gray-900 dark:text-gray-100">
                                     {{ value }}
                                 </div>
                             {% endfor %}
@@ -62,7 +62,7 @@
                         <div class="flex-1">
                             {{ form_label(form.confirm, null, {
                                 'label_attr': {
-                                    'class': 'text-sm text-gray-700 cursor-pointer leading-5'
+                                    'class': 'text-sm text-gray-700 dark:text-gray-300 cursor-pointer leading-5'
                                 }
                             }) }}
                             {{ form_errors(form.confirm) }}
@@ -72,7 +72,7 @@
                     <div class="pt-4">
                         {{ form_widget(form.submit, {
                             'attr': {
-                                'class': 'w-full px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200'
+                                'class': 'w-full px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200'
                             }
                         }) }}
                     </div>

@@ -1,15 +1,15 @@
 {# Mobile menu, show/hide based on menu state (only on small screens) #}
 <div class="md:hidden hidden mt-3" id="mobile-menu">
-    <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl ring-1 ring-black/10 divide-y divide-gray-100/50 max-h-[calc(100vh-8rem)] overflow-y-auto">
+    <div class="bg-white/95 dark:bg-gray-800/95 backdrop-blur-md rounded-3xl shadow-2xl ring-1 ring-black/10 dark:ring-white/10 divide-y divide-gray-100/50 dark:divide-gray-700/50 max-h-[calc(100vh-8rem)] overflow-y-auto">
         {# User Info Section #}
         <div class="p-3 sm:p-4">
             <div class="flex items-center space-x-3">
                 <div class="flex-shrink-0">
-                    {{ ux_icon('heroicons:user-solid', {class: 'w-6 h-6 sm:w-8 sm:h-8 text-gray-500'}) }}
+                    {{ ux_icon('heroicons:user-solid', {class: 'w-6 h-6 sm:w-8 sm:h-8 text-gray-500 dark:text-gray-400'}) }}
                 </div>
                 <div class="min-w-0 flex-1">
-                    <div class="font-semibold text-gray-900 break-all text-xs sm:text-sm leading-4 sm:leading-5">{{ app.user.email }}</div>
-                    <div class="text-xs text-gray-500">{{ "navbar.signed-in-as"|trans }}</div>
+                    <div class="font-semibold text-gray-900 dark:text-gray-100 break-all text-xs sm:text-sm leading-4 sm:leading-5">{{ app.user.email }}</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400">{{ "navbar.signed-in-as"|trans }}</div>
                 </div>
             </div>
         </div>
@@ -17,40 +17,40 @@
         {# Main Navigation #}
         <div class="p-3 sm:p-4 space-y-1 sm:space-y-2">
             <a href="{{ path('start') }}"
-               class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route == 'start' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+               class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route == 'start' ? 'bg-gray-900 dark:bg-gray-700 text-white shadow-lg' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}">
                 {{ ux_icon('heroicons:home-solid', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
                 {{ "navbar.home"|trans }}
             </a>
 
             {% if app.user.domain == domain and not is_granted('ROLE_SUSPICIOUS') %}
                 <a href="{{ path('vouchers') }}"
-                   class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route == 'vouchers' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                   class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route == 'vouchers' ? 'bg-gray-900 dark:bg-gray-700 text-white shadow-lg' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}">
                     {{ ux_icon('heroicons:ticket-solid', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
                     {{ "navbar.vouchers"|trans }}
                 </a>
             {% endif %}
 
             <a href="{{ path('aliases') }}"
-               class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route == 'aliases' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+               class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route == 'aliases' ? 'bg-gray-900 dark:bg-gray-700 text-white shadow-lg' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}">
                 {{ ux_icon('heroicons:at-symbol', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
                 {{ "navbar.aliases"|trans }}
             </a>
 
             <a href="{{ path('account') }}"
-               class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route == 'account' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+               class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route == 'account' ? 'bg-gray-900 dark:bg-gray-700 text-white shadow-lg' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}">
                 {{ ux_icon('heroicons:cog-6-tooth-solid', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
                 {{ "navbar.account"|trans }}
             </a>
 
             {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('settings_show') }}"
-                   class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route starts with 'settings' ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900' }}">
+                   class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route starts with 'settings' ? 'bg-gray-900 dark:bg-gray-700 text-white shadow-lg' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}">
                     {{ ux_icon('heroicons:adjustments-horizontal', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
                     {{ "navbar_right.settings"|trans }}
                 </a>
             {% elseif is_granted('ROLE_DOMAIN_ADMIN') %}
                 <a href="{{ path('sonata_admin_dashboard') }}"
-                   class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-all duration-300">
+                   class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-300">
                     {{ ux_icon('heroicons:shield-check-solid', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
                     {{ "navbar_right.admin"|trans }}
                 </a>
@@ -59,16 +59,28 @@
 
         {# Language Switcher Section #}
         <div class="p-3 sm:p-4">
-            <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 sm:mb-3">
+            <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2 sm:mb-3">
                 {{ "navbar.language"|trans }}
             </div>
             {% include '_locale_switcher.html.twig' with {'dropdown_mode': true} %}
         </div>
 
+        {# Dark Mode Toggle Section #}
+        <div class="p-3 sm:p-4">
+            <button type="button"
+                    onclick="window.toggleDarkMode(); this.querySelector('.icon-sun').classList.toggle('hidden'); this.querySelector('.icon-moon').classList.toggle('hidden');"
+                    class="flex items-center w-full px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-300">
+                {{ ux_icon('heroicons:sun', {class: 'icon-sun w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0 hidden'}) }}
+                {{ ux_icon('heroicons:moon', {class: 'icon-moon w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
+                <span class="dark:hidden">{{ "navbar.dark-mode"|trans|default('Dark Mode') }}</span>
+                <span class="hidden dark:inline">{{ "navbar.light-mode"|trans|default('Light Mode') }}</span>
+            </button>
+        </div>
+
         {# Logout Section #}
         <div class="p-3 sm:p-4">
             <a href="{{ path('logout') }}"
-               class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium text-red-600 hover:bg-red-50 hover:text-red-700 transition-all duration-300">
+               class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-700 dark:hover:text-red-300 transition-all duration-300">
                 {{ ux_icon('heroicons:arrow-right-on-rectangle', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
                 {{ "navbar_right.logout"|trans }}
             </a>
