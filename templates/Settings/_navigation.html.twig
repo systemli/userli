@@ -10,7 +10,7 @@
         <div class="flex space-x-1">
             {# General/Home Link #}
             <a href="{{ path('settings_show') }}"
-               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'general' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
+               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'general' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
                 <!-- heroicons:cog-8-tooth -->
                 {{ ux_icon('heroicons:cog-8-tooth', {class: 'w-4 h-4 mr-2'}) }}
                 {{ "settings.navigation.general"|trans }}
@@ -18,27 +18,27 @@
 
             {# API Tokens Link #}
             <a href="{{ path('settings_api_show') }}"
-               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'api' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
+               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'api' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
                 <!-- heroicons:key -->
                 {{ ux_icon('heroicons:key', {class: 'w-4 h-4 mr-2'}) }}
                 {{ "settings.navigation.api"|trans }}
             </a>
 
             <a href="{{ path('settings_webhook_endpoint_index') }}"
-               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'webhooks' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
+               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'webhooks' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
                 {{ ux_icon('heroicons:cursor-arrow-rays', {class: 'w-4 h-4 mr-2'}) }}
                 {{ 'settings.navigation.webhooks'|trans }}
             </a>
 
             <a href="{{ path('settings_maintenance_show') }}"
-               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'maintenance' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
+               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'maintenance' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
                 {# heroicons:building-library chosen per request #}
                 {{ ux_icon('heroicons:building-library', {class: 'w-4 h-4 mr-2'}) }}
                 {{ 'settings.navigation.maintenance'|trans }}
             </a>
 
             <a href="{{ path('sonata_admin_dashboard') }}"
-                class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'admin' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
+                class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'admin' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
                 <!-- heroicons:shield-check -->
                 {{ ux_icon('heroicons:shield-check', {class: 'w-4 h-4 mr-2'}) }}
                 Admin

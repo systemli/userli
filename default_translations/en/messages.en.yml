@@ -1,3 +1,6 @@
+accessibility:
+  skip-to-content: Skip to content
+
 navbar:
   language: Language
   select-language: Select language
@@ -58,6 +61,7 @@ index:
   alias-active-random: Active random aliases
 
 form:
+  required: Required field
   signin-header: Sign in
   signin-subtitle: Welcome back to your account
   register-header: Create account
@@ -150,6 +154,7 @@ account:
     setup-button: Set up
     qr-code-lead: QR Code
     qr-code-description: Scan the QR code below with your two-factor authenticator app.
+    qr-code-alt: QR code for two-factor authentication setup. If you cannot scan it, use the setup key below.
     backup-ack-lead: Backup Codes
     backup-ack-description: Backup codes for two-factor authentication. Copy and store them in a secure place.
     setup-key: Setup Key

@@ -10,7 +10,7 @@
     <div class="max-w-4xl mx-auto">
         {# Brief motivational explanation #}
         <div class="mb-8 text-center">
-            <p class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl mx-auto">
+            <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto">
                 {{ "index.voucher-explanation-short"|trans }}
             </p>
         </div>
@@ -98,19 +98,19 @@
                                 </div>
                             {% elseif user.creationTime|date('U') > '-7 days'|date('U') and not is_granted('ROLE_MULTIPLIER') %}
                                 {# Waiting period for regular users only #}
-                                <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                                <div class="text-center py-8 text-gray-500 dark:text-gray-300">
                                     {{ ux_icon('heroicons:clock', {'class': 'w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600'}) }}
                                     <p class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">{{ "index.voucher-waiting-title"|trans }}</p>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">
                                         {{ "index.voucher-disable"|trans({'%date%': user.creationTime|date_modify("+7 days")|date("d. F Y, H:i")}) }}
                                     </p>
                                 </div>
                             {% elseif is_granted('ROLE_MULTIPLIER') %}
                                 {# Empty state for multipliers with create button #}
-                                <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                                <div class="text-center py-8 text-gray-500 dark:text-gray-300">
                                     {{ ux_icon('heroicons:adjustments-horizontal', {'class': 'w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600'}) }}
                                     <p class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">{{ "index.voucher-empty-title"|trans }}</p>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">{{ "index.voucher-empty-multiplier"|trans }}</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-6">{{ "index.voucher-empty-multiplier"|trans }}</p>
 
                                     {# Create voucher button in empty state #}
                                     {{ form_start(voucher_form, {
@@ -144,10 +144,10 @@
                                 </div>
                             {% else %}
                                 {# Voucher limit reached for regular users #}
-                                <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                                <div class="text-center py-8 text-gray-500 dark:text-gray-300">
                                     {{ ux_icon('heroicons:information-circle-solid', {'class': 'w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600'}) }}
                                     <p class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">{{ "index.voucher-limit-title"|trans }}</p>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ "index.voucher-limit"|trans }}</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">{{ "index.voucher-limit"|trans }}</p>
                                 </div>
                             {% endif %}
                         {% endif %}

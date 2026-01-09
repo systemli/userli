@@ -82,6 +82,9 @@ function initializeDarkMode() {
     const sunIcon = darkModeToggle.querySelector(".icon-sun");
     const moonIcon = darkModeToggle.querySelector(".icon-moon");
 
+    // Update aria-pressed for accessibility
+    darkModeToggle.setAttribute("aria-pressed", isDark ? "true" : "false");
+
     if (sunIcon && moonIcon) {
       if (isDark) {
         sunIcon.classList.remove("hidden");

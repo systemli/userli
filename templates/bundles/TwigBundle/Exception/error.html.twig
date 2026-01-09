@@ -31,13 +31,13 @@
             </div>
 
             {# Error message #}
-            <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
+            <p class="text-lg text-gray-600 dark:text-gray-300 mb-8">
                 {{ "error.generic_error"|trans|default("An error occurred. We're sorry.") }}
             </p>
 
             {# Status code display if available #}
             {% if status_code is defined and status_code %}
-                <p class="text-sm text-gray-500 dark:text-gray-400 mb-8">
+                <p class="text-sm text-gray-500 dark:text-gray-300 mb-8">
                     Error {{ status_code }}
                 </p>
             {% endif %}
