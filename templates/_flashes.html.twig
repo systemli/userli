@@ -1,5 +1,5 @@
 {% if app.session.flashbag.peekAll|length > 0 %}
-    <div class="fixed top-28 right-4 z-50 space-y-3 max-w-sm w-full sm:max-w-md">
+    <div class="fixed top-28 right-4 z-40 space-y-3 max-w-sm w-full sm:max-w-md">
         {% for type, messages in app.session.flashbag.all %}
             {% for message in messages %}
                 <div class="flash-alert flex items-start p-4 rounded-lg shadow-lg border-l-4 transition-all duration-300 backdrop-blur-sm {% if type == 'error' %}bg-red-50/95 dark:bg-red-900/90 border-red-400 dark:border-red-500 text-red-800 dark:text-red-200{% elseif type == 'success' %}bg-green-50/95 dark:bg-green-900/90 border-green-400 dark:border-green-500 text-green-800 dark:text-green-200{% elseif type == 'info' %}bg-blue-50/95 dark:bg-blue-900/90 border-blue-400 dark:border-blue-500 text-blue-800 dark:text-blue-200{% elseif type == 'warning' %}bg-yellow-50/95 dark:bg-yellow-900/90 border-yellow-400 dark:border-yellow-500 text-yellow-800 dark:text-yellow-200{% else %}bg-gray-50/95 dark:bg-gray-800/90 border-gray-400 dark:border-gray-500 text-gray-800 dark:text-gray-200{% endif %}" role="alert" aria-live="polite">
