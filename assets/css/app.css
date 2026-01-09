@@ -3,6 +3,34 @@
 /* Dark Mode Configuration - Uses system preference by default */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Browser Autofill Styles - Override default browser autofill background */
+:root {
+  color-scheme: light dark;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+  color-scheme: dark;
+  background-color: #374151 !important;
+  color: #f3f4f6 !important;
+}
+
+/* Force dark background on autofilled inputs in Firefox */
+.dark input:-moz-autofill,
+.dark input:-moz-autofill:focus,
+.dark input:-moz-autofill:hover,
+.dark textarea:-moz-autofill,
+.dark select:-moz-autofill {
+  background-color: #374151 !important;
+  color: #f3f4f6 !important;
+  filter: none !important;
+}
+
 /* Tooltip Styles */
 .tooltip {
   @apply absolute z-50 px-2 py-1 text-sm text-white bg-gray-900 rounded shadow-lg pointer-events-none;
