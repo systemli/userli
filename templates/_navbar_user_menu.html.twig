@@ -1,6 +1,18 @@
 {# User dropdown menu for authenticated users #}
 {% if app.user %}
     <div class="flex items-center space-x-4 ml-auto">
+        {# Dark Mode Toggle #}
+        <button type="button"
+                id="dark-mode-toggle"
+                class="hidden sm:inline-flex items-center justify-center p-2 rounded-2xl text-gray-300 hover:text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300 hover:scale-105"
+                title="{{ 'navbar.toggle-dark-mode'|trans|default('Toggle Dark Mode') }}"
+                aria-label="{{ 'navbar.toggle-dark-mode'|trans|default('Toggle Dark Mode') }}">
+            {# Sun icon (shown in dark mode) #}
+            {{ ux_icon('heroicons:sun', {class: 'icon-sun w-5 h-5 hidden'}) }}
+            {# Moon icon (shown in light mode) #}
+            {{ ux_icon('heroicons:moon', {class: 'icon-moon w-5 h-5'}) }}
+        </button>
+
         {# User Dropdown - Visible on md screens and up #}
         <div class="hidden md:block relative" id="user-menu">
             <button type="button"
@@ -17,31 +29,31 @@
             </button>
 
             {# Dropdown menu #}
-            <div class="absolute right-0 z-50 mt-3 w-72 sm:w-80 origin-top-right bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl ring-1 ring-black/10 divide-y divide-gray-100/50 focus:outline-none opacity-0 scale-95 pointer-events-none transition-all duration-300"
+            <div class="absolute right-0 z-50 mt-3 w-72 sm:w-80 origin-top-right bg-white/95 dark:bg-gray-800/95 backdrop-blur-md rounded-3xl shadow-2xl ring-1 ring-black/10 dark:ring-white/10 divide-y divide-gray-100/50 dark:divide-gray-700/50 focus:outline-none opacity-0 scale-95 pointer-events-none transition-all duration-300"
                  id="user-menu-dropdown"
                  role="menu"
                  aria-orientation="vertical"
                  aria-labelledby="user-menu-button">
                 <div class="py-2" role="none">
-                    <div class="px-5 py-3 text-sm text-gray-700 border-b border-gray-100/50">
+                    <div class="px-5 py-3 text-sm text-gray-700 dark:text-gray-300 border-b border-gray-100/50 dark:border-gray-700/50">
                         <div class="font-semibold break-all text-sm leading-5">{{ app.user.email }}</div>
-                        <div class="text-xs text-gray-500 mt-1">{{ "navbar.signed-in-as"|trans }}</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ "navbar.signed-in-as"|trans }}</div>
                     </div>
                 </div>
 
                 <div class="py-2" role="none">
                     {# Language Switcher in User Dropdown #}
-                    <div class="px-5 py-3 border-b border-gray-100/50">
-                        <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                    <div class="px-5 py-3 border-b border-gray-100/50 dark:border-gray-700/50">
+                        <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
                             {{ "navbar.language"|trans }}
                         </div>
                         {% include '_locale_switcher.html.twig' with {'dropdown_mode': true} %}
                     </div>
 
                     <a href="{{ path('logout') }}"
-                       class="group flex items-center px-5 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-all duration-300 rounded-2xl mx-2"
+                       class="group flex items-center px-5 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-300 rounded-2xl mx-2"
                        role="menuitem">
-                        {{ ux_icon('heroicons:arrow-right-on-rectangle', {class: 'w-4 h-4 mr-3 text-gray-400 group-hover:text-gray-500'}) }}
+                        {{ ux_icon('heroicons:arrow-right-on-rectangle', {class: 'w-4 h-4 mr-3 text-gray-400 dark:text-gray-500 group-hover:text-gray-500 dark:group-hover:text-gray-400'}) }}
                         {{ "navbar_right.logout"|trans }}
                     </a>
                 </div>
@@ -66,6 +78,18 @@
 {% else %}
     {# Unauthenticated User Navigation - Brand left, Login + Language Switcher right #}
     <div class="flex items-center space-x-3 ml-auto">
+        {# Dark Mode Toggle #}
+        <button type="button"
+                id="dark-mode-toggle"
+                class="inline-flex items-center justify-center p-2 rounded-2xl text-gray-300 hover:text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300 hover:scale-105"
+                title="{{ 'navbar.toggle-dark-mode'|trans|default('Toggle Dark Mode') }}"
+                aria-label="{{ 'navbar.toggle-dark-mode'|trans|default('Toggle Dark Mode') }}">
+            {# Sun icon (shown in dark mode) #}
+            {{ ux_icon('heroicons:sun', {class: 'icon-sun w-5 h-5 hidden'}) }}
+            {# Moon icon (shown in light mode) #}
+            {{ ux_icon('heroicons:moon', {class: 'icon-moon w-5 h-5'}) }}
+        </button>
+
         <a href="{{ path('login') }}"
            class="flex items-center justify-center text-white hover:text-gray-200 px-3 lg:px-4 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:bg-white/10 hover:scale-105">
             {{ ux_icon('heroicons:arrow-right-on-rectangle', {class: 'w-4 h-4 mr-2 flex-shrink-0'}) }}

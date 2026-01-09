@@ -13,24 +13,24 @@
         {# Password Change card #}
         <div class="group h-full">
             <a href="{{ path('account_password') }}"
-               class="flex flex-col h-full bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+               class="flex flex-col h-full bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-xl hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                aria-describedby="password-desc">
                 <div class="flex flex-col h-full p-6 text-center">
                     <div class="flex-shrink-0">
-                        <div class="w-12 h-12 mx-auto mb-4 p-3 bg-blue-50 rounded-xl group-hover:bg-blue-100 transition-colors duration-200">
-                            {{ ux_icon('heroicons:key', {class: 'w-full h-full text-blue-600'}) }}
+                        <div class="w-12 h-12 mx-auto mb-4 p-3 bg-blue-50 dark:bg-blue-900/50 rounded-xl group-hover:bg-blue-100 dark:group-hover:bg-blue-900 transition-colors duration-200">
+                            {{ ux_icon('heroicons:key', {class: 'w-full h-full text-blue-600 dark:text-blue-400'}) }}
                         </div>
-                        <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-200">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
                             {{ "account.password.title"|trans }}
                         </h2>
-                        <p id="password-desc" class="text-sm text-gray-600 leading-relaxed mb-4">
+                        <p id="password-desc" class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
                             {{ "account.password.desc"|trans }}
                         </p>
                     </div>
                     <div class="flex-grow flex justify-center items-end">
                         <div class="flex-shrink-0">
                             {% if hasNotifications('password_compromised') %}
-                                <div class="inline-flex items-center px-2 py-1 bg-red-100 text-red-800 text-xs font-medium rounded-full">
+                                <div class="inline-flex items-center px-2 py-1 bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200 text-xs font-medium rounded-full">
                                     {{ ux_icon('heroicons:exclamation-triangle-20-solid', {class: 'w-3 h-3 mr-1'}) }}
                                     {{ 'notifications.password_compromised.title'|trans }}
                                 </div>
@@ -44,29 +44,29 @@
         {# Two Factor Authentication card #}
         <div class="group h-full">
             <a href="{{ path('account_twofactor') }}"
-               class="flex flex-col h-full bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+               class="flex flex-col h-full bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-xl hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                aria-describedby="twofactor-desc">
                 <div class="flex flex-col h-full p-6 text-center">
                     <div class="flex-shrink-0">
-                        <div class="w-12 h-12 mx-auto mb-4 p-3 bg-blue-50 rounded-xl group-hover:bg-blue-100 transition-colors duration-200">
-                            {{ ux_icon('heroicons:lock-closed', {class: 'w-full h-full text-blue-600'}) }}
+                        <div class="w-12 h-12 mx-auto mb-4 p-3 bg-blue-50 dark:bg-blue-900/50 rounded-xl group-hover:bg-blue-100 dark:group-hover:bg-blue-900 transition-colors duration-200">
+                            {{ ux_icon('heroicons:lock-closed', {class: 'w-full h-full text-blue-600 dark:text-blue-400'}) }}
                         </div>
-                        <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-200">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
                             {{ "account.twofactor.title"|trans }}
                         </h2>
-                        <p id="twofactor-desc" class="text-sm text-gray-600 leading-relaxed mb-4">
+                        <p id="twofactor-desc" class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
                             {{ "account.twofactor.desc"|trans }}
                         </p>
                     </div>
                     <div class="flex-grow flex justify-center items-end">
                         <div class="flex-shrink-0">
                             {% if user.totpAuthenticationEnabled %}
-                                <div class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                                <div class="inline-flex items-center px-2 py-1 bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 text-xs font-medium rounded-full">
                                     {{ ux_icon('heroicons:check-circle-20-solid', {class: 'w-3 h-3 mr-1'}) }}
                                     {{ "account.twofactor.enabled"|trans }}
                                 </div>
                             {% else %}
-                                <div class="inline-flex items-center px-2 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded-full">
+                                <div class="inline-flex items-center px-2 py-1 bg-yellow-100 dark:bg-yellow-900/50 text-yellow-800 dark:text-yellow-200 text-xs font-medium rounded-full">
                                     {{ ux_icon('heroicons:exclamation-triangle-20-solid', {class: 'w-3 h-3 mr-1'}) }}
                                     {{ "account.twofactor.disabled"|trans }}
                                 </div>
@@ -80,29 +80,29 @@
         {# Recovery Token card #}
         <div class="group h-full">
             <a href="{{ path('account_recovery_token') }}"
-               class="flex flex-col h-full bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+               class="flex flex-col h-full bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-xl hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                aria-describedby="recovery-desc">
                 <div class="flex flex-col h-full p-6 text-center">
                     <div class="flex-shrink-0">
-                        <div class="w-12 h-12 mx-auto mb-4 p-3 bg-blue-50 rounded-xl group-hover:bg-blue-100 transition-colors duration-200">
-                            {{ ux_icon('heroicons:shield-check', {class: 'w-full h-full text-blue-600'}) }}
+                        <div class="w-12 h-12 mx-auto mb-4 p-3 bg-blue-50 dark:bg-blue-900/50 rounded-xl group-hover:bg-blue-100 dark:group-hover:bg-blue-900 transition-colors duration-200">
+                            {{ ux_icon('heroicons:shield-check', {class: 'w-full h-full text-blue-600 dark:text-blue-400'}) }}
                         </div>
-                        <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-200">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
                             {{ "account.recovery.title"|trans }}
                         </h2>
-                        <p id="recovery-desc" class="text-sm text-gray-600 leading-relaxed mb-4">
+                        <p id="recovery-desc" class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
                             {{ "account.recovery.desc"|trans }}
                         </p>
                     </div>
                     <div class="flex-grow flex justify-center items-end">
                         <div class="flex-shrink-0">
                             {% if user.hasRecoverySecretBox %}
-                                <div class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                                <div class="inline-flex items-center px-2 py-1 bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 text-xs font-medium rounded-full">
                                     {{ ux_icon('heroicons:check-circle-20-solid', {class: 'w-3 h-3 mr-1'}) }}
                                     {{ "account.recovery.configured"|trans }}
                                 </div>
                             {% else %}
-                                <div class="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-800 text-xs font-medium rounded-full">
+                                <div class="inline-flex items-center px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 text-xs font-medium rounded-full">
                                     {{ ux_icon('heroicons:x-circle-20-solid', {class: 'w-3 h-3 mr-1'}) }}
                                     {{ "account.recovery.not-configured"|trans }}
                                 </div>
@@ -116,29 +116,29 @@
         {# OpenPGP card #}
         <div class="group h-full">
             <a href="{{ path('openpgp') }}"
-               class="flex flex-col h-full bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+               class="flex flex-col h-full bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-xl hover:border-blue-300 dark:hover:border-blue-600 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                aria-describedby="openpgp-desc">
                 <div class="flex flex-col h-full p-6 text-center">
                     <div class="flex-shrink-0">
-                        <div class="w-12 h-12 mx-auto mb-4 p-3 bg-blue-50 rounded-xl group-hover:bg-blue-100 transition-colors duration-200">
-                            {{ ux_icon('heroicons:shield-exclamation', {class: 'w-full h-full text-blue-600'}) }}
+                        <div class="w-12 h-12 mx-auto mb-4 p-3 bg-blue-50 dark:bg-blue-900/50 rounded-xl group-hover:bg-blue-100 dark:group-hover:bg-blue-900 transition-colors duration-200">
+                            {{ ux_icon('heroicons:shield-exclamation', {class: 'w-full h-full text-blue-600 dark:text-blue-400'}) }}
                         </div>
-                        <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-200">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
                             {{ "account.openpgp.title"|trans }}
                         </h2>
-                        <p id="openpgp-desc" class="text-sm text-gray-600 leading-relaxed mb-4">
+                        <p id="openpgp-desc" class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
                             {{ "account.openpgp.desc"|trans }}
                         </p>
                     </div>
                     <div class="flex-grow flex justify-center items-end">
                         <div class="flex-shrink-0">
                             {% if openpgp_key %}
-                                <div class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                                <div class="inline-flex items-center px-2 py-1 bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 text-xs font-medium rounded-full">
                                     {{ ux_icon('heroicons:check-circle-20-solid', {class: 'w-3 h-3 mr-1'}) }}
                                     {{ "account.openpgp.configured"|trans }}
                                 </div>
                             {% else %}
-                                <div class="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-800 text-xs font-medium rounded-full">
+                                <div class="inline-flex items-center px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 text-xs font-medium rounded-full">
                                     {{ ux_icon('heroicons:x-circle-20-solid', {class: 'w-3 h-3 mr-1'}) }}
                                     {{ "account.openpgp.not-configured"|trans }}
                                 </div>
@@ -152,17 +152,17 @@
         {# Account Deletion card #}
         <div class="group h-full">
             <a href="{{ path('account_delete') }}"
-               class="flex flex-col h-full bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl hover:border-red-300 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+               class="flex flex-col h-full bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-xl hover:border-red-300 dark:hover:border-red-600 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                aria-describedby="delete-desc">
                 <div class="flex flex-col h-full p-6 text-center">
                     <div class="flex-shrink-0">
-                        <div class="w-12 h-12 mx-auto mb-4 p-3 bg-red-50 rounded-xl group-hover:bg-red-100 transition-colors duration-200">
-                            {{ ux_icon('heroicons:trash', {class: 'w-full h-full text-red-600'}) }}
+                        <div class="w-12 h-12 mx-auto mb-4 p-3 bg-red-50 dark:bg-red-900/50 rounded-xl group-hover:bg-red-100 dark:group-hover:bg-red-900 transition-colors duration-200">
+                            {{ ux_icon('heroicons:trash', {class: 'w-full h-full text-red-600 dark:text-red-400'}) }}
                         </div>
-                        <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-red-600 transition-colors duration-200">
+                        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors duration-200">
                             {{ "account.delete.title"|trans }}
                         </h2>
-                        <p id="delete-desc" class="text-sm text-gray-600 leading-relaxed mb-4">
+                        <p id="delete-desc" class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
                             {{ "account.delete.desc"|trans }}
                         </p>
                     </div>

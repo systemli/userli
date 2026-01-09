@@ -12,16 +12,16 @@
         {% include 'Settings/_navigation.html.twig' with {'current_section': 'general'} %}
 
         {# Main content area #}
-        <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
             <div class="p-6 sm:p-8">
                 <div class="flex items-center mb-6">
-                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-4">
+                    <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center mr-4">
                         <!-- heroicons:cog-6-tooth -->
-                        {{ ux_icon('heroicons:cog-6-tooth', {class: 'w-6 h-6 text-blue-600'}) }}
+                        {{ ux_icon('heroicons:cog-6-tooth', {class: 'w-6 h-6 text-blue-600 dark:text-blue-400'}) }}
                     </div>
                     <div>
-                        <h3 class="text-xl font-semibold text-gray-900">{{ "settings.form.title"|trans }}</h3>
-                        <p class="text-sm text-gray-500 mt-1">{{ "settings.form.description"|trans }}</p>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ "settings.form.title"|trans }}</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ "settings.form.description"|trans }}</p>
                     </div>
                 </div>
                 {{ form_start(form, {'attr': {'class': 'space-y-6', 'action': path('settings_update')}}) }}
@@ -35,7 +35,7 @@
                     } %}
 
                     {% for category, fields in categories %}
-                        <div class="space-y-6 border-b border-gray-200 pb-8">
+                        <div class="space-y-6 border-b border-gray-200 dark:border-gray-700 pb-8">
                             <div class="flex items-center mb-6">
                                 {% set category_icon = {
                                     'app': 'heroicons:computer-desktop',
@@ -43,10 +43,10 @@
                                     'email': 'heroicons:envelope',
                                 }[category] %}
 
-                                <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
-                                    {{ ux_icon(category_icon, {class: 'w-4 h-4 text-gray-600'}) }}
+                                <div class="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mr-3">
+                                    {{ ux_icon(category_icon, {class: 'w-4 h-4 text-gray-600 dark:text-gray-400'}) }}
                                 </div>
-                                <h4 class="text-lg font-medium text-gray-900">
+                                <h4 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                                     {{ ("settings.form.category." ~ category)|trans }}
                                 </h4>
                             </div>
@@ -56,11 +56,11 @@
                                     {% if form[fieldName] is defined %}
                                         <div class="space-y-2">
                                             {{ form_label(form[fieldName], null, {
-                                                'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}
+                                                'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}
                                             }) }}
                                             {{ form_errors(form[fieldName]) }}
                                             {{ form_widget(form[fieldName]) }}
-                                            <p class="mt-2 text-sm text-gray-500">{{ ("settings.form." ~ fieldName ~ ".help")|trans }}</p>
+                                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ ("settings.form." ~ fieldName ~ ".help")|trans }}</p>
                                         </div>
                                     {% endif %}
                                 {% endfor %}
@@ -71,7 +71,7 @@
                     {# Submit Button #}
                     <div class="flex justify-end pt-6">
                         {{ form_widget(form.save, {
-                            'attr': {'class': 'inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200'}
+                            'attr': {'class': 'inline-flex items-center px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200'}
                         }) }}
                     </div>
 

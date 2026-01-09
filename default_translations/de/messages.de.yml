@@ -8,6 +8,9 @@ navbar:
   signed-in-as: Angemeldet als
   open-user-menu: Benutzermenü öffnen
   open-main-menu: Hauptmenü öffnen
+  toggle-dark-mode: Dunkelmodus umschalten
+  dark-mode: Dunkelmodus
+  light-mode: Hellmodus
 
 start:
   title: Willkommen bei %domain%

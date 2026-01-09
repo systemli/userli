@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app.request.locale }}">
+<html lang="{{ app.request.locale }}" class="dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,8 +12,20 @@
     {% block head_script %}
         <script src="{{ asset('build/app.js') }}"></script>
     {% endblock %}
+
+    {# Dark mode initialization - respects system preference and saved preference #}
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
 </head>
-<body>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
     {% block navbar %}
         {% include '_navbar.html.twig' %}
     {% endblock %}
@@ -33,7 +45,7 @@
                 <div class="mb-8 sm:mb-12">
                     <div class="text-center">
                         {% block page_title %}
-                            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+                            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
                                 {{ block('subtitle')|raw }}
                             </h1>
                         {% endblock %}

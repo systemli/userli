@@ -30,7 +30,8 @@ final class SafeHtmlExtension extends AbstractExtension
         $cleaned = preg_replace('/href\s*=\s*["\']?\s*(?:javascript|data):/i', 'href="#"', $cleaned);
 
         // Add a data attribute to indicate this content should be processed by DOMPurify
-        $wrapped = sprintf('<div data-safe-html>%s</div>', $cleaned);
+        // Use span with inherit class to properly inherit text styling (including dark mode colors)
+        $wrapped = sprintf('<span data-safe-html class="text-inherit">%s</span>', $cleaned);
 
         return new Markup($wrapped, 'UTF-8');
     }

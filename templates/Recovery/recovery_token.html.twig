@@ -7,26 +7,26 @@
 {% block step_title %}{{ "recovery.token-lead"|trans }}{% endblock %}
 
 {% block step_description %}
-    <p class="text-gray-600">{{ "recovery-token.lead"|trans }}</p>
+    <p class="text-gray-600 dark:text-gray-400">{{ "recovery-token.lead"|trans }}</p>
 {% endblock %}
 
 {% block step_icon %}
-    <div class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center">
-        {{ ux_icon('heroicons:ticket', {'class': 'w-8 h-8 text-blue-600'}) }}
+    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center">
+        {{ ux_icon('heroicons:ticket', {'class': 'w-8 h-8 text-blue-600 dark:text-blue-400'}) }}
     </div>
 {% endblock %}
 
 {% block step_content %}
     <div class="mb-6">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4 text-center">{{ "recovery-token.created-headline"|trans }}</h2>
-        <p class="mb-3 text-sm text-gray-600">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 text-center">{{ "recovery-token.created-headline"|trans }}</h2>
+        <p class="mb-3 text-sm text-gray-600 dark:text-gray-400">
             {{ "recovery-token.created-subtitle"|trans }}
         </p>
-        <div class="bg-white rounded border border-gray-200">
+        <div class="bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3">
-                <code class="font-stretch-semi-condensed text-sm font-mono text-gray-900 break-all select-all min-w-0 flex-1">{{ recovery_token }}</code>
+                <code class="font-stretch-semi-condensed text-sm font-mono text-gray-900 dark:text-gray-100 break-all select-all min-w-0 flex-1">{{ recovery_token }}</code>
                 <button type="button"
-                        class="inline-flex items-center p-2 text-xs font-medium text-gray-600 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 self-end sm:self-auto flex-shrink-0"
+                        class="inline-flex items-center p-2 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-500 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-700 transition-colors duration-200 self-end sm:self-auto flex-shrink-0"
                         data-button="copy-to-clipboard"
                         data-value="{{ recovery_token }}"
                         title="{{ "copy-to-clipboard"|trans }}"
@@ -45,21 +45,21 @@
     <div class="flex items-start mt-4">
         {{ form_widget(form.confirm, {
             'attr': {
-                'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-0.5 mr-2'
+                'class': 'h-4 w-4 text-blue-600 dark:text-blue-500 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 mt-0.5 mr-2'
             }
         }) }}
         {{ form_label(form.confirm, null, {
             'label_attr': {
-                'class': 'text-sm text-gray-700'
+                'class': 'text-sm text-gray-700 dark:text-gray-300'
             }
         }) }}
     </div>
-    {{ form_errors(form.confirm, {'attr': {'class': 'text-sm text-red-600 mt-1'}}) }}
+    {{ form_errors(form.confirm, {'attr': {'class': 'text-sm text-red-600 dark:text-red-400 mt-1'}}) }}
 
     <div class="mt-6">
         {{ form_widget(form.submit, {
             'attr': {
-                'class': 'w-full px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200'
+                'class': 'w-full px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200'
             }
         }) }}
     </div>
@@ -67,11 +67,11 @@
 
     {# Recovery Token Notes - No card styling, just notification areas #}
     <div class="mt-8 space-y-4">
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div class="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
             <div class="flex">
                 {# Heroicon: information-circle (solid) #}
-                {{ ux_icon('heroicons:information-circle-solid', {'class': 'w-5 h-5 text-blue-500 mt-0.5 mr-3 flex-shrink-0'}) }}
-                <div class="text-sm text-blue-800">
+                {{ ux_icon('heroicons:information-circle-solid', {'class': 'w-5 h-5 text-blue-500 dark:text-blue-400 mt-0.5 mr-3 flex-shrink-0'}) }}
+                <div class="text-sm text-blue-800 dark:text-blue-200">
                     <p class="font-medium mb-2">{{ "recovery-token.displayed-once"|trans }}</p>
                     <p>{{ "recovery-token.created-info"|trans }}</p>
                 </div>
@@ -81,7 +81,7 @@
 
     <div class="mt-6 flex justify-center">
         <a href="{{ url('index') }}"
-           class="px-6 py-3 bg-gray-100 text-gray-700 font-medium rounded-lg hover:bg-gray-200 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200">
+           class="px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200">
             {{ "error.back_link"|trans }}
         </a>
     </div>

@@ -1,9 +1,9 @@
 {% block form_errors %}
     {% if errors|length > 0 %}
-        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+        <div class="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4">
             <div class="flex">
-                {{ ux_icon('heroicons:x-circle-20-solid', {class: 'w-5 h-5 text-red-400 mt-0.5 mr-3 flex-shrink-0'}) }}
-                <div class="text-sm text-red-800">
+                {{ ux_icon('heroicons:x-circle-20-solid', {class: 'w-5 h-5 text-red-400 dark:text-red-500 mt-0.5 mr-3 flex-shrink-0'}) }}
+                <div class="text-sm text-red-800 dark:text-red-200">
                     {% for error in errors %}
                         <p{% if not loop.last %} class="mb-1"{% endif %}>{{ error.message }}</p>
                     {% endfor %}
@@ -31,7 +31,7 @@
         <label{% if label_attr %} {% set attr = label_attr %}{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}{% endif %}>
             {{ label|trans({}, translation_domain) }}
             {% if required %}
-                <span class="text-red-500 ml-1">*</span>
+                <span class="text-red-500 dark:text-red-400 ml-1">*</span>
             {% endif %}
         </label>
     {% endif %}
@@ -43,22 +43,22 @@
 
     {% if suffix is not empty %}
         {# Input with suffix #}
-        <div class="w-full flex rounded-md shadow-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 transition-colors">
+        <div class="w-full flex rounded-md shadow-sm focus-within:ring-2 focus-within:ring-blue-500 dark:focus-within:ring-blue-400 focus-within:ring-offset-2 dark:focus-within:ring-offset-gray-800 transition-colors">
             <input type="{{ type }}"
                    id="{{ id }}"
                    name="{{ full_name }}"
-                   class="flex-1 min-w-0 px-3 py-3 border border-gray-300 rounded-l-md border-r-0 focus:outline-none focus:ring-0 focus:border-gray-300 text-sm"
+                   class="flex-1 min-w-0 px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-l-md border-r-0 focus:outline-none focus:ring-0 focus:border-gray-300 dark:focus:border-gray-600 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                    {% if value is not empty %}value="{{ value }}"{% endif %}
                    {% if required %}required{% endif %}
                    {% if disabled %}disabled{% endif %} />
-            <span class="inline-flex items-center px-3 py-3 border-t border-b border-r border-gray-300 bg-gray-50 text-gray-500 text-sm rounded-r-md whitespace-nowrap">
+            <span class="inline-flex items-center px-3 py-3 border-t border-b border-r border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-600 text-gray-500 dark:text-gray-300 text-sm rounded-r-md whitespace-nowrap">
                 {{ suffix }}
             </span>
         </div>
     {% else %}
         {# Normal input without suffix #}
         {% set attr = attr|merge({
-            'class': (attr.class|default('') ~ ' w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200')|trim
+            'class': (attr.class|default('') ~ ' w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500')|trim
         }) %}
         <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
     {% endif %}
@@ -67,7 +67,7 @@
 {% block password_widget %}
     {% set type = type|default('password') %}
     {% set attr = attr|merge({
-        'class': (attr.class|default('') ~ ' w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200')|trim
+        'class': (attr.class|default('') ~ ' w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500')|trim
     }) %}
     <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
 {% endblock password_widget %}
@@ -75,21 +75,21 @@
 {% block email_widget %}
     {% set type = type|default('email') %}
     {% set attr = attr|merge({
-        'class': (attr.class|default('') ~ ' w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200')|trim
+        'class': (attr.class|default('') ~ ' w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500')|trim
     }) %}
     <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
 {% endblock email_widget %}
 
 {% block textarea_widget %}
     {% set attr = attr|merge({
-        'class': (attr.class|default('') ~ ' w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 resize-y')|trim
+        'class': (attr.class|default('') ~ ' w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 resize-y bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500')|trim
     }) %}
     <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
 {% endblock textarea_widget %}
 
 {% block checkbox_widget %}
     {% set attr = attr|merge({
-        'class': (attr.class|default('') ~ ' h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500')|trim
+        'class': (attr.class|default('') ~ ' h-4 w-4 text-blue-600 dark:text-blue-500 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700')|trim
     }) %}
     <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
 {% endblock checkbox_widget %}
@@ -99,9 +99,9 @@
         <div class="space-y-3">
             {% for child in form %}
                 <div class="flex items-center">
-                    {{ form_widget(child, {'attr': {'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500'}}) }}
+                    {{ form_widget(child, {'attr': {'class': 'h-4 w-4 text-blue-600 dark:text-blue-500 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700'}}) }}
                     {{ form_label(child, null, {
-                        'label_attr': {'class': 'ml-3 text-sm font-medium text-gray-700 cursor-pointer'},
+                        'label_attr': {'class': 'ml-3 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer'},
                         'translation_domain': translation_domain
                     }) }}
                 </div>
@@ -111,9 +111,9 @@
         <div class="space-y-3">
             {% for child in form %}
                 <div class="flex items-center">
-                    {{ form_widget(child, {'attr': {'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500'}}) }}
+                    {{ form_widget(child, {'attr': {'class': 'h-4 w-4 text-blue-600 dark:text-blue-500 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700'}}) }}
                     {{ form_label(child, null, {
-                        'label_attr': {'class': 'ml-3 text-sm font-medium text-gray-700 cursor-pointer'},
+                        'label_attr': {'class': 'ml-3 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer'},
                         'translation_domain': translation_domain
                     }) }}
                 </div>
@@ -133,7 +133,7 @@
         {%- endif -%}
     {% endif %}
     {% set attr = attr|merge({
-        'class': (attr.class|default('') ~ ' px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed')|trim
+        'class': (attr.class|default('') ~ ' px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed')|trim
     }) %}
     <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>
         {% if label is not same as(false) %}{{ label|trans({}, translation_domain) }}{% endif %}

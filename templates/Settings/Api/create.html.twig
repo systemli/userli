@@ -16,16 +16,16 @@
         {# Form Container with centered, narrower width #}
         <div class="max-w-2xl mx-auto">
             {# Main form card #}
-            <div class="bg-white rounded-xl border border-gray-200 shadow-sm">
+            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
                 <div class="p-6 sm:p-8">
                     <div class="flex items-center mb-6">
-                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-4">
+                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center mr-4">
                             <!-- heroicons:plus -->
-                            {{ ux_icon('heroicons:plus', {class: 'w-6 h-6 text-blue-600'}) }}
+                            {{ ux_icon('heroicons:plus', {class: 'w-6 h-6 text-blue-600 dark:text-blue-400'}) }}
                         </div>
                         <div>
-                            <h3 class="text-xl font-semibold text-gray-900">{{ "settings.api.create.form.title"|trans }}</h3>
-                            <p class="text-sm text-gray-500 mt-1">{{ "settings.api.create.form.description"|trans }}</p>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ "settings.api.create.form.title"|trans }}</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ "settings.api.create.form.description"|trans }}</p>
                         </div>
                     </div>
 
@@ -37,22 +37,22 @@
                         {# Token Name Field #}
                         <div>
                             {{ form_label(form.name, "settings.api.create.form.name.label"|trans, {
-                                'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}
+                                'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}
                             }) }}
                             {{ form_errors(form.name) }}
                             {{ form_widget(form.name, {
                                 'attr': {
                                     'placeholder': 'settings.api.create.form.name.placeholder'|trans,
-                                    'class': 'w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200'
+                                    'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200'
                                 }
                             }) }}
-                            <p class="mt-2 text-sm text-gray-500">{{ "settings.api.create.form.name.help"|trans }}</p>
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ "settings.api.create.form.name.help"|trans }}</p>
                         </div>
 
                         {# Scopes Field #}
                         <div>
                             {{ form_label(form.scopes, "settings.api.create.form.scopes.label"|trans, {
-                                'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}
+                                'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}
                             }) }}
                             {{ form_errors(form.scopes) }}
                             {{ form_widget(form.scopes, {
@@ -60,13 +60,13 @@
                                     'class': 'w-full'
                                 }
                             }) }}
-                            <p class="mt-2 text-sm text-gray-500">{{ "settings.api.create.form.scopes.help"|trans }}</p>
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ "settings.api.create.form.scopes.help"|trans }}</p>
                         </div>
 
                         {# Form Actions #}
                         <div class="flex items-center justify-between pt-6">
                             <a href="{{ path('settings_api_show') }}"
-                               class="inline-flex items-center px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                               class="inline-flex items-center px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
                                 <!-- heroicons:arrow-left -->
                                 {{ ux_icon('heroicons:arrow-left', {class: 'w-4 h-4 mr-2'}) }}
                                 {{ "settings.api.create.form.cancel"|trans }}
@@ -75,7 +75,7 @@
                             {{ form_widget(form.submit, {
                                 'label': 'settings.api.create.form.submit'|trans,
                                 'attr': {
-                                    'class': 'inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200'
+                                    'class': 'inline-flex items-center px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200'
                                 }
                             }) }}
                         </div>

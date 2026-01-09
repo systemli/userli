@@ -1,22 +1,22 @@
 {% extends 'Recovery/recovery.html.twig' %}
 
 {% block recovery_content %}
-    <div class="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
+    <div class="mb-6 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg p-4">
         <div class="flex">
             {# Heroicon: check-circle (solid) #}
-            {{ ux_icon('heroicons:check-circle-solid', {'class': 'w-5 h-5 text-green-500 mt-0.5 mr-3 flex-shrink-0'}) }}
-            <div class="text-sm text-green-800">
+            {{ ux_icon('heroicons:check-circle-solid', {'class': 'w-5 h-5 text-green-500 dark:text-green-400 mt-0.5 mr-3 flex-shrink-0'}) }}
+            <div class="text-sm text-green-800 dark:text-green-200">
                 <p>{{ "recovery.started"|trans }}</p>
                 <p class="mt-2">{{ "recovery.waiting-info"|trans }}</p>
             </div>
         </div>
     </div>
 
-    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+    <div class="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
         <div class="flex">
             {# Heroicon: clock (solid) #}
-            {{ ux_icon('heroicons:clock', {'class': 'w-5 h-5 text-blue-500 mt-0.5 mr-3 flex-shrink-0'}) }}
-            <div class="text-sm font-medium text-blue-800">
+            {{ ux_icon('heroicons:clock', {'class': 'w-5 h-5 text-blue-500 dark:text-blue-400 mt-0.5 mr-3 flex-shrink-0'}) }}
+            <div class="text-sm font-medium text-blue-800 dark:text-blue-200">
                 {{ "recovery.waiting-time"|trans({'%time%': active_time|date("d.m.Y")}) }}
             </div>
         </div>
@@ -24,7 +24,7 @@
 
     <div class="mt-6 flex justify-center">
         <a href="{{ url('index') }}"
-           class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
+           class="px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200">
             {{ "error.back_link"|trans }}
         </a>
     </div>

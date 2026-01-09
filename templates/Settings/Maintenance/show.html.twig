@@ -9,21 +9,21 @@
 
     <div class="grid gap-8 md:grid-cols-2">
         {# Prune User Notifications #}
-        <section class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 flex flex-col">
+        <section class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 flex flex-col">
             <div class="flex items-start justify-between mb-4">
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
-                        {{ ux_icon('heroicons:bell-slash', {class: 'w-5 h-5 text-gray-500 mr-2'}) }}
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center">
+                        {{ ux_icon('heroicons:bell-slash', {class: 'w-5 h-5 text-gray-500 dark:text-gray-400 mr-2'}) }}
                         {{ 'settings.maintenance.pruneUserNotifications.title'|trans }}
                     </h3>
-                    <p class="mt-2 text-sm text-gray-500 leading-relaxed max-w-prose">
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-prose">
                         {{ 'settings.maintenance.pruneUserNotifications.description'|trans|safe_html }}
                     </p>
                 </div>
             </div>
             <form method="post" action="{{ path('settings_maintenance_run', {task: 'prune_user_notifications'}) }}" class="mt-auto">
                 <input type="hidden" name="_token" value="{{ csrf_token('maintenance_prune_user_notifications') }}">
-                <button type="submit" title="{{ 'settings.maintenance.pruneUserNotifications.button'|trans }}" class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
+                <button type="submit" title="{{ 'settings.maintenance.pruneUserNotifications.button'|trans }}" class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 focus:ring-blue-500 transition">
                     {{ ux_icon('heroicons:play', {class: 'w-4 h-4 mr-2'}) }}
                     {{ 'settings.maintenance.pruneUserNotifications.button'|trans }}
                 </button>
@@ -31,21 +31,21 @@
         </section>
 
         {# Prune Webhook Deliveries #}
-        <section class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 flex flex-col">
+        <section class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 flex flex-col">
             <div class="flex items-start justify-between mb-4">
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
-                        {{ ux_icon('heroicons:arrow-path-rounded-square', {class: 'w-5 h-5 text-gray-500 mr-2'}) }}
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center">
+                        {{ ux_icon('heroicons:arrow-path-rounded-square', {class: 'w-5 h-5 text-gray-500 dark:text-gray-400 mr-2'}) }}
                         {{ 'settings.maintenance.pruneWebhookDeliveries.title'|trans }}
                     </h3>
-                    <p class="mt-2 text-sm text-gray-500 leading-relaxed max-w-prose">
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-prose">
                         {{ 'settings.maintenance.pruneWebhookDeliveries.description'|trans|safe_html }}
                     </p>
                 </div>
             </div>
             <form method="post" action="{{ path('settings_maintenance_run', {task: 'prune_webhook_deliveries'}) }}" class="mt-auto">
                 <input type="hidden" name="_token" value="{{ csrf_token('maintenance_prune_webhook_deliveries') }}">
-                <button type="submit" title="{{ 'settings.maintenance.pruneWebhookDeliveries.button'|trans }}" class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
+                <button type="submit" title="{{ 'settings.maintenance.pruneWebhookDeliveries.button'|trans }}" class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 focus:ring-blue-500 transition">
                     {{ ux_icon('heroicons:play', {class: 'w-4 h-4 mr-2'}) }}
                     {{ 'settings.maintenance.pruneWebhookDeliveries.button'|trans }}
                 </button>
@@ -53,21 +53,21 @@
         </section>
 
         {# Unlink Redeemed Vouchers #}
-        <section class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 flex flex-col md:col-span-2">
+        <section class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 flex flex-col md:col-span-2">
             <div class="flex items-start justify-between mb-4">
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-900 flex items-center">
-                        {{ ux_icon('heroicons:ticket', {class: 'w-5 h-5 text-gray-500 mr-2'}) }}
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center">
+                        {{ ux_icon('heroicons:ticket', {class: 'w-5 h-5 text-gray-500 dark:text-gray-400 mr-2'}) }}
                         {{ 'settings.maintenance.unlinkRedeemedVouchers.title'|trans }}
                     </h3>
-                    <p class="mt-2 text-sm text-gray-500 leading-relaxed max-w-prose">
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-prose">
                         {{ 'settings.maintenance.unlinkRedeemedVouchers.description'|trans|safe_html }}
                     </p>
                 </div>
             </div>
             <form method="post" action="{{ path('settings_maintenance_run', {task: 'unlink_redeemed_vouchers'}) }}" class="mt-auto">
                 <input type="hidden" name="_token" value="{{ csrf_token('maintenance_unlink_redeemed_vouchers') }}">
-                <button type="submit" title="{{ 'settings.maintenance.unlinkRedeemedVouchers.button'|trans }}" class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition">
+                <button type="submit" title="{{ 'settings.maintenance.unlinkRedeemedVouchers.button'|trans }}" class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 focus:ring-blue-500 transition">
                     {{ ux_icon('heroicons:play', {class: 'w-4 h-4 mr-2'}) }}
                     {{ 'settings.maintenance.unlinkRedeemedVouchers.button'|trans }}
                 </button>
