@@ -140,16 +140,10 @@ final class SettingsType extends AbstractType
 
         // Length constraints
         if (isset($validation['min_length']) || isset($validation['max_length'])) {
-            $lengthOptions = [];
-            if (isset($validation['min_length'])) {
-                $lengthOptions['min'] = $validation['min_length'];
-            }
-
-            if (isset($validation['max_length'])) {
-                $lengthOptions['max'] = $validation['max_length'];
-            }
-
-            $constraints[] = new Assert\Length($lengthOptions);
+            $constraints[] = new Assert\Length(
+                min: $validation['min_length'] ?? null,
+                max: $validation['max_length'] ?? null,
+            );
         }
 
         // Range constraints for numbers
