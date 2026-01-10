@@ -21,7 +21,7 @@ final class LoadWebhookData extends Fixture implements FixtureGroupInterface
     public function load(ObjectManager $manager): void
     {
         $endpoint = new WebhookEndpoint(
-            'https://webhook.example.com/events',
+            'http://webhook:8080/e6fd49c8-7ecc-4b0a-8af1-a16f508e0f68',
             bin2hex(random_bytes(16))
         );
         $endpoint->setEvents([WebhookEvent::USER_CREATED->value, WebhookEvent::USER_DELETED->value]);
