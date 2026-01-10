@@ -121,7 +121,7 @@
 
 {% block checkbox_widget %}
     {% set attr = attr|merge({
-        'class': (attr.class|default('') ~ ' h-4 w-4 text-blue-600 dark:text-blue-500 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700')|trim
+        'class': (attr.class|default('') ~ ' custom-checkbox')|trim
     }) %}
     <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
 {% endblock checkbox_widget %}
@@ -131,7 +131,7 @@
         <div class="space-y-3">
             {% for child in form %}
                 <div class="flex items-center">
-                    {{ form_widget(child, {'attr': {'class': 'h-4 w-4 text-blue-600 dark:text-blue-500 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700'}}) }}
+                    {{ form_widget(child, {'attr': {'class': 'custom-checkbox'}}) }}
                     {{ form_label(child, null, {
                         'label_attr': {'class': 'ml-3 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer'},
                         'translation_domain': translation_domain
@@ -143,7 +143,7 @@
         <div class="space-y-3">
             {% for child in form %}
                 <div class="flex items-center">
-                    {{ form_widget(child, {'attr': {'class': 'h-4 w-4 text-blue-600 dark:text-blue-500 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700'}}) }}
+                    {{ form_widget(child, {'attr': {'class': 'custom-checkbox'}}) }}
                     {{ form_label(child, null, {
                         'label_attr': {'class': 'ml-3 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer'},
                         'translation_domain': translation_domain
