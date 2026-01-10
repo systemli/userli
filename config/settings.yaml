@@ -25,3 +25,16 @@ settings:
   email_notification_address:
     type: email
     default: "monitoring@example.org"
+
+  smtp_quota_limit_per_hour:
+    type: integer
+    default: 0
+    validation:
+      min: 0
+
+  smtp_quota_limit_per_day:
+    type: integer
+    default: 0
+    validation:
+      min: 0
+

@@ -424,6 +424,7 @@ settings:
       app: Application Settings
       project: Project Settings
       email: Email Configuration
+      smtp_quota: SMTP Quota Limits
     app_name:
       label: Application Name
       help: The name displayed in the application header and browser title
@@ -442,6 +443,12 @@ settings:
     email_notification_address:
       label: Notification Email Address
       help: The email address that receives system notifications
+    smtp_quota_limit_per_hour:
+      label: Limit per Hour
+      help: Default maximum number of emails a user can send per hour (0 = unlimited)
+    smtp_quota_limit_per_day:
+      label: Limit per Day
+      help: Default maximum number of emails a user can send per day (0 = unlimited)
   navigation:
     aria-label: Settings navigation
     api: API Tokens

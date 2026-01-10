@@ -96,4 +96,47 @@ class PostfixControllerTest extends WebTestCase
         self::assertResponseIsSuccessful();
         self::assertJsonStringEqualsJsonString('["user2@example.org"]', $this->client->getResponse()->getContent());
     }
+
+    public function testGetSmtpQuotaWrongApiToken(): void
+    {
+        $this->client->request(method: 'GET', uri: '/api/postfix/quota/user@example.org', server: [
+            'HTTP_AUTHORIZATION' => 'Bearer wrongtoken',
+        ]);
+
+        self::assertResponseStatusCodeSame(401);
+    }
+
+    public function testGetSmtpQuotaUserNotFound(): void
+    {
+        $this->client->request('GET', '/api/postfix/quota/nonexistent@example.org');
+
+        self::assertResponseStatusCodeSame(404);
+        self::assertJsonStringEqualsJsonString('{"error":"User not found"}', $this->client->getResponse()->getContent());
+    }
+
+    public function testGetSmtpQuotaForUser(): void
+    {
+        $this->client->request('GET', '/api/postfix/quota/user@example.org');
+
+        self::assertResponseIsSuccessful();
+
+        $response = json_decode($this->client->getResponse()->getContent(), true);
+        self::assertArrayHasKey('per_hour', $response);
+        self::assertArrayHasKey('per_day', $response);
+        self::assertIsInt($response['per_hour']);
+        self::assertIsInt($response['per_day']);
+    }
+
+    public function testGetSmtpQuotaForAlias(): void
+    {
+        $this->client->request('GET', '/api/postfix/quota/alias@example.org');
+
+        self::assertResponseIsSuccessful();
+
+        $response = json_decode($this->client->getResponse()->getContent(), true);
+        self::assertArrayHasKey('per_hour', $response);
+        self::assertArrayHasKey('per_day', $response);
+        self::assertIsInt($response['per_hour']);
+        self::assertIsInt($response['per_day']);
+    }
 }
