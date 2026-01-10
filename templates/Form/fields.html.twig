@@ -13,11 +13,43 @@
     {% endif %}
 {% endblock form_errors %}
 
+{% block form_row %}
+    <div class="mb-6">
+        {{ form_label(form) }}
+        {{ form_widget(form) }}
+        {{ form_help(form) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock form_row %}
+
+{% block checkbox_row %}
+    <div class="flex items-center">
+        {{ form_widget(form) }}
+        {{ form_label(form, null, {'label_attr': {'class': 'ml-2 block text-sm text-gray-700 dark:text-gray-300 cursor-pointer', 'for': id}}) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock checkbox_row %}
+
+{% block button_row %}
+    <div>
+        {{ form_widget(form) }}
+    </div>
+{% endblock button_row %}
+
+{% block form_help %}
+    {% if help is not empty %}
+        <p id="{{ id }}_help" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+            {{ help|trans({}, translation_domain) }}
+        </p>
+    {% endif %}
+{% endblock form_help %}
+
 {% block form_label %}
     {% if label is not same as(false) %}
         {% if not compound %}
             {% set label_attr = label_attr|merge({'for': id}) %}
         {% endif %}
+        {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2')|trim}) %}
         {% if required %}
             {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
         {% endif %}

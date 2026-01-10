@@ -30,69 +30,18 @@
         </div>
     {% endif %}
 
-    {# Login form with semantic HTML and accessibility features #}
-    <form method="post" action="{{ path('login') }}" class="space-y-6" novalidate aria-labelledby="signin-heading">
-        {# Email field #}
-        <div>
-            <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {{ "form.email"|trans }}
-                <span class="text-red-500 dark:text-red-400 ml-1" aria-label="required">*</span>
-            </label>
-            <input
-                type="email"
-                id="username"
-                name="_username"
-                value="{{ last_username }}"
-                autocomplete="username email"
-                required
-                autofocus
-                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200{% if error %} border-red-300 dark:border-red-600{% endif %}"
-                aria-describedby="username-help{% if error %} username-error{% endif %}"
-                {% if error %}aria-invalid="true"{% endif %}
-            >
-            <p id="username-help" class="mt-1 text-xs text-gray-500 dark:text-gray-300">
-                {{ "form.email-help"|trans }}
-            </p>
-        </div>
+    {{ form_start(form, {'attr': {'class': 'space-y-6', 'novalidate': 'novalidate'}}) }}
+        {{ form_row(form._username) }}
+        {{ form_row(form._password) }}
 
-        {# Password field #}
-        <div>
-            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                {{ "form.password"|trans }}
-                <span class="text-red-500 dark:text-red-400 ml-1" aria-label="required">*</span>
-            </label>
-            <input
-                type="password"
-                id="password"
-                name="_password"
-                autocomplete="current-password"
-                required
-                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200{% if error %} border-red-300 dark:border-red-600{% endif %}"
-                aria-describedby="password-help{% if error %} password-error{% endif %}"
-                {% if error %}aria-invalid="true"{% endif %}
-            >
-            <p id="password-help" class="mt-1 text-xs text-gray-500 dark:text-gray-300">
-                {{ "form.password-help"|trans }}
-            </p>
-        </div>
-
-        {# CSRF token #}
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-        {# Remember me and forgot password #}
+        {# Remember me and forgot password in a row #}
         <div class="flex items-center justify-between">
             <div class="flex items-center">
-                <input
-                    id="remember-me"
-                    name="_remember_me"
-                    type="checkbox"
-                    class="h-4 w-4 text-blue-600 dark:text-blue-500 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700"
-                >
-                <label for="remember-me" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                {{ form_widget(form._remember_me) }}
+                <label for="{{ form._remember_me.vars.id }}" class="ml-2 block text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
                     {{ "form.remember-me"|trans }}
                 </label>
             </div>
-
             <div class="text-sm">
                 <a href="{{ path('recovery') }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 focus:outline-none focus:underline transition-colors duration-200">
                     {{ "form.recovery-link"|trans }}
@@ -100,16 +49,8 @@
             </div>
         </div>
 
-        {# Submit button #}
-        <div>
-            <button
-                type="submit"
-                class="w-full px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-                {{ "form.signin"|trans }}
-            </button>
-        </div>
-    </form>
+        {{ form_widget(form.submit) }}
+    {{ form_end(form) }}
 {% endblock %}
 
 {% block step_footer %}

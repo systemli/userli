@@ -38,8 +38,8 @@ Feature: registration
 
     When I am on "/login"
     And I fill in the following:
-      | username | user1@example.org |
-      | password | P4ssW0rt!!!1      |
+      | _username | user1@example.org |
+      | _password | P4ssW0rt!!!1      |
     And I press "Sign in"
 
     Then I should be on "/start"
@@ -62,10 +62,10 @@ Feature: registration
   Scenario: Register with empty password
     When I am on "/register"
     And I fill in the following:
-      | registration[voucher]               | ABCD         |
-      | registration[email]                 | user1        |
-      | registration[plainPassword][first]  |              |
-      | registration[plainPassword][second] |              |
+      | registration[voucher]               | ABCD  |
+      | registration[email]                 | user1 |
+      | registration[plainPassword][first]  |       |
+      | registration[plainPassword][second] |       |
     And I press "Submit"
 
     Then I should be on "/register"
@@ -214,10 +214,10 @@ Feature: registration
     Then I should be on "/register"
     And I should see "The username contains unexpected characters. Only valid: Letters and numbers, as well as -, _ and ."
 
-    @registration
-    Scenario: Welcome page is accessible
-      When I am authenticated as "louis@example.org"
-      And I am on "/register/welcome"
+  @registration
+  Scenario: Welcome page is accessible
+    When I am authenticated as "louis@example.org"
+    And I am on "/register/welcome"
 
-      Then I should see "Welcome to example.org!"
-      And I should see "You have set up an account with us successfully. What are the next steps?"
+    Then I should see "Welcome to example.org!"
+    And I should see "You have set up an account with us successfully. What are the next steps?"

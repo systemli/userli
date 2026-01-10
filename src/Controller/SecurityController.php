@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Form\LoginType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -19,8 +20,13 @@ final class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('Security/login.html.twig', [
+        $form = $this->createForm(LoginType::class, null, [
             'last_username' => $lastUsername,
+            'action' => $this->generateUrl('login'),
+        ]);
+
+        return $this->render('Security/login.html.twig', [
+            'form' => $form,
             'error' => $error,
         ]);
     }
