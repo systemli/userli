@@ -30,14 +30,15 @@ final readonly class WebhookDeliveryManager
     public function findPaginatedByEndpoint(
         WebhookEndpoint $endpoint,
         int $page = 1,
+        string $status = '',
     ): array {
         $page = max(1, $page);
         $offset = ($page - 1) * self::PAGE_SIZE;
-        $total = $this->repository->countByEndpoint($endpoint);
-        $totalPages = (int) ceil($total / self::PAGE_SIZE);
-        $items = $this->repository->findBy(
-            ['endpoint' => $endpoint],
-            ['id' => 'DESC'],
+        $total = $this->repository->countByEndpointAndStatus($endpoint, $status);
+        $totalPages = max(1, (int) ceil($total / self::PAGE_SIZE));
+        $items = $this->repository->findByEndpointAndStatus(
+            $endpoint,
+            $status,
             self::PAGE_SIZE,
             $offset,
         );

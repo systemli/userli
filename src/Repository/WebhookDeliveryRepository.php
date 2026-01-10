@@ -28,4 +28,47 @@ final class WebhookDeliveryRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    public function countByEndpointAndStatus(WebhookEndpoint $endpoint, string $status): int
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->select('COUNT(d.id)')
+            ->where('d.endpoint = :endpoint')
+            ->setParameter('endpoint', $endpoint);
+
+        $this->applyStatusFilter($qb, $status);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @return WebhookDelivery[]
+     */
+    public function findByEndpointAndStatus(
+        WebhookEndpoint $endpoint,
+        string $status,
+        int $limit,
+        int $offset,
+    ): array {
+        $qb = $this->createQueryBuilder('d')
+            ->where('d.endpoint = :endpoint')
+            ->setParameter('endpoint', $endpoint)
+            ->orderBy('d.id', 'DESC')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        $this->applyStatusFilter($qb, $status);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    private function applyStatusFilter(\Doctrine\ORM\QueryBuilder $qb, string $status): void
+    {
+        match ($status) {
+            'success' => $qb->andWhere('d.success = true'),
+            'failed' => $qb->andWhere('d.error IS NOT NULL')->andWhere('d.success = false'),
+            'pending' => $qb->andWhere('d.error IS NULL')->andWhere('d.success = false'),
+            default => null,
+        };
+    }
 }

@@ -84,6 +84,14 @@ Feature: Settings
     And I should see "Delivered"
     And I should see "Failed"
 
+    When I am on "/settings/webhooks/1/deliveries?status=success"
+    Then the response status code should be 200
+    And I should not see "Retry"
+
+    When I am on "/settings/webhooks/1/deliveries?status=failed"
+    Then the response status code should be 200
+    And I should see "Retry"
+
   @webhooks
   Scenario: Admin can view a delivery for a webhook
     Given the following WebhookEndpoint exists:

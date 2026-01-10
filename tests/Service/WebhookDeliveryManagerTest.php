@@ -27,12 +27,12 @@ class WebhookDeliveryManagerTest extends TestCase
 
         $repo = $this->createMock(WebhookDeliveryRepository::class);
         $repo->expects($this->once())
-            ->method('countByEndpoint')
-            ->with($endpoint)
+            ->method('countByEndpointAndStatus')
+            ->with($endpoint, '')
             ->willReturn(2);
         $repo->expects($this->once())
-            ->method('findBy')
-            ->with(['endpoint' => $endpoint], ['id' => 'DESC'], 20, 0)
+            ->method('findByEndpointAndStatus')
+            ->with($endpoint, '', 20, 0)
             ->willReturn([$d2, $d1]);
 
         $em = $this->createMock(EntityManagerInterface::class);
