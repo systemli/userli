@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Enum\WebhookEvent;
+use App\Repository\WebhookDeliveryRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: WebhookDeliveryRepository::class)]
 #[ORM\Table(name: 'webhook_deliveries')]
 #[ORM\Index(columns: ['dispatched_time'])]
 #[ORM\Index(columns: ['success'])]

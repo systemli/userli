@@ -549,6 +549,11 @@ settings:
         status: Status
         dispatched: Gesendet
         actions: Aktionen
+      pagination:
+        total: "%count% Zustellungen insgesamt"
+        newer: Neuere
+        older: Ältere
+        page: "Seite %page% von %totalPages%"
       status:
         delivered: Zugestellt
         failed: Fehlgeschlagen

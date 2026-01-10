@@ -81,6 +81,30 @@
                         </table>
                     </div>
                 </div>
+                {% if totalPages > 1 %}
+                    <div class="mt-6 flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-4">
+                        <div class="text-sm text-gray-500 dark:text-gray-400">
+                            {{ 'settings.webhook.deliveries.pagination.total'|trans({'%count%': total}) }}
+                        </div>
+                        <div class="flex gap-2">
+                            {% if page > 1 %}
+                                <a href="{{ path('settings_webhook_delivery_index', {id: endpoint.id, page: page - 1}) }}"
+                                   class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    {{ ux_icon('heroicons:chevron-left', {class: 'w-4 h-4 mr-1'}) }} {{ 'settings.webhook.deliveries.pagination.newer'|trans }}
+                                </a>
+                            {% endif %}
+                            <span class="inline-flex items-center px-3 py-1.5 text-sm text-gray-500 dark:text-gray-400">
+                                {{ 'settings.webhook.deliveries.pagination.page'|trans({'%page%': page, '%totalPages%': totalPages}) }}
+                            </span>
+                            {% if page < totalPages %}
+                                <a href="{{ path('settings_webhook_delivery_index', {id: endpoint.id, page: page + 1}) }}"
+                                   class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    {{ 'settings.webhook.deliveries.pagination.older'|trans }} {{ ux_icon('heroicons:chevron-right', {class: 'w-4 h-4 ml-1'}) }}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
