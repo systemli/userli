@@ -13,17 +13,16 @@ use Override;
 
 final class LoadRandomUserData extends AbstractUserData implements FixtureGroupInterface
 {
+    private const BATCH_SIZE = 500;
+
     #[Override]
     public function load(ObjectManager $manager): void
     {
-        $domainRepository = $manager->getRepository(Domain::class);
-        $domain = $domainRepository->findOneBy(['name' => 'example.org']);
+        $domain = $manager->getRepository(Domain::class)->findOneBy(['name' => 'example.org']);
         $roles = [Roles::USER];
 
         for ($i = 0; $i < 15000; ++$i) {
-            $email = sprintf('user-%d@%s', $i, $domain->getName());
-
-            $user = $this->buildUser($domain, $email, $roles);
+            $user = $this->buildUser($domain, sprintf('user-%d@%s', $i, $domain->getName()), $roles);
             $user->setCreationTime(new DateTime(sprintf('-%s days', random_int(1, 25))));
 
             if (0 === $i % 20) {
@@ -36,8 +35,11 @@ final class LoadRandomUserData extends AbstractUserData implements FixtureGroupI
 
             $manager->persist($user);
 
-            if (($i % 100) === 0) {
+            if (($i % self::BATCH_SIZE) === 0) {
                 $manager->flush();
+                $manager->clear();
+                // Re-fetch domain after clear
+                $domain = $manager->getRepository(Domain::class)->findOneBy(['name' => 'example.org']);
             }
         }
 
