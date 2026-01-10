@@ -551,6 +551,11 @@ settings:
         status: Status
         dispatched: Dispatched
         actions: Actions
+      pagination:
+        total: "%count% deliveries total"
+        newer: Newer
+        older: Older
+        page: "Page %page% of %totalPages%"
       status:
         delivered: Delivered
         failed: Failed

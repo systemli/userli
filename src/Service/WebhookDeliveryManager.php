@@ -7,23 +7,47 @@ namespace App\Service;
 use App\Entity\WebhookDelivery;
 use App\Entity\WebhookEndpoint;
 use App\Message\SendWebhook;
+use App\Repository\WebhookDeliveryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final readonly class WebhookDeliveryManager
 {
+    private const PAGE_SIZE = 20;
+
     public function __construct(
         private EntityManagerInterface $em,
         private MessageBusInterface $bus,
+        private WebhookDeliveryRepository $repository,
     ) {
     }
 
-    public function findAllByEndpoint(WebhookEndpoint $endpoint): array
-    {
-        return $this->em->getRepository(WebhookDelivery::class)->findBy(
+    /**
+     * Find deliveries with offset-based pagination.
+     *
+     * @return array{items: WebhookDelivery[], page: int, totalPages: int, total: int}
+     */
+    public function findPaginatedByEndpoint(
+        WebhookEndpoint $endpoint,
+        int $page = 1,
+    ): array {
+        $page = max(1, $page);
+        $offset = ($page - 1) * self::PAGE_SIZE;
+        $total = $this->repository->countByEndpoint($endpoint);
+        $totalPages = (int) ceil($total / self::PAGE_SIZE);
+        $items = $this->repository->findBy(
             ['endpoint' => $endpoint],
-            ['id' => 'DESC']
+            ['id' => 'DESC'],
+            self::PAGE_SIZE,
+            $offset,
         );
+
+        return [
+            'items' => $items,
+            'page' => $page,
+            'totalPages' => $totalPages,
+            'total' => $total,
+        ];
     }
 
     public function retry(WebhookDelivery $delivery): void

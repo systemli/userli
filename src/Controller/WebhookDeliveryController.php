@@ -23,12 +23,17 @@ final class WebhookDeliveryController extends AbstractController
     #[Route('/settings/webhooks/{id}/deliveries', name: 'settings_webhook_delivery_index', methods: ['GET'])]
     public function index(
         #[MapEntity] WebhookEndpoint $endpoint,
+        Request $request,
     ): Response {
-        $deliveries = $this->manager->findAllByEndpoint($endpoint);
+        $page = $request->query->getInt('page', 1);
+        $pagination = $this->manager->findPaginatedByEndpoint($endpoint, $page);
 
         return $this->render('Settings/Webhook/Delivery/index.html.twig', [
-            'deliveries' => $deliveries,
+            'deliveries' => $pagination['items'],
             'endpoint' => $endpoint,
+            'page' => $pagination['page'],
+            'totalPages' => $pagination['totalPages'],
+            'total' => $pagination['total'],
         ]);
     }
 
