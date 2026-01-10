@@ -543,6 +543,9 @@ settings:
       title: Zustellungen
       heading: Zustellungen
       subtitle: Kürzliche Webhook-Zustellungen
+      filter:
+        label: Status
+        all: Alle
       table:
         id: ID
         event: Ereignis

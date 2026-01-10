@@ -545,6 +545,9 @@ settings:
       title: Deliveries
       heading: Deliveries
       subtitle: Recent webhook deliveries
+      filter:
+        label: Status
+        all: All
       table:
         id: ID
         event: Event
