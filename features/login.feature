@@ -6,18 +6,18 @@ Feature: Login
       | name        |
       | example.org |
     And the following User exists:
-      | email               | password | roles        |
-      | louis@example.org   | asdasd   | ROLE_ADMIN   |
+      | email               | password | roles           |
+      | louis@example.org   | asdasd   | ROLE_ADMIN      |
       | support@example.org | asdasd   | ROLE_MULTIPLIER |
-      | user@example.org    | asdasd   | ROLE_USER    |
-      | spam@example.org    | asdasd   | ROLE_SPAM    |
+      | user@example.org    | asdasd   | ROLE_USER       |
+      | spam@example.org    | asdasd   | ROLE_SPAM       |
 
   @login
   Scenario: Login as User
     When I am on "/login"
     And I fill in the following:
-      | username | louis@example.org |
-      | password | asdasd            |
+      | _username | louis@example.org |
+      | _password | asdasd            |
     And I press "Sign in"
 
     Then I should be on "/start"
@@ -28,8 +28,8 @@ Feature: Login
   Scenario: Login as User
     When I am on "/"
     And I fill in the following:
-      | username | louis@example.org |
-      | password | asdasd            |
+      | _username | louis@example.org |
+      | _password | asdasd            |
     And I press "Sign in"
 
     Then I should be on "/start"
@@ -40,8 +40,8 @@ Feature: Login
   Scenario: Login failures
     When I am on "/login"
     And I fill in the following:
-      | username | louis@example.org |
-      | password | test123           |
+      | _username | louis@example.org |
+      | _password | test123           |
     And I press "Sign in"
 
     Then I should see text matching "The presented password is invalid."
@@ -50,8 +50,8 @@ Feature: Login
   Scenario: Login as Admin
     When I am on "/login"
     And I fill in the following:
-      | username | user@example.org |
-      | password | asdasd           |
+      | _username | user@example.org |
+      | _password | asdasd           |
     And I press "Sign in"
 
     Then I should be on "/start"
@@ -61,8 +61,8 @@ Feature: Login
   Scenario: Login as Support
     When I am on "/login"
     And I fill in the following:
-      | username | support@example.org |
-      | password | asdasd              |
+      | _username | support@example.org |
+      | _password | asdasd              |
     And I press "Sign in"
 
     Then I should be on "/start"
@@ -72,8 +72,8 @@ Feature: Login
   Scenario: Login without domain
     When I am on "/login"
     And I fill in the following:
-      | username | user   |
-      | password | asdasd |
+      | _username | user   |
+      | _password | asdasd |
     And I press "Sign in"
 
     Then I should be on "/start"
@@ -86,8 +86,8 @@ Feature: Login
       | special@example.org | paßwort  | ROLE_USER |
     And I am on "/login"
     And I fill in the following:
-      | username | special@example.org |
-      | password | paßwort             |
+      | _username | special@example.org |
+      | _password | paßwort             |
     And I press "Sign in"
 
     Then I should be on "/start"
@@ -112,8 +112,8 @@ Feature: Login
   Scenario: Login as Spam
     When I am on "/login"
     And I fill in the following:
-      | username | spam@example.org |
-      | password | asdasd              |
+      | _username | spam@example.org |
+      | _password | asdasd           |
     And I press "Sign in"
 
     Then I should be on "/start"
@@ -127,8 +127,8 @@ Feature: Login
       | twofactor@example.org | asdasd   | ROLE_USER | 1             | secret     |
     And I am on "/login"
     And I fill in the following:
-      | username | twofactor@example.org |
-      | password | asdasd                |
+      | _username | twofactor@example.org |
+      | _password | asdasd                |
     And I press "Sign in"
 
     Then I should be on "/2fa"
@@ -151,8 +151,8 @@ Feature: Login
       | twofactor@example.org | asdasd   | ROLE_USER | 1             | secret     | true              |
     And I am on "/login"
     And I fill in the following:
-      | username | twofactor@example.org |
-      | password | asdasd                |
+      | _username | twofactor@example.org |
+      | _password | asdasd                |
     And I press "Sign in"
 
     Then I should be on "/2fa"

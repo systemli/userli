@@ -128,8 +128,8 @@ Feature: User
     And the response status code should not be 403
 
     And I fill in the following:
-      | username | user@example.org |
-      | password | asdasd           |
+      | _username | user@example.org |
+      | _password | asdasd           |
     And I press "Sign in"
 
     Then I should be on "/login"
