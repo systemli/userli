@@ -10,6 +10,7 @@ use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 use Override;
@@ -22,12 +23,21 @@ final class LoadVoucherData extends Fixture implements FixtureGroupInterface, De
     #[Override]
     public function load(ObjectManager $manager): void
     {
-        $users = $manager->getRepository(User::class)->findAll();
+        assert($manager instanceof EntityManagerInterface);
+
+        $userIds = $manager->getRepository(User::class)->createQueryBuilder('u')
+            ->select('u.id')
+            ->getQuery()
+            ->getSingleColumnResult();
+
+        $suspiciousUser = $manager->getRepository(User::class)->findByEmail('suspicious@example.org');
+        $suspiciousUserId = $suspiciousUser->getId();
 
         for ($i = 0; $i < 1000; ++$i) {
-            $voucher = VoucherFactory::create($users[random_int(1, count($users) - 1)]);
+            $user = $manager->getReference(User::class, $userIds[array_rand($userIds)]);
+            $voucher = VoucherFactory::create($user);
 
-            $invitedUser = $users[random_int(0, count($users) - 1)];
+            $invitedUser = $manager->getReference(User::class, $userIds[array_rand($userIds)]);
             $voucher->setInvitedUser($invitedUser);
             $voucher->setRedeemedTime(new DateTime());
 
@@ -39,15 +49,16 @@ final class LoadVoucherData extends Fixture implements FixtureGroupInterface, De
 
             $manager->persist($voucher);
 
-            if (($i % 100) === 0) {
+            if (($i % 250) === 0) {
                 $manager->flush();
+                $manager->clear();
             }
         }
 
         // add redeemed voucher to a suspicious parent
-        $user = $manager->getRepository(User::class)->findByEmail('suspicious@example.org');
+        $user = $manager->getReference(User::class, $suspiciousUserId);
         $voucher = VoucherFactory::create($user);
-        $invitedUser = $users[random_int(0, count($users) - 1)];
+        $invitedUser = $manager->getReference(User::class, $userIds[array_rand($userIds)]);
         $voucher->setInvitedUser($invitedUser);
         $voucher->setRedeemedTime(new DateTime(sprintf('-%d days', 100)));
 
