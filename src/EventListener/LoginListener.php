@@ -38,7 +38,7 @@ final readonly class LoginListener implements EventSubscriberInterface
             return;
         }
 
-        $password = $event->getRequest()->get('_password');
+        $password = $event->getRequest()->request->get('_password');
         if ($password == null) {
             $this->logger->error(
                 '"_password" should not be null.',

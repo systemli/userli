@@ -127,7 +127,7 @@ final class SettingsType extends AbstractType
 
         // Type-specific constraints
         if ($type === 'integer') {
-            $constraints[] = new Assert\Type(['type' => 'integer']);
+            $constraints[] = new Assert\Type(type: 'integer');
         }
 
         if ($type === 'email') {
@@ -135,7 +135,7 @@ final class SettingsType extends AbstractType
         }
 
         if ($type === 'url') {
-            $constraints[] = new Assert\Url();
+            $constraints[] = new Assert\Url(requireTld: true);
         }
 
         // Length constraints
@@ -148,22 +148,16 @@ final class SettingsType extends AbstractType
 
         // Range constraints for numbers
         if (isset($validation['min'])) {
-            $constraints[] = new Assert\GreaterThanOrEqual([
-                'value' => $validation['min'],
-            ]);
+            $constraints[] = new Assert\GreaterThanOrEqual(value: $validation['min']);
         }
 
         if (isset($validation['max'])) {
-            $constraints[] = new Assert\LessThanOrEqual([
-                'value' => $validation['max'],
-            ]);
+            $constraints[] = new Assert\LessThanOrEqual(value: $validation['max']);
         }
 
         // Choice constraints
         if (isset($validation['choices']) && !empty($validation['choices'])) {
-            $constraints[] = new Assert\Choice([
-                'choices' => $validation['choices'],
-            ]);
+            $constraints[] = new Assert\Choice(choices: $validation['choices']);
         }
 
         return $constraints;

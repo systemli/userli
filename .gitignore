@@ -16,6 +16,7 @@ translations/
 docker-compose.override.yml
 .php-cs-fixer.cache
 .well-known
+/config/reference.php
 
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache

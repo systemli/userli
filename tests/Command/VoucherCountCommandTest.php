@@ -46,7 +46,7 @@ class VoucherCountCommandTest extends TestCase
     public function testExecuteWithUnknownUser(): void
     {
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:voucher:count');
         $commandTester = new CommandTester($command);
@@ -63,7 +63,7 @@ class VoucherCountCommandTest extends TestCase
     public function testExecuteWithUser(): void
     {
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:voucher:count');
         $commandTester = new CommandTester($command);

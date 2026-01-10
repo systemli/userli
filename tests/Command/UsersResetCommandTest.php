@@ -60,7 +60,7 @@ class UsersResetCommandTest extends TestCase
     public function testExecute(): void
     {
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:reset');
 
@@ -91,7 +91,7 @@ class UsersResetCommandTest extends TestCase
         $this->expectExceptionMessage("The password doesn't comply with our security policy.");
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:reset');
 
@@ -107,7 +107,7 @@ class UsersResetCommandTest extends TestCase
         $this->expectExceptionMessage("The passwords don't match");
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:reset');
 
@@ -122,7 +122,7 @@ class UsersResetCommandTest extends TestCase
         $this->expectException(UserNotFoundException::class);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:reset');
 

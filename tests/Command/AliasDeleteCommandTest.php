@@ -57,7 +57,7 @@ class AliasDeleteCommandTest extends TestCase
     public function testExecute(): void
     {
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:alias:delete');
 
@@ -83,7 +83,7 @@ class AliasDeleteCommandTest extends TestCase
     public function testExecuteWithoutAlias(): void
     {
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:alias:delete');
 

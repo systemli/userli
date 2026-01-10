@@ -74,10 +74,7 @@ class LoginListenerTest extends TestCase
      */
     private function getInteractiveEvent(User $user): InteractiveLoginEvent
     {
-        $request = $this->getMockBuilder(Request::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $request->method('get')->willReturn('password');
+        $request = new Request([], ['_password' => 'password']);
 
         $token = $this->getMockBuilder(TokenInterface::class)
             ->disableOriginalConstructor()

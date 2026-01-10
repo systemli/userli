@@ -53,7 +53,7 @@ class UsersRestoreCommandTest extends TestCase
         });
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:restore');
 
@@ -88,7 +88,7 @@ class UsersRestoreCommandTest extends TestCase
         });
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:restore');
 
@@ -113,7 +113,7 @@ class UsersRestoreCommandTest extends TestCase
         $this->expectExceptionMessage("The password doesn't comply with our security policy.");
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:restore');
 
@@ -129,7 +129,7 @@ class UsersRestoreCommandTest extends TestCase
         $this->expectExceptionMessage("The passwords don't match");
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:restore');
 
@@ -144,7 +144,7 @@ class UsersRestoreCommandTest extends TestCase
         $this->expectException(UserNotFoundException::class);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:restore');
 

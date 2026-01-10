@@ -65,7 +65,7 @@ class VoucherCreateCommandTest extends TestCase
             ->method('setBaseUrl');
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:voucher:create');
         $commandTester = new CommandTester($command);
@@ -108,7 +108,7 @@ class VoucherCreateCommandTest extends TestCase
             ->willReturn($voucher);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:voucher:create');
         $commandTester = new CommandTester($command);
@@ -165,7 +165,7 @@ class VoucherCreateCommandTest extends TestCase
             ->willThrowException($exception);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:voucher:create');
         $commandTester = new CommandTester($command);
@@ -207,7 +207,7 @@ class VoucherCreateCommandTest extends TestCase
             ->willReturn($voucher);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:voucher:create');
         $commandTester = new CommandTester($command);
@@ -260,7 +260,7 @@ class VoucherCreateCommandTest extends TestCase
             ->willReturn($baseUrl.'/register/'.$voucherCode);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:voucher:create');
         $commandTester = new CommandTester($command);
