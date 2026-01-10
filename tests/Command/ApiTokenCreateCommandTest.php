@@ -36,7 +36,7 @@ class ApiTokenCreateCommandTest extends TestCase
         $this->command = new ApiTokenCreateCommand($this->apiTokenManager, $this->validator);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $this->commandTester = new CommandTester($this->command);
     }

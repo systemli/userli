@@ -20,7 +20,7 @@ class AdminPasswordCommandTest extends TestCase
 
         $command = new AdminPasswordCommand($updater);
         $app = new Application();
-        $app->add($command);
+        $app->addCommand($command);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute(['password' => 'test']);

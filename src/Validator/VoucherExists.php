@@ -13,14 +13,14 @@ final class VoucherExists extends Constraint
 {
     public bool $exists;
 
-    public function __construct(?bool $exists = null)
+    public function __construct(?bool $exists = null, ?array $groups = null, mixed $payload = null)
     {
-        parent::__construct([]);
-
         if (null === $exists) {
-            throw new MissingOptionsException(sprintf('Option "exists" must be given for constraint %s', __CLASS__), ['min', 'max']);
+            throw new MissingOptionsException(sprintf('Option "exists" must be given for constraint %s', __CLASS__), ['exists']);
         }
 
-        $this->exists = $exists ?? $this->exists;
+        $this->exists = $exists;
+
+        parent::__construct(groups: $groups, payload: $payload);
     }
 }

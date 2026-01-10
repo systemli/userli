@@ -46,7 +46,7 @@ class UsersQuotaCommandTest extends TestCase
             ->willReturn($user);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:quota');
         $commandTester = new CommandTester($command);
@@ -74,7 +74,7 @@ class UsersQuotaCommandTest extends TestCase
             ->willReturn($user);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:quota');
         $commandTester = new CommandTester($command);
@@ -100,7 +100,7 @@ class UsersQuotaCommandTest extends TestCase
             ->willReturn(null);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:quota');
         $commandTester = new CommandTester($command);

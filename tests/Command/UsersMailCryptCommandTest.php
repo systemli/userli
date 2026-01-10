@@ -74,7 +74,7 @@ class UsersMailCryptCommandTest extends TestCase
             ->willReturn($privateKey);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:mailcrypt');
         $commandTester = new CommandTester($command);
@@ -114,7 +114,7 @@ class UsersMailCryptCommandTest extends TestCase
             ->method('decrypt');
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:mailcrypt');
         $commandTester = new CommandTester($command);
@@ -151,7 +151,7 @@ class UsersMailCryptCommandTest extends TestCase
             ->method('decrypt');
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:mailcrypt');
         $commandTester = new CommandTester($command);
@@ -189,7 +189,7 @@ class UsersMailCryptCommandTest extends TestCase
             ->method('decrypt');
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:mailcrypt');
         $commandTester = new CommandTester($command);
@@ -226,7 +226,7 @@ class UsersMailCryptCommandTest extends TestCase
             ->method('findByEmail');
 
         $application = new Application();
-        $application->add($command);
+        $application->addCommand($command);
 
         $consoleCommand = $application->find('app:users:mailcrypt');
         $commandTester = new CommandTester($consoleCommand);
@@ -249,7 +249,7 @@ class UsersMailCryptCommandTest extends TestCase
             ->willReturn(null);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:mailcrypt');
         $commandTester = new CommandTester($command);
@@ -286,7 +286,7 @@ class UsersMailCryptCommandTest extends TestCase
             ->method('decrypt');
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:mailcrypt');
         $commandTester = new CommandTester($command);

@@ -14,10 +14,10 @@ final class Lowercase extends Constraint
 
     public string $mode = 'strict';
 
-    public function __construct(?string $mode = null, ?array $groups = null, $payload = null)
+    public function __construct(?string $mode = null, ?array $groups = null, mixed $payload = null)
     {
-        parent::__construct([], $groups, $payload);
-
         $this->mode = $mode ?? $this->mode;
+
+        parent::__construct(groups: $groups, payload: $payload);
     }
 }

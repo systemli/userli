@@ -60,7 +60,7 @@ class UsersRemoveCommandTest extends TestCase
             ->willReturn($deletedUsers);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:remove');
         $commandTester = new CommandTester($command);
@@ -93,7 +93,7 @@ class UsersRemoveCommandTest extends TestCase
             ->willReturn($deletedUsers);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:remove');
         $commandTester = new CommandTester($command);
@@ -129,7 +129,7 @@ class UsersRemoveCommandTest extends TestCase
             ->willReturn($deletedUsers);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:remove');
         $commandTester = new CommandTester($command);
@@ -154,7 +154,7 @@ class UsersRemoveCommandTest extends TestCase
             ->willReturn([]);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:remove');
         $commandTester = new CommandTester($command);
@@ -183,7 +183,7 @@ class UsersRemoveCommandTest extends TestCase
             ->willReturn($deletedUsers);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:remove');
         $commandTester = new CommandTester($command);

@@ -39,7 +39,7 @@ final readonly class CompromisedPasswordListener implements EventSubscriberInter
             return;
         }
 
-        $password = $event->getRequest()->get('_password');
+        $password = $event->getRequest()->request->get('_password');
         if ($password === null) {
             return;
         }

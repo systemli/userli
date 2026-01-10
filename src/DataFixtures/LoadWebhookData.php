@@ -29,7 +29,7 @@ final class LoadWebhookData extends Fixture implements FixtureGroupInterface
         $manager->persist($endpoint);
 
         $events = WebhookEvent::cases();
-        $statuses = ['success', 'failed', 'pending'];
+        $statuses = ['success', 'failed'];
 
         for ($i = 0; $i < self::DELIVERY_COUNT; ++$i) {
             $event = $events[array_rand($events)];

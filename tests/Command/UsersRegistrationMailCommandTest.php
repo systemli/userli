@@ -55,7 +55,7 @@ class UsersRegistrationMailCommandTest extends TestCase
             ->with($user, $locale);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:registration:mail');
         $commandTester = new CommandTester($command);
@@ -84,7 +84,7 @@ class UsersRegistrationMailCommandTest extends TestCase
             ->with($user, $defaultLocale);
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:registration:mail');
         $commandTester = new CommandTester($command);
@@ -110,7 +110,7 @@ class UsersRegistrationMailCommandTest extends TestCase
             ->method('send');
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:registration:mail');
         $commandTester = new CommandTester($command);
@@ -132,7 +132,7 @@ class UsersRegistrationMailCommandTest extends TestCase
             ->method('send');
 
         $application = new Application();
-        $application->add($this->command);
+        $application->addCommand($this->command);
 
         $command = $application->find('app:users:registration:mail');
         $commandTester = new CommandTester($command);

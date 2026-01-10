@@ -39,14 +39,14 @@ final class OpenPgpKeyType extends AbstractType implements EventSubscriberInterf
                 'help' => 'openpgp-key-file',
                 'required' => false,
                 'constraints' => [
-                    new File([
-                        'maxSize' => '4M',
-                        'mimeTypes' => [
+                    new File(
+                        maxSize: '4M',
+                        mimeTypes: [
                             'application/pgp-keys',
                             'text/plain',
                         ],
-                        'mimeTypesMessage' => $this->translator->trans('openpgp-key-file-mimetype'),
-                    ]),
+                        mimeTypesMessage: $this->translator->trans('openpgp-key-file-mimetype'),
+                    ),
                 ],
             ])
             ->add('keyText', TextareaType::class, [
