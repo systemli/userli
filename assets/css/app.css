@@ -75,6 +75,22 @@
   @apply dark:text-gray-300;
 }
 
+/* Custom Checkbox with Tailwind utilities to fix firefox default style */
+input[type="checkbox"].custom-checkbox {
+  @apply h-4 w-4 appearance-none rounded border border-gray-300 bg-white cursor-pointer;
+  @apply focus:ring-2 focus:ring-blue-500 focus:ring-offset-0;
+  @apply dark:border-gray-500 dark:bg-gray-600;
+}
+
+input[type="checkbox"].custom-checkbox:checked {
+  @apply border-blue-600 bg-blue-600;
+  @apply dark:border-blue-500 dark:bg-blue-500;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 0 1 0 1.414l-5 5a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L6.5 9.086l4.293-4.293a1 1 0 0 1 1.414 0z'/%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 /* Reduced Motion Support - Respect user preference for reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
