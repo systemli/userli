@@ -27,6 +27,8 @@ final class PruneWebhookDeliveriesHandler
         $qb = $this->entityManager->createQueryBuilder()
             ->delete(WebhookDelivery::class, 'd')
             ->where('d.dispatchedTime < :before')
+            ->andWhere('d.success = :success')
+            ->setParameter('success', true)
             ->setParameter('before', $before);
 
         $deleted = $qb->getQuery()->execute();
