@@ -13,6 +13,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Entity(repositoryClass: WebhookDeliveryRepository::class)]
 #[ORM\Table(name: 'webhook_deliveries')]
 #[ORM\Index(columns: ['dispatched_time'])]
+#[ORM\Index(columns: ['dispatched_time', 'success'])]
 #[ORM\Index(columns: ['success'])]
 #[ORM\Index(columns: ['type'])]
 class WebhookDelivery
