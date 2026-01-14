@@ -20,7 +20,6 @@ use App\Traits\OpenPgpKeyAwareTrait;
 use App\Traits\PasswordTrait;
 use App\Traits\PasswordVersionTrait;
 use App\Traits\PlainMailCryptPrivateKeyTrait;
-use App\Traits\PlainPasswordTrait;
 use App\Traits\PlainRecoveryTokenTrait;
 use App\Traits\QuotaTrait;
 use App\Traits\RecoverySecretBoxTrait;
@@ -30,6 +29,7 @@ use App\Traits\TwofactorBackupCodeTrait;
 use App\Traits\TwofactorTrait;
 use App\Traits\UpdatedTimeTrait;
 use App\Validator\EmailDomain;
+use App\Validator\PasswordPolicy;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -68,7 +68,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     use PasswordTrait;
     use PasswordVersionTrait;
     use PlainMailCryptPrivateKeyTrait;
-    use PlainPasswordTrait;
     use PlainRecoveryTokenTrait;
     use QuotaTrait;
     use RecoverySecretBoxTrait;
@@ -87,6 +86,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $passwordChangeRequired;
+
+    #[PasswordPolicy]
+    #[Assert\NotCompromisedPassword(skipOnError: true)]
+    private ?string $plainPassword = null;
 
     /**
      * User constructor.
@@ -166,5 +169,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     public function setPasswordChangeRequired(bool $passwordChangeRequired): void
     {
         $this->passwordChangeRequired = $passwordChangeRequired;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
     }
 }

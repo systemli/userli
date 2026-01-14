@@ -80,8 +80,8 @@ form:
   voucher-redeemed-on: Eingelöst am
   actual-password: Aktuelles Passwort
   new-custom-alias: Neue Alias-Adresse
-  plain-password: Neues Passwort
-  plain-password_confirmation: Neues Passwort bestätigen
+  new-password: Neues Passwort
+  new-password_confirmation: Neues Passwort bestätigen
   change-password: Passwort ändern
   delete-account: Konto löschen
   delete-password: Passwort

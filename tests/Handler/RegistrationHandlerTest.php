@@ -76,7 +76,7 @@ class RegistrationHandlerTest extends KernelTestCase
         );
 
         $registration = new Registration();
-        $registration->setPlainPassword('password');
+        $registration->setPassword('password');
         $registration->setEmail('user@example.com');
         $registration->setVoucher('voucher');
 

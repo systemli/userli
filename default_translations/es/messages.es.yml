@@ -72,8 +72,8 @@ form:
   voucher-redeemed-on: Canjeado el
   actual-password: Contraseña actual
   new-custom-alias: Nueva dirección alias
-  plain-password: Nueva contraseña
-  plain-password_confirmation: Confirmar nueva contraseña
+  new-password: Nueva contraseña
+  new-password_confirmation: Confirmar nueva contraseña
   change-password: Cambiar tu contraseña
   delete-account: Eliminar cuenta
   delete-password: Contraseña

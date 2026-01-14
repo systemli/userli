@@ -59,8 +59,8 @@ form:
   add: Aggiungi
   password_confirmation: Conferma la password
   domain: Dominio
-  plain-password: Nuova password
-  plain-password_confirmation: Conferma la nuova password
+  new-password: Nuova password
+  new-password_confirmation: Conferma la nuova password
   change-password: Cambia la tua password
   create-custom-alias: Aggiungi
   delete-alias: Elimina l'indirizzo alias

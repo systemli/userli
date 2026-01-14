@@ -17,8 +17,8 @@ Feature: Initialization
     Then I should be on "/init/user"
 
     When I fill in the following:
-      | plain_password[plainPassword][first]  | P4ssW0rt!!!1 |
-      | plain_password[plainPassword][second] | P4ssW0rt!!!1 |
+      | init_user[password][first]  | P4ssW0rt!!!1 |
+      | init_user[password][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
     Then I should be on "/init/settings"

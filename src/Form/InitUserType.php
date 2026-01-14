@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\Form\Model\PlainPassword;
+use App\Form\Model\InitUser;
 use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -14,20 +14,20 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @extends AbstractType<PlainPassword>
+ * @extends AbstractType<InitUser>
  */
-final class PlainPasswordType extends AbstractType
+final class InitUserType extends AbstractType
 {
-    public const NAME = 'plain_password';
+    public const NAME = 'init_user';
 
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('plainPassword', RepeatedType::class, [
+            ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => 'form.plain-password'],
-                'second_options' => ['label' => 'form.plain-password_confirmation'],
+                'first_options' => ['label' => 'form.password'],
+                'second_options' => ['label' => 'form.password_confirmation'],
                 'invalid_message' => 'form.different-password',
             ])
             ->add('submit', SubmitType::class, ['label' => 'form.submit']);
@@ -36,7 +36,7 @@ final class PlainPasswordType extends AbstractType
     #[Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => PlainPassword::class]);
+        $resolver->setDefaults(['data_class' => InitUser::class]);
     }
 
     #[Override]

@@ -52,8 +52,8 @@ form:
   voucher-redeemed-on: Resgatado em
   actual-password: Senha atual
   new-custom-alias: Novo endereço alias
-  plain-password: Nova senha
-  plain-password_confirmation: Confime sua nova senha
+  new-password: Nova senha
+  new-password_confirmation: Confime sua nova senha
   change-password: Mudar sua senha
   delete-account: Apagar conta
   delete-password: Senha

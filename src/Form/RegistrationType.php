@@ -52,7 +52,7 @@ final class RegistrationType extends AbstractType
                 TextType::class,
                 ['label' => 'registration.label-email']
             )->addViewTransformer($transformer))
-            ->add('plainPassword', RepeatedType::class, [
+            ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => ['label' => 'form.password'],
                 'second_options' => ['label' => 'form.password_confirmation'],
