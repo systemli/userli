@@ -29,15 +29,11 @@ use App\Traits\TwofactorBackupCodeTrait;
 use App\Traits\TwofactorTrait;
 use App\Traits\UpdatedTimeTrait;
 use App\Validator\EmailDomain;
-use App\Validator\PasswordPolicy;
-use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
-use Override;
 use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
-use Stringable;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -52,7 +48,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Index(columns: ['domain_id', 'deleted'], name: 'domain_deleted_idx')]
 #[Index(columns: ['email', 'domain_id'], name: 'email_domain_idx')]
 #[EmailDomain]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface, Stringable
+class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface, \Stringable
 {
     use CreationTimeTrait;
     use DeleteTrait;
@@ -87,10 +83,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $passwordChangeRequired;
 
-    #[PasswordPolicy]
-    #[Assert\NotCompromisedPassword(skipOnError: true)]
-    private ?string $plainPassword = null;
-
     /**
      * User constructor.
      */
@@ -100,18 +92,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         $this->deleted = false;
         $this->passwordVersion = self::CURRENT_PASSWORD_VERSION;
         $this->passwordChangeRequired = false;
-        $currentDateTime = new DateTime();
+        $currentDateTime = new \DateTime();
         $this->creationTime = $currentDateTime;
         $this->updatedTime = $currentDateTime;
     }
 
-    #[Override]
+    #[\Override]
     public function __toString(): string
     {
         return $this->getEmail();
     }
 
-    #[Override]
+    #[\Override]
     public function getRoles(): array
     {
         return !empty($this->roles) ? $this->roles : [Roles::USER];
@@ -135,13 +127,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         return $this->getUserIdentifier();
     }
 
-    #[Override]
+    #[\Override]
     public function getUserIdentifier(): string
     {
         return $this->email;
     }
 
-    #[Override]
+    #[\Override]
     public function getPasswordHasherName(): ?string
     {
         if ($this->getPasswordVersion() < self::CURRENT_PASSWORD_VERSION) {
@@ -152,11 +144,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         return null;
     }
 
-    #[Override]
+    #[\Override]
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        $this->plainPassword = null;
         $this->erasePlainMailCryptPrivateKey();
         $this->erasePlainRecoveryToken();
     }
@@ -169,15 +160,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     public function setPasswordChangeRequired(bool $passwordChangeRequired): void
     {
         $this->passwordChangeRequired = $passwordChangeRequired;
-    }
-
-    public function getPlainPassword(): ?string
-    {
-        return $this->plainPassword;
-    }
-
-    public function setPlainPassword(?string $plainPassword): void
-    {
-        $this->plainPassword = $plainPassword;
     }
 }

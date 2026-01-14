@@ -10,8 +10,7 @@ use App\Enum\Roles;
 use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use App\Traits\DomainGuesserAwareTrait;
-use Exception;
-use Override;
+use App\Validator\PasswordPolicy;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -26,6 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @extends Admin<User>
@@ -42,13 +42,13 @@ final class UserAdmin extends Admin
 
     private Security $security;
 
-    #[Override]
+    #[\Override]
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {
         return 'user';
     }
 
-    #[Override]
+    #[\Override]
     protected function createNewInstance(): User
     {
         $user = new User('');
@@ -58,7 +58,7 @@ final class UserAdmin extends Admin
         return $user;
     }
 
-    #[Override]
+    #[\Override]
     protected function configureFormFields(FormMapper $form): void
     {
         /** @var User $currentUser */
@@ -75,9 +75,15 @@ final class UserAdmin extends Admin
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'form.password',
                 'required' => $this->isNewObject(),
+                'mapped' => false,
                 'disabled' => (null !== $userId) ? $user->hasMailCryptSecretBox() : false,
                 'help' => (null !== $userId && $user->hasMailCryptSecretBox()) ?
                     'Disabled because user has a MailCrypt key pair defined' : null,
+                'constraints' => [
+                    new Assert\NotBlank(groups: ['create']),
+                    new PasswordPolicy(),
+                    new Assert\NotCompromisedPassword(skipOnError: true),
+                ],
             ])
             ->add('totp_confirmed', CheckboxType::class, [
                 'label' => 'form.twofactor',
@@ -102,7 +108,15 @@ final class UserAdmin extends Admin
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
     }
 
-    #[Override]
+    #[\Override]
+    protected function configureFormOptions(array &$formOptions): void
+    {
+        $formOptions['validation_groups'] = $this->isNewObject()
+            ? ['Default', 'create']
+            : ['Default', 'edit'];
+    }
+
+    #[\Override]
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
@@ -148,7 +162,7 @@ final class UserAdmin extends Admin
             ->add('deleted');
     }
 
-    #[Override]
+    #[\Override]
     protected function configureListFields(ListMapper $list): void
     {
         $list
@@ -174,7 +188,7 @@ final class UserAdmin extends Admin
             ->add('deleted');
     }
 
-    #[Override]
+    #[\Override]
     protected function configureBatchActions($actions): array
     {
         if ($this->hasRoute('edit') && $this->hasAccess('edit')) {
@@ -187,15 +201,16 @@ final class UserAdmin extends Admin
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
-    #[Override]
+    #[\Override]
     protected function prePersist(object $object): void
     {
         assert($object instanceof User);
-        $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
+        $plainPassword = $this->getForm()->get('plainPassword')->getData();
+        $this->passwordUpdater->updatePassword($object, $plainPassword);
         if (null !== $object->getMailCryptEnabled()) {
-            $this->mailCryptKeyHandler->create($object, $object->getPlainPassword(), $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS));
+            $this->mailCryptKeyHandler->create($object, $plainPassword, $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS));
         }
 
         if (null === $object->getDomain() && null !== $domain = $this->domainGuesser->guess($object->getEmail())) {
@@ -203,7 +218,7 @@ final class UserAdmin extends Admin
         }
     }
 
-    #[Override]
+    #[\Override]
     protected function preUpdate(object $object): void
     {
         assert($object instanceof User);
@@ -212,8 +227,9 @@ final class UserAdmin extends Admin
             throw new AccessDeniedException('Not allowed to edit admin user');
         }
 
-        if (!empty($object->getPlainPassword())) {
-            $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
+        $plainPassword = $this->getForm()->get('plainPassword')->getData();
+        if (!empty($plainPassword)) {
+            $this->passwordUpdater->updatePassword($object, $plainPassword);
         } else {
             $object->updateUpdatedTime();
         }
