@@ -11,6 +11,8 @@ use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use App\Traits\DomainGuesserAwareTrait;
 use App\Validator\PasswordPolicy;
+use Exception;
+use Override;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -42,13 +44,13 @@ final class UserAdmin extends Admin
 
     private Security $security;
 
-    #[\Override]
+    #[Override]
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {
         return 'user';
     }
 
-    #[\Override]
+    #[Override]
     protected function createNewInstance(): User
     {
         $user = new User('');
@@ -58,7 +60,7 @@ final class UserAdmin extends Admin
         return $user;
     }
 
-    #[\Override]
+    #[Override]
     protected function configureFormFields(FormMapper $form): void
     {
         /** @var User $currentUser */
@@ -108,7 +110,7 @@ final class UserAdmin extends Admin
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
     }
 
-    #[\Override]
+    #[Override]
     protected function configureFormOptions(array &$formOptions): void
     {
         $formOptions['validation_groups'] = $this->isNewObject()
@@ -116,7 +118,7 @@ final class UserAdmin extends Admin
             : ['Default', 'edit'];
     }
 
-    #[\Override]
+    #[Override]
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
@@ -162,7 +164,7 @@ final class UserAdmin extends Admin
             ->add('deleted');
     }
 
-    #[\Override]
+    #[Override]
     protected function configureListFields(ListMapper $list): void
     {
         $list
@@ -188,7 +190,7 @@ final class UserAdmin extends Admin
             ->add('deleted');
     }
 
-    #[\Override]
+    #[Override]
     protected function configureBatchActions($actions): array
     {
         if ($this->hasRoute('edit') && $this->hasAccess('edit')) {
@@ -201,9 +203,9 @@ final class UserAdmin extends Admin
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    #[\Override]
+    #[Override]
     protected function prePersist(object $object): void
     {
         assert($object instanceof User);
@@ -218,7 +220,7 @@ final class UserAdmin extends Admin
         }
     }
 
-    #[\Override]
+    #[Override]
     protected function preUpdate(object $object): void
     {
         assert($object instanceof User);
