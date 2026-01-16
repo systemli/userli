@@ -68,24 +68,18 @@ class RetentionControllerTest extends WebTestCase
         self::assertJsonStringEqualsJsonString('[]', $this->client->getResponse()->getContent());
     }
 
-    public function testGetDeletedUsersNonexistantDomain(): void
+    public function testGetInactiveUsersWithWrongScope(): void
     {
-        $this->client->request('GET', '/api/retention/nonexistant.org/users');
-        self::assertResponseStatusCodeSame(404);
-    }
-
-    public function testGetDeletedUsersWithWrongScope(): void
-    {
-        $this->client->request(method: 'GET', uri: '/api/retention/example.org/users', server: [
+        $this->client->request(method: 'GET', uri: '/api/retention/users', server: [
             'HTTP_AUTHORIZATION' => 'Bearer '.LoadApiTokenData::DOVECOT_TOKEN_PLAIN,
         ]);
         self::assertResponseStatusCodeSame(403);
     }
 
-    public function testGetDeletedUsers(): void
+    public function testGetInactiveUsers(): void
     {
-        $this->client->request('GET', '/api/retention/example.org/users');
+        $this->client->request('GET', '/api/retention/users');
         self::assertResponseIsSuccessful();
-        self::assertJsonStringEqualsJsonString('["deleted@example.org"]', $this->client->getResponse()->getContent());
+        self::assertJsonStringEqualsJsonString('["inactive@example.org"]', $this->client->getResponse()->getContent());
     }
 }

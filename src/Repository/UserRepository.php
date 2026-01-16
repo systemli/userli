@@ -7,13 +7,13 @@ namespace App\Repository;
 use App\Entity\Domain;
 use App\Entity\User;
 use DateInterval;
+use DateInvalidOperationException;
 use DateTime;
 use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\LazyCriteriaCollection;
-use Exception;
 use Override;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -57,11 +57,11 @@ final class UserRepository extends EntityRepository implements PasswordUpgraderI
     }
 
     /**
-     * @return AbstractLazyCollection|(AbstractLazyCollection&Selectable)|LazyCriteriaCollection
+     * @return User[]
      *
-     * @throws Exception
+     * @throws DateInvalidOperationException
      */
-    public function findInactiveUsers(int $days)
+    public function findInactiveUsers(int $days): array
     {
         $expressionBuilder = Criteria::expr();
 
@@ -82,7 +82,7 @@ final class UserRepository extends EntityRepository implements PasswordUpgraderI
             );
         }
 
-        return $this->matching(new Criteria($expression, accessRawFieldValues: true));
+        return $this->matching(new Criteria($expression, accessRawFieldValues: true))->toArray();
     }
 
     public function findDeletedUsers(?Domain $domain = null): array

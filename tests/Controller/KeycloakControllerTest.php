@@ -61,7 +61,7 @@ class KeycloakControllerTest extends WebTestCase
         self::assertResponseIsSuccessful();
 
         $data = json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        self::assertEquals(8, $data);
+        self::assertEquals(9, $data);
     }
 
     public function testGetOneUser(): void

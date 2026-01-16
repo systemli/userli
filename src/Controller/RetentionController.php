@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Dto\RetentionTouchUserDto;
-use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\ApiScope;
 use App\Security\RequireApiScope;
@@ -54,15 +53,14 @@ final class RetentionController extends AbstractController
     }
 
     /**
-     * List deleted users.
+     * List inactive users.
      */
-    #[Route(path: '/api/retention/{domainUrl}/users', name: 'api_retention_get_deleted_users', methods: ['GET'], stateless: true)]
-    public function getDeletedUsers(
-        #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
-    ): Response {
-        $deletedUsers = $this->manager->getRepository(User::class)->findDeletedUsers($domain);
-        $deletedUsernames = array_map(static function ($user) { return $user->getEmail(); }, $deletedUsers);
+    #[Route(path: '/api/retention/users', name: 'api_retention_get_inactive_users', methods: ['GET'], stateless: true)]
+    public function getInactiveUsers(): Response
+    {
+        $inactiveUsers = $this->manager->getRepository(User::class)->findInactiveUsers(2 * 365); // 2 years
+        $inactiveEmails = array_map(static function ($user) { return $user->getEmail(); }, $inactiveUsers);
 
-        return $this->json($deletedUsernames);
+        return $this->json($inactiveEmails);
     }
 }

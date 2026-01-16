@@ -6,6 +6,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Domain;
 use App\Enum\Roles;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -27,6 +28,7 @@ final class LoadUserData extends AbstractUserData implements DependentFixtureInt
         ['email' => 'suspicious@example.org', 'roles' => [Roles::SUSPICIOUS], 'totp' => false, 'mailcrypt' => false],
         ['email' => 'domain@example.com', 'roles' => [Roles::DOMAIN_ADMIN], 'totp' => false, 'mailcrypt' => false],
         ['email' => 'deleted@example.org', 'roles' => [Roles::USER], 'totp' => false, 'mailcrypt' => false, 'deleted' => true],
+        ['email' => 'inactive@example.org', 'roles' => [Roles::USER], 'totp' => false, 'mailcrypt' => false, 'lastLoginTimeOffset' => '-3 years'],
     ];
 
     /**
@@ -45,6 +47,12 @@ final class LoadUserData extends AbstractUserData implements DependentFixtureInt
             $totpEnabled = $user['totp'];
             $mailcryptEnabled = $user['mailcrypt'];
 
+            if (array_key_exists('lastLoginTimeOffset', $user)) {
+                $lastLoginTimeOffset = $user['lastLoginTimeOffset'];
+            } else {
+                $lastLoginTimeOffset = null;
+            }
+
             $user = $this->buildUser($domain, $email, $roles);
             if ($totpEnabled) {
                 $user->setTotpSecret($this->totpAuthenticator->generateSecret());
@@ -58,6 +66,12 @@ final class LoadUserData extends AbstractUserData implements DependentFixtureInt
 
             if ($deleted) {
                 $user->setDeleted(true);
+            }
+
+            if (null !== $lastLoginTimeOffset) {
+                $lastLoginTime = new DateTime();
+                $lastLoginTime->modify($lastLoginTimeOffset);
+                $user->setLastLoginTime($lastLoginTime);
             }
 
             $manager->persist($user);
