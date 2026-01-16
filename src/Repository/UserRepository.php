@@ -7,13 +7,9 @@ namespace App\Repository;
 use App\Entity\Domain;
 use App\Entity\User;
 use DateInterval;
+use DateInvalidOperationException;
 use DateTime;
-use Doctrine\Common\Collections\AbstractLazyCollection;
-use Doctrine\Common\Collections\Criteria;
-use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\LazyCriteriaCollection;
-use Exception;
 use Override;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -38,51 +34,61 @@ final class UserRepository extends EntityRepository implements PasswordUpgraderI
         return $this->findOneBy(['domain' => $domain, 'email' => $email]);
     }
 
-    public function findUsersByString(Domain $domain, string $string, int $max, int $first): AbstractLazyCollection|LazyCriteriaCollection
-    {
-        $criteria = Criteria::create(true)->where(Criteria::expr()->eq('domain', $domain));
-        $criteria->andWhere(Criteria::expr()->contains('email', $string));
-        $criteria->setMaxResults($max);
-        $criteria->setFirstResult($first);
-
-        return $this->matching($criteria);
-    }
-
     /**
-     * @return AbstractLazyCollection|(AbstractLazyCollection&Selectable)|LazyCriteriaCollection
+     * @return User[]
      */
-    public function findUsersSince(DateTime $dateTime)
+    public function findUsersByString(Domain $domain, string $string, int $max, int $first): array
     {
-        return $this->matching(Criteria::create(true)->where(Criteria::expr()->gte('creationTime', $dateTime)));
+        return $this->createQueryBuilder('u')
+            ->where('u.domain = :domain')
+            ->andWhere('u.email LIKE :string')
+            ->setParameter('domain', $domain)
+            ->setParameter('string', '%'.$string.'%')
+            ->setMaxResults($max)
+            ->setFirstResult($first)
+            ->getQuery()
+            ->getResult();
     }
 
     /**
-     * @return AbstractLazyCollection|(AbstractLazyCollection&Selectable)|LazyCriteriaCollection
+     * @return User[]
+     */
+    public function findUsersSince(DateTime $dateTime): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.creationTime >= :dateTime')
+            ->setParameter('dateTime', $dateTime)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return User[]
      *
-     * @throws Exception
+     * @throws DateInvalidOperationException
      */
-    public function findInactiveUsers(int $days)
+    public function findInactiveUsers(int $days): array
     {
-        $expressionBuilder = Criteria::expr();
+        $qb = $this->createQueryBuilder('u')
+            ->where('u.deleted = :deleted')
+            ->setParameter('deleted', false);
 
-        if (0 === $days) {
-            $expression = $expressionBuilder->eq('deleted', 0);
-        } else {
+        if ($days > 0) {
             $dateTime = new DateTime();
             $dateTime->sub(new DateInterval('P'.$days.'D'));
-            $expression = $expressionBuilder->andX(
-                $expressionBuilder->eq('deleted', 0),
-                $expressionBuilder->orX(
-                    $expressionBuilder->lte('lastLoginTime', $dateTime),
-                    $expressionBuilder->andX(
-                        $expressionBuilder->eq('lastLoginTime', null),
-                        $expressionBuilder->lte('updatedTime', $dateTime)
+
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->lte('u.lastLoginTime', ':dateTime'),
+                    $qb->expr()->andX(
+                        $qb->expr()->isNull('u.lastLoginTime'),
+                        $qb->expr()->lte('u.updatedTime', ':dateTime')
                     )
                 )
-            );
+            )->setParameter('dateTime', $dateTime);
         }
 
-        return $this->matching(new Criteria($expression, accessRawFieldValues: true));
+        return $qb->getQuery()->getResult();
     }
 
     public function findDeletedUsers(?Domain $domain = null): array
@@ -94,47 +100,70 @@ final class UserRepository extends EntityRepository implements PasswordUpgraderI
 
     public function countUsers(): int
     {
-        return $this->matching(Criteria::create(true)
-            ->where(Criteria::expr()->eq('deleted', false)))->count();
+        return (int) $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->where('u.deleted = :deleted')
+            ->setParameter('deleted', false)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     public function countDomainUsers(Domain $domain): int
     {
-        return $this->matching(Criteria::create(true)
-            ->where(Criteria::expr()->eq('domain', $domain))
-            ->andWhere(Criteria::expr()->eq('deleted', false)))
-            ->count();
+        return (int) $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->where('u.domain = :domain')
+            ->andWhere('u.deleted = :deleted')
+            ->setParameter('domain', $domain)
+            ->setParameter('deleted', false)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     public function countDeletedUsers(): int
     {
-        return $this->matching(Criteria::create(true)
-            ->where(Criteria::expr()->eq('deleted', true)))->count();
+        return (int) $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->where('u.deleted = :deleted')
+            ->setParameter('deleted', true)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     public function countUsersWithRecoveryToken(): int
     {
-        return $this->matching(Criteria::create(true)
-            ->where(Criteria::expr()->eq('deleted', false))
-            ->andWhere(Criteria::expr()->neq('recoverySecretBox', null))
-        )->count();
+        return (int) $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->where('u.deleted = :deleted')
+            ->andWhere('u.recoverySecretBox IS NOT NULL')
+            ->setParameter('deleted', false)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     public function countUsersWithMailCrypt(): int
     {
-        return $this->matching(Criteria::create(true)
-            ->where(Criteria::expr()->eq('deleted', false))
-            ->andWhere(Criteria::expr()->eq('mailCryptEnabled', true))
-        )->count();
+        return (int) $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->where('u.deleted = :deleted')
+            ->andWhere('u.mailCryptEnabled = :mailCryptEnabled')
+            ->setParameter('deleted', false)
+            ->setParameter('mailCryptEnabled', true)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     public function countUsersWithTwofactor(): int
     {
-        return $this->matching(Criteria::create(true)
-            ->where(Criteria::expr()->eq('deleted', false))
-            ->andWhere(Criteria::expr()->eq('totpConfirmed', 1))
-            ->andWhere(Criteria::expr()->neq('totpSecret', null))
-        )->count();
+        return (int) $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->where('u.deleted = :deleted')
+            ->andWhere('u.totpConfirmed = :totpConfirmed')
+            ->andWhere('u.totpSecret IS NOT NULL')
+            ->setParameter('deleted', false)
+            ->setParameter('totpConfirmed', true)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     #[Override]
