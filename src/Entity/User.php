@@ -20,7 +20,6 @@ use App\Traits\OpenPgpKeyAwareTrait;
 use App\Traits\PasswordTrait;
 use App\Traits\PasswordVersionTrait;
 use App\Traits\PlainMailCryptPrivateKeyTrait;
-use App\Traits\PlainPasswordTrait;
 use App\Traits\PlainRecoveryTokenTrait;
 use App\Traits\QuotaTrait;
 use App\Traits\RecoverySecretBoxTrait;
@@ -68,7 +67,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     use PasswordTrait;
     use PasswordVersionTrait;
     use PlainMailCryptPrivateKeyTrait;
-    use PlainPasswordTrait;
     use PlainRecoveryTokenTrait;
     use QuotaTrait;
     use RecoverySecretBoxTrait;
@@ -153,7 +151,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        $this->plainPassword = null;
         $this->erasePlainMailCryptPrivateKey();
         $this->erasePlainRecoveryToken();
     }

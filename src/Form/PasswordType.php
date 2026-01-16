@@ -27,8 +27,8 @@ final class PasswordType extends AbstractType
             ->add('password', BasePasswordType::class, ['label' => 'form.actual-password'])
             ->add('newPassword', RepeatedType::class, [
                 'type' => BasePasswordType::class,
-                'first_options' => ['label' => 'form.plain-password'],
-                'second_options' => ['label' => 'form.plain-password_confirmation'],
+                'first_options' => ['label' => 'form.new-password'],
+                'second_options' => ['label' => 'form.new-password_confirmation'],
                 'invalid_message' => 'form.different-password',
             ])
             ->add('submit', SubmitType::class, ['label' => 'form.submit']);

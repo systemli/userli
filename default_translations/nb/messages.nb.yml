@@ -63,8 +63,8 @@ form:
   recovery-start: Gjenopprett
   registration-recovery-token-confirm: Jeg lagret gjenopprettingssymbolet på et sikkert sted
   registration-recovery-token-next-button: Fortsett
-  plain-password: Nytt passord
-  plain-password_confirmation: Bekreft nytt passord
+  new-password: Nytt passord
+  new-password_confirmation: Bekreft nytt passord
   domain: Domene
   add: Legg till
 recovery:

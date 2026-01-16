@@ -146,7 +146,7 @@ final class RecoveryController extends AbstractController
             if (null !== $user && $this->verifyEmailRecoveryToken($user, $recoveryToken, true)) {
                 if ($form->isValid()) {
                     // Success: change the password
-                    $newRecoveryToken = $this->resetPassword($user, $data->getPlainPassword(), $recoveryToken);
+                    $newRecoveryToken = $this->resetPassword($user, $data->getPassword(), $recoveryToken);
                     $this->addFlash('success', 'flashes.recovery-password-changed');
 
                     // Cleanup variables with confidential content

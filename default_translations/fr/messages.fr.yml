@@ -75,8 +75,8 @@ form:
   voucher-redeemed-on: Demandé le
   actual-password: Mot de passe actuel
   new-custom-alias: Nouvel alias d'adresse
-  plain-password: Nouveau mot de passe
-  plain-password_confirmation: Confirmer le nouveau mot de passe
+  new-password: Nouveau mot de passe
+  new-password_confirmation: Confirmer le nouveau mot de passe
   change-password: Modifier votre mot de passe
   delete-account: Supprimer le compte
   delete-password: Mot de passe

@@ -121,23 +121,23 @@
                             <div class="space-y-4">
                                 {# First password field #}
                                 <div class="space-y-2">
-                                    {{ form_label(form.plainPassword.first, null, {
+                                    {{ form_label(form.password.first, null, {
                                         'label_attr': {
                                             'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300'
                                         }
                                     }) }}
                                     <div class="relative">
-                                        {{ form_widget(form.plainPassword.first, {
+                                        {{ form_widget(form.password.first, {
                                             'attr': {
-                                                'class': 'block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors duration-200' ~ (form.plainPassword.first.vars.errors|length > 0 ? ' border-red-300 dark:border-red-600 focus:ring-red-500 focus:border-red-500' : ''),
+                                                'class': 'block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors duration-200' ~ (form.password.first.vars.errors|length > 0 ? ' border-red-300 dark:border-red-600 focus:ring-red-500 focus:border-red-500' : ''),
                                                 'autocomplete': 'new-password',
-                                                'aria-describedby': form.plainPassword.first.vars.errors|length > 0 ? 'password-error' : null
+                                                'aria-describedby': form.password.first.vars.errors|length > 0 ? 'password-error' : null
                                             }
                                         }) }}
                                     </div>
-                                    {% if form.plainPassword.first.vars.errors|length > 0 %}
+                                    {% if form.password.first.vars.errors|length > 0 %}
                                         <div id="password-error" class="text-sm text-red-600 dark:text-red-400 mt-1" role="alert">
-                                            {% for error in form.plainPassword.first.vars.errors %}
+                                            {% for error in form.password.first.vars.errors %}
                                                 <p>{{ error.message|trans }}</p>
                                             {% endfor %}
                                         </div>
@@ -146,23 +146,23 @@
 
                                 {# Password confirmation field #}
                                 <div class="space-y-2">
-                                    {{ form_label(form.plainPassword.second, null, {
+                                    {{ form_label(form.password.second, null, {
                                         'label_attr': {
                                             'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300'
                                         }
                                     }) }}
                                     <div class="relative">
-                                        {{ form_widget(form.plainPassword.second, {
+                                        {{ form_widget(form.password.second, {
                                             'attr': {
-                                                'class': 'block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors duration-200' ~ (form.plainPassword.second.vars.errors|length > 0 ? ' border-red-300 dark:border-red-600 focus:ring-red-500 focus:border-red-500' : ''),
+                                                'class': 'block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors duration-200' ~ (form.password.second.vars.errors|length > 0 ? ' border-red-300 dark:border-red-600 focus:ring-red-500 focus:border-red-500' : ''),
                                                 'autocomplete': 'new-password',
-                                                'aria-describedby': form.plainPassword.second.vars.errors|length > 0 ? 'password-confirm-error' : null
+                                                'aria-describedby': form.password.second.vars.errors|length > 0 ? 'password-confirm-error' : null
                                             }
                                         }) }}
                                     </div>
-                                    {% if form.plainPassword.second.vars.errors|length > 0 %}
+                                    {% if form.password.second.vars.errors|length > 0 %}
                                         <div id="password-confirm-error" class="text-sm text-red-600 dark:text-red-400 mt-1" role="alert">
-                                            {% for error in form.plainPassword.second.vars.errors %}
+                                            {% for error in form.password.second.vars.errors %}
                                                 <p>{{ error.message|trans }}</p>
                                             {% endfor %}
                                         </div>

@@ -26,8 +26,8 @@ Feature: registration
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | user1        |
-      | registration[plainPassword][first]  | P4ssW0rt!!!1 |
-      | registration[plainPassword][second] | P4ssW0rt!!!1 |
+      | registration[password][first]  | P4ssW0rt!!!1 |
+      | registration[password][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
     Then I should be on "/register"
@@ -51,8 +51,8 @@ Feature: registration
     And I fill in the following:
       | registration[voucher]               | ABCD         |
       | registration[email]                 | user1        |
-      | registration[plainPassword][first]  | P4ssW0rt!!!1 |
-      | registration[plainPassword][second] | P4ssW0rt!!!1 |
+      | registration[password][first]  | P4ssW0rt!!!1 |
+      | registration[password][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
     Then I should be on "/register"
@@ -64,8 +64,8 @@ Feature: registration
     And I fill in the following:
       | registration[voucher]               | ABCD  |
       | registration[email]                 | user1 |
-      | registration[plainPassword][first]  |       |
-      | registration[plainPassword][second] |       |
+      | registration[password][first]  |       |
+      | registration[password][second] |       |
     And I press "Submit"
 
     Then I should be on "/register"
@@ -77,8 +77,8 @@ Feature: registration
     And I fill in the following:
       | registration[voucher]               | INVALID      |
       | registration[email]                 | user1        |
-      | registration[plainPassword][first]  | P4ssW0rt!!!1 |
-      | registration[plainPassword][second] | P4ssW0rt!!!1 |
+      | registration[password][first]  | P4ssW0rt!!!1 |
+      | registration[password][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
     Then I should be on "/register"
@@ -90,8 +90,8 @@ Feature: registration
     And I fill in the following:
       | registration[voucher]               | TEST                 |
       | registration[email]                 | user@nonexistant.org |
-      | registration[plainPassword][first]  | P4ssW0rt!!!1         |
-      | registration[plainPassword][second] | P4ssW0rt!!!1         |
+      | registration[password][first]  | P4ssW0rt!!!1         |
+      | registration[password][second] | P4ssW0rt!!!1         |
     And I press "Submit"
 
     Then I should be on "/register"
@@ -103,8 +103,8 @@ Feature: registration
     And I fill in the following:
       | registration[voucher]               | TEST     |
       | registration[email]                 | user1    |
-      | registration[plainPassword][first]  | password |
-      | registration[plainPassword][second] | password |
+      | registration[password][first]  | password |
+      | registration[password][second] | password |
     And I press "Submit"
 
     Then I should be on "/register"
@@ -116,8 +116,8 @@ Feature: registration
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | user1        |
-      | registration[plainPassword][first]  | P4ssW0rt!!!1 |
-      | registration[plainPassword][second] | P4ssW0rt!!!2 |
+      | registration[password][first]  | P4ssW0rt!!!1 |
+      | registration[password][second] | P4ssW0rt!!!2 |
     And I press "Submit"
 
     Then I should be on "/register"
@@ -129,8 +129,8 @@ Feature: registration
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | louis        |
-      | registration[plainPassword][first]  | P4ssW0rt!!!1 |
-      | registration[plainPassword][second] | P4ssW0rt!!!1 |
+      | registration[password][first]  | P4ssW0rt!!!1 |
+      | registration[password][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
     Then I should be on "/register"
@@ -142,8 +142,8 @@ Feature: registration
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | alias        |
-      | registration[plainPassword][first]  | P4ssW0rt!!!1 |
-      | registration[plainPassword][second] | P4ssW0rt!!!1 |
+      | registration[password][first]  | P4ssW0rt!!!1 |
+      | registration[password][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
     Then I should be on "/register"
@@ -155,8 +155,8 @@ Feature: registration
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | webmaster    |
-      | registration[plainPassword][first]  | P4ssW0rt!!!1 |
-      | registration[plainPassword][second] | P4ssW0rt!!!1 |
+      | registration[password][first]  | P4ssW0rt!!!1 |
+      | registration[password][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
     Then I should be on "/register"
@@ -168,8 +168,8 @@ Feature: registration
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | Webmaster    |
-      | registration[plainPassword][first]  | P4ssW0rt!!!1 |
-      | registration[plainPassword][second] | P4ssW0rt!!!1 |
+      | registration[password][first]  | P4ssW0rt!!!1 |
+      | registration[password][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
     Then I should be on "/register"
@@ -181,8 +181,8 @@ Feature: registration
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | ab           |
-      | registration[plainPassword][first]  | P4ssW0rt!!!1 |
-      | registration[plainPassword][second] | P4ssW0rt!!!1 |
+      | registration[password][first]  | P4ssW0rt!!!1 |
+      | registration[password][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
     Then I should be on "/register"
@@ -194,8 +194,8 @@ Feature: registration
     And I fill in the following:
       | registration[voucher]               | TEST                                 |
       | registration[email]                 | abcdefghijklmnopqrstuvwxyz0123456789 |
-      | registration[plainPassword][first]  | P4ssW0rt!!!1                         |
-      | registration[plainPassword][second] | P4ssW0rt!!!1                         |
+      | registration[password][first]  | P4ssW0rt!!!1                         |
+      | registration[password][second] | P4ssW0rt!!!1                         |
     And I press "Submit"
 
     Then I should be on "/register"
@@ -207,8 +207,8 @@ Feature: registration
     And I fill in the following:
       | registration[voucher]               | TEST         |
       | registration[email]                 | user+test    |
-      | registration[plainPassword][first]  | P4ssW0rt!!!1 |
-      | registration[plainPassword][second] | P4ssW0rt!!!1 |
+      | registration[password][first]  | P4ssW0rt!!!1 |
+      | registration[password][second] | P4ssW0rt!!!1 |
     And I press "Submit"
 
     Then I should be on "/register"

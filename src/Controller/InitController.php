@@ -9,9 +9,9 @@ use App\Entity\Domain;
 use App\Entity\Setting;
 use App\Entity\User;
 use App\Form\DomainCreateType;
+use App\Form\InitUserType;
 use App\Form\Model\DomainCreate;
-use App\Form\Model\PlainPassword;
-use App\Form\PlainPasswordType;
+use App\Form\Model\InitUser;
 use App\Form\SettingsType;
 use App\Helper\AdminPasswordUpdater;
 use App\Service\SettingsService;
@@ -70,7 +70,7 @@ final class InitController extends AbstractController
             return $this->redirectToRoute('init_settings');
         }
 
-        $form = $this->createForm(PlainPasswordType::class, new PlainPassword(), [
+        $form = $this->createForm(InitUserType::class, new InitUser(), [
             'action' => $this->generateUrl('init_user_submit'),
             'method' => 'post',
         ]);
@@ -81,11 +81,11 @@ final class InitController extends AbstractController
     #[Route(path: '/init/user', name: 'init_user_submit', methods: ['POST'])]
     public function userSubmit(Request $request): Response
     {
-        $form = $this->createForm(PlainPasswordType::class, new PlainPassword());
+        $form = $this->createForm(InitUserType::class, new InitUser());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->updater->updateAdminPassword($form->getData()->getPlainPassword());
+            $this->updater->updateAdminPassword($form->getData()->getPassword());
 
             $this->addFlash('success', 'flashes.password-change-successful');
 

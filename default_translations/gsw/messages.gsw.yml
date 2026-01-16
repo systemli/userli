@@ -34,8 +34,8 @@ form:
   roles: Rouene
   register-header: Account erschteue
   voucher: Invite Code
-  plain-password: Nöis Passwort
-  plain-password_confirmation: Nöis Passwort beschtätige
+  new-password: Nöis Passwort
+  new-password_confirmation: Nöis Passwort beschtätige
   new-custom-alias: Nöii Alias Adrässe
   recovery-start: Wiederhärschteue
 index:

@@ -10,6 +10,7 @@ use App\Enum\Roles;
 use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use App\Traits\DomainGuesserAwareTrait;
+use App\Validator\PasswordPolicy;
 use Exception;
 use Override;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -26,6 +27,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @extends Admin<User>
@@ -75,9 +77,15 @@ final class UserAdmin extends Admin
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'form.password',
                 'required' => $this->isNewObject(),
+                'mapped' => false,
                 'disabled' => (null !== $userId) ? $user->hasMailCryptSecretBox() : false,
                 'help' => (null !== $userId && $user->hasMailCryptSecretBox()) ?
                     'Disabled because user has a MailCrypt key pair defined' : null,
+                'constraints' => [
+                    new Assert\NotBlank(groups: ['create']),
+                    new PasswordPolicy(),
+                    new Assert\NotCompromisedPassword(skipOnError: true),
+                ],
             ])
             ->add('totp_confirmed', CheckboxType::class, [
                 'label' => 'form.twofactor',
@@ -100,6 +108,14 @@ final class UserAdmin extends Admin
                 'help' => 'User must change password on next login',
             ])
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
+    }
+
+    #[Override]
+    protected function configureFormOptions(array &$formOptions): void
+    {
+        $formOptions['validation_groups'] = $this->isNewObject()
+            ? ['Default', 'create']
+            : ['Default', 'edit'];
     }
 
     #[Override]
@@ -193,9 +209,10 @@ final class UserAdmin extends Admin
     protected function prePersist(object $object): void
     {
         assert($object instanceof User);
-        $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
+        $plainPassword = $this->getForm()->get('plainPassword')->getData();
+        $this->passwordUpdater->updatePassword($object, $plainPassword);
         if (null !== $object->getMailCryptEnabled()) {
-            $this->mailCryptKeyHandler->create($object, $object->getPlainPassword(), $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS));
+            $this->mailCryptKeyHandler->create($object, $plainPassword, $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS));
         }
 
         if (null === $object->getDomain() && null !== $domain = $this->domainGuesser->guess($object->getEmail())) {
@@ -212,8 +229,9 @@ final class UserAdmin extends Admin
             throw new AccessDeniedException('Not allowed to edit admin user');
         }
 
-        if (!empty($object->getPlainPassword())) {
-            $this->passwordUpdater->updatePassword($object, $object->getPlainPassword());
+        $plainPassword = $this->getForm()->get('plainPassword')->getData();
+        if (!empty($plainPassword)) {
+            $this->passwordUpdater->updatePassword($object, $plainPassword);
         } else {
             $object->updateUpdatedTime();
         }
