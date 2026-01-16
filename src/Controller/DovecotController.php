@@ -21,8 +21,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
-use const DIRECTORY_SEPARATOR;
-
 #[RequireApiScope(scope: ApiScope::DOVECOT)]
 final class DovecotController extends AbstractController
 {
@@ -41,14 +39,8 @@ final class DovecotController extends AbstractController
     public function __construct(
         private readonly MailCryptKeyHandler $mailCryptKeyHandler,
         private readonly UserAuthenticationHandler $authHandler,
-        #[Autowire(env: 'DOVECOT_MAIL_LOCATION')]
-        private readonly string $mailLocation,
         #[Autowire(env: 'MAIL_CRYPT')]
         private readonly int $mailCryptEnv,
-        #[Autowire(env: 'DOVECOT_MAIL_UID')]
-        private readonly int $mailUid,
-        #[Autowire(env: 'DOVECOT_MAIL_GID')]
-        private readonly int $mailGid,
     ) {
         $this->mailCrypt = MailCrypt::from($this->mailCryptEnv);
     }
@@ -79,8 +71,6 @@ final class DovecotController extends AbstractController
             $mailCryptReported = 0;
         }
 
-        [$username, $domain] = explode('@', $user->getEmail());
-
         $customQuota = $user->getQuota();
         $customQuotaString = $customQuota !== null ? sprintf('*:storage=%dM', $customQuota) : '';
 
@@ -88,11 +78,8 @@ final class DovecotController extends AbstractController
             'message' => self::MESSAGE_SUCCESS,
             'body' => [
                 'user' => $user->getEmail(),
-                'home' => $this->mailLocation.DIRECTORY_SEPARATOR.$domain.DIRECTORY_SEPARATOR.$username,
                 'mailCrypt' => $mailCryptReported,
                 'mailCryptPublicKey' => $user->getMailCryptPublicKey() ?? '',
-                'gid' => $this->mailGid,
-                'uid' => $this->mailUid,
                 'quota' => $customQuotaString,
             ],
         ], Response::HTTP_OK);
