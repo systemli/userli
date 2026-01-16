@@ -1,5 +1,21 @@
 # Changelog
 
+## 5.3.0 (2026.01.16)
+
+### Features and Improvements
+
+- ✨ Add Pagination for Webhook Deliveries (#962)
+- 💄 Fix Checkboxes for Firefox (#966)
+- ✨ Add Filter for Webhook Deliveries (#967)
+- ⬆️ Upgrade to Symfony 7.4 (#969)
+- 🚸 Prune only succesful webhook deliveries (#974)
+- ♻️ Refactor Retention API to return inactive users instead of deleted users (#976)
+- ♻️ Remove PlainPasswordTrait (#975)
+
+### Bug Fixes
+
+- 🐛 Remove novalidate attribute from login template (#972)
+
 ## 5.2.0 (2026.01.09)
 
 ### Features and Improvements
