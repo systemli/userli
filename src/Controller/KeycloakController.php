@@ -46,14 +46,12 @@ final class KeycloakController extends AbstractController
         #[MapQueryParameter] int $max = 10,
         #[MapQueryParameter] int $first = 0,
     ): Response {
-        $users = $this->manager->getRepository(User::class)->findUsersByString($domain, $search, $max, $first)->map(function (User $user) {
-            return [
-                'id' => explode('@', $user->getEmail())[0],
-                'email' => $user->getEmail(),
-            ];
-        });
+        $users = $this->manager->getRepository(User::class)->findUsersByString($domain, $search, $max, $first);
 
-        return $this->json($users);
+        return $this->json(array_map(fn (User $user) => [
+            'id' => explode('@', $user->getEmail())[0],
+            'email' => $user->getEmail(),
+        ], $users));
     }
 
     #[Route(path: '/api/keycloak/{domainUrl}/count', name: 'api_keycloak_get_users_count', methods: ['GET'], stateless: true)]
