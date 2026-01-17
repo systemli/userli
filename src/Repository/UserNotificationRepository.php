@@ -22,6 +22,14 @@ final class UserNotificationRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return array<UserNotification>
+     */
+    public function findByUser(User $user): array
+    {
+        return $this->findBy(['user' => $user]);
+    }
+
+    /**
      * Check if a user received notification of a specific type within specified hours.
      */
     public function hasRecentNotification(User $user, UserNotificationType $type, int $hours = 24): bool

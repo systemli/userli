@@ -6,22 +6,24 @@ namespace App\Handler;
 
 use App\Entity\Alias;
 use App\Entity\User;
+use App\Entity\UserNotification;
+use App\Entity\Voucher;
 use App\Event\UserEvent;
 use App\Helper\PasswordGenerator;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
-final class DeleteHandler
+final readonly class DeleteHandler
 {
     /**
      * DeleteHandler constructor.
      */
     public function __construct(
-        private readonly PasswordUpdater $passwordUpdater,
-        private readonly EntityManagerInterface $manager,
-        private readonly WkdHandler $wkdHandler,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private PasswordUpdater $passwordUpdater,
+        private EntityManagerInterface $manager,
+        private WkdHandler $wkdHandler,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -42,10 +44,21 @@ final class DeleteHandler
     public function deleteUser(User $user): void
     {
         // Delete aliases of user
-        $aliasRepository = $this->manager->getRepository(Alias::class);
-        $aliases = $aliasRepository->findByUser($user);
+        $aliases = $this->manager->getRepository(Alias::class)->findByUser($user);
         foreach ($aliases as $alias) {
             $this->deleteAlias($alias, $user);
+        }
+
+        // Delete vouchers of user
+        $vouchers = $this->manager->getRepository(Voucher::class)->findByUser($user);
+        foreach ($vouchers as $voucher) {
+            $this->manager->remove($voucher);
+        }
+
+        // Delete notifications of user
+        $notifications = $this->manager->getRepository(UserNotification::class)->findByUser($user);
+        foreach ($notifications as $notification) {
+            $this->manager->remove($notification);
         }
 
         // Set password to random new one
