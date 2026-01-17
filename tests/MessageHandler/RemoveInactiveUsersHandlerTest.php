@@ -6,25 +6,31 @@ namespace App\Tests\MessageHandler;
 
 use App\Entity\User;
 use App\Enum\Roles;
-use App\Handler\DeleteHandler;
+use App\Message\DeleteUser;
 use App\Message\RemoveInactiveUsers;
 use App\MessageHandler\RemoveInactiveUsersHandler;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class RemoveInactiveUsersHandlerTest extends TestCase
 {
-    public function testDeletesInactiveUsers(): void
+    private array $dispatchedMessages = [];
+
+    public function testDispatchesDeleteUserForInactiveUsers(): void
     {
         $message = new RemoveInactiveUsers();
 
         $user1 = $this->createMock(User::class);
         $user1->method('hasRole')->willReturn(false);
+        $user1->method('getId')->willReturn(1);
 
         $user2 = $this->createMock(User::class);
         $user2->method('hasRole')->willReturn(false);
+        $user2->method('getId')->willReturn(2);
 
         $repository = $this->createMock(UserRepository::class);
         $repository->expects($this->once())
@@ -38,10 +44,15 @@ class RemoveInactiveUsersHandlerTest extends TestCase
             ->with(User::class)
             ->willReturn($repository);
 
-        $deleteHandler = $this->createMock(DeleteHandler::class);
-        $deleteHandler->expects($this->exactly(2))
-            ->method('deleteUser')
-            ->withConsecutive([$user1], [$user2]);
+        $this->dispatchedMessages = [];
+        $messageBus = $this->createMock(MessageBusInterface::class);
+        $messageBus->expects($this->exactly(2))
+            ->method('dispatch')
+            ->willReturnCallback(function ($message) {
+                $this->dispatchedMessages[] = $message;
+
+                return new Envelope($message);
+            });
 
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->exactly(2))
@@ -53,13 +64,19 @@ class RemoveInactiveUsersHandlerTest extends TestCase
                     $this->assertSame('Found inactive users', $message);
                     $this->assertSame(['count' => 2], $context);
                 } else {
-                    $this->assertSame('Removed inactive users', $message);
-                    $this->assertSame(['deleted' => 2], $context);
+                    $this->assertSame('Dispatched user deletions', $message);
+                    $this->assertSame(['dispatched' => 2], $context);
                 }
             });
 
-        $handler = new RemoveInactiveUsersHandler($em, $deleteHandler, $logger);
+        $handler = new RemoveInactiveUsersHandler($em, $messageBus, $logger);
         $handler($message);
+
+        self::assertCount(2, $this->dispatchedMessages);
+        self::assertInstanceOf(DeleteUser::class, $this->dispatchedMessages[0]);
+        self::assertSame(1, $this->dispatchedMessages[0]->userId);
+        self::assertInstanceOf(DeleteUser::class, $this->dispatchedMessages[1]);
+        self::assertSame(2, $this->dispatchedMessages[1]->userId);
     }
 
     public function testSkipsAdminUsers(): void
@@ -69,9 +86,11 @@ class RemoveInactiveUsersHandlerTest extends TestCase
         $adminUser = $this->createMock(User::class);
         $adminUser->method('hasRole')
             ->willReturnCallback(fn (string $role) => $role === Roles::ADMIN);
+        $adminUser->method('getId')->willReturn(1);
 
         $normalUser = $this->createMock(User::class);
         $normalUser->method('hasRole')->willReturn(false);
+        $normalUser->method('getId')->willReturn(2);
 
         $repository = $this->createMock(UserRepository::class);
         $repository->expects($this->once())
@@ -81,28 +100,23 @@ class RemoveInactiveUsersHandlerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->method('getRepository')->willReturn($repository);
 
-        $deleteHandler = $this->createMock(DeleteHandler::class);
-        $deleteHandler->expects($this->once())
-            ->method('deleteUser')
-            ->with($normalUser);
+        $this->dispatchedMessages = [];
+        $messageBus = $this->createMock(MessageBusInterface::class);
+        $messageBus->expects($this->once())
+            ->method('dispatch')
+            ->willReturnCallback(function ($message) {
+                $this->dispatchedMessages[] = $message;
 
-        $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->exactly(2))
-            ->method('info')
-            ->willReturnCallback(function (string $message, array $context): void {
-                static $callCount = 0;
-                ++$callCount;
-                if ($callCount === 1) {
-                    $this->assertSame('Found inactive users', $message);
-                    $this->assertSame(['count' => 2], $context);
-                } else {
-                    $this->assertSame('Removed inactive users', $message);
-                    $this->assertSame(['deleted' => 1], $context);
-                }
+                return new Envelope($message);
             });
 
-        $handler = new RemoveInactiveUsersHandler($em, $deleteHandler, $logger);
+        $logger = $this->createMock(LoggerInterface::class);
+
+        $handler = new RemoveInactiveUsersHandler($em, $messageBus, $logger);
         $handler($message);
+
+        self::assertCount(1, $this->dispatchedMessages);
+        self::assertSame(2, $this->dispatchedMessages[0]->userId);
     }
 
     public function testSkipsDomainAdminUsers(): void
@@ -121,25 +135,12 @@ class RemoveInactiveUsersHandlerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->method('getRepository')->willReturn($repository);
 
-        $deleteHandler = $this->createMock(DeleteHandler::class);
-        $deleteHandler->expects($this->never())->method('deleteUser');
+        $messageBus = $this->createMock(MessageBusInterface::class);
+        $messageBus->expects($this->never())->method('dispatch');
 
         $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->exactly(2))
-            ->method('info')
-            ->willReturnCallback(function (string $message, array $context): void {
-                static $callCount = 0;
-                ++$callCount;
-                if ($callCount === 1) {
-                    $this->assertSame('Found inactive users', $message);
-                    $this->assertSame(['count' => 1], $context);
-                } else {
-                    $this->assertSame('Removed inactive users', $message);
-                    $this->assertSame(['deleted' => 0], $context);
-                }
-            });
 
-        $handler = new RemoveInactiveUsersHandler($em, $deleteHandler, $logger);
+        $handler = new RemoveInactiveUsersHandler($em, $messageBus, $logger);
         $handler($message);
     }
 
@@ -159,25 +160,12 @@ class RemoveInactiveUsersHandlerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->method('getRepository')->willReturn($repository);
 
-        $deleteHandler = $this->createMock(DeleteHandler::class);
-        $deleteHandler->expects($this->never())->method('deleteUser');
+        $messageBus = $this->createMock(MessageBusInterface::class);
+        $messageBus->expects($this->never())->method('dispatch');
 
         $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->exactly(2))
-            ->method('info')
-            ->willReturnCallback(function (string $message, array $context): void {
-                static $callCount = 0;
-                ++$callCount;
-                if ($callCount === 1) {
-                    $this->assertSame('Found inactive users', $message);
-                    $this->assertSame(['count' => 1], $context);
-                } else {
-                    $this->assertSame('Removed inactive users', $message);
-                    $this->assertSame(['deleted' => 0], $context);
-                }
-            });
 
-        $handler = new RemoveInactiveUsersHandler($em, $deleteHandler, $logger);
+        $handler = new RemoveInactiveUsersHandler($em, $messageBus, $logger);
         $handler($message);
     }
 
@@ -193,25 +181,12 @@ class RemoveInactiveUsersHandlerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->method('getRepository')->willReturn($repository);
 
-        $deleteHandler = $this->createMock(DeleteHandler::class);
-        $deleteHandler->expects($this->never())->method('deleteUser');
+        $messageBus = $this->createMock(MessageBusInterface::class);
+        $messageBus->expects($this->never())->method('dispatch');
 
         $logger = $this->createMock(LoggerInterface::class);
-        $logger->expects($this->exactly(2))
-            ->method('info')
-            ->willReturnCallback(function (string $message, array $context): void {
-                static $callCount = 0;
-                ++$callCount;
-                if ($callCount === 1) {
-                    $this->assertSame('Found inactive users', $message);
-                    $this->assertSame(['count' => 0], $context);
-                } else {
-                    $this->assertSame('Removed inactive users', $message);
-                    $this->assertSame(['deleted' => 0], $context);
-                }
-            });
 
-        $handler = new RemoveInactiveUsersHandler($em, $deleteHandler, $logger);
+        $handler = new RemoveInactiveUsersHandler($em, $messageBus, $logger);
         $handler($message);
     }
 }

@@ -6,18 +6,19 @@ namespace App\MessageHandler;
 
 use App\Entity\User;
 use App\Enum\Roles;
-use App\Handler\DeleteHandler;
+use App\Message\DeleteUser;
 use App\Message\RemoveInactiveUsers;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
 final class RemoveInactiveUsersHandler
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
-        private readonly DeleteHandler $deleteHandler,
+        private readonly MessageBusInterface $messageBus,
         private readonly LoggerInterface $logger,
     ) {
     }
@@ -26,7 +27,7 @@ final class RemoveInactiveUsersHandler
     {
         $inactiveDays = 2 * 365 + 7; // 2 years and 7 days
         $users = $this->entityManager->getRepository(User::class)->findInactiveUsers($inactiveDays);
-        $deleted = 0;
+        $dispatched = 0;
 
         $this->logger->info('Found inactive users', ['count' => count($users)]);
 
@@ -35,10 +36,10 @@ final class RemoveInactiveUsersHandler
                 continue;
             }
 
-            $this->deleteHandler->deleteUser($user);
-            ++$deleted;
+            $this->messageBus->dispatch(new DeleteUser($user->getId()));
+            ++$dispatched;
         }
 
-        $this->logger->info('Removed inactive users', ['deleted' => $deleted]);
+        $this->logger->info('Dispatched user deletions', ['dispatched' => $dispatched]);
     }
 }
