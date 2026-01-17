@@ -6,13 +6,16 @@ namespace App\Tests\Handler;
 
 use App\Entity\Alias;
 use App\Entity\User;
+use App\Entity\UserNotification;
 use App\Entity\Voucher;
 use App\Handler\DeleteHandler;
 use App\Handler\WkdHandler;
 use App\Helper\PasswordUpdater;
 use App\Repository\AliasRepository;
+use App\Repository\UserNotificationRepository;
 use App\Repository\VoucherRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -21,7 +24,7 @@ class DeleteHandlerTest extends TestCase
     private EntityManagerInterface $entityManager;
     private array $removedEntities = [];
 
-    protected function createHandler(array $aliases = [], array $vouchers = []): DeleteHandler
+    protected function createHandler(array $aliases = [], array $vouchers = [], array $notifications = []): DeleteHandler
     {
         $passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)
             ->disableOriginalConstructor()->getMock();
@@ -37,15 +40,20 @@ class DeleteHandlerTest extends TestCase
             ->disableOriginalConstructor()->getMock();
         $voucherRepository->method('findByUser')->willReturn($vouchers);
 
+        $notificationRepository = $this->getMockBuilder(UserNotificationRepository::class)
+            ->disableOriginalConstructor()->getMock();
+        $notificationRepository->method('findByUser')->willReturn($notifications);
+
         $this->removedEntities = [];
         $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()->getMock();
         $this->entityManager->method('getRepository')->willReturnCallback(
-            function (string $class) use ($aliasRepository, $voucherRepository) {
+            function (string $class) use ($aliasRepository, $voucherRepository, $notificationRepository) {
                 return match ($class) {
                     Alias::class => $aliasRepository,
                     Voucher::class => $voucherRepository,
-                    default => throw new \InvalidArgumentException("Unknown repository: $class"),
+                    UserNotification::class => $notificationRepository,
+                    default => throw new InvalidArgumentException("Unknown repository: $class"),
                 };
             }
         );
@@ -136,5 +144,21 @@ class DeleteHandlerTest extends TestCase
 
         self::assertTrue($alias1->isDeleted());
         self::assertTrue($alias2->isDeleted());
+    }
+
+    public function testDeleteUserRemovesNotifications(): void
+    {
+        $user = new User('alice@example.org');
+
+        $notification1 = $this->createMock(UserNotification::class);
+        $notification2 = $this->createMock(UserNotification::class);
+
+        $handler = $this->createHandler([], [], [$notification1, $notification2]);
+
+        $handler->deleteUser($user);
+
+        self::assertCount(2, $this->removedEntities);
+        self::assertContains($notification1, $this->removedEntities);
+        self::assertContains($notification2, $this->removedEntities);
     }
 }

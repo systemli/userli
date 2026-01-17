@@ -6,6 +6,7 @@ namespace App\Handler;
 
 use App\Entity\Alias;
 use App\Entity\User;
+use App\Entity\UserNotification;
 use App\Entity\Voucher;
 use App\Event\UserEvent;
 use App\Helper\PasswordGenerator;
@@ -52,6 +53,12 @@ final readonly class DeleteHandler
         $vouchers = $this->manager->getRepository(Voucher::class)->findByUser($user);
         foreach ($vouchers as $voucher) {
             $this->manager->remove($voucher);
+        }
+
+        // Delete notifications of user
+        $notifications = $this->manager->getRepository(UserNotification::class)->findByUser($user);
+        foreach ($notifications as $notification) {
+            $this->manager->remove($notification);
         }
 
         // Set password to random new one
