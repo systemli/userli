@@ -99,6 +99,10 @@ final class UserAdmin extends Admin
                 'multiple' => true,
                 'expanded' => false,
                 'label' => 'form.roles',
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\NotNull(),
+                ],
             ])
             ->add('quota', null, [
                 'help' => 'Custom mailbox quota in MB',

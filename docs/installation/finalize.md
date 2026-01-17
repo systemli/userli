@@ -2,11 +2,11 @@
 
 Last steps to make Userli work properly.
 
-## Create database scheme
+## Create database schema
 
 ```shell
-# Create default database schema
-bin/console doctrine:schema:create
+# Run database migrations
+bin/console doctrine:migrations:migrate --no-interaction
 
 # Load default reserved names into database
 bin/console app:reservednames:import
