@@ -17,12 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\Filesystem\Exception\IOException;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
-
-use const DIRECTORY_SEPARATOR;
 
 #[AsCommand(name: 'app:users:reset', description: 'Reset a user')]
 final class UsersResetCommand extends AbstractUsersCommand
@@ -35,8 +30,6 @@ final class UsersResetCommand extends AbstractUsersCommand
         private readonly PasswordUpdater $passwordUpdater,
         private readonly MailCryptKeyHandler $mailCryptKeyHandler,
         private readonly RecoveryTokenHandler $recoveryTokenHandler,
-        #[Autowire(env: 'DOVECOT_MAIL_LOCATION')]
-        private readonly string $mailLocation,
     ) {
         parent::__construct($manager);
     }
@@ -119,28 +112,6 @@ final class UsersResetCommand extends AbstractUsersCommand
         $user->eraseCredentials();
 
         $this->manager->flush();
-
-        // Clear users mailbox
-        [$localPart, $domain] = explode('@', $user->getEmail());
-        $path = $this->mailLocation.DIRECTORY_SEPARATOR.$domain.DIRECTORY_SEPARATOR.$localPart.DIRECTORY_SEPARATOR.'Maildir';
-        $filesystem = new Filesystem();
-        if ($filesystem->exists($path)) {
-            $output->writeln(sprintf('Delete directory for user: %s', $user->getEmail()));
-
-            try {
-                $filesystem->remove($path);
-            } catch (IOException $e) {
-                $output->writeln('<error>'.$e->getMessage().'</error>');
-                $output->writeln(sprintf("<comment>Please manually clear the mailbox at '%s'</comment>", $path));
-
-                return 1;
-            }
-        } else {
-            $output->writeln(sprintf("<error>Error:</error> Directory for user '%s' not found (e.g. due to missing permissions).", $user->getEmail()));
-            $output->writeln(sprintf("<comment>Please manually clear the mailbox at '%s'</comment>", $path));
-
-            return 1;
-        }
 
         return 0;
     }

@@ -91,13 +91,6 @@ final class UserRepository extends EntityRepository implements PasswordUpgraderI
         return $qb->getQuery()->getResult();
     }
 
-    public function findDeletedUsers(?Domain $domain = null): array
-    {
-        return $domain
-            ? $this->findBy(['domain' => $domain, 'deleted' => true])
-            : $this->findBy(['deleted' => true]);
-    }
-
     public function countUsers(): int
     {
         return (int) $this->createQueryBuilder('u')

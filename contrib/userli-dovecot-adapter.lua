@@ -90,16 +90,13 @@ function auth_userdb_lookup(request)
             return dovecot.auth.USERDB_RESULT_INTERNAL_FAILURE, ""
         end
 
-        if not(data and data.body and data.body.user and data.body.home and data.body.gid and data.body.uid and data.body.quota and data.body.mailCrypt and data.body.mailCryptPublicKey) then
+        if not(data and data.body and data.body.user and data.body.quota and data.body.mailCrypt and data.body.mailCryptPublicKey) then
             request:log_error(log_msg['http-ok-malformed'])
             return dovecot.auth.USERDB_RESULT_INTERNAL_FAILURE, ""
         end
 
         local attributes = {}
         attributes["user"] = data.body.user
-        attributes["home"] = data.body.home
-        attributes["gid"]  = data.body.gid
-        attributes["uid"]  = data.body.uid
 
         if data.body.quota ~= "" then
             attributes["quota_rule"] = data.body.quota

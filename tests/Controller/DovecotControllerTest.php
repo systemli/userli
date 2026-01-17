@@ -88,9 +88,6 @@ class DovecotControllerTest extends WebTestCase
         self::assertEquals($data['body']['user'], 'user@example.org');
         self::assertEquals($data['body']['mailCrypt'], 0);
         self::assertEquals($data['body']['mailCryptPublicKey'], '');
-        self::assertIsInt($data['body']['gid']);
-        self::assertIsInt($data['body']['uid']);
-        self::assertNotEquals($data['body']['home'], '');
     }
 
     public function testUserdbMailcrypt(): void
@@ -102,7 +99,6 @@ class DovecotControllerTest extends WebTestCase
         $data = json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
         self::assertEquals($data['message'], 'success');
         self::assertEquals($data['body']['user'], 'mailcrypt@example.org');
-        self::assertNotEquals($data['body']['home'], '');
         self::assertEquals($data['body']['mailCrypt'], 2);
         self::assertNotNull($data['body']['mailCryptPublicKey']);
     }
