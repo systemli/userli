@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.4.0 (2026.01.17)
+
+### Features and Improvements
+
+- ✨ Add Schedule to remove inactive users (#980)
+- 🔥 Remove direct dependency to Dovecot (#978)
+
 ## 5.3.0 (2026.01.16)
 
 ### Features and Improvements
