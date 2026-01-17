@@ -6,6 +6,7 @@ namespace App\Handler;
 
 use App\Entity\Alias;
 use App\Entity\User;
+use App\Entity\Voucher;
 use App\Event\UserEvent;
 use App\Helper\PasswordGenerator;
 use App\Helper\PasswordUpdater;
@@ -42,10 +43,15 @@ final readonly class DeleteHandler
     public function deleteUser(User $user): void
     {
         // Delete aliases of user
-        $aliasRepository = $this->manager->getRepository(Alias::class);
-        $aliases = $aliasRepository->findByUser($user);
+        $aliases = $this->manager->getRepository(Alias::class)->findByUser($user);
         foreach ($aliases as $alias) {
             $this->deleteAlias($alias, $user);
+        }
+
+        // Delete vouchers of user
+        $vouchers = $this->manager->getRepository(Voucher::class)->findByUser($user);
+        foreach ($vouchers as $voucher) {
+            $this->manager->remove($voucher);
         }
 
         // Set password to random new one
