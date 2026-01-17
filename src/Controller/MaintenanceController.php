@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Message\PruneUserNotifications;
 use App\Message\PruneWebhookDeliveries;
+use App\Message\RemoveInactiveUsers;
 use App\Message\UnlinkRedeemedVouchers;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -18,6 +19,7 @@ final class MaintenanceController extends AbstractController
     private const TASKS = [
         'prune_user_notifications' => PruneUserNotifications::class,
         'prune_webhook_deliveries' => PruneWebhookDeliveries::class,
+        'remove_inactive_users' => RemoveInactiveUsers::class,
         'unlink_redeemed_vouchers' => UnlinkRedeemedVouchers::class,
     ];
 

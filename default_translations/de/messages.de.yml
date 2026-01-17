@@ -447,6 +447,10 @@ settings:
       title: Eingelöste Einladungen anonymisieren
       description: Trennt eingelöste Einladungs-Codes nach 3 Monaten von eingeladenen Nutzer:innen.
       button: Anonymisieren
+    removeInactiveUsers:
+      title: Inaktive Nutzer:innen entfernen
+      description: Löscht Nutzer:innen, die seit mehr als 2 Jahren inaktiv sind. Admin- und permanente Konten werden ausgenommen.
+      button: Inaktive entfernen
     unknown_task: Unbekannte Wartungsaufgabe.
     dispatched: Wartungsaufgabe erfolgreich gestartet.
   api:

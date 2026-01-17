@@ -118,7 +118,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     }
 
     /**
-     * @psalm-param 'ROLE_ADMIN'|'ROLE_SPAM'|'ROLE_SUSPICIOUS' $role
+     * @psalm-param 'ROLE_ADMIN'|'ROLE_DOMAIN_ADMIN'|'ROLE_SPAM'|'ROLE_SUSPICIOUS'|'ROLE_PERMANENT' $role
      */
     public function hasRole(string $role): bool
     {

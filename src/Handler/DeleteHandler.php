@@ -12,16 +12,16 @@ use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
-final class DeleteHandler
+final readonly class DeleteHandler
 {
     /**
      * DeleteHandler constructor.
      */
     public function __construct(
-        private readonly PasswordUpdater $passwordUpdater,
-        private readonly EntityManagerInterface $manager,
-        private readonly WkdHandler $wkdHandler,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private PasswordUpdater $passwordUpdater,
+        private EntityManagerInterface $manager,
+        private WkdHandler $wkdHandler,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 

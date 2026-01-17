@@ -410,6 +410,10 @@ settings:
       title: Unlink Redeemed Vouchers
       description: Anonymize redeemed vouchers by unlinking invited users after 3 months.
       button: Unlink vouchers
+    removeInactiveUsers:
+      title: Remove Inactive Users
+      description: Delete users who have been inactive for more than 2 years. Admin and permanent users are excluded.
+      button: Remove inactive users
     unknown_task: Unknown maintenance task.
     dispatched: Maintenance task dispatched successfully.
   title: Settings
