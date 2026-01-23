@@ -49,10 +49,12 @@ final readonly class DeleteHandler
             $this->deleteAlias($alias, $user);
         }
 
-        // Delete vouchers of user
+        // Delete vouchers of user that have not been redeemed
         $vouchers = $this->manager->getRepository(Voucher::class)->findByUser($user);
         foreach ($vouchers as $voucher) {
-            $this->manager->remove($voucher);
+            if (!$voucher->isRedeemed()) {
+                $this->manager->remove($voucher);
+            }
         }
 
         // Delete notifications of user

@@ -17,7 +17,7 @@ use Stringable;
 
 #[ORM\Entity(repositoryClass: VoucherRepository::class)]
 #[ORM\Table(name: 'virtual_vouchers')]
-#[Index(name: 'code_idx', columns: ['code'])]
+#[Index(columns: ['code'], name: 'code_idx')]
 #[VoucherUser]
 class Voucher implements Stringable
 {
@@ -31,7 +31,7 @@ class Voucher implements Stringable
     #[ORM\Column(unique: true)]
     protected string $code;
 
-    #[ORM\OneToOne(targetEntity: User::class, mappedBy: 'invitationVoucher')]
+    #[ORM\OneToOne(mappedBy: 'invitationVoucher', targetEntity: User::class)]
     protected ?User $invitedUser = null;
 
     public function __construct(string $code)
