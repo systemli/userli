@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.4.1 (2026.01.23)
+
+### Bug Fixes
+
+- 🐛 Remove only unredeemed vouchers (#985)
+
 ## 5.4.0 (2026.01.17)
 
 ### Features and Improvements
