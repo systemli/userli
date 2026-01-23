@@ -27,7 +27,8 @@ final class WebhookDeliveryController extends AbstractController
     ): Response {
         $page = $request->query->getInt('page', 1);
         $status = $request->query->getString('status', '');
-        $pagination = $this->manager->findPaginatedByEndpoint($endpoint, $page, $status);
+        $eventType = $request->query->getString('eventType', '');
+        $pagination = $this->manager->findPaginatedByEndpoint($endpoint, $page, $status, $eventType);
 
         return $this->render('Settings/Webhook/Delivery/index.html.twig', [
             'deliveries' => $pagination['items'],
@@ -36,6 +37,7 @@ final class WebhookDeliveryController extends AbstractController
             'totalPages' => $pagination['totalPages'],
             'total' => $pagination['total'],
             'status' => $status,
+            'eventType' => $eventType,
         ]);
     }
 

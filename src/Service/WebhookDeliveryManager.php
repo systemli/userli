@@ -31,16 +31,18 @@ final readonly class WebhookDeliveryManager
         WebhookEndpoint $endpoint,
         int $page = 1,
         string $status = '',
+        string $eventType = '',
     ): array {
         $page = max(1, $page);
         $offset = ($page - 1) * self::PAGE_SIZE;
-        $total = $this->repository->countByEndpointAndStatus($endpoint, $status);
+        $total = $this->repository->countByEndpointAndStatus($endpoint, $status, $eventType);
         $totalPages = max(1, (int) ceil($total / self::PAGE_SIZE));
         $items = $this->repository->findByEndpointAndStatus(
             $endpoint,
             $status,
             self::PAGE_SIZE,
             $offset,
+            $eventType,
         );
 
         return [

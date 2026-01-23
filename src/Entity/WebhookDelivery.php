@@ -16,6 +16,8 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Index(columns: ['dispatched_time', 'success'])]
 #[ORM\Index(columns: ['success'])]
 #[ORM\Index(columns: ['type'])]
+#[ORM\Index(columns: ['endpoint_id', 'type'])]
+#[ORM\Index(columns: ['endpoint_id', 'type', 'success'])]
 class WebhookDelivery
 {
     #[ORM\Id]
