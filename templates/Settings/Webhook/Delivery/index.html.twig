@@ -21,16 +21,28 @@
                        class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
                         {{ ux_icon('heroicons:arrow-left', {class: 'w-4 h-4 mr-1'}) }} {{ 'settings.webhook.actions.back'|trans }}
                     </a>
-                    <div class="flex items-center gap-2">
-                        <label for="status-filter" class="text-sm text-gray-600 dark:text-gray-400">{{ 'settings.webhook.deliveries.filter.label'|trans }}:</label>
-                        <select id="status-filter"
-                                onchange="window.location.href = this.value"
-                                class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                            <option value="{{ path('settings_webhook_delivery_index', {id: endpoint.id}) }}"{% if status == '' %} selected{% endif %}>{{ 'settings.webhook.deliveries.filter.all'|trans }}</option>
-                            <option value="{{ path('settings_webhook_delivery_index', {id: endpoint.id, status: 'success'}) }}"{% if status == 'success' %} selected{% endif %}>{{ 'settings.webhook.deliveries.status.delivered'|trans }}</option>
-                            <option value="{{ path('settings_webhook_delivery_index', {id: endpoint.id, status: 'failed'}) }}"{% if status == 'failed' %} selected{% endif %}>{{ 'settings.webhook.deliveries.status.failed'|trans }}</option>
-                            <option value="{{ path('settings_webhook_delivery_index', {id: endpoint.id, status: 'pending'}) }}"{% if status == 'pending' %} selected{% endif %}>{{ 'settings.webhook.deliveries.status.pending'|trans }}</option>
-                        </select>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <label for="event-filter" class="text-sm text-gray-600 dark:text-gray-400">{{ 'settings.webhook.deliveries.filter.event'|trans }}:</label>
+                            <select id="event-filter"
+                                    onchange="window.location.href = this.value"
+                                    class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="{{ path('settings_webhook_delivery_index', {id: endpoint.id, status: status}|filter(v => v)) }}"{% if eventType == '' %} selected{% endif %}>{{ 'settings.webhook.deliveries.filter.all'|trans }}</option>
+                                <option value="{{ path('settings_webhook_delivery_index', {id: endpoint.id, status: status, eventType: 'user.created'}|filter(v => v)) }}"{% if eventType == 'user.created' %} selected{% endif %}>user.created</option>
+                                <option value="{{ path('settings_webhook_delivery_index', {id: endpoint.id, status: status, eventType: 'user.deleted'}|filter(v => v)) }}"{% if eventType == 'user.deleted' %} selected{% endif %}>user.deleted</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label for="status-filter" class="text-sm text-gray-600 dark:text-gray-400">{{ 'settings.webhook.deliveries.filter.label'|trans }}:</label>
+                            <select id="status-filter"
+                                    onchange="window.location.href = this.value"
+                                    class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="{{ path('settings_webhook_delivery_index', {id: endpoint.id, eventType: eventType}|filter(v => v)) }}"{% if status == '' %} selected{% endif %}>{{ 'settings.webhook.deliveries.filter.all'|trans }}</option>
+                                <option value="{{ path('settings_webhook_delivery_index', {id: endpoint.id, status: 'success', eventType: eventType}|filter(v => v)) }}"{% if status == 'success' %} selected{% endif %}>{{ 'settings.webhook.deliveries.status.delivered'|trans }}</option>
+                                <option value="{{ path('settings_webhook_delivery_index', {id: endpoint.id, status: 'failed', eventType: eventType}|filter(v => v)) }}"{% if status == 'failed' %} selected{% endif %}>{{ 'settings.webhook.deliveries.status.failed'|trans }}</option>
+                                <option value="{{ path('settings_webhook_delivery_index', {id: endpoint.id, status: 'pending', eventType: eventType}|filter(v => v)) }}"{% if status == 'pending' %} selected{% endif %}>{{ 'settings.webhook.deliveries.status.pending'|trans }}</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="overflow-hidden">
@@ -99,7 +111,7 @@
                         </div>
                         <div class="flex gap-2">
                             {% if page > 1 %}
-                                <a href="{{ path('settings_webhook_delivery_index', {id: endpoint.id, page: page - 1, status: status}|filter(v => v)) }}"
+                                <a href="{{ path('settings_webhook_delivery_index', {id: endpoint.id, page: page - 1, status: status, eventType: eventType}|filter(v => v)) }}"
                                    class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
                                     {{ ux_icon('heroicons:chevron-left', {class: 'w-4 h-4 mr-1'}) }} {{ 'settings.webhook.deliveries.pagination.newer'|trans }}
                                 </a>
@@ -108,7 +120,7 @@
                                 {{ 'settings.webhook.deliveries.pagination.page'|trans({'%page%': page, '%totalPages%': totalPages}) }}
                             </span>
                             {% if page < totalPages %}
-                                <a href="{{ path('settings_webhook_delivery_index', {id: endpoint.id, page: page + 1, status: status}|filter(v => v)) }}"
+                                <a href="{{ path('settings_webhook_delivery_index', {id: endpoint.id, page: page + 1, status: status, eventType: eventType}|filter(v => v)) }}"
                                    class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
                                     {{ 'settings.webhook.deliveries.pagination.older'|trans }} {{ ux_icon('heroicons:chevron-right', {class: 'w-4 h-4 ml-1'}) }}
                                 </a>

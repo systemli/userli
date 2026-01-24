@@ -549,6 +549,7 @@ settings:
       subtitle: Kürzliche Webhook-Zustellungen
       filter:
         label: Status
+        event: Ereignis
         all: Alle
       table:
         id: ID

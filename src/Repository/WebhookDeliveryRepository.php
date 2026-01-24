@@ -7,6 +7,7 @@ namespace App\Repository;
 use App\Entity\WebhookDelivery;
 use App\Entity\WebhookEndpoint;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -29,7 +30,7 @@ final class WebhookDeliveryRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
-    public function countByEndpointAndStatus(WebhookEndpoint $endpoint, string $status): int
+    public function countByEndpointAndStatus(WebhookEndpoint $endpoint, string $status, string $eventType = ''): int
     {
         $qb = $this->createQueryBuilder('d')
             ->select('COUNT(d.id)')
@@ -37,6 +38,7 @@ final class WebhookDeliveryRepository extends ServiceEntityRepository
             ->setParameter('endpoint', $endpoint);
 
         $this->applyStatusFilter($qb, $status);
+        $this->applyEventTypeFilter($qb, $eventType);
 
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
@@ -49,6 +51,7 @@ final class WebhookDeliveryRepository extends ServiceEntityRepository
         string $status,
         int $limit,
         int $offset,
+        string $eventType = '',
     ): array {
         $qb = $this->createQueryBuilder('d')
             ->where('d.endpoint = :endpoint')
@@ -58,11 +61,12 @@ final class WebhookDeliveryRepository extends ServiceEntityRepository
             ->setFirstResult($offset);
 
         $this->applyStatusFilter($qb, $status);
+        $this->applyEventTypeFilter($qb, $eventType);
 
         return $qb->getQuery()->getResult();
     }
 
-    private function applyStatusFilter(\Doctrine\ORM\QueryBuilder $qb, string $status): void
+    private function applyStatusFilter(QueryBuilder $qb, string $status): void
     {
         match ($status) {
             'success' => $qb->andWhere('d.success = true'),
@@ -70,5 +74,13 @@ final class WebhookDeliveryRepository extends ServiceEntityRepository
             'pending' => $qb->andWhere('d.error IS NULL')->andWhere('d.success = false'),
             default => null,
         };
+    }
+
+    private function applyEventTypeFilter(QueryBuilder $qb, string $eventType): void
+    {
+        if ('' !== $eventType) {
+            $qb->andWhere('d.type = :eventType')
+                ->setParameter('eventType', $eventType);
+        }
     }
 }

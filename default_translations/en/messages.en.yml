@@ -551,6 +551,7 @@ settings:
       subtitle: Recent webhook deliveries
       filter:
         label: Status
+        event: Event
         all: All
       table:
         id: ID
