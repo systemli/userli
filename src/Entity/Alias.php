@@ -15,6 +15,7 @@ use App\Traits\UserAwareTrait;
 use App\Validator\EmailAddress;
 use App\Validator\EmailLength;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\AssociationOverride;
 use Doctrine\ORM\Mapping\Index;
@@ -48,6 +49,9 @@ class Alias implements SoftDeletableInterface, Stringable
 
     #[ORM\Column(nullable: true)]
     protected ?string $destination = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $smtpQuotaLimits = null;
 
     /**
      * Alias constructor.
@@ -85,6 +89,16 @@ class Alias implements SoftDeletableInterface, Stringable
     {
         $this->user = null;
         $this->destination = null;
+    }
+
+    public function getSmtpQuotaLimits(): ?array
+    {
+        return $this->smtpQuotaLimits;
+    }
+
+    public function setSmtpQuotaLimits(?array $smtpQuotaLimits): void
+    {
+        $this->smtpQuotaLimits = $smtpQuotaLimits;
     }
 
     #[Override]

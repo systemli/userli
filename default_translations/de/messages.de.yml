@@ -408,6 +408,7 @@ settings:
       app: Anwendungseinstellungen
       project: Projekteinstellungen
       email: E-Mail Einstellungen
+      smtp_quota: SMTP-Quota Limits
     app_name:
       label: Anwendungsname
       help: Der im Anwendungsheader und Browsertitel angezeigte Name
@@ -426,6 +427,12 @@ settings:
     email_notification_address:
       label: E-Mail-Adresse für Benachrichtigungen
       help: Die E-Mail-Adresse, die Systembenachrichtigungen erhält
+    smtp_quota_limit_per_hour:
+      label: Limit pro Stunde
+      help: Maximale Anzahl an E-Mails, die ein:e Benutzer:in pro Stunde senden kann (0 = unbegrenzt)
+    smtp_quota_limit_per_day:
+      label: Limit pro Tag
+      help: Maximale Anzahl an E-Mails, die ein:e Benutzer:in pro Tag senden kann (0 = unbegrenzt)
   navigation:
     aria-label: Einstellungen Navigation
     api: API Tokens
