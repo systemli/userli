@@ -97,8 +97,10 @@ class AliasVoterTest extends TestCase
             if (!$isAdmin) {
                 return false;
             }
+
             return in_array($role, [Roles::ADMIN, Roles::DOMAIN_ADMIN], true);
         });
+
         return $security;
     }
 
