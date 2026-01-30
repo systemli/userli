@@ -60,7 +60,7 @@ final class UsersResetCommand extends AbstractUsersCommand
         }
 
         $passwordQuest = new Question('New password: ');
-        $passwordQuest->setValidator(function ($value) {
+        $passwordQuest->setValidator(static function ($value) {
             $validator = new PasswordStrengthHandler();
             if ($validator->validate($value)) {
                 throw new Exception("The password doesn't comply with our security policy.");

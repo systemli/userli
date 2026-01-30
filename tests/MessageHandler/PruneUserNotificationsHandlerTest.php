@@ -31,10 +31,10 @@ class PruneUserNotificationsHandlerTest extends TestCase
             ->with(UserNotification::class, 'n')
             ->willReturnSelf();
         $qb->expects($this->once())->method('where')
-            ->with($this->callback(fn ($expr) => str_contains($expr, 'n.creationTime')))
+            ->with($this->callback(static fn ($expr) => str_contains($expr, 'n.creationTime')))
             ->willReturnSelf();
         $qb->expects($this->once())->method('setParameter')
-            ->with('before', $this->callback(fn ($dt) => $dt instanceof DateTimeImmutable))
+            ->with('before', $this->callback(static fn ($dt) => $dt instanceof DateTimeImmutable))
             ->willReturnSelf();
         $qb->expects($this->once())->method('getQuery')->willReturn($query);
 

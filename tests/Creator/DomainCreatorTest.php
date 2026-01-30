@@ -16,7 +16,7 @@ class DomainCreatorTest extends TestCase
     private function createCreator(): DomainCreator
     {
         $manager = $this->createMock(EntityManagerInterface::class);
-        $manager->method('persist')->willReturnCallback(function ($entity): void {
+        $manager->method('persist')->willReturnCallback(static function ($entity): void {
             $entity->setId(1);
         });
         $manager->method('flush')->willReturn(true);

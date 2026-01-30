@@ -13,7 +13,7 @@ final class UserAuthenticationHandler
 {
     public function __construct(
         private readonly PasswordHasherFactoryInterface $passwordHasherFactory,
-        protected EventDispatcherInterface $eventDispatcher,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 

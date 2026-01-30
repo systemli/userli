@@ -22,7 +22,7 @@ class AliasCreatorTest extends TestCase
     {
         $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('persist')->willReturnCallback(
-            function (Alias $alias): void {
+            static function (Alias $alias): void {
                 $alias->setId(1);
             }
         );

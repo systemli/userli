@@ -29,20 +29,20 @@ class UserRestoreHandlerTest extends TestCase
 
         $this->passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)
             ->disableOriginalConstructor()->getMock();
-        $this->passwordUpdater->method('updatePassword')->willReturnCallback(function (User $user): void {
+        $this->passwordUpdater->method('updatePassword')->willReturnCallback(static function (User $user): void {
             $user->setPassword('new_password');
         });
 
         $this->mailCryptKeyHandler = $this->getMockBuilder(MailCryptKeyHandler::class)
             ->disableOriginalConstructor()->getMock();
-        $this->mailCryptKeyHandler->method('create')->willReturnCallBack(function (User $user, string $password): void {
+        $this->mailCryptKeyHandler->method('create')->willReturnCallBack(static function (User $user, string $password): void {
             $user->setMailCryptSecretBox('MailCryptSecretBox');
             $user->setMailCryptEnabled(true);
         });
 
         $this->recoveryTokenHandler = $this->getMockBuilder(RecoveryTokenHandler::class)
             ->disableOriginalConstructor()->getMock();
-        $this->recoveryTokenHandler->method('create')->willReturnCallBack(function (User $user): void {
+        $this->recoveryTokenHandler->method('create')->willReturnCallBack(static function (User $user): void {
             $user->setRecoverySecretBox('RecoverySecretBox');
             $user->setPlainRecoveryToken('PlainRecoveryToken');
         });

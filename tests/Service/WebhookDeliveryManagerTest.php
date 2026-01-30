@@ -88,7 +88,7 @@ class WebhookDeliveryManagerTest extends TestCase
             $this->assertEquals((string) $delivery->getId(), $inner->deliveryId);
 
             return true;
-        }))->willReturnCallback(fn ($m) => $m instanceof Envelope ? $m : new Envelope($m));
+        }))->willReturnCallback(static fn ($m) => $m instanceof Envelope ? $m : new Envelope($m));
 
         $repo = $this->createMock(WebhookDeliveryRepository::class);
 

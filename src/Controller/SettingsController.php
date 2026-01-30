@@ -38,7 +38,7 @@ final class SettingsController extends AbstractController
             $data = $form->getData();
 
             // Filter out null values and save only changed settings
-            $data = array_filter($data, fn ($value) => $value !== null);
+            $data = array_filter($data, static fn ($value) => $value !== null);
 
             $this->settingsService->setAll($data);
             $this->addFlash('success', 'settings.flash.updated_successfully');
