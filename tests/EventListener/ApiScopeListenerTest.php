@@ -48,7 +48,7 @@ class ApiScopeListenerTest extends TestCase
         $request = new Request();
         $request->server->set('REQUEST_URI', '/api/test');
 
-        $event = $this->createControllerArgumentsEvent($request, function () { return 'test'; });
+        $event = $this->createControllerArgumentsEvent($request, static function () { return 'test'; });
 
         // Should not throw any exception
         $this->listener->onKernelControllerArguments($event);

@@ -21,7 +21,7 @@ class VoucherCreatorTest extends TestCase
     {
         $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
         $manager->method('persist')->willReturnCallback(
-            function (Voucher $voucher): void {
+            static function (Voucher $voucher): void {
                 $voucher->setId(1);
             }
         );

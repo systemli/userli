@@ -91,7 +91,7 @@ class SettingsServiceTest extends TestCase
 
         $this->entityManager->expects($this->once())
             ->method('persist')
-            ->with($this->callback(function (Setting $setting) {
+            ->with($this->callback(static function (Setting $setting) {
                 return $setting->getName() === 'bool_setting' && $setting->getValue() === '1';
             }));
 
@@ -112,7 +112,7 @@ class SettingsServiceTest extends TestCase
 
         $this->entityManager->expects($this->once())
             ->method('persist')
-            ->with($this->callback(function (Setting $setting) {
+            ->with($this->callback(static function (Setting $setting) {
                 return $setting->getName() === 'array_setting'
                     && $setting->getValue() === '["a","b","c"]';
             }));
@@ -222,7 +222,7 @@ class SettingsServiceTest extends TestCase
 
         $this->entityManager->expects($this->once())
             ->method('persist')
-            ->with($this->callback(function (Setting $setting) use ($expected) {
+            ->with($this->callback(static function (Setting $setting) use ($expected) {
                 return $setting->getValue() === $expected;
             }));
 

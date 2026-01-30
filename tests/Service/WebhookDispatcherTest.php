@@ -53,11 +53,11 @@ class WebhookDispatcherTest extends TestCase
                 $this->assertInstanceOf(SendWebhook::class, $message);
                 $inner = $message;
             }
-            $ids = array_map(fn (WebhookDelivery $d) => (string) $d->getId(), $persisted);
+            $ids = array_map(static fn (WebhookDelivery $d) => (string) $d->getId(), $persisted);
             $this->assertContains($inner->deliveryId, $ids);
 
             return true;
-        }))->willReturnCallback(function ($message) {
+        }))->willReturnCallback(static function ($message) {
             // Always return an Envelope as messenger expects
             return $message instanceof Envelope ? $message : new Envelope($message);
         });

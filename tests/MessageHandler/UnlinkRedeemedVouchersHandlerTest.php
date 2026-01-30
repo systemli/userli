@@ -42,7 +42,7 @@ class UnlinkRedeemedVouchersHandlerTest extends TestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['createQueryBuilder'])
             ->getMock();
-        $repo->method('createQueryBuilder')->willReturnCallback(function () use (&$qb) {
+        $repo->method('createQueryBuilder')->willReturnCallback(static function () use (&$qb) {
             return $qb;
         });
 
@@ -54,8 +54,8 @@ class UnlinkRedeemedVouchersHandlerTest extends TestCase
 
         // Because handler starts from repository->createQueryBuilder('voucher') we skip verifying alias there
         $qb->method('join')->willReturnSelf();
-        $qb->method('where')->with($this->callback(fn ($expr) => str_contains($expr, 'voucher.redeemedTime')))->willReturnSelf();
-        $qb->method('setParameter')->with('date', $this->callback(fn ($dt) => $dt instanceof DateTime))->willReturnSelf();
+        $qb->method('where')->with($this->callback(static fn ($expr) => str_contains($expr, 'voucher.redeemedTime')))->willReturnSelf();
+        $qb->method('setParameter')->with('date', $this->callback(static fn ($dt) => $dt instanceof DateTime))->willReturnSelf();
         $qb->method('orderBy')->with('voucher.redeemedTime')->willReturnSelf();
 
         $query = $this->getMockBuilder(\Doctrine\ORM\AbstractQuery::class)

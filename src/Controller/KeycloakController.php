@@ -48,7 +48,7 @@ final class KeycloakController extends AbstractController
     ): Response {
         $users = $this->manager->getRepository(User::class)->findUsersByString($domain, $search, $max, $first);
 
-        return $this->json(array_map(fn (User $user) => [
+        return $this->json(array_map(static fn (User $user) => [
             'id' => explode('@', $user->getEmail())[0],
             'email' => $user->getEmail(),
         ], $users));

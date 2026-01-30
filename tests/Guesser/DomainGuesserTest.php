@@ -36,7 +36,7 @@ class DomainGuesserTest extends TestCase
             ->getMock();
 
         $repository->method('findByName')->willReturnCallback(
-            function ($domain) {
+            static function ($domain) {
                 if ('example.org' === $domain) {
                     $domain = new Domain();
                     $domain->setName('example.org');
