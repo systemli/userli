@@ -1,14 +1,20 @@
 # Authentication for userli
 
-import_environment=MAIL_CRYPT USERLI_API_ACCESS_TOKEN USERLI_HOST DOVECOT_LUA_DEBUG DOVECOT_LUA_INSECURE
+import_environment {
+  MAIL_CRYPT=
+  USERLI_API_ACCESS_TOKEN=
+  USERLI_HOST=
+  DOVECOT_LUA_DEBUG=
+  DOVECOT_LUA_INSECURE=
+}
 
-passdb {
+passdb lua {
   driver = lua
-  args = file=/usr/local/bin/userli-dovecot-adapter.lua blocking=yes
+  lua_file = /usr/local/bin/userli-dovecot-adapter.lua
 }
 
 # The userdb below is used only by lda.
-userdb {
+userdb lua {
   driver = lua
-  args = file=/usr/local/bin/userli-dovecot-adapter.lua blocking=yes
+  lua_file = /usr/local/bin/userli-dovecot-adapter.lua
 }

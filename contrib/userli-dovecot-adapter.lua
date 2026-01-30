@@ -29,10 +29,7 @@ local api_path = "/api/dovecot"
 local api_url = protocol .. "://" .. env_userli_host .. api_path
 
 local http_client = dovecot.http.client {
-    timeout      = math.tointeger(env_dovecot_timeout);
-    max_attempts = math.tointeger(env_dovecot_max_attempts);
-    debug        = string.lower(env_dovecot_debug) == "true";
-    user_agent   = env_dovecot_agent
+    user_agent = env_dovecot_agent
 }
 
 function script_init()
