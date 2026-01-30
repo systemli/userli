@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Handler\MailCryptKeyHandler;
-use App\Handler\PasswordStrengthHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
@@ -59,20 +58,7 @@ final class UsersResetCommand extends AbstractUsersCommand
             return 0;
         }
 
-        $passwordQuest = new Question('New password: ');
-        $passwordQuest->setValidator(static function ($value) {
-            $validator = new PasswordStrengthHandler();
-            if ($validator->validate($value)) {
-                throw new Exception("The password doesn't comply with our security policy.");
-            }
-
-            return $value;
-        });
-        $passwordQuest->setHidden(true);
-        $passwordQuest->setHiddenFallback(false);
-        $passwordQuest->setMaxAttempts(5);
-
-        $password = $questionHelper->ask($input, $output, $passwordQuest);
+        $password = $questionHelper->ask($input, $output, $this->createPasswordQuestion());
 
         $passwordConfirmQuest = new Question('Repeat password: ');
         $passwordConfirmQuest->setHidden(true);

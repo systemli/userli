@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Entity\User;
+use App\Handler\PasswordStrengthHandler;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Override;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 abstract class AbstractUsersCommand extends Command
@@ -39,5 +42,22 @@ abstract class AbstractUsersCommand extends Command
         }
 
         return $user;
+    }
+
+    protected function createPasswordQuestion(): Question
+    {
+        $question = new Question('New password: ');
+        $question->setValidator(static function ($value) {
+            if ((new PasswordStrengthHandler())->validate($value)) {
+                throw new Exception("The password doesn't comply with our security policy.");
+            }
+
+            return $value;
+        });
+        $question->setHidden(true);
+        $question->setHiddenFallback(false);
+        $question->setMaxAttempts(5);
+
+        return $question;
     }
 }
