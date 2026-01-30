@@ -4,7 +4,6 @@ local math = require("math")
 -- env vars
 local env_userli_token         = os.getenv("USERLI_API_ACCESS_TOKEN")
 local env_userli_host          = os.getenv("USERLI_HOST")
-local env_dovecot_debug        = os.getenv("DOVECOT_LUA_DEBUG") or ""
 local env_dovecot_agent        = os.getenv("DOVECOT_LUA_AGENT") or "Userli-Dovecot-Adapter"
 local env_dovecot_max_attempts = os.getenv("DOVECOT_LUA_MAX_ATTEMPTS") or "3"
 local env_dovecot_timeout      = os.getenv("DOVECOT_LUA_TIMEOUT") or "10000"
@@ -102,9 +101,10 @@ function auth_userdb_lookup(request)
             attributes["quota_rule"] = data.body.quota
         end
         -- Only return mailcrypt attributes if mailcrypt is enabled for user:
+        -- Settings renamed in Dovecot 2.4: mail_crypt_* -> crypt_*
         if data.body.mailCrypt == 2 then
-            attributes["mail_crypt_global_public_key"] = data.body.mailCryptPublicKey
-            attributes["mail_crypt_save_version"]      = data.body.mailCrypt
+            attributes["crypt_global_public_key_file"] = "inline:" .. data.body.mailCryptPublicKey
+            attributes["crypt_write_algorithm"] = "ecdh-aes-256-gcm"
         end
         request:log_info(log_msg['http-ok'] .. http_response:status())
         return dovecot.auth.USERDB_RESULT_OK, attributes
@@ -145,10 +145,11 @@ function auth_password_verify(request, password)
 
         local attributes = {}
         -- Only return mailcrypt attributes if mailcrypt is enabled for user:
+        -- Settings renamed in Dovecot 2.4: mail_crypt_* -> crypt_*
         if data.body.mailCrypt == 2 then
-            attributes["userdb_mail_crypt_save_version"]       = data.body.mailCrypt
-            attributes["userdb_mail_crypt_global_private_key"] = data.body.mailCryptPrivateKey
-            attributes["userdb_mail_crypt_global_public_key"]  = data.body.mailCryptPublicKey
+            attributes["userdb_crypt_write_algorithm"] = "ecdh-aes-256-gcm"
+            attributes["userdb_crypt_global_private_key/main/crypt_private_key_file"] = "inline:" .. data.body.mailCryptPrivateKey
+            attributes["userdb_crypt_global_public_key_file"] = "inline:" .. data.body.mailCryptPublicKey
         end
         return dovecot.auth.PASSDB_RESULT_OK, attributes
     end
