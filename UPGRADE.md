@@ -24,7 +24,7 @@ If using Dovecot for authentication, the configuration syntax has changed signif
     - `mail_location` → split into `mail_driver`, `mail_path`
 
 3. **Named blocks required:**
-   All `namespace`, `passdb`, `userdb`, and `inet_listener` blocks need names.
+   All `namespace`, `passdb`, `userdb`, and `inet_listener` blocks need names (e.g., `passdb lua { }` where `lua` is the name).
 
 4. **Environment variable changes:**
     - `DOVECOT_LUA_DEBUG` removed (no longer supported)
