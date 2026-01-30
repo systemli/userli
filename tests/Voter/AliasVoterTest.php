@@ -8,10 +8,10 @@ use App\Entity\Alias;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Voter\AliasVoter;
-use Symfony\Component\Security\Core\Security;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Security;
 
 class AliasVoterTest extends TestCase
 {
@@ -80,6 +80,7 @@ class AliasVoterTest extends TestCase
         $token->method('getUser')->willReturn($user);
         $this->assertTrue($this->invokeVoteOnAttribute($voter, AliasVoter::DELETE, $alias, $token));
     }
+
     private function invokeSupports(AliasVoter $voter, string $attribute, $subject): bool
     {
         $ref = new ReflectionClass($voter);
