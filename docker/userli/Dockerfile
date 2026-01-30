@@ -1,6 +1,6 @@
 FROM docker.io/composer:2.8.12 AS composer
 
-FROM docker.io/php:8.2-cli AS builder
+FROM docker.io/php:8.4-cli AS builder
 
 RUN apt-get update && \
     apt-get install -y libzip-dev nodejs npm zip
@@ -17,7 +17,7 @@ RUN composer install --no-scripts && \
     yarn encore production && \
     bin/console assets:install
 
-FROM docker.io/php:8.2-apache-bookworm
+FROM docker.io/php:8.4-apache-trixie
 
 RUN apt-get update && \
     apt-get install -y libpng-dev libsodium-dev libzip-dev zlib1g-dev zip gpg libicu-dev && \

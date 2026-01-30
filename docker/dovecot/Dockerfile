@@ -1,4 +1,4 @@
-FROM debian:12-slim
+FROM debian:trixie-slim
 
 ENV LC_ALL=C
 ARG DEBIAN_FRONTEND=noninteractive
