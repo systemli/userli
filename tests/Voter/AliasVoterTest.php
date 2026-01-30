@@ -10,8 +10,8 @@ use App\Enum\Roles;
 use App\Voter\AliasVoter;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Security;
 
 class AliasVoterTest extends TestCase
 {
