@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Features and Improvements
+
+- 🚸 Improve UX for deleting custom aliases (#873)
+
 ## 5.4.1 (2026.01.23)
 
 ### Bug Fixes
