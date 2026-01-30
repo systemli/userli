@@ -29,7 +29,10 @@ local api_path = "/api/dovecot"
 local api_url = protocol .. "://" .. env_userli_host .. api_path
 
 local http_client = dovecot.http.client {
-    user_agent = env_dovecot_agent
+    request_timeout      = env_dovecot_timeout .. "ms";
+    request_max_attempts = math.tointeger(env_dovecot_max_attempts);
+    user_agent           = env_dovecot_agent
+    -- Note: debug option removed in Dovecot 2.4, use rawlog_dir for HTTP debugging
 }
 
 function script_init()
