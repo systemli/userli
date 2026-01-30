@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.5.0 (unreleased)
+
+### Features and Improvements
+
+- ⬆️ Upgrade to PHP 8.4
+- ⬆️ Upgrade Docker images to Debian Trixie
+- ⬆️ Migrate Dovecot configuration to 2.4 syntax
+- ⬆️ Update mail_crypt settings for Dovecot 2.4
+
 ## 5.4.1 (2026.01.23)
 
 ### Bug Fixes

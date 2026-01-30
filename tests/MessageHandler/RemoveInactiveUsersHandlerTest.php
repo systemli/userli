@@ -85,7 +85,7 @@ class RemoveInactiveUsersHandlerTest extends TestCase
 
         $adminUser = $this->createMock(User::class);
         $adminUser->method('hasRole')
-            ->willReturnCallback(fn (string $role) => $role === Roles::ADMIN);
+            ->willReturnCallback(static fn (string $role) => $role === Roles::ADMIN);
         $adminUser->method('getId')->willReturn(1);
 
         $normalUser = $this->createMock(User::class);
@@ -125,7 +125,7 @@ class RemoveInactiveUsersHandlerTest extends TestCase
 
         $domainAdminUser = $this->createMock(User::class);
         $domainAdminUser->method('hasRole')
-            ->willReturnCallback(fn (string $role) => $role === Roles::DOMAIN_ADMIN);
+            ->willReturnCallback(static fn (string $role) => $role === Roles::DOMAIN_ADMIN);
 
         $repository = $this->createMock(UserRepository::class);
         $repository->expects($this->once())
@@ -150,7 +150,7 @@ class RemoveInactiveUsersHandlerTest extends TestCase
 
         $permanentUser = $this->createMock(User::class);
         $permanentUser->method('hasRole')
-            ->willReturnCallback(fn (string $role) => $role === Roles::PERMANENT);
+            ->willReturnCallback(static fn (string $role) => $role === Roles::PERMANENT);
 
         $repository = $this->createMock(UserRepository::class);
         $repository->expects($this->once())

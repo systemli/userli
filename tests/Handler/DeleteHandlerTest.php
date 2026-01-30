@@ -28,7 +28,7 @@ class DeleteHandlerTest extends TestCase
     {
         $passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)
             ->disableOriginalConstructor()->getMock();
-        $passwordUpdater->method('updatePassword')->willReturnCallback(function (User $user): void {
+        $passwordUpdater->method('updatePassword')->willReturnCallback(static function (User $user): void {
             $user->setPassword('new_password');
         });
 
@@ -48,7 +48,7 @@ class DeleteHandlerTest extends TestCase
         $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()->getMock();
         $this->entityManager->method('getRepository')->willReturnCallback(
-            function (string $class) use ($aliasRepository, $voucherRepository, $notificationRepository) {
+            static function (string $class) use ($aliasRepository, $voucherRepository, $notificationRepository) {
                 return match ($class) {
                     Alias::class => $aliasRepository,
                     Voucher::class => $voucherRepository,

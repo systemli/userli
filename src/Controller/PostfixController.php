@@ -26,7 +26,7 @@ final class PostfixController extends AbstractController
     {
         $users = $this->manager->getRepository(Alias::class)->findBy(['deleted' => false, 'source' => $alias]);
 
-        return $this->json(array_map(function (Alias $alias) {
+        return $this->json(array_map(static function (Alias $alias) {
             return $alias->getDestination();
         }, $users));
     }
@@ -56,12 +56,12 @@ final class PostfixController extends AbstractController
         $aliases = $this->manager->getRepository(Alias::class)->findBy(['deleted' => false, 'source' => $email]);
 
         // Extract email addresses from users
-        $senders = array_map(function (User $user) {
+        $senders = array_map(static function (User $user) {
             return $user->getEmail();
         }, $users);
 
         // Extract email addresses from alias destinations
-        $senders = array_merge($senders, array_map(function (Alias $alias) {
+        $senders = array_merge($senders, array_map(static function (Alias $alias) {
             return $alias->getDestination();
         }, $aliases));
 

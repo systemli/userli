@@ -42,7 +42,7 @@ class MailHandlerTest extends TestCase
 
         $this->mailer->expects($this->once())
             ->method('send')
-            ->with($this->callback(function (Email $message) use ($email, $plain, $subject, $senderAddress, $appName) {
+            ->with($this->callback(static function (Email $message) use ($email, $plain, $subject, $senderAddress, $appName) {
                 $fromAddresses = $message->getFrom();
                 $toAddresses = $message->getTo();
 
@@ -77,7 +77,7 @@ class MailHandlerTest extends TestCase
 
         $this->mailer->expects($this->once())
             ->method('send')
-            ->with($this->callback(function (Email $message) use ($bcc) {
+            ->with($this->callback(static function (Email $message) use ($bcc) {
                 $bccAddresses = $message->getBcc();
 
                 return count($bccAddresses) === 1 && $bccAddresses[0]->getAddress() === $bcc;
@@ -104,7 +104,7 @@ class MailHandlerTest extends TestCase
 
         $this->mailer->expects($this->once())
             ->method('send')
-            ->with($this->callback(function (Email $message) use ($html) {
+            ->with($this->callback(static function (Email $message) use ($html) {
                 return $message->getHtmlBody() === $html;
             }));
 
@@ -130,7 +130,7 @@ class MailHandlerTest extends TestCase
 
         $this->mailer->expects($this->once())
             ->method('send')
-            ->with($this->callback(function (Email $message) use ($bcc, $html) {
+            ->with($this->callback(static function (Email $message) use ($bcc, $html) {
                 $bccAddresses = $message->getBcc();
 
                 return count($bccAddresses) === 1
@@ -158,7 +158,7 @@ class MailHandlerTest extends TestCase
 
         $this->mailer->expects($this->once())
             ->method('send')
-            ->with($this->callback(function (Email $message) {
+            ->with($this->callback(static function (Email $message) {
                 // Verify BCC is empty and HTML is null when empty params array is passed
                 return empty($message->getBcc()) && $message->getHtmlBody() === null;
             }));

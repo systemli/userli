@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Handler\PasswordStrengthHandler;
 use App\Handler\UserRestoreHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -47,20 +46,7 @@ final class UsersRestoreCommand extends AbstractUsersCommand
         $questionHelper = $this->getHelper('question');
         assert($questionHelper instanceof QuestionHelper);
 
-        $passwordQuest = new Question('New password: ');
-        $passwordQuest->setValidator(function ($value) {
-            $validator = new PasswordStrengthHandler();
-            if ($validator->validate($value)) {
-                throw new Exception("The password doesn't comply with our security policy.");
-            }
-
-            return $value;
-        });
-        $passwordQuest->setHidden(true);
-        $passwordQuest->setHiddenFallback(false);
-        $passwordQuest->setMaxAttempts(5);
-
-        $password = $questionHelper->ask($input, $output, $passwordQuest);
+        $password = $questionHelper->ask($input, $output, $this->createPasswordQuestion());
 
         $passwordConfirmQuest = new Question('Repeat password: ');
         $passwordConfirmQuest->setHidden(true);

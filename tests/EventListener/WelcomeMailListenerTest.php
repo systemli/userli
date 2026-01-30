@@ -43,7 +43,7 @@ class WelcomeMailListenerTest extends TestCase
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects($this->once())
             ->method('dispatch')
-            ->with($this->callback(function ($message) use ($user, $locale) {
+            ->with($this->callback(static function ($message) use ($user, $locale) {
                 return $message instanceof WelcomeMail
                     && $message->email === $user->getEmail()
                     && $message->locale === $locale;
@@ -72,7 +72,7 @@ class WelcomeMailListenerTest extends TestCase
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects($this->once())
             ->method('dispatch')
-            ->with($this->callback(function ($message) use ($user) {
+            ->with($this->callback(static function ($message) use ($user) {
                 return $message instanceof WelcomeMail
                     && $message->email === $user->getEmail()
                     && $message->locale === 'en'; // Default locale
@@ -92,7 +92,7 @@ class WelcomeMailListenerTest extends TestCase
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects($this->once())
             ->method('dispatch')
-            ->with($this->callback(function ($message) use ($user) {
+            ->with($this->callback(static function ($message) use ($user) {
                 return $message instanceof WelcomeMail
                     && $message->email === $user->getEmail()
                     && $message->locale === 'en'; // Default locale
