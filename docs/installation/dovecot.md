@@ -85,4 +85,4 @@ In order to enable MailCrypt in Dovecot, the following is required:
   - For Dovecot 2.3, use `mail_crypt_save_version = 0` instead
 
 The latter disables MailCrypt per default and is necessary to not break incoming mail for legacy users without MailCrypt keys.
-The adapter script automatically sets `crypt_write_algorithm = ecdh-x25519-aes256gcm` (or `mail_crypt_save_version = 2` for Dovecot 2.3) for all users with MailCrypt keys.
+The adapter script automatically sets `crypt_write_algorithm = ecdh-aes-256-gcm` (or `mail_crypt_save_version = 2` for Dovecot 2.3) for all users with MailCrypt keys.
