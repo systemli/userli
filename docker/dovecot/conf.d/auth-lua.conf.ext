@@ -1,10 +1,12 @@
 # Authentication for userli
 
 import_environment {
-  MAIL_CRYPT=
   USERLI_API_ACCESS_TOKEN=
   USERLI_HOST=
+  DOVECOT_LUA_AGENT=
   DOVECOT_LUA_INSECURE=
+  DOVECOT_LUA_MAX_ATTEMPTS=
+  DOVECOT_LUA_TIMEOUT=
 }
 
 passdb lua {
