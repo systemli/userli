@@ -17,6 +17,9 @@ final class Version20250101000000 extends AbstractMigration
 {
     private AbstractSchemaManager $schemaManager;
 
+    /** @var array<string, bool> Track tables that were created in this migration */
+    private array $createdTables = [];
+
     public function getDescription(): string
     {
         return 'Create initial database schema';
@@ -68,6 +71,7 @@ final class Version20250101000000 extends AbstractMigration
     {
         if (!$this->schemaManager->tablesExist([$tableName])) {
             $this->addSql($sql);
+            $this->createdTables[$tableName] = true;
         } else {
             $this->write(sprintf('Table "%s" already exists, skipping.', $tableName));
         }
@@ -75,10 +79,21 @@ final class Version20250101000000 extends AbstractMigration
 
     private function addForeignKeyIfNotExists(string $tableName, string $foreignKeyName, string $sql): void
     {
-        if (!$this->schemaManager->tablesExist([$tableName])) {
+        // Check if table exists OR was just created in this migration
+        $tableExists = $this->schemaManager->tablesExist([$tableName]) || isset($this->createdTables[$tableName]);
+
+        if (!$tableExists) {
             return;
         }
 
+        // If table was just created, we know there are no existing foreign keys
+        if (isset($this->createdTables[$tableName])) {
+            $this->addSql($sql);
+
+            return;
+        }
+
+        // Table existed before, check for existing foreign key
         $foreignKeys = $this->schemaManager->listTableForeignKeys($tableName);
         foreach ($foreignKeys as $foreignKey) {
             if ($foreignKey->getName() === $foreignKeyName) {
