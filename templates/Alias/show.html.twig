@@ -121,16 +121,27 @@
                                                     <span class="mt-1 inline-flex items-center px-2 py-0.5 rounded text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200" title="{{ alias.note }}">{{ alias.note|u.truncate(40, '…') }}</span>
                                                 {% endif %}
                                             </div>
-                                            <button type="button"
-                                                    class="inline-flex items-center p-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-600 rounded hover:bg-gray-200 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 dark:focus:ring-offset-gray-700 transition-colors flex-shrink-0"
-                                                    data-button="copy-to-clipboard"
-                                                    data-value="{{ alias.source }}"
-                                                    title="{{ "copy-to-clipboard"|trans }}"
-                                                    aria-label="{{ "copy-to-clipboard"|trans }}"
-                                                    data-toggle="tooltip"
-                                                    data-placement="top">
-                                                {{ ux_icon('heroicons:clipboard', {class: 'w-4 h-4'}) }}
-                                            </button>
+                                            <div class="flex items-center space-x-2 flex-shrink-0">
+                                                <button type="button"
+                                                        class="inline-flex items-center p-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-600 rounded hover:bg-gray-200 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 dark:focus:ring-offset-gray-700 transition-colors"
+                                                        data-button="copy-to-clipboard"
+                                                        data-value="{{ alias.source }}"
+                                                        title="{{ "copy-to-clipboard"|trans }}"
+                                                        aria-label="{{ "copy-to-clipboard"|trans }}"
+                                                        data-toggle="tooltip"
+                                                        data-placement="top">
+                                                    {{ ux_icon('heroicons:clipboard', {class: 'w-4 h-4'}) }}
+                                                </button>
+                                                {% if is_granted('delete', alias) %}
+                                                    <a href="{{ url('alias_delete', {'id': alias.id}) }}"
+                                                       class="inline-flex items-center p-2 text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/50 rounded hover:bg-red-200 dark:hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 dark:focus:ring-offset-gray-700 transition-colors"
+                                                       title="{{ "alias.delete"|trans }}"
+                                                       data-toggle="tooltip"
+                                                       data-placement="top">
+                                                        {{ ux_icon('heroicons:x-mark', {class: 'w-4 h-4'}) }}
+                                                    </a>
+                                                {% endif %}
+                                            </div>
                                         </div>
                                     {% endfor %}
                                 {% endif %}
