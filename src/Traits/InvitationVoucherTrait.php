@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 trait InvitationVoucherTrait
 {
-    #[ORM\OneToOne(targetEntity: Voucher::class)]
+    #[ORM\OneToOne(inversedBy: 'invitedUser', targetEntity: Voucher::class)]
     private ?Voucher $invitationVoucher = null;
 
     public function getInvitationVoucher(): ?Voucher

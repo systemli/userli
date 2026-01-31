@@ -1,5 +1,17 @@
 # Upgrade documentation
 
+## Upgrade from 5.3.0 or lower
+
+We switched from manual database migrations to using Doctrine Migrations.
+For existing installations, mark all migrations as executed first, then run
+any pending migrations:
+
+```shell
+bin/console doctrine:migrations:sync-metadata-storage
+bin/console doctrine:migrations:version --add --all --no-interaction
+bin/console doctrine:migrations:migrate --no-interaction
+```
+
 ## Upgrade from 3.1.0 or lower
 
 Optional note field for aliases was added. Update your database schema:

@@ -47,12 +47,12 @@ Initialize the database:
 === "podman"
 
     ```shell
-    podman compose exec userli bin/console doctrine:schema:create
+    podman compose exec userli bin/console doctrine:migrations:migrate --no-interaction
     ```
 
 === "docker"
     ```shell
-    docker compose exec userli bin/console doctrine:schema:create
+    docker compose exec userli bin/console doctrine:migrations:migrate --no-interaction
     ```
 
 Install sample data:
