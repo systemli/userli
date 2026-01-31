@@ -1,0 +1,137 @@
+name: Migrations
+
+on:
+  pull_request:
+    paths:
+      - "migrations/**"
+      - "src/Entity/**"
+      - ".github/workflows/migrations.yml"
+
+jobs:
+  migrations:
+    runs-on: ubuntu-24.04
+    name: Validate Migrations
+
+    services:
+      mysql:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MARIADB_DATABASE: userli
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: pdo_mysql, openssl, sodium
+          tools: composer
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-scripts
+
+      - name: Run Migrations
+        env:
+          DATABASE_URL: mysql://root:root@127.0.0.1:3306/userli?serverVersion=mariadb-10.11.0
+        run: bin/console doctrine:migrations:migrate --no-interaction
+
+      - name: Check for Schema Drift
+        id: schema-check
+        env:
+          DATABASE_URL: mysql://root:root@127.0.0.1:3306/userli?serverVersion=mariadb-10.11.0
+        run: |
+          DRIFT=$(bin/console doctrine:schema:update --dump-sql --complete 2>&1 || true)
+
+          if echo "$DRIFT" | grep -q "Nothing to update"; then
+            echo "✅ No schema drift detected - migrations are up to date"
+            echo "has_drift=false" >> $GITHUB_OUTPUT
+          elif [ -z "$DRIFT" ]; then
+            echo "✅ No schema drift detected - migrations are up to date"
+            echo "has_drift=false" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Schema drift detected after running migrations:"
+            echo "$DRIFT"
+            echo ""
+            echo "Please ensure all schema changes are covered by migrations."
+            echo "has_drift=true" >> $GITHUB_OUTPUT
+            {
+              echo "drift<<EOF"
+              echo "$DRIFT"
+              echo "EOF"
+            } >> $GITHUB_OUTPUT
+          fi
+
+      - name: Find existing comment
+        if: github.event_name == 'pull_request'
+        uses: peter-evans/find-comment@v3
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: "<!-- schema-drift-comment -->"
+
+      - name: Delete comment on success
+        if: github.event_name == 'pull_request' && steps.schema-check.outputs.has_drift == 'false' && steps.find-comment.outputs.comment-id != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.deleteComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: ${{ steps.find-comment.outputs.comment-id }}
+            });
+
+      - name: Post or update comment on failure
+        if: github.event_name == 'pull_request' && steps.schema-check.outputs.has_drift == 'true'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          edit-mode: replace
+          body: |
+            <!-- schema-drift-comment -->
+            ## ❌ Schema Drift Detected
+
+            After running all migrations, the database schema does not match the entity definitions.
+
+            <details>
+            <summary>SQL statements needed to fix the drift</summary>
+
+            ```sql
+            ${{ steps.schema-check.outputs.drift }}
+            ```
+
+            </details>
+
+            ### How to fix
+
+            1. Create a new migration that includes the missing schema changes:
+               ```bash
+               bin/console doctrine:migrations:diff
+               ```
+            2. Or manually add the SQL to an existing migration if appropriate.
+
+      - name: Fail on drift
+        if: steps.schema-check.outputs.has_drift == 'true'
+        run: exit 1
