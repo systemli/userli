@@ -12,6 +12,11 @@ trait TwofactorBackupCodeTrait
     #[ORM\Column(type: Types::JSON)]
     private array $totpBackupCodes = [];
 
+    public function setTotpBackupCodes(array $totpBackupCodes): void
+    {
+        $this->totpBackupCodes = $totpBackupCodes;
+    }
+
     public function getTotpBackupCodes(): array
     {
         return $this->totpBackupCodes ?: [];
@@ -30,27 +35,10 @@ trait TwofactorBackupCodeTrait
         }
     }
 
-    public function clearBackupCodes(): void
-    {
-        $this->totpBackupCodes = [];
-    }
-
     public function addBackupCode(string $backupCode): void
     {
         if (!in_array($backupCode, $this->totpBackupCodes)) {
             $this->totpBackupCodes[] = $backupCode;
         }
-    }
-
-    public function generateBackupCodes(): array
-    {
-        $codes = [];
-        for ($i = 0; $i < 6; ++$i) {
-            $codes[] = (string) random_int(100000, 999999);
-        }
-
-        $this->totpBackupCodes = $codes;
-
-        return $this->totpBackupCodes;
     }
 }

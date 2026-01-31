@@ -106,7 +106,7 @@ final class UsersResetCommand extends AbstractUsersCommand
         // Reset twofactor settings
         $user->setTotpConfirmed(false);
         $user->setTotpSecret(null);
-        $user->clearBackupCodes();
+        $user->setTotpBackupCodes([]);
 
         // Clear sensitive plaintext data from User object
         $user->eraseCredentials();

@@ -11,6 +11,7 @@ use App\Form\Model\TwofactorConfirm;
 use App\Form\TwofactorBackupConfirmType;
 use App\Form\TwofactorConfirmType;
 use App\Form\TwofactorType;
+use App\Helper\TotpBackupCodeGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Endroid\QrCode\Builder\Builder;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
@@ -25,6 +26,7 @@ final class TwofactorController extends AbstractController
     public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly TotpAuthenticatorInterface $totpAuthenticator,
+        private readonly TotpBackupCodeGenerator $totpBackupCodeGenerator,
     ) {
     }
 
@@ -67,7 +69,8 @@ final class TwofactorController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setTotpSecret($totpAuthenticator->generateSecret());
-            $user->generateBackupCodes();
+            $codes = $this->totpBackupCodeGenerator->generate();
+            $user->setTotpBackupCodes($codes);
             $this->manager->flush();
 
             return $this->redirectToRoute('account_twofactor_confirm');

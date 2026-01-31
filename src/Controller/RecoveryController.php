@@ -246,7 +246,7 @@ final class RecoveryController extends AbstractController
         // Reset twofactor settings
         $user->setTotpConfirmed(false);
         $user->setTotpSecret(null);
-        $user->clearBackupCodes();
+        $user->setTotpBackupCodes([]);
 
         // Clear sensitive plaintext data from User object
         $user->eraseCredentials();
