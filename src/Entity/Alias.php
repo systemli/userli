@@ -44,7 +44,7 @@ class Alias implements SoftDeletableInterface, Stringable
     #[ORM\Column(nullable: true)]
     protected ?string $destination = null;
 
-    #[ORM\Column(length: 40, nullable: true)]
+    #[ORM\Column(nullable: true)]
     protected ?string $note = null;
 
     /**
@@ -86,19 +86,6 @@ class Alias implements SoftDeletableInterface, Stringable
 
     public function setNote(?string $note): void
     {
-        if ($note === null) {
-            $this->note = null;
-
-            return;
-        }
-
-        $note = trim($note);
-
-        // enforce max length of 40 to match database column and validation
-        if (mb_strlen($note) > 40) {
-            $note = mb_substr($note, 0, 40);
-        }
-
         $this->note = $note;
     }
 

@@ -13,5 +13,15 @@ final class AliasCreate
     public string $alias;
 
     #[Assert\Length(max: 40)]
-    public ?string $note = null;
+    private ?string $note = null;
+
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    public function setNote(?string $note): void
+    {
+        $this->note = $note !== null ? trim($note) : null;
+    }
 }

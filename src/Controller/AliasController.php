@@ -91,9 +91,9 @@ final class AliasController extends AbstractController
         if ($randomAliasCreateForm->isSubmitted()) {
             /** @var AliasCreate $randomData */
             $randomData = $randomAliasCreateForm->getData();
-            $this->processRandomAliasCreation($user, $randomData->note ?? null);
+            $this->processRandomAliasCreation($user, $randomData->getNote());
         } elseif ($customAliasCreateForm->isSubmitted() && $customAliasCreateForm->isValid()) {
-            $this->processCustomAliasCreation($user, $aliasCreate->alias, $aliasCreate->note);
+            $this->processCustomAliasCreation($user, $aliasCreate->alias, $aliasCreate->getNote());
         }
 
         return $this->redirectToRoute('aliases');
