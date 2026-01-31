@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait TwofactorBackupCodeTrait
 {
-    #[ORM\Column(type: Types::ARRAY)]
+    #[ORM\Column(type: Types::JSON)]
     private array $totpBackupCodes = [];
 
     public function getTotpBackupCodes(): array
