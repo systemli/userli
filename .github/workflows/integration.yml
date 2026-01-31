@@ -48,7 +48,7 @@ jobs:
         run: composer cs-check
 
       - name: Prepare Database Schema
-        run: bin/console doctrine:schema:create --env=test
+        run: bin/console doctrine:migrations:migrate --no-interaction --env=test
 
       - name: Prepare Assets
         run: |
