@@ -1,16 +1,22 @@
 # Upgrade documentation
 
-## Upgrade from 5.3.0 or lower
+## Upgrade from 5.4.1 or lower
 
-We switched from manual database migrations to using Doctrine Migrations.
-For existing installations, mark all migrations as executed first, then run
-any pending migrations:
+Starting with version 5.5.0, we switched from manual database migrations to
+using Doctrine Migrations. If you are upgrading from 5.4.1 or lower, follow
+these steps:
+
+1. **First, upgrade to version 5.4.1** and apply all manual database schema
+   changes documented below for your current version.
+
+2. **Then, upgrade to the latest version** and initialize Doctrine Migrations:
 
 ```shell
-bin/console doctrine:migrations:sync-metadata-storage
-bin/console doctrine:migrations:version --add --all --no-interaction
 bin/console doctrine:migrations:migrate --no-interaction
 ```
+
+This will mark all existing migrations as executed (since you already applied
+the schema changes manually) and run any new migrations.
 
 ## Upgrade from 3.1.0 or lower
 

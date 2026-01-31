@@ -1,13 +1,21 @@
 # Changelog
 
-## Unreleased
+## 5.5.0 (2026.01.31)
 
-### Added
-- Optional note field for aliases (`virtual_aliases.note` VARCHAR NULL). Allows users to store a short description for each alias. The UI enforces a 40 character limit for better usability.
+**With this release, Userli relies on Doctrine Migrations to handle database schema changes.**
 
 ### Features and Improvements
 
+- 🗃️ Add missing migration for webhook_deliveries indexes (#992)
+- 🗃️ Add Migration to add notes column (#991)
+- 🗃️ Migrate User roles from array to json (#979)
+- ✨ Add optional note to random alias (#872)
 - 🚸 Improve UX for deleting custom aliases (#873)
+- ✨ Add Filter for Event in Webhook Deliveries (#987)
+
+### Bug Fixes
+
+- 🐛 Fix the initial migration when the database is empty (#989)
 
 ## 5.4.1 (2026.01.23)
 
