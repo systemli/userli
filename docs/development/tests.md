@@ -1,9 +1,9 @@
 # Tests
 
-You will need to create the database schema once:
+You will need to run the database migrations once:
 
 ```shell
-bin/console doctrine:schema:create --env=test
+bin/console doctrine:migrations:migrate --no-interaction --env=test
 ```
 
 ## PHPUnit

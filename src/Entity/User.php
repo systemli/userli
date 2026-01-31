@@ -40,7 +40,6 @@ use Stringable;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'virtual_users')]
@@ -78,9 +77,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 
     public const CURRENT_PASSWORD_VERSION = 2;
 
-    #[ORM\Column(type: Types::ARRAY, options: ['default' => 'a:0:{}'])]
-    #[Assert\NotNull]
-    #[Assert\NotBlank]
+    #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
 
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
