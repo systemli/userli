@@ -17,6 +17,7 @@ use App\Enum\UserNotificationType;
 use App\Enum\WebhookEvent;
 use App\Guesser\DomainGuesser;
 use App\Helper\PasswordUpdater;
+use App\Helper\TotpBackupCodeGenerator;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
@@ -62,6 +63,7 @@ class FeatureContext extends MinkContext
         private readonly PasswordUpdater $passwordUpdater,
         private readonly DomainGuesser $domainGuesser,
         private readonly TokenStorageInterface $tokenStorage,
+        private readonly TotpBackupCodeGenerator $totpBackupCodeGenerator,
     ) {
         $this->sessionFactory = $this->getContainer()->get('session.factory');
         $this->cache = $this->getContainer()->get('cache.app');
@@ -178,8 +180,9 @@ class FeatureContext extends MinkContext
                         $user->setTotpSecret($value);
                         break;
                     case 'totp_backup_codes':
-                        $user->generateBackupCodes();
-                        $this->setPlaceholder('totp_backup_codes', $user->getTotpBackupCodes());
+                        $codes = $this->totpBackupCodeGenerator->generate();
+                        $user->setTotpBackupCodes($codes);
+                        $this->setPlaceholder('totp_backup_codes', $codes);
                         break;
                 }
             }

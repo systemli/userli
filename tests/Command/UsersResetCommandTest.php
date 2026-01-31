@@ -27,7 +27,7 @@ class UsersResetCommandTest extends TestCase
         $this->user = new User('user@example.org');
         $this->user->setTotpSecret('secret');
         $this->user->setTotpConfirmed(true);
-        $this->user->addBackupCode('123456');
+        $this->user->setTotpBackupCodes(['123456']);
 
         $repository = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()
