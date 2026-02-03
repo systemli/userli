@@ -4,7 +4,7 @@
   "license": "AGPL-3.0-or-later",
   "description": "Web application to (self-) manage email users and encrypt their mailboxes.",
   "require": {
-    "php": "^8.2",
+    "php": "^8.4",
     "ext-ctype": "*",
     "ext-iconv": "*",
     "ext-openssl": ">=7.1",
@@ -79,7 +79,7 @@
     },
     "sort-packages": true,
     "platform": {
-      "php": "8.2.29"
+      "php": "8.4.3"
     },
     "allow-plugins": {
       "composer/package-versions-deprecated": true,
