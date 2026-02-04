@@ -93,7 +93,7 @@ class AliasVoterTest extends TestCase
     private function createSecurity(bool $isAdmin): Security
     {
         $security = $this->createMock(Security::class);
-        $security->method('isGranted')->willReturnCallback(function (string $role) use ($isAdmin) {
+        $security->method('isGranted')->willReturnCallback(static function (string $role) use ($isAdmin) {
             if (!$isAdmin) {
                 return false;
             }
