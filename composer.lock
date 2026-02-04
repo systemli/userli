@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "bee1f95f2167deebffad3efedc950a1e",
-=======
-    "content-hash": "7db76a1a1563f400c736b4f1a939b06e",
->>>>>>> ba3ad51f (Update to trixie and php 8.4)
+    "content-hash": "a000ef874e5278f5d2fd4376ffe7624a",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
