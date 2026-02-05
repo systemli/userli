@@ -82,7 +82,7 @@ In order to enable MailCrypt in Dovecot, the following is required:
 
 - Add `mail_crypt` to the `mail_plugins` list in `/etc/dovecot/conf.d/10-mail.conf`
 - Set `crypt_write_algorithm = none` in `/etc/dovecot/conf.d/90-mail-crypt.conf` (Dovecot 2.4+)
-  - For Dovecot 2.3, use `mail_crypt_save_version = 0` instead
+- For Dovecot 2.3, use `mail_crypt_save_version = 0` instead
 
 The latter disables MailCrypt per default and is necessary to not break incoming mail for legacy users without MailCrypt keys.
-The adapter script automatically sets `crypt_write_algorithm = ecdh-aes-256-gcm` (or `mail_crypt_save_version = 2` for Dovecot 2.3) for all users with MailCrypt keys.
+The adapter script automatically sets `crypt_write_algorithm = aes-256-gcm-sha256` (or `mail_crypt_save_version = 2` for Dovecot 2.3) for all users with MailCrypt keys.
