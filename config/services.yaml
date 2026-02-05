@@ -92,7 +92,6 @@ services:
                   model_class: App\Entity\Domain,
               }
         calls:
-            - [setDomainCreator, ['@App\Creator\DomainCreator']]
             - [
                   setEventDispatcher,
                   [

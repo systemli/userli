@@ -92,8 +92,16 @@ final class AliasController extends AbstractController
             /** @var AliasCreate $randomData */
             $randomData = $randomAliasCreateForm->getData();
             $this->processRandomAliasCreation($user, $randomData->getNote());
-        } elseif ($customAliasCreateForm->isSubmitted() && $customAliasCreateForm->isValid()) {
-            $this->processCustomAliasCreation($user, $aliasCreate->alias, $aliasCreate->getNote());
+        } elseif ($customAliasCreateForm->isSubmitted()) {
+            if ($customAliasCreateForm->isValid()) {
+                // Extract local part from full email (alias contains "localpart@domain")
+                $localPart = explode('@', $aliasCreate->getAlias())[0];
+                $this->processCustomAliasCreation($user, $localPart, $aliasCreate->getNote());
+            } else {
+                foreach ($customAliasCreateForm->getErrors(true) as $error) {
+                    $this->addFlash('error', $error->getMessage());
+                }
+            }
         }
 
         return $this->redirectToRoute('aliases');

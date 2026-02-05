@@ -8,7 +8,6 @@ use App\Repository\VoucherRepository;
 use App\Traits\CreationTimeTrait;
 use App\Traits\IdTrait;
 use App\Traits\UserAwareTrait;
-use App\Validator\VoucherUser;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
@@ -18,7 +17,6 @@ use Stringable;
 #[ORM\Entity(repositoryClass: VoucherRepository::class)]
 #[ORM\Table(name: 'virtual_vouchers')]
 #[Index(columns: ['code'], name: 'code_idx')]
-#[VoucherUser]
 class Voucher implements Stringable
 {
     use CreationTimeTrait;

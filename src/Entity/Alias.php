@@ -12,7 +12,6 @@ use App\Traits\IdTrait;
 use App\Traits\RandomTrait;
 use App\Traits\UpdatedTimeTrait;
 use App\Traits\UserAwareTrait;
-use App\Validator\EmailAddress;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\AssociationOverride;
@@ -38,7 +37,6 @@ class Alias implements SoftDeletableInterface, Stringable
     use UserAwareTrait;
 
     #[ORM\Column]
-    #[EmailAddress(groups: ['unique'])]
     protected ?string $source = null;
 
     #[ORM\Column(nullable: true)]

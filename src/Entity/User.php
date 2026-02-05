@@ -28,7 +28,6 @@ use App\Traits\SaltTrait;
 use App\Traits\TwofactorBackupCodeTrait;
 use App\Traits\TwofactorTrait;
 use App\Traits\UpdatedTimeTrait;
-use App\Validator\EmailDomain;
 use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -49,7 +48,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[Index(columns: ['email', 'deleted'], name: 'email_deleted_idx')]
 #[Index(columns: ['domain_id', 'deleted'], name: 'domain_deleted_idx')]
 #[Index(columns: ['email', 'domain_id'], name: 'email_domain_idx')]
-#[EmailDomain]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface, Stringable
 {
     use CreationTimeTrait;

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\Entity\User;
 use App\Entity\Voucher;
+use App\Enum\Roles;
 use App\Helper\RandomStringGenerator;
 use Override;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -14,6 +16,8 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateTimeRangeFilter;
 use Sonata\Form\Type\DateRangePickerType;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @extends Admin<Voucher>
@@ -52,7 +56,18 @@ final class VoucherAdmin extends Admin
         }
 
         $form
-            ->add('user', ModelAutocompleteType::class, ['disabled' => $disabled, 'property' => 'email'])
+            ->add('user', ModelAutocompleteType::class, [
+                'disabled' => $disabled,
+                'property' => 'email',
+                'constraints' => [
+                    new Assert\NotNull(),
+                    new Assert\Callback(static function (?User $user, ExecutionContextInterface $context): void {
+                        if (null !== $user && $user->hasRole(Roles::SUSPICIOUS)) {
+                            $context->addViolation('voucher.suspicious-user');
+                        }
+                    }),
+                ],
+            ])
             ->add('code', null, ['disabled' => !$this->isNewObject()]);
     }
 

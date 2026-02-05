@@ -68,6 +68,7 @@
                             <div class="mb-6 flex items-center">
                                 {%  if alias_creation_custom %}
                                 {{ form_start(custom_alias_form, {'attr': {'class': 'w-full'}}) }}
+                                {{ form_widget(custom_alias_form.domain, {'value': user_domain}) }}
                                 <div class="mb-6">
                                     {{ form_label(custom_alias_form.alias, "index.alias-custom-create"|trans, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
 
