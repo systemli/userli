@@ -98,7 +98,7 @@ function auth_userdb_lookup(request)
         attributes["user"] = data.body.user
 
         if data.body.quota ~= "" then
-            attributes["quota_rule"] = data.body.quota
+            attributes["quota/User quota/storage_size"] = data.body.quota
         end
         -- Only return mailcrypt attributes if mailcrypt is enabled for user:
         -- Settings renamed in Dovecot 2.4: mail_crypt_* -> crypt_*
