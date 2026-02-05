@@ -18,7 +18,7 @@ class UserDeleteTypeTest extends TypeTestCase
         $form = $this->factory->create(UserDeleteType::class);
 
         $object = new Delete();
-        $object->password = $password;
+        $object->setPassword($password);
 
         // submit the data to the form directly
         $form->submit($formData);

@@ -36,8 +36,8 @@ class RecoveryProcessTypeTest extends TypeTestCase
         $form = $this->factory->create(RecoveryProcessType::class);
 
         $object = new RecoveryProcess();
-        $object->email = $email;
-        $object->recoveryToken = $recoveryToken;
+        $object->setEmail($email);
+        $object->setRecoveryToken($recoveryToken);
 
         // submit the data to the form directly
         $form->submit($formData);

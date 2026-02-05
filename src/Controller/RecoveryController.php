@@ -63,8 +63,8 @@ final class RecoveryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $email = $data->email;
-            $recoveryToken = $data->recoveryToken;
+            $email = $data->getEmail();
+            $recoveryToken = $data->getRecoveryToken();
 
             // Validate the passed email + recoveryToken
             $user = $this->manager->getRepository(User::class)->findByEmail($email);

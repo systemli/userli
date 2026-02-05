@@ -182,10 +182,10 @@ final class AccountController extends AbstractController
             // Check if user has a MailCrypt key
             if ($user->hasMailCryptSecretBox()) {
                 // Decrypt the MailCrypt key
-                $user->setPlainMailCryptPrivateKey($this->mailCryptKeyHandler->decrypt($user, $data->password));
+                $user->setPlainMailCryptPrivateKey($this->mailCryptKeyHandler->decrypt($user, $data->getPassword()));
             } else {
                 // Create a new MailCrypt key if none existed before
-                $this->mailCryptKeyHandler->create($user, $data->password);
+                $this->mailCryptKeyHandler->create($user, $data->getPassword());
             }
 
             // Generate a new recovery token and encrypt the MailCrypt key with it

@@ -18,7 +18,7 @@ class OpenPgpKeyDeleteTypeTest extends TypeTestCase
         $form = $this->factory->create(OpenPgpDeleteType::class);
 
         $object = new Delete();
-        $object->password = $password;
+        $object->setPassword($password);
 
         // submit the data to the form directly
         $form->submit($formData);

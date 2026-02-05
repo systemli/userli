@@ -6,5 +6,15 @@ namespace App\Form\Model;
 
 final class VoucherCreate
 {
-    public string $voucher;
+    private string $voucher;
+
+    public function getVoucher(): string
+    {
+        return $this->voucher;
+    }
+
+    public function setVoucher(string $voucher): void
+    {
+        $this->voucher = $voucher;
+    }
 }
