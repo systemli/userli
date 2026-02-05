@@ -7,6 +7,7 @@ namespace App\Command;
 use App\Entity\Voucher;
 use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -14,15 +15,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class VoucherCountCommand extends AbstractUsersCommand
 {
     #[Override]
-    protected function configure(): void
-    {
-        parent::configure();
-    }
-
-    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $user = $this->getUser($input);
+        $user = $this->getUser($input, $output);
+        if (null === $user) {
+            return Command::FAILURE;
+        }
 
         $usedCount = $this->manager->getRepository(Voucher::class)->countVouchersByUser($user, true);
         $unusedCount = $this->manager->getRepository(Voucher::class)->countVouchersByUser($user, false);
@@ -30,6 +28,6 @@ final class VoucherCountCommand extends AbstractUsersCommand
         $output->writeln(sprintf('Used: %d', $usedCount));
         $output->writeln(sprintf('Unused: %d', $unusedCount));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

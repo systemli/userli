@@ -8,6 +8,7 @@ use App\Handler\DeleteHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -22,15 +23,12 @@ final class UsersDeleteCommand extends AbstractUsersCommand
     }
 
     #[Override]
-    protected function configure(): void
-    {
-        parent::configure();
-    }
-
-    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $user = $this->getUser($input);
+        $user = $this->getUser($input, $output);
+        if (null === $user) {
+            return Command::FAILURE;
+        }
 
         if ($input->getOption('dry-run')) {
             $output->write(sprintf("Would delete user %s\n", $user->getEmail()));
@@ -39,6 +37,6 @@ final class UsersDeleteCommand extends AbstractUsersCommand
             $this->deleteHandler->deleteUser($user);
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

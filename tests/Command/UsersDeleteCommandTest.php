@@ -11,8 +11,8 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class UsersDeleteCommandTest extends TestCase
 {
@@ -62,8 +62,6 @@ class UsersDeleteCommandTest extends TestCase
 
     public function testExecuteWithoutUser(): void
     {
-        $this->expectException(UserNotFoundException::class);
-
         $application = new Application();
         $application->addCommand($this->command);
 
@@ -71,6 +69,9 @@ class UsersDeleteCommandTest extends TestCase
 
         $commandTester = new CommandTester($command);
 
-        $commandTester->execute([]);
+        $exitCode = $commandTester->execute([]);
+
+        self::assertSame(Command::FAILURE, $exitCode);
+        $this->assertStringContainsString('User with email', $commandTester->getDisplay());
     }
 }

@@ -13,8 +13,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class UsersMailCryptCommandTest extends TestCase
 {
@@ -254,11 +254,12 @@ class UsersMailCryptCommandTest extends TestCase
         $command = $application->find('app:users:mailcrypt');
         $commandTester = new CommandTester($command);
 
-        $this->expectException(UserNotFoundException::class);
-
-        $commandTester->execute([
+        $exitCode = $commandTester->execute([
             '--user' => $email,
         ]);
+
+        self::assertSame(Command::FAILURE, $exitCode);
+        $this->assertStringContainsString('User with email', $commandTester->getDisplay());
     }
 
     public function testExecuteWithAuthenticationFailure(): void
