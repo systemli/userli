@@ -133,12 +133,7 @@ final class InitController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
-            // Filter out null values and save only provided settings
-            $data = array_filter($data, fn ($value) => $value !== null);
-
-            $this->settingsService->setAll($data);
+            $this->settingsService->setAll($form->getData());
 
             $this->addFlash('success', 'init_settings.flash.configured_successfully');
 

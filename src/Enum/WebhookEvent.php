@@ -13,6 +13,6 @@ enum WebhookEvent: string
     {
         $scopes = self::cases();
 
-        return array_map(fn (WebhookEvent $scope) => $scope->value, $scopes);
+        return array_map(static fn (WebhookEvent $scope) => $scope->value, $scopes);
     }
 }

@@ -18,7 +18,7 @@ final class BeforeRequestListener implements EventSubscriberInterface
     /**
      * BeforeRequestListener constructor.
      */
-    public function __construct(protected EntityManagerInterface $entityManager, protected Security $security)
+    public function __construct(private EntityManagerInterface $entityManager, private Security $security)
     {
     }
 

@@ -85,7 +85,7 @@ class PasswordCompromisedServiceTest extends TestCase
         $this->validator
             ->expects($this->once())
             ->method('validate')
-            ->with($password, $this->callback(function ($constraint) {
+            ->with($password, $this->callback(static function ($constraint) {
                 return $constraint instanceof NotCompromisedPassword;
             }))
             ->willReturn($violations);
@@ -119,7 +119,7 @@ class PasswordCompromisedServiceTest extends TestCase
         $this->validator
             ->expects($this->once())
             ->method('validate')
-            ->with($password, $this->callback(function ($constraint) {
+            ->with($password, $this->callback(static function ($constraint) {
                 return $constraint instanceof NotCompromisedPassword;
             }))
             ->willReturn($violations);
@@ -135,7 +135,7 @@ class PasswordCompromisedServiceTest extends TestCase
             ->expects($this->once())
             ->method('dispatch')
             ->with(
-                $this->callback(function ($event) use ($user, $locale) {
+                $this->callback(static function ($event) use ($user, $locale) {
                     return $event instanceof UserNotificationEvent
                            && $event->getUser() === $user
                            && $event->getNotificationType() === UserNotificationType::PASSWORD_COMPROMISED

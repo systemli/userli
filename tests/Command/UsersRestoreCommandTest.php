@@ -45,7 +45,7 @@ class UsersRestoreCommandTest extends TestCase
 
     public function testExecuteWithoutMailCrypt(): void
     {
-        $this->userRestoreService->method('restoreUser')->willReturnCallback(function (User $user, string $password) {
+        $this->userRestoreService->method('restoreUser')->willReturnCallback(static function (User $user, string $password) {
             $user->setDeleted(false);
 
             return null;
@@ -79,7 +79,7 @@ class UsersRestoreCommandTest extends TestCase
 
     public function testExecuteWithMailCrypt(): void
     {
-        $this->userRestoreService->method('restoreUser')->willReturnCallback(function (User $user, string $password) {
+        $this->userRestoreService->method('restoreUser')->willReturnCallback(static function (User $user, string $password) {
             $user->setDeleted(false);
             $user->setMailCryptEnabled(true);
 

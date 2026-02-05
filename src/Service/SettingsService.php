@@ -65,8 +65,8 @@ final class SettingsService
         $defaults = $this->configService->getSettings();
 
         foreach ($settings as $name => $value) {
-            // Skip undefined settings
-            if (!isset($defaults[$name])) {
+            // Skip undefined settings and null values
+            if (!isset($defaults[$name]) || $value === null) {
                 continue;
             }
 

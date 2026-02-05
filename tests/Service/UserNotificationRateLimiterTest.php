@@ -152,7 +152,7 @@ class UserNotificationRateLimiterTest extends TestCase
             ->method('error')
             ->with(
                 'Error checking notification rate limit',
-                $this->callback(function ($context) {
+                $this->callback(static function ($context) {
                     return $context['email'] === 'test@example.org'
                         && $context['type'] === UserNotificationType::PASSWORD_COMPROMISED
                         && $context['error'] === 'Cache error';
@@ -238,7 +238,7 @@ class UserNotificationRateLimiterTest extends TestCase
             ->method('error')
             ->with(
                 'Error recording notification rate limit',
-                $this->callback(function ($context) {
+                $this->callback(static function ($context) {
                     return $context['email'] === 'test@example.org'
                         && $context['type'] === UserNotificationType::PASSWORD_COMPROMISED
                         && $context['error'] === 'Database error';
@@ -270,7 +270,7 @@ class UserNotificationRateLimiterTest extends TestCase
             ->method('error')
             ->with(
                 'Error caching rate limit',
-                $this->callback(function ($context) {
+                $this->callback(static function ($context) {
                     return $context['email'] === 'test@example.org'
                         && $context['type'] === UserNotificationType::PASSWORD_COMPROMISED
                         && $context['error'] === 'Cache error';
@@ -300,7 +300,7 @@ class UserNotificationRateLimiterTest extends TestCase
         $this->cache
             ->expects($this->exactly(2))
             ->method('getItem')
-            ->willReturnCallback(function ($key) use ($cacheItem1, $cacheItem2) {
+            ->willReturnCallback(static function ($key) use ($cacheItem1, $cacheItem2) {
                 return match ($key) {
                     'user_notification_123_password_compromised' => $cacheItem1,
                     'user_notification_456_password_compromised' => $cacheItem2,

@@ -1,5 +1,42 @@
 # Upgrade documentation
 
+## Upgrade to 5.6.0
+
+### PHP 8.4 Required
+
+This release requires PHP 8.4 or newer.
+
+### Dovecot 2.4 Configuration Changes
+
+If using Dovecot for authentication, the configuration syntax has changed significantly:
+
+1. **Configuration version headers required:**
+   Add to top of `dovecot.conf`:
+   ```
+   dovecot_config_version = 2.4.0
+   dovecot_storage_version = 2.4.0
+   ```
+
+2. **Renamed settings:**
+    - `ssl_cert` → `ssl_server_cert_file`
+    - `ssl_key` → `ssl_server_key_file`
+    - `disable_plaintext_auth` → `auth_allow_cleartext`
+    - `mail_location` → split into `mail_driver`, `mail_path`
+
+3. **Named blocks required:**
+   All `namespace`, `passdb`, `userdb`, and `inet_listener` blocks need names (e.g., `passdb lua { }` where `lua` is the name).
+
+4. **Environment variable changes:**
+    - `DOVECOT_LUA_DEBUG` removed (no longer supported)
+    - `import_environment` uses block syntax
+
+5. **MailCrypt setting renames:**
+    - `mail_crypt_save_version` → `crypt_write_algorithm`
+    - `mail_crypt_global_public_key` → `crypt_global_public_key_file`
+    - `mail_crypt_global_private_key` → `crypt_global_private_key/main/crypt_private_key_file`
+
+See the [Dovecot 2.3 to 2.4 upgrade guide](https://doc.dovecot.org/main/installation/upgrade/2.3-to-2.4.html) for details.
+
 ## Upgrade from 5.4.1 or lower
 
 Starting with version 5.5.0, we switched from manual database migrations to

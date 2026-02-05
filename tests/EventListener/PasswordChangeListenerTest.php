@@ -184,7 +184,7 @@ class PasswordChangeListenerTest extends TestCase
         $event
             ->expects($this->once())
             ->method('setResponse')
-            ->with($this->callback(function ($response) {
+            ->with($this->callback(static function ($response) {
                 return $response instanceof RedirectResponse
                     && $response->getTargetUrl() === '/account/password';
             }));

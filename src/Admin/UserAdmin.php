@@ -151,7 +151,7 @@ final class UserAdmin extends Admin
             ->add('recoverySecretBox', CallbackFilter::class, [
                 'field_type' => BooleanType::class,
                 'label' => 'Recovery Token',
-                'callback' => function (ProxyQuery $proxyQuery, $alias, $field, $value) {
+                'callback' => static function (ProxyQuery $proxyQuery, $alias, $field, $value) {
                     if (is_array($value) && 2 === $value['value']) {
                         $query = sprintf('%s.recoverySecretBox IS NULL', $alias);
                     } else {

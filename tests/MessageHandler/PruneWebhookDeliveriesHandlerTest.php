@@ -33,7 +33,7 @@ class PruneWebhookDeliveriesHandlerTest extends TestCase
             ->willReturnSelf();
         $qb->expects($this->once())
             ->method('where')
-            ->with($this->callback(fn ($expr) => str_contains($expr, 'd.dispatchedTime')))
+            ->with($this->callback(static fn ($expr) => str_contains($expr, 'd.dispatchedTime')))
             ->willReturnSelf();
         $qb->expects($this->once())
             ->method('andWhere')

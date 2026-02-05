@@ -56,7 +56,7 @@ class UserRegistrationInfoHandlerTest extends TestCase
 
         $this->userRepository->expects(self::once())
             ->method('findUsersSince')
-            ->with(self::callback(function (DateTime $date) {
+            ->with(self::callback(static function (DateTime $date) {
                 // Verify that the date is approximately 7 days ago
                 $expectedDate = (new DateTime())->modify('-7 days');
                 $diff = abs($date->getTimestamp() - $expectedDate->getTimestamp());
@@ -94,7 +94,7 @@ class UserRegistrationInfoHandlerTest extends TestCase
 
         $this->userRepository->expects(self::once())
             ->method('findUsersSince')
-            ->with(self::callback(function (DateTime $date) use ($customTimeframe) {
+            ->with(self::callback(static function (DateTime $date) use ($customTimeframe) {
                 // Verify that the date is approximately 30 days ago
                 $expectedDate = (new DateTime())->modify($customTimeframe);
                 $diff = abs($date->getTimestamp() - $expectedDate->getTimestamp());

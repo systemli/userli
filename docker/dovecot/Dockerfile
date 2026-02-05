@@ -1,4 +1,4 @@
-FROM debian:12-slim
+FROM debian:trixie-slim
 
 ENV LC_ALL=C
 ARG DEBIAN_FRONTEND=noninteractive
@@ -28,9 +28,7 @@ RUN apt-get -y update && apt-get -y install \
   mkdir /etc/dovecot && \
   mkdir /etc/dovecot/conf.d && \
   ln -s /etc/ssl/certs/ssl-cert-snakeoil.pem /etc/dovecot/cert.pem && \
-  ln -s /etc/ssl/private/ssl-cert-snakeoil.key /etc/dovecot/key.pem && \
-  ln -s /usr/share/lua/5.3/json.lua /usr/share/lua/5.4/json.lua && \
-  ln -s /usr/share/lua/5.3/json /usr/share/lua/5.4/json
+  ln -s /etc/ssl/private/ssl-cert-snakeoil.key /etc/dovecot/key.pem
 
 EXPOSE 24
 EXPOSE 110
