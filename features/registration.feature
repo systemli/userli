@@ -221,3 +221,13 @@ Feature: registration
 
     Then I should see "Welcome to example.org!"
     And I should see "You have set up an account with us successfully. What are the next steps?"
+
+  @registration
+  Scenario: Registration form is accessible
+    When I am on "/register"
+    Then the response status code should be 200
+
+  @registration
+  Scenario: Registration with prefilled voucher shows readonly field
+    When I am on "/register/161161"
+    Then the response status code should be 200

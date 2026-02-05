@@ -10,6 +10,7 @@ Feature: User
       | admin@example.org   | asdasd   | ROLE_ADMIN      |
       | user@example.org    | asdasd   | ROLE_USER       |
       | support@example.org | asdasd   | ROLE_MULTIPLIER |
+      | spam@example.org    | asdasd   | ROLE_SPAM       |
     And the following Alias exists:
       | user_id | source                     | destination       | deleted | random |
       | 2       | alias1@example.org         | user@example.org  | 0       | 0      |
@@ -249,3 +250,56 @@ Feature: User
     And I press "Submit"
 
     Then the user "user@example.org" should not have a "password_compromised" notification
+
+  @account-access
+  Scenario: Unauthenticated user is redirected to login
+    When I am on "/account"
+    Then I should be on "/login"
+
+  @account-access
+  Scenario: Authenticated user can access account page
+    When I am authenticated as "user@example.org"
+    And I am on "/account"
+    Then the response status code should be 200
+    And I should see "Account settings"
+
+  @account-access
+  Scenario: Spammer cannot access account page
+    When I am authenticated as "spam@example.org"
+    And I am on "/account"
+    Then the response status code should be 403
+
+  @alias-access
+  Scenario: Unauthenticated user is redirected to login from alias page
+    When I am on "/alias"
+    Then I should be on "/login"
+
+  @alias-access
+  Scenario: Authenticated user can access alias page
+    When I am authenticated as "user@example.org"
+    And I am on "/alias"
+    Then the response status code should be 200
+    And I should see "Custom Aliases"
+
+  @alias-access
+  Scenario: Spammer cannot access alias page
+    When I am authenticated as "spam@example.org"
+    And I am on "/alias"
+    Then the response status code should be 403
+
+  @voucher-access
+  Scenario: Unauthenticated user is redirected to login from voucher page
+    When I am on "/voucher"
+    Then I should be on "/login"
+
+  @voucher-access
+  Scenario: Authenticated user can access voucher page
+    When I am authenticated as "user@example.org"
+    And I am on "/voucher"
+    Then the response status code should be 200
+
+  @voucher-access
+  Scenario: Spammer cannot access voucher page
+    When I am authenticated as "spam@example.org"
+    And I am on "/voucher"
+    Then the response status code should be 403

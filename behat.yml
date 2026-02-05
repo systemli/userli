@@ -3,6 +3,7 @@ default:
     default:
       contexts:
         - App\Tests\Behat\FeatureContext: ~
+        - App\Tests\Behat\ApiContext: ~
 
   extensions:
     FriendsOfBehat\SymfonyExtension:

@@ -36,7 +36,6 @@ composer install --no-scripts && yarn install
 yarn encore dev
 
 # Run tests (requires fixtures first)
-bin/console doctrine:fixtures:load --group=basic --env=test -n
 bin/phpunit                    # Unit/functional tests
 bin/behat --format progress    # BDD scenarios
 

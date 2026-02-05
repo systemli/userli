@@ -101,5 +101,4 @@ psalm: vendors
 	bin/psalm --no-cache --show-info=true
 
 test: db lint
-	bin/console doctrine:fixtures:load --group=basic --env=test --no-interaction
 	bin/phpunit
