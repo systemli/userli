@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ace389cd27aab3e92f0146092007ab34",
+    "content-hash": "2caa9832f5a5345dfa149f24790b5cbd",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -6609,21 +6609,27 @@
             "time": "2026-01-01T22:13:48+00:00"
         },
         {
-            "name": "symfony/polyfill-apcu",
+            "name": "symfony/polyfill-ctype",
             "version": "v1.33.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/polyfill-apcu.git",
-                "reference": "9cba05c714911d416f478a74d1758865f7373c3f"
+                "url": "https://github.com/symfony/polyfill-ctype.git",
+                "reference": "a3cc8b044a6ea513310cbd48ef7333b384945638"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-apcu/zipball/9cba05c714911d416f478a74d1758865f7373c3f",
-                "reference": "9cba05c714911d416f478a74d1758865f7373c3f",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/a3cc8b044a6ea513310cbd48ef7333b384945638",
+                "reference": "a3cc8b044a6ea513310cbd48ef7333b384945638",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2"
+            },
+            "provide": {
+                "ext-ctype": "*"
+            },
+            "suggest": {
+                "ext-ctype": "For best performance"
             },
             "type": "library",
             "extra": {
@@ -6637,7 +6643,7 @@
                     "bootstrap.php"
                 ],
                 "psr-4": {
-                    "Symfony\\Polyfill\\Apcu\\": ""
+                    "Symfony\\Polyfill\\Ctype\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -6646,25 +6652,24 @@
             ],
             "authors": [
                 {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
+                    "name": "Gert de Pagter",
+                    "email": "BackEndTea@gmail.com"
                 },
                 {
                     "name": "Symfony Community",
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony polyfill backporting apcu_* functions to lower PHP versions",
+            "description": "Symfony polyfill for ctype functions",
             "homepage": "https://symfony.com",
             "keywords": [
-                "apcu",
                 "compatibility",
+                "ctype",
                 "polyfill",
-                "portable",
-                "shim"
+                "portable"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-apcu/tree/v1.33.0"
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.33.0"
             },
             "funding": [
                 {
@@ -6684,7 +6689,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-10T14:38:51+00:00"
+            "time": "2024-09-09T11:45:10+00:00"
         },
         {
             "name": "symfony/polyfill-intl-grapheme",

@@ -425,9 +425,6 @@
             "tests/bootstrap.php"
         ]
     },
-    "symfony/polyfill-apcu": {
-        "version": "v1.9.0"
-    },
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.18.1"
     },
