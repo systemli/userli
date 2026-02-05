@@ -10,12 +10,10 @@ import_environment {
 }
 
 passdb lua {
-  driver = lua
   lua_file = /usr/local/bin/userli-dovecot-adapter.lua
 }
 
 # The userdb below is used only by lda.
 userdb lua {
-  driver = lua
   lua_file = /usr/local/bin/userli-dovecot-adapter.lua
 }
