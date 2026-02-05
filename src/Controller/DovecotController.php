@@ -71,17 +71,15 @@ final class DovecotController extends AbstractController
             $mailCryptReported = 0;
         }
 
-        return $this->json(
-            [
-                'message' => self::MESSAGE_SUCCESS,
-                'body' => [
-                    'user' => $user->getEmail(),
-                    'mailCrypt' => $mailCryptReported,
-                    'mailCryptPublicKey' => $user->getMailCryptPublicKey() ?? '',
-                    'quota' => $user->getQuota() !== null
-                            ? sprintf('%dM', $user->getQuota())
-                            : '',
-                ],
+        return $this->json([
+            'message' => self::MESSAGE_SUCCESS,
+            'body' => [
+                'user' => $user->getEmail(),
+                'mailCrypt' => $mailCryptReported,
+                'mailCryptPublicKey' => $user->getMailCryptPublicKey() ?? '',
+                'quota' => $user->getQuota() !== null
+                        ? sprintf('%dM', $user->getQuota())
+                        : '',
             ],
         ], Response::HTTP_OK);
     }
