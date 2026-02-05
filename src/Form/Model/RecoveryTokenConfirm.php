@@ -4,15 +4,24 @@ declare(strict_types=1);
 
 namespace App\Form\Model;
 
-use App\Traits\RecoveryTokenTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class RecoveryTokenConfirm
 {
-    use RecoveryTokenTrait;
+    private ?string $recoveryToken = null;
 
     #[Assert\NotBlank(message: 'form.registration-recovery-token-noack')]
     private bool $confirm = false;
+
+    public function getRecoveryToken(): ?string
+    {
+        return $this->recoveryToken;
+    }
+
+    public function setRecoveryToken(?string $recoveryToken): void
+    {
+        $this->recoveryToken = $recoveryToken;
+    }
 
     public function isConfirm(): bool
     {

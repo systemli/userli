@@ -18,7 +18,7 @@ class RecoveryTokenTypeTest extends TypeTestCase
         $form = $this->factory->create(RecoveryTokenType::class);
 
         $object = new RecoveryToken();
-        $object->password = $password;
+        $object->setPassword($password);
 
         // submit the data to the form directly
         $form->submit($formData);

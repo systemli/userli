@@ -9,5 +9,15 @@ use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 final class Delete
 {
     #[UserPassword(message: 'form.wrong-password')]
-    public string $password;
+    private string $password;
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
 }

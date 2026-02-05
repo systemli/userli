@@ -18,7 +18,7 @@ class AliasDeleteTypeTest extends TypeTestCase
         $form = $this->factory->create(AliasDeleteType::class);
 
         $object = new Delete();
-        $object->password = $password;
+        $object->setPassword($password);
 
         // submit the data to the form directly
         $form->submit($formData);
