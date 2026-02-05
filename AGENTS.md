@@ -53,5 +53,4 @@ Welcome, 🤖 AI assistant! Please follow these guidelines when contributing to 
 - Run `podman compose up -d` to start the development environment
 - Use `podman compose exec -it userli <command>` as command prefix when you want to interact with the development environment
 - Run `bin/behat --format progress` to run behavior-driven scenarios
-- Run `bin/console doctrine:fixtures:load --group=basic --env=test -n` to load basic fixtures for testing
 - Run `bin/phpunit` to run unit and functional tests (requires basic fixtures)

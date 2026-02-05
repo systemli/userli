@@ -352,3 +352,15 @@ Feature: OpenPGP
     And I should not see text matching "Fingerprint:"
     And File "/tmp/.well-known/openpgpkey/example.org/hu/kei1q4tipxxu1yj79k9kfukdhfy631xe" should not exist
     And the response status code should be 200
+
+  @openpgp-access
+  Scenario: Unauthenticated user is redirected to login
+    When I am on "/account/openpgp"
+    Then I should be on "/login"
+
+  @openpgp-access
+  Scenario: Authenticated user can access OpenPGP page
+    When I am authenticated as "alice@example.org"
+    And I am on "/account/openpgp"
+    Then the response status code should be 200
+    And I should see "OpenPGP"

@@ -13,11 +13,13 @@ use App\Entity\UserNotification;
 use App\Entity\Voucher;
 use App\Entity\WebhookDelivery;
 use App\Entity\WebhookEndpoint;
+use App\Enum\ApiScope;
 use App\Enum\UserNotificationType;
 use App\Enum\WebhookEvent;
 use App\Guesser\DomainGuesser;
 use App\Helper\PasswordUpdater;
 use App\Helper\TotpBackupCodeGenerator;
+use App\Service\ApiTokenManager;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
@@ -612,6 +614,25 @@ class FeatureContext extends MinkContext
         }
 
         return $string;
+    }
+
+    /**
+     * @When the following ApiToken exists:
+     */
+    public function theFollowingApiTokenExists(TableNode $table): void
+    {
+        $apiTokenManager = $this->getContainer()->get(ApiTokenManager::class);
+
+        foreach ($table->getColumnsHash() as $data) {
+            $token = $data['token'] ?? '';
+            $name = $data['name'] ?? 'Test Token';
+            $scopeStrings = isset($data['scopes']) ? explode(',', $data['scopes']) : [];
+
+            // Convert scope strings to ApiScope enum values
+            $scopes = array_map(fn (string $scope) => ApiScope::from(trim($scope))->value, $scopeStrings);
+
+            $apiTokenManager->create($token, $name, $scopes);
+        }
     }
 
     public function getUserRepository(): ObjectRepository
