@@ -54,8 +54,7 @@ Feature: Recovery
     When I have the request params for "recovery_token_ack":
       | recoveryToken | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
     And I request "POST /recovery/recovery_token/ack"
-    And I fill in the following:
-      | recovery_token_confirm[confirm] | 1 |
+    And I check "recovery_token_confirm[confirm]"
     And I press "recovery_token_confirm[submit]"
 
     Then I should be on "/login"

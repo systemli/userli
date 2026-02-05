@@ -178,8 +178,7 @@ Feature: User
     And I press "Create new recovery token"
 
     Then I should see text matching "Please copy and securely store this recovery token"
-    And I fill in the following:
-      | recovery_token_confirm_confirm | 1 |
+    And I check "recovery_token_confirm_confirm"
     And I press "Continue"
 
     Then I should be on "/start"
@@ -218,8 +217,7 @@ Feature: User
 
     Then I should be on "/account/twofactor/backup-codes"
     And I should see text matching "Backup codes"
-    And I fill in the following:
-      | twofactor_backup_confirm_confirm | 1 |
+    And I check "twofactor_backup_confirm_confirm"
     And I press "Verify"
 
     Then I should be on "/account/twofactor"
