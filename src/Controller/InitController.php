@@ -54,7 +54,7 @@ final class InitController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->creator->create($form->getData()->domain);
+            $this->creator->create($form->getData()->getDomain());
 
             return $this->redirectToRoute('init_user');
         }
