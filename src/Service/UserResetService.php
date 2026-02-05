@@ -2,17 +2,20 @@
 
 declare(strict_types=1);
 
-namespace App\Handler;
+namespace App\Service;
 
 use App\Entity\User;
 use App\Enum\MailCrypt;
 use App\Event\UserEvent;
+use App\Handler\MailCryptKeyHandler;
+use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final readonly class UserRestoreHandler
+final readonly class UserResetService
 {
     private MailCrypt $mailCrypt;
 
@@ -28,9 +31,13 @@ final readonly class UserRestoreHandler
         $this->mailCrypt = MailCrypt::from($mailCryptEnv);
     }
 
-    public function restoreUser(User $user, string $password): ?string
+    /**
+     * Reset a user's password, MailCrypt keys, recovery token, and 2FA settings.
+     *
+     * @throws Exception if the user is deleted or MailCrypt key generation fails
+     */
+    public function resetUser(User $user, string $password): ?string
     {
-        $user->setDeleted(false);
         $this->passwordUpdater->updatePassword($user, $password);
 
         // Generate MailCrypt key with new password (overwrites old MailCrypt key)
@@ -43,12 +50,19 @@ final readonly class UserRestoreHandler
             $recoveryToken = $user->getPlainRecoveryToken();
         }
 
+        // Reset twofactor settings
+        $user->setTotpConfirmed(false);
+        $user->setTotpSecret(null);
+        $user->setTotpBackupCodes([]);
+
         // Clear sensitive plaintext data from User object
         $user->eraseCredentials();
 
         $this->manager->flush();
 
-        $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_CREATED);
+        if (!$user->isDeleted()) {
+            $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_RESTORED);
+        }
 
         return $recoveryToken;
     }

@@ -6,9 +6,7 @@ namespace App\Command;
 
 use App\Exception\PasswordMismatchException;
 use App\Exception\PasswordPolicyException;
-use App\Handler\MailCryptKeyHandler;
-use App\Handler\RecoveryTokenHandler;
-use App\Helper\PasswordUpdater;
+use App\Service\UserResetService;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -23,9 +21,7 @@ final class UsersResetCommand extends AbstractUsersCommand
 {
     public function __construct(
         EntityManagerInterface $manager,
-        private readonly PasswordUpdater $passwordUpdater,
-        private readonly MailCryptKeyHandler $mailCryptKeyHandler,
-        private readonly RecoveryTokenHandler $recoveryTokenHandler,
+        private readonly UserResetService $userResetService,
     ) {
         parent::__construct($manager);
     }
@@ -67,26 +63,11 @@ final class UsersResetCommand extends AbstractUsersCommand
 
         $output->write(sprintf("\nResetting user %s ...\n\n", $user->getEmail()));
 
-        $this->passwordUpdater->updatePassword($user, $password);
+        $recoveryToken = $this->userResetService->resetUser($user, $password);
 
-        // Generate MailCrypt key with new password (overwrites old MailCrypt key)
-        if ($user->hasMailCryptSecretBox()) {
-            $this->mailCryptKeyHandler->create($user, $password);
-
-            // Reset recovery token
-            $this->recoveryTokenHandler->create($user);
-            $output->write(sprintf("<info>New recovery token (please hand over to user): %s</info>\n\n", $user->getPlainRecoveryToken()));
+        if ($recoveryToken !== null) {
+            $output->write(sprintf("<info>New recovery token (please hand over to user): %s</info>\n\n", $recoveryToken));
         }
-
-        // Reset twofactor settings
-        $user->setTotpConfirmed(false);
-        $user->setTotpSecret(null);
-        $user->setTotpBackupCodes([]);
-
-        // Clear sensitive plaintext data from User object
-        $user->eraseCredentials();
-
-        $this->manager->flush();
 
         return Command::SUCCESS;
     }
