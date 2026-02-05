@@ -55,7 +55,7 @@ abstract class AbstractUsersCommand extends Command
         assert($questionHelper instanceof QuestionHelper);
 
         $passwordQuest = new Question('New password: ');
-        $passwordQuest->setValidator(function ($value) {
+        $passwordQuest->setValidator(static function ($value) {
             $validator = new PasswordStrengthHandler();
             if ($validator->validate($value)) {
                 throw new PasswordPolicyException();

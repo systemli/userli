@@ -94,7 +94,7 @@ class UserRestoreServiceTest extends TestCase
             ->expects($this->once())
             ->method('dispatch')
             ->with(
-                $this->callback(fn ($event) => $event instanceof UserEvent && $event->getUser() === $user),
+                $this->callback(static fn ($event) => $event instanceof UserEvent && $event->getUser() === $user),
                 UserEvent::USER_CREATED
             );
 

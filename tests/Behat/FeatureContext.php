@@ -629,7 +629,7 @@ class FeatureContext extends MinkContext
             $scopeStrings = isset($data['scopes']) ? explode(',', $data['scopes']) : [];
 
             // Convert scope strings to ApiScope enum values
-            $scopes = array_map(fn (string $scope) => ApiScope::from(trim($scope))->value, $scopeStrings);
+            $scopes = array_map(static fn (string $scope) => ApiScope::from(trim($scope))->value, $scopeStrings);
 
             $apiTokenManager->create($token, $name, $scopes);
         }
