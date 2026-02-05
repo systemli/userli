@@ -53,8 +53,8 @@
   "require-dev": {
     "dg/bypass-finals": "^1.1",
     "dvdoug/behat-code-coverage": "^5.3",
-    "friends-of-behat/mink": "^1.10",
-    "friends-of-behat/mink-browserkit-driver": "^1.6",
+    "behat/mink": "^1.13",
+    "behat/mink-browserkit-driver": "^2.3",
     "friends-of-behat/mink-extension": "^2.7",
     "friends-of-behat/symfony-extension": "^2.0",
     "friendsofphp/php-cs-fixer": "*",
