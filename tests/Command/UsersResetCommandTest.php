@@ -6,10 +6,8 @@ namespace App\Tests\Command;
 
 use App\Command\UsersResetCommand;
 use App\Entity\User;
-use App\Handler\MailCryptKeyHandler;
-use App\Handler\RecoveryTokenHandler;
-use App\Helper\PasswordUpdater;
 use App\Repository\UserRepository;
+use App\Service\UserResetService;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -39,21 +37,27 @@ class UsersResetCommandTest extends TestCase
             ->getMock();
         $manager->method('getRepository')->willReturn($repository);
 
-        $passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)
+        $userResetService = $this->getMockBuilder(UserResetService::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $mailCryptKeyHandler = $this->getMockBuilder(MailCryptKeyHandler::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->command = new UsersResetCommand($manager, $userResetService);
+    }
 
-        $recoveryTokenHandler = $this->getMockBuilder(RecoveryTokenHandler::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+    public function testExecuteDryRun(): void
+    {
+        $application = new Application();
+        $application->addCommand($this->command);
 
-        $mailLocation = '/tmp/vmail';
+        $command = $application->find('app:users:reset');
 
-        $this->command = new UsersResetCommand($manager, $passwordUpdater, $mailCryptKeyHandler, $recoveryTokenHandler);
+        $commandTester = new CommandTester($command);
+        $commandTester->setInputs(['yes', 'longtestpassword1234', 'longtestpassword1234']);
+
+        $commandTester->execute(['--user' => 'user@example.org', '--dry-run' => true]);
+
+        $output = $commandTester->getDisplay();
+        $this->assertStringContainsString('Would reset user user@example.org', $output);
     }
 
     public function testExecute(): void
@@ -66,19 +70,7 @@ class UsersResetCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->setInputs(['yes', 'longtestpassword1234', 'longtestpassword1234']);
 
-        // Test dry run
-        $commandTester->execute(['--user' => 'user@example.org', '--dry-run' => true]);
-
-        $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Would reset user user@example.org', $output);
-
-        // Test real run
         $commandTester->execute(['--user' => 'user@example.org']);
-
-        // Verify that user properties got reset
-        self::assertFalse($this->user->getTotpConfirmed());
-        self::assertEmpty($this->user->getTotpBackupCodes());
-        self::assertFalse($this->user->isTotpAuthenticationEnabled());
 
         $output = $commandTester->getDisplay();
         $this->assertStringContainsString('Resetting user user@example.org', $output);
