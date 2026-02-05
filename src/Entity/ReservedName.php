@@ -13,11 +13,9 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Stringable;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ReservedNameRepository::class)]
 #[ORM\Table(name: 'virtual_reserved_names')]
-#[UniqueEntity('name')]
 class ReservedName implements Stringable
 {
     use CreationTimeTrait;

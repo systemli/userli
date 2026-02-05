@@ -7,6 +7,8 @@ namespace App\Admin;
 use App\Entity\Alias;
 use App\Enum\Roles;
 use App\Traits\DomainGuesserAwareTrait;
+use App\Validator\EmailAddress;
+use App\Validator\Lowercase;
 use DateTime;
 use Override;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -16,6 +18,7 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @extends Admin<Alias>
@@ -39,7 +42,14 @@ final class AliasAdmin extends Admin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('source', EmailType::class)
+            ->add('source', EmailType::class, [
+                'constraints' => $this->isNewObject() ? [
+                    new Assert\NotNull(),
+                    new Assert\Email(mode: 'strict'),
+                    new Lowercase(),
+                    new EmailAddress(),
+                ] : [],
+            ])
             ->add('user', ModelAutocompleteType::class, ['property' => 'email', 'required' => false])
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
 

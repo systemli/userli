@@ -10,7 +10,9 @@ use App\Enum\Roles;
 use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use App\Traits\DomainGuesserAwareTrait;
+use App\Validator\Lowercase;
 use App\Validator\PasswordPolicy;
+use App\Validator\UniqueField;
 use Exception;
 use Override;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -73,7 +75,15 @@ final class UserAdmin extends Admin
         $availableRoleChoices = array_combine($availableRoles, $availableRoles) ?: [];
 
         $form
-            ->add('email', EmailType::class, ['disabled' => !$this->isNewObject()])
+            ->add('email', EmailType::class, [
+                'disabled' => !$this->isNewObject(),
+                'constraints' => $this->isNewObject() ? [
+                    new Assert\NotNull(),
+                    new Assert\Email(mode: 'strict'),
+                    new Lowercase(),
+                    new UniqueField(entityClass: User::class, field: 'email', message: 'registration.email-already-taken'),
+                ] : [],
+            ])
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'form.password',
                 'required' => $this->isNewObject(),

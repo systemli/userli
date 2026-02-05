@@ -13,12 +13,10 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Stringable;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: DomainRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'virtual_domains')]
-#[UniqueEntity('name')]
 class Domain implements Stringable
 {
     use CreationTimeTrait;

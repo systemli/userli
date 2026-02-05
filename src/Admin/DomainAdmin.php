@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
-use App\Creator\DomainCreator;
 use App\Entity\Domain;
 use App\Event\DomainCreatedEvent;
+use App\Validator\Lowercase;
+use App\Validator\UniqueField;
 use Override;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -20,8 +22,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 final class DomainAdmin extends Admin
 {
-    private DomainCreator $domainCreator;
-
     private EventDispatcherInterface $eventDispatcher;
 
     #[Override]
@@ -34,7 +34,15 @@ final class DomainAdmin extends Admin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('name', TextType::class, ['disabled' => !$this->isNewObject()]);
+            ->add('name', TextType::class, [
+                'disabled' => !$this->isNewObject(),
+                'constraints' => $this->isNewObject() ? [
+                    new Assert\NotNull(),
+                    new Assert\NotBlank(),
+                    new Lowercase(),
+                    new UniqueField(entityClass: Domain::class, field: 'name', message: 'form.unique-field'),
+                ] : [],
+            ]);
     }
 
     #[Override]
@@ -69,20 +77,9 @@ final class DomainAdmin extends Admin
     }
 
     #[Override]
-    protected function prePersist(object $object): void
-    {
-        $this->domainCreator->validate($object, ['Default', 'unique']);
-    }
-
-    #[Override]
     protected function postPersist(object $object): void
     {
         $this->eventDispatcher->dispatch(new DomainCreatedEvent($object), DomainCreatedEvent::NAME);
-    }
-
-    public function setDomainCreator(DomainCreator $domainCreator): void
-    {
-        $this->domainCreator = $domainCreator;
     }
 
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void

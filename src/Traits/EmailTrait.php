@@ -4,16 +4,11 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
-use App\Validator\Lowercase;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 trait EmailTrait
 {
     #[ORM\Column(unique: true)]
-    #[Assert\NotNull]
-    #[Lowercase]
-    #[Assert\Email]
     private string $email;
 
     public function getEmail(): string

@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace App\Form\Model;
 
+use App\Validator\EmailAddress;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class AliasCreate
 {
+    /**
+     * Full email address (alias@domain).
+     * The form combines the local part with the domain before submission.
+     */
     #[Assert\NotNull]
-    #[Assert\Length(min: 3, max: 24)]
-    public string $alias;
+    #[EmailAddress]
+    private string $alias;
 
     #[Assert\Length(max: 40)]
     private ?string $note = null;
@@ -23,5 +28,15 @@ final class AliasCreate
     public function setNote(?string $note): void
     {
         $this->note = $note !== null ? trim($note) : null;
+    }
+
+    public function getAlias(): string
+    {
+        return $this->alias;
+    }
+
+    public function setAlias(string $alias): void
+    {
+        $this->alias = $alias;
     }
 }
