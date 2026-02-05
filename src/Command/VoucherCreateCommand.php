@@ -9,6 +9,7 @@ use App\Service\SettingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -39,7 +40,10 @@ final class VoucherCreateCommand extends AbstractUsersCommand
     #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $user = $this->getUser($input);
+        $user = $this->getUser($input, $output);
+        if (null === $user) {
+            return Command::FAILURE;
+        }
 
         // Set
         $context = $this->router->getContext();
@@ -57,6 +61,6 @@ final class VoucherCreateCommand extends AbstractUsersCommand
             }
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

@@ -11,11 +11,10 @@ use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class UsersResetCommandTest extends TestCase
 {
@@ -54,7 +53,7 @@ class UsersResetCommandTest extends TestCase
 
         $mailLocation = '/tmp/vmail';
 
-        $this->command = new UsersResetCommand($manager, $passwordUpdater, $mailCryptKeyHandler, $recoveryTokenHandler, $mailLocation);
+        $this->command = new UsersResetCommand($manager, $passwordUpdater, $mailCryptKeyHandler, $recoveryTokenHandler);
     }
 
     public function testExecute(): void
@@ -87,25 +86,23 @@ class UsersResetCommandTest extends TestCase
 
     public function testExecuteShortPassword(): void
     {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage("The password doesn't comply with our security policy.");
-
         $application = new Application();
         $application->addCommand($this->command);
 
         $command = $application->find('app:users:reset');
 
         $commandTester = new CommandTester($command);
+        // Provide 5 short passwords (max attempts) + confirmation question
         $commandTester->setInputs(['yes', 'short', 'short', 'short', 'short', 'short']);
 
-        $commandTester->execute(['--user' => 'user@example.org']);
+        $exitCode = $commandTester->execute(['--user' => 'user@example.org']);
+
+        self::assertSame(Command::FAILURE, $exitCode);
+        $this->assertStringContainsString("The password doesn't comply with our security policy.", $commandTester->getDisplay());
     }
 
     public function testExecutePasswordsDontMatch(): void
     {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage("The passwords don't match");
-
         $application = new Application();
         $application->addCommand($this->command);
 
@@ -114,13 +111,14 @@ class UsersResetCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->setInputs(['yes', 'longtestpassword1234', 'different']);
 
-        $commandTester->execute(['--user' => 'user@example.org']);
+        $exitCode = $commandTester->execute(['--user' => 'user@example.org']);
+
+        self::assertSame(Command::FAILURE, $exitCode);
+        $this->assertStringContainsString("The passwords don't match.", $commandTester->getDisplay());
     }
 
     public function testExecuteWithoutUser(): void
     {
-        $this->expectException(UserNotFoundException::class);
-
         $application = new Application();
         $application->addCommand($this->command);
 
@@ -128,6 +126,9 @@ class UsersResetCommandTest extends TestCase
 
         $commandTester = new CommandTester($command);
 
-        $commandTester->execute([]);
+        $exitCode = $commandTester->execute([]);
+
+        self::assertSame(Command::FAILURE, $exitCode);
+        $this->assertStringContainsString('User with email', $commandTester->getDisplay());
     }
 }

@@ -12,8 +12,8 @@ use App\Repository\VoucherRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class VoucherCountCommandTest extends TestCase
 {
@@ -51,13 +51,12 @@ class VoucherCountCommandTest extends TestCase
         $command = $application->find('app:voucher:count');
         $commandTester = new CommandTester($command);
 
-        $this->expectException(UserNotFoundException::class);
-        $commandTester->execute([
+        $exitCode = $commandTester->execute([
             '--user' => 'nonexistent@example.org',
         ]);
 
-        $output = $commandTester->getDisplay();
-        self::assertStringContainsString('', $output);
+        self::assertSame(Command::FAILURE, $exitCode);
+        $this->assertStringContainsString('User with email', $commandTester->getDisplay());
     }
 
     public function testExecuteWithUser(): void

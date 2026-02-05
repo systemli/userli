@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Handler\PasswordStrengthHandler;
+use App\Exception\PasswordMismatchException;
+use App\Exception\PasswordPolicyException;
 use App\Handler\UserRestoreHandler;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
-#[AsCommand(name: 'app:users:restore', description: 'Reset a user')]
+#[AsCommand(name: 'app:users:restore', description: 'Restore a user')]
 final class UsersRestoreCommand extends AbstractUsersCommand
 {
     public function __construct(
@@ -27,55 +25,31 @@ final class UsersRestoreCommand extends AbstractUsersCommand
     }
 
     #[Override]
-    protected function configure(): void
-    {
-        parent::configure();
-    }
-
-    /**
-     * @throws Exception
-     */
-    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $user = $this->getUser($input);
-
-        if (!$user->isDeleted()) {
-            throw new UserNotFoundException(sprintf('User with email %s is still active! Consider to reset the user instead.', $user->getEmail()));
+        $user = $this->getUser($input, $output);
+        if (null === $user) {
+            return Command::FAILURE;
         }
 
-        $questionHelper = $this->getHelper('question');
-        assert($questionHelper instanceof QuestionHelper);
+        if (!$user->isDeleted()) {
+            $output->writeln(sprintf('<error>User with email %s is still active! Consider to reset the user instead.</error>', $user->getEmail()));
 
-        $passwordQuest = new Question('New password: ');
-        $passwordQuest->setValidator(function ($value) {
-            $validator = new PasswordStrengthHandler();
-            if ($validator->validate($value)) {
-                throw new Exception("The password doesn't comply with our security policy.");
-            }
+            return Command::FAILURE;
+        }
 
-            return $value;
-        });
-        $passwordQuest->setHidden(true);
-        $passwordQuest->setHiddenFallback(false);
-        $passwordQuest->setMaxAttempts(5);
+        try {
+            $password = $this->askForPassword($input, $output);
+        } catch (PasswordPolicyException|PasswordMismatchException $e) {
+            $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
-        $password = $questionHelper->ask($input, $output, $passwordQuest);
-
-        $passwordConfirmQuest = new Question('Repeat password: ');
-        $passwordConfirmQuest->setHidden(true);
-        $passwordConfirmQuest->setHiddenFallback(false);
-
-        $passwordConfirm = $questionHelper->ask($input, $output, $passwordConfirmQuest);
-
-        if ($password !== $passwordConfirm) {
-            throw new Exception("The passwords don't match");
+            return Command::FAILURE;
         }
 
         if ($input->getOption('dry-run')) {
             $output->write(sprintf("\nWould restore user %s\n\n", $user->getEmail()));
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         $output->write(sprintf("\nRestoring user %s ...\n\n", $user->getEmail()));
@@ -85,6 +59,6 @@ final class UsersRestoreCommand extends AbstractUsersCommand
             $output->write(sprintf("<info>New recovery token (please hand over to user): %s</info>\n\n", $recoveryToken));
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

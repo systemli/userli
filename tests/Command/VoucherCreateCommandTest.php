@@ -15,10 +15,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class VoucherCreateCommandTest extends TestCase
 {
@@ -57,7 +57,7 @@ class VoucherCreateCommandTest extends TestCase
             ->willReturn(null);
 
         // Settings service should not be called when user doesn't exist
-        // because UserNotFoundException is thrown before settings are accessed
+        // because Command::FAILURE is returned before settings are accessed
         $this->settingsService->expects(self::never())
             ->method('get');
 
@@ -70,15 +70,14 @@ class VoucherCreateCommandTest extends TestCase
         $command = $application->find('app:voucher:create');
         $commandTester = new CommandTester($command);
 
-        $this->expectException(UserNotFoundException::class);
-        $commandTester->execute([
+        $exitCode = $commandTester->execute([
             '--user' => 'user@example.org',
             '--count' => 1,
             '--print',
         ]);
 
-        $output = $commandTester->getDisplay();
-        self::assertStringContainsString('', $output);
+        self::assertSame(Command::FAILURE, $exitCode);
+        $this->assertStringContainsString('User with email', $commandTester->getDisplay());
     }
 
     public function testExecuteWithUser(): void
