@@ -23,9 +23,6 @@
     "doctrine/common": {
         "version": "v2.9.0"
     },
-    "doctrine/data-fixtures": {
-        "version": "v1.3.1"
-    },
     "doctrine/dbal": {
         "version": "v2.8.0"
     },
@@ -47,10 +44,10 @@
         ]
     },
     "doctrine/doctrine-fixtures-bundle": {
-        "version": "3.4",
+        "version": "3.7",
         "recipe": {
             "repo": "github.com/symfony/recipes",
-            "branch": "master",
+            "branch": "main",
             "version": "3.0",
             "ref": "1f5514cfa15b947298df4d771e694e578d4c204d"
         },
@@ -121,9 +118,6 @@
         "files": [
             ".php-cs-fixer.dist.php"
         ]
-    },
-    "ircmaxell/password-compat": {
-        "version": "v1.0.4"
     },
     "knplabs/knp-menu": {
         "version": "2.3.0"
