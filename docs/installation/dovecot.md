@@ -2,7 +2,7 @@
 
 Userli provides an API for `userdb` and `passdb` lookups.
 
-An adapter script written in Lua is provided to use for [Lua based authentication in Dovecot](https://doc.dovecot.org/latest/core/config/auth/databases/lua.html#lua-authentication-database-lua). The script is released as a separate tarball with each release and is only guaranteed to be compatible with the same version of Userli.
+An adapter script written in Lua is provided to use for [Lua based authentication in Dovecot](https://doc.dovecot.org/latest/core/config/auth/databases/lua.html#lua-authentication-database-lua). The script is released as a separate tarball with each release and is only guaranteed to be compatible with the same version of Userli and only supports Dovecot >=2.4
 
 If the mailcrypt is enabled in Userli, the adapter script will also forward the required key material with each lookup.
 
@@ -78,11 +78,20 @@ userdb lua {
 
 ## MailCrypt
 
-In order to enable MailCrypt in Dovecot, the following is required:
+In order to enable MailCrypt in Dovecot 2.4, the following is required:
 
 - Add `mail_crypt` to the `mail_plugins` list in `/etc/dovecot/conf.d/10-mail.conf`
-- Set `crypt_write_algorithm = none` in `/etc/dovecot/conf.d/90-mail-crypt.conf` (Dovecot 2.4+)
-- For Dovecot 2.3, use `mail_crypt_save_version = 0` instead
+
+`/etc/dovecot/conf.d/90-mail-crypt.conf`:
+
+```text
+mail_plugins {
+    # disabled per default
+    mail_crypt = yes
+}
+
+crypt_write_algorithm =
+```
 
 The latter disables MailCrypt per default and is necessary to not break incoming mail for legacy users without MailCrypt keys.
-The adapter script automatically sets `crypt_write_algorithm = aes-256-gcm-sha256` (or `mail_crypt_save_version = 2` for Dovecot 2.3) for all users with MailCrypt keys.
+The adapter script automatically sets `crypt_write_algorithm = aes-256-gcm-sha256` for all users with MailCrypt keys.
