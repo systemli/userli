@@ -6,7 +6,7 @@ namespace App\Tests\Service;
 
 use App\Entity\User;
 use App\Service\UserLastLoginUpdateService;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -43,12 +43,10 @@ class UserLastLoginUpdateServiceTest extends TestCase
 
         // Assert
         $lastLoginTime = $user->getLastLoginTime();
-        $this->assertInstanceOf(DateTime::class, $lastLoginTime);
+        $this->assertInstanceOf(DateTimeImmutable::class, $lastLoginTime);
 
         // Verify it's set to the start of the current week (Monday at 00:00:00)
-        $expectedWeekStart = new DateTime();
-        $expectedWeekStart->modify('monday this week');
-        $expectedWeekStart->setTime(0, 0, 0);
+        $expectedWeekStart = new DateTimeImmutable('monday this week midnight');
 
         $this->assertEquals($expectedWeekStart->getTimestamp(), $lastLoginTime->getTimestamp());
     }
@@ -57,7 +55,7 @@ class UserLastLoginUpdateServiceTest extends TestCase
     {
         // Arrange
         $user = new User('test@example.org');
-        $oldLastLogin = (new DateTime())->modify('-1 week'); // Last week
+        $oldLastLogin = new DateTimeImmutable('-1 week');
         $user->setLastLoginTime($oldLastLogin);
 
         // Assert that persist is called exactly once
@@ -75,13 +73,11 @@ class UserLastLoginUpdateServiceTest extends TestCase
 
         // Assert
         $lastLoginTime = $user->getLastLoginTime();
-        $this->assertInstanceOf(DateTime::class, $lastLoginTime);
+        $this->assertInstanceOf(DateTimeImmutable::class, $lastLoginTime);
         $this->assertNotEquals($oldLastLogin->getTimestamp(), $lastLoginTime->getTimestamp());
 
         // Verify it's set to the start of the current week
-        $expectedWeekStart = new DateTime();
-        $expectedWeekStart->modify('monday this week');
-        $expectedWeekStart->setTime(0, 0, 0);
+        $expectedWeekStart = new DateTimeImmutable('monday this week midnight');
 
         $this->assertEquals($expectedWeekStart->getTimestamp(), $lastLoginTime->getTimestamp());
     }
@@ -92,9 +88,7 @@ class UserLastLoginUpdateServiceTest extends TestCase
         $user = new User('test@example.org');
 
         // Set to current week start (same timestamp)
-        $currentWeekStart = new DateTime();
-        $currentWeekStart->modify('monday this week');
-        $currentWeekStart->setTime(0, 0, 0);
+        $currentWeekStart = new DateTimeImmutable('monday this week midnight');
         $user->setLastLoginTime($currentWeekStart);
 
         // Assert that persist is NOT called since the value is already current

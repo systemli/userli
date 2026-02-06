@@ -4,29 +4,21 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 trait CreationTimeTrait
 {
     #[ORM\Column]
-    private ?DateTime $creationTime = null;
+    private ?DateTimeImmutable $creationTime = null;
 
-    public function getCreationTime(): ?DateTime
+    public function getCreationTime(): ?DateTimeImmutable
     {
         return $this->creationTime;
     }
 
-    public function setCreationTime(DateTime $creationTime): void
+    public function setCreationTime(DateTimeImmutable $creationTime): void
     {
         $this->creationTime = $creationTime;
-    }
-
-    #[ORM\PrePersist]
-    public function updateCreationTime(): void
-    {
-        if (null === $this->creationTime) {
-            $this->setCreationTime(new DateTime());
-        }
     }
 }

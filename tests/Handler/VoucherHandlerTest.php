@@ -10,7 +10,7 @@ use App\Entity\Voucher;
 use App\Enum\Roles;
 use App\Handler\VoucherHandler;
 use App\Repository\VoucherRepository;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -51,7 +51,7 @@ class VoucherHandlerTest extends TestCase
         $handler = new VoucherHandler($manager, $creator);
 
         $user = new User('new@example.org');
-        $user->setCreationTime(new DateTime());
+        $user->setCreationTime(new DateTimeImmutable());
 
         $vouchers = $handler->getVouchersByUser($user);
 
@@ -71,7 +71,7 @@ class VoucherHandlerTest extends TestCase
         $handler = new VoucherHandler($manager, $creator);
 
         $user = new User('test@example.org');
-        $user->setCreationTime(new DateTime('-8 days'));
+        $user->setCreationTime(new DateTimeImmutable('-8 days'));
 
         $vouchers = $handler->getVouchersByUser($user);
 
@@ -98,14 +98,14 @@ class VoucherHandlerTest extends TestCase
         $handler = new VoucherHandler($manager, $creator);
 
         $user = new User('test@example.org');
-        $user->setCreationTime(new DateTime('-8 days'));
+        $user->setCreationTime(new DateTimeImmutable('-8 days'));
 
         $vouchers = $handler->getVouchersByUser($user);
 
         self::assertNotEmpty($vouchers);
         self::assertCount(2, $vouchers);
 
-        $user->setLastLoginTime(new DateTime());
+        $user->setLastLoginTime(new DateTimeImmutable());
         $vouchers = $handler->getVouchersByUser($user);
 
         self::assertNotEmpty($vouchers);

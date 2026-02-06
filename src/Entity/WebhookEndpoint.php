@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\Index(columns: ['enabled'])]
 #[ORM\Table(name: 'webhook_endpoints')]
-class WebhookEndpoint
+class WebhookEndpoint implements UpdatedTimeInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -101,5 +101,10 @@ class WebhookEndpoint
     public function setUpdatedTime(DateTimeImmutable $updatedTime): void
     {
         $this->updatedTime = $updatedTime;
+    }
+
+    public function updateUpdatedTime(): void
+    {
+        $this->setUpdatedTime(new DateTimeImmutable());
     }
 }

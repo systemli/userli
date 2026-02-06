@@ -6,7 +6,7 @@ namespace App\MessageHandler;
 
 use App\Entity\Voucher;
 use App\Message\UnlinkRedeemedVouchers;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -27,7 +27,7 @@ final readonly class UnlinkRedeemedVouchersHandler
             ->createQueryBuilder('voucher')
             ->join('voucher.invitedUser', 'invitedUser')
             ->where('voucher.redeemedTime < :date')
-            ->setParameter('date', new DateTime('-3 months'))
+            ->setParameter('date', new DateTimeImmutable('-3 months'))
             ->orderBy('voucher.redeemedTime')
             ->getQuery()
             ->getResult();

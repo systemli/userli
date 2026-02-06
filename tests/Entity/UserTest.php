@@ -6,7 +6,7 @@ namespace App\Tests\Entity;
 
 use App\Entity\User;
 use App\Enum\Roles;
-use DateTime;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
 
@@ -78,14 +78,14 @@ class UserTest extends TestCase
     public function testHasCreationTimeSet(): void
     {
         $user = new User('test@example.org');
-        $today = new DateTime();
+        $today = new DateTimeImmutable();
         self::assertEquals($user->getCreationTime()->format('Y-m-d'), $today->format('Y-m-d'));
     }
 
     public function testHasUpdatedTimeSet(): void
     {
         $user = new User('test@example.org');
-        $today = new DateTime();
+        $today = new DateTimeImmutable();
         self::assertEquals($user->getUpdatedTime()->format('Y-m-d'), $today->format('Y-m-d'));
     }
 

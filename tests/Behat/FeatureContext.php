@@ -25,7 +25,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\MinkContext;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
@@ -157,10 +157,7 @@ class FeatureContext extends MinkContext
                         $user->setQuota($value);
                         break;
                     case 'recoveryStartTime':
-                        $time = new DateTime();
-                        if ('NOW' !== 'value') {
-                            $time = $time->modify($value);
-                        }
+                        $time = ('NOW' === $value) ? new DateTimeImmutable() : new DateTimeImmutable($value);
                         $user->setRecoveryStartTime($time);
                         break;
                     case 'recoverySecretBox':

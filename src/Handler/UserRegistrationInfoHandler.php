@@ -6,7 +6,7 @@ namespace App\Handler;
 
 use App\Entity\User;
 use App\Service\SettingsService;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Twig\Environment;
 
@@ -22,7 +22,7 @@ final readonly class UserRegistrationInfoHandler
 
     public function sendReport(string $from = '-7 days'): void
     {
-        $users = $this->manager->getRepository(User::class)->findUsersSince((new DateTime())->modify($from));
+        $users = $this->manager->getRepository(User::class)->findUsersSince(new DateTimeImmutable($from));
         $message = $this->twig->render('Email/weekly_report.twig', ['users' => $users]);
         $email = $this->settingsService->get('email_notification_address');
 

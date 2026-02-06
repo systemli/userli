@@ -11,7 +11,7 @@ use App\Event\UserEvent;
 use App\Form\Model\Registration;
 use App\Guesser\DomainGuesser;
 use App\Helper\PasswordUpdater;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -76,7 +76,7 @@ final readonly class RegistrationHandler
         }
 
         if (null !== $voucher = $this->manager->getRepository(Voucher::class)->findByCode($registration->getVoucher())) {
-            $voucher->setRedeemedTime(new DateTime());
+            $voucher->setRedeemedTime(new DateTimeImmutable());
 
             $user->setInvitationVoucher($voucher);
 

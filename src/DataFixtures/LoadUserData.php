@@ -6,7 +6,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Domain;
 use App\Enum\Roles;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -69,8 +69,7 @@ final class LoadUserData extends AbstractUserData implements DependentFixtureInt
             }
 
             if (null !== $lastLoginTimeOffset) {
-                $lastLoginTime = new DateTime();
-                $lastLoginTime->modify($lastLoginTimeOffset);
+                $lastLoginTime = new DateTimeImmutable($lastLoginTimeOffset);
                 $user->setLastLoginTime($lastLoginTime);
             }
 
