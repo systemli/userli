@@ -6,13 +6,19 @@ namespace App\Repository;
 
 use App\Entity\Alias;
 use App\Entity\User;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends EntityRepository<Alias>
+ * @extends ServiceEntityRepository<Alias>
  */
-final class AliasRepository extends EntityRepository
+final class AliasRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Alias::class);
+    }
+
     public function findOneBySource(string $email, ?bool $includeDeleted = false): ?Alias
     {
         if ($includeDeleted) {
@@ -20,6 +26,25 @@ final class AliasRepository extends EntityRepository
         }
 
         return $this->findOneBy(['source' => $email, 'deleted' => false]);
+    }
+
+    /**
+     * Returns the destination addresses for a given alias source.
+     *
+     * Uses a scalar query to avoid hydrating full Alias entities.
+     *
+     * @return string[]
+     */
+    public function findDestinationsBySource(string $source): array
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a.destination')
+            ->where('a.source = :source')
+            ->andWhere('a.deleted = :deleted')
+            ->setParameter('source', $source)
+            ->setParameter('deleted', false)
+            ->getQuery()
+            ->getSingleColumnResult();
     }
 
     /**

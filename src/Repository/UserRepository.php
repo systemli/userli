@@ -9,16 +9,22 @@ use App\Entity\User;
 use DateInterval;
 use DateInvalidOperationException;
 use DateTime;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Override;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
- * @extends EntityRepository<User>
+ * @extends ServiceEntityRepository<User>
  */
-final class UserRepository extends EntityRepository implements PasswordUpgraderInterface
+final class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, User::class);
+    }
+
     public function findById(int $id): ?User
     {
         return $this->findOneBy(['id' => $id]);
@@ -27,6 +33,19 @@ final class UserRepository extends EntityRepository implements PasswordUpgraderI
     public function findByEmail(string $email): ?User
     {
         return $this->findOneBy(['email' => $email]);
+    }
+
+    public function existsByEmail(string $email): bool
+    {
+        return (bool) $this->createQueryBuilder('u')
+            ->select('1')
+            ->where('u.email = :email')
+            ->andWhere('u.deleted = :deleted')
+            ->setParameter('email', $email)
+            ->setParameter('deleted', false)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     public function findByDomainAndEmail(Domain $domain, string $email): ?User

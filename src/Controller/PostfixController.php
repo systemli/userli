@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Alias;
-use App\Entity\Domain;
-use App\Entity\User;
 use App\Enum\ApiScope;
+use App\Repository\AliasRepository;
+use App\Repository\DomainRepository;
+use App\Repository\UserRepository;
 use App\Security\RequireApiScope;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -22,7 +21,9 @@ final class PostfixController extends AbstractController
     private const int CACHE_TTL = 60;
 
     public function __construct(
-        private readonly EntityManagerInterface $manager,
+        private readonly AliasRepository $aliasRepository,
+        private readonly DomainRepository $domainRepository,
+        private readonly UserRepository $userRepository,
         private readonly CacheInterface $cache,
     ) {
     }
@@ -33,11 +34,7 @@ final class PostfixController extends AbstractController
         $result = $this->cache->get('postfix_alias_'.sha1($alias), function (ItemInterface $item) use ($alias) {
             $item->expiresAfter(self::CACHE_TTL);
 
-            $aliases = $this->manager->getRepository(Alias::class)->findBy(['deleted' => false, 'source' => $alias]);
-
-            return array_map(static function (Alias $alias) {
-                return $alias->getDestination();
-            }, $aliases);
+            return $this->aliasRepository->findDestinationsBySource($alias);
         });
 
         return $this->json($result);
@@ -49,7 +46,7 @@ final class PostfixController extends AbstractController
         $exists = $this->cache->get('postfix_domain_'.sha1($name), function (ItemInterface $item) use ($name) {
             $item->expiresAfter(self::CACHE_TTL);
 
-            return $this->manager->getRepository(Domain::class)->findOneBy(['name' => $name]) !== null;
+            return $this->domainRepository->existsByName($name);
         });
 
         return $this->json($exists);
@@ -61,7 +58,7 @@ final class PostfixController extends AbstractController
         $exists = $this->cache->get('postfix_mailbox_'.sha1($email), function (ItemInterface $item) use ($email) {
             $item->expiresAfter(self::CACHE_TTL);
 
-            return $this->manager->getRepository(User::class)->findOneBy(['email' => $email, 'deleted' => false]) !== null;
+            return $this->userRepository->existsByEmail($email);
         });
 
         return $this->json($exists);
@@ -73,16 +70,13 @@ final class PostfixController extends AbstractController
         $senders = $this->cache->get('postfix_senders_'.sha1($email), function (ItemInterface $item) use ($email) {
             $item->expiresAfter(self::CACHE_TTL);
 
-            $users = $this->manager->getRepository(User::class)->findBy(['deleted' => false, 'email' => $email]);
-            $aliases = $this->manager->getRepository(Alias::class)->findBy(['deleted' => false, 'source' => $email]);
+            $senders = [];
 
-            $senders = array_map(static function (User $user) {
-                return $user->getEmail();
-            }, $users);
+            if ($this->userRepository->existsByEmail($email)) {
+                $senders[] = $email;
+            }
 
-            $senders = array_merge($senders, array_map(static function (Alias $alias) {
-                return $alias->getDestination();
-            }, $aliases));
+            $senders = array_merge($senders, $this->aliasRepository->findDestinationsBySource($email));
 
             return array_values(array_unique($senders));
         });
