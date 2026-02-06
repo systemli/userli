@@ -9,6 +9,7 @@ use App\Enum\MailCrypt;
 use App\Enum\Roles;
 use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
+use App\Service\UserResetService;
 use App\Traits\DomainGuesserAwareTrait;
 use App\Validator\Lowercase;
 use App\Validator\PasswordPolicy;
@@ -28,6 +29,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -45,6 +48,10 @@ final class UserAdmin extends Admin
     private MailCrypt $mailCrypt;
 
     private Security $security;
+
+    private UserResetService $userResetService;
+
+    private ?string $lastRecoveryToken = null;
 
     #[Override]
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
@@ -84,13 +91,21 @@ final class UserAdmin extends Admin
                     new UniqueField(entityClass: User::class, field: 'email', message: 'registration.email-already-taken'),
                 ] : [],
             ])
-            ->add('plainPassword', PasswordType::class, [
-                'label' => 'form.password',
+            ->add('plainPassword', RepeatedType::class, [
+                'type' => PasswordType::class,
                 'required' => $this->isNewObject(),
                 'mapped' => false,
-                'disabled' => (null !== $userId) ? $user->hasMailCryptSecretBox() : false,
-                'help' => (null !== $userId && $user->hasMailCryptSecretBox()) ?
-                    'Disabled because user has a MailCrypt key pair defined' : null,
+                'first_options' => [
+                    'label' => 'form.password',
+                    'help' => (null !== $userId && $user->hasMailCryptSecretBox())
+                        ? '<strong>Warning:</strong> Resetting the password will generate new MailCrypt keys. Existing encrypted emails will be deleted. The recovery token and 2FA will also be reset.'
+                        : null,
+                    'help_html' => true,
+                ],
+                'second_options' => [
+                    'label' => 'form.password_confirmation',
+                ],
+                'invalid_message' => 'different-password',
                 'constraints' => [
                     new Assert\NotBlank(groups: ['create']),
                     new PasswordPolicy(),
@@ -245,7 +260,13 @@ final class UserAdmin extends Admin
 
         $plainPassword = $this->getForm()->get('plainPassword')->getData();
         if (!empty($plainPassword)) {
-            $this->passwordUpdater->updatePassword($object, $plainPassword);
+            if ($object->hasMailCryptSecretBox()) {
+                // Full reset: new password, new MailCrypt keys, new recovery token, 2FA reset
+                $this->lastRecoveryToken = $this->userResetService->resetUser($object, $plainPassword);
+            } else {
+                $this->passwordUpdater->updatePassword($object, $plainPassword);
+            }
+            $object->setPasswordChangeRequired(true);
         } else {
             $object->updateUpdatedTime();
         }
@@ -254,6 +275,17 @@ final class UserAdmin extends Admin
             $object->setTotpSecret(null);
             $object->setTotpConfirmed(false);
             $object->setTotpBackupCodes([]);
+        }
+    }
+
+    #[Override]
+    protected function postUpdate(object $object): void
+    {
+        if (null !== $this->lastRecoveryToken) {
+            $session = $this->getRequest()->getSession();
+            assert($session instanceof Session);
+            $session->getFlashBag()->add('sonata_flash_info', sprintf('Recovery Token: %s', $this->lastRecoveryToken));
+            $this->lastRecoveryToken = null;
         }
     }
 
@@ -275,5 +307,10 @@ final class UserAdmin extends Admin
     public function setSecurity(Security $security): void
     {
         $this->security = $security;
+    }
+
+    public function setUserResetService(UserResetService $userResetService): void
+    {
+        $this->userResetService = $userResetService;
     }
 }
