@@ -1,6 +1,6 @@
 # Upgrade documentation
 
-## Upgrade to 5.6.0
+## Upgrade to 6.0.0
 
 ### PHP 8.4 Required
 
