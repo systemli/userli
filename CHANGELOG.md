@@ -1,13 +1,26 @@
 # Changelog
 
-## 5.6.0 (UNRELEASED)
+## 6.0.0 (2026.02.06)
 
-## Features and Improvements
+- **BREAKING CHANGE: This release needs at least PHP 8.4**
+- **BREAKING CHANGE: The Lua script for Dovecot needs at least Dovecot 2.4**
 
-- ⬆️ Upgrade to PHP 8.4
-- ⬆️ Upgrade Docker images to Debian Trixie
-- ⬆️ Migrate Dovecot configuration to 2.4 syntax
-- ⬆️ Update mail_crypt settings for Dovecot 2.4
+### Features and Improvements
+
+- ✨ Add webhook event for user.reset (#1010)
+- ✨ Allow admins to reset user passwords in UserAdmin (#1007)
+
+### Technical Changes
+
+- ✨ Auto-update updatedTime via Doctrine listener and UpdatedTimeInterface (#1009)
+- ♻️ Encapsulate form model properties with getters/setters (#1006)
+- ♻️ Centralize validation in form models and admin classes (#1002)
+- ⬆️ Update to Debian Trixie and PHP 8.4 (#988)
+- ♻️ Extract UserResetService from Command (#1004)
+- ✅ Convert Controller functional tests to Behat features (#1005)
+- ♻️ Remove code duplication in user commands (#1003)
+- ♻️ Extract TOTP Backup Code Generation from Trait (#997)
+- 🗃️ Migrate 2FA Backup Codes from array to json (#996)
 
 ## 5.5.0 (2026.01.31)
 
