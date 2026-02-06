@@ -5,25 +5,21 @@ declare(strict_types=1);
 namespace App\Event;
 
 use App\Entity\User;
-use App\Traits\UserAwareTrait;
 use Symfony\Contracts\EventDispatcher\Event;
 
 final class UserEvent extends Event
 {
-    use UserAwareTrait;
+    public const string USER_CREATED = 'user.created';
+    public const string USER_DELETED = 'user.deleted';
+    public const string USER_RESET = 'user.reset';
+    public const string PASSWORD_CHANGED = 'user.password_changed';
 
-    public const USER_CREATED = 'user.created';
-
-    public const USER_DELETED = 'user.deleted';
-    public const USER_RESTORED = 'user.restored';
-
-    public const PASSWORD_CHANGED = 'user.password_changed';
-
-    /**
-     * Constructor.
-     */
-    public function __construct(User $user)
+    public function __construct(private readonly User $user)
     {
-        $this->user = $user;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
     }
 }

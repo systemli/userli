@@ -14,6 +14,7 @@ The following events can trigger webhooks:
 
 - `user.created`: Triggered when a new user is created.
 - `user.deleted`: Triggered when a user is deleted.
+- `user.reset`: Triggered when a user is reset (password, MailCrypt keys, recovery token, and 2FA settings).
 
 ## Configuring Webhooks
 

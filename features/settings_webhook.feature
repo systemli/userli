@@ -36,6 +36,7 @@ Feature: Settings
     And I fill in "webhook_endpoint_secret" with "secret"
     And I check "user.created"
     And I check "user.deleted"
+    And I check "user.reset"
     And I press "Create"
 
     Then I should see "Webhook created successfully"

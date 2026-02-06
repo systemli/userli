@@ -30,6 +30,7 @@
                                 <option value="{{ path('settings_webhook_delivery_index', {id: endpoint.id, status: status}|filter(v => v)) }}"{% if eventType == '' %} selected{% endif %}>{{ 'settings.webhook.deliveries.filter.all'|trans }}</option>
                                 <option value="{{ path('settings_webhook_delivery_index', {id: endpoint.id, status: status, eventType: 'user.created'}|filter(v => v)) }}"{% if eventType == 'user.created' %} selected{% endif %}>user.created</option>
                                 <option value="{{ path('settings_webhook_delivery_index', {id: endpoint.id, status: status, eventType: 'user.deleted'}|filter(v => v)) }}"{% if eventType == 'user.deleted' %} selected{% endif %}>user.deleted</option>
+                                <option value="{{ path('settings_webhook_delivery_index', {id: endpoint.id, status: status, eventType: 'user.reset'}|filter(v => v)) }}"{% if eventType == 'user.reset' %} selected{% endif %}>user.reset</option>
                             </select>
                         </div>
                         <div class="flex items-center gap-2">
