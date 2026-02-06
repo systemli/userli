@@ -48,7 +48,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[Index(columns: ['email', 'deleted'], name: 'email_deleted_idx')]
 #[Index(columns: ['domain_id', 'deleted'], name: 'domain_deleted_idx')]
 #[Index(columns: ['email', 'domain_id'], name: 'email_domain_idx')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface, Stringable
+class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface, UpdatedTimeInterface, Stringable
 {
     use CreationTimeTrait;
     use DeleteTrait;
