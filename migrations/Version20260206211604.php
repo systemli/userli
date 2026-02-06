@@ -19,6 +19,7 @@ final class Version20260206211604 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
+        $this->addSql('ALTER TABLE settings CHANGE updated_time updated_time DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\'');
         $this->addSql('ALTER TABLE virtual_aliases CHANGE creation_time creation_time DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', CHANGE updated_time updated_time DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\'');
         $this->addSql('ALTER TABLE virtual_domains CHANGE creation_time creation_time DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', CHANGE updated_time updated_time DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\'');
         $this->addSql('ALTER TABLE virtual_openpgp_keys CHANGE key_expire_time key_expire_time DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\'');
@@ -29,6 +30,7 @@ final class Version20260206211604 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
+        $this->addSql('ALTER TABLE settings CHANGE updated_time updated_time DATETIME DEFAULT NULL');
         $this->addSql('ALTER TABLE virtual_domains CHANGE creation_time creation_time DATETIME NOT NULL, CHANGE updated_time updated_time DATETIME NOT NULL');
         $this->addSql('ALTER TABLE virtual_reserved_names CHANGE creation_time creation_time DATETIME NOT NULL, CHANGE updated_time updated_time DATETIME NOT NULL');
         $this->addSql('ALTER TABLE virtual_aliases CHANGE creation_time creation_time DATETIME NOT NULL, CHANGE updated_time updated_time DATETIME NOT NULL');
