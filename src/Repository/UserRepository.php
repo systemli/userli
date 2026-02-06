@@ -29,6 +29,19 @@ final class UserRepository extends EntityRepository implements PasswordUpgraderI
         return $this->findOneBy(['email' => $email]);
     }
 
+    public function existsByEmail(string $email): bool
+    {
+        return (bool) $this->createQueryBuilder('u')
+            ->select('1')
+            ->where('u.email = :email')
+            ->andWhere('u.deleted = :deleted')
+            ->setParameter('email', $email)
+            ->setParameter('deleted', false)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function findByDomainAndEmail(Domain $domain, string $email): ?User
     {
         return $this->findOneBy(['domain' => $domain, 'email' => $email]);
