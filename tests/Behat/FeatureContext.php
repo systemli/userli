@@ -181,6 +181,9 @@ class FeatureContext extends MinkContext
                     case 'totpSecret':
                         $user->setTotpSecret($value);
                         break;
+                    case 'passwordChangeRequired':
+                        $user->setPasswordChangeRequired((bool) $value);
+                        break;
                     case 'totp_backup_codes':
                         $codes = $this->totpBackupCodeGenerator->generate();
                         $user->setTotpBackupCodes($codes);
@@ -587,6 +590,60 @@ class FeatureContext extends MinkContext
 
         if (null === $user) {
             throw new RuntimeException(sprintf('User "%s" does not exist', $email));
+        }
+    }
+
+    /**
+     * @Then /^the user "([^"]*)" should have passwordChangeRequired$/
+     */
+    public function theUserShouldHavePasswordChangeRequired(string $email): void
+    {
+        $this->manager->clear();
+
+        $user = $this->getUserRepository()->findByEmail($email);
+
+        if (null === $user) {
+            throw new RuntimeException(sprintf('User "%s" does not exist', $email));
+        }
+
+        if (!$user->isPasswordChangeRequired()) {
+            throw new RuntimeException(sprintf('User "%s" does not have passwordChangeRequired set', $email));
+        }
+    }
+
+    /**
+     * @Then /^the user "([^"]*)" should have a mailCryptSecretBox$/
+     */
+    public function theUserShouldHaveAMailCryptSecretBox(string $email): void
+    {
+        $this->manager->clear();
+
+        $user = $this->getUserRepository()->findByEmail($email);
+
+        if (null === $user) {
+            throw new RuntimeException(sprintf('User "%s" does not exist', $email));
+        }
+
+        if (!$user->hasMailCryptSecretBox()) {
+            throw new RuntimeException(sprintf('User "%s" does not have a mailCryptSecretBox', $email));
+        }
+    }
+
+    /**
+     * @Then /^the user "([^"]*)" should not have totpConfirmed$/
+     */
+    public function theUserShouldNotHaveTotpConfirmed(string $email): void
+    {
+        $this->manager->clear();
+
+        $user = $this->getUserRepository()->findByEmail($email);
+
+        if (null === $user) {
+            throw new RuntimeException(sprintf('User "%s" does not exist', $email));
+        }
+
+        if ($user->getTotpConfirmed()) {
+            throw new RuntimeException(sprintf('User "%s" still has totpConfirmed set', $email));
         }
     }
 

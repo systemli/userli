@@ -65,6 +65,7 @@ services:
             - [setMailCryptKeyHandler, ['@App\Handler\MailCryptKeyHandler']]
             - [setMailCryptVar, ["%env(MAIL_CRYPT)%"]]
             - [setSecurity, ['@Symfony\Bundle\SecurityBundle\Security']]
+            - [setUserResetService, ['@App\Service\UserResetService']]
 
     userli.admin.user_notification:
         class: App\Admin\UserNotificationAdmin

@@ -12,6 +12,9 @@ Feature: Admin
       | domain@example.com  | asdasd   | ROLE_DOMAIN_ADMIN |
       | support@example.org | asdasd   | ROLE_MULTIPLIER   |
       | user@example.org    | asdasd   | ROLE_USER         |
+    And the following User exists:
+      | email                  | password | roles     | mailCrypt | mailCryptSecretBox | mailCryptPublicKey | totpConfirmed | totpSecret       |
+      | cryptuser@example.org  | asdasd   | ROLE_USER | 1         | secretbox123       | publickey456       | 1             | JBSWY3DPEHPK3PXP |
     And the following Voucher exists:
       | code | user             |
       | TEST | adminexample.org |
@@ -69,8 +72,9 @@ Feature: Admin
     When I am authenticated as "louis@example.org"
     And I am on "/admin/user/create"
     And I fill in the following:
-      | Email    | newuser@example.org |
-      | Password | P4ssW0rd!!!1        |
+      | Email            | newuser@example.org |
+      | Password         | P4ssW0rd!!!1        |
+      | Confirm password | P4ssW0rd!!!1        |
     And I press "btn_create_and_list"
     Then the response status code should be 200
     And the user "newuser@example.org" should exist
@@ -248,3 +252,34 @@ Feature: Admin
     When I am authenticated as "louis@example.org"
     And I am on "/admin/user-notification/1/edit"
     Then the response status code should be 404
+
+  @admin
+  Scenario: Admin resets password of user without MailCrypt
+    When I am authenticated as "louis@example.org"
+    And I am on "/admin/user/4/edit"
+    Then the response status code should be 200
+    And I should not see "Warning:"
+
+    When I fill in the following:
+      | Password         | N3wP4ssW0rd!!!1 |
+      | Confirm password | N3wP4ssW0rd!!!1 |
+    And I press "btn_update_and_list"
+    Then the response status code should be 200
+    And the user "user@example.org" should have passwordChangeRequired
+
+  @admin
+  Scenario: Admin resets password of user with MailCrypt
+    When I am authenticated as "louis@example.org"
+    And I am on "/admin/user/5/edit"
+    Then the response status code should be 200
+    And I should see "Warning:"
+
+    When I fill in the following:
+      | Password         | N3wP4ssW0rd!!!1 |
+      | Confirm password | N3wP4ssW0rd!!!1 |
+    And I press "btn_update_and_list"
+    Then the response status code should be 200
+    And the user "cryptuser@example.org" should have passwordChangeRequired
+    And the user "cryptuser@example.org" should have a mailCryptSecretBox
+    And the user "cryptuser@example.org" should not have totpConfirmed
+    And I should see "Recovery Token:"
