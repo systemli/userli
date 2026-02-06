@@ -16,7 +16,7 @@ use Stringable;
 
 #[ORM\Entity(repositoryClass: ReservedNameRepository::class)]
 #[ORM\Table(name: 'virtual_reserved_names')]
-class ReservedName implements Stringable
+class ReservedName implements UpdatedTimeInterface, Stringable
 {
     use CreationTimeTrait;
     use IdTrait;

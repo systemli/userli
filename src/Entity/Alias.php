@@ -21,12 +21,11 @@ use Stringable;
 
 #[ORM\Entity(repositoryClass: AliasRepository::class)]
 #[ORM\AssociationOverrides([new AssociationOverride(name: 'domain', joinColumns: new ORM\JoinColumn(nullable: true))])]
-#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'virtual_aliases')]
 #[Index(columns: ['source', 'deleted'], name: 'source_deleted_idx')]
 #[Index(columns: ['destination', 'deleted'], name: 'destination_deleted_idx')]
 #[Index(columns: ['user_id', 'deleted'], name: 'user_deleted_idx')]
-class Alias implements SoftDeletableInterface, Stringable
+class Alias implements SoftDeletableInterface, UpdatedTimeInterface, Stringable
 {
     use CreationTimeTrait;
     use DeleteTrait;

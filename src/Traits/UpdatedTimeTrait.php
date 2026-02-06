@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
+use App\Entity\UpdatedTimeInterface;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @see UpdatedTimeInterface
+ */
 trait UpdatedTimeTrait
 {
     #[ORM\Column]
@@ -22,7 +26,6 @@ trait UpdatedTimeTrait
         $this->updatedTime = $updatedTime;
     }
 
-    #[ORM\PrePersist]
     public function updateUpdatedTime(): void
     {
         $this->setUpdatedTime(new DateTime());

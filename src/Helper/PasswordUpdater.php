@@ -16,6 +16,5 @@ final readonly class PasswordUpdater
     public function updatePassword(User $user, string $plainPassword): void
     {
         $user->setPassword($this->passwordHasherFactory->getPasswordHasher($user)->hash($plainPassword));
-        $user->updateUpdatedTime();
     }
 }

@@ -15,9 +15,8 @@ use Override;
 use Stringable;
 
 #[ORM\Entity(repositoryClass: DomainRepository::class)]
-#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'virtual_domains')]
-class Domain implements Stringable
+class Domain implements UpdatedTimeInterface, Stringable
 {
     use CreationTimeTrait;
     use IdTrait;
