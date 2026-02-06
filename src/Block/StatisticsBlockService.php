@@ -6,7 +6,7 @@ namespace App\Block;
 
 use App\Entity\User;
 use App\Entity\Voucher;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Sonata\BlockBundle\Block\BlockContextInterface;
@@ -36,7 +36,7 @@ final class StatisticsBlockService implements BlockServiceInterface
                 'block' => $blockContext->getBlock(),
                 'settings' => $settings,
                 'users_since' => (null !== $usersSince = $this->manager->getRepository(User::class)->findUsersSince(
-                    new DateTime('-7 days')
+                    new DateTimeImmutable('-7 days')
                 )) ? count($usersSince) : 0,
                 'users_count' => $this->manager->getRepository(User::class)->count([]),
                 'vouchers_count' => $vouchersCount = $this->manager->getRepository(Voucher::class)->count([]),

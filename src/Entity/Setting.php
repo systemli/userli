@@ -11,9 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SettingRepository::class)]
 #[ORM\Table(name: 'settings')]
-#[ORM\HasLifecycleCallbacks]
 #[ORM\UniqueConstraint(name: 'UNIQ_SETTING_NAME', columns: ['name'])]
-class Setting
+class Setting implements UpdatedTimeInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -30,7 +29,7 @@ class Setting
     private DateTimeImmutable $creationTime;
 
     #[ORM\Column(nullable: true)]
-    private DateTimeImmutable $updatedTime;
+    private ?DateTimeImmutable $updatedTime = null;
 
     public function __construct(string $name, string $value)
     {
@@ -60,19 +59,23 @@ class Setting
         $this->value = $value;
     }
 
-    #[ORM\PreUpdate]
-    public function setUpdatedTime(): void
-    {
-        $this->updatedTime = new DateTimeImmutable();
-    }
-
     public function getCreationTime(): DateTimeImmutable
     {
         return $this->creationTime;
     }
 
-    public function getUpdatedTime(): DateTimeImmutable
+    public function getUpdatedTime(): ?DateTimeImmutable
     {
         return $this->updatedTime;
+    }
+
+    public function setUpdatedTime(DateTimeImmutable $updatedTime): void
+    {
+        $this->updatedTime = $updatedTime;
+    }
+
+    public function updateUpdatedTime(): void
+    {
+        $this->setUpdatedTime(new DateTimeImmutable());
     }
 }

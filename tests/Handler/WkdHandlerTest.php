@@ -9,7 +9,7 @@ use App\Entity\OpenPgpKey;
 use App\Entity\User;
 use App\Handler\WkdHandler;
 use App\Repository\OpenPgpKeyRepository;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -40,7 +40,7 @@ class WkdHandlerTest extends TestCase
         $this->openPgpKey->setEmail($this->email);
         $this->openPgpKey->setKeyId($this->keyId);
         $this->openPgpKey->setKeyFingerprint($this->keyFingerprint);
-        $this->openPgpKey->setKeyExpireTime(new DateTime($this->keyExpireTime));
+        $this->openPgpKey->setKeyExpireTime(new DateTimeImmutable($this->keyExpireTime));
         $this->openPgpKey->setKeyData($this->keyData);
         $repository = $this->getMockBuilder(OpenPgpKeyRepository::class)
             ->disableOriginalConstructor()
@@ -61,7 +61,7 @@ class WkdHandlerTest extends TestCase
         $expected->setEmail($this->email);
         $expected->setKeyId($this->keyId);
         $expected->setKeyFingerprint($this->keyFingerprint);
-        $expected->setKeyExpireTime(new DateTime($this->keyExpireTime));
+        $expected->setKeyExpireTime(new DateTimeImmutable($this->keyExpireTime));
         $expected->setKeyData($this->keyData);
 
         $handler = $this->createHandler();
@@ -81,7 +81,7 @@ class WkdHandlerTest extends TestCase
         $expected->setEmail($this->email);
         $expected->setKeyId($this->keyId);
         $expected->setKeyFingerprint($this->keyFingerprint);
-        $expected->setKeyExpireTime(new DateTime($this->keyExpireTime));
+        $expected->setKeyExpireTime(new DateTimeImmutable($this->keyExpireTime));
         $expected->setKeyData($this->keyData);
         $expected->setUser($user);
 

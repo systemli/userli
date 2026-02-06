@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use DateTime;
+use DateTimeImmutable;
 
 interface UpdatedTimeInterface
 {
-    public function getUpdatedTime(): ?DateTime;
+    public function getUpdatedTime(): ?DateTimeImmutable;
 
-    public function setUpdatedTime(DateTime $updatedTime): void;
+    public function setUpdatedTime(DateTimeImmutable $updatedTime): void;
 
     public function updateUpdatedTime(): void;
 }

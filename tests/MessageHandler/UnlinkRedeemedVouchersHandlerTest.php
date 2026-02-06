@@ -9,7 +9,7 @@ use App\Entity\Voucher;
 use App\Message\UnlinkRedeemedVouchers;
 use App\MessageHandler\UnlinkRedeemedVouchersHandler;
 use App\Repository\VoucherRepository;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -19,19 +19,19 @@ class UnlinkRedeemedVouchersHandlerTest extends TestCase
     public function testUnlinksRedeemedVouchersOlderThanThreeMonths(): void
     {
         $voucher1 = new Voucher('A');
-        $voucher1->setRedeemedTime(new DateTime('-4 months')); // old
+        $voucher1->setRedeemedTime(new DateTimeImmutable('-4 months')); // old
         $user1 = new User('user1@example.org');
         $user1->setInvitationVoucher($voucher1);
         $voucher1->setInvitedUser($user1);
 
         $voucher2 = new Voucher('B');
-        $voucher2->setRedeemedTime(new DateTime('-5 months')); // old
+        $voucher2->setRedeemedTime(new DateTimeImmutable('-5 months')); // old
         $user2 = new User('user2@example.org');
         $user2->setInvitationVoucher($voucher2);
         $voucher2->setInvitedUser($user2);
 
         $voucherRecent = new Voucher('C');
-        $voucherRecent->setRedeemedTime(new DateTime('-1 month')); // recent (should not appear in result set)
+        $voucherRecent->setRedeemedTime(new DateTimeImmutable('-1 month')); // recent (should not appear in result set)
         $recentUser = new User('recent@example.org');
         $recentUser->setInvitationVoucher($voucherRecent);
         $voucherRecent->setInvitedUser($recentUser);
@@ -55,7 +55,7 @@ class UnlinkRedeemedVouchersHandlerTest extends TestCase
         // Because handler starts from repository->createQueryBuilder('voucher') we skip verifying alias there
         $qb->method('join')->willReturnSelf();
         $qb->method('where')->with($this->callback(static fn ($expr) => str_contains($expr, 'voucher.redeemedTime')))->willReturnSelf();
-        $qb->method('setParameter')->with('date', $this->callback(static fn ($dt) => $dt instanceof DateTime))->willReturnSelf();
+        $qb->method('setParameter')->with('date', $this->callback(static fn ($dt) => $dt instanceof DateTimeImmutable))->willReturnSelf();
         $qb->method('orderBy')->with('voucher.redeemedTime')->willReturnSelf();
 
         $query = $this->getMockBuilder(\Doctrine\ORM\AbstractQuery::class)

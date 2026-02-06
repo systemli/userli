@@ -9,7 +9,6 @@ use App\Enum\Roles;
 use App\Traits\DomainGuesserAwareTrait;
 use App\Validator\EmailAddress;
 use App\Validator\Lowercase;
-use DateTime;
 use Override;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -127,7 +126,6 @@ final class AliasAdmin extends Admin
     protected function preUpdate(object $object): void
     {
         assert($object instanceof Alias);
-        $object->setUpdatedTime(new DateTime());
         if (null === $object->getDestination()) {
             $object->setDestination($object->getUser()?->getEmail());
         }

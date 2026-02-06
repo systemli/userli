@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\User;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class UserLastLoginUpdateService
@@ -23,9 +23,7 @@ final readonly class UserLastLoginUpdateService
      */
     public function updateLastLogin(User $user): void
     {
-        $thisWeek = new DateTime();
-        $thisWeek->modify('monday this week');
-        $thisWeek->setTime(0, 0, 0);
+        $thisWeek = new DateTimeImmutable('monday this week midnight');
 
         // If the last login time is already set to this week, do not update it again
         if ($user->getLastLoginTime() && $user->getLastLoginTime()->getTimestamp() === $thisWeek->getTimestamp()) {
