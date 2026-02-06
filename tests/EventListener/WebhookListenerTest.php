@@ -30,4 +30,24 @@ class WebhookListenerTest extends TestCase
         $listener = new WebhookListener($dispatcher);
         $listener->onUserDeleted(new UserEvent($user));
     }
+
+    public function testOnUserReset(): void
+    {
+        $user = new User('test@example.org');
+        $dispatcher = $this->createMock(WebhookDispatcher::class);
+        $dispatcher->expects($this->once())->method('dispatchUserEvent')->with($user, WebhookEvent::USER_RESET);
+        $listener = new WebhookListener($dispatcher);
+        $listener->onUserReset(new UserEvent($user));
+    }
+
+    public function testGetSubscribedEvents(): void
+    {
+        $events = WebhookListener::getSubscribedEvents();
+        self::assertArrayHasKey(UserEvent::USER_CREATED, $events);
+        self::assertArrayHasKey(UserEvent::USER_DELETED, $events);
+        self::assertArrayHasKey(UserEvent::USER_RESET, $events);
+        self::assertEquals('onUserCreated', $events[UserEvent::USER_CREATED]);
+        self::assertEquals('onUserDeleted', $events[UserEvent::USER_DELETED]);
+        self::assertEquals('onUserReset', $events[UserEvent::USER_RESET]);
+    }
 }

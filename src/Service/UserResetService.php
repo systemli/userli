@@ -61,7 +61,7 @@ final readonly class UserResetService
         $this->manager->flush();
 
         if (!$user->isDeleted()) {
-            $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_RESTORED);
+            $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_RESET);
         }
 
         return $recoveryToken;

@@ -8,6 +8,7 @@ enum WebhookEvent: string
 {
     case USER_CREATED = 'user.created';
     case USER_DELETED = 'user.deleted';
+    case USER_RESET = 'user.reset';
 
     public static function all(): array
     {

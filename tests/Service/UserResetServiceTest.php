@@ -157,7 +157,7 @@ class UserResetServiceTest extends TestCase
             ->method('dispatch')
             ->with(
                 $this->callback(static fn ($event) => $event instanceof UserEvent && $event->getUser() === $user),
-                UserEvent::USER_RESTORED
+                UserEvent::USER_RESET
             );
 
         $service->resetUser($user, 'password123');
