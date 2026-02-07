@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Traits;
 
 use App\Entity\UpdatedTimeInterface;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,20 +14,20 @@ use Doctrine\ORM\Mapping as ORM;
 trait UpdatedTimeTrait
 {
     #[ORM\Column]
-    private ?DateTime $updatedTime = null;
+    private ?DateTimeImmutable $updatedTime = null;
 
-    public function getUpdatedTime(): ?DateTime
+    public function getUpdatedTime(): ?DateTimeImmutable
     {
         return $this->updatedTime;
     }
 
-    public function setUpdatedTime(DateTime $updatedTime): void
+    public function setUpdatedTime(DateTimeImmutable $updatedTime): void
     {
         $this->updatedTime = $updatedTime;
     }
 
     public function updateUpdatedTime(): void
     {
-        $this->setUpdatedTime(new DateTime());
+        $this->setUpdatedTime(new DateTimeImmutable());
     }
 }

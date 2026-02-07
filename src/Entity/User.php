@@ -28,7 +28,7 @@ use App\Traits\SaltTrait;
 use App\Traits\TwofactorBackupCodeTrait;
 use App\Traits\TwofactorTrait;
 use App\Traits\UpdatedTimeTrait;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
@@ -90,7 +90,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         $this->deleted = false;
         $this->passwordVersion = self::CURRENT_PASSWORD_VERSION;
         $this->passwordChangeRequired = false;
-        $currentDateTime = new DateTime();
+        $currentDateTime = new DateTimeImmutable();
         $this->creationTime = $currentDateTime;
         $this->updatedTime = $currentDateTime;
     }

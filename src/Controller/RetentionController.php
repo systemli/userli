@@ -8,7 +8,7 @@ use App\Dto\RetentionTouchUserDto;
 use App\Entity\User;
 use App\Enum\ApiScope;
 use App\Security\RequireApiScope;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,9 +31,9 @@ final class RetentionController extends AbstractController
         #[MapEntity(mapping: ['email' => 'email'])] User $user,
         #[MapRequestPayload] RetentionTouchUserDto $requestData,
     ): Response {
-        $now = new DateTime();
+        $now = new DateTimeImmutable();
         $time = $requestData->getTimestamp()
-            ? new DateTime('@'.$requestData->getTimestamp())
+            ? new DateTimeImmutable('@'.$requestData->getTimestamp())
             : $now;
 
         // Check that timestamp is not in future

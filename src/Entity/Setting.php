@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\SettingRepository;
+use App\Traits\UpdatedTimeTrait;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SettingRepository::class)]
 #[ORM\Table(name: 'settings')]
-#[ORM\HasLifecycleCallbacks]
 #[ORM\UniqueConstraint(name: 'UNIQ_SETTING_NAME', columns: ['name'])]
-class Setting
+class Setting implements UpdatedTimeInterface
 {
+    use UpdatedTimeTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -28,9 +30,6 @@ class Setting
 
     #[ORM\Column]
     private DateTimeImmutable $creationTime;
-
-    #[ORM\Column(nullable: true)]
-    private DateTimeImmutable $updatedTime;
 
     public function __construct(string $name, string $value)
     {
@@ -60,19 +59,8 @@ class Setting
         $this->value = $value;
     }
 
-    #[ORM\PreUpdate]
-    public function setUpdatedTime(): void
-    {
-        $this->updatedTime = new DateTimeImmutable();
-    }
-
     public function getCreationTime(): DateTimeImmutable
     {
         return $this->creationTime;
-    }
-
-    public function getUpdatedTime(): DateTimeImmutable
-    {
-        return $this->updatedTime;
     }
 }

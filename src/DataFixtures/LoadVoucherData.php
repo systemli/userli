@@ -6,7 +6,7 @@ namespace App\DataFixtures;
 
 use App\Entity\User;
 use App\Factory\VoucherFactory;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -39,12 +39,12 @@ final class LoadVoucherData extends Fixture implements FixtureGroupInterface, De
 
             $invitedUser = $manager->getReference(User::class, $userIds[array_rand($userIds)]);
             $voucher->setInvitedUser($invitedUser);
-            $voucher->setRedeemedTime(new DateTime());
+            $voucher->setRedeemedTime(new DateTimeImmutable());
 
             $invitedUser->setInvitationVoucher($voucher);
 
             if (random_int(0, 100) > 50) {
-                $voucher->setRedeemedTime(new DateTime(sprintf('-%d days', random_int(1, 100))));
+                $voucher->setRedeemedTime(new DateTimeImmutable(sprintf('-%d days', random_int(1, 100))));
             }
 
             $manager->persist($voucher);
@@ -60,7 +60,7 @@ final class LoadVoucherData extends Fixture implements FixtureGroupInterface, De
         $voucher = VoucherFactory::create($user);
         $invitedUser = $manager->getReference(User::class, $userIds[array_rand($userIds)]);
         $voucher->setInvitedUser($invitedUser);
-        $voucher->setRedeemedTime(new DateTime(sprintf('-%d days', 100)));
+        $voucher->setRedeemedTime(new DateTimeImmutable(sprintf('-%d days', 100)));
 
         $invitedUser->setInvitationVoucher($voucher);
         $manager->persist($voucher);

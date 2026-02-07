@@ -8,7 +8,7 @@ use App\Repository\VoucherRepository;
 use App\Traits\CreationTimeTrait;
 use App\Traits\IdTrait;
 use App\Traits\UserAwareTrait;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
 use Override;
@@ -24,7 +24,7 @@ class Voucher implements Stringable
     use UserAwareTrait;
 
     #[ORM\Column(nullable: true)]
-    protected ?DateTime $redeemedTime = null;
+    protected ?DateTimeImmutable $redeemedTime = null;
 
     #[ORM\Column(unique: true)]
     protected string $code;
@@ -35,16 +35,16 @@ class Voucher implements Stringable
     public function __construct(string $code)
     {
         $this->code = $code;
-        $currentDateTime = new DateTime();
+        $currentDateTime = new DateTimeImmutable();
         $this->creationTime = $currentDateTime;
     }
 
-    public function getRedeemedTime(): ?DateTime
+    public function getRedeemedTime(): ?DateTimeImmutable
     {
         return $this->redeemedTime;
     }
 
-    public function setRedeemedTime(?DateTime $redeemedTime): void
+    public function setRedeemedTime(?DateTimeImmutable $redeemedTime): void
     {
         $this->redeemedTime = $redeemedTime;
     }

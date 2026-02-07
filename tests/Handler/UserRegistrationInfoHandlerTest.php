@@ -9,7 +9,7 @@ use App\Handler\MailHandler;
 use App\Handler\UserRegistrationInfoHandler;
 use App\Repository\UserRepository;
 use App\Service\SettingsService;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -56,9 +56,9 @@ class UserRegistrationInfoHandlerTest extends TestCase
 
         $this->userRepository->expects(self::once())
             ->method('findUsersSince')
-            ->with(self::callback(static function (DateTime $date) {
+            ->with(self::callback(static function (DateTimeImmutable $date) {
                 // Verify that the date is approximately 7 days ago
-                $expectedDate = (new DateTime())->modify('-7 days');
+                $expectedDate = new DateTimeImmutable('-7 days');
                 $diff = abs($date->getTimestamp() - $expectedDate->getTimestamp());
 
                 return $diff < 5; // Allow 5 seconds tolerance
@@ -94,9 +94,9 @@ class UserRegistrationInfoHandlerTest extends TestCase
 
         $this->userRepository->expects(self::once())
             ->method('findUsersSince')
-            ->with(self::callback(static function (DateTime $date) use ($customTimeframe) {
+            ->with(self::callback(static function (DateTimeImmutable $date) use ($customTimeframe) {
                 // Verify that the date is approximately 30 days ago
-                $expectedDate = (new DateTime())->modify($customTimeframe);
+                $expectedDate = new DateTimeImmutable($customTimeframe);
                 $diff = abs($date->getTimestamp() - $expectedDate->getTimestamp());
 
                 return $diff < 5; // Allow 5 seconds tolerance

@@ -17,7 +17,7 @@ use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use DateInterval;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -74,14 +74,14 @@ final class RecoveryController extends AbstractController
             } else {
                 $recoveryStartTime = $user->getRecoveryStartTime();
 
-                if (null === $recoveryStartTime || new DateTime($this::PROCESS_EXPIRE) >= $recoveryStartTime) {
+                if (null === $recoveryStartTime || new DateTimeImmutable($this::PROCESS_EXPIRE) >= $recoveryStartTime) {
                     // Recovery process gets started
                     $user->updateRecoveryStartTime();
                     $this->manager->flush();
                     $this->eventDispatcher->dispatch(new UserEvent($user), RecoveryProcessEvent::NAME);
                     // We don't have to add two days here, they will get added in `RecoveryProcessMessageSender`
                     $recoveryActiveTime = $user->getRecoveryStartTime();
-                } elseif (new DateTime($this::PROCESS_DELAY) < $recoveryStartTime) {
+                } elseif (new DateTimeImmutable($this::PROCESS_DELAY) < $recoveryStartTime) {
                     // Recovery process is pending, but waiting period didn't elapse yet
                     $recoveryActiveTime = $recoveryStartTime->add(new DateInterval('P2D'));
                 } else {
@@ -264,7 +264,7 @@ final class RecoveryController extends AbstractController
     {
         if ($verifyTime) {
             $recoveryStartTime = $user->getRecoveryStartTime();
-            if (null === $recoveryStartTime || new DateTime($this::PROCESS_DELAY) < $recoveryStartTime) {
+            if (null === $recoveryStartTime || new DateTimeImmutable($this::PROCESS_DELAY) < $recoveryStartTime) {
                 return false;
             }
         }

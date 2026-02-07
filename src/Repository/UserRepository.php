@@ -8,7 +8,7 @@ use App\Entity\Domain;
 use App\Entity\User;
 use DateInterval;
 use DateInvalidOperationException;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityRepository;
 use Override;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -53,7 +53,7 @@ final class UserRepository extends EntityRepository implements PasswordUpgraderI
     /**
      * @return User[]
      */
-    public function findUsersSince(DateTime $dateTime): array
+    public function findUsersSince(DateTimeImmutable $dateTime): array
     {
         return $this->createQueryBuilder('u')
             ->where('u.creationTime >= :dateTime')
@@ -74,8 +74,8 @@ final class UserRepository extends EntityRepository implements PasswordUpgraderI
             ->setParameter('deleted', false);
 
         if ($days > 0) {
-            $dateTime = new DateTime();
-            $dateTime->sub(new DateInterval('P'.$days.'D'));
+            $dateTime = new DateTimeImmutable();
+            $dateTime = $dateTime->sub(new DateInterval('P'.$days.'D'));
 
             $qb->andWhere(
                 $qb->expr()->orX(

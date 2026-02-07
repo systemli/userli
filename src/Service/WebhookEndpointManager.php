@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\WebhookEndpoint;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class WebhookEndpointManager
@@ -38,7 +37,6 @@ final readonly class WebhookEndpointManager
         $endpoint->setSecret($secret);
         $endpoint->setEvents($events);
         $endpoint->setEnabled($enabled);
-        $endpoint->setUpdatedTime(new DateTimeImmutable());
 
         $this->em->flush();
     }

@@ -9,7 +9,7 @@ use App\Traits\CreationTimeTrait;
 use App\Traits\IdTrait;
 use App\Traits\NameTrait;
 use App\Traits\UpdatedTimeTrait;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Stringable;
@@ -28,7 +28,7 @@ class ReservedName implements UpdatedTimeInterface, Stringable
      */
     public function __construct()
     {
-        $currentDateTime = new DateTime();
+        $currentDateTime = new DateTimeImmutable();
         $this->creationTime = $currentDateTime;
         $this->updatedTime = $currentDateTime;
     }

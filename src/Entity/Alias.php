@@ -12,7 +12,7 @@ use App\Traits\IdTrait;
 use App\Traits\RandomTrait;
 use App\Traits\UpdatedTimeTrait;
 use App\Traits\UserAwareTrait;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\AssociationOverride;
 use Doctrine\ORM\Mapping\Index;
@@ -51,7 +51,7 @@ class Alias implements SoftDeletableInterface, UpdatedTimeInterface, Stringable
     {
         $this->deleted = false;
         $this->random = false;
-        $currentDateTime = new DateTime();
+        $currentDateTime = new DateTimeImmutable();
         $this->creationTime = $currentDateTime;
         $this->updatedTime = $currentDateTime;
     }

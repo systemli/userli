@@ -6,7 +6,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Domain;
 use App\Enum\Roles;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Override;
@@ -23,7 +23,7 @@ final class LoadRandomUserData extends AbstractUserData implements FixtureGroupI
 
         for ($i = 0; $i < 15000; ++$i) {
             $user = $this->buildUser($domain, sprintf('user-%d@%s', $i, $domain->getName()), $roles);
-            $user->setCreationTime(new DateTime(sprintf('-%s days', random_int(1, 25))));
+            $user->setCreationTime(new DateTimeImmutable(sprintf('-%s days', random_int(1, 25))));
 
             if (0 === $i % 20) {
                 $user->setDeleted(true);
