@@ -23,6 +23,25 @@ final class AliasRepository extends EntityRepository
     }
 
     /**
+     * Returns the destination addresses for a given alias source.
+     *
+     * Uses a scalar query to avoid hydrating full Alias entities.
+     *
+     * @return string[]
+     */
+    public function findDestinationsBySource(string $source): array
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a.destination')
+            ->where('a.source = :source')
+            ->andWhere('a.deleted = :deleted')
+            ->setParameter('source', $source)
+            ->setParameter('deleted', false)
+            ->getQuery()
+            ->getSingleColumnResult();
+    }
+
+    /**
      * @return array|Alias[]
      */
     public function findByUser(User $user, ?bool $random = null, ?bool $disableDomainFilter = false): array

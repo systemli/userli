@@ -17,6 +17,17 @@ final class DomainRepository extends EntityRepository
         return $this->findOneBy(['name' => $name]);
     }
 
+    public function existsByName(string $name): bool
+    {
+        return (bool) $this->createQueryBuilder('d')
+            ->select('1')
+            ->where('d.name = :name')
+            ->setParameter('name', $name)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function getDefaultDomain(): ?Domain
     {
         return $this->findOneBy([], ['id' => 'ASC']);
