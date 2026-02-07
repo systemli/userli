@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Entity\ApiToken;
 use App\Repository\ApiTokenRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class ApiTokenManager
@@ -34,8 +35,21 @@ final readonly class ApiTokenManager
         return $this->apiTokenRepository->findOneBy(['token' => $hashedToken]);
     }
 
+    /**
+     * Updates the last used time of the API token.
+     *
+     * The update is throttled to avoid unnecessary database writes on every request.
+     * The last used time is only updated if it has not been set yet or if the last
+     * update was more than 5 minutes ago.
+     */
     public function updateLastUsedTime(ApiToken $token): void
     {
+        $lastUsedTime = $token->getLastUsedTime();
+
+        if ($lastUsedTime !== null && $lastUsedTime >= new DateTimeImmutable('-5 minutes')) {
+            return;
+        }
+
         $this->apiTokenRepository->updateLastUsedTime($token);
     }
 

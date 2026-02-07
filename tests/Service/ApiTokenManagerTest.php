@@ -7,6 +7,7 @@ namespace App\Tests\Service;
 use App\Entity\ApiToken;
 use App\Repository\ApiTokenRepository;
 use App\Service\ApiTokenManager;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -84,9 +85,49 @@ class ApiTokenManagerTest extends TestCase
         $this->assertNull($result);
     }
 
-    public function testUpdateLastUsedTime(): void
+    public function testUpdateLastUsedTimeWhenNeverUsed(): void
     {
         $apiToken = new ApiToken('hashed-token', 'Test Token', ['dovecot']);
+
+        // lastUsedTime is null by default, so it should be updated
+        $this->apiTokenRepository
+            ->expects($this->once())
+            ->method('updateLastUsedTime')
+            ->with($apiToken);
+
+        $this->apiTokenManager->updateLastUsedTime($apiToken);
+    }
+
+    public function testUpdateLastUsedTimeWhenLastUsedMoreThanFiveMinutesAgo(): void
+    {
+        $apiToken = new ApiToken('hashed-token', 'Test Token', ['dovecot']);
+        $apiToken->setLastUsedTime(new DateTimeImmutable('-10 minutes'));
+
+        $this->apiTokenRepository
+            ->expects($this->once())
+            ->method('updateLastUsedTime')
+            ->with($apiToken);
+
+        $this->apiTokenManager->updateLastUsedTime($apiToken);
+    }
+
+    public function testUpdateLastUsedTimeSkippedWhenRecentlyUsed(): void
+    {
+        $apiToken = new ApiToken('hashed-token', 'Test Token', ['dovecot']);
+        $apiToken->setLastUsedTime(new DateTimeImmutable('-2 minutes'));
+
+        // Should NOT call repository since last used time is recent
+        $this->apiTokenRepository
+            ->expects($this->never())
+            ->method('updateLastUsedTime');
+
+        $this->apiTokenManager->updateLastUsedTime($apiToken);
+    }
+
+    public function testUpdateLastUsedTimeJustOverFiveMinutesAgo(): void
+    {
+        $apiToken = new ApiToken('hashed-token', 'Test Token', ['dovecot']);
+        $apiToken->setLastUsedTime(new DateTimeImmutable('-5 minutes -1 second'));
 
         $this->apiTokenRepository
             ->expects($this->once())
