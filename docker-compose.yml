@@ -67,7 +67,10 @@ services:
       USERLI_HOST: userli
       USERLI_API_ACCESS_TOKEN: 727eb7d3ad310bc510f5fa17c223572c
       DOVECOT_LUA_INSECURE: "true"
+    ports:
+      - "1143:143"
     volumes:
+      - vmail:/var/vmail
       - ./docker/dovecot/dovecot.conf:/etc/dovecot/dovecot.conf:ro
       - ./docker/dovecot/conf.d:/etc/dovecot/conf.d:ro
       - ./contrib/userli-dovecot-adapter.lua:/usr/local/bin/userli-dovecot-adapter.lua:ro
@@ -116,3 +119,4 @@ networks:
 
 volumes:
   mariadb:
+  vmail:
