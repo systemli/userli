@@ -49,11 +49,7 @@ class Alias implements SoftDeletableInterface, UpdatedTimeInterface, Stringable
      */
     public function __construct()
     {
-        $this->deleted = false;
-        $this->random = false;
-        $currentDateTime = new DateTimeImmutable();
-        $this->creationTime = $currentDateTime;
-        $this->updatedTime = $currentDateTime;
+        $this->creationTime = new DateTimeImmutable();
     }
 
     public function getSource(): ?string

@@ -39,7 +39,6 @@ class WebhookEndpoint implements UpdatedTimeInterface
         $this->url = $url;
         $this->secret = $secret;
         $this->creationTime = new DateTimeImmutable();
-        $this->updatedTime = new DateTimeImmutable();
     }
 
     public function getId(): ?int

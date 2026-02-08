@@ -28,9 +28,7 @@ class ReservedName implements UpdatedTimeInterface, Stringable
      */
     public function __construct()
     {
-        $currentDateTime = new DateTimeImmutable();
-        $this->creationTime = $currentDateTime;
-        $this->updatedTime = $currentDateTime;
+        $this->creationTime = new DateTimeImmutable();
     }
 
     #[Override]

@@ -29,6 +29,7 @@ use App\Traits\TwofactorBackupCodeTrait;
 use App\Traits\TwofactorTrait;
 use App\Traits\UpdatedTimeTrait;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
@@ -87,12 +88,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     public function __construct(string $email)
     {
         $this->email = $email;
-        $this->deleted = false;
         $this->passwordVersion = self::CURRENT_PASSWORD_VERSION;
         $this->passwordChangeRequired = false;
-        $currentDateTime = new DateTimeImmutable();
-        $this->creationTime = $currentDateTime;
-        $this->updatedTime = $currentDateTime;
+        $this->creationTime = new DateTimeImmutable();
+        $this->openPgpKeys = new ArrayCollection();
     }
 
     #[Override]

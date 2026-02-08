@@ -82,11 +82,10 @@ class UserTest extends TestCase
         self::assertEquals($user->getCreationTime()->format('Y-m-d'), $today->format('Y-m-d'));
     }
 
-    public function testHasUpdatedTimeSet(): void
+    public function testUpdatedTimeIsNullBeforePersist(): void
     {
         $user = new User('test@example.org');
-        $today = new DateTimeImmutable();
-        self::assertEquals($user->getUpdatedTime()->format('Y-m-d'), $today->format('Y-m-d'));
+        self::assertNull($user->getUpdatedTime());
     }
 
     public function testTotp(): void
