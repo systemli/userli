@@ -1,5 +1,36 @@
 # Changelog
 
+## 6.1.0 (2026.02.10)
+
+### Features and Improvements
+
+- 🚸 Improve Error Handling in Dovecot Lua Adapter (#1034)
+- ✨ Add configurable Redis cache support via REDIS_URL (#1033)
+- ⚡ Add caching for Dovecot userdb lookup API (#1027)
+- ⚡ Add caching for Dovecot userdb lookup API (#1027)
+- ⚡ Use lightweight queries and repository methods for Postfix lookups (#1014)
+- ⚡ Add application-level caching for Postfix API endpoints (#1013)
+- ⚡ Throttle API token lastUsedTime updates to every 5 minutes (#1012)
+
+### Technical Changes
+
+- ✅ Add unit tests for 16 previously uncovered classes (#1029)
+- 👷 Add Rector CI workflow that comments on PRs with diffs (#1025)
+- ♻️ Modernize codebase for PHP 8.4 (#1024)
+- ♻️ Extract business logic from RecoveryController into RecoveryHandler (#1023)
+- ♻️ Modernize Event classes: use readonly constructor params, remove traits and setters (#1022)
+- ⬆️ Upgrade PHPUnit from 9.x to 12.x and modernize test suite (#1021)
+- ⬆️ Upgrade scheb/2fa-* from v7 to v8 (#1019)
+- ⬆️ Upgrade Doctrine bundles to latest major versions (#1018)
+- ⬆️ Upgrade Doctrine ORM from 2.x to 3.x (#1017)
+- ♻️ Clean up entity constructors: remove redundant defaults and fix OpenPgpKeys init (#1016)
+- ♻️ Migrate all entities from DateTime to DateTimeImmutable (#1015)
+
+### Bug Fixes
+
+- 🐛 Fix Xdebug blocking all HTTP requests in dev environment (#1032)
+- 🐛 Restore PHPUnit coverage and test result reporting for SonarCloud (#1028)
+
 ## 6.0.0 (2026.02.06)
 
 - **BREAKING CHANGE: This release needs at least PHP 8.4**
