@@ -6,14 +6,20 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Entity\Voucher;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Criteria;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends EntityRepository<Voucher>
+ * @extends ServiceEntityRepository<Voucher>
  */
-final class VoucherRepository extends EntityRepository
+final class VoucherRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Voucher::class);
+    }
+
     /**
      * Finds a voucher by its code.
      */
@@ -27,7 +33,7 @@ final class VoucherRepository extends EntityRepository
      */
     public function countRedeemedVouchers(): int
     {
-        return $this->matching(Criteria::create(true)->where(Criteria::expr()->neq('redeemedTime', null)))->count();
+        return $this->matching(Criteria::create()->where(Criteria::expr()->neq('redeemedTime', null)))->count();
     }
 
     /**
@@ -35,7 +41,7 @@ final class VoucherRepository extends EntityRepository
      */
     public function countUnredeemedVouchers(): int
     {
-        return $this->matching(Criteria::create(true)->where(Criteria::expr()->eq('redeemedTime', null)))->count();
+        return $this->matching(Criteria::create()->where(Criteria::expr()->eq('redeemedTime', null)))->count();
     }
 
     /**
@@ -46,7 +52,7 @@ final class VoucherRepository extends EntityRepository
     {
         $criteria = $redeemed ? Criteria::expr()->neq('redeemedTime', null) : Criteria::expr()->eq('redeemedTime', null);
 
-        return $this->matching(Criteria::create(true)
+        return $this->matching(Criteria::create()
             ->where(Criteria::expr()->eq('user', $user))
             ->andWhere($criteria))
             ->count();

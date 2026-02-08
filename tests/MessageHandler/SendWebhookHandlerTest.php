@@ -11,7 +11,7 @@ use App\Message\SendWebhook;
 use App\MessageHandler\SendWebhookHandler;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
+use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -31,7 +31,7 @@ class SendWebhookHandlerTest extends TestCase
         $delivery = $this->createDelivery();
         $id = (string) $delivery->getId();
 
-        $repo = $this->createMock(ObjectRepository::class);
+        $repo = $this->createMock(EntityRepository::class);
         $repo->method('find')->with($id)->willReturn($delivery);
         $repo->method('getClassName')->willReturn(WebhookDelivery::class);
 
@@ -61,7 +61,7 @@ class SendWebhookHandlerTest extends TestCase
         $delivery = $this->createDelivery();
         $id = (string) $delivery->getId();
 
-        $repo = $this->createMock(ObjectRepository::class);
+        $repo = $this->createMock(EntityRepository::class);
         $repo->method('find')->with($id)->willReturn($delivery);
         $repo->method('getClassName')->willReturn(WebhookDelivery::class);
 
@@ -84,7 +84,7 @@ class SendWebhookHandlerTest extends TestCase
 
     public function testNoDeliveryFoundEarlyReturn(): void
     {
-        $repo = $this->createMock(ObjectRepository::class);
+        $repo = $this->createMock(EntityRepository::class);
         $repo->method('find')->willReturn(null);
         $repo->method('getClassName')->willReturn(WebhookDelivery::class);
 

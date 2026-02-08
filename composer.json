@@ -7,7 +7,7 @@
     "php": "^8.4",
     "doctrine/doctrine-bundle": "^2.7",
     "doctrine/doctrine-migrations-bundle": "*",
-    "doctrine/orm": "^2.13",
+    "doctrine/orm": "^3.4",
     "endroid/qr-code": "^6.0",
     "nelmio/security-bundle": "^3.0",
     "pear/crypt_gpg": "^1.6",

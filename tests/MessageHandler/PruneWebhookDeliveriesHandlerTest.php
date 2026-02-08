@@ -17,7 +17,7 @@ class PruneWebhookDeliveriesHandlerTest extends TestCase
     {
         $message = new PruneWebhookDeliveries();
 
-        $query = $this->createMock(\Doctrine\ORM\AbstractQuery::class);
+        $query = $this->createMock(\Doctrine\ORM\Query::class);
         $query->expects($this->once())
             ->method('execute')
             ->willReturn(5);

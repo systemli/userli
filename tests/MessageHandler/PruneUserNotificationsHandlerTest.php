@@ -19,7 +19,7 @@ class PruneUserNotificationsHandlerTest extends TestCase
         $message = new PruneUserNotifications();
 
         // We'll simulate 2 deleted rows returned by execute()
-        $query = $this->createMock(\Doctrine\ORM\AbstractQuery::class);
+        $query = $this->createMock(\Doctrine\ORM\Query::class);
         $query->expects($this->once())->method('execute')->willReturn(2);
 
         $qb = $this->getMockBuilder(\Doctrine\ORM\QueryBuilder::class)

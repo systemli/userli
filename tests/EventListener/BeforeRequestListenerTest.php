@@ -9,7 +9,7 @@ use App\Entity\Filter\DomainFilter;
 use App\Entity\User;
 use App\EventListener\BeforeRequestListener;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\FilterCollection;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 class BeforeRequestListenerTest extends TestCase
 {
     private UserRepository $repo;
-    private EntityManager $manager;
+    private EntityManagerInterface $manager;
     private Security $security;
     private BeforeRequestListener $listener;
 
@@ -27,9 +27,7 @@ class BeforeRequestListenerTest extends TestCase
         $this->repo = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->manager = $this->getMockBuilder(EntityManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->manager = $this->createMock(EntityManagerInterface::class);
         $this->manager->method('getRepository')->willReturn($this->repo);
         $this->security = $this->getMockBuilder(Security::class)
             ->disableOriginalConstructor()
