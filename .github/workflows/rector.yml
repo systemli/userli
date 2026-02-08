@@ -1,0 +1,119 @@
+name: Rector
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "rector.php"
+      - "composer.lock"
+      - ".github/workflows/rector.yml"
+
+jobs:
+  rector:
+    runs-on: ubuntu-24.04
+    name: Rector Dry-Run
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: openssl, sodium
+          tools: composer
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-scripts
+
+      - name: Warmup Symfony container cache
+        env:
+          DATABASE_URL: sqlite:///%kernel.project_dir%/var/test.db
+        run: bin/console cache:warmup --env=dev
+
+      - name: Run Rector
+        id: rector
+        run: |
+          set +e
+          OUTPUT=$(bin/rector process --dry-run --no-ansi 2>&1)
+          EXIT_CODE=$?
+          set -e
+
+          if [ $EXIT_CODE -eq 0 ]; then
+            echo "✅ Rector found no issues"
+            echo "has_diff=false" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Rector found code that needs to be refactored:"
+            echo "$OUTPUT"
+            echo "has_diff=true" >> $GITHUB_OUTPUT
+            {
+              echo "diff<<EOF"
+              echo "$OUTPUT"
+              echo "EOF"
+            } >> $GITHUB_OUTPUT
+          fi
+
+      - name: Find existing comment
+        if: github.event_name == 'pull_request'
+        uses: peter-evans/find-comment@v3
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: "<!-- rector-diff-comment -->"
+
+      - name: Delete comment on success
+        if: github.event_name == 'pull_request' && steps.rector.outputs.has_diff == 'false' && steps.find-comment.outputs.comment-id != ''
+        uses: actions/github-script@v8
+        with:
+          script: |
+            await github.rest.issues.deleteComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: ${{ steps.find-comment.outputs.comment-id }}
+            });
+
+      - name: Post or update comment on failure
+        if: github.event_name == 'pull_request' && steps.rector.outputs.has_diff == 'true'
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          edit-mode: replace
+          body: |
+            <!-- rector-diff-comment -->
+            ## ❌ Rector Diff Detected
+
+            Rector found code that can be automatically refactored.
+
+            <details>
+            <summary>Rector output</summary>
+
+            ```diff
+            ${{ steps.rector.outputs.diff }}
+            ```
+
+            </details>
+
+            ### How to fix
+
+            Run Rector locally and commit the changes:
+            ```bash
+            composer rector-fix
+            ```
+
+      - name: Fail on diff
+        if: steps.rector.outputs.has_diff == 'true'
+        run: exit 1
