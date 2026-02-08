@@ -6,6 +6,7 @@ namespace App\Tests\Handler;
 
 use App\Entity\User;
 use App\Enum\RecoveryStatus;
+use App\Exception\RecoveryException;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryHandler;
 use App\Handler\RecoveryTokenHandler;
@@ -13,7 +14,6 @@ use App\Helper\PasswordUpdater;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -150,7 +150,7 @@ class RecoveryHandlerTest extends TestCase
 
         $handler = $this->createHandler();
 
-        $this->expectException(Exception::class);
+        $this->expectException(RecoveryException::class);
         $this->expectExceptionMessage('Invalid email or recovery token');
         $handler->resetPassword('unknown@example.org', 'token', 'newpassword');
     }
@@ -164,7 +164,7 @@ class RecoveryHandlerTest extends TestCase
 
         $handler = $this->createHandler();
 
-        $this->expectException(Exception::class);
+        $this->expectException(RecoveryException::class);
         $this->expectExceptionMessage('Invalid email or recovery token');
         $handler->resetPassword('test@example.org', 'wrong-token', 'newpassword');
     }

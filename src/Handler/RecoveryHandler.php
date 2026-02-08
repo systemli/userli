@@ -8,11 +8,12 @@ use App\Dto\RecoveryResult;
 use App\Entity\User;
 use App\Enum\RecoveryStatus;
 use App\Event\UserEvent;
+use App\Exception\RecoveryException;
 use App\Helper\PasswordUpdater;
 use DateInterval;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
+use LogicException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final readonly class RecoveryHandler
@@ -32,8 +33,6 @@ final readonly class RecoveryHandler
 
     /**
      * Start or continue the recovery process for the given email and token.
-     *
-     * @throws Exception
      */
     public function startRecovery(string $email, string $recoveryToken): RecoveryResult
     {
@@ -78,14 +77,14 @@ final readonly class RecoveryHandler
      *
      * Returns the new recovery token that the user needs to save.
      *
-     * @throws Exception
+     * @throws RecoveryException
      */
     public function resetPassword(string $email, string $recoveryToken, string $newPassword): string
     {
         $user = $this->findUserByEmail($email);
 
         if (null === $user || !$this->verifyRecoveryToken($user, $recoveryToken, true)) {
-            throw new Exception('Invalid email or recovery token');
+            throw new RecoveryException('Invalid email or recovery token');
         }
 
         $this->passwordUpdater->updatePassword($user, $newPassword);
@@ -104,7 +103,7 @@ final readonly class RecoveryHandler
 
         $this->recoveryTokenHandler->create($user);
         if (null === $newRecoveryToken = $user->getPlainRecoveryToken()) {
-            throw new Exception('PlainRecoveryToken should not be null');
+            throw new LogicException('PlainRecoveryToken should not be null');
         }
 
         // Reset twofactor settings
@@ -123,8 +122,6 @@ final readonly class RecoveryHandler
 
     /**
      * Verify that the recovery token is valid for the given email.
-     *
-     * @throws Exception
      */
     public function verifyRecoveryToken(string|User $emailOrUser, string $recoveryToken, bool $verifyTime = false): bool
     {
