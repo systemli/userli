@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
-use App\Event\RecoveryProcessEvent;
 use App\Event\UserEvent;
 use App\Sender\RecoveryProcessMessageSender;
-use Exception;
 use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -27,19 +25,13 @@ final readonly class RecoveryProcessListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            RecoveryProcessEvent::NAME => 'onRecoveryProcessStarted',
+            UserEvent::RECOVERY_PROCESS_STARTED => 'onRecoveryProcessStarted',
         ];
     }
 
-    /**
-     * @throws Exception
-     */
     public function onRecoveryProcessStarted(UserEvent $event): void
     {
-        if (null === $user = $event->getUser()) {
-            throw new Exception('User should not be null');
-        }
-
+        $user = $event->getUser();
         $locale = $this->request->getSession()->get('_locale', $this->defaultLocale);
 
         $this->sender->send($user, $locale);

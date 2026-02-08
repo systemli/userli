@@ -5,23 +5,18 @@ declare(strict_types=1);
 namespace App\Event;
 
 use App\Entity\Alias;
-use App\Traits\AliasAwareTrait;
 use Symfony\Contracts\EventDispatcher\Event;
 
-/**
- * Class AliasCreatedEvent.
- */
 final class AliasCreatedEvent extends Event
 {
-    use AliasAwareTrait;
-
     public const NAME = 'alias.custom_created';
 
-    /**
-     * Constructor.
-     */
-    public function __construct(Alias $alias)
+    public function __construct(private readonly Alias $alias)
     {
-        $this->alias = $alias;
+    }
+
+    public function getAlias(): Alias
+    {
+        return $this->alias;
     }
 }

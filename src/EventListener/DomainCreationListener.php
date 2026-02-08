@@ -9,7 +9,6 @@ use App\Entity\Domain;
 use App\Event\DomainCreatedEvent;
 use App\Handler\WkdHandler;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -19,18 +18,11 @@ final class DomainCreationListener implements EventSubscriberInterface
     {
     }
 
-    /**
-     * @throws Exception
-     */
     public function onDomainCreated(DomainCreatedEvent $event): void
     {
         $domain = $event->getDomain();
         $defaultDomain = $this->manager->getRepository(Domain::class)->getDefaultDomain();
         $adminAddress = 'postmaster@'.$defaultDomain;
-
-        if (null === $domain) {
-            throw new Exception("Domain shouldn't be null");
-        }
 
         if ($domain !== $defaultDomain) {
             // create postmaster alias
