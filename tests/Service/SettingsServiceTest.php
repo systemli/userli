@@ -9,6 +9,7 @@ use App\Repository\SettingRepository;
 use App\Service\SettingsConfigService;
 use App\Service\SettingsService;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -141,18 +142,28 @@ class SettingsServiceTest extends TestCase
             ->method('setValue')
             ->with('updated_value');
 
+        $callCount = 0;
+        $expectedArgs = [
+            ['name' => 'setting1'],
+            ['name' => 'setting2'],
+            ['name' => 'setting3'],
+        ];
+        $returnValues = [
+            null,              // setting1 doesn't exist
+            $existingSetting,  // setting2 exists
+            null,              // setting3 doesn't exist
+        ];
+
         $this->repository->expects($this->exactly(3))
             ->method('findOneBy')
-            ->withConsecutive(
-                [['name' => 'setting1']],
-                [['name' => 'setting2']],
-                [['name' => 'setting3']]
-            )
-            ->willReturnOnConsecutiveCalls(
-                null,              // setting1 doesn't exist
-                $existingSetting,  // setting2 exists
-                null               // setting3 doesn't exist
-            );
+            ->willReturnCallback(static function (array $criteria) use (&$callCount, $expectedArgs, $returnValues) {
+                $expected = $expectedArgs[$callCount];
+                $returnValue = $returnValues[$callCount];
+                ++$callCount;
+                self::assertSame($expected, $criteria);
+
+                return $returnValue;
+            });
 
         // Should persist 2 new settings (setting1 and setting3), setting2 already exists
         $this->entityManager->expects($this->exactly(2))
@@ -211,9 +222,7 @@ class SettingsServiceTest extends TestCase
         $this->settingsService->clearCache();
     }
 
-    /**
-     * @dataProvider valueToStringProvider
-     */
+    #[DataProvider('valueToStringProvider')]
     public function testValueToStringConversion(mixed $input, string $expected): void
     {
         $this->repository->expects($this->once())
@@ -235,7 +244,7 @@ class SettingsServiceTest extends TestCase
         $this->settingsService->set('test_setting', $input);
     }
 
-    public function valueToStringProvider(): array
+    public static function valueToStringProvider(): array
     {
         return [
             'null value' => [null, ''],
@@ -384,9 +393,7 @@ class SettingsServiceTest extends TestCase
         self::assertTrue($result);
     }
 
-    /**
-     * @dataProvider booleanConversionProvider
-     */
+    #[DataProvider('booleanConversionProvider')]
     public function testBooleanStringConversion(mixed $input, bool $expected): void
     {
         $reflection = new ReflectionClass($this->settingsService);
@@ -405,7 +412,7 @@ class SettingsServiceTest extends TestCase
         self::assertIsBool($result);
     }
 
-    public function booleanConversionProvider(): array
+    public static function booleanConversionProvider(): array
     {
         return [
             'string true' => ['true', true],

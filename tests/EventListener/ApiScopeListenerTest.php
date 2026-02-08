@@ -8,6 +8,7 @@ use App\Entity\ApiToken;
 use App\Enum\ApiScope;
 use App\EventListener\ApiScopeListener;
 use App\Security\RequireApiScope;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
@@ -204,9 +205,7 @@ class ApiScopeListenerTest extends TestCase
         $this->listener->onKernelControllerArguments($event);
     }
 
-    /**
-     * @dataProvider pathInfoProvider
-     */
+    #[DataProvider('pathInfoProvider')]
     public function testCorrectlyIdentifiesApiPaths(string $pathInfo, bool $shouldProcess): void
     {
         $request = new Request();

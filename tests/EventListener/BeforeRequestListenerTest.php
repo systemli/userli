@@ -11,6 +11,7 @@ use App\EventListener\BeforeRequestListener;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\FilterCollection;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -36,9 +37,7 @@ class BeforeRequestListenerTest extends TestCase
         $this->listener = new BeforeRequestListener($this->manager, $this->security);
     }
 
-    /**
-     * @dataProvider provider
-     */
+    #[DataProvider('provider')]
     public function testGetNonAdminUser(?User $user, bool $isAdmin, ?User $returnValue): void
     {
         $this->security->method('getUser')->willReturn($user);
@@ -48,9 +47,12 @@ class BeforeRequestListenerTest extends TestCase
         $this->assertEquals($returnValue, $this->listener->getNonAdminUser());
     }
 
-    public function provider(): array
+    public static function provider(): array
     {
-        $user = $this->getUser();
+        $domain = new Domain();
+        $domain->setId(1);
+        $user = new User('test@example.org');
+        $user->setDomain($domain);
 
         return [
             [null, false, null],   // not logged in

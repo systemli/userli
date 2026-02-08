@@ -11,6 +11,7 @@ use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
 use App\Security\UserProvider;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
@@ -88,11 +89,16 @@ class UserProviderTest extends TestCase
         self::assertEquals($user, $reloadedUser);
     }
 
-    /**
-     * @dataProvider userProvider
-     */
-    public function testRefreshUserException(UserInterface $user, $exception): void
+    #[DataProvider('userProvider')]
+    public function testRefreshUserException(string $userType, string $exception): void
     {
+        if ($userType === 'mock') {
+            $user = $this->createMock(UserInterface::class);
+        } else {
+            $user = new User('test@example.org');
+            $user->setId(1);
+        }
+
         $userRepository = $this->getMockBuilder(UserRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -120,14 +126,11 @@ class UserProviderTest extends TestCase
         $provider->refreshUser($user);
     }
 
-    public function userProvider(): array
+    public static function userProvider(): array
     {
-        $user = new User('test@example.org');
-        $user->setId(1);
-
         return [
-            [$this->getMockBuilder(UserInterface::class)->getMock(), UnsupportedUserException::class],
-            [$user, UserNotFoundException::class],
+            ['mock', UnsupportedUserException::class],
+            ['real', UserNotFoundException::class],
         ];
     }
 

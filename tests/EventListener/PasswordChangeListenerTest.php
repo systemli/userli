@@ -10,6 +10,7 @@ use App\Event\UserEvent;
 use App\EventListener\PasswordChangeListener;
 use App\Repository\UserNotificationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -104,9 +105,7 @@ class PasswordChangeListenerTest extends TestCase
         $this->listener->onRequest($event);
     }
 
-    /**
-     * @dataProvider passwordRoutesProvider
-     */
+    #[DataProvider('passwordRoutesProvider')]
     public function testAllowsAccessToPasswordRoutes(string $routeName): void
     {
         $user = new User('test@example.org');
@@ -128,7 +127,7 @@ class PasswordChangeListenerTest extends TestCase
         $this->listener->onRequest($event);
     }
 
-    public function passwordRoutesProvider(): array
+    public static function passwordRoutesProvider(): array
     {
         return [
             ['account_password'],

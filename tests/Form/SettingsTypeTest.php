@@ -7,6 +7,7 @@ namespace App\Tests\Form;
 use App\Form\SettingsType;
 use App\Service\SettingsConfigService;
 use App\Service\SettingsService;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -74,9 +75,7 @@ class SettingsTypeTest extends TestCase
         $this->formType->buildForm($this->formBuilder, []);
     }
 
-    /**
-     * @dataProvider fieldTypeProvider
-     */
+    #[DataProvider('fieldTypeProvider')]
     public function testDetermineFieldType(string $type, array $validation, string $expectedClass): void
     {
         $reflection = new ReflectionClass($this->formType);
@@ -88,7 +87,7 @@ class SettingsTypeTest extends TestCase
         self::assertEquals($expectedClass, $result);
     }
 
-    public function fieldTypeProvider(): array
+    public static function fieldTypeProvider(): array
     {
         return [
             'string type' => ['string', [], TextType::class],
@@ -104,9 +103,7 @@ class SettingsTypeTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider constraintProvider
-     */
+    #[DataProvider('constraintProvider')]
     public function testBuildConstraints(array $validation, string $type, int $expectedCount): void
     {
         $reflection = new ReflectionClass($this->formType);
@@ -118,7 +115,7 @@ class SettingsTypeTest extends TestCase
         self::assertCount($expectedCount, $result);
     }
 
-    public function constraintProvider(): array
+    public static function constraintProvider(): array
     {
         return [
             'string type default' => [[], 'string', 1], // NotBlank constraint for string types

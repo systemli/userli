@@ -6,6 +6,7 @@ namespace App\Tests\Validator;
 
 use App\Validator\EmailLength;
 use App\Validator\EmailLengthValidator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
@@ -68,9 +69,7 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    /**
-     * @dataProvider getShortLongAddresses
-     */
+    #[DataProvider('getShortLongAddresses')]
     public function testValidateShortLongEmailLength(string $address, string $violationMessage, string $operator, int $limit): void
     {
         $this->validator->validate($address, new EmailLength($this->minLength, $this->maxLength));
@@ -79,11 +78,11 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    public function getShortLongAddresses(): array
+    public static function getShortLongAddresses(): array
     {
         return [
-            ['s@'.$this->domain, 'registration.email-too-short', 'min', $this->minLength],
-            ['thisaddressiswaytoolong@'.$this->domain, 'registration.email-too-long', 'max', $this->maxLength],
+            ['s@example.org', 'registration.email-too-short', 'min', 3],
+            ['thisaddressiswaytoolong@example.org', 'registration.email-too-long', 'max', 10],
         ];
     }
 }

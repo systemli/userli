@@ -46,8 +46,11 @@ class DomainVoterTest extends TestCase
         $security = $this->getMockBuilder(Security::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $security->method('isGranted')->will(
-            $this->onConsecutiveCalls(false, true)
+        $isGrantedCallCount = 0;
+        $security->method('isGranted')->willReturnCallback(
+            static function () use (&$isGrantedCallCount) {
+                return [false, true][$isGrantedCallCount++];
+            }
         );
         $security->method('getUser')->willReturn($user);
         $this->voter = new DomainVoter($security, $manager);

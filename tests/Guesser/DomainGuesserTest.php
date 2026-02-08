@@ -9,7 +9,6 @@ use App\Guesser\DomainGuesser;
 use App\Repository\DomainRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 
 class DomainGuesserTest extends TestCase
 {
@@ -26,9 +25,6 @@ class DomainGuesserTest extends TestCase
         $this->guesser = new DomainGuesser($this->getManager());
     }
 
-    /**
-     * @return PHPUnit_Framework_MockObject_MockObject|EntityManagerInterface
-     */
     private function getManager(): EntityManagerInterface
     {
         $repository = $this->getMockBuilder(DomainRepository::class)

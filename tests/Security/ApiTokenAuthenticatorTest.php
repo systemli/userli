@@ -8,6 +8,7 @@ use App\Entity\ApiToken;
 use App\Security\ApiTokenAuthenticator;
 use App\Security\Badge\ApiTokenBadge;
 use App\Service\ApiTokenManager;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,9 +31,7 @@ class ApiTokenAuthenticatorTest extends TestCase
         $this->authenticator = new ApiTokenAuthenticator($this->apiTokenManager);
     }
 
-    /**
-     * @dataProvider supportsProvider
-     */
+    #[DataProvider('supportsProvider')]
     public function testSupports(string $pathInfo, bool $expected): void
     {
         $request = new Request();
@@ -283,9 +282,7 @@ class ApiTokenAuthenticatorTest extends TestCase
         $this->assertEquals('No API token provided', $content['error']);
     }
 
-    /**
-     * @dataProvider extractTokenProvider
-     */
+    #[DataProvider('extractTokenProvider')]
     public function testExtractToken(array $headers, ?string $expectedToken): void
     {
         $request = new Request();

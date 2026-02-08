@@ -15,6 +15,7 @@ use App\Repository\UserRepository;
 use App\Validator\EmailAddress;
 use App\Validator\EmailAddressValidator;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -47,7 +48,7 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $userRepository->method('findOneBy')->willReturnMap([
-            [['email' => $this->userUsed], null, true, new User($this->userUsed)],
+            [['email' => $this->userUsed], null, new User($this->userUsed)],
         ]);
         $reservedNameRepository = $this->getMockBuilder(ReservedNameRepository::class)
             ->disableOriginalConstructor()
@@ -63,7 +64,7 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
             [User::class, $userRepository],
         ]);
 
-        return new EmailAddressValidator($manager, $this->domain);
+        return new EmailAddressValidator($manager);
     }
 
     public function testExpectsEmailAddressType(): void
@@ -92,25 +93,21 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
         $this->validator->validate(new stdClass(), new EmailAddress());
     }
 
-    /**
-     * @dataProvider getValidNewAddresses
-     */
+    #[DataProvider('getValidNewAddresses')]
     public function testValidateValidNewEmailAddress(string $address): void
     {
         $this->validator->validate($address, new EmailAddress());
         $this->assertNoViolation();
     }
 
-    public function getValidNewAddresses(): array
+    public static function getValidNewAddresses(): array
     {
         return [
-            [$this->addressNew],
+            ['new@example.org'],
         ];
     }
 
-    /**
-     * @dataProvider getInvalidNewAddresses
-     */
+    #[DataProvider('getInvalidNewAddresses')]
     public function testValidateInvalidNewEmailAddress(string $address, string $violationMessage): void
     {
         $this->validator->validate($address, new EmailAddress());
@@ -118,18 +115,16 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    public function getInvalidNewAddresses(): array
+    public static function getInvalidNewAddresses(): array
     {
         return [
-            ['!nvalid@'.$this->domain, 'registration.email-unexpected-characters'],
+            ['!nvalid@example.org', 'registration.email-unexpected-characters'],
             ['new@nonexistant.org', 'registration.email-domain-not-exists'],
-            // ['new@'.$this->extraDomain, 'registration.email-domain-invalid'],
+            // ['new@extra.org', 'registration.email-domain-invalid'],
         ];
     }
 
-    /**
-     * @dataProvider getUsedAddresses
-     */
+    #[DataProvider('getUsedAddresses')]
     public function testValidateUsedEmailAddress(string $address, string $violationMessage): void
     {
         $this->validator->validate($address, new EmailAddress());
@@ -137,12 +132,12 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    public function getUsedAddresses(): array
+    public static function getUsedAddresses(): array
     {
         return [
-            [$this->userUsed, 'registration.email-already-taken'],
-            [$this->aliasUsed, 'registration.email-already-taken'],
-            ['reserved@'.$this->domain, 'registration.email-already-taken'],
+            ['user@example.org', 'registration.email-already-taken'],
+            ['alias@example.org', 'registration.email-already-taken'],
+            ['reserved@example.org', 'registration.email-already-taken'],
         ];
     }
 }

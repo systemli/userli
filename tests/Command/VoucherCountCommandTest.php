@@ -30,9 +30,12 @@ class VoucherCountCommandTest extends TestCase
             ]
         );
 
+        $voucherCallCount = 0;
         $voucherRepository = $this->createMock(VoucherRepository::class);
         $voucherRepository->method('countVouchersByUser')
-            ->willReturnOnConsecutiveCalls(2, 5);
+            ->willReturnCallback(static function () use (&$voucherCallCount) {
+                return [2, 5][$voucherCallCount++];
+            });
 
         $manager = $this->createMock(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturnMap([

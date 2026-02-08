@@ -9,8 +9,8 @@ use App\Event\LoginEvent;
 use App\EventListener\LoginListener;
 use App\Handler\MailCryptKeyHandler;
 use App\Service\UserLastLoginUpdateService;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -51,9 +51,7 @@ class LoginListenerTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider provider
-     */
+    #[DataProvider('provider')]
     public function testOnSecurityInteractiveLogin(User $user, bool $shouldCreateMailCryptKey): void
     {
         if ($shouldCreateMailCryptKey) {
@@ -69,9 +67,6 @@ class LoginListenerTest extends TestCase
         $this->listenerMailCrypt->onSecurityInteractiveLogin($event);
     }
 
-    /**
-     * @return PHPUnit_Framework_MockObject_MockObject|InteractiveLoginEvent
-     */
     private function getInteractiveEvent(User $user): InteractiveLoginEvent
     {
         $request = new Request([], ['_password' => 'password']);
@@ -91,9 +86,7 @@ class LoginListenerTest extends TestCase
         return $event;
     }
 
-    /**
-     * @dataProvider provider
-     */
+    #[DataProvider('provider')]
     public function testOnAuthenticationHandlerSuccess(User $user, bool $shouldCreateMailCryptKey): void
     {
         if ($shouldCreateMailCryptKey) {
@@ -109,9 +102,6 @@ class LoginListenerTest extends TestCase
         $this->listenerMailCrypt->onAuthenticationHandlerSuccess($event);
     }
 
-    /**
-     * @return PHPUnit_Framework_MockObject_MockObject|LoginEvent
-     */
     private function getLoginEvent(User $user): LoginEvent
     {
         $event = $this->getMockBuilder(LoginEvent::class)
