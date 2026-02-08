@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 final class UserDeleteType extends AbstractType
 {
-    public const NAME = 'delete_user';
+    public const string NAME = 'delete_user';
 
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void

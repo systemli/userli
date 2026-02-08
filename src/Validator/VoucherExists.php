@@ -16,7 +16,7 @@ final class VoucherExists extends Constraint
     public function __construct(?bool $exists = null, ?array $groups = null, mixed $payload = null)
     {
         if (null === $exists) {
-            throw new MissingOptionsException(sprintf('Option "exists" must be given for constraint %s', __CLASS__), ['exists']);
+            throw new MissingOptionsException(sprintf('Option "exists" must be given for constraint %s', self::class), ['exists']);
         }
 
         $this->exists = $exists;

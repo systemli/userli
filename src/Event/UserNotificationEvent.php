@@ -10,7 +10,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class UserNotificationEvent extends Event
 {
-    public const COMPROMISED_PASSWORD = 'user.notification.compromised_password';
+    public const string COMPROMISED_PASSWORD = 'user.notification.compromised_password';
 
     public function __construct(
         private readonly User $user,

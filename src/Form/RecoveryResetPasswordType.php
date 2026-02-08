@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 final class RecoveryResetPasswordType extends AbstractType
 {
-    public const NAME = 'recovery_reset_password';
+    public const string NAME = 'recovery_reset_password';
 
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void

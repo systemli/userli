@@ -15,13 +15,13 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 
 #[AsEntityListener(event: Events::preUpdate, method: 'preUpdate', entity: User::class)]
-final class UserChangedListener
+final readonly class UserChangedListener
 {
     private VoucherRepository $voucherRepository;
 
     public function __construct(
-        private readonly EntityManagerInterface $manager,
-        private readonly SuspiciousChildrenHandler $suspiciousChildrenHandler,
+        private EntityManagerInterface $manager,
+        private SuspiciousChildrenHandler $suspiciousChildrenHandler,
     ) {
         $this->voucherRepository = $this->manager->getRepository(Voucher::class);
     }

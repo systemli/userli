@@ -116,6 +116,7 @@ final class AliasController extends AbstractController
                     $created->setNote($note);
                     $this->manager->flush();
                 }
+
                 $this->addFlash('success', 'flashes.alias-creation-successful');
             }
         } catch (ValidationException $validationException) {
@@ -132,6 +133,7 @@ final class AliasController extends AbstractController
                     $created->setNote($note);
                     $this->manager->flush();
                 }
+
                 $this->addFlash('success', 'flashes.alias-creation-successful');
             }
         } catch (ValidationException $validationException) {

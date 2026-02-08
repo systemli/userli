@@ -10,12 +10,12 @@ use Symfony\Component\Form\DataTransformerInterface;
 /**
  * @implements DataTransformerInterface<string, string>
  */
-final class TextToEmailTransformer implements DataTransformerInterface
+final readonly class TextToEmailTransformer implements DataTransformerInterface
 {
     /**
      * Constructor.
      */
-    public function __construct(private readonly string $domain)
+    public function __construct(private string $domain)
     {
     }
 

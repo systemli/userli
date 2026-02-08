@@ -30,7 +30,7 @@ final readonly class WebhookDispatcher
 
         $payload = [
             'type' => $type->value,
-            'timestamp' => (new DateTimeImmutable())->format(DATE_ATOM),
+            'timestamp' => new DateTimeImmutable()->format(DATE_ATOM),
             'data' => [
                 'email' => $user->getEmail(),
             ],

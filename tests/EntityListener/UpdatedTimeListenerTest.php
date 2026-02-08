@@ -39,7 +39,7 @@ class UpdatedTimeListenerTest extends TestCase
         $this->listener->prePersist($args);
 
         self::assertNotEquals('2020-01-01', $user->getUpdatedTime()->format('Y-m-d'));
-        self::assertEquals((new DateTimeImmutable())->format('Y-m-d'), $user->getUpdatedTime()->format('Y-m-d'));
+        self::assertEquals(new DateTimeImmutable()->format('Y-m-d'), $user->getUpdatedTime()->format('Y-m-d'));
     }
 
     public function testPreUpdateUpdatesUpdatedTimeForUser(): void
@@ -55,7 +55,7 @@ class UpdatedTimeListenerTest extends TestCase
         $this->listener->preUpdate($args);
 
         self::assertNotEquals('2020-01-01', $user->getUpdatedTime()->format('Y-m-d'));
-        self::assertEquals((new DateTimeImmutable())->format('Y-m-d'), $user->getUpdatedTime()->format('Y-m-d'));
+        self::assertEquals(new DateTimeImmutable()->format('Y-m-d'), $user->getUpdatedTime()->format('Y-m-d'));
     }
 
     public function testPrePersistUpdatesUpdatedTimeForAlias(): void
@@ -67,7 +67,7 @@ class UpdatedTimeListenerTest extends TestCase
         $args = new PrePersistEventArgs($alias, $this->entityManager);
         $this->listener->prePersist($args);
 
-        self::assertEquals((new DateTimeImmutable())->format('Y-m-d'), $alias->getUpdatedTime()->format('Y-m-d'));
+        self::assertEquals(new DateTimeImmutable()->format('Y-m-d'), $alias->getUpdatedTime()->format('Y-m-d'));
     }
 
     public function testPrePersistUpdatesUpdatedTimeForDomain(): void
@@ -79,7 +79,7 @@ class UpdatedTimeListenerTest extends TestCase
         $args = new PrePersistEventArgs($domain, $this->entityManager);
         $this->listener->prePersist($args);
 
-        self::assertEquals((new DateTimeImmutable())->format('Y-m-d'), $domain->getUpdatedTime()->format('Y-m-d'));
+        self::assertEquals(new DateTimeImmutable()->format('Y-m-d'), $domain->getUpdatedTime()->format('Y-m-d'));
     }
 
     public function testPrePersistUpdatesUpdatedTimeForReservedName(): void
@@ -91,7 +91,7 @@ class UpdatedTimeListenerTest extends TestCase
         $args = new PrePersistEventArgs($reservedName, $this->entityManager);
         $this->listener->prePersist($args);
 
-        self::assertEquals((new DateTimeImmutable())->format('Y-m-d'), $reservedName->getUpdatedTime()->format('Y-m-d'));
+        self::assertEquals(new DateTimeImmutable()->format('Y-m-d'), $reservedName->getUpdatedTime()->format('Y-m-d'));
     }
 
     public function testPrePersistIgnoresNonUpdatedTimeEntities(): void

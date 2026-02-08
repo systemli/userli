@@ -12,12 +12,12 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final class DeleteUserHandler
+final readonly class DeleteUserHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly DeleteHandler $deleteHandler,
-        private readonly LoggerInterface $logger,
+        private EntityManagerInterface $entityManager,
+        private DeleteHandler $deleteHandler,
+        private LoggerInterface $logger,
     ) {
     }
 

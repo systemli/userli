@@ -14,12 +14,12 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
-final class RemoveInactiveUsersHandler
+final readonly class RemoveInactiveUsersHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
-        private readonly MessageBusInterface $messageBus,
-        private readonly LoggerInterface $logger,
+        private EntityManagerInterface $entityManager,
+        private MessageBusInterface $messageBus,
+        private LoggerInterface $logger,
     ) {
     }
 

@@ -9,7 +9,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class LoginEvent extends Event
 {
-    public const NAME = 'user.login';
+    public const string NAME = 'user.login';
 
     public function __construct(private readonly User $user, private readonly string $plainPassword)
     {

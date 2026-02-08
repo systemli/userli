@@ -12,9 +12,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class DomainCreationListener implements EventSubscriberInterface
+final readonly class DomainCreationListener implements EventSubscriberInterface
 {
-    public function __construct(private readonly EntityManagerInterface $manager, private readonly WkdHandler $handler)
+    public function __construct(private EntityManagerInterface $manager, private WkdHandler $handler)
     {
     }
 

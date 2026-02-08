@@ -18,9 +18,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final readonly class RecoveryHandler
 {
-    private const PROCESS_DELAY = '-2 days';
+    private const string PROCESS_DELAY = '-2 days';
 
-    private const PROCESS_EXPIRE = '-30 days';
+    private const string PROCESS_EXPIRE = '-30 days';
 
     public function __construct(
         private PasswordUpdater $passwordUpdater,

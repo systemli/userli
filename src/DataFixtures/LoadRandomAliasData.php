@@ -26,6 +26,7 @@ final class LoadRandomAliasData extends Fixture implements FixtureGroupInterface
             $alias = AliasFactory::create($user, null);
             $manager->persist($alias);
         }
+
         $manager->flush();
 
         $userIds = $manager->getRepository(User::class)->createQueryBuilder('u')

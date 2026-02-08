@@ -9,37 +9,37 @@ final class Roles
     /**
      * Role for users that should not be deleted (e.g. the main admin account).
      */
-    public const PERMANENT = 'ROLE_PERMANENT';
+    public const string PERMANENT = 'ROLE_PERMANENT';
 
     /**
      * Role for users that can create voucher codes.
      */
-    public const MULTIPLIER = 'ROLE_MULTIPLIER';
+    public const string MULTIPLIER = 'ROLE_MULTIPLIER';
 
     /**
      * Role for users that are marked as spammers and can't send emails.
      */
-    public const SPAM = 'ROLE_SPAM';
+    public const string SPAM = 'ROLE_SPAM';
 
     /**
      * Role for users that are marked as suspicious and don't receive voucher codes.
      */
-    public const SUSPICIOUS = 'ROLE_SUSPICIOUS';
+    public const string SUSPICIOUS = 'ROLE_SUSPICIOUS';
 
     /**
      * Basic role for all authenticated users.
      */
-    public const USER = 'ROLE_USER';
+    public const string USER = 'ROLE_USER';
 
     /**
      * Role for users that can manage users within their domain.
      */
-    public const DOMAIN_ADMIN = 'ROLE_DOMAIN_ADMIN';
+    public const string DOMAIN_ADMIN = 'ROLE_DOMAIN_ADMIN';
 
     /**
      * Role for users that can manage everything.
      */
-    public const ADMIN = 'ROLE_ADMIN';
+    public const string ADMIN = 'ROLE_ADMIN';
 
     /**
      * Returns a canonical list of all defined roles.

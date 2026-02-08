@@ -26,7 +26,7 @@ final class AliasAdmin extends Admin
 {
     use DomainGuesserAwareTrait;
 
-    public function __construct(protected Security $security)
+    public function __construct(private Security $security)
     {
         parent::__construct();
     }

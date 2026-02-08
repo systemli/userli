@@ -12,12 +12,12 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * Class VoucherRemover.
  */
-final class VoucherRemover
+final readonly class VoucherRemover
 {
     /**
      * VoucherRemover constructor.
      */
-    public function __construct(private readonly EntityManagerInterface $manager)
+    public function __construct(private EntityManagerInterface $manager)
     {
     }
 

@@ -27,11 +27,11 @@ class UserNotification
     #[ORM\Column(type: 'string', length: 50)]
     private string $type;
 
-    #[ORM\Column(type: 'datetime_immutable')]
-    private DateTimeImmutable $creationTime;
-
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $metadata;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    private DateTimeImmutable $creationTime;
 
     public function __construct(User $user, UserNotificationType $type, ?array $metadata = null)
     {

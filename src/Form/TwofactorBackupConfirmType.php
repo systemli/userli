@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 final class TwofactorBackupConfirmType extends AbstractType
 {
-    public const NAME = 'twofactor_backup_confirm';
+    public const string NAME = 'twofactor_backup_confirm';
 
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void

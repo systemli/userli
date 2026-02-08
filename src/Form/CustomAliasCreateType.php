@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 final class CustomAliasCreateType extends AbstractType
 {
-    public const NAME = 'create_custom_alias';
+    public const string NAME = 'create_custom_alias';
 
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -38,7 +38,7 @@ final class CustomAliasCreateType extends AbstractType
             }
 
             // Combine local part + domain into full email address
-            $data['alias'] = strtolower($data['alias']).'@'.$data['domain'];
+            $data['alias'] = strtolower((string) $data['alias']).'@'.$data['domain'];
             $event->setData($data);
         });
     }

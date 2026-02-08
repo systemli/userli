@@ -4,21 +4,12 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
-use Override;
-use Twig\Extension\AbstractExtension;
+use Twig\Attribute\AsTwigFilter;
 use Twig\Markup;
-use Twig\TwigFilter;
 
-final class SafeHtmlExtension extends AbstractExtension
+final class SafeHtmlExtension
 {
-    #[Override]
-    public function getFilters(): array
-    {
-        return [
-            new TwigFilter('safe_html', $this->safeHtml(...), ['is_safe' => ['html']]),
-        ];
-    }
-
+    #[AsTwigFilter(name: 'safe_html', isSafe: ['html'])]
     public function safeHtml(string $content): Markup
     {
         // Server-side basic HTML sanitization for security

@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 final class AliasVoter extends Voter
 {
-    public const DELETE = 'delete';
+    public const string DELETE = 'delete';
 
     public function __construct(private readonly Security $security)
     {

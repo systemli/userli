@@ -22,7 +22,7 @@ final readonly class MailHandler
         $from = $this->settingsService->get('email_sender_address');
         $name = $this->settingsService->get('app_name');
 
-        $message = (new Email())
+        $message = new Email()
             ->from(new Address($from, $name))
             ->to($email)
             ->subject($subject)

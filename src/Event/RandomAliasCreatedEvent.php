@@ -9,7 +9,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class RandomAliasCreatedEvent extends Event
 {
-    public const NAME = 'alias.random_created';
+    public const string NAME = 'alias.random_created';
 
     public function __construct(private readonly Alias $alias)
     {

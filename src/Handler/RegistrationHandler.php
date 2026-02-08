@@ -38,7 +38,7 @@ final readonly class RegistrationHandler
      */
     public function handle(Registration $registration): void
     {
-        if (!$this->isRegistrationOpen()) {
+        if (!$this->registrationOpen) {
             throw new Exception('The Registration is closed!');
         }
 

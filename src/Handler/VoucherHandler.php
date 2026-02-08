@@ -16,16 +16,16 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * Class VoucherHandler.
  */
-final class VoucherHandler
+final readonly class VoucherHandler
 {
-    private const VOUCHER_LIMIT = 3;
+    private const int VOUCHER_LIMIT = 3;
 
-    private readonly VoucherRepository $repository;
+    private VoucherRepository $repository;
 
     /**
      * VoucherHandler constructor.
      */
-    public function __construct(EntityManagerInterface $manager, private readonly VoucherCreator $creator)
+    public function __construct(EntityManagerInterface $manager, private VoucherCreator $creator)
     {
         $this->repository = $manager->getRepository(Voucher::class);
     }
@@ -55,8 +55,6 @@ final class VoucherHandler
             return $vouchers;
         }
 
-        return array_filter($vouchers, static function (Voucher $voucher) {
-            return ($voucher->isRedeemed()) ? null : $voucher;
-        });
+        return array_filter($vouchers, static fn (Voucher $voucher) => ($voucher->isRedeemed()) ? null : $voucher);
     }
 }

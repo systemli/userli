@@ -13,12 +13,12 @@ use Exception;
 /**
  * Class AliasCreatedMessageSender.
  */
-final class AliasCreatedMessageSender
+final readonly class AliasCreatedMessageSender
 {
     /**
      * AliasCreatedMessageSender constructor.
      */
-    public function __construct(private readonly MailHandler $handler, private readonly AliasCreatedMessageBuilder $builder)
+    public function __construct(private MailHandler $handler, private AliasCreatedMessageBuilder $builder)
     {
     }
 

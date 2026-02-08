@@ -11,7 +11,7 @@ use Exception;
  */
 final class RandomStringGenerator
 {
-    public const LENGTH = 6;
+    public const int LENGTH = 6;
 
     /**
      * @throws Exception

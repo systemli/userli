@@ -266,6 +266,7 @@ final class UserAdmin extends Admin
             } else {
                 $this->passwordUpdater->updatePassword($object, $plainPassword);
             }
+
             $object->setPasswordChangeRequired(true);
         }
 

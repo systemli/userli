@@ -22,9 +22,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 final class RegistrationType extends AbstractType
 {
-    public const NAME = 'registration';
+    public const string NAME = 'registration';
 
-    private string $domain;
+    private readonly string $domain;
 
     /**
      * RegistrationType constructor.

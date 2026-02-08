@@ -14,14 +14,14 @@ use Exception;
 /**
  * Class WelcomeMessageSender.
  */
-final class WelcomeMessageSender
+final readonly class WelcomeMessageSender
 {
     private string $domain;
 
     /**
      * WelcomeMessageSender constructor.
      */
-    public function __construct(private readonly MailHandler $handler, private readonly WelcomeMessageBuilder $builder, EntityManagerInterface $manager)
+    public function __construct(private MailHandler $handler, private WelcomeMessageBuilder $builder, EntityManagerInterface $manager)
     {
         $domain = $manager->getRepository(Domain::class)->getDefaultDomain();
         $this->domain = null !== $domain ? $domain->getName() : '';

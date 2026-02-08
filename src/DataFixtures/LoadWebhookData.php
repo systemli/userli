@@ -15,7 +15,7 @@ use Override;
 
 final class LoadWebhookData extends Fixture implements FixtureGroupInterface
 {
-    private const DELIVERY_COUNT = 75;
+    private const int DELIVERY_COUNT = 75;
 
     #[Override]
     public function load(ObjectManager $manager): void
@@ -26,6 +26,7 @@ final class LoadWebhookData extends Fixture implements FixtureGroupInterface
         );
         $endpoint->setEvents([WebhookEvent::USER_CREATED->value, WebhookEvent::USER_DELETED->value, WebhookEvent::USER_RESET->value]);
         $endpoint->setEnabled(true);
+
         $manager->persist($endpoint);
 
         $events = WebhookEvent::cases();

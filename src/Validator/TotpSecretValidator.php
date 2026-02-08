@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Validator;
 
 use Override;
+use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Constraint;
@@ -33,7 +34,7 @@ final class TotpSecretValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'string');
         }
 
-        /** @var \Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface $user */
+        /** @var TwoFactorInterface $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
         if (!$this->totpAuthenticator->checkCode($user, $value)) {

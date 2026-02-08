@@ -24,15 +24,15 @@ use Symfony\Component\Routing\Attribute\Route;
 #[RequireApiScope(scope: ApiScope::DOVECOT)]
 final class DovecotController extends AbstractController
 {
-    public const MESSAGE_SUCCESS = 'success';
+    public const string MESSAGE_SUCCESS = 'success';
 
-    public const MESSAGE_AUTHENTICATION_FAILED = 'authentication failed';
+    public const string MESSAGE_AUTHENTICATION_FAILED = 'authentication failed';
 
-    public const MESSAGE_USER_NOT_FOUND = 'user not found';
+    public const string MESSAGE_USER_NOT_FOUND = 'user not found';
 
-    public const MESSAGE_USER_DISABLED = 'user disabled due to spam role';
+    public const string MESSAGE_USER_DISABLED = 'user disabled due to spam role';
 
-    public const MESSAGE_USER_PASSWORD_CHANGE_REQUIRED = 'user password change required';
+    public const string MESSAGE_USER_PASSWORD_CHANGE_REQUIRED = 'user password change required';
 
     private readonly MailCrypt $mailCrypt;
 

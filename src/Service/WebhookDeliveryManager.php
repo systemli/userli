@@ -13,7 +13,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final readonly class WebhookDeliveryManager
 {
-    private const PAGE_SIZE = 20;
+    private const int PAGE_SIZE = 20;
 
     public function __construct(
         private EntityManagerInterface $em,

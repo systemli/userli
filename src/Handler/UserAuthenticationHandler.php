@@ -9,10 +9,10 @@ use App\Event\LoginEvent;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-final class UserAuthenticationHandler
+final readonly class UserAuthenticationHandler
 {
     public function __construct(
-        private readonly PasswordHasherFactoryInterface $passwordHasherFactory,
+        private PasswordHasherFactoryInterface $passwordHasherFactory,
         private EventDispatcherInterface $eventDispatcher,
     ) {
     }

@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 final class RecoveryProcessType extends AbstractType
 {
-    public const NAME = 'recovery_process';
+    public const string NAME = 'recovery_process';
 
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
