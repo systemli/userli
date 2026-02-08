@@ -4,6 +4,8 @@
 
 set -e
 
+doveconf
+
 DOVECOT_HOST="localhost"
 DOVECOT_PORT="1143"
 
@@ -47,8 +49,8 @@ clear_inbox() {
     local user=$1
     echo "Clearing INBOX for $user..."
 
-    docker compose exec dovecot doveadm mailbox delete INBOX -r -u "$user"
-    docker compose exec dovecot doveadm mailbox cache purge INBOX -u "$user"
+    doveadm mailbox delete INBOX -r -u "$user"
+    doveadm mailbox cache purge INBOX -u "$user"
 }
 
 check_encryption() {
@@ -58,7 +60,7 @@ check_encryption() {
 
     echo "Checking disk storage for $user..."
 
-    if docker compose exec dovecot sh 2>/dev/null \
+    if sh 2>/dev/null \
         -c "grep --recursive --quiet '$TEST_STRING' $path" \
     ; then
         if [ "$should_be_encrypted" = "yes" ]; then

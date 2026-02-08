@@ -1,0 +1,22 @@
+name: test-mailcrypt 
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-mailcrypt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+      - name: Build Stack
+        run: docker compose build
+      - name: Test mailcrypt
+        run: |
+          docker compose run --rm -T dovecot /tests/test_mailcrypt.sh
+      - name: Shutdown
+        if: always()
+        run: docker compose down
