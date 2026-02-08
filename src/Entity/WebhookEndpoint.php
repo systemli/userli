@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Traits\CreationTimeTrait;
+use App\Traits\UpdatedTimeTrait;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Index(columns: ['enabled'])]
 #[ORM\Table(name: 'webhook_endpoints')]
-class WebhookEndpoint
+class WebhookEndpoint implements UpdatedTimeInterface
 {
+    use CreationTimeTrait;
+    use UpdatedTimeTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -29,18 +34,12 @@ class WebhookEndpoint
     #[ORM\Column(options: ['default' => true])]
     private bool $enabled = true;
 
-    #[ORM\Column(type: 'datetime_immutable')]
-    private DateTimeImmutable $creationTime;
-
-    #[ORM\Column(type: 'datetime_immutable')]
-    private DateTimeImmutable $updatedTime;
-
     public function __construct(string $url, string $secret)
     {
         $this->url = $url;
         $this->secret = $secret;
         $this->creationTime = new DateTimeImmutable();
-        $this->updatedTime = $this->creationTime;
+        $this->updatedTime = new DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -86,20 +85,5 @@ class WebhookEndpoint
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
-    }
-
-    public function getCreationTime(): DateTimeImmutable
-    {
-        return $this->creationTime;
-    }
-
-    public function getUpdatedTime(): DateTimeImmutable
-    {
-        return $this->updatedTime;
-    }
-
-    public function setUpdatedTime(DateTimeImmutable $updatedTime): void
-    {
-        $this->updatedTime = $updatedTime;
     }
 }

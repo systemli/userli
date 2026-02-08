@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,7 +17,7 @@ trait OpenPgpKeyTrait
     public ?string $keyFingerprint = null;
 
     #[ORM\Column(nullable: true)]
-    public ?DateTime $keyExpireTime = null;
+    public ?DateTimeImmutable $keyExpireTime = null;
 
     #[ORM\Column(type: Types::TEXT)]
     public ?string $keyData = null;
@@ -42,12 +42,12 @@ trait OpenPgpKeyTrait
         $this->keyFingerprint = $keyFingerprint;
     }
 
-    public function getKeyExpireTime(): ?DateTime
+    public function getKeyExpireTime(): ?DateTimeImmutable
     {
         return $this->keyExpireTime;
     }
 
-    public function setKeyExpireTime(?DateTime $keyExpireTime): void
+    public function setKeyExpireTime(?DateTimeImmutable $keyExpireTime): void
     {
         $this->keyExpireTime = $keyExpireTime;
     }

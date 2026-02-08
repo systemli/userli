@@ -9,7 +9,7 @@ use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
 use App\Importer\GpgKeyImporter;
-use Datetime;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class GpgKeyImporterTest extends TestCase
@@ -268,7 +268,7 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
         $expected->setEmail($this->email);
         $expected->setKeyId($this->validKeyId);
         $expected->setKeyFingerprint($this->validKeyFingerprint);
-        $expected->setKeyExpireTime(new Datetime($this->validExpireTime));
+        $expected->setKeyExpireTime(new DateTimeImmutable($this->validExpireTime));
         $expected->setKeyData($this->validKeyBinary);
 
         self::assertEquals($expected, $openPgpKey);

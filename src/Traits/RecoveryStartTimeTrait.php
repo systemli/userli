@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 
 trait RecoveryStartTimeTrait
 {
     #[ORM\Column(nullable: true)]
-    private ?DateTime $recoveryStartTime = null;
+    private ?DateTimeImmutable $recoveryStartTime = null;
 
-    public function getRecoveryStartTime(): ?DateTime
+    public function getRecoveryStartTime(): ?DateTimeImmutable
     {
         return $this->recoveryStartTime;
     }
 
-    public function setRecoveryStartTime(DateTime $recoveryStartTime): void
+    public function setRecoveryStartTime(DateTimeImmutable $recoveryStartTime): void
     {
         $this->recoveryStartTime = $recoveryStartTime;
     }
@@ -28,7 +28,7 @@ trait RecoveryStartTimeTrait
      */
     public function updateRecoveryStartTime(): void
     {
-        $this->setRecoveryStartTime(new DateTime());
+        $this->setRecoveryStartTime(new DateTimeImmutable());
     }
 
     public function eraseRecoveryStartTime(): void

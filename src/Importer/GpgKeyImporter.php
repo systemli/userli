@@ -15,7 +15,7 @@ use Crypt_GPG_FileException;
 use Crypt_GPG_Key;
 use Crypt_GPG_KeyNotFoundException;
 use Crypt_GPG_NoDataException;
-use DateTime;
+use DateTimeImmutable;
 use Exception;
 use Override;
 use PEAR_Exception;
@@ -115,7 +115,7 @@ final class GpgKeyImporter implements OpenPgpKeyImporterInterface
         $expireTime = null;
         if (0 !== $expireUnixTimestamp = $primaryKey->getExpirationDate()) {
             try {
-                $expireTime = new DateTime('@'.$expireUnixTimestamp);
+                $expireTime = new DateTimeImmutable('@'.$expireUnixTimestamp);
             } catch (Exception) {
             }
         }
