@@ -160,6 +160,20 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
             ->getSingleScalarResult();
     }
 
+    /**
+     * @return array{email: string, deleted: bool, mailCryptEnabled: bool, mailCryptPublicKey: ?string, quota: ?int}|null
+     */
+    public function findLookupDataByEmail(string $email): ?array
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.email, u.deleted, u.mailCryptEnabled, u.mailCryptPublicKey, u.quota')
+            ->where('u.email = :email')
+            ->setParameter('email', $email)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function countUsersWithTwofactor(): int
     {
         return (int) $this->createQueryBuilder('u')
