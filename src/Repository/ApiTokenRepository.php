@@ -22,6 +22,6 @@ final class ApiTokenRepository extends ServiceEntityRepository
     public function updateLastUsedTime(ApiToken $token): void
     {
         $token->setLastUsedTime(new DateTimeImmutable());
-        $this->_em->flush();
+        $this->getEntityManager()->flush();
     }
 }

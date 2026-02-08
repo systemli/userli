@@ -7,7 +7,7 @@ namespace App\Tests\Entity\Filter;
 use App\Entity\Domain;
 use App\Entity\Filter\DomainFilter;
 use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\FilterCollection;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 class DomainFilterTest extends TestCase
 {
     private DomainFilter $filter;
-    private EntityManager $manager;
+    private EntityManagerInterface $manager;
     private ClassMetadata $targetEntity;
 
     protected function setUp(): void
@@ -29,16 +29,14 @@ class DomainFilterTest extends TestCase
         $connection = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->manager = $this->getMockBuilder(EntityManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->manager = $this->createMock(EntityManagerInterface::class);
         // return domainId
-        $connection->method('quote')->willReturn(1);
+        $connection->method('quote')->willReturn('1');
         $this->manager->method('getFilters')->willReturn($filterCollection);
         $this->manager->method('getConnection')->willReturn($connection);
         $this->filter = $this->getMockBuilder(DomainFilter::class)
         ->disableOriginalConstructor()
-        ->setMethodsExcept(['addFilterConstraint'])
+        ->onlyMethods(['getDomainId'])
         ->getMock();
         $this->filter->method('getDomainId')->willReturn('1');
 

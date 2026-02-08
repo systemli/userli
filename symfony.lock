@@ -14,9 +14,6 @@
     "dg/bypass-finals": {
         "version": "v1.1.0"
     },
-    "doctrine/cache": {
-        "version": "v1.8.0"
-    },
     "doctrine/collections": {
         "version": "v1.5.0"
     },
@@ -432,9 +429,6 @@
         "version": "v1.18.1"
     },
     "symfony/polyfill-mbstring": {
-        "version": "v1.9.0"
-    },
-    "symfony/polyfill-php72": {
         "version": "v1.9.0"
     },
     "symfony/polyfill-php73": {

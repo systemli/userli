@@ -11,7 +11,7 @@ use App\Enum\WebhookEvent;
 use App\Message\SendWebhook;
 use App\Service\WebhookDispatcher;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
+use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -28,7 +28,7 @@ class WebhookDispatcherTest extends TestCase
         $endpointFilteredSkip = new WebhookEndpoint('https://example.test/c', 'secret-c');
         $endpointFilteredSkip->setEvents(['other.event']);
 
-        $repo = $this->createMock(ObjectRepository::class);
+        $repo = $this->createMock(EntityRepository::class);
         $repo->method('getClassName')->willReturn(WebhookEndpoint::class);
         $repo->method('findBy')->with(['enabled' => true])->willReturn([$endpointAll, $endpointFilteredMatch, $endpointFilteredSkip]);
 

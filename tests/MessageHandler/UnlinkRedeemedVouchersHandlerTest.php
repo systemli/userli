@@ -58,10 +58,10 @@ class UnlinkRedeemedVouchersHandlerTest extends TestCase
         $qb->method('setParameter')->with('date', $this->callback(static fn ($dt) => $dt instanceof DateTimeImmutable))->willReturnSelf();
         $qb->method('orderBy')->with('voucher.redeemedTime')->willReturnSelf();
 
-        $query = $this->getMockBuilder(\Doctrine\ORM\AbstractQuery::class)
+        $query = $this->getMockBuilder(\Doctrine\ORM\Query::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['getResult'])
-            ->getMockForAbstractClass();
+            ->getMock();
         $query->expects($this->once())->method('getResult')->willReturn($expectedResultSet);
 
         $qb->expects($this->once())->method('getQuery')->willReturn($query);

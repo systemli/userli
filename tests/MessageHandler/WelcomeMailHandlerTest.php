@@ -9,7 +9,7 @@ use App\Message\WelcomeMail;
 use App\MessageHandler\WelcomeMailHandler;
 use App\Sender\WelcomeMessageSender;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
+use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;
 
 class WelcomeMailHandlerTest extends TestCase
@@ -21,7 +21,7 @@ class WelcomeMailHandlerTest extends TestCase
 
         $user = new User($email);
 
-        $repo = $this->createMock(ObjectRepository::class);
+        $repo = $this->createMock(EntityRepository::class);
         $repo->expects($this->once())
             ->method('findOneBy')
             ->with(['email' => $email])
@@ -44,7 +44,7 @@ class WelcomeMailHandlerTest extends TestCase
     {
         $email = 'missing@example.test';
 
-        $repo = $this->createMock(ObjectRepository::class);
+        $repo = $this->createMock(EntityRepository::class);
         $repo->expects($this->once())
             ->method('findOneBy')
             ->with(['email' => $email])
