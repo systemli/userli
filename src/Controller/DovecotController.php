@@ -11,6 +11,7 @@ use App\Enum\MailCrypt;
 use App\Enum\Roles;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
+use App\Repository\UserRepository;
 use App\Security\RequireApiScope;
 use Exception;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -20,6 +21,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 #[RequireApiScope(scope: ApiScope::DOVECOT)]
 final class DovecotController extends AbstractController
@@ -34,11 +37,15 @@ final class DovecotController extends AbstractController
 
     public const string MESSAGE_USER_PASSWORD_CHANGE_REQUIRED = 'user password change required';
 
+    private const int CACHE_TTL = 60;
+
     private readonly MailCrypt $mailCrypt;
 
     public function __construct(
         private readonly MailCryptKeyHandler $mailCryptKeyHandler,
         private readonly UserAuthenticationHandler $authHandler,
+        private readonly UserRepository $userRepository,
+        private readonly CacheInterface $cache,
         #[Autowire(env: 'MAIL_CRYPT')]
         private readonly int $mailCryptEnv,
     ) {
@@ -54,34 +61,45 @@ final class DovecotController extends AbstractController
     }
 
     #[Route('/api/dovecot/{email}', name: 'api_dovecot_user_lookup', methods: ['GET'], stateless: true)]
-    public function lookup(
-        #[MapEntity(mapping: ['email' => 'email'])] User $user,
-    ): JsonResponse {
-        if ($user->isDeleted()) {
+    public function lookup(string $email): JsonResponse
+    {
+        $result = $this->cache->get('dovecot_lookup_'.sha1($email), function (ItemInterface $item) use ($email) {
+            $item->expiresAfter(self::CACHE_TTL);
+
+            $userData = $this->userRepository->findLookupDataByEmail($email);
+
+            if (null === $userData || $userData['deleted']) {
+                return null;
+            }
+
+            if (
+                $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_OPTIONAL)
+                && $userData['mailCryptEnabled']
+                && !empty($userData['mailCryptPublicKey'])
+            ) {
+                $mailCryptReported = 2;
+            } else {
+                $mailCryptReported = 0;
+            }
+
+            return [
+                'message' => self::MESSAGE_SUCCESS,
+                'body' => [
+                    'user' => $userData['email'],
+                    'mailCrypt' => $mailCryptReported,
+                    'mailCryptPublicKey' => $userData['mailCryptPublicKey'] ?? '',
+                    'quota' => $userData['quota'] !== null
+                            ? sprintf('%dM', $userData['quota'])
+                            : '',
+                ],
+            ];
+        });
+
+        if (null === $result) {
             return $this->json(['message' => self::MESSAGE_USER_NOT_FOUND], Response::HTTP_NOT_FOUND);
         }
 
-        if (
-            $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_OPTIONAL)
-            && $user->getMailCryptEnabled()
-            && $user->hasMailCryptPublicKey()
-        ) {
-            $mailCryptReported = 2;
-        } else {
-            $mailCryptReported = 0;
-        }
-
-        return $this->json([
-            'message' => self::MESSAGE_SUCCESS,
-            'body' => [
-                'user' => $user->getEmail(),
-                'mailCrypt' => $mailCryptReported,
-                'mailCryptPublicKey' => $user->getMailCryptPublicKey() ?? '',
-                'quota' => $user->getQuota() !== null
-                        ? sprintf('%dM', $user->getQuota())
-                        : '',
-            ],
-        ], Response::HTTP_OK);
+        return $this->json($result);
     }
 
     #[Route('/api/dovecot/{email}', name: 'api_dovecot_user_authenticate', methods: ['POST'], stateless: true)]
