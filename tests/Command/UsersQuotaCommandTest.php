@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -17,12 +18,12 @@ use Symfony\Component\Console\Tester\CommandTester;
 class UsersQuotaCommandTest extends TestCase
 {
     private UsersQuotaCommand $command;
-    private MockObject $entityManager;
+    private Stub $entityManager;
     private MockObject $userRepository;
 
     protected function setUp(): void
     {
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->entityManager = $this->createStub(EntityManagerInterface::class);
         $this->userRepository = $this->createMock(UserRepository::class);
 
         $this->entityManager->method('getRepository')
@@ -37,7 +38,7 @@ class UsersQuotaCommandTest extends TestCase
         $email = 'quota@example.org';
         $quota = 1000;
 
-        $user = $this->createMock(User::class);
+        $user = $this->createStub(User::class);
         $user->method('getQuota')->willReturn($quota);
 
         $this->userRepository->expects(self::once())
@@ -65,7 +66,7 @@ class UsersQuotaCommandTest extends TestCase
     {
         $email = 'noquota@example.org';
 
-        $user = $this->createMock(User::class);
+        $user = $this->createStub(User::class);
         $user->method('getQuota')->willReturn(null);
 
         $this->userRepository->expects(self::once())
@@ -110,6 +111,6 @@ class UsersQuotaCommandTest extends TestCase
         ]);
 
         self::assertSame(Command::FAILURE, $exitCode);
-        $this->assertStringContainsString('User with email', $commandTester->getDisplay());
+        self::assertStringContainsString('User with email', $commandTester->getDisplay());
     }
 }

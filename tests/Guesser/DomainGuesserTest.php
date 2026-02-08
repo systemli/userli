@@ -16,8 +16,8 @@ class DomainGuesserTest extends TestCase
 
     public function testGuess(): void
     {
-        $this->assertNull($this->guesser->guess('user@gmail.com'));
-        $this->assertNotNull($this->guesser->guess('user@example.org'));
+        self::assertNull($this->guesser->guess('user@gmail.com'));
+        self::assertNotNull($this->guesser->guess('user@example.org'));
     }
 
     protected function setUp(): void
@@ -27,9 +27,7 @@ class DomainGuesserTest extends TestCase
 
     private function getManager(): EntityManagerInterface
     {
-        $repository = $this->getMockBuilder(DomainRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createStub(DomainRepository::class);
 
         $repository->method('findByName')->willReturnCallback(
             static function ($domain) {
@@ -44,9 +42,7 @@ class DomainGuesserTest extends TestCase
             }
         );
 
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
 
         $manager->method('getRepository')->willReturn($repository);
 

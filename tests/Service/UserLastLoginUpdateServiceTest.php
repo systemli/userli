@@ -43,12 +43,12 @@ class UserLastLoginUpdateServiceTest extends TestCase
 
         // Assert
         $lastLoginTime = $user->getLastLoginTime();
-        $this->assertInstanceOf(DateTimeImmutable::class, $lastLoginTime);
+        self::assertInstanceOf(DateTimeImmutable::class, $lastLoginTime);
 
         // Verify it's set to the start of the current week (Monday at 00:00:00)
         $expectedWeekStart = new DateTimeImmutable('monday this week midnight');
 
-        $this->assertEquals($expectedWeekStart->getTimestamp(), $lastLoginTime->getTimestamp());
+        self::assertEquals($expectedWeekStart->getTimestamp(), $lastLoginTime->getTimestamp());
     }
 
     public function testUpdateLastLoginWithOldLastLogin(): void
@@ -73,13 +73,13 @@ class UserLastLoginUpdateServiceTest extends TestCase
 
         // Assert
         $lastLoginTime = $user->getLastLoginTime();
-        $this->assertInstanceOf(DateTimeImmutable::class, $lastLoginTime);
-        $this->assertNotEquals($oldLastLogin->getTimestamp(), $lastLoginTime->getTimestamp());
+        self::assertInstanceOf(DateTimeImmutable::class, $lastLoginTime);
+        self::assertNotEquals($oldLastLogin->getTimestamp(), $lastLoginTime->getTimestamp());
 
         // Verify it's set to the start of the current week
         $expectedWeekStart = new DateTimeImmutable('monday this week midnight');
 
-        $this->assertEquals($expectedWeekStart->getTimestamp(), $lastLoginTime->getTimestamp());
+        self::assertEquals($expectedWeekStart->getTimestamp(), $lastLoginTime->getTimestamp());
     }
 
     public function testUpdateLastLoginDoesNotUpdateWhenAlreadyCurrentWeek(): void
@@ -101,6 +101,6 @@ class UserLastLoginUpdateServiceTest extends TestCase
 
         // Assert - the time should remain unchanged
         $lastLoginTime = $user->getLastLoginTime();
-        $this->assertEquals($currentWeekStart->getTimestamp(), $lastLoginTime->getTimestamp());
+        self::assertEquals($currentWeekStart->getTimestamp(), $lastLoginTime->getTimestamp());
     }
 }

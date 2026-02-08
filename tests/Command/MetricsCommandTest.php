@@ -23,39 +23,27 @@ class MetricsCommandTest extends TestCase
 {
     public function testExecute(): void
     {
-        $userRepository = $this->getMockBuilder(UserRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $userRepository = $this->createStub(UserRepository::class);
         $userRepository->method('countUsers')->willReturn(10);
         $userRepository->method('countDeletedUsers')->willReturn(3);
         $userRepository->method('countUsersWithRecoveryToken')->willReturn(5);
         $userRepository->method('countUsersWithMailCrypt')->willReturn(7);
         $userRepository->method('countUsersWithTwofactor')->willReturn(9);
 
-        $openPgpKeyRepository = $this->getMockBuilder(OpenPgpKeyRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $openPgpKeyRepository = $this->createStub(OpenPgpKeyRepository::class);
         $openPgpKeyRepository->method('countKeys')->willReturn(2);
 
-        $aliasRepository = $this->getMockBuilder(AliasRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $aliasRepository = $this->createStub(AliasRepository::class);
         $aliasRepository->method('count')->willReturn(4);
 
-        $domainRepository = $this->getMockBuilder(DomainRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $domainRepository = $this->createStub(DomainRepository::class);
         $domainRepository->method('count')->willReturn(6);
 
-        $voucherRepository = $this->getMockBuilder(VoucherRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $voucherRepository = $this->createStub(VoucherRepository::class);
         $voucherRepository->method('countRedeemedVouchers')->willReturn(1);
         $voucherRepository->method('countUnredeemedVouchers')->willReturn(7);
 
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturnMap([
             [User::class, $userRepository],
             [OpenPgpKey::class, $openPgpKeyRepository],

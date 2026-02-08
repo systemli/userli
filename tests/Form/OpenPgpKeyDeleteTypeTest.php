@@ -6,10 +6,17 @@ namespace App\Tests\Form;
 
 use App\Form\Model\Delete;
 use App\Form\OpenPgpDeleteType;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class OpenPgpKeyDeleteTypeTest extends TypeTestCase
 {
+    protected function setUp(): void
+    {
+        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
+        parent::setUp();
+    }
+
     public function testSubmitValidData(): void
     {
         $password = 'password';

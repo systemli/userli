@@ -26,20 +26,14 @@ class UsersResetCommandTest extends TestCase
         $this->user->setTotpConfirmed(true);
         $this->user->setTotpBackupCodes(['123456']);
 
-        $repository = $this->getMockBuilder(UserRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createStub(UserRepository::class);
         $repository->method('findByEmail')
             ->willReturn($this->user);
 
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturn($repository);
 
-        $userResetService = $this->getMockBuilder(UserResetService::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $userResetService = $this->createStub(UserResetService::class);
 
         $this->command = new UsersResetCommand($manager, $userResetService);
     }
@@ -57,7 +51,7 @@ class UsersResetCommandTest extends TestCase
         $commandTester->execute(['--user' => 'user@example.org', '--dry-run' => true]);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Would reset user user@example.org', $output);
+        self::assertStringContainsString('Would reset user user@example.org', $output);
     }
 
     public function testExecute(): void
@@ -73,7 +67,7 @@ class UsersResetCommandTest extends TestCase
         $commandTester->execute(['--user' => 'user@example.org']);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Resetting user user@example.org', $output);
+        self::assertStringContainsString('Resetting user user@example.org', $output);
     }
 
     public function testExecuteShortPassword(): void
@@ -90,7 +84,7 @@ class UsersResetCommandTest extends TestCase
         $exitCode = $commandTester->execute(['--user' => 'user@example.org']);
 
         self::assertSame(Command::FAILURE, $exitCode);
-        $this->assertStringContainsString("The password doesn't comply with our security policy.", $commandTester->getDisplay());
+        self::assertStringContainsString("The password doesn't comply with our security policy.", $commandTester->getDisplay());
     }
 
     public function testExecutePasswordsDontMatch(): void
@@ -106,7 +100,7 @@ class UsersResetCommandTest extends TestCase
         $exitCode = $commandTester->execute(['--user' => 'user@example.org']);
 
         self::assertSame(Command::FAILURE, $exitCode);
-        $this->assertStringContainsString("The passwords don't match.", $commandTester->getDisplay());
+        self::assertStringContainsString("The passwords don't match.", $commandTester->getDisplay());
     }
 
     public function testExecuteWithoutUser(): void
@@ -121,6 +115,6 @@ class UsersResetCommandTest extends TestCase
         $exitCode = $commandTester->execute([]);
 
         self::assertSame(Command::FAILURE, $exitCode);
-        $this->assertStringContainsString('User with email', $commandTester->getDisplay());
+        self::assertStringContainsString('User with email', $commandTester->getDisplay());
     }
 }

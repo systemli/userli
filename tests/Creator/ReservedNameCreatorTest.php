@@ -16,17 +16,17 @@ class ReservedNameCreatorTest extends TestCase
 {
     public function testCreate(): void
     {
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('persist')->willReturnCallback(
             static function (ReservedName $reservedName): void {
                 $reservedName->setId(1);
             }
         );
 
-        $validator = $this->getMockBuilder(ValidatorInterface::class)->getMock();
+        $validator = $this->createStub(ValidatorInterface::class);
         $validator->method('validate')->willReturn(new ConstraintViolationList());
 
-        $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
 
         $creator = new ReservedNameCreator($manager, $validator, $eventDispatcher);
 

@@ -6,10 +6,17 @@ namespace App\Tests\Form;
 
 use App\Form\Model\TwofactorBackupConfirm;
 use App\Form\TwofactorBackupConfirmType;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class TwofactorBackupConfirmTypeTest extends TypeTestCase
 {
+    protected function setUp(): void
+    {
+        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
+        parent::setUp();
+    }
+
     public function testSubmitValidData(): void
     {
         $formData = ['confirm' => true];
@@ -22,8 +29,8 @@ class TwofactorBackupConfirmTypeTest extends TypeTestCase
 
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($expected, $model);
+        self::assertTrue($form->isSynchronized());
+        self::assertEquals($expected, $model);
     }
 
     public function testSubmitWithoutConfirm(): void
@@ -34,8 +41,8 @@ class TwofactorBackupConfirmTypeTest extends TypeTestCase
         $form = $this->factory->create(TwofactorBackupConfirmType::class, $model);
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertFalse($model->isConfirm());
+        self::assertTrue($form->isSynchronized());
+        self::assertFalse($model->isConfirm());
     }
 
     public function testFormFieldsExist(): void
@@ -43,14 +50,14 @@ class TwofactorBackupConfirmTypeTest extends TypeTestCase
         $form = $this->factory->create(TwofactorBackupConfirmType::class);
         $view = $form->createView();
 
-        $this->assertArrayHasKey('confirm', $view->children);
-        $this->assertArrayHasKey('submit', $view->children);
+        self::assertArrayHasKey('confirm', $view->children);
+        self::assertArrayHasKey('submit', $view->children);
     }
 
     public function testBlockPrefix(): void
     {
         $form = $this->factory->create(TwofactorBackupConfirmType::class);
 
-        $this->assertSame('twofactor_backup_confirm', $form->getConfig()->getName());
+        self::assertSame('twofactor_backup_confirm', $form->getConfig()->getName());
     }
 }

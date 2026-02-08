@@ -6,10 +6,17 @@ namespace App\Tests\Form;
 
 use App\Form\Model\RecoveryResetPassword;
 use App\Form\RecoveryResetPasswordType;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class RecoveryResetPasswordTypeTest extends TypeTestCase
 {
+    protected function setUp(): void
+    {
+        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
+        parent::setUp();
+    }
+
     public function testSubmitValidData(): void
     {
         $email = 'user@example.org';
@@ -35,8 +42,8 @@ class RecoveryResetPasswordTypeTest extends TypeTestCase
 
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($expected, $model);
+        self::assertTrue($form->isSynchronized());
+        self::assertEquals($expected, $model);
     }
 
     public function testFormFieldsExist(): void
@@ -44,10 +51,10 @@ class RecoveryResetPasswordTypeTest extends TypeTestCase
         $form = $this->factory->create(RecoveryResetPasswordType::class);
         $view = $form->createView();
 
-        $this->assertArrayHasKey('email', $view->children);
-        $this->assertArrayHasKey('recoveryToken', $view->children);
-        $this->assertArrayHasKey('password', $view->children);
-        $this->assertArrayHasKey('submit', $view->children);
+        self::assertArrayHasKey('email', $view->children);
+        self::assertArrayHasKey('recoveryToken', $view->children);
+        self::assertArrayHasKey('password', $view->children);
+        self::assertArrayHasKey('submit', $view->children);
     }
 
     public function testEmailAndRecoveryTokenAreHidden(): void
@@ -55,14 +62,14 @@ class RecoveryResetPasswordTypeTest extends TypeTestCase
         $form = $this->factory->create(RecoveryResetPasswordType::class);
         $view = $form->createView();
 
-        $this->assertSame('hidden', $view->children['email']->vars['block_prefixes'][1]);
-        $this->assertSame('hidden', $view->children['recoveryToken']->vars['block_prefixes'][1]);
+        self::assertSame('hidden', $view->children['email']->vars['block_prefixes'][1]);
+        self::assertSame('hidden', $view->children['recoveryToken']->vars['block_prefixes'][1]);
     }
 
     public function testBlockPrefix(): void
     {
         $form = $this->factory->create(RecoveryResetPasswordType::class);
 
-        $this->assertSame('recovery_reset_password', $form->getConfig()->getName());
+        self::assertSame('recovery_reset_password', $form->getConfig()->getName());
     }
 }

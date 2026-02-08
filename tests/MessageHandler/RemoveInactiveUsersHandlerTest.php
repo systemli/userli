@@ -24,11 +24,11 @@ class RemoveInactiveUsersHandlerTest extends TestCase
     {
         $message = new RemoveInactiveUsers();
 
-        $user1 = $this->createMock(User::class);
+        $user1 = $this->createStub(User::class);
         $user1->method('hasRole')->willReturn(false);
         $user1->method('getId')->willReturn(1);
 
-        $user2 = $this->createMock(User::class);
+        $user2 = $this->createStub(User::class);
         $user2->method('hasRole')->willReturn(false);
         $user2->method('getId')->willReturn(2);
 
@@ -57,15 +57,15 @@ class RemoveInactiveUsersHandlerTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->exactly(2))
             ->method('info')
-            ->willReturnCallback(function (string $message, array $context): void {
+            ->willReturnCallback(static function (string $message, array $context): void {
                 static $callCount = 0;
                 ++$callCount;
                 if ($callCount === 1) {
-                    $this->assertSame('Found inactive users', $message);
-                    $this->assertSame(['count' => 2], $context);
+                    self::assertSame('Found inactive users', $message);
+                    self::assertSame(['count' => 2], $context);
                 } else {
-                    $this->assertSame('Dispatched user deletions', $message);
-                    $this->assertSame(['dispatched' => 2], $context);
+                    self::assertSame('Dispatched user deletions', $message);
+                    self::assertSame(['dispatched' => 2], $context);
                 }
             });
 
@@ -83,12 +83,12 @@ class RemoveInactiveUsersHandlerTest extends TestCase
     {
         $message = new RemoveInactiveUsers();
 
-        $adminUser = $this->createMock(User::class);
+        $adminUser = $this->createStub(User::class);
         $adminUser->method('hasRole')
             ->willReturnCallback(static fn (string $role) => $role === Roles::ADMIN);
         $adminUser->method('getId')->willReturn(1);
 
-        $normalUser = $this->createMock(User::class);
+        $normalUser = $this->createStub(User::class);
         $normalUser->method('hasRole')->willReturn(false);
         $normalUser->method('getId')->willReturn(2);
 
@@ -97,7 +97,7 @@ class RemoveInactiveUsersHandlerTest extends TestCase
             ->method('findInactiveUsers')
             ->willReturn([$adminUser, $normalUser]);
 
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $em->method('getRepository')->willReturn($repository);
 
         $this->dispatchedMessages = [];
@@ -110,7 +110,7 @@ class RemoveInactiveUsersHandlerTest extends TestCase
                 return new Envelope($message);
             });
 
-        $logger = $this->createMock(LoggerInterface::class);
+        $logger = $this->createStub(LoggerInterface::class);
 
         $handler = new RemoveInactiveUsersHandler($em, $messageBus, $logger);
         $handler($message);
@@ -123,7 +123,7 @@ class RemoveInactiveUsersHandlerTest extends TestCase
     {
         $message = new RemoveInactiveUsers();
 
-        $domainAdminUser = $this->createMock(User::class);
+        $domainAdminUser = $this->createStub(User::class);
         $domainAdminUser->method('hasRole')
             ->willReturnCallback(static fn (string $role) => $role === Roles::DOMAIN_ADMIN);
 
@@ -132,13 +132,13 @@ class RemoveInactiveUsersHandlerTest extends TestCase
             ->method('findInactiveUsers')
             ->willReturn([$domainAdminUser]);
 
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $em->method('getRepository')->willReturn($repository);
 
         $messageBus = $this->createMock(MessageBusInterface::class);
         $messageBus->expects($this->never())->method('dispatch');
 
-        $logger = $this->createMock(LoggerInterface::class);
+        $logger = $this->createStub(LoggerInterface::class);
 
         $handler = new RemoveInactiveUsersHandler($em, $messageBus, $logger);
         $handler($message);
@@ -148,7 +148,7 @@ class RemoveInactiveUsersHandlerTest extends TestCase
     {
         $message = new RemoveInactiveUsers();
 
-        $permanentUser = $this->createMock(User::class);
+        $permanentUser = $this->createStub(User::class);
         $permanentUser->method('hasRole')
             ->willReturnCallback(static fn (string $role) => $role === Roles::PERMANENT);
 
@@ -157,13 +157,13 @@ class RemoveInactiveUsersHandlerTest extends TestCase
             ->method('findInactiveUsers')
             ->willReturn([$permanentUser]);
 
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $em->method('getRepository')->willReturn($repository);
 
         $messageBus = $this->createMock(MessageBusInterface::class);
         $messageBus->expects($this->never())->method('dispatch');
 
-        $logger = $this->createMock(LoggerInterface::class);
+        $logger = $this->createStub(LoggerInterface::class);
 
         $handler = new RemoveInactiveUsersHandler($em, $messageBus, $logger);
         $handler($message);
@@ -178,13 +178,13 @@ class RemoveInactiveUsersHandlerTest extends TestCase
             ->method('findInactiveUsers')
             ->willReturn([]);
 
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $em->method('getRepository')->willReturn($repository);
 
         $messageBus = $this->createMock(MessageBusInterface::class);
         $messageBus->expects($this->never())->method('dispatch');
 
-        $logger = $this->createMock(LoggerInterface::class);
+        $logger = $this->createStub(LoggerInterface::class);
 
         $handler = new RemoveInactiveUsersHandler($em, $messageBus, $logger);
         $handler($message);

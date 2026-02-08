@@ -6,7 +6,7 @@ namespace App\Tests\Form;
 
 use App\Form\Model\OpenPgpKey;
 use App\Form\OpenPgpKeyType;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -17,16 +17,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OpenPgpKeyTypeTest extends TestCase
 {
-    private MockObject $translator;
-    private MockObject $formBuilder;
+    private Stub $translator;
+    private Stub $formBuilder;
     private OpenPgpKeyType $formType;
 
     protected function setUp(): void
     {
-        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->translator = $this->createStub(TranslatorInterface::class);
         $this->translator->method('trans')->willReturnCallback(static fn ($key) => $key);
 
-        $this->formBuilder = $this->createMock(FormBuilderInterface::class);
+        $this->formBuilder = $this->createStub(FormBuilderInterface::class);
         $this->formType = new OpenPgpKeyType($this->translator);
     }
 
@@ -47,13 +47,13 @@ class OpenPgpKeyTypeTest extends TestCase
 
         $this->formType->buildForm($this->formBuilder, []);
 
-        $this->assertArrayHasKey('keyFile', $addedFields);
-        $this->assertArrayHasKey('keyText', $addedFields);
-        $this->assertArrayHasKey('submit', $addedFields);
+        self::assertArrayHasKey('keyFile', $addedFields);
+        self::assertArrayHasKey('keyText', $addedFields);
+        self::assertArrayHasKey('submit', $addedFields);
 
-        $this->assertSame(FileType::class, $addedFields['keyFile']);
-        $this->assertSame(TextareaType::class, $addedFields['keyText']);
-        $this->assertSame(SubmitType::class, $addedFields['submit']);
+        self::assertSame(FileType::class, $addedFields['keyFile']);
+        self::assertSame(TextareaType::class, $addedFields['keyText']);
+        self::assertSame(SubmitType::class, $addedFields['submit']);
     }
 
     public function testConfigureOptions(): void
@@ -62,19 +62,19 @@ class OpenPgpKeyTypeTest extends TestCase
         $this->formType->configureOptions($resolver);
 
         $options = $resolver->resolve([]);
-        $this->assertSame(OpenPgpKey::class, $options['data_class']);
+        self::assertSame(OpenPgpKey::class, $options['data_class']);
     }
 
     public function testBlockPrefix(): void
     {
-        $this->assertSame('upload_openpgp_key', $this->formType->getBlockPrefix());
+        self::assertSame('upload_openpgp_key', $this->formType->getBlockPrefix());
     }
 
     public function testGetSubscribedEvents(): void
     {
         $events = OpenPgpKeyType::getSubscribedEvents();
 
-        $this->assertArrayHasKey('form.submit', $events);
-        $this->assertSame('ensureOneFieldIsSubmitted', $events['form.submit']);
+        self::assertArrayHasKey('form.submit', $events);
+        self::assertSame('ensureOneFieldIsSubmitted', $events['form.submit']);
     }
 }

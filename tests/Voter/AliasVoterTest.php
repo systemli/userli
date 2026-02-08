@@ -19,21 +19,21 @@ class AliasVoterTest extends TestCase
     {
         $alias = new Alias();
         $voter = new AliasVoter($this->createSecurity(false));
-        $this->assertTrue($this->invokeSupports($voter, AliasVoter::DELETE, $alias));
+        self::assertTrue($this->invokeSupports($voter, AliasVoter::DELETE, $alias));
     }
 
     public function testSupportsReturnsFalseForOtherAttribute(): void
     {
         $alias = new Alias();
         $voter = new AliasVoter($this->createSecurity(false));
-        $this->assertFalse($this->invokeSupports($voter, 'OTHER_ATTRIBUTE', $alias));
+        self::assertFalse($this->invokeSupports($voter, 'OTHER_ATTRIBUTE', $alias));
     }
 
     public function testSupportsReturnsFalseForNonAliasSubject(): void
     {
         $user = new User('test@example.org');
         $voter = new AliasVoter($this->createSecurity(false));
-        $this->assertFalse($this->invokeSupports($voter, AliasVoter::DELETE, $user));
+        self::assertFalse($this->invokeSupports($voter, AliasVoter::DELETE, $user));
     }
 
     public function testVoteOnAttributeReturnsTrueIfUserOwnsAlias(): void
@@ -43,9 +43,9 @@ class AliasVoterTest extends TestCase
         $alias->setRandom(true);
         $alias->setUser($user);
         $voter = new AliasVoter($this->createSecurity(false));
-        $token = $this->createMock(TokenInterface::class);
+        $token = $this->createStub(TokenInterface::class);
         $token->method('getUser')->willReturn($user);
-        $this->assertTrue($this->invokeVoteOnAttribute($voter, AliasVoter::DELETE, $alias, $token));
+        self::assertTrue($this->invokeVoteOnAttribute($voter, AliasVoter::DELETE, $alias, $token));
     }
 
     public function testVoteOnAttributeReturnsFalseIfUserDoesNotOwnAlias(): void
@@ -56,18 +56,18 @@ class AliasVoterTest extends TestCase
         $alias->setRandom(true);
         $alias->setUser($otherUser);
         $voter = new AliasVoter($this->createSecurity(false));
-        $token = $this->createMock(TokenInterface::class);
+        $token = $this->createStub(TokenInterface::class);
         $token->method('getUser')->willReturn($user);
-        $this->assertFalse($this->invokeVoteOnAttribute($voter, AliasVoter::DELETE, $alias, $token));
+        self::assertFalse($this->invokeVoteOnAttribute($voter, AliasVoter::DELETE, $alias, $token));
     }
 
     public function testVoteOnAttributeReturnsFalseIfTokenUserIsNotUser(): void
     {
         $alias = new Alias();
         $voter = new AliasVoter($this->createSecurity(false));
-        $token = $this->createMock(TokenInterface::class);
+        $token = $this->createStub(TokenInterface::class);
         $token->method('getUser')->willReturn(null);
-        $this->assertFalse($this->invokeVoteOnAttribute($voter, AliasVoter::DELETE, $alias, $token));
+        self::assertFalse($this->invokeVoteOnAttribute($voter, AliasVoter::DELETE, $alias, $token));
     }
 
     public function testVoteOnAttributeAllowsAdminCustomAlias(): void
@@ -76,9 +76,9 @@ class AliasVoterTest extends TestCase
         $alias = new Alias();
         $alias->setUser($user); // custom (not random)
         $voter = new AliasVoter($this->createSecurity(true));
-        $token = $this->createMock(TokenInterface::class);
+        $token = $this->createStub(TokenInterface::class);
         $token->method('getUser')->willReturn($user);
-        $this->assertTrue($this->invokeVoteOnAttribute($voter, AliasVoter::DELETE, $alias, $token));
+        self::assertTrue($this->invokeVoteOnAttribute($voter, AliasVoter::DELETE, $alias, $token));
     }
 
     private function invokeSupports(AliasVoter $voter, string $attribute, $subject): bool
@@ -92,7 +92,7 @@ class AliasVoterTest extends TestCase
 
     private function createSecurity(bool $isAdmin): Security
     {
-        $security = $this->createMock(Security::class);
+        $security = $this->createStub(Security::class);
         $security->method('isGranted')->willReturnCallback(static function (string $role) use ($isAdmin) {
             if (!$isAdmin) {
                 return false;

@@ -28,8 +28,8 @@ class ApiScopeListenerTest extends TestCase
     {
         $events = ApiScopeListener::getSubscribedEvents();
 
-        $this->assertArrayHasKey(ControllerArgumentsEvent::class, $events);
-        $this->assertEquals('onKernelControllerArguments', $events[ControllerArgumentsEvent::class]);
+        self::assertArrayHasKey(ControllerArgumentsEvent::class, $events);
+        self::assertEquals('onKernelControllerArguments', $events[ControllerArgumentsEvent::class]);
     }
 
     public function testIgnoresNonApiRequests(): void
@@ -41,7 +41,7 @@ class ApiScopeListenerTest extends TestCase
 
         // Should not throw any exception
         $this->listener->onKernelControllerArguments($event);
-        $this->assertTrue(true); // Test passes if no exception is thrown
+        self::assertTrue(true); // Test passes if no exception is thrown
     }
 
     public function testIgnoresNonArrayController(): void
@@ -53,7 +53,7 @@ class ApiScopeListenerTest extends TestCase
 
         // Should not throw any exception
         $this->listener->onKernelControllerArguments($event);
-        $this->assertTrue(true); // Test passes if no exception is thrown
+        self::assertTrue(true); // Test passes if no exception is thrown
     }
 
     public function testIgnoresRequestsWithoutApiToken(): void
@@ -65,7 +65,7 @@ class ApiScopeListenerTest extends TestCase
 
         // Should not throw any exception when no api_token attribute is set
         $this->listener->onKernelControllerArguments($event);
-        $this->assertTrue(true); // Test passes if no exception is thrown
+        self::assertTrue(true); // Test passes if no exception is thrown
     }
 
     public function testIgnoresRequestsWithInvalidApiToken(): void
@@ -78,7 +78,7 @@ class ApiScopeListenerTest extends TestCase
 
         // Should not throw any exception when api_token is not an ApiToken instance
         $this->listener->onKernelControllerArguments($event);
-        $this->assertTrue(true); // Test passes if no exception is thrown
+        self::assertTrue(true); // Test passes if no exception is thrown
     }
 
     public function testAllowsAccessWhenNoScopeRequired(): void
@@ -93,7 +93,7 @@ class ApiScopeListenerTest extends TestCase
 
         // Should not throw any exception when no scope is required
         $this->listener->onKernelControllerArguments($event);
-        $this->assertTrue(true); // Test passes if no exception is thrown
+        self::assertTrue(true); // Test passes if no exception is thrown
     }
 
     public function testAllowsAccessWithCorrectMethodScope(): void
@@ -108,7 +108,7 @@ class ApiScopeListenerTest extends TestCase
 
         // Should not throw any exception when token has required scope
         $this->listener->onKernelControllerArguments($event);
-        $this->assertTrue(true); // Test passes if no exception is thrown
+        self::assertTrue(true); // Test passes if no exception is thrown
     }
 
     public function testAllowsAccessWithCorrectClassScope(): void
@@ -123,7 +123,7 @@ class ApiScopeListenerTest extends TestCase
 
         // Should not throw any exception when token has required scope
         $this->listener->onKernelControllerArguments($event);
-        $this->assertTrue(true); // Test passes if no exception is thrown
+        self::assertTrue(true); // Test passes if no exception is thrown
     }
 
     public function testDeniesAccessWithIncorrectMethodScope(): void
@@ -171,7 +171,7 @@ class ApiScopeListenerTest extends TestCase
 
         // Should not throw any exception as method scope (keycloak) takes precedence over class scope (dovecot)
         $this->listener->onKernelControllerArguments($event);
-        $this->assertTrue(true); // Test passes if no exception is thrown
+        self::assertTrue(true); // Test passes if no exception is thrown
     }
 
     public function testAllowsAccessWithMultipleScopes(): void
@@ -186,7 +186,7 @@ class ApiScopeListenerTest extends TestCase
 
         // Should not throw any exception when token has required scope among others
         $this->listener->onKernelControllerArguments($event);
-        $this->assertTrue(true); // Test passes if no exception is thrown
+        self::assertTrue(true); // Test passes if no exception is thrown
     }
 
     public function testDeniesAccessWithEmptyScopes(): void
@@ -219,11 +219,11 @@ class ApiScopeListenerTest extends TestCase
         if ($shouldProcess) {
             // Should throw exception because token has dovecot scope but class requires dovecot (this should pass)
             $this->listener->onKernelControllerArguments($event);
-            $this->assertTrue(true);
+            self::assertTrue(true);
         } else {
             // Should not process non-API paths, so no exception should be thrown
             $this->listener->onKernelControllerArguments($event);
-            $this->assertTrue(true);
+            self::assertTrue(true);
         }
     }
 
@@ -241,9 +241,7 @@ class ApiScopeListenerTest extends TestCase
 
     private function createApiToken(array $scopes): ApiToken
     {
-        $apiToken = $this->getMockBuilder(ApiToken::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $apiToken = $this->createStub(ApiToken::class);
 
         $apiToken->method('getScopes')->willReturn($scopes);
 
@@ -252,7 +250,7 @@ class ApiScopeListenerTest extends TestCase
 
     private function createControllerArgumentsEvent(Request $request, $controller): ControllerArgumentsEvent
     {
-        $kernel = $this->createMock(HttpKernelInterface::class);
+        $kernel = $this->createStub(HttpKernelInterface::class);
 
         return new ControllerArgumentsEvent(
             $kernel,

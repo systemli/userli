@@ -24,7 +24,7 @@ class UpdatedTimeListenerTest extends TestCase
     protected function setUp(): void
     {
         $this->listener = new UpdatedTimeListener();
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->entityManager = $this->createStub(EntityManagerInterface::class);
     }
 
     public function testPrePersistUpdatesUpdatedTimeForUser(): void
@@ -50,7 +50,7 @@ class UpdatedTimeListenerTest extends TestCase
 
         self::assertEquals('2020-01-01', $user->getUpdatedTime()->format('Y-m-d'));
 
-        $args = $this->createMock(PreUpdateEventArgs::class);
+        $args = $this->createStub(PreUpdateEventArgs::class);
         $args->method('getObject')->willReturn($user);
         $this->listener->preUpdate($args);
 

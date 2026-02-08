@@ -16,13 +16,13 @@ class AliasHandlerTest extends TestCase
 {
     private function createHandler(array $list): AliasHandler
     {
-        $repository = $this->getMockBuilder(AliasRepository::class)->disableOriginalConstructor()->getMock();
+        $repository = $this->createStub(AliasRepository::class);
         $repository->method('findByUser')->willReturn($list);
 
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)->disableOriginalConstructor()->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturn($repository);
 
-        $creator = $this->getMockBuilder(AliasCreator::class)->disableOriginalConstructor()->getMock();
+        $creator = $this->createStub(AliasCreator::class);
 
         return new AliasHandler($manager, $creator);
     }

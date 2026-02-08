@@ -6,10 +6,17 @@ namespace App\Tests\Form;
 
 use App\Form\Model\AliasCreate;
 use App\Form\RandomAliasCreateType;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class RandomAliasCreateTypeTest extends TypeTestCase
 {
+    protected function setUp(): void
+    {
+        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
+        parent::setUp();
+    }
+
     public function testSubmitValidData(): void
     {
         $formData = ['note' => 'My test alias'];
@@ -17,11 +24,11 @@ class RandomAliasCreateTypeTest extends TypeTestCase
         $form = $this->factory->create(RandomAliasCreateType::class);
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
+        self::assertTrue($form->isSynchronized());
 
         /** @var AliasCreate $data */
         $data = $form->getData();
-        $this->assertSame('My test alias', $data->getNote());
+        self::assertSame('My test alias', $data->getNote());
     }
 
     public function testSubmitWithoutNote(): void
@@ -31,11 +38,11 @@ class RandomAliasCreateTypeTest extends TypeTestCase
         $form = $this->factory->create(RandomAliasCreateType::class);
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
+        self::assertTrue($form->isSynchronized());
 
         /** @var AliasCreate $data */
         $data = $form->getData();
-        $this->assertNull($data->getNote());
+        self::assertNull($data->getNote());
     }
 
     public function testNoteTrimmed(): void
@@ -45,11 +52,11 @@ class RandomAliasCreateTypeTest extends TypeTestCase
         $form = $this->factory->create(RandomAliasCreateType::class);
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
+        self::assertTrue($form->isSynchronized());
 
         /** @var AliasCreate $data */
         $data = $form->getData();
-        $this->assertSame('Trimmed Note', $data->getNote());
+        self::assertSame('Trimmed Note', $data->getNote());
     }
 
     public function testFormFieldsExist(): void
@@ -57,14 +64,14 @@ class RandomAliasCreateTypeTest extends TypeTestCase
         $form = $this->factory->create(RandomAliasCreateType::class);
         $view = $form->createView();
 
-        $this->assertArrayHasKey('note', $view->children);
-        $this->assertArrayHasKey('submit', $view->children);
+        self::assertArrayHasKey('note', $view->children);
+        self::assertArrayHasKey('submit', $view->children);
     }
 
     public function testBlockPrefix(): void
     {
         $form = $this->factory->create(RandomAliasCreateType::class);
 
-        $this->assertSame('create_alias', $form->getConfig()->getName());
+        self::assertSame('create_alias', $form->getConfig()->getName());
     }
 }

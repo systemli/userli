@@ -14,9 +14,7 @@ class AdminPasswordCommandTest extends TestCase
 {
     public function testExecute(): void
     {
-        $updater = $this->getMockBuilder(AdminPasswordUpdater::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $updater = $this->createStub(AdminPasswordUpdater::class);
 
         $command = new AdminPasswordCommand($updater);
         $app = new Application();
@@ -26,12 +24,12 @@ class AdminPasswordCommandTest extends TestCase
         $commandTester->execute(['password' => 'test']);
 
         $output = $commandTester->getDisplay();
-        $this->assertEquals('', $output);
+        self::assertEquals('', $output);
 
         $commandTester->setInputs(['password via interactive command\n']);
         $commandTester->execute([]);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Please enter new admin password', $output);
+        self::assertStringContainsString('Please enter new admin password', $output);
     }
 }

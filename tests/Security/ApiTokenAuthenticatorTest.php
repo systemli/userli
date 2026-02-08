@@ -9,6 +9,7 @@ use App\Security\ApiTokenAuthenticator;
 use App\Security\Badge\ApiTokenBadge;
 use App\Service\ApiTokenManager;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,12 +23,12 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 
 class ApiTokenAuthenticatorTest extends TestCase
 {
-    private ApiTokenManager $apiTokenManager;
+    private Stub&ApiTokenManager $apiTokenManager;
     private ApiTokenAuthenticator $authenticator;
 
     protected function setUp(): void
     {
-        $this->apiTokenManager = $this->createMock(ApiTokenManager::class);
+        $this->apiTokenManager = $this->createStub(ApiTokenManager::class);
         $this->authenticator = new ApiTokenAuthenticator($this->apiTokenManager);
     }
 
@@ -37,7 +38,7 @@ class ApiTokenAuthenticatorTest extends TestCase
         $request = new Request();
         $request->server->set('REQUEST_URI', $pathInfo);
 
-        $this->assertEquals($expected, $this->authenticator->supports($request));
+        self::assertEquals($expected, $this->authenticator->supports($request));
     }
 
     public static function supportsProvider(): array
@@ -61,28 +62,30 @@ class ApiTokenAuthenticatorTest extends TestCase
         $request = new Request();
         $request->headers->set('Authorization', 'Bearer '.$plainToken);
 
-        $this->apiTokenManager
+        $apiTokenManager = $this->createMock(ApiTokenManager::class);
+        $apiTokenManager
             ->expects($this->once())
             ->method('findOne')
             ->with($plainToken)
             ->willReturn($apiToken);
 
-        $this->apiTokenManager
+        $apiTokenManager
             ->expects($this->once())
             ->method('updateLastUsedTime')
             ->with($apiToken);
 
-        $passport = $this->authenticator->authenticate($request);
+        $authenticator = new ApiTokenAuthenticator($apiTokenManager);
+        $passport = $authenticator->authenticate($request);
 
-        $this->assertInstanceOf(SelfValidatingPassport::class, $passport);
-        $this->assertInstanceOf(UserBadge::class, $passport->getBadge(UserBadge::class));
-        $this->assertEquals('api_user', $passport->getBadge(UserBadge::class)->getUserIdentifier());
+        self::assertInstanceOf(SelfValidatingPassport::class, $passport);
+        self::assertInstanceOf(UserBadge::class, $passport->getBadge(UserBadge::class));
+        self::assertEquals('api_user', $passport->getBadge(UserBadge::class)->getUserIdentifier());
 
         $apiTokenBadge = $passport->getBadge(ApiTokenBadge::class);
-        $this->assertInstanceOf(ApiTokenBadge::class, $apiTokenBadge);
-        $this->assertSame($apiToken, $apiTokenBadge->getApiToken());
+        self::assertInstanceOf(ApiTokenBadge::class, $apiTokenBadge);
+        self::assertSame($apiToken, $apiTokenBadge->getApiToken());
 
-        $this->assertSame($apiToken, $request->attributes->get('api_token'));
+        self::assertSame($apiToken, $request->attributes->get('api_token'));
     }
 
     public function testAuthenticateWithXApiTokenHeaderSuccess(): void
@@ -93,21 +96,23 @@ class ApiTokenAuthenticatorTest extends TestCase
         $request = new Request();
         $request->headers->set('X-API-Token', $plainToken);
 
-        $this->apiTokenManager
+        $apiTokenManager = $this->createMock(ApiTokenManager::class);
+        $apiTokenManager
             ->expects($this->once())
             ->method('findOne')
             ->with($plainToken)
             ->willReturn($apiToken);
 
-        $this->apiTokenManager
+        $apiTokenManager
             ->expects($this->once())
             ->method('updateLastUsedTime')
             ->with($apiToken);
 
-        $passport = $this->authenticator->authenticate($request);
+        $authenticator = new ApiTokenAuthenticator($apiTokenManager);
+        $passport = $authenticator->authenticate($request);
 
-        $this->assertInstanceOf(SelfValidatingPassport::class, $passport);
-        $this->assertSame($apiToken, $request->attributes->get('api_token'));
+        self::assertInstanceOf(SelfValidatingPassport::class, $passport);
+        self::assertSame($apiToken, $request->attributes->get('api_token'));
     }
 
     public function testAuthenticateWithBearerTokenCaseInsensitive(): void
@@ -118,21 +123,23 @@ class ApiTokenAuthenticatorTest extends TestCase
         $request = new Request();
         $request->headers->set('Authorization', 'bearer '.$plainToken); // lowercase
 
-        $this->apiTokenManager
+        $apiTokenManager = $this->createMock(ApiTokenManager::class);
+        $apiTokenManager
             ->expects($this->once())
             ->method('findOne')
             ->with($plainToken)
             ->willReturn($apiToken);
 
-        $this->apiTokenManager
+        $apiTokenManager
             ->expects($this->once())
             ->method('updateLastUsedTime')
             ->with($apiToken);
 
-        $passport = $this->authenticator->authenticate($request);
+        $authenticator = new ApiTokenAuthenticator($apiTokenManager);
+        $passport = $authenticator->authenticate($request);
 
-        $this->assertInstanceOf(SelfValidatingPassport::class, $passport);
-        $this->assertSame($apiToken, $request->attributes->get('api_token'));
+        self::assertInstanceOf(SelfValidatingPassport::class, $passport);
+        self::assertSame($apiToken, $request->attributes->get('api_token'));
     }
 
     public function testAuthenticateWithBearerTokenPrecedenceOverXApiToken(): void
@@ -146,20 +153,22 @@ class ApiTokenAuthenticatorTest extends TestCase
         $request->headers->set('X-API-Token', $xApiToken);
 
         // Should use Bearer token, not X-API-Token
-        $this->apiTokenManager
+        $apiTokenManager = $this->createMock(ApiTokenManager::class);
+        $apiTokenManager
             ->expects($this->once())
             ->method('findOne')
             ->with($bearerToken)
             ->willReturn($apiToken);
 
-        $this->apiTokenManager
+        $apiTokenManager
             ->expects($this->once())
             ->method('updateLastUsedTime')
             ->with($apiToken);
 
-        $passport = $this->authenticator->authenticate($request);
+        $authenticator = new ApiTokenAuthenticator($apiTokenManager);
+        $passport = $authenticator->authenticate($request);
 
-        $this->assertInstanceOf(SelfValidatingPassport::class, $passport);
+        self::assertInstanceOf(SelfValidatingPassport::class, $passport);
     }
 
     public function testAuthenticateWithNoTokenThrowsException(): void
@@ -203,20 +212,22 @@ class ApiTokenAuthenticatorTest extends TestCase
         $request->headers->set('Authorization', 'InvalidFormat token123');
         $request->headers->set('X-API-Token', $xApiToken);
 
-        $this->apiTokenManager
+        $apiTokenManager = $this->createMock(ApiTokenManager::class);
+        $apiTokenManager
             ->expects($this->once())
             ->method('findOne')
             ->with($xApiToken)
             ->willReturn($apiToken);
 
-        $this->apiTokenManager
+        $apiTokenManager
             ->expects($this->once())
             ->method('updateLastUsedTime')
             ->with($apiToken);
 
-        $passport = $this->authenticator->authenticate($request);
+        $authenticator = new ApiTokenAuthenticator($apiTokenManager);
+        $passport = $authenticator->authenticate($request);
 
-        $this->assertInstanceOf(SelfValidatingPassport::class, $passport);
+        self::assertInstanceOf(SelfValidatingPassport::class, $passport);
     }
 
     public function testAuthenticateWithInvalidTokenThrowsException(): void
@@ -226,30 +237,33 @@ class ApiTokenAuthenticatorTest extends TestCase
         $request = new Request();
         $request->headers->set('Authorization', 'Bearer '.$plainToken);
 
-        $this->apiTokenManager
+        $apiTokenManager = $this->createMock(ApiTokenManager::class);
+        $apiTokenManager
             ->expects($this->once())
             ->method('findOne')
             ->with($plainToken)
             ->willReturn(null);
 
-        $this->apiTokenManager
+        $apiTokenManager
             ->expects($this->never())
             ->method('updateLastUsedTime');
+
+        $authenticator = new ApiTokenAuthenticator($apiTokenManager);
 
         $this->expectException(CustomUserMessageAuthenticationException::class);
         $this->expectExceptionMessage('Invalid API token');
 
-        $this->authenticator->authenticate($request);
+        $authenticator->authenticate($request);
     }
 
     public function testOnAuthenticationSuccessReturnsNull(): void
     {
         $request = new Request();
-        $token = $this->createMock(TokenInterface::class);
+        $token = $this->createStub(TokenInterface::class);
 
         $response = $this->authenticator->onAuthenticationSuccess($request, $token, 'api');
 
-        $this->assertNull($response);
+        self::assertNull($response);
     }
 
     public function testOnAuthenticationFailureReturnsJsonResponse(): void
@@ -259,12 +273,12 @@ class ApiTokenAuthenticatorTest extends TestCase
 
         $response = $this->authenticator->onAuthenticationFailure($request, $exception);
 
-        $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
+        self::assertInstanceOf(JsonResponse::class, $response);
+        self::assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
 
         $content = json_decode($response->getContent(), true);
-        $this->assertArrayHasKey('error', $content);
-        $this->assertEquals('Custom error message', $content['error']);
+        self::assertArrayHasKey('error', $content);
+        self::assertEquals('Custom error message', $content['error']);
     }
 
     public function testOnAuthenticationFailureWithCustomUserMessageException(): void
@@ -274,12 +288,12 @@ class ApiTokenAuthenticatorTest extends TestCase
 
         $response = $this->authenticator->onAuthenticationFailure($request, $exception);
 
-        $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
+        self::assertInstanceOf(JsonResponse::class, $response);
+        self::assertEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
 
         $content = json_decode($response->getContent(), true);
-        $this->assertArrayHasKey('error', $content);
-        $this->assertEquals('No API token provided', $content['error']);
+        self::assertArrayHasKey('error', $content);
+        self::assertEquals('No API token provided', $content['error']);
     }
 
     #[DataProvider('extractTokenProvider')]
@@ -297,7 +311,7 @@ class ApiTokenAuthenticatorTest extends TestCase
 
         $result = $method->invoke($this->authenticator, $request);
 
-        $this->assertEquals($expectedToken, $result);
+        self::assertEquals($expectedToken, $result);
     }
 
     public static function extractTokenProvider(): array
@@ -362,36 +376,36 @@ class ApiTokenAuthenticatorTest extends TestCase
         $request->headers->set('Authorization', 'Bearer '.$plainToken);
 
         // Test supports
-        $this->assertTrue($this->authenticator->supports($request));
+        self::assertTrue($this->authenticator->supports($request));
 
         // Mock API token manager
-        $this->apiTokenManager
+        $apiTokenManager = $this->createMock(ApiTokenManager::class);
+        $apiTokenManager
             ->expects($this->once())
             ->method('findOne')
             ->with($plainToken)
             ->willReturn($apiToken);
 
-        $this->apiTokenManager
+        $apiTokenManager
             ->expects($this->once())
             ->method('updateLastUsedTime')
             ->with($apiToken);
 
         // Test authenticate
-        $passport = $this->authenticator->authenticate($request);
+        $authenticator = new ApiTokenAuthenticator($apiTokenManager);
+        $passport = $authenticator->authenticate($request);
 
-        $this->assertInstanceOf(SelfValidatingPassport::class, $passport);
-        $this->assertSame($apiToken, $request->attributes->get('api_token'));
+        self::assertInstanceOf(SelfValidatingPassport::class, $passport);
+        self::assertSame($apiToken, $request->attributes->get('api_token'));
 
         // Test success callback
-        $token = $this->createMock(TokenInterface::class);
-        $successResponse = $this->authenticator->onAuthenticationSuccess($request, $token, 'api');
-        $this->assertNull($successResponse);
+        $token = $this->createStub(TokenInterface::class);
+        $successResponse = $authenticator->onAuthenticationSuccess($request, $token, 'api');
+        self::assertNull($successResponse);
     }
 
     private function createApiToken(): ApiToken
     {
-        return $this->getMockBuilder(ApiToken::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        return $this->createStub(ApiToken::class);
     }
 }

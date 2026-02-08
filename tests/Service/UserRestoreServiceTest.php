@@ -9,22 +9,22 @@ use App\Event\UserEvent;
 use App\Service\UserResetService;
 use App\Service\UserRestoreService;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 class UserRestoreServiceTest extends TestCase
 {
-    private EntityManagerInterface&MockObject $manager;
-    private EventDispatcherInterface&MockObject $eventDispatcher;
-    private UserResetService&MockObject $userResetService;
+    private EntityManagerInterface&Stub $manager;
+    private EventDispatcherInterface&Stub $eventDispatcher;
+    private UserResetService&Stub $userResetService;
     private UserRestoreService $service;
 
     protected function setUp(): void
     {
-        $this->manager = $this->createMock(EntityManagerInterface::class);
-        $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
-        $this->userResetService = $this->createMock(UserResetService::class);
+        $this->manager = $this->createStub(EntityManagerInterface::class);
+        $this->eventDispatcher = $this->createStub(EventDispatcherInterface::class);
+        $this->userResetService = $this->createStub(UserResetService::class);
 
         $this->service = new UserRestoreService(
             $this->manager,
@@ -39,13 +39,20 @@ class UserRestoreServiceTest extends TestCase
         $user->setDeleted(true);
         $password = 'newSecurePassword123';
 
-        $this->userResetService
+        $userResetService = $this->createMock(UserResetService::class);
+        $userResetService
             ->expects($this->once())
             ->method('resetUser')
             ->with($user, $password)
             ->willReturn(null);
 
-        $this->service->restoreUser($user, $password);
+        $service = new UserRestoreService(
+            $this->manager,
+            $this->eventDispatcher,
+            $userResetService
+        );
+
+        $service->restoreUser($user, $password);
     }
 
     public function testRestoreUserSetsDeletedToFalse(): void
@@ -63,12 +70,19 @@ class UserRestoreServiceTest extends TestCase
         $user = new User('deleted@example.org');
         $user->setDeleted(true);
 
-        $this->userResetService
+        $userResetService = $this->createMock(UserResetService::class);
+        $userResetService
             ->expects($this->once())
             ->method('resetUser')
             ->willReturn('generated-recovery-token');
 
-        $recoveryToken = $this->service->restoreUser($user, 'password123');
+        $service = new UserRestoreService(
+            $this->manager,
+            $this->eventDispatcher,
+            $userResetService
+        );
+
+        $recoveryToken = $service->restoreUser($user, 'password123');
 
         self::assertEquals('generated-recovery-token', $recoveryToken);
     }
@@ -78,11 +92,18 @@ class UserRestoreServiceTest extends TestCase
         $user = new User('deleted@example.org');
         $user->setDeleted(true);
 
-        $this->manager
+        $manager = $this->createMock(EntityManagerInterface::class);
+        $manager
             ->expects($this->once())
             ->method('flush');
 
-        $this->service->restoreUser($user, 'password123');
+        $service = new UserRestoreService(
+            $manager,
+            $this->eventDispatcher,
+            $this->userResetService
+        );
+
+        $service->restoreUser($user, 'password123');
     }
 
     public function testRestoreUserDispatchesUserCreatedEvent(): void
@@ -90,7 +111,8 @@ class UserRestoreServiceTest extends TestCase
         $user = new User('deleted@example.org');
         $user->setDeleted(true);
 
-        $this->eventDispatcher
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher
             ->expects($this->once())
             ->method('dispatch')
             ->with(
@@ -98,6 +120,12 @@ class UserRestoreServiceTest extends TestCase
                 UserEvent::USER_CREATED
             );
 
-        $this->service->restoreUser($user, 'password123');
+        $service = new UserRestoreService(
+            $this->manager,
+            $eventDispatcher,
+            $this->userResetService
+        );
+
+        $service->restoreUser($user, 'password123');
     }
 }

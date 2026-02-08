@@ -20,17 +20,17 @@ class AliasCreatorTest extends TestCase
 {
     protected function createCreator(): AliasCreator
     {
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('persist')->willReturnCallback(
             static function (Alias $alias): void {
                 $alias->setId(1);
             }
         );
 
-        $validator = $this->getMockBuilder(ValidatorInterface::class)->getMock();
+        $validator = $this->createStub(ValidatorInterface::class);
         $validator->method('validate')->willReturn(new ConstraintViolationList());
 
-        $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
 
         return new AliasCreator($manager, $validator, $eventDispatcher);
     }
@@ -67,14 +67,14 @@ class AliasCreatorTest extends TestCase
 
     public function testCreateWithException(): void
     {
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
 
         $violation = new ConstraintViolation('message', 'messageTemplate', [], null, null, 'someValue');
 
-        $validator = $this->getMockBuilder(ValidatorInterface::class)->getMock();
+        $validator = $this->createStub(ValidatorInterface::class);
         $validator->method('validate')->willReturn(new ConstraintViolationList([$violation]));
 
-        $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
 
         $creator = new AliasCreator($manager, $validator, $eventDispatcher);
 

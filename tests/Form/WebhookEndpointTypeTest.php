@@ -7,10 +7,17 @@ namespace App\Tests\Form;
 use App\Enum\WebhookEvent;
 use App\Form\Model\WebhookEndpointModel;
 use App\Form\WebhookEndpointType;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class WebhookEndpointTypeTest extends TypeTestCase
 {
+    protected function setUp(): void
+    {
+        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
+        parent::setUp();
+    }
+
     public function testSubmitValidData(): void
     {
         $url = 'https://example.org/webhook';
@@ -35,8 +42,8 @@ class WebhookEndpointTypeTest extends TypeTestCase
 
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($expected, $model);
+        self::assertTrue($form->isSynchronized());
+        self::assertEquals($expected, $model);
     }
 
     public function testSubmitWithDisabled(): void
@@ -52,8 +59,8 @@ class WebhookEndpointTypeTest extends TypeTestCase
         $form = $this->factory->create(WebhookEndpointType::class, $model);
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertFalse($model->isEnabled());
+        self::assertTrue($form->isSynchronized());
+        self::assertFalse($model->isEnabled());
     }
 
     public function testFormFieldsExist(): void
@@ -61,11 +68,11 @@ class WebhookEndpointTypeTest extends TypeTestCase
         $form = $this->factory->create(WebhookEndpointType::class);
         $view = $form->createView();
 
-        $this->assertArrayHasKey('url', $view->children);
-        $this->assertArrayHasKey('secret', $view->children);
-        $this->assertArrayHasKey('events', $view->children);
-        $this->assertArrayHasKey('enabled', $view->children);
-        $this->assertArrayHasKey('submit', $view->children);
+        self::assertArrayHasKey('url', $view->children);
+        self::assertArrayHasKey('secret', $view->children);
+        self::assertArrayHasKey('events', $view->children);
+        self::assertArrayHasKey('enabled', $view->children);
+        self::assertArrayHasKey('submit', $view->children);
     }
 
     public function testEventsFieldIsExpandedAndMultiple(): void
@@ -73,7 +80,7 @@ class WebhookEndpointTypeTest extends TypeTestCase
         $form = $this->factory->create(WebhookEndpointType::class);
 
         $eventsConfig = $form->get('events')->getConfig();
-        $this->assertTrue($eventsConfig->getOption('expanded'));
-        $this->assertTrue($eventsConfig->getOption('multiple'));
+        self::assertTrue($eventsConfig->getOption('expanded'));
+        self::assertTrue($eventsConfig->getOption('multiple'));
     }
 }

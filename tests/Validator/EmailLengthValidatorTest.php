@@ -34,14 +34,14 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
     {
         $this->validator->validate(null, new EmailLength($this->minLength, $this->maxLength));
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testEmptyStringIsValid(): void
     {
         $this->validator->validate('', new EmailLength($this->minLength, $this->maxLength));
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testExpectsStringCompatibleType(): void
@@ -66,7 +66,7 @@ class EmailLengthValidatorTest extends ConstraintValidatorTestCase
     public function testValidateValidNewEmailLength(): void
     {
         $this->validator->validate('new@example.org', new EmailLength($this->minLength, $this->maxLength));
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     #[DataProvider('getShortLongAddresses')]

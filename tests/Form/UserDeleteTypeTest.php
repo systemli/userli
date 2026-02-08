@@ -6,10 +6,17 @@ namespace App\Tests\Form;
 
 use App\Form\Model\Delete;
 use App\Form\UserDeleteType;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class UserDeleteTypeTest extends TypeTestCase
 {
+    protected function setUp(): void
+    {
+        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
+        parent::setUp();
+    }
+
     public function testSubmitValidData(): void
     {
         $password = 'password';
@@ -23,14 +30,14 @@ class UserDeleteTypeTest extends TypeTestCase
         // submit the data to the form directly
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($object, $form->getData());
+        self::assertTrue($form->isSynchronized());
+        self::assertEquals($object, $form->getData());
 
         $view = $form->createView();
         $children = $view->children;
 
         foreach (array_keys($formData) as $key) {
-            $this->assertArrayHasKey($key, $children);
+            self::assertArrayHasKey($key, $children);
         }
     }
 }

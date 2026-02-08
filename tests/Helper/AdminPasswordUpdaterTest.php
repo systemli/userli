@@ -11,7 +11,7 @@ use App\Helper\PasswordUpdater;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\Hasher\PlaintextPasswordHasher;
@@ -40,19 +40,15 @@ class AdminPasswordUpdaterTest extends TestCase
         self::assertEquals('newpassword', $admin->getPassword());
     }
 
-    public function getManager($object): MockObject
+    public function getManager($object): Stub
     {
-        $domainRepo = $this->getMockBuilder(DomainRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $domainRepo = $this->createStub(DomainRepository::class);
         $domainRepo->method('findByName')->willReturn(null);
 
-        $userRepo = $this->getMockBuilder(UserRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $userRepo = $this->createStub(UserRepository::class);
         $userRepo->method('findByEmail')->willReturn($object);
 
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturnMap(
             [
                 [Domain::class, $domainRepo],
@@ -65,8 +61,7 @@ class AdminPasswordUpdaterTest extends TestCase
     public function getUpdater(): PasswordUpdater
     {
         $hasher = new PlaintextPasswordHasher();
-        $passwordHasherFactory = $this->getMockBuilder(PasswordHasherFactoryInterface::class)
-            ->getMock();
+        $passwordHasherFactory = $this->createStub(PasswordHasherFactoryInterface::class);
         $passwordHasherFactory->method('getPasswordHasher')->willReturn($hasher);
 
         return new PasswordUpdater($passwordHasherFactory);

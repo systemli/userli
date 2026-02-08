@@ -6,10 +6,17 @@ namespace App\Tests\Form;
 
 use App\Form\Model\Twofactor;
 use App\Form\TwofactorType;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class TwofactorTypeTest extends TypeTestCase
 {
+    protected function setUp(): void
+    {
+        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
+        parent::setUp();
+    }
+
     public function testSubmitValidData(): void
     {
         $password = 'secure-password';
@@ -23,8 +30,8 @@ class TwofactorTypeTest extends TypeTestCase
 
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($expected, $model);
+        self::assertTrue($form->isSynchronized());
+        self::assertEquals($expected, $model);
     }
 
     public function testFormFieldsExist(): void
@@ -32,14 +39,14 @@ class TwofactorTypeTest extends TypeTestCase
         $form = $this->factory->create(TwofactorType::class);
         $view = $form->createView();
 
-        $this->assertArrayHasKey('password', $view->children);
-        $this->assertArrayHasKey('submit', $view->children);
+        self::assertArrayHasKey('password', $view->children);
+        self::assertArrayHasKey('submit', $view->children);
     }
 
     public function testBlockPrefix(): void
     {
         $form = $this->factory->create(TwofactorType::class);
 
-        $this->assertSame('twofactor', $form->getConfig()->getName());
+        self::assertSame('twofactor', $form->getConfig()->getName());
     }
 }

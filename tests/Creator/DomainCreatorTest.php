@@ -15,15 +15,15 @@ class DomainCreatorTest extends TestCase
 {
     private function createCreator(): DomainCreator
     {
-        $manager = $this->createMock(EntityManagerInterface::class);
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('persist')->willReturnCallback(static function ($entity): void {
             $entity->setId(1);
         });
 
-        $validator = $this->createMock(ValidatorInterface::class);
+        $validator = $this->createStub(ValidatorInterface::class);
         $validator->method('validate')->willReturn(new ConstraintViolationList());
 
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
 
         return new DomainCreator($manager, $validator, $eventDispatcher);
     }
@@ -32,7 +32,7 @@ class DomainCreatorTest extends TestCase
     {
         $creator = $this->createCreator();
         $entity = $creator->create('test');
-        $this->assertEquals(1, $entity->getId());
-        $this->assertEquals('test', $entity->getName());
+        self::assertEquals(1, $entity->getId());
+        self::assertEquals('test', $entity->getName());
     }
 }

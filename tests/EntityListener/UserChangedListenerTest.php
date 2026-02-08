@@ -29,19 +29,19 @@ class UserChangedListenerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->voucherRepository = $this->createMock(VoucherRepository::class);
-        $manager = $this->createMock(EntityManagerInterface::class);
+        $this->voucherRepository = $this->createStub(VoucherRepository::class);
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')
             ->willReturn($this->voucherRepository);
         $this->suspiciousChildrenHandler = $this->createMock(SuspiciousChildrenHandler::class);
         $this->listener = new UserChangedListener($manager, $this->suspiciousChildrenHandler);
 
-        $this->session = $this->createMock(Session::class);
-        $this->request = $this->createMock(Request::class);
+        $this->session = $this->createStub(Session::class);
+        $this->request = $this->createStub(Request::class);
         $this->request->method('getSession')
             ->willReturn($this->session);
         $this->request->query = new InputBag();
-        $this->event = $this->createMock(RequestEvent::class);
+        $this->event = $this->createStub(RequestEvent::class);
         $this->event->method('getRequest')
             ->willReturn($this->request);
     }
@@ -49,7 +49,7 @@ class UserChangedListenerTest extends TestCase
     public function testPreUpdateNoRoleChanges(): void
     {
         $user = new User('test@example.org');
-        $args = $this->createMock(PreUpdateEventArgs::class);
+        $args = $this->createStub(PreUpdateEventArgs::class);
         $args->method('getEntityChangeSet')
             ->willReturn(['someField' => [0, 1]]);
 
@@ -62,7 +62,7 @@ class UserChangedListenerTest extends TestCase
     public function testPreUpdateOtherRoleChanges(): void
     {
         $user = new User('test@example.org');
-        $args = $this->createMock(PreUpdateEventArgs::class);
+        $args = $this->createStub(PreUpdateEventArgs::class);
         $args->method('getEntityChangeSet')
             ->willReturn(['roles' => [[Roles::USER], [Roles::USER, Roles::PERMANENT]]]);
 
@@ -75,7 +75,7 @@ class UserChangedListenerTest extends TestCase
     public function testPreUpdateRoleSuspiciousRemoved(): void
     {
         $user = new User('test@example.org');
-        $args = $this->createMock(PreUpdateEventArgs::class);
+        $args = $this->createStub(PreUpdateEventArgs::class);
         $args->method('getEntityChangeSet')
             ->willReturn(['roles' => [[Roles::USER, Roles::SUSPICIOUS], [Roles::USER]]]);
 
@@ -88,7 +88,7 @@ class UserChangedListenerTest extends TestCase
     public function testPreUpdateRoleSuspiciousAdded(): void
     {
         $user = new User('user@example.org');
-        $args = $this->createMock(PreUpdateEventArgs::class);
+        $args = $this->createStub(PreUpdateEventArgs::class);
         $args->method('getEntityChangeSet')
             ->willReturn(['roles' => [[Roles::USER], [Roles::USER, Roles::SUSPICIOUS]]]);
 

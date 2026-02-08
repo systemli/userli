@@ -42,14 +42,10 @@ class WkdHandlerTest extends TestCase
         $this->openPgpKey->setKeyFingerprint($this->keyFingerprint);
         $this->openPgpKey->setKeyExpireTime(new DateTimeImmutable($this->keyExpireTime));
         $this->openPgpKey->setKeyData($this->keyData);
-        $repository = $this->getMockBuilder(OpenPgpKeyRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createStub(OpenPgpKeyRepository::class);
         $repository->method('findByEmail')->willReturn($this->openPgpKey);
 
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturn($repository);
 
         return new WkdHandler($manager, $this->wkdDirectory, $this->wkdFormat);

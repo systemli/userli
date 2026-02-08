@@ -14,6 +14,6 @@ class DomainFactoryTest extends TestCase
         $name = 'example.com';
         $domain = DomainFactory::create($name);
 
-        $this->assertSame($name, $domain->getName());
+        self::assertSame($name, $domain->getName());
     }
 }

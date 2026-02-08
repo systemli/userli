@@ -9,19 +9,19 @@ use App\Repository\ApiTokenRepository;
 use App\Service\ApiTokenManager;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 
 class ApiTokenManagerTest extends TestCase
 {
-    private ApiTokenRepository|MockObject $apiTokenRepository;
-    private EntityManagerInterface|MockObject $entityManager;
+    private ApiTokenRepository&Stub $apiTokenRepository;
+    private EntityManagerInterface&Stub $entityManager;
     private ApiTokenManager $apiTokenManager;
 
     protected function setUp(): void
     {
-        $this->apiTokenRepository = $this->createMock(ApiTokenRepository::class);
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->apiTokenRepository = $this->createStub(ApiTokenRepository::class);
+        $this->entityManager = $this->createStub(EntityManagerInterface::class);
 
         $this->apiTokenManager = new ApiTokenManager(
             $this->apiTokenRepository,
@@ -35,21 +35,27 @@ class ApiTokenManagerTest extends TestCase
         $name = 'Test Token';
         $scopes = ['dovecot', 'keycloak'];
 
-        $this->entityManager
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager
             ->expects($this->once())
             ->method('persist')
             ->with($this->isInstanceOf(ApiToken::class));
 
-        $this->entityManager
+        $entityManager
             ->expects($this->once())
             ->method('flush');
 
-        $result = $this->apiTokenManager->create($plainToken, $name, $scopes);
+        $apiTokenManager = new ApiTokenManager(
+            $this->apiTokenRepository,
+            $entityManager
+        );
 
-        $this->assertInstanceOf(ApiToken::class, $result);
-        $this->assertEquals($name, $result->getName());
-        $this->assertEquals($scopes, $result->getScopes());
-        $this->assertEquals($this->apiTokenManager->hashToken($plainToken), $result->getToken());
+        $result = $apiTokenManager->create($plainToken, $name, $scopes);
+
+        self::assertInstanceOf(ApiToken::class, $result);
+        self::assertEquals($name, $result->getName());
+        self::assertEquals($scopes, $result->getScopes());
+        self::assertEquals($apiTokenManager->hashToken($plainToken), $result->getToken());
     }
 
     public function testFindOne(): void
@@ -58,15 +64,17 @@ class ApiTokenManagerTest extends TestCase
         $hashedToken = $this->apiTokenManager->hashToken($plainToken);
         $expectedApiToken = new ApiToken($hashedToken, 'Test Token', ['dovecot']);
 
-        $this->apiTokenRepository
+        $apiTokenRepository = $this->createMock(ApiTokenRepository::class);
+        $apiTokenRepository
             ->expects($this->once())
             ->method('findOneBy')
             ->with(['token' => $hashedToken])
             ->willReturn($expectedApiToken);
 
-        $result = $this->apiTokenManager->findOne($plainToken);
+        $apiTokenManager = new ApiTokenManager($apiTokenRepository, $this->entityManager);
+        $result = $apiTokenManager->findOne($plainToken);
 
-        $this->assertSame($expectedApiToken, $result);
+        self::assertSame($expectedApiToken, $result);
     }
 
     public function testFindOneReturnsNullWhenTokenNotFound(): void
@@ -74,15 +82,17 @@ class ApiTokenManagerTest extends TestCase
         $plainToken = 'non-existent-token';
         $hashedToken = $this->apiTokenManager->hashToken($plainToken);
 
-        $this->apiTokenRepository
+        $apiTokenRepository = $this->createMock(ApiTokenRepository::class);
+        $apiTokenRepository
             ->expects($this->once())
             ->method('findOneBy')
             ->with(['token' => $hashedToken])
             ->willReturn(null);
 
-        $result = $this->apiTokenManager->findOne($plainToken);
+        $apiTokenManager = new ApiTokenManager($apiTokenRepository, $this->entityManager);
+        $result = $apiTokenManager->findOne($plainToken);
 
-        $this->assertNull($result);
+        self::assertNull($result);
     }
 
     public function testUpdateLastUsedTimeWhenNeverUsed(): void
@@ -90,12 +100,14 @@ class ApiTokenManagerTest extends TestCase
         $apiToken = new ApiToken('hashed-token', 'Test Token', ['dovecot']);
 
         // lastUsedTime is null by default, so it should be updated
-        $this->apiTokenRepository
+        $apiTokenRepository = $this->createMock(ApiTokenRepository::class);
+        $apiTokenRepository
             ->expects($this->once())
             ->method('updateLastUsedTime')
             ->with($apiToken);
 
-        $this->apiTokenManager->updateLastUsedTime($apiToken);
+        $apiTokenManager = new ApiTokenManager($apiTokenRepository, $this->entityManager);
+        $apiTokenManager->updateLastUsedTime($apiToken);
     }
 
     public function testUpdateLastUsedTimeWhenLastUsedMoreThanFiveMinutesAgo(): void
@@ -103,12 +115,14 @@ class ApiTokenManagerTest extends TestCase
         $apiToken = new ApiToken('hashed-token', 'Test Token', ['dovecot']);
         $apiToken->setLastUsedTime(new DateTimeImmutable('-10 minutes'));
 
-        $this->apiTokenRepository
+        $apiTokenRepository = $this->createMock(ApiTokenRepository::class);
+        $apiTokenRepository
             ->expects($this->once())
             ->method('updateLastUsedTime')
             ->with($apiToken);
 
-        $this->apiTokenManager->updateLastUsedTime($apiToken);
+        $apiTokenManager = new ApiTokenManager($apiTokenRepository, $this->entityManager);
+        $apiTokenManager->updateLastUsedTime($apiToken);
     }
 
     public function testUpdateLastUsedTimeSkippedWhenRecentlyUsed(): void
@@ -117,11 +131,13 @@ class ApiTokenManagerTest extends TestCase
         $apiToken->setLastUsedTime(new DateTimeImmutable('-2 minutes'));
 
         // Should NOT call repository since last used time is recent
-        $this->apiTokenRepository
+        $apiTokenRepository = $this->createMock(ApiTokenRepository::class);
+        $apiTokenRepository
             ->expects($this->never())
             ->method('updateLastUsedTime');
 
-        $this->apiTokenManager->updateLastUsedTime($apiToken);
+        $apiTokenManager = new ApiTokenManager($apiTokenRepository, $this->entityManager);
+        $apiTokenManager->updateLastUsedTime($apiToken);
     }
 
     public function testUpdateLastUsedTimeJustOverFiveMinutesAgo(): void
@@ -129,12 +145,14 @@ class ApiTokenManagerTest extends TestCase
         $apiToken = new ApiToken('hashed-token', 'Test Token', ['dovecot']);
         $apiToken->setLastUsedTime(new DateTimeImmutable('-5 minutes -1 second'));
 
-        $this->apiTokenRepository
+        $apiTokenRepository = $this->createMock(ApiTokenRepository::class);
+        $apiTokenRepository
             ->expects($this->once())
             ->method('updateLastUsedTime')
             ->with($apiToken);
 
-        $this->apiTokenManager->updateLastUsedTime($apiToken);
+        $apiTokenManager = new ApiTokenManager($apiTokenRepository, $this->entityManager);
+        $apiTokenManager->updateLastUsedTime($apiToken);
     }
 
     public function testFindAll(): void
@@ -144,30 +162,34 @@ class ApiTokenManagerTest extends TestCase
             new ApiToken('token2', 'Token 2', ['keycloak']),
         ];
 
-        $this->apiTokenRepository
+        $apiTokenRepository = $this->createMock(ApiTokenRepository::class);
+        $apiTokenRepository
             ->expects($this->once())
             ->method('findAll')
             ->willReturn($expectedTokens);
 
-        $result = $this->apiTokenManager->findAll();
+        $apiTokenManager = new ApiTokenManager($apiTokenRepository, $this->entityManager);
+        $result = $apiTokenManager->findAll();
 
-        $this->assertSame($expectedTokens, $result);
+        self::assertSame($expectedTokens, $result);
     }
 
     public function testDelete(): void
     {
         $apiToken = new ApiToken('hashed-token', 'Test Token', ['dovecot']);
 
-        $this->entityManager
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager
             ->expects($this->once())
             ->method('remove')
             ->with($apiToken);
 
-        $this->entityManager
+        $entityManager
             ->expects($this->once())
             ->method('flush');
 
-        $this->apiTokenManager->delete($apiToken);
+        $apiTokenManager = new ApiTokenManager($this->apiTokenRepository, $entityManager);
+        $apiTokenManager->delete($apiToken);
     }
 
     public function testGenerateToken(): void
@@ -176,19 +198,19 @@ class ApiTokenManagerTest extends TestCase
         $token2 = $this->apiTokenManager->generateToken();
 
         // Test that tokens are generated
-        $this->assertIsString($token1);
-        $this->assertIsString($token2);
+        self::assertIsString($token1);
+        self::assertIsString($token2);
 
         // Test that tokens are 64 characters long (32 bytes * 2 for hex)
-        $this->assertEquals(64, strlen($token1));
-        $this->assertEquals(64, strlen($token2));
+        self::assertEquals(64, strlen($token1));
+        self::assertEquals(64, strlen($token2));
 
         // Test that tokens are different (randomness)
-        $this->assertNotEquals($token1, $token2);
+        self::assertNotEquals($token1, $token2);
 
         // Test that tokens are valid hex strings
-        $this->assertMatchesRegularExpression('/^[a-f0-9]+$/', $token1);
-        $this->assertMatchesRegularExpression('/^[a-f0-9]+$/', $token2);
+        self::assertMatchesRegularExpression('/^[a-f0-9]+$/', $token1);
+        self::assertMatchesRegularExpression('/^[a-f0-9]+$/', $token2);
     }
 
     public function testHashToken(): void
@@ -198,8 +220,8 @@ class ApiTokenManagerTest extends TestCase
 
         $result = $this->apiTokenManager->hashToken($plainToken);
 
-        $this->assertEquals($expectedHash, $result);
-        $this->assertEquals(64, strlen($result)); // SHA256 produces 64 character hex string
+        self::assertEquals($expectedHash, $result);
+        self::assertEquals(64, strlen($result)); // SHA256 produces 64 character hex string
     }
 
     public function testHashTokenConsistency(): void
@@ -209,7 +231,7 @@ class ApiTokenManagerTest extends TestCase
         $hash1 = $this->apiTokenManager->hashToken($plainToken);
         $hash2 = $this->apiTokenManager->hashToken($plainToken);
 
-        $this->assertEquals($hash1, $hash2);
+        self::assertEquals($hash1, $hash2);
     }
 
     public function testHashTokenDifferentInputsProduceDifferentHashes(): void
@@ -220,6 +242,6 @@ class ApiTokenManagerTest extends TestCase
         $hash1 = $this->apiTokenManager->hashToken($token1);
         $hash2 = $this->apiTokenManager->hashToken($token2);
 
-        $this->assertNotEquals($hash1, $hash2);
+        self::assertNotEquals($hash1, $hash2);
     }
 }

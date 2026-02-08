@@ -10,25 +10,25 @@ use App\Service\SettingsConfigService;
 use App\Service\SettingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Symfony\Contracts\Cache\CacheInterface;
 
 class SettingsServiceTest extends TestCase
 {
-    private MockObject $repository;
-    private MockObject $entityManager;
-    private MockObject $cache;
-    private MockObject $configService;
+    private Stub $repository;
+    private Stub $entityManager;
+    private Stub $cache;
+    private Stub $configService;
     private SettingsService $settingsService;
 
     protected function setUp(): void
     {
-        $this->repository = $this->createMock(SettingRepository::class);
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
-        $this->cache = $this->createMock(CacheInterface::class);
-        $this->configService = $this->createMock(SettingsConfigService::class);
+        $this->repository = $this->createStub(SettingRepository::class);
+        $this->entityManager = $this->createStub(EntityManagerInterface::class);
+        $this->cache = $this->createStub(CacheInterface::class);
+        $this->configService = $this->createStub(SettingsConfigService::class);
 
         $this->settingsService = new SettingsService(
             $this->repository,
@@ -40,23 +40,33 @@ class SettingsServiceTest extends TestCase
 
     public function testSetNewSetting(): void
     {
-        $this->repository->expects($this->once())
+        $repository = $this->createMock(SettingRepository::class);
+        $repository->expects($this->once())
             ->method('findOneBy')
             ->with(['name' => 'new_setting'])
             ->willReturn(null);
 
-        $this->entityManager->expects($this->once())
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->once())
             ->method('persist')
             ->with($this->isInstanceOf(Setting::class));
 
-        $this->entityManager->expects($this->once())
+        $entityManager->expects($this->once())
             ->method('flush');
 
-        $this->cache->expects($this->once())
+        $cache = $this->createMock(CacheInterface::class);
+        $cache->expects($this->once())
             ->method('delete')
             ->with('app.settings');
 
-        $this->settingsService->set('new_setting', 'test_value');
+        $settingsService = new SettingsService(
+            $repository,
+            $entityManager,
+            $cache,
+            $this->configService
+        );
+
+        $settingsService->set('new_setting', 'test_value');
     }
 
     public function testSetExistingSetting(): void
@@ -66,70 +76,101 @@ class SettingsServiceTest extends TestCase
             ->method('setValue')
             ->with('test_value');
 
-        $this->repository->expects($this->once())
+        $repository = $this->createMock(SettingRepository::class);
+        $repository->expects($this->once())
             ->method('findOneBy')
             ->with(['name' => 'existing_setting'])
             ->willReturn($setting);
 
-        $this->entityManager->expects($this->never())
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->never())
             ->method('persist');
 
-        $this->entityManager->expects($this->once())
+        $entityManager->expects($this->once())
             ->method('flush');
 
-        $this->cache->expects($this->once())
+        $cache = $this->createMock(CacheInterface::class);
+        $cache->expects($this->once())
             ->method('delete')
             ->with('app.settings');
 
-        $this->settingsService->set('existing_setting', 'test_value');
+        $settingsService = new SettingsService(
+            $repository,
+            $entityManager,
+            $cache,
+            $this->configService
+        );
+
+        $settingsService->set('existing_setting', 'test_value');
     }
 
     public function testSetWithBooleanValue(): void
     {
-        $this->repository->expects($this->once())
+        $repository = $this->createMock(SettingRepository::class);
+        $repository->expects($this->once())
             ->method('findOneBy')
             ->willReturn(null);
 
-        $this->entityManager->expects($this->once())
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->once())
             ->method('persist')
             ->with($this->callback(static function (Setting $setting) {
                 return $setting->getName() === 'bool_setting' && $setting->getValue() === '1';
             }));
 
-        $this->entityManager->expects($this->once())
+        $entityManager->expects($this->once())
             ->method('flush');
 
-        $this->cache->expects($this->once())
+        $cache = $this->createMock(CacheInterface::class);
+        $cache->expects($this->once())
             ->method('delete');
 
-        $this->settingsService->set('bool_setting', true);
+        $settingsService = new SettingsService(
+            $repository,
+            $entityManager,
+            $cache,
+            $this->configService
+        );
+
+        $settingsService->set('bool_setting', true);
     }
 
     public function testSetWithArrayValue(): void
     {
-        $this->repository->expects($this->once())
+        $repository = $this->createMock(SettingRepository::class);
+        $repository->expects($this->once())
             ->method('findOneBy')
             ->willReturn(null);
 
-        $this->entityManager->expects($this->once())
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->once())
             ->method('persist')
             ->with($this->callback(static function (Setting $setting) {
                 return $setting->getName() === 'array_setting'
                     && $setting->getValue() === '["a","b","c"]';
             }));
 
-        $this->entityManager->expects($this->once())
+        $entityManager->expects($this->once())
             ->method('flush');
 
-        $this->cache->expects($this->once())
+        $cache = $this->createMock(CacheInterface::class);
+        $cache->expects($this->once())
             ->method('delete');
 
-        $this->settingsService->set('array_setting', ['a', 'b', 'c']);
+        $settingsService = new SettingsService(
+            $repository,
+            $entityManager,
+            $cache,
+            $this->configService
+        );
+
+        $settingsService->set('array_setting', ['a', 'b', 'c']);
     }
 
     public function testSetAll(): void
     {
-        $this->configService->expects($this->once())
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
                 'setting1' => ['type' => 'string'],
@@ -154,7 +195,8 @@ class SettingsServiceTest extends TestCase
             null,              // setting3 doesn't exist
         ];
 
-        $this->repository->expects($this->exactly(3))
+        $repository = $this->createMock(SettingRepository::class);
+        $repository->expects($this->exactly(3))
             ->method('findOneBy')
             ->willReturnCallback(static function (array $criteria) use (&$callCount, $expectedArgs, $returnValues) {
                 $expected = $expectedArgs[$callCount];
@@ -166,18 +208,27 @@ class SettingsServiceTest extends TestCase
             });
 
         // Should persist 2 new settings (setting1 and setting3), setting2 already exists
-        $this->entityManager->expects($this->exactly(2))
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->exactly(2))
             ->method('persist')
             ->with($this->isInstanceOf(Setting::class));
 
-        $this->entityManager->expects($this->once())
+        $entityManager->expects($this->once())
             ->method('flush');
 
-        $this->cache->expects($this->once())
+        $cache = $this->createMock(CacheInterface::class);
+        $cache->expects($this->once())
             ->method('delete')
             ->with('app.settings');
 
-        $this->settingsService->setAll([
+        $settingsService = new SettingsService(
+            $repository,
+            $entityManager,
+            $cache,
+            $configService
+        );
+
+        $settingsService->setAll([
             'setting1' => 'new_value',
             'setting2' => 'updated_value',
             'setting3' => true,
@@ -187,27 +238,38 @@ class SettingsServiceTest extends TestCase
 
     public function testSetAllSkipsUndefinedSettings(): void
     {
-        $this->configService->expects($this->once())
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
                 'defined_setting' => ['type' => 'string'],
             ]);
 
-        $this->repository->expects($this->once())
+        $repository = $this->createMock(SettingRepository::class);
+        $repository->expects($this->once())
             ->method('findOneBy')
             ->with(['name' => 'defined_setting'])
             ->willReturn(null);
 
-        $this->entityManager->expects($this->once())
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->once())
             ->method('persist');
 
-        $this->entityManager->expects($this->once())
+        $entityManager->expects($this->once())
             ->method('flush');
 
-        $this->cache->expects($this->once())
+        $cache = $this->createMock(CacheInterface::class);
+        $cache->expects($this->once())
             ->method('delete');
 
-        $this->settingsService->setAll([
+        $settingsService = new SettingsService(
+            $repository,
+            $entityManager,
+            $cache,
+            $configService
+        );
+
+        $settingsService->setAll([
             'defined_setting' => 'value',
             'undefined_setting' => 'ignored',
         ]);
@@ -215,33 +277,51 @@ class SettingsServiceTest extends TestCase
 
     public function testClearCache(): void
     {
-        $this->cache->expects($this->once())
+        $cache = $this->createMock(CacheInterface::class);
+        $cache->expects($this->once())
             ->method('delete')
             ->with('app.settings');
 
-        $this->settingsService->clearCache();
+        $settingsService = new SettingsService(
+            $this->repository,
+            $this->entityManager,
+            $cache,
+            $this->configService
+        );
+
+        $settingsService->clearCache();
     }
 
     #[DataProvider('valueToStringProvider')]
     public function testValueToStringConversion(mixed $input, string $expected): void
     {
-        $this->repository->expects($this->once())
+        $repository = $this->createMock(SettingRepository::class);
+        $repository->expects($this->once())
             ->method('findOneBy')
             ->willReturn(null);
 
-        $this->entityManager->expects($this->once())
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->once())
             ->method('persist')
             ->with($this->callback(static function (Setting $setting) use ($expected) {
                 return $setting->getValue() === $expected;
             }));
 
-        $this->entityManager->expects($this->once())
+        $entityManager->expects($this->once())
             ->method('flush');
 
-        $this->cache->expects($this->once())
+        $cache = $this->createMock(CacheInterface::class);
+        $cache->expects($this->once())
             ->method('delete');
 
-        $this->settingsService->set('test_setting', $input);
+        $settingsService = new SettingsService(
+            $repository,
+            $entityManager,
+            $cache,
+            $this->configService
+        );
+
+        $settingsService->set('test_setting', $input);
     }
 
     public static function valueToStringProvider(): array
@@ -259,34 +339,50 @@ class SettingsServiceTest extends TestCase
 
     public function testConvertValueFromStringWithString(): void
     {
-        $reflection = new ReflectionClass($this->settingsService);
-        $method = $reflection->getMethod('convertValueFromString');
-        $method->setAccessible(true);
-
-        $this->configService->expects($this->once())
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'string'],
             ]);
 
-        $result = $method->invoke($this->settingsService, 'test_setting', 'test_value');
+        $settingsService = new SettingsService(
+            $this->repository,
+            $this->entityManager,
+            $this->cache,
+            $configService
+        );
+
+        $reflection = new ReflectionClass($settingsService);
+        $method = $reflection->getMethod('convertValueFromString');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($settingsService, 'test_setting', 'test_value');
 
         self::assertEquals('test_value', $result);
     }
 
     public function testConvertValueFromStringWithInteger(): void
     {
-        $reflection = new ReflectionClass($this->settingsService);
-        $method = $reflection->getMethod('convertValueFromString');
-        $method->setAccessible(true);
-
-        $this->configService->expects($this->once())
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'integer'],
             ]);
 
-        $result = $method->invoke($this->settingsService, 'test_setting', '42');
+        $settingsService = new SettingsService(
+            $this->repository,
+            $this->entityManager,
+            $this->cache,
+            $configService
+        );
+
+        $reflection = new ReflectionClass($settingsService);
+        $method = $reflection->getMethod('convertValueFromString');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($settingsService, 'test_setting', '42');
 
         self::assertEquals(42, $result);
         self::assertIsInt($result);
@@ -294,17 +390,25 @@ class SettingsServiceTest extends TestCase
 
     public function testConvertValueFromStringWithFloat(): void
     {
-        $reflection = new ReflectionClass($this->settingsService);
-        $method = $reflection->getMethod('convertValueFromString');
-        $method->setAccessible(true);
-
-        $this->configService->expects($this->once())
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'float'],
             ]);
 
-        $result = $method->invoke($this->settingsService, 'test_setting', '3.14');
+        $settingsService = new SettingsService(
+            $this->repository,
+            $this->entityManager,
+            $this->cache,
+            $configService
+        );
+
+        $reflection = new ReflectionClass($settingsService);
+        $method = $reflection->getMethod('convertValueFromString');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($settingsService, 'test_setting', '3.14');
 
         self::assertEquals(3.14, $result);
         self::assertIsFloat($result);
@@ -312,34 +416,50 @@ class SettingsServiceTest extends TestCase
 
     public function testConvertValueFromStringWithBoolean(): void
     {
-        $reflection = new ReflectionClass($this->settingsService);
-        $method = $reflection->getMethod('convertValueFromString');
-        $method->setAccessible(true);
-
-        $this->configService->expects($this->once())
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'boolean'],
             ]);
 
-        $result = $method->invoke($this->settingsService, 'test_setting', '1');
+        $settingsService = new SettingsService(
+            $this->repository,
+            $this->entityManager,
+            $this->cache,
+            $configService
+        );
+
+        $reflection = new ReflectionClass($settingsService);
+        $method = $reflection->getMethod('convertValueFromString');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($settingsService, 'test_setting', '1');
 
         self::assertTrue($result);
     }
 
     public function testConvertValueFromStringWithArray(): void
     {
-        $reflection = new ReflectionClass($this->settingsService);
-        $method = $reflection->getMethod('convertValueFromString');
-        $method->setAccessible(true);
-
-        $this->configService->expects($this->once())
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'array'],
             ]);
 
-        $result = $method->invoke($this->settingsService, 'test_setting', '["a","b","c"]');
+        $settingsService = new SettingsService(
+            $this->repository,
+            $this->entityManager,
+            $this->cache,
+            $configService
+        );
+
+        $reflection = new ReflectionClass($settingsService);
+        $method = $reflection->getMethod('convertValueFromString');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($settingsService, 'test_setting', '["a","b","c"]');
 
         self::assertEquals(['a', 'b', 'c'], $result);
         self::assertIsArray($result);
@@ -347,48 +467,72 @@ class SettingsServiceTest extends TestCase
 
     public function testConvertValueFromStringWithEmptyString(): void
     {
-        $reflection = new ReflectionClass($this->settingsService);
-        $method = $reflection->getMethod('convertValueFromString');
-        $method->setAccessible(true);
-
-        $this->configService->expects($this->once())
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'string'],
             ]);
 
-        $result = $method->invoke($this->settingsService, 'test_setting', '');
+        $settingsService = new SettingsService(
+            $this->repository,
+            $this->entityManager,
+            $this->cache,
+            $configService
+        );
+
+        $reflection = new ReflectionClass($settingsService);
+        $method = $reflection->getMethod('convertValueFromString');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($settingsService, 'test_setting', '');
 
         self::assertNull($result);
     }
 
     public function testConvertValueFromStringWithAlreadyCorrectType(): void
     {
-        $reflection = new ReflectionClass($this->settingsService);
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->never())
+            ->method('getSettings');
+
+        $settingsService = new SettingsService(
+            $this->repository,
+            $this->entityManager,
+            $this->cache,
+            $configService
+        );
+
+        $reflection = new ReflectionClass($settingsService);
         $method = $reflection->getMethod('convertValueFromString');
         $method->setAccessible(true);
 
-        $this->configService->expects($this->never())
-            ->method('getSettings');
-
-        $result = $method->invoke($this->settingsService, 'test_setting', null);
+        $result = $method->invoke($settingsService, 'test_setting', null);
 
         self::assertNull($result);
     }
 
     public function testConvertValueFromStringWithBooleanAlreadyCorrect(): void
     {
-        $reflection = new ReflectionClass($this->settingsService);
-        $method = $reflection->getMethod('convertValueFromString');
-        $method->setAccessible(true);
-
-        $this->configService->expects($this->once())
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'boolean'],
             ]);
 
-        $result = $method->invoke($this->settingsService, 'test_setting', true);
+        $settingsService = new SettingsService(
+            $this->repository,
+            $this->entityManager,
+            $this->cache,
+            $configService
+        );
+
+        $reflection = new ReflectionClass($settingsService);
+        $method = $reflection->getMethod('convertValueFromString');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($settingsService, 'test_setting', true);
 
         self::assertTrue($result);
     }
@@ -396,17 +540,25 @@ class SettingsServiceTest extends TestCase
     #[DataProvider('booleanConversionProvider')]
     public function testBooleanStringConversion(mixed $input, bool $expected): void
     {
-        $reflection = new ReflectionClass($this->settingsService);
-        $method = $reflection->getMethod('convertValueFromString');
-        $method->setAccessible(true);
-
-        $this->configService->expects($this->once())
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'boolean'],
             ]);
 
-        $result = $method->invoke($this->settingsService, 'test_setting', $input);
+        $settingsService = new SettingsService(
+            $this->repository,
+            $this->entityManager,
+            $this->cache,
+            $configService
+        );
+
+        $reflection = new ReflectionClass($settingsService);
+        $method = $reflection->getMethod('convertValueFromString');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($settingsService, 'test_setting', $input);
 
         self::assertEquals($expected, $result);
         self::assertIsBool($result);
@@ -458,13 +610,15 @@ class SettingsServiceTest extends TestCase
 
     public function testGetFromDatabase(): void
     {
+        $configService = $this->createMock(SettingsConfigService::class);
+
         // Create a partial mock of SettingsService to mock getAllSettings()
         $settingsService = $this->getMockBuilder(SettingsService::class)
             ->setConstructorArgs([
                 $this->repository,
                 $this->entityManager,
                 $this->cache,
-                $this->configService,
+                $configService,
             ])
             ->onlyMethods(['getAllSettings'])
             ->getMock();
@@ -473,7 +627,7 @@ class SettingsServiceTest extends TestCase
             ->method('getAllSettings')
             ->willReturn(['test_setting' => 'database_value']);
 
-        $this->configService->expects($this->once())
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
                 'test_setting' => ['type' => 'string'],
@@ -486,13 +640,15 @@ class SettingsServiceTest extends TestCase
 
     public function testGetFromDefaultDefinition(): void
     {
+        $configService = $this->createMock(SettingsConfigService::class);
+
         // Create a partial mock of SettingsService to mock getAllSettings()
         $settingsService = $this->getMockBuilder(SettingsService::class)
             ->setConstructorArgs([
                 $this->repository,
                 $this->entityManager,
                 $this->cache,
-                $this->configService,
+                $configService,
             ])
             ->onlyMethods(['getAllSettings'])
             ->getMock();
@@ -501,7 +657,7 @@ class SettingsServiceTest extends TestCase
             ->method('getAllSettings')
             ->willReturn([]); // Empty database
 
-        $this->configService->expects($this->exactly(2))
+        $configService->expects($this->exactly(2))
             ->method('getSettings')
             ->willReturn([
                 'test_setting' => [
@@ -517,13 +673,15 @@ class SettingsServiceTest extends TestCase
 
     public function testGetWithFallbackParameter(): void
     {
+        $configService = $this->createMock(SettingsConfigService::class);
+
         // Create a partial mock of SettingsService to mock getAllSettings()
         $settingsService = $this->getMockBuilder(SettingsService::class)
             ->setConstructorArgs([
                 $this->repository,
                 $this->entityManager,
                 $this->cache,
-                $this->configService,
+                $configService,
             ])
             ->onlyMethods(['getAllSettings'])
             ->getMock();
@@ -532,7 +690,7 @@ class SettingsServiceTest extends TestCase
             ->method('getAllSettings')
             ->willReturn([]);
 
-        $this->configService->expects($this->exactly(2))
+        $configService->expects($this->exactly(2))
             ->method('getSettings')
             ->willReturn([
                 'test_setting' => [
@@ -548,13 +706,15 @@ class SettingsServiceTest extends TestCase
 
     public function testGetWithNoSettingAnywhere(): void
     {
+        $configService = $this->createMock(SettingsConfigService::class);
+
         // Create a partial mock of SettingsService to mock getAllSettings()
         $settingsService = $this->getMockBuilder(SettingsService::class)
             ->setConstructorArgs([
                 $this->repository,
                 $this->entityManager,
                 $this->cache,
-                $this->configService,
+                $configService,
             ])
             ->onlyMethods(['getAllSettings'])
             ->getMock();
@@ -563,7 +723,7 @@ class SettingsServiceTest extends TestCase
             ->method('getAllSettings')
             ->willReturn([]);
 
-        $this->configService->expects($this->once())
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([]); // No definition exists
 
@@ -574,13 +734,15 @@ class SettingsServiceTest extends TestCase
 
     public function testGetWithTypeConversion(): void
     {
+        $configService = $this->createMock(SettingsConfigService::class);
+
         // Create a partial mock of SettingsService to mock getAllSettings()
         $settingsService = $this->getMockBuilder(SettingsService::class)
             ->setConstructorArgs([
                 $this->repository,
                 $this->entityManager,
                 $this->cache,
-                $this->configService,
+                $configService,
             ])
             ->onlyMethods(['getAllSettings'])
             ->getMock();
@@ -589,7 +751,7 @@ class SettingsServiceTest extends TestCase
             ->method('getAllSettings')
             ->willReturn(['bool_setting' => '1']); // String from database
 
-        $this->configService->expects($this->once())
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([
                 'bool_setting' => ['type' => 'boolean'],
@@ -603,13 +765,15 @@ class SettingsServiceTest extends TestCase
 
     public function testGetWithDefaultTypeConversion(): void
     {
+        $configService = $this->createMock(SettingsConfigService::class);
+
         // Create a partial mock of SettingsService to mock getAllSettings()
         $settingsService = $this->getMockBuilder(SettingsService::class)
             ->setConstructorArgs([
                 $this->repository,
                 $this->entityManager,
                 $this->cache,
-                $this->configService,
+                $configService,
             ])
             ->onlyMethods(['getAllSettings'])
             ->getMock();
@@ -618,7 +782,7 @@ class SettingsServiceTest extends TestCase
             ->method('getAllSettings')
             ->willReturn([]);
 
-        $this->configService->expects($this->exactly(2))
+        $configService->expects($this->exactly(2))
             ->method('getSettings')
             ->willReturn([
                 'int_setting' => [

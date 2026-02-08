@@ -6,10 +6,17 @@ namespace App\Tests\Form;
 
 use App\Form\Model\Password;
 use App\Form\PasswordType;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class PasswordTypeTest extends TypeTestCase
 {
+    protected function setUp(): void
+    {
+        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
+        parent::setUp();
+    }
+
     public function testSubmitValidData(): void
     {
         $password = 'password';
@@ -32,8 +39,8 @@ class PasswordTypeTest extends TypeTestCase
 
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
+        self::assertTrue($form->isSynchronized());
 
-        $this->assertEquals($expected, $model);
+        self::assertEquals($expected, $model);
     }
 }

@@ -19,17 +19,17 @@ class VoucherCreatorTest extends TestCase
 {
     public function testCreate(): void
     {
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('persist')->willReturnCallback(
             static function (Voucher $voucher): void {
                 $voucher->setId(1);
             }
         );
 
-        $validator = $this->getMockBuilder(ValidatorInterface::class)->getMock();
+        $validator = $this->createStub(ValidatorInterface::class);
         $validator->method('validate')->willReturn(new ConstraintViolationList());
 
-        $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
 
         $creator = new VoucherCreator($manager, $validator, $eventDispatcher);
 
@@ -42,14 +42,14 @@ class VoucherCreatorTest extends TestCase
 
     public function testCreateWithException(): void
     {
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
 
         $violation = new ConstraintViolation('message', 'messageTemplate', [], null, null, 'someValue');
 
-        $validator = $this->getMockBuilder(ValidatorInterface::class)->getMock();
+        $validator = $this->createStub(ValidatorInterface::class);
         $validator->method('validate')->willReturn(new ConstraintViolationList([$violation]));
 
-        $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
 
         $creator = new VoucherCreator($manager, $validator, $eventDispatcher);
 

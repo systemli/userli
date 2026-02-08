@@ -9,11 +9,18 @@ use App\Form\Model\RecoveryProcess;
 use App\Form\RecoveryProcessType;
 use App\Repository\DomainRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class RecoveryProcessTypeTest extends TypeTestCase
 {
+    protected function setUp(): void
+    {
+        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
+        parent::setUp();
+    }
+
     protected function getExtensions(): array
     {
         return [
@@ -42,17 +49,17 @@ class RecoveryProcessTypeTest extends TypeTestCase
         // submit the data to the form directly
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($object, $form->getData());
+        self::assertTrue($form->isSynchronized());
+        self::assertEquals($object, $form->getData());
 
         $view = $form->createView();
         $children = $view->children;
 
         // Assert that the form field has the correct attributes
-        $this->assertSame('off', $children['recoveryToken']->vars['attr']['autocomplete']);
+        self::assertSame('off', $children['recoveryToken']->vars['attr']['autocomplete']);
 
         foreach (array_keys($formData) as $key) {
-            $this->assertArrayHasKey($key, $children);
+            self::assertArrayHasKey($key, $children);
         }
     }
 
@@ -61,13 +68,9 @@ class RecoveryProcessTypeTest extends TypeTestCase
      */
     public function getManager()
     {
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
 
-        $repository = $this->getMockBuilder(DomainRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createStub(DomainRepository::class);
 
         $domain = new Domain();
         $domain->setName('example.com');

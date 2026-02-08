@@ -25,12 +25,12 @@ class RegistrationHandlerTest extends KernelTestCase
     public function testHandleWithDisabledRegistration(): void
     {
         $handler = new RegistrationHandler(
-            $this->createMock(EntityManagerInterface::class),
-            $this->createMock(DomainGuesser::class),
-            $this->createMock(EventDispatcherInterface::class),
-            $this->createMock(PasswordUpdater::class),
-            $this->createMock(MailCryptKeyHandler::class),
-            $this->createMock(RecoveryTokenHandler::class),
+            $this->createStub(EntityManagerInterface::class),
+            $this->createStub(DomainGuesser::class),
+            $this->createStub(EventDispatcherInterface::class),
+            $this->createStub(PasswordUpdater::class),
+            $this->createStub(MailCryptKeyHandler::class),
+            $this->createStub(RecoveryTokenHandler::class),
             false,
             false
         );
@@ -42,23 +42,23 @@ class RegistrationHandlerTest extends KernelTestCase
     public function testHandleWithEnabledRegistration(): void
     {
         $domain = new Domain();
-        $domainGuesser = $this->createMock(DomainGuesser::class);
+        $domainGuesser = $this->createStub(DomainGuesser::class);
         $domainGuesser->method('guess')->willReturn($domain);
 
         $voucher = new Voucher('code');
-        $voucherRepository = $this->createMock(VoucherRepository::class);
+        $voucherRepository = $this->createStub(VoucherRepository::class);
         $voucherRepository->method('findByCode')->willReturn($voucher);
 
-        $manager = $this->createMock(EntityManagerInterface::class);
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturnMap([
             [Voucher::class, $voucherRepository],
         ]);
-        $manager->method('persist')->willReturnCallback(function (User $user) use ($voucher, $domain): void {
-            $this->assertEquals('user@example.com', $user->getEmail());
-            $this->assertEquals([Roles::USER], $user->getRoles());
-            $this->assertEquals($domain, $user->getDomain());
-            $this->assertEquals($voucher, $user->getInvitationVoucher());
-            $this->assertFalse($user->getMailCryptEnabled());
+        $manager->method('persist')->willReturnCallback(static function (User $user) use ($voucher, $domain): void {
+            self::assertEquals('user@example.com', $user->getEmail());
+            self::assertEquals([Roles::USER], $user->getRoles());
+            self::assertEquals($domain, $user->getDomain());
+            self::assertEquals($voucher, $user->getInvitationVoucher());
+            self::assertFalse($user->getMailCryptEnabled());
         });
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
@@ -68,9 +68,9 @@ class RegistrationHandlerTest extends KernelTestCase
             $manager,
             $domainGuesser,
             $eventDispatcher,
-            $this->createMock(PasswordUpdater::class),
-            $this->createMock(MailCryptKeyHandler::class),
-            $this->createMock(RecoveryTokenHandler::class),
+            $this->createStub(PasswordUpdater::class),
+            $this->createStub(MailCryptKeyHandler::class),
+            $this->createStub(RecoveryTokenHandler::class),
             true,
             false
         );
@@ -82,6 +82,6 @@ class RegistrationHandlerTest extends KernelTestCase
 
         $handler->handle($registration);
 
-        $this->assertNotNull($voucher->getRedeemedTime());
+        self::assertNotNull($voucher->getRedeemedTime());
     }
 }

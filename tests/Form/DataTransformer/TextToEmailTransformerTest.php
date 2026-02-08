@@ -15,7 +15,7 @@ class TextToEmailTransformerTest extends TestCase
     #[DataProvider('transformProvider')]
     public function testTransform($input, $expected): void
     {
-        $this->assertEquals($expected, $this->getTransformer()->transform($input));
+        self::assertEquals($expected, $this->getTransformer()->transform($input));
     }
 
     public static function transformProvider(): array
@@ -30,7 +30,7 @@ class TextToEmailTransformerTest extends TestCase
     #[DataProvider('reverseTransformProvider')]
     public function testReverseTransform($input, $expected): void
     {
-        $this->assertEquals($expected, $this->getTransformer()->reverseTransform($input));
+        self::assertEquals($expected, $this->getTransformer()->reverseTransform($input));
     }
 
     public static function reverseTransformProvider(): array

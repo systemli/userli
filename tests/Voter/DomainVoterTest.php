@@ -35,17 +35,11 @@ class DomainVoterTest extends TestCase
         $this->domain = new Domain();
         $user = new User('test@example.org');
         $user->setDomain($this->domain);
-        $repo = $this->getMockBuilder(UserRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repo = $this->createStub(UserRepository::class);
         $repo->method('findByEmail')->willReturn($user);
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturn($repo);
-        $security = $this->getMockBuilder(Security::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $security = $this->createStub(Security::class);
         $isGrantedCallCount = 0;
         $security->method('isGranted')->willReturnCallback(
             static function () use (&$isGrantedCallCount) {
@@ -59,22 +53,20 @@ class DomainVoterTest extends TestCase
     public function testSupports(): void
     {
         $method = self::getMethod('supports');
-        $this->assertTrue($method->invokeArgs($this->voter, ['ROLE_USERLI_ADMIN_USER_LIST', new User('test@example.org')]));
-        $this->assertTrue($method->invokeArgs($this->voter, ['ROLE_USERLI_ADMIN_ALIAS_VIEW', new Alias()]));
+        self::assertTrue($method->invokeArgs($this->voter, ['ROLE_USERLI_ADMIN_USER_LIST', new User('test@example.org')]));
+        self::assertTrue($method->invokeArgs($this->voter, ['ROLE_USERLI_ADMIN_ALIAS_VIEW', new Alias()]));
     }
 
     public function testVoteOnAttribute(): void
     {
         $otherUser = new User('other@example.org');
         $otherUser->setDomain($this->domain);
-        $token = $this->getMockBuilder(TokenInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $token = $this->createStub(TokenInterface::class);
         $method = self::getMethod('voteOnAttribute');
 
-        $this->assertTrue($method->invokeArgs($this->voter, ['ROLE_USERLI_ADMIN_USER_LIST', $otherUser, $token]));
+        self::assertTrue($method->invokeArgs($this->voter, ['ROLE_USERLI_ADMIN_USER_LIST', $otherUser, $token]));
         // FIXME: Is this https://github.com/systemli/userli/issues/145 ???
         // $otherUser->setDomain(new Domain());
-        // $this->assertFalse($method->invokeArgs($this->voter, ['ROLE_USERLI_ADMIN_USER_LIST', $otherUser, $token]));
+        // self::assertFalse($method->invokeArgs($this->voter, ['ROLE_USERLI_ADMIN_USER_LIST', $otherUser, $token]));
     }
 }

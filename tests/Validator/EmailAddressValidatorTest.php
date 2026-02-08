@@ -31,32 +31,24 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
 
     protected function createValidator(): EmailAddressValidator
     {
-        $aliasRepository = $this->getMockBuilder(AliasRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $aliasRepository = $this->createStub(AliasRepository::class);
         $aliasRepository->method('findOneBySource')->willReturnMap([
             [$this->aliasUsed, true, new Alias()],
         ]);
-        $domainRepository = $this->getMockBuilder(DomainRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $domainRepository = $this->createStub(DomainRepository::class);
         $domainRepository->method('findByName')->willReturnMap([
             [explode('@', (string) $this->addressNew)[1], new Domain()],
             [$this->extraDomain, new Domain()],
         ]);
-        $userRepository = $this->getMockBuilder(UserRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $userRepository = $this->createStub(UserRepository::class);
         $userRepository->method('findOneBy')->willReturnMap([
             [['email' => $this->userUsed], null, new User($this->userUsed)],
         ]);
-        $reservedNameRepository = $this->getMockBuilder(ReservedNameRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $reservedNameRepository = $this->createStub(ReservedNameRepository::class);
         $reservedNameRepository->method('findByName')->willReturnMap([
             ['reserved', new ReservedName()],
         ]);
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturnMap([
             [Alias::class, $aliasRepository],
             [Domain::class, $domainRepository],
@@ -77,14 +69,14 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
     {
         $this->validator->validate(null, new EmailAddress());
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testEmptyStringIsValid(): void
     {
         $this->validator->validate('', new EmailAddress());
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testExpectsStringCompatibleType(): void
@@ -97,7 +89,7 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
     public function testValidateValidNewEmailAddress(string $address): void
     {
         $this->validator->validate($address, new EmailAddress());
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public static function getValidNewAddresses(): array

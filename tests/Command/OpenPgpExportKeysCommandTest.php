@@ -26,18 +26,12 @@ class OpenPgpExportKeysCommandTest extends TestCase
         $domain = new Domain();
         $domain->setName('example.org');
 
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
 
-        $domainRepository = $this->getMockBuilder(DomainRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $domainRepository = $this->createStub(DomainRepository::class);
         $domainRepository->method('findAll')->willReturn([$domain]);
 
-        $openPgpKeyRepository = $this->getMockBuilder(OpenPgpKeyRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $openPgpKeyRepository = $this->createStub(OpenPgpKeyRepository::class);
         $openPgpKeyRepository->method('findAll')->willReturn([$openPgpKey]);
 
         $manager->method('getRepository')->willReturnMap(
@@ -47,9 +41,7 @@ class OpenPgpExportKeysCommandTest extends TestCase
             ]
         );
 
-        $wkdHandler = $this->getMockBuilder(WkdHandler::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $wkdHandler = $this->createStub(WkdHandler::class);
 
         $this->command = new OpenPgpExportKeysCommand($manager, $wkdHandler);
     }

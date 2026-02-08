@@ -21,9 +21,7 @@ class UserProviderTest extends TestCase
 {
     public function testLoadByUsernameSuccessful(): void
     {
-        $userRepository = $this->getMockBuilder(UserRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $userRepository = $this->createStub(UserRepository::class);
         $userRepository->method('findByEmail')->willReturnMap([
             ['admin@example.org', new User('admin@example.org')],
             ['admin', new User('admin@example.org')],
@@ -32,13 +30,11 @@ class UserProviderTest extends TestCase
         $domain = new Domain();
         $domain->setName('example.org');
 
-        $domainRepository = $this->getMockBuilder(DomainRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $domainRepository = $this->createStub(DomainRepository::class);
         $domainRepository->METHOD('getDefaultDomain')
             ->willReturn($domain);
 
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturnMap([
             [Domain::class, $domainRepository],
             [User::class, $userRepository],
@@ -53,15 +49,13 @@ class UserProviderTest extends TestCase
     public function testLoadByUsernameException(): void
     {
         $this->expectException(UserNotFoundException::class);
-        $repository = $this->getMockBuilder(UserRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createStub(UserRepository::class);
         $repository->method('findByEmail')->willReturnMap([
             ['admin@example.org', new User('admin@example.org')],
             ['admin', new User('admin@example.org')],
         ]);
 
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturn($repository);
 
         $provider = new UserProvider($manager);
@@ -74,12 +68,10 @@ class UserProviderTest extends TestCase
         $user = new User('test@example.org');
         $user->setId(1);
 
-        $repository = $this->getMockBuilder(UserRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createStub(UserRepository::class);
         $repository->method('findOneBy')->willReturn($user);
 
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturn($repository);
 
         $provider = new UserProvider($manager);
@@ -93,27 +85,23 @@ class UserProviderTest extends TestCase
     public function testRefreshUserException(string $userType, string $exception): void
     {
         if ($userType === 'mock') {
-            $user = $this->createMock(UserInterface::class);
+            $user = $this->createStub(UserInterface::class);
         } else {
             $user = new User('test@example.org');
             $user->setId(1);
         }
 
-        $userRepository = $this->getMockBuilder(UserRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $userRepository = $this->createStub(UserRepository::class);
         $userRepository->method('findOneBy')->willReturn(null);
 
         $domain = new Domain();
         $domain->setName('example.org');
 
-        $domainRepository = $this->getMockBuilder(DomainRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $domainRepository = $this->createStub(DomainRepository::class);
         $domainRepository->method('getDefaultDomain')
             ->willReturn($domain);
 
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturnMap([
             [Domain::class, $domainRepository],
             [User::class, $userRepository],
@@ -136,13 +124,9 @@ class UserProviderTest extends TestCase
 
     public function testSupportClass(): void
     {
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
 
-        $repository = $this->getMockBuilder(DomainRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createStub(DomainRepository::class);
 
         $domain = new Domain();
         $domain->setName('example.com');

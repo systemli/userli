@@ -23,9 +23,7 @@ class AliasDeleteCommandTest extends TestCase
     {
         $user = new User('user@example.org');
 
-        $userRepository = $this->getMockBuilder(UserRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $userRepository = $this->createStub(UserRepository::class);
         $userRepository->method('findByEmail')
             ->willReturn($user);
 
@@ -33,23 +31,17 @@ class AliasDeleteCommandTest extends TestCase
         $alias->setSource('alias@example.org');
         $alias->setUser($user);
 
-        $aliasRepository = $this->getMockBuilder(AliasRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $aliasRepository = $this->createStub(AliasRepository::class);
         $aliasRepository->method('findOneBySource')
             ->willReturn($alias);
 
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturnMap([
             [User::class, $userRepository],
             [Alias::class, $aliasRepository],
         ]);
 
-        $deleteHandler = $this->getMockBuilder(DeleteHandler::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $deleteHandler = $this->createStub(DeleteHandler::class);
 
         $this->command = new AliasDeleteCommand($manager, $deleteHandler);
     }
@@ -65,19 +57,19 @@ class AliasDeleteCommandTest extends TestCase
         $commandTester->execute(['--user' => 'user@example.org', '--alias' => 'alias@example.org']);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Deleting alias alias@example.org of user user@example.org', $output);
+        self::assertStringContainsString('Deleting alias alias@example.org of user user@example.org', $output);
 
         // Test dry run alias deletion
         $commandTester->execute(['--user' => 'user@example.org', '--alias' => 'alias@example.org', '--dry-run' => true]);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Would delete alias alias@example.org of user user@example.org', $output);
+        self::assertStringContainsString('Would delete alias alias@example.org of user user@example.org', $output);
 
         // Test alias deletion without user
         $commandTester->execute(['--alias' => 'alias@example.org']);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Deleting alias alias@example.org', $output);
+        self::assertStringContainsString('Deleting alias alias@example.org', $output);
     }
 
     public function testExecuteWithoutAlias(): void
@@ -92,7 +84,7 @@ class AliasDeleteCommandTest extends TestCase
         $commandTester->execute([]);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Alias with address \'\' not found!', $output);
-        $this->assertEquals($commandTester->getStatusCode(), 1);
+        self::assertStringContainsString('Alias with address \'\' not found!', $output);
+        self::assertEquals(1, $commandTester->getStatusCode());
     }
 }

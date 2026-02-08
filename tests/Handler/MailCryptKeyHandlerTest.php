@@ -14,7 +14,7 @@ class MailCryptKeyHandlerTest extends TestCase
 {
     private function createHandler(): MailCryptKeyHandler
     {
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)->disableOriginalConstructor()->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
 
         return new MailCryptKeyHandler($manager);
     }

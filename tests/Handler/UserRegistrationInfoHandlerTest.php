@@ -12,13 +12,14 @@ use App\Service\SettingsService;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment;
 
 class UserRegistrationInfoHandlerTest extends TestCase
 {
     private UserRegistrationInfoHandler $handler;
-    private MockObject $entityManager;
+    private Stub $entityManager;
     private MockObject $mailHandler;
     private MockObject $twig;
     private MockObject $settingsService;
@@ -26,7 +27,7 @@ class UserRegistrationInfoHandlerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->entityManager = $this->createStub(EntityManagerInterface::class);
         $this->mailHandler = $this->createMock(MailHandler::class);
         $this->twig = $this->createMock(Environment::class);
         $this->settingsService = $this->createMock(SettingsService::class);
@@ -148,9 +149,9 @@ class UserRegistrationInfoHandlerTest extends TestCase
         $this->handler->sendReport();
     }
 
-    private function createUserMock(string $email): MockObject
+    private function createUserMock(string $email): Stub
     {
-        $user = $this->createMock(User::class);
+        $user = $this->createStub(User::class);
         $user->method('getEmail')->willReturn($email);
 
         return $user;

@@ -11,25 +11,25 @@ use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use App\Service\UserResetService;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class UserResetServiceTest extends TestCase
 {
-    private EntityManagerInterface&MockObject $manager;
-    private PasswordUpdater&MockObject $passwordUpdater;
-    private MailCryptKeyHandler&MockObject $mailCryptKeyHandler;
-    private RecoveryTokenHandler&MockObject $recoveryTokenHandler;
-    private EventDispatcherInterface&MockObject $eventDispatcher;
+    private EntityManagerInterface&Stub $manager;
+    private PasswordUpdater&Stub $passwordUpdater;
+    private MailCryptKeyHandler&Stub $mailCryptKeyHandler;
+    private RecoveryTokenHandler&Stub $recoveryTokenHandler;
+    private EventDispatcherInterface&Stub $eventDispatcher;
 
     protected function setUp(): void
     {
-        $this->manager = $this->createMock(EntityManagerInterface::class);
-        $this->passwordUpdater = $this->createMock(PasswordUpdater::class);
-        $this->mailCryptKeyHandler = $this->createMock(MailCryptKeyHandler::class);
-        $this->recoveryTokenHandler = $this->createMock(RecoveryTokenHandler::class);
-        $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $this->manager = $this->createStub(EntityManagerInterface::class);
+        $this->passwordUpdater = $this->createStub(PasswordUpdater::class);
+        $this->mailCryptKeyHandler = $this->createStub(MailCryptKeyHandler::class);
+        $this->recoveryTokenHandler = $this->createStub(RecoveryTokenHandler::class);
+        $this->eventDispatcher = $this->createStub(EventDispatcherInterface::class);
     }
 
     private function createService(int $mailCryptEnv): UserResetService
@@ -46,18 +46,28 @@ class UserResetServiceTest extends TestCase
 
     public function testResetUserUpdatesPassword(): void
     {
-        $service = $this->createService(0);
         $user = new User('user@example.org');
         $password = 'newSecurePassword123';
 
-        $this->passwordUpdater
+        $passwordUpdater = $this->createMock(PasswordUpdater::class);
+        $passwordUpdater
             ->expects($this->once())
             ->method('updatePassword')
             ->with($user, $password);
 
-        $this->manager
+        $manager = $this->createMock(EntityManagerInterface::class);
+        $manager
             ->expects($this->once())
             ->method('flush');
+
+        $service = new UserResetService(
+            $manager,
+            $passwordUpdater,
+            $this->mailCryptKeyHandler,
+            $this->recoveryTokenHandler,
+            $this->eventDispatcher,
+            0
+        );
 
         $service->resetUser($user, $password);
     }
@@ -80,22 +90,32 @@ class UserResetServiceTest extends TestCase
 
     public function testResetUserWithMailCryptRegeneratesKeysAndRecoveryToken(): void
     {
-        $service = $this->createService(2); // MAIL_CRYPT=2 (enforce for new users)
         $user = new User('user@example.org');
         $password = 'newSecurePassword123';
 
-        $this->mailCryptKeyHandler
+        $mailCryptKeyHandler = $this->createMock(MailCryptKeyHandler::class);
+        $mailCryptKeyHandler
             ->expects($this->once())
             ->method('create')
             ->with($user, $password, true);
 
-        $this->recoveryTokenHandler
+        $recoveryTokenHandler = $this->createMock(RecoveryTokenHandler::class);
+        $recoveryTokenHandler
             ->expects($this->once())
             ->method('create')
             ->with($user)
             ->willReturnCallback(static function (User $user): void {
                 $user->setPlainRecoveryToken('generated-recovery-token');
             });
+
+        $service = new UserResetService(
+            $this->manager,
+            $this->passwordUpdater,
+            $mailCryptKeyHandler,
+            $recoveryTokenHandler,
+            $this->eventDispatcher,
+            2
+        );
 
         $recoveryToken = $service->resetUser($user, $password);
 
@@ -104,17 +124,27 @@ class UserResetServiceTest extends TestCase
 
     public function testResetUserWithoutMailCryptDoesNotRegenerateKeys(): void
     {
-        $service = $this->createService(0); // MAIL_CRYPT=0 (disabled)
         $user = new User('user@example.org');
         $password = 'newSecurePassword123';
 
-        $this->mailCryptKeyHandler
+        $mailCryptKeyHandler = $this->createMock(MailCryptKeyHandler::class);
+        $mailCryptKeyHandler
             ->expects($this->never())
             ->method('create');
 
-        $this->recoveryTokenHandler
+        $recoveryTokenHandler = $this->createMock(RecoveryTokenHandler::class);
+        $recoveryTokenHandler
             ->expects($this->never())
             ->method('create');
+
+        $service = new UserResetService(
+            $this->manager,
+            $this->passwordUpdater,
+            $mailCryptKeyHandler,
+            $recoveryTokenHandler,
+            $this->eventDispatcher,
+            0
+        );
 
         $recoveryToken = $service->resetUser($user, $password);
 
@@ -136,23 +166,32 @@ class UserResetServiceTest extends TestCase
 
     public function testResetUserFlushesEntityManager(): void
     {
-        $service = $this->createService(0);
         $user = new User('user@example.org');
 
-        $this->manager
+        $manager = $this->createMock(EntityManagerInterface::class);
+        $manager
             ->expects($this->once())
             ->method('flush');
+
+        $service = new UserResetService(
+            $manager,
+            $this->passwordUpdater,
+            $this->mailCryptKeyHandler,
+            $this->recoveryTokenHandler,
+            $this->eventDispatcher,
+            0
+        );
 
         $service->resetUser($user, 'password123');
     }
 
     public function testResetUserDispatchesUserRestoredEventWhenNotDeleted(): void
     {
-        $service = $this->createService(0);
         $user = new User('user@example.org');
         // User is not deleted (default state)
 
-        $this->eventDispatcher
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher
             ->expects($this->once())
             ->method('dispatch')
             ->with(
@@ -160,18 +199,36 @@ class UserResetServiceTest extends TestCase
                 UserEvent::USER_RESET
             );
 
+        $service = new UserResetService(
+            $this->manager,
+            $this->passwordUpdater,
+            $this->mailCryptKeyHandler,
+            $this->recoveryTokenHandler,
+            $eventDispatcher,
+            0
+        );
+
         $service->resetUser($user, 'password123');
     }
 
     public function testResetUserDoesNotDispatchEventWhenDeleted(): void
     {
-        $service = $this->createService(0);
         $user = new User('user@example.org');
         $user->setDeleted(true);
 
-        $this->eventDispatcher
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher
             ->expects($this->never())
             ->method('dispatch');
+
+        $service = new UserResetService(
+            $this->manager,
+            $this->passwordUpdater,
+            $this->mailCryptKeyHandler,
+            $this->recoveryTokenHandler,
+            $eventDispatcher,
+            0
+        );
 
         $service->resetUser($user, 'password123');
     }

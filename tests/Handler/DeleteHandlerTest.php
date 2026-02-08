@@ -26,27 +26,22 @@ class DeleteHandlerTest extends TestCase
 
     protected function createHandler(array $aliases = [], array $vouchers = [], array $notifications = []): DeleteHandler
     {
-        $passwordUpdater = $this->getMockBuilder(PasswordUpdater::class)
-            ->disableOriginalConstructor()->getMock();
+        $passwordUpdater = $this->createStub(PasswordUpdater::class);
         $passwordUpdater->method('updatePassword')->willReturnCallback(static function (User $user): void {
             $user->setPassword('new_password');
         });
 
-        $aliasRepository = $this->getMockBuilder(AliasRepository::class)
-            ->disableOriginalConstructor()->getMock();
+        $aliasRepository = $this->createStub(AliasRepository::class);
         $aliasRepository->method('findByUser')->willReturn($aliases);
 
-        $voucherRepository = $this->getMockBuilder(VoucherRepository::class)
-            ->disableOriginalConstructor()->getMock();
+        $voucherRepository = $this->createStub(VoucherRepository::class);
         $voucherRepository->method('findByUser')->willReturn($vouchers);
 
-        $notificationRepository = $this->getMockBuilder(UserNotificationRepository::class)
-            ->disableOriginalConstructor()->getMock();
+        $notificationRepository = $this->createStub(UserNotificationRepository::class);
         $notificationRepository->method('findByUser')->willReturn($notifications);
 
         $this->removedEntities = [];
-        $this->entityManager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->disableOriginalConstructor()->getMock();
+        $this->entityManager = $this->createStub(EntityManagerInterface::class);
         $this->entityManager->method('getRepository')->willReturnCallback(
             static function (string $class) use ($aliasRepository, $voucherRepository, $notificationRepository) {
                 return match ($class) {
@@ -62,11 +57,9 @@ class DeleteHandlerTest extends TestCase
             $this->removedEntities[] = $entity;
         });
 
-        $wkdHandler = $this->getMockBuilder(WkdHandler::class)
-            ->disableOriginalConstructor()->getMock();
+        $wkdHandler = $this->createStub(WkdHandler::class);
 
-        $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
-            ->disableOriginalConstructor()->getMock();
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
 
         return new DeleteHandler($passwordUpdater, $this->entityManager, $wkdHandler, $eventDispatcher);
     }
@@ -150,8 +143,8 @@ class DeleteHandlerTest extends TestCase
     {
         $user = new User('alice@example.org');
 
-        $notification1 = $this->createMock(UserNotification::class);
-        $notification2 = $this->createMock(UserNotification::class);
+        $notification1 = $this->createStub(UserNotification::class);
+        $notification2 = $this->createStub(UserNotification::class);
 
         $handler = $this->createHandler([], [], [$notification1, $notification2]);
 

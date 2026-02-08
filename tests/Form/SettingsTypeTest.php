@@ -8,7 +8,7 @@ use App\Form\SettingsType;
 use App\Service\SettingsConfigService;
 use App\Service\SettingsService;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -25,16 +25,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SettingsTypeTest extends TestCase
 {
-    private MockObject $configService;
-    private MockObject $settingsService;
-    private MockObject $formBuilder;
+    private Stub $configService;
+    private Stub $settingsService;
+    private Stub $formBuilder;
     private SettingsType $formType;
 
     protected function setUp(): void
     {
-        $this->configService = $this->createMock(SettingsConfigService::class);
-        $this->settingsService = $this->createMock(SettingsService::class);
-        $this->formBuilder = $this->createMock(FormBuilderInterface::class);
+        $this->configService = $this->createStub(SettingsConfigService::class);
+        $this->settingsService = $this->createStub(SettingsService::class);
+        $this->formBuilder = $this->createStub(FormBuilderInterface::class);
 
         $this->formType = new SettingsType($this->configService, $this->settingsService);
     }
@@ -56,23 +56,27 @@ class SettingsTypeTest extends TestCase
             ],
         ];
 
-        $this->configService->expects($this->once())
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn($definitions);
 
-        $this->settingsService->expects($this->exactly(2))
+        $settingsService = $this->createMock(SettingsService::class);
+        $settingsService->expects($this->exactly(2))
             ->method('get')
             ->willReturnMap([
                 ['app_name', null, 'My App'],
                 ['registration_enabled', null, false],
             ]);
 
+        $formBuilder = $this->createMock(FormBuilderInterface::class);
         // Expected calls to add fields
-        $this->formBuilder->expects($this->exactly(3))
+        $formBuilder->expects($this->exactly(3))
             ->method('add')
             ->willReturnSelf();
 
-        $this->formType->buildForm($this->formBuilder, []);
+        $formType = new SettingsType($configService, $settingsService);
+        $formType->buildForm($formBuilder, []);
     }
 
     #[DataProvider('fieldTypeProvider')]
@@ -153,35 +157,42 @@ class SettingsTypeTest extends TestCase
             ],
         ];
 
-        $this->configService->expects($this->once())
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn($definitions);
 
-        $this->settingsService->expects($this->once())
+        $settingsService = $this->createMock(SettingsService::class);
+        $settingsService->expects($this->once())
             ->method('get')
             ->with('simple_setting')
             ->willReturn('current_value');
 
-        $this->formBuilder->expects($this->exactly(2)) // setting + submit button
-        ->method('add')
+        $formBuilder = $this->createMock(FormBuilderInterface::class);
+        $formBuilder->expects($this->exactly(2)) // setting + submit button
+            ->method('add')
             ->willReturnSelf();
 
-        $this->formType->buildForm($this->formBuilder, []);
+        $formType = new SettingsType($configService, $settingsService);
+        $formType->buildForm($formBuilder, []);
     }
 
     public function testEmptyDefinitionsHandling(): void
     {
-        $this->configService->expects($this->once())
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn([]);
 
+        $formBuilder = $this->createMock(FormBuilderInterface::class);
         // Should only add submit button
-        $this->formBuilder->expects($this->once())
+        $formBuilder->expects($this->once())
             ->method('add')
             ->with('save')
             ->willReturnSelf();
 
-        $this->formType->buildForm($this->formBuilder, []);
+        $formType = new SettingsType($configService, $this->settingsService);
+        $formType->buildForm($formBuilder, []);
     }
 
     public function testChoiceFieldConfiguration(): void
@@ -195,18 +206,21 @@ class SettingsTypeTest extends TestCase
             ],
         ];
 
-        $this->configService->expects($this->once())
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn($definitions);
 
-        $this->settingsService->expects($this->once())
+        $settingsService = $this->createMock(SettingsService::class);
+        $settingsService->expects($this->once())
             ->method('get')
             ->willReturn('en');
 
+        $formBuilder = $this->createMock(FormBuilderInterface::class);
         // Mock the add method to capture the field configuration
-        $this->formBuilder->expects($this->exactly(2))
+        $formBuilder->expects($this->exactly(2))
             ->method('add')
-            ->willReturnCallback(function ($name, $type, $options = []) {
+            ->willReturnCallback(static function ($name, $type, $options = []) use ($formBuilder) {
                 if ($name === 'locale') {
                     self::assertEquals(ChoiceType::class, $type);
                     self::assertArrayHasKey('choices', $options);
@@ -215,10 +229,11 @@ class SettingsTypeTest extends TestCase
                     self::assertEquals($expectedChoices, $options['choices']);
                 }
 
-                return $this->formBuilder;
+                return $formBuilder;
             });
 
-        $this->formType->buildForm($this->formBuilder, []);
+        $formType = new SettingsType($configService, $settingsService);
+        $formType->buildForm($formBuilder, []);
     }
 
     public function testValidationConstraintsBuilding(): void
@@ -250,26 +265,30 @@ class SettingsTypeTest extends TestCase
             ],
         ];
 
-        $this->configService->expects($this->once())
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->once())
             ->method('getSettings')
             ->willReturn($definitions);
 
-        $this->settingsService->expects($this->once())
+        $settingsService = $this->createMock(SettingsService::class);
+        $settingsService->expects($this->once())
             ->method('get')
             ->willReturn(true);
 
-        $this->formBuilder->expects($this->exactly(2))
+        $formBuilder = $this->createMock(FormBuilderInterface::class);
+        $formBuilder->expects($this->exactly(2))
             ->method('add')
-            ->willReturnCallback(function ($name, $type, $options = []) {
+            ->willReturnCallback(static function ($name, $type, $options = []) use ($formBuilder) {
                 if ($name === 'enabled') {
                     self::assertEquals(CheckboxType::class, $type);
                     self::assertTrue($options['data']);
                 }
 
-                return $this->formBuilder;
+                return $formBuilder;
             });
 
-        $this->formType->buildForm($this->formBuilder, []);
+        $formType = new SettingsType($configService, $settingsService);
+        $formType->buildForm($formBuilder, []);
     }
 
     public function testNotBlankConstraintForStringTypes(): void
