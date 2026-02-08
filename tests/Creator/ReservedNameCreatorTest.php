@@ -23,7 +23,6 @@ class ReservedNameCreatorTest extends TestCase
             }
         );
 
-
         $validator = $this->getMockBuilder(ValidatorInterface::class)->getMock();
         $validator->method('validate')->willReturn(new ConstraintViolationList());
 

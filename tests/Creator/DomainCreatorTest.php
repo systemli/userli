@@ -20,7 +20,6 @@ class DomainCreatorTest extends TestCase
             $entity->setId(1);
         });
 
-
         $validator = $this->createMock(ValidatorInterface::class);
         $validator->method('validate')->willReturn(new ConstraintViolationList());
 
