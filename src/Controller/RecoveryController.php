@@ -4,41 +4,25 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Event\UserEvent;
+use App\Enum\RecoveryStatus;
 use App\Form\Model\RecoveryProcess;
 use App\Form\Model\RecoveryResetPassword;
 use App\Form\Model\RecoveryTokenConfirm;
 use App\Form\RecoveryProcessType;
 use App\Form\RecoveryResetPasswordType;
 use App\Form\RecoveryTokenConfirmType;
-use App\Handler\MailCryptKeyHandler;
-use App\Handler\RecoveryTokenHandler;
-use App\Helper\PasswordUpdater;
-use DateInterval;
-use DateTimeImmutable;
-use Doctrine\ORM\EntityManagerInterface;
-use Exception;
+use App\Handler\RecoveryHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class RecoveryController extends AbstractController
 {
-    private const PROCESS_DELAY = '-2 days';
-
-    private const PROCESS_EXPIRE = '-30 days';
-
     public function __construct(
-        private readonly PasswordUpdater $passwordUpdater,
-        private readonly MailCryptKeyHandler $mailCryptKeyHandler,
-        private readonly RecoveryTokenHandler $recoveryTokenHandler,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly EntityManagerInterface $manager,
+        private readonly RecoveryHandler $recoveryHandler,
     ) {
     }
 
@@ -62,44 +46,25 @@ final class RecoveryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $email = $data->getEmail();
-            $recoveryToken = $data->getRecoveryToken();
+            $result = $this->recoveryHandler->startRecovery(
+                $data->getEmail(),
+                $data->getRecoveryToken(),
+            );
 
-            // Validate the passed email + recoveryToken
-            $user = $this->manager->getRepository(User::class)->findByEmail($email);
-
-            if (null === $user || !$this->verifyEmailRecoveryToken($user, $recoveryToken)) {
-                $this->addFlash('error', 'flashes.recovery-token-invalid');
-            } else {
-                $recoveryStartTime = $user->getRecoveryStartTime();
-
-                if (null === $recoveryStartTime || new DateTimeImmutable($this::PROCESS_EXPIRE) >= $recoveryStartTime) {
-                    // Recovery process gets started
-                    $user->updateRecoveryStartTime();
-                    $this->manager->flush();
-                    $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::RECOVERY_PROCESS_STARTED);
-                    // We don't have to add two days here, they will get added in `RecoveryProcessMessageSender`
-                    $recoveryActiveTime = $user->getRecoveryStartTime();
-                } elseif (new DateTimeImmutable($this::PROCESS_DELAY) < $recoveryStartTime) {
-                    // Recovery process is pending, but waiting period didn't elapse yet
-                    $recoveryActiveTime = $recoveryStartTime->add(new DateInterval('P2D'));
-                } else {
-                    $this->addFlash('recoveryToken', $recoveryToken);
-
-                    // Recovery process successful, go on with the form to reset password
-                    return $this->redirectToRoute('recovery_reset_password', [
-                        'email' => $email,
-                    ]);
-                }
-
-                return $this->render(
+            return match ($result->status) {
+                RecoveryStatus::Invalid => $this->renderRecoveryFormWithError($form),
+                RecoveryStatus::Started, RecoveryStatus::Pending => $this->render(
                     'Recovery/recovery_started.html.twig',
                     [
                         'form' => $form,
-                        'active_time' => $recoveryActiveTime,
-                    ]
-                );
-            }
+                        'active_time' => $result->activeTime,
+                    ],
+                ),
+                RecoveryStatus::Ready => $this->redirectToResetPassword(
+                    $data->getEmail(),
+                    $result->recoveryToken,
+                ),
+            };
         }
 
         return $this->render('Recovery/recovery_new.html.twig', ['form' => $form]);
@@ -139,35 +104,17 @@ final class RecoveryController extends AbstractController
             $email = $data->getEmail();
             $recoveryToken = $data->getRecoveryToken();
 
-            // Validate the passed email + recoveryToken
-            $user = $this->manager->getRepository(User::class)->findByEmail($email);
-
-            if (null !== $user && $this->verifyEmailRecoveryToken($user, $recoveryToken, true)) {
+            if ($this->recoveryHandler->verifyRecoveryToken($email, $recoveryToken, true)) {
                 if ($form->isValid()) {
-                    // Success: change the password
-                    $newRecoveryToken = $this->resetPassword($user, $data->getPassword(), $recoveryToken);
+                    $newRecoveryToken = $this->recoveryHandler->resetPassword($email, $recoveryToken, $data->getPassword());
                     $this->addFlash('success', 'flashes.recovery-password-changed');
-
-                    // Cleanup variables with confidential content
-                    sodium_memzero($recoveryToken);
 
                     return $this->redirectToRoute('recovery_recovery_token_ack', ['recoveryToken' => $newRecoveryToken]);
                 }
 
-                // Cleanup variables with confidential content
-                sodium_memzero($recoveryToken);
-
                 // Validation of new password pair failed, try again
-                return $this->render(
-                    'Recovery/reset_password.html.twig',
-                    [
-                        'form' => $form,
-                    ]
-                );
+                return $this->render('Recovery/reset_password.html.twig', ['form' => $form]);
             }
-
-            // Cleanup variables with confidential content
-            sodium_memzero($recoveryToken);
 
             // Verification of $email + $recoveryToken failed, start over
             $this->addFlash('error', 'flashes.recovery-reauthenticate');
@@ -218,56 +165,17 @@ final class RecoveryController extends AbstractController
         ]);
     }
 
-    /**
-     * @throws Exception
-     */
-    private function resetPassword(User $user, string $password, string $recoveryToken): string
+    private function renderRecoveryFormWithError(mixed $form): Response
     {
-        $this->passwordUpdater->updatePassword($user, $password);
+        $this->addFlash('error', 'flashes.recovery-token-invalid');
 
-        $mailCryptPrivateKey = $this->recoveryTokenHandler->decrypt($user, $recoveryToken);
-
-        // Encrypt MailCrypt private key from recoverySecretBox with new password
-        $this->mailCryptKeyHandler->updateWithPrivateKey($user, $mailCryptPrivateKey, $password);
-
-        // Clear old token
-        $user->eraseRecoveryStartTime();
-        $user->eraseRecoverySecretBox();
-
-        // Generate new token
-        $user->setPlainMailCryptPrivateKey($mailCryptPrivateKey);
-
-        $this->recoveryTokenHandler->create($user);
-        if (null === $newRecoveryToken = $user->getPlainRecoveryToken()) {
-            throw new Exception('PlainRecoveryToken should not be null');
-        }
-
-        // Reset twofactor settings
-        $user->setTotpConfirmed(false);
-        $user->setTotpSecret(null);
-        $user->setTotpBackupCodes([]);
-
-        // Clear sensitive plaintext data from User object
-        $user->eraseCredentials();
-        sodium_memzero($mailCryptPrivateKey);
-
-        $this->manager->flush();
-
-        return $newRecoveryToken;
+        return $this->render('Recovery/recovery_new.html.twig', ['form' => $form]);
     }
 
-    /**
-     * @throws Exception
-     */
-    private function verifyEmailRecoveryToken(User $user, string $recoveryToken, bool $verifyTime = false): bool
+    private function redirectToResetPassword(string $email, string $recoveryToken): Response
     {
-        if ($verifyTime) {
-            $recoveryStartTime = $user->getRecoveryStartTime();
-            if (null === $recoveryStartTime || new DateTimeImmutable($this::PROCESS_DELAY) < $recoveryStartTime) {
-                return false;
-            }
-        }
+        $this->addFlash('recoveryToken', $recoveryToken);
 
-        return $this->recoveryTokenHandler->verify($user, strtolower($recoveryToken));
+        return $this->redirectToRoute('recovery_reset_password', ['email' => $email]);
     }
 }
