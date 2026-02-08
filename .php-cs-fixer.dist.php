@@ -37,6 +37,7 @@ return (new PhpCsFixer\Config())
         ],
         'void_return' => true,
         'yoda_style' => false,
+        'new_expression_parentheses' => true,
     ])
     ->setRiskyAllowed(true)
     ->setFinder($finder)

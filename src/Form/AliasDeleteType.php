@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 final class AliasDeleteType extends AbstractType
 {
-    public const NAME = 'delete_alias';
+    public const string NAME = 'delete_alias';
 
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void

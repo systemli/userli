@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[RequireApiScope(scope: ApiScope::RETENTION)]
 final class RetentionController extends AbstractController
 {
-    public const MESSAGE_TIMESTAMP_IN_FUTURE = 'timestamp in future';
+    public const string MESSAGE_TIMESTAMP_IN_FUTURE = 'timestamp in future';
 
     public function __construct(
         private readonly EntityManagerInterface $manager,
@@ -59,7 +59,7 @@ final class RetentionController extends AbstractController
     public function getInactiveUsers(): Response
     {
         $inactiveUsers = $this->manager->getRepository(User::class)->findInactiveUsers(2 * 365); // 2 years
-        $inactiveEmails = array_map(static function ($user) { return $user->getEmail(); }, $inactiveUsers);
+        $inactiveEmails = array_map(static fn ($user) => $user->getEmail(), $inactiveUsers);
 
         return $this->json($inactiveEmails);
     }

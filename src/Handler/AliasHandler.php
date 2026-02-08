@@ -14,18 +14,18 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * Class AliasHandler.
  */
-final class AliasHandler
+final readonly class AliasHandler
 {
-    public const ALIAS_LIMIT_CUSTOM = 3;
+    public const int ALIAS_LIMIT_CUSTOM = 3;
 
-    public const ALIAS_LIMIT_RANDOM = 100;
+    public const int ALIAS_LIMIT_RANDOM = 100;
 
-    private readonly AliasRepository $repository;
+    private AliasRepository $repository;
 
     /**
      * AliasHandler constructor.
      */
-    public function __construct(EntityManagerInterface $manager, private readonly AliasCreator $creator)
+    public function __construct(EntityManagerInterface $manager, private AliasCreator $creator)
     {
         $this->repository = $manager->getRepository(Alias::class);
     }

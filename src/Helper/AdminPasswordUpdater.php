@@ -9,9 +9,9 @@ use App\Entity\User;
 use App\Enum\Roles;
 use Doctrine\ORM\EntityManagerInterface;
 
-final class AdminPasswordUpdater
+final readonly class AdminPasswordUpdater
 {
-    public function __construct(private readonly EntityManagerInterface $manager, private readonly PasswordUpdater $updater)
+    public function __construct(private EntityManagerInterface $manager, private PasswordUpdater $updater)
     {
     }
 

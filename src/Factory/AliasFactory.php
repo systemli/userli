@@ -14,7 +14,7 @@ use Exception;
  */
 final class AliasFactory
 {
-    public const RANDOM_ALIAS_LENGTH = 24;
+    public const int RANDOM_ALIAS_LENGTH = 24;
 
     /**
      * @throws Exception

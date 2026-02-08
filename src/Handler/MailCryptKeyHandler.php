@@ -17,25 +17,25 @@ use const OPENSSL_KEYTYPE_EC;
 /**
  * Class AliasHandler.
  */
-final class MailCryptKeyHandler
+final readonly class MailCryptKeyHandler
 {
     // Use elliptic curve type 'secp521r1' for MailCrypt keys
-    private const MAIL_CRYPT_PRIVATE_KEY_TYPE = OPENSSL_KEYTYPE_EC;
+    private const int MAIL_CRYPT_PRIVATE_KEY_TYPE = OPENSSL_KEYTYPE_EC;
 
-    private const MAIL_CRYPT_CURVE_NAME = 'secp521r1';
+    private const string MAIL_CRYPT_CURVE_NAME = 'secp521r1';
 
-    public const MESSAGE_OPENSSL_EXITED_UNSUCCESSFULLY = 'Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: ';
+    public const string MESSAGE_OPENSSL_EXITED_UNSUCCESSFULLY = 'Transforming key to PKCS#8 with OpenSSL failed. OpenSSL exited unsuccessfully: ';
 
-    public const MESSAGE_OPENSSL_OUTPUT_INVALID = 'Transforming key to PKCS#8 with OpenSSL failed. OpenSSL output is no valid PKCS#8 key: ';
+    public const string MESSAGE_OPENSSL_OUTPUT_INVALID = 'Transforming key to PKCS#8 with OpenSSL failed. OpenSSL output is no valid PKCS#8 key: ';
 
-    public const MESSAGE_SECRET_IS_NULL = 'secret should not be null';
+    public const string MESSAGE_SECRET_IS_NULL = 'secret should not be null';
 
-    public const MESSAGE_DECRYPTION_FAILED = 'decryption of mailCryptSecretBox failed';
+    public const string MESSAGE_DECRYPTION_FAILED = 'decryption of mailCryptSecretBox failed';
 
     /**
      * MailCryptPrivateKeyHandler constructor.
      */
-    public function __construct(private readonly EntityManagerInterface $manager)
+    public function __construct(private EntityManagerInterface $manager)
     {
     }
 

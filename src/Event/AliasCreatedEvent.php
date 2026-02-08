@@ -9,7 +9,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class AliasCreatedEvent extends Event
 {
-    public const NAME = 'alias.custom_created';
+    public const string NAME = 'alias.custom_created';
 
     public function __construct(private readonly Alias $alias)
     {

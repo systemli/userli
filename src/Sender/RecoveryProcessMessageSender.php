@@ -14,12 +14,12 @@ use IntlDateFormatter;
 /**
  * Class RecoveryProcessMessageSender.
  */
-final class RecoveryProcessMessageSender
+final readonly class RecoveryProcessMessageSender
 {
     /**
      * RecoveryProcessMessageSender constructor.
      */
-    public function __construct(private readonly MailHandler $handler, private readonly RecoveryProcessMessageBuilder $builder)
+    public function __construct(private MailHandler $handler, private RecoveryProcessMessageBuilder $builder)
     {
     }
 

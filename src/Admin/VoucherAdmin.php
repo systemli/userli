@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 final class VoucherAdmin extends Admin
 {
-    public function __construct(protected Security $security)
+    public function __construct(private readonly Security $security)
     {
         parent::__construct();
     }

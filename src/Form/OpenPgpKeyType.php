@@ -24,7 +24,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 final class OpenPgpKeyType extends AbstractType implements EventSubscriberInterface
 {
-    public const NAME = 'upload_openpgp_key';
+    public const string NAME = 'upload_openpgp_key';
 
     public function __construct(private readonly TranslatorInterface $translator)
     {

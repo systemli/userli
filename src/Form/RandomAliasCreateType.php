@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 final class RandomAliasCreateType extends AbstractType
 {
-    public const NAME = 'create_alias';
+    public const string NAME = 'create_alias';
 
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void

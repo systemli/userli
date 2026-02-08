@@ -22,15 +22,15 @@ use Symfony\Component\Routing\Attribute\Route;
 #[RequireApiScope(scope: ApiScope::KEYCLOAK)]
 final class KeycloakController extends AbstractController
 {
-    public const MESSAGE_SUCCESS = 'success';
+    public const string MESSAGE_SUCCESS = 'success';
 
-    public const MESSAGE_AUTHENTICATION_FAILED = 'authentication failed';
+    public const string MESSAGE_AUTHENTICATION_FAILED = 'authentication failed';
 
-    public const MESSAGE_PASSWORD_CHANGE_REQUIRED = 'password change required';
+    public const string MESSAGE_PASSWORD_CHANGE_REQUIRED = 'password change required';
 
-    public const MESSAGE_USER_NOT_FOUND = 'user not found';
+    public const string MESSAGE_USER_NOT_FOUND = 'user not found';
 
-    public const MESSAGE_NOT_SUPPORTED = 'not supported';
+    public const string MESSAGE_NOT_SUPPORTED = 'not supported';
 
     public function __construct(
         private readonly EntityManagerInterface $manager,
@@ -76,7 +76,7 @@ final class KeycloakController extends AbstractController
         }
 
         return $this->json([
-            'id' => explode('@', $foundUser->getEmail())[0],
+            'id' => explode('@', (string) $foundUser->getEmail())[0],
             'email' => $foundUser->getEmail(),
         ]);
     }

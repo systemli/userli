@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 final class PasswordType extends AbstractType
 {
-    public const NAME = 'password';
+    public const string NAME = 'password';
 
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void

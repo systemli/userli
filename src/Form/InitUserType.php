@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 final class InitUserType extends AbstractType
 {
-    public const NAME = 'init_user';
+    public const string NAME = 'init_user';
 
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void

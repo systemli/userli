@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 final class RecoveryTokenType extends AbstractType
 {
-    public const NAME = 'recovery_token';
+    public const string NAME = 'recovery_token';
 
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void

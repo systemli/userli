@@ -35,7 +35,7 @@ final class CryptoSecret
 
     public function encode(): string
     {
-        return base64_encode($this->getSalt().$this->getNonce().$this->getSecret());
+        return base64_encode($this->getSalt().$this->nonce.$this->secret);
     }
 
     /**

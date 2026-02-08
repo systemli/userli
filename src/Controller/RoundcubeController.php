@@ -36,9 +36,7 @@ final class RoundcubeController extends AbstractController
         }
 
         $aliases = $this->manager->getRepository(Alias::class)->findByUser($user);
-        $aliasSources = array_map(static function ($alias) {
-            return $alias->getSource();
-        }, $aliases);
+        $aliasSources = array_map(static fn ($alias) => $alias->getSource(), $aliases);
 
         return $this->json($aliasSources);
     }

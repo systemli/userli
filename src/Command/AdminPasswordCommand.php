@@ -14,7 +14,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
-#[AsCommand(name: 'app:admin:password', description: 'Set password of admin user')]
+#[AsCommand(name: 'app:admin:password', description: 'Set password of admin user', help: <<<'TXT'
+Set password of admin user. Create primary user and domain if not created before.
+TXT)]
 final class AdminPasswordCommand extends Command
 {
     /**
@@ -29,7 +31,6 @@ final class AdminPasswordCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setHelp('Set password of admin user. Create primary user and domain if not created before.')
             ->addArgument('password', InputArgument::OPTIONAL, 'Admin password');
     }
 

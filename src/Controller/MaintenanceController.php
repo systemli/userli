@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class MaintenanceController extends AbstractController
 {
-    private const TASKS = [
+    private const array TASKS = [
         'prune_user_notifications' => PruneUserNotifications::class,
         'prune_webhook_deliveries' => PruneWebhookDeliveries::class,
         'remove_inactive_users' => RemoveInactiveUsers::class,

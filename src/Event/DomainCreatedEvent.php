@@ -9,7 +9,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class DomainCreatedEvent extends Event
 {
-    public const NAME = 'domain.created';
+    public const string NAME = 'domain.created';
 
     public function __construct(private readonly Domain $domain)
     {

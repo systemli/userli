@@ -13,15 +13,15 @@ use Override;
 
 final class LoadApiTokenData extends Fixture implements FixtureGroupInterface
 {
-    public const RETENTION_TOKEN_PLAIN = 'b26b306e7c65785d9c5ad8821b59ce33';
+    public const string RETENTION_TOKEN_PLAIN = 'b26b306e7c65785d9c5ad8821b59ce33';
 
-    public const KEYCLOAK_TOKEN_PLAIN = '0f4a7af12bbb3d1f22072a8fff75d30a';
+    public const string KEYCLOAK_TOKEN_PLAIN = '0f4a7af12bbb3d1f22072a8fff75d30a';
 
-    public const DOVECOT_TOKEN_PLAIN = '727eb7d3ad310bc510f5fa17c223572c';
+    public const string DOVECOT_TOKEN_PLAIN = '727eb7d3ad310bc510f5fa17c223572c';
 
-    public const POSTFIX_TOKEN_PLAIN = 'e38a0bc6b5de5b7c6137eb9d383d1977';
+    public const string POSTFIX_TOKEN_PLAIN = 'e38a0bc6b5de5b7c6137eb9d383d1977';
 
-    public const ROUNDCUBE_TOKEN_PLAIN = '3ea02d4e9490e2a4d065ede69d6741a6';
+    public const string ROUNDCUBE_TOKEN_PLAIN = '3ea02d4e9490e2a4d065ede69d6741a6';
 
     public function __construct(
         private readonly ApiTokenManager $apiTokenManager,

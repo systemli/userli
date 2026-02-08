@@ -20,7 +20,7 @@ final class EmailLength extends Constraint
     public function __construct(?int $minLength = null, ?int $maxLength = null, ?array $groups = null, mixed $payload = null)
     {
         if (null === $minLength && null === $maxLength) {
-            throw new MissingOptionsException(sprintf('Either option "minLength" or "maxLength" must be given for constraint %s', __CLASS__), ['minLength', 'maxLength']);
+            throw new MissingOptionsException(sprintf('Either option "minLength" or "maxLength" must be given for constraint %s', self::class), ['minLength', 'maxLength']);
         }
 
         $this->minLength = $minLength ?? 0;

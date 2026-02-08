@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 final class VoucherCreateType extends AbstractType
 {
-    public const NAME = 'create_voucher';
+    public const string NAME = 'create_voucher';
 
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void

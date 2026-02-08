@@ -17,7 +17,7 @@ use Symfony\Component\Scheduler\ScheduleProviderInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
 #[AsSchedule('maintenance')]
-final class MaintenanceSchedule implements ScheduleProviderInterface
+final readonly class MaintenanceSchedule implements ScheduleProviderInterface
 {
     public function __construct(
         private CacheInterface $cache,
@@ -27,7 +27,7 @@ final class MaintenanceSchedule implements ScheduleProviderInterface
     #[Override]
     public function getSchedule(): Schedule
     {
-        return (new Schedule())
+        return new Schedule()
             ->stateful($this->cache) // ensure missed tasks are executed
             ->add(RecurringMessage::every('1 day', new PruneWebhookDeliveries(), new DateTimeImmutable('03:00')))
             ->add(RecurringMessage::every('1 day', new PruneUserNotifications(), new DateTimeImmutable('03:30')))

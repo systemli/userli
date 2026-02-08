@@ -25,7 +25,7 @@ final readonly class SendWebhookHandler
     public function __invoke(SendWebhook $message): void
     {
         $delivery = $this->em->getRepository(WebhookDelivery::class)->find($message->deliveryId);
-        if (!$delivery) {
+        if ($delivery === null) {
             return;
         }
 

@@ -13,7 +13,7 @@ use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInte
 
 abstract class AbstractUserData extends Fixture
 {
-    private const PASSWORD = 'password';
+    private const string PASSWORD = 'password';
 
     protected string $passwordHash;
 

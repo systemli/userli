@@ -12,12 +12,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class RandomAliasCreationListener implements EventSubscriberInterface
+final readonly class RandomAliasCreationListener implements EventSubscriberInterface
 {
     /**
      * RandomAliasCreationListener constructor.
      */
-    public function __construct(private readonly EntityManagerInterface $manager)
+    public function __construct(private EntityManagerInterface $manager)
     {
     }
 

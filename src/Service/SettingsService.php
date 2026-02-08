@@ -10,17 +10,17 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
-final class SettingsService
+final readonly class SettingsService
 {
-    private const CACHE_KEY = 'app.settings';
+    private const string CACHE_KEY = 'app.settings';
 
-    private const CACHE_TTL = 3600;
+    private const int CACHE_TTL = 3600;
 
     public function __construct(
-        private readonly SettingRepository $repository,
-        private readonly EntityManagerInterface $entityManager,
-        private readonly CacheInterface $cache,
-        private readonly SettingsConfigService $configService,
+        private SettingRepository $repository,
+        private EntityManagerInterface $entityManager,
+        private CacheInterface $cache,
+        private SettingsConfigService $configService,
     ) {
     }
 
@@ -46,7 +46,7 @@ final class SettingsService
         $stringValue = $this->convertValueToString($value);
         $setting = $this->repository->findOneBy(['name' => $name]);
 
-        if (!$setting) {
+        if ($setting === null) {
             // Create new setting with value immediately
             $setting = new Setting($name, $stringValue);
             $this->entityManager->persist($setting);
@@ -74,7 +74,7 @@ final class SettingsService
             $stringValue = $this->convertValueToString($value);
             $setting = $this->repository->findOneBy(['name' => $name]);
 
-            if (!$setting) {
+            if ($setting === null) {
                 // Create new setting with value immediately
                 $setting = new Setting($name, $stringValue);
                 $this->entityManager->persist($setting);

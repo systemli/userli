@@ -41,9 +41,7 @@ final class UserNotificationAdmin extends Admin
             ->add('user')
             ->add('type', null, [
                 'label' => 'Type',
-                'accessor' => static function ($object) {
-                    return $object->getType()->value;
-                },
+                'accessor' => static fn ($object) => $object->getType()->value,
             ])
             ->add('creationTime');
     }

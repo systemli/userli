@@ -16,12 +16,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
 
-final class StatisticsBlockService implements BlockServiceInterface
+final readonly class StatisticsBlockService implements BlockServiceInterface
 {
     /**
      * StatisticsBlockService constructor.
      */
-    public function __construct(private readonly Environment $twig, private readonly EntityManagerInterface $manager)
+    public function __construct(private Environment $twig, private EntityManagerInterface $manager)
     {
     }
 

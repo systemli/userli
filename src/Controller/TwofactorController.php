@@ -60,7 +60,7 @@ final class TwofactorController extends AbstractController
     }
 
     #[Route(path: '/account/twofactor', name: 'account_twofactor_submit', methods: ['POST'])]
-    public function submit(Request $request, TotpAuthenticatorInterface $totpAuthenticator): Response
+    public function submit(Request $request): Response
     {
         $user = $this->getUser();
         assert($user instanceof User);
@@ -68,7 +68,7 @@ final class TwofactorController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setTotpSecret($totpAuthenticator->generateSecret());
+            $user->setTotpSecret($this->totpAuthenticator->generateSecret());
             $codes = $this->totpBackupCodeGenerator->generate();
             $user->setTotpBackupCodes($codes);
             $this->manager->flush();

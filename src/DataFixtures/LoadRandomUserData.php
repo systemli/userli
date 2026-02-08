@@ -13,7 +13,7 @@ use Override;
 
 final class LoadRandomUserData extends AbstractUserData implements FixtureGroupInterface
 {
-    private const BATCH_SIZE = 500;
+    private const int BATCH_SIZE = 500;
 
     #[Override]
     public function load(ObjectManager $manager): void

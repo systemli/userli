@@ -12,14 +12,14 @@ use Exception;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
 
-final class UserNotificationRateLimiter
+final readonly class UserNotificationRateLimiter
 {
-    private const CACHE_KEY_PREFIX = 'user_notification_';
+    private const string CACHE_KEY_PREFIX = 'user_notification_';
 
     public function __construct(
-        private readonly UserNotificationRepository $repository,
-        private readonly CacheItemPoolInterface $cache,
-        private readonly LoggerInterface $logger,
+        private UserNotificationRepository $repository,
+        private CacheItemPoolInterface $cache,
+        private LoggerInterface $logger,
     ) {
     }
 
