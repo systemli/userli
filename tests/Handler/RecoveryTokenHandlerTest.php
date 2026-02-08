@@ -16,7 +16,6 @@ class RecoveryTokenHandlerTest extends TestCase
     {
         $EntityManagerInterface = $this->getMockBuilder(EntityManagerInterface::class)
             ->disableOriginalConstructor()->getMock();
-        $EntityManagerInterface->expects($this->any())->method('flush')->willReturn(true);
 
         return new RecoveryTokenHandler($EntityManagerInterface);
     }

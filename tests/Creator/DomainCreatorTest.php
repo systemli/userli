@@ -19,7 +19,7 @@ class DomainCreatorTest extends TestCase
         $manager->method('persist')->willReturnCallback(static function ($entity): void {
             $entity->setId(1);
         });
-        $manager->method('flush')->willReturn(true);
+
 
         $validator = $this->createMock(ValidatorInterface::class);
         $validator->method('validate')->willReturn(new ConstraintViolationList());
