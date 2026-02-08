@@ -57,7 +57,7 @@ jobs:
 
       - name: PHPUnit
         run: |
-          bin/phpunit
+          bin/phpunit --coverage-clover build/clover-phpunit.xml --log-junit build/result-phpunit.xml
 
       - name: Behat
         run: |
