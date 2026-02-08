@@ -23,7 +23,6 @@ final class RandomAliasCreationListener implements EventSubscriberInterface
 
     public function onRandomAliasCreated(RandomAliasCreatedEvent $event): void
     {
-        /** @var Alias $alias */
         $alias = $event->getAlias();
 
         while (null !== $this->manager->getRepository(Alias::class)->findOneBySource($alias->getSource(), true)) {

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Event\RecoveryProcessEvent;
 use App\Event\UserEvent;
 use App\Form\Model\RecoveryProcess;
 use App\Form\Model\RecoveryResetPassword;
@@ -78,7 +77,7 @@ final class RecoveryController extends AbstractController
                     // Recovery process gets started
                     $user->updateRecoveryStartTime();
                     $this->manager->flush();
-                    $this->eventDispatcher->dispatch(new UserEvent($user), RecoveryProcessEvent::NAME);
+                    $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::RECOVERY_PROCESS_STARTED);
                     // We don't have to add two days here, they will get added in `RecoveryProcessMessageSender`
                     $recoveryActiveTime = $user->getRecoveryStartTime();
                 } elseif (new DateTimeImmutable($this::PROCESS_DELAY) < $recoveryStartTime) {

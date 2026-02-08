@@ -27,9 +27,7 @@ final readonly class AliasCreationListener implements EventSubscriberInterface
      */
     public function onAliasCreated(AliasCreatedEvent $event): void
     {
-        if (null === $alias = $event->getAlias()) {
-            throw new Exception('Alias should not be null');
-        }
+        $alias = $event->getAlias();
 
         if (null === $user = $alias->getUser()) {
             throw new Exception('User should not be null');
