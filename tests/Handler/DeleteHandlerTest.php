@@ -57,7 +57,7 @@ class DeleteHandlerTest extends TestCase
                 };
             }
         );
-        $this->entityManager->method('flush')->willReturn(true);
+
         $this->entityManager->method('remove')->willReturnCallback(function ($entity): void {
             $this->removedEntities[] = $entity;
         });

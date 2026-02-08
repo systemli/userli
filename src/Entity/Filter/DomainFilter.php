@@ -13,7 +13,7 @@ use Override;
 class DomainFilter extends SQLFilter
 {
     #[Override]
-    public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias): string
+    public function addFilterConstraint(ClassMetadata $targetEntity, string $targetTableAlias): string
     {
         if (null === $domainId = $this->getDomainId()) {
             return '';

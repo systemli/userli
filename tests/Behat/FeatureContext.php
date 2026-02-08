@@ -26,6 +26,7 @@ use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\MinkContext;
 use DateTimeImmutable;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\ToolsException;
@@ -53,7 +54,6 @@ use const PHP_URL_QUERY;
  */
 class FeatureContext extends MinkContext
 {
-    private readonly string $dbPlatform;
     private array $placeholders = [];
     private array $requestParams = [];
     private SessionFactoryInterface $sessionFactory;
@@ -69,7 +69,6 @@ class FeatureContext extends MinkContext
     ) {
         $this->sessionFactory = $this->getContainer()->get('session.factory');
         $this->cache = $this->getContainer()->get('cache.app');
-        $this->dbPlatform = $this->manager->getConnection()->getDatabasePlatform()->getName();
     }
 
     public function getContainer(): ContainerInterface
@@ -90,7 +89,7 @@ class FeatureContext extends MinkContext
         $metadata = $this->manager->getMetadataFactory()->getAllMetadata();
 
         // dropSchema leads to errors with sqlite backend since DBAL 2.10.3
-        if ('sqlite' === $this->dbPlatform) {
+        if ($this->manager->getConnection()->getDatabasePlatform() instanceof SQLitePlatform) {
             $schemaTool->dropDatabase();
         } else {
             $schemaTool->dropSchema($metadata);

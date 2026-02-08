@@ -26,7 +26,6 @@ class AliasCreatorTest extends TestCase
                 $alias->setId(1);
             }
         );
-        $manager->method('flush')->willReturn(true);
 
         $validator = $this->getMockBuilder(ValidatorInterface::class)->getMock();
         $validator->method('validate')->willReturn(new ConstraintViolationList());
