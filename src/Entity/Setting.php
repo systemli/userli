@@ -36,7 +36,6 @@ class Setting implements UpdatedTimeInterface
         $this->name = $name;
         $this->value = $value;
         $this->creationTime = new DateTimeImmutable();
-        $this->updatedTime = new DateTimeImmutable();
     }
 
     public function getId(): ?int
