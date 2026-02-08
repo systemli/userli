@@ -25,20 +25,14 @@ class UsersRestoreCommandTest extends TestCase
         $this->user = new User('deleted@example.org');
         $this->user->setDeleted(true);
 
-        $repository = $this->getMockBuilder(UserRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createStub(UserRepository::class);
         $repository->method('findByEmail')
             ->willReturn($this->user);
 
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturn($repository);
 
-        $this->userRestoreService = $this->getMockBuilder(UserRestoreService::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->userRestoreService = $this->createStub(UserRestoreService::class);
 
         $this->command = new UsersRestoreCommand($manager, $this->userRestoreService);
     }
@@ -63,7 +57,7 @@ class UsersRestoreCommandTest extends TestCase
         $commandTester->execute(['--user' => 'deleted@example.org', '--dry-run' => true]);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Would restore user deleted@example.org', $output);
+        self::assertStringContainsString('Would restore user deleted@example.org', $output);
 
         // Test real run
         $commandTester->execute(['--user' => 'deleted@example.org']);
@@ -73,8 +67,8 @@ class UsersRestoreCommandTest extends TestCase
         self::assertFalse($this->user->getMailCryptEnabled());
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Restoring user deleted@example.org', $output);
-        $this->assertStringNotContainsString('New recovery token (please hand over to user): ', $output);
+        self::assertStringContainsString('Restoring user deleted@example.org', $output);
+        self::assertStringNotContainsString('New recovery token (please hand over to user): ', $output);
     }
 
     public function testExecuteWithMailCrypt(): void
@@ -102,8 +96,8 @@ class UsersRestoreCommandTest extends TestCase
         self::assertTrue($this->user->getMailCryptEnabled());
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Restoring user deleted@example.org', $output);
-        $this->assertStringContainsString('New recovery token (please hand over to user): RecoverySecret', $output);
+        self::assertStringContainsString('Restoring user deleted@example.org', $output);
+        self::assertStringContainsString('New recovery token (please hand over to user): RecoverySecret', $output);
     }
 
     public function testExecuteShortPassword(): void
@@ -120,7 +114,7 @@ class UsersRestoreCommandTest extends TestCase
         $exitCode = $commandTester->execute(['--user' => 'deleted@example.org']);
 
         self::assertSame(Command::FAILURE, $exitCode);
-        $this->assertStringContainsString("The password doesn't comply with our security policy.", $commandTester->getDisplay());
+        self::assertStringContainsString("The password doesn't comply with our security policy.", $commandTester->getDisplay());
     }
 
     public function testExecutePasswordsDontMatch(): void
@@ -136,7 +130,7 @@ class UsersRestoreCommandTest extends TestCase
         $exitCode = $commandTester->execute(['--user' => 'deleted@example.org']);
 
         self::assertSame(Command::FAILURE, $exitCode);
-        $this->assertStringContainsString("The passwords don't match.", $commandTester->getDisplay());
+        self::assertStringContainsString("The passwords don't match.", $commandTester->getDisplay());
     }
 
     public function testExecuteWithoutUser(): void
@@ -151,6 +145,6 @@ class UsersRestoreCommandTest extends TestCase
         $exitCode = $commandTester->execute([]);
 
         self::assertSame(Command::FAILURE, $exitCode);
-        $this->assertStringContainsString('User with email', $commandTester->getDisplay());
+        self::assertStringContainsString('User with email', $commandTester->getDisplay());
     }
 }

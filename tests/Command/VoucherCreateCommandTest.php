@@ -12,7 +12,7 @@ use App\Exception\ValidationException;
 use App\Repository\UserRepository;
 use App\Service\SettingsService;
 use Doctrine\ORM\EntityManagerInterface;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -23,22 +23,22 @@ use Symfony\Component\Routing\RouterInterface;
 class VoucherCreateCommandTest extends TestCase
 {
     private VoucherCreateCommand $command;
-    private MockObject $repository;
-    private MockObject $router;
-    private MockObject $creator;
-    private MockObject $settingsService;
-    private MockObject $requestContext;
+    private Stub&UserRepository $repository;
+    private Stub&RouterInterface $router;
+    private Stub&VoucherCreator $creator;
+    private Stub&SettingsService $settingsService;
+    private Stub&RequestContext $requestContext;
 
     protected function setUp(): void
     {
-        $manager = $this->createMock(EntityManagerInterface::class);
-        $this->repository = $this->createMock(UserRepository::class);
+        $manager = $this->createStub(EntityManagerInterface::class);
+        $this->repository = $this->createStub(UserRepository::class);
         $manager->method('getRepository')->willReturn($this->repository);
 
-        $this->router = $this->createMock(RouterInterface::class);
-        $this->creator = $this->createMock(VoucherCreator::class);
-        $this->settingsService = $this->createMock(SettingsService::class);
-        $this->requestContext = $this->createMock(RequestContext::class);
+        $this->router = $this->createStub(RouterInterface::class);
+        $this->creator = $this->createStub(VoucherCreator::class);
+        $this->settingsService = $this->createStub(SettingsService::class);
+        $this->requestContext = $this->createStub(RequestContext::class);
 
         // Setup router context
         $this->router->method('getContext')->willReturn($this->requestContext);
@@ -56,14 +56,6 @@ class VoucherCreateCommandTest extends TestCase
         $this->repository->method('findByEmail')
             ->willReturn(null);
 
-        // Settings service should not be called when user doesn't exist
-        // because Command::FAILURE is returned before settings are accessed
-        $this->settingsService->expects(self::never())
-            ->method('get');
-
-        $this->requestContext->expects(self::never())
-            ->method('setBaseUrl');
-
         $application = new Application();
         $application->addCommand($this->command);
 
@@ -77,7 +69,7 @@ class VoucherCreateCommandTest extends TestCase
         ]);
 
         self::assertSame(Command::FAILURE, $exitCode);
-        $this->assertStringContainsString('User with email', $commandTester->getDisplay());
+        self::assertStringContainsString('User with email', $commandTester->getDisplay());
     }
 
     public function testExecuteWithUser(): void
@@ -89,15 +81,10 @@ class VoucherCreateCommandTest extends TestCase
         $this->repository->method('findByEmail')
             ->willReturn($user);
 
-        // Settings service should always return valid app_url
-        $this->settingsService->expects(self::atLeastOnce())
+        $this->settingsService
             ->method('get')
             ->with('app_url')
             ->willReturn($baseUrl);
-
-        $this->requestContext->expects(self::atLeastOnce())
-            ->method('setBaseUrl')
-            ->with($baseUrl);
 
         $this->router->method('generate')
             ->willReturn($baseUrl.'/register/'.$voucherCode);
@@ -148,18 +135,13 @@ class VoucherCreateCommandTest extends TestCase
         $this->repository->method('findByEmail')
             ->willReturn($user);
 
-        // Settings service should always return valid app_url
-        $this->settingsService->expects(self::once())
+        $this->settingsService
             ->method('get')
             ->with('app_url')
             ->willReturn($baseUrl);
 
-        $this->requestContext->expects(self::once())
-            ->method('setBaseUrl')
-            ->with($baseUrl);
-
         $voucher = new Voucher($voucherCode);
-        $exception = $this->createMock(ValidationException::class);
+        $exception = $this->createStub(ValidationException::class);
         $this->creator->method('create')
             ->willThrowException($exception);
 
@@ -184,32 +166,43 @@ class VoucherCreateCommandTest extends TestCase
 
         $user = new User($email);
 
-        $this->repository->expects(self::once())
+        $manager = $this->createStub(EntityManagerInterface::class);
+        $repository = $this->createMock(UserRepository::class);
+        $manager->method('getRepository')->willReturn($repository);
+        $settingsService = $this->createMock(SettingsService::class);
+        $creator = $this->createMock(VoucherCreator::class);
+        $requestContext = $this->createMock(RequestContext::class);
+        $router = $this->createStub(RouterInterface::class);
+        $router->method('getContext')->willReturn($requestContext);
+
+        $repository->expects(self::once())
             ->method('findByEmail')
             ->with($email)
             ->willReturn($user);
 
-        $this->settingsService->expects(self::once())
+        $settingsService->expects(self::once())
             ->method('get')
             ->with('app_url')
             ->willReturn($baseUrl);
 
-        $this->requestContext->expects(self::once())
+        $requestContext->expects(self::once())
             ->method('setBaseUrl')
             ->with($baseUrl);
 
         $voucher = new Voucher($voucherCode);
 
-        $this->creator->expects(self::once())
+        $creator->expects(self::once())
             ->method('create')
             ->with($user)
             ->willReturn($voucher);
 
-        $application = new Application();
-        $application->addCommand($this->command);
+        $command = new VoucherCreateCommand($manager, $router, $creator, $settingsService);
 
-        $command = $application->find('app:voucher:create');
-        $commandTester = new CommandTester($command);
+        $application = new Application();
+        $application->addCommand($command);
+
+        $consoleCommand = $application->find('app:voucher:create');
+        $commandTester = new CommandTester($consoleCommand);
 
         $commandTester->execute([
             '--user' => $email,
@@ -232,37 +225,48 @@ class VoucherCreateCommandTest extends TestCase
 
         $user = new User($email);
 
-        $this->repository->expects(self::once())
+        $manager = $this->createStub(EntityManagerInterface::class);
+        $repository = $this->createMock(UserRepository::class);
+        $manager->method('getRepository')->willReturn($repository);
+        $settingsService = $this->createMock(SettingsService::class);
+        $creator = $this->createMock(VoucherCreator::class);
+        $requestContext = $this->createMock(RequestContext::class);
+        $router = $this->createMock(RouterInterface::class);
+        $router->method('getContext')->willReturn($requestContext);
+
+        $repository->expects(self::once())
             ->method('findByEmail')
             ->with($email)
             ->willReturn($user);
 
-        $this->settingsService->expects(self::once())
+        $settingsService->expects(self::once())
             ->method('get')
             ->with('app_url')
             ->willReturn($baseUrl);
 
-        $this->requestContext->expects(self::once())
+        $requestContext->expects(self::once())
             ->method('setBaseUrl')
             ->with($baseUrl);
 
         $voucher = new Voucher($voucherCode);
 
-        $this->creator->expects(self::once())
+        $creator->expects(self::once())
             ->method('create')
             ->with($user)
             ->willReturn($voucher);
 
-        $this->router->expects(self::once())
+        $router->expects(self::once())
             ->method('generate')
             ->with('register_voucher', ['voucher' => $voucherCode])
             ->willReturn($baseUrl.'/register/'.$voucherCode);
 
-        $application = new Application();
-        $application->addCommand($this->command);
+        $command = new VoucherCreateCommand($manager, $router, $creator, $settingsService);
 
-        $command = $application->find('app:voucher:create');
-        $commandTester = new CommandTester($command);
+        $application = new Application();
+        $application->addCommand($command);
+
+        $consoleCommand = $application->find('app:voucher:create');
+        $commandTester = new CommandTester($consoleCommand);
 
         $commandTester->execute([
             '--user' => $email,

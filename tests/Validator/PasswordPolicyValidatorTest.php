@@ -22,21 +22,21 @@ class PasswordPolicyValidatorTest extends ConstraintValidatorTestCase
     {
         $this->validator->validate(null, new PasswordPolicy());
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testEmptyStringIsValid(): void
     {
         $this->validator->validate('', new PasswordPolicy());
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testValidPassword(): void
     {
         $this->validator->validate('Password123!', new PasswordPolicy());
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testInvalidPassword(): void

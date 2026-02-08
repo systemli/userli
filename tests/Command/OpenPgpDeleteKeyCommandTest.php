@@ -21,13 +21,9 @@ class OpenPgpDeleteKeyCommandTest extends TestCase
         $openPgpKey = new OpenPgpKey();
         $openPgpKey->setEmail('alice@example.org');
 
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
 
-        $repository = $this->getMockBuilder(OpenPgpKeyRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createStub(OpenPgpKeyRepository::class);
 
         $repository->method('findByEmail')->willReturnMap(
             [
@@ -38,9 +34,7 @@ class OpenPgpDeleteKeyCommandTest extends TestCase
 
         $manager->method('getRepository')->willReturn($repository);
 
-        $wkdHandler = $this->getMockBuilder(WkdHandler::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $wkdHandler = $this->createStub(WkdHandler::class);
 
         $this->command = new OpenPgpDeleteKeyCommand($manager, $wkdHandler);
     }

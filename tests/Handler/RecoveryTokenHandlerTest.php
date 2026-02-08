@@ -14,8 +14,7 @@ class RecoveryTokenHandlerTest extends TestCase
 {
     protected function createHandler(): RecoveryTokenHandler
     {
-        $EntityManagerInterface = $this->getMockBuilder(EntityManagerInterface::class)
-            ->disableOriginalConstructor()->getMock();
+        $EntityManagerInterface = $this->createStub(EntityManagerInterface::class);
 
         return new RecoveryTokenHandler($EntityManagerInterface);
     }

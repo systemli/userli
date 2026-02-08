@@ -11,46 +11,45 @@ use App\EventListener\BeforeRequestListener;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\FilterCollection;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class BeforeRequestListenerTest extends TestCase
 {
-    private UserRepository $repo;
-    private EntityManagerInterface $manager;
-    private Security $security;
+    private Stub&UserRepository $repo;
+    private Stub&EntityManagerInterface $manager;
+    private Stub&Security $security;
     private BeforeRequestListener $listener;
 
     protected function setUp(): void
     {
-        $this->repo = $this->getMockBuilder(UserRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->manager = $this->createMock(EntityManagerInterface::class);
+        $this->repo = $this->createStub(UserRepository::class);
+        $this->manager = $this->createStub(EntityManagerInterface::class);
         $this->manager->method('getRepository')->willReturn($this->repo);
-        $this->security = $this->getMockBuilder(Security::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->security = $this->createStub(Security::class);
 
         $this->listener = new BeforeRequestListener($this->manager, $this->security);
     }
 
-    /**
-     * @dataProvider provider
-     */
+    #[DataProvider('provider')]
     public function testGetNonAdminUser(?User $user, bool $isAdmin, ?User $returnValue): void
     {
         $this->security->method('getUser')->willReturn($user);
         $this->security->method('isGranted')->willReturn($isAdmin);
         $this->repo->method('findByEmail')->willReturn($user);
 
-        $this->assertEquals($returnValue, $this->listener->getNonAdminUser());
+        self::assertEquals($returnValue, $this->listener->getNonAdminUser());
     }
 
-    public function provider(): array
+    public static function provider(): array
     {
-        $user = $this->getUser();
+        $domain = new Domain();
+        $domain->setId(1);
+        $user = new User('test@example.org');
+        $user->setDomain($domain);
 
         return [
             [null, false, null],   // not logged in
@@ -63,27 +62,30 @@ class BeforeRequestListenerTest extends TestCase
     public function testOnKernelRequest(): void
     {
         $user = $this->getUser();
-        $this->security->method('getUser')->willReturn($user);
-        $this->security->method('isGranted')->willReturn(false);
-        $this->repo->method('findByEmail')->willReturn($user);
 
-        $filter = $this->getMockBuilder(DomainFilter::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repo = $this->createStub(UserRepository::class);
+        $repo->method('findByEmail')->willReturn($user);
+
+        $manager = $this->createMock(EntityManagerInterface::class);
+        $manager->method('getRepository')->willReturn($repo);
+
+        $security = $this->createStub(Security::class);
+        $security->method('getUser')->willReturn($user);
+        $security->method('isGranted')->willReturn(false);
+
+        $listener = new BeforeRequestListener($manager, $security);
+
+        $filter = $this->createMock(DomainFilter::class);
         $filter->expects($this->once())->method('setParameter');
-        $filterCollection = $this->getMockBuilder(FilterCollection::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $filterCollection = $this->createMock(FilterCollection::class);
         $filterCollection->expects($this->once())->method('enable')
             ->willReturn($filter);
-        $this->manager->expects($this->once())->method('getFilters')
+        $manager->expects($this->once())->method('getFilters')
             ->willReturn($filterCollection);
 
-        $event = $this->getMockBuilder(RequestEvent::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $event = $this->createStub(RequestEvent::class);
 
-        $this->listener->onKernelRequest($event);
+        $listener->onKernelRequest($event);
     }
 
     public function getUser(): User

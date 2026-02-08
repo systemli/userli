@@ -31,7 +31,7 @@ class SendWebhookHandlerTest extends TestCase
         $delivery = $this->createDelivery();
         $id = (string) $delivery->getId();
 
-        $repo = $this->createMock(EntityRepository::class);
+        $repo = $this->createStub(EntityRepository::class);
         $repo->method('find')->with($id)->willReturn($delivery);
         $repo->method('getClassName')->willReturn(WebhookDelivery::class);
 
@@ -49,11 +49,11 @@ class SendWebhookHandlerTest extends TestCase
         $handler = new SendWebhookHandler($em, $http);
         $handler(new SendWebhook($id));
 
-        $this->assertTrue($delivery->isSuccess());
-        $this->assertEquals(200, $delivery->getResponseCode());
-        $this->assertNull($delivery->getResponseBody());
-        $this->assertEquals(1, $delivery->getAttempts());
-        $this->assertInstanceOf(DateTimeImmutable::class, $delivery->getDeliveredTime());
+        self::assertTrue($delivery->isSuccess());
+        self::assertEquals(200, $delivery->getResponseCode());
+        self::assertNull($delivery->getResponseBody());
+        self::assertEquals(1, $delivery->getAttempts());
+        self::assertInstanceOf(DateTimeImmutable::class, $delivery->getDeliveredTime());
     }
 
     public function testFailedDeliveryThrowsExceptionForRetry(): void
@@ -61,7 +61,7 @@ class SendWebhookHandlerTest extends TestCase
         $delivery = $this->createDelivery();
         $id = (string) $delivery->getId();
 
-        $repo = $this->createMock(EntityRepository::class);
+        $repo = $this->createStub(EntityRepository::class);
         $repo->method('find')->with($id)->willReturn($delivery);
         $repo->method('getClassName')->willReturn(WebhookDelivery::class);
 
@@ -84,7 +84,7 @@ class SendWebhookHandlerTest extends TestCase
 
     public function testNoDeliveryFoundEarlyReturn(): void
     {
-        $repo = $this->createMock(EntityRepository::class);
+        $repo = $this->createStub(EntityRepository::class);
         $repo->method('find')->willReturn(null);
         $repo->method('getClassName')->willReturn(WebhookDelivery::class);
 

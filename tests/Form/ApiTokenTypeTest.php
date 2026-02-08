@@ -7,10 +7,17 @@ namespace App\Tests\Form;
 use App\Enum\ApiScope;
 use App\Form\ApiTokenType;
 use App\Form\Model\ApiToken;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class ApiTokenTypeTest extends TypeTestCase
 {
+    protected function setUp(): void
+    {
+        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
+        parent::setUp();
+    }
+
     public function testSubmitValidData(): void
     {
         $name = 'My API Token';
@@ -30,8 +37,8 @@ class ApiTokenTypeTest extends TypeTestCase
 
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($expected, $model);
+        self::assertTrue($form->isSynchronized());
+        self::assertEquals($expected, $model);
     }
 
     public function testFormFieldsExist(): void
@@ -39,9 +46,9 @@ class ApiTokenTypeTest extends TypeTestCase
         $form = $this->factory->create(ApiTokenType::class);
         $view = $form->createView();
 
-        $this->assertArrayHasKey('name', $view->children);
-        $this->assertArrayHasKey('scopes', $view->children);
-        $this->assertArrayHasKey('submit', $view->children);
+        self::assertArrayHasKey('name', $view->children);
+        self::assertArrayHasKey('scopes', $view->children);
+        self::assertArrayHasKey('submit', $view->children);
     }
 
     public function testScopesFieldIsExpandedAndMultiple(): void
@@ -49,7 +56,7 @@ class ApiTokenTypeTest extends TypeTestCase
         $form = $this->factory->create(ApiTokenType::class);
 
         $scopesConfig = $form->get('scopes')->getConfig();
-        $this->assertTrue($scopesConfig->getOption('expanded'));
-        $this->assertTrue($scopesConfig->getOption('multiple'));
+        self::assertTrue($scopesConfig->getOption('expanded'));
+        self::assertTrue($scopesConfig->getOption('multiple'));
     }
 }

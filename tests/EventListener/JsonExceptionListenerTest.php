@@ -29,8 +29,8 @@ class JsonExceptionListenerTest extends TestCase
     {
         $events = JsonExceptionListener::getSubscribedEvents();
 
-        $this->assertArrayHasKey(KernelEvents::EXCEPTION, $events);
-        $this->assertEquals(['onKernelException', 0], $events[KernelEvents::EXCEPTION]);
+        self::assertArrayHasKey(KernelEvents::EXCEPTION, $events);
+        self::assertEquals(['onKernelException', 0], $events[KernelEvents::EXCEPTION]);
     }
 
     public function testOnKernelExceptionWithApiRequest(): void
@@ -42,17 +42,17 @@ class JsonExceptionListenerTest extends TestCase
         $this->subscriber->onKernelException($event);
 
         $response = $event->getResponse();
-        $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals(500, $response->getStatusCode());
+        self::assertInstanceOf(JsonResponse::class, $response);
+        self::assertEquals(500, $response->getStatusCode());
 
         $data = json_decode($response->getContent(), true);
-        $this->assertArrayHasKey('error', $data);
-        $this->assertEquals('Test exception', $data['error']['message']);
-        $this->assertEquals(123, $data['error']['code']);
-        $this->assertArrayNotHasKey('exception', $data['error']);
-        $this->assertArrayNotHasKey('file', $data['error']);
-        $this->assertArrayNotHasKey('line', $data['error']);
-        $this->assertArrayNotHasKey('trace', $data['error']);
+        self::assertArrayHasKey('error', $data);
+        self::assertEquals('Test exception', $data['error']['message']);
+        self::assertEquals(123, $data['error']['code']);
+        self::assertArrayNotHasKey('exception', $data['error']);
+        self::assertArrayNotHasKey('file', $data['error']);
+        self::assertArrayNotHasKey('line', $data['error']);
+        self::assertArrayNotHasKey('trace', $data['error']);
     }
 
     public function testOnKernelExceptionWithJsonAcceptHeader(): void
@@ -64,7 +64,7 @@ class JsonExceptionListenerTest extends TestCase
         $this->subscriber->onKernelException($event);
 
         $response = $event->getResponse();
-        $this->assertInstanceOf(JsonResponse::class, $response);
+        self::assertInstanceOf(JsonResponse::class, $response);
     }
 
     public function testOnKernelExceptionWithJsonRequestFormat(): void
@@ -77,7 +77,7 @@ class JsonExceptionListenerTest extends TestCase
         $this->subscriber->onKernelException($event);
 
         $response = $event->getResponse();
-        $this->assertInstanceOf(JsonResponse::class, $response);
+        self::assertInstanceOf(JsonResponse::class, $response);
     }
 
     public function testOnKernelExceptionWithHttpException(): void
@@ -89,11 +89,11 @@ class JsonExceptionListenerTest extends TestCase
         $this->subscriber->onKernelException($event);
 
         $response = $event->getResponse();
-        $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertEquals(404, $response->getStatusCode());
+        self::assertInstanceOf(JsonResponse::class, $response);
+        self::assertEquals(404, $response->getStatusCode());
 
         $data = json_decode($response->getContent(), true);
-        $this->assertEquals('Resource not found', $data['error']['message']);
+        self::assertEquals('Resource not found', $data['error']['message']);
     }
 
     public function testOnKernelExceptionWithCustomHttpException(): void
@@ -105,11 +105,11 @@ class JsonExceptionListenerTest extends TestCase
         $this->subscriber->onKernelException($event);
 
         $response = $event->getResponse();
-        $this->assertEquals(422, $response->getStatusCode());
+        self::assertEquals(422, $response->getStatusCode());
 
         $data = json_decode($response->getContent(), true);
-        $this->assertEquals('Validation failed', $data['error']['message']);
-        $this->assertEquals(1001, $data['error']['code']);
+        self::assertEquals('Validation failed', $data['error']['message']);
+        self::assertEquals(1001, $data['error']['code']);
     }
 
     public function testOnKernelExceptionInDevEnvironment(): void
@@ -124,15 +124,15 @@ class JsonExceptionListenerTest extends TestCase
         $response = $event->getResponse();
         $data = json_decode($response->getContent(), true);
 
-        $this->assertArrayHasKey('exception', $data['error']);
-        $this->assertArrayHasKey('file', $data['error']);
-        $this->assertArrayHasKey('line', $data['error']);
-        $this->assertArrayHasKey('trace', $data['error']);
+        self::assertArrayHasKey('exception', $data['error']);
+        self::assertArrayHasKey('file', $data['error']);
+        self::assertArrayHasKey('line', $data['error']);
+        self::assertArrayHasKey('trace', $data['error']);
 
-        $this->assertEquals(Exception::class, $data['error']['exception']);
-        $this->assertIsString($data['error']['file']);
-        $this->assertIsInt($data['error']['line']);
-        $this->assertIsArray($data['error']['trace']);
+        self::assertEquals(Exception::class, $data['error']['exception']);
+        self::assertIsString($data['error']['file']);
+        self::assertIsInt($data['error']['line']);
+        self::assertIsArray($data['error']['trace']);
     }
 
     public function testOnKernelExceptionWithNonJsonRequest(): void
@@ -143,7 +143,7 @@ class JsonExceptionListenerTest extends TestCase
 
         $this->subscriber->onKernelException($event);
 
-        $this->assertNull($event->getResponse());
+        self::assertNull($event->getResponse());
     }
 
     public function testOnKernelExceptionWithHtmlRequest(): void
@@ -154,7 +154,7 @@ class JsonExceptionListenerTest extends TestCase
 
         $this->subscriber->onKernelException($event);
 
-        $this->assertNull($event->getResponse());
+        self::assertNull($event->getResponse());
     }
 
     public function testJsonResponseStructure(): void
@@ -166,19 +166,19 @@ class JsonExceptionListenerTest extends TestCase
         $this->subscriber->onKernelException($event);
 
         $response = $event->getResponse();
-        $this->assertInstanceOf(JsonResponse::class, $response);
+        self::assertInstanceOf(JsonResponse::class, $response);
 
         $data = json_decode($response->getContent(), true);
-        $this->assertIsArray($data);
-        $this->assertArrayHasKey('error', $data);
-        $this->assertIsArray($data['error']);
-        $this->assertArrayHasKey('message', $data['error']);
-        $this->assertArrayHasKey('code', $data['error']);
+        self::assertIsArray($data);
+        self::assertArrayHasKey('error', $data);
+        self::assertIsArray($data['error']);
+        self::assertArrayHasKey('message', $data['error']);
+        self::assertArrayHasKey('code', $data['error']);
     }
 
     private function createExceptionEvent(Request $request, Throwable $exception): ExceptionEvent
     {
-        $kernel = $this->createMock(HttpKernelInterface::class);
+        $kernel = $this->createStub(HttpKernelInterface::class);
 
         return new ExceptionEvent(
             $kernel,

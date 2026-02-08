@@ -36,7 +36,7 @@ final class EmailAddressValidator extends ConstraintValidator
         }
 
         [$localPart, $domain] = explode('@', $value);
-        $user = $this->manager->getRepository(User::class)->findOneBy(['email' => $value], null, true);
+        $user = $this->manager->getRepository(User::class)->findOneBy(['email' => $value]);
         $alias = $this->manager->getRepository(Alias::class)->findOneBySource($value, true);
         $reservedName = $this->manager->getRepository(ReservedName::class)->findByName($localPart);
 

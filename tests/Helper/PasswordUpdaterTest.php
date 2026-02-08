@@ -15,8 +15,7 @@ class PasswordUpdaterTest extends TestCase
     public function testUpdatePassword(): void
     {
         $hasher = new PlaintextPasswordHasher();
-        $passwordHasherFactory = $this->getMockBuilder(PasswordHasherFactoryInterface::class)
-            ->getMock();
+        $passwordHasherFactory = $this->createStub(PasswordHasherFactoryInterface::class);
         $passwordHasherFactory->method('getPasswordHasher')->willReturn($hasher);
         $updater = new PasswordUpdater($passwordHasherFactory);
 

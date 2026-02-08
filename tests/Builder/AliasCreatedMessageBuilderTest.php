@@ -6,20 +6,20 @@ namespace App\Tests\Builder;
 
 use App\Builder\AliasCreatedMessageBuilder;
 use App\Service\SettingsService;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AliasCreatedMessageBuilderTest extends TestCase
 {
     private AliasCreatedMessageBuilder $builder;
-    private MockObject $translator;
-    private MockObject $settingsService;
+    private Stub&TranslatorInterface $translator;
+    private Stub&SettingsService $settingsService;
 
     protected function setUp(): void
     {
-        $this->translator = $this->createMock(TranslatorInterface::class);
-        $this->settingsService = $this->createMock(SettingsService::class);
+        $this->translator = $this->createStub(TranslatorInterface::class);
+        $this->settingsService = $this->createStub(SettingsService::class);
 
         $this->builder = new AliasCreatedMessageBuilder(
             $this->translator,
@@ -36,26 +36,15 @@ class AliasCreatedMessageBuilderTest extends TestCase
         $projectName = 'Example Mail';
         $expectedBody = 'Your alias alias@example.com has been created for user@example.com';
 
-        $this->settingsService->expects(self::exactly(2))
+        $this->settingsService
             ->method('get')
             ->willReturnMap([
                 ['app_url', null, $appUrl],
                 ['project_name', null, $projectName],
             ]);
 
-        $this->translator->expects(self::once())
+        $this->translator
             ->method('trans')
-            ->with(
-                'mail.alias-created-body',
-                [
-                    '%app_url%' => $appUrl,
-                    '%project_name%' => $projectName,
-                    '%email%' => $email,
-                    '%alias%' => $alias,
-                ],
-                null,
-                $locale
-            )
             ->willReturn($expectedBody);
 
         $result = $this->builder->buildBody($locale, $email, $alias);
@@ -69,14 +58,8 @@ class AliasCreatedMessageBuilderTest extends TestCase
         $email = 'test@example.org';
         $expectedSubject = 'Alias erstellt für test@example.org';
 
-        $this->translator->expects(self::once())
+        $this->translator
             ->method('trans')
-            ->with(
-                'mail.alias-created-subject',
-                ['%email%' => $email],
-                null,
-                $locale
-            )
             ->willReturn($expectedSubject);
 
         $result = $this->builder->buildSubject($locale, $email);

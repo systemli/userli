@@ -22,20 +22,14 @@ class UsersDeleteCommandTest extends TestCase
     {
         $user = new User('user@example.org');
 
-        $repository = $this->getMockBuilder(UserRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createStub(UserRepository::class);
         $repository->method('findByEmail')
             ->willReturn($user);
 
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturn($repository);
 
-        $deleteHandler = $this->getMockBuilder(DeleteHandler::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $deleteHandler = $this->createStub(DeleteHandler::class);
 
         $this->command = new UsersDeleteCommand($manager, $deleteHandler);
     }
@@ -51,13 +45,13 @@ class UsersDeleteCommandTest extends TestCase
         $commandTester->execute(['--user' => 'user@example.org']);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Deleting user user@example.org', $output);
+        self::assertStringContainsString('Deleting user user@example.org', $output);
 
         // Test dry run user deletion
         $commandTester->execute(['--user' => 'user@example.org', '--dry-run' => true]);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Would delete user user@example.org', $output);
+        self::assertStringContainsString('Would delete user user@example.org', $output);
     }
 
     public function testExecuteWithoutUser(): void
@@ -72,6 +66,6 @@ class UsersDeleteCommandTest extends TestCase
         $exitCode = $commandTester->execute([]);
 
         self::assertSame(Command::FAILURE, $exitCode);
-        $this->assertStringContainsString('User with email', $commandTester->getDisplay());
+        self::assertStringContainsString('User with email', $commandTester->getDisplay());
     }
 }

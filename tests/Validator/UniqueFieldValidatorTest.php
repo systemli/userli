@@ -22,11 +22,10 @@ class UniqueFieldValidatorTest extends ConstraintValidatorTestCase
 
     protected function createValidator(): UniqueFieldValidator
     {
-        $this->repository = $this->createMock(EntityRepository::class);
+        $this->repository = $this->createStub(EntityRepository::class);
 
-        $this->manager = $this->createMock(EntityManagerInterface::class);
-        $this->manager->expects($this->any())
-            ->method('getRepository')
+        $this->manager = $this->createStub(EntityManagerInterface::class);
+        $this->manager->method('getRepository')
             ->willReturn($this->repository);
 
         return new UniqueFieldValidator($this->manager);
@@ -43,7 +42,7 @@ class UniqueFieldValidatorTest extends ConstraintValidatorTestCase
         $constraint = new UniqueField(entityClass: Domain::class, field: 'name');
         $this->validator->validate(null, $constraint);
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testEmptyStringIsValid(): void
@@ -51,7 +50,7 @@ class UniqueFieldValidatorTest extends ConstraintValidatorTestCase
         $constraint = new UniqueField(entityClass: Domain::class, field: 'name');
         $this->validator->validate('', $constraint);
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testExpectsStringValue(): void
@@ -64,25 +63,39 @@ class UniqueFieldValidatorTest extends ConstraintValidatorTestCase
 
     public function testUniqueValueIsValid(): void
     {
-        $this->repository->expects($this->once())
+        $repository = $this->createMock(EntityRepository::class);
+        $repository->expects($this->once())
             ->method('findOneBy')
             ->with(['name' => 'unique-domain'])
             ->willReturn(null);
 
+        $manager = $this->createStub(EntityManagerInterface::class);
+        $manager->method('getRepository')->willReturn($repository);
+
+        $this->validator = new UniqueFieldValidator($manager);
+        $this->validator->initialize($this->context);
+
         $constraint = new UniqueField(entityClass: Domain::class, field: 'name');
         $this->validator->validate('unique-domain', $constraint);
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testDuplicateValueRaisesViolation(): void
     {
         $existingDomain = new Domain();
 
-        $this->repository->expects($this->once())
+        $repository = $this->createMock(EntityRepository::class);
+        $repository->expects($this->once())
             ->method('findOneBy')
             ->with(['name' => 'existing-domain'])
             ->willReturn($existingDomain);
+
+        $manager = $this->createStub(EntityManagerInterface::class);
+        $manager->method('getRepository')->willReturn($repository);
+
+        $this->validator = new UniqueFieldValidator($manager);
+        $this->validator->initialize($this->context);
 
         $constraint = new UniqueField(entityClass: Domain::class, field: 'name');
         $this->validator->validate('existing-domain', $constraint);
@@ -97,10 +110,17 @@ class UniqueFieldValidatorTest extends ConstraintValidatorTestCase
     {
         $existingDomain = new Domain();
 
-        $this->repository->expects($this->once())
+        $repository = $this->createMock(EntityRepository::class);
+        $repository->expects($this->once())
             ->method('findOneBy')
             ->with(['name' => 'duplicate'])
             ->willReturn($existingDomain);
+
+        $manager = $this->createStub(EntityManagerInterface::class);
+        $manager->method('getRepository')->willReturn($repository);
+
+        $this->validator = new UniqueFieldValidator($manager);
+        $this->validator->initialize($this->context);
 
         $constraint = new UniqueField(
             entityClass: Domain::class,

@@ -35,16 +35,16 @@ class WebhookDeliveryManagerTest extends TestCase
             ->with($endpoint, '', 20, 0)
             ->willReturn([$d2, $d1]);
 
-        $em = $this->createMock(EntityManagerInterface::class);
-        $bus = $this->createMock(MessageBusInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
+        $bus = $this->createStub(MessageBusInterface::class);
 
         $manager = new WebhookDeliveryManager($em, $bus, $repo);
         $result = $manager->findPaginatedByEndpoint($endpoint);
 
-        $this->assertSame([$d2, $d1], $result['items']);
-        $this->assertSame(1, $result['page']);
-        $this->assertSame(1, $result['totalPages']);
-        $this->assertSame(2, $result['total']);
+        self::assertSame([$d2, $d1], $result['items']);
+        self::assertSame(1, $result['page']);
+        self::assertSame(1, $result['totalPages']);
+        self::assertSame(2, $result['total']);
     }
 
     public function testRetryDoesNothingForSuccessfulDelivery(): void
@@ -57,7 +57,7 @@ class WebhookDeliveryManagerTest extends TestCase
         $em->expects($this->never())->method('flush');
         $bus = $this->createMock(MessageBusInterface::class);
         $bus->expects($this->never())->method('dispatch');
-        $repo = $this->createMock(WebhookDeliveryRepository::class);
+        $repo = $this->createStub(WebhookDeliveryRepository::class);
 
         $manager = new WebhookDeliveryManager($em, $bus, $repo);
         $manager->retry($delivery);
@@ -78,29 +78,29 @@ class WebhookDeliveryManagerTest extends TestCase
         $em->expects($this->once())->method('flush');
 
         $bus = $this->createMock(MessageBusInterface::class);
-        $bus->expects($this->once())->method('dispatch')->with($this->callback(function ($message) use ($delivery) {
+        $bus->expects($this->once())->method('dispatch')->with($this->callback(static function ($message) use ($delivery) {
             if ($message instanceof Envelope) {
                 $inner = $message->getMessage();
             } else {
                 $inner = $message;
             }
-            $this->assertInstanceOf(SendWebhook::class, $inner);
-            $this->assertEquals((string) $delivery->getId(), $inner->deliveryId);
+            self::assertInstanceOf(SendWebhook::class, $inner);
+            self::assertEquals((string) $delivery->getId(), $inner->deliveryId);
 
             return true;
         }))->willReturnCallback(static fn ($m) => $m instanceof Envelope ? $m : new Envelope($m));
 
-        $repo = $this->createMock(WebhookDeliveryRepository::class);
+        $repo = $this->createStub(WebhookDeliveryRepository::class);
 
         $manager = new WebhookDeliveryManager($em, $bus, $repo);
         $manager->retry($delivery);
 
-        $this->assertNull($delivery->getResponseCode());
-        $this->assertNull($delivery->getResponseBody());
-        $this->assertNull($delivery->getError());
-        $this->assertFalse($delivery->isSuccess());
-        $this->assertNull($delivery->getDeliveredTime());
-        $this->assertArrayHasKey('X-Webhook-Attempt', $delivery->getRequestHeaders());
-        $this->assertSame('2', $delivery->getRequestHeaders()['X-Webhook-Attempt']);
+        self::assertNull($delivery->getResponseCode());
+        self::assertNull($delivery->getResponseBody());
+        self::assertNull($delivery->getError());
+        self::assertFalse($delivery->isSuccess());
+        self::assertNull($delivery->getDeliveredTime());
+        self::assertArrayHasKey('X-Webhook-Attempt', $delivery->getRequestHeaders());
+        self::assertSame('2', $delivery->getRequestHeaders()['X-Webhook-Attempt']);
     }
 }

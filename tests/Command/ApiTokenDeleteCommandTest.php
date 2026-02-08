@@ -7,7 +7,7 @@ namespace App\Tests\Command;
 use App\Command\ApiTokenDeleteCommand;
 use App\Entity\ApiToken;
 use App\Service\ApiTokenManager;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -16,12 +16,12 @@ use Symfony\Component\Console\Tester\CommandTester;
 class ApiTokenDeleteCommandTest extends TestCase
 {
     private ApiTokenDeleteCommand $command;
-    private MockObject|ApiTokenManager $apiTokenManager;
+    private Stub&ApiTokenManager $apiTokenManager;
     private CommandTester $commandTester;
 
     protected function setUp(): void
     {
-        $this->apiTokenManager = $this->createMock(ApiTokenManager::class);
+        $this->apiTokenManager = $this->createStub(ApiTokenManager::class);
         $this->command = new ApiTokenDeleteCommand($this->apiTokenManager);
 
         $application = new Application();
@@ -35,71 +35,85 @@ class ApiTokenDeleteCommandTest extends TestCase
         $plainToken = 'plain-abc';
         $apiToken = $this->createApiToken(1);
 
-        $this->apiTokenManager
+        $apiTokenManager = $this->createMock(ApiTokenManager::class);
+
+        $apiTokenManager
             ->expects($this->once())
             ->method('findOne')
             ->with($plainToken)
             ->willReturn($apiToken);
 
-        $this->apiTokenManager
+        $apiTokenManager
             ->expects($this->once())
             ->method('delete')
             ->with($apiToken);
 
-        $exitCode = $this->commandTester->execute([
+        $command = new ApiTokenDeleteCommand($apiTokenManager);
+        $commandTester = new CommandTester($command);
+
+        $exitCode = $commandTester->execute([
             '--token' => $plainToken,
         ]);
 
-        $this->assertEquals(Command::SUCCESS, $exitCode);
-        $output = $this->commandTester->getDisplay();
-        $this->assertStringContainsString('API token deleted successfully.', $output);
+        self::assertEquals(Command::SUCCESS, $exitCode);
+        $output = $commandTester->getDisplay();
+        self::assertStringContainsString('API token deleted successfully.', $output);
     }
 
     public function testDeleteMissingTokenOption(): void
     {
-        $this->apiTokenManager->expects($this->once())->method('findOne');
-        $this->apiTokenManager->expects($this->never())->method('delete');
+        $apiTokenManager = $this->createMock(ApiTokenManager::class);
+        $apiTokenManager->expects($this->once())->method('findOne');
+        $apiTokenManager->expects($this->never())->method('delete');
 
-        $exitCode = $this->commandTester->execute([]);
+        $command = new ApiTokenDeleteCommand($apiTokenManager);
+        $commandTester = new CommandTester($command);
 
-        $this->assertEquals(Command::FAILURE, $exitCode);
-        $output = $this->commandTester->getDisplay();
-        $this->assertStringContainsString('[ERROR] API token not found.', $output);
+        $exitCode = $commandTester->execute([]);
+
+        self::assertEquals(Command::FAILURE, $exitCode);
+        $output = $commandTester->getDisplay();
+        self::assertStringContainsString('[ERROR] API token not found.', $output);
     }
 
     public function testDeleteTokenNotFound(): void
     {
         $plainToken = 'plain-missing';
 
-        $this->apiTokenManager
+        $apiTokenManager = $this->createMock(ApiTokenManager::class);
+
+        $apiTokenManager
             ->expects($this->once())
             ->method('findOne')
             ->with($plainToken)
             ->willReturn(null);
 
-        $this->apiTokenManager->expects($this->never())->method('delete');
+        $apiTokenManager->expects($this->never())->method('delete');
 
-        $exitCode = $this->commandTester->execute([
+        $command = new ApiTokenDeleteCommand($apiTokenManager);
+        $commandTester = new CommandTester($command);
+
+        $exitCode = $commandTester->execute([
             '--token' => $plainToken,
         ]);
 
-        $this->assertEquals(Command::FAILURE, $exitCode);
-        $output = $this->commandTester->getDisplay();
-        $this->assertStringContainsString('API token not found.', $output);
+        self::assertEquals(Command::FAILURE, $exitCode);
+        $output = $commandTester->getDisplay();
+        self::assertStringContainsString('API token not found.', $output);
     }
 
     public function testCommandConfiguration(): void
     {
-        $this->assertEquals('app:api-token:delete', $this->command->getName());
+        self::assertEquals('app:api-token:delete', $this->command->getName());
 
         $definition = $this->command->getDefinition();
-        $this->assertFalse($definition->hasArgument('token'));
-        $this->assertTrue($definition->hasOption('token'));
+        self::assertFalse($definition->hasArgument('token'));
+        self::assertTrue($definition->hasOption('token'));
     }
 
     private function createApiToken(int $id): ApiToken
     {
-        $apiToken = $this->createMock(ApiToken::class);
+        $apiToken = $this->createStub(ApiToken::class);
         $apiToken->method('getId')->willReturn($id);
 
         return $apiToken;

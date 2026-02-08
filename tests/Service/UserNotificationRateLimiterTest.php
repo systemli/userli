@@ -11,7 +11,7 @@ use App\Repository\UserNotificationRepository;
 use App\Service\UserNotificationRateLimiter;
 use Exception;
 use InvalidArgumentException;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
@@ -20,17 +20,17 @@ use ReflectionClass;
 
 class UserNotificationRateLimiterTest extends TestCase
 {
-    private UserNotificationRepository|MockObject $repository;
-    private CacheItemPoolInterface|MockObject $cache;
-    private LoggerInterface|MockObject $logger;
+    private UserNotificationRepository&Stub $repository;
+    private CacheItemPoolInterface&Stub $cache;
+    private LoggerInterface&Stub $logger;
     private UserNotificationRateLimiter $rateLimiter;
     private User $user;
 
     protected function setUp(): void
     {
-        $this->repository = $this->createMock(UserNotificationRepository::class);
-        $this->cache = $this->createMock(CacheItemPoolInterface::class);
-        $this->logger = $this->createMock(LoggerInterface::class);
+        $this->repository = $this->createStub(UserNotificationRepository::class);
+        $this->cache = $this->createStub(CacheItemPoolInterface::class);
+        $this->logger = $this->createStub(LoggerInterface::class);
 
         $this->rateLimiter = new UserNotificationRateLimiter(
             $this->repository,
@@ -50,18 +50,21 @@ class UserNotificationRateLimiterTest extends TestCase
         $cacheItem = $this->createMock(CacheItemInterface::class);
         $cacheItem->expects($this->once())->method('isHit')->willReturn(true);
 
-        $this->cache
+        $cache = $this->createMock(CacheItemPoolInterface::class);
+        $cache
             ->expects($this->once())
             ->method('getItem')
             ->with('user_notification_123_password_compromised')
             ->willReturn($cacheItem);
 
         // Repository should not be called when cache hits
-        $this->repository->expects($this->never())->method('hasRecentNotification');
+        $repository = $this->createMock(UserNotificationRepository::class);
+        $repository->expects($this->never())->method('hasRecentNotification');
 
-        $result = $this->rateLimiter->isAllowed($this->user, UserNotificationType::PASSWORD_COMPROMISED);
+        $rateLimiter = new UserNotificationRateLimiter($repository, $cache, $this->logger);
+        $result = $rateLimiter->isAllowed($this->user, UserNotificationType::PASSWORD_COMPROMISED);
 
-        $this->assertFalse($result);
+        self::assertFalse($result);
     }
 
     public function testIsAllowedWhenCacheMissAndNoRecentNotification(): void
@@ -69,24 +72,27 @@ class UserNotificationRateLimiterTest extends TestCase
         $cacheItem = $this->createMock(CacheItemInterface::class);
         $cacheItem->expects($this->once())->method('isHit')->willReturn(false);
 
-        $this->cache
+        $cache = $this->createMock(CacheItemPoolInterface::class);
+        $cache
             ->expects($this->once())
             ->method('getItem')
             ->with('user_notification_123_password_compromised')
             ->willReturn($cacheItem);
 
-        $this->repository
+        $repository = $this->createMock(UserNotificationRepository::class);
+        $repository
             ->expects($this->once())
             ->method('hasRecentNotification')
             ->with($this->user, UserNotificationType::PASSWORD_COMPROMISED, 24)
             ->willReturn(false);
 
         // Cache save should not be called when no recent notification
-        $this->cache->expects($this->never())->method('save');
+        $cache->expects($this->never())->method('save');
 
-        $result = $this->rateLimiter->isAllowed($this->user, UserNotificationType::PASSWORD_COMPROMISED);
+        $rateLimiter = new UserNotificationRateLimiter($repository, $cache, $this->logger);
+        $result = $rateLimiter->isAllowed($this->user, UserNotificationType::PASSWORD_COMPROMISED);
 
-        $this->assertTrue($result);
+        self::assertTrue($result);
     }
 
     public function testIsAllowedWhenCacheMissAndHasRecentNotification(): void
@@ -96,27 +102,30 @@ class UserNotificationRateLimiterTest extends TestCase
         $cacheItem->expects($this->once())->method('set')->with(true);
         $cacheItem->expects($this->once())->method('expiresAfter')->with(24 * 3600);
 
-        $this->cache
+        $cache = $this->createMock(CacheItemPoolInterface::class);
+        $cache
             ->expects($this->exactly(2))
             ->method('getItem')
             ->with('user_notification_123_password_compromised')
             ->willReturn($cacheItem);
 
-        $this->repository
+        $repository = $this->createMock(UserNotificationRepository::class);
+        $repository
             ->expects($this->once())
             ->method('hasRecentNotification')
             ->with($this->user, UserNotificationType::PASSWORD_COMPROMISED, 24)
             ->willReturn(true);
 
         // Cache should be updated when recent notification is found
-        $this->cache
+        $cache
             ->expects($this->once())
             ->method('save')
             ->with($cacheItem);
 
-        $result = $this->rateLimiter->isAllowed($this->user, UserNotificationType::PASSWORD_COMPROMISED);
+        $rateLimiter = new UserNotificationRateLimiter($repository, $cache, $this->logger);
+        $result = $rateLimiter->isAllowed($this->user, UserNotificationType::PASSWORD_COMPROMISED);
 
-        $this->assertFalse($result);
+        self::assertFalse($result);
     }
 
     public function testIsAllowedWithCustomRateLimitHours(): void
@@ -124,30 +133,35 @@ class UserNotificationRateLimiterTest extends TestCase
         $cacheItem = $this->createMock(CacheItemInterface::class);
         $cacheItem->expects($this->once())->method('isHit')->willReturn(false);
 
-        $this->cache
+        $cache = $this->createMock(CacheItemPoolInterface::class);
+        $cache
             ->expects($this->once())
             ->method('getItem')
             ->willReturn($cacheItem);
 
-        $this->repository
+        $repository = $this->createMock(UserNotificationRepository::class);
+        $repository
             ->expects($this->once())
             ->method('hasRecentNotification')
             ->with($this->user, UserNotificationType::PASSWORD_COMPROMISED, 48)
             ->willReturn(false);
 
-        $result = $this->rateLimiter->isAllowed($this->user, UserNotificationType::PASSWORD_COMPROMISED, 48);
+        $rateLimiter = new UserNotificationRateLimiter($repository, $cache, $this->logger);
+        $result = $rateLimiter->isAllowed($this->user, UserNotificationType::PASSWORD_COMPROMISED, 48);
 
-        $this->assertTrue($result);
+        self::assertTrue($result);
     }
 
     public function testIsAllowedWithException(): void
     {
-        $this->cache
+        $cache = $this->createMock(CacheItemPoolInterface::class);
+        $cache
             ->expects($this->once())
             ->method('getItem')
             ->willThrowException(new Exception('Cache error'));
 
-        $this->logger
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger
             ->expects($this->once())
             ->method('error')
             ->with(
@@ -160,16 +174,18 @@ class UserNotificationRateLimiterTest extends TestCase
             );
 
         // Should return true (allow) in case of error to be safe
-        $result = $this->rateLimiter->isAllowed($this->user, UserNotificationType::PASSWORD_COMPROMISED);
+        $rateLimiter = new UserNotificationRateLimiter($this->repository, $cache, $logger);
+        $result = $rateLimiter->isAllowed($this->user, UserNotificationType::PASSWORD_COMPROMISED);
 
-        $this->assertTrue($result);
+        self::assertTrue($result);
     }
 
     public function testSaveSuccess(): void
     {
         $metadata = ['source' => 'login'];
 
-        $this->repository
+        $repository = $this->createMock(UserNotificationRepository::class);
+        $repository
             ->expects($this->once())
             ->method('save')
             ->with($this->callback(function ($notification) use ($metadata) {
@@ -182,18 +198,20 @@ class UserNotificationRateLimiterTest extends TestCase
         $cacheItem->expects($this->once())->method('set')->with(true);
         $cacheItem->expects($this->once())->method('expiresAfter')->with(24 * 3600);
 
-        $this->cache
+        $cache = $this->createMock(CacheItemPoolInterface::class);
+        $cache
             ->expects($this->once())
             ->method('getItem')
             ->with('user_notification_123_password_compromised')
             ->willReturn($cacheItem);
 
-        $this->cache
+        $cache
             ->expects($this->once())
             ->method('save')
             ->with($cacheItem);
 
-        $this->rateLimiter->save(
+        $rateLimiter = new UserNotificationRateLimiter($repository, $cache, $this->logger);
+        $rateLimiter->save(
             $this->user,
             UserNotificationType::PASSWORD_COMPROMISED,
             24,
@@ -203,7 +221,8 @@ class UserNotificationRateLimiterTest extends TestCase
 
     public function testSaveWithoutMetadata(): void
     {
-        $this->repository
+        $repository = $this->createMock(UserNotificationRepository::class);
+        $repository
             ->expects($this->once())
             ->method('save')
             ->with($this->callback(function ($notification) {
@@ -216,10 +235,12 @@ class UserNotificationRateLimiterTest extends TestCase
         $cacheItem->expects($this->once())->method('set')->with(true);
         $cacheItem->expects($this->once())->method('expiresAfter')->with(48 * 3600);
 
-        $this->cache->expects($this->once())->method('getItem')->willReturn($cacheItem);
-        $this->cache->expects($this->once())->method('save')->with($cacheItem);
+        $cache = $this->createMock(CacheItemPoolInterface::class);
+        $cache->expects($this->once())->method('getItem')->willReturn($cacheItem);
+        $cache->expects($this->once())->method('save')->with($cacheItem);
 
-        $this->rateLimiter->save(
+        $rateLimiter = new UserNotificationRateLimiter($repository, $cache, $this->logger);
+        $rateLimiter->save(
             $this->user,
             UserNotificationType::PASSWORD_COMPROMISED,
             48
@@ -228,12 +249,14 @@ class UserNotificationRateLimiterTest extends TestCase
 
     public function testSaveWithRepositoryException(): void
     {
-        $this->repository
+        $repository = $this->createMock(UserNotificationRepository::class);
+        $repository
             ->expects($this->once())
             ->method('save')
             ->willThrowException(new Exception('Database error'));
 
-        $this->logger
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger
             ->expects($this->once())
             ->method('error')
             ->with(
@@ -246,9 +269,11 @@ class UserNotificationRateLimiterTest extends TestCase
             );
 
         // Cache should not be called if repository fails
-        $this->cache->expects($this->never())->method('getItem');
+        $cache = $this->createMock(CacheItemPoolInterface::class);
+        $cache->expects($this->never())->method('getItem');
 
-        $this->rateLimiter->save(
+        $rateLimiter = new UserNotificationRateLimiter($repository, $cache, $logger);
+        $rateLimiter->save(
             $this->user,
             UserNotificationType::PASSWORD_COMPROMISED,
         );
@@ -256,16 +281,19 @@ class UserNotificationRateLimiterTest extends TestCase
 
     public function testSaveWithCacheException(): void
     {
-        $this->repository
+        $repository = $this->createMock(UserNotificationRepository::class);
+        $repository
             ->expects($this->once())
             ->method('save');
 
-        $this->cache
+        $cache = $this->createMock(CacheItemPoolInterface::class);
+        $cache
             ->expects($this->once())
             ->method('getItem')
             ->willThrowException(new Exception('Cache error'));
 
-        $this->logger
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger
             ->expects($this->once())
             ->method('error')
             ->with(
@@ -277,7 +305,8 @@ class UserNotificationRateLimiterTest extends TestCase
                 })
             );
 
-        $this->rateLimiter->save(
+        $rateLimiter = new UserNotificationRateLimiter($repository, $cache, $logger);
+        $rateLimiter->save(
             $this->user,
             UserNotificationType::PASSWORD_COMPROMISED,
         );
@@ -291,13 +320,14 @@ class UserNotificationRateLimiterTest extends TestCase
         $idProperty = $reflection->getProperty('id');
         $idProperty->setValue($user2, 456);
 
-        $cacheItem1 = $this->createMock(CacheItemInterface::class);
+        $cacheItem1 = $this->createStub(CacheItemInterface::class);
         $cacheItem1->method('isHit')->willReturn(false);
 
-        $cacheItem2 = $this->createMock(CacheItemInterface::class);
+        $cacheItem2 = $this->createStub(CacheItemInterface::class);
         $cacheItem2->method('isHit')->willReturn(false);
 
-        $this->cache
+        $cache = $this->createMock(CacheItemPoolInterface::class);
+        $cache
             ->expects($this->exactly(2))
             ->method('getItem')
             ->willReturnCallback(static function ($key) use ($cacheItem1, $cacheItem2) {
@@ -312,7 +342,8 @@ class UserNotificationRateLimiterTest extends TestCase
             ->method('hasRecentNotification')
             ->willReturn(false);
 
-        $this->rateLimiter->isAllowed($this->user, UserNotificationType::PASSWORD_COMPROMISED);
-        $this->rateLimiter->isAllowed($user2, UserNotificationType::PASSWORD_COMPROMISED);
+        $rateLimiter = new UserNotificationRateLimiter($this->repository, $cache, $this->logger);
+        $rateLimiter->isAllowed($this->user, UserNotificationType::PASSWORD_COMPROMISED);
+        $rateLimiter->isAllowed($user2, UserNotificationType::PASSWORD_COMPROMISED);
     }
 }

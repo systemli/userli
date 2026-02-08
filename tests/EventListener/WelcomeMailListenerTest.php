@@ -19,8 +19,8 @@ class WelcomeMailListenerTest extends TestCase
     public function testGetSubscribedEvents(): void
     {
         $events = WelcomeMailListener::getSubscribedEvents();
-        $this->assertArrayHasKey(UserEvent::USER_CREATED, $events);
-        $this->assertEquals('onUserCreated', $events[UserEvent::USER_CREATED]);
+        self::assertArrayHasKey(UserEvent::USER_CREATED, $events);
+        self::assertEquals('onUserCreated', $events[UserEvent::USER_CREATED]);
     }
 
     public function testOnUserCreatedDispatchesWelcomeMailWithLocale(): void
@@ -34,10 +34,10 @@ class WelcomeMailListenerTest extends TestCase
             ->with('_locale')
             ->willReturn($locale);
 
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
         $request->method('getSession')->willReturn($session);
 
-        $requestStack = $this->createMock(RequestStack::class);
+        $requestStack = $this->createStub(RequestStack::class);
         $requestStack->method('getCurrentRequest')->willReturn($request);
 
         $bus = $this->createMock(MessageBusInterface::class);
@@ -63,10 +63,10 @@ class WelcomeMailListenerTest extends TestCase
             ->with('_locale')
             ->willReturn(null);
 
-        $request = $this->createMock(Request::class);
+        $request = $this->createStub(Request::class);
         $request->method('getSession')->willReturn($session);
 
-        $requestStack = $this->createMock(RequestStack::class);
+        $requestStack = $this->createStub(RequestStack::class);
         $requestStack->method('getCurrentRequest')->willReturn($request);
 
         $bus = $this->createMock(MessageBusInterface::class);
@@ -86,7 +86,7 @@ class WelcomeMailListenerTest extends TestCase
     {
         $user = new User('newuser@example.test');
 
-        $requestStack = $this->createMock(RequestStack::class);
+        $requestStack = $this->createStub(RequestStack::class);
         $requestStack->method('getCurrentRequest')->willReturn(null);
 
         $bus = $this->createMock(MessageBusInterface::class);

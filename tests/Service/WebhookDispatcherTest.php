@@ -28,15 +28,15 @@ class WebhookDispatcherTest extends TestCase
         $endpointFilteredSkip = new WebhookEndpoint('https://example.test/c', 'secret-c');
         $endpointFilteredSkip->setEvents(['other.event']);
 
-        $repo = $this->createMock(EntityRepository::class);
+        $repo = $this->createStub(EntityRepository::class);
         $repo->method('getClassName')->willReturn(WebhookEndpoint::class);
         $repo->method('findBy')->with(['enabled' => true])->willReturn([$endpointAll, $endpointFilteredMatch, $endpointFilteredSkip]);
 
         $persisted = [];
         $em = $this->createMock(EntityManagerInterface::class);
         $em->method('getRepository')->with(WebhookEndpoint::class)->willReturn($repo);
-        $em->expects($this->exactly(2))->method('persist')->with($this->callback(function ($entity) use (&$persisted) {
-            $this->assertInstanceOf(WebhookDelivery::class, $entity);
+        $em->expects($this->exactly(2))->method('persist')->with($this->callback(static function ($entity) use (&$persisted) {
+            self::assertInstanceOf(WebhookDelivery::class, $entity);
             $persisted[] = $entity;
 
             return true;
@@ -44,17 +44,17 @@ class WebhookDispatcherTest extends TestCase
         $em->expects($this->exactly(4))->method('flush');
 
         $bus = $this->createMock(MessageBusInterface::class);
-        $bus->expects($this->exactly(2))->method('dispatch')->with($this->callback(function ($message) use (&$persisted) {
+        $bus->expects($this->exactly(2))->method('dispatch')->with($this->callback(static function ($message) use (&$persisted) {
             // $message may be an Envelope or the message itself depending on messenger internals; we accept both
             if ($message instanceof Envelope) {
-                $this->assertInstanceOf(SendWebhook::class, $message->getMessage());
+                self::assertInstanceOf(SendWebhook::class, $message->getMessage());
                 $inner = $message->getMessage();
             } else {
-                $this->assertInstanceOf(SendWebhook::class, $message);
+                self::assertInstanceOf(SendWebhook::class, $message);
                 $inner = $message;
             }
             $ids = array_map(static fn (WebhookDelivery $d) => (string) $d->getId(), $persisted);
-            $this->assertContains($inner->deliveryId, $ids);
+            self::assertContains($inner->deliveryId, $ids);
 
             return true;
         }))->willReturnCallback(static function ($message) {
@@ -65,13 +65,13 @@ class WebhookDispatcherTest extends TestCase
         $dispatcher = new WebhookDispatcher($em, $bus);
         $dispatcher->dispatchUserEvent($user, WebhookEvent::USER_CREATED);
 
-        $this->assertCount(2, $persisted, 'Only endpoints matching the filter (or without filter) should persist deliveries.');
+        self::assertCount(2, $persisted, 'Only endpoints matching the filter (or without filter) should persist deliveries.');
         foreach ($persisted as $delivery) {
             /** @var WebhookDelivery $delivery */
             $headers = $delivery->getRequestHeaders();
-            $this->assertArrayHasKey('X-Webhook-Signature', $headers);
+            self::assertArrayHasKey('X-Webhook-Signature', $headers);
             // After flush the dispatcher sets X-Webhook-Id
-            $this->assertArrayHasKey('X-Webhook-Id', $headers, 'X-Webhook-Id header should be added after initial flush.');
+            self::assertArrayHasKey('X-Webhook-Id', $headers, 'X-Webhook-Id header should be added after initial flush.');
         }
     }
 }

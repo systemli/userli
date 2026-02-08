@@ -19,26 +19,21 @@ class TotpSecretValidatorTest extends ConstraintValidatorTestCase
 {
     private User $user;
     private TotpAuthenticatorInterface $totpAuthenticator;
+    private TokenStorageInterface $tokenStorage;
 
     protected function createValidator(): TotpSecretValidator
     {
         $this->user = new User('test@example.org');
-        $tokenInterface = $this->getMockBuilder(TokenInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $tokenInterface = $this->createStub(TokenInterface::class);
         $tokenInterface->method('getUser')
             ->willReturn($this->user);
-        $tokenStorage = $this->getMockBuilder(TokenStorageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $tokenStorage->method('getToken')
+        $this->tokenStorage = $this->createStub(TokenStorageInterface::class);
+        $this->tokenStorage->method('getToken')
             ->willReturn($tokenInterface);
 
-        $this->totpAuthenticator = $this->getMockBuilder(TotpAuthenticatorInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->totpAuthenticator = $this->createStub(TotpAuthenticatorInterface::class);
 
-        return new TotpSecretValidator($tokenStorage, $this->totpAuthenticator);
+        return new TotpSecretValidator($this->tokenStorage, $this->totpAuthenticator);
     }
 
     public function testExpectsTotpSecretType(): void
@@ -50,13 +45,13 @@ class TotpSecretValidatorTest extends ConstraintValidatorTestCase
     public function testNullIsValid(): void
     {
         $this->validator->validate(null, new TotpSecret());
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testEmptyStringIsValid(): void
     {
         $this->validator->validate('', new TotpSecret());
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testExpectsStringCompatibleType(): void
@@ -68,10 +63,14 @@ class TotpSecretValidatorTest extends ConstraintValidatorTestCase
     public function testValidateVoucherInvalid(): void
     {
         $totpSecret = 'invalid';
-        $this->totpAuthenticator->expects(self::once())
+        $totpAuthenticator = $this->createMock(TotpAuthenticatorInterface::class);
+        $totpAuthenticator->expects(self::once())
             ->method('checkCode')
             ->with($this->user, $totpSecret)
             ->willReturn(false);
+
+        $this->validator = new TotpSecretValidator($this->tokenStorage, $totpAuthenticator);
+        $this->validator->initialize($this->context);
 
         $this->validator->validate($totpSecret, new TotpSecret());
         $this->buildViolation('form.twofactor-secret-invalid')
@@ -81,12 +80,16 @@ class TotpSecretValidatorTest extends ConstraintValidatorTestCase
     public function testValidateValid(): void
     {
         $totpSecret = 'valid';
-        $this->totpAuthenticator->expects(self::once())
+        $totpAuthenticator = $this->createMock(TotpAuthenticatorInterface::class);
+        $totpAuthenticator->expects(self::once())
             ->method('checkCode')
             ->with($this->user, $totpSecret)
             ->willReturn(true);
 
+        $this->validator = new TotpSecretValidator($this->tokenStorage, $totpAuthenticator);
+        $this->validator->initialize($this->context);
+
         $this->validator->validate($totpSecret, new TotpSecret());
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 }

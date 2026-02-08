@@ -6,6 +6,7 @@ namespace App\Tests\Validator;
 
 use App\Validator\Lowercase;
 use App\Validator\LowercaseValidator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use stdClass;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -31,13 +32,13 @@ class LowercaseValidatorTest extends ConstraintValidatorTestCase
     public function testNullIsValid(): void
     {
         $this->validator->validate(null, new Lowercase());
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testEmptyStringIsValid(): void
     {
         $this->validator->validate('', new Lowercase());
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testExpectsStringCompatibleType(): void
@@ -51,12 +52,10 @@ class LowercaseValidatorTest extends ConstraintValidatorTestCase
         $this->validator->validate('example#3!%', new Lowercase());
         $this->validator->validate('example.org', new Lowercase());
         $this->validator->validate('new@example.org', new Lowercase());
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
-    /**
-     * @dataProvider getStrings
-     */
+    #[DataProvider('getStrings')]
     public function testValidateUppercaseInvalid(string $string): void
     {
         $this->validator->validate($string, new Lowercase());

@@ -15,14 +15,12 @@ class EmailDomainValidatorTest extends ConstraintValidatorTestCase
 {
     protected function createValidator(): EmailDomainValidator
     {
-        $repository = $this->createMock(DomainRepository::class);
-        $repository->expects($this->any())
-            ->method('findOneBy')
+        $repository = $this->createStub(DomainRepository::class);
+        $repository->method('findOneBy')
             ->willReturn(null);
 
-        $manager = $this->createMock(EntityManagerInterface::class);
-        $manager->expects($this->any())
-            ->method('getRepository')
+        $manager = $this->createStub(EntityManagerInterface::class);
+        $manager->method('getRepository')
             ->willReturn($repository);
 
         return new EmailDomainValidator($manager);
@@ -32,14 +30,14 @@ class EmailDomainValidatorTest extends ConstraintValidatorTestCase
     {
         $this->validator->validate(null, new EmailDomain());
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testEmptyStringIsValid(): void
     {
         $this->validator->validate('', new EmailDomain());
 
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testDomainNotFound(): void

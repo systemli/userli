@@ -6,10 +6,17 @@ namespace App\Tests\Form;
 
 use App\Form\InitUserType;
 use App\Form\Model\InitUser;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class InitUserTypeTest extends TypeTestCase
 {
+    protected function setUp(): void
+    {
+        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
+        parent::setUp();
+    }
+
     public function testSubmitValidData(): void
     {
         $password = 'secure-password';
@@ -28,8 +35,8 @@ class InitUserTypeTest extends TypeTestCase
 
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($expected, $model);
+        self::assertTrue($form->isSynchronized());
+        self::assertEquals($expected, $model);
     }
 
     public function testFormFieldsExist(): void
@@ -37,8 +44,8 @@ class InitUserTypeTest extends TypeTestCase
         $form = $this->factory->create(InitUserType::class);
         $view = $form->createView();
 
-        $this->assertArrayHasKey('password', $view->children);
-        $this->assertArrayHasKey('submit', $view->children);
+        self::assertArrayHasKey('password', $view->children);
+        self::assertArrayHasKey('submit', $view->children);
     }
 
     public function testPasswordIsRepeatedType(): void
@@ -46,14 +53,14 @@ class InitUserTypeTest extends TypeTestCase
         $form = $this->factory->create(InitUserType::class);
         $view = $form->createView();
 
-        $this->assertArrayHasKey('first', $view->children['password']->children);
-        $this->assertArrayHasKey('second', $view->children['password']->children);
+        self::assertArrayHasKey('first', $view->children['password']->children);
+        self::assertArrayHasKey('second', $view->children['password']->children);
     }
 
     public function testBlockPrefix(): void
     {
         $form = $this->factory->create(InitUserType::class);
 
-        $this->assertSame('init_user', $form->getConfig()->getName());
+        self::assertSame('init_user', $form->getConfig()->getName());
     }
 }

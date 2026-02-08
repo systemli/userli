@@ -6,10 +6,17 @@ namespace App\Tests\Form;
 
 use App\Form\CustomAliasCreateType;
 use App\Form\Model\AliasCreate;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class CustomAliasCreateTypeTest extends TypeTestCase
 {
+    protected function setUp(): void
+    {
+        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
+        parent::setUp();
+    }
+
     public function testSubmitValidData(): void
     {
         $localPart = 'testalias';
@@ -20,12 +27,12 @@ class CustomAliasCreateTypeTest extends TypeTestCase
 
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
+        self::assertTrue($form->isSynchronized());
 
         /** @var AliasCreate $data */
         $data = $form->getData();
         // alias now contains the full email
-        $this->assertEquals($localPart.'@'.$domain, $data->getAlias());
+        self::assertEquals($localPart.'@'.$domain, $data->getAlias());
     }
 
     public function testSubmitWithoutDomainKeepsLocalPart(): void
@@ -37,12 +44,12 @@ class CustomAliasCreateTypeTest extends TypeTestCase
 
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
+        self::assertTrue($form->isSynchronized());
 
         /** @var AliasCreate $data */
         $data = $form->getData();
         // Without domain, alias stays as local part only
-        $this->assertEquals($localPart, $data->getAlias());
+        self::assertEquals($localPart, $data->getAlias());
     }
 
     public function testAliasIsLowercased(): void
@@ -55,11 +62,11 @@ class CustomAliasCreateTypeTest extends TypeTestCase
 
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
+        self::assertTrue($form->isSynchronized());
 
         /** @var AliasCreate $data */
         $data = $form->getData();
-        $this->assertEquals('testalias@'.$domain, $data->getAlias());
+        self::assertEquals('testalias@'.$domain, $data->getAlias());
     }
 
     public function testDomainFieldIsUnmapped(): void
@@ -67,6 +74,6 @@ class CustomAliasCreateTypeTest extends TypeTestCase
         $form = $this->factory->create(CustomAliasCreateType::class);
 
         $domainField = $form->get('domain');
-        $this->assertFalse($domainField->getConfig()->getMapped());
+        self::assertFalse($domainField->getConfig()->getMapped());
     }
 }

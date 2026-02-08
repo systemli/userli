@@ -27,13 +27,11 @@ class VoucherExistsValidatorTest extends ConstraintValidatorTestCase
         $this->user = new User('test@example.org');
         $this->voucher = new Voucher('code');
         $this->voucher->setUser($this->user);
-        $repository = $this->getMockBuilder(VoucherRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createStub(VoucherRepository::class);
         $repository->method('findByCode')->willReturnMap([
             ['code', $this->voucher],
         ]);
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturn($repository);
 
         return new VoucherExistsValidator($manager);
@@ -95,13 +93,13 @@ class VoucherExistsValidatorTest extends ConstraintValidatorTestCase
     public function testValidateVoucherUnused(): void
     {
         $this->validator->validate('code', new VoucherExists(true));
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testValidateVoucherNew(): void
     {
         $this->validator->validate('new', new VoucherExists(false));
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 
     public function testValidateVoucherNewExists(): void

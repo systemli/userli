@@ -9,8 +9,9 @@ use App\Event\LoginEvent;
 use App\EventListener\LoginListener;
 use App\Handler\MailCryptKeyHandler;
 use App\Service\UserLastLoginUpdateService;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -19,23 +20,17 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 class LoginListenerTest extends TestCase
 {
-    private UserLastLoginUpdateService $userLastLoginUpdateService;
-    private LoggerInterface $logger;
+    private Stub&UserLastLoginUpdateService $userLastLoginUpdateService;
+    private Stub&LoggerInterface $logger;
     private LoginListener $listener;
     private LoginListener $listenerMailCrypt;
-    private MailCryptKeyHandler $mailCryptKeyHandler;
+    private Stub&MailCryptKeyHandler $mailCryptKeyHandler;
 
     protected function setUp(): void
     {
-        $this->userLastLoginUpdateService = $this->getMockBuilder(UserLastLoginUpdateService::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->mailCryptKeyHandler = $this->getMockBuilder(MailCryptKeyHandler::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->logger = $this->getMockBuilder(LoggerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->userLastLoginUpdateService = $this->createStub(UserLastLoginUpdateService::class);
+        $this->mailCryptKeyHandler = $this->createStub(MailCryptKeyHandler::class);
+        $this->logger = $this->createStub(LoggerInterface::class);
         $this->listener = new LoginListener(
             $this->userLastLoginUpdateService,
             $this->mailCryptKeyHandler,
@@ -51,39 +46,40 @@ class LoginListenerTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider provider
-     */
+    #[DataProvider('provider')]
     public function testOnSecurityInteractiveLogin(User $user, bool $shouldCreateMailCryptKey): void
     {
+        $userLastLoginUpdateService = $this->createMock(UserLastLoginUpdateService::class);
+        $mailCryptKeyHandler = $this->createMock(MailCryptKeyHandler::class);
+
         if ($shouldCreateMailCryptKey) {
-            $this->mailCryptKeyHandler->expects($this->once())->method('create');
+            $mailCryptKeyHandler->expects($this->once())->method('create');
         } else {
-            $this->mailCryptKeyHandler->expects($this->never())->method('create');
+            $mailCryptKeyHandler->expects($this->never())->method('create');
         }
 
-        $this->userLastLoginUpdateService->expects($this->once())->method('updateLastLogin');
+        $userLastLoginUpdateService->expects($this->once())->method('updateLastLogin');
+
+        $listenerMailCrypt = new LoginListener(
+            $userLastLoginUpdateService,
+            $mailCryptKeyHandler,
+            $this->logger,
+            3
+        );
 
         $event = $this->getInteractiveEvent($user);
 
-        $this->listenerMailCrypt->onSecurityInteractiveLogin($event);
+        $listenerMailCrypt->onSecurityInteractiveLogin($event);
     }
 
-    /**
-     * @return PHPUnit_Framework_MockObject_MockObject|InteractiveLoginEvent
-     */
     private function getInteractiveEvent(User $user): InteractiveLoginEvent
     {
         $request = new Request([], ['_password' => 'password']);
 
-        $token = $this->getMockBuilder(TokenInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $token = $this->createStub(TokenInterface::class);
         $token->method('getUser')->willReturn($user);
 
-        $event = $this->getMockBuilder(InteractiveLoginEvent::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $event = $this->createStub(InteractiveLoginEvent::class);
 
         $event->method('getRequest')->willReturn($request);
         $event->method('getAuthenticationToken')->willReturn($token);
@@ -91,32 +87,35 @@ class LoginListenerTest extends TestCase
         return $event;
     }
 
-    /**
-     * @dataProvider provider
-     */
+    #[DataProvider('provider')]
     public function testOnAuthenticationHandlerSuccess(User $user, bool $shouldCreateMailCryptKey): void
     {
+        $userLastLoginUpdateService = $this->createMock(UserLastLoginUpdateService::class);
+        $mailCryptKeyHandler = $this->createMock(MailCryptKeyHandler::class);
+
         if ($shouldCreateMailCryptKey) {
-            $this->mailCryptKeyHandler->expects($this->once())->method('create');
+            $mailCryptKeyHandler->expects($this->once())->method('create');
         } else {
-            $this->mailCryptKeyHandler->expects($this->never())->method('create');
+            $mailCryptKeyHandler->expects($this->never())->method('create');
         }
 
-        $this->userLastLoginUpdateService->expects($this->once())->method('updateLastLogin');
+        $userLastLoginUpdateService->expects($this->once())->method('updateLastLogin');
+
+        $listenerMailCrypt = new LoginListener(
+            $userLastLoginUpdateService,
+            $mailCryptKeyHandler,
+            $this->logger,
+            3
+        );
 
         $event = $this->getLoginEvent($user);
 
-        $this->listenerMailCrypt->onAuthenticationHandlerSuccess($event);
+        $listenerMailCrypt->onAuthenticationHandlerSuccess($event);
     }
 
-    /**
-     * @return PHPUnit_Framework_MockObject_MockObject|LoginEvent
-     */
     private function getLoginEvent(User $user): LoginEvent
     {
-        $event = $this->getMockBuilder(LoginEvent::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $event = $this->createStub(LoginEvent::class);
 
         $event->method('getUser')->willReturn($user);
         $event->method('getPlainPassword')->willReturn('password');
@@ -145,7 +144,7 @@ class LoginListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        $this->assertEquals(
+        self::assertEquals(
             [
                 SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
                 LoginEvent::NAME => 'onAuthenticationHandlerSuccess',

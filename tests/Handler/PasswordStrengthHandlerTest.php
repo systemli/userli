@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Handler;
 
 use App\Handler\PasswordStrengthHandler;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class PasswordStrengthHandlerTest extends TestCase
 {
-    /**
-     * @dataProvider dataProvider
-     */
+    #[DataProvider('dataProvider')]
     public function testValidate($input, $expected): void
     {
         $handler = new PasswordStrengthHandler();
@@ -20,7 +19,7 @@ class PasswordStrengthHandlerTest extends TestCase
         self::assertEquals($expected, $actual);
     }
 
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return [
             ['password', ['form.weak_password']],

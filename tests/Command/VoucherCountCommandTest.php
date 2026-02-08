@@ -22,7 +22,7 @@ class VoucherCountCommandTest extends TestCase
     protected function setUp(): void
     {
         $user = new User('user@example.org');
-        $userRepository = $this->createMock(UserRepository::class);
+        $userRepository = $this->createStub(UserRepository::class);
         $userRepository->method('findByEmail')->willReturnMap(
             [
                 ['user@example.org', $user],
@@ -30,11 +30,14 @@ class VoucherCountCommandTest extends TestCase
             ]
         );
 
-        $voucherRepository = $this->createMock(VoucherRepository::class);
+        $voucherCallCount = 0;
+        $voucherRepository = $this->createStub(VoucherRepository::class);
         $voucherRepository->method('countVouchersByUser')
-            ->willReturnOnConsecutiveCalls(2, 5);
+            ->willReturnCallback(static function () use (&$voucherCallCount) {
+                return [2, 5][$voucherCallCount++];
+            });
 
-        $manager = $this->createMock(EntityManagerInterface::class);
+        $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturnMap([
             [User::class, $userRepository],
             [Voucher::class, $voucherRepository],
@@ -56,7 +59,7 @@ class VoucherCountCommandTest extends TestCase
         ]);
 
         self::assertSame(Command::FAILURE, $exitCode);
-        $this->assertStringContainsString('User with email', $commandTester->getDisplay());
+        self::assertStringContainsString('User with email', $commandTester->getDisplay());
     }
 
     public function testExecuteWithUser(): void
@@ -75,8 +78,8 @@ class VoucherCountCommandTest extends TestCase
         $commandTester->assertCommandIsSuccessful();
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Voucher count for user user@example.org', $output);
-        $this->assertStringContainsString('Used: 2', $output);
-        $this->assertStringContainsString('Unused: 5', $output);
+        self::assertStringContainsString('Voucher count for user user@example.org', $output);
+        self::assertStringContainsString('Used: 2', $output);
+        self::assertStringContainsString('Unused: 5', $output);
     }
 }

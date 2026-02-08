@@ -23,15 +23,15 @@ class LocaleListenerTest extends TestCase
     {
         $this->listener = new LocaleListener('en', ['de', 'en']);
 
-        $this->session = $this->createMock(Session::class);
+        $this->session = $this->createStub(Session::class);
         $this->request = $this->createMock(Request::class);
-        $attributes = $this->createMock(ParameterBag::class);
+        $attributes = $this->createStub(ParameterBag::class);
         $attributes->method('getBoolean')->willReturn(false);
         $this->request->attributes = $attributes;
         $this->request->method('getSession')
             ->willReturn($this->session);
         $this->request->query = new InputBag();
-        $this->event = $this->createMock(RequestEvent::class);
+        $this->event = $this->createStub(RequestEvent::class);
         $this->event->method('getRequest')
             ->willReturn($this->request);
     }

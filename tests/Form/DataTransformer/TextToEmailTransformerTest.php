@@ -5,21 +5,20 @@ declare(strict_types=1);
 namespace App\Tests\Form\DataTransformer;
 
 use App\Form\DataTransformer\TextToEmailTransformer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class TextToEmailTransformerTest extends TestCase
 {
     private const DOMAIN = 'example.org';
 
-    /**
-     * @dataProvider transformProvider
-     */
+    #[DataProvider('transformProvider')]
     public function testTransform($input, $expected): void
     {
-        $this->assertEquals($expected, $this->getTransformer()->transform($input));
+        self::assertEquals($expected, $this->getTransformer()->transform($input));
     }
 
-    public function transformProvider(): array
+    public static function transformProvider(): array
     {
         return [
             ['', ''],
@@ -28,15 +27,13 @@ class TextToEmailTransformerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider reverseTransformProvider
-     */
+    #[DataProvider('reverseTransformProvider')]
     public function testReverseTransform($input, $expected): void
     {
-        $this->assertEquals($expected, $this->getTransformer()->reverseTransform($input));
+        self::assertEquals($expected, $this->getTransformer()->reverseTransform($input));
     }
 
-    public function reverseTransformProvider(): array
+    public static function reverseTransformProvider(): array
     {
         return [
             ['', ''],

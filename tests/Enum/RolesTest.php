@@ -13,7 +13,7 @@ class RolesTest extends TestCase
     {
         $reachable = Roles::getReachableRoles([Roles::ADMIN]);
 
-        $this->assertSame([
+        self::assertSame([
             Roles::ADMIN,
             Roles::DOMAIN_ADMIN,
             Roles::USER,
@@ -27,7 +27,7 @@ class RolesTest extends TestCase
     public function testReachableRolesForDomainAdmin(): void
     {
         $reachable = Roles::getReachableRoles([Roles::DOMAIN_ADMIN]);
-        $this->assertSame([
+        self::assertSame([
             Roles::USER,
             Roles::PERMANENT,
         ], $reachable);
@@ -35,25 +35,25 @@ class RolesTest extends TestCase
 
     public function testReachableRolesEmptyInput(): void
     {
-        $this->assertSame([], Roles::getReachableRoles([]));
+        self::assertSame([], Roles::getReachableRoles([]));
     }
 
     public function testReachableRolesIgnoresUnknownRole(): void
     {
-        $this->assertSame([], Roles::getReachableRoles(['ROLE_UNKNOWN']));
+        self::assertSame([], Roles::getReachableRoles(['ROLE_UNKNOWN']));
     }
 
     public function testReachableRolesNonRootRoleHasNoImplied(): void
     {
         // SPAM is not a root key in the hierarchy; expect none
-        $this->assertSame([], Roles::getReachableRoles([Roles::SPAM]));
+        self::assertSame([], Roles::getReachableRoles([Roles::SPAM]));
     }
 
     public function testReachableRolesMergesAndDeduplicates(): void
     {
         // ADMIN already implies everything DOMAIN_ADMIN implies; expect ADMIN's list
         $reachable = Roles::getReachableRoles([Roles::ADMIN, Roles::DOMAIN_ADMIN]);
-        $this->assertSame([
+        self::assertSame([
             Roles::ADMIN,
             Roles::DOMAIN_ADMIN,
             Roles::USER,

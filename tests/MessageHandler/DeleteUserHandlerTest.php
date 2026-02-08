@@ -20,7 +20,7 @@ class DeleteUserHandlerTest extends TestCase
         $userId = 42;
         $message = new DeleteUser($userId);
 
-        $user = $this->createMock(User::class);
+        $user = $this->createStub(User::class);
         $user->method('getId')->willReturn($userId);
         $user->method('getEmail')->willReturn('alice@example.org');
         $user->method('isDeleted')->willReturn(false);
@@ -31,7 +31,7 @@ class DeleteUserHandlerTest extends TestCase
             ->with($userId)
             ->willReturn($user);
 
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $em->method('getRepository')->with(User::class)->willReturn($repository);
 
         $deleteHandler = $this->createMock(DeleteHandler::class);
@@ -59,7 +59,7 @@ class DeleteUserHandlerTest extends TestCase
             ->with($userId)
             ->willReturn(null);
 
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $em->method('getRepository')->with(User::class)->willReturn($repository);
 
         $deleteHandler = $this->createMock(DeleteHandler::class);
@@ -79,7 +79,7 @@ class DeleteUserHandlerTest extends TestCase
         $userId = 42;
         $message = new DeleteUser($userId);
 
-        $user = $this->createMock(User::class);
+        $user = $this->createStub(User::class);
         $user->method('getId')->willReturn($userId);
         $user->method('isDeleted')->willReturn(true);
 
@@ -89,7 +89,7 @@ class DeleteUserHandlerTest extends TestCase
             ->with($userId)
             ->willReturn($user);
 
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $em->method('getRepository')->with(User::class)->willReturn($repository);
 
         $deleteHandler = $this->createMock(DeleteHandler::class);

@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Helper;
 
 use App\Helper\PasswordGenerator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class PasswordGeneratorTest extends TestCase
 {
-    /**
-     * @dataProvider provider
-     */
+    #[DataProvider('provider')]
     public function testGenerate(int $length, int $iterations): void
     {
         $password = PasswordGenerator::generate($length);
@@ -23,7 +22,7 @@ class PasswordGeneratorTest extends TestCase
         }
     }
 
-    public function provider(): array
+    public static function provider(): array
     {
         return [
             [45, 1000],

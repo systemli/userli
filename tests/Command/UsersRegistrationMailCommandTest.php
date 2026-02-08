@@ -10,6 +10,7 @@ use App\Repository\UserRepository;
 use App\Sender\WelcomeMessageSender;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -18,13 +19,13 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 class UsersRegistrationMailCommandTest extends TestCase
 {
     private UsersRegistrationMailCommand $command;
-    private MockObject $entityManager;
+    private Stub $entityManager;
     private MockObject $welcomeMessageSender;
     private MockObject $userRepository;
 
     protected function setUp(): void
     {
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->entityManager = $this->createStub(EntityManagerInterface::class);
         $this->welcomeMessageSender = $this->createMock(WelcomeMessageSender::class);
         $this->userRepository = $this->createMock(UserRepository::class);
 
@@ -43,7 +44,7 @@ class UsersRegistrationMailCommandTest extends TestCase
     {
         $email = 'user@example.com';
         $locale = 'de';
-        $user = $this->createMock(User::class);
+        $user = $this->createStub(User::class);
 
         $this->userRepository->expects(self::once())
             ->method('findByEmail')
@@ -72,7 +73,7 @@ class UsersRegistrationMailCommandTest extends TestCase
     {
         $email = 'user@example.org';
         $defaultLocale = 'en';
-        $user = $this->createMock(User::class);
+        $user = $this->createStub(User::class);
 
         $this->userRepository->expects(self::once())
             ->method('findByEmail')

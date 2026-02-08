@@ -19,9 +19,7 @@ class ReservedNamesImportCommandTest extends TestCase
     {
         $manager = $this->getManager();
 
-        $creator = $this->getMockBuilder(ReservedNameCreator::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $creator = $this->createStub(ReservedNameCreator::class);
         $creator->method('create')->willReturn(new ReservedName());
 
         $command = new ReservedNamesImportCommand($manager, $creator);
@@ -30,19 +28,15 @@ class ReservedNamesImportCommandTest extends TestCase
         $commandTester->execute([], ['verbosity' => OutputInterface::VERBOSITY_VERY_VERBOSE]);
 
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString('Adding reserved name "new" to database table', $output);
-        $this->assertStringContainsString('Skipping reserved name "name", already exists', $output);
+        self::assertStringContainsString('Adding reserved name "new" to database table', $output);
+        self::assertStringContainsString('Skipping reserved name "name", already exists', $output);
     }
 
     public function getManager(): EntityManagerInterface
     {
-        $manager = $this->getMockBuilder(EntityManagerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $manager = $this->createStub(EntityManagerInterface::class);
 
-        $repository = $this->getMockBuilder(ReservedNameRepository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $repository = $this->createStub(ReservedNameRepository::class);
 
         $repository->method('findByName')->willReturnMap(
             [

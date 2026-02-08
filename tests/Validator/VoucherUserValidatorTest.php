@@ -46,6 +46,6 @@ class VoucherUserValidatorTest extends ConstraintValidatorTestCase
         $user->setRoles([Roles::USER]);
         $this->voucher->setUser($user);
         $this->validator->validate($this->voucher, new VoucherUser());
-        $this->assertNoViolation();
+        self::assertNoViolation();
     }
 }

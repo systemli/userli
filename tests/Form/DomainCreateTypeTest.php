@@ -6,10 +6,17 @@ namespace App\Tests\Form;
 
 use App\Form\DomainCreateType;
 use App\Form\Model\DomainCreate;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class DomainCreateTypeTest extends TypeTestCase
 {
+    protected function setUp(): void
+    {
+        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
+        parent::setUp();
+    }
+
     public function testSubmitValidData(): void
     {
         $domain = 'example.org';
@@ -23,8 +30,8 @@ class DomainCreateTypeTest extends TypeTestCase
 
         $form->submit($formData);
 
-        $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($expected, $model);
+        self::assertTrue($form->isSynchronized());
+        self::assertEquals($expected, $model);
     }
 
     public function testFormFieldsExist(): void
@@ -32,14 +39,14 @@ class DomainCreateTypeTest extends TypeTestCase
         $form = $this->factory->create(DomainCreateType::class);
         $view = $form->createView();
 
-        $this->assertArrayHasKey('domain', $view->children);
-        $this->assertArrayHasKey('submit', $view->children);
+        self::assertArrayHasKey('domain', $view->children);
+        self::assertArrayHasKey('submit', $view->children);
     }
 
     public function testBlockPrefix(): void
     {
         $form = $this->factory->create(DomainCreateType::class);
 
-        $this->assertSame('create_domain', $form->getConfig()->getName());
+        self::assertSame('create_domain', $form->getConfig()->getName());
     }
 }

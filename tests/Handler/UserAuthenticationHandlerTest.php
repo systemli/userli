@@ -25,7 +25,7 @@ class UserAuthenticationHandlerTest extends TestCase
 
     protected function createHandler(): UserAuthenticationHandler
     {
-        $hasher = $this->getMockBuilder(PasswordHasherInterface::class)->getMock();
+        $hasher = $this->createStub(PasswordHasherInterface::class);
         $hasher->method('verify')->willReturnMap(
             [
                 [$this->user->getPassword(), $this->password, true],
@@ -33,12 +33,9 @@ class UserAuthenticationHandlerTest extends TestCase
             ]
         );
 
-        $eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
 
-        $passwordHasherFactory = $this->getMockBuilder(PasswordHasherFactoryInterface::class)
-            ->disableOriginalConstructor()->getMock();
+        $passwordHasherFactory = $this->createStub(PasswordHasherFactoryInterface::class);
         $passwordHasherFactory->method('getPasswordHasher')
             ->with(self::equalTo($this->user))
             ->willReturn($hasher);

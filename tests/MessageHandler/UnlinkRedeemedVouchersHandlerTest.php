@@ -42,7 +42,7 @@ class UnlinkRedeemedVouchersHandlerTest extends TestCase
             ->disableOriginalConstructor()
             ->onlyMethods(['createQueryBuilder'])
             ->getMock();
-        $repo->method('createQueryBuilder')->willReturnCallback(static function () use (&$qb) {
+        $repo->expects($this->once())->method('createQueryBuilder')->willReturnCallback(static function () use (&$qb) {
             return $qb;
         });
 
@@ -53,10 +53,10 @@ class UnlinkRedeemedVouchersHandlerTest extends TestCase
             ->getMock();
 
         // Because handler starts from repository->createQueryBuilder('voucher') we skip verifying alias there
-        $qb->method('join')->willReturnSelf();
-        $qb->method('where')->with($this->callback(static fn ($expr) => str_contains($expr, 'voucher.redeemedTime')))->willReturnSelf();
-        $qb->method('setParameter')->with('date', $this->callback(static fn ($dt) => $dt instanceof DateTimeImmutable))->willReturnSelf();
-        $qb->method('orderBy')->with('voucher.redeemedTime')->willReturnSelf();
+        $qb->expects($this->any())->method('join')->willReturnSelf();
+        $qb->expects($this->any())->method('where')->with($this->callback(static fn ($expr) => str_contains($expr, 'voucher.redeemedTime')))->willReturnSelf();
+        $qb->expects($this->any())->method('setParameter')->with('date', $this->callback(static fn ($dt) => $dt instanceof DateTimeImmutable))->willReturnSelf();
+        $qb->expects($this->any())->method('orderBy')->with('voucher.redeemedTime')->willReturnSelf();
 
         $query = $this->getMockBuilder(\Doctrine\ORM\Query::class)
             ->disableOriginalConstructor()
@@ -67,7 +67,7 @@ class UnlinkRedeemedVouchersHandlerTest extends TestCase
         $qb->expects($this->once())->method('getQuery')->willReturn($query);
 
         $em = $this->createMock(EntityManagerInterface::class);
-        $em->method('getRepository')->willReturn($repo);
+        $em->expects($this->any())->method('getRepository')->willReturn($repo);
         $em->expects($this->once())->method('flush');
         $em->expects($this->exactly(2))->method('persist')->with($this->isInstanceOf(User::class));
 
@@ -77,8 +77,8 @@ class UnlinkRedeemedVouchersHandlerTest extends TestCase
         $handler = new UnlinkRedeemedVouchersHandler($em, $logger);
         $handler(new UnlinkRedeemedVouchers());
 
-        $this->assertNull($user1->getInvitationVoucher());
-        $this->assertNull($user2->getInvitationVoucher());
-        $this->assertNotNull($recentUser->getInvitationVoucher(), 'Recent voucher user should still have invitation voucher (not processed)');
+        self::assertNull($user1->getInvitationVoucher());
+        self::assertNull($user2->getInvitationVoucher());
+        self::assertNotNull($recentUser->getInvitationVoucher(), 'Recent voucher user should still have invitation voucher (not processed)');
     }
 }

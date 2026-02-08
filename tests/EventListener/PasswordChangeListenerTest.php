@@ -10,6 +10,7 @@ use App\Event\UserEvent;
 use App\EventListener\PasswordChangeListener;
 use App\Repository\UserNotificationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -28,11 +29,9 @@ class PasswordChangeListenerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->security = $this->getMockBuilder(Security::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->security = $this->createStub(Security::class);
+        $this->urlGenerator = $this->createStub(UrlGeneratorInterface::class);
+        $this->entityManager = $this->createStub(EntityManagerInterface::class);
 
         $this->listener = new PasswordChangeListener(
             $this->security,
@@ -43,7 +42,7 @@ class PasswordChangeListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        $this->assertEquals([
+        self::assertEquals([
             KernelEvents::REQUEST => [['onRequest', 0]],
             UserEvent::PASSWORD_CHANGED => [['onPasswordChanged', 0]],
         ], PasswordChangeListener::getSubscribedEvents());
@@ -53,9 +52,7 @@ class PasswordChangeListenerTest extends TestCase
     {
         $request = Request::create('/some/path');
 
-        $event = $this->getMockBuilder(RequestEvent::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $event = $this->createMock(RequestEvent::class);
         $event->method('isMainRequest')->willReturn(false);
         $event->expects($this->never())->method('setResponse');
 
@@ -73,9 +70,7 @@ class PasswordChangeListenerTest extends TestCase
         $request = Request::create('/some/path');
         $request->attributes->set('_route', 'homepage');
 
-        $event = $this->getMockBuilder(RequestEvent::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $event = $this->createMock(RequestEvent::class);
         $event->method('isMainRequest')->willReturn(true);
         $event->method('getRequest')->willReturn($request);
         $event->expects($this->never())->method('setResponse');
@@ -94,9 +89,7 @@ class PasswordChangeListenerTest extends TestCase
         $request = Request::create('/some/path');
         $request->attributes->set('_route', 'homepage');
 
-        $event = $this->getMockBuilder(RequestEvent::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $event = $this->createMock(RequestEvent::class);
         $event->method('isMainRequest')->willReturn(true);
         $event->method('getRequest')->willReturn($request);
         $event->expects($this->never())->method('setResponse');
@@ -104,9 +97,7 @@ class PasswordChangeListenerTest extends TestCase
         $this->listener->onRequest($event);
     }
 
-    /**
-     * @dataProvider passwordRoutesProvider
-     */
+    #[DataProvider('passwordRoutesProvider')]
     public function testAllowsAccessToPasswordRoutes(string $routeName): void
     {
         $user = new User('test@example.org');
@@ -118,9 +109,7 @@ class PasswordChangeListenerTest extends TestCase
         $request = Request::create('/account/password');
         $request->attributes->set('_route', $routeName);
 
-        $event = $this->getMockBuilder(RequestEvent::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $event = $this->createMock(RequestEvent::class);
         $event->method('isMainRequest')->willReturn(true);
         $event->method('getRequest')->willReturn($request);
         $event->expects($this->never())->method('setResponse');
@@ -128,7 +117,7 @@ class PasswordChangeListenerTest extends TestCase
         $this->listener->onRequest($event);
     }
 
-    public function passwordRoutesProvider(): array
+    public static function passwordRoutesProvider(): array
     {
         return [
             ['account_password'],
@@ -150,9 +139,7 @@ class PasswordChangeListenerTest extends TestCase
         $request = Request::create('/api/v1/users', 'GET');
         $request->attributes->set('_route', 'api_users');
 
-        $event = $this->getMockBuilder(RequestEvent::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $event = $this->createStub(RequestEvent::class);
         $event->method('isMainRequest')->willReturn(true);
         $event->method('getRequest')->willReturn($request);
 
@@ -175,9 +162,7 @@ class PasswordChangeListenerTest extends TestCase
         $request = Request::create('/dashboard');
         $request->attributes->set('_route', 'dashboard');
 
-        $event = $this->getMockBuilder(RequestEvent::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $event = $this->createMock(RequestEvent::class);
         $event->method('isMainRequest')->willReturn(true);
         $event->method('getRequest')->willReturn($request);
 

@@ -23,14 +23,14 @@ class PasswordCompromisedServiceTest extends TestCase
     private EventDispatcherInterface|MockObject $eventDispatcher;
     private ValidatorInterface|MockObject $validator;
     private PasswordCompromisedService $service;
-    private LoggerInterface|MockObject $logger;
+    private LoggerInterface $logger;
 
     protected function setUp(): void
     {
         $this->rateLimiter = $this->createMock(UserNotificationRateLimiter::class);
         $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $this->validator = $this->createMock(ValidatorInterface::class);
-        $this->logger = $this->createMock(LoggerInterface::class);
+        $this->logger = $this->createStub(LoggerInterface::class);
 
         $this->service = new PasswordCompromisedService(
             $this->rateLimiter,
