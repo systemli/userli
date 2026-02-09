@@ -24,8 +24,8 @@ RUN apt-get update && \
     a2enmod rewrite && \
     docker-php-ext-configure intl && \
     docker-php-ext-install -j$(nproc) gd opcache pdo_mysql sodium zip intl && \
-    pecl install xdebug && \
-    docker-php-ext-enable xdebug
+    pecl install redis xdebug && \
+    docker-php-ext-enable redis xdebug
 
 COPY --from=builder /var/www/html /var/www/html
 COPY docker/userli/apache.conf /etc/apache2/sites-available/000-default.conf
