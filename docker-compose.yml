@@ -74,6 +74,7 @@ services:
       - ./docker/dovecot/dovecot.conf:/etc/dovecot/dovecot.conf:ro
       - ./docker/dovecot/conf.d:/etc/dovecot/conf.d:ro
       - ./contrib/userli-dovecot-adapter.lua:/usr/local/bin/userli-dovecot-adapter.lua:ro
+      - ./tests:/tests:ro
     restart: always
     networks:
       - userli
