@@ -16,10 +16,10 @@ jobs:
         run: docker compose build
       - name: Load fixtures
         run: |
-          docker compose run --rm -T userli bin/console doctrine:fixtures:load --group=basic
+          docker compose exec userli bin/console doctrine:fixtures:load --group=basic --no-interaction
       - name: Test mailcrypt
         run: |
-          docker compose run --rm -T dovecot /tests/test_mailcrypt.sh
+          docker compose exec dovecot /tests/test_mailcrypt.sh
       - name: Shutdown
         if: always()
         run: docker compose down

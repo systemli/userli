@@ -7,7 +7,7 @@ set -e
 doveconf
 
 DOVECOT_HOST="localhost"
-DOVECOT_PORT="1143"
+DOVECOT_PORT="143"
 
 # User WITH mailcrypt enabled
 CRYPT_USER="mailcrypt@example.org"
