@@ -18,7 +18,7 @@ prepare: clean
 build: clean prepare
 	cd build/${TMP_DIR}; \
 	APP_ENV=prod ${SQLITE_DB_URL} \
-		composer install --no-dev --ignore-platform-reqs; \
+		composer install --no-dev --ignore-platform-reqs --no-scripts; \
 	APP_ENV=prod ${SQLITE_DB_URL} \
 		composer dump-autoload; \
 	yarn --pure-lockfile; \

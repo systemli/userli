@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: docker/userli/Dockerfile
+    environment:
+      REDIS_URL: redis://redis:6379
     volumes:
       - ./docker/userli/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro
       - ./docker/userli/php-override.ini:/usr/local/etc/php/conf.d/override.ini:ro
@@ -21,6 +23,8 @@ services:
       context: .
       dockerfile: docker/userli/Dockerfile
     command: php /var/www/html/bin/console messenger:consume async --time-limit=3600 -vv
+    environment:
+      REDIS_URL: redis://redis:6379
     volumes:
       - ./docker/userli/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro
       - ./docker/userli/php-override.ini:/usr/local/etc/php/conf.d/override.ini:ro
@@ -35,6 +39,8 @@ services:
       context: .
       dockerfile: docker/userli/Dockerfile
     command: php /var/www/html/bin/console messenger:consume scheduler_maintenance --time-limit=3600 -vv
+    environment:
+      REDIS_URL: redis://redis:6379
     volumes:
       - ./docker/userli/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro
       - ./docker/userli/php-override.ini:/usr/local/etc/php/conf.d/override.ini:ro

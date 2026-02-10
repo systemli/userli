@@ -2,9 +2,6 @@
 
 set -e
 
-# configuration
-vagrant="yes" # run build process in vagrant
-
 # idea taken from the following projects:
 # * https://gist.github.com/stefanbuck/ce788fee19ab6eb0b4447a85fc99f447
 # * https://github.com/NicoHood/gpgit
