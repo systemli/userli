@@ -5,6 +5,7 @@
   "description": "Web application to (self-) manage email users and encrypt their mailboxes.",
   "require": {
     "php": "^8.4",
+    "ext-sodium": "*",
     "doctrine/doctrine-bundle": "^3.0",
     "doctrine/doctrine-migrations-bundle": "^4.0",
     "doctrine/orm": "^3.4",
@@ -63,6 +64,9 @@
     "symfony/var-dumper": "*",
     "symfony/web-profiler-bundle": "*",
     "vimeo/psalm": "^6.0"
+  },
+  "suggest": {
+    "ext-redis": "Required for Redis-based caching (set REDIS_URL to enable)"
   },
   "config": {
     "bin-dir": "bin",
