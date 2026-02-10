@@ -10,14 +10,16 @@ local env_dovecot_timeout      = os.getenv("DOVECOT_LUA_TIMEOUT") or "10000"
 local env_dovecot_insecure     = os.getenv("DOVECOT_LUA_INSECURE") or "false"
 
 -- log messages
-local log_msg = {}
-log_msg["env_userli_host"]   = "Environment variable USERLI_HOST must not be empty"
-log_msg["env_userli_token"]  = "Environment variable USERLI_API_ACCESS_TOKEN must not be empty"
-log_msg["userli-error"]      = "Could not connect to Userli API. "
-log_msg["http-ok"]           = "Lookup successful"
-log_msg["http-ok-malformed"] = "Lookup failed: HTTP-status is 200, but HTTP-response is malformed."
-log_msg["http-failed"]       = "Lookup failed: HTTP-status "
-log_msg["http-unexpected"]   = "Lookup failed: Unexpected HTTP-status: "
+local log_msg                      = {}
+log_msg["env_userli_host"]         = "Environment variable USERLI_HOST must not be empty"
+log_msg["env_userli_token"]        = "Environment variable USERLI_API_ACCESS_TOKEN must not be empty"
+log_msg["userli-error"]            = "Could not connect to Userli API. "
+log_msg["empty-password"]          = "Password cannot be empty."
+log_msg["http-response-ok"]        = "Lookup successful"
+log_msg["http-response-malformed"] = "Lookup failed: HTTP-status is 200, but HTTP-response is malformed."
+log_msg["http-request-malformed"]  = "Lookup failed: Server cannot process request."
+log_msg["http-failed"]             = "Lookup failed: HTTP-status "
+log_msg["http-unexpected"]         = "Lookup failed: Unexpected HTTP-status: "
 
 
 local protocol = "https"
@@ -85,12 +87,12 @@ function auth_userdb_lookup(request)
     if http_response:status() == 200 then
         local success, data = pcall(json.decode, http_response:payload())
         if not success then
-            request:log_error(log_msg['http-ok-malformed'])
+            request:log_error(log_msg['http-response-malformed'])
             return dovecot.auth.USERDB_RESULT_INTERNAL_FAILURE, ""
         end
 
-        if not(data and data.body and data.body.user and data.body.quota and data.body.mailCrypt and data.body.mailCryptPublicKey) then
-            request:log_error(log_msg['http-ok-malformed'])
+        if not (data and data.body and data.body.user and data.body.quota and data.body.mailCrypt and data.body.mailCryptPublicKey) then
+            request:log_error(log_msg['http-response-malformed'])
             return dovecot.auth.USERDB_RESULT_INTERNAL_FAILURE, ""
         end
 
@@ -106,7 +108,7 @@ function auth_userdb_lookup(request)
             attributes["crypt_global_public_key_file"] = "inline:" .. data.body.mailCryptPublicKey
             attributes["crypt_write_algorithm"] = "aes-256-gcm-sha256"
         end
-        request:log_info(log_msg['http-ok'] .. http_response:status())
+        request:log_info(log_msg['http-response-ok'] .. http_response:status())
         return dovecot.auth.USERDB_RESULT_OK, attributes
     end
 
@@ -120,6 +122,11 @@ function auth_userdb_lookup(request)
 end
 
 function auth_password_verify(request, password)
+    if not password or string.len(password) == 0 then
+        request:log_warning(log_msg['empty-password'])
+        return dovecot.auth.PASSDB_RESULT_PASSWORD_MISMATCH, ""
+    end
+
     local http_request = http_client:request {
         url    = api_url .. "/" .. request.original_user;
         method = "POST"
@@ -133,13 +140,13 @@ function auth_password_verify(request, password)
     if http_response:status() == 200 then
         local success, data = pcall(json.decode, http_response:payload())
         if not success then
-            request:log_error(log_msg['http-ok-malformed'])
+            request:log_error(log_msg['http-response-malformed'])
             return dovecot.auth.PASSDB_RESULT_INTERNAL_FAILURE, ""
         end
 
         -- mailCryptPrivateKey may be empty, but cannot be nil
-        if not(data and data.body and data.body.mailCrypt and data.body.mailCryptPrivateKey and data.body.mailCryptPublicKey) then
-            request:log_error(log_msg['http-ok-malformed'])
+        if not (data and data.body and data.body.mailCrypt and data.body.mailCryptPrivateKey and data.body.mailCryptPublicKey) then
+            request:log_error(log_msg['http-response-malformed'])
             return dovecot.auth.PASSDB_RESULT_INTERNAL_FAILURE, ""
         end
 
@@ -180,6 +187,11 @@ function auth_password_verify(request, password)
     if http_response:status() == 404 then
         request:log_warning(log_msg['http-failed'] .. http_response:status())
         return dovecot.auth.PASSDB_RESULT_USER_UNKNOWN, ""
+    end
+
+    if http_response:status() == 422 then
+        request:log_warning(log_msg['http-request-malformed'])
+        return dovecot.auth.PASSDB_RESULT_INTERNAL_FAILURE, ""
     end
 
     if http_response:status() == 500 then
