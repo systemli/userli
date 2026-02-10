@@ -105,6 +105,13 @@ services:
     networks:
       - userli
 
+  redis:
+    image: docker.io/redis:7-alpine
+    command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru
+    restart: always
+    networks:
+      - userli
+
   webhook:
     image: ghcr.io/tarampampam/webhook-tester:2
     command: server --auto-create-sessions
