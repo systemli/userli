@@ -23,7 +23,7 @@ start:
   openpgp-settings: OpenPGP
   intro: Qui puoi impostare e gestire il tuo account di posta elettronica.
   registration-text: >
-    Non hai ancora un account di posta elettronica con %domain%?
+    Non hai ancora un account di posta elettronica?
     Nessun problema! Se uno dei tuoi amici ha già un account, puoi ottenere un codice invito da loro e creare immediatamente il tuo account.
   account-settings: Impostazioni dell'account
   account-settings-desc: Password e altro

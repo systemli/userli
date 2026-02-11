@@ -14,7 +14,7 @@ start:
   intro: Aquí puedes configurar y gestionar tu cuenta de e-mail.
   registration-header: Registro
   registration-text: >
-    ¿No tienes una cuenta de e-mail con %domain% aún? ¡No hay problema!
+    ¿No tienes una cuenta de e-mail aún? ¡No hay problema!
     Si uno de tus amigos ya tiene una cuenta, puedes obtener un código de invitación de ellos y configurar inmediatamente tu propia cuenta.
   registration-button: Crear cuenta
   account-settings: Configuración de la cuenta

@@ -14,7 +14,7 @@ start:
   intro: Ici vous pouvez configurer et gérer vos comptes de messagerie.
   registration-header: Inscription
   registration-text: >
-    Vous n'avez pas encore de compte de messagerie avec le domaine %domain%? Aucun problème!
+    Vous n'avez pas encore de compte de messagerie? Aucun problème!
     Si l'un de vos amis a déjà un compte, vous pouvez obtenir un code d'invitation et configurer votre compte immédiatement.
   registration-button: Créer un compte
   account-settings: Paramètres du compte

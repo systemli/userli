@@ -20,7 +20,7 @@ start:
   intro: Hier kannst du dein E-Mail-Konto erstellen und verwalten.
   registration-header: Registrierung
   registration-text: >
-    Du hast noch kein E-Mail-Konto bei %domain%? Kein Problem!
+    Du hast noch kein E-Mail-Konto? Kein Problem!
     Lass dir von einer Freund:in einen Einladungscode schicken. Damit kannst
     du sofort ein Konto erstellen.
   registration-button: Konto anlegen
