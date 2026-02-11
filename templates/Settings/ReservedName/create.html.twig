@@ -2,7 +2,7 @@
 
 {% form_theme form 'Form/fields.html.twig' %}
 
-{% block title %}{{ domain }} - {{ 'settings.reserved-name.create.title'|trans }}{% endblock %}
+{% block title %}{{ setting('app_name') }} - {{ 'settings.reserved-name.create.title'|trans }}{% endblock %}
 {% block page_title %}{{ 'settings.title'|trans }}{% endblock %}
 {% block page_subtitle %}{{ 'settings.subtitle'|trans }}{% endblock %}
 
