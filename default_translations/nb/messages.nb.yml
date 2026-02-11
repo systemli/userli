@@ -12,7 +12,7 @@ start:
   intro: Her kan du sette opp og håndtere din e-postkonto.
   registration-header: Registrering
   registration-text: >
-    Har du ikke en e-postkonto på %domain% enda? Ikke noe problem.
+    Har du ikke en e-postkonto enda? Ikke noe problem.
     Hvis én av vennene dine allerede har en konto, kan du få en invitasjonskode fra vedkommende og sette opp egen konto omgående.
   registration-button: Opprett konto
   account-settings: Kontoinnstillinger

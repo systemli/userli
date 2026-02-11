@@ -12,7 +12,7 @@ start:
   intro: Aqui você pode criar e configurar a sua conta de e-mail.
   registration-header: Registo
   registration-text: >
-    Ainda não tem uma conta em %domain%? Sem problemas! Se você conhece alguém que
+    Ainda não tem uma conta? Sem problemas! Se você conhece alguém que
     já possua uma conta você pode pedir um convite e começar imediatamente a criar
     a sua própria.
   registration-button: Criar conta
