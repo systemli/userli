@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Factory\ReservedNameFactory;
+use App\Entity\ReservedName;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -12,34 +12,24 @@ use Override;
 
 final class LoadReservedNameData extends Fixture implements FixtureGroupInterface
 {
+    private const array RESERVED_NAMES = [
+        'admin',
+        'root',
+        'postmaster',
+        'abuse',
+        'webmaster',
+    ];
+
     #[Override]
     public function load(ObjectManager $manager): void
     {
-        $handle = fopen(
-            __DIR__.'/../../config/reserved_names.txt',
-            'r'
-        );
-
-        $count = 0;
-        while ($line = fgets($handle)) {
-            $name = trim($line);
-            if (empty($name) || '#' === $name[0]) {
-                continue;
-            }
-
-            $reservedName = ReservedNameFactory::create($name);
+        foreach (self::RESERVED_NAMES as $name) {
+            $reservedName = new ReservedName();
+            $reservedName->setName($name);
             $manager->persist($reservedName);
-            ++$count;
-
-            if (($count % 250) === 0) {
-                $manager->flush();
-                $manager->clear();
-            }
         }
 
-        fclose($handle);
         $manager->flush();
-        $manager->clear();
     }
 
     #[Override]

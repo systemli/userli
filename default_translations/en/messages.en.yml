@@ -458,6 +458,7 @@ settings:
     webhooks: Webhooks
     maintenance: Maintenance
     general: General
+    reserved-names: Reserved Names
   coming-soon: Coming Soon
   api:
     title: API Tokens
@@ -599,6 +600,58 @@ settings:
       response_headers: Response Headers
       response_body: Response Body
       error: Error
+
+  reserved-name:
+    title: Reserved Names
+    heading: Reserved Names
+    description: Manage reserved names that cannot be used for email registration
+    table:
+      name: Name
+      created: Created
+      actions: Actions
+      empty-title: No reserved names
+      empty-description: There are no reserved names yet. Add names to prevent them from being used during registration.
+    create:
+      button: Add Reserved Name
+      title: Add Reserved Name
+      heading: Add Reserved Name
+      description: Add a new reserved name to prevent it from being used during registration.
+      success: Reserved name has been created successfully.
+      error: Failed to create reserved name.
+    delete:
+      confirm: "Are you sure you want to delete the reserved name \"%name%\"?"
+      success: Reserved name has been deleted successfully.
+    actions:
+      delete: Delete
+    form:
+      name:
+        label: Name
+        placeholder: e.g. "admin"
+        help: The name to reserve (lowercase only). This name will be blocked from registration.
+      cancel: Cancel
+      submit:
+        create: Create
+    search:
+      placeholder: Search names...
+      submit: Search
+    import:
+      button: Import
+      title: Import Reserved Names
+      heading: Import Reserved Names
+      description: Import reserved names from a text file. One name per line. Lines starting with # are treated as comments. Existing names will be skipped.
+      form:
+        file:
+          label: File
+          help: "Plain text file (.txt) with one reserved name per line. Maximum size: 1 MB."
+        submit: Import
+      success: "Import completed. Imported: %imported%, Skipped: %skipped%."
+    export:
+      button: Export
+    pagination:
+      total: "%count% reserved names total"
+      previous: Previous
+      next: Next
+      page: "Page %page% of %totalPages%"
 
 notifications:
   password_compromised:

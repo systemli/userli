@@ -8,12 +8,16 @@ Last steps to make Userli work properly.
 # Run database migrations
 bin/console doctrine:migrations:migrate --no-interaction
 
-# Load default reserved names into database
-bin/console app:reservednames:import
-
 # Warm up cache
 bin/console cache:warmup
 ```
+
+## Import reserved names
+
+Reserved names can be managed via the Settings UI under "Reserved Names".
+A curated list of common reserved names is available at
+[`contrib/reserved_names.txt`](https://github.com/systemli/userli/blob/main/contrib/reserved_names.txt)
+and can be imported through the import function in the Settings UI.
 
 ## Configure Dovecot
 

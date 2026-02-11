@@ -6,7 +6,6 @@ namespace App\Creator;
 
 use App\Entity\Alias;
 use App\Entity\Domain;
-use App\Entity\ReservedName;
 use App\Entity\Voucher;
 use App\Exception\ValidationException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,7 +27,7 @@ abstract class AbstractCreator
     /**
      * @throws ValidationException
      */
-    public function validate(ReservedName|Alias|Domain|Voucher $entity, ?array $validationGroups = null): void
+    public function validate(Alias|Domain|Voucher $entity, ?array $validationGroups = null): void
     {
         $violations = $this->validator->validate($entity, null, $validationGroups);
 
@@ -37,7 +36,7 @@ abstract class AbstractCreator
         }
     }
 
-    protected function save(ReservedName|Alias|Domain|Voucher $entity): void
+    protected function save(Alias|Domain|Voucher $entity): void
     {
         $this->manager->persist($entity);
         $this->manager->flush();

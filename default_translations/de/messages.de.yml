@@ -438,6 +438,7 @@ settings:
     webhooks: Webhooks
     general: Allgemein
     maintenance: Wartung
+    reserved-names: Reservierte Namen
   maintenance:
     title: Wartung
     subtitle: Führe Wartungsaufgaben bei Bedarf aus
@@ -597,6 +598,58 @@ settings:
       response_headers: Response-Header
       response_body: Response-Body
       error: Fehler
+
+  reserved-name:
+    title: Reservierte Namen
+    heading: Reservierte Namen
+    description: Verwalte reservierte Namen, die nicht für die E-Mail-Registrierung verwendet werden können
+    table:
+      name: Name
+      created: Erstellt
+      actions: Aktionen
+      empty-title: Keine reservierten Namen
+      empty-description: Es sind noch keine reservierten Namen vorhanden. Füge Namen hinzu, um deren Verwendung bei der Registrierung zu verhindern.
+    create:
+      button: Reservierten Namen hinzufügen
+      title: Reservierten Namen hinzufügen
+      heading: Reservierten Namen hinzufügen
+      description: Füge einen neuen reservierten Namen hinzu, um dessen Verwendung bei der Registrierung zu verhindern.
+      success: Reservierter Name wurde erfolgreich erstellt.
+      error: Reservierter Name konnte nicht erstellt werden.
+    delete:
+      confirm: "Möchtest du den reservierten Namen \"%name%\" wirklich löschen?"
+      success: Reservierter Name wurde erfolgreich gelöscht.
+    actions:
+      delete: Löschen
+    form:
+      name:
+        label: Name
+        placeholder: z.B. "admin"
+        help: Der zu reservierende Name (nur Kleinbuchstaben). Dieser Name wird bei der Registrierung blockiert.
+      cancel: Abbrechen
+      submit:
+        create: Erstellen
+    search:
+      placeholder: Namen suchen...
+      submit: Suchen
+    import:
+      button: Importieren
+      title: Reservierte Namen importieren
+      heading: Reservierte Namen importieren
+      description: Importiere reservierte Namen aus einer Textdatei. Ein Name pro Zeile. Zeilen, die mit # beginnen, werden als Kommentare behandelt. Vorhandene Namen werden übersprungen.
+      form:
+        file:
+          label: Datei
+          help: "Textdatei (.txt) mit einem reservierten Namen pro Zeile. Maximale Größe: 1 MB."
+        submit: Importieren
+      success: "Import abgeschlossen. Importiert: %imported%, Übersprungen: %skipped%."
+    export:
+      button: Exportieren
+    pagination:
+      total: "%count% reservierte Namen insgesamt"
+      previous: Zurück
+      next: Weiter
+      page: "Seite %page% von %totalPages%"
 
 notifications:
   password_compromised:

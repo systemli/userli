@@ -10,7 +10,6 @@ app:openpgp:delete-key                  Delete OpenPGP key for email
 app:openpgp:import-key                  Import OpenPGP key for email
 app:openpgp:show-key                    Show OpenPGP key of email
 app:report:weekly                       Send weekly report to all admins
-app:reservednames:import                Import reserved names from stdin or file
 app:users:delete                        Delete a user
 app:users:list                          List users
 app:users:mailcrypt                     Get MailCrypt values for user
