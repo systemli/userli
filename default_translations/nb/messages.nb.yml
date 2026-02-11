@@ -8,7 +8,7 @@ navbar:
   open-main-menu: Åpne hovedmeny
 
 start:
-  title: Velkommen til %domain%
+  title: Velkommen til %app_name%
   intro: Her kan du sette opp og håndtere din e-postkonto.
   registration-header: Registrering
   registration-text: >

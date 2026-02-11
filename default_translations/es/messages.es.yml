@@ -10,7 +10,7 @@ navbar:
   open-main-menu: Abrir menú principal
 
 start:
-  title: Bienvenido a %domain%
+  title: Bienvenido a %app_name%
   intro: Aquí puedes configurar y gestionar tu cuenta de e-mail.
   registration-header: Registro
   registration-text: >

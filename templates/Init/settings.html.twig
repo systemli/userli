@@ -2,7 +2,7 @@
 
 {% form_theme form 'Form/fields.html.twig' %}
 
-{% block title %}{{ domain }} - {{ "init.title"|trans }}{% endblock %}
+{% block title %}{{ setting('app_name') }} - {{ "init.title"|trans }}{% endblock %}
 
 {% block content %}
     <div class="min-h-[calc(100vh-8rem)] py-6 sm:py-8">

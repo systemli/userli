@@ -8,7 +8,7 @@ navbar:
   open-main-menu: Abrir menu principal
 
 start:
-  title: Boas-vindas a %domain%
+  title: Boas-vindas a %app_name%
   intro: Aqui você pode criar e configurar a sua conta de e-mail.
   registration-header: Registo
   registration-text: >

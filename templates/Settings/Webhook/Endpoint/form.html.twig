@@ -5,7 +5,7 @@
 
 {# Dynamic page title: use specific create/edit keys #}
 {% block title %}
-    {{ domain }} - {{ is_edit ? 'settings.webhook.edit.title'|trans : 'settings.webhook.create.title'|trans }}
+    {{ setting('app_name') }} - {{ is_edit ? 'settings.webhook.edit.title'|trans : 'settings.webhook.create.title'|trans }}
 {% endblock %}
 {% block page_title %}{{ 'settings.title'|trans }}{% endblock %}
 {% block page_subtitle %}{{ 'settings.subtitle'|trans }}{% endblock %}
