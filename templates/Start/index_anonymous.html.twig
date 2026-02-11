@@ -20,16 +20,13 @@
                             <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ "start.registration-header"|trans }}</h2>
                         </div>
 
-                        <p class="text-gray-600 dark:text-gray-300 mb-6">{{ "start.registration-text"|trans }}</p>
-
-                        <div class="flex justify-center sm:justify-start">
-                            <a href="{{ path('register') }}"
-                               class="px-5 py-3 text-gray-900 dark:text-gray-100 font-medium bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-blue-700 dark:hover:text-blue-400 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 transition-colors duration-200"
-                               aria-label="{{ "start.registration-button"|trans }}"
-                               role="button">
-                                {{ "start.registration-button"|trans }}
-                            </a>
-                        </div>
+                        {{ form_start(voucher_form, {'action': path('check_voucher'), 'attr': {'class': 'space-y-4', 'role': 'form'}}) }}
+                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ "start.registration-text"|trans }}</p>
+                            {{ form_row(voucher_form.voucher) }}
+                            <div class="pt-2">
+                                {{ form_widget(voucher_form.submit) }}
+                            </div>
+                        {{ form_end(voucher_form) }}
                     </div>
 
                     {# Login form section #}

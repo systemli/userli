@@ -21,8 +21,8 @@ start:
   registration-header: Registrierung
   registration-text: >
     Du hast noch kein E-Mail-Konto? Kein Problem!
-    Lass dir von einer Freund:in einen Einladungscode schicken. Damit kannst
-    du sofort ein Konto erstellen.
+    Lass dir von einer Freund:in einen Einladungscode schicken und
+    gib ihn unten ein.
   registration-button: Konto anlegen
   account-settings: Konto-Einstellungen
   account-settings-desc: Verwalte dein Konto
@@ -197,11 +197,13 @@ navbar_right:
   settings: Einstellungen
 registration:
   title: Bei %project_name% registrieren
-  information: Hinweis
+  information: Wähle ein sicheres Passwort
   information-intro: >
-    Du möchtest ein E-Mail-Konto bei <a href="%project_url%">%project_name%</a> registrieren.
-    Eine Registrierung ist nur möglich, wenn dich eine Freund:in zu unserem Dienst
-    einlädt, dir also einen Einladungscode übergibt.
+    Dein Passwort schützt dein E-Mail-Konto und all deine Daten.
+    Wähle ein starkes Passwort, das du nirgendwo anders verwendest.
+  password-rule-length: Mindestens 12 Zeichen
+  password-rule-umlauts: Keine deutschen Umlaute (ä, ö, ü, ß)
+  password-rule-compromised: Nicht in bekannten Datenlecks enthalten
   label-email: Deine gewünschte E-Mail-Adresse
   recovery-token-headline: Wiederherstellungscode
 welcome:

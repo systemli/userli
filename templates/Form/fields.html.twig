@@ -1,6 +1,6 @@
 {% block form_errors %}
     {% if errors|length > 0 %}
-        <div id="{{ id }}_errors" class="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4" role="alert">
+        <div id="{{ id }}_errors" class="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-4 mt-2 mb-4" role="alert">
             <div class="flex">
                 {{ ux_icon('heroicons:x-circle-20-solid', {class: 'w-5 h-5 text-red-400 dark:text-red-500 mt-0.5 mr-3 flex-shrink-0'}) }}
                 <div class="text-sm text-red-800 dark:text-red-200">

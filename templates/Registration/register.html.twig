@@ -17,22 +17,29 @@
             {# Information sidebar #}
             <div class="order-2 lg:order-1">
                 <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 sm:p-8">
-                    <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                        {{ "registration.information"|trans }}
-                    </h2>
-                    <div class="space-y-4">
-                        <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                            {{ "registration.information-intro"|trans({'%project_name%': setting('project_name'), '%project_url%': setting('project_url')})|raw }}
-                        </p>
-                        <div class="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
-                            <div class="flex items-start">
-                                {{ ux_icon('heroicons:exclamation-triangle', {'class': 'w-5 h-5 text-amber-400 dark:text-amber-500 mt-0.5 mr-3 flex-shrink-0'}) }}
-                                <div class="text-sm text-amber-700 dark:text-amber-200 leading-relaxed">
-                                    {{ "account.password.help"|trans|raw }}
-                                </div>
-                            </div>
-                        </div>
+                    <div class="flex items-center mb-4">
+                        {{ ux_icon('heroicons:shield-check', {'class': 'w-6 h-6 text-blue-500 dark:text-blue-400 mr-3 flex-shrink-0'}) }}
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                            {{ "registration.information"|trans }}
+                        </h2>
                     </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-5">
+                        {{ "registration.information-intro"|trans }}
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            {{ ux_icon('heroicons:check-circle', {'class': 'w-5 h-5 text-green-500 dark:text-green-400 mt-0.5 mr-3 flex-shrink-0'}) }}
+                            <span class="text-sm text-gray-700 dark:text-gray-300">{{ "registration.password-rule-length"|trans }}</span>
+                        </li>
+                        <li class="flex items-start">
+                            {{ ux_icon('heroicons:check-circle', {'class': 'w-5 h-5 text-green-500 dark:text-green-400 mt-0.5 mr-3 flex-shrink-0'}) }}
+                            <span class="text-sm text-gray-700 dark:text-gray-300">{{ "registration.password-rule-umlauts"|trans }}</span>
+                        </li>
+                        <li class="flex items-start">
+                            {{ ux_icon('heroicons:check-circle', {'class': 'w-5 h-5 text-green-500 dark:text-green-400 mt-0.5 mr-3 flex-shrink-0'}) }}
+                            <span class="text-sm text-gray-700 dark:text-gray-300">{{ "registration.password-rule-compromised"|trans }}</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
@@ -66,31 +73,20 @@
                             }
                         }) }}
 
-                            {# Invite code field #}
-                            <div class="space-y-2">
-                                {{ form_label(form.voucher, null, {
-                                    'label_attr': {
-                                        'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300'
-                                    }
-                                }) }}
-                                <div class="relative">
-                                    {{ form_widget(form.voucher, {
-                                        'attr': {
-                                            'class': 'block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors duration-200' ~ (form.voucher.vars.errors|length > 0 ? ' border-red-300 dark:border-red-600 focus:ring-red-500 focus:border-red-500' : ''),
-                                            'autofocus': '',
-                                            'autocomplete': 'off',
-                                            'aria-describedby': form.voucher.vars.errors|length > 0 ? 'voucher-error' : null
-                                        }
-                                    }) }}
-                                </div>
-                                {% if form.voucher.vars.errors|length > 0 %}
-                                    <div id="voucher-error" class="text-sm text-red-600 dark:text-red-400 mt-1" role="alert">
-                                        {% for error in form.voucher.vars.errors %}
-                                            <p>{{ error.message|trans }}</p>
-                                        {% endfor %}
+                            {# Voucher info display (read-only) #}
+                            <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                                <div class="flex items-center">
+                                    {{ ux_icon('heroicons:ticket', {'class': 'w-5 h-5 text-blue-500 dark:text-blue-400 mr-3 flex-shrink-0'}) }}
+                                    <div>
+                                        <span class="text-xs font-medium text-gray-500 dark:text-gray-400">{{ "form.voucher"|trans }}</span>
+                                        <p class="text-sm font-mono font-semibold text-gray-900 dark:text-gray-100">{{ voucher }}</p>
                                     </div>
-                                {% endif %}
+                                </div>
+                                {{ ux_icon('heroicons:check-circle', {'class': 'w-5 h-5 text-green-500 dark:text-green-400 flex-shrink-0'}) }}
                             </div>
+
+                            {# Hidden voucher field for form submission #}
+                            {{ form_widget(form.voucher) }}
 
                             {# Email field with domain suffix #}
                             <div class="space-y-2">
@@ -104,6 +100,7 @@
                                         'attr': {
                                             'suffix': '@' ~ domain,
                                             'autocomplete': 'email',
+                                            'autofocus': '',
                                             'aria-describedby': form.email.vars.errors|length > 0 ? 'email-error' : null
                                         }
                                     }) }}

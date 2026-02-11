@@ -107,14 +107,14 @@ yarn encore dev
 # Database fixtures
 bin/console doctrine:fixtures:load
 
-# Code quality
+# Code quality (w/o podman)
 composer cs-fix          # Fix code style (PHP CS Fixer)
 composer cs-check        # Check code style (dry-run)
 composer rector-fix      # Apply Rector refactorings
 composer rector-check    # Check Rector (dry-run)
 composer psalm           # Run Psalm static analysis
 
-# Tests (require fixtures to be loaded first)
+# Tests (w/o podman)
 bin/phpunit                    # Unit tests
 bin/behat --format progress    # Functional / BDD scenarios
 ```

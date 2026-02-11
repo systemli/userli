@@ -132,10 +132,13 @@ navbar_right:
 
 registration:
   title: Registrarse en %project_name%
-  information: Información
+  information: Elige una contraseña segura
   information-intro: >
-    ¿Te gustaría registrar una cuenta de e-mail con <a href="%project_url%">%project_name%</a>?
-    Solo permitimos registros si un amigo te invita con un código de invitación a nuestros servicios.
+    Tu contraseña protege tu cuenta de e-mail y todos tus datos.
+    Elige una contraseña fuerte que no uses en ningún otro sitio.
+  password-rule-length: Al menos 12 caracteres
+  password-rule-umlauts: Sin diéresis alemanas (ä, ö, ü, ß)
+  password-rule-compromised: No encontrada en filtraciones de datos conocidas
   label-email: Tu dirección de e-mail preferida
   recovery-token-headline: Token de recuperación
 

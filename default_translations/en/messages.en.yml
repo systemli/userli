@@ -22,7 +22,7 @@ start:
   registration-text: >
     You don't have an e-mail account yet? No problem!
     If one of your friends already has an account,
-    you can get an invite code from them and immediately set up your own account.
+    ask them for an invite code and enter it below.
   registration-button: Create account
   account-settings: Account settings
   account-settings-desc: Manage your account
@@ -201,11 +201,13 @@ navbar_right:
   settings: Settings
 registration:
   title: Registering with %project_name%
-  information: Information
+  information: Choose a secure password
   information-intro: >
-    Would you like to register an e-mail account with <a href="%project_url%">%project_name%</a>?
-    We only allow registrations if a friend invites you with an invite code to our
-    services.
+    Your password protects your e-mail account and all your data.
+    Choose a strong password that you don't use anywhere else.
+  password-rule-length: At least 12 characters
+  password-rule-umlauts: No German umlauts (ä, ö, ü, ß)
+  password-rule-compromised: Not found in known data breaches
   label-email: Your preferred e-mail address
   recovery-token-headline: Recovery token
 welcome:

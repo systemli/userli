@@ -10,9 +10,9 @@ Feature: registration
       | louis@example.org      | asdasd   | ROLE_ADMIN      |
       | suspicious@example.org | asdasd   | ROLE_SUSPICIOUS |
     And the following Voucher exists:
-      | code | user                   |
-      | TEST | louis@example.org      |
-      | ABCD | suspicious@example.org |
+      | code   | user                   |
+      | TEST00 | louis@example.org      |
+      | ABCD00 | suspicious@example.org |
     And the following Alias exists:
       | source            | destination      |
       | alias@example.org | goto@example.org |
@@ -22,9 +22,12 @@ Feature: registration
 
   @registration
   Scenario: Register as new user
-    When I am on "/register"
-    And I fill in the following:
-      | registration[voucher]               | TEST         |
+    When I am on "/"
+    And I fill in "voucher_check[voucher]" with "TEST00"
+    And I press "voucher_check[submit]"
+    Then I should be on "/register/TEST00"
+
+    When I fill in the following:
       | registration[email]                 | user1        |
       | registration[password][first]  | P4ssW0rt!!!1 |
       | registration[password][second] | P4ssW0rt!!!1 |
@@ -47,22 +50,21 @@ Feature: registration
 
   @registration
   Scenario: Register with voucher from suspicious user
-    When I am on "/register"
-    And I fill in the following:
-      | registration[voucher]               | ABCD         |
-      | registration[email]                 | user1        |
-      | registration[password][first]  | P4ssW0rt!!!1 |
-      | registration[password][second] | P4ssW0rt!!!1 |
-    And I press "Submit"
+    When I am on "/"
+    And I fill in "voucher_check[voucher]" with "ABCD00"
+    And I press "voucher_check[submit]"
 
-    Then I should be on "/register"
+    Then I should be on "/"
     And I should see "The invite code is invalid."
 
   @registration
   Scenario: Register with empty password
-    When I am on "/register"
-    And I fill in the following:
-      | registration[voucher]               | ABCD  |
+    When I am on "/"
+    And I fill in "voucher_check[voucher]" with "TEST00"
+    And I press "voucher_check[submit]"
+    Then I should be on "/register/TEST00"
+
+    When I fill in the following:
       | registration[email]                 | user1 |
       | registration[password][first]  |       |
       | registration[password][second] |       |
@@ -73,22 +75,21 @@ Feature: registration
 
   @registration
   Scenario: Register with invalid voucher
-    When I am on "/register"
-    And I fill in the following:
-      | registration[voucher]               | INVALID      |
-      | registration[email]                 | user1        |
-      | registration[password][first]  | P4ssW0rt!!!1 |
-      | registration[password][second] | P4ssW0rt!!!1 |
-    And I press "Submit"
+    When I am on "/"
+    And I fill in "voucher_check[voucher]" with "INVALID"
+    And I press "voucher_check[submit]"
 
-    Then I should be on "/register"
+    Then I should be on "/"
     And I should see "The invite code is invalid."
 
   @registration
   Scenario: Register with invalid e-mail domain
-    When I am on "/register"
-    And I fill in the following:
-      | registration[voucher]               | TEST                 |
+    When I am on "/"
+    And I fill in "voucher_check[voucher]" with "TEST00"
+    And I press "voucher_check[submit]"
+    Then I should be on "/register/TEST00"
+
+    When I fill in the following:
       | registration[email]                 | user@nonexistant.org |
       | registration[password][first]  | P4ssW0rt!!!1         |
       | registration[password][second] | P4ssW0rt!!!1         |
@@ -99,9 +100,12 @@ Feature: registration
 
   @registration
   Scenario: Register with invalid password
-    When I am on "/register"
-    And I fill in the following:
-      | registration[voucher]               | TEST     |
+    When I am on "/"
+    And I fill in "voucher_check[voucher]" with "TEST00"
+    And I press "voucher_check[submit]"
+    Then I should be on "/register/TEST00"
+
+    When I fill in the following:
       | registration[email]                 | user1    |
       | registration[password][first]  | password |
       | registration[password][second] | password |
@@ -112,9 +116,12 @@ Feature: registration
 
   @registration
   Scenario: Register with different passwords
-    When I am on "/register"
-    And I fill in the following:
-      | registration[voucher]               | TEST         |
+    When I am on "/"
+    And I fill in "voucher_check[voucher]" with "TEST00"
+    And I press "voucher_check[submit]"
+    Then I should be on "/register/TEST00"
+
+    When I fill in the following:
       | registration[email]                 | user1        |
       | registration[password][first]  | P4ssW0rt!!!1 |
       | registration[password][second] | P4ssW0rt!!!2 |
@@ -125,9 +132,12 @@ Feature: registration
 
   @registration
   Scenario: Register with taken address
-    When I am on "/register"
-    And I fill in the following:
-      | registration[voucher]               | TEST         |
+    When I am on "/"
+    And I fill in "voucher_check[voucher]" with "TEST00"
+    And I press "voucher_check[submit]"
+    Then I should be on "/register/TEST00"
+
+    When I fill in the following:
       | registration[email]                 | louis        |
       | registration[password][first]  | P4ssW0rt!!!1 |
       | registration[password][second] | P4ssW0rt!!!1 |
@@ -138,9 +148,12 @@ Feature: registration
 
   @registration
   Scenario: Register with taken alias address
-    When I am on "/register"
-    And I fill in the following:
-      | registration[voucher]               | TEST         |
+    When I am on "/"
+    And I fill in "voucher_check[voucher]" with "TEST00"
+    And I press "voucher_check[submit]"
+    Then I should be on "/register/TEST00"
+
+    When I fill in the following:
       | registration[email]                 | alias        |
       | registration[password][first]  | P4ssW0rt!!!1 |
       | registration[password][second] | P4ssW0rt!!!1 |
@@ -151,9 +164,12 @@ Feature: registration
 
   @registration
   Scenario: Register with reserved address
-    When I am on "/register"
-    And I fill in the following:
-      | registration[voucher]               | TEST         |
+    When I am on "/"
+    And I fill in "voucher_check[voucher]" with "TEST00"
+    And I press "voucher_check[submit]"
+    Then I should be on "/register/TEST00"
+
+    When I fill in the following:
       | registration[email]                 | webmaster    |
       | registration[password][first]  | P4ssW0rt!!!1 |
       | registration[password][second] | P4ssW0rt!!!1 |
@@ -163,10 +179,13 @@ Feature: registration
     And I should see "The e-mail address is already taken."
 
   @registration
-  Scenario: Register with reserved address
-    When I am on "/register"
-    And I fill in the following:
-      | registration[voucher]               | TEST         |
+  Scenario: Register with reserved address (case insensitive)
+    When I am on "/"
+    And I fill in "voucher_check[voucher]" with "TEST00"
+    And I press "voucher_check[submit]"
+    Then I should be on "/register/TEST00"
+
+    When I fill in the following:
       | registration[email]                 | Webmaster    |
       | registration[password][first]  | P4ssW0rt!!!1 |
       | registration[password][second] | P4ssW0rt!!!1 |
@@ -177,9 +196,12 @@ Feature: registration
 
   @registration
   Scenario: Register with too short username
-    When I am on "/register"
-    And I fill in the following:
-      | registration[voucher]               | TEST         |
+    When I am on "/"
+    And I fill in "voucher_check[voucher]" with "TEST00"
+    And I press "voucher_check[submit]"
+    Then I should be on "/register/TEST00"
+
+    When I fill in the following:
       | registration[email]                 | ab           |
       | registration[password][first]  | P4ssW0rt!!!1 |
       | registration[password][second] | P4ssW0rt!!!1 |
@@ -190,9 +212,12 @@ Feature: registration
 
   @registration
   Scenario: Register with too long username
-    When I am on "/register"
-    And I fill in the following:
-      | registration[voucher]               | TEST                                 |
+    When I am on "/"
+    And I fill in "voucher_check[voucher]" with "TEST00"
+    And I press "voucher_check[submit]"
+    Then I should be on "/register/TEST00"
+
+    When I fill in the following:
       | registration[email]                 | abcdefghijklmnopqrstuvwxyz0123456789 |
       | registration[password][first]  | P4ssW0rt!!!1                         |
       | registration[password][second] | P4ssW0rt!!!1                         |
@@ -203,9 +228,12 @@ Feature: registration
 
   @registration
   Scenario: Register with a plus sign
-    When I am on "/register"
-    And I fill in the following:
-      | registration[voucher]               | TEST         |
+    When I am on "/"
+    And I fill in "voucher_check[voucher]" with "TEST00"
+    And I press "voucher_check[submit]"
+    Then I should be on "/register/TEST00"
+
+    When I fill in the following:
       | registration[email]                 | user+test    |
       | registration[password][first]  | P4ssW0rt!!!1 |
       | registration[password][second] | P4ssW0rt!!!1 |
@@ -223,11 +251,11 @@ Feature: registration
     And I should see "You have set up an account with us successfully. What are the next steps?"
 
   @registration
-  Scenario: Registration form is accessible
+  Scenario: GET /register redirects to start page
     When I am on "/register"
-    Then the response status code should be 200
+    Then I should be on "/"
 
   @registration
-  Scenario: Registration with prefilled voucher shows readonly field
-    When I am on "/register/161161"
-    Then the response status code should be 200
+  Scenario: Invalid voucher in URL redirects to start page
+    When I am on "/register/XXXXXX"
+    Then I should be on "/"
