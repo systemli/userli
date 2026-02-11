@@ -410,6 +410,7 @@ settings:
       app: Anwendungseinstellungen
       project: Projekteinstellungen
       email: E-Mail Einstellungen
+      reports: Berichte
     app_name:
       label: Anwendungsname
       help: Der im Anwendungsheader und Browsertitel angezeigte Name
@@ -428,6 +429,9 @@ settings:
     email_notification_address:
       label: E-Mail-Adresse für Benachrichtigungen
       help: Die E-Mail-Adresse, die Systembenachrichtigungen erhält
+    weekly_report_enabled:
+      label: Wöchentlicher Bericht
+      help: Einen wöchentlichen Bericht über neue Registrierungen an die Benachrichtigungs-E-Mail-Adresse senden
   navigation:
     aria-label: Einstellungen Navigation
     api: API Tokens

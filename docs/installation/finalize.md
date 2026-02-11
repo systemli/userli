@@ -37,10 +37,4 @@ to delete a maildir from a removed Userli account:
 
 # Daily delete maildirs of removed accounts
 @daily /usr/local/bin/userli-maildirs-remove.sh
-
-# Daily unlink old redeemed vouchers
-@daily userli cd /path/to/userli && bin/console app:voucher:unlink
-
-# Send weekly report to admins
-12 13 * * 1 userli cd /path/to/userli && bin/console app:report:weekly
 ```
