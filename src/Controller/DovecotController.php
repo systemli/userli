@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Enum\ApiScope;
 use App\Enum\MailCrypt;
 use App\Enum\Roles;
+use App\Enum\UserCacheKey;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
 use App\Repository\UserRepository;
@@ -37,8 +38,6 @@ final class DovecotController extends AbstractController
 
     public const string MESSAGE_USER_PASSWORD_CHANGE_REQUIRED = 'user password change required';
 
-    private const int CACHE_TTL = 60;
-
     private readonly MailCrypt $mailCrypt;
 
     public function __construct(
@@ -63,8 +62,8 @@ final class DovecotController extends AbstractController
     #[Route('/api/dovecot/{email}', name: 'api_dovecot_user_lookup', methods: ['GET'], stateless: true)]
     public function lookup(string $email): JsonResponse
     {
-        $result = $this->cache->get('dovecot_lookup_'.sha1($email), function (ItemInterface $item) use ($email) {
-            $item->expiresAfter(self::CACHE_TTL);
+        $result = $this->cache->get(UserCacheKey::DOVECOT_LOOKUP->key($email), function (ItemInterface $item) use ($email) {
+            $item->expiresAfter(UserCacheKey::TTL);
 
             $userData = $this->userRepository->findLookupDataByEmail($email);
 
