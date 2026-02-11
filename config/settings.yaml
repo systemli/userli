@@ -25,3 +25,7 @@ settings:
   email_notification_address:
     type: email
     default: "monitoring@example.org"
+
+  weekly_report_enabled:
+    type: boolean
+    default: true

@@ -430,6 +430,7 @@ settings:
       app: Application Settings
       project: Project Settings
       email: Email Configuration
+      reports: Reports
     app_name:
       label: Application Name
       help: The name displayed in the application header and browser title
@@ -448,6 +449,9 @@ settings:
     email_notification_address:
       label: Notification Email Address
       help: The email address that receives system notifications
+    weekly_report_enabled:
+      label: Weekly Report
+      help: Send a weekly report with new registrations to the notification email address
   navigation:
     aria-label: Settings navigation
     api: API Tokens

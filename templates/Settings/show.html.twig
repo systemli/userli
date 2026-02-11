@@ -32,6 +32,7 @@
                         'app': ['app_name', 'app_url'],
                         'project': ['project_name', 'project_url'],
                         'email': ['email_sender_address', 'email_notification_address'],
+                        'reports': ['weekly_report_enabled'],
                     } %}
 
                     {% for category, fields in categories %}
@@ -41,6 +42,7 @@
                                     'app': 'heroicons:computer-desktop',
                                     'project': 'heroicons:building-office',
                                     'email': 'heroicons:envelope',
+                                    'reports': 'heroicons:document-chart-bar',
                                 }[category] %}
 
                                 <div class="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mr-3">
@@ -54,14 +56,30 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {% for fieldName in fields %}
                                     {% if form[fieldName] is defined %}
-                                        <div class="space-y-2">
-                                            {{ form_label(form[fieldName], null, {
-                                                'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}
-                                            }) }}
-                                            {{ form_errors(form[fieldName]) }}
-                                            {{ form_widget(form[fieldName]) }}
-                                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">{{ ("settings.form." ~ fieldName ~ ".help")|trans }}</p>
-                                        </div>
+                                        {% if form[fieldName].vars.block_prefixes[1] == 'checkbox' %}
+                                            <div class="flex items-start md:col-span-2">
+                                                <label for="{{ form[fieldName].vars.id }}" class="relative inline-flex items-center cursor-pointer flex-shrink-0 mt-0.5 mr-4">
+                                                    {{ form_widget(form[fieldName], {'attr': {'class': 'sr-only peer'}}) }}
+                                                    <div class="w-11 h-6 bg-gray-200 dark:bg-gray-600 rounded-full peer peer-checked:bg-blue-600 dark:peer-checked:bg-blue-500 peer-focus:ring-2 peer-focus:ring-blue-500 dark:peer-focus:ring-blue-400 peer-focus:ring-offset-2 dark:peer-focus:ring-offset-gray-800 transition-colors duration-200 after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all after:duration-200 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full"></div>
+                                                </label>
+                                                <div>
+                                                    {{ form_label(form[fieldName], null, {
+                                                        'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer', 'for': form[fieldName].vars.id}
+                                                    }) }}
+                                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">{{ ("settings.form." ~ fieldName ~ ".help")|trans }}</p>
+                                                </div>
+                                                {{ form_errors(form[fieldName]) }}
+                                            </div>
+                                        {% else %}
+                                            <div class="space-y-2">
+                                                {{ form_label(form[fieldName], null, {
+                                                    'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}
+                                                }) }}
+                                                {{ form_errors(form[fieldName]) }}
+                                                {{ form_widget(form[fieldName]) }}
+                                                <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">{{ ("settings.form." ~ fieldName ~ ".help")|trans }}</p>
+                                            </div>
+                                        {% endif %}
                                     {% endif %}
                                 {% endfor %}
                             </div>

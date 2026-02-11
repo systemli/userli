@@ -7,6 +7,7 @@ namespace App\Schedule;
 use App\Message\PruneUserNotifications;
 use App\Message\PruneWebhookDeliveries;
 use App\Message\RemoveInactiveUsers;
+use App\Message\SendWeeklyReport;
 use App\Message\UnlinkRedeemedVouchers;
 use DateTimeImmutable;
 use Override;
@@ -32,6 +33,7 @@ final readonly class MaintenanceSchedule implements ScheduleProviderInterface
             ->add(RecurringMessage::every('1 day', new PruneWebhookDeliveries(), new DateTimeImmutable('03:00')))
             ->add(RecurringMessage::every('1 day', new PruneUserNotifications(), new DateTimeImmutable('03:30')))
             ->add(RecurringMessage::every('1 day', new UnlinkRedeemedVouchers(), new DateTimeImmutable('04:00')))
-            ->add(RecurringMessage::every('1 week', new RemoveInactiveUsers(), new DateTimeImmutable('06:00')));
+            ->add(RecurringMessage::every('1 week', new RemoveInactiveUsers(), new DateTimeImmutable('06:00')))
+            ->add(RecurringMessage::every('1 week', new SendWeeklyReport(), new DateTimeImmutable('07:00')));
     }
 }
