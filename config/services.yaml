@@ -138,15 +138,3 @@ services:
             - '@Twig\Environment'
             - '@Doctrine\ORM\EntityManagerInterface'
 
-    userli.admin.reservedname:
-        class: App\Admin\ReservedNameAdmin
-        public: true
-        tags:
-            - {
-                  name: sonata.admin,
-                  manager_type: orm,
-                  group: "Mail",
-                  label: "Reserved Name",
-                  code: userli.admin.reservedname,
-                  model_class: App\Entity\ReservedName,
-              }

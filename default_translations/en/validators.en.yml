@@ -12,6 +12,7 @@ form:
   twofactor-secret-invalid: "The verification code is not valid."
   twofactor-backup-ack-missing: "This needs to be checked."
   lowercase: "The string must not contain uppercase letters."
+  unique-field: "This value is already used."
 
 registration:
   voucher-invalid: "The invite code is invalid."

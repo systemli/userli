@@ -12,6 +12,7 @@ form:
   twofactor-secret-invalid: "Der Verifizierungscode ist ungültig."
   twofactor-backup-ack-missing: "Dies muss muss ausgewählt werden."
   lowercase: "Die Zeichenkette darf keine Großbuchstaben enthalten."
+  unique-field: "Dieser Wert wird bereits verwendet."
 
 registration:
   voucher-invalid: Der Einladungscode ist ungültig.

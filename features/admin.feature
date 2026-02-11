@@ -173,31 +173,28 @@ Feature: Admin
   @admin
   Scenario: Access ReservedName List and able to create a ReservedName as Admin
     When I am authenticated as "louis@example.org"
-    And I am on "/admin/reservedname/list"
+    And I am on "/settings/reserved-names/"
     Then the response status code should be 200
 
-    When I am on "/admin/reservedname/create"
+    When I am on "/settings/reserved-names/create"
     Then the response status code should be 200
 
   @admin
   Scenario: Access ReservedName List and able to create a ReservedName as Domain Admin
     When I am authenticated as "domain@example.com"
-    And I am on "/admin/reservedname/list"
+    And I am on "/settings/reserved-names/"
     Then the response status code should be 403
 
-    When I am on "/admin/reservedname/create"
+    When I am on "/settings/reserved-names/create"
     Then the response status code should be 403
 
   @admin
-  Scenario: Admin can remove Vouchers, Aliases and ReservedNames
+  Scenario: Admin can remove Vouchers and Aliases
     When I am authenticated as "louis@example.org"
     And I am on "/admin/voucher/1/delete"
     Then the response status code should be 200
 
     When I am on "/admin/alias/1/delete"
-    Then the response status code should be 200
-
-    When I am on "/admin/reservedname/1/delete"
     Then the response status code should be 200
 
   @admin

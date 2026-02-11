@@ -22,4 +22,35 @@ final class ReservedNameRepository extends ServiceEntityRepository
     {
         return $this->findOneBy(['name' => $name]);
     }
+
+    public function countBySearch(string $search = ''): int
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->select('COUNT(r.id)');
+
+        if ('' !== $search) {
+            $qb->where('r.name LIKE :search')
+                ->setParameter('search', '%'.$search.'%');
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @return ReservedName[]
+     */
+    public function findPaginatedBySearch(string $search, int $limit, int $offset): array
+    {
+        $qb = $this->createQueryBuilder('r')
+            ->orderBy('r.id', 'DESC')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        if ('' !== $search) {
+            $qb->where('r.name LIKE :search')
+                ->setParameter('search', '%'.$search.'%');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }
