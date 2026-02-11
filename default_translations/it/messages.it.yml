@@ -11,7 +11,7 @@ navbar:
 
 start:
   registration-header: Registrazione
-  title: Benvenuto/a su %domain%
+  title: Benvenuto/a su %app_name%
   registration-button: Crea un account
   aliases: Indirizzi alias
   aliases-desc: Nascondi la tua identità

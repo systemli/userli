@@ -75,7 +75,7 @@ start:
   vouchers-desc: Lad dini Fründe ii
   account-settings-desc: Passwörter und meh
   webmail-desc: E-Mails läse und schriibe
-  title: Wiukomme bi %domain%
+  title: Wiukomme bi %app_name%
   webmail: Webmail
 welcome:
   text: >

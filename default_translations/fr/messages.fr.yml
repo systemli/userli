@@ -10,7 +10,7 @@ navbar:
   open-main-menu: Ouvrir le menu principal
 
 start:
-  title: Bienvenue sur %domain%
+  title: Bienvenue sur %app_name%
   intro: Ici vous pouvez configurer et gérer vos comptes de messagerie.
   registration-header: Inscription
   registration-text: >

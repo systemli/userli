@@ -16,7 +16,7 @@ navbar:
   light-mode: Hellmodus
 
 start:
-  title: Willkommen bei %domain%
+  title: Willkommen bei %app_name%
   intro: Hier kannst du dein E-Mail-Konto erstellen und verwalten.
   registration-header: Registrierung
   registration-text: >

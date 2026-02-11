@@ -16,7 +16,7 @@ navbar:
   light-mode: Light mode
 
 start:
-  title: Welcome to %domain%
+  title: Welcome to %app_name%
   intro: Here you can set up and manage your e-mail account.
   registration-header: Registration
   registration-text: >

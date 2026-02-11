@@ -3,9 +3,9 @@
 {% set project_name = setting('project_name') %}
 {% set app_url = setting('app_url') %}
 
-{% block title %}{{ domain }} - {{ "welcome.headline"|trans({'%domain%': domain, '%project_name%': project_name}) }}{% endblock %}
+{% block title %}{{ setting('app_name') }} - {{ "welcome.headline"|trans({'%project_name%': project_name}) }}{% endblock %}
 
-{% block page_title %}{{ "welcome.headline"|trans({'%domain%': domain, '%project_name%': project_name}) }}{% endblock %}
+{% block page_title %}{{ "welcome.headline"|trans({'%project_name%': project_name}) }}{% endblock %}
 
 {% block page_subtitle %}{{ "welcome.lead"|trans }}{% endblock %}
 

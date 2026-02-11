@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% if domain is defined %}{{ domain }} - {% endif %}{{ "error.title"|trans|default("Oops, an error occurred.") }}</title>
+    <title>{{ setting('app_name') }} - {{ "error.title"|trans|default("Oops, an error occurred.") }}</title>
     <link rel="stylesheet" href="{{ asset('build/app.css') }}">
     <script>
         (function() {

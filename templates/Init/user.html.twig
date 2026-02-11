@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ domain }} - {{ "init.title"|trans }}{% endblock %}
+{% block title %}{{ setting('app_name') }} - {{ "init.title"|trans }}{% endblock %}
 
 {% form_theme form 'Form/fields.html.twig' %}
 

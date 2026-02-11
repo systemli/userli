@@ -1,6 +1,6 @@
 {% extends 'base_page.html.twig' %}
 
-{% block title %}{{ domain }} - {{ "account.twofactor.headline"|trans }}{% endblock %}
+{% block title %}{{ setting('app_name') }} - {{ "account.twofactor.headline"|trans }}{% endblock %}
 
 {% form_theme form 'Form/fields.html.twig' %}
 
