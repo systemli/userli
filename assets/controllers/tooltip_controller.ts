@@ -19,14 +19,17 @@ import { Controller } from "@hotwired/stimulus";
  *   </button>
  */
 export default class extends Controller {
+  declare hasContentValue: boolean;
+  declare contentValue: string;
+
   static values = {
     content: String,
   };
 
-  connect() {
-    this._tooltip = null;
-    this._title = "";
+  private _tooltip: HTMLDivElement | null = null;
+  private _title: string = "";
 
+  connect(): void {
     this._show = this._show.bind(this);
     this._hide = this._hide.bind(this);
 
@@ -36,7 +39,7 @@ export default class extends Controller {
     this.element.addEventListener("blur", this._hide);
   }
 
-  disconnect() {
+  disconnect(): void {
     this._hide();
     this.element.removeEventListener("mouseenter", this._show);
     this.element.removeEventListener("mouseleave", this._hide);
@@ -44,7 +47,7 @@ export default class extends Controller {
     this.element.removeEventListener("blur", this._hide);
   }
 
-  _show() {
+  private _show(): void {
     const text =
       this.hasContentValue && this.contentValue
         ? this.contentValue
@@ -75,7 +78,7 @@ export default class extends Controller {
     this._tooltip = tooltip;
   }
 
-  _hide() {
+  private _hide(): void {
     if (this._tooltip) {
       this._tooltip.remove();
       this._tooltip = null;

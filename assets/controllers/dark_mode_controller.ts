@@ -21,22 +21,28 @@ import { Controller } from "@hotwired/stimulus";
  *     <svg data-dark-mode-target="moon">...</svg>
  *   </button>
  */
-export default class extends Controller {
+export default class extends Controller<HTMLElement> {
+  declare hasSunTarget: boolean;
+  declare sunTarget: HTMLElement;
+  declare hasMoonTarget: boolean;
+  declare moonTarget: HTMLElement;
+
   static targets = ["sun", "moon"];
 
-  connect() {
-    this._onSystemChange = this._onSystemChange.bind(this);
+  private _mediaQuery!: MediaQueryList;
+
+  connect(): void {
     this._mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     this._mediaQuery.addEventListener("change", this._onSystemChange);
 
     this._updateIcons();
   }
 
-  disconnect() {
+  disconnect(): void {
     this._mediaQuery.removeEventListener("change", this._onSystemChange);
   }
 
-  toggle() {
+  toggle(): void {
     const isDark = document.documentElement.classList.contains("dark");
 
     if (isDark) {
@@ -50,7 +56,7 @@ export default class extends Controller {
     this._updateIcons();
   }
 
-  _updateIcons() {
+  private _updateIcons(): void {
     const isDark = document.documentElement.classList.contains("dark");
 
     this.element.setAttribute("aria-pressed", isDark ? "true" : "false");
@@ -66,7 +72,7 @@ export default class extends Controller {
     }
   }
 
-  _onSystemChange(event) {
+  private _onSystemChange = (event: MediaQueryListEvent): void => {
     // Only apply system preference if user hasn't set an explicit preference
     if (!localStorage.getItem("theme")) {
       if (event.matches) {
@@ -76,5 +82,5 @@ export default class extends Controller {
       }
       this._updateIcons();
     }
-  }
+  };
 }

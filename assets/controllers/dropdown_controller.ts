@@ -31,13 +31,24 @@ import { Controller } from "@hotwired/stimulus";
  *   </div>
  */
 export default class extends Controller {
+  declare modeValue: string;
+  declare hasMenuTarget: boolean;
+  declare menuTarget: HTMLElement;
+  declare hasButtonTarget: boolean;
+  declare buttonTarget: HTMLElement;
+  declare hasArrowTarget: boolean;
+  declare arrowTarget: HTMLElement;
+  declare hasIconOpenTarget: boolean;
+  declare iconOpenTarget: HTMLElement;
+  declare hasIconCloseTarget: boolean;
+  declare iconCloseTarget: HTMLElement;
+
   static targets = ["button", "menu", "arrow", "iconOpen", "iconClose"];
   static values = { mode: { type: String, default: "animated" } };
 
-  connect() {
-    this.isOpen = false;
+  private isOpen: boolean = false;
 
-    // Bind handlers so we can add/remove them cleanly
+  connect(): void {
     this._onOutsideClick = this._onOutsideClick.bind(this);
     this._onKeydown = this._onKeydown.bind(this);
 
@@ -45,12 +56,12 @@ export default class extends Controller {
     document.addEventListener("keydown", this._onKeydown);
   }
 
-  disconnect() {
+  disconnect(): void {
     document.removeEventListener("click", this._onOutsideClick);
     document.removeEventListener("keydown", this._onKeydown);
   }
 
-  toggle(event) {
+  toggle(event: Event): void {
     event.preventDefault();
     event.stopPropagation();
 
@@ -61,7 +72,7 @@ export default class extends Controller {
     }
   }
 
-  open() {
+  open(): void {
     if (!this.hasMenuTarget) return;
 
     this.isOpen = true;
@@ -75,7 +86,7 @@ export default class extends Controller {
       this.menuTarget.classList.remove(
         "opacity-0",
         "scale-95",
-        "pointer-events-none"
+        "pointer-events-none",
       );
       this.menuTarget.classList.add("opacity-100", "scale-100");
       if (this.hasArrowTarget) this.arrowTarget.classList.add("rotate-180");
@@ -86,7 +97,7 @@ export default class extends Controller {
     }
   }
 
-  close() {
+  close(): void {
     if (!this.hasMenuTarget) return;
 
     this.isOpen = false;
@@ -101,7 +112,7 @@ export default class extends Controller {
       this.menuTarget.classList.add(
         "opacity-0",
         "scale-95",
-        "pointer-events-none"
+        "pointer-events-none",
       );
       if (this.hasArrowTarget) this.arrowTarget.classList.remove("rotate-180");
     }
@@ -111,13 +122,13 @@ export default class extends Controller {
     }
   }
 
-  _onOutsideClick(event) {
-    if (this.isOpen && !this.element.contains(event.target)) {
+  private _onOutsideClick(event: Event): void {
+    if (this.isOpen && !this.element.contains(event.target as Node)) {
       this.close();
     }
   }
 
-  _onKeydown(event) {
+  private _onKeydown(event: KeyboardEvent): void {
     if (event.key === "Escape" && this.isOpen) {
       this.close();
       if (this.hasButtonTarget) this.buttonTarget.focus();

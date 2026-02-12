@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+import type { ZxcvbnResult } from "@zxcvbn-ts/core";
 
 /* stimulusFetch: 'lazy' */
 
@@ -22,7 +23,23 @@ import { Controller } from "@hotwired/stimulus";
  *     <p data-password-strength-target="feedback"></p>
  *   </div>
  */
-export default class extends Controller {
+
+interface ScoreColor {
+  active: string[];
+  count: number;
+}
+
+type ZxcvbnFunction = (password: string, userInputs?: (string | number)[]) => ZxcvbnResult;
+
+export default class extends Controller<HTMLElement> {
+  declare inputTarget: HTMLInputElement;
+  declare segmentTargets: HTMLElement[];
+  declare hasFeedbackTarget: boolean;
+  declare feedbackTarget: HTMLElement;
+  declare strongLabelValue: string;
+  declare minLengthValue: number;
+  declare minLengthLabelValue: string;
+
   static targets = ["input", "segment", "feedback"];
 
   static values = {
@@ -32,7 +49,7 @@ export default class extends Controller {
   };
 
   // Score-to-color mapping for the strength segments
-  static SCORE_COLORS = [
+  static SCORE_COLORS: ScoreColor[] = [
     { active: ["bg-red-500", "dark:bg-red-400"], count: 1 },
     { active: ["bg-orange-500", "dark:bg-orange-400"], count: 2 },
     { active: ["bg-yellow-500", "dark:bg-yellow-400"], count: 3 },
@@ -40,9 +57,9 @@ export default class extends Controller {
     { active: ["bg-green-600", "dark:bg-green-400"], count: 4 },
   ];
 
-  static INACTIVE_CLASSES = ["bg-gray-200", "dark:bg-gray-600"];
+  static INACTIVE_CLASSES: string[] = ["bg-gray-200", "dark:bg-gray-600"];
 
-  static ALL_COLOR_CLASSES = [
+  static ALL_COLOR_CLASSES: string[] = [
     "bg-red-500",
     "dark:bg-red-400",
     "bg-orange-500",
@@ -57,14 +74,17 @@ export default class extends Controller {
     "dark:bg-gray-600",
   ];
 
-  connect() {
+  private _zxcvbn: ZxcvbnFunction | null = null;
+  private _debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+  connect(): void {
     this._zxcvbn = null;
     this._debounceTimer = null;
 
     this._resetMeter();
   }
 
-  disconnect() {
+  disconnect(): void {
     if (this._debounceTimer) {
       clearTimeout(this._debounceTimer);
       this._debounceTimer = null;
@@ -75,9 +95,9 @@ export default class extends Controller {
    * Lazy-load zxcvbn-ts on first focus, then evaluate.
    * Bound via data-action="focus->password-strength#loadAndEvaluate:once"
    */
-  loadAndEvaluate() {
+  loadAndEvaluate(): void {
     if (!this._zxcvbn) {
-      this._loadZxcvbn().catch((err) => {
+      this._loadZxcvbn().catch((err: unknown) => {
         console.error("Failed to load password strength library:", err);
       });
     }
@@ -87,14 +107,16 @@ export default class extends Controller {
    * Evaluate password strength on input (debounced).
    * Bound via data-action="input->password-strength#evaluate"
    */
-  evaluate() {
-    clearTimeout(this._debounceTimer);
+  evaluate(): void {
+    if (this._debounceTimer) {
+      clearTimeout(this._debounceTimer);
+    }
     this._debounceTimer = setTimeout(() => this._doEvaluate(), 150);
   }
 
   // -- Private --
 
-  _loadZxcvbn() {
+  private _loadZxcvbn(): Promise<void> {
     const locale = (document.documentElement.lang || "en")
       .split("-")[0]
       .toLowerCase();
@@ -120,7 +142,7 @@ export default class extends Controller {
     });
   }
 
-  _doEvaluate() {
+  private _doEvaluate(): void {
     const password = this.inputTarget.value;
 
     if (!password) {
@@ -148,38 +170,39 @@ export default class extends Controller {
       } else {
         const text =
           result.feedback.warning || result.feedback.suggestions.join(" ");
-        this._showFeedback(text, false);
+        this._showFeedback(text || "", false);
       }
     }
   }
 
-  _updateMeter(score) {
-    const config =
-      this.constructor.SCORE_COLORS[score] || this.constructor.SCORE_COLORS[0];
+  private _updateMeter(score: number): void {
+    const ctor = this.constructor as typeof Controller & {
+      SCORE_COLORS: ScoreColor[];
+      ALL_COLOR_CLASSES: string[];
+      INACTIVE_CLASSES: string[];
+    };
+    const config = ctor.SCORE_COLORS[score] || ctor.SCORE_COLORS[0];
 
     this.segmentTargets.forEach((segment, index) => {
-      this.constructor.ALL_COLOR_CLASSES.forEach((cls) =>
-        segment.classList.remove(cls),
-      );
+      ctor.ALL_COLOR_CLASSES.forEach((cls) => segment.classList.remove(cls));
 
       if (index < config.count) {
         config.active.forEach((cls) => segment.classList.add(cls));
       } else {
-        this.constructor.INACTIVE_CLASSES.forEach((cls) =>
-          segment.classList.add(cls),
-        );
+        ctor.INACTIVE_CLASSES.forEach((cls) => segment.classList.add(cls));
       }
     });
   }
 
-  _resetMeter() {
+  private _resetMeter(): void {
+    const ctor = this.constructor as typeof Controller & {
+      ALL_COLOR_CLASSES: string[];
+      INACTIVE_CLASSES: string[];
+    };
+
     this.segmentTargets.forEach((segment) => {
-      this.constructor.ALL_COLOR_CLASSES.forEach((cls) =>
-        segment.classList.remove(cls),
-      );
-      this.constructor.INACTIVE_CLASSES.forEach((cls) =>
-        segment.classList.add(cls),
-      );
+      ctor.ALL_COLOR_CLASSES.forEach((cls) => segment.classList.remove(cls));
+      ctor.INACTIVE_CLASSES.forEach((cls) => segment.classList.add(cls));
     });
 
     if (this.hasFeedbackTarget) {
@@ -190,7 +213,7 @@ export default class extends Controller {
     }
   }
 
-  _showFeedback(text, isStrong) {
+  private _showFeedback(text: string, isStrong: boolean): void {
     const el = this.feedbackTarget;
     el.textContent = text;
 

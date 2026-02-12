@@ -13,11 +13,13 @@ import { Controller } from "@hotwired/stimulus";
  *   </form>
  */
 export default class extends Controller {
+  declare messageValue: string;
+
   static values = {
     message: { type: String, default: "Are you sure?" },
   };
 
-  prompt(event) {
+  prompt(event: Event): void {
     if (!window.confirm(this.messageValue)) {
       event.preventDefault();
     }

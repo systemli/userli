@@ -15,27 +15,29 @@ import { Controller } from "@hotwired/stimulus";
  * Values:
  *   autoDismiss (Number): Delay in ms before auto-dismissing. 0 = disabled.
  */
-export default class extends Controller {
+export default class extends Controller<HTMLElement> {
+  declare autoDismissValue: number;
+
   static values = {
     autoDismiss: { type: Number, default: 0 },
   };
 
-  connect() {
-    this._timer = null;
+  private _timer: ReturnType<typeof setTimeout> | null = null;
 
+  connect(): void {
     if (this.autoDismissValue > 0) {
       this._timer = setTimeout(() => this.dismiss(), this.autoDismissValue);
     }
   }
 
-  disconnect() {
+  disconnect(): void {
     if (this._timer) {
       clearTimeout(this._timer);
       this._timer = null;
     }
   }
 
-  dismiss() {
+  dismiss(): void {
     if (this._timer) {
       clearTimeout(this._timer);
       this._timer = null;

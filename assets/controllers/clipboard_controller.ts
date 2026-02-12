@@ -25,21 +25,37 @@ import Clipboard from "@stimulus-components/clipboard";
  *     </button>
  *   </div>
  */
+
+declare type ClipboardWithSourceTarget = Clipboard & {
+  hasSourceTarget: boolean;
+  sourceTarget: HTMLInputElement;
+  hasContentValue: boolean;
+  contentValue: string;
+  hasSuccessContentValue: boolean;
+  successContentValue: string;
+  hasButtonTarget: boolean;
+  buttonTarget: HTMLElement;
+  originalContent: string;
+  successDurationValue: number;
+  timeout: ReturnType<typeof setTimeout>;
+};
+
 export default class extends Clipboard {
   static values = {
     ...Clipboard.values,
     content: String,
   };
 
-  copy(event) {
+  copy(event: Event): void {
     event.preventDefault();
 
-    let text;
+    const self = this as unknown as ClipboardWithSourceTarget;
+    let text: string;
 
-    if (this.hasSourceTarget) {
-      text = this.sourceTarget.innerHTML || this.sourceTarget.value;
-    } else if (this.hasContentValue) {
-      text = this.contentValue;
+    if (self.hasSourceTarget) {
+      text = self.sourceTarget.innerHTML || self.sourceTarget.value;
+    } else if (self.hasContentValue) {
+      text = self.contentValue;
     } else {
       return;
     }
@@ -47,29 +63,32 @@ export default class extends Clipboard {
     navigator.clipboard.writeText(text).then(() => this.copied());
   }
 
-  get _feedbackElement() {
-    return this.hasButtonTarget ? this.buttonTarget : this.element;
+  get _feedbackElement(): HTMLElement {
+    const self = this as unknown as ClipboardWithSourceTarget;
+    return self.hasButtonTarget ? self.buttonTarget : this.element as HTMLElement;
   }
 
-  connect() {
-    this.originalContent = this._feedbackElement.innerHTML;
+  connect(): void {
+    (this as unknown as ClipboardWithSourceTarget).originalContent =
+      this._feedbackElement.innerHTML;
   }
 
-  copied() {
+  copied(): void {
+    const self = this as unknown as ClipboardWithSourceTarget;
     const el = this._feedbackElement;
 
-    if (this.timeout) {
-      clearTimeout(this.timeout);
+    if (self.timeout) {
+      clearTimeout(self.timeout);
     }
 
-    const content = this.hasSuccessContentValue
-      ? this.successContentValue
+    const content = self.hasSuccessContentValue
+      ? self.successContentValue
       : '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>';
 
     el.innerHTML = content;
 
-    this.timeout = setTimeout(() => {
-      el.innerHTML = this.originalContent;
-    }, this.successDurationValue);
+    self.timeout = setTimeout(() => {
+      el.innerHTML = self.originalContent;
+    }, self.successDurationValue);
   }
 }
