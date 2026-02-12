@@ -32,10 +32,12 @@
                             {{ ux_icon('heroicons:check-circle', {class: 'w-5 h-5 text-green-600 dark:text-green-400 mr-2'}) }}
                             <span class="text-sm font-medium text-green-800 dark:text-green-200">{{ "settings.api.created.title"|trans }}</span>
                         </div>
-                        <div class="flex items-center bg-white dark:bg-gray-700 border border-green-200 dark:border-green-700 rounded-lg p-3">
-                            <pre id="new-token-display" class="flex-1 text-sm font-mono text-gray-900 dark:text-gray-100 mr-3 whitespace-pre-wrap break-all">{{ newToken }}</pre>
+                        <div class="flex items-center bg-white dark:bg-gray-700 border border-green-200 dark:border-green-700 rounded-lg p-3"
+                             data-controller="clipboard">
+                            <pre data-clipboard-target="source" class="flex-1 text-sm font-mono text-gray-900 dark:text-gray-100 mr-3 whitespace-pre-wrap break-all">{{ newToken }}</pre>
                             <button type="button"
-                                    onclick="copyToClipboard('new-token-display')"
+                                    data-clipboard-target="button"
+                                    data-action="clipboard#copy"
                                     class="px-3 py-2 bg-green-600 dark:bg-green-500 text-white rounded hover:bg-green-700 dark:hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors flex-shrink-0">
                                 <!-- heroicons:clipboard -->
                                 {{ ux_icon('heroicons:clipboard', {class: 'w-4 h-4'}) }}
@@ -148,65 +150,6 @@
     </div>
 
     <script>
-        {% if newToken is defined and newToken is not null %}
-            function copyToClipboard(elementId) {
-                const element = document.getElementById(elementId);
-                const text = element.textContent;
-
-                try {
-                    navigator.clipboard.writeText(text).then(() => {
-                        // Visual feedback
-                        const button = element.nextElementSibling;
-                        const originalContent = button.innerHTML;
-                        button.innerHTML = '{{ ux_icon('heroicons:check', {class: 'w-4 h-4'}) }}';
-                        button.classList.remove('bg-green-600', 'hover:bg-green-700');
-                        button.classList.add('bg-green-700');
-
-                        setTimeout(() => {
-                            button.innerHTML = originalContent;
-                            button.classList.remove('bg-green-700');
-                            button.classList.add('bg-green-600', 'hover:bg-green-700');
-                        }, 2000);
-                    }).catch(() => {
-                        // Fallback for older browsers
-                        fallbackCopy(text, element);
-                    });
-                } catch (err) {
-                    // Fallback for older browsers
-                    fallbackCopy(text, element);
-                }
-            }
-
-            function fallbackCopy(text, element) {
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.select();
-
-                try {
-                    document.execCommand('copy');
-
-                    // Visual feedback
-                    const button = element.nextElementSibling;
-                    const originalContent = button.innerHTML;
-                    button.innerHTML = '{{ ux_icon('heroicons:check', {class: 'w-4 h-4'}) }}';
-                    button.classList.remove('bg-green-600', 'hover:bg-green-700');
-                    button.classList.add('bg-green-700');
-
-                    setTimeout(() => {
-                        button.innerHTML = originalContent;
-                        button.classList.remove('bg-green-700');
-                        button.classList.add('bg-green-600', 'hover:bg-green-700');
-                    }, 2000);
-
-                } catch (err) {
-                    console.error('Failed to copy token: ', err);
-                }
-
-                document.body.removeChild(textArea);
-            }
-        {% endif %}
-
         function confirmDelete(tokenId, tokenName) {
             const message = '{{ "settings.api.delete.confirm"|trans({'%name%': '__TOKEN_NAME__'})|e('js') }}'.replace('__TOKEN_NAME__', tokenName);
 

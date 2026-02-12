@@ -48,9 +48,9 @@
                             </div>
                             <button type="button"
                                     class="inline-flex items-center p-2 text-xs font-medium text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-md hover:bg-gray-50 dark:hover:bg-gray-500 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-700 transition-colors duration-200"
-                                    onclick="copyToClipboard('{{ user.totpSecret }}', this)"
-                                    data-button="copy-to-clipboard"
-                                    data-value="{{ user.totpSecret }}"
+                                    data-controller="clipboard"
+                                    data-clipboard-content-value="{{ user.totpSecret }}"
+                                    data-action="clipboard#copy"
                                     title="{{ "copy-to-clipboard"|trans }}"
                                     aria-label="{{ "copy-to-clipboard"|trans }}">
                                 {{ ux_icon('heroicons:clipboard', {'class': 'w-4 h-4'}) }}
