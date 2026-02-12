@@ -51,30 +51,6 @@
   @apply text-center;
 }
 
-/* Popover Styles */
-.popover {
-  @apply absolute z-50 max-w-xs bg-white border border-gray-200 rounded-lg shadow-lg;
-  @apply dark:bg-gray-800 dark:border-gray-700;
-}
-
-.popover.fade {
-  @apply opacity-0 transition-opacity duration-150;
-}
-
-.popover.fade.in {
-  @apply opacity-100;
-}
-
-.popover-title {
-  @apply px-3 py-2 text-sm font-semibold text-gray-900 border-b border-gray-200 bg-gray-50 rounded-t-lg;
-  @apply dark:text-gray-100 dark:border-gray-700 dark:bg-gray-700;
-}
-
-.popover-content {
-  @apply px-3 py-2 text-sm text-gray-700;
-  @apply dark:text-gray-300;
-}
-
 /* Custom Checkbox with Tailwind utilities to fix firefox default style */
 input[type="checkbox"].custom-checkbox {
   @apply h-4 w-4 appearance-none rounded border border-gray-300 bg-white cursor-pointer;

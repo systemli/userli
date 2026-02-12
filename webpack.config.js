@@ -9,8 +9,8 @@ Encore
   // only needed for CDN's or sub-directory deploy
   //.setManifestKeyPrefix('build/')
 
-  // Tell Webpack to *not* output a separate runtime.js file.
-  .disableSingleRuntimeChunk()
+  // Enable a single runtime chunk (required by Stimulus bridge)
+  .enableSingleRuntimeChunk()
 
   /*
    * ENTRY CONFIG
@@ -39,6 +39,9 @@ Encore
 
   // Enable PostCSS support for Tailwind CSS
   .enablePostCssLoader()
+
+  // Enable Stimulus bridge for auto-loading controllers
+  .enableStimulusBridge("./assets/controllers.json")
 
   .addPlugin(
     new CopyWebpackPlugin({

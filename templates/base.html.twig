@@ -6,11 +6,11 @@
     <title>{% block title %}{{ setting('app_name') }} - {{ "index.title"|trans }}{% endblock %}</title>
 
     {% block head_style %}
-        <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+        {{ encore_entry_link_tags('app') }}
     {% endblock %}
 
     {% block head_script %}
-        <script src="{{ asset('build/app.js') }}"></script>
+        {{ encore_entry_script_tags('app') }}
     {% endblock %}
 
     {# Dark mode initialization - respects system preference and saved preference #}
