@@ -77,7 +77,12 @@ final class ApiTokenController extends AbstractController
     #[Route('/settings/api/delete/{id}', name: 'settings_api_delete', methods: ['POST'])]
     public function delete(
         #[MapEntity(class: ApiToken::class, mapping: ['id' => 'id'])] ?ApiToken $apiToken,
+        Request $request,
     ): RedirectResponse {
+        if (!$this->isCsrfTokenValid('delete_api_token_'.$apiToken->getId(), $request->request->get('_token'))) {
+            return $this->redirectToRoute('settings_api_show');
+        }
+
         $this->apiTokenManager->delete($apiToken);
 
         $this->addFlash('success', 'settings.api.delete.success');

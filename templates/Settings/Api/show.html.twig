@@ -132,13 +132,19 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div class="flex justify-end">
-                                                    <button type="button"
-                                                            onclick="confirmDelete('{{ token.id }}', '{{ token.name|e('js') }}')"
-                                                            class="inline-flex items-center px-3 py-1.5 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
-                                                        <!-- heroicons:trash -->
-                                                        {{ ux_icon('heroicons:trash', {class: 'w-4 h-4 mr-1'}) }}
-                                                        {{ "settings.api.table.delete"|trans }}
-                                                    </button>
+                                                    <form method="POST"
+                                                          action="{{ path('settings_api_delete', {'id': token.id}) }}"
+                                                          data-controller="confirm"
+                                                          data-confirm-message-value="{{ "settings.api.delete.confirm"|trans({'%name%': token.name}) }}"
+                                                          data-action="submit->confirm#prompt">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('delete_api_token_' ~ token.id) }}">
+                                                        <button type="submit"
+                                                                class="inline-flex items-center px-3 py-1.5 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                                                            <!-- heroicons:trash -->
+                                                            {{ ux_icon('heroicons:trash', {class: 'w-4 h-4 mr-1'}) }}
+                                                            {{ "settings.api.table.delete"|trans }}
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </td>
                                         </tr>
@@ -151,34 +157,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        function confirmDelete(tokenId, tokenName) {
-            const message = '{{ "settings.api.delete.confirm"|trans({'%name%': '__TOKEN_NAME__'})|e('js') }}'.replace('__TOKEN_NAME__', tokenName);
-
-            if (confirm(message)) {
-                // Create and submit form for DELETE request
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = '{{ path('settings_api_delete', {'id': '__TOKEN_ID__'}) }}'.replace('__TOKEN_ID__', tokenId);
-
-                // Add CSRF token
-                const csrfInput = document.createElement('input');
-                csrfInput.type = 'hidden';
-                csrfInput.name = '_token';
-                csrfInput.value = '{{ csrf_token('delete_api_token_' ~ '__TOKEN_ID__') }}'.replace('__TOKEN_ID__', tokenId);
-                form.appendChild(csrfInput);
-
-                // Add method override for DELETE
-                const methodInput = document.createElement('input');
-                methodInput.type = 'hidden';
-                methodInput.name = '_method';
-                methodInput.value = 'DELETE';
-                form.appendChild(methodInput);
-
-                document.body.appendChild(form);
-                form.submit();
-            }
-        }
-    </script>
 {% endblock %}
