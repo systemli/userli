@@ -46,3 +46,8 @@ psalm-baseline.xml
 psalm.sarif
 .psalm/
 ###< psalm/plugin-symfony ###
+
+###> symfony/webpack-encore-bundle ###
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
