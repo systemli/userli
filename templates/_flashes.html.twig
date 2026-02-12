@@ -2,7 +2,11 @@
     <div class="fixed top-28 right-4 z-40 space-y-3 max-w-sm w-full sm:max-w-md">
         {% for type, messages in app.session.flashbag.all %}
             {% for message in messages %}
-                <div class="flash-alert flex items-start p-4 rounded-lg shadow-lg border-l-4 transition-all duration-300 backdrop-blur-sm {% if type == 'error' %}bg-red-50/95 dark:bg-red-900/90 border-red-400 dark:border-red-500 text-red-800 dark:text-red-200{% elseif type == 'success' %}bg-green-50/95 dark:bg-green-900/90 border-green-400 dark:border-green-500 text-green-800 dark:text-green-200{% elseif type == 'info' %}bg-blue-50/95 dark:bg-blue-900/90 border-blue-400 dark:border-blue-500 text-blue-800 dark:text-blue-200{% elseif type == 'warning' %}bg-yellow-50/95 dark:bg-yellow-900/90 border-yellow-400 dark:border-yellow-500 text-yellow-800 dark:text-yellow-200{% else %}bg-gray-50/95 dark:bg-gray-800/90 border-gray-400 dark:border-gray-500 text-gray-800 dark:text-gray-200{% endif %}" role="alert" aria-live="polite">
+                <div class="flash-alert flex items-start p-4 rounded-lg shadow-lg border-l-4 transition-all duration-300 backdrop-blur-sm {% if type == 'error' %}bg-red-50/95 dark:bg-red-900/90 border-red-400 dark:border-red-500 text-red-800 dark:text-red-200{% elseif type == 'success' %}bg-green-50/95 dark:bg-green-900/90 border-green-400 dark:border-green-500 text-green-800 dark:text-green-200{% elseif type == 'info' %}bg-blue-50/95 dark:bg-blue-900/90 border-blue-400 dark:border-blue-500 text-blue-800 dark:text-blue-200{% elseif type == 'warning' %}bg-yellow-50/95 dark:bg-yellow-900/90 border-yellow-400 dark:border-yellow-500 text-yellow-800 dark:text-yellow-200{% else %}bg-gray-50/95 dark:bg-gray-800/90 border-gray-400 dark:border-gray-500 text-gray-800 dark:text-gray-200{% endif %}"
+                     role="alert"
+                     aria-live="polite"
+                     data-controller="flash-notification"
+                     {% if type == 'success' %}data-flash-notification-auto-dismiss-value="5000"{% endif %}>
 
                     <div class="flex-shrink-0 mr-3 mt-0.5">
                         {% if type == 'error' %}
@@ -27,7 +31,10 @@
 
                     {# Dismiss button #}
                     <div class="flex-shrink-0 ml-4">
-                        <button type="button" class="flash-dismiss inline-flex rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent transition-colors {% if type == 'error' %}text-red-500 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-800 focus:ring-red-600{% elseif type == 'success' %}text-green-500 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-800 focus:ring-green-600{% elseif type == 'info' %}text-blue-500 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-800 focus:ring-blue-600{% elseif type == 'warning' %}text-yellow-500 dark:text-yellow-400 hover:bg-yellow-100 dark:hover:bg-yellow-800 focus:ring-yellow-600{% else %}text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-gray-600{% endif %}" aria-label="{{ 'flashes.dismiss'|trans }}">
+                        <button type="button"
+                                class="inline-flex rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent transition-colors {% if type == 'error' %}text-red-500 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-800 focus:ring-red-600{% elseif type == 'success' %}text-green-500 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-800 focus:ring-green-600{% elseif type == 'info' %}text-blue-500 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-800 focus:ring-blue-600{% elseif type == 'warning' %}text-yellow-500 dark:text-yellow-400 hover:bg-yellow-100 dark:hover:bg-yellow-800 focus:ring-yellow-600{% else %}text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-gray-600{% endif %}"
+                                aria-label="{{ 'flashes.dismiss'|trans }}"
+                                data-action="flash-notification#dismiss">
                             {{ ux_icon('heroicons:x-mark', {'class': 'w-4 h-4'}) }}
                         </button>
                     </div>
@@ -35,37 +42,4 @@
             {% endfor %}
         {% endfor %}
     </div>
-
-    {# JavaScript for enhanced dismiss functionality with auto-dismiss #}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.flash-dismiss').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    const alert = this.closest('.flash-alert');
-                    dismissAlert(alert);
-                });
-            });
-
-            // Auto-dismiss success messages after 5 seconds
-            document.querySelectorAll('.flash-alert').forEach(function(alert) {
-                if (alert.classList.contains('bg-green-50/95')) {
-                    setTimeout(function() {
-                        if (alert.parentNode) {
-                            dismissAlert(alert);
-                        }
-                    }, 5000);
-                }
-            });
-
-            function dismissAlert(alert) {
-                alert.style.opacity = '0';
-                alert.style.transform = 'translateX(100%)';
-                setTimeout(function() {
-                    if (alert.parentNode) {
-                        alert.remove();
-                    }
-                }, 300);
-            }
-        });
-    </script>
 {% endif %}
