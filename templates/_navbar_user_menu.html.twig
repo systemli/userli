@@ -3,15 +3,16 @@
     <div class="flex items-center space-x-4 ml-auto">
         {# Dark Mode Toggle #}
         <button type="button"
-                id="dark-mode-toggle"
+                data-controller="dark-mode"
+                data-action="dark-mode#toggle"
                 class="hidden sm:inline-flex items-center justify-center p-2 rounded-2xl text-gray-300 hover:text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300 hover:scale-105"
                 title="{{ 'navbar.toggle-dark-mode'|trans|default('Toggle Dark Mode') }}"
                 aria-label="{{ 'navbar.toggle-dark-mode'|trans|default('Toggle Dark Mode') }}"
                 aria-pressed="false">
             {# Sun icon (shown in dark mode) #}
-            {{ ux_icon('heroicons:sun', {class: 'icon-sun w-5 h-5 hidden'}) }}
+            {{ ux_icon('heroicons:sun', {class: 'w-5 h-5 hidden', 'data-dark-mode-target': 'sun'}) }}
             {# Moon icon (shown in light mode) #}
-            {{ ux_icon('heroicons:moon', {class: 'icon-moon w-5 h-5'}) }}
+            {{ ux_icon('heroicons:moon', {class: 'w-5 h-5', 'data-dark-mode-target': 'moon'}) }}
         </button>
 
         {# User Dropdown - Visible on md screens and up #}
@@ -81,14 +82,15 @@
     <div class="flex items-center space-x-3 ml-auto">
         {# Dark Mode Toggle #}
         <button type="button"
-                id="dark-mode-toggle"
+                data-controller="dark-mode"
+                data-action="dark-mode#toggle"
                 class="inline-flex items-center justify-center p-2 rounded-2xl text-gray-300 hover:text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300 hover:scale-105"
                 title="{{ 'navbar.toggle-dark-mode'|trans|default('Toggle Dark Mode') }}"
                 aria-label="{{ 'navbar.toggle-dark-mode'|trans|default('Toggle Dark Mode') }}">
             {# Sun icon (shown in dark mode) #}
-            {{ ux_icon('heroicons:sun', {class: 'icon-sun w-5 h-5 hidden'}) }}
+            {{ ux_icon('heroicons:sun', {class: 'w-5 h-5 hidden', 'data-dark-mode-target': 'sun'}) }}
             {# Moon icon (shown in light mode) #}
-            {{ ux_icon('heroicons:moon', {class: 'icon-moon w-5 h-5'}) }}
+            {{ ux_icon('heroicons:moon', {class: 'w-5 h-5', 'data-dark-mode-target': 'moon'}) }}
         </button>
 
         <a href="{{ path('login') }}"
