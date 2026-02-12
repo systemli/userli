@@ -67,83 +67,6 @@ function initializeSafeHtml() {
 }
 
 /**
- * Dark Mode Toggle Functionality
- *
- * The dark mode respects system preferences by default but allows users
- * to override it. The preference is stored in localStorage.
- */
-function initializeDarkMode() {
-  const darkModeToggle = document.getElementById("dark-mode-toggle");
-
-  if (!darkModeToggle) return;
-
-  // Update toggle button icon based on current theme
-  function updateToggleIcon() {
-    const isDark = document.documentElement.classList.contains("dark");
-    const sunIcon = darkModeToggle.querySelector(".icon-sun");
-    const moonIcon = darkModeToggle.querySelector(".icon-moon");
-
-    // Update aria-pressed for accessibility
-    darkModeToggle.setAttribute("aria-pressed", isDark ? "true" : "false");
-
-    if (sunIcon && moonIcon) {
-      if (isDark) {
-        sunIcon.classList.remove("hidden");
-        moonIcon.classList.add("hidden");
-      } else {
-        sunIcon.classList.add("hidden");
-        moonIcon.classList.remove("hidden");
-      }
-    }
-  }
-
-  // Toggle dark mode
-  darkModeToggle.addEventListener("click", function () {
-    const isDark = document.documentElement.classList.contains("dark");
-
-    if (isDark) {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    }
-
-    updateToggleIcon();
-  });
-
-  // Initialize toggle icon
-  updateToggleIcon();
-
-  // Listen for system theme changes
-  window
-    .matchMedia("(prefers-color-scheme: dark)")
-    .addEventListener("change", function (e) {
-      // Only apply system preference if user hasn't set a preference
-      if (!localStorage.getItem("theme")) {
-        if (e.matches) {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-        updateToggleIcon();
-      }
-    });
-}
-
-// Make toggleDarkMode globally available
-window.toggleDarkMode = function () {
-  const isDark = document.documentElement.classList.contains("dark");
-  if (isDark) {
-    document.documentElement.classList.remove("dark");
-    localStorage.setItem("theme", "light");
-  } else {
-    document.documentElement.classList.add("dark");
-    localStorage.setItem("theme", "dark");
-  }
-};
-
-/**
  * Password Strength Meter
  *
  * Uses zxcvbn-ts to evaluate password strength in real-time.
@@ -348,9 +271,6 @@ function initializePasswordStrength() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Initialize dark mode toggle
-  initializeDarkMode();
-
   // Initialize password strength meter
   initializePasswordStrength();
 

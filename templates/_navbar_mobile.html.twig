@@ -73,10 +73,11 @@
         {# Dark Mode Toggle Section #}
         <div class="p-3 sm:p-4">
             <button type="button"
-                    onclick="window.toggleDarkMode(); this.querySelector('.icon-sun').classList.toggle('hidden'); this.querySelector('.icon-moon').classList.toggle('hidden');"
+                    data-controller="dark-mode"
+                    data-action="dark-mode#toggle"
                     class="flex items-center w-full px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-300">
-                {{ ux_icon('heroicons:sun', {class: 'icon-sun w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0 hidden'}) }}
-                {{ ux_icon('heroicons:moon', {class: 'icon-moon w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
+                {{ ux_icon('heroicons:sun', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0 hidden', 'data-dark-mode-target': 'sun'}) }}
+                {{ ux_icon('heroicons:moon', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0', 'data-dark-mode-target': 'moon'}) }}
                 <span class="dark:hidden">{{ "navbar.dark-mode"|trans|default('Dark Mode') }}</span>
                 <span class="hidden dark:inline">{{ "navbar.light-mode"|trans|default('Light Mode') }}</span>
             </button>
