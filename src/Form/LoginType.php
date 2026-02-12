@@ -27,7 +27,6 @@ final class LoginType extends AbstractType
                 'required' => true,
                 'attr' => [
                     'autocomplete' => 'username email',
-                    'autofocus' => true,
                     'placeholder' => '',
                 ],
                 'help' => 'form.email-help',

@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
+use App\Form\LoginType;
 use App\Form\Model\VoucherCheck;
 use App\Form\VoucherCheckType;
 use App\Handler\RegistrationHandler;
@@ -15,12 +16,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 final class StartController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly RegistrationHandler $registrationHandler,
+        private readonly AuthenticationUtils $authenticationUtils,
     ) {
     }
 
@@ -38,6 +41,10 @@ final class StartController extends AbstractController
 
         return $this->render('Start/index_anonymous.html.twig', [
             'voucher_form' => $this->createForm(VoucherCheckType::class),
+            'login_form' => $this->createForm(LoginType::class, null, [
+                'last_username' => $this->authenticationUtils->getLastUsername(),
+                'action' => $this->generateUrl('login'),
+            ]),
         ]);
     }
 
@@ -60,6 +67,10 @@ final class StartController extends AbstractController
 
         return $this->render('Start/index_anonymous.html.twig', [
             'voucher_form' => $form,
+            'login_form' => $this->createForm(LoginType::class, null, [
+                'last_username' => $this->authenticationUtils->getLastUsername(),
+                'action' => $this->generateUrl('login'),
+            ]),
         ]);
     }
 

@@ -79,7 +79,6 @@ class LoginTypeTest extends TypeTestCase
 
         $usernameAttrs = $view->children['_username']->vars['attr'];
         self::assertSame('username email', $usernameAttrs['autocomplete']);
-        self::assertTrue($usernameAttrs['autofocus']);
     }
 
     public function testPasswordFieldAttributes(): void
