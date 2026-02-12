@@ -15,26 +15,26 @@
         </button>
 
         {# User Dropdown - Visible on md screens and up #}
-        <div class="hidden md:block relative" id="user-menu">
+        <div class="hidden md:block relative" data-controller="dropdown">
             <button type="button"
                     class="bg-white/10 hover:bg-white/20 flex text-sm rounded-2xl focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent transition-all duration-300 hover:scale-105 backdrop-blur-sm max-w-xs"
-                    id="user-menu-button"
+                    data-dropdown-target="button"
+                    data-action="dropdown#toggle"
                     aria-expanded="false"
                     aria-haspopup="true">
                 <span class="sr-only">{{ "navbar.open-user-menu"|trans }}</span>
                 <div class="flex items-center px-2 lg:px-3 py-2 space-x-2 min-w-0">
                     {{ ux_icon('heroicons:user-solid', {class: 'w-5 h-5 text-gray-300 flex-shrink-0'}) }}
                     <span class="text-gray-300 text-sm font-medium hidden lg:block truncate min-w-0" title="{{ app.user.email }}">{{ app.user.email }}</span>
-                    {{ ux_icon('heroicons:chevron-down', {class: 'w-4 h-4 text-gray-300 transition-transform duration-200 flex-shrink-0', id: 'user-menu-arrow'}) }}
+                    {{ ux_icon('heroicons:chevron-down', {class: 'w-4 h-4 text-gray-300 transition-transform duration-200 flex-shrink-0', 'data-dropdown-target': 'arrow'}) }}
                 </div>
             </button>
 
             {# Dropdown menu #}
             <div class="absolute right-0 z-50 mt-3 w-72 sm:w-80 origin-top-right bg-white dark:bg-gray-800 rounded-3xl shadow-2xl ring-1 ring-black/10 dark:ring-white/10 divide-y divide-gray-100 dark:divide-gray-700 focus:outline-none opacity-0 scale-95 pointer-events-none transition-all duration-300"
-                 id="user-menu-dropdown"
+                 data-dropdown-target="menu"
                  role="menu"
-                 aria-orientation="vertical"
-                 aria-labelledby="user-menu-button">
+                 aria-orientation="vertical">
                 <div class="px-5 py-4" role="none">
                     <div class="text-xs text-gray-500 dark:text-gray-300">{{ "navbar.signed-in-as"|trans }}</div>
                     <div class="font-semibold break-all text-sm leading-5 text-gray-700 dark:text-gray-300 mt-1">{{ app.user.email }}</div>
@@ -64,12 +64,14 @@
             {# Mobile menu button #}
             <button type="button"
                     class="bg-white/10 hover:bg-white/20 inline-flex items-center justify-center p-2 rounded-2xl text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300 hover:scale-105 backdrop-blur-sm"
-                    id="mobile-menu-button"
+                    data-dropdown-target="button"
+                    data-action="dropdown#toggle"
                     aria-controls="mobile-menu"
                     aria-expanded="false">
                 <span class="sr-only">{{ "navbar.open-main-menu"|trans }}</span>
-                {{ ux_icon('heroicons:bars-3-solid', {class: 'block h-5 w-5', id: 'mobile-menu-icon-open'}) }}
-                {{ ux_icon('heroicons:x-mark-solid', {class: 'hidden h-5 w-5', id: 'mobile-menu-icon-close'}) }}
+                {{ ux_icon('heroicons:bars-3-solid', {class: 'block h-5 w-5', 'data-dropdown-target': 'iconOpen'}) }}
+                {{ ux_icon('heroicons:x-mark-solid', {class: 'hidden h-5 w-5', 'data-dropdown-target': 'iconClose'}) }}
+            </button>
             </button>
         </div>
     </div>
