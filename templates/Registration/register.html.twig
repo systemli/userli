@@ -119,8 +119,13 @@
 
                             {# Password fields #}
                             <div class="space-y-4">
-                                {# First password field #}
-                                <div class="space-y-2">
+                                {# First password field with strength meter #}
+                                <div class="space-y-2"
+                                     data-password-strength
+                                     data-password-strength-strong-label="{{ "form.password-strong"|trans }}"
+                                     data-password-strength-min-length="12"
+                                     data-password-strength-min-length-label="{{ "form.password-min-length"|trans({'%min%': 12}) }}"
+                                >
                                     {{ form_label(form.password.first, null, {
                                         'label_attr': {
                                             'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300'
@@ -131,10 +136,19 @@
                                             'attr': {
                                                 'class': 'block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm transition-colors duration-200' ~ (form.password.first.vars.errors|length > 0 ? ' border-red-300 dark:border-red-600 focus:ring-red-500 focus:border-red-500' : ''),
                                                 'autocomplete': 'new-password',
-                                                'aria-describedby': form.password.first.vars.errors|length > 0 ? 'password-error' : null
+                                                'data-password-strength-input': '',
+                                                'aria-describedby': (form.password.first.vars.errors|length > 0 ? 'password-error' : '') ~ ' password-strength-feedback'
                                             }
                                         }) }}
                                     </div>
+                                    {# Password strength meter #}
+                                    <div class="flex gap-1 mt-2" data-password-strength-meter aria-hidden="true">
+                                        <div class="h-1 flex-1 rounded-full bg-gray-200 dark:bg-gray-600 transition-colors duration-300" data-password-strength-segment></div>
+                                        <div class="h-1 flex-1 rounded-full bg-gray-200 dark:bg-gray-600 transition-colors duration-300" data-password-strength-segment></div>
+                                        <div class="h-1 flex-1 rounded-full bg-gray-200 dark:bg-gray-600 transition-colors duration-300" data-password-strength-segment></div>
+                                        <div class="h-1 flex-1 rounded-full bg-gray-200 dark:bg-gray-600 transition-colors duration-300" data-password-strength-segment></div>
+                                    </div>
+                                    <p id="password-strength-feedback" class="text-xs text-gray-500 dark:text-gray-400 hidden" data-password-strength-feedback aria-live="polite"></p>
                                     {% if form.password.first.vars.errors|length > 0 %}
                                         <div id="password-error" class="text-sm text-red-600 dark:text-red-400 mt-1" role="alert">
                                             {% for error in form.password.first.vars.errors %}
