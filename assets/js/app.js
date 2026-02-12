@@ -274,58 +274,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize password strength meter
   initializePasswordStrength();
 
-  // Initialize tooltips (replacing Bootstrap's jQuery tooltip)
-  function initializeTooltips() {
-    const tooltipElements = document.querySelectorAll(
-      '[data-toggle="tooltip"]'
-    );
-    tooltipElements.forEach(function (element) {
-      element.addEventListener("mouseenter", function () {
-        showTooltip(this);
-      });
-      element.addEventListener("mouseleave", function () {
-        hideTooltip(this);
-      });
-    });
-  }
-
-  function showTooltip(element) {
-    const title =
-      element.getAttribute("title") ||
-      element.getAttribute("data-original-title");
-    if (!title) return;
-
-    const tooltip = document.createElement("div");
-    tooltip.className = "tooltip fade in";
-    tooltip.innerHTML = `<div class="tooltip-inner">${sanitizeHTML(
-      title
-    )}</div>`;
-
-    // Position tooltip
-    const rect = element.getBoundingClientRect();
-    tooltip.style.position = "absolute";
-    tooltip.style.top = rect.top - 35 + "px";
-    tooltip.style.left = rect.left + rect.width / 2 - 50 + "px";
-    tooltip.style.zIndex = "1070";
-
-    element.setAttribute("data-original-title", title);
-    element.removeAttribute("title");
-    element.tooltip = tooltip;
-    document.body.appendChild(tooltip);
-  }
-
-  function hideTooltip(element) {
-    if (element.tooltip) {
-      document.body.removeChild(element.tooltip);
-      element.tooltip = null;
-      const originalTitle = element.getAttribute("data-original-title");
-      if (originalTitle) {
-        element.setAttribute("title", originalTitle);
-      }
-    }
-  }
-
   // Initialize all components
-  initializeTooltips();
   initializeSafeHtml();
 });
