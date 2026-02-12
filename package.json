@@ -20,5 +20,11 @@
     "webpack": "^5.104.1",
     "webpack-cli": "^6.0.1"
   },
-  "packageManager": "yarn@1.22.19"
+  "packageManager": "yarn@1.22.19",
+  "dependencies": {
+    "@zxcvbn-ts/core": "^3.0.4",
+    "@zxcvbn-ts/language-common": "^3.0.4",
+    "@zxcvbn-ts/language-de": "^3.0.2",
+    "@zxcvbn-ts/language-en": "^3.0.2"
+  }
 }

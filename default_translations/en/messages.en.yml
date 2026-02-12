@@ -70,6 +70,8 @@ form:
   password: Password
   password-help: Enter your password
   password_confirmation: Confirm password
+  password-strong: Great choice! Your password is strong.
+  password-min-length: At least %min% characters required.
   remember-me: Stay logged in
   signin: Sign in
   recovery-link: Password forgotten?
