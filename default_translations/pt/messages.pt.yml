@@ -84,10 +84,13 @@ navbar_right:
   admin: Administrador
 registration:
   title: Cadastro com %project_name%
-  information: Information
+  information: Escolha uma senha segura
   information-intro: >
-    Gostaria de se cadastrar em <a href="%project_url%">%project_name%</a>? Você só
-    pode se cadastrar se receber um convite para o nosso serviço.
+    Sua senha protege sua conta de e-mail e todos os seus dados.
+    Escolha uma senha forte que você não use em nenhum outro lugar.
+  password-rule-length: Pelo menos 12 caracteres
+  password-rule-umlauts: Sem tremas alemães (ä, ö, ü, ß)
+  password-rule-compromised: Não encontrada em vazamentos de dados conhecidos
   label-email: Seu endereço de email desejado
   recovery-token-headline: Token de recuperação
 welcome:

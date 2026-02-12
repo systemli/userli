@@ -80,11 +80,14 @@ navbar_right:
   admin: Amministratore
 registration:
   title: Registrazione su %project_name%
-  information: Informazioni
-  recovery-token-headline: Gettone di recupero
+  information: Scegli una password sicura
   information-intro: >
-    Vuoi registrare un account di posta elettronica con <a href="%project_url%">%project_name%</a>?
-    Permettiamo le registrazioni solo se un amico ti invita con un codice di invito ai nostri servizi.
+    La tua password protegge il tuo account e-mail e tutti i tuoi dati.
+    Scegli una password forte che non usi da nessun'altra parte.
+  password-rule-length: Almeno 12 caratteri
+  password-rule-umlauts: Nessuna dieresi tedesca (ä, ö, ü, ß)
+  password-rule-compromised: Non presente in violazioni di dati note
+  recovery-token-headline: Gettone di recupero
   label-email: Il tuo indirizzo e-mail preferito
 delete:
   user:

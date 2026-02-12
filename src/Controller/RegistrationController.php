@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Voucher;
+use App\Enum\Roles;
 use App\Form\Model\RecoveryTokenConfirm;
 use App\Form\Model\Registration;
 use App\Form\RecoveryTokenConfirmType;
 use App\Form\RegistrationType;
 use App\Handler\RegistrationHandler;
 use App\Repository\UserRepository;
+use App\Repository\VoucherRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,15 +32,27 @@ final class RegistrationController extends AbstractController
     ) {
     }
 
+    #[Route(path: '/register', name: 'register', methods: ['GET'])]
+    public function redirectToIndex(): Response
+    {
+        return $this->redirectToRoute('index');
+    }
+
     /**
      * @throws Exception
      */
-    #[Route(path: '/register', name: 'register', methods: ['GET'])]
     #[Route(path: '/register/{voucher}', name: 'register_voucher', requirements: ['voucher' => '[a-zA-Z0-9]{6}'], methods: ['GET'])]
-    public function show(string $voucher = ''): Response
+    public function show(string $voucher): Response
     {
         if (!$this->registrationHandler->isRegistrationOpen()) {
             return $this->render('Registration/closed.html.twig');
+        }
+
+        // Validate voucher before showing the registration form
+        if (!$this->isVoucherValid($voucher)) {
+            $this->addFlash('error', 'registration.voucher-invalid');
+
+            return $this->redirectToRoute('index');
         }
 
         $registration = new Registration();
@@ -52,7 +67,10 @@ final class RegistrationController extends AbstractController
             ]
         );
 
-        return $this->render('Registration/register.html.twig', ['form' => $form]);
+        return $this->render('Registration/register.html.twig', [
+            'form' => $form,
+            'voucher' => $voucher,
+        ]);
     }
 
     /**
@@ -70,7 +88,10 @@ final class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
-            return $this->render('Registration/register.html.twig', ['form' => $form]);
+            return $this->render('Registration/register.html.twig', [
+                'form' => $form,
+                'voucher' => $registration->getVoucher(),
+            ]);
         }
 
         $this->registrationHandler->handle($registration);
@@ -136,5 +157,26 @@ final class RegistrationController extends AbstractController
         $this->addFlash('success', 'flashes.registration-successful');
 
         return $this->render('Registration/welcome.html.twig');
+    }
+
+    private function isVoucherValid(string $code): bool
+    {
+        /** @var VoucherRepository $voucherRepository */
+        $voucherRepository = $this->manager->getRepository(Voucher::class);
+
+        $voucher = $voucherRepository->findByCode($code);
+
+        if (null === $voucher) {
+            return false;
+        }
+
+        if ($voucher->isRedeemed()) {
+            return false;
+        }
+
+        /** @var User $user */
+        $user = $voucher->getUser();
+
+        return !$user->hasRole(Roles::SUSPICIOUS);
     }
 }

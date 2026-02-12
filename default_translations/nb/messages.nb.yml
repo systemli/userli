@@ -87,12 +87,15 @@ navbar_right:
   admin: Administrator
 registration:
   title: Registrering med %project_name%
-  information: Info
+  information: Velg et sikkert passord
+  information-intro: >
+    Passordet ditt beskytter e-postkontoen din og alle dataene dine.
+    Velg et sterkt passord som du ikke bruker andre steder.
+  password-rule-length: Minst 12 tegn
+  password-rule-umlauts: Ingen tyske omlydstegn (ä, ö, ü, ß)
+  password-rule-compromised: Ikke funnet i kjente datalekkasjer
   label-email: Din foretrukne e-postadresse
   recovery-token-headline: Gjenopprettingssymbol
-  information-intro: >
-    Ønsker du å registrere en e-postkonto med <a href="%project_url%">%project_name%</a>?
-    Registreringer tillates kun hvis en venn inviterer deg med en invitasjonskode til tjenestene.
 welcome:
   headline: Velkommen til %project_name%.
   lead: Du har nå satt opp en konto hos oss. Hva skal du foreta deg nå?

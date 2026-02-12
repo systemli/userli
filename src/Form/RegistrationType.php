@@ -10,6 +10,7 @@ use App\Form\Model\Registration;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -40,13 +41,7 @@ final class RegistrationType extends AbstractType
         $transformer = new TextToEmailTransformer($this->domain);
 
         $builder
-            ->add('voucher', TextType::class, [
-                'label' => 'form.voucher',
-                'attr' => [
-                    'autocomplete' => 'off',
-                    'readonly' => ('' !== $options['data']->getVoucher()),
-                ],
-            ])
+            ->add('voucher', HiddenType::class)
             ->add($builder->create(
                 'email',
                 TextType::class,

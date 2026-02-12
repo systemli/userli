@@ -122,10 +122,13 @@ navbar_right:
 
 registration:
   title: Inscription à %project_name%
-  information: Informations
+  information: Choisissez un mot de passe sécurisé
   information-intro: >
-    Souhaitez-vous enregistrer un nouveau compte de messagerie sur <a href="%project_url%">%project_name%</a>?
-    Nous n'autorisons que les inscriptions via les codes d'invitation vers nos services.
+    Votre mot de passe protège votre compte e-mail et toutes vos données.
+    Choisissez un mot de passe fort que vous n'utilisez nulle part ailleurs.
+  password-rule-length: Au moins 12 caractères
+  password-rule-umlauts: Pas de trémas allemands (ä, ö, ü, ß)
+  password-rule-compromised: Absent des fuites de données connues
   label-email: Votre adresse électronique préférée
   recovery-token-headline: Jeton de récupération
 

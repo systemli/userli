@@ -179,13 +179,16 @@ navbar_right:
   admin: Admin
 Bad credentials.: Fautschi Login Agabe
 registration:
-  information: Information
+  information: Wähl es sichrigs Passwort
+  information-intro: >
+    Dis Passwort schützt dis E-Mail Konto und alli dini Date.
+    Wähl es starchs Passwort, wo du nirgends suscht bruuchsch.
+  password-rule-length: Mindischtens 12 Zeiche
+  password-rule-umlauts: Kei dütschi Umluut (ä, ö, ü, ß)
+  password-rule-compromised: Nid in bekannte Datelecks enthalte
   recovery-token-headline: Recovery Token
   title: Regischtriere bi %project_name%
   label-email: Dini bevorzugti E-Mail Adrässe
-  information-intro: >
-    Würdsch du gärn e E-Mail Account bi <a href="%project_url%">%project_name%</a> ha?
-    Mir erloube Nöiregischtratione nume indäm e Fründ di mittemne Invite Code iladt.
 Domain: Domain
 closed:
   headline: Regischtrierig gschlosse
