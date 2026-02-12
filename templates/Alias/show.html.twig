@@ -125,8 +125,9 @@
                                             <div class="flex items-center space-x-2 flex-shrink-0">
                                                 <button type="button"
                                                         class="inline-flex items-center p-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-600 rounded hover:bg-gray-200 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 dark:focus:ring-offset-gray-700 transition-colors"
-                                                        data-button="copy-to-clipboard"
-                                                        data-value="{{ alias.source }}"
+                                                        data-controller="clipboard"
+                                                        data-clipboard-content-value="{{ alias.source }}"
+                                                        data-action="clipboard#copy"
                                                         title="{{ "copy-to-clipboard"|trans }}"
                                                         aria-label="{{ "copy-to-clipboard"|trans }}"
                                                         data-toggle="tooltip"
@@ -254,8 +255,9 @@
                                             <div class="flex items-center space-x-2 flex-shrink-0">
                                                 <button type="button"
                                                         class="inline-flex items-center p-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-600 rounded hover:bg-gray-200 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-1 dark:focus:ring-offset-gray-700 transition-colors"
-                                                        data-button="copy-to-clipboard"
-                                                        data-value="{{ alias.source }}"
+                                                        data-controller="clipboard"
+                                                        data-clipboard-content-value="{{ alias.source }}"
+                                                        data-action="clipboard#copy"
                                                         title="{{ "copy-to-clipboard"|trans }}"
                                                         aria-label="{{ "copy-to-clipboard"|trans }}"
                                                         data-toggle="tooltip"
