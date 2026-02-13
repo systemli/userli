@@ -28,93 +28,93 @@ Feature: User
       | password_newPassword_second | P4ssW0rd!!!1 |
     And I press "Submit"
 
-    Then I should be on "/account"
+    Then I should be on "/account/settings"
     And I should see text matching "Your new password is now active!"
     And the response status code should not be 403
 
   @create-random-alias
   Scenario: Create random alias
     When I am authenticated as "user@example.org"
-    And I am on "/alias"
+    And I am on "/account/alias"
     And I press "Generate random alias"
 
-    Then I should be on "/alias"
+    Then I should be on "/account/alias"
     And I should see text matching "Your new alias address was created."
     And the response status code should be 200
 
   @create-custom-alias
   Scenario: Create custom alias
     When I am authenticated as "user@example.org"
-    And I am on "/alias"
+    And I am on "/account/alias"
     And I fill in the following:
       | create_custom_alias_alias | test_alias |
     And I press "Add"
 
-    Then I should be on "/alias"
+    Then I should be on "/account/alias"
     And I should see text matching "Your new alias address was created."
     And the response status code should be 200
 
   @fail-to-create-existing-custom-alias
   Scenario: Fail to create existing custom alias
     When I am authenticated as "user@example.org"
-    And I am on "/alias"
+    And I am on "/account/alias"
     And I fill in the following:
       | create_custom_alias_alias | alias1 |
     And I press "Add"
 
-    Then I should be on "/alias"
+    Then I should be on "/account/alias"
     And I should see "The e-mail address is already taken."
     And the response status code should be 200
 
   @fail-to-create-deleted-custom-alias
   Scenario: Fail to create deleted custom alias
     When I am authenticated as "user@example.org"
-    And I am on "/alias"
+    And I am on "/account/alias"
     And I fill in the following:
       | create_custom_alias_alias | alias2 |
     And I press "Add"
 
-    Then I should be on "/alias"
+    Then I should be on "/account/alias"
     And I should see "The e-mail address is already taken."
     And the response status code should be 200
 
   @delete-alias
   Scenario: User tries to delete a custom alias
     When I am authenticated as "user@example.org"
-    And I am on "/alias/delete/1"
+    And I am on "/account/alias/delete/1"
 
     Then the response status code should be 403
 
   @delete-alias
   Scenario: Delete random alias
     When I am authenticated as "user@example.org"
-    And I am on "/alias/delete/4"
+    And I am on "/account/alias/delete/4"
     Then the response status code should be 200
 
     When I fill in the following:
       | delete_alias_password | asdasd |
     And I press "Delete alias address"
 
-    Then I should be on "/alias"
+    Then I should be on "/account/alias"
     And I should see text matching "Your alias address was deleted."
     And the response status code should not be 403
 
   @delete-alias
   Scenario: User tries to access a deleted alias
     When I am authenticated as "user@example.org"
-    And I am on "/alias/delete/2"
+    And I am on "/account/alias/delete/2"
     Then the response status code should be 404
 
   @delete-alias
   Scenario: User tries to access a alias that does not belong to them
     When I am authenticated as "user@example.org"
-    And I am on "/alias/delete/3"
+    And I am on "/account/alias/delete/3"
     Then the response status code should be 403
 
   @delete-alias
   Scenario: Nonexistent alias redirect
     When I am authenticated as "user@example.org"
-    And I am on "/alias/delete/200"
+    And I am on "/account/alias/delete/200"
     Then the response status code should be 404
 
   @delete-user
@@ -140,32 +140,32 @@ Feature: User
   @create-voucher
   Scenario: Create voucher as Admin
     When I am authenticated as "admin@example.org"
-    And I am on "/voucher"
+    And I am on "/account/voucher"
     And I press "Create invite code"
 
-    Then I should be on "/voucher"
+    Then I should be on "/account/voucher"
     And I should see text matching "New invite code created."
     And the response status code should be 200
 
   @create-voucher
   Scenario: Create voucher as Support
     When I am authenticated as "support@example.org"
-    And I am on "/voucher"
+    And I am on "/account/voucher"
     And I press "Create invite code"
 
-    Then I should be on "/voucher"
+    Then I should be on "/account/voucher"
     And I should see text matching "New invite code created."
     And the response status code should be 200
 
   Scenario: Voucher button as Support
     When I am authenticated as "support@example.org"
-    And I am on "/voucher"
+    And I am on "/account/voucher"
 
     Then I should see text matching "Create invite code"
 
   Scenario: Voucher button as User
     When I am authenticated as "user@example.org"
-    And I am on "/voucher"
+    And I am on "/account/voucher"
 
     Then I should not see text matching "Create invite code"
 
@@ -181,7 +181,7 @@ Feature: User
     And I check "recovery_token_confirm_confirm"
     And I press "Continue"
 
-    Then I should be on "/start"
+    Then I should be on "/account"
 
   @twofactor-auth
   Scenario: Enable two-factor authentication #1 and enter wrong password
@@ -229,7 +229,7 @@ Feature: User
       | user@example.org | password_compromised |
 
     When I am authenticated as "user@example.org"
-    And I am on "/"
+    And I am on "/account"
 
     Then I should see text matching "Your password has been found in a database of known compromised passwords."
 
@@ -259,45 +259,58 @@ Feature: User
     When I am authenticated as "user@example.org"
     And I am on "/account"
     Then the response status code should be 200
-    And I should see "Account settings"
+    And I should see "Manage your e-mail account"
 
   @account-access
-  Scenario: Spammer cannot access account page
+  Scenario: Spammer sees locked message on account page
     When I am authenticated as "spam@example.org"
     And I am on "/account"
-    Then the response status code should be 403
+    Then the response status code should be 200
+    And I should see "Account locked"
+
+  @account-settings-access
+  Scenario: Unauthenticated user is redirected to login from account settings
+    When I am on "/account/settings"
+    Then I should be on "/login"
+
+  @account-settings-access
+  Scenario: Authenticated user can access account settings page
+    When I am authenticated as "user@example.org"
+    And I am on "/account/settings"
+    Then the response status code should be 200
+    And I should see "Account settings"
 
   @alias-access
   Scenario: Unauthenticated user is redirected to login from alias page
-    When I am on "/alias"
+    When I am on "/account/alias"
     Then I should be on "/login"
 
   @alias-access
   Scenario: Authenticated user can access alias page
     When I am authenticated as "user@example.org"
-    And I am on "/alias"
+    And I am on "/account/alias"
     Then the response status code should be 200
     And I should see "Custom Aliases"
 
   @alias-access
   Scenario: Spammer cannot access alias page
     When I am authenticated as "spam@example.org"
-    And I am on "/alias"
+    And I am on "/account/alias"
     Then the response status code should be 403
 
   @voucher-access
   Scenario: Unauthenticated user is redirected to login from voucher page
-    When I am on "/voucher"
+    When I am on "/account/voucher"
     Then I should be on "/login"
 
   @voucher-access
   Scenario: Authenticated user can access voucher page
     When I am authenticated as "user@example.org"
-    And I am on "/voucher"
+    And I am on "/account/voucher"
     Then the response status code should be 200
 
   @voucher-access
   Scenario: Spammer cannot access voucher page
     When I am authenticated as "spam@example.org"
-    And I am on "/voucher"
+    And I am on "/account/voucher"
     Then the response status code should be 403

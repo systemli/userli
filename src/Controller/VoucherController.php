@@ -24,7 +24,7 @@ final class VoucherController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/voucher', name: 'vouchers', methods: ['GET'])]
+    #[Route(path: '/account/voucher', name: 'vouchers', methods: ['GET'])]
     public function show(): Response
     {
         /** @var User $user */
@@ -52,7 +52,7 @@ final class VoucherController extends AbstractController
         );
     }
 
-    #[Route(path: '/voucher/create', name: 'vouchers_create', methods: ['POST'])]
+    #[Route(path: '/account/voucher/create', name: 'vouchers_create', methods: ['POST'])]
     public function create(Request $request): Response
     {
         /** @var User $user */

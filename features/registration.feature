@@ -45,7 +45,7 @@ Feature: registration
       | _password | P4ssW0rt!!!1      |
     And I press "Sign in"
 
-    Then I should be on "/start"
+    Then I should be on "/account"
     And I should see text matching "Log out"
 
   @registration

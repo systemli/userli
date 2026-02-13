@@ -32,7 +32,7 @@ final class AliasController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/alias', name: 'aliases', methods: ['GET'])]
+    #[Route(path: '/account/alias', name: 'aliases', methods: ['GET'])]
     public function show(): Response
     {
         /** @var User $user */
@@ -75,7 +75,7 @@ final class AliasController extends AbstractController
         );
     }
 
-    #[Route(path: '/alias/create', name: 'aliases_create', methods: ['POST'])]
+    #[Route(path: '/account/alias/create', name: 'aliases_create', methods: ['POST'])]
     public function create(Request $request): Response
     {
         /** @var User $user */
@@ -141,7 +141,7 @@ final class AliasController extends AbstractController
         }
     }
 
-    #[Route(path: '/alias/delete/{id}', name: 'alias_delete', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Route(path: '/account/alias/delete/{id}', name: 'alias_delete', requirements: ['id' => '\d+'], methods: ['GET'])]
     #[IsGranted('delete', subject: 'alias')]
     public function delete(
         #[MapEntity(class: Alias::class, expr: 'repository.findOneBy({id: id, deleted: false})')]
@@ -166,7 +166,7 @@ final class AliasController extends AbstractController
         );
     }
 
-    #[Route(path: '/alias/delete/{id}', name: 'alias_delete_submit', requirements: ['id' => '\d+'], methods: ['POST'])]
+    #[Route(path: '/account/alias/delete/{id}', name: 'alias_delete_submit', requirements: ['id' => '\d+'], methods: ['POST'])]
     #[IsGranted('delete', subject: 'alias')]
     public function deleteSubmit(
         Request $request,

@@ -35,7 +35,7 @@ Feature: Admin
     And I am on "/admin/dashboard"
     Then the response status code should be 200
     And I should see text matching "Logout"
-    And I should see text matching "Return to Index"
+    And I should see text matching "Return to Account"
 
   @admin
   Scenario: Access to Admin Interface as Domain Admin
@@ -43,7 +43,7 @@ Feature: Admin
     And I am on "/admin/dashboard"
     Then the response status code should be 200
     And I should see text matching "Logout"
-    And I should see text matching "Return to Index"
+    And I should see text matching "Return to Account"
 
   @admin
   Scenario: Access to Admin Interface as Support

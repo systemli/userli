@@ -2,10 +2,10 @@
 <div class="hidden md:flex xl:hidden flex-1 items-center justify-center">
     <div class="flex items-center space-x-1">
         {# Home #}
-        <a href="{{ path('start') }}"
-           class="flex items-center justify-center px-2 md:px-3 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:scale-105 {{ current_route == 'start' ? 'bg-white/20 text-white shadow-lg' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}"
+        <a href="{{ path('account') }}"
+           class="flex items-center justify-center px-2 md:px-3 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:scale-105 {{ current_route == 'account' ? 'bg-white/20 text-white shadow-lg' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}"
            title="{{ "navbar.home"|trans }}"
-           {{ current_route == 'start' ? 'aria-current="page"' : '' }}>
+           {{ current_route == 'account' ? 'aria-current="page"' : '' }}>
             {{ ux_icon('heroicons:home-solid', {'class': 'w-4 h-4 mr-1 flex-shrink-0'}) }}
             <span class="text-xs md:text-sm">{{ "navbar.home"|trans }}</span>
         </a>
@@ -31,10 +31,10 @@
         </a>
 
         {# Konto #}
-        <a href="{{ path('account') }}"
-           class="flex items-center justify-center px-2 md:px-3 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:scale-105 {{ current_route == 'account' ? 'bg-white/20 text-white shadow-lg' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}"
+        <a href="{{ path('account_settings') }}"
+           class="flex items-center justify-center px-2 md:px-3 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:scale-105 {{ current_route == 'account_settings' ? 'bg-white/20 text-white shadow-lg' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}"
            title="{{ "navbar.account"|trans }}"
-           {{ current_route == 'account' ? 'aria-current="page"' : '' }}>
+           {{ current_route == 'account_settings' ? 'aria-current="page"' : '' }}>
             {{ ux_icon('heroicons:cog-6-tooth-solid', {'class': 'w-4 h-4 mr-1 flex-shrink-0'}) }}
             <span class="text-xs md:text-sm">{{ "navbar.account"|trans }}</span>
         </a>
