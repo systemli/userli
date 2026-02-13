@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Enum\Roles;
 use App\Event\UserEvent;
 use App\Form\Model\Delete;
 use App\Form\Model\Password;
@@ -41,7 +42,26 @@ final class AccountController extends AbstractController
     }
 
     #[Route(path: '/account', name: 'account', methods: ['GET'])]
-    public function show(): Response
+    public function index(): Response
+    {
+        if ($this->isGranted(Roles::SPAM)) {
+            return $this->render('Account/index_spam.html.twig');
+        }
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        return $this->render(
+            'Account/index.html.twig',
+            [
+                'user' => $user,
+                'user_domain' => $user->getDomain(),
+            ]
+        );
+    }
+
+    #[Route(path: '/account/settings', name: 'account_settings', methods: ['GET'])]
+    public function settings(): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -100,7 +120,7 @@ final class AccountController extends AbstractController
 
             $this->addFlash('success', 'flashes.password-change-successful');
 
-            return $this->redirectToRoute('account');
+            return $this->redirectToRoute('account_settings');
         }
 
         return $this->render(
@@ -241,7 +261,7 @@ final class AccountController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->addFlash('success', 'flashes.recovery-token-ack');
 
-            return $this->redirectToRoute('start');
+            return $this->redirectToRoute('account');
         }
 
         return $this->render('Account/recovery_token.html.twig',

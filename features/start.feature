@@ -20,21 +20,21 @@ Feature: Start Page
         And I should see "Welcome to Userli"
 
     @start
-    Scenario: Authenticated user redirects to start page
+    Scenario: Authenticated user redirects to account page
         Given I am authenticated as "user@example.org"
         When I am on "/"
-        Then I should be on "/start"
+        Then I should be on "/account"
 
     @start
     Scenario: Spammer sees locked message
         Given I am authenticated as "spam@example.org"
-        When I am on "/start"
+        When I am on "/account"
         Then the response status code should be 200
         And I should see "Account locked"
 
     @start
     Scenario: Regular user sees dashboard
         Given I am authenticated as "user@example.org"
-        When I am on "/start"
+        When I am on "/account"
         Then the response status code should be 200
         And I should see "Manage your e-mail account"

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Domain;
-use App\Entity\User;
 use App\Enum\Roles;
 use App\Form\LoginType;
 use App\Form\Model\VoucherCheck;
@@ -31,7 +30,7 @@ final class StartController extends AbstractController
     public function index(): Response
     {
         if ($this->isGranted(Roles::USER)) {
-            return $this->redirectToRoute('start');
+            return $this->redirectToRoute('account');
         }
 
         // forward to installer if no domains exist
@@ -72,24 +71,5 @@ final class StartController extends AbstractController
                 'action' => $this->generateUrl('login'),
             ]),
         ]);
-    }
-
-    #[Route(path: '/start', name: 'start')]
-    public function start(): Response
-    {
-        if ($this->isGranted(Roles::SPAM)) {
-            return $this->render('Start/index_spam.html.twig');
-        }
-
-        /** @var User $user */
-        $user = $this->getUser();
-
-        return $this->render(
-            'Start/index.html.twig',
-            [
-                'user' => $user,
-                'user_domain' => $user->getDomain(),
-            ]
-        );
     }
 }

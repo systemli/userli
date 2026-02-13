@@ -20,7 +20,7 @@ Feature: Login
       | _password | asdasd            |
     And I press "Sign in"
 
-    Then I should be on "/start"
+    Then I should be on "/account"
     And I should see text matching "Log out"
     And the response status code should not be 403
 
@@ -32,7 +32,7 @@ Feature: Login
       | _password | asdasd            |
     And I press "Sign in"
 
-    Then I should be on "/start"
+    Then I should be on "/account"
     And I should see text matching "Log out"
     And the response status code should not be 403
 
@@ -54,7 +54,7 @@ Feature: Login
       | _password | asdasd           |
     And I press "Sign in"
 
-    Then I should be on "/start"
+    Then I should be on "/account"
     And the response status code should not be 403
 
   @login
@@ -65,7 +65,7 @@ Feature: Login
       | _password | asdasd              |
     And I press "Sign in"
 
-    Then I should be on "/start"
+    Then I should be on "/account"
     And the response status code should not be 403
 
   @login
@@ -76,7 +76,7 @@ Feature: Login
       | _password | asdasd |
     And I press "Sign in"
 
-    Then I should be on "/start"
+    Then I should be on "/account"
     And the response status code should not be 403
 
   @login
@@ -90,7 +90,7 @@ Feature: Login
       | _password | paßwort             |
     And I press "Sign in"
 
-    Then I should be on "/start"
+    Then I should be on "/account"
     And the response status code should not be 403
 
   @logout
@@ -116,7 +116,7 @@ Feature: Login
       | _password | asdasd           |
     And I press "Sign in"
 
-    Then I should be on "/start"
+    Then I should be on "/account"
     And the response status code should be 200
     And I should see text matching "E-mail access has been turned off"
 
@@ -161,5 +161,5 @@ Feature: Login
     And I enter TOTP backup code
     And I press "Verify"
 
-    Then I should be on "/start"
+    Then I should be on "/account"
     And the response status code should be 200

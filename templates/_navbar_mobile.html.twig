@@ -16,9 +16,9 @@
 
         {# Main Navigation #}
         <div class="p-3 sm:p-4 space-y-1 sm:space-y-2">
-            <a href="{{ path('start') }}"
-               class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route == 'start' ? 'bg-gray-900 dark:bg-gray-700 text-white shadow-lg' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}"
-               {{ current_route == 'start' ? 'aria-current="page"' : '' }}>
+            <a href="{{ path('account') }}"
+               class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route == 'account' ? 'bg-gray-900 dark:bg-gray-700 text-white shadow-lg' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}"
+               {{ current_route == 'account' ? 'aria-current="page"' : '' }}>
                 {{ ux_icon('heroicons:home-solid', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
                 {{ "navbar.home"|trans }}
             </a>
@@ -39,9 +39,9 @@
                 {{ "navbar.aliases"|trans }}
             </a>
 
-            <a href="{{ path('account') }}"
-               class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route == 'account' ? 'bg-gray-900 dark:bg-gray-700 text-white shadow-lg' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}"
-               {{ current_route == 'account' ? 'aria-current="page"' : '' }}>
+            <a href="{{ path('account_settings') }}"
+               class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route == 'account_settings' ? 'bg-gray-900 dark:bg-gray-700 text-white shadow-lg' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}"
+               {{ current_route == 'account_settings' ? 'aria-current="page"' : '' }}>
                 {{ ux_icon('heroicons:cog-6-tooth-solid', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
                 {{ "navbar.account"|trans }}
             </a>
