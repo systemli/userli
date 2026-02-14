@@ -11,8 +11,8 @@ Feature: Initialization
     And print last response
 
     When I fill in the following:
-      | create_domain_domain | example.org |
-    And I press "create_domain_submit"
+      | domain_name | example.org |
+    And I press "domain_submit"
 
     Then I should be on "/init/user"
 

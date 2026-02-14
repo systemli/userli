@@ -38,4 +38,35 @@ final class DomainRepository extends ServiceEntityRepository
     {
         return $this->findOneBy([], ['id' => 'ASC']);
     }
+
+    public function countBySearch(string $search = ''): int
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->select('COUNT(d.id)');
+
+        if ('' !== $search) {
+            $qb->where('d.name LIKE :search')
+                ->setParameter('search', '%'.$search.'%');
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @return Domain[]
+     */
+    public function findPaginatedBySearch(string $search, int $limit, int $offset): array
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->orderBy('d.id', 'DESC')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        if ('' !== $search) {
+            $qb->where('d.name LIKE :search')
+                ->setParameter('search', '%'.$search.'%');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }

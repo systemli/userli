@@ -474,6 +474,7 @@ settings:
     maintenance: Maintenance
     general: General
     reserved-names: Reserved Names
+    domains: Domains
   coming-soon: Coming Soon
   api:
     title: API Tokens
@@ -664,6 +665,45 @@ settings:
       button: Export
     pagination:
       total: "%count% reserved names total"
+      previous: Previous
+      next: Next
+      page: "Page %page% of %totalPages%"
+
+  domain:
+    title: Domains
+    heading: Domains
+    description: Manage email domains for your organization
+    table:
+      name: Name
+      created: Created
+      empty-title: No domains
+      empty-description: There are no domains yet. Add a domain to get started.
+    create:
+      button: Add Domain
+      title: Add Domain
+      heading: Add Domain
+      description: Add a new email domain. The domain must have a valid top-level domain.
+      success: Domain has been created successfully.
+      error: Failed to create domain.
+    form:
+      name:
+        label: Domain Name
+        placeholder: e.g. "example.org"
+        help: The domain name to add (lowercase only). Must be a valid hostname with a recognized TLD.
+      cancel: Cancel
+      submit:
+        create: Create
+    search:
+      placeholder: Search domains...
+      submit: Search
+    show:
+      description: Domain details and statistics
+      users: Users
+      aliases: Aliases
+      admins: Domain Admins
+      back: Back to Domains
+    pagination:
+      total: "%count% domains total"
       previous: Previous
       next: Next
       page: "Page %page% of %totalPages%"

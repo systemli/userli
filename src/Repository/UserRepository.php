@@ -151,6 +151,20 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
             ->getSingleScalarResult();
     }
 
+    public function countDomainAdmins(Domain $domain): int
+    {
+        return (int) $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->where('u.domain = :domain')
+            ->andWhere('u.deleted = :deleted')
+            ->andWhere('u.roles LIKE :role')
+            ->setParameter('domain', $domain)
+            ->setParameter('deleted', false)
+            ->setParameter('role', '%ROLE_DOMAIN_ADMIN%')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     public function countDeletedUsers(): int
     {
         return (int) $this->createQueryBuilder('u')

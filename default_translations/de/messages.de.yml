@@ -454,6 +454,7 @@ settings:
     general: Allgemein
     maintenance: Wartung
     reserved-names: Reservierte Namen
+    domains: Domains
   maintenance:
     title: Wartung
     subtitle: Führe Wartungsaufgaben bei Bedarf aus
@@ -662,6 +663,45 @@ settings:
       button: Exportieren
     pagination:
       total: "%count% reservierte Namen insgesamt"
+      previous: Zurück
+      next: Weiter
+      page: "Seite %page% von %totalPages%"
+
+  domain:
+    title: Domains
+    heading: Domains
+    description: Verwalte E-Mail-Domains für deine Organisation
+    table:
+      name: Name
+      created: Erstellt
+      empty-title: Keine Domains
+      empty-description: Es sind noch keine Domains vorhanden. Füge eine Domain hinzu, um loszulegen.
+    create:
+      button: Domain hinzufügen
+      title: Domain hinzufügen
+      heading: Domain hinzufügen
+      description: Füge eine neue E-Mail-Domain hinzu. Die Domain muss eine gültige Top-Level-Domain haben.
+      success: Domain wurde erfolgreich erstellt.
+      error: Domain konnte nicht erstellt werden.
+    form:
+      name:
+        label: Domainname
+        placeholder: z.B. "example.org"
+        help: Der hinzuzufügende Domainname (nur Kleinbuchstaben). Muss ein gültiger Hostname mit einer anerkannten TLD sein.
+      cancel: Abbrechen
+      submit:
+        create: Erstellen
+    search:
+      placeholder: Domains suchen...
+      submit: Suchen
+    show:
+      description: Domain-Details und Statistiken
+      users: Benutzer
+      aliases: Aliase
+      admins: Domain-Admins
+      back: Zurück zu Domains
+    pagination:
+      total: "%count% Domains insgesamt"
       previous: Zurück
       next: Weiter
       page: "Seite %page% von %totalPages%"
