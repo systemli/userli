@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\User;
-use App\Factory\VoucherFactory;
+use App\Entity\Voucher;
+use App\Helper\RandomStringGenerator;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
@@ -35,7 +36,9 @@ final class LoadVoucherData extends Fixture implements FixtureGroupInterface, De
 
         for ($i = 0; $i < 1000; ++$i) {
             $user = $manager->getReference(User::class, $userIds[array_rand($userIds)]);
-            $voucher = VoucherFactory::create($user);
+            $voucher = new Voucher(RandomStringGenerator::generate(6, true));
+            $voucher->setUser($user);
+            $voucher->setDomain($user->getDomain());
 
             $invitedUser = $manager->getReference(User::class, $userIds[array_rand($userIds)]);
             $voucher->setInvitedUser($invitedUser);
@@ -57,7 +60,10 @@ final class LoadVoucherData extends Fixture implements FixtureGroupInterface, De
 
         // add redeemed voucher to a suspicious parent
         $user = $manager->getReference(User::class, $suspiciousUserId);
-        $voucher = VoucherFactory::create($user);
+        $voucher = new Voucher(RandomStringGenerator::generate(6, true));
+        $voucher->setUser($user);
+        $voucher->setDomain($user->getDomain());
+
         $invitedUser = $manager->getReference(User::class, $userIds[array_rand($userIds)]);
         $voucher->setInvitedUser($invitedUser);
         $voucher->setRedeemedTime(new DateTimeImmutable(sprintf('-%d days', 100)));

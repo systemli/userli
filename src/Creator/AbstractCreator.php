@@ -6,7 +6,6 @@ namespace App\Creator;
 
 use App\Entity\Alias;
 use App\Entity\Domain;
-use App\Entity\Voucher;
 use App\Exception\ValidationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -27,7 +26,7 @@ abstract class AbstractCreator
     /**
      * @throws ValidationException
      */
-    public function validate(Alias|Domain|Voucher $entity, ?array $validationGroups = null): void
+    public function validate(Alias|Domain $entity, ?array $validationGroups = null): void
     {
         $violations = $this->validator->validate($entity, null, $validationGroups);
 
@@ -36,7 +35,7 @@ abstract class AbstractCreator
         }
     }
 
-    protected function save(Alias|Domain|Voucher $entity): void
+    protected function save(Alias|Domain $entity): void
     {
         $this->manager->persist($entity);
         $this->manager->flush();

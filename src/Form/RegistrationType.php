@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\Entity\Domain;
 use App\Form\DataTransformer\TextToEmailTransformer;
 use App\Form\Model\Registration;
-use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -25,20 +23,10 @@ final class RegistrationType extends AbstractType
 {
     public const string NAME = 'registration';
 
-    private readonly string $domain;
-
-    /**
-     * RegistrationType constructor.
-     */
-    public function __construct(EntityManagerInterface $manager)
-    {
-        $this->domain = $manager->getRepository(Domain::class)->getDefaultDomain()->getName();
-    }
-
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $transformer = new TextToEmailTransformer($this->domain);
+        $transformer = new TextToEmailTransformer($options['domain']);
 
         $builder
             ->add('voucher', HiddenType::class)
@@ -60,6 +48,8 @@ final class RegistrationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(['data_class' => Registration::class]);
+        $resolver->setRequired('domain');
+        $resolver->setAllowedTypes('domain', 'string');
     }
 
     #[Override]
