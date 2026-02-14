@@ -29,15 +29,10 @@ final class ReservedNameController extends AbstractController
     #[Route('/settings/reserved-names/', name: 'settings_reserved_name_index', methods: ['GET'])]
     public function index(Request $request): Response
     {
-        $page = $request->query->getInt('page', 1);
         $search = $request->query->getString('search', '');
-        $pagination = $this->manager->findPaginated($page, $search);
 
         return $this->render('Settings/ReservedName/index.html.twig', [
-            'reservedNames' => $pagination->items,
-            'page' => $pagination->page,
-            'totalPages' => $pagination->totalPages,
-            'total' => $pagination->total,
+            'pagination' => $this->manager->findPaginated($request->query->getInt('page', 1), $search),
             'search' => $search,
         ]);
     }
