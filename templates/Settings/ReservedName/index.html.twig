@@ -44,7 +44,7 @@
                     } %}
                 </div>
 
-                {% if reservedNames is empty %}
+                {% if pagination.items is empty %}
                     <div class="text-center py-12">
                         {{ ux_icon('heroicons:shield-exclamation', {class: 'w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600'}) }}
                         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">{{ 'settings.reserved-name.table.empty-title'|trans }}</h3>
@@ -62,7 +62,7 @@
                                 </tr>
                                 </thead>
                                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                {% for reservedName in reservedNames %}
+                                {% for reservedName in pagination.items %}
                                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                                         <td class="px-6 py-4 text-sm font-mono text-gray-900 dark:text-gray-100">{{ reservedName.name }}</td>
                                         <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
@@ -93,9 +93,7 @@
                         previous_key: 'settings.reserved-name.pagination.previous',
                         next_key: 'settings.reserved-name.pagination.next',
                         page_key: 'settings.reserved-name.pagination.page',
-                        page: page,
-                        totalPages: totalPages,
-                        total: total,
+                        pagination: pagination,
                         search: search,
                     } %}
                 {% endif %}

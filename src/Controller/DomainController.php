@@ -24,15 +24,10 @@ final class DomainController extends AbstractController
     #[Route('/settings/domains/', name: 'settings_domain_index', methods: ['GET'])]
     public function index(Request $request): Response
     {
-        $page = $request->query->getInt('page', 1);
         $search = $request->query->getString('search', '');
-        $pagination = $this->manager->findPaginated($page, $search);
 
         return $this->render('Settings/Domain/index.html.twig', [
-            'domains' => $pagination->items,
-            'page' => $pagination->page,
-            'totalPages' => $pagination->totalPages,
-            'total' => $pagination->total,
+            'pagination' => $this->manager->findPaginated($request->query->getInt('page', 1), $search),
             'search' => $search,
         ]);
     }
