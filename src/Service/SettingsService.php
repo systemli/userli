@@ -65,8 +65,13 @@ final readonly class SettingsService
         $defaults = $this->configService->getSettings();
 
         foreach ($settings as $name => $value) {
-            // Skip undefined settings and null values
-            if (!isset($defaults[$name]) || $value === null) {
+            // Skip undefined settings
+            if (!isset($defaults[$name])) {
+                continue;
+            }
+
+            // Skip null values for non-optional settings
+            if ($value === null && empty($defaults[$name]['optional'])) {
                 continue;
             }
 

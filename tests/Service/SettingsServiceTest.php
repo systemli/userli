@@ -275,6 +275,81 @@ class SettingsServiceTest extends TestCase
         ]);
     }
 
+    public function testSetAllSkipsNullForNonOptionalSettings(): void
+    {
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->once())
+            ->method('getSettings')
+            ->willReturn([
+                'required_url' => ['type' => 'url'],
+            ]);
+
+        $repository = $this->createMock(SettingRepository::class);
+        $repository->expects($this->never())
+            ->method('findOneBy');
+
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->never())
+            ->method('persist');
+
+        $cache = $this->createMock(CacheInterface::class);
+
+        $settingsService = new SettingsService(
+            $repository,
+            $entityManager,
+            $cache,
+            $configService
+        );
+
+        $settingsService->setAll([
+            'required_url' => null,
+        ]);
+    }
+
+    public function testSetAllSavesNullAsEmptyStringForOptionalSettings(): void
+    {
+        $existingSetting = $this->createMock(Setting::class);
+        $existingSetting->expects($this->once())
+            ->method('setValue')
+            ->with('');
+
+        $configService = $this->createMock(SettingsConfigService::class);
+        $configService->expects($this->once())
+            ->method('getSettings')
+            ->willReturn([
+                'webmail_url' => ['type' => 'url', 'optional' => true, 'default' => ''],
+            ]);
+
+        $repository = $this->createMock(SettingRepository::class);
+        $repository->expects($this->once())
+            ->method('findOneBy')
+            ->with(['name' => 'webmail_url'])
+            ->willReturn($existingSetting);
+
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->never())
+            ->method('persist');
+
+        $entityManager->expects($this->once())
+            ->method('flush');
+
+        $cache = $this->createMock(CacheInterface::class);
+        $cache->expects($this->once())
+            ->method('delete')
+            ->with('app.settings');
+
+        $settingsService = new SettingsService(
+            $repository,
+            $entityManager,
+            $cache,
+            $configService
+        );
+
+        $settingsService->setAll([
+            'webmail_url' => null,
+        ]);
+    }
+
     public function testClearCache(): void
     {
         $cache = $this->createMock(CacheInterface::class);
