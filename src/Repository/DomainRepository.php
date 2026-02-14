@@ -11,8 +11,10 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Domain>
  */
-final class DomainRepository extends ServiceEntityRepository
+final class DomainRepository extends ServiceEntityRepository implements SearchableRepositoryInterface
 {
+    use SearchableRepositoryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Domain::class);
@@ -37,36 +39,5 @@ final class DomainRepository extends ServiceEntityRepository
     public function getDefaultDomain(): ?Domain
     {
         return $this->findOneBy([], ['id' => 'ASC']);
-    }
-
-    public function countBySearch(string $search = ''): int
-    {
-        $qb = $this->createQueryBuilder('d')
-            ->select('COUNT(d.id)');
-
-        if ('' !== $search) {
-            $qb->where('d.name LIKE :search')
-                ->setParameter('search', '%'.$search.'%');
-        }
-
-        return (int) $qb->getQuery()->getSingleScalarResult();
-    }
-
-    /**
-     * @return Domain[]
-     */
-    public function findPaginatedBySearch(string $search, int $limit, int $offset): array
-    {
-        $qb = $this->createQueryBuilder('d')
-            ->orderBy('d.id', 'DESC')
-            ->setMaxResults($limit)
-            ->setFirstResult($offset);
-
-        if ('' !== $search) {
-            $qb->where('d.name LIKE :search')
-                ->setParameter('search', '%'.$search.'%');
-        }
-
-        return $qb->getQuery()->getResult();
     }
 }

@@ -33,13 +33,7 @@ final readonly class DomainManager
      */
     public function findPaginated(int $page = 1, string $search = ''): PaginatedResult
     {
-        $page = max(1, $page);
-        $offset = ($page - 1) * self::PAGE_SIZE;
-        $total = $this->repository->countBySearch($search);
-        $totalPages = max(1, (int) ceil($total / self::PAGE_SIZE));
-        $items = $this->repository->findPaginatedBySearch($search, self::PAGE_SIZE, $offset);
-
-        return new PaginatedResult($items, $page, $totalPages, $total);
+        return PaginatedResult::fromSearchableRepository($this->repository, $page, self::PAGE_SIZE, $search);
     }
 
     public function create(string $name): Domain
