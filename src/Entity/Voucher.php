@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Repository\VoucherRepository;
 use App\Traits\CreationTimeTrait;
+use App\Traits\DomainAwareTrait;
 use App\Traits\IdTrait;
 use App\Traits\UserAwareTrait;
 use DateTimeImmutable;
@@ -20,6 +21,7 @@ use Stringable;
 class Voucher implements Stringable
 {
     use CreationTimeTrait;
+    use DomainAwareTrait;
     use IdTrait;
     use UserAwareTrait;
 

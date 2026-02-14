@@ -44,7 +44,10 @@ final class VoucherAdmin extends Admin
     #[Override]
     protected function alterNewInstance(object $object): void
     {
-        $object->setUser($this->security->getUser());
+        /** @var User $user */
+        $user = $this->security->getUser();
+        $object->setUser($user);
+        $object->setDomain($user->getDomain());
     }
 
     #[Override]
@@ -68,6 +71,9 @@ final class VoucherAdmin extends Admin
                     }),
                 ],
             ])
+            ->add('domain', ModelAutocompleteType::class, [
+                'property' => 'name',
+            ])
             ->add('code', null, ['disabled' => !$this->isNewObject()]);
     }
 
@@ -82,6 +88,7 @@ final class VoucherAdmin extends Admin
             ])
             ->add('code')
             ->add('user')
+            ->add('domain')
             ->add('creationTime')
             ->add('redeemedTime');
     }
@@ -92,6 +99,7 @@ final class VoucherAdmin extends Admin
         $filter
             ->add('user.email', null, ['label' => 'User'])
             ->add('code')
+            ->add('domain')
             ->add('creationTime', DateTimeRangeFilter::class, [
                 'field_type' => DateRangePickerType::class,
                 'field_options' => [
