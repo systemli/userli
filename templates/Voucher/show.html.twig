@@ -19,8 +19,7 @@
         <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 sm:p-8">
             {# Voucher management section #}
             <div class="space-y-6">
-                {% if domain == user_domain %}
-                    {# Create voucher button for multipliers (only if vouchers exist) #}
+                {# Create voucher button for multipliers (only if vouchers exist) #}
                     {% if is_granted('ROLE_MULTIPLIER') and vouchers is defined and vouchers|length > 0 %}
                         <div class="flex justify-end">
                             {{ form_start(voucher_form, {
@@ -67,6 +66,9 @@
                                                         <p class="font-mono text-lg text-amber-800 dark:text-amber-200 line-through mb-1">
                                                             {{ voucher.code }}
                                                         </p>
+                                                        <p class="text-sm text-amber-600 dark:text-amber-400 mb-1">
+                                                            {{ voucher.domain }}
+                                                        </p>
                                                         <p class="text-sm text-amber-700 dark:text-amber-300">
                                                             {{ "form.voucher-redeemed-on"|trans }} {{ voucher.redeemedTime|date("d.m.Y") }}
                                                         </p>
@@ -77,11 +79,16 @@
                                             {# Active voucher #}
                                             <div class="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl p-4">
                                                 <div class="flex items-center justify-between">
-                                                    <div class="flex items-center">
-                                                        {{ ux_icon('heroicons:link', {'class': 'w-5 h-5 text-green-400 dark:text-green-500 mr-3 flex-shrink-0'}) }}
-                                                        <p class="font-mono text-lg text-green-800 dark:text-green-200 font-semibold">
-                                                            {{ voucher.code }}
-                                                        </p>
+                                                    <div class="flex items-start">
+                                                        {{ ux_icon('heroicons:link', {'class': 'w-5 h-5 text-green-400 dark:text-green-500 mt-0.5 mr-3 flex-shrink-0'}) }}
+                                                        <div>
+                                                            <p class="font-mono text-lg text-green-800 dark:text-green-200 font-semibold">
+                                                                {{ voucher.code }}
+                                                            </p>
+                                                            <p class="text-sm text-green-600 dark:text-green-400">
+                                                                {{ voucher.domain }}
+                                                            </p>
+                                                        </div>
                                                     </div>
                                                     <button type="button"
                                                             class="inline-flex items-center p-2 border border-green-300 dark:border-green-700 rounded-lg text-sm font-medium text-green-700 dark:text-green-300 bg-white dark:bg-gray-800 hover:bg-green-50 dark:hover:bg-green-900/30 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200 cursor-pointer"
@@ -151,7 +158,6 @@
                                     <p class="text-sm text-gray-600 dark:text-gray-300">{{ "index.voucher-limit"|trans }}</p>
                                 </div>
                             {% endif %}
-                        {% endif %}
                     </div>
                 </div>
         </div>
