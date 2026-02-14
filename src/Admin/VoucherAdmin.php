@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Entity\Voucher;
 use App\Enum\Roles;
 use App\Helper\RandomStringGenerator;
+use App\Validator\UniqueField;
 use Override;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -74,7 +75,18 @@ final class VoucherAdmin extends Admin
             ->add('domain', ModelAutocompleteType::class, [
                 'property' => 'name',
             ])
-            ->add('code', null, ['disabled' => !$this->isNewObject()]);
+            ->add(
+                'code',
+                null,
+                [
+                    'disabled' => !$this->isNewObject(),
+                    'constraints' => [
+                        new Assert\NotBlank(),
+                        new Assert\Length(exactly: 6),
+                        new UniqueField(entityClass: Voucher::class, field: 'code', message: 'form.unique-field'),
+                    ],
+                ]
+            );
     }
 
     #[Override]

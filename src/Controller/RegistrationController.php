@@ -96,7 +96,7 @@ final class RegistrationController extends AbstractController
         $voucherEntity = $this->voucherRepository->findByCode($voucherCode);
 
         if (null === $voucherEntity || !$this->isVoucherValid($voucherEntity)) {
-            $this->addFlash('error', 'registration.voucher-invalid');
+            $this->addFlash('error', 'flashes.voucher-invalid');
 
             return $this->redirectToRoute('index');
         }

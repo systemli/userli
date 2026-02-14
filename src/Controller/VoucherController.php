@@ -43,7 +43,6 @@ final class VoucherController extends AbstractController
             'Voucher/show.html.twig',
             [
                 'user' => $user,
-                'user_domain' => $user->getDomain(),
                 'vouchers' => $vouchers,
                 'voucher_form' => $voucherCreateForm,
             ]
