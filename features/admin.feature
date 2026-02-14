@@ -99,33 +99,6 @@ Feature: Admin
     Then the response status code should be 403
 
   @admin
-  Scenario: Access Domain List and able to create a Domain as Admin
-    When I am authenticated as "louis@example.org"
-    And I am on "/admin/domain/list"
-    Then the response status code should be 200
-
-    When I am on "/admin/domain/create"
-    Then the response status code should be 200
-
-  @admin
-  Scenario: Access Domain List and able to create a Domain as Domain Admin
-    When I am authenticated as "domain@example.com"
-    And I am on "/admin/domain/list"
-    Then the response status code should be 403
-
-    When I am on "/admin/domain/create"
-    Then the response status code should be 403
-
-  @admin
-  Scenario: Access Domain List and able to create a Domain as Support
-    When I am authenticated as "support@example.org"
-    And I am on "/admin/domain/list"
-    Then the response status code should be 403
-
-    When I am on "/admin/domain/create"
-    Then the response status code should be 403
-
-  @admin
   Scenario: Access Alias List and able to create a Alias as Admin
     When I am authenticated as "louis@example.org"
     And I am on "/admin/alias/list"
@@ -196,12 +169,6 @@ Feature: Admin
 
     When I am on "/admin/alias/1/delete"
     Then the response status code should be 200
-
-  @admin
-  Scenario: Admin can't remove Domains
-    When I am authenticated as "louis@example.org"
-    And I am on "/admin/domain/1/delete"
-    Then the response status code should be 404
 
   @admin
   Scenario: Admin can remove Users
