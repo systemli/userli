@@ -26,26 +26,12 @@
                         </a>
                     </div>
 
-                    <form method="get" action="{{ path('settings_domain_index') }}" class="flex items-center gap-2">
-                        <div class="relative">
-                            <input type="text" name="search" value="{{ search }}"
-                                   placeholder="{{ 'settings.domain.search.placeholder'|trans }}"
-                                   class="pl-10 pr-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                {{ ux_icon('heroicons:magnifying-glass', {class: 'w-4 h-4 text-gray-400'}) }}
-                            </div>
-                        </div>
-                        <button type="submit"
-                                class="inline-flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
-                            {{ 'settings.domain.search.submit'|trans }}
-                        </button>
-                        {% if search %}
-                            <a href="{{ path('settings_domain_index') }}"
-                               class="inline-flex items-center px-3 py-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
-                                {{ ux_icon('heroicons:x-mark', {class: 'w-4 h-4'}) }}
-                            </a>
-                        {% endif %}
-                    </form>
+                    {% include 'Settings/_search_form.html.twig' with {
+                        index_route: 'settings_domain_index',
+                        placeholder_key: 'settings.domain.search.placeholder',
+                        submit_key: 'settings.domain.search.submit',
+                        search: search,
+                    } %}
                 </div>
 
                 {% if domains is empty %}
@@ -83,30 +69,17 @@
                         </div>
                     </div>
 
-                    {% if totalPages > 1 %}
-                        <div class="mt-6 flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-4">
-                            <div class="text-sm text-gray-500 dark:text-gray-400">
-                                {{ 'settings.domain.pagination.total'|trans({'%count%': total}) }}
-                            </div>
-                            <div class="flex gap-2">
-                                {% if page > 1 %}
-                                    <a href="{{ path('settings_domain_index', {page: page - 1, search: search}|filter(v => v)) }}"
-                                       class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        {{ ux_icon('heroicons:chevron-left', {class: 'w-4 h-4 mr-1'}) }} {{ 'settings.domain.pagination.previous'|trans }}
-                                    </a>
-                                {% endif %}
-                                <span class="inline-flex items-center px-3 py-1.5 text-sm text-gray-500 dark:text-gray-400">
-                                    {{ 'settings.domain.pagination.page'|trans({'%page%': page, '%totalPages%': totalPages}) }}
-                                </span>
-                                {% if page < totalPages %}
-                                    <a href="{{ path('settings_domain_index', {page: page + 1, search: search}|filter(v => v)) }}"
-                                       class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        {{ 'settings.domain.pagination.next'|trans }} {{ ux_icon('heroicons:chevron-right', {class: 'w-4 h-4 ml-1'}) }}
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    {% endif %}
+                    {% include 'Settings/_pagination.html.twig' with {
+                        index_route: 'settings_domain_index',
+                        total_key: 'settings.domain.pagination.total',
+                        previous_key: 'settings.domain.pagination.previous',
+                        next_key: 'settings.domain.pagination.next',
+                        page_key: 'settings.domain.pagination.page',
+                        page: page,
+                        totalPages: totalPages,
+                        total: total,
+                        search: search,
+                    } %}
                 {% endif %}
             </div>
         </div>
