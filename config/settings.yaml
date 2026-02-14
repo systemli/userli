@@ -26,6 +26,11 @@ settings:
     type: email
     default: "monitoring@example.org"
 
+  webmail_url:
+    type: url
+    default: ""
+    optional: true
+
   weekly_report_enabled:
     type: boolean
     default: true

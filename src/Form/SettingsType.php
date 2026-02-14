@@ -53,6 +53,7 @@ final class SettingsType extends AbstractType
         $type = $definition['type'] ?? 'text';
         $validation = $definition['validation'] ?? [];
         $default = $definition['default'] ?? null;
+        $optional = $definition['optional'] ?? false;
 
         // Priority: 1. Form data (from controller), 2. Database value, 3. Definition default
         $currentValue = null;
@@ -75,7 +76,7 @@ final class SettingsType extends AbstractType
             'help' => sprintf('settings.form.%s.help', $name),
             'required' => false,
             'data' => $currentValue,
-            'constraints' => $this->buildConstraints($validation, $type),
+            'constraints' => $this->buildConstraints($validation, $type, $optional),
         ];
 
         // Add field based on type and validation
@@ -113,15 +114,15 @@ final class SettingsType extends AbstractType
         };
     }
 
-    private function buildConstraints(array $validation, string $type): array
+    private function buildConstraints(array $validation, string $type, bool $optional = false): array
     {
         $constraints = [];
 
         // String-like types that should not be empty
         $stringLikeTypes = ['string', 'email', 'url', 'password', 'textarea'];
 
-        // Add NotBlank constraint for all string-like types
-        if (in_array($type, $stringLikeTypes, true)) {
+        // Add NotBlank constraint for all string-like types (unless optional)
+        if (!$optional && in_array($type, $stringLikeTypes, true)) {
             $constraints[] = new Assert\NotBlank();
         }
 
@@ -135,7 +136,14 @@ final class SettingsType extends AbstractType
         }
 
         if ($type === 'url') {
-            $constraints[] = new Assert\Url(requireTld: true);
+            if ($optional) {
+                $constraints[] = new Assert\AtLeastOneOf([
+                    new Assert\Blank(),
+                    new Assert\Url(requireTld: true),
+                ]);
+            } else {
+                $constraints[] = new Assert\Url(requireTld: true);
+            }
         }
 
         // Length constraints

@@ -17,7 +17,8 @@
             <div class="flex flex-wrap justify-center gap-6 max-w-7xl mx-auto">
 
                 {# Webmail card #}
-                {% if webmail_url is defined and webmail_url is not empty %}
+                {% set webmail_url = setting('webmail_url') %}
+                {% if webmail_url is not empty %}
                     {% if webmail_url starts with 'https://' %}
                         {% set url = webmail_url | slice(8) %}
                     {% elseif webmail_url starts with 'http://' %}
