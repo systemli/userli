@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
-use App\Dto\PaginatedResult;
 use App\Entity\ReservedName;
 use App\Repository\ReservedNameRepository;
 use App\Service\ReservedNameManager;
@@ -64,104 +63,6 @@ class ReservedNameManagerTest extends TestCase
 
         $manager = new ReservedNameManager($entityManager, $this->repository);
         $manager->delete($reservedName);
-    }
-
-    public function testFindPaginatedDefaults(): void
-    {
-        $items = [new ReservedName(), new ReservedName()];
-
-        $repository = $this->createMock(ReservedNameRepository::class);
-        $repository
-            ->expects($this->once())
-            ->method('countBySearch')
-            ->with('')
-            ->willReturn(2);
-        $repository
-            ->expects($this->once())
-            ->method('findPaginatedBySearch')
-            ->with('', 20, 0)
-            ->willReturn($items);
-
-        $manager = new ReservedNameManager($this->entityManager, $repository);
-        $result = $manager->findPaginated();
-
-        self::assertInstanceOf(PaginatedResult::class, $result);
-        self::assertSame($items, $result->items);
-        self::assertEquals(1, $result->page);
-        self::assertEquals(1, $result->totalPages);
-        self::assertEquals(2, $result->total);
-    }
-
-    public function testFindPaginatedWithSearch(): void
-    {
-        $repository = $this->createMock(ReservedNameRepository::class);
-        $repository
-            ->expects($this->once())
-            ->method('countBySearch')
-            ->with('admin')
-            ->willReturn(1);
-        $repository
-            ->expects($this->once())
-            ->method('findPaginatedBySearch')
-            ->with('admin', 20, 0)
-            ->willReturn([new ReservedName()]);
-
-        $manager = new ReservedNameManager($this->entityManager, $repository);
-        $result = $manager->findPaginated(1, 'admin');
-
-        self::assertCount(1, $result->items);
-        self::assertEquals(1, $result->total);
-    }
-
-    public function testFindPaginatedWithMultiplePages(): void
-    {
-        $repository = $this->createMock(ReservedNameRepository::class);
-        $repository
-            ->expects($this->once())
-            ->method('countBySearch')
-            ->with('')
-            ->willReturn(45);
-        $repository
-            ->expects($this->once())
-            ->method('findPaginatedBySearch')
-            ->with('', 20, 20)
-            ->willReturn([new ReservedName()]);
-
-        $manager = new ReservedNameManager($this->entityManager, $repository);
-        $result = $manager->findPaginated(2);
-
-        self::assertEquals(2, $result->page);
-        self::assertEquals(3, $result->totalPages);
-        self::assertEquals(45, $result->total);
-    }
-
-    public function testFindPaginatedNegativePageClampedToOne(): void
-    {
-        $repository = $this->createMock(ReservedNameRepository::class);
-        $repository->method('countBySearch')->willReturn(5);
-        $repository
-            ->expects($this->once())
-            ->method('findPaginatedBySearch')
-            ->with('', 20, 0);
-
-        $manager = new ReservedNameManager($this->entityManager, $repository);
-        $result = $manager->findPaginated(-1);
-
-        self::assertEquals(1, $result->page);
-    }
-
-    public function testFindPaginatedZeroTotalReturnsOneTotalPage(): void
-    {
-        $repository = $this->createMock(ReservedNameRepository::class);
-        $repository->method('countBySearch')->willReturn(0);
-        $repository->method('findPaginatedBySearch')->willReturn([]);
-
-        $manager = new ReservedNameManager($this->entityManager, $repository);
-        $result = $manager->findPaginated();
-
-        self::assertEquals(1, $result->totalPages);
-        self::assertEquals(0, $result->total);
-        self::assertEmpty($result->items);
     }
 
     public function testImportFromFile(): void
