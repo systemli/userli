@@ -34,10 +34,10 @@ final class ReservedNameController extends AbstractController
         $pagination = $this->manager->findPaginated($page, $search);
 
         return $this->render('Settings/ReservedName/index.html.twig', [
-            'reservedNames' => $pagination['items'],
-            'page' => $pagination['page'],
-            'totalPages' => $pagination['totalPages'],
-            'total' => $pagination['total'],
+            'reservedNames' => $pagination->items,
+            'page' => $pagination->page,
+            'totalPages' => $pagination->totalPages,
+            'total' => $pagination->total,
             'search' => $search,
         ]);
     }

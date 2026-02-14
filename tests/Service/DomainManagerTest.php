@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
+use App\Dto\PaginatedResult;
 use App\Entity\Domain;
 use App\Event\DomainCreatedEvent;
 use App\Repository\AliasRepository;
@@ -99,10 +100,11 @@ class DomainManagerTest extends TestCase
         );
         $result = $manager->findPaginated();
 
-        self::assertSame($items, $result['items']);
-        self::assertEquals(1, $result['page']);
-        self::assertEquals(1, $result['totalPages']);
-        self::assertEquals(2, $result['total']);
+        self::assertInstanceOf(PaginatedResult::class, $result);
+        self::assertSame($items, $result->items);
+        self::assertEquals(1, $result->page);
+        self::assertEquals(1, $result->totalPages);
+        self::assertEquals(2, $result->total);
     }
 
     public function testFindPaginatedWithSearch(): void
@@ -128,8 +130,8 @@ class DomainManagerTest extends TestCase
         );
         $result = $manager->findPaginated(1, 'example');
 
-        self::assertCount(1, $result['items']);
-        self::assertEquals(1, $result['total']);
+        self::assertCount(1, $result->items);
+        self::assertEquals(1, $result->total);
     }
 
     public function testFindPaginatedWithMultiplePages(): void
@@ -155,9 +157,9 @@ class DomainManagerTest extends TestCase
         );
         $result = $manager->findPaginated(2);
 
-        self::assertEquals(2, $result['page']);
-        self::assertEquals(3, $result['totalPages']);
-        self::assertEquals(45, $result['total']);
+        self::assertEquals(2, $result->page);
+        self::assertEquals(3, $result->totalPages);
+        self::assertEquals(45, $result->total);
     }
 
     public function testFindPaginatedNegativePageClampedToOne(): void
@@ -178,7 +180,7 @@ class DomainManagerTest extends TestCase
         );
         $result = $manager->findPaginated(-1);
 
-        self::assertEquals(1, $result['page']);
+        self::assertEquals(1, $result->page);
     }
 
     public function testFindPaginatedZeroTotalReturnsOneTotalPage(): void
@@ -196,9 +198,9 @@ class DomainManagerTest extends TestCase
         );
         $result = $manager->findPaginated();
 
-        self::assertEquals(1, $result['totalPages']);
-        self::assertEquals(0, $result['total']);
-        self::assertEmpty($result['items']);
+        self::assertEquals(1, $result->totalPages);
+        self::assertEquals(0, $result->total);
+        self::assertEmpty($result->items);
     }
 
     public function testGetDomainStats(): void

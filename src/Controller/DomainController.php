@@ -29,10 +29,10 @@ final class DomainController extends AbstractController
         $pagination = $this->manager->findPaginated($page, $search);
 
         return $this->render('Settings/Domain/index.html.twig', [
-            'domains' => $pagination['items'],
-            'page' => $pagination['page'],
-            'totalPages' => $pagination['totalPages'],
-            'total' => $pagination['total'],
+            'domains' => $pagination->items,
+            'page' => $pagination->page,
+            'totalPages' => $pagination->totalPages,
+            'total' => $pagination->total,
             'search' => $search,
         ]);
     }
