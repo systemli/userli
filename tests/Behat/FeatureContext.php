@@ -215,10 +215,17 @@ class FeatureContext extends MinkContext
 
                         if (null !== $user) {
                             $voucher->setUser($user);
+                            $voucher->setDomain($user->getDomain());
                         }
 
                         break;
                 }
+            }
+
+            // Set default domain if no domain was set via user
+            if (null === $voucher->getDomain()) {
+                $defaultDomain = $this->manager->getRepository(Domain::class)->getDefaultDomain();
+                $voucher->setDomain($defaultDomain);
             }
 
             $this->manager->persist($voucher);

@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Creator\VoucherCreator;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Exception\ValidationException;
 use App\Form\Model\VoucherCreate;
 use App\Form\VoucherCreateType;
-use App\Handler\VoucherHandler;
+use App\Service\VoucherManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,8 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class VoucherController extends AbstractController
 {
     public function __construct(
-        private readonly VoucherHandler $voucherHandler,
-        private readonly VoucherCreator $voucherCreator,
+        private readonly VoucherManager $voucherManager,
     ) {
     }
 
@@ -39,7 +37,7 @@ final class VoucherController extends AbstractController
             ]
         );
 
-        $vouchers = $this->voucherHandler->getVouchersByUser($user);
+        $vouchers = $this->voucherManager->getVouchersByUser($user);
 
         return $this->render(
             'Voucher/show.html.twig',
@@ -72,7 +70,7 @@ final class VoucherController extends AbstractController
     {
         if ($this->isGranted(Roles::MULTIPLIER)) {
             try {
-                $this->voucherCreator->create($user);
+                $this->voucherManager->create($user, $user->getDomain());
                 $this->addFlash('success', 'flashes.voucher-creation-successful');
             } catch (ValidationException) {
                 // Should not throw
