@@ -441,6 +441,9 @@ settings:
     app_url:
       label: Application URL
       help: The main URL of your application (e.g., https://users.example.org)
+    webmail_url:
+      label: Webmail URL
+      help: URL to your webmail client (e.g., https://webmail.example.org). Leave empty to hide the webmail link.
     project_name:
       label: Project Name
       help: The name of your project or organization

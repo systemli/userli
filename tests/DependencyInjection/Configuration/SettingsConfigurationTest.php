@@ -277,4 +277,56 @@ class SettingsConfigurationTest extends TestCase
         // allow_empty should not exist anymore
         self::assertArrayNotHasKey('allow_empty', $processedConfig['test_field']['validation']);
     }
+
+    public function testOptionalDefaultsToFalse(): void
+    {
+        $config = [
+            'settings' => [
+                'required_setting' => [
+                    'type' => 'url',
+                    'default' => 'https://example.org',
+                ],
+            ],
+        ];
+
+        $processedConfig = $this->processor->processConfiguration($this->configuration, [$config['settings']]);
+
+        self::assertFalse($processedConfig['required_setting']['optional']);
+    }
+
+    public function testOptionalCanBeSetToTrue(): void
+    {
+        $config = [
+            'settings' => [
+                'webmail_url' => [
+                    'type' => 'url',
+                    'default' => '',
+                    'optional' => true,
+                ],
+            ],
+        ];
+
+        $processedConfig = $this->processor->processConfiguration($this->configuration, [$config['settings']]);
+
+        self::assertTrue($processedConfig['webmail_url']['optional']);
+        self::assertEquals('url', $processedConfig['webmail_url']['type']);
+        self::assertEquals('', $processedConfig['webmail_url']['default']);
+    }
+
+    public function testOptionalCanBeExplicitlyFalse(): void
+    {
+        $config = [
+            'settings' => [
+                'app_url' => [
+                    'type' => 'url',
+                    'default' => 'https://example.org',
+                    'optional' => false,
+                ],
+            ],
+        ];
+
+        $processedConfig = $this->processor->processConfiguration($this->configuration, [$config['settings']]);
+
+        self::assertFalse($processedConfig['app_url']['optional']);
+    }
 }

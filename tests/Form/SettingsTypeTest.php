@@ -22,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class SettingsTypeTest extends TestCase
 {
@@ -108,13 +109,13 @@ class SettingsTypeTest extends TestCase
     }
 
     #[DataProvider('constraintProvider')]
-    public function testBuildConstraints(array $validation, string $type, int $expectedCount): void
+    public function testBuildConstraints(array $validation, string $type, int $expectedCount, bool $optional = false): void
     {
         $reflection = new ReflectionClass($this->formType);
         $method = $reflection->getMethod('buildConstraints');
         $method->setAccessible(true);
 
-        $result = $method->invoke($this->formType, $validation, $type);
+        $result = $method->invoke($this->formType, $validation, $type, $optional);
 
         self::assertCount($expectedCount, $result);
     }
@@ -134,6 +135,9 @@ class SettingsTypeTest extends TestCase
             'email type' => [[], 'email', 2], // NotBlank + Email constraint
             'password type' => [[], 'password', 1], // NotBlank constraint
             'textarea type' => [[], 'textarea', 1], // NotBlank constraint
+            'optional url type' => [[], 'url', 1, true], // AtLeastOneOf(Blank, Url) only, no NotBlank
+            'optional string type' => [[], 'string', 0, true], // No NotBlank constraint
+            'optional email type' => [[], 'email', 1, true], // Email only, no NotBlank
         ];
     }
 
@@ -331,5 +335,39 @@ class SettingsTypeTest extends TestCase
         $validation = [];
         $constraints = $method->invoke($this->formType, $validation, 'boolean');
         self::assertCount(0, $constraints); // No constraints
+    }
+
+    public function testOptionalUrlConstraints(): void
+    {
+        $reflection = new ReflectionClass($this->formType);
+        $method = $reflection->getMethod('buildConstraints');
+        $method->setAccessible(true);
+
+        // Optional URL: should have AtLeastOneOf(Blank, Url) and no NotBlank
+        $constraints = $method->invoke($this->formType, [], 'url', true);
+        self::assertCount(1, $constraints);
+        self::assertInstanceOf(Assert\AtLeastOneOf::class, $constraints[0]);
+
+        // Non-optional URL: should have NotBlank + Url
+        $constraints = $method->invoke($this->formType, [], 'url', false);
+        self::assertCount(2, $constraints);
+        self::assertInstanceOf(Assert\NotBlank::class, $constraints[0]);
+        self::assertInstanceOf(Assert\Url::class, $constraints[1]);
+    }
+
+    public function testOptionalStringSkipsNotBlank(): void
+    {
+        $reflection = new ReflectionClass($this->formType);
+        $method = $reflection->getMethod('buildConstraints');
+        $method->setAccessible(true);
+
+        // Optional string: no NotBlank
+        $constraints = $method->invoke($this->formType, [], 'string', true);
+        self::assertCount(0, $constraints);
+
+        // Non-optional string: NotBlank
+        $constraints = $method->invoke($this->formType, [], 'string', false);
+        self::assertCount(1, $constraints);
+        self::assertInstanceOf(Assert\NotBlank::class, $constraints[0]);
     }
 }

@@ -421,6 +421,9 @@ settings:
     app_url:
       label: Anwendungs-URL
       help: Die Haupt-URL deiner Anwendung (z. B. https://users.example.org)
+    webmail_url:
+      label: Webmail-URL
+      help: URL zu deinem Webmail-Client (z. B. https://webmail.example.org). Leer lassen, um den Webmail-Link auszublenden.
     project_name:
       label: Projekt Name
       help: Der Name deines Projekts oder Organisation

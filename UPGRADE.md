@@ -1,5 +1,13 @@
 # Upgrade documentation
 
+## Upgrade to 6.2.0
+
+### WEBMAIL_URL environment variable removed
+
+The `WEBMAIL_URL` environment variable has been removed. The webmail URL is now configured as an application setting in the admin panel under **Settings > Application Settings > Webmail URL**.
+
+If you previously had `WEBMAIL_URL` set, you need to configure it manually in the settings after upgrading.
+
 ## Upgrade to 6.0.0
 
 ### PHP 8.4 Required

@@ -30,6 +30,7 @@ final class SettingsConfiguration implements ConfigurationInterface
                         ->defaultValue('string')
                     ->end()
                     ->scalarNode('default')->defaultNull()->end()
+                    ->booleanNode('optional')->defaultFalse()->end()
                     ->arrayNode('validation')
                         ->addDefaultsIfNotSet()
                         ->children()
