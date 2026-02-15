@@ -31,11 +31,11 @@ final class WebhookDeliveryController extends AbstractController
         $pagination = $this->manager->findPaginatedByEndpoint($endpoint, $page, $status, $eventType);
 
         return $this->render('Settings/Webhook/Delivery/index.html.twig', [
-            'deliveries' => $pagination['items'],
+            'deliveries' => $pagination->items,
             'endpoint' => $endpoint,
-            'page' => $pagination['page'],
-            'totalPages' => $pagination['totalPages'],
-            'total' => $pagination['total'],
+            'page' => $pagination->page,
+            'totalPages' => $pagination->totalPages,
+            'total' => $pagination->total,
             'status' => $status,
             'eventType' => $eventType,
         ]);

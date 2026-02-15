@@ -1,0 +1,13 @@
+{% set current_section = 'domains' %}
+{% set heading_key = 'settings.domain.create.heading' %}
+{% set description_key = 'settings.domain.create.description' %}
+{% set label_key = 'settings.domain.form.name.label' %}
+{% set placeholder_key = 'settings.domain.form.name.placeholder' %}
+{% set help_key = 'settings.domain.form.name.help' %}
+{% set cancel_key = 'settings.domain.form.cancel' %}
+{% set submit_key = 'settings.domain.form.submit.create' %}
+{% set cancel_route = 'settings_domain_index' %}
+
+{% extends 'Settings/_create_form.html.twig' %}
+
+{% block title %}{{ setting('app_name') }} - {{ 'settings.domain.create.title'|trans }}{% endblock %}

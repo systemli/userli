@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
+use App\Dto\PaginatedResult;
 use App\Entity\WebhookDelivery;
 use App\Entity\WebhookEndpoint;
 use App\Enum\WebhookEvent;
@@ -41,10 +42,11 @@ class WebhookDeliveryManagerTest extends TestCase
         $manager = new WebhookDeliveryManager($em, $bus, $repo);
         $result = $manager->findPaginatedByEndpoint($endpoint);
 
-        self::assertSame([$d2, $d1], $result['items']);
-        self::assertSame(1, $result['page']);
-        self::assertSame(1, $result['totalPages']);
-        self::assertSame(2, $result['total']);
+        self::assertInstanceOf(PaginatedResult::class, $result);
+        self::assertSame([$d2, $d1], $result->items);
+        self::assertSame(1, $result->page);
+        self::assertSame(1, $result->totalPages);
+        self::assertSame(2, $result->total);
     }
 
     public function testRetryDoesNothingForSuccessfulDelivery(): void

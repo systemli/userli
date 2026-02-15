@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Alias;
+use App\Entity\Domain;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -26,6 +27,18 @@ final class AliasRepository extends ServiceEntityRepository
         }
 
         return $this->findOneBy(['source' => $email, 'deleted' => false]);
+    }
+
+    public function countDomainAliases(Domain $domain): int
+    {
+        return (int) $this->createQueryBuilder('a')
+            ->select('COUNT(a.id)')
+            ->where('a.domain = :domain')
+            ->andWhere('a.deleted = :deleted')
+            ->setParameter('domain', $domain)
+            ->setParameter('deleted', false)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     /**

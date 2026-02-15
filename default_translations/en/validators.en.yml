@@ -13,6 +13,7 @@ form:
   twofactor-backup-ack-missing: "This needs to be checked."
   lowercase: "The string must not contain uppercase letters."
   unique-field: "This value is already used."
+  valid-tld: "The domain does not have a valid top-level domain."
 
 registration:
   voucher-invalid: "The invite code is invalid."
