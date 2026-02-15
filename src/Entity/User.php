@@ -82,6 +82,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $passwordChangeRequired;
 
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $smtpQuotaLimits = null;
+
     /**
      * User constructor.
      */
@@ -157,5 +160,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     public function setPasswordChangeRequired(bool $passwordChangeRequired): void
     {
         $this->passwordChangeRequired = $passwordChangeRequired;
+    }
+
+    public function getSmtpQuotaLimits(): ?array
+    {
+        return $this->smtpQuotaLimits;
+    }
+
+    public function setSmtpQuotaLimits(?array $smtpQuotaLimits): void
+    {
+        $this->smtpQuotaLimits = $smtpQuotaLimits;
     }
 }

@@ -7,6 +7,7 @@ namespace App\Admin;
 use App\Entity\User;
 use App\Enum\MailCrypt;
 use App\Enum\Roles;
+use App\Form\SmtpQuotaLimitsType;
 use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use App\Service\UserResetService;
@@ -131,11 +132,20 @@ final class UserAdmin extends Admin
             ])
             ->add('quota', null, [
                 'help' => 'Custom mailbox quota in MB',
-            ])
-            ->add('passwordChangeRequired', CheckboxType::class, [
+            ]);
+
+        if ($this->security->isGranted(Roles::ADMIN)) {
+            $form->add('smtpQuotaLimits', SmtpQuotaLimitsType::class, [
+                'label' => 'SMTP Quota Limits',
                 'required' => false,
-                'help' => 'User must change password on next login',
-            ])
+                'help' => 'Set custom SMTP quota limits for this user',
+            ]);
+        }
+
+        $form->add('passwordChangeRequired', CheckboxType::class, [
+            'required' => false,
+            'help' => 'User must change password on next login',
+        ])
             ->add('deleted', CheckboxType::class, ['disabled' => true]);
     }
 

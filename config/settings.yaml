@@ -34,3 +34,15 @@ settings:
   weekly_report_enabled:
     type: boolean
     default: true
+
+  smtp_quota_limit_per_hour:
+    type: integer
+    default: 0
+    validation:
+      min: 0
+
+  smtp_quota_limit_per_day:
+    type: integer
+    default: 0
+    validation:
+      min: 0

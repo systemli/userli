@@ -6,6 +6,7 @@ namespace App\Admin;
 
 use App\Entity\Alias;
 use App\Enum\Roles;
+use App\Form\SmtpQuotaLimitsType;
 use App\Traits\DomainGuesserAwareTrait;
 use App\Validator\EmailAddress;
 use App\Validator\Lowercase;
@@ -54,7 +55,12 @@ final class AliasAdmin extends Admin
 
         if ($this->security->isGranted(Roles::ADMIN)) {
             $form
-                ->add('destination', EmailType::class, ['required' => false]);
+                ->add('destination', EmailType::class, ['required' => false])
+                ->add('smtpQuotaLimits', SmtpQuotaLimitsType::class, [
+                    'label' => 'SMTP Quota Limits',
+                    'required' => false,
+                    'help' => 'Set custom SMTP quota limits for this alias.',
+                ]);
         }
     }
 

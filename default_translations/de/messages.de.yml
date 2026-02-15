@@ -415,6 +415,7 @@ settings:
       project: Projekteinstellungen
       email: E-Mail Einstellungen
       reports: Berichte
+      smtp_quota: SMTP-Quota Limits
     app_name:
       label: Anwendungsname
       help: Der im Anwendungsheader und Browsertitel angezeigte Name
@@ -439,6 +440,12 @@ settings:
     weekly_report_enabled:
       label: Wöchentlicher Bericht
       help: Einen wöchentlichen Bericht über neue Registrierungen an die Benachrichtigungs-E-Mail-Adresse senden
+    smtp_quota_limit_per_hour:
+      label: Limit pro Stunde
+      help: Maximale Anzahl an E-Mails, die ein:e Benutzer:in pro Stunde senden kann (0 = unbegrenzt)
+    smtp_quota_limit_per_day:
+      label: Limit pro Tag
+      help: Maximale Anzahl an E-Mails, die ein:e Benutzer:in pro Tag senden kann (0 = unbegrenzt)
   navigation:
     aria-label: Einstellungen Navigation
     api: API Tokens

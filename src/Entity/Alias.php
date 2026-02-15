@@ -13,6 +13,7 @@ use App\Traits\RandomTrait;
 use App\Traits\UpdatedTimeTrait;
 use App\Traits\UserAwareTrait;
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\AssociationOverride;
 use Doctrine\ORM\Mapping\Index;
@@ -43,6 +44,9 @@ class Alias implements SoftDeletableInterface, UpdatedTimeInterface, Stringable
 
     #[ORM\Column(nullable: true)]
     protected ?string $note = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $smtpQuotaLimits = null;
 
     /**
      * Alias constructor.
@@ -86,6 +90,16 @@ class Alias implements SoftDeletableInterface, UpdatedTimeInterface, Stringable
     {
         $this->user = null;
         $this->destination = null;
+    }
+
+    public function getSmtpQuotaLimits(): ?array
+    {
+        return $this->smtpQuotaLimits;
+    }
+
+    public function setSmtpQuotaLimits(?array $smtpQuotaLimits): void
+    {
+        $this->smtpQuotaLimits = $smtpQuotaLimits;
     }
 
     #[Override]

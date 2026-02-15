@@ -48,6 +48,33 @@ final class AliasRepository extends ServiceEntityRepository
     }
 
     /**
+     * Returns the smtp_quota_limits for an alias, or null if the alias does not exist.
+     *
+     * Uses a scalar query to avoid hydrating the full Alias entity.
+     * An existing alias with no custom limits returns an empty array.
+     *
+     * @return array<string, int>|null
+     */
+    public function findSmtpQuotaLimitsBySource(string $source): ?array
+    {
+        $result = $this->createQueryBuilder('a')
+            ->select('a.smtpQuotaLimits')
+            ->where('a.source = :source')
+            ->andWhere('a.deleted = :deleted')
+            ->setParameter('source', $source)
+            ->setParameter('deleted', false)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if ($result === null) {
+            return null;
+        }
+
+        return $result['smtpQuotaLimits'] ?? [];
+    }
+
+    /**
      * @return array|Alias[]
      */
     public function findByUser(User $user, ?bool $random = null, ?bool $disableDomainFilter = false): array
