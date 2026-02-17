@@ -11,7 +11,7 @@ use App\Traits\OpenPgpKeyTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OpenPgpKeyRepository::class)]
-#[ORM\Table(name: 'virtual_openpgp_keys')]
+#[ORM\Table(name: 'openpgp_keys')]
 #[ORM\Index(name: 'idx_wkd_hash', columns: ['wkd_hash'])]
 class OpenPgpKey
 {

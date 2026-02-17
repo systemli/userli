@@ -22,7 +22,7 @@ use Stringable;
 
 #[ORM\Entity(repositoryClass: AliasRepository::class)]
 #[ORM\AssociationOverrides([new AssociationOverride(name: 'domain', joinColumns: new ORM\JoinColumn(nullable: true))])]
-#[ORM\Table(name: 'virtual_aliases')]
+#[ORM\Table(name: 'aliases')]
 #[Index(columns: ['source', 'deleted'], name: 'source_deleted_idx')]
 #[Index(columns: ['destination', 'deleted'], name: 'destination_deleted_idx')]
 #[Index(columns: ['user_id', 'deleted'], name: 'user_deleted_idx')]
