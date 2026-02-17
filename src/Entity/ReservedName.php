@@ -15,7 +15,7 @@ use Override;
 use Stringable;
 
 #[ORM\Entity(repositoryClass: ReservedNameRepository::class)]
-#[ORM\Table(name: 'virtual_reserved_names')]
+#[ORM\Table(name: 'reserved_names')]
 class ReservedName implements UpdatedTimeInterface, Stringable
 {
     use CreationTimeTrait;
