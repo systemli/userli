@@ -42,7 +42,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: 'virtual_users')]
+#[ORM\Table(name: 'users')]
 #[Index(columns: ['email'], name: 'email_idx')]
 #[Index(columns: ['creation_time'], name: 'creation_time_idx')]
 #[Index(columns: ['deleted'], name: 'deleted_idx')]

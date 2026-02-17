@@ -22,7 +22,7 @@ have MailCrypt enabled per default, you can set `MAIL_CRYPT=1` in the dotenv
   documentation about migrating legacy users for more info
 
 MailCrypt can be turned on/off for individual users by setting the `mail_crypt`
-switch in the `virtual_users` database table. This switch is mainly meant to
+switch in the `users` database table. This switch is mainly meant to
 provide a migration path from legacy users without MailCrypt keys. On new
 setups, it's recommended to keep MailCrypt enabled for all users.
 
@@ -52,7 +52,7 @@ In order to enable MailCrypt for a legacy user, do the following:
 1. Ensure that they have a recovery token generated. This will automatically
    generate MailCrypt key pair as well. This step can only be done by the
    account holder, as the user password is required to do so.
-2. Manually set `mail_crypt=1` for the user in the `virtual_users` database
+2. Manually set `mail_crypt=1` for the user in the `users` database
    table. This needs to be done on a per-user basis on purpose (e.g. by a
    cron script).
 
@@ -62,7 +62,7 @@ Or, alternatively, to enforce MailCrypt for all legacy users:
    MailCrypt key pair being generated automatically when legacy users log
    in the next time. Again, we cannot do this step without the user logging
    in, as the user password is required to do so.
-2. Manually set `mail_crypt=1` for all users in the `virtual_users` database
+2. Manually set `mail_crypt=1` for all users in the `users` database
    table that have a MailCrypt key pair generated but MailCrypt not enabled
    yet. This needs to be done on a per-user basis on purpose (e.g. by a cron
    script).
@@ -75,5 +75,5 @@ The following SQL statement can be used to enable MailCrypt for all legacy
 users that got a MailCrypt key pair generated. Use with caution!
 
 ```sql
-UPDATE virtual_users SET mail_crypt=1 WHERE mail_crypt_secret_box IS NOT NULL AND mail_crypt = 0;
+UPDATE users SET mail_crypt=1 WHERE mail_crypt_secret_box IS NOT NULL AND mail_crypt = 0;
 ```

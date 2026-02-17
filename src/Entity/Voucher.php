@@ -15,7 +15,7 @@ use Override;
 use Stringable;
 
 #[ORM\Entity(repositoryClass: VoucherRepository::class)]
-#[ORM\Table(name: 'virtual_vouchers')]
+#[ORM\Table(name: 'vouchers')]
 #[Index(columns: ['code'], name: 'code_idx')]
 class Voucher implements Stringable
 {
