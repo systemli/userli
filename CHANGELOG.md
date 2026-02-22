@@ -1,5 +1,39 @@
 # Changelog
 
+## 6.2.0 (2026.02.22)
+
+### Features and Improvements
+
+- 🔥 Remove unused environment variable (#1059)
+- ✨ Add real-time password strength meter (#1044)
+- ✨ Introduce configurable sending quotas (#955)
+
+### Technical Changes
+
+- ♻️ Migrate WEBMAIL_URL from env var to application setting (#1058)
+- ♻️ Group all authenticated routes under /account/ (#1055)
+- ♻️ Migrate JavaScript to TypeScript (#1054)
+- ♻️ Final cleanup: extract sanitize module, add confirm controller, fix CSRF (#1053)
+- ♻️ Replace password strength inline JS with Stimulus controller (#1052)
+- ♻️ Replace flash notification inline JS with Stimulus controller (#1051)
+- ♻️ Replace tooltip inline JS with Stimulus controller (#1050)
+- ♻️ Replace clipboard JS with @stimulus-components/clipboard (#1049)
+- ♻️ Replace dark mode inline JS with Stimulus controller (#1048)
+- ♻️ Replace inline dropdown JS with Stimulus controller (#1047)
+- ♻️ Activate Stimulus bridge and remove dead frontend code (#1046)
+- ♻️ Refactor registration into two-step flow with voucher check on start page (#1043)
+- 🌐 Remove %domain% variable from translations (#1042)
+- ♻️ Replace domain with app_name setting in browser page titles (#1041)
+- 📝 Merge copilot-instructions.md into AGENTS.md and update guidelines (#1040)
+- ♻️ Replace ReportWeeklyCommand with Scheduler and configurable setting (#1039)
+- ♻️ Refactor UserChangedListener to async ReportSuspiciousChildren pattern (#1038)
+- ♻️ Migrate ReservedName management from SonataAdmin to native Settings UI (#1037)
+- ♻️ Centralize cache key management and increase TTL to 24h (#1036)
+
+### Bug Fixes
+
+- 🐛 Fix optional settings not being saved (#1060)
+
 ## 6.1.0 (2026.02.10)
 
 ### Features and Improvements
