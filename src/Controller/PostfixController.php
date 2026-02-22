@@ -12,6 +12,7 @@ use App\Repository\AliasRepository;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
 use App\Security\RequireApiScope;
+use App\Service\SettingsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -26,6 +27,7 @@ final class PostfixController extends AbstractController
         private readonly DomainRepository $domainRepository,
         private readonly UserRepository $userRepository,
         private readonly CacheInterface $cache,
+        private readonly SettingsService $settingsService,
     ) {
     }
 
@@ -83,5 +85,31 @@ final class PostfixController extends AbstractController
         });
 
         return $this->json($senders);
+    }
+
+    #[Route(path: '/api/postfix/smtp_quota/{email}', name: 'api_postfix_get_smtp_quota', methods: ['GET'], stateless: true)]
+    public function getSmtpQuota(string $email): Response
+    {
+        $result = $this->cache->get(UserCacheKey::POSTFIX_QUOTA->key($email), function (ItemInterface $item) use ($email) {
+            $item->expiresAfter(UserCacheKey::TTL);
+
+            $limits = $this->userRepository->findSmtpQuotaLimitsByEmail($email)
+                ?? $this->aliasRepository->findSmtpQuotaLimitsBySource($email);
+
+            if ($limits === null) {
+                return null;
+            }
+
+            return [
+                'per_hour' => $limits['per_hour'] ?? (int) $this->settingsService->get('smtp_quota_limit_per_hour', 0),
+                'per_day' => $limits['per_day'] ?? (int) $this->settingsService->get('smtp_quota_limit_per_day', 0),
+            ];
+        });
+
+        if ($result === null) {
+            return $this->json(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->json($result);
     }
 }

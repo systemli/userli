@@ -18,7 +18,7 @@ class InvalidateUserCacheHandlerTest extends TestCase
         $expectedKeys = UserCacheKey::allKeysForEmail($email);
 
         $cache = $this->createMock(CacheInterface::class);
-        $cache->expects(self::exactly(3))
+        $cache->expects(self::exactly(4))
             ->method('delete')
             ->with($this->callback(static function (string $key) use (&$expectedKeys): bool {
                 $index = array_search($key, $expectedKeys, true);

@@ -7,7 +7,6 @@ namespace App\Repository;
 use App\Entity\Domain;
 use App\Entity\User;
 use DateInterval;
-use DateInvalidOperationException;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -78,8 +77,6 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
 
     /**
      * @return User[]
-     *
-     * @throws DateInvalidOperationException
      */
     public function findInactiveUsers(int $days): array
     {
@@ -103,6 +100,33 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Returns the smtp_quota_limits for a user, or null if the user does not exist.
+     *
+     * Uses a scalar query to avoid hydrating the full User entity.
+     * An existing user with no custom limits returns an empty array.
+     *
+     * @return array<string, int>|null
+     */
+    public function findSmtpQuotaLimitsByEmail(string $email): ?array
+    {
+        $result = $this->createQueryBuilder('u')
+            ->select('u.smtpQuotaLimits')
+            ->where('u.email = :email')
+            ->andWhere('u.deleted = :deleted')
+            ->setParameter('email', $email)
+            ->setParameter('deleted', false)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if ($result === null) {
+            return null;
+        }
+
+        return $result['smtpQuotaLimits'] ?? [];
     }
 
     public function countUsers(): int

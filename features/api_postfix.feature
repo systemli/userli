@@ -103,3 +103,31 @@ Feature: Postfix API
             """
             ["user2@example.org"]
             """
+
+    @quota
+    Scenario: Get SMTP quota with wrong API token
+        Given I have an invalid API token
+        When I send a GET request to "/api/postfix/smtp_quota/user@example.org"
+        Then the response status code should equal 401
+
+    @quota
+    Scenario: Get SMTP quota for non-existent address
+        Given I have a valid API token "postfix-test-123"
+        When I send a GET request to "/api/postfix/smtp_quota/nonexistent@example.org"
+        Then the response status code should equal 404
+
+    @quota
+    Scenario: Get SMTP quota for existing user
+        Given I have a valid API token "postfix-test-123"
+        When I send a GET request to "/api/postfix/smtp_quota/user@example.org"
+        Then the response status code should equal 200
+        And the JSON path "per_hour" should equal "0"
+        And the JSON path "per_day" should equal "0"
+
+    @quota
+    Scenario: Get SMTP quota for existing alias
+        Given I have a valid API token "postfix-test-123"
+        When I send a GET request to "/api/postfix/smtp_quota/alias@example.org"
+        Then the response status code should equal 200
+        And the JSON path "per_hour" should equal "0"
+        And the JSON path "per_day" should equal "0"

@@ -24,6 +24,9 @@ final readonly class InvalidateAliasCacheHandler
             $this->cache->delete($key);
         }
 
+        // Invalidate quota cache for the alias source address
+        $this->cache->delete(UserCacheKey::POSTFIX_QUOTA->key($message->source));
+
         // Invalidate sender cache for all destination emails of the alias
         $emails = $this->aliasRepository->findDestinationsBySource($message->source);
         foreach ($emails as $email) {

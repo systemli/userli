@@ -26,12 +26,13 @@ class InvalidateAliasCacheHandlerTest extends TestCase
 
         $expectedKeys = [
             AliasCacheKey::POSTFIX_ALIAS->key($source),
+            UserCacheKey::POSTFIX_QUOTA->key($source),
             UserCacheKey::POSTFIX_SENDERS->key('user1@example.org'),
             UserCacheKey::POSTFIX_SENDERS->key('user2@example.org'),
         ];
 
         $cache = $this->createMock(CacheInterface::class);
-        $cache->expects(self::exactly(3))
+        $cache->expects(self::exactly(4))
             ->method('delete')
             ->with($this->callback(static function (string $key) use (&$expectedKeys): bool {
                 $index = array_search($key, $expectedKeys, true);
@@ -59,13 +60,28 @@ class InvalidateAliasCacheHandlerTest extends TestCase
             ->with($source)
             ->willReturn([]);
 
+        $expectedKeys = [
+            AliasCacheKey::POSTFIX_ALIAS->key($source),
+            UserCacheKey::POSTFIX_QUOTA->key($source),
+        ];
+
         $cache = $this->createMock(CacheInterface::class);
-        $cache->expects(self::once())
+        $cache->expects(self::exactly(2))
             ->method('delete')
-            ->with(AliasCacheKey::POSTFIX_ALIAS->key($source))
+            ->with($this->callback(static function (string $key) use (&$expectedKeys): bool {
+                $index = array_search($key, $expectedKeys, true);
+                if ($index === false) {
+                    return false;
+                }
+                unset($expectedKeys[$index]);
+
+                return true;
+            }))
             ->willReturn(true);
 
         $handler = new InvalidateAliasCacheHandler($cache, $aliasRepository);
         $handler(new InvalidateAliasCache($source));
+
+        self::assertEmpty($expectedKeys, 'All expected cache keys should have been deleted');
     }
 }
