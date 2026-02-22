@@ -21,6 +21,8 @@ build: clean prepare
 		composer install --no-dev --ignore-platform-reqs --no-scripts; \
 	APP_ENV=prod ${SQLITE_DB_URL} \
 		composer dump-autoload; \
+	APP_ENV=prod ${SQLITE_DB_URL} \
+		bin/console assets:install --no-interaction; \
 	yarn --pure-lockfile; \
 	yarn encore production
 
