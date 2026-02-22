@@ -6,7 +6,6 @@ namespace App\Remover;
 
 use App\Entity\User;
 use App\Entity\Voucher;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -28,14 +27,12 @@ final readonly class VoucherRemover
 
     public function removeUnredeemedVouchersByUsers(array $users): void
     {
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->isNull('redeemedTime'))
-            ->andWhere(Criteria::expr()->in('user', $users));
-
         $this->manager->getRepository(Voucher::class)
-            ->createQueryBuilder('a')
-            ->addCriteria($criteria)
+            ->createQueryBuilder('v')
             ->delete()
+            ->where('v.redeemedTime IS NULL')
+            ->andWhere('v.user IN (:users)')
+            ->setParameter('users', $users)
             ->getQuery()
             ->execute();
     }

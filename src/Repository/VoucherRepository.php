@@ -7,7 +7,6 @@ namespace App\Repository;
 use App\Entity\User;
 use App\Entity\Voucher;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -33,7 +32,11 @@ final class VoucherRepository extends ServiceEntityRepository
      */
     public function countRedeemedVouchers(): int
     {
-        return $this->matching(Criteria::create()->where(Criteria::expr()->neq('redeemedTime', null)))->count();
+        return (int) $this->createQueryBuilder('v')
+            ->select('COUNT(v.id)')
+            ->where('v.redeemedTime IS NOT NULL')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     /**
@@ -41,7 +44,11 @@ final class VoucherRepository extends ServiceEntityRepository
      */
     public function countUnredeemedVouchers(): int
     {
-        return $this->matching(Criteria::create()->where(Criteria::expr()->eq('redeemedTime', null)))->count();
+        return (int) $this->createQueryBuilder('v')
+            ->select('COUNT(v.id)')
+            ->where('v.redeemedTime IS NULL')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     /**
@@ -50,12 +57,18 @@ final class VoucherRepository extends ServiceEntityRepository
      */
     public function countVouchersByUser(User $user, ?bool $redeemed): int
     {
-        $criteria = $redeemed ? Criteria::expr()->neq('redeemedTime', null) : Criteria::expr()->eq('redeemedTime', null);
+        $qb = $this->createQueryBuilder('v')
+            ->select('COUNT(v.id)')
+            ->where('v.user = :user')
+            ->setParameter('user', $user);
 
-        return $this->matching(Criteria::create()
-            ->where(Criteria::expr()->eq('user', $user))
-            ->andWhere($criteria))
-            ->count();
+        if ($redeemed) {
+            $qb->andWhere('v.redeemedTime IS NOT NULL');
+        } else {
+            $qb->andWhere('v.redeemedTime IS NULL');
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
     /**
