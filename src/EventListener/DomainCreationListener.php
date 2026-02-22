@@ -7,14 +7,13 @@ namespace App\EventListener;
 use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Event\DomainCreatedEvent;
-use App\Handler\WkdHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final readonly class DomainCreationListener implements EventSubscriberInterface
 {
-    public function __construct(private EntityManagerInterface $manager, private WkdHandler $handler)
+    public function __construct(private EntityManagerInterface $manager)
     {
     }
 
@@ -34,9 +33,6 @@ final readonly class DomainCreationListener implements EventSubscriberInterface
             $this->manager->persist($alias);
             $this->manager->flush();
         }
-
-        // create Web Key Directory (WKD)
-        $this->handler->getDomainWkdPath($domain->getName());
     }
 
     #[Override]

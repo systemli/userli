@@ -32,6 +32,18 @@ final class OpenPgpKeyRepository extends ServiceEntityRepository
         return $this->findOneBy(['email' => $email]);
     }
 
+    public function findByWkdHash(string $hash, string $domain): ?OpenPgpKey
+    {
+        return $this->createQueryBuilder('k')
+            ->where('k.wkdHash = :hash')
+            ->andWhere('k.email LIKE :domain')
+            ->setParameter('hash', $hash)
+            ->setParameter('domain', '%@'.strtolower(str_replace('%', '', $domain)))
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function countKeys(): int
     {
         return $this->count([]);

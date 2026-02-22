@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OpenPgpKeyRepository::class)]
 #[ORM\Table(name: 'virtual_openpgp_keys')]
+#[ORM\Index(name: 'idx_wkd_hash', columns: ['wkd_hash'])]
 class OpenPgpKey
 {
     use EmailTrait;
@@ -21,6 +22,9 @@ class OpenPgpKey
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'openPgpKeys')]
     private ?User $user = null;
 
+    #[ORM\Column(length: 32, nullable: true)]
+    private ?string $wkdHash = null;
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -29,6 +33,16 @@ class OpenPgpKey
     public function setUser(?User $user): void
     {
         $this->user = $user;
+    }
+
+    public function getWkdHash(): ?string
+    {
+        return $this->wkdHash;
+    }
+
+    public function setWkdHash(?string $wkdHash): void
+    {
+        $this->wkdHash = $wkdHash;
     }
 
     public function toBinary(): ?string
