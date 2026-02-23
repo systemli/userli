@@ -50,7 +50,7 @@ final class RegistrationController extends AbstractController
 
         // Validate voucher before showing the registration form
         if (!$this->isVoucherValid($voucher)) {
-            $this->addFlash('error', 'registration.voucher-invalid');
+            $this->addFlash('error', 'flashes.voucher-invalid');
 
             return $this->redirectToRoute('index');
         }

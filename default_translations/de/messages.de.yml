@@ -265,6 +265,7 @@ flashes:
   recovery-next-login: Du kannst dich nun einloggen.
   openpgp-deletion-successful: Dein OpenPGP-Schlüssel wurde gelöscht.
   openpgp-key-upload-successful: Dein OpenPGP-Schlüssel wurde hochgeladen.
+  voucher-invalid: Der Einladungscode ist ungültig.
   openpgp-key-upload-error-no-openpgp: Die hochgadene Datei enthält keine OpenPGP-Schlüssel.
   openpgp-key-upload-error-no-keys: Die hochgeladene Datei enthält keine Schlüssel für deine E-Mail-Adresse.
   openpgp-key-upload-error-multiple-keys: Die hochgeladene Datei enhält mehr als einen Schlüssel für deine E-Mail-Adresse. Bitte lade nur einen Schlüssel hoch.
