@@ -271,6 +271,7 @@ flashes:
   openpgp-key-upload-successful: Your OpenPGP key got uploaded.
   openpgp-key-upload-error-no-openpgp: The uploaded file doesn't contain OpenPGP data.
   openpgp-key-upload-error-no-keys: No keys for your mail address found in uploaded data.
+  voucher-invalid: The invite code is invalid.
   openpgp-key-upload-error-multiple-keys: More than one key for your mail address found in uploaded data. Please upload only one key.
 flash_batch_remove_vouchers_success: Unredeemed invite codes deleted.
 error:
