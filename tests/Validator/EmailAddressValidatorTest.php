@@ -132,4 +132,20 @@ class EmailAddressValidatorTest extends ConstraintValidatorTestCase
             ['reserved@example.org', 'registration.email-already-taken'],
         ];
     }
+
+    #[DataProvider('getUsedAddressesNotExists')]
+    public function testValidateUsedEmailAddressWithoutExists(string $address): void
+    {
+        $this->validator->validate($address, new EmailAddress(exists: false));
+        self::assertNoViolation();
+    }
+
+    public static function getUsedAddressesNotExists(): array
+    {
+        return [
+            ['user@example.org'],
+            ['alias@example.org'],
+            ['reserved@example.org'],
+        ];
+    }
 }

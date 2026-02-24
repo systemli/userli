@@ -47,7 +47,8 @@ final class AliasAdmin extends Admin
                     new Assert\NotNull(),
                     new Assert\Email(mode: 'strict'),
                     new Lowercase(),
-                    new EmailAddress(),
+                    // Admin is allowed to create Aliases for already existing sources
+                    new EmailAddress(exists: false),
                 ] : [],
             ])
             ->add('user', ModelAutocompleteType::class, ['property' => 'email', 'required' => false])
