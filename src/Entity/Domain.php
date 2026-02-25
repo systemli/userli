@@ -15,7 +15,7 @@ use Override;
 use Stringable;
 
 #[ORM\Entity(repositoryClass: DomainRepository::class)]
-#[ORM\Table(name: 'virtual_domains')]
+#[ORM\Table(name: 'domains')]
 class Domain implements UpdatedTimeInterface, Stringable
 {
     use CreationTimeTrait;
