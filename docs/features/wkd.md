@@ -6,6 +6,11 @@ Users can import and update their OpenPGP key and it will be published in the
 Web Key Directory according to the [OpenPGP Web Key Directory Internet
 Draft](https://datatracker.ietf.org/doc/draft-koch-openpgp-webkey-service).
 
+Importing OpenPGP keys requires [GnuPG](https://gnupg.org/) (version 2.1.14
+or newer) to be installed, as the
+[`pear/crypt_gpg`](https://pear.php.net/manual/en/package.encryption.crypt-gpg.intro.php)
+library uses it to parse and validate uploaded keys.
+
 Userli serves WKD keys directly via HTTP using the **Advanced** method. The
 following routes are provided:
 
