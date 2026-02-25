@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Form\Model;
 
-use App\Validator\EmailAddress;
+use App\Validator\EmailAllowedSymbols;
+use App\Validator\EmailAvailable;
+use App\Validator\EmailDomain;
 use App\Validator\EmailLength;
 use App\Validator\Lowercase;
 use App\Validator\PasswordPolicy;
@@ -18,7 +20,9 @@ final class Registration
     private string $voucher = '';
 
     #[Assert\Email(message: 'form.invalid-email', mode: 'strict')]
-    #[EmailAddress]
+    #[EmailAvailable]
+    #[EmailAllowedSymbols]
+    #[EmailDomain]
     #[Assert\NotNull]
     #[Lowercase]
     #[EmailLength(minLength: 3, maxLength: 32)]

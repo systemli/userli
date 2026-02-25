@@ -8,6 +8,6 @@ use Attribute;
 use Symfony\Component\Validator\Constraint;
 
 #[Attribute]
-final class EmailDomain extends Constraint
+final class EmailAllowedSymbols extends Constraint
 {
 }
