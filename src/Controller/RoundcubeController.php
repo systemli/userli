@@ -35,7 +35,8 @@ final class RoundcubeController extends AbstractController
             throw new AuthenticationException('Bad credentials', 401);
         }
 
-        $aliases = $this->manager->getRepository(Alias::class)->findByUser($user);
+        // Fetch all non random aliases for user, disabling domain filter.
+        $aliases = $this->manager->getRepository(Alias::class)->findByUser($user, false, true);
         $aliasSources = array_map(static fn ($alias) => $alias->getSource(), $aliases);
 
         return $this->json($aliasSources);
