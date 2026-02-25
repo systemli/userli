@@ -6,6 +6,7 @@ namespace App\Tests\Behat;
 
 use App\Entity\Alias;
 use App\Entity\Domain;
+use App\Entity\OpenPgpKey;
 use App\Entity\ReservedName;
 use App\Entity\Setting;
 use App\Entity\User;
@@ -17,6 +18,7 @@ use App\Enum\ApiScope;
 use App\Enum\UserNotificationType;
 use App\Enum\WebhookEvent;
 use App\Guesser\DomainGuesser;
+use App\Handler\WkdHandler;
 use App\Helper\PasswordUpdater;
 use App\Helper\TotpBackupCodeGenerator;
 use App\Service\ApiTokenManager;
@@ -685,6 +687,72 @@ class FeatureContext extends MinkContext
             $scopes = array_map(static fn (string $scope) => ApiScope::from(trim($scope))->value, $scopeStrings);
 
             $apiTokenManager->create($token, $name, $scopes);
+        }
+    }
+
+    /**
+     * @When the following OpenPgpKey exists:
+     */
+    public function theFollowingOpenPgpKeyExists(TableNode $table): void
+    {
+        foreach ($table->getColumnsHash() as $data) {
+            $openPgpKey = new OpenPgpKey();
+
+            foreach ($data as $key => $value) {
+                if (empty($value)) {
+                    continue;
+                }
+
+                switch ($key) {
+                    case 'email':
+                        $openPgpKey->setEmail($value);
+                        break;
+                    case 'keyId':
+                        $openPgpKey->setKeyId($value);
+                        break;
+                    case 'keyFingerprint':
+                        $openPgpKey->setKeyFingerprint($value);
+                        break;
+                    case 'keyData':
+                        $openPgpKey->setKeyData($value);
+                        break;
+                    case 'user':
+                        $user = $this->getUserRepository()->findByEmail($value);
+
+                        if (null !== $user) {
+                            $openPgpKey->setUser($user);
+                        }
+
+                        break;
+                }
+            }
+
+            if (null !== $openPgpKey->getEmail()) {
+                [$localPart] = explode('@', $openPgpKey->getEmail());
+                $openPgpKey->setWkdHash(WkdHandler::wkdHash($localPart));
+            }
+
+            $this->manager->persist($openPgpKey);
+            $this->manager->flush();
+        }
+    }
+
+    /**
+     * @Then the response header :header should equal :expected
+     *
+     * @throws UnsupportedDriverActionException
+     */
+    public function theResponseHeaderShouldEqual(string $header, string $expected): void
+    {
+        $driver = $this->getSession()->getDriver();
+        if (!$driver instanceof BrowserKitDriver) {
+            throw new UnsupportedDriverActionException('This step is only supported by the BrowserKitDriver', $driver);
+        }
+
+        $actual = $driver->getClient()->getResponse()->headers->get($header);
+
+        if ($actual !== $expected) {
+            throw new RuntimeException(sprintf('Expected header "%s" to equal "%s" but got "%s"', $header, $expected, $actual ?? 'null'));
         }
     }
 

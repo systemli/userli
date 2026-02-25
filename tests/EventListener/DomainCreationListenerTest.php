@@ -8,7 +8,6 @@ use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Event\DomainCreatedEvent;
 use App\EventListener\DomainCreationListener;
-use App\Handler\WkdHandler;
 use App\Repository\DomainRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
@@ -45,12 +44,7 @@ class DomainCreationListenerTest extends TestCase
             }));
         $manager->expects($this->once())->method('flush');
 
-        $wkdHandler = $this->createMock(WkdHandler::class);
-        $wkdHandler->expects($this->once())
-            ->method('getDomainWkdPath')
-            ->with('new.org');
-
-        $listener = new DomainCreationListener($manager, $wkdHandler);
+        $listener = new DomainCreationListener($manager);
         $listener->onDomainCreated(new DomainCreatedEvent($newDomain));
     }
 
@@ -67,12 +61,7 @@ class DomainCreationListenerTest extends TestCase
         $manager->expects($this->never())->method('persist');
         $manager->expects($this->never())->method('flush');
 
-        $wkdHandler = $this->createMock(WkdHandler::class);
-        $wkdHandler->expects($this->once())
-            ->method('getDomainWkdPath')
-            ->with('default.org');
-
-        $listener = new DomainCreationListener($manager, $wkdHandler);
+        $listener = new DomainCreationListener($manager);
         $listener->onDomainCreated(new DomainCreatedEvent($defaultDomain));
     }
 }

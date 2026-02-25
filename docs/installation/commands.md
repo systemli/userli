@@ -21,7 +21,6 @@ app:users:restore                       Reset a user
 app:voucher:count                       Get count of vouchers for a specific user
 app:voucher:create                      Create voucher for a specific user
 app:voucher:unlink                      Remove connection between vouchers and accounts after 3 months
-app:wkd:export-keys                     Export all OpenPGP keys to WKD directory
 ```
     
 Get more information about each command by running:

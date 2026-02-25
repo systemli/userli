@@ -316,7 +316,6 @@ Feature: OpenPGP
     Then I should be on "/account/openpgp"
     And I should see text matching "Your OpenPGP key got uploaded."
     And I should see text matching "Fingerprint: 7301 2547 C25D E2A0 D097 8C46 AD8D 52CD 2281 FEC2"
-    And File "/tmp/.well-known/openpgpkey/example.org/hu/kei1q4tipxxu1yj79k9kfukdhfy631xe" should exist
     And the response status code should be 200
 
   @upload-openpgp-file-replace-valid-key
@@ -331,7 +330,6 @@ Feature: OpenPGP
     Then I should be on "/account/openpgp"
     And I should see text matching "Your OpenPGP key got uploaded."
     And I should see text matching "Fingerprint: 4964 21CF 18B5 0D8D 61DB 26BA D3CB BC7A 09CC 0EDF"
-    And File "/tmp/.well-known/openpgpkey/example.org/hu/kei1q4tipxxu1yj79k9kfukdhfy631xe" should exist
     And the response status code should be 200
 
   @upload-openpgp-delete-key
@@ -350,7 +348,6 @@ Feature: OpenPGP
     Then I should be on "/account/openpgp"
     And I should see text matching "Your OpenPGP key was deleted."
     And I should not see text matching "Fingerprint:"
-    And File "/tmp/.well-known/openpgpkey/example.org/hu/kei1q4tipxxu1yj79k9kfukdhfy631xe" should not exist
     And the response status code should be 200
 
   @openpgp-access
