@@ -111,9 +111,6 @@ assets: vendors
 	yarn
 	yarn encore dev
 
-db: vendors
-	${SQLITE_DB_URL} bin/console doctrine:migrations:migrate --no-interaction
-
 integration: assets db lint
 	bin/behat -f progress
 
@@ -123,5 +120,5 @@ security-check: vendors
 psalm: vendors
 	composer psalm
 
-test: db lint
+test: vendors lint
 	bin/phpunit
