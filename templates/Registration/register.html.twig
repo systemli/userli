@@ -2,13 +2,13 @@
 
 
 
-{% block title %}{{ setting('app_name') }} - {{ "form.register-header"|trans }}{% endblock %}
+{% block title %}{{ registration_domain }} - {{ "form.register-header"|trans }}{% endblock %}
 
 {% form_theme form 'Form/fields.html.twig' %}
 
 {% block page_title %}{{ "form.register-header"|trans }}{% endblock %}
 
-{% block page_subtitle %}{{ "registration.title"|trans({'%project_name%': setting('project_name')}) }}{% endblock %}
+{% block page_subtitle %}{{ "registration.title"|trans({'%project_name%': registration_domain}) }}{% endblock %}
 
 {% block page_content %}
     <div class="max-w-4xl mx-auto">
@@ -98,7 +98,7 @@
                                 <div class="relative">
                                     {{ form_widget(form.email, {
                                         'attr': {
-                                            'suffix': '@' ~ domain,
+                                            'suffix': '@' ~ registration_domain,
                                             'autocomplete': 'email',
                                             'autofocus': '',
                                             'aria-describedby': form.email.vars.errors|length > 0 ? 'email-error' : null

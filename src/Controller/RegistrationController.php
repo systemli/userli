@@ -14,7 +14,6 @@ use App\Form\RegistrationType;
 use App\Handler\RegistrationHandler;
 use App\Repository\UserRepository;
 use App\Repository\VoucherRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +26,8 @@ final class RegistrationController extends AbstractController
 {
     public function __construct(
         private readonly RegistrationHandler $registrationHandler,
-        private readonly ManagerRegistry $manager,
+        private readonly VoucherRepository $voucherRepository,
+        private readonly UserRepository $userRepository,
         private readonly TokenStorageInterface $tokenStorage,
     ) {
     }
@@ -48,12 +48,15 @@ final class RegistrationController extends AbstractController
             return $this->render('Registration/closed.html.twig');
         }
 
-        // Validate voucher before showing the registration form
-        if (!$this->isVoucherValid($voucher)) {
+        $voucherEntity = $this->voucherRepository->findByCode($voucher);
+
+        if (null === $voucherEntity || !$this->isVoucherValid($voucherEntity)) {
             $this->addFlash('error', 'flashes.voucher-invalid');
 
             return $this->redirectToRoute('index');
         }
+
+        $domainName = $voucherEntity->getDomain()->getName();
 
         $registration = new Registration();
         $registration->setVoucher($voucher);
@@ -64,12 +67,14 @@ final class RegistrationController extends AbstractController
             [
                 'action' => $this->generateUrl('register_submit'),
                 'method' => 'post',
+                'domain' => $domainName,
             ]
         );
 
         return $this->render('Registration/register.html.twig', [
             'form' => $form,
             'voucher' => $voucher,
+            'registration_domain' => $domainName,
         ]);
     }
 
@@ -84,20 +89,35 @@ final class RegistrationController extends AbstractController
         }
 
         $registration = new Registration();
-        $form = $this->createForm(RegistrationType::class, $registration);
+
+        // Extract voucher code from submitted form data to resolve the domain
+        $formData = $request->request->all('registration');
+        $voucherCode = $formData['voucher'] ?? '';
+        $voucherEntity = $this->voucherRepository->findByCode($voucherCode);
+
+        if (null === $voucherEntity || !$this->isVoucherValid($voucherEntity)) {
+            $this->addFlash('error', 'flashes.voucher-invalid');
+
+            return $this->redirectToRoute('index');
+        }
+
+        $domainName = $voucherEntity->getDomain()->getName();
+
+        $form = $this->createForm(RegistrationType::class, $registration, [
+            'domain' => $domainName,
+        ]);
         $form->handleRequest($request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
             return $this->render('Registration/register.html.twig', [
                 'form' => $form,
                 'voucher' => $registration->getVoucher(),
+                'registration_domain' => $domainName,
             ]);
         }
 
         $this->registrationHandler->handle($registration);
-        /** @var UserRepository $userRepository */
-        $userRepository = $this->manager->getRepository(User::class);
-        $user = $userRepository->findByEmail($registration->getEmail());
+        $user = $this->userRepository->findByEmail($registration->getEmail());
         if (null !== $user) {
             $token = new UsernamePasswordToken($user, 'default', $user->getRoles());
             $this->tokenStorage->setToken($token);
@@ -159,17 +179,8 @@ final class RegistrationController extends AbstractController
         return $this->render('Registration/welcome.html.twig');
     }
 
-    private function isVoucherValid(string $code): bool
+    private function isVoucherValid(Voucher $voucher): bool
     {
-        /** @var VoucherRepository $voucherRepository */
-        $voucherRepository = $this->manager->getRepository(Voucher::class);
-
-        $voucher = $voucherRepository->findByCode($code);
-
-        if (null === $voucher) {
-            return false;
-        }
-
         if ($voucher->isRedeemed()) {
             return false;
         }
