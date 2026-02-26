@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Tests if mailcrypt is working by uploading emails via IMAP and checking disk storage
-
 set -e
 
 DOVECOT_HOST="localhost"
