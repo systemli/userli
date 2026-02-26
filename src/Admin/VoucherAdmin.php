@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\Entity\Domain;
 use App\Entity\User;
 use App\Entity\Voucher;
 use App\Enum\Roles;
@@ -15,7 +16,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\DoctrineORMAdminBundle\Filter\DateTimeRangeFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Sonata\Form\Type\DateRangePickerType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -72,8 +75,9 @@ final class VoucherAdmin extends Admin
                     }),
                 ],
             ])
-            ->add('domain', ModelAutocompleteType::class, [
-                'property' => 'name',
+            ->add('domain', EntityType::class, [
+                'class' => Domain::class,
+                'choice_label' => 'name',
             ])
             ->add(
                 'code',
@@ -100,7 +104,9 @@ final class VoucherAdmin extends Admin
             ])
             ->add('code')
             ->add('user')
-            ->add('domain')
+            ->add('domain', null, [
+                'associated_property' => 'name',
+            ])
             ->add('creationTime')
             ->add('redeemedTime');
     }
@@ -111,7 +117,13 @@ final class VoucherAdmin extends Admin
         $filter
             ->add('user.email', null, ['label' => 'User'])
             ->add('code')
-            ->add('domain')
+            ->add('domain', ModelFilter::class, [
+                'field_type' => EntityType::class,
+                'field_options' => [
+                    'class' => Domain::class,
+                    'choice_label' => 'name',
+                ],
+            ])
             ->add('creationTime', DateTimeRangeFilter::class, [
                 'field_type' => DateRangePickerType::class,
                 'field_options' => [
