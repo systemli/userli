@@ -10,6 +10,7 @@ use App\Event\DomainCreatedEvent;
 use App\Repository\AliasRepository;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
+use App\Repository\VoucherRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -22,6 +23,7 @@ final readonly class DomainManager
         private DomainRepository $repository,
         private UserRepository $userRepository,
         private AliasRepository $aliasRepository,
+        private VoucherRepository $voucherRepository,
         private EventDispatcherInterface $eventDispatcher,
     ) {
     }
@@ -50,7 +52,7 @@ final readonly class DomainManager
     }
 
     /**
-     * @return array{users: int, aliases: int, admins: int}
+     * @return array{users: int, aliases: int, admins: int, vouchers: int}
      */
     public function getDomainStats(Domain $domain): array
     {
@@ -58,6 +60,7 @@ final readonly class DomainManager
             'users' => $this->userRepository->countDomainUsers($domain),
             'aliases' => $this->aliasRepository->countDomainAliases($domain),
             'admins' => $this->userRepository->countDomainAdmins($domain),
+            'vouchers' => $this->voucherRepository->countByDomain($domain),
         ];
     }
 }

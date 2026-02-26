@@ -7,15 +7,13 @@
         {% include 'Settings/_navigation.html.twig' with {'current_section': 'webhooks'} %}
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
             <div class="p-6 sm:p-8">
-                <div class="flex items-center mb-6">
-                    <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center mr-4">
-                        {{ ux_icon('heroicons:cursor-arrow-rays', {class: 'w-6 h-6 text-blue-600 dark:text-blue-400'}) }}
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ 'settings.webhook.table.title'|trans }}</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ 'settings.webhook.table.description'|trans }}</p>
-                    </div>
-                </div>
+                {% include 'Settings/_section_header.html.twig' with {
+                    icon: 'heroicons:cursor-arrow-rays',
+                    icon_color: 'blue',
+                    heading_key: 'settings.webhook.table.title',
+                    description_key: 'settings.webhook.table.description',
+                } %}
+
                 <div class="mb-6">
                     <a href="{{ path('settings_webhook_endpoint_create') }}"
                        class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
@@ -23,69 +21,74 @@
                         {{ 'settings.webhook.create.button'|trans }}
                     </a>
                 </div>
+
                 {% if endpoints is empty %}
-                    <div class="text-center py-12">
-                        {{ ux_icon('heroicons:cursor-arrow-rays', {class: 'w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600'}) }}
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">{{ 'settings.webhook.table.empty-title'|trans }}</h3>
-                        <p class="text-gray-500 dark:text-gray-300 max-w-md mx-auto">{{ 'settings.webhook.table.empty-description'|trans }}</p>
-                    </div>
+                    {% include 'Settings/_empty_state.html.twig' with {
+                        icon: 'heroicons:cursor-arrow-rays',
+                        title_key: 'settings.webhook.table.empty-title',
+                        description_key: 'settings.webhook.table.empty-description',
+                    } %}
                 {% else %}
-                    <div class="overflow-hidden">
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                <thead class="bg-gray-50 dark:bg-gray-700">
-                                <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ 'settings.webhook.table.id'|trans }}</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ 'settings.webhook.table.url'|trans }}</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ 'settings.webhook.table.events'|trans }}</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ 'settings.webhook.table.enabled'|trans }}</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ 'settings.api.table.actions'|trans }}</th>
+                    {% embed 'Settings/_table.html.twig' with {
+                        headers: [
+                            {label: 'settings.table.id'},
+                            {label: 'settings.webhook.table.url'},
+                            {label: 'settings.webhook.table.events'},
+                            {label: 'settings.webhook.table.enabled'},
+                            {label: 'settings.table.actions', align: 'right'},
+                        ]
+                    } %}
+                        {% block table_body %}
+                            {% for endpoint in endpoints %}
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ endpoint.id }}</td>
+                                    <td class="px-6 py-4 text-sm font-mono break-all text-gray-900 dark:text-gray-100">{{ endpoint.url|e }}</td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-wrap gap-1">
+                                            {% for event in endpoint.events %}
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200">{{ event }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">{% if endpoint.enabled %}<span
+                                                class="text-green-600 dark:text-green-400 font-medium">{{ 'settings.webhook.enabled'|trans }}</span>{% else %}
+                                            <span class="text-gray-400 dark:text-gray-500">{{ 'settings.webhook.disabled'|trans }}</span>{% endif %}
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <span class="inline-flex items-center rounded-lg border border-gray-200 dark:border-gray-600 divide-x divide-gray-200 dark:divide-gray-600">
+                                            <a href="{{ path('settings_webhook_delivery_index', {id: endpoint.id}) }}"
+                                               title="{{ 'settings.webhook.actions.deliveries'|trans }}"
+                                               data-controller="tooltip"
+                                               class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors first:rounded-l-[7px] last:rounded-r-[7px]">
+                                                {{ ux_icon('heroicons:paper-airplane', {class: 'w-4 h-4'}) }}
+                                                <span class="sr-only">{{ 'settings.webhook.actions.deliveries'|trans }}</span>
+                                            </a>
+                                            <a href="{{ path('settings_webhook_endpoint_edit', {id: endpoint.id}) }}"
+                                               title="{{ 'settings.webhook.actions.edit'|trans }}"
+                                               data-controller="tooltip"
+                                               class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors first:rounded-l-[7px] last:rounded-r-[7px]">
+                                                {{ ux_icon('heroicons:pencil-square', {class: 'w-4 h-4'}) }}
+                                                <span class="sr-only">{{ 'settings.webhook.actions.edit'|trans }}</span>
+                                            </a>
+                                            <form method="post"
+                                                  action="{{ path('settings_webhook_endpoint_delete', {id: endpoint.id}) }}"
+                                                  onsubmit="return confirm('{{ 'settings.webhook.delete.confirm'|trans({'%url%': endpoint.url|e('js')}) }}');">
+                                                <input type="hidden" name="_token"
+                                                       value="{{ csrf_token('delete_webhook_endpoint_' ~ endpoint.id) }}">
+                                                <button type="submit"
+                                                        title="{{ 'settings.webhook.actions.delete'|trans }}"
+                                                        data-controller="tooltip"
+                                                        class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors first:rounded-l-[7px] last:rounded-r-[7px]">
+                                                    {{ ux_icon('heroicons:trash', {class: 'w-4 h-4'}) }}
+                                                    <span class="sr-only">{{ 'settings.webhook.actions.delete'|trans }}</span>
+                                                </button>
+                                            </form>
+                                        </span>
+                                    </td>
                                 </tr>
-                                </thead>
-                                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                {% for endpoint in endpoints %}
-                                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                        <td class="px-6 py-4 text-sm font-mono text-gray-900 dark:text-gray-100">{{ endpoint.id }}</td>
-                                        <td class="px-6 py-4 text-sm font-mono break-all text-gray-900 dark:text-gray-100">{{ endpoint.url|e }}</td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex flex-wrap gap-1">
-                                                {% for event in endpoint.events %}
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200">{{ event }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4">{% if endpoint.enabled %}<span
-                                                    class="text-green-600 dark:text-green-400 font-medium">{{ 'settings.webhook.enabled'|trans }}</span>{% else %}
-                                                <span class="text-gray-400 dark:text-gray-500">{{ 'settings.webhook.disabled'|trans }}</span>{% endif %}
-                                        </td>
-                                        <td class="px-6 py-4 text-right">
-                                            <div class="flex justify-end gap-2">
-                                                <a href="{{ path('settings_webhook_delivery_index', {id: endpoint.id}) }}"
-                                                   class="inline-flex items-center px-3 py-1.5 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-md transition-colors">
-                                                    {{ ux_icon('heroicons:paper-airplane', {class: 'w-4 h-4 mr-1'}) }} {{ 'settings.webhook.actions.deliveries'|trans }}
-                                                </a>
-                                                <a href="{{ path('settings_webhook_endpoint_edit', {id: endpoint.id}) }}"
-                                                   class="inline-flex items-center px-3 py-1.5 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-md transition-colors">
-                                                    {{ ux_icon('heroicons:pencil-square', {class: 'w-4 h-4 mr-1'}) }} {{ 'settings.webhook.actions.edit'|trans }}
-                                                </a>
-                                                <form method="post"
-                                                      action="{{ path('settings_webhook_endpoint_delete', {id: endpoint.id}) }}"
-                                                      onsubmit="return confirm('{{ 'settings.webhook.delete.confirm'|trans({'%url%': endpoint.url|e('js')}) }}');">
-                                                    <input type="hidden" name="_token"
-                                                           value="{{ csrf_token('delete_webhook_endpoint_' ~ endpoint.id) }}">
-                                                    <button type="submit"
-                                                            class="inline-flex items-center px-3 py-1.5 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-md transition-colors">
-                                                        {{ ux_icon('heroicons:trash', {class: 'w-4 h-4 mr-1'}) }} {{ 'settings.webhook.actions.delete'|trans }}
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                            {% endfor %}
+                        {% endblock %}
+                    {% endembed %}
                 {% endif %}
             </div>
         </div>

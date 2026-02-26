@@ -7,15 +7,13 @@
         {% include 'Settings/_navigation.html.twig' with {'current_section': 'webhooks'} %}
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
             <div class="p-6 sm:p-8">
-                <div class="flex items-center mb-6">
-                    <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/50 rounded-xl flex items-center justify-center mr-4">
-                        {{ ux_icon('heroicons:paper-airplane', {class: 'w-6 h-6 text-indigo-600 dark:text-indigo-400'}) }}
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ 'settings.webhook.deliveries.heading'|trans }}</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ 'settings.webhook.deliveries.subtitle'|trans }}</p>
-                    </div>
-                </div>
+                {% include 'Settings/_section_header.html.twig' with {
+                    icon: 'heroicons:paper-airplane',
+                    icon_color: 'indigo',
+                    heading_key: 'settings.webhook.deliveries.heading',
+                    description_key: 'settings.webhook.deliveries.subtitle',
+                } %}
+
                 <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <a href="{{ path('settings_webhook_endpoint_index') }}"
                        class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -46,65 +44,71 @@
                         </div>
                     </div>
                 </div>
-                <div class="overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                            <thead class="bg-gray-50 dark:bg-gray-700">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ 'settings.webhook.deliveries.table.id'|trans }}</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ 'settings.webhook.deliveries.table.event'|trans }}</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ 'settings.webhook.deliveries.table.status'|trans }}</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ 'settings.webhook.deliveries.table.dispatched'|trans }}</th>
-                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ 'settings.webhook.deliveries.table.actions'|trans }}</th>
-                            </tr>
-                            </thead>
-                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                            {% for delivery in deliveries %}
-                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                    <td class="px-6 py-4 text-sm font-mono break-all text-gray-900 dark:text-gray-100">{{ delivery.id }}</td>
-                                    <td class="px-6 py-4">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200">{{ delivery.type }}</span>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        {% if delivery.success %}
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">{{ 'settings.webhook.deliveries.status.delivered'|trans }}</span>
-                                        {% elseif delivery.error %}
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200">{{ 'settings.webhook.deliveries.status.failed'|trans }}</span>
-                                        {% else %}
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">{{ 'settings.webhook.deliveries.status.pending'|trans }}</span>
+
+                {% embed 'Settings/_table.html.twig' with {
+                    headers: [
+                        {label: 'settings.table.id'},
+                        {label: 'settings.webhook.deliveries.table.event'},
+                        {label: 'settings.webhook.deliveries.table.status'},
+                        {label: 'settings.webhook.deliveries.table.dispatched'},
+                        {label: 'settings.table.actions', align: 'right'},
+                    ]
+                } %}
+                    {% block table_body %}
+                        {% for delivery in deliveries %}
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ delivery.id }}</td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200">{{ delivery.type }}</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    {% if delivery.success %}
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">{{ 'settings.webhook.deliveries.status.delivered'|trans }}</span>
+                                    {% elseif delivery.error %}
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200">{{ 'settings.webhook.deliveries.status.failed'|trans }}</span>
+                                    {% else %}
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">{{ 'settings.webhook.deliveries.status.pending'|trans }}</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
+                                    {{ delivery.dispatchedTime|date('H:i:s') }}
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="inline-flex items-center rounded-lg border border-gray-200 dark:border-gray-600 divide-x divide-gray-200 dark:divide-gray-600">
+                                        <a href="{{ path('settings_webhook_delivery_show', {id: delivery.id}) }}"
+                                           title="{{ 'settings.webhook.deliveries.detail.action'|trans }}"
+                                           data-controller="tooltip"
+                                           class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors first:rounded-l-[7px] last:rounded-r-[7px]">
+                                            {{ ux_icon('heroicons:eye', {class: 'w-4 h-4'}) }}
+                                            <span class="sr-only">{{ 'settings.webhook.deliveries.detail.action'|trans }}</span>
+                                        </a>
+                                        {% if delivery.error and not delivery.success %}
+                                            <form method="post"
+                                                  action="{{ path('settings_webhook_delivery_retry', {id: delivery.id}) }}"
+                                                  onsubmit="return confirm('{{ 'settings.webhook.deliveries.retry.confirm'|trans }}')">
+                                                <input type="hidden" name="_token"
+                                                       value="{{ csrf_token('retry_delivery_' ~ delivery.id) }}">
+                                                <button type="submit"
+                                                        title="{{ 'settings.webhook.deliveries.retry.action'|trans }}"
+                                                        data-controller="tooltip"
+                                                        class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors first:rounded-l-[7px] last:rounded-r-[7px]">
+                                                    {{ ux_icon('heroicons:arrow-path', {class: 'w-4 h-4'}) }}
+                                                    <span class="sr-only">{{ 'settings.webhook.deliveries.retry.action'|trans }}</span>
+                                                </button>
+                                            </form>
                                         {% endif %}
-                                    </td>
-                                    <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
-                                        {{ delivery.dispatchedTime|date('H:i:s') }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex justify-end gap-2">
-                                            <a href="{{ path('settings_webhook_delivery_show', {id: delivery.id}) }}"
-                                               class="inline-flex items-center px-3 py-1.5 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-md transition-colors">
-                                                {{ ux_icon('heroicons:eye', {class: 'w-4 h-4 mr-1'}) }} {{ 'settings.webhook.deliveries.detail.action'|trans }}
-                                            </a>
-                                            {% if delivery.error and not delivery.success %}
-                                                <form method="post"
-                                                      action="{{ path('settings_webhook_delivery_retry', {id: delivery.id}) }}"
-                                                      onsubmit="return confirm('{{ 'settings.webhook.deliveries.retry.confirm'|trans }}')">
-                                                    <input type="hidden" name="_token"
-                                                           value="{{ csrf_token('retry_delivery_' ~ delivery.id) }}">
-                                                    <button class="inline-flex items-center px-3 py-1.5 bg-blue-600 dark:bg-blue-500 text-white rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors">{{ ux_icon('heroicons:arrow-path', {class: 'w-4 h-4 mr-1'}) }} {{ 'settings.webhook.deliveries.retry.action'|trans }}</button>
-                                                </form>
-                                            {% endif %}
-                                        </div>
-                                    </td>
-                                </tr>
-                            {% else %}
-                                <tr>
-                                    <td colspan="5"
-                                        class="px-6 py-6 text-center text-sm text-gray-500 dark:text-gray-300">{{ 'settings.webhook.deliveries.empty'|trans }}</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                                    </span>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5"
+                                    class="px-6 py-6 text-center text-sm text-gray-500 dark:text-gray-300">{{ 'settings.webhook.deliveries.empty'|trans }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endblock %}
+                {% endembed %}
+
                 {% if totalPages > 1 %}
                     <div class="mt-6 flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-4">
                         <div class="text-sm text-gray-500 dark:text-gray-400">

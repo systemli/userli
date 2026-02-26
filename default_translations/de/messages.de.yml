@@ -476,6 +476,11 @@ settings:
       button: Inaktive entfernen
     unknown_task: Unbekannte Wartungsaufgabe.
     dispatched: Wartungsaufgabe erfolgreich gestartet.
+  table:
+    id: ID
+    actions: Aktionen
+    name: Name
+    created: Erstellt
   api:
     title: API Tokens
     subtitle: Verwalte deine API Tokens
@@ -484,13 +489,9 @@ settings:
       description: Liste der vorhandenen API Tokens
       empty-title: Keine API Tokens vorhanden
       empty-description: Erstelle einen API-Token, um den Zugriff für Integrationen (Dovecot, KeyCloak, ...) zu ermöglichen.
-      id: ID
-      name: Name
       scopes: Berechtigungen
-      created: Erstellt
       last-used: Zuletzt verwendet
       never-used: Nie verwendet
-      actions: Aktionen
       delete: Löschen
     create:
       title: Neuen API Token erstellen
@@ -522,7 +523,6 @@ settings:
       description: Liste deiner vorhandenen Webhooks
       empty-title: Noch keine Webhooks vorhanden
       empty-description: Erstelle einen Webhook um Echtzeit-Benachrichtigungen über Systemereignisse zu erhalten.
-      id: ID
       url: URL
       secret: Secret
       events: Ereignisse
@@ -575,11 +575,9 @@ settings:
         event: Ereignis
         all: Alle
       table:
-        id: ID
         event: Ereignis
         status: Status
         dispatched: Gesendet
-        actions: Aktionen
       pagination:
         total: "%count% Zustellungen insgesamt"
         newer: Neuere
@@ -620,9 +618,6 @@ settings:
     heading: Reservierte Namen
     description: Verwalte reservierte Namen, die nicht für die E-Mail-Registrierung verwendet werden können
     table:
-      name: Name
-      created: Erstellt
-      actions: Aktionen
       empty-title: Keine reservierten Namen
       empty-description: Es sind noch keine reservierten Namen vorhanden. Füge Namen hinzu, um deren Verwendung bei der Registrierung zu verhindern.
     create:
@@ -672,8 +667,6 @@ settings:
     heading: Domains
     description: Verwalte E-Mail-Domains für deine Organisation
     table:
-      name: Name
-      created: Erstellt
       empty-title: Keine Domains
       empty-description: Es sind noch keine Domains vorhanden. Füge eine Domain hinzu, um loszulegen.
     create:
@@ -694,11 +687,14 @@ settings:
     search:
       placeholder: Domains suchen...
       submit: Suchen
+    actions:
+      show: Anzeigen
     show:
       description: Domain-Details und Statistiken
       users: Benutzer
       aliases: Aliase
       admins: Domain-Admins
+      vouchers: Einladungen
       back: Zurück zu Domains
     pagination:
       total: "%count% Domains insgesamt"

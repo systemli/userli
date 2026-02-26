@@ -5,8 +5,7 @@
 {% block page_content %}
     <div class="max-w-5xl mx-auto">
         {% include 'Settings/_navigation.html.twig' with {'current_section': 'domains'} %}
-        <div class="max-w-4xl mx-auto">
-            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
                 <div class="p-6 sm:p-8">
                     <div class="flex items-center mb-6">
                         <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/50 rounded-xl flex items-center justify-center mr-4">
@@ -18,7 +17,14 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                    <div class="mb-6">
+                        <a href="{{ path('settings_domain_index') }}"
+                           class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
+                            {{ ux_icon('heroicons:arrow-left', {class: 'w-4 h-4 mr-1'}) }} {{ 'settings.domain.show.back'|trans }}
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
                         <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600">
                             <div class="flex items-center mb-2">
                                 {{ ux_icon('heroicons:users', {class: 'w-5 h-5 text-blue-500 dark:text-blue-400 mr-2'}) }}
@@ -42,17 +48,16 @@
                             </div>
                             <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ stats.admins }}</p>
                         </div>
-                    </div>
 
-                    <div class="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-6">
-                        <a href="{{ path('settings_domain_index') }}"
-                           class="inline-flex items-center px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
-                            {{ ux_icon('heroicons:arrow-left', {class: 'w-4 h-4 mr-2'}) }}
-                            {{ 'settings.domain.show.back'|trans }}
-                        </a>
+                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600">
+                            <div class="flex items-center mb-2">
+                                {{ ux_icon('heroicons:ticket', {class: 'w-5 h-5 text-orange-500 dark:text-orange-400 mr-2'}) }}
+                                <span class="text-sm font-medium text-gray-600 dark:text-gray-300">{{ 'settings.domain.show.vouchers'|trans }}</span>
+                            </div>
+                            <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ stats.vouchers }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 {% endblock %}

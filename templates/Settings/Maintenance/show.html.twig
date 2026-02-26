@@ -5,95 +5,45 @@
 {% block page_subtitle %}{{ 'settings.maintenance.subtitle'|trans }}{% endblock %}
 
 {% block page_content %}
-    {% include 'Settings/_navigation.html.twig' with { current_section: 'maintenance' } %}
+    <div class="max-w-5xl mx-auto">
+        {% include 'Settings/_navigation.html.twig' with { current_section: 'maintenance' } %}
 
-    <div class="grid gap-8 md:grid-cols-2">
-        {# Prune User Notifications #}
-        <section class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 flex flex-col">
-            <div class="flex items-start justify-between mb-4">
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center">
-                        {{ ux_icon('heroicons:bell-slash', {class: 'w-5 h-5 text-gray-500 dark:text-gray-300 mr-2'}) }}
-                        {{ 'settings.maintenance.pruneUserNotifications.title'|trans }}
-                    </h3>
-                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300 leading-relaxed max-w-prose">
-                        {{ 'settings.maintenance.pruneUserNotifications.description'|trans|safe_html }}
-                    </p>
-                </div>
-            </div>
-            <form method="post" action="{{ path('settings_maintenance_run', {task: 'prune_user_notifications'}) }}" class="mt-auto">
-                <input type="hidden" name="_token" value="{{ csrf_token('maintenance_prune_user_notifications') }}">
-                <button type="submit" title="{{ 'settings.maintenance.pruneUserNotifications.button'|trans }}" class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 focus:ring-blue-500 transition">
-                    {{ ux_icon('heroicons:play', {class: 'w-4 h-4 mr-2'}) }}
-                    {{ 'settings.maintenance.pruneUserNotifications.button'|trans }}
-                </button>
-            </form>
-        </section>
+        <div class="grid gap-8 md:grid-cols-2">
+            {% include 'Settings/_maintenance_card.html.twig' with {
+                icon: 'heroicons:bell-slash',
+                title_key: 'settings.maintenance.pruneUserNotifications.title',
+                description_key: 'settings.maintenance.pruneUserNotifications.description',
+                button_key: 'settings.maintenance.pruneUserNotifications.button',
+                task: 'prune_user_notifications',
+                csrf_token_id: 'maintenance_prune_user_notifications',
+            } %}
 
-        {# Prune Webhook Deliveries #}
-        <section class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 flex flex-col">
-            <div class="flex items-start justify-between mb-4">
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center">
-                        {{ ux_icon('heroicons:arrow-path-rounded-square', {class: 'w-5 h-5 text-gray-500 dark:text-gray-300 mr-2'}) }}
-                        {{ 'settings.maintenance.pruneWebhookDeliveries.title'|trans }}
-                    </h3>
-                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300 leading-relaxed max-w-prose">
-                        {{ 'settings.maintenance.pruneWebhookDeliveries.description'|trans|safe_html }}
-                    </p>
-                </div>
-            </div>
-            <form method="post" action="{{ path('settings_maintenance_run', {task: 'prune_webhook_deliveries'}) }}" class="mt-auto">
-                <input type="hidden" name="_token" value="{{ csrf_token('maintenance_prune_webhook_deliveries') }}">
-                <button type="submit" title="{{ 'settings.maintenance.pruneWebhookDeliveries.button'|trans }}" class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 focus:ring-blue-500 transition">
-                    {{ ux_icon('heroicons:play', {class: 'w-4 h-4 mr-2'}) }}
-                    {{ 'settings.maintenance.pruneWebhookDeliveries.button'|trans }}
-                </button>
-            </form>
-        </section>
+            {% include 'Settings/_maintenance_card.html.twig' with {
+                icon: 'heroicons:arrow-path-rounded-square',
+                title_key: 'settings.maintenance.pruneWebhookDeliveries.title',
+                description_key: 'settings.maintenance.pruneWebhookDeliveries.description',
+                button_key: 'settings.maintenance.pruneWebhookDeliveries.button',
+                task: 'prune_webhook_deliveries',
+                csrf_token_id: 'maintenance_prune_webhook_deliveries',
+            } %}
 
-        {# Remove Inactive Users #}
-        <section class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 flex flex-col">
-            <div class="flex items-start justify-between mb-4">
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center">
-                        {{ ux_icon('heroicons:user-minus', {class: 'w-5 h-5 text-gray-500 dark:text-gray-300 mr-2'}) }}
-                        {{ 'settings.maintenance.removeInactiveUsers.title'|trans }}
-                    </h3>
-                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300 leading-relaxed max-w-prose">
-                        {{ 'settings.maintenance.removeInactiveUsers.description'|trans|safe_html }}
-                    </p>
-                </div>
-            </div>
-            <form method="post" action="{{ path('settings_maintenance_run', {task: 'remove_inactive_users'}) }}" class="mt-auto">
-                <input type="hidden" name="_token" value="{{ csrf_token('maintenance_remove_inactive_users') }}">
-                <button type="submit" title="{{ 'settings.maintenance.removeInactiveUsers.button'|trans }}" class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 focus:ring-blue-500 transition">
-                    {{ ux_icon('heroicons:play', {class: 'w-4 h-4 mr-2'}) }}
-                    {{ 'settings.maintenance.removeInactiveUsers.button'|trans }}
-                </button>
-            </form>
-        </section>
+            {% include 'Settings/_maintenance_card.html.twig' with {
+                icon: 'heroicons:user-minus',
+                title_key: 'settings.maintenance.removeInactiveUsers.title',
+                description_key: 'settings.maintenance.removeInactiveUsers.description',
+                button_key: 'settings.maintenance.removeInactiveUsers.button',
+                task: 'remove_inactive_users',
+                csrf_token_id: 'maintenance_remove_inactive_users',
+            } %}
 
-        {# Unlink Redeemed Vouchers #}
-        <section class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 flex flex-col">
-            <div class="flex items-start justify-between mb-4">
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center">
-                        {{ ux_icon('heroicons:ticket', {class: 'w-5 h-5 text-gray-500 dark:text-gray-300 mr-2'}) }}
-                        {{ 'settings.maintenance.unlinkRedeemedVouchers.title'|trans }}
-                    </h3>
-                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300 leading-relaxed max-w-prose">
-                        {{ 'settings.maintenance.unlinkRedeemedVouchers.description'|trans|safe_html }}
-                    </p>
-                </div>
-            </div>
-            <form method="post" action="{{ path('settings_maintenance_run', {task: 'unlink_redeemed_vouchers'}) }}" class="mt-auto">
-                <input type="hidden" name="_token" value="{{ csrf_token('maintenance_unlink_redeemed_vouchers') }}">
-                <button type="submit" title="{{ 'settings.maintenance.unlinkRedeemedVouchers.button'|trans }}" class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 focus:ring-blue-500 transition">
-                    {{ ux_icon('heroicons:play', {class: 'w-4 h-4 mr-2'}) }}
-                    {{ 'settings.maintenance.unlinkRedeemedVouchers.button'|trans }}
-                </button>
-            </form>
-        </section>
+            {% include 'Settings/_maintenance_card.html.twig' with {
+                icon: 'heroicons:ticket',
+                title_key: 'settings.maintenance.unlinkRedeemedVouchers.title',
+                description_key: 'settings.maintenance.unlinkRedeemedVouchers.description',
+                button_key: 'settings.maintenance.unlinkRedeemedVouchers.button',
+                task: 'unlink_redeemed_vouchers',
+                csrf_token_id: 'maintenance_unlink_redeemed_vouchers',
+            } %}
+        </div>
     </div>
 {% endblock %}

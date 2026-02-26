@@ -7,15 +7,12 @@
         {% include 'Settings/_navigation.html.twig' with {'current_section': 'reserved-names'} %}
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
             <div class="p-6 sm:p-8">
-                <div class="flex items-center mb-6">
-                    <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/50 rounded-xl flex items-center justify-center mr-4">
-                        {{ ux_icon('heroicons:shield-exclamation', {class: 'w-6 h-6 text-amber-600 dark:text-amber-400'}) }}
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ 'settings.reserved-name.heading'|trans }}</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ 'settings.reserved-name.description'|trans }}</p>
-                    </div>
-                </div>
+                {% include 'Settings/_section_header.html.twig' with {
+                    icon: 'heroicons:shield-exclamation',
+                    icon_color: 'amber',
+                    heading_key: 'settings.reserved-name.heading',
+                    description_key: 'settings.reserved-name.description',
+                } %}
 
                 <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div class="flex flex-wrap items-center gap-2">
@@ -45,47 +42,47 @@
                 </div>
 
                 {% if pagination.items is empty %}
-                    <div class="text-center py-12">
-                        {{ ux_icon('heroicons:shield-exclamation', {class: 'w-16 h-16 mx-auto mb-4 text-gray-300 dark:text-gray-600'}) }}
-                        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">{{ 'settings.reserved-name.table.empty-title'|trans }}</h3>
-                        <p class="text-gray-500 dark:text-gray-300 max-w-md mx-auto">{{ 'settings.reserved-name.table.empty-description'|trans }}</p>
-                    </div>
+                    {% include 'Settings/_empty_state.html.twig' with {
+                        icon: 'heroicons:shield-exclamation',
+                        title_key: 'settings.reserved-name.table.empty-title',
+                        description_key: 'settings.reserved-name.table.empty-description',
+                    } %}
                 {% else %}
-                    <div class="overflow-hidden">
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                <thead class="bg-gray-50 dark:bg-gray-700">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ 'settings.reserved-name.table.name'|trans }}</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ 'settings.reserved-name.table.created'|trans }}</th>
-                                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{{ 'settings.reserved-name.table.actions'|trans }}</th>
+                    {% embed 'Settings/_table.html.twig' with {
+                        headers: [
+                            {label: 'settings.table.id'},
+                            {label: 'settings.table.name'},
+                            {label: 'settings.table.created'},
+                            {label: 'settings.table.actions', align: 'right'},
+                        ]
+                    } %}
+                        {% block table_body %}
+                            {% for reservedName in pagination.items %}
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ reservedName.id }}</td>
+                                    <td class="px-6 py-4 text-sm font-mono text-gray-900 dark:text-gray-100">{{ reservedName.name }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
+                                        {{ reservedName.creationTime|date('Y-m-d H:i') }}
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <form method="post"
+                                              action="{{ path('settings_reserved_name_delete', {id: reservedName.id}) }}"
+                                              onsubmit="return confirm('{{ 'settings.reserved-name.delete.confirm'|trans({'%name%': reservedName.name|e('js')}) }}');">
+                                            <input type="hidden" name="_token"
+                                                   value="{{ csrf_token('delete_reserved_name_' ~ reservedName.id) }}">
+                                            <button type="submit"
+                                                    title="{{ 'settings.reserved-name.actions.delete'|trans }}"
+                                                    data-controller="tooltip"
+                                                    class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors">
+                                                {{ ux_icon('heroicons:trash', {class: 'w-4 h-4'}) }}
+                                                <span class="sr-only">{{ 'settings.reserved-name.actions.delete'|trans }}</span>
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
-                                </thead>
-                                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                {% for reservedName in pagination.items %}
-                                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                        <td class="px-6 py-4 text-sm font-mono text-gray-900 dark:text-gray-100">{{ reservedName.name }}</td>
-                                        <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
-                                            {{ reservedName.creationTime|date('Y-m-d H:i') }}
-                                        </td>
-                                        <td class="px-6 py-4 text-right">
-                                            <form method="post"
-                                                  action="{{ path('settings_reserved_name_delete', {id: reservedName.id}) }}"
-                                                  onsubmit="return confirm('{{ 'settings.reserved-name.delete.confirm'|trans({'%name%': reservedName.name|e('js')}) }}');">
-                                                <input type="hidden" name="_token"
-                                                       value="{{ csrf_token('delete_reserved_name_' ~ reservedName.id) }}">
-                                                <button type="submit"
-                                                        class="inline-flex items-center px-3 py-1.5 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-md transition-colors">
-                                                    {{ ux_icon('heroicons:trash', {class: 'w-4 h-4 mr-1'}) }} {{ 'settings.reserved-name.actions.delete'|trans }}
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                            {% endfor %}
+                        {% endblock %}
+                    {% endembed %}
 
                     {% include 'Settings/_pagination.html.twig' with {
                         index_route: 'settings_reserved_name_index',

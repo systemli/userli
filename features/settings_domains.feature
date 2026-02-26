@@ -52,13 +52,14 @@ Feature: Settings (Domains)
   Scenario: Admin can view domain details
     Given I am authenticated as "louis@example.org"
     When I am on "/settings/domains/"
-    And I follow "example.org"
+    And I follow "Show"
 
     Then the response status code should be 200
     And I should see "example.org"
     And I should see "Users"
     And I should see "Aliases"
     And I should see "Domain Admins"
+    And I should see "Vouchers"
 
   @domains
   Scenario: Admin can search domains

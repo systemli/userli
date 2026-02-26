@@ -476,6 +476,11 @@ settings:
     reserved-names: Reserved Names
     domains: Domains
   coming-soon: Coming Soon
+  table:
+    id: ID
+    actions: Actions
+    name: Name
+    created: Created
   api:
     title: API Tokens
     subtitle: Manage your API tokens
@@ -484,13 +489,9 @@ settings:
       description: List of your existing API tokens
       empty-title: No API tokens created yet
       empty-description: Create an API token to allow access for integrations (Dovecot, KeyCloak, ...)
-      id: ID
-      name: Name
       scopes: Scopes
-      created: Created
       last-used: Last Used
       never-used: Never used
-      actions: Actions
       delete: Delete
     create:
       title: Create API Token
@@ -522,7 +523,6 @@ settings:
       description: List of your existing webhooks
       empty-title: No webhooks created yet
       empty-description: Create a webhook to receive real-time notifications about system events.
-      id: ID
       url: URL
       secret: Secret
       events: Events
@@ -577,11 +577,9 @@ settings:
         event: Event
         all: All
       table:
-        id: ID
         event: Event
         status: Status
         dispatched: Dispatched
-        actions: Actions
       pagination:
         total: "%count% deliveries total"
         newer: Newer
@@ -622,9 +620,6 @@ settings:
     heading: Reserved Names
     description: Manage reserved names that cannot be used for email registration
     table:
-      name: Name
-      created: Created
-      actions: Actions
       empty-title: No reserved names
       empty-description: There are no reserved names yet. Add names to prevent them from being used during registration.
     create:
@@ -674,8 +669,6 @@ settings:
     heading: Domains
     description: Manage email domains for your organization
     table:
-      name: Name
-      created: Created
       empty-title: No domains
       empty-description: There are no domains yet. Add a domain to get started.
     create:
@@ -696,11 +689,14 @@ settings:
     search:
       placeholder: Search domains...
       submit: Search
+    actions:
+      show: Show
     show:
       description: Domain details and statistics
       users: Users
       aliases: Aliases
       admins: Domain Admins
+      vouchers: Vouchers
       back: Back to Domains
     pagination:
       total: "%count% domains total"
