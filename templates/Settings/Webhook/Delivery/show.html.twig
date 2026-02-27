@@ -66,11 +66,11 @@
                                 </div>
                                 <div class="flex justify-between gap-4 px-4 py-2 dark:bg-gray-800">
                                     <dt class="font-medium text-gray-600 dark:text-gray-300">{{ 'settings.webhook.delivery.dispatched'|trans }}</dt>
-                                    <dd class="text-gray-900 dark:text-gray-100">{{ delivery.dispatchedTime|date('Y-m-d H:i:s') }}</dd>
+                                    <dd class="text-gray-900 dark:text-gray-100">{{ delivery.dispatchedTime|format_datetime('short', 'medium') }}</dd>
                                 </div>
                                 <div class="flex justify-between gap-4 px-4 py-2 bg-gray-50 dark:bg-gray-700">
                                     <dt class="font-medium text-gray-600 dark:text-gray-300">{{ 'settings.webhook.delivery.delivered'|trans }}</dt>
-                                    <dd class="text-gray-900 dark:text-gray-100">{{ delivery.deliveredTime ? delivery.deliveredTime|date('Y-m-d H:i:s') : '—' }}</dd>
+                                    <dd class="text-gray-900 dark:text-gray-100">{{ delivery.deliveredTime ? delivery.deliveredTime|format_datetime('short', 'medium') : '—' }}</dd>
                                 </div>
                                 <div class="flex justify-between gap-4 px-4 py-2 bg-gray-50 dark:bg-gray-700">
                                     <dt class="font-medium text-gray-600 dark:text-gray-300">{{ 'settings.webhook.delivery.response_status'|trans }}</dt>

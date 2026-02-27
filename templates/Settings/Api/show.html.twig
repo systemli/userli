@@ -82,11 +82,11 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
-                                        {{ token.creationTime|date('Y-m-d H:i') }}
+                                        {{ token.creationTime|format_datetime('short', 'short') }}
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
                                         {% if token.lastUsedTime %}
-                                            {{ token.lastUsedTime|date('Y-m-d H:i') }}
+                                            {{ token.lastUsedTime|format_datetime('short', 'short') }}
                                         {% else %}
                                             <span class="text-gray-400 dark:text-gray-500 italic">{{ "settings.api.table.never-used"|trans }}</span>
                                         {% endif %}

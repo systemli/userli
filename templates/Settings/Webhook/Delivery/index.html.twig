@@ -71,7 +71,7 @@
                                     {% endif %}
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
-                                    {{ delivery.dispatchedTime|date('H:i:s') }}
+                                    {{ delivery.dispatchedTime|format_datetime('none', 'medium') }}
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <span class="inline-flex items-center rounded-lg border border-gray-200 dark:border-gray-600 divide-x divide-gray-200 dark:divide-gray-600">
