@@ -56,6 +56,36 @@ To run only the Dovecot-related tests:
 bin/behat --tags=@dovecot --format progress
 ```
 
+### Mailcrypt integration test
+
+A dedicated GitHub Actions workflow (`.github/workflows/mailcrypt.yml`) tests the Dovecot mailcrypt integration end-to-end.
+It uses a separate compose file (`docker-compose.mailcrypt-test.yml`) that starts a real Dovecot instance with a Python mock of the Userli API (`tests/dovecot-api-mock.py`).
+
+The test (`tests/mailcrypt_integration.sh`) uploads emails via IMAP to two users:
+
+- A user **with** mailcrypt enabled -- verifies that the email content is **not** readable on disk (encrypted)
+- A user **without** mailcrypt -- verifies that the email content **is** readable on disk (plaintext)
+
+This ensures that the Lua adapter, Dovecot's `mail_crypt` plugin, and the API contract work correctly together.
+
+To run the mailcrypt tests locally:
+
+=== "podman"
+
+    ```shell
+    COMPOSE_FILE=docker-compose.mailcrypt-test.yml podman compose up -d
+    bash tests/mailcrypt_integration.sh
+    COMPOSE_FILE=docker-compose.mailcrypt-test.yml podman compose down -v
+    ```
+
+=== "docker"
+
+    ```shell
+    COMPOSE_FILE=docker-compose.mailcrypt-test.yml docker compose up -d
+    bash tests/mailcrypt_integration.sh
+    COMPOSE_FILE=docker-compose.mailcrypt-test.yml docker compose down -v
+    ```
+
 ### Manual testing with containers
 
 The development containers are pre-configured to connect Dovecot to Userli's API.
