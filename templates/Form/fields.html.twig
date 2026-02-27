@@ -113,6 +113,35 @@
     <textarea {{ block('widget_attributes') }}>{{ value }}</textarea>
 {% endblock textarea_widget %}
 
+{% block choice_widget_collapsed %}
+    {% set attr = attr|merge({
+        'class': (attr.class|default('') ~ ' w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100')|trim
+    }) %}
+    {%- if required and placeholder is none and not placeholder_in_choices and not multiple and (attr.size is not defined or attr.size <= 1) -%}
+        {% set required = false %}
+    {%- endif -%}
+    <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+        {%- if placeholder is not none -%}
+            <option value=""{% if placeholder_attr|default({}) %}{% with {attr: placeholder_attr} %}{{ block('attributes') }}{% endwith %}{% endif %}{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? (translation_domain is same as(false) ? placeholder : placeholder|trans({}, translation_domain)) }}</option>
+        {%- endif -%}
+        {%- if preferred_choices|length > 0 -%}
+            {% set options = preferred_choices %}
+            {% set render_preferred_choices = true %}
+            {{- block('choice_widget_options') -}}
+            {%- if choices|length > 0 and separator is not none -%}
+                {%- if separator_html is not defined or separator_html is same as(false) -%}
+                    <option disabled="disabled">{{ separator }}</option>
+                {% else %}
+                    {{ separator|raw }}
+                {% endif %}
+            {%- endif -%}
+        {%- endif -%}
+        {%- set options = choices -%}
+        {%- set render_preferred_choices = false -%}
+        {{- block('choice_widget_options') -}}
+    </select>
+{% endblock choice_widget_collapsed %}
+
 {% block checkbox_widget %}
     {% set attr = attr|merge({
         'class': (attr.class|default('') ~ ' custom-checkbox')|trim

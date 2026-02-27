@@ -417,6 +417,7 @@ settings:
       email: E-Mail Einstellungen
       reports: Berichte
       smtp_quota: SMTP-Quota Limits
+      mta_sts: MTA-STS
     app_name:
       label: Anwendungsname
       help: Der im Anwendungsheader und Browsertitel angezeigte Name
@@ -447,6 +448,15 @@ settings:
     smtp_quota_limit_per_day:
       label: Limit pro Tag
       help: Maximale Anzahl an E-Mails, die ein:e Benutzer:in pro Tag senden kann (0 = unbegrenzt)
+    mta_sts_mode:
+      label: MTA-STS Modus
+      help: "Richtlinienmodus: testing (nur Berichte), enforce (bei Fehler ablehnen) oder none (deaktivieren)"
+    mta_sts_mx:
+      label: MX-Hosts
+      help: "Erlaubte MX-Hostnamen, einer pro Zeile (z. B. mail.example.org). Wildcards möglich (z. B. *.example.org)"
+    mta_sts_max_age:
+      label: Max. Alter (Sekunden)
+      help: Wie lange sendende Server die Richtlinie zwischenspeichern sollen (Standard 604800 = 1 Woche)
   navigation:
     aria-label: Einstellungen Navigation
     api: API Tokens
