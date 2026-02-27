@@ -701,6 +701,12 @@ settings:
       submit: Search
     actions:
       show: Show
+      delete: Delete
+    delete:
+      confirm: "Are you sure you want to delete the domain \"%name%\"? This will permanently delete all associated users, aliases, and vouchers."
+      success: Domain and all associated data have been deleted successfully.
+      error:
+        own_domain: You cannot delete your own domain.
     show:
       description: Domain details and statistics
       users: Users

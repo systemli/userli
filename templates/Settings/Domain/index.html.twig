@@ -55,13 +55,28 @@
                                         {{ domain.creationTime|format_datetime('short', 'short') }}
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        <a href="{{ path('settings_domain_show', {id: domain.id}) }}"
-                                           title="{{ 'settings.domain.actions.show'|trans }}"
-                                           data-controller="tooltip"
-                                           class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors">
-                                            {{ ux_icon('heroicons:eye', {class: 'w-4 h-4'}) }}
-                                            <span class="sr-only">{{ 'settings.domain.actions.show'|trans }}</span>
-                                        </a>
+                                        <div class="inline-flex items-center gap-1">
+                                            <a href="{{ path('settings_domain_show', {id: domain.id}) }}"
+                                               title="{{ 'settings.domain.actions.show'|trans }}"
+                                               data-controller="tooltip"
+                                               class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors">
+                                                {{ ux_icon('heroicons:eye', {class: 'w-4 h-4'}) }}
+                                                <span class="sr-only">{{ 'settings.domain.actions.show'|trans }}</span>
+                                            </a>
+                                            <form method="post"
+                                                  action="{{ path('settings_domain_delete', {id: domain.id}) }}"
+                                                  onsubmit="return confirm('{{ 'settings.domain.delete.confirm'|trans({'%name%': domain.name|e('js')}) }}');">
+                                                <input type="hidden" name="_token"
+                                                       value="{{ csrf_token('delete_domain_' ~ domain.id) }}">
+                                                <button type="submit"
+                                                        title="{{ 'settings.domain.actions.delete'|trans }}"
+                                                        data-controller="tooltip"
+                                                        class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors">
+                                                    {{ ux_icon('heroicons:trash', {class: 'w-4 h-4'}) }}
+                                                    <span class="sr-only">{{ 'settings.domain.actions.delete'|trans }}</span>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                             {% endfor %}

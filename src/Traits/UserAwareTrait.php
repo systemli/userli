@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait UserAwareTrait
 {
     #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?User $user = null;
 
     public function getUser(): ?User

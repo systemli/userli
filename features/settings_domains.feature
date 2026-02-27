@@ -74,3 +74,29 @@ Feature: Settings (Domains)
     And I should see "example.org"
     And I should see "example.com"
     And I should not see "test.org"
+
+  @domains
+  Scenario: Admin can delete a domain
+    Given the following Domain exists:
+      | name       |
+      | delete.org |
+    And I am authenticated as "louis@example.org"
+    When I am on "/settings/domains/"
+
+    Then I should see "delete.org"
+
+    When I press "Delete"
+
+    Then I should see "Domain and all associated data have been deleted successfully"
+    And I should not see "delete.org"
+
+  @domains
+  Scenario: Admin cannot delete own domain
+    Given I am authenticated as "louis@example.org"
+    When I am on "/settings/domains/"
+
+    Then I should see "example.org"
+
+    When I press "Delete"
+
+    Then I should see "You cannot delete your own domain"

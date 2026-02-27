@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Domain;
+use App\Entity\User;
 use App\Exception\ValidationException;
 use App\Form\DomainType;
 use App\Service\DomainManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -77,5 +79,25 @@ final class DomainController extends AbstractController
             'domain' => $domain,
             'stats' => $stats,
         ]);
+    }
+
+    #[Route('/settings/domains/delete/{id}', name: 'settings_domain_delete', methods: ['POST'])]
+    public function delete(#[MapEntity] Domain $domain, Request $request): RedirectResponse
+    {
+        if (!$this->isCsrfTokenValid('delete_domain_'.$domain->getId(), $request->request->get('_token'))) {
+            return $this->redirectToRoute('settings_domain_index');
+        }
+
+        $user = $this->getUser();
+        if ($user instanceof User && $user->getDomain() === $domain) {
+            $this->addFlash('error', 'settings.domain.delete.error.own_domain');
+
+            return $this->redirectToRoute('settings_domain_index');
+        }
+
+        $this->manager->delete($domain);
+        $this->addFlash('success', 'settings.domain.delete.success');
+
+        return $this->redirectToRoute('settings_domain_index');
     }
 }

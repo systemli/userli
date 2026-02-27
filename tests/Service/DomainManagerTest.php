@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Service;
 
 use App\Entity\Domain;
-use App\Event\DomainCreatedEvent;
+use App\Event\DomainEvent;
 use App\Repository\AliasRepository;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
@@ -51,8 +51,8 @@ class DomainManagerTest extends TestCase
             ->expects($this->once())
             ->method('dispatch')
             ->with(
-                $this->isInstanceOf(DomainCreatedEvent::class),
-                $this->equalTo(DomainCreatedEvent::NAME),
+                $this->isInstanceOf(DomainEvent::class),
+                $this->equalTo(DomainEvent::CREATED),
             );
 
         $manager = new DomainManager(
@@ -67,6 +67,40 @@ class DomainManagerTest extends TestCase
 
         self::assertInstanceOf(Domain::class, $result);
         self::assertEquals('example.org', $result->getName());
+    }
+
+    public function testDelete(): void
+    {
+        $domain = new Domain();
+        $domain->setName('example.org');
+
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with(
+                $this->isInstanceOf(DomainEvent::class),
+                $this->equalTo(DomainEvent::DELETED),
+            );
+
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager
+            ->expects($this->once())
+            ->method('remove')
+            ->with($domain);
+        $entityManager
+            ->expects($this->once())
+            ->method('flush');
+
+        $manager = new DomainManager(
+            $entityManager,
+            $this->domainRepository,
+            $this->userRepository,
+            $this->aliasRepository,
+            $this->voucherRepository,
+            $eventDispatcher,
+        );
+        $manager->delete($domain);
     }
 
     public function testGetDomainStats(): void

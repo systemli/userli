@@ -6,7 +6,7 @@ namespace App\Service;
 
 use App\Dto\PaginatedResult;
 use App\Entity\Domain;
-use App\Event\DomainCreatedEvent;
+use App\Event\DomainEvent;
 use App\Repository\AliasRepository;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
@@ -46,9 +46,18 @@ final readonly class DomainManager
         $this->em->persist($domain);
         $this->em->flush();
 
-        $this->eventDispatcher->dispatch(new DomainCreatedEvent($domain), DomainCreatedEvent::NAME);
+        $this->eventDispatcher->dispatch(new DomainEvent($domain), DomainEvent::CREATED);
 
         return $domain;
+    }
+
+    public function delete(Domain $domain): void
+    {
+        $this->eventDispatcher->dispatch(new DomainEvent($domain), DomainEvent::DELETED);
+
+        // The database CASCADE constraints handle deletion of all dependent entities
+        $this->em->remove($domain);
+        $this->em->flush();
     }
 
     /**

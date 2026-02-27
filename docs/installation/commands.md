@@ -5,6 +5,7 @@ This app brings custom commands:
 ```text
 app:admin:password                      Set password of admin user
 app:alias:delete                        Delete an alias
+app:domain:delete                       Delete a domain and all associated data (users, aliases, vouchers)
 app:metrics                             Global Metrics for Userli
 app:openpgp:delete-key                  Delete OpenPGP key for email
 app:openpgp:import-key                  Import OpenPGP key for email

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait DomainAwareTrait
 {
     #[ORM\ManyToOne(targetEntity: Domain::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Domain $domain = null;
 
     public function getDomain(): ?Domain

@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 trait InvitationVoucherTrait
 {
     #[ORM\OneToOne(inversedBy: 'invitedUser', targetEntity: Voucher::class)]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?Voucher $invitationVoucher = null;
 
     public function getInvitationVoucher(): ?Voucher

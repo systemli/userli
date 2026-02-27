@@ -21,7 +21,7 @@ use Override;
 use Stringable;
 
 #[ORM\Entity(repositoryClass: AliasRepository::class)]
-#[ORM\AssociationOverrides([new AssociationOverride(name: 'domain', joinColumns: new ORM\JoinColumn(nullable: true))])]
+#[ORM\AssociationOverrides([new AssociationOverride(name: 'domain', joinColumns: new ORM\JoinColumn(nullable: true, onDelete: 'CASCADE'))])]
 #[ORM\Table(name: 'aliases')]
 #[Index(columns: ['source', 'deleted'], name: 'source_deleted_idx')]
 #[Index(columns: ['destination', 'deleted'], name: 'destination_deleted_idx')]
