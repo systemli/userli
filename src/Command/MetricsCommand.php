@@ -37,12 +37,18 @@ final class MetricsCommand extends Command
     #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $usersTotal = $this->manager->getRepository(User::class)->countUsers();
+        $activeUsersTotal = $this->manager->getRepository(User::class)->countUsers();
+        $deletedUsersTotal = $this->manager->getRepository(User::class)->countDeletedUsers();
+        $usersTotal = $activeUsersTotal + $deletedUsersTotal;
+
         $output->writeln('# HELP userli_users_total Total number of users');
         $output->writeln('# TYPE userli_users_total gauge');
         $output->writeln('userli_users_total '.$usersTotal);
 
-        $deletedUsersTotal = $this->manager->getRepository(User::class)->countDeletedUsers();
+        $output->writeln('# HELP userli_users_active_total Total number of active users');
+        $output->writeln('# TYPE userli_users_active_total gauge');
+        $output->writeln('userli_users_active_total '.$activeUsersTotal);
+
         $output->writeln('# HELP userli_users_deleted_total Total number of deleted users');
         $output->writeln('# TYPE userli_users_deleted_total gauge');
         $output->writeln('userli_users_deleted_total '.$deletedUsersTotal);

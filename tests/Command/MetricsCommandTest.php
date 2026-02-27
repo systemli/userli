@@ -59,7 +59,8 @@ class MetricsCommandTest extends TestCase
 
         $output = $commandTester->getDisplay();
 
-        self::assertStringContainsString('userli_users_total 10', $output);
+        self::assertStringContainsString('userli_users_total 13', $output);
+        self::assertStringContainsString('userli_users_active_total 10', $output);
         self::assertStringContainsString('userli_users_deleted_total 3', $output);
         self::assertStringContainsString('userli_users_recovery_token_total 5', $output);
         self::assertStringContainsString('userli_users_mailcrypt_total 7', $output);
