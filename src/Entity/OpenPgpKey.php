@@ -20,6 +20,7 @@ class OpenPgpKey
     use OpenPgpKeyTrait;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'openPgpKeys')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?User $user = null;
 
     #[ORM\Column(length: 32, nullable: true)]

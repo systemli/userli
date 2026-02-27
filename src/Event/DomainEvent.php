@@ -7,9 +7,11 @@ namespace App\Event;
 use App\Entity\Domain;
 use Symfony\Contracts\EventDispatcher\Event;
 
-final class DomainCreatedEvent extends Event
+final class DomainEvent extends Event
 {
-    public const string NAME = 'domain.created';
+    public const string CREATED = 'domain.created';
+
+    public const string DELETED = 'domain.deleted';
 
     public function __construct(private readonly Domain $domain)
     {

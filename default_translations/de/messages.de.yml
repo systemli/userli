@@ -689,6 +689,12 @@ settings:
       submit: Suchen
     actions:
       show: Anzeigen
+      delete: Löschen
+    delete:
+      confirm: "Bist du sicher, dass du die Domain \"%name%\" löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungen unwiderruflich gelöscht."
+      success: Domain und alle zugehörigen Daten wurden erfolgreich gelöscht.
+      error:
+        own_domain: Du kannst deine eigene Domain nicht löschen.
     show:
       description: Domain-Details und Statistiken
       users: Benutzer
