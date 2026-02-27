@@ -5,17 +5,11 @@ declare(strict_types=1);
 namespace App\Tests\Command;
 
 use App\Command\MetricsCommand;
-use App\Entity\Alias;
-use App\Entity\Domain;
-use App\Entity\OpenPgpKey;
-use App\Entity\User;
-use App\Entity\Voucher;
 use App\Repository\AliasRepository;
 use App\Repository\DomainRepository;
 use App\Repository\OpenPgpKeyRepository;
 use App\Repository\UserRepository;
 use App\Repository\VoucherRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -43,23 +37,15 @@ class MetricsCommandTest extends TestCase
         $voucherRepository->method('countRedeemedVouchers')->willReturn(1);
         $voucherRepository->method('countUnredeemedVouchers')->willReturn(7);
 
-        $manager = $this->createStub(EntityManagerInterface::class);
-        $manager->method('getRepository')->willReturnMap([
-            [User::class, $userRepository],
-            [OpenPgpKey::class, $openPgpKeyRepository],
-            [Alias::class, $aliasRepository],
-            [Domain::class, $domainRepository],
-            [Voucher::class, $voucherRepository],
-        ]);
-
-        $command = new MetricsCommand($manager);
+        $command = new MetricsCommand($userRepository, $voucherRepository, $domainRepository, $aliasRepository, $openPgpKeyRepository);
 
         $commandTester = new CommandTester($command);
         $commandTester->execute([]);
 
         $output = $commandTester->getDisplay();
 
-        self::assertStringContainsString('userli_users_total 10', $output);
+        self::assertStringContainsString('userli_users_total 13', $output);
+        self::assertStringContainsString('userli_users_active_total 10', $output);
         self::assertStringContainsString('userli_users_deleted_total 3', $output);
         self::assertStringContainsString('userli_users_recovery_token_total 5', $output);
         self::assertStringContainsString('userli_users_mailcrypt_total 7', $output);
