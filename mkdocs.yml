@@ -26,6 +26,7 @@ nav:
   - Update: update/index.md
   - Features:
       - MailCrypt: features/mail_crypt.md
+      - MTA-STS: features/mta-sts.md
       - "Web Key Directory": features/wkd.md
       - Integrations: features/integrations.md
       - Webhooks: features/webhooks.md

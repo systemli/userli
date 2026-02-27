@@ -106,6 +106,10 @@ security:
             pattern: ^/.well-known/openpgpkey
             stateless: true
             security: false
+        mta_sts:
+            pattern: ^/.well-known/mta-sts\.txt$
+            stateless: true
+            security: false
         api:
             pattern: ^/api
             stateless: true
@@ -141,6 +145,7 @@ security:
     access_control:
         - { path: "^/$", roles: PUBLIC_ACCESS }
         - { path: "^/.well-known/openpgpkey", roles: PUBLIC_ACCESS }
+        - { path: "^/.well-known/mta-sts\\.txt$", roles: PUBLIC_ACCESS }
         - { path: "^/init", roles: PUBLIC_ACCESS }
         - { path: "^/login", roles: PUBLIC_ACCESS }
         - { path: "^/recovery", roles: PUBLIC_ACCESS }

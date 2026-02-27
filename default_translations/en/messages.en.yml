@@ -437,6 +437,7 @@ settings:
       email: Email Configuration
       reports: Reports
       smtp_quota: SMTP Quota Limits
+      mta_sts: MTA-STS
     app_name:
       label: Application Name
       help: The name displayed in the application header and browser title
@@ -467,6 +468,15 @@ settings:
     smtp_quota_limit_per_day:
       label: Limit per Day
       help: Default maximum number of emails a user can send per day (0 = unlimited)
+    mta_sts_mode:
+      label: MTA-STS Mode
+      help: "Policy mode: testing (report only), enforce (reject on failure), or none (opt out)"
+    mta_sts_mx:
+      label: MX Hosts
+      help: "Allowed MX hostnames, one per line (e.g., mail.example.org). Wildcards supported (e.g., *.example.org)"
+    mta_sts_max_age:
+      label: Max Age (seconds)
+      help: How long sending servers should cache the policy (default 604800 = 1 week)
   navigation:
     aria-label: Settings navigation
     api: API Tokens

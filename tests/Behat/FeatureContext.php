@@ -246,11 +246,20 @@ class FeatureContext extends MinkContext
                 continue;
             }
 
-            $setting = new Setting($name, $value);
+            $existing = $this->manager->getRepository(Setting::class)->findOneBy(['name' => $name]);
 
-            $this->manager->persist($setting);
+            if (null !== $existing) {
+                $existing->setValue($value);
+            } else {
+                $setting = new Setting($name, $value);
+                $this->manager->persist($setting);
+            }
+
             $this->manager->flush();
         }
+
+        // Clear settings cache so updated values take effect
+        $this->cache->clear();
     }
 
     /**
@@ -760,6 +769,33 @@ class FeatureContext extends MinkContext
 
         if ($actual !== $expected) {
             throw new RuntimeException(sprintf('Expected header "%s" to equal "%s" but got "%s"', $header, $expected, $actual ?? 'null'));
+        }
+    }
+
+    /**
+     * @When I set the host header to :host
+     */
+    public function iSetTheHostHeaderTo(string $host): void
+    {
+        $this->getSession()->setRequestHeader('Host', $host);
+    }
+
+    /**
+     * @Then the response body should contain :text
+     *
+     * @throws UnsupportedDriverActionException
+     */
+    public function theResponseBodyShouldContain(string $text): void
+    {
+        $driver = $this->getSession()->getDriver();
+        if (!$driver instanceof BrowserKitDriver) {
+            throw new UnsupportedDriverActionException('This step is only supported by the BrowserKitDriver', $driver);
+        }
+
+        $body = $driver->getClient()->getResponse()->getContent();
+
+        if (!str_contains($body, $text)) {
+            throw new RuntimeException(sprintf("Expected response body to contain \"%s\" but got:\n%s", $text, $body));
         }
     }
 

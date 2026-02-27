@@ -46,3 +46,21 @@ settings:
     default: 0
     validation:
       min: 0
+
+  mta_sts_mode:
+    type: string
+    default: "testing"
+    validation:
+      choices: ["none", "testing", "enforce"]
+
+  mta_sts_mx:
+    type: textarea
+    default: ""
+    optional: true
+
+  mta_sts_max_age:
+    type: integer
+    default: 604800
+    validation:
+      min: 86400
+      max: 31557600

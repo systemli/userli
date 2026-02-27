@@ -30,6 +30,7 @@
                         'email': ['email_sender_address', 'email_notification_address'],
                         'reports': ['weekly_report_enabled'],
                         'smtp_quota': ['smtp_quota_limit_per_hour', 'smtp_quota_limit_per_day'],
+                        'mta_sts': ['mta_sts_mode', 'mta_sts_mx', 'mta_sts_max_age'],
                     } %}
 
                     {% for category, fields in categories %}
@@ -41,6 +42,7 @@
                                     'email': 'heroicons:envelope',
                                     'reports': 'heroicons:document-chart-bar',
                                     'smtp_quota': 'heroicons:arrow-up-tray',
+                                    'mta_sts': 'heroicons:shield-check',
                                 }[category] %}
 
                                 <div class="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mr-3">
