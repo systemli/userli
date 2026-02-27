@@ -25,6 +25,13 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
+/**
+ * Dovecot integration API for passdb authentication and userdb lookup.
+ *
+ * Consumed by the Lua adapter script (contrib/userli-dovecot-adapter.lua).
+ * Returns mailbox configuration including MailCrypt key material when encryption is enabled.
+ * Requires the "dovecot" API scope.
+ */
 #[RequireApiScope(scope: ApiScope::DOVECOT)]
 final class DovecotController extends AbstractController
 {
@@ -51,6 +58,7 @@ final class DovecotController extends AbstractController
         $this->mailCrypt = MailCrypt::from($this->mailCryptEnv);
     }
 
+    /** Health-check endpoint. Returns a success message. */
     #[Route('/api/dovecot/status', name: 'api_dovecot_status', methods: ['GET'], stateless: true)]
     public function status(): JsonResponse
     {
@@ -59,6 +67,7 @@ final class DovecotController extends AbstractController
         ], Response::HTTP_OK);
     }
 
+    /** Look up a user's mailbox configuration (MailCrypt status, public key, quota) for Dovecot userdb. */
     #[Route('/api/dovecot/{email}', name: 'api_dovecot_user_lookup', methods: ['GET'], stateless: true)]
     public function lookup(string $email): JsonResponse
     {
@@ -101,6 +110,7 @@ final class DovecotController extends AbstractController
         return $this->json($result);
     }
 
+    /** Authenticate a user for Dovecot passdb and return MailCrypt private key material on success. */
     #[Route('/api/dovecot/{email}', name: 'api_dovecot_user_authenticate', methods: ['POST'], stateless: true)]
     public function authenticate(
         #[MapEntity(mapping: ['email' => 'email'])] User $user,

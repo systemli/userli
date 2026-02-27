@@ -11,6 +11,9 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+/**
+ * Sends a recovery-process notification email when a user initiates account recovery.
+ */
 final readonly class RecoveryProcessListener implements EventSubscriberInterface
 {
     public function __construct(

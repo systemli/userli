@@ -36,6 +36,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * Sonata Admin for User entities. Handles password changes with MailCrypt key re-generation and full user reset.
+ *
  * @extends Admin<User>
  */
 final class UserAdmin extends Admin

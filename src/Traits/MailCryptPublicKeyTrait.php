@@ -7,6 +7,9 @@ namespace App\Traits;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Stores the user's MailCrypt public key (PEM-encoded EC secp521r1), used by Dovecot to encrypt incoming mail.
+ */
 trait MailCryptPublicKeyTrait
 {
     #[ORM\Column(type: Types::TEXT, nullable: true)]

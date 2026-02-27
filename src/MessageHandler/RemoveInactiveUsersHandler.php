@@ -13,6 +13,12 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+/**
+ * Finds users inactive for 2 years + 7 days and dispatches individual DeleteUser messages.
+ *
+ * The 7-day buffer accounts for the week-granularity obfuscation in UserLastLoginUpdateService.
+ * Admins, domain admins, and PERMANENT users are exempt.
+ */
 #[AsMessageHandler]
 final readonly class RemoveInactiveUsersHandler
 {

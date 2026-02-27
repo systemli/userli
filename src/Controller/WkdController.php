@@ -12,6 +12,14 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
+/**
+ * OpenPGP Web Key Directory (WKD) endpoints.
+ *
+ * Serves OpenPGP public keys and policy files per the Advanced WKD method.
+ * Responses are cached with a 24h TTL. Stateless and unauthenticated.
+ *
+ * @see https://datatracker.ietf.org/doc/draft-koch-openpgp-webkey-service
+ */
 final class WkdController extends AbstractController
 {
     public function __construct(
@@ -20,6 +28,7 @@ final class WkdController extends AbstractController
     ) {
     }
 
+    /** Return the binary OpenPGP public key for a given WKD hash and domain. */
     #[Route(
         path: '/.well-known/openpgpkey/{domain}/hu/{hash}',
         name: 'wkd_lookup',
@@ -49,6 +58,7 @@ final class WkdController extends AbstractController
         ]);
     }
 
+    /** Return an empty WKD policy file for the given domain. */
     #[Route(
         path: '/.well-known/openpgpkey/{domain}/policy',
         name: 'wkd_policy',

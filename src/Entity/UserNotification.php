@@ -9,6 +9,12 @@ use App\Repository\UserNotificationRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Notification shown to a specific user (e.g. compromised password warning).
+ *
+ * Created programmatically when the system detects a condition the user should
+ * be informed about. Notification types are defined in {@see UserNotificationType}.
+ */
 #[ORM\Entity(repositoryClass: UserNotificationRepository::class)]
 #[ORM\Table(name: 'user_notifications')]
 #[ORM\Index(columns: ['user_id', 'type', 'creation_time'], name: 'idx_user_type_creation_time')]
@@ -24,9 +30,11 @@ class UserNotification
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
+    /** Notification type stored as string (see {@see UserNotificationType} enum). */
     #[ORM\Column(type: 'string', length: 50)]
     private string $type;
 
+    /** Optional JSON payload with notification-specific data. */
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $metadata;
 

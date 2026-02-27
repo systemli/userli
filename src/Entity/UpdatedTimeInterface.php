@@ -6,6 +6,11 @@ namespace App\Entity;
 
 use DateTimeImmutable;
 
+/**
+ * Implemented by entities that track their last modification time.
+ *
+ * The updatedTime field is automatically maintained via a Doctrine lifecycle callback.
+ */
 interface UpdatedTimeInterface
 {
     public function getUpdatedTime(): ?DateTimeImmutable;

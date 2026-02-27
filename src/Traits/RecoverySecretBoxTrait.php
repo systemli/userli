@@ -7,6 +7,9 @@ namespace App\Traits;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Stores a copy of the MailCrypt private key encrypted with the recovery token (sodium secretbox).
+ */
 trait RecoverySecretBoxTrait
 {
     #[ORM\Column(type: Types::TEXT, nullable: true)]

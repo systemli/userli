@@ -8,6 +8,13 @@ use App\Entity\User;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Updates last-login timestamps with week-granularity obfuscation as a privacy measure.
+ *
+ * Stores "Monday this week midnight" instead of exact login times.
+ *
+ * @see RemoveInactiveUsersHandler which consumes these timestamps to detect inactive users
+ */
 final readonly class UserLastLoginUpdateService
 {
     public function __construct(
