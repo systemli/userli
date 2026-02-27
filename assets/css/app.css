@@ -67,6 +67,207 @@ input[type="checkbox"].custom-checkbox:checked {
   background-repeat: no-repeat;
 }
 
+/* Tom Select Autocomplete - Override default theme to match Tailwind form styling */
+.ts-wrapper {
+  min-height: auto;
+}
+
+.ts-control {
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  min-height: 2.75rem;
+  background-color: #fff;
+  box-shadow: none;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: #111827;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.ts-control > input {
+  font-size: 1rem !important;
+  line-height: 1.5rem !important;
+  color: #111827 !important;
+}
+
+.ts-control > input::placeholder {
+  color: #9ca3af;
+}
+
+.focus .ts-control {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.ts-dropdown {
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  margin-top: 0.25rem;
+  background: #fff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.ts-dropdown,
+.ts-dropdown .option,
+.ts-dropdown .optgroup-header,
+.ts-dropdown .no-results,
+.ts-dropdown .create {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #374151;
+}
+
+.ts-dropdown .option {
+  padding: 0.5rem 0.75rem;
+}
+
+.ts-dropdown .active {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+}
+
+.ts-dropdown [data-selectable] .highlight {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+/* Multi-select tags */
+.ts-wrapper.multi .ts-control > div {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  border-radius: 0.375rem;
+  padding: 0.125rem 0.5rem;
+  margin: 0.125rem 0.25rem 0.125rem 0;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-shadow: none;
+  background-image: none;
+  box-shadow: none;
+}
+
+.ts-wrapper.multi .ts-control > div.active {
+  background: #dbeafe;
+  color: #1e40af;
+  border-color: #93c5fd;
+}
+
+/* Remove button styling for tags */
+.ts-wrapper.plugin-remove_button:not(.rtl) .item .remove {
+  border-left: 1px solid #bfdbfe;
+  margin-left: 0.375rem;
+  padding: 0 0.375rem;
+  color: #3b82f6;
+}
+
+.ts-wrapper.plugin-remove_button:not(.rtl) .item .remove:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: #1d4ed8;
+}
+
+/* Single select caret */
+.ts-wrapper.single .ts-control {
+  background-image: none;
+  background-color: #fff;
+  box-shadow: none;
+}
+
+.ts-wrapper.single .ts-control::after {
+  border-color: #6b7280 transparent transparent transparent;
+}
+
+.ts-wrapper.single.dropdown-active .ts-control::after {
+  border-color: transparent transparent #6b7280 transparent;
+}
+
+/* Dropdown-active: connect control to dropdown */
+.dropdown-active .ts-control {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.dropdown-active .ts-dropdown {
+  border-radius: 0 0 0.5rem 0.5rem;
+  margin-top: 0;
+  border-top: 0;
+}
+
+/* Dark mode overrides */
+.dark .ts-control {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #f3f4f6;
+}
+
+.dark .ts-control > input {
+  color: #f3f4f6 !important;
+}
+
+.dark .ts-control > input::placeholder {
+  color: #6b7280;
+}
+
+.dark .focus .ts-control {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.3);
+}
+
+.dark .ts-dropdown {
+  background: #374151;
+  border-color: #4b5563;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+}
+
+.dark .ts-dropdown,
+.dark .ts-dropdown .option,
+.dark .ts-dropdown .optgroup-header,
+.dark .ts-dropdown .no-results,
+.dark .ts-dropdown .create {
+  color: #d1d5db;
+}
+
+.dark .ts-dropdown .active {
+  background-color: #1e3a5f;
+  color: #93c5fd;
+}
+
+.dark .ts-dropdown [data-selectable] .highlight {
+  background: rgba(96, 165, 250, 0.2);
+}
+
+.dark .ts-wrapper.multi .ts-control > div {
+  background: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.dark .ts-wrapper.multi .ts-control > div.active {
+  background: rgba(59, 130, 246, 0.25);
+  color: #bfdbfe;
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.dark .ts-wrapper.plugin-remove_button:not(.rtl) .item .remove {
+  border-left-color: rgba(59, 130, 246, 0.3);
+  color: #60a5fa;
+}
+
+.dark .ts-wrapper.plugin-remove_button:not(.rtl) .item .remove:hover {
+  background: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+}
+
+.dark .ts-wrapper.single .ts-control {
+  background-color: #374151;
+}
+
+.dark .ts-wrapper.single .ts-control::after {
+  border-color: #9ca3af transparent transparent transparent;
+}
+
+.dark .ts-wrapper.single.dropdown-active .ts-control::after {
+  border-color: transparent transparent #9ca3af transparent;
+}
+
 /* Reduced Motion Support - Respect user preference for reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
