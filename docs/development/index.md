@@ -107,20 +107,6 @@ src/
 └── Validator/        Custom validation constraints
 ```
 
-### Key entities
-
-| Entity              | Purpose                                            |
-| ------------------- | -------------------------------------------------- |
-| `User`              | Email account with roles, 2FA, mailbox encryption  |
-| `Domain`            | Email domain with admin assignments                |
-| `Alias`             | Email alias pointing to a user                     |
-| `Voucher`           | Invite code for registration                       |
-| `Setting`           | Global application settings (see `config/settings.yaml`) |
-| `ReservedName`      | Reserved email prefixes                            |
-| `OpenPgpKey`        | OpenPGP public keys for WKD                        |
-| `ApiToken`          | API authentication token with scopes               |
-| `WebhookEndpoint`   | Webhook target URL with secret                     |
-
 ### Key patterns
 
 - **Controllers** separate GET and POST into distinct methods with explicit HTTP method constraints.
