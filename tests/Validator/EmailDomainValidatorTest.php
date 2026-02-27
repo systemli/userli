@@ -4,26 +4,38 @@ declare(strict_types=1);
 
 namespace App\Tests\Validator;
 
-use App\Entity\User;
+use App\Entity\Domain;
 use App\Repository\DomainRepository;
 use App\Validator\EmailDomain;
 use App\Validator\EmailDomainValidator;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
+use stdClass;
+use Symfony\Component\Validator\Constraints\Valid;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 class EmailDomainValidatorTest extends ConstraintValidatorTestCase
 {
     protected function createValidator(): EmailDomainValidator
     {
-        $repository = $this->createStub(DomainRepository::class);
-        $repository->method('findOneBy')
-            ->willReturn(null);
+        $domainRepository = $this->createStub(DomainRepository::class);
+        $domainRepository->method('findByName')->willReturnMap([
+            ['example.org', new Domain()],
+        ]);
 
         $manager = $this->createStub(EntityManagerInterface::class);
-        $manager->method('getRepository')
-            ->willReturn($repository);
+        $manager->method('getRepository')->willReturnMap([
+            [Domain::class, $domainRepository],
+        ]);
 
         return new EmailDomainValidator($manager);
+    }
+
+    public function testExpectsEmailDomainType(): void
+    {
+        $this->expectException(UnexpectedTypeException::class);
+        $this->validator->validate('string', new Valid());
     }
 
     public function testNullIsValid(): void
@@ -40,12 +52,31 @@ class EmailDomainValidatorTest extends ConstraintValidatorTestCase
         self::assertNoViolation();
     }
 
-    public function testDomainNotFound(): void
+    public function testExpectsStringCompatibleType(): void
     {
-        $user = new User('user@example.com');
-        $this->validator->validate($user, new EmailDomain());
+        $this->expectException(UnexpectedTypeException::class);
+        $this->validator->validate(new stdClass(), new EmailDomain());
+    }
 
-        $this->buildViolation('form.missing-domain')
+    public function testValidDomain(): void
+    {
+        $this->validator->validate('new@example.org', new EmailDomain());
+        self::assertNoViolation();
+    }
+
+    #[DataProvider('getInvalidDomains')]
+    public function testInvalidDomain(string $address): void
+    {
+        $this->validator->validate($address, new EmailDomain());
+        $this->buildViolation('registration.email-domain-not-exists')
             ->assertRaised();
+    }
+
+    public static function getInvalidDomains(): array
+    {
+        return [
+            ['new@nonexistant.org'],
+            ['user@unknown.com'],
+        ];
     }
 }

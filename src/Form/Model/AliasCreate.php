@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Form\Model;
 
-use App\Validator\EmailAddress;
+use App\Validator\EmailAllowedSymbols;
+use App\Validator\EmailAvailable;
+use App\Validator\EmailDomain;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class AliasCreate
@@ -14,7 +16,9 @@ final class AliasCreate
      * The form combines the local part with the domain before submission.
      */
     #[Assert\NotNull]
-    #[EmailAddress]
+    #[EmailAvailable]
+    #[EmailAllowedSymbols]
+    #[EmailDomain]
     private string $alias;
 
     #[Assert\Length(max: 40)]

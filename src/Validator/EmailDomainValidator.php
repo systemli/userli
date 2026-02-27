@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Validator;
 
 use App\Entity\Domain;
-use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 final class EmailDomainValidator extends ConstraintValidator
 {
@@ -20,15 +20,22 @@ final class EmailDomainValidator extends ConstraintValidator
     #[Override]
     public function validate(mixed $value, Constraint $constraint): void
     {
-        if (!$value instanceof User) {
+        if (!$constraint instanceof EmailDomain) {
+            throw new UnexpectedTypeException($constraint, EmailDomain::class);
+        }
+
+        if (null === $value || '' === $value) {
             return;
         }
 
-        $name = substr(strrchr($value->getEmail(), '@'), 1);
-        $domain = $this->manager->getRepository(Domain::class)->findOneBy(['name' => $name]);
+        if (!is_string($value)) {
+            throw new UnexpectedTypeException($value, 'string');
+        }
 
-        if (null === $domain) {
-            $this->context->addViolation('form.missing-domain');
+        [, $domain] = explode('@', $value);
+
+        if (null === $this->manager->getRepository(Domain::class)->findByName($domain)) {
+            $this->context->addViolation('registration.email-domain-not-exists');
         }
     }
 }

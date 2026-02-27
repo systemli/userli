@@ -8,7 +8,8 @@ use App\Entity\Alias;
 use App\Enum\Roles;
 use App\Form\SmtpQuotaLimitsType;
 use App\Traits\DomainGuesserAwareTrait;
-use App\Validator\EmailAddress;
+use App\Validator\EmailAllowedSymbols;
+use App\Validator\EmailDomain;
 use App\Validator\Lowercase;
 use Override;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -47,8 +48,8 @@ final class AliasAdmin extends Admin
                     new Assert\NotNull(),
                     new Assert\Email(mode: 'strict'),
                     new Lowercase(),
-                    // Admin is allowed to create Aliases for already existing sources
-                    new EmailAddress(exists: false),
+                    new EmailAllowedSymbols(),
+                    new EmailDomain(),
                 ] : [],
             ])
             ->add('user', ModelAutocompleteType::class, ['property' => 'email', 'required' => false])
