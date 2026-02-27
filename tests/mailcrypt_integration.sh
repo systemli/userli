@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Tests if mailcrypt is working by uploading emails via IMAP and checking disk storage
-
 set -e
 
 DOVECOT_HOST="localhost"
@@ -10,12 +9,12 @@ DOVECOT_PORT="1143"
 # User WITH mailcrypt enabled
 CRYPT_USER="mailcrypt@example.org"
 CRYPT_PASS="password"
-CRYPT_INBOX="/var/vmail/mailcrypt/Mail/mailboxes/INBOX/dbox-Mails/*"
+CRYPT_INBOX="/srv/vmail/mailcrypt/Mail/mailboxes/INBOX/dbox-Mails/"
 
 # User WITHOUT mailcrypt
 PLAIN_USER="user@example.org"
 PLAIN_PASS="password"
-PLAIN_INBOX="/var/vmail/user/Mail/mailboxes/INBOX/dbox-Mails/*"
+PLAIN_INBOX="/srv/vmail/user/Mail/mailboxes/INBOX/dbox-Mails/"
 
 TEST_STRING="Content of email"
 
@@ -58,8 +57,7 @@ check_encryption() {
 
     echo "Checking disk storage for $user..."
 
-    if docker compose exec dovecot sh 2>/dev/null \
-        -c "grep --recursive --quiet '$TEST_STRING' $path" \
+    if docker compose run --rm -T tools grep -r -q "$TEST_STRING" $path 2>/dev/null \
     ; then
         if [ "$should_be_encrypted" = "yes" ]; then
             echo "❌ FAIL: Content IS readable for $user (should be encrypted)"

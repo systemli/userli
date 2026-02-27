@@ -1,0 +1,55 @@
+---
+# Minimal compose file for mailcrypt integration tests.
+# Starts only dovecot, a mock Userli API, and a tools container.
+#
+# Usage:
+#   docker compose -f docker-compose.mailcrypt-test.yml up -d
+#   bash tests/mailcrypt_integration.sh
+#   docker compose -f docker-compose.mailcrypt-test.yml down -v
+
+services:
+  dovecot:
+    depends_on:
+      mock-api:
+        condition: service_healthy
+    image: dovecot/dovecot:latest
+    environment:
+      MAIL_CRYPT: 2
+      USERLI_HOST: mock-api
+      USERLI_API_ACCESS_TOKEN: 727eb7d3ad310bc510f5fa17c223572c
+      DOVECOT_LUA_INSECURE: "true"
+    ports:
+      - "1143:31143"
+    volumes:
+      - vmail:/srv/vmail
+      - ./docker/dovecot/dovecot.conf:/etc/dovecot/dovecot.conf:ro
+      - ./docker/dovecot/conf.d:/etc/dovecot/conf.d:ro
+      - ./contrib/userli-dovecot-adapter.lua:/usr/local/bin/userli-dovecot-adapter.lua:ro
+
+  mock-api:
+    image: docker.io/python:3-alpine
+    working_dir: /app
+    command: python dovecot-api-mock.py 80
+    volumes:
+      - ./tests/dovecot-api-mock.py:/app/dovecot-api-mock.py:ro
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request as u; u.urlopen(u.Request('http://localhost/api/dovecot/status', headers={'Authorization': 'Bearer 727eb7d3ad310bc510f5fa17c223572c'}))",
+        ]
+      interval: 2s
+      timeout: 3s
+      retries: 5
+
+  tools:
+    image: busybox:stable
+    profiles:
+      - tools
+    volumes:
+      - vmail:/srv/vmail:ro
+
+volumes:
+  vmail:

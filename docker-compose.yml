@@ -65,18 +65,18 @@ services:
       - userli
 
   dovecot:
-    build:
-      context: .
-      dockerfile: docker/dovecot/Dockerfile
+    depends_on:
+      - userli
+    image: dovecot/dovecot:2.4.2
     environment:
       MAIL_CRYPT: 2
       USERLI_HOST: userli
       USERLI_API_ACCESS_TOKEN: 727eb7d3ad310bc510f5fa17c223572c
       DOVECOT_LUA_INSECURE: "true"
     ports:
-      - "1143:143"
+      - "1143:31143"
     volumes:
-      - vmail:/var/vmail
+      - vmail:/srv/vmail
       - ./docker/dovecot/dovecot.conf:/etc/dovecot/dovecot.conf:ro
       - ./docker/dovecot/conf.d:/etc/dovecot/conf.d:ro
       - ./contrib/userli-dovecot-adapter.lua:/usr/local/bin/userli-dovecot-adapter.lua:ro
@@ -96,9 +96,12 @@ services:
 
   roundcube:
     image: docker.io/roundcube/roundcubemail:1.6.11-apache
+    depends_on:
+      - dovecot
+      - mailcatcher
     environment:
       ROUNDCUBEMAIL_DEFAULT_HOST: dovecot
-      ROUNDCUBEMAIL_DEFAULT_PORT: 143
+      ROUNDCUBEMAIL_DEFAULT_PORT: 31143
       ROUNDCUBEMAIL_SMTP_SERVER: smtp://mailcatcher
       ROUNDCUBEMAIL_SMTP_PORT: 1025
       ROUNDCUBEMAIL_USERNAME_DOMAIN: example.org
@@ -124,6 +127,15 @@ services:
     ports:
       - 9000:8080
     restart: always
+    networks:
+      - userli
+
+  tools:
+    image: busybox:stable
+    profiles:
+      - tools
+    volumes:
+      - vmail:/srv/vmail:ro
     networks:
       - userli
 

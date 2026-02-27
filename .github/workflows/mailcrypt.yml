@@ -1,0 +1,62 @@
+name: Mailcrypt
+
+on:
+  pull_request:
+    paths:
+      - "contrib/userli-dovecot-adapter.lua"
+      - "docker/dovecot/**"
+      - "docker-compose.mailcrypt-test.yml"
+      - "tests/test_mailcrypt.sh"
+      - "tests/dovecot-api-mock.py"
+      - ".github/workflows/mailcrypt.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "contrib/userli-dovecot-adapter.lua"
+      - "docker/dovecot/**"
+      - "docker-compose.mailcrypt-test.yml"
+      - "tests/test_mailcrypt.sh"
+      - "tests/dovecot-api-mock.py"
+      - ".github/workflows/mailcrypt.yml"
+
+jobs:
+  mailcrypt:
+    runs-on: ubuntu-24.04
+    name: Dovecot Mailcrypt Integration
+
+    env:
+      COMPOSE_FILE: docker-compose.mailcrypt-test.yml
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Start containers
+        run: docker compose up -d
+
+      - name: Wait for Dovecot to be ready
+        run: |
+          for i in $(seq 1 30); do
+            if docker compose exec dovecot doveadm service status imap-login > /dev/null 2>&1; then
+              echo "Dovecot is ready"
+              break
+            fi
+            echo "Waiting for Dovecot... ($i/30)"
+            sleep 2
+          done
+
+      - name: Run mailcrypt tests
+        run: bash tests/mailcrypt_integration.sh
+
+      - name: Dovecot logs
+        if: failure()
+        run: docker compose logs dovecot
+
+      - name: Mock API logs
+        if: failure()
+        run: docker compose logs mock-api
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down -v
