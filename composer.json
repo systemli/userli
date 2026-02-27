@@ -6,6 +6,7 @@
   "require": {
     "php": "^8.4",
     "ext-sodium": "*",
+    "arubacao/tld-checker": "*",
     "doctrine/doctrine-bundle": "^3.0",
     "doctrine/doctrine-migrations-bundle": "^4.0",
     "doctrine/orm": "^3.4",
@@ -43,6 +44,7 @@
     "symfony/yaml": "*",
     "tuupola/base32": "^2.0",
     "twig/extra-bundle": "^2.12|^3.0",
+    "twig/intl-extra": "*",
     "twig/twig": "^2.12|^3.0"
   },
   "require-dev": {

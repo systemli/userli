@@ -1,0 +1,63 @@
+{% extends 'base_page.html.twig' %}
+{% block title %}{{ setting('app_name') }} - {{ domain.name }}{% endblock %}
+{% block page_title %}{{ 'settings.title'|trans }}{% endblock %}
+{% block page_subtitle %}{{ 'settings.subtitle'|trans }}{% endblock %}
+{% block page_content %}
+    <div class="max-w-5xl mx-auto">
+        {% include 'Settings/_navigation.html.twig' with {'current_section': 'domains'} %}
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+                <div class="p-6 sm:p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/50 rounded-xl flex items-center justify-center mr-4">
+                            {{ ux_icon('heroicons:globe-alt', {class: 'w-6 h-6 text-indigo-600 dark:text-indigo-400'}) }}
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ domain.name }}</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ 'settings.domain.show.description'|trans }}</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <a href="{{ path('settings_domain_index') }}"
+                           class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
+                            {{ ux_icon('heroicons:arrow-left', {class: 'w-4 h-4 mr-1'}) }} {{ 'settings.domain.show.back'|trans }}
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600">
+                            <div class="flex items-center mb-2">
+                                {{ ux_icon('heroicons:users', {class: 'w-5 h-5 text-blue-500 dark:text-blue-400 mr-2'}) }}
+                                <span class="text-sm font-medium text-gray-600 dark:text-gray-300">{{ 'settings.domain.show.users'|trans }}</span>
+                            </div>
+                            <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ stats.users }}</p>
+                        </div>
+
+                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600">
+                            <div class="flex items-center mb-2">
+                                {{ ux_icon('heroicons:at-symbol', {class: 'w-5 h-5 text-green-500 dark:text-green-400 mr-2'}) }}
+                                <span class="text-sm font-medium text-gray-600 dark:text-gray-300">{{ 'settings.domain.show.aliases'|trans }}</span>
+                            </div>
+                            <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ stats.aliases }}</p>
+                        </div>
+
+                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600">
+                            <div class="flex items-center mb-2">
+                                {{ ux_icon('heroicons:shield-check', {class: 'w-5 h-5 text-purple-500 dark:text-purple-400 mr-2'}) }}
+                                <span class="text-sm font-medium text-gray-600 dark:text-gray-300">{{ 'settings.domain.show.admins'|trans }}</span>
+                            </div>
+                            <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ stats.admins }}</p>
+                        </div>
+
+                        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600">
+                            <div class="flex items-center mb-2">
+                                {{ ux_icon('heroicons:ticket', {class: 'w-5 h-5 text-orange-500 dark:text-orange-400 mr-2'}) }}
+                                <span class="text-sm font-medium text-gray-600 dark:text-gray-300">{{ 'settings.domain.show.vouchers'|trans }}</span>
+                            </div>
+                            <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ stats.vouchers }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+{% endblock %}

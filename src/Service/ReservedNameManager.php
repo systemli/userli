@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Dto\PaginatedResult;
 use App\Entity\ReservedName;
 use App\Repository\ReservedNameRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,22 +24,11 @@ final readonly class ReservedNameManager
     /**
      * Find reserved names with offset-based pagination and optional search.
      *
-     * @return array{items: ReservedName[], page: int, totalPages: int, total: int}
+     * @return PaginatedResult<ReservedName>
      */
-    public function findPaginated(int $page = 1, string $search = ''): array
+    public function findPaginated(int $page = 1, string $search = ''): PaginatedResult
     {
-        $page = max(1, $page);
-        $offset = ($page - 1) * self::PAGE_SIZE;
-        $total = $this->repository->countBySearch($search);
-        $totalPages = max(1, (int) ceil($total / self::PAGE_SIZE));
-        $items = $this->repository->findPaginatedBySearch($search, self::PAGE_SIZE, $offset);
-
-        return [
-            'items' => $items,
-            'page' => $page,
-            'totalPages' => $totalPages,
-            'total' => $total,
-        ];
+        return PaginatedResult::fromSearchableRepository($this->repository, $page, self::PAGE_SIZE, $search);
     }
 
     public function create(string $name): ReservedName

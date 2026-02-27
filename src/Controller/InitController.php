@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Creator\DomainCreator;
 use App\Entity\Domain;
 use App\Entity\Setting;
 use App\Entity\User;
-use App\Form\DomainCreateType;
+use App\Form\DomainType;
 use App\Form\InitUserType;
-use App\Form\Model\DomainCreate;
 use App\Form\Model\InitUser;
 use App\Form\SettingsType;
 use App\Helper\AdminPasswordUpdater;
+use App\Service\DomainManager;
 use App\Service\SettingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +25,7 @@ final class InitController extends AbstractController
     public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly AdminPasswordUpdater $updater,
-        private readonly DomainCreator $creator,
+        private readonly DomainManager $domainManager,
         private readonly SettingsService $settingsService,
     ) {
     }
@@ -39,7 +38,7 @@ final class InitController extends AbstractController
             return $this->redirectToRoute('init_user');
         }
 
-        $form = $this->createForm(DomainCreateType::class, new DomainCreate(), [
+        $form = $this->createForm(DomainType::class, new Domain(), [
             'action' => $this->generateUrl('init_submit'),
             'method' => 'post',
         ]);
@@ -50,11 +49,12 @@ final class InitController extends AbstractController
     #[Route(path: '/init', name: 'init_submit', methods: ['POST'])]
     public function initSubmit(Request $request): Response
     {
-        $form = $this->createForm(DomainCreateType::class, new DomainCreate());
+        $domain = new Domain();
+        $form = $this->createForm(DomainType::class, $domain);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->creator->create($form->getData()->getDomain());
+            $this->domainManager->create((string) $domain->getName());
 
             return $this->redirectToRoute('init_user');
         }

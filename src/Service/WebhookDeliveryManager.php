@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Dto\PaginatedResult;
 use App\Entity\WebhookDelivery;
 use App\Entity\WebhookEndpoint;
 use App\Message\SendWebhook;
@@ -25,14 +26,14 @@ final readonly class WebhookDeliveryManager
     /**
      * Find deliveries with offset-based pagination.
      *
-     * @return array{items: WebhookDelivery[], page: int, totalPages: int, total: int}
+     * @return PaginatedResult<WebhookDelivery>
      */
     public function findPaginatedByEndpoint(
         WebhookEndpoint $endpoint,
         int $page = 1,
         string $status = '',
         string $eventType = '',
-    ): array {
+    ): PaginatedResult {
         $page = max(1, $page);
         $offset = ($page - 1) * self::PAGE_SIZE;
         $total = $this->repository->countByEndpointAndStatus($endpoint, $status, $eventType);
@@ -45,12 +46,7 @@ final readonly class WebhookDeliveryManager
             $eventType,
         );
 
-        return [
-            'items' => $items,
-            'page' => $page,
-            'totalPages' => $totalPages,
-            'total' => $total,
-        ];
+        return new PaginatedResult($items, $page, $totalPages, $total);
     }
 
     public function retry(WebhookDelivery $delivery): void

@@ -14,16 +14,12 @@
         {# Main content area #}
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
             <div class="p-6 sm:p-8">
-                <div class="flex items-center mb-6">
-                    <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center mr-4">
-                        <!-- heroicons:cog-6-tooth -->
-                        {{ ux_icon('heroicons:cog-6-tooth', {class: 'w-6 h-6 text-blue-600 dark:text-blue-400'}) }}
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ "settings.form.title"|trans }}</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ "settings.form.description"|trans }}</p>
-                    </div>
-                </div>
+                {% include 'Settings/_section_header.html.twig' with {
+                    icon: 'heroicons:cog-6-tooth',
+                    icon_color: 'blue',
+                    heading_key: 'settings.form.title',
+                    description_key: 'settings.form.description',
+                } %}
                 {{ form_start(form, {'attr': {'class': 'space-y-6', 'action': path('settings_update')}}) }}
                     {{ form_errors(form) }}
 

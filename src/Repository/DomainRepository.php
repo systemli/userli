@@ -11,8 +11,10 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Domain>
  */
-final class DomainRepository extends ServiceEntityRepository
+final class DomainRepository extends ServiceEntityRepository implements SearchableRepositoryInterface
 {
+    use SearchableRepositoryTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Domain::class);

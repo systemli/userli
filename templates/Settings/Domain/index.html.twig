@@ -1,0 +1,84 @@
+{% extends 'base_page.html.twig' %}
+{% block title %}{{ setting('app_name') }} - {{ 'settings.domain.title'|trans }}{% endblock %}
+{% block page_title %}{{ 'settings.title'|trans }}{% endblock %}
+{% block page_subtitle %}{{ 'settings.subtitle'|trans }}{% endblock %}
+{% block page_content %}
+    <div class="max-w-5xl mx-auto">
+        {% include 'Settings/_navigation.html.twig' with {'current_section': 'domains'} %}
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+            <div class="p-6 sm:p-8">
+                {% include 'Settings/_section_header.html.twig' with {
+                    icon: 'heroicons:globe-alt',
+                    icon_color: 'indigo',
+                    heading_key: 'settings.domain.heading',
+                    description_key: 'settings.domain.description',
+                } %}
+
+                <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <a href="{{ path('settings_domain_create') }}"
+                           class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
+                            {{ ux_icon('heroicons:plus', {class: 'w-4 h-4 mr-2'}) }}
+                            {{ 'settings.domain.create.button'|trans }}
+                        </a>
+                    </div>
+
+                    {% include 'Settings/_search_form.html.twig' with {
+                        index_route: 'settings_domain_index',
+                        placeholder_key: 'settings.domain.search.placeholder',
+                        submit_key: 'settings.domain.search.submit',
+                        search: search,
+                    } %}
+                </div>
+
+                {% if pagination.items is empty %}
+                    {% include 'Settings/_empty_state.html.twig' with {
+                        icon: 'heroicons:globe-alt',
+                        title_key: 'settings.domain.table.empty-title',
+                        description_key: 'settings.domain.table.empty-description',
+                    } %}
+                {% else %}
+                    {% embed 'Settings/_table.html.twig' with {
+                        headers: [
+                            {label: 'settings.table.id'},
+                            {label: 'settings.table.name'},
+                            {label: 'settings.table.created'},
+                            {label: 'settings.table.actions', align: 'right'},
+                        ]
+                    } %}
+                        {% block table_body %}
+                            {% for domain in pagination.items %}
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ domain.id }}</td>
+                                    <td class="px-6 py-4 text-sm font-mono text-gray-900 dark:text-gray-100">{{ domain.name }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
+                                        {{ domain.creationTime|format_datetime('short', 'short') }}
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <a href="{{ path('settings_domain_show', {id: domain.id}) }}"
+                                           title="{{ 'settings.domain.actions.show'|trans }}"
+                                           data-controller="tooltip"
+                                           class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors">
+                                            {{ ux_icon('heroicons:eye', {class: 'w-4 h-4'}) }}
+                                            <span class="sr-only">{{ 'settings.domain.actions.show'|trans }}</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endblock %}
+                    {% endembed %}
+
+                    {% include 'Settings/_pagination.html.twig' with {
+                        index_route: 'settings_domain_index',
+                        total_key: 'settings.domain.pagination.total',
+                        previous_key: 'settings.domain.pagination.previous',
+                        next_key: 'settings.domain.pagination.next',
+                        page_key: 'settings.domain.pagination.page',
+                        pagination: pagination,
+                        search: search,
+                    } %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

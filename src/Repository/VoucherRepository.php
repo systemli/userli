@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Domain;
 use App\Entity\User;
 use App\Entity\Voucher;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -25,6 +26,19 @@ final class VoucherRepository extends ServiceEntityRepository
     public function findByCode(string $code): ?Voucher
     {
         return $this->findOneBy(['code' => $code]);
+    }
+
+    /**
+     * Returns the number of vouchers for a domain.
+     */
+    public function countByDomain(Domain $domain): int
+    {
+        return (int) $this->createQueryBuilder('v')
+            ->select('COUNT(v.id)')
+            ->where('v.domain = :domain')
+            ->setParameter('domain', $domain)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     /**

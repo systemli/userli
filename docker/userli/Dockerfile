@@ -3,8 +3,9 @@ FROM docker.io/composer:2.8.12 AS composer
 FROM docker.io/php:8.4-cli AS builder
 
 RUN apt-get update && \
-    apt-get install -y libzip-dev nodejs npm zip
-RUN docker-php-ext-install -j$(nproc) zip
+    apt-get install -y libicu-dev libzip-dev nodejs npm zip
+RUN docker-php-ext-configure intl && \
+    docker-php-ext-install -j$(nproc) intl zip
 
 COPY . /var/www/html/
 COPY --from=composer /usr/bin/composer /usr/bin/composer

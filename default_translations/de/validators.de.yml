@@ -13,6 +13,7 @@ form:
   twofactor-backup-ack-missing: "Dies muss muss ausgewählt werden."
   lowercase: "Die Zeichenkette darf keine Großbuchstaben enthalten."
   unique-field: "Dieser Wert wird bereits verwendet."
+  valid-tld: "Die Domain hat keine gültige Top-Level-Domain."
 
 registration:
   voucher-invalid: Der Einladungscode ist ungültig.

@@ -1,0 +1,21 @@
+{# Parameters: index_route, placeholder_key, submit_key, search #}
+<form method="get" action="{{ path(index_route) }}" class="flex items-center gap-2">
+    <div class="relative">
+        <input type="text" name="search" value="{{ search }}"
+               placeholder="{{ placeholder_key|trans }}"
+               class="pl-10 pr-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            {{ ux_icon('heroicons:magnifying-glass', {class: 'w-4 h-4 text-gray-400'}) }}
+        </div>
+    </div>
+    <button type="submit"
+            class="inline-flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
+        {{ submit_key|trans }}
+    </button>
+    {% if search %}
+        <a href="{{ path(index_route) }}"
+           class="inline-flex items-center px-3 py-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+            {{ ux_icon('heroicons:x-mark', {class: 'w-4 h-4'}) }}
+        </a>
+    {% endif %}
+</form>

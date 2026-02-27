@@ -80,26 +80,6 @@ services:
                   model_class: App\Entity\UserNotification,
               }
 
-    userli.admin.domain:
-        class: App\Admin\DomainAdmin
-        public: true
-        tags:
-            - {
-                  name: sonata.admin,
-                  manager_type: orm,
-                  group: "Mail",
-                  label: "Domain",
-                  code: userli.admin.domain,
-                  model_class: App\Entity\Domain,
-              }
-        calls:
-            - [
-                  setEventDispatcher,
-                  [
-                      '@Symfony\Contracts\EventDispatcher\EventDispatcherInterface',
-                  ],
-              ]
-
     userli.admin.alias:
         class: App\Admin\AliasAdmin
         public: true
