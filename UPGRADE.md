@@ -8,6 +8,10 @@ The `WEBMAIL_URL` environment variable has been removed. The webmail URL is now 
 
 If you previously had `WEBMAIL_URL` set, you need to configure it manually in the settings after upgrading.
 
+### Prometheus metrics changes
+
+The `userli_users_total` metric now includes both active and deleted users. Previously, it only counted active users. A new `userli_users_active_total` metric has been added to report the number of active users separately. If you have dashboards or alerts based on `userli_users_total`, update them accordingly.
+
 ## Upgrade to 6.0.0
 
 ### PHP 8.4 Required
