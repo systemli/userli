@@ -83,12 +83,14 @@ release: clean prepare build
 		shasum -a "$${sha}" "build/${RELEASE_FILE_ADAPTER}" >"build/${RELEASE_FILE_ADAPTER}.sha$${sha}"; \
 	done
 
-cs-fixer:
-	php-cs-fixer fix src --rules=@Symfony
-	php-cs-fixer fix tests --rules=@Symfony
+fix: vendors
+	composer cs-fix
+	composer rector-fix
 
-lint:
+lint: vendors
 	php -l src/
+	composer cs-check
+	composer rector-check
 
 reset: clean
 	rm -f php_cs.cache
@@ -109,9 +111,6 @@ assets: vendors
 	yarn
 	yarn encore dev
 
-db: vendors
-	${SQLITE_DB_URL} bin/console doctrine:migrations:migrate --no-interaction
-
 integration: assets db lint
 	bin/behat -f progress
 
@@ -119,7 +118,7 @@ security-check: vendors
 	bin/local-php-security-checker
 
 psalm: vendors
-	bin/psalm --no-cache --show-info=true
+	composer psalm
 
-test: db lint
+test: vendors lint
 	bin/phpunit
