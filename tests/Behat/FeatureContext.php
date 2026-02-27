@@ -339,6 +339,16 @@ class FeatureContext extends MinkContext
             $endpoint->setEvents($events);
             $endpoint->setEnabled((bool) $enabled);
 
+            if (isset($data['domains'])) {
+                foreach (explode(',', $data['domains']) as $domainName) {
+                    $domain = $this->manager->getRepository(Domain::class)->findOneBy(['name' => trim($domainName)]);
+                    if (null === $domain) {
+                        throw new RuntimeException(sprintf('Domain "%s" not found', trim($domainName)));
+                    }
+                    $endpoint->addDomain($domain);
+                }
+            }
+
             $this->manager->persist($endpoint);
             $this->manager->flush();
         }

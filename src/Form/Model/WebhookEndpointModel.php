@@ -24,6 +24,8 @@ final class WebhookEndpointModel
 
     private bool $enabled = true;
 
+    private array $domains = [];
+
     public function getUrl(): string
     {
         return $this->url;
@@ -62,5 +64,15 @@ final class WebhookEndpointModel
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function getDomains(): array
+    {
+        return $this->domains;
+    }
+
+    public function setDomains(array $domains): void
+    {
+        $this->domains = $domains;
     }
 }

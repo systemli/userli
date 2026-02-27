@@ -24,7 +24,19 @@ You need to provide the following information:
 - **URL**: The endpoint URL where the webhook payload will be sent.
 - **Secret**: A secret key used to sign the webhook payload for security purposes.
 - **Events**: Select at least one event that should trigger the webhook (at least one is required by validation).
+- **Domains**: Optionally restrict the webhook to specific domains. If no domains are selected, the webhook will fire for events from all domains.
 - **Enabled**: Enable or disable the webhook.
+
+## Domain Filtering
+
+Webhook endpoints can optionally be scoped to one or more domains. This is useful when you have multiple domains and want to send events for only a subset of them to a particular endpoint.
+
+- **No domains selected** (default): The endpoint receives events for users on **all** domains. This is backward compatible and suitable for global integrations (e.g., Dovecot).
+- **One or more domains selected**: The endpoint only receives events for users belonging to those domains. For example, you might configure the `userli-webhook-listener` for Nextcloud/Matrix to only receive events for a single domain.
+
+!!! warning
+
+    If a domain is deleted and it was the only domain assigned to a webhook endpoint, that endpoint will be **automatically disabled** to prevent it from silently becoming global.
 
 ## Webhook Payload
 

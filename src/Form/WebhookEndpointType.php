@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use App\Entity\Domain;
 use App\Enum\WebhookEvent;
 use App\Form\Model\WebhookEndpointModel;
 use Override;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -32,6 +34,13 @@ final class WebhookEndpointType extends AbstractType
                 'choices' => $choices,
                 'expanded' => true,
                 'multiple' => true,
+            ])
+            ->add('domains', EntityType::class, [
+                'class' => Domain::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'required' => false,
+                'autocomplete' => true,
             ])
             ->add('enabled', CheckboxType::class, [
                 'required' => false,

@@ -34,6 +34,7 @@
                             {label: 'settings.table.id'},
                             {label: 'settings.webhook.table.url'},
                             {label: 'settings.webhook.table.events'},
+                            {label: 'settings.webhook.table.domains'},
                             {label: 'settings.webhook.table.enabled'},
                             {label: 'settings.table.actions', align: 'right'},
                         ]
@@ -48,6 +49,17 @@
                                             {% for event in endpoint.events %}
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200">{{ event }}</span>
                                             {% endfor %}
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-wrap gap-1">
+                                            {% if endpoint.domains is empty %}
+                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ 'settings.webhook.all_domains'|trans }}</span>
+                                            {% else %}
+                                                {% for domain in endpoint.domains %}
+                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">{{ domain.name }}</span>
+                                                {% endfor %}
+                                            {% endif %}
                                         </div>
                                     </td>
                                     <td class="px-6 py-4">{% if endpoint.enabled %}<span

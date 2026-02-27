@@ -528,6 +528,7 @@ settings:
     title: Webhooks
     enabled: Aktiv
     disabled: Deaktiviert
+    all_domains: Alle Domains
     table:
       title: Webhooks
       description: Liste deiner vorhandenen Webhooks
@@ -536,6 +537,7 @@ settings:
       url: URL
       secret: Secret
       events: Ereignisse
+      domains: Domains
       enabled: Aktiv
     create:
       button: Webhook erstellen
@@ -570,6 +572,9 @@ settings:
       events:
         label: Ereignisse
         help: Wähle die Ereignisse, die einen Webhook senden
+      domains:
+        label: Domains
+        help: Leer lassen, um Ereignisse für alle Domains zu empfangen
       enabled:
         label: Aktiv
       submit:
