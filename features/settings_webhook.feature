@@ -110,3 +110,28 @@ Feature: Settings
     When I follow "Details"
 
     Then I should see "Detailed information about this webhook delivery"
+
+  @webhooks
+  Scenario: Webhook endpoint without domains shows "All domains"
+    Given the following WebhookEndpoint exists:
+      | url                      | secret | events       |
+      | https://example.org/hook | secret | user.created |
+
+    When I am authenticated as "louis@example.org"
+    And I am on "/settings/webhooks/"
+
+    Then the response status code should be 200
+    And I should see "All domains"
+
+  @webhooks
+  Scenario: Webhook endpoint with domains shows domain name
+    Given the following WebhookEndpoint exists:
+      | url                      | secret | events       | domains     |
+      | https://example.org/hook | secret | user.created | example.org |
+
+    When I am authenticated as "louis@example.org"
+    And I am on "/settings/webhooks/"
+
+    Then the response status code should be 200
+    And I should see "example.org"
+    And I should not see "All domains"

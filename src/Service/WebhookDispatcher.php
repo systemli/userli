@@ -41,6 +41,10 @@ final readonly class WebhookDispatcher
                 continue;
             }
 
+            if (!$endpoint->getDomains()->isEmpty() && !$endpoint->getDomains()->contains($user->getDomain())) {
+                continue;
+            }
+
             $data = json_encode($payload, JSON_UNESCAPED_SLASHES);
             $signature = hash_hmac('sha256', $data, $endpoint->getSecret());
             $headers = [

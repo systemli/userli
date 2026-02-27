@@ -38,6 +38,7 @@
     "symfony/translation": "*",
     "symfony/twig-bundle": "*",
     "symfony/uid": "*",
+    "symfony/ux-autocomplete": "*",
     "symfony/ux-icons": "^2.27",
     "symfony/validator": "*",
     "symfony/webpack-encore-bundle": "*",

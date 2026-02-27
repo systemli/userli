@@ -7,6 +7,8 @@ namespace App\Entity;
 use App\Traits\CreationTimeTrait;
 use App\Traits\UpdatedTimeTrait;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -34,11 +36,17 @@ class WebhookEndpoint implements UpdatedTimeInterface
     #[ORM\Column(options: ['default' => true])]
     private bool $enabled = true;
 
+    /** @var Collection<int, Domain> */
+    #[ORM\ManyToMany(targetEntity: Domain::class)]
+    #[ORM\JoinTable(name: 'webhook_endpoint_domain')]
+    private Collection $domains;
+
     public function __construct(string $url, string $secret)
     {
         $this->url = $url;
         $this->secret = $secret;
         $this->creationTime = new DateTimeImmutable();
+        $this->domains = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -84,5 +92,23 @@ class WebhookEndpoint implements UpdatedTimeInterface
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    /** @return Collection<int, Domain> */
+    public function getDomains(): Collection
+    {
+        return $this->domains;
+    }
+
+    public function addDomain(Domain $domain): void
+    {
+        if (!$this->domains->contains($domain)) {
+            $this->domains->add($domain);
+        }
+    }
+
+    public function removeDomain(Domain $domain): void
+    {
+        $this->domains->removeElement($domain);
     }
 }

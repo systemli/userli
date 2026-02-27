@@ -574,6 +574,18 @@
         },
         "files": []
     },
+    "symfony/ux-autocomplete": {
+        "version": "2.32",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.6",
+            "ref": "07d9602b7231ba355f484305d6cea58310c01741"
+        },
+        "files": [
+            "config/routes/ux_autocomplete.yaml"
+        ]
+    },
     "symfony/ux-icons": {
         "version": "2.31",
         "recipe": {

@@ -52,7 +52,7 @@ final class WebhookEndpointController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $this->manager->create($data->getUrl(), $data->getSecret(), $data->getEvents(), $data->isEnabled());
+            $this->manager->create($data->getUrl(), $data->getSecret(), $data->getEvents(), $data->isEnabled(), $data->getDomains());
             $this->addFlash('success', 'settings.webhook.create.success');
 
             return $this->redirectToRoute('settings_webhook_endpoint_index');
@@ -71,6 +71,7 @@ final class WebhookEndpointController extends AbstractController
         $model->setSecret($endpoint->getSecret());
         $model->setEvents($endpoint->getEvents());
         $model->setEnabled($endpoint->isEnabled());
+        $model->setDomains($endpoint->getDomains()->toArray());
 
         $form = $this->createForm(WebhookEndpointType::class, $model, [
             'action' => $this->generateUrl('settings_webhook_endpoint_edit_post', ['id' => $endpoint->getId()]),
@@ -91,7 +92,7 @@ final class WebhookEndpointController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $this->manager->update($endpoint, $data->getUrl(), $data->getSecret(), $data->getEvents(), $data->isEnabled());
+            $this->manager->update($endpoint, $data->getUrl(), $data->getSecret(), $data->getEvents(), $data->isEnabled(), $data->getDomains());
             $this->addFlash('success', 'settings.webhook.edit.success');
 
             return $this->redirectToRoute('settings_webhook_endpoint_index');

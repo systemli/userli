@@ -4,28 +4,37 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Entity\Domain;
 use App\Entity\WebhookDelivery;
 use App\Entity\WebhookEndpoint;
 use App\Enum\WebhookEvent;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Override;
 
-final class LoadWebhookData extends Fixture implements FixtureGroupInterface
+final class LoadWebhookData extends Fixture implements FixtureGroupInterface, DependentFixtureInterface
 {
     private const int DELIVERY_COUNT = 75;
 
     #[Override]
     public function load(ObjectManager $manager): void
     {
+        $domains = $manager->getRepository(Domain::class)->findAll();
+
         $endpoint = new WebhookEndpoint(
             'http://webhook:8080/e6fd49c8-7ecc-4b0a-8af1-a16f508e0f68',
             bin2hex(random_bytes(16))
         );
         $endpoint->setEvents([WebhookEvent::USER_CREATED->value, WebhookEvent::USER_DELETED->value, WebhookEvent::USER_RESET->value]);
         $endpoint->setEnabled(true);
+
+        // Assign the first domain to demonstrate domain filtering
+        if ([] !== $domains) {
+            $endpoint->addDomain($domains[0]);
+        }
 
         $manager->persist($endpoint);
 
@@ -99,5 +108,11 @@ final class LoadWebhookData extends Fixture implements FixtureGroupInterface
     public static function getGroups(): array
     {
         return ['basic', 'advanced'];
+    }
+
+    #[Override]
+    public function getDependencies(): array
+    {
+        return [LoadDomainData::class];
     }
 }
