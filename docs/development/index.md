@@ -1,7 +1,7 @@
 # Getting started
 
 Userli is a Symfony-based web application for self-managing email users with mailbox encryption support (Dovecot).
-It is built with PHP 8.4, Symfony 7.4, Doctrine ORM, and uses TailwindCSS with Symfony UX on the frontend.
+It is built with PHP, Symfony, Doctrine ORM, and uses TailwindCSS with Symfony UX on the frontend.
 
 We provide a `docker-compose.yml` that starts Userli with MariaDB, Dovecot, Roundcube, Mailcatcher, Redis, and a webhook tester to set up a complete development environment.
 
@@ -79,7 +79,7 @@ Load sample data:
     ```
 
 !!! info
-    The fixtures create four accounts (`admin`, `user`, `support`, `suspicious`) on the domain `example.org`, all with the password `password`.
+    The fixtures create some user accounts (`admin`, `user`, `support` and `suspicious`, among others) on the domain `example.org`, all with the password `password`.
     They also create sample aliases and vouchers.
     See `src/DataFixtures` for details.
 
