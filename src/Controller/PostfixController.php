@@ -19,6 +19,12 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
+/**
+ * Postfix integration API for domain, mailbox, alias, and sender verification lookups.
+ *
+ * Consumed by the userli-postfix-adapter. All responses are cached.
+ * Requires the "postfix" API scope.
+ */
 #[RequireApiScope(scope: ApiScope::POSTFIX)]
 final class PostfixController extends AbstractController
 {
@@ -31,6 +37,7 @@ final class PostfixController extends AbstractController
     ) {
     }
 
+    /** Return destination email addresses for a given alias source address. */
     #[Route(path: '/api/postfix/alias/{alias}', name: 'api_postfix_get_alias_users', methods: ['GET'], stateless: true)]
     public function getAliasUsers(string $alias): Response
     {
@@ -43,6 +50,7 @@ final class PostfixController extends AbstractController
         return $this->json($result);
     }
 
+    /** Check whether a domain exists by name. Returns a JSON boolean. */
     #[Route(path: '/api/postfix/domain/{name}', name: 'api_postfix_get_domain', methods: ['GET'], stateless: true)]
     public function getDomain(string $name): Response
     {
@@ -55,6 +63,7 @@ final class PostfixController extends AbstractController
         return $this->json($exists);
     }
 
+    /** Check whether a mailbox (user) exists by email. Returns a JSON boolean. */
     #[Route(path: '/api/postfix/mailbox/{email}', name: 'api_postfix_get_mailbox', methods: ['GET'], stateless: true)]
     public function getMailbox(string $email): Response
     {
@@ -67,6 +76,7 @@ final class PostfixController extends AbstractController
         return $this->json($exists);
     }
 
+    /** Return all valid sender addresses for an email (the user itself plus alias destinations). */
     #[Route(path: '/api/postfix/senders/{email}', name: 'api_postfix_get_senders', methods: ['GET'], stateless: true)]
     public function getSenders(string $email): Response
     {
@@ -87,6 +97,7 @@ final class PostfixController extends AbstractController
         return $this->json($senders);
     }
 
+    /** Return SMTP quota limits (per_hour, per_day) for a user or alias, falling back to global settings. */
     #[Route(path: '/api/postfix/smtp_quota/{email}', name: 'api_postfix_get_smtp_quota', methods: ['GET'], stateless: true)]
     public function getSmtpQuota(string $email): Response
     {

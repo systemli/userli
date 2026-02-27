@@ -6,6 +6,9 @@ namespace App\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Tracks the password hashing version to support transparent migration between hashing algorithms.
+ */
 trait PasswordVersionTrait
 {
     #[ORM\Column]

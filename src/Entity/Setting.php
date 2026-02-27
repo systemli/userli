@@ -10,6 +10,11 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Persisted key-value pair for global application settings.
+ *
+ * Available setting names, types, and defaults are defined in config/settings.yaml.
+ */
 #[ORM\Entity(repositoryClass: SettingRepository::class)]
 #[ORM\Table(name: 'settings')]
 #[ORM\UniqueConstraint(name: 'UNIQ_SETTING_NAME', columns: ['name'])]
@@ -22,9 +27,11 @@ class Setting implements UpdatedTimeInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    /** Setting key matching an entry in config/settings.yaml (e.g. "app_name", "smtp_quota_limit_per_hour"). */
     #[ORM\Column(length: 255)]
     private string $name;
 
+    /** Serialized setting value. Type depends on the setting definition in config/settings.yaml. */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private string $value;
 

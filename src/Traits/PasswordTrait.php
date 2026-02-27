@@ -6,6 +6,9 @@ namespace App\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Stores the hashed password (persisted). The hashing algorithm is managed by Symfony's password hasher.
+ */
 trait PasswordTrait
 {
     #[ORM\Column]

@@ -11,6 +11,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Target URL for webhook notifications about user lifecycle events.
+ *
+ * When a subscribed event occurs (e.g. user.created, user.deleted, user.reset),
+ * a signed JSON POST request is dispatched to the configured URL. The shared secret
+ * is used to compute an HMAC-SHA256 signature sent in the `X-Webhook-Signature` header.
+ *
+ * @see WebhookEvent for the available event types
+ * @see WebhookDelivery for delivery attempt logs
+ */
 #[ORM\Entity]
 #[ORM\Index(columns: ['enabled'])]
 #[ORM\Table(name: 'webhook_endpoints')]
@@ -27,12 +37,15 @@ class WebhookEndpoint implements UpdatedTimeInterface
     #[ORM\Column(length: 2048)]
     private string $url;
 
+    /** Shared secret used for HMAC-SHA256 signing of webhook request bodies. */
     #[ORM\Column(length: 255)]
     private string $secret;
 
+    /** Subscribed event types (values from {@see WebhookEvent}, e.g. "user.created"). */
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $events = null;
 
+    /** Whether deliveries are dispatched to this endpoint. Disabled endpoints are skipped. */
     #[ORM\Column(options: ['default' => true])]
     private bool $enabled = true;
 

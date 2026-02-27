@@ -14,6 +14,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Stringable;
 
+/**
+ * Reserved email local-part that cannot be used for user registration.
+ *
+ * Managed via the admin UI. A curated list of common reserved names
+ * (e.g. "admin", "postmaster") is available in `contrib/reserved_names.txt`.
+ */
 #[ORM\Entity(repositoryClass: ReservedNameRepository::class)]
 #[ORM\Table(name: 'reserved_names')]
 class ReservedName implements UpdatedTimeInterface, Stringable

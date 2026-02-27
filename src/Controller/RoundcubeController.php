@@ -17,6 +17,12 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
+/**
+ * Roundcube integration API for listing a user's alias addresses after authentication.
+ *
+ * Consumed by the Roundcube Userli plugin to populate sender identities.
+ * Requires the "roundcube" API scope.
+ */
 #[RequireApiScope(scope: ApiScope::ROUNDCUBE)]
 final class RoundcubeController extends AbstractController
 {
@@ -26,6 +32,7 @@ final class RoundcubeController extends AbstractController
     ) {
     }
 
+    /** Authenticate a user and return their alias source addresses. */
     #[Route(path: '/api/roundcube/aliases', name: 'api_roundcube_post_aliases', methods: ['POST'], stateless: true)]
     public function postUserAliases(
         #[MapRequestPayload] RoundcubeUserAliasesDto $data,

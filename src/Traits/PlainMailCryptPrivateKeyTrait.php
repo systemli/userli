@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Traits;
 
 /**
- * Trait PlainMailCryptPrivateKeyTrait.
+ * Holds the decrypted MailCrypt private key in memory (not persisted). Used transiently during key operations.
  */
 trait PlainMailCryptPrivateKeyTrait
 {

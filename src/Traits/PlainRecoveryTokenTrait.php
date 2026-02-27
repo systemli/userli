@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Traits;
 
 /**
- * Trait PlainRecoveryTokenTrait.
+ * Holds the plaintext recovery token in memory (not persisted). Only available at generation time.
  */
 trait PlainRecoveryTokenTrait
 {

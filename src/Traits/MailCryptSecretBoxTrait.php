@@ -7,6 +7,9 @@ namespace App\Traits;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Stores the user's MailCrypt private key encrypted with a password-derived key (sodium secretbox).
+ */
 trait MailCryptSecretBoxTrait
 {
     #[ORM\Column(type: Types::TEXT, nullable: true)]
