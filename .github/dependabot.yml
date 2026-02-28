@@ -20,18 +20,34 @@ updates:
     commit-message:
       prefix: "⬆️"
       include: "scope"
-    allow:
-      - dependency-name: "endroid/qr-code"
-      - dependency-name: "ircmaxell/password-compat"
-      - dependency-name: "nelmio/security-bundle"
-      - dependency-name: "pear/crypt_gpg"
-      - dependency-name: "ramsey/uuid"
-      - dependency-name: "scheb/*"
-      - dependency-name: "sonata-project/*"
-      - dependency-name: "tuupola/base32"
-      - dependency-name: "friends-of-behat/*"
     groups:
-      php-dependencies:
+      symfony:
+        patterns:
+          - "symfony/*"
+      doctrine:
+        patterns:
+          - "doctrine/*"
+      scheb:
+        patterns:
+          - "scheb/*"
+      sonata:
+        patterns:
+          - "sonata-project/*"
+      twig:
+        patterns:
+          - "twig/*"
+      php-dev-tools:
+        patterns:
+          - "friendsofphp/*"
+          - "vimeo/psalm"
+          - "psalm/*"
+          - "rector/*"
+      behat:
+        patterns:
+          - "behat/*"
+          - "friends-of-behat/*"
+          - "dvdoug/behat-code-coverage"
+      php-other:
         patterns:
           - "*"
 
@@ -42,3 +58,7 @@ updates:
     commit-message:
       prefix: "⬆️"
       include: "scope"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
