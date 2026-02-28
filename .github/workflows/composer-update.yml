@@ -35,6 +35,7 @@ jobs:
 
       - name: Generate update summary
         run: |
+          composer global config allow-plugins.ion-bazan/composer-diff true
           composer global require ion-bazan/composer-diff
           {
             echo "## Composer Update Summary"
