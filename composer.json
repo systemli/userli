@@ -29,7 +29,7 @@
     "symfony/http-client": "*",
     "symfony/mailer": "*",
     "symfony/messenger": "*",
-    "symfony/monolog-bundle": "^3.8.0",
+    "symfony/monolog-bundle": "^4.0.1",
     "symfony/process": "*",
     "symfony/runtime": "*",
     "symfony/scheduler": "*",
