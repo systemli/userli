@@ -28,10 +28,19 @@ jobs:
           tools: composer
 
       - name: Install dependencies
-        run: composer install
+        run: composer install --no-scripts
 
       - name: Update dependencies
-        run: composer update
+        run: composer update --no-scripts
+
+      - name: Generate update summary
+        run: |
+          composer global require ion-bazan/composer-diff
+          {
+            echo "## Composer Update Summary"
+            echo ""
+            composer diff -l -f mdtable 2>/dev/null || echo "No changes detected."
+          } > /tmp/composer-diff.md
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7
@@ -40,7 +49,5 @@ jobs:
           commit-message: "⬆️ Update composer dependencies"
           branch: automated/composer-update
           title: "⬆️ Update composer dependencies"
-          body: |
-            Automated `composer update` with Symfony Flex.
-            Respects `extra.symfony.require` from `composer.json`.
+          body-path: /tmp/composer-diff.md
           draft: true
