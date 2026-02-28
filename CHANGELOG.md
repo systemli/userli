@@ -1,5 +1,38 @@
 # Changelog
 
+## 6.3.0 (2026.03.01)
+
+### Features and Improvements
+
+- ✨ Add domain filter for webhook endpoints (#1078)
+- ✨ Add MTA-STS (RFC 8461) support (#1077)
+- ✨ Add domain deletion with CASCADE constraints and async event handling (#1075)
+- ✨ Native domain management and unified Settings UI (#1057)
+- ✨ Add domain field to Voucher entity (#1056)
+
+### Security
+
+- 🔒 Pin GitHub Actions to commit SHAs for supply chain security (#1099)
+
+### Technical Changes
+
+- 👷 Improve Dependabot and CI configuration (#1111, #1107, #1105, #1100, #1095, #1092)
+- 📌 Pin Symfony packages to ^7.4 to prevent unintended Symfony 8 upgrades (#1103)
+- 📝 Consolidate and update development documentation (#1076)
+- ♻️ Fix Makefile (#1074)
+- ♻️ Improve docker dovecot setup and mailcrypt integration (#1073)
+- ♻️ Refactor EmailAddress validator (#1071)
+- ♻️ AliasAdmin: Relax EmailAddress() constraint (#1070)
+- ♻️ Serve WKD keys directly from database instead of filesystem (#1067)
+- 🗃️ Rename database tables to remove virtual_ prefix (#1062)
+- ⬆️ Update dependencies (#1110, #1108, #1094, #1068)
+
+### Bug Fixes
+
+- 🐛 Allow composer-diff plugin in global Composer config (#1109)
+- 🐛 Fix misleading Prometheus exporter label for user count (#1081)
+- 🐛 Fix untranslated voucher-invalid flash message (#1069)
+
 ## 6.2.0 (2026.02.22)
 
 ### Features and Improvements
