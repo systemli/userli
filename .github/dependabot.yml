@@ -5,6 +5,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "⬆️"
+      include: "scope"
     groups:
       npm-dependencies:
         patterns:
@@ -14,6 +17,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "⬆️"
+      include: "scope"
     allow:
       - dependency-name: "endroid/qr-code"
       - dependency-name: "ircmaxell/password-compat"
@@ -33,3 +39,6 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    commit-message:
+      prefix: "⬆️"
+      include: "scope"
