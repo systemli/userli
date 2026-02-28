@@ -6,7 +6,7 @@ updates:
     schedule:
       interval: "weekly"
     commit-message:
-      prefix: "⬆️"
+      prefix: "⬆️ "
       include: "scope"
     groups:
       npm-dependencies:
@@ -18,8 +18,11 @@ updates:
     schedule:
       interval: "weekly"
     commit-message:
-      prefix: "⬆️"
+      prefix: "⬆️ "
       include: "scope"
+    ignore:
+      - dependency-name: "symfony/*"
+        versions: [">= 8.0"]
     groups:
       symfony:
         patterns:
@@ -56,7 +59,7 @@ updates:
     schedule:
       interval: "weekly"
     commit-message:
-      prefix: "⬆️"
+      prefix: "⬆️ "
       include: "scope"
     groups:
       github-actions:
