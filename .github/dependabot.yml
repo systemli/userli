@@ -23,6 +23,8 @@ updates:
     ignore:
       - dependency-name: "symfony/*"
         versions: [">= 8.0"]
+      - dependency-name: "symfony/monolog-bundle"
+        versions: [">= 4.0"]
     groups:
       symfony:
         patterns:
