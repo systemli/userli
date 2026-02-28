@@ -56,7 +56,7 @@ final readonly class UserResetService
         $user->setTotpBackupCodes([]);
 
         // Clear sensitive plaintext data from User object
-        $user->eraseCredentials();
+        $user->clearSensitiveData();
 
         $this->manager->flush();
 

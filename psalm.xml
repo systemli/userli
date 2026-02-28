@@ -43,5 +43,17 @@
                 <directory name="src/Entity" />
             </errorLevel>
         </ClassMustBeFinal>
+
+        <!--
+            MissingOverrideAttribute - eraseCredentials() deprecation
+            ==========================================================
+            UserInterface::eraseCredentials() was removed in Symfony 8.0, so
+            #[Override] cannot be used without breaking forward-compatibility.
+        -->
+        <MissingOverrideAttribute>
+            <errorLevel type="suppress">
+                <file name="src/Entity/User.php" />
+            </errorLevel>
+        </MissingOverrideAttribute>
     </issueHandlers>
 </psalm>

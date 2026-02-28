@@ -112,7 +112,7 @@ final readonly class RecoveryHandler
         $user->setTotpBackupCodes([]);
 
         // Clear sensitive plaintext data from User object
-        $user->eraseCredentials();
+        $user->clearSensitiveData();
         sodium_memzero($mailCryptPrivateKey);
 
         $this->manager->flush();

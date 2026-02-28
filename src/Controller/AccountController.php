@@ -112,7 +112,7 @@ final class AccountController extends AbstractController
             }
 
             $user->setPasswordChangeRequired(false);
-            $user->eraseCredentials();
+            $user->clearSensitiveData();
 
             $this->manager->flush();
 
@@ -215,7 +215,7 @@ final class AccountController extends AbstractController
             }
 
             // Clear sensitive plaintext data from User object
-            $user->eraseCredentials();
+            $user->clearSensitiveData();
 
             return $this->redirectToRoute('account_recovery_token_confirm', ['recovery_token' => $recoveryToken]);
         }

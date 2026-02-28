@@ -29,6 +29,7 @@ use App\Traits\TwofactorBackupCodeTrait;
 use App\Traits\TwofactorTrait;
 use App\Traits\UpdatedTimeTrait;
 use DateTimeImmutable;
+use Deprecated;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -144,10 +145,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         return null;
     }
 
-    #[Override]
+    #[Deprecated(since: 'symfony/security-core 7.3')]
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
+    }
+
+    /**
+     * Removes sensitive plaintext data from the user object.
+     */
+    public function clearSensitiveData(): void
+    {
         $this->erasePlainMailCryptPrivateKey();
         $this->erasePlainRecoveryToken();
     }
