@@ -19,21 +19,21 @@ class OpenPgpKey
     use IdTrait;
     use OpenPgpKeyTrait;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'openPgpKeys')]
-    #[ORM\JoinColumn(onDelete: 'CASCADE')]
-    private ?User $user = null;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'uploadedKeys')]
+    #[ORM\JoinColumn(name: 'uploader_id', onDelete: 'SET NULL')]
+    private ?User $uploader = null;
 
     #[ORM\Column(length: 32, nullable: true)]
     private ?string $wkdHash = null;
 
-    public function getUser(): ?User
+    public function getUploader(): ?User
     {
-        return $this->user;
+        return $this->uploader;
     }
 
-    public function setUser(?User $user): void
+    public function setUploader(?User $uploader): void
     {
-        $this->user = $user;
+        $this->uploader = $uploader;
     }
 
     public function getWkdHash(): ?string

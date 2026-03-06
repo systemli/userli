@@ -6,9 +6,26 @@ namespace App\Form\Model;
 
 final class OpenPgpKey
 {
+    private ?string $email = null;
+
     private ?string $keyFile = null;
 
     private ?string $keyText = null;
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
 
     public function getKeyFile(): ?string
     {

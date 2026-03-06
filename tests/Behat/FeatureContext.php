@@ -530,6 +530,22 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @When I set hidden field :fieldId to :value
+     *
+     * @throws Exception
+     */
+    public function iSetHiddenFieldTo(string $fieldId, string $value): void
+    {
+        $element = $this->getSession()->getPage()->find('css', sprintf('input[id="%s"]', $fieldId));
+
+        if (null === $element) {
+            throw new Exception(sprintf('Hidden field "%s" not found', $fieldId));
+        }
+
+        $element->setValue($value);
+    }
+
+    /**
      * @When /I set the placeholder "([^"]*)" from html element "([^"]*)"$/
      *
      * @throws Exception
@@ -548,22 +564,6 @@ class FeatureContext extends MinkContext
         }
 
         $this->setPlaceholder($name, $value);
-    }
-
-    /**
-     * @When /^I set the hidden field "([^"]*)" to "([^"]*)"$/
-     *
-     * @throws Exception
-     */
-    public function iSetTheHiddenFieldTo(string $fieldId, string $value): void
-    {
-        $element = $this->getSession()->getPage()->find('css', '#'.$fieldId);
-
-        if (null === $element) {
-            throw new Exception(sprintf('Hidden field "#%s" not found', $fieldId));
-        }
-
-        $element->setValue($value);
     }
 
     /**
@@ -761,11 +761,11 @@ class FeatureContext extends MinkContext
                     case 'keyData':
                         $openPgpKey->setKeyData($value);
                         break;
-                    case 'user':
+                    case 'uploader':
                         $user = $this->getUserRepository()->findByEmail($value);
 
                         if (null !== $user) {
-                            $openPgpKey->setUser($user);
+                            $openPgpKey->setUploader($user);
                         }
 
                         break;

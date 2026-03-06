@@ -13,7 +13,7 @@ Feature: Web Key Directory
             | email             | password |
             | alice@example.org | asdasd   |
         And the following OpenPgpKey exists:
-            | email             | user              | keyId | keyFingerprint | keyData    |
+            | email             | uploader          | keyId | keyFingerprint | keyData    |
             | alice@example.org | alice@example.org | ABC1  | AABBCCDD1234   | dGVzdGtleQ== |
 
     @wkd-lookup
