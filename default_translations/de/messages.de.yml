@@ -239,6 +239,10 @@ delete:
   openpgp:
     headline: OpenPGP-Schlüssel löschen
     lead: Mit der Bestätigung deines Passworts kannst du deinen OpenPGP-Schlüssel aus dem Web Key Directory löschen.
+  domain:
+    headline: Domain löschen
+    lead: "Bist du sicher, dass du <strong>%name%</strong> löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungen unwiderruflich gelöscht."
+    submit: Domain löschen
   cancel: Abbrechen
 recovery-token:
   headline: Wiederherstellungscode verwalten

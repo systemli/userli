@@ -7,14 +7,12 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Event\UserEvent;
-use App\Form\Model\Delete;
 use App\Form\Model\Password;
-use App\Form\Model\RecoveryToken;
+use App\Form\Model\PasswordConfirmation;
 use App\Form\Model\RecoveryTokenConfirm;
+use App\Form\PasswordConfirmationType;
 use App\Form\PasswordType;
 use App\Form\RecoveryTokenConfirmType;
-use App\Form\RecoveryTokenType;
-use App\Form\UserDeleteType;
 use App\Handler\DeleteHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
@@ -137,7 +135,11 @@ final class AccountController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $form = $this->createForm(UserDeleteType::class, new Delete());
+        $form = $this->createForm(
+            PasswordConfirmationType::class,
+            new PasswordConfirmation(),
+            ['submit_label' => 'form.delete-account'],
+        );
 
         return $this->render(
             'Account/delete.html.twig',
@@ -153,7 +155,11 @@ final class AccountController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $form = $this->createForm(UserDeleteType::class, new Delete());
+        $form = $this->createForm(
+            PasswordConfirmationType::class,
+            new PasswordConfirmation(),
+            ['submit_label' => 'form.delete-account'],
+        );
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -176,10 +182,16 @@ final class AccountController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $form = $this->createForm(RecoveryTokenType::class, new RecoveryToken(), [
-            'action' => $this->generateUrl('account_recovery_token_submit'),
-            'method' => 'post',
-        ]);
+        $form = $this->createForm(
+            PasswordConfirmationType::class,
+            new PasswordConfirmation(),
+            [
+                'action' => $this->generateUrl('account_recovery_token_submit'),
+                'method' => 'post',
+                'password_label' => 'form.password',
+                'submit_label' => 'form.generate-recovery-token',
+            ],
+        );
 
         return $this->render('Account/recovery_token.html.twig',
             [
@@ -194,8 +206,15 @@ final class AccountController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $data = new RecoveryToken();
-        $form = $this->createForm(RecoveryTokenType::class, $data);
+        $data = new PasswordConfirmation();
+        $form = $this->createForm(
+            PasswordConfirmationType::class,
+            $data,
+            [
+                'password_label' => 'form.password',
+                'submit_label' => 'form.generate-recovery-token',
+            ],
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

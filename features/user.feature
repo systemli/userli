@@ -92,7 +92,7 @@ Feature: User
     Then the response status code should be 200
 
     When I fill in the following:
-      | delete_alias_password | asdasd |
+      | password_confirmation_password | asdasd |
     And I press "Delete alias address"
 
     Then I should be on "/account/alias"
@@ -122,7 +122,7 @@ Feature: User
     When I am authenticated as "user@example.org"
     And I am on "/account/delete"
     And I fill in the following:
-      | delete_user_password | asdasd |
+      | password_confirmation_password | asdasd |
     And I press "Delete account"
 
     Then I should be on "/"
@@ -174,7 +174,7 @@ Feature: User
     When I am authenticated as "user@example.org"
     And I am on "/account/recovery-token"
     And I fill in the following:
-      | recovery_token_password | asdasd |
+      | password_confirmation_password | asdasd |
     And I press "Create new recovery token"
 
     Then I should see text matching "Please copy and securely store this recovery token"
@@ -188,7 +188,7 @@ Feature: User
     When I am authenticated as "user@example.org"
     And I am on "/account/twofactor"
     And I fill in the following:
-      | twofactor_password | wrong-password |
+      | password_confirmation_password | wrong-password |
     And I press "Set up"
 
     Then I should be on "/account/twofactor"
@@ -199,7 +199,7 @@ Feature: User
     When I am authenticated as "user@example.org"
     And I am on "/account/twofactor"
     And I fill in the following:
-      | twofactor_password | asdasd |
+      | password_confirmation_password | asdasd |
     And I press "Set up"
 
     Then I should be on "/account/twofactor/confirm"

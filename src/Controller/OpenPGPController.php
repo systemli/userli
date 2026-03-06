@@ -8,10 +8,10 @@ use App\Entity\User;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
-use App\Form\Model\Delete;
 use App\Form\Model\OpenPgpKey as OpenPgpKeyModel;
-use App\Form\OpenPgpDeleteType;
+use App\Form\Model\PasswordConfirmation;
 use App\Form\OpenPgpKeyType;
+use App\Form\PasswordConfirmationType;
 use App\Handler\WkdHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -97,7 +97,11 @@ final class OpenPGPController extends AbstractController
     #[Route(path: '/account/openpgp/delete', name: 'openpgp_delete', methods: ['GET'])]
     public function delete(): RedirectResponse|Response
     {
-        $form = $this->createForm(OpenPgpDeleteType::class, new Delete());
+        $form = $this->createForm(
+            PasswordConfirmationType::class,
+            new PasswordConfirmation(),
+            ['submit_label' => 'openpgp-delete'],
+        );
 
         return $this->render(
             'Account/openpgp_delete.html.twig',
@@ -111,7 +115,11 @@ final class OpenPGPController extends AbstractController
     #[Route(path: '/account/openpgp/delete', name: 'openpgp_delete_submit', methods: ['POST'])]
     public function deleteSubmit(Request $request): RedirectResponse
     {
-        $form = $this->createForm(OpenPgpDeleteType::class, new Delete());
+        $form = $this->createForm(
+            PasswordConfirmationType::class,
+            new PasswordConfirmation(),
+            ['submit_label' => 'openpgp-delete'],
+        );
         $form->handleRequest($request);
 
         if ($form->isValid()) {

@@ -8,10 +8,11 @@ use App\Entity\Domain;
 use App\Entity\User;
 use App\Exception\ValidationException;
 use App\Form\DomainType;
+use App\Form\Model\PasswordConfirmation;
+use App\Form\PasswordConfirmationType;
 use App\Service\DomainManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -81,13 +82,9 @@ final class DomainController extends AbstractController
         ]);
     }
 
-    #[Route('/settings/domains/delete/{id}', name: 'settings_domain_delete', methods: ['POST'])]
-    public function delete(#[MapEntity] Domain $domain, Request $request): RedirectResponse
+    #[Route('/settings/domains/delete/{id}', name: 'settings_domain_delete', methods: ['GET'])]
+    public function delete(#[MapEntity] Domain $domain): Response
     {
-        if (!$this->isCsrfTokenValid('delete_domain_'.$domain->getId(), $request->request->get('_token'))) {
-            return $this->redirectToRoute('settings_domain_index');
-        }
-
         $user = $this->getUser();
         if ($user instanceof User && $user->getDomain() === $domain) {
             $this->addFlash('error', 'settings.domain.delete.error.own_domain');
@@ -95,9 +92,43 @@ final class DomainController extends AbstractController
             return $this->redirectToRoute('settings_domain_index');
         }
 
-        $this->manager->delete($domain);
-        $this->addFlash('success', 'settings.domain.delete.success');
+        $form = $this->createForm(PasswordConfirmationType::class, new PasswordConfirmation(), [
+            'action' => $this->generateUrl('settings_domain_delete_post', ['id' => $domain->getId()]),
+            'method' => 'POST',
+            'submit_label' => 'delete.domain.submit',
+        ]);
 
-        return $this->redirectToRoute('settings_domain_index');
+        return $this->render('Settings/Domain/delete.html.twig', [
+            'form' => $form,
+            'domain' => $domain,
+        ]);
+    }
+
+    #[Route('/settings/domains/delete/{id}', name: 'settings_domain_delete_post', methods: ['POST'])]
+    public function deleteSubmit(#[MapEntity] Domain $domain, Request $request): Response
+    {
+        $user = $this->getUser();
+        if ($user instanceof User && $user->getDomain() === $domain) {
+            $this->addFlash('error', 'settings.domain.delete.error.own_domain');
+
+            return $this->redirectToRoute('settings_domain_index');
+        }
+
+        $form = $this->createForm(PasswordConfirmationType::class, new PasswordConfirmation(), [
+            'submit_label' => 'delete.domain.submit',
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->manager->delete($domain);
+            $this->addFlash('success', 'settings.domain.delete.success');
+
+            return $this->redirectToRoute('settings_domain_index');
+        }
+
+        return $this->render('Settings/Domain/delete.html.twig', [
+            'form' => $form,
+            'domain' => $domain,
+        ]);
     }
 }

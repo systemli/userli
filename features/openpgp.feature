@@ -342,7 +342,7 @@ Feature: OpenPGP
     And I press "Publish OpenPGP key"
     And I am on "/account/openpgp/delete"
     And I fill in the following:
-      | delete_openpgp_password  | asdasd  |
+      | password_confirmation_password  | asdasd  |
     And I press "Delete OpenPGP key"
 
     Then I should be on "/account/openpgp"

@@ -7,10 +7,10 @@ namespace App\Controller;
 use App\Entity\Alias;
 use App\Entity\User;
 use App\Exception\ValidationException;
-use App\Form\AliasDeleteType;
 use App\Form\CustomAliasCreateType;
 use App\Form\Model\AliasCreate;
-use App\Form\Model\Delete;
+use App\Form\Model\PasswordConfirmation;
+use App\Form\PasswordConfirmationType;
 use App\Form\RandomAliasCreateType;
 use App\Handler\AliasHandler;
 use App\Handler\DeleteHandler;
@@ -148,12 +148,13 @@ final class AliasController extends AbstractController
         Alias $alias): Response
     {
         $form = $this->createForm(
-            AliasDeleteType::class,
-            new Delete(),
+            PasswordConfirmationType::class,
+            new PasswordConfirmation(),
             [
                 'action' => $this->generateUrl('alias_delete_submit', ['id' => $alias->getId()]),
                 'method' => 'post',
-            ]
+                'submit_label' => 'form.delete-alias',
+            ],
         );
 
         return $this->render(
@@ -173,7 +174,11 @@ final class AliasController extends AbstractController
         #[MapEntity(class: Alias::class, expr: 'repository.findOneBy({id: id, deleted: false})')]
         Alias $alias): RedirectResponse|Response
     {
-        $form = $this->createForm(AliasDeleteType::class, new Delete());
+        $form = $this->createForm(
+            PasswordConfirmationType::class,
+            new PasswordConfirmation(),
+            ['submit_label' => 'form.delete-alias'],
+        );
         $form->handleRequest($request);
 
         if ($form->isValid()) {
