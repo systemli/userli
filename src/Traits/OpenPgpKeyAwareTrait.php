@@ -11,43 +11,43 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait OpenPgpKeyAwareTrait
 {
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: OpenPgpKey::class)]
-    private Collection $openPgpKeys;
+    #[ORM\OneToMany(mappedBy: 'uploader', targetEntity: OpenPgpKey::class)]
+    private Collection $uploadedKeys;
 
     public function __construct()
     {
-        $this->openPgpKeys = new ArrayCollection();
+        $this->uploadedKeys = new ArrayCollection();
     }
 
-    public function getOpenPgpKeys(): Collection
+    public function getUploadedKeys(): Collection
     {
-        return $this->openPgpKeys;
+        return $this->uploadedKeys;
     }
 
-    public function setOpenPgpKeys(Collection $openPgpKeys): void
+    public function setUploadedKeys(Collection $uploadedKeys): void
     {
-        $this->openPgpKeys = $openPgpKeys;
+        $this->uploadedKeys = $uploadedKeys;
     }
 
-    public function addOpenPgpKey(OpenPgpKey $openPgpKey): void
+    public function addUploadedKey(OpenPgpKey $openPgpKey): void
     {
-        if (!$this->openPgpKeys->contains($openPgpKey)) {
-            $this->openPgpKeys->add($openPgpKey);
-            $openPgpKey->setUser($this);
+        if (!$this->uploadedKeys->contains($openPgpKey)) {
+            $this->uploadedKeys->add($openPgpKey);
+            $openPgpKey->setUploader($this);
         }
     }
 
-    public function removeOpenPgpKey(OpenPgpKey $openPgpKey): void
+    public function removeUploadedKey(OpenPgpKey $openPgpKey): void
     {
-        if ($this->openPgpKeys->removeElement($openPgpKey)) {
-            if ($openPgpKey->getUser() === $this) {
-                $openPgpKey->setUser(null);
+        if ($this->uploadedKeys->removeElement($openPgpKey)) {
+            if ($openPgpKey->getUploader() === $this) {
+                $openPgpKey->setUploader(null);
             }
         }
     }
 
-    public function hasOpenPgpKeys(): bool
+    public function hasUploadedKeys(): bool
     {
-        return !$this->openPgpKeys->isEmpty();
+        return !$this->uploadedKeys->isEmpty();
     }
 }

@@ -238,7 +238,7 @@ delete:
     lead: Mit der Bestätigung deines Passworts kannst du dein Konto unwiderruflich löschen.
   openpgp:
     headline: OpenPGP-Schlüssel löschen
-    lead: Mit der Bestätigung deines Passworts kannst du deinen OpenPGP-Schlüssel aus dem Web Key Directory löschen.
+    lead: Mit der Bestätigung deines Passworts kannst du den OpenPGP-Schlüssel für <strong>%email%</strong> aus dem Web Key Directory löschen.
   domain:
     headline: Domain löschen
     lead: "Bist du sicher, dass du <strong>%name%</strong> löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungen unwiderruflich gelöscht."
@@ -273,6 +273,7 @@ flashes:
   openpgp-key-upload-error-no-openpgp: Die hochgadene Datei enthält keine OpenPGP-Schlüssel.
   openpgp-key-upload-error-no-keys: Die hochgeladene Datei enthält keine Schlüssel für deine E-Mail-Adresse.
   openpgp-key-upload-error-multiple-keys: Die hochgeladene Datei enhält mehr als einen Schlüssel für deine E-Mail-Adresse. Bitte lade nur einen Schlüssel hoch.
+  openpgp-key-unauthorized: Du bist nicht berechtigt, Schlüssel für diese Adresse zu verwalten.
 flash_batch_remove_vouchers_success: Nicht eingelöste Einladungscodes gelöscht.
 error:
   title: Oops, es ist ein Fehler passiert.
@@ -373,7 +374,7 @@ init_settings:
   flash:
     configured_successfully: Die Einstellungen wurden erfolgreich konfiguriert. Deine Userli-Installation ist jetzt einsatzbereit!
 openpgp:
-  delete-button: OpenPGP-Schlüssel löschen
+  delete-button: Löschen
   information: Information
   information-details: >
     Hier kannst du deinen OpenPGP-Schlüssel hochladen, damit er in unserem <a target="_blank" href="https://gnupg.org/faq/wkd.html">Web Key
@@ -383,10 +384,16 @@ openpgp:
   fingerprint-label: "Fingerprint:"
   expiretime-label: "Ablaufdatum:"
   no-expiration: Kein Ablaufdatum (unbegrenzt gültig)
-  manage-subtitle: Verwalte deinen OpenPGP-Schlüssel
+  manage-subtitle: Verwalte deine OpenPGP-Schlüssel
   current-key: Aktueller OpenPGP-Schlüssel
-  no-key-uploaded: Noch kein OpenPGP-Schlüssel hochgeladen
+  no-key-uploaded: Noch kein Schlüssel hochgeladen
   upload-prompt: Lade einen Schlüssel über das Formular rechts hoch
+  your-email: Deine E-Mail
+  alias-addresses: Alias-Adressen
+  upload-key: Hochladen
+  update-key: Ersetzen
+  upload-modal-title: Schlüssel hochladen
+  upload-for: "für"
 
 index.alias-motivation: Erstelle personalisierte E-Mail-Aliasse, um deinen Posteingang besser zu organisieren und deine Privatsphäre zu schützen.
 
@@ -662,7 +669,7 @@ settings:
       success: Reservierter Name wurde erfolgreich erstellt.
       error: Reservierter Name konnte nicht erstellt werden.
     delete:
-      confirm: "Möchtest du den reservierten Namen \"%name%\" wirklich löschen?"
+      confirm: 'Möchtest du den reservierten Namen "%name%" wirklich löschen?'
       success: Reservierter Name wurde erfolgreich gelöscht.
     actions:
       delete: Löschen
@@ -780,7 +787,7 @@ settings:
       show: Anzeigen
       delete: Löschen
     delete:
-      confirm: "Bist du sicher, dass du die Domain \"%name%\" löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungen unwiderruflich gelöscht."
+      confirm: 'Bist du sicher, dass du die Domain "%name%" löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungen unwiderruflich gelöscht.'
       success: Domain und alle zugehörigen Daten wurden erfolgreich gelöscht.
       error:
         own_domain: Du kannst deine eigene Domain nicht löschen.

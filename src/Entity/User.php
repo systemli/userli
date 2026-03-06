@@ -94,7 +94,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         $this->passwordVersion = self::CURRENT_PASSWORD_VERSION;
         $this->passwordChangeRequired = false;
         $this->creationTime = new DateTimeImmutable();
-        $this->openPgpKeys = new ArrayCollection();
+        $this->uploadedKeys = new ArrayCollection();
     }
 
     #[Override]

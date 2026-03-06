@@ -243,9 +243,10 @@ Feature: OpenPGP
   Scenario: Upload both OpenPGP keys
     When I am authenticated as "alice@example.org"
     And I am on "/account/openpgp"
+    And I set hidden field "upload_openpgp_key_email" to "alice@example.org"
     And I fill in the following:
-      | upload_openpgp_key_keyFile       | /tmp/invalid.asc |
-      | upload_openpgp_key_keyText       | text             |
+      | upload_openpgp_key_keyFile       | /tmp/invalid.asc  |
+      | upload_openpgp_key_keyText       | text              |
     And I press "Publish OpenPGP key"
 
     Then I should be on "/account/openpgp"
@@ -256,9 +257,10 @@ Feature: OpenPGP
   Scenario: Upload invalid file
     When I am authenticated as "alice@example.org"
     And I am on "/account/openpgp"
+    And I set hidden field "upload_openpgp_key_email" to "alice@example.org"
     And I fill in the following:
-      | upload_openpgp_key_keyFile       | /tmp/invalid.asc |
-      | upload_openpgp_key_keyText       |                  |
+      | upload_openpgp_key_keyFile       | /tmp/invalid.asc  |
+      | upload_openpgp_key_keyText       |                   |
     And I press "Publish OpenPGP key"
 
     Then I should be on "/account/openpgp"
@@ -269,9 +271,10 @@ Feature: OpenPGP
   Scenario: Upload invalid text
     When I am authenticated as "alice@example.org"
     And I am on "/account/openpgp"
+    And I set hidden field "upload_openpgp_key_email" to "alice@example.org"
     And I fill in the following:
-      | upload_openpgp_key_keyFile       |              |
-      | upload_openpgp_key_keyText       | text         |
+      | upload_openpgp_key_keyFile       |                   |
+      | upload_openpgp_key_keyText       | text              |
     And I press "Publish OpenPGP key"
 
     Then I should be on "/account/openpgp"
@@ -282,9 +285,10 @@ Feature: OpenPGP
   Scenario: Upload file with wrong key
     When I am authenticated as "alice@example.org"
     And I am on "/account/openpgp"
+    And I set hidden field "upload_openpgp_key_email" to "alice@example.org"
     And I fill in the following:
-      | upload_openpgp_key_keyFile       | /tmp/james.asc  |
-      | upload_openpgp_key_keyText       |                 |
+      | upload_openpgp_key_keyFile       | /tmp/james.asc    |
+      | upload_openpgp_key_keyText       |                   |
     And I press "Publish OpenPGP key"
 
     Then I should be on "/account/openpgp"
@@ -295,6 +299,7 @@ Feature: OpenPGP
   Scenario: Upload file with two matching keys
     When I am authenticated as "alice@example.org"
     And I am on "/account/openpgp"
+    And I set hidden field "upload_openpgp_key_email" to "alice@example.org"
     And I fill in the following:
       | upload_openpgp_key_keyFile       | /tmp/alice_two_keys.asc  |
       | upload_openpgp_key_keyText       |                          |
@@ -308,9 +313,10 @@ Feature: OpenPGP
   Scenario: Upload file with matching key
     When I am authenticated as "alice@example.org"
     And I am on "/account/openpgp"
+    And I set hidden field "upload_openpgp_key_email" to "alice@example.org"
     And I fill in the following:
-      | upload_openpgp_key_keyFile       | /tmp/alice1.asc  |
-      | upload_openpgp_key_keyText       |                  |
+      | upload_openpgp_key_keyFile       | /tmp/alice1.asc   |
+      | upload_openpgp_key_keyText       |                   |
     And I press "Publish OpenPGP key"
 
     Then I should be on "/account/openpgp"
@@ -322,9 +328,10 @@ Feature: OpenPGP
   Scenario: Upload file with another matching key
     When I am authenticated as "alice@example.org"
     And I am on "/account/openpgp"
+    And I set hidden field "upload_openpgp_key_email" to "alice@example.org"
     And I fill in the following:
-      | upload_openpgp_key_keyFile       | /tmp/alice2.asc  |
-      | upload_openpgp_key_keyText       |                  |
+      | upload_openpgp_key_keyFile       | /tmp/alice2.asc   |
+      | upload_openpgp_key_keyText       |                   |
     And I press "Publish OpenPGP key"
 
     Then I should be on "/account/openpgp"
@@ -336,11 +343,12 @@ Feature: OpenPGP
   Scenario: Upload and delete key
     When I am authenticated as "alice@example.org"
     And I am on "/account/openpgp"
+    And I set hidden field "upload_openpgp_key_email" to "alice@example.org"
     And I fill in the following:
-      | upload_openpgp_key_keyFile       | /tmp/alice2.asc  |
-      | upload_openpgp_key_keyText       |                  |
+      | upload_openpgp_key_keyFile       | /tmp/alice2.asc   |
+      | upload_openpgp_key_keyText       |                   |
     And I press "Publish OpenPGP key"
-    And I am on "/account/openpgp/delete"
+    And I am on "/account/openpgp/delete/alice@example.org"
     And I fill in the following:
       | password_confirmation_password  | asdasd  |
     And I press "Delete OpenPGP key"
@@ -361,3 +369,43 @@ Feature: OpenPGP
     And I am on "/account/openpgp"
     Then the response status code should be 200
     And I should see "OpenPGP"
+
+  @upload-openpgp-alias-key
+  Scenario: Upload key for alias address
+    Given the following Alias exists:
+      | user_id | source              | destination         | deleted | random |
+      | 1       | james@example.org   | alice@example.org   | 0       | 0      |
+    When I am authenticated as "alice@example.org"
+    And I am on "/account/openpgp"
+    And I set hidden field "upload_openpgp_key_email" to "james@example.org"
+    And I fill in the following:
+      | upload_openpgp_key_keyFile       | /tmp/james.asc    |
+      | upload_openpgp_key_keyText       |                   |
+    And I press "Publish OpenPGP key"
+
+    Then I should be on "/account/openpgp"
+    And I should see text matching "Your OpenPGP key got uploaded."
+    And the response status code should be 200
+
+  @upload-openpgp-unauthorized
+  Scenario: Upload key for unauthorized email is rejected
+    When I am authenticated as "alice@example.org"
+    And I am on "/account/openpgp"
+    And I set hidden field "upload_openpgp_key_email" to "bob@example.org"
+    And I fill in the following:
+      | upload_openpgp_key_keyFile       | /tmp/alice1.asc   |
+      | upload_openpgp_key_keyText       |                   |
+    And I press "Publish OpenPGP key"
+
+    Then I should be on "/account/openpgp"
+    And I should see text matching "You are not authorized to manage this identity."
+    And the response status code should be 200
+
+  @delete-openpgp-unauthorized
+  Scenario: Delete key for unauthorized email is rejected
+    When I am authenticated as "alice@example.org"
+    And I am on "/account/openpgp/delete/bob@example.org"
+
+    Then I should be on "/account/openpgp"
+    And I should see text matching "You are not authorized to manage this identity."
+    And the response status code should be 200

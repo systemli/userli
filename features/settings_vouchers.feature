@@ -49,8 +49,8 @@ Feature: Settings (Vouchers)
     Then the response status code should be 200
 
     When I fill in "voucher_code" with "abc123"
-    And I set the hidden field "voucher_user" to "1"
-    And I set the hidden field "voucher_domain" to "1"
+    And I set hidden field "voucher_user" to "1"
+    And I set hidden field "voucher_domain" to "1"
     And I press "Create"
 
     Then I should see "Voucher has been created successfully"
@@ -62,8 +62,8 @@ Feature: Settings (Vouchers)
     When I am on "/settings/vouchers/create"
 
     When I fill in "voucher_code" with "ab"
-    And I set the hidden field "voucher_user" to "1"
-    And I set the hidden field "voucher_domain" to "1"
+    And I set hidden field "voucher_user" to "1"
+    And I set hidden field "voucher_domain" to "1"
     And I press "Create"
 
     Then the response status code should be 422
