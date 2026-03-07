@@ -1,5 +1,23 @@
 # Changelog
 
+## 6.4.0 (2026.03.08)
+
+### Features and Improvements
+
+- 💄 Improve responsive table layout in settings pages (#1124)
+- 💄 Redesign settings navigation for responsiveness and scalability (#1120)
+
+### Technical Changes
+
+- ♻️ Replace Sonata Alias admin with native settings view (#1125)
+- ♻️ Organize controllers into Account, Settings, and Api subdirectories (#1123)
+- ♻️ Replace Sonata Voucher admin with native settings view (#1122)
+- ♻️ Replace Sonata UserNotification admin with native settings view (#1121)
+- ♻️ Replace MAIL_CRYPT env variable with database-backed setting (#1119)
+- ♻️ Unify password confirmation forms and add password-confirmed domain deletion (#1116)
+- ⬆️ (deps): Bump svgo from 3.3.2 to 3.3.3 (#1115)
+- ⬆️ Update composer dependencies (#1112)
+
 ## 6.3.0 (2026.03.01)
 
 ### Features and Improvements
