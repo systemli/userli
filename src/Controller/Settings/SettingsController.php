@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Settings;
 
 use App\Form\SettingsType;
 use App\Service\SettingsService;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Settings;
 
 use App\Entity\Domain;
 use App\Entity\User;
@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class VoucherSettingsController extends AbstractController
+final class VoucherController extends AbstractController
 {
     public function __construct(
         private readonly VoucherManager $manager,

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Settings;
 
 use App\Message\PruneUserNotifications;
 use App\Message\PruneWebhookDeliveries;

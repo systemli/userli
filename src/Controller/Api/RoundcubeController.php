@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Api;
 
 use App\Dto\RoundcubeUserAliasesDto;
 use App\Entity\Alias;
