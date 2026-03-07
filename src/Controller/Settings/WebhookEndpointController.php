@@ -104,8 +104,12 @@ final class WebhookEndpointController extends AbstractController
     }
 
     #[Route('/settings/webhooks/delete/{id}', name: 'settings_webhook_endpoint_delete', methods: ['POST'])]
-    public function delete(#[MapEntity] WebhookEndpoint $endpoint): RedirectResponse
+    public function delete(#[MapEntity] WebhookEndpoint $endpoint, Request $request): RedirectResponse
     {
+        if (!$this->isCsrfTokenValid('delete_webhook_endpoint_'.$endpoint->getId(), $request->request->get('_token'))) {
+            return $this->redirectToRoute('settings_webhook_endpoint_index');
+        }
+
         $this->manager->delete($endpoint);
         $this->addFlash('success', 'settings.webhook.delete.success');
 
