@@ -129,7 +129,7 @@ class ReservedNameManagerTest extends TestCase
         $content = "Admin\nPOSTMASTER\nWebMaster\n";
         $tmpFile = $this->createTempFile($content);
 
-        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager = $this->createStub(EntityManagerInterface::class);
         $persistedNames = [];
         $entityManager->method('persist')->willReturnCallback(
             static function (ReservedName $reservedName) use (&$persistedNames): void {
@@ -167,7 +167,6 @@ class ReservedNameManagerTest extends TestCase
         $name3->setName('webmaster');
 
         $this->repository->method('findBy')
-            ->with([], ['name' => 'ASC'])
             ->willReturn([$name1, $name2, $name3]);
 
         $result = $this->manager->exportAsText();

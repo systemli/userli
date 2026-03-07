@@ -24,10 +24,8 @@ class DomainVoterTest extends TestCase
     protected static function getMethod($name): ReflectionMethod
     {
         $class = new ReflectionClass(DomainVoter::class);
-        $method = $class->getMethod($name);
-        $method->setAccessible(true);
 
-        return $method;
+        return $class->getMethod($name);
     }
 
     protected function setUp(): void

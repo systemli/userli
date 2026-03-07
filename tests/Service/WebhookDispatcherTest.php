@@ -31,7 +31,7 @@ class WebhookDispatcherTest extends TestCase
 
         $repo = $this->createStub(EntityRepository::class);
         $repo->method('getClassName')->willReturn(WebhookEndpoint::class);
-        $repo->method('findBy')->with(['enabled' => true])->willReturn([$endpointAll, $endpointFilteredMatch, $endpointFilteredSkip]);
+        $repo->method('findBy')->willReturn([$endpointAll, $endpointFilteredMatch, $endpointFilteredSkip]);
 
         $persisted = [];
         $em = $this->createMock(EntityManagerInterface::class);
@@ -92,7 +92,7 @@ class WebhookDispatcherTest extends TestCase
         $endpointDomainSkip->addDomain($otherDomain);
 
         $repo = $this->createStub(EntityRepository::class);
-        $repo->method('findBy')->with(['enabled' => true])->willReturn([$endpointDomainSkip]);
+        $repo->method('findBy')->willReturn([$endpointDomainSkip]);
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->method('getRepository')->with(WebhookEndpoint::class)->willReturn($repo);
@@ -118,7 +118,7 @@ class WebhookDispatcherTest extends TestCase
         $endpointDomainMatch->addDomain($domain);
 
         $repo = $this->createStub(EntityRepository::class);
-        $repo->method('findBy')->with(['enabled' => true])->willReturn([$endpointDomainMatch]);
+        $repo->method('findBy')->willReturn([$endpointDomainMatch]);
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->method('getRepository')->with(WebhookEndpoint::class)->willReturn($repo);
@@ -146,7 +146,7 @@ class WebhookDispatcherTest extends TestCase
         $endpointNoDomains = new WebhookEndpoint('https://example.test/a', 'secret-a');
 
         $repo = $this->createStub(EntityRepository::class);
-        $repo->method('findBy')->with(['enabled' => true])->willReturn([$endpointNoDomains]);
+        $repo->method('findBy')->willReturn([$endpointNoDomains]);
 
         $em = $this->createMock(EntityManagerInterface::class);
         $em->method('getRepository')->with(WebhookEndpoint::class)->willReturn($repo);

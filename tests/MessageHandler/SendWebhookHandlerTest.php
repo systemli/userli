@@ -32,7 +32,7 @@ class SendWebhookHandlerTest extends TestCase
         $id = (string) $delivery->getId();
 
         $repo = $this->createStub(EntityRepository::class);
-        $repo->method('find')->with($id)->willReturn($delivery);
+        $repo->method('find')->willReturn($delivery);
         $repo->method('getClassName')->willReturn(WebhookDelivery::class);
 
         $response = $this->createMock(ResponseInterface::class);
@@ -62,7 +62,7 @@ class SendWebhookHandlerTest extends TestCase
         $id = (string) $delivery->getId();
 
         $repo = $this->createStub(EntityRepository::class);
-        $repo->method('find')->with($id)->willReturn($delivery);
+        $repo->method('find')->willReturn($delivery);
         $repo->method('getClassName')->willReturn(WebhookDelivery::class);
 
         $http = $this->createMock(HttpClientInterface::class);

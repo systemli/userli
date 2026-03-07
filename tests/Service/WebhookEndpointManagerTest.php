@@ -18,10 +18,10 @@ class WebhookEndpointManagerTest extends TestCase
         $endpoints = [new WebhookEndpoint('https://example.org/hook', 'secret1')];
 
         $repository = $this->createStub(EntityRepository::class);
-        $repository->method('findBy')->with([], ['id' => 'ASC'])->willReturn($endpoints);
+        $repository->method('findBy')->willReturn($endpoints);
 
         $em = $this->createStub(EntityManagerInterface::class);
-        $em->method('getRepository')->with(WebhookEndpoint::class)->willReturn($repository);
+        $em->method('getRepository')->willReturn($repository);
 
         $manager = new WebhookEndpointManager($em);
 

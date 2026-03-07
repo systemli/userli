@@ -40,7 +40,6 @@ class ReportSuspiciousChildrenHandlerTest extends TestCase
 
         $voucherRepository = $this->createStub(VoucherRepository::class);
         $voucherRepository->method('getRedeemedVouchersByUser')
-            ->with($user)
             ->willReturn([$voucher1, $voucher2]);
 
         $em = $this->createStub(EntityManagerInterface::class);
@@ -79,7 +78,7 @@ class ReportSuspiciousChildrenHandlerTest extends TestCase
             ->willReturn(null);
 
         $em = $this->createStub(EntityManagerInterface::class);
-        $em->method('getRepository')->with(User::class)->willReturn($userRepository);
+        $em->method('getRepository')->willReturn($userRepository);
 
         $suspiciousChildrenHandler = $this->createMock(SuspiciousChildrenHandler::class);
         $suspiciousChildrenHandler->expects(self::never())

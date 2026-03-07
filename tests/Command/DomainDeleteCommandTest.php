@@ -21,7 +21,6 @@ class DomainDeleteCommandTest extends TestCase
 
         $repository = $this->createStub(DomainRepository::class);
         $repository->method('findByName')
-            ->with('example.org')
             ->willReturn($domain);
 
         $manager = $this->createMock(DomainManager::class);
@@ -49,7 +48,6 @@ class DomainDeleteCommandTest extends TestCase
 
         $repository = $this->createStub(DomainRepository::class);
         $repository->method('findByName')
-            ->with('example.org')
             ->willReturn($domain);
 
         $manager = $this->createMock(DomainManager::class);
@@ -77,7 +75,6 @@ class DomainDeleteCommandTest extends TestCase
     {
         $repository = $this->createStub(DomainRepository::class);
         $repository->method('findByName')
-            ->with('nonexistent.org')
             ->willReturn(null);
 
         $manager = $this->createStub(DomainManager::class);

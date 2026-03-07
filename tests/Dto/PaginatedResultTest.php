@@ -93,7 +93,7 @@ class PaginatedResultTest extends TestCase
 
     public function testFromSearchableRepositoryZeroTotalReturnsOneTotalPage(): void
     {
-        $repository = $this->createMock(SearchableRepositoryInterface::class);
+        $repository = $this->createStub(SearchableRepositoryInterface::class);
         $repository->method('countBySearch')->willReturn(0);
         $repository->method('findPaginatedBySearch')->willReturn([]);
 

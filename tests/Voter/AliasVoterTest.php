@@ -85,7 +85,6 @@ class AliasVoterTest extends TestCase
     {
         $ref = new ReflectionClass($voter);
         $method = $ref->getMethod('supports');
-        $method->setAccessible(true);
 
         return $method->invoke($voter, $attribute, $subject);
     }
@@ -108,7 +107,6 @@ class AliasVoterTest extends TestCase
     {
         $ref = new ReflectionClass($voter);
         $method = $ref->getMethod('voteOnAttribute');
-        $method->setAccessible(true);
 
         return $method->invoke($voter, $attribute, $subject, $token);
     }

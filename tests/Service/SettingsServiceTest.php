@@ -292,7 +292,7 @@ class SettingsServiceTest extends TestCase
         $entityManager->expects($this->never())
             ->method('persist');
 
-        $cache = $this->createMock(CacheInterface::class);
+        $cache = $this->createStub(CacheInterface::class);
 
         $settingsService = new SettingsService(
             $repository,
@@ -430,7 +430,6 @@ class SettingsServiceTest extends TestCase
 
         $reflection = new ReflectionClass($settingsService);
         $method = $reflection->getMethod('convertValueFromString');
-        $method->setAccessible(true);
 
         $result = $method->invoke($settingsService, 'test_setting', 'test_value');
 
@@ -455,7 +454,6 @@ class SettingsServiceTest extends TestCase
 
         $reflection = new ReflectionClass($settingsService);
         $method = $reflection->getMethod('convertValueFromString');
-        $method->setAccessible(true);
 
         $result = $method->invoke($settingsService, 'test_setting', '42');
 
@@ -481,7 +479,6 @@ class SettingsServiceTest extends TestCase
 
         $reflection = new ReflectionClass($settingsService);
         $method = $reflection->getMethod('convertValueFromString');
-        $method->setAccessible(true);
 
         $result = $method->invoke($settingsService, 'test_setting', '3.14');
 
@@ -507,7 +504,6 @@ class SettingsServiceTest extends TestCase
 
         $reflection = new ReflectionClass($settingsService);
         $method = $reflection->getMethod('convertValueFromString');
-        $method->setAccessible(true);
 
         $result = $method->invoke($settingsService, 'test_setting', '1');
 
@@ -532,7 +528,6 @@ class SettingsServiceTest extends TestCase
 
         $reflection = new ReflectionClass($settingsService);
         $method = $reflection->getMethod('convertValueFromString');
-        $method->setAccessible(true);
 
         $result = $method->invoke($settingsService, 'test_setting', '["a","b","c"]');
 
@@ -558,7 +553,6 @@ class SettingsServiceTest extends TestCase
 
         $reflection = new ReflectionClass($settingsService);
         $method = $reflection->getMethod('convertValueFromString');
-        $method->setAccessible(true);
 
         $result = $method->invoke($settingsService, 'test_setting', '');
 
@@ -580,7 +574,6 @@ class SettingsServiceTest extends TestCase
 
         $reflection = new ReflectionClass($settingsService);
         $method = $reflection->getMethod('convertValueFromString');
-        $method->setAccessible(true);
 
         $result = $method->invoke($settingsService, 'test_setting', null);
 
@@ -605,7 +598,6 @@ class SettingsServiceTest extends TestCase
 
         $reflection = new ReflectionClass($settingsService);
         $method = $reflection->getMethod('convertValueFromString');
-        $method->setAccessible(true);
 
         $result = $method->invoke($settingsService, 'test_setting', true);
 
@@ -631,7 +623,6 @@ class SettingsServiceTest extends TestCase
 
         $reflection = new ReflectionClass($settingsService);
         $method = $reflection->getMethod('convertValueFromString');
-        $method->setAccessible(true);
 
         $result = $method->invoke($settingsService, 'test_setting', $input);
 
@@ -656,7 +647,6 @@ class SettingsServiceTest extends TestCase
     {
         $reflection = new ReflectionClass($this->settingsService);
         $method = $reflection->getMethod('convertValueToString');
-        $method->setAccessible(true);
 
         // Test null
         $result = $method->invoke($this->settingsService, null);

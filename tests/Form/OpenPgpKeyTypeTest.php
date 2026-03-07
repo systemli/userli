@@ -42,7 +42,6 @@ class OpenPgpKeyTypeTest extends TestCase
             });
 
         $this->formBuilder->method('addEventSubscriber')
-            ->with($this->formType)
             ->willReturnSelf();
 
         $this->formType->buildForm($this->formBuilder, []);

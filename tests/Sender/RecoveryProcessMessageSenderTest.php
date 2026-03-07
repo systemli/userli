@@ -21,7 +21,7 @@ class RecoveryProcessMessageSenderTest extends TestCase
         $builder = $this->createMock(RecoveryProcessMessageBuilder::class);
         $builder->expects($this->once())
             ->method('buildBody')
-            ->with('en', 'user@example.org', $this->isType('string'))
+            ->with('en', 'user@example.org', $this->isString())
             ->willReturn('Recovery body');
         $builder->expects($this->once())
             ->method('buildSubject')
@@ -45,7 +45,7 @@ class RecoveryProcessMessageSenderTest extends TestCase
         $builder = $this->createMock(RecoveryProcessMessageBuilder::class);
         $builder->expects($this->once())
             ->method('buildBody')
-            ->with('de', 'user@example.org', $this->isType('string'))
+            ->with('de', 'user@example.org', $this->isString())
             ->willReturn('Wiederherstellung');
         $builder->expects($this->once())
             ->method('buildSubject')

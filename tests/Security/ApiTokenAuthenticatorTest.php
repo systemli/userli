@@ -307,7 +307,6 @@ class ApiTokenAuthenticatorTest extends TestCase
         // Use reflection to access private method
         $reflection = new ReflectionClass($this->authenticator);
         $method = $reflection->getMethod('extractToken');
-        $method->setAccessible(true);
 
         $result = $method->invoke($this->authenticator, $request);
 

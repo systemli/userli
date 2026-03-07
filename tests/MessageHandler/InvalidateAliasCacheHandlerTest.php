@@ -21,7 +21,6 @@ class InvalidateAliasCacheHandlerTest extends TestCase
 
         $aliasRepository = $this->createStub(AliasRepository::class);
         $aliasRepository->method('findDestinationsBySource')
-            ->with($source)
             ->willReturn($destinations);
 
         $expectedKeys = [
@@ -57,7 +56,6 @@ class InvalidateAliasCacheHandlerTest extends TestCase
 
         $aliasRepository = $this->createStub(AliasRepository::class);
         $aliasRepository->method('findDestinationsBySource')
-            ->with($source)
             ->willReturn([]);
 
         $expectedKeys = [

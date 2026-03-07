@@ -10,6 +10,7 @@ use App\Form\DomainAutocompleteType;
 use App\Form\UserAutocompleteType;
 use App\Form\VoucherType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -24,6 +25,7 @@ class VoucherTypeTest extends TypeTestCase
         $this->entityManager = $this->createStub(EntityManagerInterface::class);
         $this->urlGenerator = $this->createStub(UrlGeneratorInterface::class);
         $this->urlGenerator->method('generate')->willReturn('/settings/search');
+        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
         parent::setUp();
     }
 

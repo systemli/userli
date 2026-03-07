@@ -95,7 +95,6 @@ class VoucherCreateCommandTest extends TestCase
 
         $this->settingsService
             ->method('get')
-            ->with('app_url')
             ->willReturn($baseUrl);
 
         $this->router->method('generate')
@@ -149,7 +148,6 @@ class VoucherCreateCommandTest extends TestCase
 
         $this->settingsService
             ->method('get')
-            ->with('app_url')
             ->willReturn($baseUrl);
 
         $exception = $this->createStub(ValidationException::class);
@@ -318,12 +316,10 @@ class VoucherCreateCommandTest extends TestCase
             ->willReturn($user);
 
         $this->domainRepository->method('findByName')
-            ->with('other.org')
             ->willReturn($otherDomain);
 
         $this->settingsService
             ->method('get')
-            ->with('app_url')
             ->willReturn($baseUrl);
 
         $voucher = new Voucher($voucherCode);
@@ -358,7 +354,6 @@ class VoucherCreateCommandTest extends TestCase
             ->willReturn($user);
 
         $this->domainRepository->method('findByName')
-            ->with('unknown.org')
             ->willReturn(null);
 
         $application = new Application();

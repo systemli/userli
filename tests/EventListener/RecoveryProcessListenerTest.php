@@ -28,7 +28,7 @@ class RecoveryProcessListenerTest extends TestCase
         $user = new User('user@example.org');
 
         $session = $this->createStub(SessionInterface::class);
-        $session->method('get')->with('_locale', 'en')->willReturn('fr');
+        $session->method('get')->willReturn('fr');
 
         $request = $this->createStub(Request::class);
         $request->method('getSession')->willReturn($session);
@@ -51,7 +51,7 @@ class RecoveryProcessListenerTest extends TestCase
         $user = new User('user@example.org');
 
         $session = $this->createStub(SessionInterface::class);
-        $session->method('get')->with('_locale', 'en')->willReturn('en');
+        $session->method('get')->willReturn('en');
 
         $request = $this->createStub(Request::class);
         $request->method('getSession')->willReturn($session);
