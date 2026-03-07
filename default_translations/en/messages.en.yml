@@ -239,6 +239,10 @@ delete:
   openpgp:
     headline: Delete OpenPGP key
     lead: We need to verify your password to remove your OpenPGP key from the Web Key Directory.
+  domain:
+    headline: Delete domain
+    lead: "Are you sure you want to delete <strong>%name%</strong>? This will permanently delete all associated users, aliases, and vouchers."
+    submit: Delete domain
   cancel: Cancel
 recovery-token:
   headline: Manage recovery token

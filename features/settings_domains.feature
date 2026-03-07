@@ -85,7 +85,14 @@ Feature: Settings (Domains)
 
     Then I should see "delete.org"
 
-    When I press "Delete"
+    When I follow "Delete"
+
+    Then the response status code should be 200
+    And I should see "Delete domain"
+
+    When I fill in the following:
+      | password_confirmation_password | asdasd |
+    And I press "Delete domain"
 
     Then I should see "Domain and all associated data have been deleted successfully"
     And I should not see "delete.org"
@@ -97,6 +104,6 @@ Feature: Settings (Domains)
 
     Then I should see "example.org"
 
-    When I press "Delete"
+    When I follow "Delete"
 
     Then I should see "You cannot delete your own domain"

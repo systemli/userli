@@ -6,7 +6,7 @@ namespace App\Form\Model;
 
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
-final class Delete
+final class PasswordConfirmation
 {
     #[UserPassword(message: 'form.wrong-password')]
     private string $password;

@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\Model\Twofactor;
+use App\Form\Model\PasswordConfirmation;
 use App\Form\Model\TwofactorBackupConfirm;
 use App\Form\Model\TwofactorConfirm;
+use App\Form\PasswordConfirmationType;
 use App\Form\TwofactorBackupConfirmType;
 use App\Form\TwofactorConfirmType;
-use App\Form\TwofactorType;
 use App\Helper\TotpBackupCodeGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Endroid\QrCode\Builder\Builder;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -36,10 +35,16 @@ final class TwofactorController extends AbstractController
         $user = $this->getUser();
         assert($user instanceof User);
         if (!$user->isTotpAuthenticationEnabled()) {
-            $form = $this->createForm(TwofactorType::class, new Twofactor(), [
-                'action' => $this->generateUrl('account_twofactor_submit'),
-                'method' => 'POST',
-            ]);
+            $form = $this->createForm(
+                PasswordConfirmationType::class,
+                new PasswordConfirmation(),
+                [
+                    'action' => $this->generateUrl('account_twofactor_submit'),
+                    'method' => 'POST',
+                    'password_label' => 'form.password',
+                    'submit_label' => 'account.twofactor.setup-button',
+                ],
+            );
 
             return $this->render('Account/twofactor_enable.html.twig', [
                 'form' => $form,
@@ -47,11 +52,16 @@ final class TwofactorController extends AbstractController
             ]);
         }
 
-        $form = $this->createForm(TwofactorType::class, new Twofactor(), [
-            'action' => $this->generateUrl('account_twofactor_disable'),
-            'method' => 'POST',
-        ]);
-        $form->add('submit', SubmitType::class, ['label' => 'account.twofactor.disable-button']);
+        $form = $this->createForm(
+            PasswordConfirmationType::class,
+            new PasswordConfirmation(),
+            [
+                'action' => $this->generateUrl('account_twofactor_disable'),
+                'method' => 'POST',
+                'password_label' => 'form.password',
+                'submit_label' => 'account.twofactor.disable-button',
+            ],
+        );
 
         return $this->render('Account/twofactor_disable.html.twig', [
             'form' => $form,
@@ -64,7 +74,14 @@ final class TwofactorController extends AbstractController
     {
         $user = $this->getUser();
         assert($user instanceof User);
-        $form = $this->createForm(TwofactorType::class, new Twofactor());
+        $form = $this->createForm(
+            PasswordConfirmationType::class,
+            new PasswordConfirmation(),
+            [
+                'password_label' => 'form.password',
+                'submit_label' => 'account.twofactor.setup-button',
+            ],
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -174,7 +191,14 @@ final class TwofactorController extends AbstractController
     {
         $user = $this->getUser();
         assert($user instanceof User);
-        $form = $this->createForm(TwofactorType::class, new Twofactor());
+        $form = $this->createForm(
+            PasswordConfirmationType::class,
+            new PasswordConfirmation(),
+            [
+                'password_label' => 'form.password',
+                'submit_label' => 'account.twofactor.disable-button',
+            ],
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
