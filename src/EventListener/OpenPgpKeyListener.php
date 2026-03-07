@@ -21,7 +21,7 @@ final readonly class OpenPgpKeyListener implements EventSubscriberInterface
     ) {
     }
 
-    public function onAliasDeleted(AliasEvent $event): void
+    public function onCustomAliasDeleted(AliasEvent $event): void
     {
         $source = $event->getAlias()->getSource();
 
@@ -59,7 +59,7 @@ final readonly class OpenPgpKeyListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            AliasEvent::DELETED => 'onAliasDeleted',
+            AliasEvent::CUSTOM_DELETED => 'onCustomAliasDeleted',
             UserEvent::USER_DELETED => 'onUserDeleted',
         ];
     }

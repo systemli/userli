@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
-use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Event\AliasEvent;
 use App\Helper\RandomStringGenerator;
 use App\Repository\AliasRepository;
 use App\Sender\AliasCreatedMessageSender;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -23,8 +21,9 @@ final readonly class AliasListener implements EventSubscriberInterface
         private RequestStack $request,
         private AliasCreatedMessageSender $sender,
         private AliasRepository $aliasRepository,
-        #[Autowire("kernel.default_locale")] private string $defaultLocale,
-    ) {}
+        #[Autowire('kernel.default_locale')] private string $defaultLocale,
+    ) {
+    }
 
     /**
      * @throws Exception
@@ -34,10 +33,10 @@ final readonly class AliasListener implements EventSubscriberInterface
         $alias = $event->getAlias();
 
         if (null === ($user = $alias->getUser())) {
-            throw new Exception("User should not be null");
+            throw new Exception('User should not be null');
         }
 
-        $locale = $this->request->getSession()->get("_locale", $this->defaultLocale);
+        $locale = $this->request->getSession()->get('_locale', $this->defaultLocale);
         $this->sender->send($user, $alias, $locale);
     }
 
@@ -49,7 +48,7 @@ final readonly class AliasListener implements EventSubscriberInterface
             $localPart = RandomStringGenerator::generate(24, false);
             /** @var Domain $domain */
             $domain = $alias->getDomain();
-            $alias->setSource($localPart . "@" . $domain->getName());
+            $alias->setSource($localPart.'@'.$domain->getName());
         }
     }
 
@@ -57,8 +56,8 @@ final readonly class AliasListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            AliasEvent::CUSTOM_CREATED => "onCustomCreated",
-            AliasEvent::RANDOM_CREATED => "onRandomCreated",
+            AliasEvent::CUSTOM_CREATED => 'onCustomCreated',
+            AliasEvent::RANDOM_CREATED => 'onRandomCreated',
         ];
     }
 }

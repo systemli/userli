@@ -40,7 +40,9 @@ final readonly class DeleteHandler
 
         $this->manager->flush();
 
-        $this->eventDispatcher->dispatch(new AliasEvent($alias), AliasEvent::DELETED);
+        if (!$alias->isRandom()) {
+            $this->eventDispatcher->dispatch(new AliasEvent($alias), AliasEvent::CUSTOM_DELETED);
+        }
     }
 
     public function deleteUser(User $user): void
@@ -83,8 +85,10 @@ final readonly class DeleteHandler
 
         $this->manager->flush();
 
-        foreach ($aliases as $alias) {
-            $this->eventDispatcher->dispatch(new AliasEvent($alias), AliasEvent::DELETED);
+        // Fetch custom aliases
+        $customAliases = $this->manager->getRepository(Alias::class)->findByUser($user, false);
+        foreach ($customAliases as $customAlias) {
+            $this->eventDispatcher->dispatch(new AliasEvent($customAlias), AliasEvent::CUSTOM_DELETED);
         }
 
         $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_DELETED);
