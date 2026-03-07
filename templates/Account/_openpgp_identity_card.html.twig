@@ -1,0 +1,78 @@
+{#
+    Renders a single identity card for the OpenPGP key management page.
+
+    Variables:
+        identity.email  – The email address
+        identity.type   – 'primary' or 'alias'
+        identity.key    – OpenPgpKey entity or null
+#}
+<div class="rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
+    {# Header #}
+    <div class="bg-gray-50 dark:bg-gray-700/50 px-5 py-3 border-b border-gray-200 dark:border-gray-700">
+        <p class="text-sm font-medium font-mono text-gray-900 dark:text-gray-100 truncate">
+            {{ identity.email }}
+        </p>
+    </div>
+
+    {# Body #}
+    <div class="bg-white dark:bg-gray-800 px-4 py-4 sm:px-5">
+        {% if identity.key %}
+            <div class="flex items-center justify-between gap-4">
+                <dl class="space-y-1 text-xs min-w-0">
+                    <div class="flex">
+                        <dt class="w-20 flex-shrink-0 text-right leading-5 text-gray-500 dark:text-gray-400">{{ "openpgp.keyid-label"|trans }}</dt>
+                        <dd class="ml-2 leading-5 font-mono text-gray-900 dark:text-gray-100">{{ identity.key.keyId }}</dd>
+                    </div>
+                    <div class="flex">
+                        <dt class="w-20 flex-shrink-0 text-right leading-5 text-gray-500 dark:text-gray-400">{{ "openpgp.fingerprint-label"|trans }}</dt>
+                        <dd class="ml-2 leading-5 font-mono text-gray-900 dark:text-gray-100 break-all">{{ identity.key.keyFingerprint }}</dd>
+                    </div>
+                    <div class="flex">
+                        <dt class="w-20 flex-shrink-0 text-right leading-5 text-gray-500 dark:text-gray-400">{{ "openpgp.expiretime-label"|trans }}</dt>
+                        <dd class="ml-2 leading-5 text-gray-900 dark:text-gray-100">
+                            {% if identity.key.keyExpireTime %}
+                                {{ identity.key.keyExpireTime|date("d.m.Y") }}
+                            {% else %}
+                                {{ "openpgp.no-expiration"|trans }}
+                            {% endif %}
+                        </dd>
+                    </div>
+                </dl>
+
+                <div class="flex items-center gap-2 flex-shrink-0">
+                    <button type="button"
+                            data-action="modal#open"
+                            data-modal-email-param="{{ identity.email }}"
+                            class="inline-flex items-center justify-center p-2 sm:px-3.5 sm:py-2 text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800
+                                bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white focus:ring-blue-500"
+                            title="{{ "openpgp.update-key"|trans }}">
+                        {{ ux_icon('heroicons:cloud-arrow-up', {'class': 'w-4 h-4 sm:mr-1.5'}) }}
+                        <span class="hidden sm:inline">{{ "openpgp.update-key"|trans }}</span>
+                    </button>
+
+                    <a href="{{ path('openpgp_delete', {email: identity.email}) }}"
+                       class="inline-flex items-center justify-center p-2 sm:px-3.5 sm:py-2 text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800
+                           bg-red-600 dark:bg-red-500 hover:bg-red-700 dark:hover:bg-red-600 text-white focus:ring-red-500"
+                       title="{{ "openpgp.delete-button"|trans }}">
+                        {{ ux_icon('heroicons:trash', {'class': 'w-4 h-4 sm:mr-1.5'}) }}
+                        <span class="hidden sm:inline">{{ "openpgp.delete-button"|trans }}</span>
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <div class="flex items-center justify-between gap-4">
+                <p class="text-xs text-gray-400 dark:text-gray-500">{{ "openpgp.no-key-uploaded"|trans }}</p>
+
+                <button type="button"
+                        data-action="modal#open"
+                        data-modal-email-param="{{ identity.email }}"
+                        class="inline-flex items-center justify-center p-2 sm:px-3.5 sm:py-2 text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800
+                            bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white focus:ring-blue-500 flex-shrink-0"
+                        title="{{ "openpgp.upload-key"|trans }}">
+                    {{ ux_icon('heroicons:cloud-arrow-up', {'class': 'w-4 h-4 sm:mr-1.5'}) }}
+                    <span class="hidden sm:inline">{{ "openpgp.upload-key"|trans }}</span>
+                </button>
+            </div>
+        {% endif %}
+    </div>
+</div>

@@ -8,8 +8,9 @@ use App\Entity\Alias;
 use App\Entity\User;
 use App\Entity\UserNotification;
 use App\Entity\Voucher;
+use App\Event\AliasEvent;
+use App\Event\UserEvent;
 use App\Handler\DeleteHandler;
-use App\Handler\WkdHandler;
 use App\Helper\PasswordUpdater;
 use App\Repository\AliasRepository;
 use App\Repository\UserNotificationRepository;
@@ -21,8 +22,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 
 class DeleteHandlerTest extends TestCase
 {
-    private EntityManagerInterface $entityManager;
     private array $removedEntities = [];
+    private array $dispatchedEvents = [];
 
     protected function createHandler(array $aliases = [], array $vouchers = [], array $notifications = []): DeleteHandler
     {
@@ -41,27 +42,33 @@ class DeleteHandlerTest extends TestCase
         $notificationRepository->method('findByUser')->willReturn($notifications);
 
         $this->removedEntities = [];
-        $this->entityManager = $this->createStub(EntityManagerInterface::class);
-        $this->entityManager->method('getRepository')->willReturnCallback(
-            static function (string $class) use ($aliasRepository, $voucherRepository, $notificationRepository) {
-                return match ($class) {
-                    Alias::class => $aliasRepository,
-                    Voucher::class => $voucherRepository,
-                    UserNotification::class => $notificationRepository,
-                    default => throw new InvalidArgumentException("Unknown repository: $class"),
-                };
+        $entityManager = $this->createStub(EntityManagerInterface::class);
+        $entityManager->method('getRepository')->willReturnCallback(
+            static fn (string $class) => match ($class) {
+                Alias::class => $aliasRepository,
+                Voucher::class => $voucherRepository,
+                UserNotification::class => $notificationRepository,
+                default => throw new InvalidArgumentException("Unknown repository: $class"),
             }
         );
 
-        $this->entityManager->method('remove')->willReturnCallback(function ($entity): void {
+        $entityManager->method('remove')->willReturnCallback(function ($entity): void {
             $this->removedEntities[] = $entity;
         });
 
-        $wkdHandler = $this->createStub(WkdHandler::class);
-
+        $this->dispatchedEvents = [];
         $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
+        $eventDispatcher->method('dispatch')->willReturnCallback(function (object $event, string $eventName) {
+            $this->dispatchedEvents[] = ['event' => $event, 'name' => $eventName];
 
-        return new DeleteHandler($passwordUpdater, $this->entityManager, $wkdHandler, $eventDispatcher);
+            return $event;
+        });
+
+        return new DeleteHandler(
+            $passwordUpdater,
+            $entityManager,
+            $eventDispatcher,
+        );
     }
 
     public function testDeleteAlias(): void
@@ -83,6 +90,37 @@ class DeleteHandlerTest extends TestCase
         self::assertTrue($alias->isDeleted());
         self::assertNotEquals($alias->getUser(), $user);
         self::assertNull($alias->getDestination());
+    }
+
+    public function testDeleteAliasDispatchesEvent(): void
+    {
+        $handler = $this->createHandler();
+
+        $user = new User('alice@example.org');
+        $alias = new Alias();
+        $alias->setUser($user);
+        $alias->setSource('alias@example.org');
+
+        $handler->deleteAlias($alias);
+
+        self::assertCount(1, $this->dispatchedEvents);
+        self::assertSame(AliasEvent::DELETED, $this->dispatchedEvents[0]['name']);
+        self::assertInstanceOf(AliasEvent::class, $this->dispatchedEvents[0]['event']);
+        self::assertSame($alias, $this->dispatchedEvents[0]['event']->getAlias());
+    }
+
+    public function testDeleteAliasDoesNotDispatchEventWhenUserMismatch(): void
+    {
+        $handler = $this->createHandler();
+
+        $user = new User('alice@example.org');
+        $alias = new Alias();
+        $alias->setUser($user);
+
+        $otherUser = new User('bob@example.org');
+        $handler->deleteAlias($alias, $otherUser);
+
+        self::assertCount(0, $this->dispatchedEvents);
     }
 
     public function testDeleteUser(): void
@@ -153,5 +191,36 @@ class DeleteHandlerTest extends TestCase
         self::assertCount(2, $this->removedEntities);
         self::assertContains($notification1, $this->removedEntities);
         self::assertContains($notification2, $this->removedEntities);
+    }
+
+    public function testDeleteUserDispatchesAliasAndUserEvents(): void
+    {
+        $user = new User('alice@example.org');
+
+        $alias1 = new Alias();
+        $alias1->setUser($user);
+        $alias1->setSource('alias1@example.org');
+
+        $alias2 = new Alias();
+        $alias2->setUser($user);
+        $alias2->setSource('alias2@example.org');
+
+        $handler = $this->createHandler([$alias1, $alias2]);
+
+        $handler->deleteUser($user);
+
+        // Expect 2 AliasEvent::DELETED + 1 UserEvent::USER_DELETED
+        self::assertCount(3, $this->dispatchedEvents);
+
+        // Alias events come first
+        self::assertSame(AliasEvent::DELETED, $this->dispatchedEvents[0]['name']);
+        self::assertSame($alias1, $this->dispatchedEvents[0]['event']->getAlias());
+
+        self::assertSame(AliasEvent::DELETED, $this->dispatchedEvents[1]['name']);
+        self::assertSame($alias2, $this->dispatchedEvents[1]['event']->getAlias());
+
+        // User event comes last
+        self::assertSame(UserEvent::USER_DELETED, $this->dispatchedEvents[2]['name']);
+        self::assertSame($user, $this->dispatchedEvents[2]['event']->getUser());
     }
 }

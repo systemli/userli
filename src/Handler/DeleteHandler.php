@@ -8,6 +8,7 @@ use App\Entity\Alias;
 use App\Entity\User;
 use App\Entity\UserNotification;
 use App\Entity\Voucher;
+use App\Event\AliasEvent;
 use App\Event\UserEvent;
 use App\Helper\PasswordGenerator;
 use App\Helper\PasswordUpdater;
@@ -22,7 +23,6 @@ final readonly class DeleteHandler
     public function __construct(
         private PasswordUpdater $passwordUpdater,
         private EntityManagerInterface $manager,
-        private WkdHandler $wkdHandler,
         private EventDispatcherInterface $eventDispatcher,
     ) {
     }
@@ -39,6 +39,10 @@ final readonly class DeleteHandler
         $alias->clearSensitiveData();
 
         $this->manager->flush();
+
+        if (!$alias->isRandom()) {
+            $this->eventDispatcher->dispatch(new AliasEvent($alias), AliasEvent::CUSTOM_DELETED);
+        }
     }
 
     public function deleteUser(User $user): void
@@ -46,7 +50,8 @@ final readonly class DeleteHandler
         // Delete aliases of user
         $aliases = $this->manager->getRepository(Alias::class)->findByUser($user);
         foreach ($aliases as $alias) {
-            $this->deleteAlias($alias, $user);
+            $alias->setDeleted(true);
+            $alias->clearSensitiveData();
         }
 
         // Delete vouchers of user that have not been redeemed
@@ -75,13 +80,16 @@ final readonly class DeleteHandler
         $user->eraseMailCryptPublicKey();
         $user->eraseMailCryptSecretBox();
 
-        // Delete OpenPGP key from WKD
-        $this->wkdHandler->deleteKey($user->getEmail());
-
         // Flag user as deleted
         $user->setDeleted(true);
 
         $this->manager->flush();
+
+        // Fetch custom aliases
+        $customAliases = $this->manager->getRepository(Alias::class)->findByUser($user, false);
+        foreach ($customAliases as $customAlias) {
+            $this->eventDispatcher->dispatch(new AliasEvent($customAlias), AliasEvent::CUSTOM_DELETED);
+        }
 
         $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_DELETED);
     }

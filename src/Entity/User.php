@@ -16,7 +16,6 @@ use App\Traits\LastLoginTimeTrait;
 use App\Traits\MailCryptEnabledTrait;
 use App\Traits\MailCryptPublicKeyTrait;
 use App\Traits\MailCryptSecretBoxTrait;
-use App\Traits\OpenPgpKeyAwareTrait;
 use App\Traits\PasswordTrait;
 use App\Traits\PasswordVersionTrait;
 use App\Traits\PlainMailCryptPrivateKeyTrait;
@@ -30,6 +29,7 @@ use App\Traits\TwofactorTrait;
 use App\Traits\UpdatedTimeTrait;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
@@ -61,7 +61,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     use MailCryptEnabledTrait;
     use MailCryptPublicKeyTrait;
     use MailCryptSecretBoxTrait;
-    use OpenPgpKeyAwareTrait;
     use PasswordTrait;
     use PasswordVersionTrait;
     use PlainMailCryptPrivateKeyTrait;
@@ -85,6 +84,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $smtpQuotaLimits = null;
 
+    #[ORM\OneToMany(mappedBy: 'uploader', targetEntity: OpenPgpKey::class)]
+    private Collection $uploadedKeys;
+
     /**
      * User constructor.
      */
@@ -94,7 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         $this->passwordVersion = self::CURRENT_PASSWORD_VERSION;
         $this->passwordChangeRequired = false;
         $this->creationTime = new DateTimeImmutable();
-        $this->openPgpKeys = new ArrayCollection();
+        $this->uploadedKeys = new ArrayCollection();
     }
 
     #[Override]

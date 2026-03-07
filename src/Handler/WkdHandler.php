@@ -47,7 +47,7 @@ final readonly class WkdHandler
         }
 
         if (null !== $user) {
-            $openPgpKey->setUser($user);
+            $openPgpKey->setUploader($user);
         }
 
         $openPgpKeyNew = GpgKeyImporter::import($email, $key);
