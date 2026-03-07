@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Api;
 
 use App\Service\MtaStsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

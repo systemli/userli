@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Account;
 
 use App\Entity\User;
 use App\Form\Model\PasswordConfirmation;
