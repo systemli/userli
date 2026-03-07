@@ -47,6 +47,12 @@ settings:
     validation:
       min: 0
 
+  mail_crypt:
+    type: integer
+    default: 2
+    validation:
+      choices: [0, 1, 2, 3]
+
   mta_sts_mode:
     type: string
     default: "testing"

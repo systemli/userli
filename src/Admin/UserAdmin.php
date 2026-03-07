@@ -10,6 +10,7 @@ use App\Enum\Roles;
 use App\Form\SmtpQuotaLimitsType;
 use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
+use App\Service\SettingsService;
 use App\Service\UserResetService;
 use App\Traits\DomainGuesserAwareTrait;
 use App\Validator\Lowercase;
@@ -46,7 +47,7 @@ final class UserAdmin extends Admin
 
     private MailCryptKeyHandler $mailCryptKeyHandler;
 
-    private MailCrypt $mailCrypt;
+    private SettingsService $settingsService;
 
     private Security $security;
 
@@ -251,7 +252,8 @@ final class UserAdmin extends Admin
         $plainPassword = $this->getForm()->get('plainPassword')->getData();
         $this->passwordUpdater->updatePassword($object, $plainPassword);
         if (null !== $object->getMailCryptEnabled()) {
-            $this->mailCryptKeyHandler->create($object, $plainPassword, $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS));
+            $mailCrypt = MailCrypt::from($this->settingsService->get('mail_crypt'));
+            $this->mailCryptKeyHandler->create($object, $plainPassword, $mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS));
         }
 
         if (null === $object->getDomain() && null !== $domain = $this->domainGuesser->guess($object->getEmail())) {
@@ -308,9 +310,9 @@ final class UserAdmin extends Admin
         $this->mailCryptKeyHandler = $mailCryptKeyHandler;
     }
 
-    public function setMailCryptVar(string $mailCrypt): void
+    public function setSettingsService(SettingsService $settingsService): void
     {
-        $this->mailCrypt = MailCrypt::from((int) $mailCrypt);
+        $this->settingsService = $settingsService;
     }
 
     public function setSecurity(Security $security): void

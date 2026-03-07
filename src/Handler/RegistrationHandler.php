@@ -6,11 +6,13 @@ namespace App\Handler;
 
 use App\Entity\User;
 use App\Entity\Voucher;
+use App\Enum\MailCrypt;
 use App\Enum\Roles;
 use App\Event\UserEvent;
 use App\Form\Model\Registration;
 use App\Guesser\DomainGuesser;
 use App\Helper\PasswordUpdater;
+use App\Service\SettingsService;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -26,10 +28,9 @@ final readonly class RegistrationHandler
         private PasswordUpdater $passwordUpdater,
         private MailCryptKeyHandler $mailCryptKeyHandler,
         private RecoveryTokenHandler $recoveryTokenHandler,
+        private SettingsService $settingsService,
         #[Autowire(env: 'REGISTRATION_OPEN')]
         private bool $registrationOpen,
-        #[Autowire(env: 'MAIL_CRYPT')]
-        private bool $mailCrypt,
     ) {
     }
 
@@ -47,7 +48,8 @@ final readonly class RegistrationHandler
 
         // Update password, generate MailCrypt keys, generate recovery token
         // key material for mailCrypt is always generated, but only enabled if MAIL_CRYPT >= 2
-        $mailCryptEnable = $this->mailCrypt >= 2;
+        $mailCrypt = MailCrypt::from($this->settingsService->get('mail_crypt'));
+        $mailCryptEnable = $mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS);
         $this->passwordUpdater->updatePassword($user, $registration->getPassword());
         $this->mailCryptKeyHandler->create($user, $registration->getPassword(), $mailCryptEnable);
         $this->recoveryTokenHandler->create($user);

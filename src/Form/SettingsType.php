@@ -83,7 +83,11 @@ final class SettingsType extends AbstractType
         $fieldType = $this->determineFieldType($type, $validation);
 
         if ($fieldType === ChoiceType::class && isset($validation['choices'])) {
-            $options['choices'] = array_combine($validation['choices'], $validation['choices']);
+            $labels = array_map(
+                static fn ($c) => sprintf('settings.form.%s.choice.%s', $name, $c),
+                $validation['choices']
+            );
+            $options['choices'] = array_combine($labels, $validation['choices']);
         }
 
         if ($type === 'boolean') {
