@@ -1,100 +1,96 @@
-{% extends 'base_page.html.twig' %}
+{% set current_section = 'reserved-names' %}
+{% extends 'Settings/base_settings.html.twig' %}
 {% block title %}{{ setting('app_name') }} - {{ 'settings.reserved-name.title'|trans }}{% endblock %}
-{% block page_title %}{{ 'settings.title'|trans }}{% endblock %}
-{% block page_subtitle %}{{ 'settings.subtitle'|trans }}{% endblock %}
-{% block page_content %}
-    <div class="max-w-5xl mx-auto">
-        {% include 'Settings/_navigation.html.twig' with {'current_section': 'reserved-names'} %}
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
-            <div class="p-6 sm:p-8">
-                {% include 'Settings/_section_header.html.twig' with {
-                    icon: 'heroicons:shield-exclamation',
-                    icon_color: 'amber',
-                    heading_key: 'settings.reserved-name.heading',
-                    description_key: 'settings.reserved-name.description',
-                } %}
+{% block settings_content %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="p-6 sm:p-8">
+            {% include 'Settings/_section_header.html.twig' with {
+                icon: 'heroicons:shield-exclamation',
+                icon_color: 'amber',
+                heading_key: 'settings.reserved-name.heading',
+                description_key: 'settings.reserved-name.description',
+            } %}
 
-                <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div class="flex flex-wrap items-center gap-2">
-                        <a href="{{ path('settings_reserved_name_create') }}"
-                           class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
-                            {{ ux_icon('heroicons:plus', {class: 'w-4 h-4 mr-2'}) }}
-                            {{ 'settings.reserved-name.create.button'|trans }}
-                        </a>
-                        <a href="{{ path('settings_reserved_name_import') }}"
-                           class="inline-flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
-                            {{ ux_icon('heroicons:arrow-up-tray', {class: 'w-4 h-4 mr-2'}) }}
-                            {{ 'settings.reserved-name.import.button'|trans }}
-                        </a>
-                        <a href="{{ path('settings_reserved_name_export') }}"
-                           class="inline-flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
-                            {{ ux_icon('heroicons:arrow-down-tray', {class: 'w-4 h-4 mr-2'}) }}
-                            {{ 'settings.reserved-name.export.button'|trans }}
-                        </a>
-                    </div>
-
-                    {% include 'Settings/_search_form.html.twig' with {
-                        index_route: 'settings_reserved_name_index',
-                        placeholder_key: 'settings.reserved-name.search.placeholder',
-                        submit_key: 'settings.reserved-name.search.submit',
-                        search: search,
-                    } %}
+            <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div class="flex flex-wrap items-center gap-2">
+                    <a href="{{ path('settings_reserved_name_create') }}"
+                       class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
+                        {{ ux_icon('heroicons:plus', {class: 'w-4 h-4 mr-2'}) }}
+                        {{ 'settings.reserved-name.create.button'|trans }}
+                    </a>
+                    <a href="{{ path('settings_reserved_name_import') }}"
+                       class="inline-flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
+                        {{ ux_icon('heroicons:arrow-up-tray', {class: 'w-4 h-4 mr-2'}) }}
+                        {{ 'settings.reserved-name.import.button'|trans }}
+                    </a>
+                    <a href="{{ path('settings_reserved_name_export') }}"
+                       class="inline-flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
+                        {{ ux_icon('heroicons:arrow-down-tray', {class: 'w-4 h-4 mr-2'}) }}
+                        {{ 'settings.reserved-name.export.button'|trans }}
+                    </a>
                 </div>
 
-                {% if pagination.items is empty %}
-                    {% include 'Settings/_empty_state.html.twig' with {
-                        icon: 'heroicons:shield-exclamation',
-                        title_key: 'settings.reserved-name.table.empty-title',
-                        description_key: 'settings.reserved-name.table.empty-description',
-                    } %}
-                {% else %}
-                    {% embed 'Settings/_table.html.twig' with {
-                        headers: [
-                            {label: 'settings.table.id'},
-                            {label: 'settings.table.name'},
-                            {label: 'settings.table.created'},
-                            {label: 'settings.table.actions', align: 'right'},
-                        ]
-                    } %}
-                        {% block table_body %}
-                            {% for reservedName in pagination.items %}
-                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ reservedName.id }}</td>
-                                    <td class="px-6 py-4 text-sm font-mono text-gray-900 dark:text-gray-100">{{ reservedName.name }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
-                                        {{ reservedName.creationTime|format_datetime('short', 'short') }}
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <form method="post"
-                                              action="{{ path('settings_reserved_name_delete', {id: reservedName.id}) }}"
-                                              onsubmit="return confirm('{{ 'settings.reserved-name.delete.confirm'|trans({'%name%': reservedName.name|e('js')}) }}');">
-                                            <input type="hidden" name="_token"
-                                                   value="{{ csrf_token('delete_reserved_name_' ~ reservedName.id) }}">
-                                            <button type="submit"
-                                                    title="{{ 'settings.reserved-name.actions.delete'|trans }}"
-                                                    data-controller="tooltip"
-                                                    class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors">
-                                                {{ ux_icon('heroicons:trash', {class: 'w-4 h-4'}) }}
-                                                <span class="sr-only">{{ 'settings.reserved-name.actions.delete'|trans }}</span>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        {% endblock %}
-                    {% endembed %}
-
-                    {% include 'Settings/_pagination.html.twig' with {
-                        index_route: 'settings_reserved_name_index',
-                        total_key: 'settings.reserved-name.pagination.total',
-                        previous_key: 'settings.reserved-name.pagination.previous',
-                        next_key: 'settings.reserved-name.pagination.next',
-                        page_key: 'settings.reserved-name.pagination.page',
-                        pagination: pagination,
-                        search: search,
-                    } %}
-                {% endif %}
+                {% include 'Settings/_search_form.html.twig' with {
+                    index_route: 'settings_reserved_name_index',
+                    placeholder_key: 'settings.reserved-name.search.placeholder',
+                    submit_key: 'settings.reserved-name.search.submit',
+                    search: search,
+                } %}
             </div>
+
+            {% if pagination.items is empty %}
+                {% include 'Settings/_empty_state.html.twig' with {
+                    icon: 'heroicons:shield-exclamation',
+                    title_key: 'settings.reserved-name.table.empty-title',
+                    description_key: 'settings.reserved-name.table.empty-description',
+                } %}
+            {% else %}
+                {% embed 'Settings/_table.html.twig' with {
+                    headers: [
+                        {label: 'settings.table.id'},
+                        {label: 'settings.table.name'},
+                        {label: 'settings.table.created'},
+                        {label: 'settings.table.actions', align: 'right'},
+                    ]
+                } %}
+                    {% block table_body %}
+                        {% for reservedName in pagination.items %}
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ reservedName.id }}</td>
+                                <td class="px-6 py-4 text-sm font-mono text-gray-900 dark:text-gray-100">{{ reservedName.name }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
+                                    {{ reservedName.creationTime|format_datetime('short', 'short') }}
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <form method="post"
+                                          action="{{ path('settings_reserved_name_delete', {id: reservedName.id}) }}"
+                                          onsubmit="return confirm('{{ 'settings.reserved-name.delete.confirm'|trans({'%name%': reservedName.name|e('js')}) }}');">
+                                        <input type="hidden" name="_token"
+                                               value="{{ csrf_token('delete_reserved_name_' ~ reservedName.id) }}">
+                                        <button type="submit"
+                                                title="{{ 'settings.reserved-name.actions.delete'|trans }}"
+                                                data-controller="tooltip"
+                                                class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors">
+                                            {{ ux_icon('heroicons:trash', {class: 'w-4 h-4'}) }}
+                                            <span class="sr-only">{{ 'settings.reserved-name.actions.delete'|trans }}</span>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endblock %}
+                {% endembed %}
+
+                {% include 'Settings/_pagination.html.twig' with {
+                    index_route: 'settings_reserved_name_index',
+                    total_key: 'settings.reserved-name.pagination.total',
+                    previous_key: 'settings.reserved-name.pagination.previous',
+                    next_key: 'settings.reserved-name.pagination.next',
+                    page_key: 'settings.reserved-name.pagination.page',
+                    pagination: pagination,
+                    search: search,
+                } %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}

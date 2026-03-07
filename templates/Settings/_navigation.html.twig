@@ -1,60 +1,43 @@
-{# Settings Navigation Component #}
-{# Parameters: current_section (string) - The current active section #}
+{# Settings Navigation Component (vertical list) #}
+{# Parameters:
+   - current_section (string) - The current active section
+   - summary_only (bool, optional) - If true, only render the active item's icon + label (for mobile <summary>)
+#}
 
 {% set current_section = current_section|default('general') %}
+{% set summary_only = summary_only|default(false) %}
 
-<div class="mb-8">
-    {# Floating navigation bar style - inspired by the main navbar #}
-    <nav class="bg-gray-50/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200/60 dark:border-gray-700/60 rounded-2xl shadow-sm p-1"
-         aria-label="{{ 'settings.navigation.aria-label'|trans }}">
-        <div class="flex space-x-1">
-            {# General/Home Link #}
-            <a href="{{ path('settings_show') }}"
-               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'general' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
-                <!-- heroicons:cog-8-tooth -->
-                {{ ux_icon('heroicons:cog-8-tooth', {class: 'w-4 h-4 mr-2'}) }}
-                {{ "settings.navigation.general"|trans }}
-            </a>
+{% set nav_items = [
+    {route: 'settings_show', section: 'general', icon: 'heroicons:cog-8-tooth', label: 'settings.navigation.general'},
+    {route: 'settings_api_show', section: 'api', icon: 'heroicons:key', label: 'settings.navigation.api'},
+    {route: 'settings_webhook_endpoint_index', section: 'webhooks', icon: 'heroicons:cursor-arrow-rays', label: 'settings.navigation.webhooks'},
+    {route: 'settings_maintenance_show', section: 'maintenance', icon: 'heroicons:building-library', label: 'settings.navigation.maintenance'},
+    {route: 'settings_domain_index', section: 'domains', icon: 'heroicons:globe-alt', label: 'settings.navigation.domains'},
+    {route: 'settings_reserved_name_index', section: 'reserved-names', icon: 'heroicons:shield-exclamation', label: 'settings.navigation.reserved-names'},
+    {route: 'sonata_admin_dashboard', section: 'admin', icon: 'heroicons:shield-check', label: 'Admin'},
+] %}
 
-            {# API Tokens Link #}
-            <a href="{{ path('settings_api_show') }}"
-               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'api' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
-                <!-- heroicons:key -->
-                {{ ux_icon('heroicons:key', {class: 'w-4 h-4 mr-2'}) }}
-                {{ "settings.navigation.api"|trans }}
+{% if summary_only %}
+    {# Render only the active item's icon and label (used inside <summary>) #}
+    {% for item in nav_items %}
+        {% if item.section == current_section %}
+            <span class="flex items-center text-sm font-medium text-gray-900 dark:text-gray-100">
+                {{ ux_icon(item.icon, {class: 'w-4 h-4 mr-2 text-gray-600 dark:text-gray-300'}) }}
+                {{ item.label|trans }}
+            </span>
+        {% endif %}
+    {% endfor %}
+{% else %}
+    {# Full vertical navigation list #}
+    <div class="flex flex-col space-y-1">
+        {% for item in nav_items %}
+            {% set is_active = item.section == current_section %}
+            <a href="{{ path(item.route) }}"
+               {% if is_active %}aria-current="page"{% endif %}
+               class="flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ is_active ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
+                {{ ux_icon(item.icon, {class: 'w-4 h-4 mr-2.5 flex-shrink-0'}) }}
+                {{ item.section == 'admin' ? item.label : item.label|trans }}
             </a>
-
-            <a href="{{ path('settings_webhook_endpoint_index') }}"
-               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'webhooks' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
-                {{ ux_icon('heroicons:cursor-arrow-rays', {class: 'w-4 h-4 mr-2'}) }}
-                {{ 'settings.navigation.webhooks'|trans }}
-            </a>
-
-            <a href="{{ path('settings_maintenance_show') }}"
-               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'maintenance' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
-                {# heroicons:building-library chosen per request #}
-                {{ ux_icon('heroicons:building-library', {class: 'w-4 h-4 mr-2'}) }}
-                {{ 'settings.navigation.maintenance'|trans }}
-            </a>
-
-            <a href="{{ path('settings_domain_index') }}"
-               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'domains' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
-                {{ ux_icon('heroicons:globe-alt', {class: 'w-4 h-4 mr-2'}) }}
-                {{ 'settings.navigation.domains'|trans }}
-            </a>
-
-            <a href="{{ path('settings_reserved_name_index') }}"
-               class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'reserved-names' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
-                {{ ux_icon('heroicons:shield-exclamation', {class: 'w-4 h-4 mr-2'}) }}
-                {{ 'settings.navigation.reserved-names'|trans }}
-            </a>
-
-            <a href="{{ path('sonata_admin_dashboard') }}"
-                class="flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 {{ current_section == 'admin' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
-                <!-- heroicons:shield-check -->
-                {{ ux_icon('heroicons:shield-check', {class: 'w-4 h-4 mr-2'}) }}
-                Admin
-            </a>
-        </div>
-    </nav>
-</div>
+        {% endfor %}
+    </div>
+{% endif %}
