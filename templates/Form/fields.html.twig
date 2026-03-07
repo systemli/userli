@@ -199,3 +199,46 @@
     {% set type = type|default('submit') %}
     {{ block('button_widget') }}
 {% endblock submit_widget %}
+
+{% block user_autocomplete_widget %}
+    <div data-controller="ajax-autocomplete"
+         data-ajax-autocomplete-url-value="{{ autocomplete_url }}"
+         data-ajax-autocomplete-label-field-value="{{ autocomplete_label_field }}"
+         data-ajax-autocomplete-min-chars-value="{{ autocomplete_min_chars }}">
+        <input type="hidden"
+               id="{{ id }}"
+               name="{{ full_name }}"
+               data-ajax-autocomplete-target="hidden"
+               {% if value is not empty %}value="{{ value }}"{% endif %}
+               {% if autocomplete_label is not empty %}data-label="{{ autocomplete_label }}"{% endif %} />
+    </div>
+{% endblock user_autocomplete_widget %}
+
+{% block domain_autocomplete_widget %}
+    <div data-controller="ajax-autocomplete"
+         data-ajax-autocomplete-url-value="{{ autocomplete_url }}"
+         data-ajax-autocomplete-label-field-value="{{ autocomplete_label_field }}"
+         data-ajax-autocomplete-min-chars-value="{{ autocomplete_min_chars }}">
+        <input type="hidden"
+               id="{{ id }}"
+               name="{{ full_name }}"
+               data-ajax-autocomplete-target="hidden"
+               {% if value is not empty %}value="{{ value }}"{% endif %}
+               {% if autocomplete_label is not empty %}data-label="{{ autocomplete_label }}"{% endif %} />
+    </div>
+{% endblock domain_autocomplete_widget %}
+
+{% block domains_autocomplete_widget %}
+    <div data-controller="ajax-autocomplete"
+         data-ajax-autocomplete-url-value="{{ autocomplete_url }}"
+         data-ajax-autocomplete-label-field-value="{{ autocomplete_label_field }}"
+         data-ajax-autocomplete-min-chars-value="{{ autocomplete_min_chars }}"
+         data-ajax-autocomplete-multiple-value="true">
+        <input type="hidden"
+               id="{{ id }}"
+               name="{{ full_name }}"
+               data-ajax-autocomplete-target="hidden"
+               {% if value is not empty %}value="{{ value }}"{% endif %}
+               data-selected="{{ autocomplete_selected|json_encode }}" />
+    </div>
+{% endblock domains_autocomplete_widget %}

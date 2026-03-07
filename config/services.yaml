@@ -83,19 +83,6 @@ services:
         calls:
             - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
 
-    userli.admin.voucher:
-        class: App\Admin\VoucherAdmin
-        public: true
-        tags:
-            - {
-                  name: sonata.admin,
-                  manager_type: orm,
-                  group: "Mail",
-                  label: "Voucher",
-                  code: userli.admin.voucher,
-                  model_class: App\Entity\Voucher,
-              }
-
     userli.admin.block.statistics:
         class: App\Block\StatisticsBlockService
         public: true

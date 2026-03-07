@@ -1,5 +1,9 @@
-{# Parameters: index_route, placeholder_key, submit_key, search #}
+{# Parameters: index_route, placeholder_key, submit_key, search, extra_params (optional dict) #}
+{% set params = extra_params|default({}) %}
 <form method="get" action="{{ path(index_route) }}" class="flex items-center gap-2">
+    {% for key, value in params %}
+        <input type="hidden" name="{{ key }}" value="{{ value }}">
+    {% endfor %}
     <div class="relative">
         <input type="text" name="search" value="{{ search }}"
                placeholder="{{ placeholder_key|trans }}"
@@ -13,7 +17,7 @@
         {{ submit_key|trans }}
     </button>
     {% if search %}
-        <a href="{{ path(index_route) }}"
+        <a href="{{ path(index_route, params|filter(v => v)) }}"
            class="inline-flex items-center px-3 py-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
             {{ ux_icon('heroicons:x-mark', {class: 'w-4 h-4'}) }}
         </a>
