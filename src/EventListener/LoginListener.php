@@ -8,26 +8,22 @@ use App\Entity\User;
 use App\Enum\MailCrypt;
 use App\Event\LoginEvent;
 use App\Handler\MailCryptKeyHandler;
+use App\Service\SettingsService;
 use App\Service\UserLastLoginUpdateService;
 use Override;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
 final readonly class LoginListener implements EventSubscriberInterface
 {
-    private MailCrypt $mailCrypt;
-
     public function __construct(
         private UserLastLoginUpdateService $userLastLoginUpdateService,
         private MailCryptKeyHandler $mailCryptKeyHandler,
         private LoggerInterface $logger,
-        #[Autowire(env: 'MAIL_CRYPT')]
-        private int $mailCryptEnv,
+        private SettingsService $settingsService,
     ) {
-        $this->mailCrypt = MailCrypt::from($this->mailCryptEnv);
     }
 
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event): void
@@ -58,7 +54,8 @@ final readonly class LoginListener implements EventSubscriberInterface
 
     private function handleLogin(User $user, ?string $password): void
     {
-        if ($this->mailCrypt === MailCrypt::ENABLED_ENFORCE_ALL_USERS && null !== $password) {
+        $mailCrypt = MailCrypt::from($this->settingsService->get('mail_crypt'));
+        if ($mailCrypt === MailCrypt::ENABLED_ENFORCE_ALL_USERS && null !== $password) {
             $this->enableMailCrypt($user, $password);
         }
 

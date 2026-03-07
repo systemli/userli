@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Enum\MailCrypt;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
+use App\Service\SettingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Override;
@@ -14,7 +16,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 #[AsCommand(name: 'app:users:mailcrypt', description: 'Get MailCrypt values for user')]
 final class UsersMailCryptCommand extends AbstractUsersCommand
@@ -23,8 +24,7 @@ final class UsersMailCryptCommand extends AbstractUsersCommand
         EntityManagerInterface $manager,
         private readonly UserAuthenticationHandler $handler,
         private readonly MailCryptKeyHandler $mailCryptKeyHandler,
-        #[Autowire(env: 'MAIL_CRYPT')]
-        private readonly int $mailCrypt,
+        private readonly SettingsService $settingsService,
     ) {
         parent::__construct($manager);
     }
@@ -47,7 +47,8 @@ final class UsersMailCryptCommand extends AbstractUsersCommand
     #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if ($this->mailCrypt <= 0) {
+        $mailCrypt = MailCrypt::from($this->settingsService->get('mail_crypt'));
+        if ($mailCrypt === MailCrypt::DISABLED) {
             return Command::FAILURE;
         }
 

@@ -228,8 +228,12 @@ class SettingsTypeTest extends TestCase
                 if ($name === 'locale') {
                     self::assertEquals(ChoiceType::class, $type);
                     self::assertArrayHasKey('choices', $options);
-                    // Choices are transformed to key-value pairs by Symfony
-                    $expectedChoices = ['en' => 'en', 'de' => 'de', 'fr' => 'fr'];
+                    // Choices use translation keys as labels
+                    $expectedChoices = [
+                        'settings.form.locale.choice.en' => 'en',
+                        'settings.form.locale.choice.de' => 'de',
+                        'settings.form.locale.choice.fr' => 'fr',
+                    ];
                     self::assertEquals($expectedChoices, $options['choices']);
                 }
 

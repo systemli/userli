@@ -419,6 +419,7 @@ settings:
       app: Anwendungseinstellungen
       project: Projekteinstellungen
       email: E-Mail Einstellungen
+      mail_crypt: Postfachverschlüsselung
       reports: Berichte
       smtp_quota: SMTP-Quota Limits
       mta_sts: MTA-STS
@@ -452,9 +453,21 @@ settings:
     smtp_quota_limit_per_day:
       label: Limit pro Tag
       help: Maximale Anzahl an E-Mails, die ein:e Benutzer:in pro Tag senden kann (0 = unbegrenzt)
+    mail_crypt:
+      label: Verschlüsselungsmodus
+      help: "Steuert die Postfachverschlüsselung: Deaktiviert (0), optional für Nutzer (1), erzwungen für neue Nutzer (2) oder erzwungen für alle Nutzer (3)"
+      choice:
+        0: Deaktiviert
+        1: Optional (Nutzer kann aktivieren)
+        2: Für neue Nutzer erzwingen
+        3: Für alle Nutzer erzwingen
     mta_sts_mode:
       label: MTA-STS Modus
       help: "Richtlinienmodus: testing (nur Berichte), enforce (bei Fehler ablehnen) oder none (deaktivieren)"
+      choice:
+        none: Keine
+        testing: Testen
+        enforce: Erzwingen
     mta_sts_mx:
       label: MX-Hosts
       help: "Erlaubte MX-Hostnamen, einer pro Zeile (z. B. mail.example.org). Wildcards möglich (z. B. *.example.org)"

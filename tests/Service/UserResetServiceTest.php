@@ -9,6 +9,7 @@ use App\Event\UserEvent;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
+use App\Service\SettingsService;
 use App\Service\UserResetService;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\Stub;
@@ -40,8 +41,16 @@ class UserResetServiceTest extends TestCase
             $this->mailCryptKeyHandler,
             $this->recoveryTokenHandler,
             $this->eventDispatcher,
-            $mailCryptEnv
+            $this->createSettingsServiceStub($mailCryptEnv),
         );
+    }
+
+    private function createSettingsServiceStub(int $mailCrypt = 0): SettingsService&Stub
+    {
+        $settingsService = $this->createStub(SettingsService::class);
+        $settingsService->method('get')->willReturn($mailCrypt);
+
+        return $settingsService;
     }
 
     public function testResetUserUpdatesPassword(): void
@@ -66,7 +75,7 @@ class UserResetServiceTest extends TestCase
             $this->mailCryptKeyHandler,
             $this->recoveryTokenHandler,
             $this->eventDispatcher,
-            0
+            $this->createSettingsServiceStub(),
         );
 
         $service->resetUser($user, $password);
@@ -114,7 +123,7 @@ class UserResetServiceTest extends TestCase
             $mailCryptKeyHandler,
             $recoveryTokenHandler,
             $this->eventDispatcher,
-            2
+            $this->createSettingsServiceStub(2),
         );
 
         $recoveryToken = $service->resetUser($user, $password);
@@ -143,7 +152,7 @@ class UserResetServiceTest extends TestCase
             $mailCryptKeyHandler,
             $recoveryTokenHandler,
             $this->eventDispatcher,
-            0
+            $this->createSettingsServiceStub(),
         );
 
         $recoveryToken = $service->resetUser($user, $password);
@@ -179,7 +188,7 @@ class UserResetServiceTest extends TestCase
             $this->mailCryptKeyHandler,
             $this->recoveryTokenHandler,
             $this->eventDispatcher,
-            0
+            $this->createSettingsServiceStub(),
         );
 
         $service->resetUser($user, 'password123');
@@ -205,7 +214,7 @@ class UserResetServiceTest extends TestCase
             $this->mailCryptKeyHandler,
             $this->recoveryTokenHandler,
             $eventDispatcher,
-            0
+            $this->createSettingsServiceStub(),
         );
 
         $service->resetUser($user, 'password123');
@@ -227,7 +236,7 @@ class UserResetServiceTest extends TestCase
             $this->mailCryptKeyHandler,
             $this->recoveryTokenHandler,
             $eventDispatcher,
-            0
+            $this->createSettingsServiceStub(),
         );
 
         $service->resetUser($user, 'password123');

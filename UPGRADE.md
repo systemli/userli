@@ -1,5 +1,21 @@
 # Upgrade documentation
 
+## Upgrade to 6.3.0
+
+### MAIL_CRYPT environment variable removed
+
+The `MAIL_CRYPT` environment variable has been replaced with a database-backed
+setting configurable via the Settings UI.
+
+A database migration automatically populates the new setting from the existing
+`MAIL_CRYPT` environment variable. If the variable is not set, it defaults to `2`
+(enforce for new users).
+
+After upgrading and running migrations, verify the setting in the Settings UI
+and remove `MAIL_CRYPT` from your environment configuration. Note: the
+`MAIL_CRYPT` variable in `docker-compose.yml` for the Dovecot container is
+**not affected** and must remain.
+
 ## Upgrade to 6.2.0
 
 ### WEBMAIL_URL environment variable removed

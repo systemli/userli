@@ -63,7 +63,7 @@ services:
             - [setPasswordUpdater, ['@App\Helper\PasswordUpdater']]
             - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
             - [setMailCryptKeyHandler, ['@App\Handler\MailCryptKeyHandler']]
-            - [setMailCryptVar, ["%env(MAIL_CRYPT)%"]]
+            - [setSettingsService, ['@App\Service\SettingsService']]
             - [setSecurity, ['@Symfony\Bundle\SecurityBundle\Security']]
             - [setUserResetService, ['@App\Service\UserResetService']]
 

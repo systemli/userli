@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Event\LoginEvent;
 use App\EventListener\LoginListener;
 use App\Handler\MailCryptKeyHandler;
+use App\Service\SettingsService;
 use App\Service\UserLastLoginUpdateService;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Stub;
@@ -31,18 +32,24 @@ class LoginListenerTest extends TestCase
         $this->userLastLoginUpdateService = $this->createStub(UserLastLoginUpdateService::class);
         $this->mailCryptKeyHandler = $this->createStub(MailCryptKeyHandler::class);
         $this->logger = $this->createStub(LoggerInterface::class);
+
+        $settingsService = $this->createStub(SettingsService::class);
+        $settingsService->method('get')->willReturn(2);
         $this->listener = new LoginListener(
             $this->userLastLoginUpdateService,
             $this->mailCryptKeyHandler,
             $this->logger,
-            2
+            $settingsService,
         );
+
         // Enforces creation of mailCrypt on Login
+        $settingsServiceMailCrypt = $this->createStub(SettingsService::class);
+        $settingsServiceMailCrypt->method('get')->willReturn(3);
         $this->listenerMailCrypt = new LoginListener(
             $this->userLastLoginUpdateService,
             $this->mailCryptKeyHandler,
             $this->logger,
-            3
+            $settingsServiceMailCrypt,
         );
     }
 
@@ -60,11 +67,14 @@ class LoginListenerTest extends TestCase
 
         $userLastLoginUpdateService->expects($this->once())->method('updateLastLogin');
 
+        $settingsService = $this->createStub(SettingsService::class);
+        $settingsService->method('get')->willReturn(3);
+
         $listenerMailCrypt = new LoginListener(
             $userLastLoginUpdateService,
             $mailCryptKeyHandler,
             $this->logger,
-            3
+            $settingsService,
         );
 
         $event = $this->getInteractiveEvent($user);
@@ -101,11 +111,14 @@ class LoginListenerTest extends TestCase
 
         $userLastLoginUpdateService->expects($this->once())->method('updateLastLogin');
 
+        $settingsService = $this->createStub(SettingsService::class);
+        $settingsService->method('get')->willReturn(3);
+
         $listenerMailCrypt = new LoginListener(
             $userLastLoginUpdateService,
             $mailCryptKeyHandler,
             $this->logger,
-            3
+            $settingsService,
         );
 
         $event = $this->getLoginEvent($user);

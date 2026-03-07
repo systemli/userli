@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
 use App\Repository\UserRepository;
+use App\Service\SettingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
@@ -23,7 +24,7 @@ class UsersMailCryptCommandTest extends TestCase
     private Stub&UserRepository $userRepository;
     private Stub&UserAuthenticationHandler $authenticationHandler;
     private Stub&MailCryptKeyHandler $mailCryptKeyHandler;
-    private int $mailCrypt = 1;
+    private Stub&SettingsService $settingsService;
 
     protected function setUp(): void
     {
@@ -31,6 +32,8 @@ class UsersMailCryptCommandTest extends TestCase
         $this->userRepository = $this->createStub(UserRepository::class);
         $this->authenticationHandler = $this->createStub(UserAuthenticationHandler::class);
         $this->mailCryptKeyHandler = $this->createStub(MailCryptKeyHandler::class);
+        $this->settingsService = $this->createStub(SettingsService::class);
+        $this->settingsService->method('get')->willReturn(1);
 
         $this->entityManager->method('getRepository')
             ->with(User::class)
@@ -40,7 +43,7 @@ class UsersMailCryptCommandTest extends TestCase
             $this->entityManager,
             $this->authenticationHandler,
             $this->mailCryptKeyHandler,
-            $this->mailCrypt
+            $this->settingsService,
         );
     }
 
@@ -80,7 +83,7 @@ class UsersMailCryptCommandTest extends TestCase
             ->with($user, 'p')
             ->willReturn($privateKey);
 
-        $command = new UsersMailCryptCommand($entityManager, $authenticationHandler, $mailCryptKeyHandler, $this->mailCrypt);
+        $command = new UsersMailCryptCommand($entityManager, $authenticationHandler, $mailCryptKeyHandler, $this->settingsService);
 
         $application = new Application();
         $application->addCommand($command);
@@ -200,11 +203,14 @@ class UsersMailCryptCommandTest extends TestCase
             ->willReturn($userRepository);
 
         // Create command with mailCrypt disabled
+        $settingsService = $this->createStub(SettingsService::class);
+        $settingsService->method('get')->willReturn(0);
+
         $command = new UsersMailCryptCommand(
             $entityManager,
             $this->authenticationHandler,
             $this->mailCryptKeyHandler,
-            0
+            $settingsService,
         );
 
         $userRepository->expects(self::never())
@@ -272,7 +278,7 @@ class UsersMailCryptCommandTest extends TestCase
             ->with($user, 'w')
             ->willReturn(null);
 
-        $command = new UsersMailCryptCommand($entityManager, $authenticationHandler, $this->mailCryptKeyHandler, $this->mailCrypt);
+        $command = new UsersMailCryptCommand($entityManager, $authenticationHandler, $this->mailCryptKeyHandler, $this->settingsService);
 
         $application = new Application();
         $application->addCommand($command);

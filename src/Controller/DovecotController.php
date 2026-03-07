@@ -14,10 +14,10 @@ use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
 use App\Repository\UserRepository;
 use App\Security\RequireApiScope;
+use App\Service\SettingsService;
 use Exception;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -38,17 +38,13 @@ final class DovecotController extends AbstractController
 
     public const string MESSAGE_USER_PASSWORD_CHANGE_REQUIRED = 'user password change required';
 
-    private readonly MailCrypt $mailCrypt;
-
     public function __construct(
         private readonly MailCryptKeyHandler $mailCryptKeyHandler,
         private readonly UserAuthenticationHandler $authHandler,
         private readonly UserRepository $userRepository,
         private readonly CacheInterface $cache,
-        #[Autowire(env: 'MAIL_CRYPT')]
-        private readonly int $mailCryptEnv,
+        private readonly SettingsService $settingsService,
     ) {
-        $this->mailCrypt = MailCrypt::from($this->mailCryptEnv);
     }
 
     #[Route('/api/dovecot/status', name: 'api_dovecot_status', methods: ['GET'], stateless: true)]
@@ -71,8 +67,9 @@ final class DovecotController extends AbstractController
                 return null;
             }
 
+            $mailCrypt = MailCrypt::from($this->settingsService->get('mail_crypt'));
             if (
-                $this->mailCrypt->isAtLeast(MailCrypt::ENABLED_OPTIONAL)
+                $mailCrypt->isAtLeast(MailCrypt::ENABLED_OPTIONAL)
                 && $userData['mailCryptEnabled']
                 && !empty($userData['mailCryptPublicKey'])
             ) {
@@ -123,7 +120,8 @@ final class DovecotController extends AbstractController
         }
 
         // If mailCrypt is enabled and enabled for user, derive mailCryptPrivateKey
-        if ($this->mailCrypt->isAtLeast(MailCrypt::ENABLED_OPTIONAL) && $user->getMailCryptEnabled()) {
+        $mailCrypt = MailCrypt::from($this->settingsService->get('mail_crypt'));
+        if ($mailCrypt->isAtLeast(MailCrypt::ENABLED_OPTIONAL) && $user->getMailCryptEnabled()) {
             try {
                 $privateKey = $this->mailCryptKeyHandler->decrypt($user, $request->getPassword());
             } catch (Exception $exception) {

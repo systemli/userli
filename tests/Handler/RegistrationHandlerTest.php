@@ -15,6 +15,7 @@ use App\Handler\RecoveryTokenHandler;
 use App\Handler\RegistrationHandler;
 use App\Helper\PasswordUpdater;
 use App\Repository\VoucherRepository;
+use App\Service\SettingsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -24,6 +25,9 @@ class RegistrationHandlerTest extends KernelTestCase
 {
     public function testHandleWithDisabledRegistration(): void
     {
+        $settingsService = $this->createStub(SettingsService::class);
+        $settingsService->method('get')->willReturn(0);
+
         $handler = new RegistrationHandler(
             $this->createStub(EntityManagerInterface::class),
             $this->createStub(DomainGuesser::class),
@@ -31,7 +35,7 @@ class RegistrationHandlerTest extends KernelTestCase
             $this->createStub(PasswordUpdater::class),
             $this->createStub(MailCryptKeyHandler::class),
             $this->createStub(RecoveryTokenHandler::class),
-            false,
+            $settingsService,
             false
         );
 
@@ -64,6 +68,9 @@ class RegistrationHandlerTest extends KernelTestCase
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher->expects($this->once())->method('dispatch');
 
+        $settingsService = $this->createStub(SettingsService::class);
+        $settingsService->method('get')->willReturn(0);
+
         $handler = new RegistrationHandler(
             $manager,
             $domainGuesser,
@@ -71,8 +78,8 @@ class RegistrationHandlerTest extends KernelTestCase
             $this->createStub(PasswordUpdater::class),
             $this->createStub(MailCryptKeyHandler::class),
             $this->createStub(RecoveryTokenHandler::class),
-            true,
-            false
+            $settingsService,
+            true
         );
 
         $registration = new Registration();
