@@ -1,0 +1,71 @@
+{% set current_section = 'vouchers' %}
+{% extends 'Settings/base_settings.html.twig' %}
+
+{% form_theme form 'Form/fields.html.twig' %}
+
+{% block title %}{{ setting('app_name') }} - {{ 'settings.voucher.create.title'|trans }}{% endblock %}
+
+{% block settings_content %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="p-6 sm:p-8">
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center mr-4">
+                    {{ ux_icon('heroicons:plus', {class: 'w-6 h-6 text-blue-600 dark:text-blue-400'}) }}
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                        {{ 'settings.voucher.create.heading'|trans }}
+                    </h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ 'settings.voucher.create.description'|trans }}</p>
+                </div>
+            </div>
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="space-y-6">
+                <div>
+                    {{ form_label(form.code, 'settings.voucher.form.code.label', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                    {{ form_errors(form.code) }}
+                    {{ form_widget(form.code) }}
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
+                        {{ 'settings.voucher.form.code.help'|trans }}
+                    </p>
+                </div>
+
+                <div>
+                    {{ form_label(form.user, 'settings.voucher.form.user.label') }}
+                    {{ form_errors(form.user) }}
+                    {{ form_widget(form.user) }}
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
+                        {{ 'settings.voucher.form.user.help'|trans }}
+                    </p>
+                </div>
+
+                <div>
+                    {{ form_label(form.domain, 'settings.voucher.form.domain.label') }}
+                    {{ form_errors(form.domain) }}
+                    {{ form_widget(form.domain) }}
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
+                        {{ 'settings.voucher.form.domain.help'|trans }}
+                    </p>
+                </div>
+
+                <div class="flex items-center justify-between pt-6">
+                    <a href="{{ path('settings_voucher_index') }}"
+                       class="inline-flex items-center px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
+                        {{ ux_icon('heroicons:arrow-left', {class: 'w-4 h-4 mr-2'}) }}
+                        {{ 'settings.voucher.form.cancel'|trans }}
+                    </a>
+                    {{ form_widget(form.submit, {
+                        label: 'settings.voucher.form.submit.create',
+                        attr: {
+                            class: 'inline-flex items-center px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors'
+                        }
+                    }) }}
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -71,7 +71,7 @@ final class DomainController extends AbstractController
         ]);
     }
 
-    #[Route('/settings/domains/{id}', name: 'settings_domain_show', methods: ['GET'])]
+    #[Route('/settings/domains/{id}', name: 'settings_domain_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(#[MapEntity] Domain $domain): Response
     {
         $stats = $this->manager->getDomainStats($domain);

@@ -128,19 +128,19 @@ Feature: Admin
   @admin
   Scenario: Access Voucher List and able to create a Voucher as Admin
     When I am authenticated as "louis@example.org"
-    And I am on "/admin/voucher/list"
+    And I am on "/settings/vouchers/"
     Then the response status code should be 200
 
-    When I am on "/admin/voucher/create"
+    When I am on "/settings/vouchers/create"
     Then the response status code should be 200
 
   @admin
   Scenario: Access Voucher List and able to create a Voucher as Support
     When I am authenticated as "support@example.org"
-    And I am on "/admin/voucher/list"
+    And I am on "/settings/vouchers/"
     Then the response status code should be 403
 
-    When I am on "/admin/voucher/create"
+    When I am on "/settings/vouchers/create"
     Then the response status code should be 403
 
   @admin
@@ -162,12 +162,9 @@ Feature: Admin
     Then the response status code should be 403
 
   @admin
-  Scenario: Admin can remove Vouchers and Aliases
+  Scenario: Admin can remove Aliases
     When I am authenticated as "louis@example.org"
-    And I am on "/admin/voucher/1/delete"
-    Then the response status code should be 200
-
-    When I am on "/admin/alias/1/delete"
+    And I am on "/admin/alias/1/delete"
     Then the response status code should be 200
 
   @admin

@@ -501,6 +501,7 @@ settings:
     maintenance: Maintenance
     general: General
     reserved-names: Reserved Names
+    vouchers: Vouchers
     domains: Domains
     user-notifications: Notifications
   coming-soon: Coming Soon
@@ -693,6 +694,61 @@ settings:
       button: Export
     pagination:
       total: "%count% reserved names total"
+      previous: Previous
+      next: Next
+      page: "Page %page% of %totalPages%"
+
+  voucher:
+    title: Vouchers
+    heading: Vouchers
+    description: Manage invitation vouchers for user registration
+    table:
+      code: Code
+      user: User
+      domain: Domain
+      status: Status
+      empty-title: No vouchers
+      empty-description: There are no vouchers yet. Create a voucher to invite new users.
+    filter:
+      domain: Domain
+      status: Status
+      all: All
+      redeemed: Redeemed
+      unredeemed: Unredeemed
+      clear: Clear filter
+    status:
+      redeemed: Redeemed
+      unredeemed: Unredeemed
+    create:
+      button: Create Voucher
+      title: Create Voucher
+      heading: Create Voucher
+      description: Create a new invitation voucher for a user.
+      success: Voucher has been created successfully.
+      error: Failed to create voucher.
+    delete:
+      confirm: "Are you sure you want to delete the voucher \"%code%\"?"
+      success: Voucher has been deleted successfully.
+    actions:
+      delete: Delete
+    form:
+      code:
+        label: Code
+        help: A pre-generated voucher code. You can change it to a custom value.
+      user:
+        label: User
+        help: Select the user who will own this voucher.
+      domain:
+        label: Domain
+        help: Select the domain for this voucher.
+      cancel: Cancel
+      submit:
+        create: Create
+    search:
+      placeholder: Search by code or user...
+      submit: Search
+    pagination:
+      total: "%count% vouchers total"
       previous: Previous
       next: Next
       page: "Page %page% of %totalPages%"

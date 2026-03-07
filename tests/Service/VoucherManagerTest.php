@@ -195,4 +195,93 @@ class VoucherManagerTest extends TestCase
         self::assertNotEmpty($vouchers);
         self::assertCount(3, $vouchers);
     }
+
+    public function testFindPaginated(): void
+    {
+        $this->repository->method('countByFilters')->willReturn(25);
+        $this->repository->method('findPaginatedByFilters')->willReturn([
+            new Voucher('code1'),
+            new Voucher('code2'),
+        ]);
+
+        $result = $this->manager->findPaginated(1, '', null, '');
+
+        self::assertSame(1, $result->page);
+        self::assertSame(2, $result->totalPages);
+        self::assertSame(25, $result->total);
+        self::assertCount(2, $result->items);
+    }
+
+    public function testFindPaginatedWithFilters(): void
+    {
+        $this->repository->method('countByFilters')->willReturn(5);
+        $this->repository->method('findPaginatedByFilters')->willReturn([
+            new Voucher('abc123'),
+        ]);
+
+        $result = $this->manager->findPaginated(1, 'abc', $this->domain, 'unredeemed');
+
+        self::assertSame(1, $result->page);
+        self::assertSame(1, $result->totalPages);
+        self::assertSame(5, $result->total);
+        self::assertCount(1, $result->items);
+    }
+
+    public function testCreateForAdmin(): void
+    {
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager
+            ->expects($this->once())
+            ->method('persist')
+            ->with($this->isInstanceOf(Voucher::class));
+        $entityManager
+            ->expects($this->once())
+            ->method('flush');
+
+        $manager = new VoucherManager($entityManager, $this->repository, $this->validator);
+
+        $user = new User('admin@example.org');
+        $user->setDomain($this->domain);
+
+        $voucher = $manager->createForAdmin('custom1', $user, $this->domain);
+
+        self::assertInstanceOf(Voucher::class, $voucher);
+        self::assertSame($user, $voucher->getUser());
+        self::assertSame($this->domain, $voucher->getDomain());
+        self::assertSame('custom1', $voucher->getCode());
+    }
+
+    public function testCreateForAdminWithValidationException(): void
+    {
+        $violation = new ConstraintViolation('message', 'messageTemplate', [], null, null, 'someValue');
+
+        $validator = $this->createStub(ValidatorInterface::class);
+        $validator->method('validate')->willReturn(new ConstraintViolationList([$violation]));
+
+        $manager = new VoucherManager($this->entityManager, $this->repository, $validator);
+
+        $user = new User('admin@example.org');
+        $user->setDomain($this->domain);
+
+        $this->expectException(ValidationException::class);
+
+        $manager->createForAdmin('abc123', $user, $this->domain);
+    }
+
+    public function testDelete(): void
+    {
+        $voucher = new Voucher('delete1');
+
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager
+            ->expects($this->once())
+            ->method('remove')
+            ->with($voucher);
+        $entityManager
+            ->expects($this->once())
+            ->method('flush');
+
+        $manager = new VoucherManager($entityManager, $this->repository, $this->validator);
+        $manager->delete($voucher);
+    }
 }

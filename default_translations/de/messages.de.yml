@@ -481,6 +481,7 @@ settings:
     general: Allgemein
     maintenance: Wartung
     reserved-names: Reservierte Namen
+    vouchers: Einladungen
     domains: Domains
     user-notifications: Benachrichtigungen
   maintenance:
@@ -691,6 +692,61 @@ settings:
       button: Exportieren
     pagination:
       total: "%count% reservierte Namen insgesamt"
+      previous: Zurück
+      next: Weiter
+      page: "Seite %page% von %totalPages%"
+
+  voucher:
+    title: Einladungen
+    heading: Einladungen
+    description: Verwalte Einladungs-Codes für die Benutzerregistrierung
+    table:
+      code: Code
+      user: Benutzer
+      domain: Domain
+      status: Status
+      empty-title: Keine Einladungen
+      empty-description: Es sind noch keine Einladungen vorhanden. Erstelle eine Einladung, um neue Benutzer einzuladen.
+    filter:
+      domain: Domain
+      status: Status
+      all: Alle
+      redeemed: Eingelöst
+      unredeemed: Nicht eingelöst
+      clear: Filter zurücksetzen
+    status:
+      redeemed: Eingelöst
+      unredeemed: Nicht eingelöst
+    create:
+      button: Einladung erstellen
+      title: Einladung erstellen
+      heading: Einladung erstellen
+      description: Erstelle einen neuen Einladungs-Code für einen Benutzer.
+      success: Einladung wurde erfolgreich erstellt.
+      error: Einladung konnte nicht erstellt werden.
+    delete:
+      confirm: "Möchtest du die Einladung \"%code%\" wirklich löschen?"
+      success: Einladung wurde erfolgreich gelöscht.
+    actions:
+      delete: Löschen
+    form:
+      code:
+        label: Code
+        help: Ein vorgenerierter Einladungs-Code. Du kannst ihn durch einen eigenen Wert ersetzen.
+      user:
+        label: Benutzer
+        help: Wähle den Benutzer, dem diese Einladung gehören soll.
+      domain:
+        label: Domain
+        help: Wähle die Domain für diese Einladung.
+      cancel: Abbrechen
+      submit:
+        create: Erstellen
+    search:
+      placeholder: Nach Code oder Benutzer suchen...
+      submit: Suchen
+    pagination:
+      total: "%count% Einladungen insgesamt"
       previous: Zurück
       next: Weiter
       page: "Seite %page% von %totalPages%"

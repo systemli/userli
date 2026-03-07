@@ -4,48 +4,38 @@ declare(strict_types=1);
 
 namespace App\Tests\Form;
 
-use App\Entity\Domain;
 use App\Enum\WebhookEvent;
+use App\Form\DataTransformer\DomainsToIdsTransformer;
+use App\Form\DomainsAutocompleteType;
 use App\Form\Model\WebhookEndpointModel;
 use App\Form\WebhookEndpointType;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\Persistence\ManagerRegistry;
-use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
-use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
-use Symfony\UX\Autocomplete\Checksum\ChecksumCalculator;
-use Symfony\UX\Autocomplete\Form\AutocompleteChoiceTypeExtension;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-#[AllowMockObjectsWithoutExpectations]
 class WebhookEndpointTypeTest extends TypeTestCase
 {
-    private ManagerRegistry $registry;
+    private EntityManagerInterface $entityManager;
+    private UrlGeneratorInterface $urlGenerator;
 
     protected function setUp(): void
     {
-        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
-        $this->registry = $this->createRegistryMock();
+        $this->entityManager = $this->createStub(EntityManagerInterface::class);
+        $this->urlGenerator = $this->createStub(UrlGeneratorInterface::class);
+        $this->urlGenerator->method('generate')->willReturn('/settings/domains/search');
         parent::setUp();
     }
 
     protected function getExtensions(): array
     {
+        $domainsAutocomplete = new DomainsAutocompleteType(
+            new DomainsToIdsTransformer($this->entityManager),
+            $this->urlGenerator,
+        );
+
         return [
-            new DoctrineOrmExtension($this->registry),
-            new PreloadedExtension([], [
-                'Symfony\Component\Form\Extension\Core\Type\ChoiceType' => [
-                    new AutocompleteChoiceTypeExtension(new ChecksumCalculator('test-secret')),
-                ],
-                'Symfony\Component\Form\Extension\Core\Type\TextType' => [
-                    new AutocompleteChoiceTypeExtension(new ChecksumCalculator('test-secret')),
-                ],
-            ]),
+            new PreloadedExtension([$domainsAutocomplete], []),
         ];
     }
 
@@ -60,7 +50,7 @@ class WebhookEndpointTypeTest extends TypeTestCase
             'secret' => $secret,
             'events' => $events,
             'enabled' => true,
-            'domains' => [],
+            'domains' => '',
         ];
 
         $model = new WebhookEndpointModel();
@@ -117,49 +107,22 @@ class WebhookEndpointTypeTest extends TypeTestCase
         self::assertTrue($eventsConfig->getOption('multiple'));
     }
 
-    public function testDomainsFieldIsMultipleAndNotRequired(): void
+    public function testDomainsFieldIsAutocomplete(): void
     {
         $form = $this->factory->create(WebhookEndpointType::class);
+        $view = $form->createView();
 
-        $domainsConfig = $form->get('domains')->getConfig();
-        self::assertTrue($domainsConfig->getOption('multiple'));
-        self::assertFalse($domainsConfig->getOption('required'));
+        self::assertContains('domains_autocomplete', $view->children['domains']->vars['block_prefixes']);
     }
 
-    private function createRegistryMock(): ManagerRegistry
+    public function testDomainsFieldHasAutocompleteVars(): void
     {
-        $classMetadata = $this->createStub(ClassMetadata::class);
-        $classMetadata->method('getIdentifierFieldNames')->willReturn(['id']);
-        $classMetadata->method('getTypeOfField')->willReturn('integer');
-        $classMetadata->method('getName')->willReturn(Domain::class);
+        $form = $this->factory->create(WebhookEndpointType::class);
+        $view = $form->createView();
 
-        $em = $this->getMockBuilder(EntityManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $query = $this->getMockBuilder(Query::class)
-            ->setConstructorArgs([$em])
-            ->onlyMethods(['execute', 'getResult', 'getSql', 'setFirstResult', 'setMaxResults'])
-            ->getMock();
-        $query->method('execute')->willReturn([]);
-        $query->method('getResult')->willReturn([]);
-
-        $queryBuilder = $this->getMockBuilder(QueryBuilder::class)
-            ->setConstructorArgs([$em])
-            ->onlyMethods(['getQuery'])
-            ->getMock();
-        $queryBuilder->method('getQuery')->willReturn($query);
-
-        $repository = $this->createStub(EntityRepository::class);
-        $repository->method('createQueryBuilder')->willReturn($queryBuilder);
-
-        $em->method('getClassMetadata')->willReturn($classMetadata);
-        $em->method('getRepository')->willReturn($repository);
-
-        $registry = $this->createStub(ManagerRegistry::class);
-        $registry->method('getManagerForClass')->willReturn($em);
-        $registry->method('getManager')->willReturn($em);
-
-        return $registry;
+        self::assertArrayHasKey('autocomplete_url', $view->children['domains']->vars);
+        self::assertSame('name', $view->children['domains']->vars['autocomplete_label_field']);
+        self::assertSame(0, $view->children['domains']->vars['autocomplete_min_chars']);
+        self::assertIsArray($view->children['domains']->vars['autocomplete_selected']);
     }
 }
