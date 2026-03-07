@@ -28,7 +28,7 @@
             {% else %}
                 {% embed 'Settings/_table.html.twig' with {
                     headers: [
-                        {label: 'settings.table.id'},
+                        {label: 'settings.table.id', class: 'hidden xl:table-cell'},
                         {label: 'settings.webhook.table.url'},
                         {label: 'settings.webhook.table.events'},
                         {label: 'settings.webhook.table.domains'},
@@ -39,16 +39,16 @@
                     {% block table_body %}
                         {% for endpoint in endpoints %}
                             <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ endpoint.id }}</td>
-                                <td class="px-6 py-4 text-sm font-mono break-all text-gray-900 dark:text-gray-100">{{ endpoint.url|e }}</td>
-                                <td class="px-6 py-4">
+                                <td class="hidden xl:table-cell px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ endpoint.id }}</td>
+                                <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-gray-100 max-w-xs truncate" title="{{ endpoint.url|e }}">{{ endpoint.url|e }}</td>
+                                <td class="px-4 py-3">
                                     <div class="flex flex-wrap gap-1">
                                         {% for event in endpoint.events %}
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200">{{ event }}</span>
                                         {% endfor %}
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-4 py-3">
                                     <div class="flex flex-wrap gap-1">
                                         {% if endpoint.domains is empty %}
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 whitespace-nowrap">{{ 'settings.webhook.all_domains'|trans }}</span>
@@ -59,11 +59,11 @@
                                         {% endif %}
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">{% if endpoint.enabled %}<span
+                                <td class="px-4 py-3">{% if endpoint.enabled %}<span
                                             class="text-green-600 dark:text-green-400 font-medium">{{ 'settings.webhook.enabled'|trans }}</span>{% else %}
                                         <span class="text-gray-400 dark:text-gray-500">{{ 'settings.webhook.disabled'|trans }}</span>{% endif %}
                                 </td>
-                                <td class="px-6 py-4 text-right">
+                                <td class="px-4 py-3 text-right">
                                     <span class="inline-flex items-center rounded-lg border border-gray-200 dark:border-gray-600 divide-x divide-gray-200 dark:divide-gray-600">
                                         <a href="{{ path('settings_webhook_delivery_index', {id: endpoint.id}) }}"
                                            title="{{ 'settings.webhook.actions.deliveries'|trans }}"

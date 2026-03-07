@@ -75,11 +75,11 @@
             {% else %}
                 {% embed 'Settings/_table.html.twig' with {
                     headers: [
-                        {label: 'settings.table.id'},
+                        {label: 'settings.table.id', class: 'hidden xl:table-cell'},
                         {label: 'settings.voucher.table.code'},
                         {label: 'settings.voucher.table.user'},
                         {label: 'settings.voucher.table.domain'},
-                        {label: 'settings.table.created'},
+                        {label: 'settings.table.created', class: 'hidden xl:table-cell'},
                         {label: 'settings.voucher.table.status'},
                         {label: 'settings.table.actions', align: 'right'},
                     ]
@@ -87,21 +87,21 @@
                     {% block table_body %}
                         {% for voucher in pagination.items %}
                             <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ voucher.id }}</td>
-                                <td class="px-6 py-4 text-sm font-mono text-gray-900 dark:text-gray-100">{{ voucher.code }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">{{ voucher.user ? voucher.user.email : '—' }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">{{ voucher.domain ? voucher.domain.name : '—' }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-300">
+                                <td class="hidden xl:table-cell px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ voucher.id }}</td>
+                                <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-gray-100 max-w-[10rem] truncate" title="{{ voucher.code }}">{{ voucher.code }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 max-w-xs truncate" title="{{ voucher.user ? voucher.user.email : '' }}">{{ voucher.user ? voucher.user.email : '—' }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">{{ voucher.domain ? voucher.domain.name : '—' }}</td>
+                                <td class="hidden xl:table-cell px-4 py-3 text-sm text-gray-500 dark:text-gray-300">
                                     {{ voucher.creationTime|format_datetime('short', 'short') }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-4 py-3">
                                     {% if voucher.redeemed %}
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">{{ 'settings.voucher.status.redeemed'|trans }}</span>
                                     {% else %}
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">{{ 'settings.voucher.status.unredeemed'|trans }}</span>
                                     {% endif %}
                                 </td>
-                                <td class="px-6 py-4 text-right">
+                                <td class="px-4 py-3 text-right">
                                     <form method="post"
                                           action="{{ path('settings_voucher_delete', {id: voucher.id}) }}"
                                           onsubmit="return confirm('{{ 'settings.voucher.delete.confirm'|trans({'%code%': voucher.code|e('js')}) }}');">
