@@ -14,6 +14,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Override;
 use Stringable;
 
+/**
+ * Email domain managed by the application (e.g. "example.org").
+ *
+ * Users, aliases, and vouchers are scoped to a domain. Domain admins
+ * with {@see Roles::DOMAIN_ADMIN} can manage entities within their assigned domain.
+ */
 #[ORM\Entity(repositoryClass: DomainRepository::class)]
 #[ORM\Table(name: 'domains')]
 class Domain implements UpdatedTimeInterface, Stringable

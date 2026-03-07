@@ -7,6 +7,10 @@ namespace App\Twig;
 use Twig\Attribute\AsTwigFilter;
 use Twig\Markup;
 
+/**
+ * Provides the |safe_html Twig filter: server-side HTML sanitization (allowlisted tags, no javascript:/data: URLs)
+ * plus a data-safe-html wrapper for client-side DOMPurify processing.
+ */
 final class SafeHtmlExtension
 {
     #[AsTwigFilter(name: 'safe_html', isSafe: ['html'])]

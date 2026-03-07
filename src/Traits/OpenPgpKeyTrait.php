@@ -8,6 +8,9 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Stores OpenPGP key metadata and binary key data for Web Key Directory (WKD) publishing.
+ */
 trait OpenPgpKeyTrait
 {
     #[ORM\Column(type: Types::TEXT)]

@@ -41,6 +41,14 @@ use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Email account with roles, two-factor authentication (TOTP), and Dovecot mailbox encryption (MailCrypt).
+ *
+ * Each user belongs to a {@see Domain} and authenticates via password. Mailbox encryption keys are derived from
+ * the user's password and, optionally, a recovery token — both stored as libsodium secret boxes.
+ *
+ * @see Roles for the available role constants
+ */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
 #[Index(columns: ['email'], name: 'email_idx')]
@@ -76,12 +84,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 
     public const CURRENT_PASSWORD_VERSION = 2;
 
+    /** JSON array of role strings (e.g. ROLE_ADMIN, ROLE_DOMAIN_ADMIN). Defaults to [ROLE_USER]. */
     #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
 
+    /** When true, the user is forced to change their password on next login. */
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $passwordChangeRequired;
 
+    /** Per-user SMTP rate limits (keys: per_hour, per_day). Falls back to global settings when null. */
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $smtpQuotaLimits = null;
 

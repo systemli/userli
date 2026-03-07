@@ -16,6 +16,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Retention tracking API for updating last-login timestamps and listing inactive users.
+ *
+ * Useful for services with long-lived sessions (e.g. Matrix Synapse) that don't
+ * re-authenticate regularly against Dovecot. Requires the "retention" API scope.
+ */
 #[RequireApiScope(scope: ApiScope::RETENTION)]
 final class RetentionController extends AbstractController
 {
@@ -26,6 +32,7 @@ final class RetentionController extends AbstractController
     ) {
     }
 
+    /** Update a user's last-login time. Accepts an optional timestamp (must not be in the future). */
     #[Route(path: '/api/retention/{email}/touch', name: 'api_retention_put_touch_user', methods: ['PUT'], stateless: true)]
     public function putTouchUser(
         #[MapEntity(mapping: ['email' => 'email'])] User $user,
@@ -52,9 +59,7 @@ final class RetentionController extends AbstractController
         return $this->json([]);
     }
 
-    /**
-     * List inactive users.
-     */
+    /** List email addresses of users inactive for 2+ years. */
     #[Route(path: '/api/retention/users', name: 'api_retention_get_inactive_users', methods: ['GET'], stateless: true)]
     public function getInactiveUsers(): Response
     {

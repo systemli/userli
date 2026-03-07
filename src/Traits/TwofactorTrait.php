@@ -8,6 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
 
+/**
+ * Provides TOTP two-factor authentication fields.
+ */
 trait TwofactorTrait
 {
     #[ORM\Column(nullable: true)]

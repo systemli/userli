@@ -9,6 +9,12 @@ use App\Event\LoginEvent;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * Authenticates a user by password and dispatches a LoginEvent on success.
+ *
+ * The LoginEvent carries the plaintext password so downstream listeners
+ * (e.g. MailCrypt key handler) can decrypt/re-encrypt keys.
+ */
 final readonly class UserAuthenticationHandler
 {
     public function __construct(

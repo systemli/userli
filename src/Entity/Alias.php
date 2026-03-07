@@ -20,6 +20,13 @@ use Doctrine\ORM\Mapping\Index;
 use Override;
 use Stringable;
 
+/**
+ * Email alias that forwards mail from a source address to a destination user.
+ *
+ * Aliases can be manually created by users or randomly generated (see {@see $random}).
+ * Soft-deletable: deleted aliases retain their source but clear the destination and user
+ * reference via {@see clearSensitiveData()}.
+ */
 #[ORM\Entity(repositoryClass: AliasRepository::class)]
 #[ORM\AssociationOverrides([new AssociationOverride(name: 'domain', joinColumns: new ORM\JoinColumn(nullable: true, onDelete: 'CASCADE'))])]
 #[ORM\Table(name: 'aliases')]
@@ -36,15 +43,19 @@ class Alias implements SoftDeletableInterface, UpdatedTimeInterface, Stringable
     use UpdatedTimeTrait;
     use UserAwareTrait;
 
+    /** The alias email address that receives mail (e.g. "alias@example.org"). */
     #[ORM\Column]
     protected ?string $source = null;
 
+    /** The target email address mail is forwarded to. Nullable for soft-deleted aliases. */
     #[ORM\Column(nullable: true)]
     protected ?string $destination = null;
 
+    /** Optional user-provided label for this alias. */
     #[ORM\Column(nullable: true)]
     protected ?string $note = null;
 
+    /** Per-alias SMTP rate limits (keys: per_hour, per_day). Falls back to the user's or global settings when null. */
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $smtpQuotaLimits = null;
 

@@ -11,6 +11,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+/**
+ * Removes the link between redeemed vouchers and invited users after 3 months as a privacy measure.
+ */
 #[AsMessageHandler]
 final readonly class UnlinkRedeemedVouchersHandler
 {

@@ -10,6 +10,9 @@ use App\Service\WebhookDispatcher;
 use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Forwards user domain events (created, deleted, reset) to the WebhookDispatcher for outbound delivery.
+ */
 final readonly class WebhookListener implements EventSubscriberInterface
 {
     public function __construct(private WebhookDispatcher $dispatcher)

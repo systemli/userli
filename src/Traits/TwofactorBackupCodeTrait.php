@@ -7,6 +7,9 @@ namespace App\Traits;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Stores TOTP backup codes as a JSON array. Codes are invalidated (removed) on use.
+ */
 trait TwofactorBackupCodeTrait
 {
     #[ORM\Column(type: Types::JSON)]

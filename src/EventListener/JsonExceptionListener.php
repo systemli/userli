@@ -13,6 +13,9 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * Converts exceptions into JSON error responses for API requests. Includes stack traces in dev environment.
+ */
 final readonly class JsonExceptionListener implements EventSubscriberInterface
 {
     public function __construct(

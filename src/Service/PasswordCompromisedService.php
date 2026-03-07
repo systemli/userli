@@ -13,6 +13,9 @@ use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * Checks passwords against the Have I Been Pwned API and notifies users of compromised passwords (rate-limited to once per 7 days).
+ */
 final readonly class PasswordCompromisedService
 {
     private const RATE_LIMIT_HOURS = 24 * 7; // 7 days

@@ -15,6 +15,11 @@ use Doctrine\ORM\Mapping\Index;
 use Override;
 use Stringable;
 
+/**
+ * Invite code for the registration system.
+ *
+ * Each voucher belongs to a {@see Domain} and can be redeemed exactly once.
+ */
 #[ORM\Entity(repositoryClass: VoucherRepository::class)]
 #[ORM\Table(name: 'vouchers')]
 #[Index(columns: ['code'], name: 'code_idx')]
@@ -25,12 +30,15 @@ class Voucher implements Stringable
     use IdTrait;
     use UserAwareTrait;
 
+    /** When the voucher was used to register a new account (null if still available). */
     #[ORM\Column(nullable: true)]
     protected ?DateTimeImmutable $redeemedTime = null;
 
+    /** Unique invite code string shared with prospective users. */
     #[ORM\Column(unique: true)]
     protected string $code;
 
+    /** The user account that was created by redeeming this voucher (null if not yet redeemed). */
     #[ORM\OneToOne(mappedBy: 'invitationVoucher', targetEntity: User::class)]
     protected ?User $invitedUser = null;
 

@@ -10,6 +10,13 @@ use App\Traits\IdTrait;
 use App\Traits\OpenPgpKeyTrait;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * OpenPGP public key published via the Web Key Directory (WKD) protocol.
+ *
+ * Users can upload their keys through the UI. Keys are served as binary at
+ * `/.well-known/openpgpkey/{domain}/hu/{wkdHash}` and cached in Redis with a 24h TTL.
+ * Requires GnuPG >= 2.1.14 on the server for key import and validation.
+ */
 #[ORM\Entity(repositoryClass: OpenPgpKeyRepository::class)]
 #[ORM\Table(name: 'openpgp_keys')]
 #[ORM\Index(name: 'idx_wkd_hash', columns: ['wkd_hash'])]
@@ -23,6 +30,7 @@ class OpenPgpKey
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?User $user = null;
 
+    /** Z-Base-32 encoded SHA-1 hash of the lowercase local part, used for WKD key lookup. */
     #[ORM\Column(length: 32, nullable: true)]
     private ?string $wkdHash = null;
 

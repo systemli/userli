@@ -12,7 +12,9 @@ use App\Repository\AliasRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
- * Class AliasHandler.
+ * Manages email alias creation with separate limits for custom and random aliases.
+ *
+ * @see AliasCreator for the actual alias persistence logic
  */
 final readonly class AliasHandler
 {
@@ -22,9 +24,6 @@ final readonly class AliasHandler
 
     private AliasRepository $repository;
 
-    /**
-     * AliasHandler constructor.
-     */
     public function __construct(EntityManagerInterface $manager, private AliasCreator $creator)
     {
         $this->repository = $manager->getRepository(Alias::class);

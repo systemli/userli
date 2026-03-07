@@ -19,6 +19,12 @@ use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
+/**
+ * Keycloak user storage provider API for user search, count, and credential validation.
+ *
+ * Supports password and TOTP authentication. Used by the userli-keycloak-provider plugin.
+ * Requires the "keycloak" API scope.
+ */
 #[RequireApiScope(scope: ApiScope::KEYCLOAK)]
 final class KeycloakController extends AbstractController
 {
@@ -39,6 +45,7 @@ final class KeycloakController extends AbstractController
     ) {
     }
 
+    /** Search users within a domain. Supports pagination via ?search=, ?max=, ?first= query parameters. */
     #[Route(path: '/api/keycloak/{domainUrl}', name: 'api_keycloak_get_users_search', methods: ['GET'], stateless: true)]
     public function getUsersSearch(
         #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
@@ -54,12 +61,14 @@ final class KeycloakController extends AbstractController
         ], $users));
     }
 
+    /** Return the total number of users in a domain. */
     #[Route(path: '/api/keycloak/{domainUrl}/count', name: 'api_keycloak_get_users_count', methods: ['GET'], stateless: true)]
     public function getUsersCount(#[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain): Response
     {
         return $this->json($this->manager->getRepository(User::class)->countDomainUsers($domain));
     }
 
+    /** Look up a single user by email within a domain. Appends @domain if no @ is present. */
     #[Route(path: '/api/keycloak/{domainUrl}/user/{email}', name: 'api_keycloak_get_one_user', methods: ['GET'], stateless: true)]
     public function getOneUser(
         #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
@@ -81,6 +90,7 @@ final class KeycloakController extends AbstractController
         ]);
     }
 
+    /** Validate user credentials (password or TOTP) based on the credentialType in the request body. */
     #[Route(path: '/api/keycloak/{domainUrl}/validate/{email}', name: 'api_keycloak_post_user_validate', methods: ['POST'], stateless: true)]
     public function postUserValidate(
         #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
@@ -102,6 +112,7 @@ final class KeycloakController extends AbstractController
         };
     }
 
+    /** Check if a user has a specific credential type configured (password or OTP). */
     #[Route(path: '/api/keycloak/{domainUrl}/configured/{credentialType}/{email}', name: 'api_keycloak_get_is_configured_for', methods: ['GET'], stateless: true)]
     public function getIsConfiguredFor(#[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain, string $credentialType, string $email): Response
     {

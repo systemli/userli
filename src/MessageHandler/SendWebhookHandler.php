@@ -13,6 +13,10 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
 
+/**
+ * Delivers a webhook HTTP POST, recording attempt count, response code, and body (truncated to 4 KB).
+ * Re-throws transport exceptions to trigger Messenger retry.
+ */
 #[AsMessageHandler]
 final readonly class SendWebhookHandler
 {

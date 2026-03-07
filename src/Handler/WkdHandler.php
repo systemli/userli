@@ -14,6 +14,11 @@ use App\Repository\OpenPgpKeyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Tuupola\Base32;
 
+/**
+ * Manages OpenPGP Web Key Directory (WKD) operations: importing, looking up, and deleting GPG keys.
+ *
+ * @see GpgKeyImporter for the actual GPG key parsing
+ */
 final readonly class WkdHandler
 {
     private OpenPgpKeyRepository $repository;

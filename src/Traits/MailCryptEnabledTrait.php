@@ -6,6 +6,9 @@ namespace App\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Tracks whether MailCrypt (Dovecot mail_crypt_plugin) is enabled for this user.
+ */
 trait MailCryptEnabledTrait
 {
     #[ORM\Column(options: ['default' => false], name: 'mail_crypt')]

@@ -10,6 +10,13 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Ulid;
 
+/**
+ * Log entry for a single webhook delivery attempt.
+ *
+ * Tracks the full request/response cycle including headers, body, status code,
+ * and error details. Deliveries are retried up to 3 times with incremental backoff
+ * (10s, 60s, 360s). Uses ULID as primary key (also sent as `X-Webhook-Id` header).
+ */
 #[ORM\Entity(repositoryClass: WebhookDeliveryRepository::class)]
 #[ORM\Table(name: 'webhook_deliveries')]
 #[ORM\Index(columns: ['dispatched_time'])]
@@ -20,6 +27,7 @@ use Symfony\Component\Uid\Ulid;
 #[ORM\Index(columns: ['endpoint_id', 'type', 'success'])]
 class WebhookDelivery
 {
+    /** ULID primary key, also sent as the X-Webhook-Id header for idempotency. */
     #[ORM\Id]
     #[ORM\Column(type: 'ulid', unique: true)]
     private Ulid $id;
@@ -28,6 +36,7 @@ class WebhookDelivery
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private WebhookEndpoint $endpoint;
 
+    /** The webhook event type (e.g. "user.created"). Stored as string from {@see WebhookEvent}. */
     #[ORM\Column(length: 100)]
     private string $type;
 
@@ -43,12 +52,14 @@ class WebhookDelivery
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $responseBody = null;
 
+    /** Whether a 2xx response was received within the 10-second timeout. */
     #[ORM\Column(options: ['default' => false])]
     private bool $success = false;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $error = null;
 
+    /** Number of delivery attempts so far (max 4: initial + 3 retries). */
     #[ORM\Column(options: ['default' => 0])]
     private int $attempts = 0;
 
