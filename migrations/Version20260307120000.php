@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use DateTimeImmutable;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -28,9 +29,12 @@ final class Version20260307120000 extends AbstractMigration
         );
 
         if ((int) $exists === 0) {
+            $now = new DateTimeImmutable()->format('Y-m-d H:i:s');
             $this->connection->insert('settings', [
                 'name' => 'mail_crypt',
                 'value' => (string) $value,
+                'creation_time' => $now,
+                'updated_time' => $now,
             ]);
         }
     }
