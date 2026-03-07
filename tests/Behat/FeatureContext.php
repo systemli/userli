@@ -98,6 +98,9 @@ class FeatureContext extends MinkContext
         }
         $schemaTool->createSchema($metadata);
 
+        // Clear identity map to prevent collisions when entities are re-created
+        $this->manager->clear();
+
         // Clear the cache to ensure settings are not cached between tests
         $this->cache->clear();
     }
@@ -545,6 +548,22 @@ class FeatureContext extends MinkContext
         }
 
         $this->setPlaceholder($name, $value);
+    }
+
+    /**
+     * @When /^I set the hidden field "([^"]*)" to "([^"]*)"$/
+     *
+     * @throws Exception
+     */
+    public function iSetTheHiddenFieldTo(string $fieldId, string $value): void
+    {
+        $element = $this->getSession()->getPage()->find('css', '#'.$fieldId);
+
+        if (null === $element) {
+            throw new Exception(sprintf('Hidden field "#%s" not found', $fieldId));
+        }
+
+        $element->setValue($value);
     }
 
     /**
