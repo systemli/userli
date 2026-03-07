@@ -70,4 +70,47 @@ final class UserNotificationRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute();
     }
+
+    public function countByFilters(string $email = '', string $type = ''): int
+    {
+        $qb = $this->createQueryBuilder('un')
+            ->select('COUNT(un.id)')
+            ->join('un.user', 'u');
+
+        if ('' !== $email) {
+            $qb->andWhere('u.email LIKE :email')
+                ->setParameter('email', '%'.$email.'%');
+        }
+
+        if ('' !== $type) {
+            $qb->andWhere('un.type = :type')
+                ->setParameter('type', $type);
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @return array<UserNotification>
+     */
+    public function findPaginatedByFilters(string $email, string $type, int $limit, int $offset): array
+    {
+        $qb = $this->createQueryBuilder('un')
+            ->join('un.user', 'u')
+            ->orderBy('un.id', 'DESC')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        if ('' !== $email) {
+            $qb->andWhere('u.email LIKE :email')
+                ->setParameter('email', '%'.$email.'%');
+        }
+
+        if ('' !== $type) {
+            $qb->andWhere('un.type = :type')
+                ->setParameter('type', $type);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }

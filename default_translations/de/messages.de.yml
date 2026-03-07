@@ -482,6 +482,7 @@ settings:
     maintenance: Wartung
     reserved-names: Reservierte Namen
     domains: Domains
+    user-notifications: Benachrichtigungen
   maintenance:
     title: Wartung
     subtitle: Führe Wartungsaufgaben bei Bedarf aus
@@ -738,6 +739,27 @@ settings:
       total: "%count% Domains insgesamt"
       previous: Zurück
       next: Weiter
+      page: "Seite %page% von %totalPages%"
+
+  user-notification:
+    title: Benutzerbenachrichtigungen
+    heading: Benutzerbenachrichtigungen
+    description: Benachrichtigungsprotokolle für Benutzer anzeigen
+    filter:
+      type: Typ
+      all: Alle
+    search:
+      placeholder: Nach E-Mail suchen...
+      submit: Suchen
+    table:
+      user: Benutzer
+      type: Typ
+      empty-title: Keine Benachrichtigungen
+      empty-description: Es wurden noch keine Benutzerbenachrichtigungen aufgezeichnet.
+    pagination:
+      total: "%count% Benachrichtigungen insgesamt"
+      newer: Neuer
+      older: Älter
       page: "Seite %page% von %totalPages%"
 
 notifications:

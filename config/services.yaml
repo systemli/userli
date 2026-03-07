@@ -67,19 +67,6 @@ services:
             - [setSecurity, ['@Symfony\Bundle\SecurityBundle\Security']]
             - [setUserResetService, ['@App\Service\UserResetService']]
 
-    userli.admin.user_notification:
-        class: App\Admin\UserNotificationAdmin
-        public: true
-        tags:
-            - {
-                  name: sonata.admin,
-                  manager_type: orm,
-                  group: "Mail",
-                  label: "User Notification",
-                  code: userli.admin.user_notification,
-                  model_class: App\Entity\UserNotification,
-              }
-
     userli.admin.alias:
         class: App\Admin\AliasAdmin
         public: true

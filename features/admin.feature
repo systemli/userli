@@ -200,24 +200,6 @@ Feature: Admin
     Then I should be on "/login"
 
   @admin
-  Scenario: Admin can list user notifications
-    When I am authenticated as "louis@example.org"
-    And I am on "/admin/user-notification/list"
-    Then the response status code should be 200
-
-  @admin
-  Scenario: It is not possible to create new user notifications
-    When I am authenticated as "louis@example.org"
-    And I am on "/admin/user-notification/create"
-    Then the response status code should be 404
-
-  @admin
-  Scenario: It is not possible to edit user notifications
-    When I am authenticated as "louis@example.org"
-    And I am on "/admin/user-notification/1/edit"
-    Then the response status code should be 404
-
-  @admin
   Scenario: Admin resets password of user without MailCrypt
     When I am authenticated as "louis@example.org"
     And I am on "/admin/user/4/edit"
