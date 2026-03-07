@@ -502,6 +502,7 @@ settings:
     general: General
     reserved-names: Reserved Names
     domains: Domains
+    user-notifications: Notifications
   coming-soon: Coming Soon
   table:
     id: ID
@@ -740,6 +741,27 @@ settings:
       total: "%count% domains total"
       previous: Previous
       next: Next
+      page: "Page %page% of %totalPages%"
+
+  user-notification:
+    title: User Notifications
+    heading: User Notifications
+    description: View notification records sent to users
+    filter:
+      type: Type
+      all: All
+    search:
+      placeholder: Search by email...
+      submit: Search
+    table:
+      user: User
+      type: Type
+      empty-title: No notifications
+      empty-description: No user notifications have been recorded yet.
+    pagination:
+      total: "%count% notifications total"
+      newer: Newer
+      older: Older
       page: "Page %page% of %totalPages%"
 
 notifications:
