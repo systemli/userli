@@ -6,7 +6,7 @@ namespace App\Tests\EventListener;
 
 use App\Entity\Alias;
 use App\Entity\User;
-use App\Event\AliasDeletedEvent;
+use App\Event\AliasEvent;
 use App\Event\UserEvent;
 use App\EventListener\OpenPgpKeyListener;
 use App\Handler\WkdHandler;
@@ -20,9 +20,9 @@ class OpenPgpKeyListenerTest extends TestCase
     {
         $events = OpenPgpKeyListener::getSubscribedEvents();
 
-        self::assertArrayHasKey(AliasDeletedEvent::NAME, $events);
+        self::assertArrayHasKey(AliasEvent::DELETED, $events);
         self::assertArrayHasKey(UserEvent::USER_DELETED, $events);
-        self::assertEquals('onAliasDeleted', $events[AliasDeletedEvent::NAME]);
+        self::assertEquals('onAliasDeleted', $events[AliasEvent::DELETED]);
         self::assertEquals('onUserDeleted', $events[UserEvent::USER_DELETED]);
     }
 
@@ -41,7 +41,7 @@ class OpenPgpKeyListenerTest extends TestCase
         $wkdHandler->expects(self::once())->method('deleteKey')->with('shared@example.org');
 
         $listener = new OpenPgpKeyListener($wkdHandler, $userRepository, $aliasRepository);
-        $listener->onAliasDeleted(new AliasDeletedEvent($alias));
+        $listener->onAliasDeleted(new AliasEvent($alias));
     }
 
     public function testOnAliasDeletedKeepsKeyWhenUserExists(): void
@@ -58,7 +58,7 @@ class OpenPgpKeyListenerTest extends TestCase
         $wkdHandler->expects(self::never())->method('deleteKey');
 
         $listener = new OpenPgpKeyListener($wkdHandler, $userRepository, $aliasRepository);
-        $listener->onAliasDeleted(new AliasDeletedEvent($alias));
+        $listener->onAliasDeleted(new AliasEvent($alias));
     }
 
     public function testOnAliasDeletedKeepsKeyWhenAnotherAliasExists(): void
@@ -79,7 +79,7 @@ class OpenPgpKeyListenerTest extends TestCase
         $wkdHandler->expects(self::never())->method('deleteKey');
 
         $listener = new OpenPgpKeyListener($wkdHandler, $userRepository, $aliasRepository);
-        $listener->onAliasDeleted(new AliasDeletedEvent($alias));
+        $listener->onAliasDeleted(new AliasEvent($alias));
     }
 
     public function testOnAliasDeletedSkipsNullSource(): void
@@ -93,7 +93,7 @@ class OpenPgpKeyListenerTest extends TestCase
         $aliasRepository = $this->createStub(AliasRepository::class);
 
         $listener = new OpenPgpKeyListener($wkdHandler, $userRepository, $aliasRepository);
-        $listener->onAliasDeleted(new AliasDeletedEvent($alias));
+        $listener->onAliasDeleted(new AliasEvent($alias));
     }
 
     public function testOnUserDeletedCleansUpOrphanedKey(): void

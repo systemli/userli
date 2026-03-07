@@ -8,7 +8,7 @@ use App\Entity\Alias;
 use App\Entity\User;
 use App\Entity\UserNotification;
 use App\Entity\Voucher;
-use App\Event\AliasDeletedEvent;
+use App\Event\AliasEvent;
 use App\Event\UserEvent;
 use App\Handler\DeleteHandler;
 use App\Helper\PasswordUpdater;
@@ -104,8 +104,8 @@ class DeleteHandlerTest extends TestCase
         $handler->deleteAlias($alias);
 
         self::assertCount(1, $this->dispatchedEvents);
-        self::assertSame(AliasDeletedEvent::NAME, $this->dispatchedEvents[0]['name']);
-        self::assertInstanceOf(AliasDeletedEvent::class, $this->dispatchedEvents[0]['event']);
+        self::assertSame(AliasEvent::DELETED, $this->dispatchedEvents[0]['name']);
+        self::assertInstanceOf(AliasEvent::class, $this->dispatchedEvents[0]['event']);
         self::assertSame($alias, $this->dispatchedEvents[0]['event']->getAlias());
     }
 
@@ -209,14 +209,14 @@ class DeleteHandlerTest extends TestCase
 
         $handler->deleteUser($user);
 
-        // Expect 2 AliasDeletedEvents + 1 UserEvent::USER_DELETED
+        // Expect 2 AliasEvent::DELETED + 1 UserEvent::USER_DELETED
         self::assertCount(3, $this->dispatchedEvents);
 
         // Alias events come first
-        self::assertSame(AliasDeletedEvent::NAME, $this->dispatchedEvents[0]['name']);
+        self::assertSame(AliasEvent::DELETED, $this->dispatchedEvents[0]['name']);
         self::assertSame($alias1, $this->dispatchedEvents[0]['event']->getAlias());
 
-        self::assertSame(AliasDeletedEvent::NAME, $this->dispatchedEvents[1]['name']);
+        self::assertSame(AliasEvent::DELETED, $this->dispatchedEvents[1]['name']);
         self::assertSame($alias2, $this->dispatchedEvents[1]['event']->getAlias());
 
         // User event comes last

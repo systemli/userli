@@ -8,7 +8,7 @@ use App\Entity\Alias;
 use App\Entity\User;
 use App\Entity\UserNotification;
 use App\Entity\Voucher;
-use App\Event\AliasDeletedEvent;
+use App\Event\AliasEvent;
 use App\Event\UserEvent;
 use App\Helper\PasswordGenerator;
 use App\Helper\PasswordUpdater;
@@ -40,7 +40,7 @@ final readonly class DeleteHandler
 
         $this->manager->flush();
 
-        $this->eventDispatcher->dispatch(new AliasDeletedEvent($alias), AliasDeletedEvent::NAME);
+        $this->eventDispatcher->dispatch(new AliasEvent($alias), AliasEvent::DELETED);
     }
 
     public function deleteUser(User $user): void
@@ -84,7 +84,7 @@ final readonly class DeleteHandler
         $this->manager->flush();
 
         foreach ($aliases as $alias) {
-            $this->eventDispatcher->dispatch(new AliasDeletedEvent($alias), AliasDeletedEvent::NAME);
+            $this->eventDispatcher->dispatch(new AliasEvent($alias), AliasEvent::DELETED);
         }
 
         $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_DELETED);

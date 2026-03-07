@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
-use App\Event\AliasDeletedEvent;
+use App\Event\AliasEvent;
 use App\Event\UserEvent;
 use App\Handler\WkdHandler;
 use App\Repository\AliasRepository;
@@ -21,7 +21,7 @@ final readonly class OpenPgpKeyListener implements EventSubscriberInterface
     ) {
     }
 
-    public function onAliasDeleted(AliasDeletedEvent $event): void
+    public function onAliasDeleted(AliasEvent $event): void
     {
         $source = $event->getAlias()->getSource();
 
@@ -59,7 +59,7 @@ final readonly class OpenPgpKeyListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            AliasDeletedEvent::NAME => 'onAliasDeleted',
+            AliasEvent::DELETED => 'onAliasDeleted',
             UserEvent::USER_DELETED => 'onUserDeleted',
         ];
     }
