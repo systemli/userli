@@ -8,6 +8,7 @@ use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -85,6 +86,53 @@ final class AliasRepository extends ServiceEntityRepository
         }
 
         return $result['smtpQuotaLimits'] ?? [];
+    }
+
+    public function countByFilters(string $search = '', ?Domain $domain = null, string $deleted = 'active'): int
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->select('COUNT(a.id)');
+
+        $this->applyFilters($qb, $search, $domain, $deleted);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @return Alias[]
+     */
+    public function findPaginatedByFilters(string $search = '', ?Domain $domain = null, string $deleted = 'active', int $limit = 20, int $offset = 0): array
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->orderBy('a.id', 'DESC')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        $this->applyFilters($qb, $search, $domain, $deleted);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    private function applyFilters(QueryBuilder $qb, string $search, ?Domain $domain, string $deleted): void
+    {
+        if ('' !== $search) {
+            $qb->leftJoin('a.user', 'u')
+                ->andWhere('a.source LIKE :search OR a.destination LIKE :search OR u.email LIKE :search')
+                ->setParameter('search', '%'.$search.'%');
+        }
+
+        if (null !== $domain) {
+            $qb->andWhere('a.domain = :domain')
+                ->setParameter('domain', $domain);
+        }
+
+        if ('active' === $deleted) {
+            $qb->andWhere('a.deleted = :deleted')
+                ->setParameter('deleted', false);
+        } elseif ('deleted' === $deleted) {
+            $qb->andWhere('a.deleted = :deleted')
+                ->setParameter('deleted', true);
+        }
     }
 
     /**

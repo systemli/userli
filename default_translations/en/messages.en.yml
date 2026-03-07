@@ -501,6 +501,7 @@ settings:
     maintenance: Maintenance
     general: General
     reserved-names: Reserved Names
+    aliases: Aliases
     vouchers: Vouchers
     domains: Domains
     user-notifications: Notifications
@@ -694,6 +695,73 @@ settings:
       button: Export
     pagination:
       total: "%count% reserved names total"
+      previous: Previous
+      next: Next
+      page: "Page %page% of %totalPages%"
+
+  alias:
+    title: Aliases
+    heading: Aliases
+    description: Manage email aliases for your users
+    table:
+      source: Source
+      destination: Destination
+      status: Status
+      empty-title: No aliases
+      empty-description: There are no aliases yet. Create an alias to forward emails.
+    filter:
+      status: Status
+      active: Active
+      deleted: Deleted
+      all: All
+    status:
+      active: Active
+      deleted: Deleted
+    create:
+      button: Create Alias
+      title: Create Alias
+      heading: Create Alias
+      description: Create a new email alias.
+      success: Alias has been created successfully.
+      error: Failed to create alias.
+    edit:
+      title: Edit Alias
+      success: Alias has been updated successfully.
+    delete:
+      confirm: "Are you sure you want to delete the alias \"%source%\"?"
+      success: Alias has been deleted successfully.
+    actions:
+      edit: Edit
+      delete: Delete
+    form:
+      title:
+        create: Create new Alias
+        edit: Edit Alias
+      description:
+        create: Provide the source email, optional user and destination for the alias.
+      source:
+        label: Source
+        help:
+          create: The source email address that will be aliased.
+          edit: The source email address cannot be changed. Create a new alias instead.
+      user:
+        label: User
+        help: Select the user who owns this alias. If left empty, defaults to the current user.
+      destination:
+        label: Destination
+        help: The destination email address. If left empty, defaults to the selected user's email.
+      smtp_quota_limits:
+        label: SMTP Quota Limits
+        help: Override the default SMTP quota limits for this alias.
+      submit:
+        create: Create
+        save: Save
+      cancel: Cancel
+    search:
+      placeholder: Search by source, destination or user...
+      submit: Search
+    pagination:
+      total: "%count% aliases total"
       previous: Previous
       next: Next
       page: "Page %page% of %totalPages%"

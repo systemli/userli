@@ -481,6 +481,7 @@ settings:
     general: Allgemein
     maintenance: Wartung
     reserved-names: Reservierte Namen
+    aliases: Aliase
     vouchers: Einladungen
     domains: Domains
     user-notifications: Benachrichtigungen
@@ -692,6 +693,73 @@ settings:
       button: Exportieren
     pagination:
       total: "%count% reservierte Namen insgesamt"
+      previous: Zurück
+      next: Weiter
+      page: "Seite %page% von %totalPages%"
+
+  alias:
+    title: Aliase
+    heading: Aliase
+    description: Verwalte E-Mail-Aliase für deine Benutzer:innen
+    table:
+      source: Quelle
+      destination: Ziel
+      status: Status
+      empty-title: Keine Aliase
+      empty-description: Es sind noch keine Aliase vorhanden. Erstelle einen Alias, um E-Mails weiterzuleiten.
+    filter:
+      status: Status
+      active: Aktiv
+      deleted: Gelöscht
+      all: Alle
+    status:
+      active: Aktiv
+      deleted: Gelöscht
+    create:
+      button: Alias erstellen
+      title: Alias erstellen
+      heading: Alias erstellen
+      description: Erstelle einen neuen E-Mail-Alias.
+      success: Alias wurde erfolgreich erstellt.
+      error: Alias konnte nicht erstellt werden.
+    edit:
+      title: Alias bearbeiten
+      success: Alias wurde erfolgreich aktualisiert.
+    delete:
+      confirm: "Möchtest du den Alias \"%source%\" wirklich löschen?"
+      success: Alias wurde erfolgreich gelöscht.
+    actions:
+      edit: Bearbeiten
+      delete: Löschen
+    form:
+      title:
+        create: Neuen Alias erstellen
+        edit: Alias bearbeiten
+      description:
+        create: Gib die Quell-E-Mail-Adresse, optional einen Benutzer und ein Ziel für den Alias an.
+      source:
+        label: Quelle
+        help:
+          create: Die Quell-E-Mail-Adresse, die weitergeleitet wird.
+          edit: Die Quell-E-Mail-Adresse kann nicht geändert werden. Erstelle stattdessen einen neuen Alias.
+      user:
+        label: Benutzer
+        help: Wähle den Benutzer, dem dieser Alias gehört. Wenn leer, wird der aktuelle Benutzer verwendet.
+      destination:
+        label: Ziel
+        help: Die Ziel-E-Mail-Adresse. Wenn leer, wird die E-Mail-Adresse des ausgewählten Benutzers verwendet.
+      smtp_quota_limits:
+        label: SMTP-Quota Limits
+        help: Überschreibe die Standard-SMTP-Quota-Limits für diesen Alias.
+      submit:
+        create: Erstellen
+        save: Speichern
+      cancel: Abbrechen
+    search:
+      placeholder: Nach Quelle, Ziel oder Benutzer suchen...
+      submit: Suchen
+    pagination:
+      total: "%count% Aliase insgesamt"
       previous: Zurück
       next: Weiter
       page: "Seite %page% von %totalPages%"
