@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ setting('app_name') }} - {{ "error.title"|trans|default("Oops, an error occurred.") }}</title>
     <link rel="stylesheet" href="{{ asset('build/app.css') }}">
-    <script>
+    <script nonce="{{ csp_nonce('script') }}">
         (function() {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
