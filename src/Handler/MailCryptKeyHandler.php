@@ -14,9 +14,6 @@ use Symfony\Component\Process\Process;
 
 use const OPENSSL_KEYTYPE_EC;
 
-/**
- * Class AliasHandler.
- */
 final readonly class MailCryptKeyHandler
 {
     // Use elliptic curve type 'secp521r1' for MailCrypt keys
@@ -32,9 +29,6 @@ final readonly class MailCryptKeyHandler
 
     public const string MESSAGE_DECRYPTION_FAILED = 'decryption of mailCryptSecretBox failed';
 
-    /**
-     * MailCryptPrivateKeyHandler constructor.
-     */
     public function __construct(private EntityManagerInterface $manager)
     {
     }
