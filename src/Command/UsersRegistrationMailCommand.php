@@ -52,6 +52,6 @@ final class UsersRegistrationMailCommand extends Command
 
         $this->welcomeMessageSender->send($user, $locale);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

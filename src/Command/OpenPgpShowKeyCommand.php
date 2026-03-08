@@ -49,6 +49,6 @@ final class OpenPgpShowKeyCommand extends Command
             $output->writeln(sprintf('OpenPGP key for email %s: %s', $openPgpKey->getEmail(), $openPgpKey->getKeyFingerprint()));
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

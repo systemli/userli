@@ -42,13 +42,13 @@ final class AliasDeleteCommand extends Command
         if ($email && null === $user = $this->manager->getRepository(User::class)->findByEmail($email)) {
             $output->writeln(sprintf("<error>User with email '%s' not found!</error>", $email));
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if (empty($source) || null === $alias = $this->manager->getRepository(Alias::class)->findOneBySource($source)) {
             $output->writeln(sprintf("<error>Alias with address '%s' not found!</error>", $source));
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if ($input->getOption('dry-run')) {
@@ -67,6 +67,6 @@ final class AliasDeleteCommand extends Command
             }
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
