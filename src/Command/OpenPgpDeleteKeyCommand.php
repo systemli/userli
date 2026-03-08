@@ -52,6 +52,6 @@ final class OpenPgpDeleteKeyCommand extends Command
             $output->writeln(sprintf('Deleted OpenPGP key for email %s: %s', $openPgpKey->getEmail(), $openPgpKey->getKeyFingerprint()));
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

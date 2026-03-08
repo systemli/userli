@@ -57,11 +57,11 @@ final class OpenPgpImportKeyCommand extends Command
         } catch (NoGpgKeyForUserException|MultipleGpgKeysForUserException $e) {
             $output->writeln(sprintf('Error: %s in %s', $e->getMessage(), $file));
 
-            return 0;
+            return Command::FAILURE;
         }
 
         $output->writeln(sprintf('Imported OpenPGP key for email %s: %s', $email, $openPgpKey->getKeyFingerprint()));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
