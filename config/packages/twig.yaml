@@ -2,7 +2,7 @@ twig:
   default_path: '%kernel.project_dir%/templates'
   form_themes: ['Form/fields.html.twig']
   globals:
-    locales: '%supported_locales%'
+    locales: '%locales%'
   file_name_pattern: '*.twig'
 
 when@test:
