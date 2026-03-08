@@ -33,7 +33,8 @@
                 <div class="flex items-center gap-2">
                     <label for="deleted-filter" class="text-sm text-gray-600 dark:text-gray-400">{{ 'settings.alias.filter.status'|trans }}:</label>
                     <select id="deleted-filter"
-                            onchange="window.location.href = this.value"
+                            data-controller="navigate"
+                            data-action="change->navigate#go"
                             class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         <option value="{{ path('settings_alias_index', {search: search, deleted: 'active'}|filter(v => v)) }}"{% if deleted == 'active' %} selected{% endif %}>{{ 'settings.alias.filter.active'|trans }}</option>
                         <option value="{{ path('settings_alias_index', {search: search, deleted: 'deleted'}|filter(v => v)) }}"{% if deleted == 'deleted' %} selected{% endif %}>{{ 'settings.alias.filter.deleted'|trans }}</option>

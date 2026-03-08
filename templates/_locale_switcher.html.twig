@@ -84,7 +84,8 @@
 <noscript>
     <div class="relative inline-block text-left">
         <select
-            onchange="window.location.href=this.value"
+            data-controller="navigate"
+            data-action="change->navigate#go"
             class="bg-gray-900/95 text-white text-sm border-gray-600/50 rounded-2xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-md"
             aria-label="{{ 'navbar.select-language'|trans }}"
         >
