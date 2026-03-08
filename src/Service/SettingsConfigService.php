@@ -9,21 +9,18 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Yaml\Yaml;
 
-final class SettingsConfigService
+final readonly class SettingsConfigService
 {
-    private array $settings = [];
+    private array $settings;
 
     public function __construct(
-        #[Autowire(param: 'kernel.project_dir')] private readonly string $projectDir,
+        #[Autowire(param: 'kernel.project_dir')] string $projectDir,
     ) {
-        $this->loadDefaults();
-    }
-
-    private function loadDefaults(): void
-    {
-        $configFile = $this->projectDir.'/config/settings.yaml';
+        $configFile = $projectDir.'/config/settings.yaml';
 
         if (!file_exists($configFile)) {
+            $this->settings = [];
+
             return;
         }
 
@@ -31,7 +28,6 @@ final class SettingsConfigService
         $processor = new Processor();
         $configuration = new SettingsConfiguration();
 
-        // Pass the 'settings' part of the config to the processor
         $settingsConfig = $config['settings'] ?? [];
         $this->settings = $processor->processConfiguration($configuration, [$settingsConfig]);
     }
