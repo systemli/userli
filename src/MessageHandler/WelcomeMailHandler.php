@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\MessageHandler;
 
 use App\Entity\User;
+use App\Mail\WelcomeMailer;
 use App\Message\WelcomeMail;
-use App\Sender\WelcomeMessageSender;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -15,7 +15,7 @@ final readonly class WelcomeMailHandler
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private WelcomeMessageSender $sender,
+        private WelcomeMailer $mailer,
     ) {
     }
 
@@ -26,6 +26,6 @@ final readonly class WelcomeMailHandler
             return;
         }
 
-        $this->sender->send($user, $message->locale);
+        $this->mailer->send($user, $message->locale);
     }
 }

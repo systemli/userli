@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Tests\MessageHandler;
 
 use App\Entity\User;
+use App\Mail\WelcomeMailer;
 use App\Message\WelcomeMail;
 use App\MessageHandler\WelcomeMailHandler;
-use App\Sender\WelcomeMessageSender;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;
@@ -31,12 +31,12 @@ class WelcomeMailHandlerTest extends TestCase
         $em = $this->createStub(EntityManagerInterface::class);
         $em->method('getRepository')->willReturn($repo);
 
-        $sender = $this->createMock(WelcomeMessageSender::class);
-        $sender->expects($this->once())
+        $mailer = $this->createMock(WelcomeMailer::class);
+        $mailer->expects($this->once())
             ->method('send')
             ->with($user, $locale);
 
-        $handler = new WelcomeMailHandler($em, $sender);
+        $handler = new WelcomeMailHandler($em, $mailer);
         $handler(new WelcomeMail($email, $locale));
     }
 
@@ -54,10 +54,10 @@ class WelcomeMailHandlerTest extends TestCase
         $em = $this->createStub(EntityManagerInterface::class);
         $em->method('getRepository')->willReturn($repo);
 
-        $sender = $this->createMock(WelcomeMessageSender::class);
-        $sender->expects($this->never())->method('send');
+        $mailer = $this->createMock(WelcomeMailer::class);
+        $mailer->expects($this->never())->method('send');
 
-        $handler = new WelcomeMailHandler($em, $sender);
+        $handler = new WelcomeMailHandler($em, $mailer);
         $handler(new WelcomeMail($email, 'en'));
     }
 }

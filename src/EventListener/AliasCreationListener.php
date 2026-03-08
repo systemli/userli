@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\EventListener;
 
 use App\Event\AliasCreatedEvent;
-use App\Sender\AliasCreatedMessageSender;
+use App\Mail\AliasCreatedMailer;
 use Exception;
 use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -16,7 +16,7 @@ final readonly class AliasCreationListener implements EventSubscriberInterface
 {
     public function __construct(
         private RequestStack $request,
-        private AliasCreatedMessageSender $sender,
+        private AliasCreatedMailer $mailer,
         #[Autowire('kernel.default_locale')]
         private string $defaultLocale,
     ) {
@@ -34,7 +34,7 @@ final readonly class AliasCreationListener implements EventSubscriberInterface
         }
 
         $locale = $this->request->getSession()->get('_locale', $this->defaultLocale);
-        $this->sender->send($user, $alias, $locale);
+        $this->mailer->send($user, $alias, $locale);
     }
 
     #[Override]

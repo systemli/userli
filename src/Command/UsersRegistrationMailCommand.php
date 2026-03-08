@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Entity\User;
-use App\Sender\WelcomeMessageSender;
+use App\Mail\WelcomeMailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Override;
@@ -22,7 +22,7 @@ final class UsersRegistrationMailCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $manager,
-        private readonly WelcomeMessageSender $welcomeMessageSender,
+        private readonly WelcomeMailer $welcomeMailer,
         #[Autowire('kernel.default_locale')]
         private readonly string $defaultLocale,
     ) {
@@ -50,7 +50,7 @@ final class UsersRegistrationMailCommand extends Command
             throw new UserNotFoundException(sprintf('User with email %s not found!', $email));
         }
 
-        $this->welcomeMessageSender->send($user, $locale);
+        $this->welcomeMailer->send($user, $locale);
 
         return Command::SUCCESS;
     }
