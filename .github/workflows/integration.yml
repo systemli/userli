@@ -1,7 +1,7 @@
 name: Integration
 
 on:
-  pull_request:
+  pull_request_target:
   push:
     branches:
       - main
@@ -14,6 +14,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
       - name: Setup PHP

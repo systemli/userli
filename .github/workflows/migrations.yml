@@ -83,7 +83,7 @@ jobs:
           fi
 
       - name: Find existing comment
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad # v4
         id: find-comment
         with:
@@ -92,7 +92,7 @@ jobs:
           body-includes: "<!-- schema-drift-comment -->"
 
       - name: Delete comment on success
-        if: github.event_name == 'pull_request' && steps.schema-check.outputs.has_drift == 'false' && steps.find-comment.outputs.comment-id != ''
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && steps.schema-check.outputs.has_drift == 'false' && steps.find-comment.outputs.comment-id != ''
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           script: |
@@ -103,7 +103,7 @@ jobs:
             });
 
       - name: Post or update comment on failure
-        if: github.event_name == 'pull_request' && steps.schema-check.outputs.has_drift == 'true'
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && steps.schema-check.outputs.has_drift == 'true'
         uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
