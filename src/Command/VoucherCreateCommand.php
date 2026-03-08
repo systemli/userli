@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Entity\Domain;
+use App\Handler\PasswordStrengthHandler;
 use App\Service\SettingsService;
 use App\Service\VoucherManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,11 +22,12 @@ final class VoucherCreateCommand extends AbstractUsersCommand
 {
     public function __construct(
         EntityManagerInterface $manager,
+        PasswordStrengthHandler $passwordStrengthHandler,
         private readonly RouterInterface $router,
         private readonly VoucherManager $voucherManager,
         private readonly SettingsService $settingsService,
     ) {
-        parent::__construct($manager);
+        parent::__construct($manager, $passwordStrengthHandler);
     }
 
     #[Override]

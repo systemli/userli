@@ -21,6 +21,7 @@ abstract class AbstractUsersCommand extends Command
 {
     public function __construct(
         protected readonly EntityManagerInterface $manager,
+        private readonly PasswordStrengthHandler $passwordStrengthHandler,
     ) {
         parent::__construct();
     }
@@ -55,9 +56,8 @@ abstract class AbstractUsersCommand extends Command
         assert($questionHelper instanceof QuestionHelper);
 
         $passwordQuest = new Question('New password: ');
-        $passwordQuest->setValidator(static function ($value) {
-            $validator = new PasswordStrengthHandler();
-            if ($validator->validate($value)) {
+        $passwordQuest->setValidator(function ($value) {
+            if ($this->passwordStrengthHandler->validate($value)) {
                 throw new PasswordPolicyException();
             }
 
