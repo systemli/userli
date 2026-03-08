@@ -10,7 +10,7 @@ use App\Sender\WelcomeMessageSender;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
+#[AsMessageHandler(sign: true)]
 final readonly class WelcomeMailHandler
 {
     public function __construct(

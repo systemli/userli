@@ -9,7 +9,7 @@ use App\Message\InvalidateDomainCache;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Contracts\Cache\CacheInterface;
 
-#[AsMessageHandler]
+#[AsMessageHandler(sign: true)]
 final readonly class InvalidateDomainCacheHandler
 {
     public function __construct(private CacheInterface $cache)

@@ -9,7 +9,7 @@ use App\Message\InvalidateUserCache;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Contracts\Cache\CacheInterface;
 
-#[AsMessageHandler]
+#[AsMessageHandler(sign: true)]
 final readonly class InvalidateUserCacheHandler
 {
     public function __construct(private CacheInterface $cache)

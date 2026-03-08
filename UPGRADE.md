@@ -1,5 +1,31 @@
 # Upgrade documentation
 
+## Unreleased
+
+### Messenger message signing enabled
+
+All Messenger message handlers now use cryptographic signing (`sign: true`) via
+Symfony's `SigningSerializer`. Messages are signed with an HMAC-SHA256 signature
+using `APP_SECRET` when dispatched and verified when consumed.
+
+**Deployment impact:** Messages already in the queue at the time of deployment
+will lack a valid signature and will be **rejected** by the consumer with an
+`InvalidMessageSignatureException`. To avoid message loss:
+
+1. **Before deploying**, drain the message queue by running the consumer until
+   all pending messages are processed:
+   ```shell
+   bin/console messenger:consume async --limit=0
+   ```
+2. **Deploy** the new version.
+3. **Start** the consumer as usual.
+
+Alternatively, if draining is not possible, you can purge the queue (messages
+will be lost):
+```shell
+bin/console doctrine:query:sql "DELETE FROM messenger_messages"
+```
+
 ## Upgrade to 6.3.0
 
 ### MAIL_CRYPT environment variable removed

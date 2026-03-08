@@ -8,7 +8,7 @@ use App\Message\ClearCache;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
+#[AsMessageHandler(sign: true)]
 final readonly class ClearCacheHandler
 {
     public function __construct(private CacheItemPoolInterface $cache)

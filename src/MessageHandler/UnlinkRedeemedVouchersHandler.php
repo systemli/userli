@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
+#[AsMessageHandler(sign: true)]
 final readonly class UnlinkRedeemedVouchersHandler
 {
     public function __construct(
