@@ -78,7 +78,7 @@ jobs:
     if: github.actor != 'dependabot[bot]'
     needs: test
     concurrency:
-      group: docker-build-push
+      group: docker-build-push-${{ github.head_ref || github.ref }}
       cancel-in-progress: true
     steps:
       - name: Checkout
