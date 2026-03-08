@@ -1,5 +1,16 @@
 # Changelog
 
+## 6.4.1 (2026.03.08)
+
+### Technical Changes
+
+- 💚 Scope Docker build concurrency group to git ref (#1147)
+- ♻️ Replace inline onchange handlers with Stimulus navigate controller (#1146)
+- 💚 Fix CI workflows for external (fork) contributions (#1145)
+- ♻️ Merge Builder/ + Sender/ into Mail/ mailer classes (#1144)
+- ♻️ Simplify locale parameters in services.yaml (#1143)
+- ⬆️ (deps-dev): Bump dompurify from 3.3.1 to 3.3.2 (#1118)
+
 ## 6.4.0 (2026.03.08)
 
 ### Features and Improvements
