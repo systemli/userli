@@ -9,9 +9,8 @@
 {% block page_subtitle %}{{ "account.twofactor.backup-ack-lead"|trans }}{% endblock %}
 
 {% block page_content %}
-    <div class="max-w-6xl mx-auto">
-        <div class="max-w-5xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Left column: Backup Codes and Acknowledgment Form -->
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 sm:p-8">
                     <div class="flex items-center mb-4">
@@ -83,6 +82,5 @@
 
                 {% include 'Account/_twofactor_info.html.twig' %}
             </div>
-        </div>
     </div>
 {% endblock %}
