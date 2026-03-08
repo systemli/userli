@@ -14,7 +14,7 @@
     {% endblock %}
 
     {# Dark mode initialization - respects system preference and saved preference #}
-    <script>
+    <script nonce="{{ csp_nonce('script') }}">
         (function() {
             const savedTheme = localStorage.getItem('theme');
             if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
