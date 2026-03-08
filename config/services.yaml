@@ -35,11 +35,6 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\EventListener\:
-        resource: "../src/EventListener/*"
-        tags:
-            - { name: kernel.event_subscriber }
-
     # Custom TOTP Authenticator that uses settings instead of environment variables
     App\Service\SettingsAwareTotpAuthenticator:
         decorates: "scheb_two_factor.security.totp_authenticator"
