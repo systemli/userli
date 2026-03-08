@@ -7,7 +7,7 @@ namespace App\Tests\EventListener;
 use App\Entity\User;
 use App\Event\UserEvent;
 use App\EventListener\RecoveryProcessListener;
-use App\Sender\RecoveryProcessMessageSender;
+use App\Mail\RecoveryProcessMailer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -37,12 +37,12 @@ class RecoveryProcessListenerTest extends TestCase
         $requestStack->method('getSession')->willReturn($session);
         $requestStack->method('getCurrentRequest')->willReturn($request);
 
-        $sender = $this->createMock(RecoveryProcessMessageSender::class);
-        $sender->expects($this->once())
+        $mailer = $this->createMock(RecoveryProcessMailer::class);
+        $mailer->expects($this->once())
             ->method('send')
             ->with($user, 'fr');
 
-        $listener = new RecoveryProcessListener($requestStack, $sender, 'en');
+        $listener = new RecoveryProcessListener($requestStack, $mailer, 'en');
         $listener->onRecoveryProcessStarted(new UserEvent($user));
     }
 
@@ -60,12 +60,12 @@ class RecoveryProcessListenerTest extends TestCase
         $requestStack->method('getSession')->willReturn($session);
         $requestStack->method('getCurrentRequest')->willReturn($request);
 
-        $sender = $this->createMock(RecoveryProcessMessageSender::class);
-        $sender->expects($this->once())
+        $mailer = $this->createMock(RecoveryProcessMailer::class);
+        $mailer->expects($this->once())
             ->method('send')
             ->with($user, 'en');
 
-        $listener = new RecoveryProcessListener($requestStack, $sender, 'en');
+        $listener = new RecoveryProcessListener($requestStack, $mailer, 'en');
         $listener->onRecoveryProcessStarted(new UserEvent($user));
     }
 }

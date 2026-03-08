@@ -8,7 +8,7 @@ use App\Entity\Alias;
 use App\Entity\User;
 use App\Event\AliasCreatedEvent;
 use App\EventListener\AliasCreationListener;
-use App\Sender\AliasCreatedMessageSender;
+use App\Mail\AliasCreatedMailer;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,12 +42,12 @@ class AliasCreationListenerTest extends TestCase
         $requestStack->method('getSession')->willReturn($session);
         $requestStack->method('getCurrentRequest')->willReturn($request);
 
-        $sender = $this->createMock(AliasCreatedMessageSender::class);
-        $sender->expects($this->once())
+        $mailer = $this->createMock(AliasCreatedMailer::class);
+        $mailer->expects($this->once())
             ->method('send')
             ->with($user, $alias, 'de');
 
-        $listener = new AliasCreationListener($requestStack, $sender, 'en');
+        $listener = new AliasCreationListener($requestStack, $mailer, 'en');
         $listener->onAliasCreated(new AliasCreatedEvent($alias));
     }
 
@@ -58,9 +58,9 @@ class AliasCreationListenerTest extends TestCase
         // User is null
 
         $requestStack = $this->createStub(RequestStack::class);
-        $sender = $this->createStub(AliasCreatedMessageSender::class);
+        $mailer = $this->createStub(AliasCreatedMailer::class);
 
-        $listener = new AliasCreationListener($requestStack, $sender, 'en');
+        $listener = new AliasCreationListener($requestStack, $mailer, 'en');
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('User should not be null');

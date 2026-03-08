@@ -6,8 +6,8 @@ namespace App\Tests\Command;
 
 use App\Command\UsersRegistrationMailCommand;
 use App\Entity\User;
+use App\Mail\WelcomeMailer;
 use App\Repository\UserRepository;
-use App\Sender\WelcomeMessageSender;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
@@ -20,13 +20,13 @@ class UsersRegistrationMailCommandTest extends TestCase
 {
     private UsersRegistrationMailCommand $command;
     private Stub $entityManager;
-    private MockObject $welcomeMessageSender;
+    private MockObject $welcomeMailer;
     private MockObject $userRepository;
 
     protected function setUp(): void
     {
         $this->entityManager = $this->createStub(EntityManagerInterface::class);
-        $this->welcomeMessageSender = $this->createMock(WelcomeMessageSender::class);
+        $this->welcomeMailer = $this->createMock(WelcomeMailer::class);
         $this->userRepository = $this->createMock(UserRepository::class);
 
         $this->entityManager->method('getRepository')
@@ -34,7 +34,7 @@ class UsersRegistrationMailCommandTest extends TestCase
 
         $this->command = new UsersRegistrationMailCommand(
             $this->entityManager,
-            $this->welcomeMessageSender,
+            $this->welcomeMailer,
             'en'
         );
     }
@@ -50,7 +50,7 @@ class UsersRegistrationMailCommandTest extends TestCase
             ->with($email)
             ->willReturn($user);
 
-        $this->welcomeMessageSender->expects(self::once())
+        $this->welcomeMailer->expects(self::once())
             ->method('send')
             ->with($user, $locale);
 
@@ -79,7 +79,7 @@ class UsersRegistrationMailCommandTest extends TestCase
             ->with($email)
             ->willReturn($user);
 
-        $this->welcomeMessageSender->expects(self::once())
+        $this->welcomeMailer->expects(self::once())
             ->method('send')
             ->with($user, $defaultLocale);
 
@@ -106,7 +106,7 @@ class UsersRegistrationMailCommandTest extends TestCase
             ->with($email)
             ->willReturn(null);
 
-        $this->welcomeMessageSender->expects(self::never())
+        $this->welcomeMailer->expects(self::never())
             ->method('send');
 
         $application = new Application();
@@ -128,7 +128,7 @@ class UsersRegistrationMailCommandTest extends TestCase
         $this->userRepository->expects(self::never())
             ->method('findByEmail');
 
-        $this->welcomeMessageSender->expects(self::never())
+        $this->welcomeMailer->expects(self::never())
             ->method('send');
 
         $application = new Application();

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\EventListener;
 
 use App\Event\UserEvent;
-use App\Sender\RecoveryProcessMessageSender;
+use App\Mail\RecoveryProcessMailer;
 use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -15,7 +15,7 @@ final readonly class RecoveryProcessListener implements EventSubscriberInterface
 {
     public function __construct(
         private RequestStack $request,
-        private RecoveryProcessMessageSender $sender,
+        private RecoveryProcessMailer $mailer,
         #[Autowire('kernel.default_locale')]
         private string $defaultLocale,
     ) {
@@ -34,6 +34,6 @@ final readonly class RecoveryProcessListener implements EventSubscriberInterface
         $user = $event->getUser();
         $locale = $this->request->getSession()->get('_locale', $this->defaultLocale);
 
-        $this->sender->send($user, $locale);
+        $this->mailer->send($user, $locale);
     }
 }
