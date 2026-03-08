@@ -7,6 +7,7 @@ namespace App\Tests\Command;
 use App\Command\UsersMailCryptCommand;
 use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
+use App\Handler\PasswordStrengthHandler;
 use App\Handler\UserAuthenticationHandler;
 use App\Repository\UserRepository;
 use App\Service\SettingsService;
@@ -40,6 +41,7 @@ class UsersMailCryptCommandTest extends TestCase
 
         $this->command = new UsersMailCryptCommand(
             $this->entityManager,
+            new PasswordStrengthHandler(),
             $this->authenticationHandler,
             $this->mailCryptKeyHandler,
             $this->settingsService,
@@ -82,7 +84,7 @@ class UsersMailCryptCommandTest extends TestCase
             ->with($user, 'p')
             ->willReturn($privateKey);
 
-        $command = new UsersMailCryptCommand($entityManager, $authenticationHandler, $mailCryptKeyHandler, $this->settingsService);
+        $command = new UsersMailCryptCommand($entityManager, new PasswordStrengthHandler(), $authenticationHandler, $mailCryptKeyHandler, $this->settingsService);
 
         $application = new Application();
         $application->addCommand($command);
@@ -206,6 +208,7 @@ class UsersMailCryptCommandTest extends TestCase
 
         $command = new UsersMailCryptCommand(
             $entityManager,
+            new PasswordStrengthHandler(),
             $this->authenticationHandler,
             $this->mailCryptKeyHandler,
             $settingsService,
@@ -276,7 +279,7 @@ class UsersMailCryptCommandTest extends TestCase
             ->with($user, 'w')
             ->willReturn(null);
 
-        $command = new UsersMailCryptCommand($entityManager, $authenticationHandler, $this->mailCryptKeyHandler, $this->settingsService);
+        $command = new UsersMailCryptCommand($entityManager, new PasswordStrengthHandler(), $authenticationHandler, $this->mailCryptKeyHandler, $this->settingsService);
 
         $application = new Application();
         $application->addCommand($command);

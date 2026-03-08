@@ -6,6 +6,7 @@ namespace App\Tests\Command;
 
 use App\Command\UsersQuotaCommand;
 use App\Entity\User;
+use App\Handler\PasswordStrengthHandler;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -29,7 +30,7 @@ class UsersQuotaCommandTest extends TestCase
         $this->entityManager->method('getRepository')
             ->willReturn($this->userRepository);
 
-        $this->command = new UsersQuotaCommand($this->entityManager);
+        $this->command = new UsersQuotaCommand($this->entityManager, new PasswordStrengthHandler());
     }
 
     public function testExecuteWithQuotaSet(): void

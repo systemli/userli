@@ -6,6 +6,7 @@ namespace App\Tests\Command;
 
 use App\Command\UsersRestoreCommand;
 use App\Entity\User;
+use App\Handler\PasswordStrengthHandler;
 use App\Repository\UserRepository;
 use App\Service\UserRestoreService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,7 +35,7 @@ class UsersRestoreCommandTest extends TestCase
 
         $this->userRestoreService = $this->createStub(UserRestoreService::class);
 
-        $this->command = new UsersRestoreCommand($manager, $this->userRestoreService);
+        $this->command = new UsersRestoreCommand($manager, new PasswordStrengthHandler(), $this->userRestoreService);
     }
 
     public function testExecuteWithoutMailCrypt(): void

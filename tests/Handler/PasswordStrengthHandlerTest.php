@@ -19,6 +19,17 @@ class PasswordStrengthHandlerTest extends TestCase
         self::assertEquals($expected, $actual);
     }
 
+    public function testValidateDoesNotAccumulateErrors(): void
+    {
+        $handler = new PasswordStrengthHandler();
+
+        $firstResult = $handler->validate('short');
+        self::assertEquals(['form.weak_password'], $firstResult);
+
+        $secondResult = $handler->validate('PasswordSecure1');
+        self::assertEquals([], $secondResult, 'Second call must not contain errors from the first call');
+    }
+
     public static function dataProvider(): array
     {
         return [

@@ -6,6 +6,7 @@ namespace App\Command;
 
 use App\Exception\PasswordMismatchException;
 use App\Exception\PasswordPolicyException;
+use App\Handler\PasswordStrengthHandler;
 use App\Service\UserRestoreService;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
@@ -19,9 +20,10 @@ final class UsersRestoreCommand extends AbstractUsersCommand
 {
     public function __construct(
         EntityManagerInterface $manager,
+        PasswordStrengthHandler $passwordStrengthHandler,
         private readonly UserRestoreService $userRestoreService,
     ) {
-        parent::__construct($manager);
+        parent::__construct($manager, $passwordStrengthHandler);
     }
 
     #[Override]

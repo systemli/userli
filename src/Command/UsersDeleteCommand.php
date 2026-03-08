@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Handler\DeleteHandler;
+use App\Handler\PasswordStrengthHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -17,9 +18,10 @@ final class UsersDeleteCommand extends AbstractUsersCommand
 {
     public function __construct(
         EntityManagerInterface $manager,
+        PasswordStrengthHandler $passwordStrengthHandler,
         private readonly DeleteHandler $deleteHandler,
     ) {
-        parent::__construct($manager);
+        parent::__construct($manager, $passwordStrengthHandler);
     }
 
     #[Override]

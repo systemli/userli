@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
-final class PasswordStrengthHandler
+final readonly class PasswordStrengthHandler
 {
     private const string REGEX_FORBIDDEN_CHARS = '/[äöüÄÖÜß\'"]/u';
 
-    private array $errors = [];
-
     public function validate(string $value): array
     {
-        if (preg_match(self::REGEX_FORBIDDEN_CHARS, (string) $value)) {
-            $this->errors[] = 'form.forbidden_char';
+        $errors = [];
+
+        if (preg_match(self::REGEX_FORBIDDEN_CHARS, $value)) {
+            $errors[] = 'form.forbidden_char';
         }
 
-        if (strlen((string) $value) < 12) {
-            $this->errors[] = 'form.weak_password';
+        if (strlen($value) < 12) {
+            $errors[] = 'form.weak_password';
         }
 
-        return $this->errors;
+        return $errors;
     }
 }
