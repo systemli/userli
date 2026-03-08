@@ -10,7 +10,7 @@ use App\Service\SettingsService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
+#[AsMessageHandler(sign: true)]
 final readonly class SendWeeklyReportHandler
 {
     public function __construct(

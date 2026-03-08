@@ -11,7 +11,7 @@ use App\Repository\AliasRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Contracts\Cache\CacheInterface;
 
-#[AsMessageHandler]
+#[AsMessageHandler(sign: true)]
 final readonly class InvalidateAliasCacheHandler
 {
     public function __construct(private CacheInterface $cache, private AliasRepository $aliasRepository)

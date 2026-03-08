@@ -13,7 +13,7 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
 
-#[AsMessageHandler]
+#[AsMessageHandler(sign: true)]
 final readonly class SendWebhookHandler
 {
     public function __construct(
