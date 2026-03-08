@@ -36,7 +36,6 @@ class UsersMailCryptCommandTest extends TestCase
         $this->settingsService->method('get')->willReturn(1);
 
         $this->entityManager->method('getRepository')
-            ->with(User::class)
             ->willReturn($this->userRepository);
 
         $this->command = new UsersMailCryptCommand(
@@ -199,7 +198,6 @@ class UsersMailCryptCommandTest extends TestCase
         $userRepository = $this->createMock(UserRepository::class);
 
         $entityManager->method('getRepository')
-            ->with(User::class)
             ->willReturn($userRepository);
 
         // Create command with mailCrypt disabled

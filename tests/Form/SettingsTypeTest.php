@@ -85,7 +85,6 @@ class SettingsTypeTest extends TestCase
     {
         $reflection = new ReflectionClass($this->formType);
         $method = $reflection->getMethod('determineFieldType');
-        $method->setAccessible(true);
 
         $result = $method->invoke($this->formType, $type, $validation);
 
@@ -113,7 +112,6 @@ class SettingsTypeTest extends TestCase
     {
         $reflection = new ReflectionClass($this->formType);
         $method = $reflection->getMethod('buildConstraints');
-        $method->setAccessible(true);
 
         $result = $method->invoke($this->formType, $validation, $type, $optional);
 
@@ -256,7 +254,6 @@ class SettingsTypeTest extends TestCase
 
         $reflection = new ReflectionClass($this->formType);
         $method = $reflection->getMethod('buildConstraints');
-        $method->setAccessible(true);
 
         $constraints = $method->invoke($this->formType, $validation, 'string');
 
@@ -303,7 +300,6 @@ class SettingsTypeTest extends TestCase
     {
         $reflection = new ReflectionClass($this->formType);
         $method = $reflection->getMethod('buildConstraints');
-        $method->setAccessible(true);
 
         // Test string type: should always add NotBlank
         $validation = [];
@@ -345,7 +341,6 @@ class SettingsTypeTest extends TestCase
     {
         $reflection = new ReflectionClass($this->formType);
         $method = $reflection->getMethod('buildConstraints');
-        $method->setAccessible(true);
 
         // Optional URL: should have AtLeastOneOf(Blank, Url) and no NotBlank
         $constraints = $method->invoke($this->formType, [], 'url', true);
@@ -363,7 +358,6 @@ class SettingsTypeTest extends TestCase
     {
         $reflection = new ReflectionClass($this->formType);
         $method = $reflection->getMethod('buildConstraints');
-        $method->setAccessible(true);
 
         // Optional string: no NotBlank
         $constraints = $method->invoke($this->formType, [], 'string', true);

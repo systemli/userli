@@ -37,7 +37,6 @@ class UserNotificationExtensionTest extends TestCase
 
         $repository = $this->createStub(EntityRepository::class);
         $repository->method('findBy')
-            ->with(['user' => $user])
             ->willReturn([$notification]);
 
         $em = $this->createStub(EntityManagerInterface::class);
@@ -57,7 +56,6 @@ class UserNotificationExtensionTest extends TestCase
 
         $repository = $this->createStub(EntityRepository::class);
         $repository->method('findBy')
-            ->with(['user' => $user])
             ->willReturn([]);
 
         $em = $this->createStub(EntityManagerInterface::class);
@@ -79,7 +77,6 @@ class UserNotificationExtensionTest extends TestCase
 
         $repository = $this->createStub(EntityRepository::class);
         $repository->method('findBy')
-            ->with(['user' => $user, 'type' => 'compromised_password'])
             ->willReturn([$notification]);
 
         $em = $this->createStub(EntityManagerInterface::class);
@@ -99,7 +96,6 @@ class UserNotificationExtensionTest extends TestCase
 
         $repository = $this->createStub(EntityRepository::class);
         $repository->method('findBy')
-            ->with(['user' => $user, 'type' => 'compromised_password'])
             ->willReturn([]);
 
         $em = $this->createStub(EntityManagerInterface::class);

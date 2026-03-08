@@ -56,7 +56,7 @@ class DomainToIdTransformerTest extends TestCase
         $domain->setId(7);
 
         $repository = $this->createStub(EntityRepository::class);
-        $repository->method('find')->with(7)->willReturn($domain);
+        $repository->method('find')->willReturn($domain);
 
         $em = $this->createStub(EntityManagerInterface::class);
         $em->method('getRepository')->willReturn($repository);

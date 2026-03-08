@@ -8,7 +8,6 @@ use App\Form\Model\Registration;
 use App\Form\RegistrationType;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -32,7 +31,6 @@ class RegistrationTypeTest extends TestCase
         $childBuilder->method('addViewTransformer')->willReturnSelf();
 
         $this->formBuilder->method('create')
-            ->with('email', TextType::class, $this->anything())
             ->willReturn($childBuilder);
 
         $addedFields = [];

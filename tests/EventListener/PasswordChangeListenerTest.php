@@ -65,7 +65,7 @@ class PasswordChangeListenerTest extends TestCase
         $user->setPasswordChangeRequired(true);
 
         $this->security->method('getUser')->willReturn($user);
-        $this->security->method('isGranted')->with('IS_AUTHENTICATED_FULLY')->willReturn(false);
+        $this->security->method('isGranted')->willReturn(false);
 
         $request = Request::create('/some/path');
         $request->attributes->set('_route', 'homepage');
@@ -84,7 +84,7 @@ class PasswordChangeListenerTest extends TestCase
         $user->setPasswordChangeRequired(false);
 
         $this->security->method('getUser')->willReturn($user);
-        $this->security->method('isGranted')->with('IS_AUTHENTICATED_FULLY')->willReturn(true);
+        $this->security->method('isGranted')->willReturn(true);
 
         $request = Request::create('/some/path');
         $request->attributes->set('_route', 'homepage');
@@ -104,7 +104,7 @@ class PasswordChangeListenerTest extends TestCase
         $user->setPasswordChangeRequired(true);
 
         $this->security->method('getUser')->willReturn($user);
-        $this->security->method('isGranted')->with('IS_AUTHENTICATED_FULLY')->willReturn(true);
+        $this->security->method('isGranted')->willReturn(true);
 
         $request = Request::create('/account/password');
         $request->attributes->set('_route', $routeName);
@@ -133,7 +133,7 @@ class PasswordChangeListenerTest extends TestCase
         $user->setPasswordChangeRequired(true);
 
         $this->security->method('getUser')->willReturn($user);
-        $this->security->method('isGranted')->with('IS_AUTHENTICATED_FULLY')->willReturn(true);
+        $this->security->method('isGranted')->willReturn(true);
 
         // JSON detection: path starts with /api/
         $request = Request::create('/api/v1/users', 'GET');
@@ -152,11 +152,10 @@ class PasswordChangeListenerTest extends TestCase
         $user->setPasswordChangeRequired(true);
 
         $this->security->method('getUser')->willReturn($user);
-        $this->security->method('isGranted')->with('IS_AUTHENTICATED_FULLY')->willReturn(true);
+        $this->security->method('isGranted')->willReturn(true);
 
         $this->urlGenerator
             ->method('generate')
-            ->with('account_password')
             ->willReturn('/account/password');
 
         $request = Request::create('/dashboard');

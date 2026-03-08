@@ -57,7 +57,7 @@ class UserToIdTransformerTest extends TestCase
         $user = new User('test@example.org');
 
         $repository = $this->createStub(EntityRepository::class);
-        $repository->method('find')->with(42)->willReturn($user);
+        $repository->method('find')->willReturn($user);
 
         $em = $this->createStub(EntityManagerInterface::class);
         $em->method('getRepository')->willReturn($repository);

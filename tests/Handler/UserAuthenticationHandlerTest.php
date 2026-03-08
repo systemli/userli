@@ -37,7 +37,6 @@ class UserAuthenticationHandlerTest extends TestCase
 
         $passwordHasherFactory = $this->createStub(PasswordHasherFactoryInterface::class);
         $passwordHasherFactory->method('getPasswordHasher')
-            ->with(self::equalTo($this->user))
             ->willReturn($hasher);
 
         return new UserAuthenticationHandler($passwordHasherFactory, $eventDispatcher);

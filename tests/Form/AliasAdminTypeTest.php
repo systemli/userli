@@ -10,6 +10,7 @@ use App\Form\Model\AliasAdminModel;
 use App\Form\SmtpQuotaLimitsType;
 use App\Form\UserAutocompleteType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -26,6 +27,7 @@ class AliasAdminTypeTest extends TypeTestCase
         $this->entityManager = $this->createStub(EntityManagerInterface::class);
         $this->urlGenerator = $this->createStub(UrlGeneratorInterface::class);
         $this->urlGenerator->method('generate')->willReturn('/settings/users/search');
+        $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
         parent::setUp();
     }
 

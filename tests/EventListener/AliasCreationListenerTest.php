@@ -33,7 +33,7 @@ class AliasCreationListenerTest extends TestCase
         $alias->setUser($user);
 
         $session = $this->createStub(SessionInterface::class);
-        $session->method('get')->with('_locale', 'en')->willReturn('de');
+        $session->method('get')->willReturn('de');
 
         $request = $this->createStub(Request::class);
         $request->method('getSession')->willReturn($session);

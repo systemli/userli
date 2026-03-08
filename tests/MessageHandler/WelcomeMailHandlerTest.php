@@ -29,7 +29,7 @@ class WelcomeMailHandlerTest extends TestCase
         $repo->method('getClassName')->willReturn(User::class);
 
         $em = $this->createStub(EntityManagerInterface::class);
-        $em->method('getRepository')->with(User::class)->willReturn($repo);
+        $em->method('getRepository')->willReturn($repo);
 
         $sender = $this->createMock(WelcomeMessageSender::class);
         $sender->expects($this->once())
@@ -52,7 +52,7 @@ class WelcomeMailHandlerTest extends TestCase
         $repo->method('getClassName')->willReturn(User::class);
 
         $em = $this->createStub(EntityManagerInterface::class);
-        $em->method('getRepository')->with(User::class)->willReturn($repo);
+        $em->method('getRepository')->willReturn($repo);
 
         $sender = $this->createMock(WelcomeMessageSender::class);
         $sender->expects($this->never())->method('send');

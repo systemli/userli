@@ -27,7 +27,6 @@ class UsersQuotaCommandTest extends TestCase
         $this->userRepository = $this->createMock(UserRepository::class);
 
         $this->entityManager->method('getRepository')
-            ->with(User::class)
             ->willReturn($this->userRepository);
 
         $this->command = new UsersQuotaCommand($this->entityManager);

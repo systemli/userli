@@ -32,7 +32,7 @@ class DeleteUserHandlerTest extends TestCase
             ->willReturn($user);
 
         $em = $this->createStub(EntityManagerInterface::class);
-        $em->method('getRepository')->with(User::class)->willReturn($repository);
+        $em->method('getRepository')->willReturn($repository);
 
         $deleteHandler = $this->createMock(DeleteHandler::class);
         $deleteHandler->expects($this->once())
@@ -60,7 +60,7 @@ class DeleteUserHandlerTest extends TestCase
             ->willReturn(null);
 
         $em = $this->createStub(EntityManagerInterface::class);
-        $em->method('getRepository')->with(User::class)->willReturn($repository);
+        $em->method('getRepository')->willReturn($repository);
 
         $deleteHandler = $this->createMock(DeleteHandler::class);
         $deleteHandler->expects($this->never())->method('deleteUser');
@@ -90,7 +90,7 @@ class DeleteUserHandlerTest extends TestCase
             ->willReturn($user);
 
         $em = $this->createStub(EntityManagerInterface::class);
-        $em->method('getRepository')->with(User::class)->willReturn($repository);
+        $em->method('getRepository')->willReturn($repository);
 
         $deleteHandler = $this->createMock(DeleteHandler::class);
         $deleteHandler->expects($this->never())->method('deleteUser');

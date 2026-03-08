@@ -17,8 +17,8 @@ class MtaStsServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->domainRepository = $this->createMock(DomainRepository::class);
-        $this->settingsService = $this->createMock(SettingsService::class);
+        $this->domainRepository = $this->createStub(DomainRepository::class);
+        $this->settingsService = $this->createStub(SettingsService::class);
 
         $this->service = new MtaStsService(
             $this->domainRepository,
@@ -39,7 +39,6 @@ class MtaStsServiceTest extends TestCase
     public function testGetPolicyReturnsNullForUnknownDomain(): void
     {
         $this->domainRepository->method('existsByName')
-            ->with('unknown.org')
             ->willReturn(false);
 
         self::assertNull($this->service->getPolicy('mta-sts.unknown.org'));
@@ -48,7 +47,6 @@ class MtaStsServiceTest extends TestCase
     public function testGetPolicyReturnsNullWhenMxEmptyAndModeNotNone(): void
     {
         $this->domainRepository->method('existsByName')
-            ->with('example.org')
             ->willReturn(true);
 
         $this->settingsService->method('get')
@@ -64,7 +62,6 @@ class MtaStsServiceTest extends TestCase
     public function testGetPolicyReturnsEnforcePolicy(): void
     {
         $this->domainRepository->method('existsByName')
-            ->with('example.org')
             ->willReturn(true);
 
         $this->settingsService->method('get')
@@ -81,7 +78,6 @@ class MtaStsServiceTest extends TestCase
     public function testGetPolicyReturnsTestingPolicy(): void
     {
         $this->domainRepository->method('existsByName')
-            ->with('example.org')
             ->willReturn(true);
 
         $this->settingsService->method('get')
@@ -98,7 +94,6 @@ class MtaStsServiceTest extends TestCase
     public function testGetPolicyReturnsPolicyWithModeNone(): void
     {
         $this->domainRepository->method('existsByName')
-            ->with('example.org')
             ->willReturn(true);
 
         $this->settingsService->method('get')
@@ -115,7 +110,6 @@ class MtaStsServiceTest extends TestCase
     public function testGetPolicyReturnsPolicyWithModeNoneAndEmptyMx(): void
     {
         $this->domainRepository->method('existsByName')
-            ->with('example.org')
             ->willReturn(true);
 
         $this->settingsService->method('get')
@@ -132,7 +126,6 @@ class MtaStsServiceTest extends TestCase
     public function testGetPolicyTrimsBlankLinesFromMx(): void
     {
         $this->domainRepository->method('existsByName')
-            ->with('example.org')
             ->willReturn(true);
 
         $this->settingsService->method('get')
@@ -149,7 +142,6 @@ class MtaStsServiceTest extends TestCase
     public function testGetPolicyHandlesUppercaseHost(): void
     {
         $this->domainRepository->method('existsByName')
-            ->with('example.org')
             ->willReturn(true);
 
         $this->settingsService->method('get')
@@ -165,7 +157,6 @@ class MtaStsServiceTest extends TestCase
     public function testGetPolicyHandlesCrlfInMxTextarea(): void
     {
         $this->domainRepository->method('existsByName')
-            ->with('example.org')
             ->willReturn(true);
 
         $this->settingsService->method('get')
