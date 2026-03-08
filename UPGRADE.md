@@ -1,6 +1,6 @@
 # Upgrade documentation
 
-## Unreleased
+## Upgrade to 6.4.0
 
 ### Messenger message signing enabled
 
@@ -25,8 +25,6 @@ will be lost):
 ```shell
 bin/console doctrine:query:sql "DELETE FROM messenger_messages"
 ```
-
-## Upgrade to 6.3.0
 
 ### MAIL_CRYPT environment variable removed
 

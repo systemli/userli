@@ -1,5 +1,40 @@
 # Changelog
 
+## 6.4.0 (2026.03.08)
+
+### Features and Improvements
+
+- 💄 Improve responsive table layout in settings pages (#1124)
+- 💄 Redesign settings navigation for responsiveness and scalability (#1120)
+
+### Security
+
+- 🔒 Add CSP nonces to inline dark mode scripts (#1142)
+- 🔒 Enable cryptographic signing for all Messenger handlers (#1134)
+- 🔒 Add missing CSRF validation and fix null-safety in settings controllers (#1132)
+
+### Technical Changes
+
+- 🔧 Remove redundant kernel.event_subscriber tag from services.yaml (#1141)
+- ♻️ Replace fluent setters with void setters in OpenPgpKey form model (#1140)
+- ♻️ Use Command::SUCCESS/FAILURE constants instead of literal integers (#1139)
+- ♻️ Add missing readonly keywords to stateless classes (#1137)
+- 🔥 Remove incorrect copy-paste docblocks from MailCryptKeyHandler (#1136)
+- ✅ Fix all PHPUnit deprecations and notices in test suite (#1133)
+- ♻️ Replace Sonata Alias admin with native settings view (#1125)
+- ♻️ Organize controllers into Account, Settings, and Api subdirectories (#1123)
+- ♻️ Replace Sonata Voucher admin with native settings view (#1122)
+- ♻️ Replace Sonata UserNotification admin with native settings view (#1121)
+- ♻️ Replace MAIL_CRYPT env variable with database-backed setting (#1119)
+- ♻️ Unify password confirmation forms and add password-confirmed domain deletion (#1116)
+- ⬆️ (deps): Bump svgo from 3.3.2 to 3.3.3 (#1115)
+- ⬆️ Update composer dependencies (#1112)
+
+### Bug Fixes
+
+- 🐛 Fix TotpSecretValidator return type to match Symfony's void signature (#1138)
+- 🐛 Fix mutable state bug in PasswordStrengthHandler (#1135)
+
 ## 6.3.0 (2026.03.01)
 
 ### Features and Improvements
