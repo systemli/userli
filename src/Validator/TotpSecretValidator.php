@@ -20,14 +20,14 @@ final class TotpSecretValidator extends ConstraintValidator
     }
 
     #[Override]
-    public function validate($value, Constraint $constraint): bool
+    public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$constraint instanceof TotpSecret) {
             throw new UnexpectedTypeException($constraint, TotpSecret::class);
         }
 
         if (null === $value || '' === $value) {
-            return true;
+            return;
         }
 
         if (!is_string($value)) {
@@ -40,10 +40,6 @@ final class TotpSecretValidator extends ConstraintValidator
         if (!$this->totpAuthenticator->checkCode($user, $value)) {
             $this->context->buildViolation('form.twofactor-secret-invalid')
                 ->addViolation();
-
-            return false;
         }
-
-        return true;
     }
 }
