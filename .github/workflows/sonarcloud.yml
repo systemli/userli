@@ -1,46 +1,88 @@
 name: SonarCloud
 
 on:
-  workflow_run:
-    workflows: ["Integration"]
-    types: [completed]
+  push:
+    branches:
+      - main
+  pull_request_target:
 
 jobs:
   sonarcloud:
     runs-on: ubuntu-24.04
     name: SonarCloud Scan
-    if: github.event.workflow_run.conclusion == 'success'
     steps:
-      - name: Checkout
+      - name: Checkout (Push)
+        if: github.event_name == 'push'
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
-          repository: ${{ github.event.workflow_run.head_repository.full_name }}
-          ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
+
+      - name: Checkout (Pull Request)
+        if: github.event_name == 'pull_request_target'
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Wait for Integration workflow
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        id: wait-for-integration
+        with:
+          script: |
+            const sha = context.eventName === 'pull_request_target'
+              ? context.payload.pull_request.head.sha
+              : context.sha;
+
+            const maxAttempts = 60;
+            const delaySeconds = 30;
+
+            for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+              core.info(`Attempt ${attempt}/${maxAttempts}: Checking Integration workflow status for ${sha}...`);
+
+              const { data: runs } = await github.rest.actions.listWorkflowRunsForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                head_sha: sha,
+              });
+
+              const integrationRun = runs.workflow_runs.find(
+                r => r.name === 'Integration' && r.head_sha === sha
+              );
+
+              if (integrationRun) {
+                if (integrationRun.status === 'completed') {
+                  if (integrationRun.conclusion === 'success') {
+                    core.info(`Integration workflow succeeded (run ${integrationRun.id})`);
+                    core.setOutput('run-id', integrationRun.id);
+                    return;
+                  } else {
+                    core.setFailed(`Integration workflow finished with conclusion: ${integrationRun.conclusion}`);
+                    return;
+                  }
+                }
+                core.info(`Integration workflow is still ${integrationRun.status}...`);
+              } else {
+                core.info('Integration workflow not found yet...');
+              }
+
+              if (attempt < maxAttempts) {
+                await new Promise(resolve => setTimeout(resolve, delaySeconds * 1000));
+              }
+            }
+
+            core.setFailed('Timed out waiting for Integration workflow');
 
       - name: Download coverage reports
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: coverage-reports
           path: build/
-          run-id: ${{ github.event.workflow_run.id }}
+          run-id: ${{ steps.wait-for-integration.outputs.run-id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: SonarCloud Scan (Push)
-        if: github.event.workflow_run.event == 'push'
+      - name: SonarCloud Scan
         uses: sonarsource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9 # v7.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      - name: SonarCloud Scan (Pull Request)
-        if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.pull_requests[0].number > 0
-        uses: sonarsource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9 # v7.0.0
-        with:
-          args: >
-            -Dsonar.pullrequest.key=${{ github.event.workflow_run.pull_requests[0].number }}
-            -Dsonar.pullrequest.branch=${{ github.event.workflow_run.head_branch }}
-            -Dsonar.pullrequest.base=${{ github.event.workflow_run.pull_requests[0].base.ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
