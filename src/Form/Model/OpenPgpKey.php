@@ -15,14 +15,9 @@ final class OpenPgpKey
         return $this->keyFile;
     }
 
-    /**
-     * @return $this
-     */
-    public function setKeyFile(string $keyFile): self
+    public function setKeyFile(string $keyFile): void
     {
         $this->keyFile = $keyFile;
-
-        return $this;
     }
 
     public function getKeyText(): ?string
@@ -30,13 +25,8 @@ final class OpenPgpKey
         return $this->keyText;
     }
 
-    /**
-     * @return $this
-     */
-    public function setKeyText(string $keyText): self
+    public function setKeyText(string $keyText): void
     {
         $this->keyText = $keyText;
-
-        return $this;
     }
 }
