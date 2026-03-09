@@ -67,7 +67,7 @@ class WkdHandlerTest extends TestCase
         $expected->setKeyFingerprint($this->keyFingerprint);
         $expected->setKeyExpireTime(new DateTimeImmutable($this->keyExpireTime));
         $expected->setKeyData($this->keyData);
-        $expected->setUser($user);
+        $expected->setUploader($user);
         $expected->setWkdHash(WkdHandler::wkdHash('alice'));
 
         $handler = $this->createHandler();

@@ -22,9 +22,9 @@ final class OpenPgpKeyRepository extends ServiceEntityRepository
     /**
      * @return OpenPgpKey[]
      */
-    public function findByUser(User $user): array
+    public function findByUploader(User $user): array
     {
-        return $this->findBy(['user' => $user]);
+        return $this->findBy(['uploader' => $user]);
     }
 
     public function findByEmail(string $email): ?OpenPgpKey
