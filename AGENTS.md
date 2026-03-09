@@ -81,6 +81,7 @@ Coding style is enforced by PHP CS Fixer, Rector, and Psalm. Use the commands be
 ## Testing
 
 - **PHPUnit** for unit tests, **Behat** for functional and behavior-driven scenarios
+- **Vitest** for Stimulus controller and JS/TS utility unit tests in `tests/js/`
 - Use `self::assert*` for assertions
 - Use `$this->createMock(HttpClientInterface::class)` for HTTP client mocking
 - All user-facing text must use the `|trans` filter with keys from `default_translations/`
@@ -117,4 +118,5 @@ composer psalm           # Run Psalm static analysis
 # Tests (w/o podman)
 bin/phpunit                    # Unit tests
 bin/behat --format progress    # Functional / BDD scenarios
+yarn test                      # Stimulus controller & JS/TS unit tests
 ```

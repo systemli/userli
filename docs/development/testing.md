@@ -17,6 +17,25 @@ Tests use SQLite (configured in `.env.test`), so no running database container i
     make test
     ```
 
+## Vitest
+
+[Vitest](https://vitest.dev/) with jsdom is used to unit-test Stimulus controllers and JavaScript/TypeScript utilities.
+Test files live in `tests/js/` and mirror the `assets/` structure.
+
+=== "direct"
+
+    ```shell
+    yarn test              # Single run
+    yarn test:watch        # Watch mode during development
+    yarn test:coverage     # Run with coverage report
+    ```
+
+=== "make"
+
+    ```shell
+    make jstest
+    ```
+
 ## Behat
 
 Behat feature files are in `features/`.
