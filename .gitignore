@@ -51,3 +51,7 @@ psalm.sarif
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###> vitest ###
+coverage/
+###< vitest ###
