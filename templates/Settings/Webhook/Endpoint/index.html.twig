@@ -2,7 +2,8 @@
 {% extends 'Settings/base_settings.html.twig' %}
 {% block title %}{{ setting('app_name') }} - {{ 'settings.webhook.title'|trans }}{% endblock %}
 {% block settings_content %}
-    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
+         data-controller="modal">
         <div class="p-6 sm:p-8">
             {% include 'Settings/_section_header.html.twig' with {
                 icon: 'heroicons:cursor-arrow-rays',
@@ -81,8 +82,9 @@
                                         </a>
                                         <form method="post"
                                               action="{{ path('settings_webhook_endpoint_delete', {id: endpoint.id}) }}"
-                                              onsubmit="return confirm('{{ 'settings.webhook.delete.confirm'|trans({'%url%': endpoint.url|e('js')}) }}');">
-                                            <input type="hidden" name="_token"
+                                              data-action="submit->modal#open"
+                                              data-modal-title-param="{{ 'delete.confirm-title'|trans|e('html_attr') }}"
+                                              data-modal-message-param="{{ 'settings.webhook.delete.confirm'|trans({'%url%': endpoint.url})|e('html_attr') }}">                                            <input type="hidden" name="_token"
                                                    value="{{ csrf_token('delete_webhook_endpoint_' ~ endpoint.id) }}">
                                             <button type="submit"
                                                     title="{{ 'settings.webhook.actions.delete'|trans }}"
@@ -100,5 +102,7 @@
                 {% endembed %}
             {% endif %}
         </div>
+
+        {% include 'Settings/_delete_confirm_modal.html.twig' %}
     </div>
 {% endblock %}

@@ -244,6 +244,8 @@ delete:
     lead: "Bist du sicher, dass du <strong>%name%</strong> löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungen unwiderruflich gelöscht."
     submit: Domain löschen
   cancel: Abbrechen
+  confirm: Löschen
+  confirm-title: Löschen bestätigen
 recovery-token:
   headline: Wiederherstellungscode verwalten
   lead: Mit dem Wiederherstellungscode kannst du dein Passwort zurücksetzen, wenn du es vergessen hast.

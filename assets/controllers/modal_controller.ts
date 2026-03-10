@@ -4,18 +4,21 @@ import { Controller } from "@hotwired/stimulus";
  * Reusable accessible modal dialog controller.
  *
  * Targets:
- *   - overlay:    The backdrop overlay element (covers the whole screen).
- *   - dialog:     The dialog panel element (the centered card).
- *   - emailField: (optional) A hidden input whose value is set when opening.
- *   - title:      (optional) An element whose text content is updated on open.
- *   - autofocus:  (optional) The element to focus when the modal opens.
- *                 Falls back to the first focusable element in the dialog.
+ *   - overlay:     The backdrop overlay element (covers the whole screen).
+ *   - dialog:      The dialog panel element (the centered card).
+ *   - emailField:  (optional) A hidden input whose value is set when opening.
+ *   - title:       (optional) An element whose text content is updated on open.
+ *   - description: (optional) An element whose innerHTML is updated on open.
+ *   - autofocus:   (optional) The element to focus when the modal opens.
+ *                  Falls back to the first focusable element in the dialog.
  *
  * Actions:
- *   - open:           Opens the modal. Accepts an `email` param via
- *                     data-modal-email-param to populate the hidden field.
+ *   - open:           Opens the modal. Accepts optional params via
+ *                     data-modal-email-param, data-modal-title-param,
+ *                     and data-modal-message-param.
  *   - close:          Closes the modal.
  *   - backdropClose:  Closes only when clicking the backdrop itself.
+ *   - confirm:        Submits the pending form (set during open) and closes.
  *
  * Accessibility:
  *   - Focus is trapped within the dialog while open (Tab/Shift+Tab cycle).
@@ -26,7 +29,7 @@ import { Controller } from "@hotwired/stimulus";
  *   - Templates should set aria-modal="true", role="dialog", and
  *     aria-labelledby on the overlay element.
  *
- * Usage:
+ * Usage (file upload modal):
  *   <div data-controller="modal">
  *     <button data-action="modal#open"
  *             data-modal-email-param="user@example.com">
@@ -46,6 +49,26 @@ import { Controller } from "@hotwired/stimulus";
  *       </div>
  *     </div>
  *   </div>
+ *
+ * Usage (delete confirmation modal):
+ *   <div data-controller="modal">
+ *     <form method="post" action="/delete/123"
+ *           data-action="submit->modal#open"
+ *           data-modal-title-param="Confirm deletion"
+ *           data-modal-message-param="Are you sure?">
+ *       <input type="hidden" name="_token" value="...">
+ *       <button type="submit">Delete</button>
+ *     </form>
+ *
+ *     <div data-modal-target="overlay" ...>
+ *       <div data-modal-target="dialog">
+ *         <h3 data-modal-target="title"></h3>
+ *         <p data-modal-target="description"></p>
+ *         <button data-action="modal#close">Cancel</button>
+ *         <button data-action="modal#confirm">Delete</button>
+ *       </div>
+ *     </div>
+ *   </div>
  */
 export default class extends Controller {
   declare hasOverlayTarget: boolean;
@@ -56,14 +79,25 @@ export default class extends Controller {
   declare emailFieldTarget: HTMLInputElement;
   declare hasTitleTarget: boolean;
   declare titleTarget: HTMLElement;
+  declare hasDescriptionTarget: boolean;
+  declare descriptionTarget: HTMLElement;
   declare hasAutofocusTarget: boolean;
   declare autofocusTarget: HTMLElement;
 
-  static targets = ["overlay", "dialog", "emailField", "title", "autofocus"];
+  static targets = [
+    "overlay",
+    "dialog",
+    "emailField",
+    "title",
+    "description",
+    "autofocus",
+  ];
 
   private isOpen: boolean = false;
   private boundOnKeydown: ((event: KeyboardEvent) => void) | null = null;
   private previouslyFocusedElement: HTMLElement | null = null;
+  private pendingForm: HTMLFormElement | null = null;
+  private confirming: boolean = false;
 
   connect(): void {
     this.boundOnKeydown = this.onKeydown.bind(this);
@@ -76,19 +110,41 @@ export default class extends Controller {
     }
   }
 
-  open(event: Event & { params?: { email?: string } }): void {
+  open(
+    event: Event & {
+      params?: { email?: string; title?: string; message?: string };
+    },
+  ): void {
     if (!this.hasOverlayTarget) return;
+
+    // Skip interception when confirm() is re-submitting the form.
+    if (this.confirming) return;
+
+    // Intercept form submissions so the modal can confirm first.
+    if (event.type === "submit") {
+      event.preventDefault();
+      const form = (event.target as HTMLElement)?.closest("form");
+      if (form) {
+        this.pendingForm = form;
+      }
+    }
 
     this.previouslyFocusedElement = document.activeElement as HTMLElement;
 
     const email = event.params?.email ?? "";
+    const title = event.params?.title ?? "";
+    const message = event.params?.message ?? "";
 
     if (this.hasEmailFieldTarget && email) {
       this.emailFieldTarget.value = email;
     }
 
-    if (this.hasTitleTarget && email) {
-      this.titleTarget.textContent = email;
+    if (this.hasTitleTarget && (email || title)) {
+      this.titleTarget.textContent = title || email;
+    }
+
+    if (this.hasDescriptionTarget && message) {
+      this.descriptionTarget.innerHTML = message;
     }
 
     this.overlayTarget.classList.remove("hidden");
@@ -129,6 +185,7 @@ export default class extends Controller {
     }, 200);
 
     this.isOpen = false;
+    this.pendingForm = null;
     document.body.classList.remove("overflow-hidden");
 
     // Restore focus immediately so screen readers don't lose their position
@@ -143,6 +200,23 @@ export default class extends Controller {
     // Only close when clicking the overlay itself, not the dialog content.
     if (event.target === this.overlayTarget) {
       this.close();
+    }
+  }
+
+  /**
+   * Submits the pending form that triggered the modal and closes it.
+   *
+   * Used for delete confirmation modals: the form's submit event is
+   * intercepted by open(), then confirm() submits it after the user
+   * explicitly confirms the action.
+   */
+  confirm(): void {
+    const form = this.pendingForm;
+    this.close();
+    if (form) {
+      this.confirming = true;
+      form.requestSubmit();
+      this.confirming = false;
     }
   }
 

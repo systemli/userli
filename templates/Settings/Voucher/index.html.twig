@@ -2,7 +2,8 @@
 {% extends 'Settings/base_settings.html.twig' %}
 {% block title %}{{ setting('app_name') }} - {{ 'settings.voucher.title'|trans }}{% endblock %}
 {% block settings_content %}
-    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
+         data-controller="modal">
         <div class="p-6 sm:p-8">
             {% include 'Settings/_section_header.html.twig' with {
                 icon: 'heroicons:ticket',
@@ -105,8 +106,9 @@
                                 <td class="px-4 py-3 text-right">
                                     <form method="post"
                                           action="{{ path('settings_voucher_delete', {id: voucher.id}) }}"
-                                          onsubmit="return confirm('{{ 'settings.voucher.delete.confirm'|trans({'%code%': voucher.code|e('js')}) }}');">
-                                        <input type="hidden" name="_token"
+                                          data-action="submit->modal#open"
+                                          data-modal-title-param="{{ 'delete.confirm-title'|trans|e('html_attr') }}"
+                                          data-modal-message-param="{{ 'settings.voucher.delete.confirm'|trans({'%code%': voucher.code})|e('html_attr') }}">                                        <input type="hidden" name="_token"
                                                value="{{ csrf_token('delete_voucher_' ~ voucher.id) }}">
                                         <button type="submit"
                                                 title="{{ 'settings.voucher.actions.delete'|trans }}"
@@ -134,5 +136,7 @@
                 } %}
             {% endif %}
         </div>
+
+        {% include 'Settings/_delete_confirm_modal.html.twig' %}
     </div>
 {% endblock %}
