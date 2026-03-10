@@ -13,10 +13,24 @@ default:
         path: ~
         environment: ~
         debug: ~
+
+    Robertfausk\Behat\PantherExtension: ~
+
     Behat\MinkExtension:
+      javascript_session: panther
       sessions:
         symfony:
           symfony: ~
+        panther:
+          panther:
+            options:
+              browser: 'chrome'
+              webServerDir: '%paths.base%/public'
+            manager_options:
+              capabilities:
+                goog:chromeOptions:
+                  args:
+                    - '--accept-lang=en'
 
     DVDoug\Behat\CodeCoverage\Extension:
       filter:

@@ -55,3 +55,7 @@ yarn-error.log
 ###> vitest ###
 coverage/
 ###< vitest ###
+
+###> symfony/panther ###
+/drivers/
+###< symfony/panther ###

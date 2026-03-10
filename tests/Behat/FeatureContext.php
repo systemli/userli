@@ -419,14 +419,25 @@ class FeatureContext extends MinkContext
 
     /**
      * @Given /^I am authenticated as "([^"]*)"$/
-     *
-     * @throws UnsupportedDriverActionException
      */
     public function iAmAuthenticatedAs(string $username): void
     {
         $driver = $this->getSession()->getDriver();
+
+        // For real browser drivers (e.g. Panther), authenticate via the login form
         if (!$driver instanceof BrowserKitDriver) {
-            throw new UnsupportedDriverActionException('This step is only supported by the BrowserKitDriver', $driver);
+            $user = $this->getUserRepository()->findByEmail($username);
+            if (null === $user) {
+                throw new RuntimeException(sprintf('User "%s" does not exist', $username));
+            }
+
+            // Find the plain password from our test fixtures (default: "asdasd")
+            $this->visit('/login');
+            $this->fillField('_username', $username);
+            $this->fillField('_password', 'asdasd');
+            $this->pressButton('Sign in');
+
+            return;
         }
 
         $user = $this->getUserRepository()->findByEmail($username);
@@ -831,5 +842,129 @@ class FeatureContext extends MinkContext
     public function getUserRepository(): ObjectRepository
     {
         return $this->manager->getRepository(User::class);
+    }
+
+    /**
+     * @Then /^I should see the password strength feedback "([^"]*)"$/
+     */
+    public function iShouldSeeThePasswordStrengthFeedback(string $expectedText): void
+    {
+        $this->assertDriverSupportsJavascript();
+
+        $feedback = $this->getSession()->getPage()->find('css', '[data-password-strength-target="feedback"]');
+        if (null === $feedback) {
+            throw new RuntimeException('Password strength feedback element not found');
+        }
+
+        $this->getSession()->wait(5000, sprintf(
+            'document.querySelector(\'[data-password-strength-target="feedback"]\').textContent.includes(%s)',
+            json_encode($expectedText)
+        ));
+
+        $actualText = $feedback->getText();
+        if (!str_contains($actualText, $expectedText)) {
+            throw new RuntimeException(sprintf('Expected password strength feedback to contain "%s", but got "%s"', $expectedText, $actualText));
+        }
+    }
+
+    /**
+     * @Then /^the password strength feedback should not be visible$/
+     */
+    public function thePasswordStrengthFeedbackShouldNotBeVisible(): void
+    {
+        $this->assertDriverSupportsJavascript();
+
+        $feedback = $this->getSession()->getPage()->find('css', '[data-password-strength-target="feedback"]');
+        if (null === $feedback) {
+            throw new RuntimeException('Password strength feedback element not found');
+        }
+
+        if ($feedback->isVisible()) {
+            throw new RuntimeException(sprintf('Expected password strength feedback to be hidden, but it is visible with text: "%s"', $feedback->getText()));
+        }
+    }
+
+    /**
+     * @Then /^I should see (\d+) active password strength segments$/
+     */
+    public function iShouldSeeActivePasswordStrengthSegments(int $expectedCount): void
+    {
+        $this->assertDriverSupportsJavascript();
+
+        // Wait for the strength meter to update
+        $this->getSession()->wait(2000, sprintf(
+            'document.querySelectorAll(\'[data-password-strength-target="segment"]:not(.bg-gray-200)\').length === %d',
+            $expectedCount
+        ));
+
+        $segments = $this->getSession()->getPage()->findAll('css', '[data-password-strength-target="segment"]');
+        $activeCount = 0;
+
+        foreach ($segments as $segment) {
+            $class = $segment->getAttribute('class') ?? '';
+            if (!str_contains($class, 'bg-gray-200')) {
+                ++$activeCount;
+            }
+        }
+
+        if ($activeCount !== $expectedCount) {
+            throw new RuntimeException(sprintf('Expected %d active password strength segments, but found %d', $expectedCount, $activeCount));
+        }
+    }
+
+    /**
+     * @Then /^I wait for the element "([^"]*)" to appear$/
+     */
+    public function iWaitForTheElementToAppear(string $cssSelector): void
+    {
+        $this->assertDriverSupportsJavascript();
+
+        $result = $this->getSession()->wait(5000, sprintf(
+            'document.querySelector(%s) !== null',
+            json_encode($cssSelector)
+        ));
+
+        if (!$result) {
+            throw new RuntimeException(sprintf('Element "%s" did not appear within 5 seconds', $cssSelector));
+        }
+    }
+
+    /**
+     * @When /^I type "([^"]*)" into the field "([^"]*)"$/
+     */
+    public function iTypeIntoTheField(string $value, string $field): void
+    {
+        $this->assertDriverSupportsJavascript();
+
+        $element = $this->getSession()->getPage()->findField($field);
+
+        if (null === $element) {
+            throw new RuntimeException(sprintf('Field "%s" not found', $field));
+        }
+
+        // Focus the field first (triggers Stimulus connect/focus events)
+        $element->focus();
+
+        // Type character by character to trigger input events
+        foreach (str_split($value) as $char) {
+            $currentValue = $element->getValue().$char;
+            $element->setValue($currentValue);
+        }
+    }
+
+    /**
+     * @Then /^I wait (\d+) milliseconds$/
+     */
+    public function iWaitMilliseconds(int $milliseconds): void
+    {
+        $this->getSession()->wait($milliseconds);
+    }
+
+    private function assertDriverSupportsJavascript(): void
+    {
+        $driver = $this->getSession()->getDriver();
+        if ($driver instanceof BrowserKitDriver) {
+            throw new UnsupportedDriverActionException('This step requires a JavaScript-capable browser driver', $driver);
+        }
     }
 }
