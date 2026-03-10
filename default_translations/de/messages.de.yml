@@ -633,6 +633,7 @@ settings:
         pending: Ausstehend
       retry:
         confirm: Zustellung erneut versuchen?
+        confirm-title: Wiederholung bestätigen
         action: Erneut senden
         queued: Zustellung zur erneuten Ausführung eingeplant.
       detail:

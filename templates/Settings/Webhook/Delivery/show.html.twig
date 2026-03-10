@@ -2,7 +2,8 @@
 {% extends 'Settings/base_settings.html.twig' %}
 {% block title %}{{ setting('app_name') }} - {{ 'settings.webhook.delivery.title'|trans({'%id%': delivery.id}) }}{% endblock %}
 {% block settings_content %}
-    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
+         data-controller="modal">
         <div class="p-6 sm:p-8 space-y-8">
             <div class="flex items-start justify-between">
                 <div class="flex items-center">
@@ -24,7 +25,9 @@
                 {% if delivery.error and not delivery.success %}
                     <form method="post"
                           action="{{ path('settings_webhook_delivery_retry', {id: delivery.id}) }}"
-                          onsubmit="return confirm('{{ 'settings.webhook.deliveries.retry.confirm'|trans }}')">
+                          data-action="submit->modal#open"
+                          data-modal-title-param="{{ 'settings.webhook.deliveries.retry.confirm-title'|trans|e('html_attr') }}"
+                          data-modal-message-param="{{ 'settings.webhook.deliveries.retry.confirm'|trans|e('html_attr') }}">
                         <input type="hidden" name="_token"
                                value="{{ csrf_token('retry_delivery_' ~ delivery.id) }}">
                         <button class="inline-flex items-center px-3 py-2 bg-blue-600 dark:bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors">
@@ -106,5 +109,13 @@
                 </div>
             {% endif %}
         </div>
+
+        {% if delivery.error and not delivery.success %}
+            {% include 'Settings/_confirm_modal.html.twig' with {
+                variant: 'info',
+                confirm_label: 'settings.webhook.deliveries.retry.action',
+                modal_id: 'retry-confirm-title',
+            } %}
+        {% endif %}
     </div>
 {% endblock %}

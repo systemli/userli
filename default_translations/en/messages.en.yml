@@ -635,6 +635,7 @@ settings:
         pending: Pending
       retry:
         confirm: Retry this delivery?
+        confirm-title: Confirm retry
         action: Retry
         queued: Delivery retry queued.
       detail:
