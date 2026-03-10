@@ -10,7 +10,7 @@
 {% block page_subtitle %}{{ "index.alias-subtitle"|trans }}{% endblock %}
 
 {% block page_content %}
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-4xl mx-auto" data-controller="modal">
         {# Brief motivational explanation #}
                 <div class="mb-8 text-center">
                     <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto">
@@ -131,12 +131,16 @@
                                                     {{ ux_icon('heroicons:clipboard', {class: 'w-4 h-4'}) }}
                                                 </button>
                                                 {% if is_granted('delete', alias) %}
-                                                    <a href="{{ url('alias_delete', {'id': alias.id}) }}"
-                                                       class="inline-flex items-center p-2 text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/50 rounded hover:bg-red-200 dark:hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 dark:focus:ring-offset-gray-700 transition-colors"
-                                                       title="{{ "alias.delete"|trans }}"
-                                                       data-controller="tooltip">
+                                                    <button type="button"
+                                                            data-action="modal#open"
+                                                            data-modal-action-param="{{ path('alias_delete_submit', {'id': alias.id}) }}"
+                                                            data-modal-message-param="{{ 'delete.alias.lead_specific'|trans({'%alias%': alias.source}) }}"
+                                                            class="inline-flex items-center p-2 text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/50 rounded hover:bg-red-200 dark:hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 dark:focus:ring-offset-gray-700 transition-colors"
+                                                            title="{{ "alias.delete"|trans }}"
+                                                            aria-label="{{ "alias.delete"|trans }} {{ alias.source }}"
+                                                            data-controller="tooltip">
                                                         {{ ux_icon('heroicons:x-mark', {class: 'w-4 h-4'}) }}
-                                                    </a>
+                                                    </button>
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -257,12 +261,16 @@
                                                         aria-label="{{ "copy-to-clipboard"|trans }}">
                                                 {{ ux_icon('heroicons:clipboard', {'class': 'w-4 h-4'}) }}
                                                 </button>
-                                                <a href="{{ url('alias_delete', {'id': alias.id}) }}"
-                                                   class="inline-flex items-center p-2 text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/50 rounded hover:bg-red-200 dark:hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 dark:focus:ring-offset-gray-700 transition-colors"
-                                                   title="{{ "alias.delete"|trans }}"
-                                                   data-controller="tooltip">
+                                                <button type="button"
+                                                        data-action="modal#open"
+                                                        data-modal-action-param="{{ path('alias_delete_submit', {'id': alias.id}) }}"
+                                                        data-modal-message-param="{{ 'delete.alias.lead_specific'|trans({'%alias%': alias.source}) }}"
+                                                        class="inline-flex items-center p-2 text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/50 rounded hover:bg-red-200 dark:hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 dark:focus:ring-offset-gray-700 transition-colors"
+                                                        title="{{ "alias.delete"|trans }}"
+                                                        aria-label="{{ "alias.delete"|trans }} {{ alias.source }}"
+                                                        data-controller="tooltip">
                                                     {{ ux_icon('heroicons:x-mark', {'class': 'w-4 h-4'}) }}
-                                                </a>
+                                                </button>
                                             </div>
                                         </div>
                                     {% endfor %}
@@ -271,6 +279,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
+
+        {# Delete alias modal #}
+        {% include '_delete_password_modal.html.twig' with {
+            modal_title: 'delete.alias.headline_generic'|trans,
+            modal_description: 'delete.alias.lead_generic'|trans,
+            modal_submit_label: 'form.delete-alias'|trans,
+        } %}
     </div>
 {% endblock %}

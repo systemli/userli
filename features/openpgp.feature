@@ -339,24 +339,24 @@ Feature: OpenPGP
     And I should see text matching "Fingerprint: 4964 21CF 18B5 0D8D 61DB 26BA D3CB BC7A 09CC 0EDF"
     And the response status code should be 200
 
-  @upload-openpgp-delete-key
-  Scenario: Upload and delete key
+  @javascript @upload-openpgp-delete-key
+  Scenario: Delete key via modal
+    Given the following OpenPgpKey exists:
+      | email             | keyId      | keyFingerprint                             | keyData    | uploader          |
+      | alice@example.org | 2281FEC2   | 7301 2547 C25D E2A0 D097 8C46 AD8D 52CD   | dummydata  | alice@example.org |
     When I am authenticated as "alice@example.org"
     And I am on "/account/openpgp"
-    And I set hidden field "upload_openpgp_key_email" to "alice@example.org"
-    And I fill in the following:
-      | upload_openpgp_key_keyFile       | /tmp/alice2.asc   |
-      | upload_openpgp_key_keyText       |                   |
-    And I press "Publish OpenPGP key"
-    And I am on "/account/openpgp/delete/alice@example.org"
-    And I fill in the following:
-      | password_confirmation_password  | asdasd  |
-    And I press "Delete OpenPGP key"
 
-    Then I should be on "/account/openpgp"
-    And I should see text matching "Your OpenPGP key was deleted."
+    Then I should see text matching "Fingerprint:"
+
+    When I press "Delete"
+    And I wait for the modal to appear
+    And I fill in "password_confirmation[password]" with "asdasd" in the modal
+    And I click "Delete OpenPGP key" in the modal
+    And I wait for text "Your OpenPGP key was deleted." to appear
+
+    Then I should see text matching "Your OpenPGP key was deleted."
     And I should not see text matching "Fingerprint:"
-    And the response status code should be 200
 
   @openpgp-access
   Scenario: Unauthenticated user is redirected to login
@@ -402,10 +402,9 @@ Feature: OpenPGP
     And the response status code should be 200
 
   @delete-openpgp-unauthorized
-  Scenario: Delete key for unauthorized email is rejected
+  Scenario: Delete key for unauthorized email via POST is rejected
     When I am authenticated as "alice@example.org"
-    And I am on "/account/openpgp/delete/bob@example.org"
+    And I request "POST /account/openpgp/delete/bob@example.org"
 
     Then I should be on "/account/openpgp"
     And I should see text matching "You are not authorized to manage this identity."
-    And the response status code should be 200

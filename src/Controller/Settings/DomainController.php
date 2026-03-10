@@ -82,28 +82,6 @@ final class DomainController extends AbstractController
         ]);
     }
 
-    #[Route('/settings/domains/delete/{id}', name: 'settings_domain_delete', methods: ['GET'])]
-    public function delete(#[MapEntity] Domain $domain): Response
-    {
-        $user = $this->getUser();
-        if ($user instanceof User && $user->getDomain() === $domain) {
-            $this->addFlash('error', 'settings.domain.delete.error.own_domain');
-
-            return $this->redirectToRoute('settings_domain_index');
-        }
-
-        $form = $this->createForm(PasswordConfirmationType::class, new PasswordConfirmation(), [
-            'action' => $this->generateUrl('settings_domain_delete_post', ['id' => $domain->getId()]),
-            'method' => 'POST',
-            'submit_label' => 'delete.domain.submit',
-        ]);
-
-        return $this->render('Settings/Domain/delete.html.twig', [
-            'form' => $form,
-            'domain' => $domain,
-        ]);
-    }
-
     #[Route('/settings/domains/delete/{id}', name: 'settings_domain_delete_post', methods: ['POST'])]
     public function deleteSubmit(#[MapEntity] Domain $domain, Request $request): Response
     {
@@ -126,9 +104,8 @@ final class DomainController extends AbstractController
             return $this->redirectToRoute('settings_domain_index');
         }
 
-        return $this->render('Settings/Domain/delete.html.twig', [
-            'form' => $form,
-            'domain' => $domain,
-        ]);
+        $this->addFlash('error', 'flashes.password-confirmation-failed');
+
+        return $this->redirectToRoute('settings_domain_index');
     }
 }

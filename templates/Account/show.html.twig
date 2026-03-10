@@ -7,6 +7,7 @@
 {% block page_subtitle %}{{ "start.account-settings-desc"|trans }}{% endblock %}
 
 {% block page_content %}
+    <div data-controller="modal">
     {# Dashboard cards grid #}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr place-content-center">
 
@@ -151,9 +152,10 @@
 
         {# Account Deletion card #}
         <div class="group h-full">
-            <a href="{{ path('account_delete') }}"
-               class="flex flex-col h-full bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-xl hover:border-red-300 dark:hover:border-red-600 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
-               aria-describedby="delete-desc">
+            <button type="button"
+                    data-action="modal#open"
+                    class="flex flex-col h-full w-full bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-xl hover:border-red-300 dark:hover:border-red-600 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+                    aria-describedby="delete-desc">
                 <div class="flex flex-col h-full p-6 text-center">
                     <div class="flex-shrink-0">
                         <div class="w-12 h-12 mx-auto mb-4 p-3 bg-red-50 dark:bg-red-900/50 rounded-xl group-hover:bg-red-100 dark:group-hover:bg-red-900 transition-colors duration-200">
@@ -167,7 +169,16 @@
                         </p>
                     </div>
                 </div>
-            </a>
+            </button>
         </div>
+    </div>
+
+    {# Delete account modal #}
+    {% include '_delete_password_modal.html.twig' with {
+        modal_title: 'delete.user.headline'|trans,
+        modal_description: 'delete.user.lead'|trans,
+        modal_action: path('account_delete_submit'),
+        modal_submit_label: 'form.delete-account'|trans,
+    } %}
     </div>
 {% endblock %}

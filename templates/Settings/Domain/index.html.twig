@@ -2,6 +2,7 @@
 {% extends 'Settings/base_settings.html.twig' %}
 {% block title %}{{ setting('app_name') }} - {{ 'settings.domain.title'|trans }}{% endblock %}
 {% block settings_content %}
+    <div data-controller="modal">
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
         <div class="p-6 sm:p-8">
             {% include 'Settings/_section_header.html.twig' with {
@@ -60,13 +61,17 @@
                                             {{ ux_icon('heroicons:eye', {class: 'w-4 h-4'}) }}
                                             <span class="sr-only">{{ 'settings.domain.actions.show'|trans }}</span>
                                         </a>
-                                        <a href="{{ path('settings_domain_delete', {id: domain.id}) }}"
-                                           title="{{ 'settings.domain.actions.delete'|trans }}"
-                                           data-controller="tooltip"
-                                           class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors">
+                                        <button type="button"
+                                                data-action="modal#open"
+                                                data-modal-action-param="{{ path('settings_domain_delete_post', {id: domain.id}) }}"
+                                                data-modal-message-param="{{ 'delete.domain.lead_specific'|trans({'%name%': domain.name}) }}"
+                                                title="{{ 'settings.domain.actions.delete'|trans }}"
+                                                aria-label="{{ 'settings.domain.actions.delete'|trans }} {{ domain.name }}"
+                                                data-controller="tooltip"
+                                                class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors">
                                             {{ ux_icon('heroicons:trash', {class: 'w-4 h-4'}) }}
                                             <span class="sr-only">{{ 'settings.domain.actions.delete'|trans }}</span>
-                                        </a>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -85,5 +90,13 @@
                 } %}
             {% endif %}
         </div>
+    </div>
+
+    {# Delete domain modal #}
+    {% include '_delete_password_modal.html.twig' with {
+        modal_title: 'delete.domain.headline'|trans,
+        modal_description: 'delete.domain.lead_generic'|trans,
+        modal_submit_label: 'delete.domain.submit'|trans,
+    } %}
     </div>
 {% endblock %}

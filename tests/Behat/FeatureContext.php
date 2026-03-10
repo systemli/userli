@@ -25,6 +25,7 @@ use App\Service\ApiTokenManager;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\MinkContext;
 use DateTimeImmutable;
@@ -961,6 +962,37 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @Then /^I wait for text "([^"]*)" to appear$/
+     */
+    public function iWaitForTextToAppear(string $text): void
+    {
+        $this->assertDriverSupportsJavascript();
+
+        $result = $this->getSession()->wait(
+            10000,
+            sprintf('document.body && document.body.textContent.includes(%s)', json_encode($text))
+        );
+
+        if (!$result) {
+            throw new RuntimeException(sprintf('Text "%s" did not appear within 10 seconds', $text));
+        }
+    }
+
+    /**
+     * @When /^I press the "([^"]*)" button$/
+     */
+    public function iPressTheButton(string $ariaLabel): void
+    {
+        $element = $this->getSession()->getPage()->find('css', sprintf('button[aria-label="%s"]', addcslashes($ariaLabel, '"')));
+
+        if (null === $element) {
+            throw new RuntimeException(sprintf('Button with aria-label "%s" not found', $ariaLabel));
+        }
+
+        $element->click();
+    }
+
+    /**
      * @Then /^I wait for the modal to appear$/
      */
     public function iWaitForTheModalToAppear(): void
@@ -968,9 +1000,10 @@ class FeatureContext extends MinkContext
         $this->assertDriverSupportsJavascript();
 
         $result = $this->getSession()->wait(5000,
-            'document.querySelector(\'[data-modal-target="overlay"]\') !== null'
-            .' && !document.querySelector(\'[data-modal-target="overlay"]\').classList.contains("hidden")'
-            .' && document.querySelector(\'[data-modal-target="overlay"]\').classList.contains("opacity-100")'
+            '(function() {'
+            .'  var overlays = document.querySelectorAll(\'[data-modal-target="overlay"], [data-delete-modal-target="overlay"]\');'
+            .'  return Array.from(overlays).some(function(el) { return !el.classList.contains("hidden") && el.classList.contains("opacity-100"); });'
+            .'})()'
         );
 
         if (!$result) {
@@ -986,8 +1019,10 @@ class FeatureContext extends MinkContext
         $this->assertDriverSupportsJavascript();
 
         $result = $this->getSession()->wait(5000,
-            'document.querySelector(\'[data-modal-target="overlay"]\') === null'
-            .' || document.querySelector(\'[data-modal-target="overlay"]\').classList.contains("hidden")'
+            '(function() {'
+            .'  var overlays = document.querySelectorAll(\'[data-modal-target="overlay"], [data-delete-modal-target="overlay"]\');'
+            .'  return overlays.length === 0 || Array.from(overlays).every(function(el) { return el.classList.contains("hidden"); });'
+            .'})()'
         );
 
         if (!$result) {
@@ -1002,11 +1037,7 @@ class FeatureContext extends MinkContext
     {
         $this->assertDriverSupportsJavascript();
 
-        $dialog = $this->getSession()->getPage()->find('css', '[data-modal-target="dialog"]');
-
-        if (null === $dialog) {
-            throw new RuntimeException('Modal dialog not found');
-        }
+        $dialog = $this->findVisibleModalDialog();
 
         if (!str_contains($dialog->getText(), $text)) {
             throw new RuntimeException(sprintf('Text "%s" not found in modal dialog', $text));
@@ -1020,12 +1051,7 @@ class FeatureContext extends MinkContext
     {
         $this->assertDriverSupportsJavascript();
 
-        $dialog = $this->getSession()->getPage()->find('css', '[data-modal-target="dialog"]');
-
-        if (null === $dialog) {
-            throw new RuntimeException('Modal dialog not found');
-        }
-
+        $dialog = $this->findVisibleModalDialog();
         $button = $dialog->findButton($buttonText);
 
         if (null === $button) {
@@ -1033,6 +1059,46 @@ class FeatureContext extends MinkContext
         }
 
         $button->click();
+    }
+
+    /**
+     * @When /^I fill in "([^"]*)" with "([^"]*)" in the modal$/
+     */
+    public function iFillInWithInTheModal(string $field, string $value): void
+    {
+        $this->assertDriverSupportsJavascript();
+
+        $dialog = $this->findVisibleModalDialog();
+        $fieldElement = $dialog->findField($field);
+
+        if (null === $fieldElement) {
+            throw new RuntimeException(sprintf('Field "%s" not found in modal dialog', $field));
+        }
+
+        $fieldElement->setValue($value);
+    }
+
+    /**
+     * Finds the currently visible modal dialog element.
+     *
+     * Supports both `data-modal-target="dialog"` and
+     * `data-delete-modal-target="dialog"` selectors.
+     */
+    private function findVisibleModalDialog(): NodeElement
+    {
+        $page = $this->getSession()->getPage();
+        $selectors = ['[data-modal-target="dialog"]', '[data-delete-modal-target="dialog"]'];
+
+        foreach ($selectors as $selector) {
+            $dialogs = $page->findAll('css', $selector);
+            foreach ($dialogs as $dialog) {
+                if ($dialog->isVisible()) {
+                    return $dialog;
+                }
+            }
+        }
+
+        throw new RuntimeException('No visible modal dialog found');
     }
 
     private function assertDriverSupportsJavascript(): void

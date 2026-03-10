@@ -11,11 +11,13 @@ import { Controller } from "@hotwired/stimulus";
  *   - description: (optional) An element whose innerHTML is updated on open.
  *   - autofocus:   (optional) The element to focus when the modal opens.
  *                  Falls back to the first focusable element in the dialog.
+ *   - form:        (optional) A form element whose action attribute is updated
+ *                  when opening, via data-modal-action-param.
  *
  * Actions:
  *   - open:           Opens the modal. Accepts optional params via
  *                     data-modal-email-param, data-modal-title-param,
- *                     and data-modal-message-param.
+ *                     data-modal-message-param, and data-modal-action-param.
  *   - close:          Closes the modal.
  *   - backdropClose:  Closes only when clicking the backdrop itself.
  *   - confirm:        Submits the pending form (set during open) and closes.
@@ -69,6 +71,24 @@ import { Controller } from "@hotwired/stimulus";
  *       </div>
  *     </div>
  *   </div>
+ *
+ * Usage (password confirmation modal with dynamic action):
+ *   <div data-controller="modal">
+ *     <button data-action="modal#open"
+ *             data-modal-action-param="/delete/123">
+ *       Delete
+ *     </button>
+ *
+ *     <div data-modal-target="overlay" ...>
+ *       <div data-modal-target="dialog">
+ *         <form data-modal-target="form" method="post">
+ *           <input type="password" name="password">
+ *           <button data-action="modal#close">Cancel</button>
+ *           <button type="submit">Delete</button>
+ *         </form>
+ *       </div>
+ *     </div>
+ *   </div>
  */
 export default class extends Controller {
   declare hasOverlayTarget: boolean;
@@ -83,6 +103,8 @@ export default class extends Controller {
   declare descriptionTarget: HTMLElement;
   declare hasAutofocusTarget: boolean;
   declare autofocusTarget: HTMLElement;
+  declare hasFormTarget: boolean;
+  declare formTarget: HTMLFormElement;
 
   static targets = [
     "overlay",
@@ -91,6 +113,7 @@ export default class extends Controller {
     "title",
     "description",
     "autofocus",
+    "form",
   ];
 
   private isOpen: boolean = false;
@@ -112,7 +135,12 @@ export default class extends Controller {
 
   open(
     event: Event & {
-      params?: { email?: string; title?: string; message?: string };
+      params?: {
+        email?: string;
+        title?: string;
+        message?: string;
+        action?: string;
+      };
     },
   ): void {
     if (!this.hasOverlayTarget) return;
@@ -134,6 +162,7 @@ export default class extends Controller {
     const email = event.params?.email ?? "";
     const title = event.params?.title ?? "";
     const message = event.params?.message ?? "";
+    const action = event.params?.action ?? "";
 
     if (this.hasEmailFieldTarget && email) {
       this.emailFieldTarget.value = email;
@@ -145,6 +174,10 @@ export default class extends Controller {
 
     if (this.hasDescriptionTarget && message) {
       this.descriptionTarget.innerHTML = message;
+    }
+
+    if (this.hasFormTarget && action) {
+      this.formTarget.setAttribute("action", action);
     }
 
     this.overlayTarget.classList.remove("hidden");
