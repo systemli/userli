@@ -61,7 +61,7 @@ export default class extends Controller {
 
     const tooltip = document.createElement("div");
     tooltip.className = "tooltip fade";
-    tooltip.innerHTML = `<div class="tooltip-inner">${text.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>`;
+    tooltip.innerHTML = `<div class="tooltip-inner">${text.replaceAll("<", "&lt;").replaceAll(">", "&gt;")}</div>`;
     tooltip.setAttribute("role", "tooltip");
 
     document.body.appendChild(tooltip);
