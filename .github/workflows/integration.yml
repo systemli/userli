@@ -71,6 +71,15 @@ jobs:
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9 # v7.0.0
+        with:
+          args: >
+            ${{ github.event_name == 'pull_request_target' && format(
+              '-Dsonar.pullrequest.key={0} -Dsonar.pullrequest.branch={1} -Dsonar.pullrequest.base={2} -Dsonar.scm.revision={3}',
+              github.event.pull_request.number,
+              github.event.pull_request.head.ref,
+              github.event.pull_request.base.ref,
+              github.event.pull_request.head.sha
+            ) || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
