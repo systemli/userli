@@ -135,3 +135,26 @@ Feature: Settings
     Then the response status code should be 200
     And I should see "example.org"
     And I should not see "All domains"
+
+  @javascript @webhooks @delete-modal
+  Scenario: Delete webhook via confirmation modal
+    Given the following WebhookEndpoint exists:
+      | url                      | secret | events       |
+      | https://example.org/hook | secret | user.created |
+    And I am authenticated as "louis@example.org"
+    When I am on "/settings/webhooks/"
+    Then I should see "https://example.org/hook"
+
+    When I press "Delete"
+    And I wait for the modal to appear
+    Then I should see "Confirm deletion" in the modal
+
+    When I click "Cancel" in the modal
+    And I wait for the modal to close
+    Then I should see "https://example.org/hook"
+
+    When I press "Delete"
+    And I wait for the modal to appear
+    When I click "Delete" in the modal
+
+    Then I should see "Webhook deleted successfully"

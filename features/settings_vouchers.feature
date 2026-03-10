@@ -70,21 +70,6 @@ Feature: Settings (Vouchers)
     And I should see "Create Voucher"
 
   @vouchers
-  Scenario: Admin can delete a voucher
-    Given the following Voucher exists:
-      | code   | user              |
-      | del123 | louis@example.org |
-    And I am authenticated as "louis@example.org"
-    When I am on "/settings/vouchers/"
-
-    Then I should see "del123"
-
-    When I press "Delete"
-
-    Then I should see "Voucher has been deleted successfully"
-    And I should not see "del123"
-
-  @vouchers
   Scenario: Admin can list existing vouchers
     Given the following Voucher exists:
       | code   | user              |
@@ -96,3 +81,26 @@ Feature: Settings (Vouchers)
     Then the response status code should be 200
     And I should see "vch001"
     And I should see "vch002"
+
+  @javascript @vouchers @delete-modal
+  Scenario: Delete voucher via confirmation modal
+    Given the following Voucher exists:
+      | code   | user              |
+      | del123 | louis@example.org |
+    And I am authenticated as "louis@example.org"
+    When I am on "/settings/vouchers/"
+    Then I should see "del123"
+
+    When I press "Delete"
+    And I wait for the modal to appear
+    Then I should see "Confirm deletion" in the modal
+
+    When I click "Cancel" in the modal
+    And I wait for the modal to close
+    Then I should see "del123"
+
+    When I press "Delete"
+    And I wait for the modal to appear
+    When I click "Delete" in the modal
+
+    Then I should see "Voucher has been deleted successfully"

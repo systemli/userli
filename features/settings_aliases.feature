@@ -67,20 +67,6 @@ Feature: Settings (Aliases)
     And I should see "alias2@example.org"
 
   @aliases
-  Scenario: Admin can delete an alias
-    Given the following Alias exists:
-      | source              | destination       |
-      | todelete@example.org | louis@example.org |
-    And I am authenticated as "louis@example.org"
-    When I am on "/settings/aliases/"
-
-    Then I should see "todelete@example.org"
-
-    When I press "Delete"
-
-    Then I should see "Alias has been deleted successfully"
-
-  @aliases
   Scenario: Admin can access edit alias page
     Given the following Alias exists:
       | source              | destination       |
@@ -94,3 +80,26 @@ Feature: Settings (Aliases)
 
     Then the response status code should be 200
     And I should see "Edit Alias"
+
+  @javascript @aliases @delete-modal
+  Scenario: Delete alias via confirmation modal
+    Given the following Alias exists:
+      | source               | destination       |
+      | todelete@example.org | louis@example.org |
+    And I am authenticated as "louis@example.org"
+    When I am on "/settings/aliases/"
+    Then I should see "todelete@example.org"
+
+    When I press "Delete"
+    And I wait for the modal to appear
+    Then I should see "Confirm deletion" in the modal
+
+    When I click "Cancel" in the modal
+    And I wait for the modal to close
+    Then I should see "todelete@example.org"
+
+    When I press "Delete"
+    And I wait for the modal to appear
+    When I click "Delete" in the modal
+
+    Then I should see "Alias has been deleted successfully"

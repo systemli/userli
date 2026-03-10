@@ -244,6 +244,8 @@ delete:
     lead: "Are you sure you want to delete <strong>%name%</strong>? This will permanently delete all associated users, aliases, and vouchers."
     submit: Delete domain
   cancel: Cancel
+  confirm: Delete
+  confirm-title: Confirm deletion
 recovery-token:
   headline: Manage recovery token
   lead: The recovery token can be used to reset your password if you forget it.
