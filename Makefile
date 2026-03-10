@@ -66,6 +66,7 @@ release: clean prepare build
 		--exclude='${TMP_DIR}/sonar-project.properties' \
 		--exclude='${TMP_DIR}/tests' \
 		--exclude='${TMP_DIR}/tsconfig.json' \
+		--exclude='${TMP_DIR}/vitest.config.ts' \
 		--exclude='${TMP_DIR}/var/cache/*' \
 		--exclude='${TMP_DIR}/var/db_test.sqlite' \
 		--exclude='${TMP_DIR}/var/log/*' \
@@ -122,3 +123,6 @@ psalm: vendors
 
 test: vendors lint
 	bin/phpunit
+
+jstest: assets
+	yarn test
