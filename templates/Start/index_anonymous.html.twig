@@ -7,9 +7,7 @@
 {% block page_subtitle %}{{ "start.intro"|trans }}{% endblock %}
 
 {% block page_content %}
-    <div class="max-w-6xl mx-auto">
-        {# Main content area #}
-        <div class="max-w-5xl mx-auto">
+    <div class="max-w-5xl mx-auto">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {# Registration section #}
                     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 sm:p-8">
@@ -63,7 +61,5 @@
                         {{ form_end(login_form) }}
                     </div>
                 </div>
-            </div>
-        </div>
     </div>
 {% endblock %}
