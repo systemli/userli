@@ -39,3 +39,26 @@ Feature: Settings (API Tokens)
     And I press "Create"
 
     Then I should see "New API token created"
+
+  @javascript @apitokens @delete-modal
+  Scenario: Delete API token via confirmation modal
+    Given the following ApiToken exists:
+      | token      | name       | scopes   |
+      | test-token | Test Token | keycloak |
+    And I am authenticated as "louis@example.org"
+    When I am on "/settings/api"
+    Then I should see "Test Token"
+
+    When I press "Delete"
+    And I wait for the modal to appear
+    Then I should see "Confirm deletion" in the modal
+
+    When I click "Cancel" in the modal
+    And I wait for the modal to close
+    Then I should see "Test Token"
+
+    When I press "Delete"
+    And I wait for the modal to appear
+    When I click "Delete" in the modal
+
+    Then I should see "API token deleted successfully"

@@ -960,6 +960,81 @@ class FeatureContext extends MinkContext
         $this->getSession()->wait($milliseconds);
     }
 
+    /**
+     * @Then /^I wait for the modal to appear$/
+     */
+    public function iWaitForTheModalToAppear(): void
+    {
+        $this->assertDriverSupportsJavascript();
+
+        $result = $this->getSession()->wait(5000,
+            'document.querySelector(\'[data-modal-target="overlay"]\') !== null'
+            .' && !document.querySelector(\'[data-modal-target="overlay"]\').classList.contains("hidden")'
+            .' && document.querySelector(\'[data-modal-target="overlay"]\').classList.contains("opacity-100")'
+        );
+
+        if (!$result) {
+            throw new RuntimeException('Modal did not appear within 5 seconds');
+        }
+    }
+
+    /**
+     * @Then /^I wait for the modal to close$/
+     */
+    public function iWaitForTheModalToClose(): void
+    {
+        $this->assertDriverSupportsJavascript();
+
+        $result = $this->getSession()->wait(5000,
+            'document.querySelector(\'[data-modal-target="overlay"]\') === null'
+            .' || document.querySelector(\'[data-modal-target="overlay"]\').classList.contains("hidden")'
+        );
+
+        if (!$result) {
+            throw new RuntimeException('Modal did not close within 5 seconds');
+        }
+    }
+
+    /**
+     * @Then /^I should see "([^"]*)" in the modal$/
+     */
+    public function iShouldSeeInTheModal(string $text): void
+    {
+        $this->assertDriverSupportsJavascript();
+
+        $dialog = $this->getSession()->getPage()->find('css', '[data-modal-target="dialog"]');
+
+        if (null === $dialog) {
+            throw new RuntimeException('Modal dialog not found');
+        }
+
+        if (!str_contains($dialog->getText(), $text)) {
+            throw new RuntimeException(sprintf('Text "%s" not found in modal dialog', $text));
+        }
+    }
+
+    /**
+     * @When /^I click "([^"]*)" in the modal$/
+     */
+    public function iClickInTheModal(string $buttonText): void
+    {
+        $this->assertDriverSupportsJavascript();
+
+        $dialog = $this->getSession()->getPage()->find('css', '[data-modal-target="dialog"]');
+
+        if (null === $dialog) {
+            throw new RuntimeException('Modal dialog not found');
+        }
+
+        $button = $dialog->findButton($buttonText);
+
+        if (null === $button) {
+            throw new RuntimeException(sprintf('Button "%s" not found in modal dialog', $buttonText));
+        }
+
+        $button->click();
+    }
+
     private function assertDriverSupportsJavascript(): void
     {
         $driver = $this->getSession()->getDriver();

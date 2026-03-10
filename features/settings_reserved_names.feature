@@ -57,21 +57,6 @@ Feature: Settings (Reserved Names)
     Then I should see "This value is already used"
 
   @reserved-names
-  Scenario: Admin can delete a reserved name
-    Given the following ReservedName exists:
-      | name      |
-      | deleteme  |
-    And I am authenticated as "louis@example.org"
-    When I am on "/settings/reserved-names/"
-
-    Then I should see "deleteme"
-
-    When I press "Delete"
-
-    Then I should see "Reserved name has been deleted successfully"
-    And I should not see "deleteme"
-
-  @reserved-names
   Scenario: Admin can search reserved names
     Given the following ReservedName exists:
       | name      |
@@ -96,3 +81,26 @@ Feature: Settings (Reserved Names)
     When I am on "/settings/reserved-names/export"
 
     Then the response status code should be 200
+
+  @javascript @reserved-names @delete-modal
+  Scenario: Delete reserved name via confirmation modal
+    Given the following ReservedName exists:
+      | name     |
+      | deleteme |
+    And I am authenticated as "louis@example.org"
+    When I am on "/settings/reserved-names/"
+    Then I should see "deleteme"
+
+    When I press "Delete"
+    And I wait for the modal to appear
+    Then I should see "Confirm deletion" in the modal
+
+    When I click "Cancel" in the modal
+    And I wait for the modal to close
+    Then I should see "deleteme"
+
+    When I press "Delete"
+    And I wait for the modal to appear
+    When I click "Delete" in the modal
+
+    Then I should see "Reserved name has been deleted successfully"
