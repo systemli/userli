@@ -353,6 +353,7 @@ Feature: OpenPGP
     And I wait for the modal to appear
     And I fill in "password_confirmation[password]" with "asdasd" in the modal
     And I click "Delete OpenPGP key" in the modal
+    And I wait for text "Your OpenPGP key was deleted." to appear
 
     Then I should see text matching "Your OpenPGP key was deleted."
     And I should not see text matching "Fingerprint:"
