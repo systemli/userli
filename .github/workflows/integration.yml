@@ -68,6 +68,9 @@ jobs:
         run: |
           bin/console cache:clear --env=test
           bin/behat --format progress
+        env:
+          PANTHER_CHROME_ARGUMENTS: '--disable-gpu --headless --no-sandbox --disable-dev-shm-usage'
+          PANTHER_NO_SANDBOX: 1
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9 # v7.0.0

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d1430fa2c53fb025ee8e3e1c68deecb",
+    "content-hash": "51709c9d3be9cabd9686d8209bfb4ee8",
     "packages": [
         {
             "name": "arubacao/tld-checker",
@@ -11523,6 +11523,55 @@
             "time": "2024-04-12T12:12:48+00:00"
         },
         {
+            "name": "dbrekelmans/bdi",
+            "version": "1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dbrekelmans/bdi.git",
+                "reference": "c2b77127d7aa3fad25d57575c207b54b108ab300"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dbrekelmans/bdi/zipball/c2b77127d7aa3fad25d57575c207b54b108ab300",
+                "reference": "c2b77127d7aa3fad25d57575c207b54b108ab300",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-zip": "*",
+                "ext-zlib": "*",
+                "php": "^8.1"
+            },
+            "bin": [
+                "bdi",
+                "bdi.phar"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniël Brekelmans",
+                    "homepage": "https://github.com/dbrekelmans"
+                },
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/dbrekelmans/bdi/graphs/contributors"
+                }
+            ],
+            "description": "PHAR distribution of dbrekelmans/browser-driver-installer.",
+            "homepage": "https://github.com/dbrekelmans/bdi",
+            "keywords": [
+                "browser-driver-installer"
+            ],
+            "support": {
+                "source": "https://github.com/dbrekelmans/bdi/tree/1.4.1"
+            },
+            "time": "2025-11-03T11:32:28+00:00"
+        },
+        {
             "name": "dg/bypass-finals",
             "version": "v1.9.0",
             "source": {
@@ -12854,6 +12903,72 @@
                 "source": "https://github.com/phar-io/version/tree/3.2.1"
             },
             "time": "2022-02-21T01:04:05+00:00"
+        },
+        {
+            "name": "php-webdriver/webdriver",
+            "version": "1.16.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-webdriver/php-webdriver.git",
+                "reference": "ac0662863aa120b4f645869f584013e4c4dba46a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-webdriver/php-webdriver/zipball/ac0662863aa120b4f645869f584013e4c4dba46a",
+                "reference": "ac0662863aa120b4f645869f584013e4c4dba46a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-zip": "*",
+                "php": "^7.3 || ^8.0",
+                "symfony/polyfill-mbstring": "^1.12",
+                "symfony/process": "^5.0 || ^6.0 || ^7.0 || ^8.0"
+            },
+            "replace": {
+                "facebook/webdriver": "*"
+            },
+            "require-dev": {
+                "ergebnis/composer-normalize": "^2.20.0",
+                "ondram/ci-detector": "^4.0",
+                "php-coveralls/php-coveralls": "^2.4",
+                "php-mock/php-mock-phpunit": "^2.0",
+                "php-parallel-lint/php-parallel-lint": "^1.2",
+                "phpunit/phpunit": "^9.3",
+                "squizlabs/php_codesniffer": "^3.5",
+                "symfony/var-dumper": "^5.0 || ^6.0 || ^7.0 || ^8.0"
+            },
+            "suggest": {
+                "ext-simplexml": "For Firefox profile creation"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/Exception/TimeoutException.php"
+                ],
+                "psr-4": {
+                    "Facebook\\WebDriver\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A PHP client for Selenium WebDriver. Previously facebook/webdriver.",
+            "homepage": "https://github.com/php-webdriver/php-webdriver",
+            "keywords": [
+                "Chromedriver",
+                "geckodriver",
+                "php",
+                "selenium",
+                "webdriver"
+            ],
+            "support": {
+                "issues": "https://github.com/php-webdriver/php-webdriver/issues",
+                "source": "https://github.com/php-webdriver/php-webdriver/tree/1.16.0"
+            },
+            "time": "2025-12-28T23:57:40+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -14416,6 +14531,171 @@
             "time": "2025-08-27T21:33:23+00:00"
         },
         {
+            "name": "robertfausk/behat-panther-extension",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/robertfausk/behat-panther-extension.git",
+                "reference": "838984a60cd53d950382bee321f8b670c3a5d120"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/robertfausk/behat-panther-extension/zipball/838984a60cd53d950382bee321f8b670c3a5d120",
+                "reference": "838984a60cd53d950382bee321f8b670c3a5d120",
+                "shasum": ""
+            },
+            "require": {
+                "behat/behat": "^3.0.5",
+                "friends-of-behat/mink-extension": "^2.3.0",
+                "php": ">=7.2",
+                "robertfausk/mink-panther-driver": "^1.0",
+                "symfony/config": "^3.4|^4.0|^5.0|^6.0|^7.0"
+            },
+            "require-dev": {
+                "g1a/composer-test-scenarios": "^3.0",
+                "matthiasnoback/symfony-config-test": "^4.1|^5.1",
+                "phpunit/phpunit": "~7.5|~9.3",
+                "roave/security-advisories": "dev-master"
+            },
+            "type": "behat-extension",
+            "extra": {
+                "scenarios": {
+                    "symfony3": {
+                        "require": {
+                            "symfony/config": "^3.4"
+                        }
+                    },
+                    "symfony4": {
+                        "require": {
+                            "symfony/config": "^4.0"
+                        }
+                    },
+                    "symfony5": {
+                        "require": {
+                            "symfony/config": "^5.0"
+                        }
+                    },
+                    "symfony6": {
+                        "require": {
+                            "symfony/config": "^6.0"
+                        }
+                    },
+                    "symfony7": {
+                        "require": {
+                            "symfony/config": "^7.0"
+                        }
+                    }
+                },
+                "branch-alias": {
+                    "dev-main": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Robertfausk\\Behat\\PantherExtension\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Robert Freigang",
+                    "email": "robertfreigang@gmx.de"
+                }
+            ],
+            "description": "Symfony Panther extension for Behat",
+            "keywords": [
+                "Behat",
+                "Cucumber",
+                "Panther",
+                "browser",
+                "chrome",
+                "firefox",
+                "gherkin",
+                "gui",
+                "symfony",
+                "test",
+                "web"
+            ],
+            "support": {
+                "issues": "https://github.com/robertfausk/behat-panther-extension/issues",
+                "source": "https://github.com/robertfausk/behat-panther-extension/tree/v1.2.0"
+            },
+            "time": "2025-04-04T10:09:14+00:00"
+        },
+        {
+            "name": "robertfausk/mink-panther-driver",
+            "version": "v1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/robertfausk/mink-panther-driver.git",
+                "reference": "ac95116505015a43af687220a8e00cefabd34dc0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/robertfausk/mink-panther-driver/zipball/ac95116505015a43af687220a8e00cefabd34dc0",
+                "reference": "ac95116505015a43af687220a8e00cefabd34dc0",
+                "shasum": ""
+            },
+            "require": {
+                "behat/mink": "~1.8",
+                "ext-dom": "*",
+                "php": ">=7.2",
+                "symfony/panther": "~0.7|~1.0|~2.0"
+            },
+            "require-dev": {
+                "dbrekelmans/bdi": "^1.0",
+                "mink/driver-testsuite": "dev-master",
+                "phpunit/phpunit": "~8.5|~9.3",
+                "symfony/dom-crawler": "~4.0|~5.0|~6.0",
+                "symfony/http-kernel": "~4.0|~5.0|~6.0"
+            },
+            "suggest": {
+                "ext-gd": "*"
+            },
+            "type": "mink-driver",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Behat\\Mink\\Driver\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Robert Freigang",
+                    "email": "robertfreigang@gmx.de"
+                }
+            ],
+            "description": "Symfony Panther driver for Mink framework",
+            "homepage": "http://mink.behat.org/",
+            "keywords": [
+                "Mink",
+                "Panther",
+                "browser",
+                "chrome",
+                "chromium",
+                "firefox",
+                "headless",
+                "symfony",
+                "testing"
+            ],
+            "support": {
+                "issues": "https://github.com/robertfausk/mink-panther-driver/issues",
+                "source": "https://github.com/robertfausk/mink-panther-driver/tree/v1.1.2"
+            },
+            "time": "2025-04-03T21:55:18+00:00"
+        },
+        {
             "name": "sebastian/cli-parser",
             "version": "4.2.0",
             "source": {
@@ -15720,6 +16000,95 @@
                 }
             ],
             "time": "2026-02-17T07:53:42+00:00"
+        },
+        {
+            "name": "symfony/panther",
+            "version": "v2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/panther.git",
+                "reference": "2d810395942e71aea2f7ea8e8b5f82326bb4b8b4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/panther/zipball/2d810395942e71aea2f7ea8e8b5f82326bb4b8b4",
+                "reference": "2d810395942e71aea2f7ea8e8b5f82326bb4b8b4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-libxml": "*",
+                "php": ">=8.1",
+                "php-webdriver/webdriver": "^1.8.2",
+                "symfony/browser-kit": "^6.4 || ^7.3 || ^8.0",
+                "symfony/dependency-injection": "^6.4 || ^7.3 || ^8.0",
+                "symfony/deprecation-contracts": "^2.4 || ^3",
+                "symfony/dom-crawler": "^6.4 || ^7.3 || ^8.0",
+                "symfony/http-client": "^6.4 || ^7.0 || ^8.0",
+                "symfony/http-kernel": "^6.4 || ^7.3 || ^8.0",
+                "symfony/process": "^6.4 || ^7.3 || ^8.0"
+            },
+            "require-dev": {
+                "symfony/css-selector": "^6.4 || ^7.3 || ^8.0",
+                "symfony/framework-bundle": "^6.4 || ^7.3 || ^8.0",
+                "symfony/mime": "^6.4 || ^7.3 || ^8.0",
+                "symfony/phpunit-bridge": ">=7.3.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Panther\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kévin Dunglas",
+                    "email": "kevin@dunglas.dev",
+                    "homepage": "https://dunglas.dev"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "A browser testing and web scraping library for PHP and Symfony.",
+            "homepage": "https://symfony.com/packages/Panther",
+            "keywords": [
+                "e2e",
+                "scraping",
+                "selenium",
+                "symfony",
+                "testing",
+                "webdriver"
+            ],
+            "support": {
+                "issues": "https://github.com/symfony/panther/issues",
+                "source": "https://github.com/symfony/panther/tree/v2.4.0"
+            },
+            "funding": [
+                {
+                    "url": "https://www.panthera.org/donate",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/dunglas",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/panther",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-01-08T05:29:21+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",

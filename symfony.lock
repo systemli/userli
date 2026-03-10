@@ -401,6 +401,15 @@
     "symfony/options-resolver": {
         "version": "v4.1.4"
     },
+    "symfony/panther": {
+        "version": "2.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "4380502301e68b744b21d2a0c917693676a72f33"
+        }
+    },
     "symfony/phpunit-bridge": {
         "version": "8.0",
         "recipe": {
