@@ -130,26 +130,6 @@ final class AccountController extends AbstractController
         );
     }
 
-    #[Route(path: '/account/delete', name: 'account_delete', methods: ['GET'])]
-    public function delete(): Response
-    {
-        /** @var User $user */
-        $user = $this->getUser();
-        $form = $this->createForm(
-            PasswordConfirmationType::class,
-            new PasswordConfirmation(),
-            ['submit_label' => 'form.delete-account'],
-        );
-
-        return $this->render(
-            'Account/delete.html.twig',
-            [
-                'form' => $form,
-                'user' => $user,
-            ]
-        );
-    }
-
     #[Route(path: '/account/delete', name: 'account_delete_submit', methods: ['POST'])]
     public function deleteSubmit(Request $request): Response
     {
@@ -168,13 +148,9 @@ final class AccountController extends AbstractController
             return $this->redirectToRoute('logout');
         }
 
-        return $this->render(
-            'Account/delete.html.twig',
-            [
-                'form' => $form,
-                'user' => $user,
-            ]
-        );
+        $this->addFlash('error', 'flashes.password-confirmation-failed');
+
+        return $this->redirectToRoute('account_settings');
     }
 
     #[Route(path: '/account/recovery-token', name: 'account_recovery_token', methods: ['GET'])]

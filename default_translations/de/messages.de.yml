@@ -276,6 +276,7 @@ flashes:
   openpgp-key-upload-error-no-keys: Die hochgeladene Datei enthält keine Schlüssel für deine E-Mail-Adresse.
   openpgp-key-upload-error-multiple-keys: Die hochgeladene Datei enhält mehr als einen Schlüssel für deine E-Mail-Adresse. Bitte lade nur einen Schlüssel hoch.
   openpgp-key-unauthorized: Du bist nicht berechtigt, Schlüssel für diese Adresse zu verwalten.
+  password-confirmation-failed: Das eingegebene Passwort ist falsch. Bitte versuche es erneut.
 flash_batch_remove_vouchers_success: Nicht eingelöste Einladungscodes gelöscht.
 error:
   title: Oops, es ist ein Fehler passiert.

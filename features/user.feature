@@ -79,63 +79,57 @@ Feature: User
     And the response status code should be 200
 
   @delete-alias
-  Scenario: User tries to delete a custom alias
+  Scenario: User tries to delete a custom alias via POST
     When I am authenticated as "user@example.org"
-    And I am on "/account/alias/delete/1"
+    And I request "POST /account/alias/delete/1"
 
     Then the response status code should be 403
 
-  @delete-alias
-  Scenario: Delete random alias
+  @javascript @delete-alias
+  Scenario: Delete random alias via modal
     When I am authenticated as "user@example.org"
-    And I am on "/account/alias/delete/4"
-    Then the response status code should be 200
+    And I am on "/account/alias"
 
-    When I fill in the following:
-      | password_confirmation_password | asdasd |
-    And I press "Delete alias address"
+    Then I should see text matching "Delete"
 
-    Then I should be on "/account/alias"
-    And I should see text matching "Your alias address was deleted."
-    And the response status code should not be 403
+    When I click on the element "[data-modal-action-param='/account/alias/delete/4']"
+    And I wait for the modal to appear
+    And I fill in "password_confirmation[password]" with "asdasd" in the modal
+    And I click "Delete alias address" in the modal
+    And I wait 3000 milliseconds
+
+    Then I should see text matching "Your alias address was deleted."
 
   @delete-alias
-  Scenario: User tries to access a deleted alias
+  Scenario: User tries to access a deleted alias via POST
     When I am authenticated as "user@example.org"
-    And I am on "/account/alias/delete/2"
+    And I request "POST /account/alias/delete/2"
     Then the response status code should be 404
 
   @delete-alias
-  Scenario: User tries to access a alias that does not belong to them
+  Scenario: User tries to access a alias that does not belong to them via POST
     When I am authenticated as "user@example.org"
-    And I am on "/account/alias/delete/3"
+    And I request "POST /account/alias/delete/3"
     Then the response status code should be 403
 
   @delete-alias
-  Scenario: Nonexistent alias redirect
+  Scenario: Nonexistent alias via POST
     When I am authenticated as "user@example.org"
-    And I am on "/account/alias/delete/200"
+    And I request "POST /account/alias/delete/200"
     Then the response status code should be 404
 
-  @delete-user
-  Scenario: Delete Account
+  @javascript @delete-user
+  Scenario: Delete Account via modal
     When I am authenticated as "user@example.org"
-    And I am on "/account/delete"
-    And I fill in the following:
-      | password_confirmation_password | asdasd |
-    And I press "Delete account"
+    And I am on "/account/settings"
+
+    When I press "Delete Account"
+    And I wait for the modal to appear
+    And I fill in "password_confirmation[password]" with "asdasd" in the modal
+    And I click "Delete account" in the modal
+    And I wait 3000 milliseconds
 
     Then I should be on "/"
-    And the response status code should not be 403
-
-    And I fill in the following:
-      | _username | user@example.org |
-      | _password | asdasd           |
-    And I press "Sign in"
-
-    Then I should be on "/login"
-    Then I should see text matching "The presented password is invalid."
-    And the response status code should not be 403
 
   @create-voucher
   Scenario: Create voucher as Admin

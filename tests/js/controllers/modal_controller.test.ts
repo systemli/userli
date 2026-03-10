@@ -297,4 +297,67 @@ describe("ModalController", () => {
       }).not.toThrow();
     });
   });
+
+  describe("form target with dynamic action param", () => {
+    const FORM_ACTION_HTML = `
+      <div data-controller="modal">
+        <button id="trigger-1"
+                data-action="modal#open"
+                data-modal-action-param="/delete/1">
+          Delete #1
+        </button>
+        <button id="trigger-2"
+                data-action="modal#open"
+                data-modal-action-param="/delete/2">
+          Delete #2
+        </button>
+
+        <div data-modal-target="overlay"
+             data-action="click->modal#backdropClose"
+             class="hidden opacity-0"
+             aria-modal="true"
+             role="dialog">
+          <div data-modal-target="dialog" class="opacity-0 scale-95">
+            <form data-modal-target="form" method="post" action="">
+              <input type="password" name="password">
+              <button id="close-btn" data-action="modal#close">Cancel</button>
+              <button type="submit">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>`;
+
+    it("sets form action from the action param on open", async () => {
+      const { element } = await start(FORM_ACTION_HTML);
+
+      const form = element.querySelector(
+        "[data-modal-target='form']",
+      ) as HTMLFormElement;
+      const trigger1 = element.querySelector("#trigger-1") as HTMLElement;
+      trigger1.click();
+
+      expect(form.getAttribute("action")).toBe("/delete/1");
+    });
+
+    it("updates form action when a different trigger is clicked", async () => {
+      const { element } = await start(FORM_ACTION_HTML);
+
+      const form = element.querySelector(
+        "[data-modal-target='form']",
+      ) as HTMLFormElement;
+      const trigger1 = element.querySelector("#trigger-1") as HTMLElement;
+      const trigger2 = element.querySelector("#trigger-2") as HTMLElement;
+
+      trigger1.click();
+      expect(form.getAttribute("action")).toBe("/delete/1");
+
+      // Close and re-open with different action
+      const closeBtn = element.querySelector("#close-btn") as HTMLElement;
+      closeBtn.click();
+      vi.advanceTimersByTime(200);
+
+      trigger2.click();
+      expect(form.getAttribute("action")).toBe("/delete/2");
+    });
+  });
 });

@@ -50,13 +50,15 @@
                         <span class="hidden sm:inline">{{ "openpgp.update-key"|trans }}</span>
                     </button>
 
-                    <a href="{{ path('openpgp_delete', {email: identity.email}) }}"
-                       class="inline-flex items-center justify-center p-2 sm:px-3.5 sm:py-2 text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800
-                           bg-red-600 dark:bg-red-500 hover:bg-red-700 dark:hover:bg-red-600 text-white focus:ring-red-500"
-                       title="{{ "openpgp.delete-button"|trans }}">
+                    <button type="button"
+                            data-action="delete-modal#open"
+                            data-delete-modal-action-param="{{ path('openpgp_delete_submit', {email: identity.email}) }}"
+                            class="inline-flex items-center justify-center p-2 sm:px-3.5 sm:py-2 text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800
+                               bg-red-600 dark:bg-red-500 hover:bg-red-700 dark:hover:bg-red-600 text-white focus:ring-red-500"
+                            title="{{ "openpgp.delete-button"|trans }}">
                         {{ ux_icon('heroicons:trash', {'class': 'w-4 h-4 sm:mr-1.5'}) }}
                         <span class="hidden sm:inline">{{ "openpgp.delete-button"|trans }}</span>
-                    </a>
+                    </button>
                 </div>
             </div>
         {% else %}

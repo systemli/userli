@@ -141,38 +141,12 @@ final class AliasController extends AbstractController
         }
     }
 
-    #[Route(path: '/account/alias/delete/{id}', name: 'alias_delete', requirements: ['id' => '\d+'], methods: ['GET'])]
-    #[IsGranted('delete', subject: 'alias')]
-    public function delete(
-        #[MapEntity(class: Alias::class, expr: 'repository.findOneBy({id: id, deleted: false})')]
-        Alias $alias): Response
-    {
-        $form = $this->createForm(
-            PasswordConfirmationType::class,
-            new PasswordConfirmation(),
-            [
-                'action' => $this->generateUrl('alias_delete_submit', ['id' => $alias->getId()]),
-                'method' => 'post',
-                'submit_label' => 'form.delete-alias',
-            ],
-        );
-
-        return $this->render(
-            'Alias/delete.html.twig',
-            [
-                'alias' => $alias,
-                'form' => $form,
-                'user' => $this->getUser(),
-            ]
-        );
-    }
-
     #[Route(path: '/account/alias/delete/{id}', name: 'alias_delete_submit', requirements: ['id' => '\d+'], methods: ['POST'])]
     #[IsGranted('delete', subject: 'alias')]
     public function deleteSubmit(
         Request $request,
         #[MapEntity(class: Alias::class, expr: 'repository.findOneBy({id: id, deleted: false})')]
-        Alias $alias): RedirectResponse|Response
+        Alias $alias): RedirectResponse
     {
         $form = $this->createForm(
             PasswordConfirmationType::class,
@@ -189,13 +163,8 @@ final class AliasController extends AbstractController
             return $this->redirectToRoute('aliases');
         }
 
-        return $this->render(
-            'Alias/delete.html.twig',
-            [
-                'alias' => $alias,
-                'form' => $form,
-                'user' => $this->getUser(),
-            ]
-        );
+        $this->addFlash('error', 'flashes.password-confirmation-failed');
+
+        return $this->redirectToRoute('aliases');
     }
 }

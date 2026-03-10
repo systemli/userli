@@ -100,35 +100,12 @@ final class OpenPGPController extends AbstractController
         }
     }
 
-    #[Route(path: '/account/openpgp/delete/{email}', name: 'openpgp_delete', methods: ['GET'])]
-    public function delete(string $email): RedirectResponse|Response
-    {
-        /** @var User $user */
-        $user = $this->getUser();
-
-        if (!$this->canManageIdentity($user, $email)) {
-            $this->addFlash('error', 'flashes.openpgp-key-unauthorized');
-
-            return $this->redirectToRoute('openpgp');
-        }
-
-        $form = $this->createForm(PasswordConfirmationType::class, new PasswordConfirmation(), [
-            'submit_label' => 'openpgp-delete',
-        ]);
-
-        return $this->render('Account/openpgp_delete.html.twig', [
-            'form' => $form,
-            'user' => $user,
-            'email' => $email,
-        ]);
-    }
-
     #[Route(
         path: '/account/openpgp/delete/{email}',
         name: 'openpgp_delete_submit',
         methods: ['POST'],
         requirements: ['email' => '[^/]+'],
-    ),]
+    )]
     public function deleteSubmit(Request $request, string $email): RedirectResponse
     {
         /** @var User $user */
@@ -150,6 +127,8 @@ final class OpenPGPController extends AbstractController
             $this->wkdHandler->deleteKey($email);
 
             $this->addFlash('success', 'flashes.openpgp-deletion-successful');
+        } else {
+            $this->addFlash('error', 'flashes.password-confirmation-failed');
         }
 
         return $this->redirectToRoute('openpgp');
