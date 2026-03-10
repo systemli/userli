@@ -962,6 +962,37 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @Then /^I wait for text "([^"]*)" to appear$/
+     */
+    public function iWaitForTextToAppear(string $text): void
+    {
+        $this->assertDriverSupportsJavascript();
+
+        $result = $this->getSession()->wait(
+            10000,
+            sprintf('document.body && document.body.textContent.includes(%s)', json_encode($text))
+        );
+
+        if (!$result) {
+            throw new RuntimeException(sprintf('Text "%s" did not appear within 10 seconds', $text));
+        }
+    }
+
+    /**
+     * @When /^I press the "([^"]*)" button$/
+     */
+    public function iPressTheButton(string $ariaLabel): void
+    {
+        $element = $this->getSession()->getPage()->find('css', sprintf('button[aria-label="%s"]', addcslashes($ariaLabel, '"')));
+
+        if (null === $element) {
+            throw new RuntimeException(sprintf('Button with aria-label "%s" not found', $ariaLabel));
+        }
+
+        $element->click();
+    }
+
+    /**
      * @Then /^I wait for the modal to appear$/
      */
     public function iWaitForTheModalToAppear(): void
@@ -1045,22 +1076,6 @@ class FeatureContext extends MinkContext
         }
 
         $fieldElement->setValue($value);
-    }
-
-    /**
-     * @When /^I click on the element "([^"]*)"$/
-     */
-    public function iClickOnTheElement(string $cssSelector): void
-    {
-        $this->assertDriverSupportsJavascript();
-
-        $element = $this->getSession()->getPage()->find('css', $cssSelector);
-
-        if (null === $element) {
-            throw new RuntimeException(sprintf('Element "%s" not found', $cssSelector));
-        }
-
-        $element->click();
     }
 
     /**

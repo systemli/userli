@@ -85,11 +85,11 @@ Feature: Settings (Domains)
 
     Then I should see "delete.org"
 
-    When I click on the element "[data-modal-action-param='/settings/domains/delete/2']"
+    When I press the "Delete delete.org" button
     And I wait for the modal to appear
     And I fill in "password_confirmation[password]" with "asdasd" in the modal
     And I click "Delete domain" in the modal
-    And I wait 3000 milliseconds
+    And I wait for text "Domain and all associated data have been deleted successfully" to appear
 
     Then I should see "Domain and all associated data have been deleted successfully"
     And I should not see "delete.org"

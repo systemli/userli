@@ -230,18 +230,22 @@ closed:
 delete:
   alias:
     headline_generic: Alias-Adresse löschen
+    lead_generic: >
+      Bist du dir sicher, dass du diese Alias-Adresse löschen möchtest?
+      Die Adresse wird unwiderruflich gelöscht.
     lead_specific: >
       Bist du dir sicher, dass du <strong>%alias%</strong> löschen möchtest?
       Die Adresse wird unwiderruflich gelöscht.
   user:
     headline: Konto löschen
-    lead: Mit der Bestätigung deines Passworts kannst du dein Konto unwiderruflich löschen.
+    lead: Mit der Bestätigung deines Passworts kannst du dein Konto unwiderruflich löschen. Diese Aktion kann nicht rückgängig gemacht werden.
   openpgp:
     headline: OpenPGP-Schlüssel löschen
     lead: Mit der Bestätigung deines Passworts kannst du den OpenPGP-Schlüssel für <strong>%email%</strong> aus dem Web Key Directory löschen.
   domain:
     headline: Domain löschen
-    lead: "Bist du sicher, dass du <strong>%name%</strong> löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungen unwiderruflich gelöscht."
+    lead_generic: "Bist du sicher, dass du diese Domain löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungen unwiderruflich gelöscht."
+    lead_specific: "Bist du sicher, dass du <strong>%name%</strong> löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungen unwiderruflich gelöscht."
     submit: Domain löschen
   cancel: Abbrechen
   confirm: Löschen

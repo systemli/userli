@@ -64,7 +64,9 @@
                                         <button type="button"
                                                 data-action="modal#open"
                                                 data-modal-action-param="{{ path('settings_domain_delete_post', {id: domain.id}) }}"
+                                                data-modal-message-param="{{ 'delete.domain.lead_specific'|trans({'%name%': domain.name}) }}"
                                                 title="{{ 'settings.domain.actions.delete'|trans }}"
+                                                aria-label="{{ 'settings.domain.actions.delete'|trans }} {{ domain.name }}"
                                                 data-controller="tooltip"
                                                 class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors">
                                             {{ ux_icon('heroicons:trash', {class: 'w-4 h-4'}) }}
@@ -93,7 +95,7 @@
     {# Delete domain modal #}
     {% include '_delete_password_modal.html.twig' with {
         modal_title: 'delete.domain.headline'|trans,
-        modal_description: 'delete.domain.lead'|trans({'%name%': ''}),
+        modal_description: 'delete.domain.lead_generic'|trans,
         modal_submit_label: 'delete.domain.submit'|trans,
     } %}
     </div>

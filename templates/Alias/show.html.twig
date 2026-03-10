@@ -134,8 +134,10 @@
                                                     <button type="button"
                                                             data-action="modal#open"
                                                             data-modal-action-param="{{ path('alias_delete_submit', {'id': alias.id}) }}"
+                                                            data-modal-message-param="{{ 'delete.alias.lead_specific'|trans({'%alias%': alias.source}) }}"
                                                             class="inline-flex items-center p-2 text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/50 rounded hover:bg-red-200 dark:hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 dark:focus:ring-offset-gray-700 transition-colors"
                                                             title="{{ "alias.delete"|trans }}"
+                                                            aria-label="{{ "alias.delete"|trans }} {{ alias.source }}"
                                                             data-controller="tooltip">
                                                         {{ ux_icon('heroicons:x-mark', {class: 'w-4 h-4'}) }}
                                                     </button>
@@ -262,8 +264,10 @@
                                                 <button type="button"
                                                         data-action="modal#open"
                                                         data-modal-action-param="{{ path('alias_delete_submit', {'id': alias.id}) }}"
+                                                        data-modal-message-param="{{ 'delete.alias.lead_specific'|trans({'%alias%': alias.source}) }}"
                                                         class="inline-flex items-center p-2 text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/50 rounded hover:bg-red-200 dark:hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 dark:focus:ring-offset-gray-700 transition-colors"
                                                         title="{{ "alias.delete"|trans }}"
+                                                        aria-label="{{ "alias.delete"|trans }} {{ alias.source }}"
                                                         data-controller="tooltip">
                                                     {{ ux_icon('heroicons:x-mark', {'class': 'w-4 h-4'}) }}
                                                 </button>
@@ -279,7 +283,7 @@
         {# Delete alias modal #}
         {% include '_delete_password_modal.html.twig' with {
             modal_title: 'delete.alias.headline_generic'|trans,
-            modal_description: 'delete.alias.lead_specific'|trans({'%alias%': ''}),
+            modal_description: 'delete.alias.lead_generic'|trans,
             modal_submit_label: 'form.delete-alias'|trans,
         } %}
     </div>

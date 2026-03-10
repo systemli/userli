@@ -92,11 +92,11 @@ Feature: User
 
     Then I should see text matching "Delete"
 
-    When I click on the element "[data-modal-action-param='/account/alias/delete/4']"
+    When I press the "Delete alias random_alias_4@example.org" button
     And I wait for the modal to appear
     And I fill in "password_confirmation[password]" with "asdasd" in the modal
     And I click "Delete alias address" in the modal
-    And I wait 3000 milliseconds
+    And I wait for text "Your alias address was deleted." to appear
 
     Then I should see text matching "Your alias address was deleted."
 
@@ -127,7 +127,7 @@ Feature: User
     And I wait for the modal to appear
     And I fill in "password_confirmation[password]" with "asdasd" in the modal
     And I click "Delete account" in the modal
-    And I wait 3000 milliseconds
+    And I wait for text "Sign in" to appear
 
     Then I should be on "/"
 
