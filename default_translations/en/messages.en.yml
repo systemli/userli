@@ -517,6 +517,7 @@ settings:
     vouchers: Vouchers
     domains: Domains
     user-notifications: Notifications
+    users: Users
   coming-soon: Coming Soon
   table:
     id: ID
@@ -879,6 +880,95 @@ settings:
       previous: Previous
       next: Next
       page: "Page %page% of %totalPages%"
+
+  user:
+    title: Users
+    heading: Users
+    description: Manage user accounts, roles, and security settings
+    table:
+      email: Email
+      roles: Roles
+      twofactor: 2FA
+      mailcrypt: MailCrypt
+      status: Status
+      empty-title: No users found
+      empty-description: No user accounts match your current filters.
+    filter:
+      status: Status
+      active: Active
+      deleted: Deleted
+      all: All
+      role: Role
+      mailcrypt: MailCrypt
+      twofactor: 2FA
+      enabled: Enabled
+      disabled: Disabled
+    status:
+      active: Active
+      deleted: Deleted
+    create:
+      button: Create User
+      title: Create User
+      success: User has been created successfully.
+    edit:
+      title: Edit User
+      success: User has been updated successfully.
+    delete:
+      confirm: "Are you sure you want to delete the user \"%email%\"?"
+      success: User has been deleted successfully.
+    actions:
+      edit: Edit
+      delete: Delete
+    search:
+      placeholder: Search by email...
+      submit: Search
+    pagination:
+      total: "%count% users total"
+      previous: Previous
+      next: Next
+      page: "Page %page% of %totalPages%"
+    form:
+      title:
+        edit: Edit User
+        create: Create new User
+      description:
+        create: Provide the email, password, and roles for the new user account.
+      email:
+        label: Email
+        help:
+          edit: The email address cannot be changed.
+          create: The full email address for the new user account.
+      password:
+        label: Password
+        help:
+          mailcrypt: "Warning: Changing the password will reset the user's mailbox encryption. A new recovery token will be generated."
+      password_confirmation:
+        label: Confirm Password
+      roles:
+        label: Roles
+        help: Select the roles to assign to this user.
+      quota:
+        label: Quota (MB)
+        help: Mailbox quota in megabytes. Leave empty for the default quota.
+      smtp_quota_limits:
+        label: SMTP Quota Limits
+        help: Override the default SMTP quota limits for this user.
+      totp:
+        label: Two-factor authentication enabled
+        help: Uncheck to disable two-factor authentication for this user. This will clear the TOTP secret and backup codes.
+        help_disabled: Two-factor authentication can only be enabled by the user themselves. As an admin, you can only deactivate it.
+      password_change_required:
+        label: Password change required
+        help: When enabled, the user will be forced to change their password on next login.
+      last_login: Last Login
+      recovery_token:
+        label: Recovery Token
+        "yes": Configured
+        "no": Not configured
+      cancel: Cancel
+      submit:
+        save: Save
+        create: Create
 
   user-notification:
     title: User Notifications

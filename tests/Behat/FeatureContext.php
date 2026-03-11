@@ -721,7 +721,7 @@ class FeatureContext extends MinkContext
     {
         foreach ($this->getAllPlaceholders() as $key => $value) {
             if (str_contains($string, $key)) {
-                $string = str_replace($key, $value, $string);
+                $string = str_replace($key, (string) $value, $string);
             }
         }
 

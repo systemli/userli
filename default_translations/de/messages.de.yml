@@ -499,6 +499,7 @@ settings:
     vouchers: Einladungen
     domains: Domains
     user-notifications: Benachrichtigungen
+    users: Benutzer:innen
   maintenance:
     title: Wartung
     subtitle: Führe Wartungsaufgaben bei Bedarf aus
@@ -879,6 +880,95 @@ settings:
       previous: Zurück
       next: Weiter
       page: "Seite %page% von %totalPages%"
+
+  user:
+    title: Benutzer
+    heading: Benutzer
+    description: Verwalte Benutzerkonten, Rollen und Sicherheitseinstellungen
+    table:
+      email: E-Mail
+      roles: Rollen
+      twofactor: 2FA
+      mailcrypt: MailCrypt
+      status: Status
+      empty-title: Keine Benutzer gefunden
+      empty-description: Keine Benutzerkonten entsprechen deinen aktuellen Filtern.
+    filter:
+      status: Status
+      active: Aktiv
+      deleted: Gelöscht
+      all: Alle
+      role: Rolle
+      mailcrypt: MailCrypt
+      twofactor: 2FA
+      enabled: Aktiviert
+      disabled: Deaktiviert
+    status:
+      active: Aktiv
+      deleted: Gelöscht
+    create:
+      button: Benutzer erstellen
+      title: Benutzer erstellen
+      success: Benutzer wurde erfolgreich erstellt.
+    edit:
+      title: Benutzer bearbeiten
+      success: Benutzer wurde erfolgreich aktualisiert.
+    delete:
+      confirm: "Möchtest du den Benutzer \"%email%\" wirklich löschen?"
+      success: Benutzer wurde erfolgreich gelöscht.
+    actions:
+      edit: Bearbeiten
+      delete: Löschen
+    search:
+      placeholder: Nach E-Mail suchen...
+      submit: Suchen
+    pagination:
+      total: "%count% Benutzer insgesamt"
+      previous: Zurück
+      next: Weiter
+      page: "Seite %page% von %totalPages%"
+    form:
+      title:
+        edit: Benutzer bearbeiten
+        create: Neuen Benutzer erstellen
+      description:
+        create: Gib E-Mail-Adresse, Passwort und Rollen für das neue Benutzerkonto an.
+      email:
+        label: E-Mail
+        help:
+          edit: Die E-Mail-Adresse kann nicht geändert werden.
+          create: Die vollständige E-Mail-Adresse für das neue Benutzerkonto.
+      password:
+        label: Passwort
+        help:
+          mailcrypt: "Achtung: Das Ändern des Passworts setzt die Postfachverschlüsselung des Benutzers zurück. Ein neuer Wiederherstellungscode wird generiert."
+      password_confirmation:
+        label: Passwort bestätigen
+      roles:
+        label: Rollen
+        help: Wähle die Rollen, die diesem Benutzer zugewiesen werden sollen.
+      quota:
+        label: Quota (MB)
+        help: Postfach-Quota in Megabyte. Leer lassen für das Standard-Quota.
+      smtp_quota_limits:
+        label: SMTP-Quota Limits
+        help: Überschreibe die Standard-SMTP-Quota-Limits für diesen Benutzer.
+      totp:
+        label: Zwei-Faktor-Authentifizierung aktiviert
+        help: Deaktivieren, um die Zwei-Faktor-Authentifizierung für diesen Benutzer zu entfernen. Das TOTP-Secret und die Backup-Codes werden gelöscht.
+        help_disabled: Die Zwei-Faktor-Authentifizierung kann nur von der Benutzerin/dem Benutzer selbst aktiviert werden. Als Admin kann sie nur deaktiviert werden.
+      password_change_required:
+        label: Passwortänderung erforderlich
+        help: Wenn aktiviert, wird der Benutzer beim nächsten Login gezwungen, sein Passwort zu ändern.
+      last_login: Letzter Login
+      recovery_token:
+        label: Wiederherstellungscode
+        "yes": Konfiguriert
+        "no": Nicht konfiguriert
+      cancel: Abbrechen
+      submit:
+        save: Speichern
+        create: Erstellen
 
   user-notification:
     title: Benutzerbenachrichtigungen

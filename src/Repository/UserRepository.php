@@ -9,6 +9,7 @@ use App\Entity\User;
 use DateInterval;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Override;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -223,6 +224,73 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
             ->setParameter('totpConfirmed', true)
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    public function countByFilters(string $search = '', string $deleted = 'active', string $role = '', string $mailCrypt = '', string $twofactor = ''): int
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)');
+
+        $this->applyFilters($qb, $search, $deleted, $role, $mailCrypt, $twofactor);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @return User[]
+     */
+    public function findPaginatedByFilters(string $search = '', string $deleted = 'active', string $role = '', string $mailCrypt = '', string $twofactor = '', int $limit = 20, int $offset = 0): array
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->orderBy('u.id', 'DESC')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        $this->applyFilters($qb, $search, $deleted, $role, $mailCrypt, $twofactor);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    private function applyFilters(QueryBuilder $qb, string $search, string $deleted, string $role, string $mailCrypt, string $twofactor): void
+    {
+        if ('' !== $search) {
+            $qb->andWhere('u.email LIKE :search')
+                ->setParameter('search', '%'.$search.'%');
+        }
+
+        if ('active' === $deleted) {
+            $qb->andWhere('u.deleted = :deleted')
+                ->setParameter('deleted', false);
+        } elseif ('deleted' === $deleted) {
+            $qb->andWhere('u.deleted = :deleted')
+                ->setParameter('deleted', true);
+        }
+
+        if ('' !== $role) {
+            $qb->andWhere('u.roles LIKE :role')
+                ->setParameter('role', '%'.$role.'%');
+        }
+
+        if ('enabled' === $mailCrypt) {
+            $qb->andWhere('u.mailCryptEnabled = :mailCryptEnabled')
+                ->setParameter('mailCryptEnabled', true);
+        } elseif ('disabled' === $mailCrypt) {
+            $qb->andWhere('u.mailCryptEnabled = :mailCryptEnabled')
+                ->setParameter('mailCryptEnabled', false);
+        }
+
+        if ('enabled' === $twofactor) {
+            $qb->andWhere('u.totpConfirmed = :totpConfirmed')
+                ->andWhere('u.totpSecret IS NOT NULL')
+                ->setParameter('totpConfirmed', true);
+        } elseif ('disabled' === $twofactor) {
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    'u.totpConfirmed = :totpConfirmed',
+                    'u.totpSecret IS NULL'
+                )
+            )->setParameter('totpConfirmed', false);
+        }
     }
 
     #[Override]
