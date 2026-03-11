@@ -1,0 +1,201 @@
+{% set current_section = 'users' %}
+{% extends 'Settings/base_settings.html.twig' %}
+
+{% form_theme form 'Form/fields.html.twig' %}
+{% set is_edit = user is defined %}
+
+{% block title %}
+    {{ setting('app_name') }} - {{ is_edit ? 'settings.user.edit.title'|trans : 'settings.user.create.title'|trans }}
+{% endblock %}
+
+{% block settings_content %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="p-6 sm:p-8">
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 {{ is_edit ? 'bg-indigo-100 dark:bg-indigo-900/50' : 'bg-blue-100 dark:bg-blue-900/50' }} rounded-xl flex items-center justify-center mr-4">
+                    {% if is_edit %}
+                        {{ ux_icon('heroicons:pencil-square', {class: 'w-6 h-6 text-indigo-600 dark:text-indigo-400'}) }}
+                    {% else %}
+                        {{ ux_icon('heroicons:plus', {class: 'w-6 h-6 text-blue-600 dark:text-blue-400'}) }}
+                    {% endif %}
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                        {% if is_edit %}
+                            {{ 'settings.user.form.title.edit'|trans }}
+                        {% else %}
+                            {{ 'settings.user.form.title.create'|trans }}
+                        {% endif %}
+                    </h3>
+                    {% if not is_edit %}
+                        <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ 'settings.user.form.description.create'|trans }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if is_edit %}
+                <div class="mb-6 grid grid-cols-2 sm:grid-cols-5 divide-x divide-gray-200 dark:divide-gray-600 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'settings.table.created'|trans }}</dt>
+                        <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ user.creationTime|format_datetime('short', 'short') }}</dd>
+                    </div>
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'settings.user.form.last_login'|trans }}</dt>
+                        <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ user.lastLoginTime ? user.lastLoginTime|format_datetime('short', 'short') : '—' }}</dd>
+                    </div>
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'settings.user.form.recovery_token.label'|trans }}</dt>
+                        <dd class="mt-1">
+                            {% if user.recoverySecretBox %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">{{ 'settings.user.form.recovery_token.yes'|trans }}</span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">{{ 'settings.user.form.recovery_token.no'|trans }}</span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'settings.user.table.mailcrypt'|trans }}</dt>
+                        <dd class="mt-1">
+                            {% if user.mailCryptEnabled %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">{{ 'settings.user.filter.enabled'|trans }}</span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">{{ 'settings.user.filter.disabled'|trans }}</span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'settings.user.table.status'|trans }}</dt>
+                        <dd class="mt-1">
+                            {% if user.deleted %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200">{{ 'settings.user.status.deleted'|trans }}</span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">{{ 'settings.user.status.active'|trans }}</span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                </div>
+            {% endif %}
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="space-y-6">
+                <div>
+                    {{ form_label(form.email, 'settings.user.form.email.label', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                    {{ form_errors(form.email) }}
+                    {{ form_widget(form.email) }}
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
+                        {{ is_edit ? 'settings.user.form.email.help.edit'|trans : 'settings.user.form.email.help.create'|trans }}
+                    </p>
+                </div>
+
+                <div data-controller="password-strength"
+                     data-password-strength-strong-label-value="{{ "form.password-strong"|trans }}"
+                     data-password-strength-min-length-value="12"
+                     data-password-strength-min-length-label-value="{{ "form.password-min-length"|trans({'%min%': 12}) }}"
+                >
+                    {{ form_label(form.plainPassword.first, 'settings.user.form.password.label', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                    {{ form_errors(form.plainPassword) }}
+                    {{ form_widget(form.plainPassword.first, {'attr': {'data-password-strength-target': 'input', 'data-action': 'focus->password-strength#loadAndEvaluate:once input->password-strength#evaluate', 'autocomplete': 'new-password'}}) }}
+                    {# Password strength meter #}
+                    <div class="flex gap-1 mt-2" data-password-strength-meter aria-hidden="true">
+                        <div class="h-1 flex-1 rounded-full bg-gray-200 dark:bg-gray-600 transition-colors duration-300" data-password-strength-target="segment"></div>
+                        <div class="h-1 flex-1 rounded-full bg-gray-200 dark:bg-gray-600 transition-colors duration-300" data-password-strength-target="segment"></div>
+                        <div class="h-1 flex-1 rounded-full bg-gray-200 dark:bg-gray-600 transition-colors duration-300" data-password-strength-target="segment"></div>
+                        <div class="h-1 flex-1 rounded-full bg-gray-200 dark:bg-gray-600 transition-colors duration-300" data-password-strength-target="segment"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 hidden mt-1" data-password-strength-target="feedback" aria-live="polite"></p>
+                    {% if form.plainPassword.first.vars.help %}
+                        <div class="mt-2 p-3 bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800 rounded-lg">
+                            <p class="text-sm text-amber-800 dark:text-amber-100">
+                                {{ ux_icon('heroicons:exclamation-triangle', {class: 'w-4 h-4 inline mr-1'}) }}
+                                {{ form.plainPassword.first.vars.help|trans }}
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div>
+                    {{ form_label(form.plainPassword.second, 'settings.user.form.password_confirmation.label', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                    {{ form_widget(form.plainPassword.second) }}
+                </div>
+
+                <div>
+                    {{ form_label(form.roles, 'settings.user.form.roles.label', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                    {{ form_errors(form.roles) }}
+                    <div class="flex flex-wrap gap-4">
+                        {% for child in form.roles %}
+                            <label class="inline-flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                                {{ form_widget(child) }}
+                                {{ child.vars.label }}
+                            </label>
+                        {% endfor %}
+                    </div>
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
+                        {{ 'settings.user.form.roles.help'|trans }}
+                    </p>
+                </div>
+
+                <div>
+                    {{ form_label(form.quota, 'settings.user.form.quota.label', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                    {{ form_errors(form.quota) }}
+                    {{ form_widget(form.quota) }}
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
+                        {{ 'settings.user.form.quota.help'|trans }}
+                    </p>
+                </div>
+
+                <div>
+                    {{ form_label(form.smtpQuotaLimits, 'settings.user.form.smtp_quota_limits.label', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                    {{ form_errors(form.smtpQuotaLimits) }}
+                    {{ form_widget(form.smtpQuotaLimits) }}
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
+                        {{ 'settings.user.form.smtp_quota_limits.help'|trans }}
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    {{ form_widget(form.totpConfirmed) }}
+                    {{ form_label(form.totpConfirmed, 'settings.user.form.totp.label', {'label_attr': {'class': 'text-sm font-medium text-gray-700 dark:text-gray-300'}}) }}
+                    {{ form_errors(form.totpConfirmed) }}
+                </div>
+                {% if form.totpConfirmed.vars.disabled %}
+                    <div class="-mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg">
+                        <p class="text-sm text-blue-800 dark:text-blue-200">
+                            {{ ux_icon('heroicons:information-circle', {class: 'w-4 h-4 inline mr-1'}) }}
+                            {{ 'settings.user.form.totp.help_disabled'|trans }}
+                        </p>
+                    </div>
+                {% else %}
+                    <p class="-mt-4 text-sm text-gray-500 dark:text-gray-300">
+                        {{ 'settings.user.form.totp.help'|trans }}
+                    </p>
+                {% endif %}
+
+                <div class="flex items-center gap-3">
+                    {{ form_widget(form.passwordChangeRequired) }}
+                    {{ form_label(form.passwordChangeRequired, 'settings.user.form.password_change_required.label', {'label_attr': {'class': 'text-sm font-medium text-gray-700 dark:text-gray-300'}}) }}
+                    {{ form_errors(form.passwordChangeRequired) }}
+                </div>
+                <p class="-mt-4 text-sm text-gray-500 dark:text-gray-300">
+                    {{ 'settings.user.form.password_change_required.help'|trans }}
+                </p>
+
+                <div class="flex items-center justify-between pt-6">
+                    <a href="{{ path('settings_user_index') }}"
+                       class="inline-flex items-center px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
+                        {{ ux_icon('heroicons:arrow-left', {class: 'w-4 h-4 mr-2'}) }}
+                        {{ 'settings.user.form.cancel'|trans }}
+                    </a>
+                    {{ form_widget(form.submit, {
+                        label: is_edit ? 'settings.user.form.submit.save' : 'settings.user.form.submit.create',
+                        attr: {
+                            class: 'inline-flex items-center px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors'
+                        }
+                    }) }}
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
