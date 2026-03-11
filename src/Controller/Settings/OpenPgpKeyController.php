@@ -13,6 +13,7 @@ use App\Form\OpenPgpKeyType;
 use App\Service\OpenPgpKeyManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,32 +64,10 @@ final class OpenPgpKeyController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var string $email */
             $email = $model->getEmail();
+            $keyContent = $this->resolveKeyContent($form, $model);
 
-            /** @var UploadedFile|null $keyFile */
-            $keyFile = $form->get('keyFile')->getData();
-            /** @var string|null $keyText */
-            $keyText = $model->getKeyText();
-
-            $keyContent = null;
-            if (null !== $keyFile) {
-                $keyContent = file_get_contents($keyFile->getPathname());
-            } elseif (null !== $keyText) {
-                $keyContent = $keyText;
-            }
-
-            if (null !== $keyContent && false !== $keyContent) {
-                try {
-                    $this->manager->importKey($keyContent, $email);
-                    $this->addFlash('success', 'settings.openpgp-key.import.success');
-
-                    return $this->redirectToRoute('settings_openpgp_key_index');
-                } catch (NoGpgDataException) {
-                    $this->addFlash('error', 'settings.openpgp-key.import.error.no-openpgp');
-                } catch (NoGpgKeyForUserException) {
-                    $this->addFlash('error', 'settings.openpgp-key.import.error.no-keys');
-                } catch (MultipleGpgKeysForUserException) {
-                    $this->addFlash('error', 'settings.openpgp-key.import.error.multiple-keys');
-                }
+            if (null !== $keyContent && $this->importKey($keyContent, $email)) {
+                return $this->redirectToRoute('settings_openpgp_key_index');
             }
         }
 
@@ -108,5 +87,40 @@ final class OpenPgpKeyController extends AbstractController
         $this->addFlash('success', 'settings.openpgp-key.delete.success');
 
         return $this->redirectToRoute('settings_openpgp_key_index');
+    }
+
+    /**
+     * @param FormInterface<OpenPgpKeyModel> $form
+     */
+    private function resolveKeyContent(FormInterface $form, OpenPgpKeyModel $model): ?string
+    {
+        /** @var UploadedFile|null $keyFile */
+        $keyFile = $form->get('keyFile')->getData();
+
+        if (null !== $keyFile) {
+            $content = file_get_contents($keyFile->getPathname());
+
+            return false !== $content ? $content : null;
+        }
+
+        return $model->getKeyText();
+    }
+
+    private function importKey(string $keyContent, string $email): bool
+    {
+        try {
+            $this->manager->importKey($keyContent, $email);
+            $this->addFlash('success', 'settings.openpgp-key.import.success');
+
+            return true;
+        } catch (NoGpgDataException) {
+            $this->addFlash('error', 'settings.openpgp-key.import.error.no-openpgp');
+        } catch (NoGpgKeyForUserException) {
+            $this->addFlash('error', 'settings.openpgp-key.import.error.no-keys');
+        } catch (MultipleGpgKeysForUserException) {
+            $this->addFlash('error', 'settings.openpgp-key.import.error.multiple-keys');
+        }
+
+        return false;
     }
 }
