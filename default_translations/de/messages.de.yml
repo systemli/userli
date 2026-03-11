@@ -415,10 +415,6 @@ random-aliases.limitation-random-name: Zufällige Namen, die schwerer zu merken 
 random-aliases.management-hint: <strong>Tipp:</strong> Lösche ungenutzte zufällige Aliasse, um Platz für neue zu schaffen.
 
 admin:
-  registered-accounts: Registrierte Nutzer
-  registered-accounts-last-week: Registrierte Nuter in den letzten 7 Tagen
-  invite-codes: Einladungscodes
-  invite-codes-redeemed: Eingelöste Einladungscodes
   title: Einstellungen
   subtitle: Systemeinstellungen und Integrationen verwalten
   flash:

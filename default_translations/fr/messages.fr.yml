@@ -249,11 +249,7 @@ mail:
     Nous espérons que vous êtes satisfait de votre compte de messagerie.
     Votre équipe d'administration de %project_name%.
 
-admin:
-  registered-accounts: Inscriptions
-  registered-accounts-last-week: Inscriptions ces 7 derniers jours
-  invite-codes: Codes d'invitation actifs
-  invite-codes-redeemed: Codes d'invitation demandés
+admin: ~
 
 Ratio: Ratio
 User: Utilisateur

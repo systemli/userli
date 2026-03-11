@@ -256,11 +256,7 @@ mail:
     Esperamos que sigas disfrutando de tu cuenta de e-mail.
     Tu equipo de administración de %project_name%.
 
-admin:
-  registered-accounts: Cuentas registradas
-  registered-accounts-last-week: Cuentas registradas en los últimos 7 días
-  invite-codes: Códigos de invitación existentes
-  invite-codes-redeemed: Códigos de invitación canjeados
+admin: ~
 
 Ratio: Ratio
 User: Usuario
