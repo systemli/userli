@@ -12,8 +12,8 @@ use App\Form\Model\OpenPgpKey as OpenPgpKeyModel;
 use App\Form\Model\PasswordConfirmation;
 use App\Form\OpenPgpKeyType;
 use App\Form\PasswordConfirmationType;
-use App\Handler\WkdHandler;
 use App\Repository\AliasRepository;
+use App\Service\OpenPgpKeyManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class OpenPGPController extends AbstractController
 {
     public function __construct(
-        private readonly WkdHandler $wkdHandler,
+        private readonly OpenPgpKeyManager $openPgpKeyManager,
         private readonly AliasRepository $aliasRepository,
     ) {
     }
@@ -89,7 +89,7 @@ final class OpenPGPController extends AbstractController
     private function importOpenPgpKey(User $user, string $key, string $email): void
     {
         try {
-            $this->wkdHandler->importKey($key, $email, $user);
+            $this->openPgpKeyManager->importKey($key, $email, $user);
             $this->addFlash('success', 'flashes.openpgp-key-upload-successful');
         } catch (NoGpgDataException) {
             $this->addFlash('error', 'flashes.openpgp-key-upload-error-no-openpgp');
@@ -124,7 +124,7 @@ final class OpenPGPController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $this->wkdHandler->deleteKey($email);
+            $this->openPgpKeyManager->deleteKey($email);
 
             $this->addFlash('success', 'flashes.openpgp-deletion-successful');
         } else {
@@ -147,7 +147,7 @@ final class OpenPGPController extends AbstractController
         $identities[] = [
             'email' => $user->getEmail(),
             'type' => 'primary',
-            'key' => $this->wkdHandler->getKey($user->getEmail()),
+            'key' => $this->openPgpKeyManager->getKey($user->getEmail()),
         ];
 
         // Non-random alias sources from all domains
@@ -158,7 +158,7 @@ final class OpenPGPController extends AbstractController
                 $identities[] = [
                     'email' => $source,
                     'type' => 'alias',
-                    'key' => $this->wkdHandler->getKey($source),
+                    'key' => $this->openPgpKeyManager->getKey($source),
                 ];
             }
         }

@@ -6,9 +6,7 @@ namespace App\Tests\Command;
 
 use App\Command\OpenPgpDeleteKeyCommand;
 use App\Entity\OpenPgpKey;
-use App\Handler\WkdHandler;
-use App\Repository\OpenPgpKeyRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\OpenPgpKeyManager;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -21,22 +19,15 @@ class OpenPgpDeleteKeyCommandTest extends TestCase
         $openPgpKey = new OpenPgpKey();
         $openPgpKey->setEmail('alice@example.org');
 
-        $manager = $this->createStub(EntityManagerInterface::class);
-
-        $repository = $this->createStub(OpenPgpKeyRepository::class);
-
-        $repository->method('findByEmail')->willReturnMap(
+        $manager = $this->createStub(OpenPgpKeyManager::class);
+        $manager->method('getKey')->willReturnMap(
             [
                 ['alice@example.org', $openPgpKey],
                 ['nonexistent@example.org', null],
             ]
         );
 
-        $manager->method('getRepository')->willReturn($repository);
-
-        $wkdHandler = $this->createStub(WkdHandler::class);
-
-        $this->command = new OpenPgpDeleteKeyCommand($manager, $wkdHandler);
+        $this->command = new OpenPgpDeleteKeyCommand($manager);
     }
 
     public function testExecute(): void

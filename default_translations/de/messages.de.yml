@@ -500,6 +500,7 @@ settings:
     domains: Domains
     user-notifications: Benachrichtigungen
     users: Benutzer:innen
+    openpgp-keys: OpenPGP-Schlüssel
   maintenance:
     title: Wartung
     subtitle: Führe Wartungsaufgaben bei Bedarf aus
@@ -987,6 +988,55 @@ settings:
       empty-description: Es wurden noch keine Benutzerbenachrichtigungen aufgezeichnet.
     pagination:
       total: "%count% Benachrichtigungen insgesamt"
+      newer: Neuer
+      older: Älter
+      page: "Seite %page% von %totalPages%"
+
+  openpgp-key:
+    title: OpenPGP-Schlüssel
+    heading: OpenPGP-Schlüssel
+    description: Veröffentlichte OpenPGP-Schlüssel anzeigen
+    search:
+      placeholder: Nach E-Mail suchen...
+      submit: Suchen
+    table:
+      email: E-Mail
+      key-id: Schlüssel-ID
+      fingerprint: Fingerabdruck
+      expiry: Ablaufdatum
+      no-expiry: Keines
+      empty-title: Keine OpenPGP-Schlüssel
+      empty-description: Es wurden noch keine OpenPGP-Schlüssel veröffentlicht.
+    import:
+      button: Schlüssel importieren
+      title: OpenPGP-Schlüssel importieren
+      heading: OpenPGP-Schlüssel importieren
+      description: Importiere einen öffentlichen OpenPGP-Schlüssel. Du kannst eine Schlüsseldatei hochladen oder den ASCII-geschützten Schlüsseltext einfügen.
+      form:
+        email:
+          label: E-Mail-Adresse
+          placeholder: benutzer@beispiel.org
+        key-file:
+          label: Schlüsseldatei
+          help: "ASCII-geschützte öffentliche OpenPGP-Schlüsseldatei (.asc). Maximale Größe: 1 MB."
+        key-text:
+          label: Schlüsseltext
+          placeholder: "-----BEGIN PGP PUBLIC KEY BLOCK-----"
+        or: oder
+        cancel: Abbrechen
+        submit: Importieren
+      success: OpenPGP-Schlüssel wurde erfolgreich importiert.
+      error:
+        no-openpgp: Die hochgeladene Datei enthält keine gültigen OpenPGP-Daten.
+        no-keys: Keine OpenPGP-Schlüssel in den bereitgestellten Daten gefunden.
+        multiple-keys: Die bereitgestellten Daten enthalten mehrere Schlüssel. Bitte importiere jeweils nur einen Schlüssel.
+    delete:
+      confirm: "Bist du sicher, dass du den OpenPGP-Schlüssel für \"%email%\" löschen möchtest?"
+      success: OpenPGP-Schlüssel wurde erfolgreich gelöscht.
+    actions:
+      delete: Löschen
+    pagination:
+      total: "%count% Schlüssel insgesamt"
       newer: Neuer
       older: Älter
       page: "Seite %page% von %totalPages%"

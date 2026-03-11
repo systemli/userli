@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enum;
 
-use App\Handler\WkdHandler;
+use App\Service\OpenPgpKeyManager;
 
 enum OpenPgpKeyCacheKey: string
 {
@@ -29,7 +29,7 @@ enum OpenPgpKeyCacheKey: string
     {
         [$localPart, $domain] = explode('@', $email);
 
-        $wkdHash = WkdHandler::wkdHash($localPart);
+        $wkdHash = OpenPgpKeyManager::wkdHash($localPart);
 
         return array_map(
             static fn (self $case) => $case->key(strtolower($wkdHash).'@'.strtolower($domain)),

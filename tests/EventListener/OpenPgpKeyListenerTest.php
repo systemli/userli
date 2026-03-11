@@ -9,9 +9,9 @@ use App\Entity\User;
 use App\Event\AliasDeletedEvent;
 use App\Event\UserEvent;
 use App\EventListener\OpenPgpKeyListener;
-use App\Handler\WkdHandler;
 use App\Repository\AliasRepository;
 use App\Repository\UserRepository;
+use App\Service\OpenPgpKeyManager;
 use PHPUnit\Framework\TestCase;
 
 class OpenPgpKeyListenerTest extends TestCase
@@ -37,10 +37,10 @@ class OpenPgpKeyListenerTest extends TestCase
         $aliasRepository = $this->createStub(AliasRepository::class);
         $aliasRepository->method('findOneBySource')->willReturn(null);
 
-        $wkdHandler = $this->createMock(WkdHandler::class);
-        $wkdHandler->expects(self::once())->method('deleteKey')->with('shared@example.org');
+        $openPgpKeyManager = $this->createMock(OpenPgpKeyManager::class);
+        $openPgpKeyManager->expects(self::once())->method('deleteKey')->with('shared@example.org');
 
-        $listener = new OpenPgpKeyListener($wkdHandler, $userRepository, $aliasRepository);
+        $listener = new OpenPgpKeyListener($openPgpKeyManager, $userRepository, $aliasRepository);
         $listener->onCustomAliasDeleted(new AliasDeletedEvent($alias));
     }
 
@@ -54,10 +54,10 @@ class OpenPgpKeyListenerTest extends TestCase
 
         $aliasRepository = $this->createStub(AliasRepository::class);
 
-        $wkdHandler = $this->createMock(WkdHandler::class);
-        $wkdHandler->expects(self::never())->method('deleteKey');
+        $openPgpKeyManager = $this->createMock(OpenPgpKeyManager::class);
+        $openPgpKeyManager->expects(self::never())->method('deleteKey');
 
-        $listener = new OpenPgpKeyListener($wkdHandler, $userRepository, $aliasRepository);
+        $listener = new OpenPgpKeyListener($openPgpKeyManager, $userRepository, $aliasRepository);
         $listener->onCustomAliasDeleted(new AliasDeletedEvent($alias));
     }
 
@@ -75,10 +75,10 @@ class OpenPgpKeyListenerTest extends TestCase
         $aliasRepository = $this->createStub(AliasRepository::class);
         $aliasRepository->method('findOneBySource')->willReturn($otherAlias);
 
-        $wkdHandler = $this->createMock(WkdHandler::class);
-        $wkdHandler->expects(self::never())->method('deleteKey');
+        $openPgpKeyManager = $this->createMock(OpenPgpKeyManager::class);
+        $openPgpKeyManager->expects(self::never())->method('deleteKey');
 
-        $listener = new OpenPgpKeyListener($wkdHandler, $userRepository, $aliasRepository);
+        $listener = new OpenPgpKeyListener($openPgpKeyManager, $userRepository, $aliasRepository);
         $listener->onCustomAliasDeleted(new AliasDeletedEvent($alias));
     }
 
@@ -86,13 +86,13 @@ class OpenPgpKeyListenerTest extends TestCase
     {
         $alias = new Alias();
 
-        $wkdHandler = $this->createMock(WkdHandler::class);
-        $wkdHandler->expects(self::never())->method('deleteKey');
+        $openPgpKeyManager = $this->createMock(OpenPgpKeyManager::class);
+        $openPgpKeyManager->expects(self::never())->method('deleteKey');
 
         $userRepository = $this->createStub(UserRepository::class);
         $aliasRepository = $this->createStub(AliasRepository::class);
 
-        $listener = new OpenPgpKeyListener($wkdHandler, $userRepository, $aliasRepository);
+        $listener = new OpenPgpKeyListener($openPgpKeyManager, $userRepository, $aliasRepository);
         $listener->onCustomAliasDeleted(new AliasDeletedEvent($alias));
     }
 
@@ -106,10 +106,10 @@ class OpenPgpKeyListenerTest extends TestCase
         $aliasRepository = $this->createStub(AliasRepository::class);
         $aliasRepository->method('findOneBySource')->willReturn(null);
 
-        $wkdHandler = $this->createMock(WkdHandler::class);
-        $wkdHandler->expects(self::once())->method('deleteKey')->with('alice@example.org');
+        $openPgpKeyManager = $this->createMock(OpenPgpKeyManager::class);
+        $openPgpKeyManager->expects(self::once())->method('deleteKey')->with('alice@example.org');
 
-        $listener = new OpenPgpKeyListener($wkdHandler, $userRepository, $aliasRepository);
+        $listener = new OpenPgpKeyListener($openPgpKeyManager, $userRepository, $aliasRepository);
         $listener->onUserDeleted(new UserEvent($user));
     }
 
@@ -126,10 +126,10 @@ class OpenPgpKeyListenerTest extends TestCase
         $aliasRepository = $this->createStub(AliasRepository::class);
         $aliasRepository->method('findOneBySource')->willReturn($otherAlias);
 
-        $wkdHandler = $this->createMock(WkdHandler::class);
-        $wkdHandler->expects(self::never())->method('deleteKey');
+        $openPgpKeyManager = $this->createMock(OpenPgpKeyManager::class);
+        $openPgpKeyManager->expects(self::never())->method('deleteKey');
 
-        $listener = new OpenPgpKeyListener($wkdHandler, $userRepository, $aliasRepository);
+        $listener = new OpenPgpKeyListener($openPgpKeyManager, $userRepository, $aliasRepository);
         $listener->onUserDeleted(new UserEvent($user));
     }
 }

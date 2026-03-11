@@ -518,6 +518,7 @@ settings:
     domains: Domains
     user-notifications: Notifications
     users: Users
+    openpgp-keys: OpenPGP Keys
   coming-soon: Coming Soon
   table:
     id: ID
@@ -987,6 +988,55 @@ settings:
       empty-description: No user notifications have been recorded yet.
     pagination:
       total: "%count% notifications total"
+      newer: Newer
+      older: Older
+      page: "Page %page% of %totalPages%"
+
+  openpgp-key:
+    title: OpenPGP Keys
+    heading: OpenPGP Keys
+    description: View published OpenPGP keys
+    search:
+      placeholder: Search by email...
+      submit: Search
+    table:
+      email: Email
+      key-id: Key ID
+      fingerprint: Fingerprint
+      expiry: Expiry
+      no-expiry: None
+      empty-title: No OpenPGP keys
+      empty-description: No OpenPGP keys have been published yet.
+    import:
+      button: Import Key
+      title: Import OpenPGP Key
+      heading: Import OpenPGP Key
+      description: Import an OpenPGP public key. You can upload a key file or paste the ASCII-armored key text.
+      form:
+        email:
+          label: Email Address
+          placeholder: user@example.org
+        key-file:
+          label: Key File
+          help: "ASCII-armored OpenPGP public key file (.asc). Maximum size: 1 MB."
+        key-text:
+          label: Key Text
+          placeholder: "-----BEGIN PGP PUBLIC KEY BLOCK-----"
+        or: or
+        cancel: Cancel
+        submit: Import
+      success: OpenPGP key has been imported successfully.
+      error:
+        no-openpgp: The uploaded file doesn't contain valid OpenPGP data.
+        no-keys: No OpenPGP keys found in the provided data.
+        multiple-keys: The provided data contains multiple keys. Please import one key at a time.
+    delete:
+      confirm: "Are you sure you want to delete the OpenPGP key for \"%email%\"?"
+      success: OpenPGP key has been deleted successfully.
+    actions:
+      delete: Delete
+    pagination:
+      total: "%count% keys total"
       newer: Newer
       older: Older
       page: "Page %page% of %totalPages%"

@@ -6,16 +6,16 @@ namespace App\EventListener;
 
 use App\Event\AliasDeletedEvent;
 use App\Event\UserEvent;
-use App\Handler\WkdHandler;
 use App\Repository\AliasRepository;
 use App\Repository\UserRepository;
+use App\Service\OpenPgpKeyManager;
 use Override;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final readonly class OpenPgpKeyListener implements EventSubscriberInterface
 {
     public function __construct(
-        private WkdHandler $wkdHandler,
+        private OpenPgpKeyManager $openPgpKeyManager,
         private UserRepository $userRepository,
         private AliasRepository $aliasRepository,
     ) {
@@ -52,7 +52,7 @@ final readonly class OpenPgpKeyListener implements EventSubscriberInterface
             return;
         }
 
-        $this->wkdHandler->deleteKey($email);
+        $this->openPgpKeyManager->deleteKey($email);
     }
 
     #[Override]

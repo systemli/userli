@@ -6,7 +6,7 @@ namespace App\Command;
 
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgKeyForUserException;
-use App\Handler\WkdHandler;
+use App\Service\OpenPgpKeyManager;
 use Override;
 use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:openpgp:import-key', description: 'Import OpenPGP key for email')]
 final class OpenPgpImportKeyCommand extends Command
 {
-    public function __construct(private readonly WkdHandler $handler)
+    public function __construct(private readonly OpenPgpKeyManager $manager)
     {
         parent::__construct();
     }
@@ -53,7 +53,7 @@ final class OpenPgpImportKeyCommand extends Command
 
         // Import the key
         try {
-            $openPgpKey = $this->handler->importKey($content, $email);
+            $openPgpKey = $this->manager->importKey($content, $email);
         } catch (NoGpgKeyForUserException|MultipleGpgKeysForUserException $e) {
             $output->writeln(sprintf('Error: %s in %s', $e->getMessage(), $file));
 

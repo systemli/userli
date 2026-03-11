@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Entity\OpenPgpKey;
-use App\Repository\OpenPgpKeyRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\OpenPgpKeyManager;
 use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -17,11 +15,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:openpgp:show-key', description: 'Show OpenPGP key of email')]
 final class OpenPgpShowKeyCommand extends Command
 {
-    private readonly OpenPgpKeyRepository $repository;
-
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(private readonly OpenPgpKeyManager $manager)
     {
-        $this->repository = $manager->getRepository(OpenPgpKey::class);
         parent::__construct();
     }
 
@@ -42,7 +37,7 @@ final class OpenPgpShowKeyCommand extends Command
         $email = $input->getArgument('email');
 
         // Check if OpenPGP key exists
-        $openPgpKey = $this->repository->findByEmail($email);
+        $openPgpKey = $this->manager->getKey($email);
         if (null === $openPgpKey) {
             $output->writeln(sprintf('No OpenPGP key found for email %s', $email));
         } else {
