@@ -228,9 +228,9 @@ class SettingsTypeTest extends TestCase
                     self::assertArrayHasKey('choices', $options);
                     // Choices use translation keys as labels
                     $expectedChoices = [
-                        'settings.form.locale.choice.en' => 'en',
-                        'settings.form.locale.choice.de' => 'de',
-                        'settings.form.locale.choice.fr' => 'fr',
+                        'admin.form.locale.choice.en' => 'en',
+                        'admin.form.locale.choice.de' => 'de',
+                        'admin.form.locale.choice.fr' => 'fr',
                     ];
                     self::assertEquals($expectedChoices, $options['choices']);
                 }

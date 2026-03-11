@@ -1,0 +1,97 @@
+{% set current_section = 'aliases' %}
+{% extends 'Admin/base_admin.html.twig' %}
+
+{% form_theme form 'Form/fields.html.twig' %}
+{% set is_edit = alias is defined %}
+
+{% block title %}
+    {{ setting('app_name') }} - {{ is_edit ? 'admin.alias.edit.title'|trans : 'admin.alias.create.title'|trans }}
+{% endblock %}
+
+{% block admin_content %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="p-6 sm:p-8">
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 {{ is_edit ? 'bg-indigo-100 dark:bg-indigo-900/50' : 'bg-blue-100 dark:bg-blue-900/50' }} rounded-xl flex items-center justify-center mr-4">
+                    {% if is_edit %}
+                        {{ ux_icon('heroicons:pencil-square', {class: 'w-6 h-6 text-indigo-600 dark:text-indigo-400'}) }}
+                    {% else %}
+                        {{ ux_icon('heroicons:plus', {class: 'w-6 h-6 text-blue-600 dark:text-blue-400'}) }}
+                    {% endif %}
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                        {% if is_edit %}
+                            {{ 'admin.alias.form.title.edit'|trans }}
+                        {% else %}
+                            {{ 'admin.alias.form.title.create'|trans }}
+                        {% endif %}
+                    </h3>
+                    {% if not is_edit %}
+                        <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ 'admin.alias.form.description.create'|trans }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="space-y-6">
+                <div>
+                    {{ form_label(form.source, 'admin.alias.form.source.label', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                    {{ form_errors(form.source) }}
+                    {{ form_widget(form.source) }}
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
+                        {{ is_edit ? 'admin.alias.form.source.help.edit'|trans : 'admin.alias.form.source.help.create'|trans }}
+                    </p>
+                </div>
+
+                <div>
+                    {{ form_label(form.user, 'admin.alias.form.user.label') }}
+                    {{ form_errors(form.user) }}
+                    {{ form_widget(form.user) }}
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
+                        {{ 'admin.alias.form.user.help'|trans }}
+                    </p>
+                </div>
+
+                {% if form.destination is defined %}
+                    <div>
+                        {{ form_label(form.destination, 'admin.alias.form.destination.label', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                        {{ form_errors(form.destination) }}
+                        {{ form_widget(form.destination) }}
+                        <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
+                            {{ 'admin.alias.form.destination.help'|trans }}
+                        </p>
+                    </div>
+                {% endif %}
+
+                {% if form.smtpQuotaLimits is defined %}
+                    <div>
+                        {{ form_label(form.smtpQuotaLimits, 'admin.alias.form.smtp_quota_limits.label', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                        {{ form_errors(form.smtpQuotaLimits) }}
+                        {{ form_widget(form.smtpQuotaLimits) }}
+                        <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
+                            {{ 'admin.alias.form.smtp_quota_limits.help'|trans }}
+                        </p>
+                    </div>
+                {% endif %}
+
+                <div class="flex items-center justify-between pt-6">
+                    <a href="{{ path('admin_alias_index') }}"
+                       class="inline-flex items-center px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
+                        {{ ux_icon('heroicons:arrow-left', {class: 'w-4 h-4 mr-2'}) }}
+                        {{ 'admin.alias.form.cancel'|trans }}
+                    </a>
+                    {{ form_widget(form.submit, {
+                        label: is_edit ? 'admin.alias.form.submit.save' : 'admin.alias.form.submit.create',
+                        attr: {
+                            class: 'inline-flex items-center px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors'
+                        }
+                    }) }}
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

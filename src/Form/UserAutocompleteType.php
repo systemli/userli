@@ -39,7 +39,7 @@ final class UserAutocompleteType extends AbstractType
     #[Override]
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        $view->vars['autocomplete_url'] = $this->urlGenerator->generate('settings_user_search');
+        $view->vars['autocomplete_url'] = $this->urlGenerator->generate('admin_user_search');
         $view->vars['autocomplete_label_field'] = 'email';
         $view->vars['autocomplete_min_chars'] = 2;
 

@@ -194,7 +194,6 @@ navbar_right:
   login: Anmelden
   logout: Abmelden
   admin: Admin
-  settings: Einstellungen
 registration:
   title: Bei %project_name% registrieren
   information: Wähle ein sicheres Passwort
@@ -347,11 +346,6 @@ mail:
 
     Weiterhin viel Spaß mit deinem E-Mail-Konto, wünscht dir
     dein %project_name%-Verwaltungsteam.
-admin:
-  registered-accounts: Registrierte Nutzer
-  registered-accounts-last-week: Registrierte Nuter in den letzten 7 Tagen
-  invite-codes: Einladungscodes
-  invite-codes-redeemed: Eingelöste Einladungscodes
 Ratio: Verhältnis
 User: Nutzer
 Domain: Domäne
@@ -420,7 +414,11 @@ random-aliases.feature-deletable: Können jederzeit gelöscht werden, wenn sie n
 random-aliases.limitation-random-name: Zufällige Namen, die schwerer zu merken sind
 random-aliases.management-hint: <strong>Tipp:</strong> Lösche ungenutzte zufällige Aliasse, um Platz für neue zu schaffen.
 
-settings:
+admin:
+  registered-accounts: Registrierte Nutzer
+  registered-accounts-last-week: Registrierte Nuter in den letzten 7 Tagen
+  invite-codes: Einladungscodes
+  invite-codes-redeemed: Eingelöste Einladungscodes
   title: Einstellungen
   subtitle: Systemeinstellungen und Integrationen verwalten
   flash:

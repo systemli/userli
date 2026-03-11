@@ -1,0 +1,72 @@
+{% set current_section = 'openpgp-keys' %}
+{% extends 'Admin/base_admin.html.twig' %}
+{% block title %}{{ setting('app_name') }} - {{ 'admin.openpgp-key.title'|trans }}{% endblock %}
+{% block admin_content %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="p-6 sm:p-8">
+            {% include 'Admin/_section_header.html.twig' with {
+                icon: 'heroicons:key',
+                icon_color: 'indigo',
+                heading_key: 'admin.openpgp-key.heading',
+                description_key: 'admin.openpgp-key.description',
+            } %}
+
+            <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div></div>
+
+                {% include 'Admin/_search_form.html.twig' with {
+                    index_route: 'admin_openpgp_key_index',
+                    placeholder_key: 'admin.openpgp-key.search.placeholder',
+                    submit_key: 'admin.openpgp-key.search.submit',
+                    search: search,
+                } %}
+            </div>
+
+            {% if pagination.items is empty %}
+                {% include 'Admin/_empty_state.html.twig' with {
+                    icon: 'heroicons:key',
+                    title_key: 'admin.openpgp-key.table.empty-title',
+                    description_key: 'admin.openpgp-key.table.empty-description',
+                } %}
+            {% else %}
+                {% embed 'Admin/_table.html.twig' with {
+                    headers: [
+                        {label: 'admin.table.id'},
+                        {label: 'admin.openpgp-key.table.email'},
+                        {label: 'admin.openpgp-key.table.key-id'},
+                        {label: 'admin.openpgp-key.table.fingerprint'},
+                        {label: 'admin.openpgp-key.table.expiry'},
+                    ]
+                } %}
+                    {% block table_body %}
+                        {% for key in pagination.items %}
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ key.id }}</td>
+                                <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-gray-100">{{ key.email }}</td>
+                                <td class="px-4 py-3 text-sm font-mono text-gray-500 dark:text-gray-300">{{ key.keyId }}</td>
+                                <td class="px-4 py-3 text-sm font-mono text-gray-500 dark:text-gray-300">{{ key.keyFingerprint }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">
+                                    {% if key.keyExpireTime %}
+                                        {{ key.keyExpireTime|format_datetime('short', 'short') }}
+                                    {% else %}
+                                        <span class="text-gray-400 dark:text-gray-500">{{ 'admin.openpgp-key.table.no-expiry'|trans }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endblock %}
+                {% endembed %}
+
+                {% include 'Admin/_pagination.html.twig' with {
+                    index_route: 'admin_openpgp_key_index',
+                    total_key: 'admin.openpgp-key.pagination.total',
+                    previous_key: 'admin.openpgp-key.pagination.newer',
+                    next_key: 'admin.openpgp-key.pagination.older',
+                    page_key: 'admin.openpgp-key.pagination.page',
+                    pagination: pagination,
+                    search: search,
+                } %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

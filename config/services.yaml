@@ -39,49 +39,4 @@ services:
         arguments:
             $decoratedAuthenticator: '@App\Service\SettingsAwareTotpAuthenticator.inner'
 
-    userli.admin.user:
-        class: App\Admin\UserAdmin
-        public: true
-        tags:
-            - {
-                  name: sonata.admin,
-                  manager_type: orm,
-                  group: "Mail",
-                  label: "User",
-                  code: userli.admin.user,
-                  model_class: App\Entity\User,
-                  controller: App\Controller\UserCRUDController,
-              }
-        calls:
-            - [setPasswordUpdater, ['@App\Helper\PasswordUpdater']]
-            - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
-            - [setMailCryptKeyHandler, ['@App\Handler\MailCryptKeyHandler']]
-            - [setSettingsService, ['@App\Service\SettingsService']]
-            - [setSecurity, ['@Symfony\Bundle\SecurityBundle\Security']]
-            - [setUserResetService, ['@App\Service\UserResetService']]
-
-    userli.admin.alias:
-        class: App\Admin\AliasAdmin
-        public: true
-        tags:
-            - {
-                  name: sonata.admin,
-                  manager_type: orm,
-                  group: "Mail",
-                  label: "Alias",
-                  code: userli.admin.alias,
-                  model_class: App\Entity\Alias,
-                  controller: App\Controller\AliasCRUDController,
-              }
-        calls:
-            - [setDomainGuesser, ['@App\Guesser\DomainGuesser']]
-
-    userli.admin.block.statistics:
-        class: App\Block\StatisticsBlockService
-        public: true
-        tags:
-            - { name: sonata.block }
-        arguments:
-            - '@Twig\Environment'
-            - '@Doctrine\ORM\EntityManagerInterface'
 

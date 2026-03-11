@@ -198,7 +198,6 @@ navbar_right:
   login: Log in
   logout: Log out
   admin: Admin
-  settings: Settings
 registration:
   title: Registering with %project_name%
   information: Choose a secure password
@@ -347,11 +346,6 @@ mail:
 
     We hope you continue to enjoy your e-mail account.
     Your %project_name% admin team.
-admin:
-  registered-accounts: Registered accounts
-  registered-accounts-last-week: Registered accounts in last 7 days
-  invite-codes: Existing invite codes
-  invite-codes-redeemed: Redeemed invite codes
 Ratio: Ratio
 User: User
 Domain: Domain
@@ -417,7 +411,11 @@ random-aliases.feature-deletable: Can be deleted anytime when no longer needed
 random-aliases.limitation-random-name: Random names that are harder to remember
 random-aliases.management-hint: <strong>Tip:</strong> Delete unused random aliases to make room for new ones.
 
-settings:
+admin:
+  registered-accounts: Registered accounts
+  registered-accounts-last-week: Registered accounts in last 7 days
+  invite-codes: Existing invite codes
+  invite-codes-redeemed: Redeemed invite codes
   maintenance:
     title: Maintenance
     subtitle: Run on-demand maintenance tasks

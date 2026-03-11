@@ -98,7 +98,7 @@ Feature: Login
     When I am authenticated as "louis@example.org"
     And I am on "/logout"
 
-    When I am on "/admin/dashboard"
+    When I am on "/admin"
     Then I should be on "/login"
 
   @logout

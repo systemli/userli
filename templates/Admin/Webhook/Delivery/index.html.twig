@@ -1,0 +1,148 @@
+{% set current_section = 'webhooks' %}
+{% extends 'Admin/base_admin.html.twig' %}
+{% block title %}{{ setting('app_name') }} - {{ 'admin.webhook.deliveries.title'|trans }}{% endblock %}
+{% block admin_content %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
+         data-controller="modal">
+        <div class="p-6 sm:p-8">
+            {% include 'Admin/_section_header.html.twig' with {
+                icon: 'heroicons:paper-airplane',
+                icon_color: 'indigo',
+                heading_key: 'admin.webhook.deliveries.heading',
+                description_key: 'admin.webhook.deliveries.subtitle',
+            } %}
+
+            <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <a href="{{ path('admin_webhook_endpoint_index') }}"
+                   class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
+                    {{ ux_icon('heroicons:arrow-left', {class: 'w-4 h-4 mr-1'}) }} {{ 'admin.webhook.actions.back'|trans }}
+                </a>
+                <div class="flex flex-wrap items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <label for="event-filter" class="text-sm text-gray-600 dark:text-gray-400">{{ 'admin.webhook.deliveries.filter.event'|trans }}:</label>
+                        <select id="event-filter"
+                                data-controller="navigate"
+                                data-action="change->navigate#go"
+                                class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="{{ path('admin_webhook_delivery_index', {id: endpoint.id, status: status}|filter(v => v)) }}"{% if eventType == '' %} selected{% endif %}>{{ 'admin.webhook.deliveries.filter.all'|trans }}</option>
+                            <option value="{{ path('admin_webhook_delivery_index', {id: endpoint.id, status: status, eventType: 'user.created'}|filter(v => v)) }}"{% if eventType == 'user.created' %} selected{% endif %}>user.created</option>
+                            <option value="{{ path('admin_webhook_delivery_index', {id: endpoint.id, status: status, eventType: 'user.deleted'}|filter(v => v)) }}"{% if eventType == 'user.deleted' %} selected{% endif %}>user.deleted</option>
+                            <option value="{{ path('admin_webhook_delivery_index', {id: endpoint.id, status: status, eventType: 'user.reset'}|filter(v => v)) }}"{% if eventType == 'user.reset' %} selected{% endif %}>user.reset</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label for="status-filter" class="text-sm text-gray-600 dark:text-gray-400">{{ 'admin.webhook.deliveries.filter.label'|trans }}:</label>
+                        <select id="status-filter"
+                                data-controller="navigate"
+                                data-action="change->navigate#go"
+                                class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="{{ path('admin_webhook_delivery_index', {id: endpoint.id, eventType: eventType}|filter(v => v)) }}"{% if status == '' %} selected{% endif %}>{{ 'admin.webhook.deliveries.filter.all'|trans }}</option>
+                            <option value="{{ path('admin_webhook_delivery_index', {id: endpoint.id, status: 'success', eventType: eventType}|filter(v => v)) }}"{% if status == 'success' %} selected{% endif %}>{{ 'admin.webhook.deliveries.status.delivered'|trans }}</option>
+                            <option value="{{ path('admin_webhook_delivery_index', {id: endpoint.id, status: 'failed', eventType: eventType}|filter(v => v)) }}"{% if status == 'failed' %} selected{% endif %}>{{ 'admin.webhook.deliveries.status.failed'|trans }}</option>
+                            <option value="{{ path('admin_webhook_delivery_index', {id: endpoint.id, status: 'pending', eventType: eventType}|filter(v => v)) }}"{% if status == 'pending' %} selected{% endif %}>{{ 'admin.webhook.deliveries.status.pending'|trans }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            {% embed 'Admin/_table.html.twig' with {
+                headers: [
+                    {label: 'admin.table.id', class: 'hidden xl:table-cell'},
+                    {label: 'admin.webhook.deliveries.table.event'},
+                    {label: 'admin.webhook.deliveries.table.status'},
+                    {label: 'admin.webhook.deliveries.table.dispatched'},
+                    {label: 'admin.table.actions', align: 'right'},
+                ]
+            } %}
+                {% block table_body %}
+                    {% for delivery in deliveries %}
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <td class="hidden xl:table-cell px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ delivery.id }}</td>
+                            <td class="px-4 py-3">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200">{{ delivery.type }}</span>
+                            </td>
+                            <td class="px-4 py-3">
+                                {% if delivery.success %}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">{{ 'admin.webhook.deliveries.status.delivered'|trans }}</span>
+                                {% elseif delivery.error %}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200">{{ 'admin.webhook.deliveries.status.failed'|trans }}</span>
+                                {% else %}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">{{ 'admin.webhook.deliveries.status.pending'|trans }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">
+                                {{ delivery.dispatchedTime|format_datetime('none', 'medium') }}
+                            </td>
+                            <td class="px-4 py-3 text-right">
+                                <span class="inline-flex items-center rounded-lg border border-gray-200 dark:border-gray-600 divide-x divide-gray-200 dark:divide-gray-600">
+                                    <a href="{{ path('admin_webhook_delivery_show', {id: delivery.id}) }}"
+                                       title="{{ 'admin.webhook.deliveries.detail.action'|trans }}"
+                                       data-controller="tooltip"
+                                       class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors first:rounded-l-[7px] last:rounded-r-[7px]">
+                                        {{ ux_icon('heroicons:eye', {class: 'w-4 h-4'}) }}
+                                        <span class="sr-only">{{ 'admin.webhook.deliveries.detail.action'|trans }}</span>
+                                    </a>
+                                    {% if delivery.error and not delivery.success %}
+                                        <form method="post"
+                                              action="{{ path('admin_webhook_delivery_retry', {id: delivery.id}) }}"
+                                              data-action="submit->modal#open"
+                                              data-modal-title-param="{{ 'admin.webhook.deliveries.retry.confirm-title'|trans|e('html_attr') }}"
+                                              data-modal-message-param="{{ 'admin.webhook.deliveries.retry.confirm'|trans|e('html_attr') }}">
+                                            <input type="hidden" name="_token"
+                                                   value="{{ csrf_token('retry_delivery_' ~ delivery.id) }}">
+                                            <button type="submit"
+                                                    title="{{ 'admin.webhook.deliveries.retry.action'|trans }}"
+                                                    data-controller="tooltip"
+                                                    class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors first:rounded-l-[7px] last:rounded-r-[7px]">
+                                                {{ ux_icon('heroicons:arrow-path', {class: 'w-4 h-4'}) }}
+                                                <span class="sr-only">{{ 'admin.webhook.deliveries.retry.action'|trans }}</span>
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </span>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5"
+                                class="px-4 py-6 text-center text-sm text-gray-500 dark:text-gray-300">{{ 'admin.webhook.deliveries.empty'|trans }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endblock %}
+            {% endembed %}
+
+            {% if totalPages > 1 %}
+                <div class="mt-6 flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-4">
+                    <div class="text-sm text-gray-500 dark:text-gray-400">
+                        {{ 'admin.webhook.deliveries.pagination.total'|trans({'%count%': total}) }}
+                    </div>
+                    <div class="flex gap-2">
+                        {% if page > 1 %}
+                            <a href="{{ path('admin_webhook_delivery_index', {id: endpoint.id, page: page - 1, status: status, eventType: eventType}|filter(v => v)) }}"
+                               class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
+                                {{ ux_icon('heroicons:chevron-left', {class: 'w-4 h-4 mr-1'}) }} {{ 'admin.webhook.deliveries.pagination.newer'|trans }}
+                            </a>
+                        {% endif %}
+                        <span class="inline-flex items-center px-3 py-1.5 text-sm text-gray-500 dark:text-gray-400">
+                            {{ 'admin.webhook.deliveries.pagination.page'|trans({'%page%': page, '%totalPages%': totalPages}) }}
+                        </span>
+                        {% if page < totalPages %}
+                            <a href="{{ path('admin_webhook_delivery_index', {id: endpoint.id, page: page + 1, status: status, eventType: eventType}|filter(v => v)) }}"
+                               class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
+                                {{ 'admin.webhook.deliveries.pagination.older'|trans }} {{ ux_icon('heroicons:chevron-right', {class: 'w-4 h-4 ml-1'}) }}
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        {% if deliveries|filter(d => d.error and not d.success)|length > 0 %}
+            {% include 'Admin/_confirm_modal.html.twig' with {
+                variant: 'info',
+                confirm_label: 'admin.webhook.deliveries.retry.action',
+                modal_id: 'retry-confirm-title',
+            } %}
+        {% endif %}
+    </div>
+{% endblock %}

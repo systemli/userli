@@ -51,7 +51,7 @@ final class UserAdminType extends AbstractType
 
         $passwordHelp = null;
         if ($isEdit && $hasMailCrypt) {
-            $passwordHelp = 'settings.user.form.password.help.mailcrypt';
+            $passwordHelp = 'admin.user.form.password.help.mailcrypt';
         }
 
         $builder->add('plainPassword', RepeatedType::class, [

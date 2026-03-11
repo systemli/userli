@@ -109,7 +109,7 @@ class UserAdminTypeTest extends TypeTestCase
         ]);
 
         $passwordFirstConfig = $form->get('plainPassword')->get('first')->getConfig();
-        self::assertSame('settings.user.form.password.help.mailcrypt', $passwordFirstConfig->getOption('help'));
+        self::assertSame('admin.user.form.password.help.mailcrypt', $passwordFirstConfig->getOption('help'));
     }
 
     public function testPasswordHelpNullWhenNoMailCrypt(): void

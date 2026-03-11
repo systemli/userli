@@ -1,0 +1,100 @@
+{% set current_section = 'reserved-names' %}
+{% extends 'Admin/base_admin.html.twig' %}
+{% block title %}{{ setting('app_name') }} - {{ 'admin.reserved-name.title'|trans }}{% endblock %}
+{% block admin_content %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
+         data-controller="modal">
+        <div class="p-6 sm:p-8">
+            {% include 'Admin/_section_header.html.twig' with {
+                icon: 'heroicons:shield-exclamation',
+                icon_color: 'amber',
+                heading_key: 'admin.reserved-name.heading',
+                description_key: 'admin.reserved-name.description',
+            } %}
+
+            <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div class="flex flex-wrap items-center gap-2">
+                    <a href="{{ path('admin_reserved_name_create') }}"
+                       class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
+                        {{ ux_icon('heroicons:plus', {class: 'w-4 h-4 mr-2'}) }}
+                        {{ 'admin.reserved-name.create.button'|trans }}
+                    </a>
+                    <a href="{{ path('admin_reserved_name_import') }}"
+                       class="inline-flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
+                        {{ ux_icon('heroicons:arrow-up-tray', {class: 'w-4 h-4 mr-2'}) }}
+                        {{ 'admin.reserved-name.import.button'|trans }}
+                    </a>
+                    <a href="{{ path('admin_reserved_name_export') }}"
+                       class="inline-flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
+                        {{ ux_icon('heroicons:arrow-down-tray', {class: 'w-4 h-4 mr-2'}) }}
+                        {{ 'admin.reserved-name.export.button'|trans }}
+                    </a>
+                </div>
+
+                {% include 'Admin/_search_form.html.twig' with {
+                    index_route: 'admin_reserved_name_index',
+                    placeholder_key: 'admin.reserved-name.search.placeholder',
+                    submit_key: 'admin.reserved-name.search.submit',
+                    search: search,
+                } %}
+            </div>
+
+            {% if pagination.items is empty %}
+                {% include 'Admin/_empty_state.html.twig' with {
+                    icon: 'heroicons:shield-exclamation',
+                    title_key: 'admin.reserved-name.table.empty-title',
+                    description_key: 'admin.reserved-name.table.empty-description',
+                } %}
+            {% else %}
+                {% embed 'Admin/_table.html.twig' with {
+                    headers: [
+                        {label: 'admin.table.id'},
+                        {label: 'admin.table.name'},
+                        {label: 'admin.table.created'},
+                        {label: 'admin.table.actions', align: 'right'},
+                    ]
+                } %}
+                    {% block table_body %}
+                        {% for reservedName in pagination.items %}
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ reservedName.id }}</td>
+                                <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-gray-100">{{ reservedName.name }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">
+                                    {{ reservedName.creationTime|format_datetime('short', 'short') }}
+                                </td>
+                                <td class="px-4 py-3 text-right">
+                                    <form method="post"
+                                          action="{{ path('admin_reserved_name_delete', {id: reservedName.id}) }}"
+                                          data-action="submit->modal#open"
+                                          data-modal-title-param="{{ 'delete.confirm-title'|trans|e('html_attr') }}"
+                                          data-modal-message-param="{{ 'admin.reserved-name.delete.confirm'|trans({'%name%': reservedName.name})|e('html_attr') }}">                                        <input type="hidden" name="_token"
+                                               value="{{ csrf_token('delete_reserved_name_' ~ reservedName.id) }}">
+                                        <button type="submit"
+                                                title="{{ 'admin.reserved-name.actions.delete'|trans }}"
+                                                data-controller="tooltip"
+                                                class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors">
+                                            {{ ux_icon('heroicons:trash', {class: 'w-4 h-4'}) }}
+                                            <span class="sr-only">{{ 'admin.reserved-name.actions.delete'|trans }}</span>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endblock %}
+                {% endembed %}
+
+                {% include 'Admin/_pagination.html.twig' with {
+                    index_route: 'admin_reserved_name_index',
+                    total_key: 'admin.reserved-name.pagination.total',
+                    previous_key: 'admin.reserved-name.pagination.previous',
+                    next_key: 'admin.reserved-name.pagination.next',
+                    page_key: 'admin.reserved-name.pagination.page',
+                    pagination: pagination,
+                    search: search,
+                } %}
+            {% endif %}
+        </div>
+
+        {% include 'Admin/_confirm_modal.html.twig' %}
+    </div>
+{% endblock %}

@@ -17,9 +17,6 @@
     "doctrine/collections": {
         "version": "v1.5.0"
     },
-    "doctrine/common": {
-        "version": "v2.9.0"
-    },
     "doctrine/dbal": {
         "version": "v2.8.0"
     },
@@ -116,12 +113,6 @@
             ".php-cs-fixer.dist.php"
         ]
     },
-    "knplabs/knp-menu": {
-        "version": "2.3.0"
-    },
-    "knplabs/knp-menu-bundle": {
-        "version": "v2.2.1"
-    },
     "monolog/monolog": {
         "version": "1.23.0"
     },
@@ -199,33 +190,6 @@
             "config/packages/scheb_2fa.yaml",
             "config/routes/scheb_2fa.yaml"
         ]
-    },
-    "sonata-project/admin-bundle": {
-        "version": "3.31",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "3.31",
-            "ref": "0e5931df1732e3dccfba42a20853049e5e9db6ae"
-        }
-    },
-    "sonata-project/block-bundle": {
-        "version": "3.12.1"
-    },
-    "sonata-project/doctrine-extensions": {
-        "version": "1.1.0"
-    },
-    "sonata-project/doctrine-orm-admin-bundle": {
-        "version": "3.6.1"
-    },
-    "sonata-project/exporter": {
-        "version": "1.9.1"
-    },
-    "sonata-project/form-extensions": {
-        "version": "0.1.2"
-    },
-    "sonata-project/twig-extensions": {
-        "version": "0.1.1"
     },
     "symfony/apache-pack": {
         "version": "1.0",
@@ -651,9 +615,6 @@
     },
     "twig/extra-bundle": {
         "version": "v3.21.0"
-    },
-    "twig/string-extra": {
-        "version": "v3.0.5"
     },
     "twig/twig": {
         "version": "v2.5.0"

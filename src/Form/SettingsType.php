@@ -44,7 +44,7 @@ final class SettingsType extends AbstractType
         }
 
         $builder->add('save', SubmitType::class, [
-            'label' => 'settings.form.save',
+            'label' => 'admin.form.save',
         ]);
     }
 
@@ -72,8 +72,8 @@ final class SettingsType extends AbstractType
         }
 
         $options = [
-            'label' => sprintf('settings.form.%s.label', $name),
-            'help' => sprintf('settings.form.%s.help', $name),
+            'label' => sprintf('admin.form.%s.label', $name),
+            'help' => sprintf('admin.form.%s.help', $name),
             'required' => false,
             'data' => $currentValue,
             'constraints' => $this->buildConstraints($validation, $type, $optional),
@@ -84,7 +84,7 @@ final class SettingsType extends AbstractType
 
         if ($fieldType === ChoiceType::class && isset($validation['choices'])) {
             $labels = array_map(
-                static fn ($c) => sprintf('settings.form.%s.choice.%s', $name, $c),
+                static fn ($c) => sprintf('admin.form.%s.choice.%s', $name, $c),
                 $validation['choices']
             );
             $options['choices'] = array_combine($labels, $validation['choices']);
