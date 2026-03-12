@@ -1079,6 +1079,27 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @When I press the :nth :button button
+     */
+    public function iPressTheNthButton(string $nth, string $button): void
+    {
+        $index = match ($nth) {
+            '1st' => 0,
+            '2nd' => 1,
+            '3rd' => 2,
+            default => ((int) $nth) - 1,
+        };
+
+        $buttons = $this->getSession()->getPage()->findAll('named', ['button', $button]);
+
+        if (!isset($buttons[$index])) {
+            throw new RuntimeException(sprintf('The %s button "%s" was not found on the page (found %d)', $nth, $button, count($buttons)));
+        }
+
+        $buttons[$index]->press();
+    }
+
+    /**
      * Finds the currently visible modal dialog element.
      *
      * Supports both `data-modal-target="dialog"` and
