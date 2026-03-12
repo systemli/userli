@@ -13,7 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -35,15 +34,10 @@ final class OpenPgpKeyType extends AbstractType implements EventSubscriberInterf
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $emailType = $options['email_visible'] ? TextType::class : HiddenType::class;
-        $emailOptions = ['required' => true];
-        if ($options['email_visible']) {
-            $emailOptions['label'] = 'settings.openpgp-key.import.form.email.label';
-            $emailOptions['attr'] = ['placeholder' => 'settings.openpgp-key.import.form.email.placeholder'];
-        }
-
         $builder
-            ->add('email', $emailType, $emailOptions)
+            ->add('email', HiddenType::class, [
+                'required' => true,
+            ])
             ->add('keyFile', FileType::class, [
                 'label' => 'openpgp-key-file',
                 'help' => 'openpgp-key-file',
@@ -72,11 +66,7 @@ final class OpenPgpKeyType extends AbstractType implements EventSubscriberInterf
     #[Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => OpenPgpKey::class,
-            'email_visible' => false,
-        ]);
-        $resolver->setAllowedTypes('email_visible', 'bool');
+        $resolver->setDefaults(['data_class' => OpenPgpKey::class]);
     }
 
     #[Override]

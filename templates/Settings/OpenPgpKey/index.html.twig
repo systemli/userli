@@ -2,8 +2,7 @@
 {% extends 'Settings/base_settings.html.twig' %}
 {% block title %}{{ setting('app_name') }} - {{ 'settings.openpgp-key.title'|trans }}{% endblock %}
 {% block settings_content %}
-    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
-         data-controller="modal">
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
         <div class="p-6 sm:p-8">
             {% include 'Settings/_section_header.html.twig' with {
                 icon: 'heroicons:key',
@@ -12,22 +11,12 @@
                 description_key: 'settings.openpgp-key.description',
             } %}
 
-            <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div class="flex flex-wrap items-center gap-2">
-                    <a href="{{ path('settings_openpgp_key_import') }}"
-                       class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
-                        {{ ux_icon('heroicons:arrow-up-tray', {class: 'w-4 h-4 mr-2'}) }}
-                        {{ 'settings.openpgp-key.import.button'|trans }}
-                    </a>
-                </div>
-
-                {% include 'Settings/_search_form.html.twig' with {
-                    index_route: 'settings_openpgp_key_index',
-                    placeholder_key: 'settings.openpgp-key.search.placeholder',
-                    submit_key: 'settings.openpgp-key.search.submit',
-                    search: search,
-                } %}
-            </div>
+            {% include 'Settings/_search_form.html.twig' with {
+                index_route: 'settings_openpgp_key_index',
+                placeholder_key: 'settings.openpgp-key.search.placeholder',
+                submit_key: 'settings.openpgp-key.search.submit',
+                search: search,
+            } %}
 
             {% if pagination.items is empty %}
                 {% include 'Settings/_empty_state.html.twig' with {
@@ -43,7 +32,6 @@
                         {label: 'settings.openpgp-key.table.key-id'},
                         {label: 'settings.openpgp-key.table.fingerprint'},
                         {label: 'settings.openpgp-key.table.expiry'},
-                        {label: 'settings.table.actions', align: 'right'},
                     ]
                 } %}
                     {% block table_body %}
@@ -59,23 +47,6 @@
                                     {% else %}
                                         <span class="text-gray-400 dark:text-gray-500">{{ 'settings.openpgp-key.table.no-expiry'|trans }}</span>
                                     {% endif %}
-                                </td>
-                                <td class="px-4 py-3 text-right">
-                                    <form method="post"
-                                          action="{{ path('settings_openpgp_key_delete', {id: key.id}) }}"
-                                          data-action="submit->modal#open"
-                                          data-modal-title-param="{{ 'delete.confirm-title'|trans|e('html_attr') }}"
-                                          data-modal-message-param="{{ 'settings.openpgp-key.delete.confirm'|trans({'%email%': key.email})|e('html_attr') }}">
-                                        <input type="hidden" name="_token"
-                                               value="{{ csrf_token('delete_openpgp_key_' ~ key.id) }}">
-                                        <button type="submit"
-                                                title="{{ 'settings.openpgp-key.actions.delete'|trans }}"
-                                                data-controller="tooltip"
-                                                class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors">
-                                            {{ ux_icon('heroicons:trash', {class: 'w-4 h-4'}) }}
-                                            <span class="sr-only">{{ 'settings.openpgp-key.actions.delete'|trans }}</span>
-                                        </button>
-                                    </form>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -93,7 +64,5 @@
                 } %}
             {% endif %}
         </div>
-
-        {% include 'Settings/_confirm_modal.html.twig' %}
     </div>
 {% endblock %}
