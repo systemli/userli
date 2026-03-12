@@ -8,11 +8,12 @@ use App\Entity\OpenPgpKey;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Override;
 
 /**
  * @extends ServiceEntityRepository<OpenPgpKey>
  */
-final class OpenPgpKeyRepository extends ServiceEntityRepository
+final class OpenPgpKeyRepository extends ServiceEntityRepository implements SearchableRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -47,5 +48,38 @@ final class OpenPgpKeyRepository extends ServiceEntityRepository
     public function countKeys(): int
     {
         return $this->count([]);
+    }
+
+    #[Override]
+    public function countBySearch(string $search = ''): int
+    {
+        $qb = $this->createQueryBuilder('k')
+            ->select('COUNT(k.id)');
+
+        if ('' !== $search) {
+            $qb->andWhere('k.email LIKE :search')
+                ->setParameter('search', '%'.$search.'%');
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @return array<OpenPgpKey>
+     */
+    #[Override]
+    public function findPaginatedBySearch(string $search, int $limit, int $offset): array
+    {
+        $qb = $this->createQueryBuilder('k')
+            ->orderBy('k.id', 'DESC')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
+
+        if ('' !== $search) {
+            $qb->andWhere('k.email LIKE :search')
+                ->setParameter('search', '%'.$search.'%');
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

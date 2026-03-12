@@ -518,6 +518,7 @@ settings:
     domains: Domains
     user-notifications: Notifications
     users: Users
+    openpgp-keys: OpenPGP Keys
   coming-soon: Coming Soon
   table:
     id: ID
@@ -987,6 +988,27 @@ settings:
       empty-description: No user notifications have been recorded yet.
     pagination:
       total: "%count% notifications total"
+      newer: Newer
+      older: Older
+      page: "Page %page% of %totalPages%"
+
+  openpgp-key:
+    title: OpenPGP Keys
+    heading: OpenPGP Keys
+    description: View published OpenPGP keys
+    search:
+      placeholder: Search by email...
+      submit: Search
+    table:
+      email: Email
+      key-id: Key ID
+      fingerprint: Fingerprint
+      expiry: Expiry
+      no-expiry: None
+      empty-title: No OpenPGP keys
+      empty-description: No OpenPGP keys have been published yet.
+    pagination:
+      total: "%count% keys total"
       newer: Newer
       older: Older
       page: "Page %page% of %totalPages%"

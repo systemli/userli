@@ -16,8 +16,8 @@ use App\Form\RecoveryTokenConfirmType;
 use App\Handler\DeleteHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
-use App\Handler\WkdHandler;
 use App\Helper\PasswordUpdater;
+use App\Service\OpenPgpKeyManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,7 +34,7 @@ final class AccountController extends AbstractController
         private readonly EntityManagerInterface $manager,
         private readonly DeleteHandler $deleteHandler,
         private readonly RecoveryTokenHandler $recoveryTokenHandler,
-        private readonly WkdHandler $wkdHandler,
+        private readonly OpenPgpKeyManager $openPgpKeyManager,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
@@ -63,7 +63,7 @@ final class AccountController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $openPgpKey = $this->wkdHandler->getKey($user->getEmail());
+        $openPgpKey = $this->openPgpKeyManager->getKey($user->getEmail());
 
         return $this->render(
             'Account/show.html.twig',

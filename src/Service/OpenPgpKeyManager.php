@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Handler;
+namespace App\Service;
 
+use App\Dto\PaginatedResult;
 use App\Entity\OpenPgpKey;
 use App\Entity\User;
 use App\Exception\MultipleGpgKeysForUserException;
@@ -14,14 +15,22 @@ use App\Repository\OpenPgpKeyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Tuupola\Base32;
 
-final readonly class WkdHandler
+final readonly class OpenPgpKeyManager
 {
-    private OpenPgpKeyRepository $repository;
+    private const int PAGE_SIZE = 20;
 
     public function __construct(
-        private EntityManagerInterface $manager,
+        private EntityManagerInterface $em,
+        private OpenPgpKeyRepository $repository,
     ) {
-        $this->repository = $manager->getRepository(OpenPgpKey::class);
+    }
+
+    /**
+     * @return PaginatedResult<OpenPgpKey>
+     */
+    public function findPaginated(int $page = 1, string $search = ''): PaginatedResult
+    {
+        return PaginatedResult::fromSearchableRepository($this->repository, $page, self::PAGE_SIZE, $search);
     }
 
     /**
@@ -32,7 +41,7 @@ final readonly class WkdHandler
     {
         $base32Encoder = new Base32(['characters' => Base32::ZBASE32]);
 
-        return $base32Encoder->encode(sha1(strtolower($localPart), true));
+        return $base32Encoder->encode(sha1(strtolower($localPart), true)); // NOSONAR not used in secure contexts
     }
 
     /**
@@ -61,8 +70,8 @@ final readonly class WkdHandler
         [$localPart] = explode('@', $openPgpKeyNew->getEmail());
         $openPgpKey->setWkdHash(self::wkdHash($localPart));
 
-        $this->manager->persist($openPgpKey);
-        $this->manager->flush();
+        $this->em->persist($openPgpKey);
+        $this->em->flush();
 
         return $openPgpKey;
     }
@@ -78,7 +87,7 @@ final readonly class WkdHandler
             return;
         }
 
-        $this->manager->remove($openPgpKey);
-        $this->manager->flush();
+        $this->em->remove($openPgpKey);
+        $this->em->flush();
     }
 }

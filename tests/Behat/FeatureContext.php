@@ -18,10 +18,10 @@ use App\Enum\ApiScope;
 use App\Enum\UserNotificationType;
 use App\Enum\WebhookEvent;
 use App\Guesser\DomainGuesser;
-use App\Handler\WkdHandler;
 use App\Helper\PasswordUpdater;
 use App\Helper\TotpBackupCodeGenerator;
 use App\Service\ApiTokenManager;
+use App\Service\OpenPgpKeyManager;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
@@ -786,7 +786,7 @@ class FeatureContext extends MinkContext
 
             if (null !== $openPgpKey->getEmail()) {
                 [$localPart] = explode('@', $openPgpKey->getEmail());
-                $openPgpKey->setWkdHash(WkdHandler::wkdHash($localPart));
+                $openPgpKey->setWkdHash(OpenPgpKeyManager::wkdHash($localPart));
             }
 
             $this->manager->persist($openPgpKey);
