@@ -1,0 +1,142 @@
+{% set current_section = 'vouchers' %}
+{% extends 'Admin/base_admin.html.twig' %}
+{% block title %}{{ setting('app_name') }} - {{ 'admin.voucher.title'|trans }}{% endblock %}
+{% block admin_content %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
+         data-controller="modal">
+        <div class="p-6 sm:p-8">
+            {% include 'Admin/_section_header.html.twig' with {
+                icon: 'heroicons:ticket',
+                icon_color: 'purple',
+                heading_key: 'admin.voucher.heading',
+                description_key: 'admin.voucher.description',
+            } %}
+
+            <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div class="flex flex-wrap items-center gap-2">
+                    <a href="{{ path('admin_voucher_create') }}"
+                       class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
+                        {{ ux_icon('heroicons:plus', {class: 'w-4 h-4 mr-2'}) }}
+                        {{ 'admin.voucher.create.button'|trans }}
+                    </a>
+                </div>
+
+                {% include 'Admin/_search_form.html.twig' with {
+                    index_route: 'admin_voucher_index',
+                    placeholder_key: 'admin.voucher.search.placeholder',
+                    submit_key: 'admin.voucher.search.submit',
+                    search: search,
+                    extra_params: {domain: selectedDomain, status: status}|filter(v => v),
+                } %}
+            </div>
+
+            <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-4">
+                <div class="flex flex-wrap items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <label class="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">{{ 'admin.voucher.filter.domain'|trans }}:</label>
+                        <div class="min-w-[200px]"
+                             data-controller="ajax-autocomplete"
+                             data-ajax-autocomplete-url-value="{{ path('admin_domain_search') }}"
+                             data-ajax-autocomplete-label-field-value="name"
+                             data-ajax-autocomplete-min-chars-value="0"
+                             data-ajax-autocomplete-filter-param-value="domain"
+                             data-ajax-autocomplete-compact-value="true">
+                            <input type="hidden"
+                                   data-ajax-autocomplete-target="hidden"
+                                   value="{{ selectedDomain }}"
+                                   data-label="{{ selectedDomainName }}">
+                        </div>
+                        {% if selectedDomain %}
+                            <a href="{{ path('admin_voucher_index', {search: search, status: status}|filter(v => v)) }}"
+                               class="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                               title="{{ 'admin.voucher.filter.clear'|trans }}">
+                                {{ ux_icon('heroicons:x-mark', {class: 'w-3 h-3'}) }}
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label for="status-filter" class="text-sm text-gray-600 dark:text-gray-400">{{ 'admin.voucher.filter.status'|trans }}:</label>
+                        <select id="status-filter"
+                                data-controller="navigate"
+                                data-action="change->navigate#go"
+                                class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                            <option value="{{ path('admin_voucher_index', {search: search, domain: selectedDomain}|filter(v => v)) }}"{% if status == '' %} selected{% endif %}>{{ 'admin.voucher.filter.all'|trans }}</option>
+                            <option value="{{ path('admin_voucher_index', {search: search, domain: selectedDomain, status: 'redeemed'}|filter(v => v)) }}"{% if status == 'redeemed' %} selected{% endif %}>{{ 'admin.voucher.filter.redeemed'|trans }}</option>
+                            <option value="{{ path('admin_voucher_index', {search: search, domain: selectedDomain, status: 'unredeemed'}|filter(v => v)) }}"{% if status == 'unredeemed' %} selected{% endif %}>{{ 'admin.voucher.filter.unredeemed'|trans }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            {% if pagination.items is empty %}
+                {% include 'Admin/_empty_state.html.twig' with {
+                    icon: 'heroicons:ticket',
+                    title_key: 'admin.voucher.table.empty-title',
+                    description_key: 'admin.voucher.table.empty-description',
+                } %}
+            {% else %}
+                {% embed 'Admin/_table.html.twig' with {
+                    headers: [
+                        {label: 'admin.table.id', class: 'hidden xl:table-cell'},
+                        {label: 'admin.voucher.table.code'},
+                        {label: 'admin.voucher.table.user'},
+                        {label: 'admin.voucher.table.domain'},
+                        {label: 'admin.table.created', class: 'hidden xl:table-cell'},
+                        {label: 'admin.voucher.table.status'},
+                        {label: 'admin.table.actions', align: 'right'},
+                    ]
+                } %}
+                    {% block table_body %}
+                        {% for voucher in pagination.items %}
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="hidden xl:table-cell px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ voucher.id }}</td>
+                                <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-gray-100 max-w-[10rem] truncate" title="{{ voucher.code }}">{{ voucher.code }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 max-w-xs truncate" title="{{ voucher.user ? voucher.user.email : '' }}">{{ voucher.user ? voucher.user.email : '—' }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">{{ voucher.domain ? voucher.domain.name : '—' }}</td>
+                                <td class="hidden xl:table-cell px-4 py-3 text-sm text-gray-500 dark:text-gray-300">
+                                    {{ voucher.creationTime|format_datetime('short', 'short') }}
+                                </td>
+                                <td class="px-4 py-3">
+                                    {% if voucher.redeemed %}
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">{{ 'admin.voucher.status.redeemed'|trans }}</span>
+                                    {% else %}
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">{{ 'admin.voucher.status.unredeemed'|trans }}</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-4 py-3 text-right">
+                                    <form method="post"
+                                          action="{{ path('admin_voucher_delete', {id: voucher.id}) }}"
+                                          data-action="submit->modal#open"
+                                          data-modal-title-param="{{ 'delete.confirm-title'|trans|e('html_attr') }}"
+                                          data-modal-message-param="{{ 'admin.voucher.delete.confirm'|trans({'%code%': voucher.code})|e('html_attr') }}">                                        <input type="hidden" name="_token"
+                                               value="{{ csrf_token('delete_voucher_' ~ voucher.id) }}">
+                                        <button type="submit"
+                                                title="{{ 'admin.voucher.actions.delete'|trans }}"
+                                                data-controller="tooltip"
+                                                class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors">
+                                            {{ ux_icon('heroicons:trash', {class: 'w-4 h-4'}) }}
+                                            <span class="sr-only">{{ 'admin.voucher.actions.delete'|trans }}</span>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endblock %}
+                {% endembed %}
+
+                {% include 'Admin/_pagination.html.twig' with {
+                    index_route: 'admin_voucher_index',
+                    total_key: 'admin.voucher.pagination.total',
+                    previous_key: 'admin.voucher.pagination.previous',
+                    next_key: 'admin.voucher.pagination.next',
+                    page_key: 'admin.voucher.pagination.page',
+                    pagination: pagination,
+                    search: search,
+                    extra_params: {domain: selectedDomain, status: status}|filter(v => v),
+                } %}
+            {% endif %}
+        </div>
+
+        {% include 'Admin/_confirm_modal.html.twig' %}
+    </div>
+{% endblock %}

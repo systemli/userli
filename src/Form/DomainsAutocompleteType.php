@@ -40,7 +40,7 @@ final class DomainsAutocompleteType extends AbstractType
     #[Override]
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        $view->vars['autocomplete_url'] = $this->urlGenerator->generate('settings_domain_search');
+        $view->vars['autocomplete_url'] = $this->urlGenerator->generate('admin_domain_search');
         $view->vars['autocomplete_label_field'] = 'name';
         $view->vars['autocomplete_min_chars'] = 0;
 

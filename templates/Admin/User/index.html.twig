@@ -1,0 +1,181 @@
+{% set current_section = 'users' %}
+{% extends 'Admin/base_admin.html.twig' %}
+{% block title %}{{ setting('app_name') }} - {{ 'admin.user.title'|trans }}{% endblock %}
+{% block admin_content %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
+         data-controller="modal">
+        <div class="p-6 sm:p-8">
+            {% include 'Admin/_section_header.html.twig' with {
+                icon: 'heroicons:users',
+                icon_color: 'violet',
+                heading_key: 'admin.user.heading',
+                description_key: 'admin.user.description',
+            } %}
+
+            <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div class="flex flex-wrap items-center gap-2">
+                    <a href="{{ path('admin_user_create') }}"
+                       class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
+                        {{ ux_icon('heroicons:plus', {class: 'w-4 h-4 mr-2'}) }}
+                        {{ 'admin.user.create.button'|trans }}
+                    </a>
+                </div>
+
+                {% include 'Admin/_search_form.html.twig' with {
+                    index_route: 'admin_user_index',
+                    placeholder_key: 'admin.user.search.placeholder',
+                    submit_key: 'admin.user.search.submit',
+                    search: search,
+                    extra_params: {deleted: deleted, role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v and v != 'active'),
+                } %}
+            </div>
+
+            <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-4">
+                <div class="flex flex-wrap items-center gap-2">
+                    <label for="deleted-filter" class="text-sm text-gray-600 dark:text-gray-400">{{ 'admin.user.filter.status'|trans }}:</label>
+                    <select id="deleted-filter"
+                            data-controller="navigate"
+                            data-action="change->navigate#go"
+                            class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="{{ path('admin_user_index', {search: search, deleted: 'active', role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v)) }}"{% if deleted == 'active' %} selected{% endif %}>{{ 'admin.user.filter.active'|trans }}</option>
+                        <option value="{{ path('admin_user_index', {search: search, deleted: 'deleted', role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v)) }}"{% if deleted == 'deleted' %} selected{% endif %}>{{ 'admin.user.filter.deleted'|trans }}</option>
+                        <option value="{{ path('admin_user_index', {search: search, role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v)) }}"{% if deleted == '' %} selected{% endif %}>{{ 'admin.user.filter.all'|trans }}</option>
+                    </select>
+
+                    <label for="role-filter" class="text-sm text-gray-600 dark:text-gray-400 ml-2">{{ 'admin.user.filter.role'|trans }}:</label>
+                    <select id="role-filter"
+                            data-controller="navigate"
+                            data-action="change->navigate#go"
+                            class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v and v != 'active')) }}"{% if role == '' %} selected{% endif %}>{{ 'admin.user.filter.all'|trans }}</option>
+                        {% for role_key, role_value in all_roles %}
+                            <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role_value, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v and v != 'active')) }}"{% if role == role_value %} selected{% endif %}>{{ role_value }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="mailcrypt-filter" class="text-sm text-gray-600 dark:text-gray-400 ml-2">{{ 'admin.user.filter.mailcrypt'|trans }}:</label>
+                    <select id="mailcrypt-filter"
+                            data-controller="navigate"
+                            data-action="change->navigate#go"
+                            class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, twofactor: twofactor}|filter(v => v and v != 'active')) }}"{% if mailCrypt == '' %} selected{% endif %}>{{ 'admin.user.filter.all'|trans }}</option>
+                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, mailCrypt: 'enabled', twofactor: twofactor}|filter(v => v and v != 'active')) }}"{% if mailCrypt == 'enabled' %} selected{% endif %}>{{ 'admin.user.filter.enabled'|trans }}</option>
+                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, mailCrypt: 'disabled', twofactor: twofactor}|filter(v => v and v != 'active')) }}"{% if mailCrypt == 'disabled' %} selected{% endif %}>{{ 'admin.user.filter.disabled'|trans }}</option>
+                    </select>
+
+                    <label for="twofactor-filter" class="text-sm text-gray-600 dark:text-gray-400 ml-2">{{ 'admin.user.filter.twofactor'|trans }}:</label>
+                    <select id="twofactor-filter"
+                            data-controller="navigate"
+                            data-action="change->navigate#go"
+                            class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, mailCrypt: mailCrypt}|filter(v => v and v != 'active')) }}"{% if twofactor == '' %} selected{% endif %}>{{ 'admin.user.filter.all'|trans }}</option>
+                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, mailCrypt: mailCrypt, twofactor: 'enabled'}|filter(v => v and v != 'active')) }}"{% if twofactor == 'enabled' %} selected{% endif %}>{{ 'admin.user.filter.enabled'|trans }}</option>
+                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, mailCrypt: mailCrypt, twofactor: 'disabled'}|filter(v => v and v != 'active')) }}"{% if twofactor == 'disabled' %} selected{% endif %}>{{ 'admin.user.filter.disabled'|trans }}</option>
+                    </select>
+                </div>
+            </div>
+
+            {% if pagination.items is empty %}
+                {% include 'Admin/_empty_state.html.twig' with {
+                    icon: 'heroicons:users',
+                    title_key: 'admin.user.table.empty-title',
+                    description_key: 'admin.user.table.empty-description',
+                } %}
+            {% else %}
+                {% embed 'Admin/_table.html.twig' with {
+                    headers: [
+                        {label: 'admin.table.id', class: 'hidden xl:table-cell'},
+                        {label: 'admin.user.table.email'},
+                        {label: 'admin.table.created', class: 'hidden xl:table-cell'},
+                        {label: 'admin.user.table.roles'},
+                        {label: 'admin.user.table.twofactor', class: 'hidden lg:table-cell', align: 'center'},
+                        {label: 'admin.user.table.mailcrypt', class: 'hidden lg:table-cell', align: 'center'},
+                        {label: 'admin.user.table.status', align: 'center'},
+                        {label: 'admin.table.actions', align: 'right'},
+                    ]
+                } %}
+                    {% block table_body %}
+                        {% for user in pagination.items %}
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="hidden xl:table-cell px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ user.id }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 max-w-xs truncate" title="{{ user.email }}">{{ user.email }}</td>
+                                <td class="hidden xl:table-cell px-4 py-3 text-sm text-gray-500 dark:text-gray-300">
+                                    {{ user.creationTime|format_datetime('short', 'short') }}
+                                </td>
+                                <td class="px-4 py-3">
+                                    <div class="flex flex-wrap gap-1">
+                                        {% for role in user.roles %}
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">{{ role }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </td>
+                                <td class="hidden lg:table-cell px-4 py-3 text-center">
+                                    {% if user.totpAuthenticationEnabled %}
+                                        {{ ux_icon('heroicons:check-circle-20-solid', {class: 'w-5 h-5 text-green-500 dark:text-green-400 inline', title: 'admin.user.filter.enabled'|trans}) }}
+                                    {% else %}
+                                        {{ ux_icon('heroicons:x-circle-20-solid', {class: 'w-5 h-5 text-gray-300 dark:text-gray-600 inline', title: 'admin.user.filter.disabled'|trans}) }}
+                                    {% endif %}
+                                </td>
+                                <td class="hidden lg:table-cell px-4 py-3 text-center">
+                                    {% if user.mailCryptEnabled %}
+                                        {{ ux_icon('heroicons:check-circle-20-solid', {class: 'w-5 h-5 text-green-500 dark:text-green-400 inline', title: 'admin.user.filter.enabled'|trans}) }}
+                                    {% else %}
+                                        {{ ux_icon('heroicons:x-circle-20-solid', {class: 'w-5 h-5 text-gray-300 dark:text-gray-600 inline', title: 'admin.user.filter.disabled'|trans}) }}
+                                    {% endif %}
+                                </td>
+                                <td class="px-4 py-3 text-center">
+                                    {% if user.deleted %}
+                                        {{ ux_icon('heroicons:x-circle-20-solid', {class: 'w-5 h-5 text-red-500 dark:text-red-400 inline', title: 'admin.user.status.deleted'|trans}) }}
+                                    {% else %}
+                                        {{ ux_icon('heroicons:check-circle-20-solid', {class: 'w-5 h-5 text-green-500 dark:text-green-400 inline', title: 'admin.user.status.active'|trans}) }}
+                                    {% endif %}
+                                </td>
+                                <td class="px-4 py-3 text-right">
+                                    <div class="inline-flex items-center gap-1">
+                                        {% if not user.deleted %}
+                                            <a href="{{ path('admin_user_edit', {id: user.id}) }}"
+                                               title="{{ 'admin.user.actions.edit'|trans }}"
+                                               data-controller="tooltip"
+                                               class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors">
+                                                {{ ux_icon('heroicons:pencil-square', {class: 'w-4 h-4'}) }}
+                                                <span class="sr-only">{{ 'admin.user.actions.edit'|trans }}</span>
+                                            </a>
+                                            <form method="post"
+                                                  action="{{ path('admin_user_delete', {id: user.id}) }}"
+                                                  data-action="submit->modal#open"
+                                                  data-modal-title-param="{{ 'delete.confirm-title'|trans|e('html_attr') }}"
+                                                  data-modal-message-param="{{ 'admin.user.delete.confirm'|trans({'%email%': user.email})|e('html_attr') }}">
+                                                <input type="hidden" name="_token"
+                                                       value="{{ csrf_token('delete_user_' ~ user.id) }}">
+                                                <button type="submit"
+                                                        title="{{ 'admin.user.actions.delete'|trans }}"
+                                                        data-controller="tooltip"
+                                                        class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors">
+                                                    {{ ux_icon('heroicons:trash', {class: 'w-4 h-4'}) }}
+                                                    <span class="sr-only">{{ 'admin.user.actions.delete'|trans }}</span>
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endblock %}
+                {% endembed %}
+
+                {% include 'Admin/_pagination.html.twig' with {
+                    index_route: 'admin_user_index',
+                    total_key: 'admin.user.pagination.total',
+                    previous_key: 'admin.user.pagination.previous',
+                    next_key: 'admin.user.pagination.next',
+                    page_key: 'admin.user.pagination.page',
+                    pagination: pagination,
+                    search: search,
+                    extra_params: {deleted: deleted, role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v and v != 'active'),
+                } %}
+            {% endif %}
+        </div>
+
+        {% include 'Admin/_confirm_modal.html.twig' %}
+    </div>
+{% endblock %}

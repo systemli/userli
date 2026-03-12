@@ -1,0 +1,45 @@
+{% set current_section = 'maintenance' %}
+{% extends 'Admin/base_admin.html.twig' %}
+
+{% block title %}{{ setting('app_name') }} - {{ 'admin.maintenance.title'|trans }}{% endblock %}
+{% block page_subtitle %}{{ 'admin.maintenance.subtitle'|trans }}{% endblock %}
+
+{% block admin_content %}
+    <div class="grid gap-8 md:grid-cols-2">
+        {% include 'Admin/_maintenance_card.html.twig' with {
+            icon: 'heroicons:bell-slash',
+            title_key: 'admin.maintenance.pruneUserNotifications.title',
+            description_key: 'admin.maintenance.pruneUserNotifications.description',
+            button_key: 'admin.maintenance.pruneUserNotifications.button',
+            task: 'prune_user_notifications',
+            csrf_token_id: 'maintenance_prune_user_notifications',
+        } %}
+
+        {% include 'Admin/_maintenance_card.html.twig' with {
+            icon: 'heroicons:arrow-path-rounded-square',
+            title_key: 'admin.maintenance.pruneWebhookDeliveries.title',
+            description_key: 'admin.maintenance.pruneWebhookDeliveries.description',
+            button_key: 'admin.maintenance.pruneWebhookDeliveries.button',
+            task: 'prune_webhook_deliveries',
+            csrf_token_id: 'maintenance_prune_webhook_deliveries',
+        } %}
+
+        {% include 'Admin/_maintenance_card.html.twig' with {
+            icon: 'heroicons:user-minus',
+            title_key: 'admin.maintenance.removeInactiveUsers.title',
+            description_key: 'admin.maintenance.removeInactiveUsers.description',
+            button_key: 'admin.maintenance.removeInactiveUsers.button',
+            task: 'remove_inactive_users',
+            csrf_token_id: 'maintenance_remove_inactive_users',
+        } %}
+
+        {% include 'Admin/_maintenance_card.html.twig' with {
+            icon: 'heroicons:ticket',
+            title_key: 'admin.maintenance.unlinkRedeemedVouchers.title',
+            description_key: 'admin.maintenance.unlinkRedeemedVouchers.description',
+            button_key: 'admin.maintenance.unlinkRedeemedVouchers.button',
+            task: 'unlink_redeemed_vouchers',
+            csrf_token_id: 'maintenance_unlink_redeemed_vouchers',
+        } %}
+    </div>
+{% endblock %}

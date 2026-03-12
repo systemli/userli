@@ -1,0 +1,13 @@
+{% set current_section = 'reserved-names' %}
+{% set heading_key = 'admin.reserved-name.create.heading' %}
+{% set description_key = 'admin.reserved-name.create.description' %}
+{% set label_key = 'admin.reserved-name.form.name.label' %}
+{% set placeholder_key = 'admin.reserved-name.form.name.placeholder' %}
+{% set help_key = 'admin.reserved-name.form.name.help' %}
+{% set cancel_key = 'admin.reserved-name.form.cancel' %}
+{% set submit_key = 'admin.reserved-name.form.submit.create' %}
+{% set cancel_route = 'admin_reserved_name_index' %}
+
+{% extends 'Admin/_create_form.html.twig' %}
+
+{% block title %}{{ setting('app_name') }} - {{ 'admin.reserved-name.create.title'|trans }}{% endblock %}

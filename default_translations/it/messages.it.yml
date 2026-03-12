@@ -153,8 +153,7 @@ mail:
 
     Speriamo che tu continui a goderti il tuo account di posta elettronica.
     Il tuo %project_name% admin team.
-admin:
-  registered-accounts: Account registrati
+admin: ~
 User: Utente
 init_user:
   lead: Hai creato il tuo dominio primario.

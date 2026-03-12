@@ -47,16 +47,10 @@
             </a>
 
             {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('settings_show') }}"
-                   class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route starts with 'settings' ? 'bg-gray-900 dark:bg-gray-700 text-white shadow-lg' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}"
-                   {{ current_route starts with 'settings' ? 'aria-current="page"' : '' }}>
+                <a href="{{ path('admin_show') }}"
+                   class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route starts with 'admin' ? 'bg-gray-900 dark:bg-gray-700 text-white shadow-lg' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}"
+                   {{ current_route starts with 'admin' ? 'aria-current="page"' : '' }}>
                     {{ ux_icon('heroicons:adjustments-horizontal', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
-                    {{ "navbar_right.settings"|trans }}
-                </a>
-            {% elseif is_granted('ROLE_DOMAIN_ADMIN') %}
-                <a href="{{ path('sonata_admin_dashboard') }}"
-                   class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-300">
-                    {{ ux_icon('heroicons:shield-check-solid', {class: 'w-4 h-4 sm:w-5 sm:h-5 mr-3 flex-shrink-0'}) }}
                     {{ "navbar_right.admin"|trans }}
                 </a>
             {% endif %}

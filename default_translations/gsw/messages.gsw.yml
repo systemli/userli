@@ -50,11 +50,7 @@ index:
   title: Di E-Mail Account verwaute
   voucher-disable: Am %date% bechunnsch drü Invite Codes. Das isch so glöst zum Masse-Regischtrierige und Spam verhindere.
   alias-limit: Du hesch s Limit vo %alias_limit% %alias_type% Alias Adrässene erreicht.
-admin:
-  registered-accounts-last-week: Regischtrierti Accounts ide letschte 7 Täg
-  registered-accounts: Regischtrierti Accounts
-  invite-codes-redeemed: Iglösti Invite Codes
-  invite-codes: Exischtierendi Invite Codes
+admin: ~
 Voucher: Invite Code
 delete:
   user:

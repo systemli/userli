@@ -201,11 +201,7 @@ mail:
     Vi håper du fortsetter å ha glede av din e-postkonto.
     Ditt %project_name%-administratorlag.
 flash_batch_remove_vouchers_success: Uinnløste invitasjonskoder slettet.
-admin:
-  registered-accounts: Registrerte kontoer
-  registered-accounts-last-week: Registrerte kontoer de siste syv dagene
-  invite-codes: Eksisterende invitasjonskoder
-  invite-codes-redeemed: Innløste invitasjonskoder
+admin: ~
 Ratio: Forhold
 User: Bruker
 Domain: Domene
