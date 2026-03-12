@@ -1,4 +1,4 @@
-Feature: Settings (Reserved Names)
+Feature: Admin (Reserved Names)
 
   Background:
     Given the database is clean
@@ -81,6 +81,45 @@ Feature: Settings (Reserved Names)
     When I am on "/admin/reserved-names/export"
 
     Then the response status code should be 200
+
+  @reserved-names
+  Scenario: Admin can import reserved names from file
+    Given File "/tmp/reserved_names.txt" exists with content:
+      """
+      # This is a comment
+      webmaster
+      postmaster
+      hostmaster
+      """
+    And I am authenticated as "louis@example.org"
+    When I am on "/admin/reserved-names/import"
+    Then the response status code should be 200
+
+    When I attach the file "/tmp/reserved_names.txt" to "reserved_name_import_file"
+    And I press "Import"
+
+    Then I should see "Import completed. Imported: 3, Skipped: 0."
+    And I should see "webmaster"
+    And I should see "postmaster"
+    And I should see "hostmaster"
+
+  @reserved-names
+  Scenario: Admin import skips existing reserved names
+    Given the following ReservedName exists:
+      | name       |
+      | postmaster |
+    And File "/tmp/reserved_names_dup.txt" exists with content:
+      """
+      postmaster
+      newname
+      """
+    And I am authenticated as "louis@example.org"
+    When I am on "/admin/reserved-names/import"
+
+    When I attach the file "/tmp/reserved_names_dup.txt" to "reserved_name_import_file"
+    And I press "Import"
+
+    Then I should see "Import completed. Imported: 1, Skipped: 1."
 
   @javascript @reserved-names @delete-modal
   Scenario: Delete reserved name via confirmation modal
