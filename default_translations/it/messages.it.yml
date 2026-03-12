@@ -24,7 +24,8 @@ start:
   intro: Qui puoi impostare e gestire il tuo account di posta elettronica.
   registration-text: >
     Non hai ancora un account di posta elettronica?
-    Nessun problema! Se uno dei tuoi amici ha già un account, puoi ottenere un codice invito da loro e creare immediatamente il tuo account.
+    Nessun problema! Se uno dei tuoi amici ha già un account, puoi ottenere un codice
+    invito da loro e creare immediatamente il tuo account.
   account-settings: Impostazioni dell'account
   account-settings-desc: Password e altro
 index:
@@ -35,7 +36,8 @@ index:
   voucher-limit-title: Limite codici di invito raggiunto
   title: Gestisci il tuo account di posta elettronica
   alias-deletion-custom: Scrivici per fare eliminare indirizzi.
-  voucher-disable: Il %date% riceverai tre codici di invito. Questo per evitare registrazioni di massa e spam.
+  voucher-disable: Il %date% riceverai tre codici di invito. Questo per evitare 
+    registrazioni di massa e spam.
 form:
   email: E-mail
   signin-header: Accedi
@@ -69,7 +71,8 @@ form:
 welcome:
   text: >
     <h3>Pronto a partire</h3>
-    Nel web puoi trovare delle guide per impostare il tuo account di posta elettronica con diversi programmi client.
+    Nel web puoi trovare delle guide per impostare il tuo account di posta elettronica
+    con diversi programmi client.
     In una settimana riceverai tre codici invito, che potrai raccogliere a <a href="%app_url%">%app_url%</a>.
     Puoi passarli ai tuoi amici e invitarli a registrarsi con %project_name%.
   headline: Benvenuto/a a %project_name%!
@@ -92,13 +95,16 @@ registration:
 delete:
   user:
     headline: Elimina l'account
-    lead: Abbiamo bisogno di verificare la tua password per eliminare il tuo account.
+    lead: Abbiamo bisogno di verificare la tua password per eliminare il tuo 
+      account.
 flashes:
-  openpgp-key-upload-error-no-keys: Nessuna chiave per il tuo indirizzo e-mail trovata nei dati caricati.
+  openpgp-key-upload-error-no-keys: Nessuna chiave per il tuo indirizzo e-mail 
+    trovata nei dati caricati.
   openpgp-key-upload-error-multiple-keys: >
     Nei dati caricati è stata trovata più di una chiave per il tuo indirizzo e-mail.
     Si prega di caricare solo una chiave.
-  recovery-token-invalid: L'indirizzo e-mail e/o il gettone di recupero sono sbagliati!
+  recovery-token-invalid: L'indirizzo e-mail e/o il gettone di recupero sono 
+    sbagliati!
 spam:
   title: Account bloccato
   text: >
@@ -124,7 +130,8 @@ mail:
     Benvenuto a bordo. Puoi trovare guide per impostare il tuo account di posta elettronica
     con diversi programmi client su Internet.
 
-    Avrai una casella di posta elettronica con una quota di 1 GB. Se superi il tuo limite,
+    Avrai una casella di posta elettronica con una quota di 1 GB. Se superi il tuo
+    limite,
     il tuo account di posta elettronica potrebbe non funzionare correttamente.
 
     In una settimana riceverai tre codici invito, che potrai ritirare
@@ -133,7 +140,8 @@ mail:
 
     Sinceramente,
     il tuo team di amministrazione di %project_name%.
-  recovery-subject: La password del tuo account di posta elettronica %email% sarà reimpostata
+  recovery-subject: La password del tuo account di posta elettronica %email% 
+    sarà reimpostata
   recovery-body: >
     Ciao %email%,
 
