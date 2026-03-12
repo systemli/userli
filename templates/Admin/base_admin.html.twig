@@ -1,12 +1,12 @@
-{# Base template for all settings pages. Provides sidebar navigation (desktop) and disclosure menu (mobile). #}
+{# Base template for all admin pages. Provides sidebar navigation (desktop) and disclosure menu (mobile). #}
 {# Parameters: current_section (string) - set via {% set %} in child templates before {% extends %} #}
 {% extends 'base_page.html.twig' %}
 
-{% block page_title %}{{ 'admin.title'|trans }}{% endblock %}
-{% block page_subtitle %}{{ 'admin.subtitle'|trans }}{% endblock %}
+{% block page_title %}{{ 'admin.page_title'|trans }}{% endblock %}
+{% block page_subtitle %}{{ 'admin.page_subtitle'|trans }}{% endblock %}
 
 {% block page_content %}
-    {% set current_section = current_section|default('general') %}
+    {% set current_section = current_section|default('dashboard') %}
 
     <div class="lg:grid lg:grid-cols-[15rem_1fr] lg:gap-8">
         {# Desktop sidebar (hidden on mobile) #}

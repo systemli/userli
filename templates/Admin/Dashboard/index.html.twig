@@ -1,0 +1,69 @@
+{% set current_section = 'dashboard' %}
+{% extends 'Admin/base_admin.html.twig' %}
+
+{% block title %}{{ setting('app_name') }} - {{ 'admin.dashboard.title'|trans }}{% endblock %}
+
+{% block admin_content %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="p-6 sm:p-8">
+            {% include 'Admin/_section_header.html.twig' with {
+                icon: 'heroicons:chart-bar-square',
+                icon_color: 'blue',
+                heading_key: 'admin.dashboard.title',
+                description_key: 'admin.dashboard.description',
+            } %}
+
+            {# Stats grid — visible to all admin roles #}
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {% include 'Admin/Dashboard/_stat_card.html.twig' with {
+                    icon: 'heroicons:users',
+                    icon_color: 'blue',
+                    label_key: 'admin.dashboard.stats.users',
+                    value: stats.users,
+                    route: 'admin_user_index',
+                } %}
+
+                {% include 'Admin/Dashboard/_stat_card.html.twig' with {
+                    icon: 'heroicons:at-symbol',
+                    icon_color: 'indigo',
+                    label_key: 'admin.dashboard.stats.aliases',
+                    value: stats.aliases,
+                    route: 'admin_alias_index',
+                } %}
+
+                {% include 'Admin/Dashboard/_stat_card.html.twig' with {
+                    icon: 'heroicons:globe-alt',
+                    icon_color: 'purple',
+                    label_key: 'admin.dashboard.stats.domains',
+                    value: stats.domains,
+                    route: is_granted('ROLE_ADMIN') ? 'admin_domain_index' : null,
+                } %}
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    {% include 'Admin/Dashboard/_stat_card.html.twig' with {
+                        icon: 'heroicons:ticket',
+                        icon_color: 'amber',
+                        label_key: 'admin.dashboard.stats.vouchers_unredeemed',
+                        value: stats.vouchers_unredeemed,
+                        route: 'admin_voucher_index',
+                    } %}
+
+                    {% include 'Admin/Dashboard/_stat_card.html.twig' with {
+                        icon: 'heroicons:ticket',
+                        icon_color: 'green',
+                        label_key: 'admin.dashboard.stats.vouchers_redeemed',
+                        value: stats.vouchers_redeemed,
+                        route: 'admin_voucher_index',
+                    } %}
+                {% endif %}
+
+                {% include 'Admin/Dashboard/_stat_card.html.twig' with {
+                    icon: 'heroicons:key',
+                    icon_color: 'orange',
+                    label_key: 'admin.dashboard.stats.openpgp_keys',
+                    value: stats.openpgp_keys,
+                } %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

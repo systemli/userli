@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\ApiToken;
+use App\Enum\Roles;
 use App\Form\ApiTokenType;
 use App\Service\ApiTokenManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -14,7 +15,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted(Roles::ADMIN)]
 final class ApiTokenController extends AbstractController
 {
     public function __construct(private readonly ApiTokenManager $apiTokenManager)

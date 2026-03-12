@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\ReservedName;
+use App\Enum\Roles;
 use App\Exception\ValidationException;
 use App\Form\ReservedNameImportType;
 use App\Form\ReservedNameType;
@@ -16,8 +17,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[IsGranted(Roles::ADMIN)]
 final class ReservedNameController extends AbstractController
 {
     public function __construct(

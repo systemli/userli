@@ -1,47 +1,99 @@
-{# Admin Navigation Component (vertical list) #}
+{# Admin Navigation Component (vertical list with grouped sections) #}
 {# Parameters:
    - current_section (string) - The current active section
    - summary_only (bool, optional) - If true, only render the active item's icon + label (for mobile <summary>)
 #}
 
-{% set current_section = current_section|default('general') %}
+{% set current_section = current_section|default('dashboard') %}
 {% set summary_only = summary_only|default(false) %}
 
-{% set nav_items = [
-    {route: 'admin_show', section: 'general', icon: 'heroicons:cog-8-tooth', label: 'admin.navigation.general'},
-    {route: 'admin_api_show', section: 'api', icon: 'heroicons:key', label: 'admin.navigation.api'},
-    {route: 'admin_webhook_endpoint_index', section: 'webhooks', icon: 'heroicons:cursor-arrow-rays', label: 'admin.navigation.webhooks'},
-    {route: 'admin_maintenance_show', section: 'maintenance', icon: 'heroicons:building-library', label: 'admin.navigation.maintenance'},
-    {route: 'admin_domain_index', section: 'domains', icon: 'heroicons:globe-alt', label: 'admin.navigation.domains'},
-    {route: 'admin_user_index', section: 'users', icon: 'heroicons:users', label: 'admin.navigation.users'},
-    {route: 'admin_reserved_name_index', section: 'reserved-names', icon: 'heroicons:shield-exclamation', label: 'admin.navigation.reserved-names'},
-    {route: 'admin_alias_index', section: 'aliases', icon: 'heroicons:at-symbol', label: 'admin.navigation.aliases'},
-    {route: 'admin_voucher_index', section: 'vouchers', icon: 'heroicons:ticket', label: 'admin.navigation.vouchers'},
-    {route: 'admin_openpgp_key_index', section: 'openpgp-keys', icon: 'heroicons:key', label: 'admin.navigation.openpgp-keys'},
-    {route: 'admin_user_notification_index', section: 'user-notifications', icon: 'heroicons:bell-alert', label: 'admin.navigation.user-notifications'},
+{% set nav_groups = [
+    {
+        items: [
+            {route: 'admin_dashboard', section: 'dashboard', icon: 'heroicons:chart-bar-square', label: 'admin.navigation.dashboard'},
+        ]
+    },
+    {
+        label: 'admin.navigation.group.management',
+        items: [
+            {route: 'admin_user_index', section: 'users', icon: 'heroicons:users', label: 'admin.navigation.users'},
+            {route: 'admin_alias_index', section: 'aliases', icon: 'heroicons:at-symbol', label: 'admin.navigation.aliases'},
+            {route: 'admin_voucher_index', section: 'vouchers', icon: 'heroicons:ticket', label: 'admin.navigation.vouchers', role: 'ROLE_ADMIN'},
+        ]
+    },
+    {
+        label: 'admin.navigation.group.configuration',
+        role: 'ROLE_ADMIN',
+        items: [
+            {route: 'admin_domain_index', section: 'domains', icon: 'heroicons:globe-alt', label: 'admin.navigation.domains'},
+            {route: 'admin_reserved_name_index', section: 'reserved-names', icon: 'heroicons:shield-exclamation', label: 'admin.navigation.reserved-names'},
+            {route: 'admin_openpgp_key_index', section: 'openpgp-keys', icon: 'heroicons:key', label: 'admin.navigation.openpgp-keys'},
+            {route: 'admin_user_notification_index', section: 'user-notifications', icon: 'heroicons:bell-alert', label: 'admin.navigation.user-notifications'},
+        ]
+    },
+    {
+        label: 'admin.navigation.group.system',
+        role: 'ROLE_ADMIN',
+        items: [
+            {route: 'admin_settings', section: 'settings', icon: 'heroicons:cog-8-tooth', label: 'admin.navigation.settings'},
+            {route: 'admin_api_show', section: 'api', icon: 'heroicons:key', label: 'admin.navigation.api'},
+            {route: 'admin_webhook_endpoint_index', section: 'webhooks', icon: 'heroicons:cursor-arrow-rays', label: 'admin.navigation.webhooks'},
+            {route: 'admin_maintenance_show', section: 'maintenance', icon: 'heroicons:building-library', label: 'admin.navigation.maintenance'},
+        ]
+    },
 ] %}
 
+{# Flatten all items for summary_only lookup #}
 {% if summary_only %}
-    {# Render only the active item's icon and label (used inside <summary>) #}
-    {% for item in nav_items %}
-        {% if item.section == current_section %}
-            <span class="flex items-center text-sm font-medium text-gray-900 dark:text-gray-100">
-                {{ ux_icon(item.icon, {class: 'w-4 h-4 mr-2 text-gray-600 dark:text-gray-300'}) }}
-                {{ item.label|trans }}
-            </span>
+    {% for group in nav_groups %}
+        {% if group.role is not defined or is_granted(group.role) %}
+            {% for item in group.items %}
+                {% if (item.role is not defined or is_granted(item.role)) and item.section == current_section %}
+                    <span class="flex items-center text-sm font-medium text-gray-900 dark:text-gray-100">
+                        {{ ux_icon(item.icon, {class: 'w-4 h-4 mr-2 text-gray-600 dark:text-gray-300'}) }}
+                        {{ item.label|trans }}
+                    </span>
+                {% endif %}
+            {% endfor %}
         {% endif %}
     {% endfor %}
 {% else %}
-    {# Full vertical navigation list #}
-    <div class="flex flex-col space-y-1">
-        {% for item in nav_items %}
-            {% set is_active = item.section == current_section %}
-            <a href="{{ path(item.route) }}"
-               {% if is_active %}aria-current="page"{% endif %}
-               class="flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ is_active ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
-                {{ ux_icon(item.icon, {class: 'w-4 h-4 mr-2.5 flex-shrink-0'}) }}
-                {{ item.label|trans }}
-            </a>
+    {# Full vertical navigation list with groups #}
+    <div class="flex flex-col">
+        {% for group in nav_groups %}
+            {% if group.role is not defined or is_granted(group.role) %}
+                {# Filter visible items within the group #}
+                {% set visible_items = [] %}
+                {% for item in group.items %}
+                    {% if item.role is not defined or is_granted(item.role) %}
+                        {% set visible_items = visible_items|merge([item]) %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if visible_items|length > 0 %}
+                    {% if not loop.first %}
+                        <div class="my-2 border-t border-gray-200/60 dark:border-gray-700/60"></div>
+                    {% endif %}
+
+                    {% if group.label is defined %}
+                        <p class="px-3 pt-2 pb-1 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+                            {{ group.label|trans }}
+                        </p>
+                    {% endif %}
+
+                    <div class="flex flex-col space-y-0.5">
+                        {% for item in visible_items %}
+                            {% set is_active = item.section == current_section %}
+                            <a href="{{ path(item.route) }}"
+                               {% if is_active %}aria-current="page"{% endif %}
+                               class="flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ is_active ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white/50 dark:hover:bg-gray-700/50' }}">
+                                {{ ux_icon(item.icon, {class: 'w-4 h-4 mr-2.5 flex-shrink-0'}) }}
+                                {{ item.label|trans }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endif %}
         {% endfor %}
     </div>
 {% endif %}

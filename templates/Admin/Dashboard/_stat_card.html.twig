@@ -1,4 +1,5 @@
-{# Parameters: icon (e.g. 'heroicons:key'), icon_color (e.g. 'blue', 'amber', 'indigo'), heading_key, description_key #}
+{# Stat card partial #}
+{# Parameters: icon, icon_color, label_key, value, route (optional) #}
 
 {# Map color names to full Tailwind classes so they are detected at build time #}
 {% set color_map = {
@@ -13,13 +14,15 @@
 } %}
 
 {% set colors = color_map[icon_color] | default(color_map['blue']) %}
+{% set tag = route is defined and route ? 'a' : 'div' %}
 
-<div class="flex items-center mb-6">
-    <div class="w-12 h-12 {{ colors.bg }} rounded-xl flex items-center justify-center mr-4">
-        {{ ux_icon(icon, {class: 'w-6 h-6 ' ~ colors.text}) }}
+<{{ tag }}{% if route is defined and route %} href="{{ path(route) }}"{% endif %}
+    class="flex items-center gap-4 p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50 {{ route is defined and route ? 'hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors' : '' }}">
+    <div class="w-10 h-10 {{ colors.bg }} rounded-lg flex items-center justify-center flex-shrink-0">
+        {{ ux_icon(icon, {class: 'w-5 h-5 ' ~ colors.text}) }}
     </div>
-    <div>
-        <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ heading_key|trans }}</h3>
-        <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ description_key|trans }}</p>
+    <div class="min-w-0">
+        <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ value|number_format }}</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400 truncate">{{ label_key|trans }}</p>
     </div>
-</div>
+</{{ tag }}>

@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Entity\Voucher;
+use App\Enum\Roles;
 use App\Exception\ValidationException;
 use App\Form\Model\VoucherModel;
 use App\Form\VoucherType;
@@ -19,7 +20,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted(Roles::ADMIN)]
 final class VoucherController extends AbstractController
 {
     public function __construct(

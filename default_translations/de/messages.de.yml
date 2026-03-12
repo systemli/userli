@@ -483,7 +483,9 @@ admin:
       label: Max. Alter (Sekunden)
       help: Wie lange sendende Server die Richtlinie zwischenspeichern sollen (Standard 604800 = 1 Woche)
   navigation:
-    aria-label: Einstellungen Navigation
+    aria-label: Admin Navigation
+    dashboard: Dashboard
+    settings: Einstellungen
     api: API Tokens
     webhooks: Webhooks
     general: Allgemein
@@ -495,9 +497,26 @@ admin:
     user-notifications: Benachrichtigungen
     users: Benutzer:innen
     openpgp-keys: OpenPGP-Schlüssel
+    group:
+      management: Verwaltung
+      configuration: Konfiguration
+      system: System
+  dashboard:
+    title: Dashboard
+    description: Überblick über dein System auf einen Blick
+    stats:
+      users: Benutzer:innen
+      aliases: Aliase
+      domains: Domains
+      vouchers_redeemed: Einladungen eingelöst
+      vouchers_unredeemed: Einladungen offen
+      openpgp_keys: OpenPGP-Schlüssel
+  page_title: Admin
+  page_subtitle: Verwaltung und Konfiguration
   maintenance:
     title: Wartung
     subtitle: Führe Wartungsaufgaben bei Bedarf aus
+    description: Führe Wartungsaufgaben bei Bedarf aus
     pruneUserNotifications:
       title: Alte Benachrichtigungen aufräumen
       description: Löscht Benachrichtigungen, die älter als 30 Tage sind.
