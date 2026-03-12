@@ -1079,7 +1079,7 @@ class FeatureContext extends MinkContext
     }
 
     /**
-     * @When I press the :nth :button button
+     * @When /^I press the (\d+(?:st|nd|rd|th)) "([^"]*)" button$/
      */
     public function iPressTheNthButton(string $nth, string $button): void
     {
