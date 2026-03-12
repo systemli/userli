@@ -1,4 +1,4 @@
-Feature: Settings (Aliases)
+Feature: Admin (Aliases)
 
   Background:
     Given the database is clean
@@ -80,6 +80,21 @@ Feature: Settings (Aliases)
 
     Then the response status code should be 200
     And I should see "Edit Alias"
+
+  @aliases
+  Scenario: Admin can edit an alias destination
+    Given the following Alias exists:
+      | source                | destination       |
+      | editalias@example.org | louis@example.org |
+    And I am authenticated as "louis@example.org"
+    When I am on "/admin/aliases/"
+    And I follow "Edit"
+    Then I should see "Edit Alias"
+
+    When I fill in "alias_admin_destination" with "user@example.org"
+    And I press "Save"
+
+    Then I should see "Alias has been updated successfully"
 
   @javascript @aliases @delete-modal
   Scenario: Delete alias via confirmation modal
