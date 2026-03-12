@@ -11,12 +11,16 @@
                 description_key: 'settings.openpgp-key.description',
             } %}
 
-            {% include 'Settings/_search_form.html.twig' with {
-                index_route: 'settings_openpgp_key_index',
-                placeholder_key: 'settings.openpgp-key.search.placeholder',
-                submit_key: 'settings.openpgp-key.search.submit',
-                search: search,
-            } %}
+            <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div></div>
+
+                {% include 'Settings/_search_form.html.twig' with {
+                    index_route: 'settings_openpgp_key_index',
+                    placeholder_key: 'settings.openpgp-key.search.placeholder',
+                    submit_key: 'settings.openpgp-key.search.submit',
+                    search: search,
+                } %}
+            </div>
 
             {% if pagination.items is empty %}
                 {% include 'Settings/_empty_state.html.twig' with {
