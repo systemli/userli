@@ -110,5 +110,5 @@ security:
               allow_if: "!is_granted('ROLE_SPAM')",
           }
         - { path: "^/account", roles: ROLE_USER }
-        - { path: "^/admin", roles: ROLE_ADMIN }
+        - { path: "^/admin", roles: ROLE_DOMAIN_ADMIN }
         - { path: "^/api", roles: ROLE_API }

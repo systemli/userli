@@ -39,13 +39,13 @@
             <span class="text-xs md:text-sm">{{ "navbar.account"|trans }}</span>
         </a>
 
-        {# Admin Link #}
-        {% if is_granted('ROLE_ADMIN') %}
-            <a href="{{ path('admin_show') }}"
+        {# Admin Link (visible for domain admins and full admins) #}
+        {% if is_granted('ROLE_DOMAIN_ADMIN') %}
+            <a href="{{ path('admin_dashboard') }}"
                class="flex items-center justify-center px-2 md:px-3 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:scale-105 {{ current_route starts with 'admin' ? 'bg-white/20 text-white shadow-lg' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}"
                title="{{ "navbar_right.admin"|trans }}"
                {{ current_route starts with 'admin' ? 'aria-current="page"' : '' }}>
-                {{ ux_icon('heroicons:adjustments-horizontal', {'class': 'w-4 h-4 mr-1 flex-shrink-0'}) }}
+                {{ ux_icon('heroicons:shield-check-solid', {'class': 'w-4 h-4 mr-1 flex-shrink-0'}) }}
                 <span class="text-xs md:text-sm">{{ "navbar_right.admin"|trans }}</span>
             </a>
         {% endif %}

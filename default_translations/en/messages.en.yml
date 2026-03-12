@@ -415,6 +415,7 @@ admin:
   maintenance:
     title: Maintenance
     subtitle: Run on-demand maintenance tasks
+    description: Run on-demand maintenance tasks
     pruneUserNotifications:
       title: Prune User Notifications
       description: Remove user notifications older than 30 days.
@@ -501,7 +502,9 @@ admin:
       label: Max Age (seconds)
       help: How long sending servers should cache the policy (default 604800 = 1 week)
   navigation:
-    aria-label: Settings navigation
+    aria-label: Admin navigation
+    dashboard: Dashboard
+    settings: Settings
     api: API Tokens
     webhooks: Webhooks
     maintenance: Maintenance
@@ -513,6 +516,22 @@ admin:
     user-notifications: Notifications
     users: Users
     openpgp-keys: OpenPGP Keys
+    group:
+      management: Management
+      configuration: Configuration
+      system: System
+  dashboard:
+    title: Dashboard
+    description: Overview of your system at a glance
+    stats:
+      users: Users
+      aliases: Aliases
+      domains: Domains
+      vouchers_redeemed: Vouchers redeemed
+      vouchers_unredeemed: Vouchers unredeemed
+      openpgp_keys: OpenPGP Keys
+  page_title: Admin
+  page_subtitle: Administration and configuration
   coming-soon: Coming Soon
   table:
     id: ID

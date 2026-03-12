@@ -20,12 +20,12 @@ Feature: Settings (Users)
     And the response status code should be 403
 
   @settings-users
-  Scenario: Domain admin cannot access users page
+  Scenario: Domain admin can access users page
     Given I am authenticated as "support@example.org"
     When I am on "/admin/users/"
 
-    Then I should see "Access Denied"
-    And the response status code should be 403
+    Then the response status code should be 200
+    And I should see "Users"
 
   @settings-users
   Scenario: Admin can list users

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Enum\Roles;
 use App\Message\PruneUserNotifications;
 use App\Message\PruneWebhookDeliveries;
 use App\Message\RemoveInactiveUsers;
@@ -13,7 +14,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted(Roles::ADMIN)]
 final class MaintenanceController extends AbstractController
 {
     private const array TASKS = [

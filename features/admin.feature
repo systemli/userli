@@ -15,31 +15,38 @@ Feature: Admin
 
   @admin
   Scenario: Unauthenticated user is redirected to login
-    When I am on "/admin"
+    When I am on "/admin/"
     Then I should be on "/login"
     And the response status code should be 200
 
   @admin
-  Scenario: Admin can access admin page
+  Scenario: Admin can access admin dashboard
     When I am authenticated as "louis@example.org"
-    And I am on "/admin"
+    And I am on "/admin/"
     Then the response status code should be 200
-    And I should see "Settings"
+    And I should see "Dashboard"
 
   @admin
-  Scenario: Domain admin cannot access admin page
+  Scenario: Domain admin can access admin dashboard
     When I am authenticated as "domain@example.com"
-    And I am on "/admin"
+    And I am on "/admin/"
+    Then the response status code should be 200
+    And I should see "Dashboard"
+
+  @admin
+  Scenario: Domain admin cannot access admin-only pages
+    When I am authenticated as "domain@example.com"
+    And I am on "/admin/settings"
     Then the response status code should be 403
 
   @admin
   Scenario: Multiplier cannot access admin page
     When I am authenticated as "support@example.org"
-    And I am on "/admin"
+    And I am on "/admin/"
     Then the response status code should be 403
 
   @admin
   Scenario: Regular user cannot access admin page
     When I am authenticated as "user@example.org"
-    And I am on "/admin"
+    And I am on "/admin/"
     Then the response status code should be 403
