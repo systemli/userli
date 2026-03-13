@@ -34,6 +34,7 @@ class DeleteHandlerTest extends TestCase
 
         $aliasRepository = $this->createStub(AliasRepository::class);
         $aliasRepository->method('findByUser')->willReturn($aliases);
+        $aliasRepository->method('findByUserAcrossDomains')->willReturn($aliases);
 
         $voucherRepository = $this->createStub(VoucherRepository::class);
         $voucherRepository->method('findByUser')->willReturn($vouchers);

@@ -5,6 +5,7 @@ Feature: User
     And the following Domain exists:
       | name        |
       | example.org |
+      | example.com |
     And the following User exists:
       | email               | password | roles           |
       | admin@example.org   | asdasd   | ROLE_ADMIN      |
@@ -291,6 +292,16 @@ Feature: User
     When I am authenticated as "spam@example.org"
     And I am on "/account/alias"
     Then the response status code should be 403
+
+  @alias-cross-domain
+  Scenario: User can see cross-domain aliases on alias page
+    Given the following Alias exists:
+      | user_id | source                      | destination      | deleted | random |
+      | 2       | crossdomain@example.com     | user@example.org | 0       | 0      |
+    When I am authenticated as "user@example.org"
+    And I am on "/account/alias"
+    Then the response status code should be 200
+    And I should see "crossdomain@example.com"
 
   @voucher-access
   Scenario: Unauthenticated user is redirected to login from voucher page
