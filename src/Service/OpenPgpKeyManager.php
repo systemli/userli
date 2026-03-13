@@ -10,7 +10,6 @@ use App\Entity\User;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
-use App\Importer\GpgKeyImporter;
 use App\Repository\OpenPgpKeyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;

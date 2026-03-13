@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Remover;
+namespace App\Service;
 
 use App\Entity\User;
 use App\Entity\Voucher;

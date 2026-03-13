@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Importer;
+namespace App\Tests\Service;
 
 use App\Entity\OpenPgpKey;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
-use App\Importer\GpgKeyImporter;
+use App\Service\GpgKeyImporter;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 

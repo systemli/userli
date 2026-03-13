@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Importer;
+namespace App\Service;
 
 use App\Entity\OpenPgpKey;
 use App\Exception\MultipleGpgKeysForUserException;
@@ -17,7 +17,6 @@ use Crypt_GPG_KeyNotFoundException;
 use Crypt_GPG_NoDataException;
 use DateTimeImmutable;
 use Exception;
-use Override;
 use PEAR_Exception;
 use RuntimeException;
 
@@ -26,7 +25,7 @@ use const DIRECTORY_SEPARATOR;
 /**
  * Class GpgKeyImporter.
  */
-final class GpgKeyImporter implements OpenPgpKeyImporterInterface
+final class GpgKeyImporter
 {
     private static function recursiveRemoveDir(string $dir): void
     {
@@ -55,7 +54,6 @@ final class GpgKeyImporter implements OpenPgpKeyImporterInterface
      * @throws MultipleGpgKeysForUserException
      * @throws RuntimeException
      */
-    #[Override]
     public static function import(string $email, string $data): OpenPgpKey
     {
         $tempDir = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'userli_'.mt_rand().microtime(true);
