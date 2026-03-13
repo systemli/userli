@@ -35,7 +35,10 @@ final class RoundcubeController extends AbstractController
             throw new AuthenticationException('Bad credentials', 401);
         }
 
-        $aliases = $this->manager->getRepository(Alias::class)->findByUser($user);
+        // Uses findByUserAcrossDomains to include cross-domain aliases. The domain
+        // filter is typically not active for API-authenticated requests (see the
+        // method's doc comment), but this ensures correct behavior regardless.
+        $aliases = $this->manager->getRepository(Alias::class)->findByUserAcrossDomains($user);
         $aliasSources = array_map(static fn ($alias) => $alias->getSource(), $aliases);
 
         return $this->json($aliasSources);

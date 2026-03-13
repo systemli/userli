@@ -223,6 +223,40 @@ class ApiContext extends RawMinkContext implements Context
     }
 
     /**
+     * @Then the JSON response should contain :value
+     */
+    public function theJsonResponseShouldContain(string $value): void
+    {
+        $content = $this->getSession()->getPage()->getContent();
+        $data = json_decode($content, true);
+
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            throw new RuntimeException(sprintf('Response is not valid JSON: %s', json_last_error_msg()));
+        }
+
+        if (!is_array($data) || !in_array($value, $data, true)) {
+            throw new RuntimeException(sprintf('JSON response does not contain "%s". Response: %s', $value, $content));
+        }
+    }
+
+    /**
+     * @Then the JSON response should not contain :value
+     */
+    public function theJsonResponseShouldNotContain(string $value): void
+    {
+        $content = $this->getSession()->getPage()->getContent();
+        $data = json_decode($content, true);
+
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            throw new RuntimeException(sprintf('Response is not valid JSON: %s', json_last_error_msg()));
+        }
+
+        if (is_array($data) && in_array($value, $data, true)) {
+            throw new RuntimeException(sprintf('JSON response should not contain "%s" but it does. Response: %s', $value, $content));
+        }
+    }
+
+    /**
      * @throws UnsupportedDriverActionException
      */
     private function sendRequest(string $method, string $path, array $parameters = [], ?string $content = null, bool $setContentType = true): void
