@@ -93,7 +93,7 @@ final class UserController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $this->denyAccessUnlessGrantedForAdminUser($user);
+        $this->denyAccessUnlessGranted('edit', $user);
 
         $model = UserAdminModel::fromUser($user);
 
@@ -118,7 +118,7 @@ final class UserController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        $this->denyAccessUnlessGrantedForAdminUser($user);
+        $this->denyAccessUnlessGranted('edit', $user);
 
         $model = new UserAdminModel();
         $form = $this->createForm(UserAdminType::class, $model, [
@@ -159,22 +159,12 @@ final class UserController extends AbstractController
             return $this->redirectToRoute('admin_user_index');
         }
 
-        $this->denyAccessUnlessGrantedForAdminUser($user);
+        $this->denyAccessUnlessGranted('delete', $user);
 
         $this->manager->delete($user);
         $this->addFlash('success', 'admin.user.delete.success');
 
         return $this->redirectToRoute('admin_user_index');
-    }
-
-    /**
-     * Deny access if the current user is not a full admin and the target user has admin role.
-     */
-    private function denyAccessUnlessGrantedForAdminUser(User $user): void
-    {
-        if ($user->hasRole(Roles::ADMIN) && !$this->isGranted(Roles::ADMIN)) {
-            throw $this->createAccessDeniedException('Domain admins cannot manage admin users.');
-        }
     }
 
     /**
