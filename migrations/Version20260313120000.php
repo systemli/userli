@@ -17,8 +17,8 @@ final class Version20260313120000 extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE openpgp_keys ADD domain_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE openpgp_keys ADD CONSTRAINT FK_openpgp_keys_domain FOREIGN KEY (domain_id) REFERENCES domains (id) ON DELETE SET NULL');
-        $this->addSql('CREATE INDEX IDX_openpgp_keys_domain ON openpgp_keys (domain_id)');
+        $this->addSql('ALTER TABLE openpgp_keys ADD CONSTRAINT FK_BAB4DF37115F0EE5 FOREIGN KEY (domain_id) REFERENCES domains (id) ON DELETE SET NULL');
+        $this->addSql('CREATE INDEX IDX_BAB4DF37115F0EE5 ON openpgp_keys (domain_id)');
     }
 
     public function postUp(Schema $schema): void
@@ -31,8 +31,8 @@ final class Version20260313120000 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE openpgp_keys DROP FOREIGN KEY FK_openpgp_keys_domain');
-        $this->addSql('DROP INDEX IDX_openpgp_keys_domain ON openpgp_keys');
+        $this->addSql('ALTER TABLE openpgp_keys DROP FOREIGN KEY FK_BAB4DF37115F0EE5');
+        $this->addSql('DROP INDEX IDX_BAB4DF37115F0EE5 ON openpgp_keys');
         $this->addSql('ALTER TABLE openpgp_keys DROP domain_id');
     }
 }
