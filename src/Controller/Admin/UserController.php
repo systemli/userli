@@ -73,9 +73,7 @@ final class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->denyAccessUnlessGrantedForRoles($model->getRoles());
-
-            $this->manager->create($model, $this->getAllowedRoles());
+            $this->manager->create($model);
             $this->addFlash('success', 'admin.user.create.success');
 
             return $this->redirectToRoute('admin_user_index');
@@ -130,9 +128,7 @@ final class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->denyAccessUnlessGrantedForRoles($model->getRoles());
-
-            $recoveryToken = $this->manager->update($user, $model, $this->getAllowedRoles());
+            $recoveryToken = $this->manager->update($user, $model);
             $this->addFlash('success', 'admin.user.edit.success');
 
             if (null !== $recoveryToken) {
@@ -165,30 +161,5 @@ final class UserController extends AbstractController
         $this->addFlash('success', 'admin.user.delete.success');
 
         return $this->redirectToRoute('admin_user_index');
-    }
-
-    /**
-     * Deny access if the submitted roles contain any role not reachable by the current user.
-     *
-     * @param string[] $roles
-     */
-    private function denyAccessUnlessGrantedForRoles(array $roles): void
-    {
-        $allowedRoles = $this->getAllowedRoles();
-        foreach ($roles as $role) {
-            if (!in_array($role, $allowedRoles, true)) {
-                throw $this->createAccessDeniedException(sprintf('You are not allowed to assign the role "%s".', $role));
-            }
-        }
-    }
-
-    /**
-     * @return string[]
-     */
-    private function getAllowedRoles(): array
-    {
-        $highestRole = $this->isGranted(Roles::ADMIN) ? [Roles::ADMIN] : [Roles::DOMAIN_ADMIN];
-
-        return Roles::getReachableRoles($highestRole);
     }
 }

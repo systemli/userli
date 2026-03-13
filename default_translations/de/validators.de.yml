@@ -14,6 +14,7 @@ form:
   lowercase: "Die Zeichenkette darf keine Großbuchstaben enthalten."
   unique-field: "Dieser Wert wird bereits verwendet."
   valid-tld: "Die Domain hat keine gültige Top-Level-Domain."
+  role-not-allowed: "Du darfst die Rolle \"{{ role }}\" nicht zuweisen."
 
 registration:
   voucher-invalid: Der Einladungscode ist ungültig.

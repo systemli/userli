@@ -14,6 +14,7 @@ form:
   lowercase: "The string must not contain uppercase letters."
   unique-field: "This value is already used."
   valid-tld: "The domain does not have a valid top-level domain."
+  role-not-allowed: "You are not allowed to assign the role \"{{ role }}\"."
 
 registration:
   voucher-invalid: "The invite code is invalid."

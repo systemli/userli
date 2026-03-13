@@ -7,6 +7,7 @@ namespace App\Form;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Form\Model\UserAdminModel;
+use App\Validator\AllowedRoles;
 use App\Validator\Lowercase;
 use App\Validator\PasswordPolicy;
 use App\Validator\UniqueField;
@@ -90,6 +91,7 @@ final class UserAdminType extends AbstractType
             'constraints' => [
                 new Assert\NotBlank(),
                 new Assert\NotNull(),
+                new AllowedRoles(),
             ],
         ]);
 
