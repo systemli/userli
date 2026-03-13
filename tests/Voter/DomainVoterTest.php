@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Voter;
 
-use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
@@ -39,16 +38,6 @@ class DomainVoterTest extends TestCase
         foreach ([DomainVoter::VIEW, DomainVoter::EDIT, DomainVoter::DELETE] as $attribute) {
             $result = $voter->vote($this->createToken(), new User('test@example.org'), [$attribute]);
             self::assertNotSame(VoterInterface::ACCESS_ABSTAIN, $result, sprintf('Voter should not abstain for attribute "%s" on User', $attribute));
-        }
-    }
-
-    public function testSupportsAliasWithValidAttribute(): void
-    {
-        $voter = $this->createVoter(isAdmin: true);
-
-        foreach ([DomainVoter::VIEW, DomainVoter::EDIT, DomainVoter::DELETE] as $attribute) {
-            $result = $voter->vote($this->createToken(), new Alias(), [$attribute]);
-            self::assertNotSame(VoterInterface::ACCESS_ABSTAIN, $result, sprintf('Voter should not abstain for attribute "%s" on Alias', $attribute));
         }
     }
 
@@ -178,50 +167,6 @@ class DomainVoterTest extends TestCase
         $adminUser->setRoles([Roles::ADMIN]);
 
         $result = $voter->vote($this->createToken($this->domainAdminA), $adminUser, [DomainVoter::DELETE]);
-        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
-    }
-
-    // --- Domain admin: alias operations ---
-
-    public function testDomainAdminCanViewAliasInSameDomain(): void
-    {
-        $voter = $this->createVoter(isDomainAdmin: true);
-        $alias = new Alias();
-        $alias->setDomain($this->domainA);
-
-        $result = $voter->vote($this->createToken($this->domainAdminA), $alias, [DomainVoter::VIEW]);
-        self::assertSame(VoterInterface::ACCESS_GRANTED, $result);
-    }
-
-    public function testDomainAdminCanEditAliasInSameDomain(): void
-    {
-        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainA);
-        $alias = new Alias();
-        $alias->setDomain($this->domainA);
-        $alias->setSource('alias@domain-a.org');
-
-        $result = $voter->vote($this->createToken($this->domainAdminA), $alias, [DomainVoter::EDIT]);
-        self::assertSame(VoterInterface::ACCESS_GRANTED, $result);
-    }
-
-    public function testDomainAdminCannotViewAliasInDifferentDomain(): void
-    {
-        $voter = $this->createVoter(isDomainAdmin: true);
-        $alias = new Alias();
-        $alias->setDomain($this->domainB);
-
-        $result = $voter->vote($this->createToken($this->domainAdminA), $alias, [DomainVoter::VIEW]);
-        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
-    }
-
-    public function testDomainAdminCannotEditAliasInDifferentDomain(): void
-    {
-        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainB);
-        $alias = new Alias();
-        $alias->setDomain($this->domainB);
-        $alias->setSource('alias@domain-b.org');
-
-        $result = $voter->vote($this->createToken($this->domainAdminA), $alias, [DomainVoter::EDIT]);
         self::assertSame(VoterInterface::ACCESS_DENIED, $result);
     }
 

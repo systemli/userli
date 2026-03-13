@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Voter;
 
-use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
@@ -16,7 +15,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * @extends Voter<string, Alias|User>
+ * @extends Voter<string, User>
  */
 final class DomainVoter extends Voter
 {
@@ -41,7 +40,7 @@ final class DomainVoter extends Voter
             return false;
         }
 
-        return $subject instanceof User || $subject instanceof Alias;
+        return $subject instanceof User;
     }
 
     #[Override]
@@ -73,10 +72,6 @@ final class DomainVoter extends Voter
             return $this->voteOnUser($attribute, $subject, $currentDomain);
         }
 
-        if ($subject instanceof Alias) {
-            return $this->voteOnAlias($attribute, $subject, $currentDomain);
-        }
-
         return false;
     }
 
@@ -85,15 +80,6 @@ final class DomainVoter extends Voter
         return match ($attribute) {
             self::VIEW, self::DELETE => $currentDomain === $user->getDomain(),
             self::EDIT => $currentDomain === $this->domainGuesser->guess($user->getEmail()),
-            default => false,
-        };
-    }
-
-    private function voteOnAlias(string $attribute, Alias $alias, ?Domain $currentDomain): bool
-    {
-        return match ($attribute) {
-            self::VIEW, self::DELETE => $currentDomain === $alias->getDomain(),
-            self::EDIT => $currentDomain === $this->domainGuesser->guess($alias->getSource()),
             default => false,
         };
     }
