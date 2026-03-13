@@ -23,6 +23,10 @@ class OpenPgpKey
     #[ORM\JoinColumn(name: 'uploader_id', onDelete: 'SET NULL')]
     private ?User $uploader = null;
 
+    #[ORM\ManyToOne(targetEntity: Domain::class)]
+    #[ORM\JoinColumn(name: 'domain_id', onDelete: 'SET NULL')]
+    private ?Domain $domain = null;
+
     #[ORM\Column(length: 32, nullable: true)]
     private ?string $wkdHash = null;
 
@@ -34,6 +38,16 @@ class OpenPgpKey
     public function setUploader(?User $uploader): void
     {
         $this->uploader = $uploader;
+    }
+
+    public function getDomain(): ?Domain
+    {
+        return $this->domain;
+    }
+
+    public function setDomain(?Domain $domain): void
+    {
+        $this->domain = $domain;
     }
 
     public function getWkdHash(): ?string

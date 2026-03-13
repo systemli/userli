@@ -47,7 +47,10 @@ final class OpenPgpKeyRepository extends ServiceEntityRepository implements Sear
 
     public function countKeys(): int
     {
-        return $this->count([]);
+        return (int) $this->createQueryBuilder('k')
+            ->select('COUNT(k.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     #[Override]

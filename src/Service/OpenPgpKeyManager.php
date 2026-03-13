@@ -22,6 +22,7 @@ final readonly class OpenPgpKeyManager
     public function __construct(
         private EntityManagerInterface $em,
         private OpenPgpKeyRepository $repository,
+        private DomainGuesser $domainGuesser,
     ) {
     }
 
@@ -69,6 +70,9 @@ final readonly class OpenPgpKeyManager
 
         [$localPart] = explode('@', $openPgpKeyNew->getEmail());
         $openPgpKey->setWkdHash(self::wkdHash($localPart));
+
+        $domain = $this->domainGuesser->guess($openPgpKeyNew->getEmail());
+        $openPgpKey->setDomain($domain);
 
         $this->em->persist($openPgpKey);
         $this->em->flush();
