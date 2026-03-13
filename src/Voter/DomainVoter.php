@@ -20,13 +20,15 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 final class DomainVoter extends Voter
 {
+    public const string CREATE = 'create';
+
     public const string VIEW = 'view';
 
     public const string EDIT = 'edit';
 
     public const string DELETE = 'delete';
 
-    private const array SUPPORTED_ATTRIBUTES = [self::VIEW, self::EDIT, self::DELETE];
+    private const array SUPPORTED_ATTRIBUTES = [self::CREATE, self::VIEW, self::EDIT, self::DELETE];
 
     public function __construct(
         private readonly Security $security,
@@ -39,6 +41,10 @@ final class DomainVoter extends Voter
     {
         if (!in_array($attribute, self::SUPPORTED_ATTRIBUTES, true)) {
             return false;
+        }
+
+        if ($attribute === self::CREATE || $attribute === self::DELETE) {
+            return $subject instanceof User;
         }
 
         return $subject instanceof User || $subject instanceof Alias;
@@ -69,6 +75,10 @@ final class DomainVoter extends Voter
 
         $currentDomain = $currentUser->getDomain();
 
+        if (null === $currentDomain) {
+            return false;
+        }
+
         if ($subject instanceof User) {
             return $this->voteOnUser($attribute, $subject, $currentDomain);
         }
@@ -80,19 +90,19 @@ final class DomainVoter extends Voter
         return false;
     }
 
-    private function voteOnUser(string $attribute, User $user, ?Domain $currentDomain): bool
+    private function voteOnUser(string $attribute, User $user, Domain $currentDomain): bool
     {
         return match ($attribute) {
             self::VIEW, self::DELETE => $currentDomain === $user->getDomain(),
-            self::EDIT => $currentDomain === $this->domainGuesser->guess($user->getEmail()),
+            self::CREATE, self::EDIT => $currentDomain === $this->domainGuesser->guess($user->getEmail()),
             default => false,
         };
     }
 
-    private function voteOnAlias(string $attribute, Alias $alias, ?Domain $currentDomain): bool
+    private function voteOnAlias(string $attribute, Alias $alias, Domain $currentDomain): bool
     {
         return match ($attribute) {
-            self::VIEW, self::DELETE => $currentDomain === $alias->getDomain(),
+            self::VIEW => $currentDomain === $alias->getDomain(),
             self::EDIT => $currentDomain === $this->domainGuesser->guess($alias->getSource()),
             default => false,
         };

@@ -73,6 +73,10 @@ final class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = new User($model->getEmail() ?? '');
+            $user->setRoles($model->getRoles());
+            $this->denyAccessUnlessGranted('create', $user);
+
             $this->manager->create($model);
             $this->addFlash('success', 'admin.user.create.success');
 
@@ -128,6 +132,11 @@ final class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Re-authorize with submitted roles to prevent escalation
+            $editedUser = new User($user->getEmail() ?? '');
+            $editedUser->setRoles($model->getRoles());
+            $this->denyAccessUnlessGranted('edit', $editedUser);
+
             $recoveryToken = $this->manager->update($user, $model);
             $this->addFlash('success', 'admin.user.edit.success');
 
