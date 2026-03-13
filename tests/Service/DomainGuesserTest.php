@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Guesser;
+namespace App\Tests\Service;
 
 use App\Entity\Domain;
-use App\Guesser\DomainGuesser;
 use App\Repository\DomainRepository;
+use App\Service\DomainGuesser;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 

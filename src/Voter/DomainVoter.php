@@ -7,7 +7,7 @@ namespace App\Voter;
 use App\Entity\Alias;
 use App\Entity\User;
 use App\Enum\Roles;
-use App\Guesser\DomainGuesser;
+use App\Service\DomainGuesser;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Bundle\SecurityBundle\Security;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Guesser;
+namespace App\Service;
 
 use App\Entity\Domain;
 use App\Repository\DomainRepository;
