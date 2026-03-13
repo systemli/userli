@@ -11,6 +11,7 @@ use App\Validator\Lowercase;
 use App\Validator\PasswordPolicy;
 use App\Validator\UniqueField;
 use Override;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -28,6 +29,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 final class UserAdminType extends AbstractType
 {
+    public function __construct(
+        private readonly Security $security,
+    ) {
+    }
+
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -73,7 +79,8 @@ final class UserAdminType extends AbstractType
             ]),
         ]);
 
-        $availableRoles = Roles::getReachableRoles([Roles::ADMIN]);
+        $highestRole = $this->security->isGranted(Roles::ADMIN) ? [Roles::ADMIN] : [Roles::DOMAIN_ADMIN];
+        $availableRoles = Roles::getReachableRoles($highestRole);
         $availableRoleChoices = array_combine($availableRoles, $availableRoles) ?: [];
 
         $builder->add('roles', ChoiceType::class, [

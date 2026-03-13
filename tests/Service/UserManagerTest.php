@@ -18,6 +18,7 @@ use App\Service\SettingsService;
 use App\Service\UserManager;
 use App\Service\UserResetService;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
@@ -362,5 +363,114 @@ class UserManagerTest extends TestCase
         );
 
         $manager->delete($user);
+    }
+
+    public function testCreateWithAllowedRoles(): void
+    {
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->once())->method('persist');
+        $entityManager->expects($this->once())->method('flush');
+
+        $manager = new UserManager(
+            $entityManager,
+            $this->repository,
+            $this->passwordUpdater,
+            $this->mailCryptKeyHandler,
+            $this->settingsService,
+            $this->domainGuesser,
+            $this->userResetService,
+            $this->deleteHandler,
+        );
+
+        $model = new UserAdminModel();
+        $model->setEmail('user@example.org');
+        $model->setPlainPassword('securePassword123');
+        $model->setRoles([Roles::USER, Roles::PERMANENT]);
+
+        $user = $manager->create($model, [Roles::USER, Roles::PERMANENT]);
+
+        self::assertContains(Roles::USER, $user->getRoles());
+        self::assertContains(Roles::PERMANENT, $user->getRoles());
+    }
+
+    public function testCreateRejectsDisallowedRoles(): void
+    {
+        $model = new UserAdminModel();
+        $model->setEmail('admin@example.org');
+        $model->setPlainPassword('securePassword123');
+        $model->setRoles([Roles::ADMIN]);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Role "ROLE_ADMIN" is not allowed.');
+
+        $this->manager->create($model, [Roles::USER, Roles::PERMANENT]);
+    }
+
+    public function testCreateWithNullAllowedRolesSkipsValidation(): void
+    {
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->once())->method('persist');
+        $entityManager->expects($this->once())->method('flush');
+
+        $manager = new UserManager(
+            $entityManager,
+            $this->repository,
+            $this->passwordUpdater,
+            $this->mailCryptKeyHandler,
+            $this->settingsService,
+            $this->domainGuesser,
+            $this->userResetService,
+            $this->deleteHandler,
+        );
+
+        $model = new UserAdminModel();
+        $model->setEmail('admin@example.org');
+        $model->setPlainPassword('securePassword123');
+        $model->setRoles([Roles::ADMIN]);
+
+        $user = $manager->create($model);
+
+        self::assertContains(Roles::ADMIN, $user->getRoles());
+    }
+
+    public function testUpdateWithAllowedRoles(): void
+    {
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->once())->method('flush');
+
+        $manager = new UserManager(
+            $entityManager,
+            $this->repository,
+            $this->passwordUpdater,
+            $this->mailCryptKeyHandler,
+            $this->settingsService,
+            $this->domainGuesser,
+            $this->userResetService,
+            $this->deleteHandler,
+        );
+
+        $user = new User('user@example.org');
+
+        $model = new UserAdminModel();
+        $model->setRoles([Roles::USER, Roles::PERMANENT]);
+        $model->setTotpConfirmed(false);
+
+        $manager->update($user, $model, [Roles::USER, Roles::PERMANENT]);
+
+        self::assertSame([Roles::USER, Roles::PERMANENT], $user->getRoles());
+    }
+
+    public function testUpdateRejectsDisallowedRoles(): void
+    {
+        $user = new User('user@example.org');
+
+        $model = new UserAdminModel();
+        $model->setRoles([Roles::USER, Roles::ADMIN]);
+        $model->setTotpConfirmed(false);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Role "ROLE_ADMIN" is not allowed.');
+
+        $this->manager->update($user, $model, [Roles::USER, Roles::PERMANENT]);
     }
 }
