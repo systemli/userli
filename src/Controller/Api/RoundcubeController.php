@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Dto\RoundcubeUserAliasesDto;
-use App\Entity\Alias;
-use App\Entity\User;
 use App\Enum\ApiScope;
 use App\Handler\UserAuthenticationHandler;
+use App\Repository\AliasRepository;
+use App\Repository\UserRepository;
 use App\Security\RequireApiScope;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -21,8 +20,9 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 final class RoundcubeController extends AbstractController
 {
     public function __construct(
-        private readonly EntityManagerInterface $manager,
         private readonly UserAuthenticationHandler $userAuthenticationHandler,
+        private readonly AliasRepository $aliasRepository,
+        private readonly UserRepository $userRepository,
     ) {
     }
 
@@ -30,12 +30,12 @@ final class RoundcubeController extends AbstractController
     public function postUserAliases(
         #[MapRequestPayload] RoundcubeUserAliasesDto $data,
     ): Response {
-        $user = $this->manager->getRepository(User::class)->findByEmail($data->getEmail());
+        $user = $this->userRepository->findByEmail($data->getEmail());
         if (!$user || null === $this->userAuthenticationHandler->authenticate($user, $data->getPassword())) {
             throw new AuthenticationException('Bad credentials', 401);
         }
 
-        $aliases = $this->manager->getRepository(Alias::class)->findByUser($user);
+        $aliases = $this->aliasRepository->findByUser($user, random: false);
         $aliasSources = array_map(static fn ($alias) => $alias->getSource(), $aliases);
 
         return $this->json($aliasSources);

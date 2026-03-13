@@ -59,3 +59,17 @@ Feature: Roundcube API
             """
             []
             """
+
+    @aliases
+    Scenario: Random aliases are excluded from response
+        Given the following Alias exists:
+            | user_id | source                       | destination       | random |
+            | 2       | randomstring@example.org     | user2@example.org | 1      |
+        And I have a valid API token "roundcube-test-123"
+        When I send a POST request to "/api/roundcube/aliases" with form data:
+            | email    | user2@example.org |
+            | password | password          |
+        Then the response status code should equal 200
+        And the JSON response should contain "alias@example.org"
+        And the JSON response should contain "alias2@example.org"
+        And the JSON response should not contain "randomstring@example.org"
