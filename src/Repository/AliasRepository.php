@@ -136,20 +136,45 @@ final class AliasRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return array|Alias[]
+     * @return Alias[]
      */
-    public function findByUser(User $user, ?bool $random = null, ?bool $disableDomainFilter = false): array
+    public function findByUser(User $user, ?bool $random = null): array
+    {
+        $criteria = ['user' => $user, 'deleted' => false];
+
+        if (null !== $random) {
+            $criteria['random'] = $random;
+        }
+
+        return $this->findBy($criteria);
+    }
+
+    /**
+     * Find active aliases owned by the user across all domains.
+     *
+     * Temporarily disables the domain filter to include cross-domain aliases
+     * (e.g. aliases where the source domain differs from the user's domain).
+     * If the domain filter is not active (e.g. for API-authenticated requests
+     * where BeforeRequestListener does not enable it), this behaves identically
+     * to findByUser().
+     *
+     * @return Alias[]
+     */
+    public function findByUserAcrossDomains(User $user, ?bool $random = null): array
     {
         $filters = $this->getEntityManager()->getFilters();
+        $wasEnabled = $filters->isEnabled('domain_filter');
 
-        if ($filters->isEnabled('domain_filter') && $disableDomainFilter == true) {
+        if ($wasEnabled) {
             $filters->disable('domain_filter');
         }
 
-        if (isset($random)) {
-            return $this->findBy(['user' => $user, 'random' => $random, 'deleted' => false]);
+        try {
+            return $this->findByUser($user, $random);
+        } finally {
+            if ($wasEnabled) {
+                $filters->enable('domain_filter');
+            }
         }
-
-        return $this->findBy(['user' => $user, 'deleted' => false]);
     }
 }
