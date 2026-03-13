@@ -24,7 +24,7 @@ class OpenPgpKey
     private ?User $uploader = null;
 
     #[ORM\ManyToOne(targetEntity: Domain::class)]
-    #[ORM\JoinColumn(name: 'domain_id', onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(name: 'domain_id', nullable: false, onDelete: 'CASCADE')]
     private ?Domain $domain = null;
 
     #[ORM\Column(length: 32, nullable: true)]
@@ -45,7 +45,7 @@ class OpenPgpKey
         return $this->domain;
     }
 
-    public function setDomain(?Domain $domain): void
+    public function setDomain(Domain $domain): void
     {
         $this->domain = $domain;
     }

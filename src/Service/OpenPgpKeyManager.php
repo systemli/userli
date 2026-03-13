@@ -13,6 +13,7 @@ use App\Exception\NoGpgKeyForUserException;
 use App\Importer\GpgKeyImporter;
 use App\Repository\OpenPgpKeyRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use RuntimeException;
 use Tuupola\Base32;
 
 final readonly class OpenPgpKeyManager
@@ -72,6 +73,10 @@ final readonly class OpenPgpKeyManager
         $openPgpKey->setWkdHash(self::wkdHash($localPart));
 
         $domain = $this->domainGuesser->guess($openPgpKeyNew->getEmail());
+        if (null === $domain) {
+            throw new RuntimeException(sprintf('No matching domain found for email "%s"', $openPgpKeyNew->getEmail()));
+        }
+
         $openPgpKey->setDomain($domain);
 
         $this->em->persist($openPgpKey);

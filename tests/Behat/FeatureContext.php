@@ -789,6 +789,9 @@ class FeatureContext extends MinkContext
                 $openPgpKey->setWkdHash(OpenPgpKeyManager::wkdHash($localPart));
 
                 $domain = $this->domainGuesser->guess($openPgpKey->getEmail());
+                if (null === $domain) {
+                    throw new RuntimeException(sprintf('No matching domain found for email "%s"', $openPgpKey->getEmail()));
+                }
                 $openPgpKey->setDomain($domain);
             }
 

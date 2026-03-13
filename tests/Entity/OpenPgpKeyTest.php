@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Entity;
 
+use App\Entity\Domain;
 use App\Entity\OpenPgpKey;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
@@ -52,5 +53,23 @@ class OpenPgpKeyTest extends TestCase
         $key->setWkdHash('abc123');
 
         self::assertSame('abc123', $key->getWkdHash());
+    }
+
+    public function testGetDomainReturnsNullByDefault(): void
+    {
+        $key = new OpenPgpKey();
+
+        self::assertNull($key->getDomain());
+    }
+
+    public function testSetAndGetDomain(): void
+    {
+        $key = new OpenPgpKey();
+        $domain = new Domain();
+        $domain->setName('example.org');
+
+        $key->setDomain($domain);
+
+        self::assertSame($domain, $key->getDomain());
     }
 }

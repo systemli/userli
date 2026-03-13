@@ -17,7 +17,7 @@ final class Version20260313120000 extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE openpgp_keys ADD domain_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE openpgp_keys ADD CONSTRAINT FK_BAB4DF37115F0EE5 FOREIGN KEY (domain_id) REFERENCES domains (id) ON DELETE SET NULL');
+        $this->addSql('ALTER TABLE openpgp_keys ADD CONSTRAINT FK_BAB4DF37115F0EE5 FOREIGN KEY (domain_id) REFERENCES domains (id) ON DELETE CASCADE');
         $this->addSql('CREATE INDEX IDX_BAB4DF37115F0EE5 ON openpgp_keys (domain_id)');
     }
 
@@ -26,6 +26,16 @@ final class Version20260313120000 extends AbstractMigration
         // Populate domain_id from the email column for existing keys
         $this->connection->executeStatement(
             'UPDATE openpgp_keys SET domain_id = (SELECT d.id FROM domains d WHERE d.name = SUBSTRING(openpgp_keys.email, LOCATE(\'@\', openpgp_keys.email) + 1)) WHERE domain_id IS NULL'
+        );
+
+        // Remove orphaned keys that have no matching domain
+        $this->connection->executeStatement(
+            'DELETE FROM openpgp_keys WHERE domain_id IS NULL'
+        );
+
+        // Make domain_id non-nullable now that all rows have a value
+        $this->connection->executeStatement(
+            'ALTER TABLE openpgp_keys MODIFY domain_id INT NOT NULL'
         );
     }
 

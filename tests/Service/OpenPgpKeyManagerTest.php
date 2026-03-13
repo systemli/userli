@@ -14,6 +14,7 @@ use App\Service\OpenPgpKeyManager;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 class OpenPgpKeyManagerTest extends TestCase
 {
@@ -231,5 +232,23 @@ class OpenPgpKeyManagerTest extends TestCase
     public function testWkdHash(): void
     {
         self::assertEquals('kei1q4tipxxu1yj79k9kfukdhfy631xe', OpenPgpKeyManager::wkdHash('alice'));
+    }
+
+    public function testImportKeyThrowsExceptionForUnknownDomain(): void
+    {
+        $repository = $this->createStub(OpenPgpKeyRepository::class);
+        $repository->method('findByEmail')->willReturn(null);
+
+        $em = $this->createStub(EntityManagerInterface::class);
+
+        $domainGuesser = $this->createStub(DomainGuesser::class);
+        $domainGuesser->method('guess')->willReturn(null);
+
+        $manager = new OpenPgpKeyManager($em, $repository, $domainGuesser);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('No matching domain found for email "alice@example.org"');
+
+        $manager->importKey(base64_decode($this->keyData), $this->email);
     }
 }
