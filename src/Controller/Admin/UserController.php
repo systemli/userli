@@ -73,7 +73,9 @@ final class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->manager->create($model);
+            $this->denyAccessUnlessGrantedForRoles($model->getRoles());
+
+            $this->manager->create($model, $this->getAllowedRoles());
             $this->addFlash('success', 'admin.user.create.success');
 
             return $this->redirectToRoute('admin_user_index');
@@ -90,6 +92,8 @@ final class UserController extends AbstractController
         if ($user->isDeleted()) {
             throw $this->createNotFoundException();
         }
+
+        $this->denyAccessUnlessGrantedForAdminUser($user);
 
         $model = UserAdminModel::fromUser($user);
 
@@ -114,6 +118,8 @@ final class UserController extends AbstractController
             throw $this->createNotFoundException();
         }
 
+        $this->denyAccessUnlessGrantedForAdminUser($user);
+
         $model = new UserAdminModel();
         $form = $this->createForm(UserAdminType::class, $model, [
             'is_edit' => true,
@@ -124,7 +130,9 @@ final class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $recoveryToken = $this->manager->update($user, $model);
+            $this->denyAccessUnlessGrantedForRoles($model->getRoles());
+
+            $recoveryToken = $this->manager->update($user, $model, $this->getAllowedRoles());
             $this->addFlash('success', 'admin.user.edit.success');
 
             if (null !== $recoveryToken) {
@@ -151,9 +159,46 @@ final class UserController extends AbstractController
             return $this->redirectToRoute('admin_user_index');
         }
 
+        $this->denyAccessUnlessGrantedForAdminUser($user);
+
         $this->manager->delete($user);
         $this->addFlash('success', 'admin.user.delete.success');
 
         return $this->redirectToRoute('admin_user_index');
+    }
+
+    /**
+     * Deny access if the current user is not a full admin and the target user has admin role.
+     */
+    private function denyAccessUnlessGrantedForAdminUser(User $user): void
+    {
+        if ($user->hasRole(Roles::ADMIN) && !$this->isGranted(Roles::ADMIN)) {
+            throw $this->createAccessDeniedException('Domain admins cannot manage admin users.');
+        }
+    }
+
+    /**
+     * Deny access if the submitted roles contain any role not reachable by the current user.
+     *
+     * @param string[] $roles
+     */
+    private function denyAccessUnlessGrantedForRoles(array $roles): void
+    {
+        $allowedRoles = $this->getAllowedRoles();
+        foreach ($roles as $role) {
+            if (!in_array($role, $allowedRoles, true)) {
+                throw $this->createAccessDeniedException(sprintf('You are not allowed to assign the role "%s".', $role));
+            }
+        }
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getAllowedRoles(): array
+    {
+        $highestRole = $this->isGranted(Roles::ADMIN) ? [Roles::ADMIN] : [Roles::DOMAIN_ADMIN];
+
+        return Roles::getReachableRoles($highestRole);
     }
 }

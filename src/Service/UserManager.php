@@ -14,6 +14,7 @@ use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 
 final readonly class UserManager
 {
@@ -49,8 +50,10 @@ final readonly class UserManager
 
     /**
      * Create a new user from the admin form model.
+     *
+     * @param string[]|null $allowedRoles If set, only these roles may be assigned
      */
-    public function create(UserAdminModel $model): User
+    public function create(UserAdminModel $model, ?array $allowedRoles = null): User
     {
         $user = new User($model->getEmail() ?? '');
 
@@ -58,6 +61,8 @@ final readonly class UserManager
         if (!in_array(Roles::USER, $roles, true)) {
             $roles[] = Roles::USER;
         }
+
+        $this->assertRolesAllowed($roles, $allowedRoles);
 
         $user->setRoles($roles);
 
@@ -87,10 +92,14 @@ final readonly class UserManager
      *
      * Returns a recovery token string if the password was changed and MailCrypt is active,
      * or null otherwise.
+     *
+     * @param string[]|null $allowedRoles If set, only these roles may be assigned
      */
-    public function update(User $user, UserAdminModel $model): ?string
+    public function update(User $user, UserAdminModel $model, ?array $allowedRoles = null): ?string
     {
         $recoveryToken = null;
+
+        $this->assertRolesAllowed($model->getRoles(), $allowedRoles);
 
         $user->setRoles($model->getRoles());
         $user->setQuota($model->getQuota());
@@ -126,5 +135,26 @@ final readonly class UserManager
     public function delete(User $user): void
     {
         $this->deleteHandler->deleteUser($user);
+    }
+
+    /**
+     * Validate that all given roles are within the allowed set.
+     *
+     * @param string[]      $roles        Roles to validate
+     * @param string[]|null $allowedRoles Allowed roles (null = no restriction)
+     *
+     * @throws InvalidArgumentException if a disallowed role is found
+     */
+    private function assertRolesAllowed(array $roles, ?array $allowedRoles): void
+    {
+        if (null === $allowedRoles) {
+            return;
+        }
+
+        foreach ($roles as $role) {
+            if (!in_array($role, $allowedRoles, true)) {
+                throw new InvalidArgumentException(sprintf('Role "%s" is not allowed.', $role));
+            }
+        }
     }
 }
