@@ -1,100 +1,115 @@
 # AI Contribution Guidelines
 
-## Project Overview
+**Generated:** 2026-03-13
+**Commit:** b7aba4ad
+**Branch:** main
 
-Userli is a Symfony-based web application for self-managing email users with mailbox encryption support (Dovecot).
+## Overview
 
-- **Backend:** Symfony, Doctrine ORM, Twig, Monolog
-- **Frontend:** Symfony UX, TailwindCSS, Heroicons
-- **Admin:** Sonata Admin (`src/Admin/`)
-- **Testing:** PHPUnit, Behat
-- **Dev environment:** Podman and Docker (prefer Podman)
+Userli — Symfony 7.4 web app for self-managing email users with Dovecot mailbox encryption. PHP 8.4, Doctrine ORM, TailwindCSS, Sonata Admin.
 
-## Architecture Overview
+## Structure
 
-### Entities (`src/Entity/`)
+```
+userli/
+├── src/                    # Application code (see src/AGENTS.md)
+│   ├── Controller/         # HTTP layer (see src/Controller/AGENTS.md)
+│   ├── Entity/             # 11 Doctrine entities, trait-composed
+│   ├── Form/               # Symfony forms + models (see src/Form/AGENTS.md)
+│   ├── Handler/            # Business logic operations
+│   ├── Service/            # Managers + domain services
+│   ├── EventListener/      # Symfony event listeners
+│   ├── Message/            # Messenger messages (async)
+│   ├── MessageHandler/     # Messenger handlers (1:1 with messages)
+│   ├── Command/            # 18 console commands
+│   ├── Validator/          # Custom constraint + validator pairs
+│   ├── Traits/             # 27 reusable entity traits
+│   ├── Enum/               # PHP enums (roles, scopes, cache keys)
+│   └── Security/           # Authenticator, provider, voter
+├── templates/              # Twig templates (see templates/AGENTS.md)
+├── config/                 # Symfony config, routes, settings.yaml
+├── tests/                  # Tests mirror src/ (see tests/AGENTS.md)
+├── features/               # 30 Behat feature files
+├── assets/                 # Stimulus controllers, TailwindCSS, JS
+├── default_translations/   # EN/DE manual, others via Weblate
+├── migrations/             # 15 Doctrine migrations
+└── docs/                   # MkDocs documentation site
+```
 
-- `User`: Email account with roles, 2FA, and mailbox encryption
-- `Domain`: Email domains with admins
-- `Alias`: Email aliases pointing to users
+## Where to Look
+
+| Task | Location | Notes |
+|------|----------|-------|
+| Add user-facing feature | `src/Controller/`, `src/Form/`, `templates/` | GET/POST split pattern |
+| Add admin feature | `src/Controller/Admin/` | Role-gated, Twig admin templates |
+| Add API endpoint | `src/Controller/Api/` | Token auth, scope-based |
+| Business logic | `src/Handler/` or `src/Service/` | Handlers = operations, Services = managers |
+| Background job | `src/Message/` + `src/MessageHandler/` | Always paired 1:1 |
+| Scheduled task | `src/Schedule/MaintenanceSchedule.php` | Symfony Scheduler |
+| Custom validation | `src/Validator/` | Constraint + Validator pair |
+| Entity change | `src/Entity/` + `src/Traits/` | Entities compose many traits |
+| Cache invalidation | `src/EntityListener/` | Doctrine lifecycle listeners |
+| Domain events | `src/Event/` + `src/EventListener/` | Dispatched via EventDispatcher |
+| Email templates | `templates/Email/` | Twig email templates |
+| Settings/config | `config/settings.yaml` | Dynamic settings schema |
+| Translations | `default_translations/` | EN + DE only, `|trans` filter |
+
+## Entities
+
+- `User`: Email account — roles, 2FA (TOTP + backup codes), mailbox encryption, composed of 27 traits
+- `Domain`: Email domains with admin relationships
+- `Alias`: Email aliases → users (random + custom)
 - `Voucher`: Invite codes for registration (users get 3 after one week)
-- `Setting`: Global settings, see `config/settings.yaml`
-- `ReservedName`: Reserved email prefixes
-- `OpenPgpKey`: OpenPGP public keys for WKD
-- `ApiToken`: API authentication tokens with scopes
-- `WebhookEndpoint`: Webhook target URLs with secrets
-- `WebhookDelivery`: Webhook delivery log entries
-- `UserNotification`: Admin notifications shown to users
+- `Setting`: Global settings persisted to DB, schema in `config/settings.yaml`
+- `ReservedName`: Reserved email prefixes (blocked from registration)
+- `OpenPgpKey`: OpenPGP public keys for WKD (Web Key Directory)
+- `ApiToken`: API auth tokens with `ApiScope` enum scopes
+- `WebhookEndpoint` / `WebhookDelivery`: Webhook targets + delivery log
+- `UserNotification`: Admin-created notifications shown to users
 
-### Key Patterns
-
-- **Controllers** (`src/Controller/`): Separate GET/POST into distinct methods with explicit HTTP method constraints. See `RegistrationController` as canonical example.
-- **Forms** (`src/Form/`): Symfony forms with dedicated models in `src/Form/Model/`. Never bind entities directly to forms.
-- **Handlers** (`src/Handler/`): Business logic (e.g. `RegistrationHandler`, `MailCryptKeyHandler`)
-- **Services** (`src/Service/`): Business logic (e.g. `UserResetService`, `WebhookDispatcher`)
-- **Events** (`src/Event/`): Domain events dispatched via `EventDispatcherInterface` (e.g. `UserEvent::USER_CREATED`)
-- **Enums** (`src/Enum/`): PHP enums for roles, webhook events, etc.
-- **MessageHandlers** (`src/MessageHandler/`): Symfony Messenger handlers for async processing
-- **Admin** (`src/Admin/`): Sonata Admin classes for backend management
-
-### Roles (`src/Enum/Roles.php`)
+## Roles (`src/Enum/Roles.php`)
 
 `ROLE_USER`, `ROLE_ADMIN`, `ROLE_DOMAIN_ADMIN`, `ROLE_SUSPICIOUS`, `ROLE_SPAM`, `ROLE_PERMANENT`, `ROLE_MULTIPLIER`
 
-## Project Structure
+## Conventions
 
-- `src/` - Application code (Controllers, Entities, Repositories, Handlers, Services, etc.)
-- `templates/` - Twig templates
-- `config/` - Configuration files (services, routes, packages, `settings.yaml`)
-- `public/` - Publicly accessible files (entry point, assets)
-- `default_translations/` - Translation files (EN and DE managed manually; other languages automated via Weblate)
-- `tests/` - Unit tests (mirrors `src/` structure)
-- `features/` - Behat feature files for functional testing
-- `docs/` - Documentation (MkDocs with Material theme)
-- `Dockerfile` & `docker-compose.yml` - Containerization and development environment
+- **Controller GET/POST split**: Separate methods with explicit `#[Route(methods: ['GET'])]` / `#[Route(methods: ['POST'])]`. `RegistrationController` is canonical example.
+- **Form models**: NEVER bind entities to forms. Use dedicated models in `src/Form/Model/`.
+- **Environment variables**: Inject via `#[Autowire(env: 'VAR_NAME')]` in constructors.
+- **Coding style**: PHP CS Fixer + Rector + Psalm enforced. Run `composer cs-fix && composer rector-fix && composer psalm`.
+- **Translations**: All user-facing text uses `|trans` filter with keys from `default_translations/`. EN/DE managed manually.
+- **Commit messages**: Gitmoji prefix, English language.
+- **PRs**: Open as draft, English description with goal/improvement summary.
 
-## Template Architecture
+## Anti-Patterns (This Project)
 
-Three base templates in `templates/`:
-
-- `base.html.twig`: Root layout with dark mode, assets, navbar
-- `base_page.html.twig`: Full pages -- use blocks `page_title`, `page_subtitle`, `page_content`
-- `base_step.html.twig`: Multi-step flows (registration, recovery) -- use blocks `step_icon`, `step_title`, `step_description`, `step_content`, `step_footer`
-
-**Styling:** Tailwind CSS utility classes, Heroicons via `{{ ux_icon('heroicons:...') }}`. Form theme at `templates/Form/fields.html.twig`.
-
-**Conventions:** Responsive mobile-first design, accessibility (ARIA attributes, semantic HTML), dark mode support.
+- **NEVER** use `|raw` for user-supplied data in Twig — use `|safe_html` filter (`src/Twig/SafeHtmlExtension.php`)
+- **NEVER** set `innerHTML` without `sanitizeHTML()` (`assets/js/app.js`)
+- **NEVER** bind entities directly to Symfony forms — always use `src/Form/Model/`
+- **NEVER** suppress type errors (`@ts-ignore`, `as any`, psalm suppression)
+- **NEVER** create Message without matching MessageHandler (always paired 1:1)
 
 ## Security
 
-- Use the `|safe_html` Twig filter (`src/Twig/SafeHtmlExtension.php`) for user content -- never use `|raw` for user-supplied data
-- In JavaScript, use `sanitizeHTML()` (`assets/js/app.js`) before setting `innerHTML`
-- Follow secure coding practices to prevent XSS, CSRF, injections, and auth bypasses
+- API auth: `ApiTokenAuthenticator` with scope-based access (`ApiScope` enum, `RequireApiScope` attribute)
+- User checks: `UserChecker` validates account status before auth
+- Voters: `AliasVoter`, `DomainVoter` for resource-level auth
+- Twig: `|safe_html` filter for user content, never `|raw`
+- JS: `sanitizeHTML()` before `innerHTML`
+- CSRF: Symfony CSRF protection on all forms
 
-## PHP Conventions
+## Frontend
 
-Coding style is enforced by PHP CS Fixer, Rector, and Psalm. Use the commands below to format and check code. Additional conventions not covered by tooling:
-
-- Inject environment variables via `#[Autowire(env: 'VAR_NAME')]` in constructors
-- Use form models in `src/Form/Model/` instead of binding entities directly to forms
-
-## Testing
-
-- **PHPUnit** for unit tests, **Behat** for functional and behavior-driven scenarios
-- **Vitest** for Stimulus controller and JS/TS utility unit tests in `tests/js/`
-- Use `self::assert*` for assertions
-- Use `$this->createMock(HttpClientInterface::class)` for HTTP client mocking
-- All user-facing text must use the `|trans` filter with keys from `default_translations/`
-
-## Contributing
-
-- **Commits:** Use [Gitmojis](https://gitmoji.dev/) and write messages in English
-- **Pull Requests:** Open as draft. Write the description in English with a summary of what was done and why (goal, improvement, feature, bug fix, etc.)
+- **TailwindCSS** for styling, Webpack Encore for bundling
+- **Stimulus controllers** in `assets/controllers/` (TypeScript)
+- **Heroicons** via `{{ ux_icon('heroicons:icon-name') }}`
+- **Vitest** for JS/TS unit tests in `tests/js/`
+- Mobile-first responsive, dark mode support, ARIA accessibility
 
 ## Commands
 
 ```bash
-# Development environment
+# Dev environment (prefer Podman)
 podman compose up -d
 podman compose exec -it userli <command>
 
@@ -105,18 +120,38 @@ yarn install
 # Assets
 yarn encore dev
 
-# Database fixtures
+# Database
 bin/console doctrine:fixtures:load
 
-# Code quality (w/o podman)
-composer cs-fix          # Fix code style (PHP CS Fixer)
-composer cs-check        # Check code style (dry-run)
-composer rector-fix      # Apply Rector refactorings
-composer rector-check    # Check Rector (dry-run)
-composer psalm           # Run Psalm static analysis
+# Code quality
+composer cs-fix          # PHP CS Fixer
+composer cs-check        # Dry-run
+composer rector-fix      # Rector refactorings
+composer rector-check    # Dry-run
+composer psalm           # Static analysis
 
-# Tests (w/o podman)
+# Tests
 bin/phpunit                    # Unit tests
-bin/behat --format progress    # Functional / BDD scenarios
-yarn test                      # Stimulus controller & JS/TS unit tests
+bin/behat --format progress    # Behat scenarios
+yarn test                      # JS/TS unit tests
 ```
+
+## CI/CD
+
+9 GitHub Actions workflows:
+- `integration.yml` — PHPUnit + Behat + code quality
+- `security-check.yml` — Dependency vulnerability scan
+- `codeql.yml` — CodeQL static analysis
+- `psalm.yml` — Psalm type checking
+- `rector.yml` — Rector dry-run
+- `migrations.yml` — Database migration validation
+- `mailcrypt.yml` — Mailbox encryption integration tests
+- `composer-update.yml` — Automated dependency updates
+- `mkdocs.yml` — Documentation build
+
+## Notes
+
+- `config/reference.php` (2179 lines) — largest file, auto-generated settings reference
+- `tests/Behat/FeatureContext.php` (1132 lines) — monolithic Behat context, main BDD entry point
+- Docker Compose uses MariaDB + Postfix for full email stack testing
+- `dg/bypass-finals` in dev deps — allows mocking final classes in tests
