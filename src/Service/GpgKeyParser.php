@@ -63,7 +63,7 @@ class GpgKeyParser
             throw new GpgKeyParserException('Failed to read keys: '.$cryptGPGException->getMessage());
         }
 
-        if (count($keys) < 1) {
+        if (empty($keys)) {
             throw new NoGpgKeyForUserException(sprintf('No key found for %s', $email));
         }
 
