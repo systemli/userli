@@ -31,15 +31,15 @@
                     route: 'admin_alias_index',
                 } %}
 
-                {% include 'Admin/Dashboard/_stat_card.html.twig' with {
-                    icon: 'heroicons:globe-alt',
-                    icon_color: 'purple',
-                    label_key: 'admin.dashboard.stats.domains',
-                    value: stats.domains,
-                    route: is_granted('ROLE_ADMIN') ? 'admin_domain_index' : null,
-                } %}
-
                 {% if is_granted('ROLE_ADMIN') %}
+                    {% include 'Admin/Dashboard/_stat_card.html.twig' with {
+                        icon: 'heroicons:globe-alt',
+                        icon_color: 'purple',
+                        label_key: 'admin.dashboard.stats.domains',
+                        value: stats.domains,
+                        route: 'admin_domain_index',
+                    } %}
+
                     {% include 'Admin/Dashboard/_stat_card.html.twig' with {
                         icon: 'heroicons:ticket',
                         icon_color: 'amber',

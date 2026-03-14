@@ -31,11 +31,11 @@ final class DashboardController extends AbstractController
         $stats = [
             'users' => $this->userRepository->countUsers(),
             'aliases' => $this->aliasRepository->countByFilters(),
-            'domains' => $this->domainRepository->countBySearch(),
             'openpgp_keys' => $this->openPgpKeyRepository->countKeys(),
         ];
 
         if ($this->isGranted(Roles::ADMIN)) {
+            $stats['domains'] = $this->domainRepository->countBySearch();
             $stats['vouchers_redeemed'] = $this->voucherRepository->countRedeemedVouchers();
             $stats['vouchers_unredeemed'] = $this->voucherRepository->countUnredeemedVouchers();
         }

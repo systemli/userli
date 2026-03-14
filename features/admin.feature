@@ -25,6 +25,12 @@ Feature: Admin
     And I am on "/admin/"
     Then the response status code should be 200
     And I should see "Dashboard"
+    And I should see "Users"
+    And I should see "Aliases"
+    And I should see "Domains"
+    And I should see "OpenPGP Keys"
+    And I should see "Vouchers redeemed"
+    And I should see "Vouchers unredeemed"
 
   @admin
   Scenario: Domain admin can access admin dashboard
@@ -32,6 +38,12 @@ Feature: Admin
     And I am on "/admin/"
     Then the response status code should be 200
     And I should see "Dashboard"
+    And I should see "Users"
+    And I should see "Aliases"
+    And I should see "OpenPGP Keys"
+    And I should not see "Domains"
+    And I should not see "Vouchers redeemed"
+    And I should not see "Vouchers unredeemed"
 
   @admin
   Scenario: Domain admin cannot access admin-only pages
