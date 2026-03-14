@@ -14,25 +14,24 @@ Userli — Symfony 7.4 web app for self-managing email users with Dovecot mailbo
 userli/
 ├── src/                    # Application code (see src/AGENTS.md)
 │   ├── Controller/         # HTTP layer (see src/Controller/AGENTS.md)
-│   ├── Entity/             # 11 Doctrine entities, trait-composed
+│   ├── Entity/             # Doctrine entities, trait-composed
 │   ├── Form/               # Symfony forms + models (see src/Form/AGENTS.md)
-│   ├── Handler/            # Business logic operations
-│   ├── Service/            # Managers + domain services
+│   ├── Service/            # Business logic, managers + domain services
 │   ├── EventListener/      # Symfony event listeners
 │   ├── Message/            # Messenger messages (async)
 │   ├── MessageHandler/     # Messenger handlers (1:1 with messages)
-│   ├── Command/            # 18 console commands
+│   ├── Command/            # Console commands
 │   ├── Validator/          # Custom constraint + validator pairs
-│   ├── Traits/             # 27 reusable entity traits
+│   ├── Traits/             # Entity composition traits
 │   ├── Enum/               # PHP enums (roles, scopes, cache keys)
 │   └── Security/           # Authenticator, provider, voter
 ├── templates/              # Twig templates (see templates/AGENTS.md)
 ├── config/                 # Symfony config, routes, settings.yaml
 ├── tests/                  # Tests mirror src/ (see tests/AGENTS.md)
-├── features/               # 30 Behat feature files
+├── features/               # Behat feature files
 ├── assets/                 # Stimulus controllers, TailwindCSS, JS
 ├── default_translations/   # EN/DE manual, others via Weblate
-├── migrations/             # 15 Doctrine migrations
+├── migrations/             # Doctrine migrations
 └── docs/                   # MkDocs documentation site
 ```
 
@@ -43,11 +42,11 @@ userli/
 | Add user-facing feature | `src/Controller/`, `src/Form/`, `templates/` | GET/POST split pattern |
 | Add admin feature | `src/Controller/Admin/` | Role-gated, Twig admin templates |
 | Add API endpoint | `src/Controller/Api/` | Token auth, scope-based |
-| Business logic | `src/Handler/` or `src/Service/` | Handlers = operations, Services = managers |
+| Business logic | `src/Service/` | Primary location for business logic |
 | Background job | `src/Message/` + `src/MessageHandler/` | Always paired 1:1 |
 | Scheduled task | `src/Schedule/MaintenanceSchedule.php` | Symfony Scheduler |
 | Custom validation | `src/Validator/` | Constraint + Validator pair |
-| Entity change | `src/Entity/` + `src/Traits/` | Entities compose many traits |
+| Entity change | `src/Entity/` + `src/Traits/` | Entities compose traits |
 | Cache invalidation | `src/EntityListener/` | Doctrine lifecycle listeners |
 | Domain events | `src/Event/` + `src/EventListener/` | Dispatched via EventDispatcher |
 | Email templates | `templates/Email/` | Twig email templates |
@@ -56,7 +55,7 @@ userli/
 
 ## Entities
 
-- `User`: Email account — roles, 2FA (TOTP + backup codes), mailbox encryption, composed of 27 traits
+- `User`: Email account — roles, 2FA (TOTP + backup codes), mailbox encryption, composed of traits
 - `Domain`: Email domains with admin relationships
 - `Alias`: Email aliases → users (random + custom)
 - `Voucher`: Invite codes for registration (users get 3 after one week)
@@ -151,7 +150,7 @@ yarn test                      # JS/TS unit tests
 
 ## Notes
 
-- `config/reference.php` (2179 lines) — largest file, auto-generated settings reference
-- `tests/Behat/FeatureContext.php` (1132 lines) — monolithic Behat context, main BDD entry point
+- `config/reference.php` — largest file, auto-generated settings reference
+- `tests/Behat/FeatureContext.php` — monolithic Behat context, main BDD entry point
 - Docker Compose uses MariaDB + Postfix for full email stack testing
 - `dg/bypass-finals` in dev deps — allows mocking final classes in tests

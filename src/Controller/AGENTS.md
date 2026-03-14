@@ -1,18 +1,18 @@
 # src/Controller/ — HTTP Layer
 
-32 files across 3 subdirectories + 5 root controllers.
+Three subdirectories + root controllers.
 
 ## Structure
 
 ```
 Controller/
-├── Account/              # Authenticated user self-service (5 controllers)
+├── Account/              # Authenticated user self-service
 │   ├── AccountController.php     # Password change, recovery token, delete account
 │   ├── AliasController.php       # Custom + random alias management
 │   ├── OpenPGPController.php     # OpenPGP key upload/delete
 │   ├── TwofactorController.php   # TOTP setup + backup codes
 │   └── VoucherController.php     # View/create invite vouchers
-├── Admin/                # Admin panel (15 controllers)
+├── Admin/                # Admin panel
 │   ├── DashboardController.php   # Admin dashboard
 │   ├── UserController.php        # User CRUD
 │   ├── DomainController.php      # Domain management
@@ -20,7 +20,7 @@ Controller/
 │   ├── SettingsController.php    # Global settings editor
 │   ├── MaintenanceController.php # Maintenance operations
 │   └── ...                       # Voucher, ApiToken, Webhook, ReservedName, etc.
-├── Api/                  # API endpoints (7 controllers)
+├── Api/                  # API endpoints
 │   ├── DovecotController.php     # Dovecot mailbox auth + encryption
 │   ├── PostfixController.php     # Postfix mail routing
 │   ├── KeycloakController.php    # Keycloak SSO integration
@@ -48,14 +48,14 @@ public function submit(Request $request): Response { /* handle submission */ }
 ```
 
 - GET method: Creates form, renders template
-- POST method: Handles request, validates, delegates to Handler
+- POST method: Handles request, validates, delegates to Service
 - Separate route names: `*_show` / `*_submit` or similar
 
 ## Controller Conventions
 
 - Controllers are `final` classes extending `AbstractController`
 - Constructor injection via `readonly` promoted properties
-- Business logic delegated to `Handler/` — controllers only coordinate
+- Business logic delegated to `Service/` — controllers only coordinate
 - Flash messages use translation keys: `$this->addFlash('error', 'flashes.voucher-invalid')`
 - Forms created with `$this->createForm()`, specify `action` and `method` in options
 

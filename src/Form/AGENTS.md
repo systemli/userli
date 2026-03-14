@@ -1,12 +1,10 @@
 # src/Form/ — Forms and Models
 
-50 files: 30 form types + 18 form models + 2 data transformers.
-
 ## Structure
 
 ```
 Form/
-├── Model/                  # Form DTOs (18 files) — NEVER use entities
+├── Model/                  # Form DTOs — NEVER use entities
 │   ├── Registration.php    # Registration flow data
 │   ├── Password.php        # Password change
 │   ├── AliasCreate.php     # Alias creation
@@ -18,7 +16,7 @@ Form/
 ├── PasswordType.php        # Password input with constraints
 ├── SettingsType.php        # Dynamic global settings form
 ├── UserAdminType.php       # Admin user edit form
-└── ...                     # 26 more form types
+└── ...                     # Additional form types
 ```
 
 ## Entity-Form Separation (MANDATORY)
@@ -34,7 +32,7 @@ $form = $this->createForm(RegistrationType::class, $registration);
 $form = $this->createForm(UserType::class, $user);  // Entity bound to form
 ```
 
-Form models are plain PHP classes with getters/setters + validation attributes. After form submission, data is transferred from model to entity in the Handler.
+Form models are plain PHP classes with getters/setters + validation attributes. After form submission, data is transferred from model to entity in the Service.
 
 ## Form Type Conventions
 

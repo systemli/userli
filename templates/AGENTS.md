@@ -1,7 +1,5 @@
 # templates/ — Twig Templates
 
-85 templates across 12 subdirectories.
-
 ## Base Template Hierarchy
 
 Three base templates — every page extends one:
@@ -21,20 +19,20 @@ base.html.twig              # Root: HTML shell, dark mode, assets, navbar, flash
 
 ## Directory Map
 
-| Directory | Templates | Purpose |
-|-----------|-----------|---------|
-| `Account/` | 14 | User self-service pages (password, aliases, 2FA, OpenPGP) |
-| `Admin/` | 11 | Admin panel (users, domains, settings, maintenance) |
-| `Alias/` | - | Alias management partials |
-| `Email/` | - | Email notification templates |
-| `Form/` | 1 | `fields.html.twig` — global Symfony form theme |
-| `Init/` | - | First-run setup |
-| `Recovery/` | - | Account recovery flow |
-| `Registration/` | - | Registration multi-step |
-| `Security/` | - | Login page |
-| `Start/` | - | Landing/index page |
-| `Voucher/` | - | Invite code pages |
-| `bundles/` | - | Bundle template overrides |
+| Directory | Purpose |
+|-----------|---------|
+| `Account/` | User self-service pages (password, aliases, 2FA, OpenPGP) |
+| `Admin/` | Admin panel (users, domains, settings, maintenance) |
+| `Alias/` | Alias management partials |
+| `Email/` | Email notification templates |
+| `Form/` | `fields.html.twig` — global Symfony form theme |
+| `Init/` | First-run setup |
+| `Recovery/` | Account recovery flow |
+| `Registration/` | Registration multi-step |
+| `Security/` | Login page |
+| `Start/` | Landing/index page |
+| `Voucher/` | Invite code pages |
+| `bundles/` | Bundle template overrides |
 
 ## Shared Partials (root level)
 
