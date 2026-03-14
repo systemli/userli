@@ -8,6 +8,7 @@ use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
+use App\Form\Model\UserAdminModel;
 use App\Service\DomainGuesser;
 use Override;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -16,7 +17,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * @extends Voter<string, User>
+ * @extends Voter<string, User|UserAdminModel|Alias>
  */
 final class DomainVoter extends Voter
 {
@@ -43,7 +44,15 @@ final class DomainVoter extends Voter
             return false;
         }
 
-        if ($attribute === self::CREATE || $attribute === self::DELETE) {
+        if ($attribute === self::CREATE) {
+            return $subject instanceof User || $subject instanceof UserAdminModel;
+        }
+
+        if ($attribute === self::EDIT) {
+            return $subject instanceof User || $subject instanceof UserAdminModel || $subject instanceof Alias;
+        }
+
+        if ($attribute === self::DELETE) {
             return $subject instanceof User;
         }
 
@@ -68,6 +77,10 @@ final class DomainVoter extends Voter
             return false;
         }
 
+        if ($subject instanceof UserAdminModel && in_array(Roles::ADMIN, $subject->getRoles(), true)) {
+            return false;
+        }
+
         $currentUser = $token->getUser();
         if (!$currentUser instanceof User) {
             return false;
@@ -81,6 +94,10 @@ final class DomainVoter extends Voter
 
         if ($subject instanceof User) {
             return $this->voteOnUser($attribute, $subject, $currentDomain);
+        }
+
+        if ($subject instanceof UserAdminModel) {
+            return $this->voteOnUserAdminModel($subject, $currentDomain);
         }
 
         if ($subject instanceof Alias) {
@@ -97,6 +114,11 @@ final class DomainVoter extends Voter
             self::CREATE, self::EDIT => $currentDomain === $this->domainGuesser->guess($user->getEmail()),
             default => false,
         };
+    }
+
+    private function voteOnUserAdminModel(UserAdminModel $model, Domain $currentDomain): bool
+    {
+        return $currentDomain === $this->domainGuesser->guess($model->getEmail());
     }
 
     private function voteOnAlias(string $attribute, Alias $alias, Domain $currentDomain): bool
