@@ -13,7 +13,7 @@
     "@babel/preset-env": "^7.29.0",
     "@hotwired/stimulus": "^3.0.0",
     "@symfony/stimulus-bridge": "^4.0.1",
-    "@symfony/webpack-encore": "^6.0.0",
+    "@symfony/webpack-encore": "^5.3.1",
     "@tailwindcss/postcss": "^4.2.1",
     "@vitest/coverage-v8": "^4.0.18",
     "copy-webpack-plugin": "^14.0.0",
@@ -34,7 +34,6 @@
     "@zxcvbn-ts/core": "^3.0.4",
     "@zxcvbn-ts/language-common": "^3.0.4",
     "@zxcvbn-ts/language-de": "^3.0.2",
-    "@zxcvbn-ts/language-en": "^3.0.2",
-    "css-minimizer-webpack-plugin": "^8.0.0"
+    "@zxcvbn-ts/language-en": "^3.0.2"
   }
 }
