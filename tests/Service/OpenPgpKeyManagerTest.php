@@ -10,6 +10,7 @@ use App\Entity\OpenPgpKey;
 use App\Entity\User;
 use App\Repository\OpenPgpKeyRepository;
 use App\Service\DomainGuesser;
+use App\Service\GpgKeyImporter;
 use App\Service\OpenPgpKeyManager;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,7 +40,11 @@ class OpenPgpKeyManagerTest extends TestCase
         $domainGuesser = $this->createStub(DomainGuesser::class);
         $domainGuesser->method('guess')->willReturn($domain);
 
-        return new OpenPgpKeyManager($em, $repository, $domainGuesser);
+        $importedKey = $this->createExistingKey();
+        $gpgKeyImporter = $this->createStub(GpgKeyImporter::class);
+        $gpgKeyImporter->method('import')->willReturn($importedKey);
+
+        return new OpenPgpKeyManager($em, $repository, $domainGuesser, $gpgKeyImporter);
     }
 
     private function createExistingKey(): OpenPgpKey
@@ -68,7 +73,8 @@ class OpenPgpKeyManagerTest extends TestCase
 
         $em = $this->createStub(EntityManagerInterface::class);
         $domainGuesser = $this->createStub(DomainGuesser::class);
-        $manager = new OpenPgpKeyManager($em, $repo, $domainGuesser);
+        $gpgKeyImporter = $this->createStub(GpgKeyImporter::class);
+        $manager = new OpenPgpKeyManager($em, $repo, $domainGuesser, $gpgKeyImporter);
         $result = $manager->findPaginated(1);
 
         self::assertInstanceOf(PaginatedResult::class, $result);
@@ -92,7 +98,8 @@ class OpenPgpKeyManagerTest extends TestCase
 
         $em = $this->createStub(EntityManagerInterface::class);
         $domainGuesser = $this->createStub(DomainGuesser::class);
-        $manager = new OpenPgpKeyManager($em, $repo, $domainGuesser);
+        $gpgKeyImporter = $this->createStub(GpgKeyImporter::class);
+        $manager = new OpenPgpKeyManager($em, $repo, $domainGuesser, $gpgKeyImporter);
         $result = $manager->findPaginated(1, 'user@example.org');
 
         self::assertSame(['item1'], $result->items);
@@ -113,7 +120,8 @@ class OpenPgpKeyManagerTest extends TestCase
 
         $em = $this->createStub(EntityManagerInterface::class);
         $domainGuesser = $this->createStub(DomainGuesser::class);
-        $manager = new OpenPgpKeyManager($em, $repo, $domainGuesser);
+        $gpgKeyImporter = $this->createStub(GpgKeyImporter::class);
+        $manager = new OpenPgpKeyManager($em, $repo, $domainGuesser, $gpgKeyImporter);
         $result = $manager->findPaginated(2);
 
         self::assertSame(2, $result->page);
@@ -134,7 +142,8 @@ class OpenPgpKeyManagerTest extends TestCase
 
         $em = $this->createStub(EntityManagerInterface::class);
         $domainGuesser = $this->createStub(DomainGuesser::class);
-        $manager = new OpenPgpKeyManager($em, $repo, $domainGuesser);
+        $gpgKeyImporter = $this->createStub(GpgKeyImporter::class);
+        $manager = new OpenPgpKeyManager($em, $repo, $domainGuesser, $gpgKeyImporter);
         $result = $manager->findPaginated(-5);
 
         self::assertSame(1, $result->page);
@@ -202,7 +211,8 @@ class OpenPgpKeyManagerTest extends TestCase
         $em->expects($this->once())->method('flush');
 
         $domainGuesser = $this->createStub(DomainGuesser::class);
-        $manager = new OpenPgpKeyManager($em, $repository, $domainGuesser);
+        $gpgKeyImporter = $this->createStub(GpgKeyImporter::class);
+        $manager = new OpenPgpKeyManager($em, $repository, $domainGuesser, $gpgKeyImporter);
         $manager->deleteKey($this->email);
     }
 
@@ -215,7 +225,8 @@ class OpenPgpKeyManagerTest extends TestCase
         $em->expects($this->never())->method('remove');
 
         $domainGuesser = $this->createStub(DomainGuesser::class);
-        $manager = new OpenPgpKeyManager($em, $repository, $domainGuesser);
+        $gpgKeyImporter = $this->createStub(GpgKeyImporter::class);
+        $manager = new OpenPgpKeyManager($em, $repository, $domainGuesser, $gpgKeyImporter);
         $manager->deleteKey($this->email);
     }
 
@@ -244,7 +255,13 @@ class OpenPgpKeyManagerTest extends TestCase
         $domainGuesser = $this->createStub(DomainGuesser::class);
         $domainGuesser->method('guess')->willReturn(null);
 
-        $manager = new OpenPgpKeyManager($em, $repository, $domainGuesser);
+        $importedKey = new OpenPgpKey();
+        $importedKey->setEmail($this->email);
+
+        $gpgKeyImporter = $this->createStub(GpgKeyImporter::class);
+        $gpgKeyImporter->method('import')->willReturn($importedKey);
+
+        $manager = new OpenPgpKeyManager($em, $repository, $domainGuesser, $gpgKeyImporter);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('No matching domain found for email "alice@example.org"');

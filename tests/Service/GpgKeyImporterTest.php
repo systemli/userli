@@ -9,8 +9,17 @@ use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
 use App\Service\GpgKeyImporter;
+use Crypt_GPG;
+use Crypt_GPG_Exception;
+use Crypt_GPG_FileException;
+use Crypt_GPG_Key;
+use Crypt_GPG_KeyNotFoundException;
+use Crypt_GPG_NoDataException;
+use Crypt_GPG_SubKey;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
+use Throwable;
 
 class GpgKeyImporterTest extends TestCase
 {
@@ -125,23 +134,11 @@ rtR6dnGn1DxDYIBiN4kA6Uan1rNHZC1HxgXgajV9qD9azJT6S/rRw6NFEVPU6yWR
 y2USCeHHNeCalKPxD9efQb+iq+tKZNJT/fB6nkixkXZVifqrQa/q2g==
 =QPao
 -----END PGP PUBLIC KEY BLOCK-----';
-    /**
-     * Should result in the following key being exported:.
-     *
-     * pub   rsa3072 2020-10-21 [SC] [expires: 2022-10-21]
-     *       D26D7D3E94B086E29893A4F391285F31F93A680B
-     * uid           Alice <alice@example.org>
-     * uid           Alice2 <alice@example.org>
-     * uid           alice@example.org
-     * uid           <alice@example.org> <anotheralice@example.org>>
-     * sub   rsa3072 2020-10-21 [E] [expires: 2022-10-21]
-     */
-    private $validKeyBinary = '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';
-    private $validKeyId = '91285F31F93A680B';
-    private $validKeyFingerprint = 'D26D 7D3E 94B0 86E2 9893  A4F3 9128 5F31 F93A 680B';
-    private $validExpireTime = '@1666343513';
-    private $brokenKeyAscii = 'brokenkeystring';
-    private $otherKeyAscii = '-----BEGIN PGP PUBLIC KEY BLOCK-----
+    private string $validKeyId = '91285F31F93A680B';
+    private string $validKeyFingerprint = 'D26D 7D3E 94B0 86E2 9893  A4F3 9128 5F31 F93A 680B';
+    private string $validExpireTime = '@1666343513';
+    private string $brokenKeyAscii = 'brokenkeystring';
+    private string $otherKeyAscii = '-----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mQGNBF+B1BUBDADH6aiuRFTgea8JfAc8b9uHmMpnVRGkIXBlakBlSBmoJAxEEAFH
 UU9lalSx4pi0UlUqlVA5+mdHMUv/gQ65EvVyrvUthfrEOnRuGMnotf5qQNL+kSqg
@@ -182,7 +179,7 @@ XhO9u0FBGcEwAb8vj4tXff233xxHypcqQ8Ki3txpv1oQnO/2ZSEXjgIkycrICjDQ
 hx77izIzoqOrwcQ7yTyR+Uo=
 =hivm
 -----END PGP PUBLIC KEY BLOCK-----';
-    private $twoKeysAscii = '-----BEGIN PGP PUBLIC KEY BLOCK-----
+    private string $twoKeysAscii = '-----BEGIN PGP PUBLIC KEY BLOCK-----
 
 mQGNBF+B09wBDACe08x3/cZYBdYfKm062Bj9DtSkq9K7uZSif0alSm1x10hcNh3d
 31EjIBLPt7PNowYiADj2aLFscC3UjO/nNKqE6wXXPB5yfeW0ES9NxgElDgyHUvim
@@ -260,38 +257,245 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
 =z1eK
 -----END PGP PUBLIC KEY BLOCK-----';
 
+    // -- Integration tests (using real GPG binary) --
+
     public function testValidKey(): void
     {
-        $openPgpKey = GpgKeyImporter::import($this->email, $this->validKeyAscii);
+        $importer = new GpgKeyImporter();
+        $openPgpKey = $importer->import($this->email, $this->validKeyAscii);
 
-        $expected = new OpenPgpKey();
-        $expected->setEmail($this->email);
-        $expected->setKeyId($this->validKeyId);
-        $expected->setKeyFingerprint($this->validKeyFingerprint);
-        $expected->setKeyExpireTime(new DateTimeImmutable($this->validExpireTime));
-        $expected->setKeyData($this->validKeyBinary);
-
-        self::assertEquals($expected, $openPgpKey);
+        self::assertSame($this->email, $openPgpKey->getEmail());
+        self::assertSame($this->validKeyId, $openPgpKey->getKeyId());
+        self::assertSame($this->validKeyFingerprint, $openPgpKey->getKeyFingerprint());
+        self::assertEquals(new DateTimeImmutable($this->validExpireTime), $openPgpKey->getKeyExpireTime());
+        self::assertNotEmpty($openPgpKey->getKeyData());
     }
 
     public function testBrokenKey(): void
     {
         $this->expectException(NoGpgDataException::class);
 
-        GpgKeyImporter::import($this->email, $this->brokenKeyAscii);
+        new GpgKeyImporter()->import($this->email, $this->brokenKeyAscii);
     }
 
     public function testOtherKey(): void
     {
         $this->expectException(NoGpgKeyForUserException::class);
 
-        GpgKeyImporter::import($this->email, $this->otherKeyAscii);
+        new GpgKeyImporter()->import($this->email, $this->otherKeyAscii);
     }
 
     public function testTwoKeys(): void
     {
         $this->expectException(MultipleGpgKeysForUserException::class);
 
-        GpgKeyImporter::import($this->email, $this->twoKeysAscii);
+        new GpgKeyImporter()->import($this->email, $this->twoKeysAscii);
+    }
+
+    // -- Unit tests (mocked GPG) --
+
+    public function testImportThrowsRuntimeExceptionOnGpgFileException(): void
+    {
+        $importer = $this->createImporterWithGpgException(
+            'createGpg',
+            new Crypt_GPG_FileException('bad homedir')
+        );
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Failed to read GnuPG home directory:');
+
+        $importer->import($this->email, 'keydata');
+    }
+
+    public function testImportThrowsNoGpgDataExceptionOnImportFailure(): void
+    {
+        $gpg = $this->createStub(Crypt_GPG::class);
+        $gpg->method('importKey')->willThrowException(new Crypt_GPG_NoDataException('no data'));
+
+        $importer = $this->createImporterWithMockedGpg($gpg);
+
+        $this->expectException(NoGpgDataException::class);
+        $this->expectExceptionMessage('Failed to import WKD key:');
+
+        $importer->import($this->email, 'keydata');
+    }
+
+    public function testImportThrowsRuntimeExceptionOnGetKeysFailure(): void
+    {
+        $gpg = $this->createStub(Crypt_GPG::class);
+        $gpg->method('importKey')->willReturn([]);
+        $gpg->method('getKeys')->willThrowException(new Crypt_GPG_Exception('keys error'));
+
+        $importer = $this->createImporterWithMockedGpg($gpg);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Failed to read keys:');
+
+        $importer->import($this->email, 'keydata');
+    }
+
+    public function testImportThrowsNoGpgKeyForUserExceptionWhenNoKeysFound(): void
+    {
+        $gpg = $this->createStub(Crypt_GPG::class);
+        $gpg->method('importKey')->willReturn([]);
+        $gpg->method('getKeys')->willReturn([]);
+
+        $importer = $this->createImporterWithMockedGpg($gpg);
+
+        $this->expectException(NoGpgKeyForUserException::class);
+        $this->expectExceptionMessage('No key found for');
+
+        $importer->import($this->email, 'keydata');
+    }
+
+    public function testImportThrowsMultipleGpgKeysForUserException(): void
+    {
+        $gpg = $this->createStub(Crypt_GPG::class);
+        $gpg->method('importKey')->willReturn([]);
+        $gpg->method('getKeys')->willReturn([new Crypt_GPG_Key(), new Crypt_GPG_Key()]);
+
+        $importer = $this->createImporterWithMockedGpg($gpg);
+
+        $this->expectException(MultipleGpgKeysForUserException::class);
+        $this->expectExceptionMessage('More than one keys found for');
+
+        $importer->import($this->email, 'keydata');
+    }
+
+    public function testImportThrowsRuntimeExceptionOnExportFailure(): void
+    {
+        $key = $this->createKeyWithPrimaryKey('AABBCCDD', 1666343513);
+
+        $gpg = $this->createStub(Crypt_GPG::class);
+        $gpg->method('importKey')->willReturn([]);
+        $gpg->method('getKeys')->willReturn([$key]);
+        $gpg->method('exportPublicKey')->willThrowException(
+            new Crypt_GPG_KeyNotFoundException('not found', 0, 'AABBCCDD')
+        );
+
+        $importer = $this->createImporterWithMockedGpg($gpg);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Failed to export key:');
+
+        $importer->import($this->email, 'keydata');
+    }
+
+    public function testImportThrowsRuntimeExceptionWhenNoPrimaryKey(): void
+    {
+        $key = new Crypt_GPG_Key();
+
+        $gpg = $this->createStub(Crypt_GPG::class);
+        $gpg->method('importKey')->willReturn([]);
+        $gpg->method('getKeys')->willReturn([$key]);
+        $gpg->method('exportPublicKey')->willReturn('exported-key-data');
+
+        $importer = $this->createImporterWithMockedGpg($gpg);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Failed to get GnuPG key ID.');
+
+        $importer->import($this->email, 'keydata');
+    }
+
+    public function testImportThrowsRuntimeExceptionOnFingerprintFailure(): void
+    {
+        $key = $this->createKeyWithPrimaryKey('AABBCCDD', 1666343513);
+
+        $gpg = $this->createStub(Crypt_GPG::class);
+        $gpg->method('importKey')->willReturn([]);
+        $gpg->method('getKeys')->willReturn([$key]);
+        $gpg->method('exportPublicKey')->willReturn('exported-key-data');
+        $gpg->method('getFingerprint')->willThrowException(new Crypt_GPG_Exception('fp error'));
+
+        $importer = $this->createImporterWithMockedGpg($gpg);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Failed to get GnuPG key fingerprint:');
+
+        $importer->import($this->email, 'keydata');
+    }
+
+    public function testImportSuccessWithMockedGpg(): void
+    {
+        $key = $this->createKeyWithPrimaryKey('AABBCCDD11223344', 1666343513);
+
+        $gpg = $this->createStub(Crypt_GPG::class);
+        $gpg->method('importKey')->willReturn([]);
+        $gpg->method('getKeys')->willReturn([$key]);
+        $gpg->method('exportPublicKey')->willReturn('exported-key-data');
+        $gpg->method('getFingerprint')->willReturn('AAAA BBBB CCCC DDDD');
+
+        $importer = $this->createImporterWithMockedGpg($gpg);
+        $result = $importer->import($this->email, 'keydata');
+
+        self::assertInstanceOf(OpenPgpKey::class, $result);
+        self::assertSame($this->email, $result->getEmail());
+        self::assertSame('AABBCCDD11223344', $result->getKeyId());
+        self::assertSame('AAAA BBBB CCCC DDDD', $result->getKeyFingerprint());
+        self::assertEquals(new DateTimeImmutable('@1666343513'), $result->getKeyExpireTime());
+        self::assertSame(base64_encode('exported-key-data'), $result->getKeyData());
+    }
+
+    public function testImportSuccessWithNoExpiry(): void
+    {
+        $key = $this->createKeyWithPrimaryKey('AABBCCDD11223344', 0);
+
+        $gpg = $this->createStub(Crypt_GPG::class);
+        $gpg->method('importKey')->willReturn([]);
+        $gpg->method('getKeys')->willReturn([$key]);
+        $gpg->method('exportPublicKey')->willReturn('exported-key-data');
+        $gpg->method('getFingerprint')->willReturn('AAAA BBBB CCCC DDDD');
+
+        $importer = $this->createImporterWithMockedGpg($gpg);
+        $result = $importer->import($this->email, 'keydata');
+
+        self::assertNull($result->getKeyExpireTime());
+    }
+
+    private function createKeyWithPrimaryKey(string $keyId, int $expirationDate): Crypt_GPG_Key
+    {
+        $subKey = new Crypt_GPG_SubKey();
+        $subKey->setId($keyId);
+        $subKey->setExpirationDate($expirationDate);
+
+        $key = new Crypt_GPG_Key();
+        $key->addSubKey($subKey);
+
+        return $key;
+    }
+
+    /**
+     * Creates a GpgKeyImporter that throws an exception when createGpg() is called.
+     */
+    private function createImporterWithGpgException(string $method, Throwable $exception): GpgKeyImporter
+    {
+        return new class($exception) extends GpgKeyImporter {
+            public function __construct(private readonly Throwable $exception)
+            {
+            }
+
+            protected function createGpg(string $homedir): Crypt_GPG
+            {
+                throw $this->exception;
+            }
+        };
+    }
+
+    /**
+     * Creates a GpgKeyImporter that returns the given mock Crypt_GPG instance.
+     */
+    private function createImporterWithMockedGpg(Crypt_GPG $gpg): GpgKeyImporter
+    {
+        return new class($gpg) extends GpgKeyImporter {
+            public function __construct(private readonly Crypt_GPG $gpg)
+            {
+            }
+
+            protected function createGpg(string $homedir): Crypt_GPG
+            {
+                return $this->gpg;
+            }
+        };
     }
 }

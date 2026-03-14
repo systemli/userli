@@ -23,6 +23,7 @@ final readonly class OpenPgpKeyManager
         private EntityManagerInterface $em,
         private OpenPgpKeyRepository $repository,
         private DomainGuesser $domainGuesser,
+        private GpgKeyImporter $gpgKeyImporter,
     ) {
     }
 
@@ -60,7 +61,7 @@ final readonly class OpenPgpKeyManager
             $openPgpKey->setUploader($user);
         }
 
-        $openPgpKeyNew = GpgKeyImporter::import($email, $key);
+        $openPgpKeyNew = $this->gpgKeyImporter->import($email, $key);
 
         $openPgpKey->setEmail($openPgpKeyNew->getEmail());
         $openPgpKey->setKeyId($openPgpKeyNew->getKeyId());
