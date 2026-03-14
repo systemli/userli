@@ -286,6 +286,9 @@ class FeatureContext extends MinkContext
                         break;
                     case 'source':
                         $alias->setSource($value);
+                        if (null !== $domain = $this->domainGuesser->guess($value)) {
+                            $alias->setDomain($domain);
+                        }
                         break;
                     case 'destination':
                         $alias->setDestination($value);
@@ -296,10 +299,6 @@ class FeatureContext extends MinkContext
                     case 'random':
                         $alias->setRandom((bool) $value);
                         break;
-                }
-
-                if (null !== $domain = $this->domainGuesser->guess($value)) {
-                    $alias->setDomain($domain);
                 }
             }
 
