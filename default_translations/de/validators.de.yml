@@ -15,6 +15,8 @@ form:
   unique-field: "Dieser Wert wird bereits verwendet."
   valid-tld: "Die Domain hat keine gültige Top-Level-Domain."
   role-not-allowed: "Du darfst die Rolle \"{{ role }}\" nicht zuweisen."
+  email-domain-not-allowed: "Du darfst keine Benutzer:innen in dieser Domain anlegen."
+  email-domain-not-found: "Die E-Mail-Domain existiert nicht."
 
 registration:
   voucher-invalid: Der Einladungscode ist ungültig.

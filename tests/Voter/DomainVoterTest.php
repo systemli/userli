@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Voter;
 
+use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
+use App\Form\Model\UserAdminModel;
 use App\Service\DomainGuesser;
 use App\Voter\DomainVoter;
 use PHPUnit\Framework\TestCase;
@@ -35,9 +37,43 @@ class DomainVoterTest extends TestCase
     {
         $voter = $this->createVoter(isAdmin: true);
 
-        foreach ([DomainVoter::VIEW, DomainVoter::EDIT, DomainVoter::DELETE] as $attribute) {
+        foreach ([DomainVoter::CREATE, DomainVoter::VIEW, DomainVoter::EDIT, DomainVoter::DELETE] as $attribute) {
             $result = $voter->vote($this->createToken(), new User('test@example.org'), [$attribute]);
             self::assertNotSame(VoterInterface::ACCESS_ABSTAIN, $result, sprintf('Voter should not abstain for attribute "%s" on User', $attribute));
+        }
+    }
+
+    public function testSupportsAliasWithValidAttribute(): void
+    {
+        $voter = $this->createVoter(isAdmin: true);
+
+        foreach ([DomainVoter::VIEW, DomainVoter::EDIT] as $attribute) {
+            $result = $voter->vote($this->createToken(), new Alias(), [$attribute]);
+            self::assertNotSame(VoterInterface::ACCESS_ABSTAIN, $result, sprintf('Voter should not abstain for attribute "%s" on Alias', $attribute));
+        }
+    }
+
+    public function testSupportsUserAdminModelForCreateAndEdit(): void
+    {
+        $voter = $this->createVoter(isAdmin: true);
+        $model = new UserAdminModel();
+        $model->setEmail('test@example.org');
+
+        foreach ([DomainVoter::CREATE, DomainVoter::EDIT] as $attribute) {
+            $result = $voter->vote($this->createToken(), $model, [$attribute]);
+            self::assertNotSame(VoterInterface::ACCESS_ABSTAIN, $result, sprintf('Voter should not abstain for attribute "%s" on UserAdminModel', $attribute));
+        }
+    }
+
+    public function testAbstainsOnUserAdminModelForViewAndDelete(): void
+    {
+        $voter = $this->createVoter(isAdmin: true);
+        $model = new UserAdminModel();
+        $model->setEmail('test@example.org');
+
+        foreach ([DomainVoter::VIEW, DomainVoter::DELETE] as $attribute) {
+            $result = $voter->vote($this->createToken(), $model, [$attribute]);
+            self::assertSame(VoterInterface::ACCESS_ABSTAIN, $result, sprintf('Voter should abstain for attribute "%s" on UserAdminModel', $attribute));
         }
     }
 
@@ -57,6 +93,22 @@ class DomainVoterTest extends TestCase
         self::assertSame(VoterInterface::ACCESS_ABSTAIN, $result);
     }
 
+    public function testAbstainsOnCreateForAlias(): void
+    {
+        $voter = $this->createVoter(isAdmin: true);
+
+        $result = $voter->vote($this->createToken(), new Alias(), [DomainVoter::CREATE]);
+        self::assertSame(VoterInterface::ACCESS_ABSTAIN, $result);
+    }
+
+    public function testAbstainsOnDeleteForAlias(): void
+    {
+        $voter = $this->createVoter(isAdmin: true);
+
+        $result = $voter->vote($this->createToken(), new Alias(), [DomainVoter::DELETE]);
+        self::assertSame(VoterInterface::ACCESS_ABSTAIN, $result);
+    }
+
     // --- Full admin ---
 
     public function testFullAdminCanDoEverything(): void
@@ -65,10 +117,40 @@ class DomainVoterTest extends TestCase
         $adminUser = new User('superadmin@example.org');
         $adminUser->setRoles([Roles::ADMIN]);
 
-        foreach ([DomainVoter::VIEW, DomainVoter::EDIT, DomainVoter::DELETE] as $attribute) {
+        foreach ([DomainVoter::CREATE, DomainVoter::VIEW, DomainVoter::EDIT, DomainVoter::DELETE] as $attribute) {
             $result = $voter->vote($this->createToken(), $adminUser, [$attribute]);
             self::assertSame(VoterInterface::ACCESS_GRANTED, $result, sprintf('Full admin should be granted "%s" on admin user', $attribute));
         }
+    }
+
+    // --- Domain admin: create user ---
+
+    public function testDomainAdminCanCreateUserInSameDomain(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainA);
+        $user = new User('newuser@domain-a.org');
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $user, [DomainVoter::CREATE]);
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $result);
+    }
+
+    public function testDomainAdminCannotCreateUserInDifferentDomain(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainB);
+        $user = new User('newuser@domain-b.org');
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $user, [DomainVoter::CREATE]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
+    }
+
+    public function testDomainAdminCannotCreateAdminUser(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainA);
+        $user = new User('newadmin@domain-a.org');
+        $user->setRoles([Roles::ADMIN]);
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $user, [DomainVoter::CREATE]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
     }
 
     // --- Domain admin: user in same domain ---
@@ -135,6 +217,82 @@ class DomainVoterTest extends TestCase
         self::assertSame(VoterInterface::ACCESS_DENIED, $result);
     }
 
+    // --- Domain admin: create/edit via UserAdminModel ---
+
+    public function testDomainAdminCanCreateViaModelInSameDomain(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainA);
+        $model = new UserAdminModel();
+        $model->setEmail('newuser@domain-a.org');
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $model, [DomainVoter::CREATE]);
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $result);
+    }
+
+    public function testDomainAdminCannotCreateViaModelInDifferentDomain(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainB);
+        $model = new UserAdminModel();
+        $model->setEmail('newuser@domain-b.org');
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $model, [DomainVoter::CREATE]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
+    }
+
+    public function testDomainAdminCannotCreateViaModelWithAdminRole(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainA);
+        $model = new UserAdminModel();
+        $model->setEmail('newadmin@domain-a.org');
+        $model->setRoles([Roles::ADMIN]);
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $model, [DomainVoter::CREATE]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
+    }
+
+    public function testDomainAdminCanEditViaModelInSameDomain(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainA);
+        $model = new UserAdminModel();
+        $model->setEmail('user@domain-a.org');
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $model, [DomainVoter::EDIT]);
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $result);
+    }
+
+    public function testDomainAdminCannotEditViaModelInDifferentDomain(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainB);
+        $model = new UserAdminModel();
+        $model->setEmail('user@domain-b.org');
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $model, [DomainVoter::EDIT]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
+    }
+
+    public function testDomainAdminCannotEditViaModelWithAdminRole(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainA);
+        $model = new UserAdminModel();
+        $model->setEmail('admin@domain-a.org');
+        $model->setRoles([Roles::ADMIN]);
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $model, [DomainVoter::EDIT]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
+    }
+
+    public function testFullAdminGrantedForModelSubject(): void
+    {
+        $voter = $this->createVoter(isAdmin: true);
+        $model = new UserAdminModel();
+        $model->setEmail('anyone@any-domain.org');
+
+        foreach ([DomainVoter::CREATE, DomainVoter::EDIT] as $attribute) {
+            $result = $voter->vote($this->createToken(), $model, [$attribute]);
+            self::assertSame(VoterInterface::ACCESS_GRANTED, $result, sprintf('Full admin should be granted "%s" on UserAdminModel', $attribute));
+        }
+    }
+
     // --- Domain admin: cannot manage admin users ---
 
     public function testDomainAdminCannotViewAdminUser(): void
@@ -170,6 +328,50 @@ class DomainVoterTest extends TestCase
         self::assertSame(VoterInterface::ACCESS_DENIED, $result);
     }
 
+    // --- Domain admin: alias operations ---
+
+    public function testDomainAdminCanViewAliasInSameDomain(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true);
+        $alias = new Alias();
+        $alias->setDomain($this->domainA);
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $alias, [DomainVoter::VIEW]);
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $result);
+    }
+
+    public function testDomainAdminCanEditAliasInSameDomain(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainA);
+        $alias = new Alias();
+        $alias->setDomain($this->domainA);
+        $alias->setSource('alias@domain-a.org');
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $alias, [DomainVoter::EDIT]);
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $result);
+    }
+
+    public function testDomainAdminCannotViewAliasInDifferentDomain(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true);
+        $alias = new Alias();
+        $alias->setDomain($this->domainB);
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $alias, [DomainVoter::VIEW]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
+    }
+
+    public function testDomainAdminCannotEditAliasInDifferentDomain(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainB);
+        $alias = new Alias();
+        $alias->setDomain($this->domainB);
+        $alias->setSource('alias@domain-b.org');
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $alias, [DomainVoter::EDIT]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
+    }
+
     // --- Regular user (neither admin nor domain admin) ---
 
     public function testRegularUserIsDenied(): void
@@ -179,6 +381,21 @@ class DomainVoterTest extends TestCase
         $user->setDomain($this->domainA);
 
         $result = $voter->vote($this->createToken($this->domainAdminA), $user, [DomainVoter::VIEW]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
+    }
+
+    // --- Domain admin with null domain ---
+
+    public function testDomainAdminWithNullDomainIsDenied(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true);
+        $adminWithNoDomain = new User('orphan@example.org');
+        // No domain set — $currentDomain will be null
+
+        $user = new User('user@domain-a.org');
+        $user->setDomain($this->domainA);
+
+        $result = $voter->vote($this->createToken($adminWithNoDomain), $user, [DomainVoter::VIEW]);
         self::assertSame(VoterInterface::ACCESS_DENIED, $result);
     }
 

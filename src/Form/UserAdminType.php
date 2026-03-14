@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Enum\Roles;
 use App\Form\Model\UserAdminModel;
 use App\Validator\AllowedRoles;
+use App\Validator\EmailDomainAdmin;
 use App\Validator\Lowercase;
 use App\Validator\PasswordPolicy;
 use App\Validator\UniqueField;
@@ -52,6 +53,7 @@ final class UserAdminType extends AbstractType
                     new Assert\Email(mode: 'strict'),
                     new Lowercase(),
                     new UniqueField(entityClass: User::class, field: 'email', message: 'registration.email-already-taken'),
+                    new EmailDomainAdmin(),
                 ],
             ]);
         }
