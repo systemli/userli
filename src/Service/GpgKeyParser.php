@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Dto\GpgKeyResult;
+use App\Exception\GpgKeyParserException;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
@@ -17,7 +18,6 @@ use Crypt_GPG_KeyNotFoundException;
 use Crypt_GPG_NoDataException;
 use DateTimeImmutable;
 use PEAR_Exception;
-use RuntimeException;
 
 use const DIRECTORY_SEPARATOR;
 
@@ -32,13 +32,13 @@ class GpgKeyParser
      * @throws NoGpgDataException
      * @throws NoGpgKeyForUserException
      * @throws MultipleGpgKeysForUserException
-     * @throws RuntimeException
+     * @throws GpgKeyParserException
      */
     public function parse(string $email, string $data): GpgKeyResult
     {
         $tempDir = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'userli_'.mt_rand().microtime(true);
         if (!mkdir($concurrentDirectory = $tempDir) && !is_dir($concurrentDirectory)) {
-            throw new RuntimeException('Failed to create directory: '.$concurrentDirectory);
+            throw new GpgKeyParserException('Failed to create directory: '.$concurrentDirectory);
         }
 
         try {
@@ -47,7 +47,7 @@ class GpgKeyParser
                 'import' => sprintf('--import-filter keep-uid="uid =~ <%s> || uid = %s"', $email, $email),
             ]);
         } catch (Crypt_GPG_FileException|PEAR_Exception $e) {
-            throw new RuntimeException('Failed to read GnuPG home directory: '.$e->getMessage());
+            throw new GpgKeyParserException('Failed to read GnuPG home directory: '.$e->getMessage());
         }
 
         try {
@@ -60,7 +60,7 @@ class GpgKeyParser
             /** @var Crypt_GPG_Key[] $keys */
             $keys = $gpg->getKeys(sprintf('<%s>', $email));
         } catch (Crypt_GPG_Exception $cryptGPGException) {
-            throw new RuntimeException('Failed to read keys: '.$cryptGPGException->getMessage());
+            throw new GpgKeyParserException('Failed to read keys: '.$cryptGPGException->getMessage());
         }
 
         if (count($keys) < 1) {
@@ -74,12 +74,12 @@ class GpgKeyParser
         try {
             $keyData = base64_encode($gpg->exportPublicKey($email, false));
         } catch (Crypt_GPG_Exception|Crypt_GPG_KeyNotFoundException $e) {
-            throw new RuntimeException('Failed to export key: '.$e->getMessage());
+            throw new GpgKeyParserException('Failed to export key: '.$e->getMessage());
         }
 
         $primaryKey = $keys[0]->getPrimaryKey();
         if (!$primaryKey) {
-            throw new RuntimeException('Failed to get GnuPG key ID.');
+            throw new GpgKeyParserException('Failed to get GnuPG key ID.');
         }
 
         $keyId = $primaryKey->getId();
@@ -91,7 +91,7 @@ class GpgKeyParser
         try {
             $fingerprint = $gpg->getFingerprint($email, Crypt_GPG::FORMAT_CANONICAL);
         } catch (Crypt_GPG_Exception $cryptGPGException) {
-            throw new RuntimeException('Failed to get GnuPG key fingerprint: '.$cryptGPGException->getMessage());
+            throw new GpgKeyParserException('Failed to get GnuPG key fingerprint: '.$cryptGPGException->getMessage());
         }
 
         return new GpgKeyResult(

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Service;
 
 use App\Dto\GpgKeyResult;
+use App\Exception\GpgKeyParserException;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
@@ -18,7 +19,6 @@ use Crypt_GPG_NoDataException;
 use Crypt_GPG_SubKey;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 use Throwable;
 
 class GpgKeyParserTest extends TestCase
@@ -295,13 +295,13 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
 
     // -- Unit tests (mocked GPG) --
 
-    public function testParseThrowsRuntimeExceptionOnGpgFileException(): void
+    public function testParseThrowsGpgKeyParserExceptionOnGpgFileException(): void
     {
         $parser = $this->createParserWithGpgException(
             new Crypt_GPG_FileException('bad homedir')
         );
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(GpgKeyParserException::class);
         $this->expectExceptionMessage('Failed to read GnuPG home directory:');
 
         $parser->parse($this->email, 'keydata');
@@ -320,7 +320,7 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
         $parser->parse($this->email, 'keydata');
     }
 
-    public function testParseThrowsRuntimeExceptionOnGetKeysFailure(): void
+    public function testParseThrowsGpgKeyParserExceptionOnGetKeysFailure(): void
     {
         $gpg = $this->createStub(Crypt_GPG::class);
         $gpg->method('importKey')->willReturn([]);
@@ -328,7 +328,7 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
 
         $parser = $this->createParserWithMockedGpg($gpg);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(GpgKeyParserException::class);
         $this->expectExceptionMessage('Failed to read keys:');
 
         $parser->parse($this->email, 'keydata');
@@ -362,7 +362,7 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
         $parser->parse($this->email, 'keydata');
     }
 
-    public function testParseThrowsRuntimeExceptionOnExportFailure(): void
+    public function testParseThrowsGpgKeyParserExceptionOnExportFailure(): void
     {
         $key = $this->createKeyWithPrimaryKey('AABBCCDD', 1666343513);
 
@@ -375,13 +375,13 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
 
         $parser = $this->createParserWithMockedGpg($gpg);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(GpgKeyParserException::class);
         $this->expectExceptionMessage('Failed to export key:');
 
         $parser->parse($this->email, 'keydata');
     }
 
-    public function testParseThrowsRuntimeExceptionWhenNoPrimaryKey(): void
+    public function testParseThrowsGpgKeyParserExceptionWhenNoPrimaryKey(): void
     {
         $key = new Crypt_GPG_Key();
 
@@ -392,13 +392,13 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
 
         $parser = $this->createParserWithMockedGpg($gpg);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(GpgKeyParserException::class);
         $this->expectExceptionMessage('Failed to get GnuPG key ID.');
 
         $parser->parse($this->email, 'keydata');
     }
 
-    public function testParseThrowsRuntimeExceptionOnFingerprintFailure(): void
+    public function testParseThrowsGpgKeyParserExceptionOnFingerprintFailure(): void
     {
         $key = $this->createKeyWithPrimaryKey('AABBCCDD', 1666343513);
 
@@ -410,7 +410,7 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
 
         $parser = $this->createParserWithMockedGpg($gpg);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(GpgKeyParserException::class);
         $this->expectExceptionMessage('Failed to get GnuPG key fingerprint:');
 
         $parser->parse($this->email, 'keydata');
