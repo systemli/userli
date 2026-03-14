@@ -91,6 +91,8 @@ final class UserController extends AbstractController
             throw $this->createNotFoundException();
         }
 
+        $this->denyAccessUnlessGranted('edit', $user);
+
         $model = UserAdminModel::fromUser($user);
 
         $form = $this->createForm(UserAdminType::class, $model, [
@@ -113,6 +115,8 @@ final class UserController extends AbstractController
         if ($user->isDeleted()) {
             throw $this->createNotFoundException();
         }
+
+        $this->denyAccessUnlessGranted('edit', $user);
 
         $model = new UserAdminModel();
         $form = $this->createForm(UserAdminType::class, $model, [
@@ -150,6 +154,8 @@ final class UserController extends AbstractController
         if (!$this->isCsrfTokenValid('delete_user_'.$user->getId(), $request->request->get('_token'))) {
             return $this->redirectToRoute('admin_user_index');
         }
+
+        $this->denyAccessUnlessGranted('delete', $user);
 
         $this->manager->delete($user);
         $this->addFlash('success', 'admin.user.delete.success');
