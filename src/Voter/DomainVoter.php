@@ -8,6 +8,7 @@ use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
+use App\Form\Model\AliasAdminModel;
 use App\Form\Model\UserAdminModel;
 use App\Service\DomainGuesser;
 use Override;
@@ -17,7 +18,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * @extends Voter<string, User|UserAdminModel|Alias>
+ * @extends Voter<string, User|UserAdminModel|Alias|AliasAdminModel>
  */
 final class DomainVoter extends Voter
 {
@@ -45,7 +46,7 @@ final class DomainVoter extends Voter
         }
 
         if ($attribute === self::CREATE) {
-            return $subject instanceof User || $subject instanceof UserAdminModel;
+            return $subject instanceof User || $subject instanceof UserAdminModel || $subject instanceof Alias || $subject instanceof AliasAdminModel;
         }
 
         if ($attribute === self::EDIT) {
@@ -53,7 +54,7 @@ final class DomainVoter extends Voter
         }
 
         if ($attribute === self::DELETE) {
-            return $subject instanceof User;
+            return $subject instanceof User || $subject instanceof Alias;
         }
 
         return $subject instanceof User || $subject instanceof Alias;
@@ -104,6 +105,10 @@ final class DomainVoter extends Voter
             return $this->voteOnAlias($attribute, $subject, $currentDomain);
         }
 
+        if ($subject instanceof AliasAdminModel) {
+            return $this->voteOnAliasAdminModel($subject, $currentDomain);
+        }
+
         return false;
     }
 
@@ -124,9 +129,14 @@ final class DomainVoter extends Voter
     private function voteOnAlias(string $attribute, Alias $alias, Domain $currentDomain): bool
     {
         return match ($attribute) {
-            self::VIEW => $currentDomain === $alias->getDomain(),
-            self::EDIT => $currentDomain === $this->domainGuesser->guess($alias->getSource()),
+            self::VIEW, self::DELETE => $currentDomain === $alias->getDomain(),
+            self::CREATE, self::EDIT => $currentDomain === $this->domainGuesser->guess($alias->getSource()),
             default => false,
         };
+    }
+
+    private function voteOnAliasAdminModel(AliasAdminModel $model, Domain $currentDomain): bool
+    {
+        return $currentDomain === $this->domainGuesser->guess($model->getSource());
     }
 }
