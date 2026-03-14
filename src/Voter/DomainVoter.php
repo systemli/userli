@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * @extends Voter<string, Alias|User>
+ * @extends Voter<string, User>
  */
 final class DomainVoter extends Voter
 {

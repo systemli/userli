@@ -11,5 +11,6 @@ use Symfony\Component\Validator\Constraint;
 final class EmailDomainAdmin extends Constraint
 {
     public string $message = 'form.email-domain-not-allowed';
+
     public string $domainNotFoundMessage = 'form.email-domain-not-found';
 }
