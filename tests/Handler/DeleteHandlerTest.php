@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Handler;
 
 use App\Entity\Alias;
+use App\Entity\Domain;
 use App\Entity\User;
 use App\Entity\UserNotification;
 use App\Entity\Voucher;
@@ -170,12 +171,20 @@ class DeleteHandlerTest extends TestCase
         $alias2->setUser($user);
         $alias2->setSource('alias2@example.org');
 
-        $handler = $this->createHandler([$alias1, $alias2]);
+        $alias3 = new Alias();
+        $alias3->setUser($user);
+        $alias3->setSource('crossdomain@example.com');
+        $crossDomain = new Domain();
+        $crossDomain->setName('example.com');
+        $alias3->setDomain($crossDomain);
+
+        $handler = $this->createHandler([$alias1, $alias2, $alias3]);
 
         $handler->deleteUser($user);
 
         self::assertTrue($alias1->isDeleted());
         self::assertTrue($alias2->isDeleted());
+        self::assertTrue($alias3->isDeleted());
     }
 
     public function testDeleteUserRemovesNotifications(): void
