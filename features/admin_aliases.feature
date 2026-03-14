@@ -5,10 +5,12 @@ Feature: Admin (Aliases)
     And the following Domain exists:
       | name        |
       | example.org |
+      | example.com |
     And the following User exists:
-      | email             | password | roles      |
-      | louis@example.org | asdasd   | ROLE_ADMIN |
-      | user@example.org  | asdasd   | ROLE_USER  |
+      | email               | password | roles             |
+      | louis@example.org   | asdasd   | ROLE_ADMIN        |
+      | user@example.org    | asdasd   | ROLE_USER         |
+      | domain@example.com  | asdasd   | ROLE_DOMAIN_ADMIN |
 
   @aliases
   Scenario: Normal user cannot access aliases page
@@ -118,3 +120,85 @@ Feature: Admin (Aliases)
     When I click "Delete" in the modal
 
     Then I should see "Alias has been deleted successfully"
+
+  # --- Domain admin scenarios ---
+
+  @aliases
+  Scenario: Domain admin can list aliases
+    Given I am authenticated as "domain@example.com"
+    When I am on "/admin/aliases/"
+
+    Then the response status code should be 200
+    And I should see "Aliases"
+
+  @aliases
+  Scenario: Domain admin can create alias in own domain
+    Given I am authenticated as "domain@example.com"
+    When I am on "/admin/aliases/create"
+    Then the response status code should be 200
+
+    When I fill in "alias_admin_source" with "newalias@example.com"
+    And I press "Create"
+
+    Then I should see "Alias has been created successfully"
+
+  @aliases
+  Scenario: Domain admin cannot create alias in different domain
+    Given I am authenticated as "domain@example.com"
+    When I am on "/admin/aliases/create"
+    Then the response status code should be 200
+
+    # DomainFilter hides foreign domains from the EmailDomain validator,
+    # so the form fails validation before the voter check fires.
+    When I fill in "alias_admin_source" with "newalias@example.org"
+    And I press "Create"
+
+    Then the response status code should be 422
+
+  @aliases
+  Scenario: Domain admin can edit alias in own domain
+    Given the following Alias exists:
+      | source                   | destination          |
+      | domainalia@example.com   | domain@example.com   |
+    And I am authenticated as "domain@example.com"
+    And I set the placeholder "__alias_id__" with property "id" for alias "domainalia@example.com"
+    When I am on "/admin/aliases/edit/__alias_id__"
+
+    Then the response status code should be 200
+    And I should see "Edit Alias"
+
+  @aliases
+  Scenario: Domain admin cannot view alias in different domain
+    Given the following Alias exists:
+      | source                  | destination       |
+      | otheralias@example.org  | louis@example.org |
+    And I am authenticated as "domain@example.com"
+    And I set the placeholder "__alias_id__" with property "id" for alias "otheralias@example.org"
+    # DomainFilter excludes the alias from the query, so #[MapEntity] returns 404
+    When I am on "/admin/aliases/edit/__alias_id__"
+
+    Then the response status code should be 404
+
+  @aliases
+  Scenario: Domain admin cannot edit alias in different domain
+    Given the following Alias exists:
+      | source                 | destination       |
+      | crossalias@example.org | louis@example.org |
+    And I am authenticated as "domain@example.com"
+    And I set the placeholder "__alias_id__" with property "id" for alias "crossalias@example.org"
+    # DomainFilter excludes the alias from the query, so #[MapEntity] returns 404
+    When I request "POST /admin/aliases/edit/__alias_id__"
+
+    Then the response status code should be 404
+
+  @aliases
+  Scenario: Domain admin cannot delete alias in different domain
+    Given the following Alias exists:
+      | source                   | destination       |
+      | deletecross@example.org  | louis@example.org |
+    And I am authenticated as "domain@example.com"
+    And I set the placeholder "__alias_id__" with property "id" for alias "deletecross@example.org"
+    # DomainFilter excludes the alias from the query, so #[MapEntity] returns 404
+    When I request "POST /admin/aliases/delete/__alias_id__"
+
+    Then the response status code should be 404
