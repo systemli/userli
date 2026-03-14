@@ -48,7 +48,7 @@ final readonly class DeleteHandler
     public function deleteUser(User $user): void
     {
         // Delete aliases of user
-        $aliases = $this->manager->getRepository(Alias::class)->findByUser($user);
+        $aliases = $this->manager->getRepository(Alias::class)->findByUserAcrossDomains($user);
         foreach ($aliases as $alias) {
             $alias->setDeleted(true);
             $alias->clearSensitiveData();

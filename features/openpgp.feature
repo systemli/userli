@@ -5,6 +5,7 @@ Feature: OpenPGP
     And the following Domain exists:
       | name        |
       | example.org |
+      | example.com |
     And the following User exists:
       | email               | password |
       | alice@example.org   | asdasd   |
@@ -408,3 +409,13 @@ Feature: OpenPGP
 
     Then I should be on "/account/openpgp"
     And I should see text matching "You are not authorized to manage this identity."
+
+  @openpgp-cross-domain-identity
+  Scenario: Cross-domain alias appears as identity on OpenPGP page
+    Given the following Alias exists:
+      | user_id | source                  | destination       | deleted | random |
+      | 1       | crossdomain@example.com | alice@example.org | 0       | 0      |
+    When I am authenticated as "alice@example.org"
+    And I am on "/account/openpgp"
+    Then the response status code should be 200
+    And I should see "crossdomain@example.com"

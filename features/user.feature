@@ -132,6 +132,14 @@ Feature: User
 
     Then I should be on "/"
 
+  @delete-user-cross-domain-aliases
+  Scenario: Deleting a user also deletes their cross-domain aliases
+    Given the following Alias exists:
+      | user_id | source                  | destination      | deleted | random |
+      | 2       | crossdomain@example.com | user@example.org | 0       | 0      |
+    When the user "user@example.org" is deleted
+    Then the alias "crossdomain@example.com" should be deleted
+
   @create-voucher
   Scenario: Create voucher as Admin
     When I am authenticated as "admin@example.org"

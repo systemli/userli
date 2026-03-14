@@ -175,7 +175,7 @@ final class OpenPGPController extends AbstractController
             return true;
         }
 
-        $aliases = $this->aliasRepository->findByUser($user, false);
+        $aliases = $this->aliasRepository->findByUserAcrossDomains($user, false);
 
         return array_any($aliases, static fn ($alias) => $alias->getSource() === $email);
     }

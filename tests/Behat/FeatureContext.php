@@ -665,6 +665,39 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @When /^the user "([^"]*)" is deleted$/
+     */
+    public function theUserIsDeleted(string $email): void
+    {
+        $user = $this->getUserRepository()->findByEmail($email);
+
+        if (null === $user) {
+            throw new RuntimeException(sprintf('User "%s" does not exist', $email));
+        }
+
+        $deleteHandler = $this->getContainer()->get('App\Handler\DeleteHandler');
+        $deleteHandler->deleteUser($user);
+    }
+
+    /**
+     * @Then /^the alias "([^"]*)" should be deleted$/
+     */
+    public function theAliasShouldBeDeleted(string $source): void
+    {
+        $this->manager->clear();
+
+        $alias = $this->manager->getRepository(Alias::class)->findOneBySource($source, includeDeleted: true);
+
+        if (null === $alias) {
+            throw new RuntimeException(sprintf('Alias "%s" does not exist', $source));
+        }
+
+        if (!$alias->isDeleted()) {
+            throw new RuntimeException(sprintf('Alias "%s" is not deleted', $source));
+        }
+    }
+
+    /**
      * @Then /^the user "([^"]*)" should have passwordChangeRequired$/
      */
     public function theUserShouldHavePasswordChangeRequired(string $email): void
