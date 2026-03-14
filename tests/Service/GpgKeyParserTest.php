@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
-use App\Entity\OpenPgpKey;
+use App\Dto\GpgKeyResult;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
-use App\Service\GpgKeyImporter;
+use App\Service\GpgKeyParser;
 use Crypt_GPG;
 use Crypt_GPG_Exception;
 use Crypt_GPG_FileException;
@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Throwable;
 
-class GpgKeyImporterTest extends TestCase
+class GpgKeyParserTest extends TestCase
 {
     private string $email = 'alice@example.org';
     /**
@@ -261,108 +261,108 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
 
     public function testValidKey(): void
     {
-        $importer = new GpgKeyImporter();
-        $openPgpKey = $importer->import($this->email, $this->validKeyAscii);
+        $parser = new GpgKeyParser();
+        $result = $parser->parse($this->email, $this->validKeyAscii);
 
-        self::assertSame($this->email, $openPgpKey->getEmail());
-        self::assertSame($this->validKeyId, $openPgpKey->getKeyId());
-        self::assertSame($this->validKeyFingerprint, $openPgpKey->getKeyFingerprint());
-        self::assertEquals(new DateTimeImmutable($this->validExpireTime), $openPgpKey->getKeyExpireTime());
-        self::assertNotEmpty($openPgpKey->getKeyData());
+        self::assertInstanceOf(GpgKeyResult::class, $result);
+        self::assertSame($this->email, $result->email);
+        self::assertSame($this->validKeyId, $result->keyId);
+        self::assertSame($this->validKeyFingerprint, $result->fingerprint);
+        self::assertEquals(new DateTimeImmutable($this->validExpireTime), $result->expireTime);
+        self::assertNotEmpty($result->keyData);
     }
 
     public function testBrokenKey(): void
     {
         $this->expectException(NoGpgDataException::class);
 
-        new GpgKeyImporter()->import($this->email, $this->brokenKeyAscii);
+        new GpgKeyParser()->parse($this->email, $this->brokenKeyAscii);
     }
 
     public function testOtherKey(): void
     {
         $this->expectException(NoGpgKeyForUserException::class);
 
-        new GpgKeyImporter()->import($this->email, $this->otherKeyAscii);
+        new GpgKeyParser()->parse($this->email, $this->otherKeyAscii);
     }
 
     public function testTwoKeys(): void
     {
         $this->expectException(MultipleGpgKeysForUserException::class);
 
-        new GpgKeyImporter()->import($this->email, $this->twoKeysAscii);
+        new GpgKeyParser()->parse($this->email, $this->twoKeysAscii);
     }
 
     // -- Unit tests (mocked GPG) --
 
-    public function testImportThrowsRuntimeExceptionOnGpgFileException(): void
+    public function testParseThrowsRuntimeExceptionOnGpgFileException(): void
     {
-        $importer = $this->createImporterWithGpgException(
-            'createGpg',
+        $parser = $this->createParserWithGpgException(
             new Crypt_GPG_FileException('bad homedir')
         );
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Failed to read GnuPG home directory:');
 
-        $importer->import($this->email, 'keydata');
+        $parser->parse($this->email, 'keydata');
     }
 
-    public function testImportThrowsNoGpgDataExceptionOnImportFailure(): void
+    public function testParseThrowsNoGpgDataExceptionOnImportFailure(): void
     {
         $gpg = $this->createStub(Crypt_GPG::class);
         $gpg->method('importKey')->willThrowException(new Crypt_GPG_NoDataException('no data'));
 
-        $importer = $this->createImporterWithMockedGpg($gpg);
+        $parser = $this->createParserWithMockedGpg($gpg);
 
         $this->expectException(NoGpgDataException::class);
         $this->expectExceptionMessage('Failed to import WKD key:');
 
-        $importer->import($this->email, 'keydata');
+        $parser->parse($this->email, 'keydata');
     }
 
-    public function testImportThrowsRuntimeExceptionOnGetKeysFailure(): void
+    public function testParseThrowsRuntimeExceptionOnGetKeysFailure(): void
     {
         $gpg = $this->createStub(Crypt_GPG::class);
         $gpg->method('importKey')->willReturn([]);
         $gpg->method('getKeys')->willThrowException(new Crypt_GPG_Exception('keys error'));
 
-        $importer = $this->createImporterWithMockedGpg($gpg);
+        $parser = $this->createParserWithMockedGpg($gpg);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Failed to read keys:');
 
-        $importer->import($this->email, 'keydata');
+        $parser->parse($this->email, 'keydata');
     }
 
-    public function testImportThrowsNoGpgKeyForUserExceptionWhenNoKeysFound(): void
+    public function testParseThrowsNoGpgKeyForUserExceptionWhenNoKeysFound(): void
     {
         $gpg = $this->createStub(Crypt_GPG::class);
         $gpg->method('importKey')->willReturn([]);
         $gpg->method('getKeys')->willReturn([]);
 
-        $importer = $this->createImporterWithMockedGpg($gpg);
+        $parser = $this->createParserWithMockedGpg($gpg);
 
         $this->expectException(NoGpgKeyForUserException::class);
         $this->expectExceptionMessage('No key found for');
 
-        $importer->import($this->email, 'keydata');
+        $parser->parse($this->email, 'keydata');
     }
 
-    public function testImportThrowsMultipleGpgKeysForUserException(): void
+    public function testParseThrowsMultipleGpgKeysForUserException(): void
     {
         $gpg = $this->createStub(Crypt_GPG::class);
         $gpg->method('importKey')->willReturn([]);
         $gpg->method('getKeys')->willReturn([new Crypt_GPG_Key(), new Crypt_GPG_Key()]);
 
-        $importer = $this->createImporterWithMockedGpg($gpg);
+        $parser = $this->createParserWithMockedGpg($gpg);
 
         $this->expectException(MultipleGpgKeysForUserException::class);
         $this->expectExceptionMessage('More than one keys found for');
 
-        $importer->import($this->email, 'keydata');
+        $parser->parse($this->email, 'keydata');
     }
 
-    public function testImportThrowsRuntimeExceptionOnExportFailure(): void
+    public function testParseThrowsRuntimeExceptionOnExportFailure(): void
     {
         $key = $this->createKeyWithPrimaryKey('AABBCCDD', 1666343513);
 
@@ -373,15 +373,15 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
             new Crypt_GPG_KeyNotFoundException('not found', 0, 'AABBCCDD')
         );
 
-        $importer = $this->createImporterWithMockedGpg($gpg);
+        $parser = $this->createParserWithMockedGpg($gpg);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Failed to export key:');
 
-        $importer->import($this->email, 'keydata');
+        $parser->parse($this->email, 'keydata');
     }
 
-    public function testImportThrowsRuntimeExceptionWhenNoPrimaryKey(): void
+    public function testParseThrowsRuntimeExceptionWhenNoPrimaryKey(): void
     {
         $key = new Crypt_GPG_Key();
 
@@ -390,15 +390,15 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
         $gpg->method('getKeys')->willReturn([$key]);
         $gpg->method('exportPublicKey')->willReturn('exported-key-data');
 
-        $importer = $this->createImporterWithMockedGpg($gpg);
+        $parser = $this->createParserWithMockedGpg($gpg);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Failed to get GnuPG key ID.');
 
-        $importer->import($this->email, 'keydata');
+        $parser->parse($this->email, 'keydata');
     }
 
-    public function testImportThrowsRuntimeExceptionOnFingerprintFailure(): void
+    public function testParseThrowsRuntimeExceptionOnFingerprintFailure(): void
     {
         $key = $this->createKeyWithPrimaryKey('AABBCCDD', 1666343513);
 
@@ -408,15 +408,15 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
         $gpg->method('exportPublicKey')->willReturn('exported-key-data');
         $gpg->method('getFingerprint')->willThrowException(new Crypt_GPG_Exception('fp error'));
 
-        $importer = $this->createImporterWithMockedGpg($gpg);
+        $parser = $this->createParserWithMockedGpg($gpg);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Failed to get GnuPG key fingerprint:');
 
-        $importer->import($this->email, 'keydata');
+        $parser->parse($this->email, 'keydata');
     }
 
-    public function testImportSuccessWithMockedGpg(): void
+    public function testParseSuccessWithMockedGpg(): void
     {
         $key = $this->createKeyWithPrimaryKey('AABBCCDD11223344', 1666343513);
 
@@ -426,18 +426,18 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
         $gpg->method('exportPublicKey')->willReturn('exported-key-data');
         $gpg->method('getFingerprint')->willReturn('AAAA BBBB CCCC DDDD');
 
-        $importer = $this->createImporterWithMockedGpg($gpg);
-        $result = $importer->import($this->email, 'keydata');
+        $parser = $this->createParserWithMockedGpg($gpg);
+        $result = $parser->parse($this->email, 'keydata');
 
-        self::assertInstanceOf(OpenPgpKey::class, $result);
-        self::assertSame($this->email, $result->getEmail());
-        self::assertSame('AABBCCDD11223344', $result->getKeyId());
-        self::assertSame('AAAA BBBB CCCC DDDD', $result->getKeyFingerprint());
-        self::assertEquals(new DateTimeImmutable('@1666343513'), $result->getKeyExpireTime());
-        self::assertSame(base64_encode('exported-key-data'), $result->getKeyData());
+        self::assertInstanceOf(GpgKeyResult::class, $result);
+        self::assertSame($this->email, $result->email);
+        self::assertSame('AABBCCDD11223344', $result->keyId);
+        self::assertSame('AAAA BBBB CCCC DDDD', $result->fingerprint);
+        self::assertEquals(new DateTimeImmutable('@1666343513'), $result->expireTime);
+        self::assertSame(base64_encode('exported-key-data'), $result->keyData);
     }
 
-    public function testImportSuccessWithNoExpiry(): void
+    public function testParseSuccessWithNoExpiry(): void
     {
         $key = $this->createKeyWithPrimaryKey('AABBCCDD11223344', 0);
 
@@ -447,10 +447,10 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
         $gpg->method('exportPublicKey')->willReturn('exported-key-data');
         $gpg->method('getFingerprint')->willReturn('AAAA BBBB CCCC DDDD');
 
-        $importer = $this->createImporterWithMockedGpg($gpg);
-        $result = $importer->import($this->email, 'keydata');
+        $parser = $this->createParserWithMockedGpg($gpg);
+        $result = $parser->parse($this->email, 'keydata');
 
-        self::assertNull($result->getKeyExpireTime());
+        self::assertNull($result->expireTime);
     }
 
     private function createKeyWithPrimaryKey(string $keyId, int $expirationDate): Crypt_GPG_Key
@@ -466,11 +466,11 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
     }
 
     /**
-     * Creates a GpgKeyImporter that throws an exception when createGpg() is called.
+     * Creates a GpgKeyParser that throws an exception when createGpg() is called.
      */
-    private function createImporterWithGpgException(string $method, Throwable $exception): GpgKeyImporter
+    private function createParserWithGpgException(Throwable $exception): GpgKeyParser
     {
-        return new class($exception) extends GpgKeyImporter {
+        return new class($exception) extends GpgKeyParser {
             public function __construct(private readonly Throwable $exception)
             {
             }
@@ -483,11 +483,11 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
     }
 
     /**
-     * Creates a GpgKeyImporter that returns the given mock Crypt_GPG instance.
+     * Creates a GpgKeyParser that returns the given mock Crypt_GPG instance.
      */
-    private function createImporterWithMockedGpg(Crypt_GPG $gpg): GpgKeyImporter
+    private function createParserWithMockedGpg(Crypt_GPG $gpg): GpgKeyParser
     {
-        return new class($gpg) extends GpgKeyImporter {
+        return new class($gpg) extends GpgKeyParser {
             public function __construct(private readonly Crypt_GPG $gpg)
             {
             }

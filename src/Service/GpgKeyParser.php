@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\OpenPgpKey;
+use App\Dto\GpgKeyResult;
 use App\Exception\MultipleGpgKeysForUserException;
 use App\Exception\NoGpgDataException;
 use App\Exception\NoGpgKeyForUserException;
@@ -21,7 +21,7 @@ use RuntimeException;
 
 use const DIRECTORY_SEPARATOR;
 
-class GpgKeyImporter
+class GpgKeyParser
 {
     protected function createGpg(string $homedir): Crypt_GPG
     {
@@ -34,7 +34,7 @@ class GpgKeyImporter
      * @throws MultipleGpgKeysForUserException
      * @throws RuntimeException
      */
-    public function import(string $email, string $data): OpenPgpKey
+    public function parse(string $email, string $data): GpgKeyResult
     {
         $tempDir = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'userli_'.mt_rand().microtime(true);
         if (!mkdir($concurrentDirectory = $tempDir) && !is_dir($concurrentDirectory)) {
@@ -94,13 +94,12 @@ class GpgKeyImporter
             throw new RuntimeException('Failed to get GnuPG key fingerprint: '.$cryptGPGException->getMessage());
         }
 
-        $openPgpKey = new OpenPgpKey();
-        $openPgpKey->setEmail($email);
-        $openPgpKey->setKeyId($keyId);
-        $openPgpKey->setKeyFingerprint($fingerprint);
-        $openPgpKey->setKeyExpireTime($expireTime);
-        $openPgpKey->setKeyData($keyData);
-
-        return $openPgpKey;
+        return new GpgKeyResult(
+            email: $email,
+            keyId: $keyId,
+            fingerprint: $fingerprint,
+            expireTime: $expireTime,
+            keyData: $keyData,
+        );
     }
 }

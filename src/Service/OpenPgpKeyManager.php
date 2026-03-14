@@ -23,7 +23,7 @@ final readonly class OpenPgpKeyManager
         private EntityManagerInterface $em,
         private OpenPgpKeyRepository $repository,
         private DomainGuesser $domainGuesser,
-        private GpgKeyImporter $gpgKeyImporter,
+        private GpgKeyParser $gpgKeyParser,
     ) {
     }
 
@@ -61,20 +61,20 @@ final readonly class OpenPgpKeyManager
             $openPgpKey->setUploader($user);
         }
 
-        $openPgpKeyNew = $this->gpgKeyImporter->import($email, $key);
+        $result = $this->gpgKeyParser->parse($email, $key);
 
-        $openPgpKey->setEmail($openPgpKeyNew->getEmail());
-        $openPgpKey->setKeyId($openPgpKeyNew->getKeyId());
-        $openPgpKey->setKeyFingerprint($openPgpKeyNew->getKeyFingerprint());
-        $openPgpKey->setKeyExpireTime($openPgpKeyNew->getKeyExpireTime());
-        $openPgpKey->setKeyData($openPgpKeyNew->getKeyData());
+        $openPgpKey->setEmail($result->email);
+        $openPgpKey->setKeyId($result->keyId);
+        $openPgpKey->setKeyFingerprint($result->fingerprint);
+        $openPgpKey->setKeyExpireTime($result->expireTime);
+        $openPgpKey->setKeyData($result->keyData);
 
-        [$localPart] = explode('@', $openPgpKeyNew->getEmail());
+        [$localPart] = explode('@', $result->email);
         $openPgpKey->setWkdHash(self::wkdHash($localPart));
 
-        $domain = $this->domainGuesser->guess($openPgpKeyNew->getEmail());
+        $domain = $this->domainGuesser->guess($result->email);
         if (null === $domain) {
-            throw new RuntimeException(sprintf('No matching domain found for email "%s"', $openPgpKeyNew->getEmail()));
+            throw new RuntimeException(sprintf('No matching domain found for email "%s"', $result->email));
         }
 
         $openPgpKey->setDomain($domain);
