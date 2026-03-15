@@ -41,6 +41,8 @@
         <ClassMustBeFinal>
             <errorLevel type="suppress">
                 <directory name="src/Entity" />
+                <!-- GpgKeyParser uses a protected factory method pattern for testability -->
+                <file name="src/Service/GpgKeyParser.php" />
             </errorLevel>
         </ClassMustBeFinal>
     </issueHandlers>
