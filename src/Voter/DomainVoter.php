@@ -115,28 +115,28 @@ final class DomainVoter extends Voter
     private function voteOnUser(string $attribute, User $user, Domain $currentDomain): bool
     {
         return match ($attribute) {
-            self::VIEW, self::DELETE => $currentDomain === $user->getDomain(),
-            self::CREATE, self::EDIT => $currentDomain === $this->domainGuesser->guess($user->getEmail()),
+            self::VIEW, self::DELETE => $currentDomain->getId() === $user->getDomain()?->getId(),
+            self::CREATE, self::EDIT => $currentDomain->getId() === $this->domainGuesser->guess($user->getEmail())?->getId(),
             default => false,
         };
     }
 
     private function voteOnUserAdminModel(UserAdminModel $model, Domain $currentDomain): bool
     {
-        return $currentDomain === $this->domainGuesser->guess($model->getEmail());
+        return $currentDomain->getId() === $this->domainGuesser->guess($model->getEmail())?->getId();
     }
 
     private function voteOnAlias(string $attribute, Alias $alias, Domain $currentDomain): bool
     {
         return match ($attribute) {
-            self::VIEW, self::DELETE => $currentDomain === $alias->getDomain(),
-            self::CREATE, self::EDIT => $currentDomain === $this->domainGuesser->guess($alias->getSource()),
+            self::VIEW, self::DELETE => $currentDomain->getId() === $alias->getDomain()?->getId(),
+            self::CREATE, self::EDIT => $currentDomain->getId() === $this->domainGuesser->guess($alias->getSource())?->getId(),
             default => false,
         };
     }
 
     private function voteOnAliasAdminModel(AliasAdminModel $model, Domain $currentDomain): bool
     {
-        return $currentDomain === $this->domainGuesser->guess($model->getSource());
+        return $currentDomain->getId() === $this->domainGuesser->guess($model->getSource())?->getId();
     }
 }

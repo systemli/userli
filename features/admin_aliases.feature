@@ -192,6 +192,18 @@ Feature: Admin (Aliases)
     Then the response status code should be 404
 
   @aliases
+  Scenario: Domain admin can delete alias in own domain
+    Given the following Alias exists:
+      | source                   | destination          | user_id |
+      | deleteown@example.com    | domain@example.com   | 3       |
+    And I am authenticated as "domain@example.com"
+    When I am on "/admin/aliases/"
+    Then I should see "deleteown@example.com"
+    # The page also contains modal "Delete" buttons; target the row action submit button.
+    When I press the 1st "Delete" button
+    Then I should see "Alias has been deleted successfully"
+
+  @aliases
   Scenario: Domain admin cannot delete alias in different domain
     Given the following Alias exists:
       | source                   | destination       |

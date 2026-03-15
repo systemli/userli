@@ -26,7 +26,9 @@ class DomainVoterTest extends TestCase
     protected function setUp(): void
     {
         $this->domainA = new Domain();
+        $this->domainA->setId(1);
         $this->domainB = new Domain();
+        $this->domainB->setId(2);
 
         $this->domainAdminA = new User('admin@domain-a.org');
         $this->domainAdminA->setDomain($this->domainA);
