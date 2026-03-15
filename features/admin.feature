@@ -48,11 +48,11 @@ Feature: Admin
     And I should see "Aliases"
 
   @admin
-  Scenario: Domain admin can access OpenPGP keys page
+  @admin
+  Scenario: Domain admin cannot access OpenPGP keys page
     When I am authenticated as "domain@example.com"
     And I am on "/admin/openpgp-keys/"
-    Then the response status code should be 200
-    And I should see "OpenPGP Keys"
+    Then the response status code should be 403
 
   @admin
   Scenario: Domain admin cannot access settings page
