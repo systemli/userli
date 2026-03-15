@@ -81,6 +81,18 @@ class AliasVoterTest extends TestCase
         self::assertTrue($this->invokeVoteOnAttribute($voter, AliasVoter::DELETE, $alias, $token));
     }
 
+    public function testVoteOnAttributeAllowsAdminToDeleteNonOwnedAlias(): void
+    {
+        $admin = new User('admin@example.org');
+        $otherUser = new User('other@example.org');
+        $alias = new Alias();
+        $alias->setUser($otherUser);
+        $voter = new AliasVoter($this->createSecurity(true));
+        $token = $this->createStub(TokenInterface::class);
+        $token->method('getUser')->willReturn($admin);
+        self::assertTrue($this->invokeVoteOnAttribute($voter, AliasVoter::DELETE, $alias, $token));
+    }
+
     private function invokeSupports(AliasVoter $voter, string $attribute, $subject): bool
     {
         $ref = new ReflectionClass($voter);
