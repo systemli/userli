@@ -214,8 +214,7 @@ welcome:
   lead: You have set up an account with us successfully. What are the next steps?
   next-button: To the overview
   text: >
-    <h3>Ready to go</h3>
-    In the web you can find guides for settting up your e-mail account with several client programs.
+    In the web you can find guides for setting up your e-mail account with several client programs.
     In one week you will receive three invite codes, which you can collect at <a href="%app_url%">%app_url%</a>.
     You can pass these on to friends and invite them to register with %project_name%.
 closed:
