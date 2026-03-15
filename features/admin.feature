@@ -25,6 +25,12 @@ Feature: Admin
     And I am on "/admin/"
     Then the response status code should be 200
     And I should see "Dashboard"
+    And I should see "Users"
+    And I should see "Aliases"
+    And I should see "Domains"
+    And I should see "OpenPGP Keys"
+    And I should see "Vouchers redeemed"
+    And I should see "Vouchers unredeemed"
 
   @admin
   Scenario: Domain admin can access admin dashboard
@@ -32,11 +38,85 @@ Feature: Admin
     And I am on "/admin/"
     Then the response status code should be 200
     And I should see "Dashboard"
+    And I should see "Users"
+    And I should see "Aliases"
+    And I should see "OpenPGP Keys"
+    And I should not see "Domains"
+    And I should not see "Vouchers redeemed"
+    And I should not see "Vouchers unredeemed"
 
   @admin
-  Scenario: Domain admin cannot access admin-only pages
+  Scenario: Domain admin can access users page
+    When I am authenticated as "domain@example.com"
+    And I am on "/admin/users/"
+    Then the response status code should be 200
+    And I should see "Users"
+
+  @admin
+  Scenario: Domain admin can access aliases page
+    When I am authenticated as "domain@example.com"
+    And I am on "/admin/aliases/"
+    Then the response status code should be 200
+    And I should see "Aliases"
+
+  @admin
+  Scenario: Domain admin can access OpenPGP keys page
+    When I am authenticated as "domain@example.com"
+    And I am on "/admin/openpgp-keys/"
+    Then the response status code should be 200
+
+  @admin
+  Scenario: Domain admin cannot access settings page
     When I am authenticated as "domain@example.com"
     And I am on "/admin/settings"
+    Then the response status code should be 403
+
+  @admin
+  Scenario: Domain admin cannot access domains page
+    When I am authenticated as "domain@example.com"
+    And I am on "/admin/domains/"
+    Then the response status code should be 403
+
+  @admin
+  Scenario: Domain admin cannot access domain search page
+    When I am authenticated as "domain@example.com"
+    And I am on "/admin/domains/search"
+    Then the response status code should be 403
+
+  @admin
+  Scenario: Domain admin cannot access reserved names page
+    When I am authenticated as "domain@example.com"
+    And I am on "/admin/reserved-names/"
+    Then the response status code should be 403
+
+  @admin
+  Scenario: Domain admin cannot access vouchers page
+    When I am authenticated as "domain@example.com"
+    And I am on "/admin/vouchers/"
+    Then the response status code should be 403
+
+  @admin
+  Scenario: Domain admin cannot access API tokens page
+    When I am authenticated as "domain@example.com"
+    And I am on "/admin/api/"
+    Then the response status code should be 403
+
+  @admin
+  Scenario: Domain admin cannot access maintenance page
+    When I am authenticated as "domain@example.com"
+    And I am on "/admin/maintenance"
+    Then the response status code should be 403
+
+  @admin
+  Scenario: Domain admin cannot access user notifications page
+    When I am authenticated as "domain@example.com"
+    And I am on "/admin/user-notifications/"
+    Then the response status code should be 403
+
+  @admin
+  Scenario: Domain admin cannot access webhooks page
+    When I am authenticated as "domain@example.com"
+    And I am on "/admin/webhooks/"
     Then the response status code should be 403
 
   @admin

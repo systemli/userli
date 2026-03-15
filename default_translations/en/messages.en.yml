@@ -525,6 +525,7 @@ admin:
     description: Overview of your system at a glance
     stats:
       users: Users
+      recent_users: New accounts (7 days)
       aliases: Aliases
       domains: Domains
       vouchers_redeemed: Vouchers redeemed

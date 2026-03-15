@@ -140,6 +140,21 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
             ->getSingleScalarResult();
     }
 
+    public function countRecentUsers(int $days = 7): int
+    {
+        $dateTime = new DateTimeImmutable();
+        $dateTime = $dateTime->sub(new DateInterval('P'.$days.'D'));
+
+        return (int) $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->where('u.deleted = :deleted')
+            ->andWhere('u.creationTime >= :dateTime')
+            ->setParameter('deleted', false)
+            ->setParameter('dateTime', $dateTime)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     public function countDomainUsers(Domain $domain): int
     {
         return (int) $this->createQueryBuilder('u')
