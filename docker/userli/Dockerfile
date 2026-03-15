@@ -22,6 +22,8 @@ RUN composer install --no-scripts && \
 # Stage 3: Final runtime
 FROM docker.io/php:8.4-fpm-alpine
 
+ARG INSTALL_XDEBUG=false
+
 # Install build dependencies (virtual package for easy removal)
 RUN apk add --no-cache --virtual .build-deps \
         autoconf g++ make linux-headers \
@@ -31,9 +33,14 @@ RUN apk add --no-cache --virtual .build-deps \
         libpng libsodium libzip zlib icu-libs gnupg zip && \
     docker-php-ext-configure intl && \
     docker-php-ext-install -j$(nproc) gd opcache pdo_mysql sodium zip intl && \
-    pecl install redis xdebug && \
-    docker-php-ext-enable redis xdebug && \
+    pecl install redis && \
+    docker-php-ext-enable redis && \
+    if [ "$INSTALL_XDEBUG" = "true" ]; then \
+        pecl install xdebug && \
+        docker-php-ext-enable xdebug; \
+    fi && \
     apk del .build-deps
 
 COPY --from=php-builder /var/www/html /var/www/html
 WORKDIR /var/www/html
+EXPOSE 9000

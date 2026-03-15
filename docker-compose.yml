@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: docker/userli/Dockerfile
+      args:
+        INSTALL_XDEBUG: "true"
     environment:
       REDIS_URL: redis://redis:6379
     volumes:
@@ -77,11 +79,11 @@ services:
 
   dovecot:
     depends_on:
-      - userli
+      - caddy
     image: dovecot/dovecot:2.4.2
     environment:
       MAIL_CRYPT: 2
-      USERLI_HOST: userli
+      USERLI_HOST: caddy
       USERLI_API_ACCESS_TOKEN: 727eb7d3ad310bc510f5fa17c223572c
       DOVECOT_LUA_INSECURE: "true"
     ports:
