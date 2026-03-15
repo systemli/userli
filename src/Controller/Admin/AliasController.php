@@ -10,6 +10,7 @@ use App\Exception\ValidationException;
 use App\Form\AliasAdminType;
 use App\Form\Model\AliasAdminModel;
 use App\Service\AliasManager;
+use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -92,17 +93,23 @@ final class AliasController extends AbstractController
         $isAdmin = $this->isGranted(Roles::ADMIN);
         $model = AliasAdminModel::fromAlias($alias);
 
-        $form = $this->createForm(AliasAdminType::class, $model, [
-            'action' => $this->generateUrl('admin_alias_edit_post', ['id' => $alias->getId()]),
-            'method' => 'POST',
-            'is_admin' => $isAdmin,
-            'is_edit' => true,
-        ]);
+        try {
+            $form = $this->createForm(AliasAdminType::class, $model, [
+                'action' => $this->generateUrl('admin_alias_edit_post', ['id' => $alias->getId()]),
+                'method' => 'POST',
+                'is_admin' => $isAdmin,
+                'is_edit' => true,
+            ]);
 
-        return $this->render('Admin/Alias/form.html.twig', [
-            'form' => $form,
-            'alias' => $alias,
-        ]);
+            return $this->render('Admin/Alias/form.html.twig', [
+                'form' => $form,
+                'alias' => $alias,
+            ]);
+        } catch (EntityNotFoundException) {
+            $this->addFlash('error', 'admin.alias.edit.error_cross_domain');
+
+            return $this->redirectToRoute('admin_alias_index');
+        }
     }
 
     #[Route('/admin/aliases/edit/{id}', name: 'admin_alias_edit_post', methods: ['POST'])]
@@ -122,17 +129,23 @@ final class AliasController extends AbstractController
         ]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->manager->update($alias, $model);
-            $this->addFlash('success', 'admin.alias.edit.success');
+        try {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $this->manager->update($alias, $model);
+                $this->addFlash('success', 'admin.alias.edit.success');
+
+                return $this->redirectToRoute('admin_alias_index');
+            }
+
+            return $this->render('Admin/Alias/form.html.twig', [
+                'form' => $form,
+                'alias' => $alias,
+            ]);
+        } catch (EntityNotFoundException) {
+            $this->addFlash('error', 'admin.alias.edit.error_cross_domain');
 
             return $this->redirectToRoute('admin_alias_index');
         }
-
-        return $this->render('Admin/Alias/form.html.twig', [
-            'form' => $form,
-            'alias' => $alias,
-        ]);
     }
 
     #[Route('/admin/aliases/delete/{id}', name: 'admin_alias_delete', methods: ['POST'])]

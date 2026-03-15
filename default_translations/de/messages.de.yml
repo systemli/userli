@@ -756,6 +756,7 @@ admin:
     edit:
       title: Alias bearbeiten
       success: Alias wurde erfolgreich aktualisiert.
+      error_cross_domain: Dieser Alias kann nicht bearbeitet werden, da der zugehörige Benutzer zu einer anderen Domain gehört.
     delete:
       confirm: "Möchtest du den Alias \"%source%\" wirklich löschen?"
       success: Alias wurde erfolgreich gelöscht.
