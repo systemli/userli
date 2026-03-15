@@ -85,6 +85,20 @@ Feature: Recovery
     And the response status code should be 200
 
   @recovery
+  Scenario: Reset password with invalid password in recovery process
+    When I have the request params for "recovery_reset_password":
+      | email         | user2@example.org                    |
+      | recoveryToken | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
+    And I request "POST /recovery/reset_password"
+    And I fill in the following:
+      | recovery_reset_password[password][first]  | password |
+      | recovery_reset_password[password][second] | password |
+    And I press "recovery_reset_password[submit]"
+
+    Then I should be on "/recovery/reset_password"
+    And I should see "The password comply not with our security policy."
+
+  @recovery
   Scenario: Recovery invalid UUID
     When I am on "/recovery"
     And I fill in the following:

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Model;
 
+use App\Validator\PasswordPolicy;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class RecoveryResetPassword
@@ -12,6 +13,8 @@ final class RecoveryResetPassword
     private string $email;
 
     #[Assert\NotBlank]
+    #[PasswordPolicy]
+    #[Assert\NotCompromisedPassword(skipOnError: true)]
     private string $password;
 
     #[Assert\NotBlank]
