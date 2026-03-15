@@ -1,0 +1,5 @@
+:80 {
+	root * /var/www/html/public
+	php_fastcgi userli:9000
+	file_server
+}

@@ -12,8 +12,19 @@ services:
       - ./docker/userli/php-override.ini:/usr/local/etc/php/conf.d/override.ini:ro
       - ./:/var/www/html
     restart: always
+    networks:
+      - userli
+
+  caddy:
+    image: docker.io/caddy:2-alpine
     ports:
       - 8000:80
+    volumes:
+      - ./docker/userli/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./public:/var/www/html/public:ro
+    depends_on:
+      - userli
+    restart: always
     networks:
       - userli
 
