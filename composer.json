@@ -27,6 +27,7 @@
     "symfony/flex": "^2.10",
     "symfony/form": "^7.4",
     "symfony/framework-bundle": "^7.4",
+    "symfony/html-sanitizer": "7.4.*",
     "symfony/http-client": "^7.4",
     "symfony/mailer": "^7.4",
     "symfony/messenger": "^7.4",

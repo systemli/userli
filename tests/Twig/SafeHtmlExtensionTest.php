@@ -53,7 +53,36 @@ class SafeHtmlExtensionTest extends TestCase
 
         self::assertStringNotContainsString('<script>', $result);
         self::assertStringNotContainsString('<img', $result);
-        self::assertStringContainsString('alert("xss")', $result);
+    }
+
+    public function testSafeHtmlStripsEventHandlers(): void
+    {
+        $input = '<a href="https://example.org" onclick="alert(1)">click</a>';
+        $result = (string) $this->extension->safeHtml($input);
+
+        self::assertStringNotContainsString('onclick', $result);
+        self::assertStringContainsString('href="https://example.org"', $result);
+    }
+
+    public function testSafeHtmlStripsEventHandlersOnAllowedTags(): void
+    {
+        $input = '<div onmouseover="alert(1)">hover</div><span onfocus="alert(1)" tabindex="0">focus</span>';
+        $result = (string) $this->extension->safeHtml($input);
+
+        self::assertStringNotContainsString('onmouseover', $result);
+        self::assertStringNotContainsString('onfocus', $result);
+        self::assertStringNotContainsString('tabindex', $result);
+        self::assertStringContainsString('hover', $result);
+        self::assertStringContainsString('focus', $result);
+    }
+
+    public function testSafeHtmlStripsStyleAttribute(): void
+    {
+        $input = '<div style="background-image:url(javascript:alert(1))">content</div>';
+        $result = (string) $this->extension->safeHtml($input);
+
+        self::assertStringNotContainsString('style', $result);
+        self::assertStringContainsString('content', $result);
     }
 
     #[DataProvider('javascriptUrlProvider')]
@@ -62,7 +91,7 @@ class SafeHtmlExtensionTest extends TestCase
         $result = (string) $this->extension->safeHtml($input);
 
         self::assertStringNotContainsString($notExpected, $result);
-        self::assertStringContainsString('href="#"', $result);
+        self::assertStringNotContainsString('href=', $result);
     }
 
     public static function javascriptUrlProvider(): array

@@ -4,21 +4,36 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
 use Twig\Attribute\AsTwigFilter;
 use Twig\Markup;
 
-final class SafeHtmlExtension
+final readonly class SafeHtmlExtension
 {
+    private HtmlSanitizer $sanitizer;
+
+    public function __construct()
+    {
+        $config = new HtmlSanitizerConfig()
+            ->allowElement('b')
+            ->allowElement('i')
+            ->allowElement('em')
+            ->allowElement('strong')
+            ->allowElement('u')
+            ->allowElement('br')
+            ->allowElement('p')
+            ->allowElement('span')
+            ->allowElement('div')
+            ->allowElement('a', ['href', 'target']);
+
+        $this->sanitizer = new HtmlSanitizer($config);
+    }
+
     #[AsTwigFilter(name: 'safe_html', isSafe: ['html'])]
     public function safeHtml(string $content): Markup
     {
-        // Server-side basic HTML sanitization for security
-        // The client-side DOMPurify will provide additional sanitization
-        $allowedTags = '<b><i><em><strong><u><br><p><span><div><a>';
-        $cleaned = strip_tags($content, $allowedTags);
-
-        // Remove any javascript: or data: URLs
-        $cleaned = preg_replace('/href\s*=\s*["\']?\s*(?:javascript|data):/i', 'href="#"', $cleaned);
+        $cleaned = $this->sanitizer->sanitize($content);
 
         // Add a data attribute to indicate this content should be processed by DOMPurify
         // Use span with inherit class to properly inherit text styling (including dark mode colors)
