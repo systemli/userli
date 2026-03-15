@@ -45,3 +45,22 @@ Feature: Admin (OpenPGP Keys)
     Then the response status code should be 200
     And I should see "louis@example.org"
     And I should not see "user@example.org"
+
+  @openpgp-keys
+  Scenario: Domain admin can access OpenPGP keys page scoped to their domain
+    Given the following Domain exists:
+      | name        |
+      | example.com |
+    And the following User exists:
+      | email              | password | roles             |
+      | domain@example.com | asdasd   | ROLE_DOMAIN_ADMIN |
+    And the following OpenPgpKey exists:
+      | email              | keyId            | keyFingerprint                           | keyData    |
+      | user@example.org   | AAAA1111BBBB2222 | AAAA1111BBBB2222CCCC3333DDDD4444EEEE5555 | dummydata1 |
+      | domain@example.com | CCCC3333DDDD4444 | CCCC3333DDDD4444EEEE5555FFFF6666AAAA1111 | dummydata2 |
+    And I am authenticated as "domain@example.com"
+    When I am on "/admin/openpgp-keys/"
+
+    Then the response status code should be 200
+    And I should see "domain@example.com"
+    And I should not see "user@example.org"
