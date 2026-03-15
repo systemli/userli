@@ -210,7 +210,6 @@ welcome:
   lead: Du hast erfolgreich ein E-Mail-Konto bei uns erstellt! Wie geht es weiter?
   next-button: Zur Übersicht
   text: >
-    <h3>Los geht's</h3>
     Im Web findest du Anleitungen zur Einrichtung deines E-Mail-Kontos mit verschiedenen Client-Programmen.
     In einer Woche bekommst du drei Einladungscodes gutgeschrieben, die du unter <a href="%app_url%">%app_url%</a> abrufen kannst.
     Diese kannst du an Freundinnen und Freunde weiterleiten und sie so zu %project_name% einladen.
