@@ -214,3 +214,37 @@ Feature: Admin (Aliases)
     When I request "POST /admin/aliases/delete/__alias_id__"
 
     Then the response status code should be 404
+
+  @aliases
+  Scenario: Domain admin can see cross-domain alias where source is in their domain
+    Given the following Alias exists:
+      | user_id | source                  | destination       |
+      | 2       | crossdomain@example.com | user@example.org  |
+    And I am authenticated as "domain@example.com"
+    When I am on "/admin/aliases/"
+
+    Then the response status code should be 200
+    And I should see "crossdomain@example.com"
+
+  @aliases
+  Scenario: Domain admin cannot see cross-domain alias where source is in another domain
+    And the following Alias exists:
+      | user_id | source            | destination        |
+      | 3       | alias@example.org | domain@example.com |
+    And I am authenticated as "domain@example.com"
+    When I am on "/admin/aliases/"
+
+    Then the response status code should be 200
+    And I should not see "alias@example.org"
+
+  @aliases
+  Scenario: Domain admin is redirected with error when editing cross-domain alias
+    Given the following Alias exists:
+      | user_id | source            | destination       |
+      | 2       | alias@example.com | user@example.org  |
+    And I am authenticated as "domain@example.com"
+    When I am on "/admin/aliases/"
+    And I follow "Edit"
+
+    Then I should be on "/admin/aliases/"
+    And I should see "This alias cannot be edited because its user belongs to another domain"
