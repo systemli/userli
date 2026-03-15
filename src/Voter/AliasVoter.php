@@ -48,14 +48,10 @@ final class AliasVoter extends Voter
             return false;
         }
 
-        // Admins and domain admins can delete any alias (DomainVoter handles domain scoping)
-        if ($this->security->isGranted(Roles::ADMIN) || $this->security->isGranted(Roles::DOMAIN_ADMIN)) {
-            return true;
-        }
-
-        // Regular users can only delete their own random aliases
         $isOwner = $alias->getUser() === $user;
+        $canDeleteRandom = $alias->isRandom() && $isOwner;
+        $canDeleteAsAdmin = $isOwner && ($this->security->isGranted(Roles::ADMIN) || $this->security->isGranted(Roles::DOMAIN_ADMIN));
 
-        return $alias->isRandom() && $isOwner;
+        return $canDeleteRandom || $canDeleteAsAdmin;
     }
 }

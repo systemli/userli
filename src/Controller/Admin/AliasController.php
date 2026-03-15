@@ -142,7 +142,7 @@ final class AliasController extends AbstractController
             return $this->redirectToRoute('admin_alias_index');
         }
 
-        $this->denyAccessUnlessGranted('delete', $alias);
+        $this->denyAccessUnlessGranted('view', $alias);
 
         if (!$this->isCsrfTokenValid('delete_alias_'.$alias->getId(), $request->request->get('_token'))) {
             return $this->redirectToRoute('admin_alias_index');

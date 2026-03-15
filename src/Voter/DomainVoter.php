@@ -54,7 +54,7 @@ final class DomainVoter extends Voter
         }
 
         if ($attribute === self::DELETE) {
-            return $subject instanceof User || $subject instanceof Alias;
+            return $subject instanceof User;
         }
 
         return $subject instanceof User || $subject instanceof Alias;
@@ -129,7 +129,7 @@ final class DomainVoter extends Voter
     private function voteOnAlias(string $attribute, Alias $alias, Domain $currentDomain): bool
     {
         return match ($attribute) {
-            self::VIEW, self::DELETE => $currentDomain->getId() === $alias->getDomain()?->getId(),
+            self::VIEW => $currentDomain->getId() === $alias->getDomain()?->getId(),
             self::CREATE, self::EDIT => $currentDomain->getId() === $this->domainGuesser->guess($alias->getSource())?->getId(),
             default => false,
         };

@@ -50,10 +50,18 @@ class DomainVoterTest extends TestCase
     {
         $voter = $this->createVoter(isAdmin: true);
 
-        foreach ([DomainVoter::CREATE, DomainVoter::VIEW, DomainVoter::EDIT, DomainVoter::DELETE] as $attribute) {
+        foreach ([DomainVoter::CREATE, DomainVoter::VIEW, DomainVoter::EDIT] as $attribute) {
             $result = $voter->vote($this->createToken(), new Alias(), [$attribute]);
             self::assertNotSame(VoterInterface::ACCESS_ABSTAIN, $result, sprintf('Voter should not abstain for attribute "%s" on Alias', $attribute));
         }
+    }
+
+    public function testAbstainsOnAliasForDelete(): void
+    {
+        $voter = $this->createVoter(isAdmin: true);
+
+        $result = $voter->vote($this->createToken(), new Alias(), [DomainVoter::DELETE]);
+        self::assertSame(VoterInterface::ACCESS_ABSTAIN, $result, 'Voter should abstain for attribute "delete" on Alias');
     }
 
     public function testSupportsUserAdminModelForCreateAndEdit(): void
@@ -401,24 +409,24 @@ class DomainVoterTest extends TestCase
         self::assertSame(VoterInterface::ACCESS_DENIED, $result);
     }
 
-    public function testDomainAdminCanDeleteAliasInSameDomain(): void
+    public function testAbstainsOnAliasDeleteForDomainAdminSameDomain(): void
     {
         $voter = $this->createVoter(isDomainAdmin: true);
         $alias = new Alias();
         $alias->setDomain($this->domainA);
 
         $result = $voter->vote($this->createToken($this->domainAdminA), $alias, [DomainVoter::DELETE]);
-        self::assertSame(VoterInterface::ACCESS_GRANTED, $result);
+        self::assertSame(VoterInterface::ACCESS_ABSTAIN, $result);
     }
 
-    public function testDomainAdminCannotDeleteAliasInDifferentDomain(): void
+    public function testAbstainsOnAliasDeleteForDomainAdminDifferentDomain(): void
     {
         $voter = $this->createVoter(isDomainAdmin: true);
         $alias = new Alias();
         $alias->setDomain($this->domainB);
 
         $result = $voter->vote($this->createToken($this->domainAdminA), $alias, [DomainVoter::DELETE]);
-        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
+        self::assertSame(VoterInterface::ACCESS_ABSTAIN, $result);
     }
 
     // --- Domain admin: create alias via AliasAdminModel ---
@@ -455,14 +463,14 @@ class DomainVoterTest extends TestCase
         self::assertSame(VoterInterface::ACCESS_GRANTED, $result);
     }
 
-    public function testFullAdminCanDeleteAlias(): void
+    public function testAbstainsOnAliasDeleteForFullAdmin(): void
     {
         $voter = $this->createVoter(isAdmin: true);
         $alias = new Alias();
         $alias->setDomain($this->domainA);
 
         $result = $voter->vote($this->createToken(), $alias, [DomainVoter::DELETE]);
-        self::assertSame(VoterInterface::ACCESS_GRANTED, $result);
+        self::assertSame(VoterInterface::ACCESS_ABSTAIN, $result);
     }
 
     public function testFullAdminCanCreateViaAliasModel(): void
