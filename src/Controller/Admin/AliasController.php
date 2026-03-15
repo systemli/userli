@@ -63,6 +63,8 @@ final class AliasController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->denyAccessUnlessGranted('create', $model);
+
             try {
                 $this->manager->create($model);
                 $this->addFlash('success', 'admin.alias.create.success');
@@ -84,6 +86,8 @@ final class AliasController extends AbstractController
         if ($alias->isDeleted()) {
             throw $this->createNotFoundException();
         }
+
+        $this->denyAccessUnlessGranted('view', $alias);
 
         $isAdmin = $this->isGranted(Roles::ADMIN);
         $model = AliasAdminModel::fromAlias($alias);
@@ -107,6 +111,8 @@ final class AliasController extends AbstractController
         if ($alias->isDeleted()) {
             throw $this->createNotFoundException();
         }
+
+        $this->denyAccessUnlessGranted('edit', $alias);
 
         $isAdmin = $this->isGranted(Roles::ADMIN);
         $model = new AliasAdminModel();
@@ -135,6 +141,8 @@ final class AliasController extends AbstractController
         if ($alias->isDeleted()) {
             return $this->redirectToRoute('admin_alias_index');
         }
+
+        $this->denyAccessUnlessGranted('view', $alias);
 
         if (!$this->isCsrfTokenValid('delete_alias_'.$alias->getId(), $request->request->get('_token'))) {
             return $this->redirectToRoute('admin_alias_index');

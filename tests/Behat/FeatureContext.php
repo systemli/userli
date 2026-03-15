@@ -479,6 +479,7 @@ class FeatureContext extends MinkContext
         $client = $driver->getClient();
 
         $method = strtoupper($httpMethod);
+        $path = $this->replacePlaceholders($path);
         $formParams = $this->requestParams;
         $headers = [
             'Content-Type' => 'application/x-www-form-urlencoded',
@@ -505,6 +506,22 @@ class FeatureContext extends MinkContext
         }
 
         $value = PropertyAccess::createPropertyAccessor()->getValue($user, $key);
+
+        $this->setPlaceholder($name, $value);
+    }
+
+    /**
+     * @When /^I set the placeholder "([^"]*)" with property "([^"]*)" for alias "([^"]*)"$/
+     */
+    public function iSetPlaceholderForAlias(string $name, string $key, string $source): void
+    {
+        $alias = $this->manager->getRepository(Alias::class)->findOneBy(['source' => $source]);
+
+        if (!$alias) {
+            throw new RuntimeException(sprintf('Alias with source "%s" not found', $source));
+        }
+
+        $value = PropertyAccess::createPropertyAccessor()->getValue($alias, $key);
 
         $this->setPlaceholder($name, $value);
     }
