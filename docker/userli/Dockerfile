@@ -1,9 +1,16 @@
 FROM docker.io/composer:2.8.12 AS composer
 
+FROM docker.io/node:22-slim AS node
+
 FROM docker.io/php:8.4-cli AS builder
 
+COPY --from=node /usr/local/bin/node /usr/local/bin/
+COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+RUN ln -sf /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm && \
+    ln -sf /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
+
 RUN apt-get update && \
-    apt-get install -y libicu-dev libzip-dev nodejs npm zip
+    apt-get install -y libicu-dev libzip-dev zip
 RUN docker-php-ext-configure intl && \
     docker-php-ext-install -j$(nproc) intl zip
 
