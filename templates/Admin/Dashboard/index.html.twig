@@ -24,6 +24,14 @@
                 } %}
 
                 {% include 'Admin/Dashboard/_stat_card.html.twig' with {
+                    icon: 'heroicons:user-plus',
+                    icon_color: 'green',
+                    label_key: 'admin.dashboard.stats.recent_users',
+                    value: stats.recent_users,
+                    route: 'admin_user_index',
+                } %}
+
+                {% include 'Admin/Dashboard/_stat_card.html.twig' with {
                     icon: 'heroicons:at-symbol',
                     icon_color: 'indigo',
                     label_key: 'admin.dashboard.stats.aliases',
@@ -31,15 +39,15 @@
                     route: 'admin_alias_index',
                 } %}
 
-                {% include 'Admin/Dashboard/_stat_card.html.twig' with {
-                    icon: 'heroicons:globe-alt',
-                    icon_color: 'purple',
-                    label_key: 'admin.dashboard.stats.domains',
-                    value: stats.domains,
-                    route: is_granted('ROLE_ADMIN') ? 'admin_domain_index' : null,
-                } %}
-
                 {% if is_granted('ROLE_ADMIN') %}
+                    {% include 'Admin/Dashboard/_stat_card.html.twig' with {
+                        icon: 'heroicons:globe-alt',
+                        icon_color: 'purple',
+                        label_key: 'admin.dashboard.stats.domains',
+                        value: stats.domains,
+                        route: 'admin_domain_index',
+                    } %}
+
                     {% include 'Admin/Dashboard/_stat_card.html.twig' with {
                         icon: 'heroicons:ticket',
                         icon_color: 'amber',
