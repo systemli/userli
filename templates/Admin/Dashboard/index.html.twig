@@ -24,6 +24,14 @@
                 } %}
 
                 {% include 'Admin/Dashboard/_stat_card.html.twig' with {
+                    icon: 'heroicons:user-plus',
+                    icon_color: 'green',
+                    label_key: 'admin.dashboard.stats.recent_users',
+                    value: stats.recent_users,
+                    route: 'admin_user_index',
+                } %}
+
+                {% include 'Admin/Dashboard/_stat_card.html.twig' with {
                     icon: 'heroicons:at-symbol',
                     icon_color: 'indigo',
                     label_key: 'admin.dashboard.stats.aliases',

@@ -30,6 +30,7 @@ final class DashboardController extends AbstractController
     {
         $stats = [
             'users' => $this->userRepository->countUsers(),
+            'recent_users' => $this->userRepository->countRecentUsers(),
             'aliases' => $this->aliasRepository->countByFilters(),
             'openpgp_keys' => $this->openPgpKeyRepository->countKeys(),
         ];
