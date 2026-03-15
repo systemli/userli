@@ -6,15 +6,75 @@ on:
     branches:
       - main
 
+concurrency:
+  group: integration-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-24.04
-    name: PHPUnit & Behat
+    name: Code Style
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # v2
         with:
-          fetch-depth: 0
+          php-version: "8.4"
+          extensions: openssl, sodium
+          coverage: none
+          tools: composer
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache composer dependencies
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-scripts
+
+      - name: Check Code Style
+        run: composer cs-check
+
+  vitest:
+    runs-on: ubuntu-24.04
+    name: Vitest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Setup Node
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        with:
+          node-version-file: ".nvmrc"
+          cache: "yarn"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Vitest
+        run: yarn test:coverage
+
+      - name: Upload JS coverage
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        with:
+          name: coverage-js
+          path: build/coverage-js/
+          retention-days: 1
+
+  phpunit:
+    runs-on: ubuntu-24.04
+    name: PHPUnit
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # v2
@@ -44,8 +104,60 @@ jobs:
       - name: Install dependencies
         run: composer install --no-scripts
 
-      - name: Check Code Style
-        run: composer cs-check
+      - name: Prepare Database Schema
+        run: bin/console doctrine:schema:create --env=test
+
+      - name: Prepare Assets
+        run: |
+          yarn install --frozen-lockfile
+          yarn encore dev
+
+      - name: PHPUnit
+        run: bin/phpunit --coverage-clover build/clover-phpunit.xml --log-junit build/result-phpunit.xml
+
+      - name: Upload PHPUnit coverage
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        with:
+          name: coverage-phpunit
+          path: |
+            build/clover-phpunit.xml
+            build/result-phpunit.xml
+          retention-days: 1
+
+  behat:
+    runs-on: ubuntu-24.04
+    name: Behat
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # v2
+        with:
+          php-version: "8.4"
+          extensions: openssl, sodium
+          coverage: pcov
+          tools: composer
+
+      - name: Setup Node
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        with:
+          node-version-file: ".nvmrc"
+          cache: "yarn"
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache composer dependencies
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-scripts
 
       - name: Prepare Database Schema
         run: bin/console doctrine:schema:create --env=test
@@ -55,23 +167,52 @@ jobs:
           yarn install --frozen-lockfile
           yarn encore dev
 
-      - name: Vitest
-        run: yarn test:coverage
-
-      - name: PHPUnit
-        run: |
-          bin/phpunit --coverage-clover build/clover-phpunit.xml --log-junit build/result-phpunit.xml
+      - name: Clear Cache
+        run: bin/console cache:clear --env=test
 
       - name: Behat
-        run: |
-          bin/console cache:clear --env=test
-          bin/behat --format progress
+        run: bin/behat --format progress
         env:
           PANTHER_CHROME_ARGUMENTS: '--disable-gpu --headless --no-sandbox --disable-dev-shm-usage'
           PANTHER_NO_SANDBOX: 1
 
+      - name: Upload Behat coverage
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        with:
+          name: coverage-behat
+          path: build/clover-behat.xml
+          retention-days: 1
+
+  sonarcloud:
+    runs-on: ubuntu-24.04
+    name: SonarCloud
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    needs: [lint, vitest, phpunit, behat]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 0
+
+      - name: Download JS coverage
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: coverage-js
+          path: build/coverage-js/
+
+      - name: Download PHPUnit coverage
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: coverage-phpunit
+          path: build/
+
+      - name: Download Behat coverage
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
+        with:
+          name: coverage-behat
+          path: build/
+
       - name: SonarCloud Scan
-        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
         uses: sonarsource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9 # v7.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -81,10 +222,7 @@ jobs:
     runs-on: ubuntu-24.04
     name: Build & Push Docker Image
     if: github.actor != 'dependabot[bot]'
-    needs: test
-    concurrency:
-      group: docker-build-push-${{ github.head_ref || github.ref }}
-      cancel-in-progress: true
+    needs: [lint, vitest, phpunit, behat]
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
