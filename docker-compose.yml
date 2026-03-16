@@ -22,7 +22,7 @@ services:
     ports:
       - 8000:80
     volumes:
-      - ./docker/userli/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - ./public:/var/www/html/public:ro
     depends_on:
       - userli
