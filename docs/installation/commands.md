@@ -5,23 +5,19 @@ This app brings custom commands:
 ```text
 app:admin:password                      Set password of admin user
 app:alias:delete                        Delete an alias
+app:api-token:create                    Create a new API token with specified name and scopes
+app:api-token:delete                    Delete an API token by its plain token
 app:domain:delete                       Delete a domain and all associated data (users, aliases, vouchers)
 app:metrics                             Global Metrics for Userli
-app:openpgp:delete-key                  Delete OpenPGP key for email
-app:openpgp:import-key                  Import OpenPGP key for email
 app:openpgp:show-key                    Show OpenPGP key of email
-app:report:weekly                       Send weekly report to all admins
 app:users:delete                        Delete a user
-app:users:list                          List users
 app:users:mailcrypt                     Get MailCrypt values for user
 app:users:quota                         Get quota of user if set
 app:users:registration:mail             Send a registration mail to a user
-app:users:remove                        Removes all mailboxes from deleted users
 app:users:reset                         Reset a user
-app:users:restore                       Reset a user
+app:users:restore                       Restore a user
 app:voucher:count                       Get count of vouchers for a specific user
 app:voucher:create                      Create voucher for a specific user
-app:voucher:unlink                      Remove connection between vouchers and accounts after 3 months
 ```
     
 Get more information about each command by running:
