@@ -104,9 +104,13 @@ class ApiTokenDeleteCommandTest extends TestCase
 
     public function testCommandConfiguration(): void
     {
-        self::assertEquals('app:api-token:delete', $this->command->getName());
+        $application = new Application();
+        $application->addCommand($this->command);
+        $command = $application->find('app:api-token:delete');
 
-        $definition = $this->command->getDefinition();
+        self::assertEquals('app:api-token:delete', $command->getName());
+
+        $definition = $command->getDefinition();
         self::assertFalse($definition->hasArgument('token'));
         self::assertTrue($definition->hasOption('token'));
     }

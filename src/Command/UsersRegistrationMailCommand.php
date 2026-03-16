@@ -4,49 +4,38 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Entity\User;
 use App\Mail\WelcomeMailer;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserRepository;
 use Exception;
-use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 #[AsCommand(name: 'app:users:registration:mail', description: 'Send a registration mail to a user')]
-final class UsersRegistrationMailCommand extends Command
+final readonly class UsersRegistrationMailCommand
 {
     public function __construct(
-        private readonly EntityManagerInterface $manager,
-        private readonly WelcomeMailer $welcomeMailer,
+        private UserRepository $userRepository,
+        private WelcomeMailer $welcomeMailer,
         #[Autowire('kernel.default_locale')]
-        private readonly string $defaultLocale,
+        private string $defaultLocale,
     ) {
-        parent::__construct();
-    }
-
-    #[Override]
-    protected function configure(): void
-    {
-        $this
-            ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User who get the voucher(s)')
-            ->addOption('locale', 'l', InputOption::VALUE_OPTIONAL, 'the locale', $this->defaultLocale);
     }
 
     /**
      * @throws Exception
      */
-    #[Override]
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $email = $input->getOption('user');
-        $locale = $input->getOption('locale');
+    public function __invoke(
+        #[Option(name: 'user', description: 'User who get the voucher(s)', shortcut: 'u')]
+        ?string $email = null,
+        #[Option(description: 'the locale', shortcut: 'l')]
+        ?string $locale = null,
+    ): int {
+        $locale ??= $this->defaultLocale;
 
-        if (empty($email) || null === $user = $this->manager->getRepository(User::class)->findByEmail($email)) {
+        if (empty($email) || null === $user = $this->userRepository->findByEmail($email)) {
             throw new UserNotFoundException(sprintf('User with email %s not found!', $email));
         }
 

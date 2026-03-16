@@ -7,9 +7,7 @@ namespace App\Tests\Command;
 use App\Command\UsersDeleteCommand;
 use App\Entity\User;
 use App\Handler\DeleteHandler;
-use App\Handler\PasswordStrengthHandler;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -27,12 +25,9 @@ class UsersDeleteCommandTest extends TestCase
         $repository->method('findByEmail')
             ->willReturn($user);
 
-        $manager = $this->createStub(EntityManagerInterface::class);
-        $manager->method('getRepository')->willReturn($repository);
-
         $deleteHandler = $this->createStub(DeleteHandler::class);
 
-        $this->command = new UsersDeleteCommand($manager, new PasswordStrengthHandler(), $deleteHandler);
+        $this->command = new UsersDeleteCommand($repository, $deleteHandler);
     }
 
     public function testExecute(): void
@@ -68,5 +63,20 @@ class UsersDeleteCommandTest extends TestCase
 
         self::assertSame(Command::FAILURE, $exitCode);
         self::assertStringContainsString('User with email', $commandTester->getDisplay());
+    }
+
+    public function testCommandConfiguration(): void
+    {
+        $application = new Application();
+        $application->addCommand($this->command);
+        $command = $application->find('app:users:delete');
+
+        self::assertEquals('app:users:delete', $command->getName());
+        self::assertEquals('Delete a user', $command->getDescription());
+
+        $definition = $command->getDefinition();
+        self::assertTrue($definition->hasOption('user'));
+        self::assertEquals('u', $definition->getOption('user')->getShortcut());
+        self::assertTrue($definition->hasOption('dry-run'));
     }
 }

@@ -6,41 +6,30 @@ namespace App\Command;
 
 use App\Repository\DomainRepository;
 use App\Service\DomainManager;
-use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:domain:delete',
     description: 'Delete a domain and all associated data (users, aliases, vouchers)'
 )]
-final class DomainDeleteCommand extends Command
+final readonly class DomainDeleteCommand
 {
     public function __construct(
-        private readonly DomainRepository $repository,
-        private readonly DomainManager $manager,
+        private DomainRepository $repository,
+        private DomainManager $manager,
     ) {
-        parent::__construct();
     }
 
-    #[Override]
-    protected function configure(): void
-    {
-        $this
-            ->addOption('domain', 'd', InputOption::VALUE_REQUIRED, 'The domain name to delete')
-            ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Show what would be deleted without actually deleting');
-    }
-
-    #[Override]
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $io = new SymfonyStyle($input, $output);
-
-        $domainName = $input->getOption('domain');
+    public function __invoke(
+        #[Option(name: 'domain', description: 'The domain name to delete', shortcut: 'd')]
+        ?string $domainName = null,
+        #[Option(name: 'dry-run', description: 'Show what would be deleted without actually deleting')]
+        bool $dryRun = false,
+        ?SymfonyStyle $io = null,
+    ): int {
         if (empty($domainName)) {
             $io->error('Please provide a domain name with --domain.');
 
@@ -56,7 +45,7 @@ final class DomainDeleteCommand extends Command
 
         $stats = $this->manager->getDomainStats($domain);
 
-        if ($input->getOption('dry-run')) {
+        if ($dryRun) {
             $io->note(sprintf("Would delete domain '%s' with:", $domainName));
             $io->listing([
                 sprintf('%d users', $stats['users']),

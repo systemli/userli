@@ -5,38 +5,23 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Service\OpenPgpKeyManager;
-use Override;
+use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:openpgp:show-key', description: 'Show OpenPGP key of email')]
-final class OpenPgpShowKeyCommand extends Command
+final readonly class OpenPgpShowKeyCommand
 {
-    public function __construct(private readonly OpenPgpKeyManager $manager)
+    public function __construct(private OpenPgpKeyManager $manager)
     {
-        parent::__construct();
     }
 
-    #[Override]
-    protected function configure(): void
-    {
-        $this
-            ->addArgument(
-                'email',
-                InputOption::VALUE_REQUIRED,
-                'email address of the OpenPGP key');
-    }
-
-    #[Override]
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        // parse arguments
-        $email = $input->getArgument('email');
-
-        // Check if OpenPGP key exists
+    public function __invoke(
+        #[Argument(description: 'email address of the OpenPGP key')]
+        string $email,
+        OutputInterface $output,
+    ): int {
         $openPgpKey = $this->manager->getKey($email);
         if (null === $openPgpKey) {
             $output->writeln(sprintf('No OpenPGP key found for email %s', $email));

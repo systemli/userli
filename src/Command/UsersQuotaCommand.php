@@ -4,24 +4,31 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use Override;
+use App\Repository\UserRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:users:quota', description: 'Get quota of user if set')]
-final class UsersQuotaCommand extends AbstractUsersCommand
+final readonly class UsersQuotaCommand
 {
-    #[Override]
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $user = $this->getUser($input, $output);
-        if (null === $user) {
+    public function __construct(
+        private UserRepository $userRepository,
+    ) {
+    }
+
+    public function __invoke(
+        #[Option(name: 'user', description: 'User to act upon', shortcut: 'u')]
+        ?string $email = null,
+        ?OutputInterface $output = null,
+    ): int {
+        if (empty($email) || null === $user = $this->userRepository->findByEmail($email)) {
+            $output->writeln(sprintf('<error>User with email %s not found!</error>', $email));
+
             return Command::FAILURE;
         }
 
-        // get quota
         $quota = $user->getQuota();
         if (null === $quota) {
             return Command::SUCCESS;

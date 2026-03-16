@@ -11,6 +11,7 @@ use App\Repository\OpenPgpKeyRepository;
 use App\Repository\UserRepository;
 use App\Repository\VoucherRepository;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class MetricsCommandTest extends TestCase
@@ -55,5 +56,27 @@ class MetricsCommandTest extends TestCase
         self::assertStringContainsString('userli_domains_total 6', $output);
         self::assertStringContainsString('userli_aliases_total 4', $output);
         self::assertStringContainsString('userli_openpgpkeys_total 2', $output);
+    }
+
+    public function testCommandConfiguration(): void
+    {
+        $command = new MetricsCommand(
+            $this->createStub(UserRepository::class),
+            $this->createStub(VoucherRepository::class),
+            $this->createStub(DomainRepository::class),
+            $this->createStub(AliasRepository::class),
+            $this->createStub(OpenPgpKeyRepository::class),
+        );
+
+        $application = new Application();
+        $application->addCommand($command);
+        $wrappedCommand = $application->find('app:metrics');
+
+        self::assertEquals('app:metrics', $wrappedCommand->getName());
+        self::assertEquals('Global Metrics for Userli', $wrappedCommand->getDescription());
+
+        $definition = $wrappedCommand->getDefinition();
+        self::assertEmpty($definition->getArguments());
+        self::assertEmpty($definition->getOptions());
     }
 }

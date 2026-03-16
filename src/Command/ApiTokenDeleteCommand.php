@@ -6,40 +6,29 @@ namespace App\Command;
 
 use App\Service\ApiTokenManager;
 use Exception;
-use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:api-token:delete',
     description: 'Delete an API token by its plain token'
 )]
-final class ApiTokenDeleteCommand extends Command
+final readonly class ApiTokenDeleteCommand
 {
     public function __construct(
-        private readonly ApiTokenManager $apiTokenManager,
+        private ApiTokenManager $apiTokenManager,
     ) {
-        parent::__construct();
     }
 
-    #[Override]
-    protected function configure(): void
-    {
-        $this
-            ->addOption('token', 't', InputOption::VALUE_REQUIRED, 'The plain API token to delete');
-    }
-
-    #[Override]
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $io = new SymfonyStyle($input, $output);
-
+    public function __invoke(
+        #[Option(description: 'The plain API token to delete', shortcut: 't')]
+        ?string $token = null,
+        ?SymfonyStyle $io = null,
+    ): int {
         try {
-            $plainToken = (string) $input->getOption('token');
+            $plainToken = (string) $token;
             $apiToken = $this->apiTokenManager->findOne($plainToken);
 
             if ($apiToken === null) {

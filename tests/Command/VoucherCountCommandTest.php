@@ -6,11 +6,8 @@ namespace App\Tests\Command;
 
 use App\Command\VoucherCountCommand;
 use App\Entity\User;
-use App\Entity\Voucher;
-use App\Handler\PasswordStrengthHandler;
 use App\Repository\UserRepository;
 use App\Repository\VoucherRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -38,13 +35,7 @@ class VoucherCountCommandTest extends TestCase
                 return [2, 5][$voucherCallCount++];
             });
 
-        $manager = $this->createStub(EntityManagerInterface::class);
-        $manager->method('getRepository')->willReturnMap([
-            [User::class, $userRepository],
-            [Voucher::class, $voucherRepository],
-        ]);
-
-        $this->command = new VoucherCountCommand($manager, new PasswordStrengthHandler());
+        $this->command = new VoucherCountCommand($userRepository, $voucherRepository);
     }
 
     public function testExecuteWithUnknownUser(): void
@@ -82,5 +73,20 @@ class VoucherCountCommandTest extends TestCase
         self::assertStringContainsString('Voucher count for user user@example.org', $output);
         self::assertStringContainsString('Used: 2', $output);
         self::assertStringContainsString('Unused: 5', $output);
+    }
+
+    public function testCommandConfiguration(): void
+    {
+        $application = new Application();
+        $application->addCommand($this->command);
+        $command = $application->find('app:voucher:count');
+
+        self::assertEquals('app:voucher:count', $command->getName());
+        self::assertEquals('Get count of vouchers for a specific user', $command->getDescription());
+
+        $definition = $command->getDefinition();
+        self::assertTrue($definition->hasOption('user'));
+        self::assertEquals('u', $definition->getOption('user')->getShortcut());
+        self::assertFalse($definition->hasOption('dry-run'));
     }
 }

@@ -5,48 +5,39 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Helper\AdminPasswordUpdater;
-use Override;
+use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[AsCommand(name: 'app:admin:password', description: 'Set password of admin user', help: <<<'TXT'
-Set password of admin user. Create primary user and domain if not created before.
-TXT)]
-final class AdminPasswordCommand extends Command
+#[AsCommand(
+    name: 'app:admin:password',
+    description: 'Set password of admin user',
+    help: 'Set password of admin user. Create primary user and domain if do not exist.'
+)]
+final readonly class AdminPasswordCommand
 {
-    /**
-     * AdminPasswordCommand constructor.
-     */
-    public function __construct(private readonly AdminPasswordUpdater $updater)
+    public function __construct(private AdminPasswordUpdater $updater)
     {
-        parent::__construct();
     }
 
-    #[Override]
-    protected function configure(): void
-    {
-        $this
-            ->addArgument('password', InputArgument::OPTIONAL, 'Admin password');
-    }
-
-    #[Override]
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $password = $input->getArgument('password');
+    public function __invoke(
+        #[Argument(description: 'Admin password')]
+        ?string $password = null,
+        ?InputInterface $input = null,
+        ?OutputInterface $output = null,
+    ): int {
         if (null === $password) {
-            $helper = $this->getHelper('question');
-            assert($helper instanceof QuestionHelper);
+            $io = new SymfonyStyle($input, $output);
             $question = new Question('Please enter new admin password:');
-            $password = $helper->ask($input, $output, $question);
+            $password = $io->askQuestion($question);
         }
 
         $this->updater->updateAdminPassword($password);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

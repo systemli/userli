@@ -9,10 +9,8 @@ use App\Repository\DomainRepository;
 use App\Repository\OpenPgpKeyRepository;
 use App\Repository\UserRepository;
 use App\Repository\VoucherRepository;
-use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -26,20 +24,18 @@ use Symfony\Component\Console\Output\OutputInterface;
  * * * * * * php /path/to/bin/console app:metrics | sponge /path/to/metrics/userli.prom
  */
 #[AsCommand(name: 'app:metrics', description: 'Global Metrics for Userli')]
-final class MetricsCommand extends Command
+final readonly class MetricsCommand
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
-        private readonly VoucherRepository $voucherRepository,
-        private readonly DomainRepository $domainRepository,
-        private readonly AliasRepository $aliasRepository,
-        private readonly OpenPgpKeyRepository $openPgpKeyRepository,
+        private UserRepository $userRepository,
+        private VoucherRepository $voucherRepository,
+        private DomainRepository $domainRepository,
+        private AliasRepository $aliasRepository,
+        private OpenPgpKeyRepository $openPgpKeyRepository,
     ) {
-        parent::__construct();
     }
 
-    #[Override]
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function __invoke(OutputInterface $output): int
     {
         $activeUsersTotal = $this->userRepository->countUsers();
         $deletedUsersTotal = $this->userRepository->countDeletedUsers();
@@ -94,6 +90,6 @@ final class MetricsCommand extends Command
         $output->writeln('# TYPE userli_openpgpkeys_total gauge');
         $output->writeln('userli_openpgpkeys_total '.$openPgpKeysTotal);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

@@ -6,11 +6,8 @@ namespace App\Tests\Command;
 
 use App\Command\UsersQuotaCommand;
 use App\Entity\User;
-use App\Handler\PasswordStrengthHandler;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -19,18 +16,13 @@ use Symfony\Component\Console\Tester\CommandTester;
 class UsersQuotaCommandTest extends TestCase
 {
     private UsersQuotaCommand $command;
-    private Stub $entityManager;
     private MockObject $userRepository;
 
     protected function setUp(): void
     {
-        $this->entityManager = $this->createStub(EntityManagerInterface::class);
         $this->userRepository = $this->createMock(UserRepository::class);
 
-        $this->entityManager->method('getRepository')
-            ->willReturn($this->userRepository);
-
-        $this->command = new UsersQuotaCommand($this->entityManager, new PasswordStrengthHandler());
+        $this->command = new UsersQuotaCommand($this->userRepository);
     }
 
     public function testExecuteWithQuotaSet(): void
@@ -112,5 +104,20 @@ class UsersQuotaCommandTest extends TestCase
 
         self::assertSame(Command::FAILURE, $exitCode);
         self::assertStringContainsString('User with email', $commandTester->getDisplay());
+    }
+
+    public function testCommandConfiguration(): void
+    {
+        $application = new Application();
+        $application->addCommand($this->command);
+        $command = $application->find('app:users:quota');
+
+        self::assertEquals('app:users:quota', $command->getName());
+        self::assertEquals('Get quota of user if set', $command->getDescription());
+
+        $definition = $command->getDefinition();
+        self::assertTrue($definition->hasOption('user'));
+        self::assertEquals('u', $definition->getOption('user')->getShortcut());
+        self::assertFalse($definition->hasOption('dry-run'));
     }
 }

@@ -9,12 +9,10 @@ use App\Entity\Domain;
 use App\Entity\User;
 use App\Entity\Voucher;
 use App\Exception\ValidationException;
-use App\Handler\PasswordStrengthHandler;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
 use App\Service\SettingsService;
 use App\Service\VoucherManager;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -39,13 +37,8 @@ class VoucherCreateCommandTest extends TestCase
         $this->domain = new Domain();
         $this->domain->setName('example.org');
 
-        $manager = $this->createStub(EntityManagerInterface::class);
         $this->repository = $this->createStub(UserRepository::class);
         $this->domainRepository = $this->createStub(DomainRepository::class);
-        $manager->method('getRepository')->willReturnMap([
-            [User::class, $this->repository],
-            [Domain::class, $this->domainRepository],
-        ]);
 
         $this->router = $this->createStub(RouterInterface::class);
         $this->voucherManager = $this->createStub(VoucherManager::class);
@@ -56,8 +49,8 @@ class VoucherCreateCommandTest extends TestCase
         $this->router->method('getContext')->willReturn($this->requestContext);
 
         $this->command = new VoucherCreateCommand(
-            $manager,
-            new PasswordStrengthHandler(),
+            $this->repository,
+            $this->domainRepository,
             $this->router,
             $this->voucherManager,
             $this->settingsService
@@ -178,13 +171,8 @@ class VoucherCreateCommandTest extends TestCase
         $user = new User($email);
         $user->setDomain($this->domain);
 
-        $manager = $this->createStub(EntityManagerInterface::class);
         $repository = $this->createMock(UserRepository::class);
         $domainRepository = $this->createStub(DomainRepository::class);
-        $manager->method('getRepository')->willReturnMap([
-            [User::class, $repository],
-            [Domain::class, $domainRepository],
-        ]);
         $settingsService = $this->createMock(SettingsService::class);
         $voucherManager = $this->createMock(VoucherManager::class);
         $requestContext = $this->createMock(RequestContext::class);
@@ -212,7 +200,7 @@ class VoucherCreateCommandTest extends TestCase
             ->with($user, $this->domain)
             ->willReturn($voucher);
 
-        $command = new VoucherCreateCommand($manager, new PasswordStrengthHandler(), $router, $voucherManager, $settingsService);
+        $command = new VoucherCreateCommand($repository, $domainRepository, $router, $voucherManager, $settingsService);
 
         $application = new Application();
         $application->addCommand($command);
@@ -242,13 +230,8 @@ class VoucherCreateCommandTest extends TestCase
         $user = new User($email);
         $user->setDomain($this->domain);
 
-        $manager = $this->createStub(EntityManagerInterface::class);
         $repository = $this->createMock(UserRepository::class);
         $domainRepository = $this->createStub(DomainRepository::class);
-        $manager->method('getRepository')->willReturnMap([
-            [User::class, $repository],
-            [Domain::class, $domainRepository],
-        ]);
         $settingsService = $this->createMock(SettingsService::class);
         $voucherManager = $this->createMock(VoucherManager::class);
         $requestContext = $this->createMock(RequestContext::class);
@@ -281,7 +264,7 @@ class VoucherCreateCommandTest extends TestCase
             ->with('register_voucher', ['voucher' => $voucherCode])
             ->willReturn($baseUrl.'/register/'.$voucherCode);
 
-        $command = new VoucherCreateCommand($manager, new PasswordStrengthHandler(), $router, $voucherManager, $settingsService);
+        $command = new VoucherCreateCommand($repository, $domainRepository, $router, $voucherManager, $settingsService);
 
         $application = new Application();
         $application->addCommand($command);
@@ -372,5 +355,27 @@ class VoucherCreateCommandTest extends TestCase
 
         self::assertSame(Command::FAILURE, $exitCode);
         self::assertStringContainsString('Domain unknown.org not found', $commandTester->getDisplay());
+    }
+
+    public function testCommandConfiguration(): void
+    {
+        $application = new Application();
+        $application->addCommand($this->command);
+        $command = $application->find('app:voucher:create');
+
+        self::assertEquals('app:voucher:create', $command->getName());
+        self::assertEquals('Create voucher for a specific user', $command->getDescription());
+
+        $definition = $command->getDefinition();
+        self::assertTrue($definition->hasOption('user'));
+        self::assertEquals('u', $definition->getOption('user')->getShortcut());
+        self::assertTrue($definition->hasOption('count'));
+        self::assertEquals('c', $definition->getOption('count')->getShortcut());
+        self::assertTrue($definition->hasOption('print'));
+        self::assertEquals('p', $definition->getOption('print')->getShortcut());
+        self::assertTrue($definition->hasOption('print-links'));
+        self::assertEquals('l', $definition->getOption('print-links')->getShortcut());
+        self::assertTrue($definition->hasOption('domain'));
+        self::assertEquals('d', $definition->getOption('domain')->getShortcut());
     }
 }

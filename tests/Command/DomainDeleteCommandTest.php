@@ -9,6 +9,7 @@ use App\Entity\Domain;
 use App\Repository\DomainRepository;
 use App\Service\DomainManager;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -109,9 +110,13 @@ class DomainDeleteCommandTest extends TestCase
 
         $command = new DomainDeleteCommand($repository, $manager);
 
-        self::assertEquals('app:domain:delete', $command->getName());
+        $application = new Application();
+        $application->addCommand($command);
+        $wrappedCommand = $application->find('app:domain:delete');
 
-        $definition = $command->getDefinition();
+        self::assertEquals('app:domain:delete', $wrappedCommand->getName());
+
+        $definition = $wrappedCommand->getDefinition();
         self::assertTrue($definition->hasOption('domain'));
         self::assertTrue($definition->hasOption('dry-run'));
     }

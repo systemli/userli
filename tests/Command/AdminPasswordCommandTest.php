@@ -32,4 +32,21 @@ class AdminPasswordCommandTest extends TestCase
         $output = $commandTester->getDisplay();
         self::assertStringContainsString('Please enter new admin password', $output);
     }
+
+    public function testCommandConfiguration(): void
+    {
+        $updater = $this->createStub(AdminPasswordUpdater::class);
+        $command = new AdminPasswordCommand($updater);
+
+        $app = new Application();
+        $app->addCommand($command);
+        $wrappedCommand = $app->find('app:admin:password');
+
+        self::assertEquals('app:admin:password', $wrappedCommand->getName());
+        self::assertEquals('Set password of admin user', $wrappedCommand->getDescription());
+
+        $definition = $wrappedCommand->getDefinition();
+        self::assertTrue($definition->hasArgument('password'));
+        self::assertFalse($definition->getArgument('password')->isRequired());
+    }
 }

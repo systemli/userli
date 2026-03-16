@@ -8,6 +8,7 @@ use App\Command\OpenPgpShowKeyCommand;
 use App\Entity\OpenPgpKey;
 use App\Service\OpenPgpKeyManager;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class OpenPgpShowKeyCommandTest extends TestCase
@@ -46,5 +47,19 @@ class OpenPgpShowKeyCommandTest extends TestCase
 
         $output = $commandTester->getDisplay();
         self::assertStringContainsString('No OpenPGP key found for email nonexistent@example.org', $output);
+    }
+
+    public function testCommandConfiguration(): void
+    {
+        $application = new Application();
+        $application->addCommand($this->command);
+        $command = $application->find('app:openpgp:show-key');
+
+        self::assertEquals('app:openpgp:show-key', $command->getName());
+        self::assertEquals('Show OpenPGP key of email', $command->getDescription());
+
+        $definition = $command->getDefinition();
+        self::assertTrue($definition->hasArgument('email'));
+        self::assertTrue($definition->getArgument('email')->isRequired());
     }
 }

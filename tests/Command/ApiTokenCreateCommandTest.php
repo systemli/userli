@@ -209,10 +209,14 @@ class ApiTokenCreateCommandTest extends TestCase
 
     public function testCommandConfiguration(): void
     {
-        self::assertEquals('app:api-token:create', $this->command->getName());
-        self::assertEquals('Create a new API token with specified name and scopes', $this->command->getDescription());
+        $application = new Application();
+        $application->addCommand($this->command);
+        $command = $application->find('app:api-token:create');
 
-        $definition = $this->command->getDefinition();
+        self::assertEquals('app:api-token:create', $command->getName());
+        self::assertEquals('Create a new API token with specified name and scopes', $command->getDescription());
+
+        $definition = $command->getDefinition();
 
         // Arguments: none required anymore for name
         self::assertFalse($definition->hasArgument('name'));
