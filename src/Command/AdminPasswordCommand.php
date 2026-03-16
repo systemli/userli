@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Exception\PasswordMismatchException;
+use App\Exception\PasswordPolicyException;
 use App\Helper\AdminPasswordUpdater;
+use App\Service\ConsolePasswordHelper;
 use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:admin:password',
@@ -20,20 +21,28 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 final readonly class AdminPasswordCommand
 {
-    public function __construct(private AdminPasswordUpdater $updater)
-    {
+    public function __construct(
+        private AdminPasswordUpdater $updater,
+        private ConsolePasswordHelper $consolePasswordHelper,
+    ) {
     }
 
     public function __invoke(
-        #[Argument(description: 'Admin password')]
+        #[Argument(description: 'Admin password (omit for interactive prompt)')]
         ?string $password = null,
         ?InputInterface $input = null,
         ?OutputInterface $output = null,
     ): int {
-        if (null === $password) {
-            $io = new SymfonyStyle($input, $output);
-            $question = new Question('Please enter new admin password:');
-            $password = $io->askQuestion($question);
+        try {
+            if (null !== $password) {
+                $this->consolePasswordHelper->validatePassword($password);
+            } else {
+                $password = $this->consolePasswordHelper->askForPassword($input, $output);
+            }
+        } catch (PasswordPolicyException|PasswordMismatchException $e) {
+            $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+
+            return Command::FAILURE;
         }
 
         $this->updater->updateAdminPassword($password);

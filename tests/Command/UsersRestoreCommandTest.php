@@ -14,6 +14,8 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UsersRestoreCommandTest extends TestCase
 {
@@ -31,7 +33,9 @@ class UsersRestoreCommandTest extends TestCase
             ->willReturn($this->user);
 
         $this->userRestoreService = $this->createStub(UserRestoreService::class);
-        $consolePasswordHelper = new ConsolePasswordHelper(new PasswordStrengthHandler());
+        $validator = $this->createStub(ValidatorInterface::class);
+        $validator->method('validate')->willReturn(new ConstraintViolationList());
+        $consolePasswordHelper = new ConsolePasswordHelper(new PasswordStrengthHandler(), $validator);
 
         $this->command = new UsersRestoreCommand($repository, $this->userRestoreService, $consolePasswordHelper);
     }
