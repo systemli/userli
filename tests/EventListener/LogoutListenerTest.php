@@ -18,7 +18,7 @@ class LogoutListenerTest extends TestCase
         $events = LogoutListener::getSubscribedEvents();
 
         self::assertArrayHasKey(LogoutEvent::class, $events);
-        self::assertEquals('onLogoutSuccess', $events[LogoutEvent::class]);
+        self::assertEquals(['onLogoutSuccess', -1], $events[LogoutEvent::class]);
     }
 
     public function testOnLogoutSuccessAddsFlashMessage(): void
