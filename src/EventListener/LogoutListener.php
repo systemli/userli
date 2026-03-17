@@ -22,7 +22,7 @@ final readonly class LogoutListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            LogoutEvent::class => 'onLogoutSuccess',
+            LogoutEvent::class => ['onLogoutSuccess', -1],
         ];
     }
 }
