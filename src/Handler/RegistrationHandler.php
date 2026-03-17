@@ -43,7 +43,8 @@ final readonly class RegistrationHandler
             throw new Exception('The Registration is closed!');
         }
 
-        $this->manager->wrapInTransaction(function () use ($registration): void {
+        $user = null;
+        $this->manager->wrapInTransaction(function () use ($registration, &$user): void {
             // Create user
             $user = $this->buildUser($registration);
 
@@ -59,10 +60,9 @@ final readonly class RegistrationHandler
             // as we need to print the plainRecoveryToken beforehand
 
             $this->manager->persist($user);
-            $this->manager->flush();
-
-            $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_CREATED);
         });
+
+        $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_CREATED);
     }
 
     public function isRegistrationOpen(): bool
