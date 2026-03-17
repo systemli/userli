@@ -57,6 +57,9 @@ class RegistrationHandlerTest extends KernelTestCase
         $manager->method('getRepository')->willReturnMap([
             [Voucher::class, $voucherRepository],
         ]);
+        $manager->method('wrapInTransaction')->willReturnCallback(static function (callable $callback) {
+            return $callback();
+        });
         $manager->method('persist')->willReturnCallback(static function (User $user) use ($voucher, $domain): void {
             self::assertEquals('user@example.com', $user->getEmail());
             self::assertEquals([Roles::USER], $user->getRoles());
