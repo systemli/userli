@@ -78,6 +78,8 @@ services:
       - userli
 
   dovecot:
+    profiles:
+      - mail
     depends_on:
       - caddy
     image: dovecot/dovecot:2.4.2
@@ -108,6 +110,8 @@ services:
       - userli
 
   roundcube:
+    profiles:
+      - mail
     image: docker.io/roundcube/roundcubemail:1.6.11-apache
     depends_on:
       - dovecot
