@@ -38,6 +38,18 @@
 
             Suppressing ClassMustBeFinal for the entire Entity directory.
         -->
+        <!--
+            InvalidAttribute - Psalm 6.x false positives
+            ==============================================
+            Psalm 6.x does not recognize PHP 8.3+ #[\Override] and Twig
+            #[AsTwigFilter]/#[AsTwigFunction] attributes, reporting them
+            as InvalidAttribute. Psalm 7.0 fixes this but is still in beta
+            and psalm/plugin-symfony does not yet support it.
+
+            TODO: Remove this suppression after upgrading to Psalm 7.0 stable.
+        -->
+        <InvalidAttribute errorLevel="suppress" />
+
         <ClassMustBeFinal>
             <errorLevel type="suppress">
                 <directory name="src/Entity" />
