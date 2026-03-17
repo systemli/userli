@@ -43,22 +43,24 @@ final readonly class RegistrationHandler
             throw new Exception('The Registration is closed!');
         }
 
-        // Create user
-        $user = $this->buildUser($registration);
+        $user = null;
+        $this->manager->wrapInTransaction(function () use ($registration, &$user): void {
+            // Create user
+            $user = $this->buildUser($registration);
 
-        // Update password, generate MailCrypt keys, generate recovery token
-        // key material for mailCrypt is always generated, but only enabled if MAIL_CRYPT >= 2
-        $mailCrypt = MailCrypt::from($this->settingsService->get('mail_crypt'));
-        $mailCryptEnable = $mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS);
-        $this->passwordUpdater->updatePassword($user, $registration->getPassword());
-        $this->mailCryptKeyHandler->create($user, $registration->getPassword(), $mailCryptEnable);
-        $this->recoveryTokenHandler->create($user);
+            // Update password, generate MailCrypt keys, generate recovery token
+            // key material for mailCrypt is always generated, but only enabled if MAIL_CRYPT >= 2
+            $mailCrypt = MailCrypt::from($this->settingsService->get('mail_crypt'));
+            $mailCryptEnable = $mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS);
+            $this->passwordUpdater->updatePassword($user, $registration->getPassword());
+            $this->mailCryptKeyHandler->create($user, $registration->getPassword(), $mailCryptEnable);
+            $this->recoveryTokenHandler->create($user);
 
-        // We used to erase sensitive data here, but it's now done in RegistrationController
-        // as we need to print the plainRecoveryToken beforehand
+            // We used to erase sensitive data here, but it's now done in RegistrationController
+            // as we need to print the plainRecoveryToken beforehand
 
-        $this->manager->persist($user);
-        $this->manager->flush();
+            $this->manager->persist($user);
+        });
 
         $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_CREATED);
     }
@@ -81,8 +83,6 @@ final readonly class RegistrationHandler
             $voucher->setRedeemedTime(new DateTimeImmutable());
 
             $user->setInvitationVoucher($voucher);
-
-            $this->manager->flush();
 
             return $user;
         }
