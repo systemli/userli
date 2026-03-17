@@ -24,7 +24,7 @@ We provide a `docker-compose.yml` that starts Userli with MariaDB, Dovecot, Roun
 
 ## Setup
 
-Start the containers:
+Start the core containers (without Dovecot and Roundcube):
 
 === "podman"
 
@@ -82,6 +82,23 @@ Load sample data:
     The fixtures create some user accounts (`admin`, `user`, `support` and `suspicious`, among others) on the domain `example.org`, all with the password `password`.
     They also create sample aliases and vouchers.
     See `src/DataFixtures` for details.
+
+Start Dovecot and Roundcube:
+
+=== "podman"
+
+    ```shell
+    podman compose --profile mail up -d
+    ```
+
+=== "docker"
+
+    ```shell
+    docker compose --profile mail up -d
+    ```
+
+!!! info
+    Dovecot and Roundcube are in the `mail` profile and must be started separately after the database is initialized. Starting them before the database exists will cause errors as Dovecot queries the Userli API for user authentication.
 
 Open your browser and go to [http://localhost:8000](http://localhost:8000).
 

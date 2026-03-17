@@ -109,7 +109,7 @@ userli/
 
 ```bash
 # Dev environment (prefer Podman)
-podman compose up -d
+podman compose up -d                       # Core services (no Dovecot/Roundcube)
 podman compose exec -it userli <command>
 
 # Dependencies
@@ -120,7 +120,11 @@ yarn install
 yarn encore dev
 
 # Database
+bin/console doctrine:migrations:migrate --no-interaction
 bin/console doctrine:fixtures:load
+
+# Start mail services (after DB init)
+podman compose --profile mail up -d        # Dovecot + Roundcube
 
 # Code quality
 composer cs-fix          # PHP CS Fixer
@@ -152,5 +156,6 @@ yarn test                      # JS/TS unit tests
 
 - `config/reference.php` — largest file, auto-generated settings reference
 - `tests/Behat/FeatureContext.php` — monolithic Behat context, main BDD entry point
-- Docker Compose uses MariaDB + Postfix for full email stack testing
+- Docker Compose uses MariaDB + Dovecot for full email stack testing
+- Dovecot and Roundcube are in the `mail` profile — start them after DB init with `--profile mail`
 - `dg/bypass-finals` in dev deps — allows mocking final classes in tests
