@@ -1,5 +1,17 @@
 # Upgrade documentation
 
+## Upgrade to 6.5.0
+
+### Sonata Admin Bundle removed
+
+The Sonata Admin Bundle has been completely removed. The admin area is now a
+native Symfony implementation accessible at `/admin/`. All admin functionality
+(users, aliases, vouchers, domains, reserved names, notifications, OpenPGP keys)
+is available through the new interface.
+
+If you have any custom integrations or bookmarks pointing to Sonata Admin routes
+(e.g. `/admin/app/...`), update them to the new `/admin/` paths.
+
 ## Upgrade to 6.4.0
 
 ### Messenger message signing enabled

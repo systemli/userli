@@ -1,5 +1,57 @@
 # Changelog
 
+## 6.5.0 (2026.03.18)
+
+### Features and Improvements
+
+- 🗃️ Wrap registration flow in database transaction (#1201)
+- 🐳 Switch to Alpine + Caddy, separate Node/PHP build stages (#1192)
+- ✨ Scope dashboard statistics for domain admins (#1181)
+- ✨ Link OpenPGP keys dashboard tile and enable domain admin access (#1170)
+- ✨ Restructure admin area for multi-role access with dashboard (#1169)
+- ✨ Add OpenPGP keys settings page (#1167)
+- 🔥 Remove Sonata Admin Bundle and rename settings to admin (#1166)
+- ✨ Add native User Admin under /settings/users/ (#1165)
+- ✨ Allow OpenPgpKey uploads to WKD for aliases (#1117)
+
+### Security
+
+- 🔒 Invalidate session on logout (#1200)
+- 🔒 Switch CI from pull_request_target to pull_request (#1189)
+- 🔒️ Add missing password validation constraints to RecoveryResetPassword (#1184)
+- 🔒 Extend DomainVoter for aliases and harden AliasController for domain admins (#1179)
+- 🔒 Fix serialize-javascript vulnerability (Dependabot #79) (#1177)
+- 🔒 Add domain authorization for user creation (#1176)
+- 🔒 Prevent domain admin privilege escalation to full admin (#1173)
+
+### Technical Changes
+
+- 🐳 Move Dovecot/Roundcube to mail profile and fix rootless Podman (#1198)
+- 🔇 Suppress Psalm InvalidAttribute false positives (#1196)
+- ♻️ Use Symfony's HTML Sanitizer for safe_html twig filter (#1186)
+- ⏪ Revert serialize-javascript vulnerability fix (#1177) (#1182)
+- 🧪 Add comprehensive domain admin access control Behat tests (#1180)
+- 📝 Add hierarchical AGENTS.md knowledge base (#1174)
+- ♻️ Refactor GpgKeyImporter into GpgKeyParser, introduce GpgKeyResult DTO, and remove dead code (#1172)
+- ♻️ Replace standalone delete pages with password-confirmation modal dialogs (#1164)
+- ♻️ Generalize confirm modal and replace inline JS with Stimulus controller (#1163)
+- ♻️ Remove redundant max-width constraints from page templates (#1162)
+- ♻️ Replace window.confirm() with accessible modal dialogs for delete confirmations (#1161)
+- ✅ Add JavaScript testing support to Behat via Symfony Panther (#1160)
+- ✅ Add unit tests for all remaining Stimulus controllers (#1158)
+- 💚 Fix SonarCloud PR decoration with pull_request_target (#1157)
+- ✅ Add Vitest unit tests for Stimulus controllers and sanitize utility (#1156)
+- 🎨 Widen page layout to max-w-7xl and remove redundant width wrappers (#1151)
+- ⬆️ Update composer dependencies (#1193, #1153)
+- ⬆️ Update npm dependencies (#1197, #1178, #1175, #1154)
+- ⬆️ Update GitHub Actions dependencies (#1195, #1155)
+
+### Bug Fixes
+
+- 🐛 Catch EntityNotFoundException in Admin\AliasController (#1188)
+- 🐛 Validate csrf token in MaintenanceController::run (#1185)
+- 🐛 Fix SonarCloud reliability issues in JS/TS controllers (#1159)
+
 ## 6.4.1 (2026.03.08)
 
 ### Technical Changes
