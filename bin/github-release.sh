@@ -21,6 +21,11 @@ if [ -z "$GITHUB_API_TOKEN" ]; then
     exit 1
 fi
 
+if ! command -v jq >/dev/null 2>&1; then
+    printf "Error: jq is required but not installed\n" >&2
+    exit 1
+fi
+
 # set release variables
 version="$1"
 today="$(date +%Y.%m.%d)"
@@ -30,7 +35,6 @@ gh_group="systemli"
 gh_project="userli"
 gh_api="https://api.github.com"
 gh_repo="$gh_api/repos/${gh_group}/${gh_project}"
-gh_tags="$gh_repo/releases/tags/$version"
 gh_auth="Authorization: token $GITHUB_API_TOKEN"
 curl_args="--location --remote-header-name --remote-name #"
 
@@ -44,7 +48,7 @@ elif ! grep -qx "## $version ($today)" CHANGELOG.md; then
     exit 1
 fi
 
-gh_notes="$(awk "/^## $version/{flag=1; next} /^## [0-9]+/{flag=0} flag" CHANGELOG.md | grep '[^[:blank:]]' | awk -vORS='\\n' 1)"
+gh_notes="$(awk "/^## $version/{flag=1; next} /^## [0-9]+/{flag=0} flag" CHANGELOG.md | grep '[^[:blank:]]')"
 
 # make a gpg-signed tag for the release
 git tag --sign --message "Release $version" "$version"
@@ -69,21 +73,23 @@ gpg -u ${GPG_SIGN_KEY} --output "${tarball_userli}.asc" --armor --detach-sign --
 gpg -u ${GPG_SIGN_KEY} --output "${tarball_adapter}.asc" --armor --detach-sign --batch --yes "$tarball_adapter"
 
 # validate token
-curl --output /dev/null --silent --header "$auth" $gh_repo || { printf "Error: Invalid repo, token or network issue\n" >&2; exit 1; }
+curl --output /dev/null --silent --header "$gh_auth" $gh_repo || { printf "Error: Invalid repo, token or network issue\n" >&2; exit 1; }
 
 # push git tag
 git push origin "refs/tags/${version}" >/dev/null
 
 # create release on Github
-api_json=$(printf '{"tag_name": "%s","target_commitish": "%s","name": "%s","body": "%s","draft": false,"prerelease": %s}' "$version" "main" "$version" "$gh_notes" "false")
+api_json=$(jq --null-input \
+    --arg tag_name "$version" \
+    --arg target_commitish "main" \
+    --arg name "$version" \
+    --arg body "$gh_notes" \
+    '{"tag_name": $tag_name, "target_commitish": $target_commitish, "name": $name, "body": $body, "draft": false, "prerelease": false}')
 gh_release="$(curl --silent --proto-redir https --data "$api_json" "$gh_repo/releases" -H "Accept: application/vnd.github.v3+json" -H "$gh_auth")"
 
-# read asset tags
-gh_response="$(curl --silent --header "$auth" "$gh_tags")"
-
-# get release id
-eval $(printf "$gh_response" | grep -m 1 "id.:" | grep -w id | tr : = | tr -cd '[[:alnum:]]=')
-[ "$id" ] || { printf "Error: Failed to get release id for tag: %s\n" "$version"; printf "%s\n" "$gh_response" | awk 'length($0)<100' >&2; exit 1; }
+# get release id from create response
+eval $(printf "$gh_release" | grep -m 1 "id.:" | grep -w id | tr : = | tr -cd '[[:alnum:]]=')
+[ "$id" ] || { printf "Error: Failed to create release for tag: %s\n" "$version"; printf "%s\n" "$gh_release" | awk 'length($0)<100' >&2; exit 1; }
 
 # upload to Github
 for tarball in ${tarball_userli} ${tarball_adapter}; do
