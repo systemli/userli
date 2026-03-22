@@ -6,7 +6,7 @@ namespace App\Handler;
 
 final readonly class PasswordStrengthHandler
 {
-    private const string REGEX_FORBIDDEN_CHARS = '/[äöüÄÖÜß\'"]/u';
+    private const string REGEX_FORBIDDEN_CHARS = '/[äöüÄÖÜß]/u';
 
     public function validate(string $value): array
     {
