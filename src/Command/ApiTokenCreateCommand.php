@@ -8,12 +8,9 @@ use App\Enum\ApiScope;
 use App\Form\Model\ApiToken as ApiTokenModel;
 use App\Service\ApiTokenManager;
 use Exception;
-use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -21,37 +18,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     name: 'app:api-token:create',
     description: 'Create a new API token with specified name and scopes'
 )]
-final class ApiTokenCreateCommand extends Command
+final readonly class ApiTokenCreateCommand
 {
     public function __construct(
-        private readonly ApiTokenManager $apiTokenManager,
-        private readonly ValidatorInterface $validator,
+        private ApiTokenManager $apiTokenManager,
+        private ValidatorInterface $validator,
     ) {
-        parent::__construct();
     }
 
-    #[Override]
-    protected function configure(): void
-    {
-        $this
-            ->addOption('name', 't', InputOption::VALUE_REQUIRED, 'Name for the API token')
-            ->addOption(
-                'scopes',
-                's',
-                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Scopes for the API token (available: '.implode(', ', ApiScope::all()).')',
-                []
-            );
-    }
-
-    #[Override]
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $io = new SymfonyStyle($input, $output);
-
-        $name = (string) $input->getOption('name');
-        $scopes = (array) $input->getOption('scopes');
-
+    public function __invoke(
+        #[Option(description: 'Name for the API token', shortcut: 't')]
+        string $name = '',
+        #[Option(description: 'Scopes for the API token (available: '.ApiScope::ALL_SCOPES_DESCRIPTION.')', shortcut: 's')]
+        array $scopes = [],
+        ?SymfonyStyle $io = null,
+    ): int {
         $model = new ApiTokenModel();
         $model->setName($name);
         $model->setScopes($scopes);

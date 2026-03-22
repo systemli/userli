@@ -8,12 +8,14 @@ use App\Command\UsersResetCommand;
 use App\Entity\User;
 use App\Handler\PasswordStrengthHandler;
 use App\Repository\UserRepository;
+use App\Service\ConsolePasswordHelper;
 use App\Service\UserResetService;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UsersResetCommandTest extends TestCase
 {
@@ -31,12 +33,12 @@ class UsersResetCommandTest extends TestCase
         $repository->method('findByEmail')
             ->willReturn($this->user);
 
-        $manager = $this->createStub(EntityManagerInterface::class);
-        $manager->method('getRepository')->willReturn($repository);
-
         $userResetService = $this->createStub(UserResetService::class);
+        $validator = $this->createStub(ValidatorInterface::class);
+        $validator->method('validate')->willReturn(new ConstraintViolationList());
+        $consolePasswordHelper = new ConsolePasswordHelper(new PasswordStrengthHandler(), $validator);
 
-        $this->command = new UsersResetCommand($manager, new PasswordStrengthHandler(), $userResetService);
+        $this->command = new UsersResetCommand($repository, $userResetService, $consolePasswordHelper);
     }
 
     public function testExecuteDryRun(): void
@@ -117,5 +119,20 @@ class UsersResetCommandTest extends TestCase
 
         self::assertSame(Command::FAILURE, $exitCode);
         self::assertStringContainsString('User with email', $commandTester->getDisplay());
+    }
+
+    public function testCommandConfiguration(): void
+    {
+        $application = new Application();
+        $application->addCommand($this->command);
+        $command = $application->find('app:users:reset');
+
+        self::assertEquals('app:users:reset', $command->getName());
+        self::assertEquals('Reset a user', $command->getDescription());
+
+        $definition = $command->getDefinition();
+        self::assertTrue($definition->hasOption('user'));
+        self::assertEquals('u', $definition->getOption('user')->getShortcut());
+        self::assertTrue($definition->hasOption('dry-run'));
     }
 }

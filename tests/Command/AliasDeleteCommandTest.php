@@ -10,7 +10,6 @@ use App\Entity\User;
 use App\Handler\DeleteHandler;
 use App\Repository\AliasRepository;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -35,15 +34,9 @@ class AliasDeleteCommandTest extends TestCase
         $aliasRepository->method('findOneBySource')
             ->willReturn($alias);
 
-        $manager = $this->createStub(EntityManagerInterface::class);
-        $manager->method('getRepository')->willReturnMap([
-            [User::class, $userRepository],
-            [Alias::class, $aliasRepository],
-        ]);
-
         $deleteHandler = $this->createStub(DeleteHandler::class);
 
-        $this->command = new AliasDeleteCommand($manager, $deleteHandler);
+        $this->command = new AliasDeleteCommand($userRepository, $aliasRepository, $deleteHandler);
     }
 
     public function testExecute(): void
@@ -86,5 +79,22 @@ class AliasDeleteCommandTest extends TestCase
         $output = $commandTester->getDisplay();
         self::assertStringContainsString('Alias with address \'\' not found!', $output);
         self::assertEquals(1, $commandTester->getStatusCode());
+    }
+
+    public function testCommandConfiguration(): void
+    {
+        $application = new Application();
+        $application->addCommand($this->command);
+        $command = $application->find('app:alias:delete');
+
+        self::assertEquals('app:alias:delete', $command->getName());
+        self::assertEquals('Delete an alias', $command->getDescription());
+
+        $definition = $command->getDefinition();
+        self::assertTrue($definition->hasOption('alias'));
+        self::assertEquals('a', $definition->getOption('alias')->getShortcut());
+        self::assertTrue($definition->hasOption('user'));
+        self::assertEquals('u', $definition->getOption('user')->getShortcut());
+        self::assertTrue($definition->hasOption('dry-run'));
     }
 }

@@ -12,6 +12,8 @@ enum ApiScope: string
     case RETENTION = 'retention';
     case ROUNDCUBE = 'roundcube';
 
+    public const ALL_SCOPES_DESCRIPTION = 'keycloak, dovecot, postfix, retention, roundcube';
+
     public static function all(): array
     {
         $scopes = self::cases();

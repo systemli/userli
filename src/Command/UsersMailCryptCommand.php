@@ -6,60 +6,45 @@ namespace App\Command;
 
 use App\Enum\MailCrypt;
 use App\Handler\MailCryptKeyHandler;
-use App\Handler\PasswordStrengthHandler;
 use App\Handler\UserAuthenticationHandler;
+use App\Repository\UserRepository;
 use App\Service\SettingsService;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Override;
+use Symfony\Component\Console\Attribute\Argument;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:users:mailcrypt', description: 'Get MailCrypt values for user')]
-final class UsersMailCryptCommand extends AbstractUsersCommand
+final readonly class UsersMailCryptCommand
 {
     public function __construct(
-        EntityManagerInterface $manager,
-        PasswordStrengthHandler $passwordStrengthHandler,
-        private readonly UserAuthenticationHandler $handler,
-        private readonly MailCryptKeyHandler $mailCryptKeyHandler,
-        private readonly SettingsService $settingsService,
+        private UserRepository $userRepository,
+        private UserAuthenticationHandler $handler,
+        private MailCryptKeyHandler $mailCryptKeyHandler,
+        private SettingsService $settingsService,
     ) {
-        parent::__construct($manager, $passwordStrengthHandler);
-    }
-
-    #[Override]
-    protected function configure(): void
-    {
-        parent::configure();
-        $this
-            ->addArgument(
-                'password',
-                InputOption::VALUE_OPTIONAL,
-                'password of supplied email address'
-            );
     }
 
     /**
      * @throws Exception
      */
-    #[Override]
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
+    public function __invoke(
+        #[Option(name: 'user', description: 'User to act upon', shortcut: 'u')]
+        ?string $email = null,
+        #[Argument(description: 'password of supplied email address')]
+        ?string $password = null,
+        ?OutputInterface $output = null,
+    ): int {
         $mailCrypt = MailCrypt::from($this->settingsService->get('mail_crypt'));
         if ($mailCrypt === MailCrypt::DISABLED) {
             return Command::FAILURE;
         }
 
-        // parse arguments
-        $password = $input->getArgument('password');
+        if (empty($email) || null === $user = $this->userRepository->findByEmail($email)) {
+            $output->writeln(sprintf('<error>User with email %s not found!</error>', $email));
 
-        // Check if user exists
-        $user = $this->getUser($input, $output);
-        if (null === $user) {
             return Command::FAILURE;
         }
 
@@ -68,7 +53,6 @@ final class UsersMailCryptCommand extends AbstractUsersCommand
         }
 
         if ($password) {
-            $password = $password[0];
             // verify user credentials
             if (null === $user = $this->handler->authenticate($user, $password)) {
                 return Command::FAILURE;

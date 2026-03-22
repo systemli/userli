@@ -4,61 +4,54 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Entity\Alias;
-use App\Entity\User;
 use App\Handler\DeleteHandler;
-use Doctrine\ORM\EntityManagerInterface;
-use Override;
+use App\Repository\AliasRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'app:alias:delete', description: 'Delete an alias')]
-final class AliasDeleteCommand extends Command
+final readonly class AliasDeleteCommand
 {
-    public function __construct(private readonly EntityManagerInterface $manager, private readonly DeleteHandler $deleteHandler)
-    {
-        parent::__construct();
+    public function __construct(
+        private UserRepository $userRepository,
+        private AliasRepository $aliasRepository,
+        private DeleteHandler $deleteHandler,
+    ) {
     }
 
-    #[Override]
-    protected function configure(): void
-    {
-        $this
-            ->addOption('user', 'u', InputOption::VALUE_REQUIRED, 'User who owns the alias (optional)')
-            ->addOption('alias', 'a', InputOption::VALUE_REQUIRED, 'Alias address to delete')
-            ->addOption('dry-run', null, InputOption::VALUE_NONE);
-    }
-
-    #[Override]
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $email = $input->getOption('user');
-        $source = $input->getOption('alias');
-
+    public function __invoke(
+        #[Option(name: 'alias', description: 'Alias address to delete', shortcut: 'a')]
+        ?string $source = null,
+        #[Option(name: 'user', description: 'User who owns the alias (optional)', shortcut: 'u')]
+        ?string $email = null,
+        #[Option(name: 'dry-run', description: 'Show what would be deleted without actually deleting')]
+        bool $dryRun = false,
+        ?OutputInterface $output = null,
+    ): int {
         $user = null;
-        if ($email && null === $user = $this->manager->getRepository(User::class)->findByEmail($email)) {
+        if ($email && null === $user = $this->userRepository->findByEmail($email)) {
             $output->writeln(sprintf("<error>User with email '%s' not found!</error>", $email));
 
             return Command::FAILURE;
         }
 
-        if (empty($source) || null === $alias = $this->manager->getRepository(Alias::class)->findOneBySource($source)) {
+        if (empty($source) || null === $alias = $this->aliasRepository->findOneBySource($source)) {
             $output->writeln(sprintf("<error>Alias with address '%s' not found!</error>", $source));
 
             return Command::FAILURE;
         }
 
-        if ($input->getOption('dry-run')) {
-            if ($user) {
+        if ($dryRun) {
+            if ($user !== null) {
                 $output->write(sprintf("Would delete alias %s of user %s\n", $source, $email));
             } else {
                 $output->write(sprintf("Would delete alias %s\n", $source));
             }
         } else {
-            if ($user) {
+            if ($user !== null) {
                 $output->write(sprintf("Deleting alias %s of user %s\n", $source, $email));
                 $this->deleteHandler->deleteAlias($alias, $user);
             } else {

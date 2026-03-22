@@ -8,17 +8,19 @@ use App\Command\UsersRestoreCommand;
 use App\Entity\User;
 use App\Handler\PasswordStrengthHandler;
 use App\Repository\UserRepository;
+use App\Service\ConsolePasswordHelper;
 use App\Service\UserRestoreService;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UsersRestoreCommandTest extends TestCase
 {
     private UsersRestoreCommand $command;
-    private UserRestoreService $userRestoreService;
+    private UserRestoreService&\PHPUnit\Framework\MockObject\Stub $userRestoreService;
     private User $user;
 
     protected function setUp(): void
@@ -30,12 +32,12 @@ class UsersRestoreCommandTest extends TestCase
         $repository->method('findByEmail')
             ->willReturn($this->user);
 
-        $manager = $this->createStub(EntityManagerInterface::class);
-        $manager->method('getRepository')->willReturn($repository);
-
         $this->userRestoreService = $this->createStub(UserRestoreService::class);
+        $validator = $this->createStub(ValidatorInterface::class);
+        $validator->method('validate')->willReturn(new ConstraintViolationList());
+        $consolePasswordHelper = new ConsolePasswordHelper(new PasswordStrengthHandler(), $validator);
 
-        $this->command = new UsersRestoreCommand($manager, new PasswordStrengthHandler(), $this->userRestoreService);
+        $this->command = new UsersRestoreCommand($repository, $this->userRestoreService, $consolePasswordHelper);
     }
 
     public function testExecuteWithoutMailCrypt(): void
@@ -147,5 +149,20 @@ class UsersRestoreCommandTest extends TestCase
 
         self::assertSame(Command::FAILURE, $exitCode);
         self::assertStringContainsString('User with email', $commandTester->getDisplay());
+    }
+
+    public function testCommandConfiguration(): void
+    {
+        $application = new Application();
+        $application->addCommand($this->command);
+        $command = $application->find('app:users:restore');
+
+        self::assertEquals('app:users:restore', $command->getName());
+        self::assertEquals('Restore a user', $command->getDescription());
+
+        $definition = $command->getDefinition();
+        self::assertTrue($definition->hasOption('user'));
+        self::assertEquals('u', $definition->getOption('user')->getShortcut());
+        self::assertTrue($definition->hasOption('dry-run'));
     }
 }

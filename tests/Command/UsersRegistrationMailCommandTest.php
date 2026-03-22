@@ -8,9 +8,7 @@ use App\Command\UsersRegistrationMailCommand;
 use App\Entity\User;
 use App\Mail\WelcomeMailer;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -19,21 +17,16 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 class UsersRegistrationMailCommandTest extends TestCase
 {
     private UsersRegistrationMailCommand $command;
-    private Stub $entityManager;
     private MockObject $welcomeMailer;
     private MockObject $userRepository;
 
     protected function setUp(): void
     {
-        $this->entityManager = $this->createStub(EntityManagerInterface::class);
         $this->welcomeMailer = $this->createMock(WelcomeMailer::class);
         $this->userRepository = $this->createMock(UserRepository::class);
 
-        $this->entityManager->method('getRepository')
-            ->willReturn($this->userRepository);
-
         $this->command = new UsersRegistrationMailCommand(
-            $this->entityManager,
+            $this->userRepository,
             $this->welcomeMailer,
             'en'
         );
@@ -143,5 +136,21 @@ class UsersRegistrationMailCommandTest extends TestCase
         $commandTester->execute([
             '--user' => '',
         ]);
+    }
+
+    public function testCommandConfiguration(): void
+    {
+        $application = new Application();
+        $application->addCommand($this->command);
+        $command = $application->find('app:users:registration:mail');
+
+        self::assertEquals('app:users:registration:mail', $command->getName());
+        self::assertEquals('Send a registration mail to a user', $command->getDescription());
+
+        $definition = $command->getDefinition();
+        self::assertTrue($definition->hasOption('user'));
+        self::assertEquals('u', $definition->getOption('user')->getShortcut());
+        self::assertTrue($definition->hasOption('locale'));
+        self::assertEquals('l', $definition->getOption('locale')->getShortcut());
     }
 }

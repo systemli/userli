@@ -7,11 +7,9 @@ namespace App\Tests\Command;
 use App\Command\UsersMailCryptCommand;
 use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
-use App\Handler\PasswordStrengthHandler;
 use App\Handler\UserAuthenticationHandler;
 use App\Repository\UserRepository;
 use App\Service\SettingsService;
-use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -21,7 +19,6 @@ use Symfony\Component\Console\Tester\CommandTester;
 class UsersMailCryptCommandTest extends TestCase
 {
     private UsersMailCryptCommand $command;
-    private Stub&EntityManagerInterface $entityManager;
     private Stub&UserRepository $userRepository;
     private Stub&UserAuthenticationHandler $authenticationHandler;
     private Stub&MailCryptKeyHandler $mailCryptKeyHandler;
@@ -29,19 +26,14 @@ class UsersMailCryptCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->entityManager = $this->createStub(EntityManagerInterface::class);
         $this->userRepository = $this->createStub(UserRepository::class);
         $this->authenticationHandler = $this->createStub(UserAuthenticationHandler::class);
         $this->mailCryptKeyHandler = $this->createStub(MailCryptKeyHandler::class);
         $this->settingsService = $this->createStub(SettingsService::class);
         $this->settingsService->method('get')->willReturn(1);
 
-        $this->entityManager->method('getRepository')
-            ->willReturn($this->userRepository);
-
         $this->command = new UsersMailCryptCommand(
-            $this->entityManager,
-            new PasswordStrengthHandler(),
+            $this->userRepository,
             $this->authenticationHandler,
             $this->mailCryptKeyHandler,
             $this->settingsService,
@@ -65,26 +57,23 @@ class UsersMailCryptCommandTest extends TestCase
         $authenticationHandler = $this->createMock(UserAuthenticationHandler::class);
         $mailCryptKeyHandler = $this->createMock(MailCryptKeyHandler::class);
 
-        $entityManager = $this->createStub(EntityManagerInterface::class);
-        $entityManager->method('getRepository')->willReturn($userRepository);
-
         $userRepository->expects(self::once())
             ->method('findByEmail')
             ->with($email)
             ->willReturn($user);
 
-        // The command uses $password[0], so it takes the first character
+        // The command passes the full password string
         $authenticationHandler->expects(self::once())
             ->method('authenticate')
-            ->with($user, 'p')
+            ->with($user, $password)
             ->willReturn($user);
 
         $mailCryptKeyHandler->expects(self::once())
             ->method('decrypt')
-            ->with($user, 'p')
+            ->with($user, $password)
             ->willReturn($privateKey);
 
-        $command = new UsersMailCryptCommand($entityManager, new PasswordStrengthHandler(), $authenticationHandler, $mailCryptKeyHandler, $this->settingsService);
+        $command = new UsersMailCryptCommand($userRepository, $authenticationHandler, $mailCryptKeyHandler, $this->settingsService);
 
         $application = new Application();
         $application->addCommand($command);
@@ -196,19 +185,14 @@ class UsersMailCryptCommandTest extends TestCase
 
     public function testExecuteWhenMailCryptGloballyDisabled(): void
     {
-        $entityManager = $this->createStub(EntityManagerInterface::class);
         $userRepository = $this->createMock(UserRepository::class);
-
-        $entityManager->method('getRepository')
-            ->willReturn($userRepository);
 
         // Create command with mailCrypt disabled
         $settingsService = $this->createStub(SettingsService::class);
         $settingsService->method('get')->willReturn(0);
 
         $command = new UsersMailCryptCommand(
-            $entityManager,
-            new PasswordStrengthHandler(),
+            $userRepository,
             $this->authenticationHandler,
             $this->mailCryptKeyHandler,
             $settingsService,
@@ -265,21 +249,18 @@ class UsersMailCryptCommandTest extends TestCase
         $userRepository = $this->createMock(UserRepository::class);
         $authenticationHandler = $this->createMock(UserAuthenticationHandler::class);
 
-        $entityManager = $this->createStub(EntityManagerInterface::class);
-        $entityManager->method('getRepository')->willReturn($userRepository);
-
         $userRepository->expects(self::once())
             ->method('findByEmail')
             ->with($email)
             ->willReturn($user);
 
-        // The command uses $password[0], so it takes the first character
+        // The command passes the full password string
         $authenticationHandler->expects(self::once())
             ->method('authenticate')
-            ->with($user, 'w')
+            ->with($user, $password)
             ->willReturn(null);
 
-        $command = new UsersMailCryptCommand($entityManager, new PasswordStrengthHandler(), $authenticationHandler, $this->mailCryptKeyHandler, $this->settingsService);
+        $command = new UsersMailCryptCommand($userRepository, $authenticationHandler, $this->mailCryptKeyHandler, $this->settingsService);
 
         $application = new Application();
         $application->addCommand($command);
@@ -293,5 +274,21 @@ class UsersMailCryptCommandTest extends TestCase
         ]);
 
         self::assertSame(1, $commandTester->getStatusCode());
+    }
+
+    public function testCommandConfiguration(): void
+    {
+        $application = new Application();
+        $application->addCommand($this->command);
+        $command = $application->find('app:users:mailcrypt');
+
+        self::assertEquals('app:users:mailcrypt', $command->getName());
+        self::assertEquals('Get MailCrypt values for user', $command->getDescription());
+
+        $definition = $command->getDefinition();
+        self::assertTrue($definition->hasOption('user'));
+        self::assertEquals('u', $definition->getOption('user')->getShortcut());
+        self::assertTrue($definition->hasArgument('password'));
+        self::assertFalse($definition->getArgument('password')->isRequired());
     }
 }

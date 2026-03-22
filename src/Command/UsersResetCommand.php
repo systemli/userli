@@ -6,33 +6,39 @@ namespace App\Command;
 
 use App\Exception\PasswordMismatchException;
 use App\Exception\PasswordPolicyException;
-use App\Handler\PasswordStrengthHandler;
+use App\Repository\UserRepository;
+use App\Service\ConsolePasswordHelper;
 use App\Service\UserResetService;
-use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Attribute\Option;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(name: 'app:users:reset', description: 'Reset a user')]
-final class UsersResetCommand extends AbstractUsersCommand
+final readonly class UsersResetCommand
 {
     public function __construct(
-        EntityManagerInterface $manager,
-        PasswordStrengthHandler $passwordStrengthHandler,
-        private readonly UserResetService $userResetService,
+        private UserRepository $userRepository,
+        private UserResetService $userResetService,
+        private ConsolePasswordHelper $consolePasswordHelper,
     ) {
-        parent::__construct($manager, $passwordStrengthHandler);
     }
 
-    #[Override]
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $user = $this->getUser($input, $output);
-        if (null === $user) {
+    public function __invoke(
+        #[Option(name: 'user', description: 'User to act upon', shortcut: 'u')]
+        ?string $email = null,
+        #[Option(name: 'dry-run', description: 'Simulate without making changes')]
+        bool $dryRun = false,
+        ?InputInterface $input = null,
+        ?OutputInterface $output = null,
+    ): int {
+        $io = new SymfonyStyle($input, $output);
+
+        if (empty($email) || null === $user = $this->userRepository->findByEmail($email)) {
+            $output->writeln(sprintf('<error>User with email %s not found!</error>', $email));
+
             return Command::FAILURE;
         }
 
@@ -42,22 +48,19 @@ final class UsersResetCommand extends AbstractUsersCommand
             return Command::FAILURE;
         }
 
-        $questionHelper = $this->getHelper('question');
-        assert($questionHelper instanceof QuestionHelper);
-        $confirmQuest = new ConfirmationQuestion('Really reset user? This will clear their mailbox: (yes|no) ', false);
-        if (!$questionHelper->ask($input, $output, $confirmQuest)) {
+        if (!$io->confirm('Really reset user? This will clear their mailbox', false)) {
             return Command::SUCCESS;
         }
 
         try {
-            $password = $this->askForPassword($input, $output);
+            $password = $this->consolePasswordHelper->askForPassword($input, $output);
         } catch (PasswordPolicyException|PasswordMismatchException $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
             return Command::FAILURE;
         }
 
-        if ($input->getOption('dry-run')) {
+        if ($dryRun) {
             $output->write(sprintf("\nWould reset user %s\n\n", $user->getEmail()));
 
             return Command::SUCCESS;
