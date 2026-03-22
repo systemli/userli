@@ -128,7 +128,7 @@ account:
     desc: Aktualisiere dein Passwort
     subtitle: Aktualisiere dein Passwort
     help: >
-      <strong>Passwortrichtlinie:</strong> Mindestens 12 Zeichen, keine deutschen Umlaute.
+      <strong>Passwortrichtlinie:</strong> Mindestens 12 Zeichen.
       Passwörter werden anhand einer <a href="https://haveibeenpwned.com/Passwords">Datenbank
       mit bekannten fehlerhaften Passwörtern</a> geprüft.
     change_required: >
@@ -201,7 +201,6 @@ registration:
     Dein Passwort schützt dein E-Mail-Konto und all deine Daten.
     Wähle ein starkes Passwort, das du nirgendwo anders verwendest.
   password-rule-length: Mindestens 12 Zeichen
-  password-rule-umlauts: Keine deutschen Umlaute (ä, ö, ü, ß)
   password-rule-compromised: Nicht in bekannten Datenlecks enthalten
   label-email: Deine gewünschte E-Mail-Adresse
   recovery-token-headline: Wiederherstellungscode

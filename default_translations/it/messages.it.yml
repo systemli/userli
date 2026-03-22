@@ -85,7 +85,6 @@ registration:
     La tua password protegge il tuo account e-mail e tutti i tuoi dati.
     Scegli una password forte che non usi da nessun'altra parte.
   password-rule-length: Almeno 12 caratteri
-  password-rule-umlauts: Nessuna dieresi tedesca (ä, ö, ü, ß)
   password-rule-compromised: Non presente in violazioni di dati note
   recovery-token-headline: Gettone di recupero
   label-email: Il tuo indirizzo e-mail preferito

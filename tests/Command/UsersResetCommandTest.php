@@ -6,7 +6,6 @@ namespace App\Tests\Command;
 
 use App\Command\UsersResetCommand;
 use App\Entity\User;
-use App\Handler\PasswordStrengthHandler;
 use App\Repository\UserRepository;
 use App\Service\UserResetService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,7 +35,7 @@ class UsersResetCommandTest extends TestCase
 
         $userResetService = $this->createStub(UserResetService::class);
 
-        $this->command = new UsersResetCommand($manager, new PasswordStrengthHandler(), $userResetService);
+        $this->command = new UsersResetCommand($manager, $userResetService);
     }
 
     public function testExecuteDryRun(): void

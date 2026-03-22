@@ -6,7 +6,6 @@ namespace App\Command;
 
 use App\Enum\MailCrypt;
 use App\Handler\MailCryptKeyHandler;
-use App\Handler\PasswordStrengthHandler;
 use App\Handler\UserAuthenticationHandler;
 use App\Service\SettingsService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,12 +22,11 @@ final class UsersMailCryptCommand extends AbstractUsersCommand
 {
     public function __construct(
         EntityManagerInterface $manager,
-        PasswordStrengthHandler $passwordStrengthHandler,
         private readonly UserAuthenticationHandler $handler,
         private readonly MailCryptKeyHandler $mailCryptKeyHandler,
         private readonly SettingsService $settingsService,
     ) {
-        parent::__construct($manager, $passwordStrengthHandler);
+        parent::__construct($manager);
     }
 
     #[Override]

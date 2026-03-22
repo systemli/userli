@@ -16,5 +16,4 @@ form:
   weak_password: Passordet overholder ikke vår sikkerhetspraksis.
   invalid-email: E-posten er ikke gyldig.
   identical-passwords: Passordet er det samme som det gamle.
-  forbidden_char: Passordet inneholder ugyldige tegn.
   invalid-token: Symbolet har et ugyldig format.

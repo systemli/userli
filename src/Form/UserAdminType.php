@@ -10,7 +10,6 @@ use App\Form\Model\UserAdminModel;
 use App\Validator\AllowedRoles;
 use App\Validator\EmailDomainAdmin;
 use App\Validator\Lowercase;
-use App\Validator\PasswordPolicy;
 use App\Validator\UniqueField;
 use Override;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -77,7 +76,7 @@ final class UserAdminType extends AbstractType
             'invalid_message' => 'different-password',
             'constraints' => array_filter([
                 !$isEdit ? new Assert\NotBlank() : null,
-                new PasswordPolicy(),
+                new Assert\Length(min: 12, minMessage: 'form.weak_password'),
                 new Assert\NotCompromisedPassword(skipOnError: true),
             ]),
         ]);
