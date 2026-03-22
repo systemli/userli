@@ -39,12 +39,14 @@ class PasswordStrengthHandlerTest extends TestCase
             ['PässwordSecure1', ['form.forbidden_char']],
             ['PasswördSecure1', ['form.forbidden_char']],
             ['PasswordSecüre1', ['form.forbidden_char']],
-            ['PasswordSecure1\'', ['form.forbidden_char']],
             ['passwordpasswordpassword', []],
             ['PasswordSecure1', []],
             ['PasswordSecure$', []],
             ['PasswordSecure!', []],
             ['PasswordSecure_', []],
+            ['PasswordSecure1\'', []],
+            ['PasswordSecure1"', []],
+            ['R4MF#7K?L?D#\Q%)F""(yj&KWHtn%^_', []],
         ];
     }
 }

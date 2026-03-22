@@ -89,6 +89,21 @@ Feature: Settings (Users)
     And the user "new@example.org" should have passwordChangeRequired
 
   @settings-users
+  Scenario: Admin can create a user with a complex password
+    Given I am authenticated as "admin@example.org"
+    When I am on "/admin/users/create"
+    Then the response status code should be 200
+
+    When I fill in the following:
+      | user_admin_email                | complex@example.org            |
+      | user_admin_plainPassword_first  | R4MF#7K?L?D#\Q%)F""(yj&KWHtn%^_ |
+      | user_admin_plainPassword_second | R4MF#7K?L?D#\Q%)F""(yj&KWHtn%^_ |
+    And I press "Create"
+
+    Then I should see "User has been created successfully"
+    And the user "complex@example.org" should exist
+
+  @settings-users
   Scenario: Admin sees validation error on empty password
     Given I am authenticated as "admin@example.org"
     When I am on "/admin/users/create"
