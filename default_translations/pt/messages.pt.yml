@@ -89,7 +89,6 @@ registration:
     Sua senha protege sua conta de e-mail e todos os seus dados.
     Escolha uma senha forte que você não use em nenhum outro lugar.
   password-rule-length: Pelo menos 12 caracteres
-  password-rule-umlauts: Sem tremas alemães (ä, ö, ü, ß)
   password-rule-compromised: Não encontrada em vazamentos de dados conhecidos
   label-email: Seu endereço de email desejado
   recovery-token-headline: Token de recuperação

@@ -7,7 +7,6 @@ namespace App\Command;
 use App\Entity\User;
 use App\Exception\PasswordMismatchException;
 use App\Exception\PasswordPolicyException;
-use App\Handler\PasswordStrengthHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Component\Console\Command\Command;
@@ -21,7 +20,6 @@ abstract class AbstractUsersCommand extends Command
 {
     public function __construct(
         protected readonly EntityManagerInterface $manager,
-        private readonly PasswordStrengthHandler $passwordStrengthHandler,
     ) {
         parent::__construct();
     }
@@ -56,8 +54,8 @@ abstract class AbstractUsersCommand extends Command
         assert($questionHelper instanceof QuestionHelper);
 
         $passwordQuest = new Question('New password: ');
-        $passwordQuest->setValidator(function ($value) {
-            if ($this->passwordStrengthHandler->validate($value)) {
+        $passwordQuest->setValidator(static function ($value) {
+            if (strlen($value) < 12) {
                 throw new PasswordPolicyException();
             }
 

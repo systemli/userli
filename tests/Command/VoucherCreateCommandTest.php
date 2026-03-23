@@ -9,7 +9,6 @@ use App\Entity\Domain;
 use App\Entity\User;
 use App\Entity\Voucher;
 use App\Exception\ValidationException;
-use App\Handler\PasswordStrengthHandler;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
 use App\Service\SettingsService;
@@ -57,7 +56,6 @@ class VoucherCreateCommandTest extends TestCase
 
         $this->command = new VoucherCreateCommand(
             $manager,
-            new PasswordStrengthHandler(),
             $this->router,
             $this->voucherManager,
             $this->settingsService
@@ -212,7 +210,7 @@ class VoucherCreateCommandTest extends TestCase
             ->with($user, $this->domain)
             ->willReturn($voucher);
 
-        $command = new VoucherCreateCommand($manager, new PasswordStrengthHandler(), $router, $voucherManager, $settingsService);
+        $command = new VoucherCreateCommand($manager, $router, $voucherManager, $settingsService);
 
         $application = new Application();
         $application->addCommand($command);
@@ -281,7 +279,7 @@ class VoucherCreateCommandTest extends TestCase
             ->with('register_voucher', ['voucher' => $voucherCode])
             ->willReturn($baseUrl.'/register/'.$voucherCode);
 
-        $command = new VoucherCreateCommand($manager, new PasswordStrengthHandler(), $router, $voucherManager, $settingsService);
+        $command = new VoucherCreateCommand($manager, $router, $voucherManager, $settingsService);
 
         $application = new Application();
         $application->addCommand($command);

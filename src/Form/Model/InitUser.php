@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Form\Model;
 
-use App\Validator\PasswordPolicy;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class InitUser
 {
-    #[PasswordPolicy]
+    #[Assert\Length(min: 12, minMessage: 'form.weak_password')]
     #[Assert\NotBlank]
     #[Assert\NotCompromisedPassword(skipOnError: true)]
     private string $password;

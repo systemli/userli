@@ -1,7 +1,6 @@
 ---
 form:
   weak_password: "The password comply not with our security policy."
-  forbidden_char: "The password contains non valid characters."
   different-password: "Password and confirmation does not match."
   invalid-email: "The email is not valid."
   wrong-password: "Wrong password"

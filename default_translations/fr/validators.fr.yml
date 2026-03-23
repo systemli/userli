@@ -17,5 +17,4 @@ form:
   wrong-password: Mauvais mot de passe
   invalid-email: L'adresse électronique n'est pas valide.
   different-password: Le mot de passe et la confirmation ne correspondent pas.
-  forbidden_char: Le mot de passe contient des caractères invalides.
   weak_password: Le mot de passe n'est pas conforme à notre politique de sécurité.

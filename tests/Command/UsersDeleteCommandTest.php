@@ -7,7 +7,6 @@ namespace App\Tests\Command;
 use App\Command\UsersDeleteCommand;
 use App\Entity\User;
 use App\Handler\DeleteHandler;
-use App\Handler\PasswordStrengthHandler;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
@@ -32,7 +31,7 @@ class UsersDeleteCommandTest extends TestCase
 
         $deleteHandler = $this->createStub(DeleteHandler::class);
 
-        $this->command = new UsersDeleteCommand($manager, new PasswordStrengthHandler(), $deleteHandler);
+        $this->command = new UsersDeleteCommand($manager, $deleteHandler);
     }
 
     public function testExecute(): void

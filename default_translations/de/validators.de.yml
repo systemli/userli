@@ -1,7 +1,6 @@
 ---
 form:
   weak_password: Das Passwort entspricht nicht den Sicherheitsanforderungen.
-  forbidden_char: Das Passwort enthält nicht erlaubte Zeichen.
   different-password: Die Passwörter stimmen nicht überein.
   invalid-email: Die E-Mail-Adresse ist ungültig.
   wrong-password: Das eingegebene Passwort ist falsch

@@ -7,7 +7,6 @@ namespace App\Tests\Command;
 use App\Command\VoucherCountCommand;
 use App\Entity\User;
 use App\Entity\Voucher;
-use App\Handler\PasswordStrengthHandler;
 use App\Repository\UserRepository;
 use App\Repository\VoucherRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -44,7 +43,7 @@ class VoucherCountCommandTest extends TestCase
             [Voucher::class, $voucherRepository],
         ]);
 
-        $this->command = new VoucherCountCommand($manager, new PasswordStrengthHandler());
+        $this->command = new VoucherCountCommand($manager);
     }
 
     public function testExecuteWithUnknownUser(): void

@@ -1,6 +1,5 @@
 form:
   weak_password: A palavra-passe não está de acordo com a nossa política de segurança.
-  forbidden_char: A palavra-passe contém caracteres inválidos.
   different-password: A palavra-passe e a confirmação de palavra-passe não são iguais.
   invalid-email: O email é inválido.
   wrong-password: Palavra-passe errada

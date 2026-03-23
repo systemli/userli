@@ -9,7 +9,6 @@ use App\Validator\EmailAvailable;
 use App\Validator\EmailDomain;
 use App\Validator\EmailLength;
 use App\Validator\Lowercase;
-use App\Validator\PasswordPolicy;
 use App\Validator\VoucherExists;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,7 +27,7 @@ final class Registration
     #[EmailLength(minLength: 3, maxLength: 32)]
     private string $email;
 
-    #[PasswordPolicy]
+    #[Assert\Length(min: 12, minMessage: 'form.weak_password')]
     #[Assert\NotBlank]
     #[Assert\NotCompromisedPassword(skipOnError: true)]
     private string $password;
