@@ -955,7 +955,7 @@ admin:
       password:
         label: Password
         help:
-          mailcrypt: "Warning: Changing the password will reset the user's mailbox encryption. A new recovery token will be generated."
+          mailcrypt: "Warning: Changing the password will reset the user's mailbox encryption, and all existing emails will be lost. A new recovery token will be generated."
       password_confirmation:
         label: Confirm Password
       roles:

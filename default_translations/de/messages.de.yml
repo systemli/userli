@@ -955,7 +955,7 @@ admin:
       password:
         label: Passwort
         help:
-          mailcrypt: "Achtung: Das Ändern des Passworts setzt die Postfachverschlüsselung des Benutzers zurück. Ein neuer Wiederherstellungscode wird generiert."
+          mailcrypt: "Achtung: Das Ändern des Passworts setzt die Postfachverschlüsselung des Benutzers zurück, und alle existierenden E-Mails gehen verloren. Ein neuer Wiederherstellungscode wird generiert."
       password_confirmation:
         label: Passwort bestätigen
       roles:
