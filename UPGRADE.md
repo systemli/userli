@@ -14,8 +14,8 @@ Invitations (vouchers) are now controlled per domain instead of via the global
    bin/console doctrine:migrations:migrate --no-interaction
    ```
    The migration enables invitations with a limit of 3 for the primary domain
-   and disables them for all other domains. It also removes any vouchers that
-   were incorrectly created for non-primary domains.
+   and disables them for all other domains. It also removes any unredeemed
+   vouchers that were incorrectly created for non-primary domains.
 
 2. Remove `REGISTRATION_OPEN` from your environment configuration (`.env`,
    `.env.local`, `docker-compose.yml`, etc.). The variable is no longer used.

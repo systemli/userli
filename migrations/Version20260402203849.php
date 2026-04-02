@@ -26,9 +26,9 @@ final class Version20260402203849 extends AbstractMigration
             'UPDATE domains SET invitation_enabled = 1, invitation_limit = 3 WHERE id = (SELECT min_id FROM (SELECT MIN(id) AS min_id FROM domains) AS t)'
         );
 
-        // Delete vouchers from non-primary domains (bug fix: these should never have been created)
+        // Delete unredeemed vouchers from non-primary domains (bug fix: these should never have been created)
         $this->connection->executeStatement(
-            'DELETE FROM vouchers WHERE domain_id != (SELECT min_id FROM (SELECT MIN(id) AS min_id FROM domains) AS t)'
+            'DELETE FROM vouchers WHERE domain_id != (SELECT min_id FROM (SELECT MIN(id) AS min_id FROM domains) AS t) AND redeemed_time IS NULL'
         );
     }
 
