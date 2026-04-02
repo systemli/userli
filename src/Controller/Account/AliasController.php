@@ -57,8 +57,8 @@ final class AliasController extends AbstractController
         );
 
         $aliasRepository = $this->manager->getRepository(Alias::class);
-        $aliasesRandom = $aliasRepository->findByUser($user, true, true);
-        $aliasesCustom = $aliasRepository->findByUser($user, false, true);
+        $aliasesRandom = $aliasRepository->findByUserAcrossDomains($user, random: true);
+        $aliasesCustom = $aliasRepository->findByUserAcrossDomains($user, random: false);
 
         return $this->render(
             'Alias/show.html.twig',

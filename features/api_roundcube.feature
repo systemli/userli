@@ -9,6 +9,7 @@ Feature: Roundcube API
         And the following Domain exists:
             | name        |
             | example.org |
+            | example.com |
         And the following User exists:
             | email             | password | roles     |
             | user@example.org  | password | ROLE_USER |
@@ -59,3 +60,17 @@ Feature: Roundcube API
             """
             []
             """
+
+    @aliases
+    Scenario: Get cross-domain aliases for user
+        Given the following Alias exists:
+            | user_id | source                      | destination       |
+            | 2       | crossdomain@example.com     | user2@example.org |
+        And I have a valid API token "roundcube-test-123"
+        When I send a POST request to "/api/roundcube/aliases" with form data:
+            | email    | user2@example.org |
+            | password | password          |
+        Then the response status code should equal 200
+        And the JSON response should contain "alias@example.org"
+        And the JSON response should contain "alias2@example.org"
+        And the JSON response should contain "crossdomain@example.com"

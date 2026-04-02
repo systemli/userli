@@ -5,6 +5,7 @@ Feature: User
     And the following Domain exists:
       | name        |
       | example.org |
+      | example.com |
     And the following User exists:
       | email               | password | roles           |
       | admin@example.org   | asdasd   | ROLE_ADMIN      |
@@ -130,6 +131,14 @@ Feature: User
     And I wait for text "Sign in" to appear
 
     Then I should be on "/"
+
+  @delete-user-cross-domain-aliases
+  Scenario: Deleting a user also deletes their cross-domain aliases
+    Given the following Alias exists:
+      | user_id | source                  | destination      | deleted | random |
+      | 2       | crossdomain@example.com | user@example.org | 0       | 0      |
+    When the user "user@example.org" is deleted
+    Then the alias "crossdomain@example.com" should be deleted
 
   @create-voucher
   Scenario: Create voucher as Admin
@@ -291,6 +300,16 @@ Feature: User
     When I am authenticated as "spam@example.org"
     And I am on "/account/alias"
     Then the response status code should be 403
+
+  @alias-cross-domain
+  Scenario: User can see cross-domain aliases on alias page
+    Given the following Alias exists:
+      | user_id | source                      | destination      | deleted | random |
+      | 2       | crossdomain@example.com     | user@example.org | 0       | 0      |
+    When I am authenticated as "user@example.org"
+    And I am on "/account/alias"
+    Then the response status code should be 200
+    And I should see "crossdomain@example.com"
 
   @voucher-access
   Scenario: Unauthenticated user is redirected to login from voucher page

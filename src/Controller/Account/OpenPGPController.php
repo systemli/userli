@@ -151,7 +151,7 @@ final class OpenPGPController extends AbstractController
         ];
 
         // Non-random alias sources from all domains
-        $aliases = $this->aliasRepository->findByUser($user, false, true);
+        $aliases = $this->aliasRepository->findByUserAcrossDomains($user, random: false);
         foreach ($aliases as $alias) {
             $source = $alias->getSource();
             if (null !== $source) {
@@ -175,7 +175,7 @@ final class OpenPGPController extends AbstractController
             return true;
         }
 
-        $aliases = $this->aliasRepository->findByUser($user, false);
+        $aliases = $this->aliasRepository->findByUserAcrossDomains($user, false);
 
         return array_any($aliases, static fn ($alias) => $alias->getSource() === $email);
     }

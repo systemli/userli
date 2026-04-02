@@ -48,7 +48,7 @@ final readonly class DeleteHandler
     public function deleteUser(User $user): void
     {
         // Delete aliases of user
-        $aliases = $this->manager->getRepository(Alias::class)->findByUser($user);
+        $aliases = $this->manager->getRepository(Alias::class)->findByUserAcrossDomains($user);
         foreach ($aliases as $alias) {
             $alias->setDeleted(true);
             $alias->clearSensitiveData();
@@ -86,7 +86,7 @@ final readonly class DeleteHandler
         $this->manager->flush();
 
         // Get custom aliases from all domains
-        $customAliases = $this->manager->getRepository(Alias::class)->findByUser($user, false, true);
+        $customAliases = $this->manager->getRepository(Alias::class)->findByUserAcrossDomains($user, random: false);
         foreach ($customAliases as $customAlias) {
             $this->eventDispatcher->dispatch(new AliasDeletedEvent($customAlias), AliasDeletedEvent::CUSTOM);
         }
