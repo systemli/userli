@@ -6,29 +6,25 @@ RELEASE_FILE_USERLI  := userli-${GIT_VERSION}.tar.gz
 RELEASE_FILE_ADAPTER := userli-dovecot-adapter-${GIT_VERSION}.tar.gz
 SHA_ALGORITHMS       := 256 512
 TMP_DIR              := userli-${GIT_VERSION}
-SQLITE_DB_URL        := DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
 
-clean:
-	rm -rf build
-
-prepare: clean
+build:
+	rm -rf build/
 	mkdir -p build
 	git clone $(shell pwd) build/${TMP_DIR}
-
-build: clean prepare
 	cd build/${TMP_DIR}; \
-	APP_ENV=prod ${SQLITE_DB_URL} \
+	APP_ENV=prod \
 		composer install --no-dev --ignore-platform-reqs --no-scripts; \
-	APP_ENV=prod ${SQLITE_DB_URL} \
+	APP_ENV=prod \
 		composer dump-autoload; \
-	APP_ENV=prod ${SQLITE_DB_URL} \
+	APP_ENV=prod \
 		bin/console assets:install --no-interaction; \
 	yarn --pure-lockfile; \
 	yarn encore production
 
-release: clean prepare build
-	# Create a release tarball for Userli
-	tar --directory=build/${TMP_DIR} \
+# Create a release tarball for Userli
+# To be used by bin/github-release.sh
+release: build
+	tar --directory=build \
 		--exclude='${TMP_DIR}/.dockerignore' \
 		--exclude='${TMP_DIR}/.*.yml' \
 		--exclude='${TMP_DIR}/.editorconfig' \
@@ -73,7 +69,7 @@ release: clean prepare build
 		--exclude='${TMP_DIR}/webpack.config.js' \
 		--exclude='${TMP_DIR}/yarn.lock' \
 		-czf build/${RELEASE_FILE_USERLI} \
-		../${TMP_DIR}
+		${TMP_DIR}
 	# Create a release tarball for adapter
 	tar --directory=build/${TMP_DIR}/contrib/ \
 		-czf build/${RELEASE_FILE_ADAPTER} \
@@ -84,18 +80,10 @@ release: clean prepare build
 		shasum -a "$${sha}" "build/${RELEASE_FILE_ADAPTER}" >"build/${RELEASE_FILE_ADAPTER}.sha$${sha}"; \
 	done
 
-fix: vendors
-	composer cs-fix
-	composer rector-fix
-
-lint: vendors
-	php -l src/
-	composer cs-check
-	composer rector-check
-
-reset: clean
-	rm -f php_cs.cache
-	rm -rf node-modules
+reset:
+	rm -rf build
+	rm -f .php-cs-fixer.cache
+	rm -rf node_modules
 	rm -rf public/build
 	rm -rf public/bundles
 	rm -rf public/components
@@ -106,13 +94,21 @@ reset: clean
 	rm -rf vendor
 
 vendors:
-	${SQLITE_DB_URL} composer install --ignore-platform-reqs
+	composer install --ignore-platform-reqs --no-scripts
+
+fix: vendors
+	composer cs-fix
+	composer rector-fix
+
+lint: vendors
+	composer cs-check
+	composer rector-check
 
 assets: vendors
 	yarn
 	yarn encore dev
 
-integration: assets db lint
+behat: assets
 	bin/behat -f progress
 
 security-check: vendors
@@ -121,8 +117,8 @@ security-check: vendors
 psalm: vendors
 	composer psalm
 
-test: vendors lint
+phpunit: vendors
 	bin/phpunit
 
-jstest: assets
+vitest: assets
 	yarn test
