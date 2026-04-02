@@ -1,3 +1,4 @@
+COMPOSE              := $(shell podman compose version >/dev/null 2>&1 && echo "podman compose" || (docker compose version >/dev/null 2>&1 && echo "docker compose" || echo ""))
 GIT_VERSION          := $(shell git --no-pager describe --tags --always)
 GIT_COMMIT           := $(shell git rev-parse --verify HEAD)
 GIT_DATE             := $(firstword $(shell git --no-pager show --date=iso-strict --format="%ad" --name-only))
@@ -6,6 +7,57 @@ RELEASE_FILE_USERLI  := userli-${GIT_VERSION}.tar.gz
 RELEASE_FILE_ADAPTER := userli-dovecot-adapter-${GIT_VERSION}.tar.gz
 SHA_ALGORITHMS       := 256 512
 TMP_DIR              := userli-${GIT_VERSION}
+
+define check_compose
+	@if [ -z "$(COMPOSE)" ]; then \
+		echo "Error: Neither 'podman compose' nor 'docker compose' is available."; \
+		echo "  Install Podman with compose support: https://podman.io/getting-started/installation"; \
+		echo "  or Docker with compose plugin:       https://docs.docker.com/get-docker/"; \
+		exit 1; \
+	fi
+endef
+
+define mariadb_ready
+	@echo "Waiting for MariaDB to be ready..."
+	@for i in 1 2 3 4 5 6 7 8 9 10; do \
+		$(COMPOSE) exec mariadb mariadb -umail -ppassword mail -e "SELECT 1" >/dev/null 2>&1 && break; \
+		echo "  Attempt $$i/10 — waiting 2s..."; \
+		sleep 2; \
+	done
+endef
+
+containers:
+	$(check_compose)
+	$(COMPOSE) up -d
+
+migrations: containers
+	$(mariadb_ready)
+	$(COMPOSE) exec userli bin/console doctrine:migrations:migrate --no-interaction --quiet
+
+dev: assets migrations
+	@echo ""
+	@echo "Started container environment."
+	@echo "Services:"
+	@echo "  Userli:      http://localhost:8000"
+	@echo "  Mailcatcher: http://localhost:1080"
+	@echo "  Webhook:     http://localhost:9000"
+	@echo ""
+	@echo "Run 'make fixtures' to load example user data and start mail containers"
+	@echo ""
+
+fixtures: migrations
+	$(COMPOSE) exec userli bin/console doctrine:fixtures:load --group=basic --append --no-interaction --no-debug --quiet
+	$(COMPOSE) --profile mail up -d
+	@echo ""
+	@echo "Fixtures have been loaded."
+	@echo "Services:"
+	@echo "  Roundcube:   http://localhost:8001"
+	@echo ""
+	@echo "Login with: admin@example.org / password"
+
+destroy:
+	$(check_compose)
+	$(COMPOSE) --profile mail down -v
 
 build:
 	rm -rf build/

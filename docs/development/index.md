@@ -24,83 +24,43 @@ We provide a `docker-compose.yml` that starts Userli with MariaDB, Dovecot, Roun
 
 ## Setup
 
-Start the core containers (without Dovecot and Roundcube):
-
-=== "podman"
-
-    ```shell
-    podman compose up -d
-    ```
-
-=== "docker"
-
-    ```shell
-    docker compose up -d
-    ```
-
-!!! info
-    This will build the containers on the first run. Append `--build` to force a full rebuild.
-
-Install PHP dependencies and build frontend assets:
+For first-time setup, run:
 
 ```shell
-make assets
+make setup
 ```
 
-!!! tip
-    Run `make` without arguments to see all available targets.
+This will:
 
-Initialize the database:
+1. Install PHP dependencies and build frontend assets (`make assets`)
+2. Start all containers (MariaDB, Redis, Caddy, Userli, worker, scheduler, mailcatcher, webhook tester)
+3. Wait for MariaDB to be ready
+4. Run database migrations
+5. Load sample data
+6. Start Dovecot and Roundcube (mail profile)
 
-=== "podman"
+The Makefile auto-detects whether you have Podman or Docker installed.
 
-    ```shell
-    podman compose exec userli bin/console doctrine:migrations:migrate --no-interaction
-    ```
+When it finishes, open [http://localhost:8000](http://localhost:8000) and log in with `admin@example.org` / `password`.
 
-=== "docker"
+For subsequent runs, use:
 
-    ```shell
-    docker compose exec userli bin/console doctrine:migrations:migrate --no-interaction
-    ```
+```shell
+make dev
+```
 
-Load sample data:
-
-=== "podman"
-
-    ```shell
-    podman compose exec userli bin/console doctrine:fixtures:load
-    ```
-
-=== "docker"
-
-    ```shell
-    docker compose exec userli bin/console doctrine:fixtures:load
-    ```
+This starts all containers and builds assets, but skips database initialization and fixture loading.
 
 !!! info
-    The fixtures create some user accounts (`admin`, `user`, `support` and `suspicious`, among others) on the domain `example.org`, all with the password `password`.
+    The fixtures create user accounts (`admin`, `user`, `support` and `suspicious`, among others) on the domain `example.org`, all with the password `password`.
     They also create sample aliases and vouchers.
     See `src/DataFixtures` for details.
 
-Start Dovecot and Roundcube:
-
-=== "podman"
-
-    ```shell
-    podman compose --profile mail up -d
-    ```
-
-=== "docker"
-
-    ```shell
-    docker compose --profile mail up -d
-    ```
-
 !!! info
-    Dovecot and Roundcube are in the `mail` profile and must be started separately after the database is initialized. Starting them before the database exists will cause errors as Dovecot queries the Userli API for user authentication.
+    Dovecot and Roundcube are in the `mail` profile and must be started after the database is initialized. `make setup` handles this ordering automatically. If you start them manually before the database exists, Dovecot will fail because it queries the Userli API for user authentication.
 
-Open your browser and go to [http://localhost:8000](http://localhost:8000).
+!!! tip
+    Run `make` without arguments to see all available targets.
 
 ## Project structure
 
