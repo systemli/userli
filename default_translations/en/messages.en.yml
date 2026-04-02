@@ -218,14 +218,11 @@ welcome:
     You can pass these on to friends and invite them to register with %project_name%.
 closed:
   headline: Registration closed
-  lead: Due to paragraph three TKÜV we decided to close our Registration. Sorry for that.
+  lead: The registration for new accounts is currently closed.
   text: >
-    Due <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">to paragraph three of "Verordnung über die technische und organisatorische
-    Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (short: telecommuicationen-surveillance-decree
-    - "TKÜV") e-mail providers with more than 10.000 users are forced to implement an surveillance interface for the authorities.
-    That's why we decided to lock down the registration and do not allow any creation of new accounts.<p>
+    Currently, no new accounts can be created.
 
-    <strong>Existing accounts aren't effected</strong>
+    <strong>Existing accounts are not affected.</strong>
 delete:
   alias:
     headline_generic: Delete alias address

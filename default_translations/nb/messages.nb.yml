@@ -106,10 +106,10 @@ welcome:
     Du kan gi disse til venner og invitere dem til å registrere seg på %project_name%.
 closed:
   headline: Registrering stengt
-  lead: Som følge av paragraf tre i TKÜV, har vi besluttet å stenge registreringen. Beklager.
+  lead: Registrering av nye kontoer er for øyeblikket stengt.
   text: >
-    Som følge av <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">paragraf 3 av "Verordnung über die technische und organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (kort: telekommunikasjonsovervåknings-dekret - "TKÜV") er e-posttilbydere med mer enn 10000 brukere tvunget til å implementere et overvåkningsgrensesnitt for myndighetene. Derfor har vi besluttet å låse registreringen, og ikke tillate opprettelse av nye kontoer.
-    <strong>Dette har ingen innvirkning på eksisterende kontoer</strong>
+    For øyeblikket kan ingen nye kontoer opprettes.
+    <strong>Dette har ingen innvirkning på eksisterende kontoer.</strong>
 delete:
   user:
     headline: Slett konto
