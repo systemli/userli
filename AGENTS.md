@@ -108,35 +108,24 @@ userli/
 ## Commands
 
 ```bash
-# Dev environment (prefer Podman)
-podman compose up -d                       # Core services (no Dovecot/Roundcube)
-podman compose exec -it userli <command>
+# Dev environment (auto-detects Podman or Docker)
+make dev                       # Build assets, start containers, run migrations
+make fixtures                  # Load sample data + start Dovecot/Roundcube
+make destroy                   # Stop all containers and remove volumes
 
-# Dependencies
-composer install --no-scripts
-yarn install
-
-# Assets
-yarn encore dev
-
-# Database
-bin/console doctrine:migrations:migrate --no-interaction
-bin/console doctrine:fixtures:load
-
-# Start mail services (after DB init)
-podman compose --profile mail up -d        # Dovecot + Roundcube
+# Run commands inside the container
+make containers                # Start containers only
+<podman|docker> compose exec userli <command>
 
 # Code quality
-composer cs-fix          # PHP CS Fixer
-composer cs-check        # Dry-run
-composer rector-fix      # Rector refactorings
-composer rector-check    # Dry-run
-composer psalm           # Static analysis
+make fix                 # PHP CS Fixer + Rector (auto-fix)
+make lint                # CS + Rector dry-run checks
+make psalm               # Psalm static analysis
 
 # Tests
-bin/phpunit                    # Unit tests
-bin/behat --format progress    # Behat scenarios
-yarn test                      # JS/TS unit tests
+make phpunit             # PHPUnit tests
+make behat               # Behat scenarios
+make vitest              # JS/TS unit tests (Vitest)
 ```
 
 ## CI/CD
@@ -157,5 +146,5 @@ yarn test                      # JS/TS unit tests
 - `config/reference.php` — largest file, auto-generated settings reference
 - `tests/Behat/FeatureContext.php` — monolithic Behat context, main BDD entry point
 - Docker Compose uses MariaDB + Dovecot for full email stack testing
-- Dovecot and Roundcube are in the `mail` profile — start them after DB init with `--profile mail`
+- Dovecot and Roundcube are in the `mail` profile — `make fixtures` starts them after loading data
 - `dg/bypass-finals` in dev deps — allows mocking final classes in tests

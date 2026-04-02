@@ -27,7 +27,7 @@ We provide a `docker-compose.yml` that starts Userli with MariaDB, Dovecot, Roun
 For first-time setup, run:
 
 ```shell
-make setup
+make dev
 ```
 
 This will:
@@ -36,20 +36,23 @@ This will:
 2. Start all containers (MariaDB, Redis, Caddy, Userli, worker, scheduler, mailcatcher, webhook tester)
 3. Wait for MariaDB to be ready
 4. Run database migrations
-5. Load sample data
-6. Start Dovecot and Roundcube (mail profile)
 
 The Makefile auto-detects whether you have Podman or Docker installed.
 
-When it finishes, open [http://localhost:8000](http://localhost:8000) and log in with `admin@example.org` / `password`.
+### Load fixtures
 
-For subsequent runs, use:
+To populate the environment with example data, run
 
 ```shell
-make dev
+make fixtures 
 ```
 
-This starts all containers and builds assets, but skips database initialization and fixture loading.
+This 
+1. Load sample data (users, domains, API-tokens...)
+2. Start Dovecot and Roundcube (mail profile)
+
+When it finishes, open [http://localhost:8000](http://localhost:8000) and log in with `admin@example.org` / `password`.
+
 
 !!! info
     The fixtures create user accounts (`admin`, `user`, `support` and `suspicious`, among others) on the domain `example.org`, all with the password `password`.
@@ -57,7 +60,7 @@ This starts all containers and builds assets, but skips database initialization 
     See `src/DataFixtures` for details.
 
 !!! info
-    Dovecot and Roundcube are in the `mail` profile and must be started after the database is initialized. `make setup` handles this ordering automatically. If you start them manually before the database exists, Dovecot will fail because it queries the Userli API for user authentication.
+    Dovecot and Roundcube are in the `mail` profile and must be started after the fixtures are loaded in the database, otherwise Dovecot will fail because the API token it is configured to use will not exists in the database. `make fixtures` handles both in the right order. 
 
 !!! tip
     Run `make` without arguments to see all available targets.
