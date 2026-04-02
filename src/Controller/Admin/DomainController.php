@@ -96,7 +96,7 @@ final class DomainController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->manager->update($domain);
+            $this->manager->update();
             $this->addFlash('success', 'admin.domain.edit.success');
 
             return $this->redirectToRoute('admin_domain_show', ['id' => $domain->getId()]);

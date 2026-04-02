@@ -51,7 +51,7 @@ final readonly class DomainManager
         return $domain;
     }
 
-    public function update(Domain $domain): void
+    public function update(): void
     {
         $this->em->flush();
     }
