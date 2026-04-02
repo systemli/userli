@@ -103,11 +103,10 @@ welcome:
     Você pode enviá-los a seus contatos e chamá-los para se cadastrar no %project_name%.
 closed:
   headline: Cadastros fechados
-  lead: De acordo com o parágrafo 3 das normas de telecomunicação TKÜV decidimos manter um limite de 10.000 registos. Lamentamos a inconveniência.
+  lead: O registo de novas contas está atualmente fechado.
   text: >
-    Devido<a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">ao parágrafo três da "Verordnung über die technische und organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (curto: Decreto de vigilância de telecommunicações - "TKÜV") provedores de e-mail com mais de 10.000 utilizadores são obrigados a implementar uma interface de vigilância para as autoridades.
-    Foi por isso que decidimos bloquear o registo e não permitir a criação de novas contas.
-    <strong>As contas existentes não são afetadas</strong>
+    Atualmente, não é possível criar novas contas.
+    <strong>As contas existentes não são afetadas.</strong>
   user:
     headline: Apagar a conta
     lead: Precisamos verificar a sua palavra-passe para apagar a sua conta.

@@ -143,10 +143,10 @@ welcome:
 
 closed:
   headline: Inscription fermée
-  lead: En raison du paragraphe trois du TKÜV nous avons décidé de fermer les inscriptions. Nous sommes désolés.
+  lead: L'inscription de nouveaux comptes est actuellement fermée.
   text: >
-    En raison du <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">paragraphe trois du « Verordnung über die technische und organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation »</a> (abrégé telecommuicationen-surveillance-decree ou « TKÜV »), les fournisseurs de messagerie avec plus de 10 000 utilisateurs sont dans l'obligation de mettre en place une interface de surveillance pour les autorités. C'est pourquoi nous avons décidé de bloquer les inscriptions et de ne pas autoriser la création de nouveaux comptes.
-    <strong>Les comptes existants ne sont pas affectés</strong>
+    Actuellement, aucun nouveau compte ne peut être créé.
+    <strong>Les comptes existants ne sont pas affectés.</strong>
 
 delete:
   alias:

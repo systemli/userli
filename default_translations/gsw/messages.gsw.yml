@@ -187,12 +187,11 @@ registration:
 Domain: Domain
 closed:
   headline: Regischtrierig gschlosse
-  lead: Wägem Absatz drü TKÜV hei mir üs entschlosse d Regischtrierig z schliesse. Sorry für dä.
+  lead: D Regischtrierig vo nöiie Accounts isch im Momänt gschlosse.
   title: Regischtrierig gschlosse
   text: >
-    Wägem <a href="https://www.gesetze-im-internet.de/tk_v_2005/BJNR313600005.html" target="_blank">Absatz drü vor "Verordnung über die technische und organisatorische Umsetzung von Maßnahmen zur Überwachung der Telekommunikation"</a> (churz "TKÜV") müesse E-Mail Provider mit meh als 10'000 User e Überwachigsschnittschteu fürd Behördene implementiere.
-    Das isch dr Grund wieso mir üs hei entschlosse d Regischtrierig z schliesse und damit s Erschteue vo nöiie Accounts z verhindere.
-    <strong>Bishärigi Accounts si da drvo nid betroffe</strong>
+    Im Momänt chöi kei nöiie Accounts erschtellt wärde.
+    <strong>Bishärigi Accounts si da drvo nid betroffe.</strong>
 spam:
   text: >
     Oh nei! Mir hei s Gfüeu dass di Account vomene Spammer isch misbruucht worde.
