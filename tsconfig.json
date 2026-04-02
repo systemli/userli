@@ -14,6 +14,7 @@
     "noEmit": false,
     "sourceMap": true,
     "declaration": false,
+    "rootDir": "./assets",
     "outDir": "./dist",
     "types": ["webpack-env"]
   },
