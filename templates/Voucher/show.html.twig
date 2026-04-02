@@ -19,6 +19,13 @@
         <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 sm:p-8">
             {# Voucher management section #}
             <div class="space-y-6">
+                {% if not invitations_enabled %}
+                    <div class="text-center py-8 text-gray-500 dark:text-gray-300">
+                        {{ ux_icon('heroicons:no-symbol', {'class': 'w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600'}) }}
+                        <p class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">{{ "index.voucher-domain-disabled-title"|trans }}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">{{ "index.voucher-domain-disabled"|trans }}</p>
+                    </div>
+                {% else %}
                 {# Create voucher button for multipliers (only if vouchers exist) #}
                     {% if is_granted('ROLE_MULTIPLIER') and vouchers is defined and vouchers|length > 0 %}
                         <div class="flex justify-end">
@@ -159,6 +166,7 @@
                                 </div>
                             {% endif %}
                     </div>
+                {% endif %}{# invitations_enabled #}
                 </div>
         </div>
     </div>

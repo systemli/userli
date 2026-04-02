@@ -118,6 +118,13 @@ class FeatureContext extends MinkContext
                 switch ($key) {
                     case 'name':
                         $domain->setName($value);
+                        break;
+                    case 'invitation_enabled':
+                        $domain->setInvitationEnabled((bool) $value);
+                        break;
+                    case 'invitation_limit':
+                        $domain->setInvitationLimit((int) $value);
+                        break;
                 }
             }
 

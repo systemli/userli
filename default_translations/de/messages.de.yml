@@ -45,6 +45,8 @@ index:
   voucher-empty-title: Noch keine Einladungscodes erstellt
   voucher-empty-multiplier: Erstelle einen neuen Einladungscode um Freund:innen einzuladen.
   voucher-limit-title: Einladungscode-Limit erreicht
+  voucher-domain-disabled-title: Einladungen deaktiviert
+  voucher-domain-disabled: Einladungen sind für deine Domain derzeit nicht verfügbar.
   alias-subtitle: Verwalte deine E-Mail-Aliase
   alias-limit: Du hast das Limit von %alias_limit% erlaubten %alias_type% Alias-Adressen erreicht.
   alias-limit-reached: Limit erreicht
@@ -868,14 +870,22 @@ admin:
         label: Domainname
         placeholder: z.B. "example.org"
         help: Der hinzuzufügende Domainname (nur Kleinbuchstaben). Muss ein gültiger Hostname mit einer anerkannten TLD sein.
+      invitation_enabled: Einladungen aktivieren
+      invitation_limit: Initiale Einladungen pro Benutzer:in
       cancel: Abbrechen
       submit:
         create: Erstellen
+    edit:
+      heading: Domain bearbeiten
+      description: Einladungseinstellungen für diese Domain konfigurieren.
+      submit: Speichern
+      success: Domain-Einstellungen wurden erfolgreich gespeichert.
     search:
       placeholder: Domains suchen...
       submit: Suchen
     actions:
       show: Anzeigen
+      edit: Bearbeiten
       delete: Löschen
     delete:
       confirm: 'Bist du sicher, dass du die Domain "%name%" löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungen unwiderruflich gelöscht.'
@@ -889,6 +899,10 @@ admin:
       admins: Domain-Admins
       vouchers: Einladungen
       back: Zurück zu Domains
+      invitation_enabled: Einladungen
+      invitation_enabled_yes: Aktiviert
+      invitation_enabled_no: Deaktiviert
+      invitation_limit: Initiale Einladungen
     pagination:
       total: "%count% Domains insgesamt"
       previous: Zurück

@@ -60,6 +60,23 @@ Feature: Settings (Domains)
     And I should see "Aliases"
     And I should see "Domain Admins"
     And I should see "Vouchers"
+    And I should see "Invitations"
+    And I should see "Initial Invitations"
+
+  @domains
+  Scenario: Admin can edit invitation settings for a domain
+    Given I am authenticated as "louis@example.org"
+    When I am on "/admin/domains/"
+    And I follow "Edit"
+
+    Then the response status code should be 200
+    And I should see "Enable Invitations"
+    And I should see "Initial Invitations per User"
+
+    When I fill in "domain_edit[invitationLimit]" with "5"
+    And I press "Save Changes"
+
+    Then I should see "Domain settings have been updated successfully"
 
   @domains
   Scenario: Admin can search domains

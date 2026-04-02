@@ -49,6 +49,8 @@ index:
   voucher-empty-title: No invite codes created yet
   voucher-empty-multiplier: Create a new invite code to invite friends.
   voucher-limit-title: Invite code limit reached
+  voucher-domain-disabled-title: Invitations Disabled
+  voucher-domain-disabled: Invitations are currently not available for your domain.
   alias-subtitle: Manage your e-mail aliases
   alias-limit: You reached the allowed limit of %alias_limit% %alias_type% alias addresses.
   alias-limit-reached: Limit reached
@@ -868,14 +870,22 @@ admin:
         label: Domain Name
         placeholder: e.g. "example.org"
         help: The domain name to add (lowercase only). Must be a valid hostname with a recognized TLD.
+      invitation_enabled: Enable Invitations
+      invitation_limit: Initial Invitations per User
       cancel: Cancel
       submit:
         create: Create
+    edit:
+      heading: Edit Domain
+      description: Configure invitation settings for this domain.
+      submit: Save Changes
+      success: Domain settings have been updated successfully.
     search:
       placeholder: Search domains...
       submit: Search
     actions:
       show: Show
+      edit: Edit
       delete: Delete
     delete:
       confirm: "Are you sure you want to delete the domain \"%name%\"? This will permanently delete all associated users, aliases, and vouchers."
@@ -889,6 +899,10 @@ admin:
       admins: Domain Admins
       vouchers: Vouchers
       back: Back to Domains
+      invitation_enabled: Invitations
+      invitation_enabled_yes: Enabled
+      invitation_enabled_no: Disabled
+      invitation_limit: Initial Invitations
     pagination:
       total: "%count% domains total"
       previous: Previous

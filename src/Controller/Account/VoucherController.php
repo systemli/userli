@@ -45,6 +45,7 @@ final class VoucherController extends AbstractController
                 'user' => $user,
                 'vouchers' => $vouchers,
                 'voucher_form' => $voucherCreateForm,
+                'invitations_enabled' => $user->getDomain()?->isInvitationEnabled() ?? false,
             ]
         );
     }

@@ -1,5 +1,29 @@
 # Upgrade documentation
 
+## Upgrade to 6.6.0
+
+### Per-domain invitation settings / REGISTRATION_OPEN removed
+
+Invitations (vouchers) are now controlled per domain instead of via the global
+`REGISTRATION_OPEN` environment variable.
+
+**Action required:**
+
+1. Run the database migration:
+   ```shell
+   bin/console doctrine:migrations:migrate --no-interaction
+   ```
+   The migration enables invitations with a limit of 3 for the primary domain
+   and disables them for all other domains. It also removes any vouchers that
+   were incorrectly created for non-primary domains.
+
+2. Remove `REGISTRATION_OPEN` from your environment configuration (`.env`,
+   `.env.local`, `docker-compose.yml`, etc.). The variable is no longer used.
+
+3. To enable invitations for additional domains or adjust the invitation limit,
+   go to **Admin → Domains**, click **Edit** on the desired domain and configure
+   the invitation settings.
+
 ## Upgrade to 6.5.0
 
 ### Sonata Admin Bundle removed

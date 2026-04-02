@@ -51,6 +51,11 @@ final readonly class DomainManager
         return $domain;
     }
 
+    public function update(Domain $domain): void
+    {
+        $this->em->flush();
+    }
+
     public function delete(Domain $domain): void
     {
         $this->eventDispatcher->dispatch(new DomainEvent($domain), DomainEvent::DELETED);

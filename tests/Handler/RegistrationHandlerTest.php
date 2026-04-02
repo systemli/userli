@@ -17,32 +17,11 @@ use App\Repository\VoucherRepository;
 use App\Service\DomainGuesser;
 use App\Service\SettingsService;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RegistrationHandlerTest extends KernelTestCase
 {
-    public function testHandleWithDisabledRegistration(): void
-    {
-        $settingsService = $this->createStub(SettingsService::class);
-        $settingsService->method('get')->willReturn(0);
-
-        $handler = new RegistrationHandler(
-            $this->createStub(EntityManagerInterface::class),
-            $this->createStub(DomainGuesser::class),
-            $this->createStub(EventDispatcherInterface::class),
-            $this->createStub(PasswordUpdater::class),
-            $this->createStub(MailCryptKeyHandler::class),
-            $this->createStub(RecoveryTokenHandler::class),
-            $settingsService,
-            false
-        );
-
-        $this->expectException(Exception::class);
-        $handler->handle(new Registration());
-    }
-
     public function testHandleWithEnabledRegistration(): void
     {
         $domain = new Domain();
@@ -82,7 +61,6 @@ class RegistrationHandlerTest extends KernelTestCase
             $this->createStub(MailCryptKeyHandler::class),
             $this->createStub(RecoveryTokenHandler::class),
             $settingsService,
-            true
         );
 
         $registration = new Registration();

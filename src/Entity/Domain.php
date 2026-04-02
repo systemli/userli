@@ -23,9 +23,35 @@ class Domain implements UpdatedTimeInterface, Stringable
     use NameTrait;
     use UpdatedTimeTrait;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    private bool $invitationEnabled = false;
+
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    private int $invitationLimit = 0;
+
     public function __construct()
     {
         $this->creationTime = new DateTimeImmutable();
+    }
+
+    public function isInvitationEnabled(): bool
+    {
+        return $this->invitationEnabled;
+    }
+
+    public function setInvitationEnabled(bool $invitationEnabled): void
+    {
+        $this->invitationEnabled = $invitationEnabled;
+    }
+
+    public function getInvitationLimit(): int
+    {
+        return $this->invitationLimit;
+    }
+
+    public function setInvitationLimit(int $invitationLimit): void
+    {
+        $this->invitationLimit = $invitationLimit;
     }
 
     #[Override]

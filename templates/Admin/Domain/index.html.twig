@@ -61,6 +61,13 @@
                                             {{ ux_icon('heroicons:eye', {class: 'w-4 h-4'}) }}
                                             <span class="sr-only">{{ 'admin.domain.actions.show'|trans }}</span>
                                         </a>
+                                        <a href="{{ path('admin_domain_edit', {id: domain.id}) }}"
+                                           title="{{ 'admin.domain.actions.edit'|trans }}"
+                                           data-controller="tooltip"
+                                           class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors">
+                                            {{ ux_icon('heroicons:pencil-square', {class: 'w-4 h-4'}) }}
+                                            <span class="sr-only">{{ 'admin.domain.actions.edit'|trans }}</span>
+                                        </a>
                                         <button type="button"
                                                 data-action="modal#open"
                                                 data-modal-action-param="{{ path('admin_domain_delete_post', {id: domain.id}) }}"

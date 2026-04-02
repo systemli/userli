@@ -8,6 +8,7 @@ use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Exception\ValidationException;
+use App\Form\DomainEditType;
 use App\Form\DomainType;
 use App\Form\Model\PasswordConfirmation;
 use App\Form\PasswordConfirmationType;
@@ -74,7 +75,40 @@ final class DomainController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/domains/{id}', name: 'admin_domain_show', methods: ['GET'], requirements: ['id' => '\d+'])]
+    #[Route('/admin/domains/edit/{id}', name: 'admin_domain_edit', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function edit(#[MapEntity] Domain $domain): Response
+    {
+        $form = $this->createForm(DomainEditType::class, $domain, [
+            'action' => $this->generateUrl('admin_domain_edit_post', ['id' => $domain->getId()]),
+            'method' => 'POST',
+        ]);
+
+        return $this->render('Admin/Domain/edit.html.twig', [
+            'domain' => $domain,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/admin/domains/edit/{id}', name: 'admin_domain_edit_post', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function editSubmit(#[MapEntity] Domain $domain, Request $request): Response
+    {
+        $form = $this->createForm(DomainEditType::class, $domain);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->manager->update($domain);
+            $this->addFlash('success', 'admin.domain.edit.success');
+
+            return $this->redirectToRoute('admin_domain_show', ['id' => $domain->getId()]);
+        }
+
+        return $this->render('Admin/Domain/edit.html.twig', [
+            'domain' => $domain,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/admin/domains/{id}', name: 'admin_domain_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(#[MapEntity] Domain $domain): Response
     {
         $stats = $this->manager->getDomainStats($domain);

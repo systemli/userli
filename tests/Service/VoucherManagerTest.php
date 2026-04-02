@@ -37,6 +37,8 @@ class VoucherManagerTest extends TestCase
 
         $this->domain = new Domain();
         $this->domain->setName('example.org');
+        $this->domain->setInvitationEnabled(true);
+        $this->domain->setInvitationLimit(3);
 
         $this->manager = new VoucherManager(
             $this->entityManager,
@@ -125,6 +127,40 @@ class VoucherManagerTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         $this->manager->assertDomainPermission($user, $otherDomain);
+    }
+
+    public function testGetVouchersByUserDomainDisabled(): void
+    {
+        $domain = new Domain();
+        $domain->setName('disabled.org');
+        $domain->setInvitationEnabled(false);
+        $domain->setInvitationLimit(3);
+
+        $user = new User('test@disabled.org');
+        $user->setDomain($domain);
+
+        $vouchers = $this->manager->getVouchersByUser($user);
+
+        self::assertEmpty($vouchers);
+    }
+
+    public function testGetVouchersByUserCustomLimit(): void
+    {
+        $this->repository->method('findByUser')->willReturn([]);
+
+        $domain = new Domain();
+        $domain->setName('custom.org');
+        $domain->setInvitationEnabled(true);
+        $domain->setInvitationLimit(5);
+
+        $user = new User('test@custom.org');
+        $user->setDomain($domain);
+        $user->setCreationTime(new DateTimeImmutable('-8 days'));
+        $user->setLastLoginTime(new DateTimeImmutable());
+
+        $vouchers = $this->manager->getVouchersByUser($user);
+
+        self::assertCount(5, $vouchers);
     }
 
     public function testGetVouchersByUserSuspicious(): void

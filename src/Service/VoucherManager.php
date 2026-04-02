@@ -19,8 +19,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final readonly class VoucherManager
 {
-    private const int VOUCHER_LIMIT = 3;
-
     private const int PAGE_SIZE = 20;
 
     public function __construct(
@@ -119,10 +117,17 @@ final readonly class VoucherManager
             return [];
         }
 
+        $domain = $user->getDomain();
+
+        if (null === $domain || !$domain->isInvitationEnabled()) {
+            return [];
+        }
+
+        $limit = $domain->getInvitationLimit();
         $vouchers = $this->repository->findByUser($user);
 
-        if (null !== $user->getLastLoginTime() && count($vouchers) < self::VOUCHER_LIMIT && $user->getCreationTime() <= new DateTimeImmutable('-7 days')) {
-            for ($i = count($vouchers); $i < self::VOUCHER_LIMIT; ++$i) {
+        if (null !== $user->getLastLoginTime() && count($vouchers) < $limit && $user->getCreationTime() <= new DateTimeImmutable('-7 days')) {
+            for ($i = count($vouchers); $i < $limit; ++$i) {
                 try {
                     $vouchers[] = $this->create($user, $user->getDomain());
                 } catch (ValidationException) {
