@@ -44,19 +44,12 @@ final class RegistrationController extends AbstractController
     #[Route(path: '/register/{voucher}', name: 'register_voucher', requirements: ['voucher' => '[a-zA-Z0-9]{6}'], methods: ['GET'])]
     public function show(string $voucher): Response
     {
-        if (!$this->registrationHandler->isRegistrationOpen()) {
-            return $this->render('Registration/closed.html.twig');
+        $result = $this->resolveVoucher($voucher);
+        if ($result instanceof Response) {
+            return $result;
         }
 
-        $voucherEntity = $this->voucherRepository->findByCode($voucher);
-
-        if (null === $voucherEntity || !$this->isVoucherValid($voucherEntity)) {
-            $this->addFlash('error', 'flashes.voucher-invalid');
-
-            return $this->redirectToRoute('index');
-        }
-
-        $domainName = $voucherEntity->getDomain()->getName();
+        $domainName = $result->getDomain()->getName();
 
         $registration = new Registration();
         $registration->setVoucher($voucher);
@@ -84,24 +77,18 @@ final class RegistrationController extends AbstractController
     #[Route(path: '/register', name: 'register_submit', methods: ['POST'])]
     public function submit(Request $request): Response
     {
-        if (!$this->registrationHandler->isRegistrationOpen()) {
-            return $this->render('Registration/closed.html.twig');
-        }
-
         $registration = new Registration();
 
         // Extract voucher code from submitted form data to resolve the domain
         $formData = $request->request->all('registration');
         $voucherCode = $formData['voucher'] ?? '';
-        $voucherEntity = $this->voucherRepository->findByCode($voucherCode);
 
-        if (null === $voucherEntity || !$this->isVoucherValid($voucherEntity)) {
-            $this->addFlash('error', 'flashes.voucher-invalid');
-
-            return $this->redirectToRoute('index');
+        $result = $this->resolveVoucher($voucherCode);
+        if ($result instanceof Response) {
+            return $result;
         }
 
-        $domainName = $voucherEntity->getDomain()->getName();
+        $domainName = $result->getDomain()->getName();
 
         $form = $this->createForm(RegistrationType::class, $registration, [
             'domain' => $domainName,
@@ -177,6 +164,23 @@ final class RegistrationController extends AbstractController
         $this->addFlash('success', 'flashes.registration-successful');
 
         return $this->render('Registration/welcome.html.twig');
+    }
+
+    private function resolveVoucher(string $code): Voucher|Response
+    {
+        $voucher = $this->voucherRepository->findByCode($code);
+
+        if (null === $voucher || !$this->isVoucherValid($voucher)) {
+            $this->addFlash('error', 'flashes.voucher-invalid');
+
+            return $this->redirectToRoute('index');
+        }
+
+        if (!$voucher->getDomain()->isInvitationEnabled()) {
+            return $this->render('Registration/closed.html.twig');
+        }
+
+        return $voucher;
     }
 
     private function isVoucherValid(Voucher $voucher): bool

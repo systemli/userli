@@ -23,7 +23,7 @@
                 {{ "navbar.home"|trans }}
             </a>
 
-            {% if app.user.domain == domain and not is_granted('ROLE_SUSPICIOUS') %}
+            {% if app.user.domain.invitationEnabled and not is_granted('ROLE_SUSPICIOUS') %}
                 <a href="{{ path('vouchers') }}"
                    class="flex items-center px-3 sm:px-4 py-2 sm:py-3 rounded-2xl text-sm sm:text-base font-medium transition-all duration-300 {{ current_route == 'vouchers' ? 'bg-gray-900 dark:bg-gray-700 text-white shadow-lg' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100' }}"
                    {{ current_route == 'vouchers' ? 'aria-current="page"' : '' }}>

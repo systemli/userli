@@ -9,7 +9,6 @@ use App\Enum\Roles;
 use App\Form\LoginType;
 use App\Form\Model\VoucherCheck;
 use App\Form\VoucherCheckType;
-use App\Handler\RegistrationHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +20,6 @@ final class StartController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $manager,
-        private readonly RegistrationHandler $registrationHandler,
         private readonly AuthenticationUtils $authenticationUtils,
     ) {
     }
@@ -50,10 +48,6 @@ final class StartController extends AbstractController
     #[Route(path: '/', name: 'check_voucher', methods: ['POST'])]
     public function checkVoucher(Request $request): Response
     {
-        if (!$this->registrationHandler->isRegistrationOpen()) {
-            return $this->redirectToRoute('index');
-        }
-
         $form = $this->createForm(VoucherCheckType::class);
         $form->handleRequest($request);
 

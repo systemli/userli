@@ -7,6 +7,7 @@ namespace App\Service;
 use App\Dto\PaginatedResult;
 use App\Entity\Domain;
 use App\Event\DomainEvent;
+use App\Form\Model\DomainAdminModel;
 use App\Repository\AliasRepository;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
@@ -57,6 +58,14 @@ final readonly class DomainManager
 
         // The database CASCADE constraints handle deletion of all dependent entities
         $this->em->remove($domain);
+        $this->em->flush();
+    }
+
+    public function update(Domain $domain, DomainAdminModel $model): void
+    {
+        $domain->setInvitationEnabled($model->isInvitationEnabled());
+        $domain->setInvitationLimit($model->getInvitationLimit());
+
         $this->em->flush();
     }
 

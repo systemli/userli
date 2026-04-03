@@ -38,13 +38,15 @@ start:
 index:
   title: Verwalte dein E-Mail-Konto
   voucher-subtitle: Lade Freund:innen ein
-  voucher-explanation-short: Nutze deine Einladungscodes um Freund:innen einzuladen. Du hast standardmäßig drei Einladungen zur Verfügung.
+  voucher-explanation-short: Nutze deine Einladungscodes um Freund:innen einzuladen. Du erhältst standardmäßig %limit% Einladungen nach 7 Tagen.
   voucher-limit: Du hast keine Einladungscodes mehr verfügbar.
-  voucher-disable: Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben. Dies dient der Vermeidung von Massenregistrierungen und Spam.
+  voucher-disable: Du bekommst am %date% Uhr %limit% Einladungscodes gutgeschrieben. Dies dient der Vermeidung von Massenregistrierungen und Spam.
   voucher-waiting-title: Wartezeit für neue Einladungscodes
   voucher-empty-title: Noch keine Einladungscodes erstellt
   voucher-empty-multiplier: Erstelle einen neuen Einladungscode um Freund:innen einzuladen.
   voucher-limit-title: Einladungscode-Limit erreicht
+  voucher-domain-disabled-title: Einladungen deaktiviert
+  voucher-domain-disabled: Einladungen sind für deine Domain derzeit nicht verfügbar.
   alias-subtitle: Verwalte deine E-Mail-Aliase
   alias-limit: Du hast das Limit von %alias_limit% erlaubten %alias_type% Alias-Adressen erreicht.
   alias-limit-reached: Limit erreicht
@@ -863,14 +865,24 @@ admin:
         label: Domainname
         placeholder: z.B. "example.org"
         help: Der hinzuzufügende Domainname (nur Kleinbuchstaben). Muss ein gültiger Hostname mit einer anerkannten TLD sein.
+      invitation_enabled: Einladungen aktivieren
+      invitation_enabled_help: "Wenn aktiviert, erhalten Benutzer:innen 7 Tage nach der Registrierung Einladungscodes und neue Registrierungen über diese Codes sind möglich. Wenn deaktiviert, können auch bestehende Einladungscodes nicht eingelöst werden."
+      invitation_limit: Initiale Einladungen pro Benutzer:in
+      invitation_limit_help: "Anzahl der Einladungscodes, die jede:r Benutzer:in 7 Tage nach der Registrierung automatisch erhält. Benutzer:innen mit der Multiplier-Rolle können zusätzliche Codes erstellen."
       cancel: Abbrechen
       submit:
         create: Erstellen
+    edit:
+      heading: Domain bearbeiten
+      description: Einladungseinstellungen für diese Domain konfigurieren.
+      submit: Speichern
+      success: Domain-Einstellungen wurden erfolgreich gespeichert.
     search:
       placeholder: Domains suchen...
       submit: Suchen
     actions:
       show: Anzeigen
+      edit: Bearbeiten
       delete: Löschen
     delete:
       confirm: 'Bist du sicher, dass du die Domain "%name%" löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungen unwiderruflich gelöscht.'
@@ -884,6 +896,10 @@ admin:
       admins: Domain-Admins
       vouchers: Einladungen
       back: Zurück zu Domains
+      invitation_enabled: Einladungen
+      invitation_enabled_yes: Aktiviert
+      invitation_enabled_no: Deaktiviert
+      invitation_limit: Initiale Einladungen
     pagination:
       total: "%count% Domains insgesamt"
       previous: Zurück

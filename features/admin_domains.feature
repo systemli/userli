@@ -60,6 +60,8 @@ Feature: Settings (Domains)
     And I should see "Aliases"
     And I should see "Domain Admins"
     And I should see "Vouchers"
+    And I should see "Invitations"
+    And I should see "Initial Invitations"
 
   @domains
   Scenario: Admin can search domains

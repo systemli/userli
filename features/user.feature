@@ -3,8 +3,8 @@ Feature: User
   Background:
     Given the database is clean
     And the following Domain exists:
-      | name        |
-      | example.org |
+      | name        | invitation_enabled | invitation_limit |
+      | example.org | 1                  | 3                |
     And the following User exists:
       | email               | password | roles           |
       | admin@example.org   | asdasd   | ROLE_ADMIN      |

@@ -16,7 +16,6 @@ use App\Service\SettingsService;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final readonly class RegistrationHandler
@@ -29,8 +28,6 @@ final readonly class RegistrationHandler
         private MailCryptKeyHandler $mailCryptKeyHandler,
         private RecoveryTokenHandler $recoveryTokenHandler,
         private SettingsService $settingsService,
-        #[Autowire(env: 'REGISTRATION_OPEN')]
-        private bool $registrationOpen,
     ) {
     }
 
@@ -39,10 +36,6 @@ final readonly class RegistrationHandler
      */
     public function handle(Registration $registration): void
     {
-        if (!$this->registrationOpen) {
-            throw new Exception('The Registration is closed!');
-        }
-
         $user = null;
         $this->manager->wrapInTransaction(function () use ($registration, &$user): void {
             // Create user
@@ -63,11 +56,6 @@ final readonly class RegistrationHandler
         });
 
         $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_CREATED);
-    }
-
-    public function isRegistrationOpen(): bool
-    {
-        return $this->registrationOpen;
     }
 
     private function buildUser(Registration $registration): User
