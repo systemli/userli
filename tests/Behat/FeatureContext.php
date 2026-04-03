@@ -549,6 +549,22 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @When /^I set the placeholder "([^"]*)" with property "([^"]*)" for domain "([^"]*)"$/
+     */
+    public function iSetPlaceholderForDomain(string $name, string $key, string $domainName): void
+    {
+        $domain = $this->manager->getRepository(Domain::class)->findOneBy(['name' => $domainName]);
+
+        if (!$domain) {
+            throw new RuntimeException(sprintf('Domain with name "%s" not found', $domainName));
+        }
+
+        $value = PropertyAccess::createPropertyAccessor()->getValue($domain, $key);
+
+        $this->setPlaceholder($name, $value);
+    }
+
+    /**
      * @When /^I set the placeholder "([^"]*)" from url parameter "([^"]*)"$/
      */
     public function iSetPlaceholderFromUrl(string $name, string $key): void

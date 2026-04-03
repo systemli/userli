@@ -694,6 +694,61 @@ class DomainVoterTest extends TestCase
         self::assertSame(VoterInterface::ACCESS_DENIED, $result);
     }
 
+    // --- Token with non-User user object ---
+
+    public function testDomainAdminWithNonUserTokenIsDenied(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true);
+        $user = new User('user@domain-a.org');
+        $user->setDomain($this->domainA);
+
+        // Token returns a non-User object
+        $token = $this->createStub(TokenInterface::class);
+        $token->method('getUser')->willReturn(null);
+
+        $result = $voter->vote($token, $user, [DomainVoter::VIEW]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
+    }
+
+    // --- Domain admin: domain with null ID ---
+
+    public function testDomainAdminWithNullDomainIdIsDenied(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true);
+        $domainNoId = new Domain();
+        // Domain without ID set
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $domainNoId, [DomainVoter::VIEW]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
+    }
+
+    public function testDomainAdminCannotViewDomainAdminModel(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true);
+        $model = new DomainAdminModel();
+
+        // DomainAdminModel is not supported for VIEW, should abstain
+        $result = $voter->vote($this->createToken($this->domainAdminA), $model, [DomainVoter::VIEW]);
+        self::assertSame(VoterInterface::ACCESS_ABSTAIN, $result);
+    }
+
+    public function testRegularUserIsDeniedForDomain(): void
+    {
+        $voter = $this->createVoter(isAdmin: false, isDomainAdmin: false);
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $this->domainA, [DomainVoter::VIEW]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
+    }
+
+    public function testRegularUserIsDeniedForDomainAdminModel(): void
+    {
+        $voter = $this->createVoter(isAdmin: false, isDomainAdmin: false);
+        $model = new DomainAdminModel();
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $model, [DomainVoter::EDIT]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
+    }
+
     // --- Full admin: domain operations ---
 
     public function testFullAdminCanViewAndEditAnyDomain(): void
