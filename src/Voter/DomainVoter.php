@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Entity\Voucher;
 use App\Enum\Roles;
 use App\Form\Model\AliasAdminModel;
+use App\Form\Model\DomainAdminModel;
 use App\Form\Model\UserAdminModel;
 use App\Form\Model\VoucherModel;
 use App\Service\DomainGuesser;
@@ -20,7 +21,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * @extends Voter<string, User|UserAdminModel|Alias|AliasAdminModel|Voucher|VoucherModel>
+ * @extends Voter<string, Domain|DomainAdminModel|User|UserAdminModel|Alias|AliasAdminModel|Voucher|VoucherModel>
  */
 final class DomainVoter extends Voter
 {
@@ -51,15 +52,19 @@ final class DomainVoter extends Voter
             return $subject instanceof User || $subject instanceof UserAdminModel || $subject instanceof Alias || $subject instanceof AliasAdminModel || $subject instanceof VoucherModel;
         }
 
+        if ($attribute === self::VIEW) {
+            return $subject instanceof Domain || $subject instanceof User || $subject instanceof Alias || $subject instanceof Voucher;
+        }
+
         if ($attribute === self::EDIT) {
-            return $subject instanceof User || $subject instanceof UserAdminModel || $subject instanceof Alias;
+            return $subject instanceof Domain || $subject instanceof DomainAdminModel || $subject instanceof User || $subject instanceof UserAdminModel || $subject instanceof Alias;
         }
 
         if ($attribute === self::DELETE) {
             return $subject instanceof User || $subject instanceof Voucher;
         }
 
-        return $subject instanceof User || $subject instanceof Alias || $subject instanceof Voucher;
+        return false;
     }
 
     #[Override]
@@ -93,6 +98,14 @@ final class DomainVoter extends Voter
 
         if (null === $currentDomain) {
             return false;
+        }
+
+        if ($subject instanceof Domain) {
+            return $currentDomain->getId() === $subject->getId();
+        }
+
+        if ($subject instanceof DomainAdminModel) {
+            return true;
         }
 
         if ($subject instanceof User) {

@@ -20,6 +20,7 @@
             {route: 'admin_alias_index', section: 'aliases', icon: 'heroicons:at-symbol', label: 'admin.navigation.aliases'},
             {route: 'admin_openpgp_key_index', section: 'openpgp-keys', icon: 'heroicons:key', label: 'admin.navigation.openpgp-keys'},
             {route: 'admin_voucher_index', section: 'vouchers', icon: 'heroicons:ticket', label: 'admin.navigation.vouchers'},
+            {route: 'admin_domain_my', section: 'domains', icon: 'heroicons:globe-alt', label: 'admin.navigation.domain_settings', role: 'ROLE_DOMAIN_ADMIN', hide_for: 'ROLE_ADMIN'},
         ]
     },
     {
@@ -48,7 +49,7 @@
     {% for group in nav_groups %}
         {% if group.role is not defined or is_granted(group.role) %}
             {% for item in group.items %}
-                {% if (item.role is not defined or is_granted(item.role)) and item.section == current_section %}
+                {% if (item.role is not defined or is_granted(item.role)) and (item.hide_for is not defined or not is_granted(item.hide_for)) and item.section == current_section %}
                     <span class="flex items-center text-sm font-medium text-gray-900 dark:text-gray-100">
                         {{ ux_icon(item.icon, {class: 'w-4 h-4 mr-2 text-gray-600 dark:text-gray-300'}) }}
                         {{ item.label|trans }}
@@ -65,7 +66,7 @@
                 {# Filter visible items within the group #}
                 {% set visible_items = [] %}
                 {% for item in group.items %}
-                    {% if item.role is not defined or is_granted(item.role) %}
+                    {% if (item.role is not defined or is_granted(item.role)) and (item.hide_for is not defined or not is_granted(item.hide_for)) %}
                         {% set visible_items = visible_items|merge([item]) %}
                     {% endif %}
                 {% endfor %}
