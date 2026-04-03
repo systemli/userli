@@ -871,7 +871,9 @@ admin:
         placeholder: e.g. "example.org"
         help: The domain name to add (lowercase only). Must be a valid hostname with a recognized TLD.
       invitation_enabled: Enable Invitations
+      invitation_enabled_help: "When enabled, users receive invite codes after 7 days and new registrations via those codes are allowed. When disabled, existing invite codes cannot be used either."
       invitation_limit: Initial Invitations per User
+      invitation_limit_help: "Number of invite codes automatically given to each user 7 days after registration. Users with the multiplier role can create additional codes."
       cancel: Cancel
       submit:
         create: Create

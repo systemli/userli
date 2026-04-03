@@ -26,9 +26,11 @@ final class DomainEditType extends AbstractType
             ->add('invitationEnabled', CheckboxType::class, [
                 'required' => false,
                 'label' => 'admin.domain.form.invitation_enabled',
+                'help' => 'admin.domain.form.invitation_enabled_help',
             ])
             ->add('invitationLimit', IntegerType::class, [
                 'label' => 'admin.domain.form.invitation_limit',
+                'help' => 'admin.domain.form.invitation_limit_help',
                 'constraints' => [
                     new Assert\NotNull(),
                     new Assert\PositiveOrZero(),

@@ -23,10 +23,13 @@
 {% endblock form_row %}
 
 {% block checkbox_row %}
-    <div class="flex items-center">
-        {{ form_widget(form) }}
-        {{ form_label(form, null, {'label_attr': {'class': 'ml-2 block text-sm text-gray-700 dark:text-gray-300 cursor-pointer', 'for': id}}) }}
-        {{ form_errors(form) }}
+    <div>
+        <div class="flex items-center">
+            {{ form_widget(form) }}
+            {{ form_label(form, null, {'label_attr': {'class': 'ml-2 block text-sm text-gray-700 dark:text-gray-300 cursor-pointer', 'for': id}}) }}
+            {{ form_errors(form) }}
+        </div>
+        {{ form_help(form) }}
     </div>
 {% endblock checkbox_row %}
 

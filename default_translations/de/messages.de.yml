@@ -871,7 +871,9 @@ admin:
         placeholder: z.B. "example.org"
         help: Der hinzuzufügende Domainname (nur Kleinbuchstaben). Muss ein gültiger Hostname mit einer anerkannten TLD sein.
       invitation_enabled: Einladungen aktivieren
+      invitation_enabled_help: "Wenn aktiviert, erhalten Benutzer:innen 7 Tage nach der Registrierung Einladungscodes und neue Registrierungen über diese Codes sind möglich. Wenn deaktiviert, können auch bestehende Einladungscodes nicht eingelöst werden."
       invitation_limit: Initiale Einladungen pro Benutzer:in
+      invitation_limit_help: "Anzahl der Einladungscodes, die jede:r Benutzer:in 7 Tage nach der Registrierung automatisch erhält. Benutzer:innen mit der Multiplier-Rolle können zusätzliche Codes erstellen."
       cancel: Abbrechen
       submit:
         create: Erstellen
