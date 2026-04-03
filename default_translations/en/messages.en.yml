@@ -842,6 +842,9 @@ admin:
     search:
       placeholder: Search by code or user...
       submit: Search
+    invitations_disabled:
+      title: Invitations are disabled for your domain
+      description: Existing vouchers cannot be redeemed and no new registrations are possible. You can enable invitations in the domain settings.
     pagination:
       total: "%count% vouchers total"
       previous: Previous

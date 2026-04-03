@@ -840,6 +840,9 @@ admin:
     search:
       placeholder: Nach Code oder Benutzer suchen...
       submit: Suchen
+    invitations_disabled:
+      title: Einladungen sind für deine Domain deaktiviert
+      description: Bestehende Einladungs-Codes können nicht eingelöst werden und neue Registrierungen sind nicht möglich. Du kannst Einladungen in den Domain-Einstellungen aktivieren.
     pagination:
       total: "%count% Einladungen insgesamt"
       previous: Zurück
