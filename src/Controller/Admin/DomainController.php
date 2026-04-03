@@ -13,6 +13,7 @@ use App\Form\DomainType;
 use App\Form\Model\PasswordConfirmation;
 use App\Form\PasswordConfirmationType;
 use App\Service\DomainManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,6 +26,7 @@ final class DomainController extends AbstractController
 {
     public function __construct(
         private readonly DomainManager $manager,
+        private readonly EntityManagerInterface $em,
     ) {
     }
 
@@ -96,7 +98,7 @@ final class DomainController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->manager->update();
+            $this->em->flush();
             $this->addFlash('success', 'admin.domain.edit.success');
 
             return $this->redirectToRoute('admin_domain_show', ['id' => $domain->getId()]);

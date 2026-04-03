@@ -44,12 +44,12 @@ final class RegistrationController extends AbstractController
     #[Route(path: '/register/{voucher}', name: 'register_voucher', requirements: ['voucher' => '[a-zA-Z0-9]{6}'], methods: ['GET'])]
     public function show(string $voucher): Response
     {
-        $response = $this->resolveVoucher($voucher, $voucherEntity);
-        if (null !== $response) {
-            return $response;
+        $result = $this->resolveVoucher($voucher);
+        if ($result instanceof Response) {
+            return $result;
         }
 
-        $domainName = $voucherEntity->getDomain()->getName();
+        $domainName = $result->getDomain()->getName();
 
         $registration = new Registration();
         $registration->setVoucher($voucher);
@@ -83,12 +83,12 @@ final class RegistrationController extends AbstractController
         $formData = $request->request->all('registration');
         $voucherCode = $formData['voucher'] ?? '';
 
-        $response = $this->resolveVoucher($voucherCode, $voucherEntity);
-        if (null !== $response) {
-            return $response;
+        $result = $this->resolveVoucher($voucherCode);
+        if ($result instanceof Response) {
+            return $result;
         }
 
-        $domainName = $voucherEntity->getDomain()->getName();
+        $domainName = $result->getDomain()->getName();
 
         $form = $this->createForm(RegistrationType::class, $registration, [
             'domain' => $domainName,
@@ -166,7 +166,7 @@ final class RegistrationController extends AbstractController
         return $this->render('Registration/welcome.html.twig');
     }
 
-    private function resolveVoucher(string $code, ?Voucher &$voucher): ?Response
+    private function resolveVoucher(string $code): Voucher|Response
     {
         $voucher = $this->voucherRepository->findByCode($code);
 
@@ -180,7 +180,7 @@ final class RegistrationController extends AbstractController
             return $this->render('Registration/closed.html.twig');
         }
 
-        return null;
+        return $voucher;
     }
 
     private function isVoucherValid(Voucher $voucher): bool
