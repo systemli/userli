@@ -45,18 +45,32 @@ final class VoucherController extends AbstractController
             }
         }
 
+        $invitationDisabled = false;
+        if (!$this->isGranted(Roles::ADMIN)) {
+            $user = $this->getUser();
+            if ($user instanceof User) {
+                $userDomain = $user->getDomain();
+                $invitationDisabled = null === $userDomain || !$userDomain->isInvitationEnabled();
+            }
+        }
+
         return $this->render('Admin/Voucher/index.html.twig', [
             'pagination' => $this->manager->findPaginated($request->query->getInt('page', 1), $search, $domain, $status),
             'search' => $search,
             'status' => $status,
             'selectedDomain' => $domainId,
             'selectedDomainName' => $selectedDomainName,
+            'invitationDisabled' => $invitationDisabled,
         ]);
     }
 
     #[Route('/admin/vouchers/create', name: 'admin_voucher_create', methods: ['GET'])]
     public function create(): Response
     {
+        if ($this->isInvitationDisabledForCurrentUser()) {
+            return $this->redirectToRoute('admin_voucher_index');
+        }
+
         $isAdmin = $this->isGranted(Roles::ADMIN);
         $model = new VoucherModel();
         $model->setCode(RandomStringGenerator::generate(6, true));
@@ -80,6 +94,10 @@ final class VoucherController extends AbstractController
     #[Route('/admin/vouchers/create', name: 'admin_voucher_create_post', methods: ['POST'])]
     public function createSubmit(Request $request): Response
     {
+        if ($this->isInvitationDisabledForCurrentUser()) {
+            return $this->redirectToRoute('admin_voucher_index');
+        }
+
         $isAdmin = $this->isGranted(Roles::ADMIN);
         $model = new VoucherModel();
 
@@ -126,5 +144,21 @@ final class VoucherController extends AbstractController
         $this->addFlash('success', 'admin.voucher.delete.success');
 
         return $this->redirectToRoute('admin_voucher_index');
+    }
+
+    private function isInvitationDisabledForCurrentUser(): bool
+    {
+        if ($this->isGranted(Roles::ADMIN)) {
+            return false;
+        }
+
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            return true;
+        }
+
+        $domain = $user->getDomain();
+
+        return null === $domain || !$domain->isInvitationEnabled();
     }
 }
