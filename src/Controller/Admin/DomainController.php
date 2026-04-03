@@ -10,10 +10,10 @@ use App\Enum\Roles;
 use App\Exception\ValidationException;
 use App\Form\DomainEditType;
 use App\Form\DomainType;
+use App\Form\Model\DomainAdminModel;
 use App\Form\Model\PasswordConfirmation;
 use App\Form\PasswordConfirmationType;
 use App\Service\DomainManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +26,6 @@ final class DomainController extends AbstractController
 {
     public function __construct(
         private readonly DomainManager $manager,
-        private readonly EntityManagerInterface $em,
     ) {
     }
 
@@ -80,7 +79,8 @@ final class DomainController extends AbstractController
     #[Route('/admin/domains/edit/{id}', name: 'admin_domain_edit', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function edit(#[MapEntity] Domain $domain): Response
     {
-        $form = $this->createForm(DomainEditType::class, $domain, [
+        $model = DomainAdminModel::fromDomain($domain);
+        $form = $this->createForm(DomainEditType::class, $model, [
             'action' => $this->generateUrl('admin_domain_edit_post', ['id' => $domain->getId()]),
             'method' => 'POST',
         ]);
@@ -94,11 +94,12 @@ final class DomainController extends AbstractController
     #[Route('/admin/domains/edit/{id}', name: 'admin_domain_edit_post', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function editSubmit(#[MapEntity] Domain $domain, Request $request): Response
     {
-        $form = $this->createForm(DomainEditType::class, $domain);
+        $model = new DomainAdminModel();
+        $form = $this->createForm(DomainEditType::class, $model);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->flush();
+            $this->manager->update($domain, $model);
             $this->addFlash('success', 'admin.domain.edit.success');
 
             return $this->redirectToRoute('admin_domain_show', ['id' => $domain->getId()]);

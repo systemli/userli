@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\Entity\Domain;
+use App\Form\Model\DomainAdminModel;
 use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @extends AbstractType<Domain>
+ * @extends AbstractType<DomainAdminModel>
  */
 final class DomainEditType extends AbstractType
 {
@@ -43,7 +43,7 @@ final class DomainEditType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Domain::class,
+            'data_class' => DomainAdminModel::class,
         ]);
     }
 }
