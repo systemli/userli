@@ -42,6 +42,7 @@
                     </p>
                 </div>
 
+                {% if form.domain is defined %}
                 <div>
                     {{ form_label(form.domain, 'admin.voucher.form.domain.label') }}
                     {{ form_errors(form.domain) }}
@@ -50,6 +51,7 @@
                         {{ 'admin.voucher.form.domain.help'|trans }}
                     </p>
                 </div>
+                {% endif %}
 
                 <div class="flex items-center justify-between pt-6">
                     <a href="{{ path('admin_voucher_index') }}"

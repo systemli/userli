@@ -533,6 +533,22 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @When /^I set the placeholder "([^"]*)" with property "([^"]*)" for voucher "([^"]*)"$/
+     */
+    public function iSetPlaceholderForVoucher(string $name, string $key, string $code): void
+    {
+        $voucher = $this->manager->getRepository(Voucher::class)->findOneBy(['code' => $code]);
+
+        if (!$voucher) {
+            throw new RuntimeException(sprintf('Voucher with code "%s" not found', $code));
+        }
+
+        $value = PropertyAccess::createPropertyAccessor()->getValue($voucher, $key);
+
+        $this->setPlaceholder($name, $value);
+    }
+
+    /**
      * @When /^I set the placeholder "([^"]*)" from url parameter "([^"]*)"$/
      */
     public function iSetPlaceholderFromUrl(string $name, string $key): void
