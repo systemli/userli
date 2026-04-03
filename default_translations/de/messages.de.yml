@@ -492,6 +492,7 @@ admin:
     user-notifications: Benachrichtigungen
     users: Benutzer:innen
     openpgp-keys: OpenPGP-Schlüssel
+    domain_settings: Domain-Einstellungen
     group:
       management: Verwaltung
       configuration: Konfiguration

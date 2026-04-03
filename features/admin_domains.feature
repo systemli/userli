@@ -3,12 +3,14 @@ Feature: Settings (Domains)
   Background:
     Given the database is clean
     And the following Domain exists:
-      | name        |
-      | example.org |
+      | name        | invitation_enabled | invitation_limit |
+      | example.org | 1                  | 3                |
+      | other.org   | 0                  | 0                |
     And the following User exists:
-      | email             | password | roles      |
-      | louis@example.org | asdasd   | ROLE_ADMIN |
-      | user@example.org  | asdasd   | ROLE_USER  |
+      | email              | password | roles             |
+      | louis@example.org  | asdasd   | ROLE_ADMIN        |
+      | user@example.org   | asdasd   | ROLE_USER         |
+      | domain@example.org | asdasd   | ROLE_DOMAIN_ADMIN |
 
   @domains
   Scenario: Normal user cannot access domains page
@@ -102,3 +104,78 @@ Feature: Settings (Domains)
     When I request "POST /admin/domains/delete/1"
 
     Then I should see "You cannot delete your own domain"
+
+  @domains
+  Scenario: Domain admin can access own domain via redirect
+    Given I am authenticated as "domain@example.org"
+    When I am on "/admin/domain"
+
+    Then the response status code should be 200
+    And I should see "example.org"
+    And I should see "Users"
+    And I should see "Aliases"
+
+  @domains
+  Scenario: Domain admin can view own domain details
+    Given I am authenticated as "domain@example.org"
+    And I set the placeholder "__domain_id__" with property "id" for domain "example.org"
+    When I am on "/admin/domains/__domain_id__"
+
+    Then the response status code should be 200
+    And I should see "example.org"
+    And I should see "Invitations"
+
+  @domains
+  Scenario: Domain admin cannot view other domain
+    Given I am authenticated as "domain@example.org"
+    And I set the placeholder "__other_domain_id__" with property "id" for domain "other.org"
+    When I am on "/admin/domains/__other_domain_id__"
+
+    Then the response status code should be 404
+
+  @domains
+  Scenario: Domain admin can edit own domain settings
+    Given I am authenticated as "domain@example.org"
+    And I set the placeholder "__domain_id__" with property "id" for domain "example.org"
+    When I am on "/admin/domains/edit/__domain_id__"
+
+    Then the response status code should be 200
+    And I should see "Enable Invitations"
+    And I should see "Initial Invitations per User"
+
+    When I fill in "domain_edit[invitationLimit]" with "5"
+    And I press "Save Changes"
+
+    Then I should see "Domain settings have been updated successfully"
+
+  @domains
+  Scenario: Domain admin cannot edit other domain
+    Given I am authenticated as "domain@example.org"
+    And I set the placeholder "__other_domain_id__" with property "id" for domain "other.org"
+    When I am on "/admin/domains/edit/__other_domain_id__"
+
+    Then the response status code should be 404
+
+  @domains
+  Scenario: Domain admin cannot access domain list
+    Given I am authenticated as "domain@example.org"
+    When I am on "/admin/domains/"
+
+    Then I should see "Access Denied"
+    And the response status code should be 403
+
+  @domains
+  Scenario: Domain admin cannot create a domain
+    Given I am authenticated as "domain@example.org"
+    When I am on "/admin/domains/create"
+
+    Then I should see "Access Denied"
+    And the response status code should be 403
+
+  @domains
+  Scenario: Domain admin cannot delete a domain
+    Given I am authenticated as "domain@example.org"
+    And I set the placeholder "__domain_id__" with property "id" for domain "example.org"
+    When I request "POST /admin/domains/delete/__domain_id__"
+
+    Then the response status code should be 403

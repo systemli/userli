@@ -15,14 +15,18 @@
                 </div>
 
                 <div class="mb-6 flex gap-2">
-                    <a href="{{ path('admin_domain_index') }}"
-                       class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
-                        {{ ux_icon('heroicons:arrow-left', {class: 'w-4 h-4 mr-1'}) }} {{ 'admin.domain.show.back'|trans }}
-                    </a>
-                    <a href="{{ path('admin_domain_edit', {id: domain.id}) }}"
-                       class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
-                        {{ ux_icon('heroicons:pencil-square', {class: 'w-4 h-4 mr-1'}) }} {{ 'admin.domain.actions.edit'|trans }}
-                    </a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('admin_domain_index') }}"
+                           class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
+                            {{ ux_icon('heroicons:arrow-left', {class: 'w-4 h-4 mr-1'}) }} {{ 'admin.domain.show.back'|trans }}
+                        </a>
+                    {% endif %}
+                    {% if is_granted('edit', domain) %}
+                        <a href="{{ path('admin_domain_edit', {id: domain.id}) }}"
+                           class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
+                            {{ ux_icon('heroicons:pencil-square', {class: 'w-4 h-4 mr-1'}) }} {{ 'admin.domain.actions.edit'|trans }}
+                        </a>
+                    {% endif %}
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">

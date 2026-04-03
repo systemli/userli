@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(Roles::ADMIN)]
+#[IsGranted(Roles::DOMAIN_ADMIN)]
 final class DomainController extends AbstractController
 {
     public function __construct(
@@ -29,6 +29,7 @@ final class DomainController extends AbstractController
     ) {
     }
 
+    #[IsGranted(Roles::ADMIN)]
     #[Route('/admin/domains/', name: 'admin_domain_index', methods: ['GET'])]
     public function index(Request $request): Response
     {
@@ -40,6 +41,7 @@ final class DomainController extends AbstractController
         ]);
     }
 
+    #[IsGranted(Roles::ADMIN)]
     #[Route('/admin/domains/create', name: 'admin_domain_create', methods: ['GET'])]
     public function create(): Response
     {
@@ -53,6 +55,7 @@ final class DomainController extends AbstractController
         ]);
     }
 
+    #[IsGranted(Roles::ADMIN)]
     #[Route('/admin/domains/create', name: 'admin_domain_create_post', methods: ['POST'])]
     public function createSubmit(Request $request): Response
     {
@@ -79,6 +82,8 @@ final class DomainController extends AbstractController
     #[Route('/admin/domains/edit/{id}', name: 'admin_domain_edit', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function edit(#[MapEntity] Domain $domain): Response
     {
+        $this->denyAccessUnlessGranted('edit', $domain);
+
         $model = DomainAdminModel::fromDomain($domain);
         $form = $this->createForm(DomainEditType::class, $model, [
             'action' => $this->generateUrl('admin_domain_edit_post', ['id' => $domain->getId()]),
@@ -94,6 +99,8 @@ final class DomainController extends AbstractController
     #[Route('/admin/domains/edit/{id}', name: 'admin_domain_edit_post', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function editSubmit(#[MapEntity] Domain $domain, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('edit', $domain);
+
         $model = new DomainAdminModel();
         $form = $this->createForm(DomainEditType::class, $model);
         $form->handleRequest($request);
@@ -111,9 +118,21 @@ final class DomainController extends AbstractController
         ]);
     }
 
+    #[Route('/admin/domain', name: 'admin_domain_my', methods: ['GET'])]
+    public function my(): Response
+    {
+        $user = $this->getUser();
+        if (!$user instanceof User || null === $user->getDomain()) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->redirectToRoute('admin_domain_show', ['id' => $user->getDomain()->getId()]);
+    }
+
     #[Route('/admin/domains/{id}', name: 'admin_domain_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(#[MapEntity] Domain $domain): Response
     {
+        $this->denyAccessUnlessGranted('view', $domain);
         $stats = $this->manager->getDomainStats($domain);
 
         return $this->render('Admin/Domain/show.html.twig', [
@@ -122,6 +141,7 @@ final class DomainController extends AbstractController
         ]);
     }
 
+    #[IsGranted(Roles::ADMIN)]
     #[Route('/admin/domains/delete/{id}', name: 'admin_domain_delete_post', methods: ['POST'])]
     public function deleteSubmit(#[MapEntity] Domain $domain, Request $request): Response
     {

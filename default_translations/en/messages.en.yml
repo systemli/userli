@@ -513,6 +513,7 @@ admin:
     user-notifications: Notifications
     users: Users
     openpgp-keys: OpenPGP Keys
+    domain_settings: Domain Settings
     group:
       management: Management
       configuration: Configuration
