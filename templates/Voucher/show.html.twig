@@ -9,11 +9,13 @@
 {% block page_content %}
     <div class="max-w-4xl mx-auto">
         {# Brief motivational explanation #}
-        <div class="mb-8 text-center">
-            <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto">
-                {{ "index.voucher-explanation-short"|trans }}
-            </p>
-        </div>
+        {% if user.domain.invitationLimit > 0 %}
+            <div class="mb-8 text-center">
+                <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto">
+                    {{ "index.voucher-explanation-short"|trans({'%limit%': user.domain.invitationLimit}) }}
+                </p>
+            </div>
+        {% endif %}
 
         {# Main content card #}
         <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 sm:p-8">
@@ -117,7 +119,7 @@
                             {{ ux_icon('heroicons:clock', {'class': 'w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600'}) }}
                             <p class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">{{ "index.voucher-waiting-title"|trans }}</p>
                             <p class="text-sm text-gray-600 dark:text-gray-300">
-                                {{ "index.voucher-disable"|trans({'%date%': user.creationTime|date_modify("+7 days")|date("d. F Y, H:i")}) }}
+                                {{ "index.voucher-disable"|trans({'%date%': user.creationTime|date_modify("+7 days")|date("d. F Y, H:i"), '%limit%': user.domain.invitationLimit}) }}
                             </p>
                         </div>
                     {% elseif is_granted('ROLE_MULTIPLIER') %}

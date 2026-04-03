@@ -40,10 +40,10 @@ index:
   voucher-subtitle: Invite your friends
   voucher-explanation-short: >
     Use your invite codes to invite friends.
-    You have three invitations available by default.
+    You receive %limit% invitations after 7 days by default.
   voucher-limit: You don't have any invite codes left.
   voucher-disable: >
-    At %date% you will receive three invite codes.
+    At %date% you will receive %limit% invite codes.
     This is to avoid mass registrations and spam.
   voucher-waiting-title: Waiting for new invite codes
   voucher-empty-title: No invite codes created yet

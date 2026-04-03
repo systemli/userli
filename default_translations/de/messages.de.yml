@@ -38,9 +38,9 @@ start:
 index:
   title: Verwalte dein E-Mail-Konto
   voucher-subtitle: Lade Freund:innen ein
-  voucher-explanation-short: Nutze deine Einladungscodes um Freund:innen einzuladen. Du hast standardmäßig drei Einladungen zur Verfügung.
+  voucher-explanation-short: Nutze deine Einladungscodes um Freund:innen einzuladen. Du erhältst standardmäßig %limit% Einladungen nach 7 Tagen.
   voucher-limit: Du hast keine Einladungscodes mehr verfügbar.
-  voucher-disable: Du bekommst am %date% Uhr drei Einladungscodes gutgeschrieben. Dies dient der Vermeidung von Massenregistrierungen und Spam.
+  voucher-disable: Du bekommst am %date% Uhr %limit% Einladungscodes gutgeschrieben. Dies dient der Vermeidung von Massenregistrierungen und Spam.
   voucher-waiting-title: Wartezeit für neue Einladungscodes
   voucher-empty-title: Noch keine Einladungscodes erstellt
   voucher-empty-multiplier: Erstelle einen neuen Einladungscode um Freund:innen einzuladen.
