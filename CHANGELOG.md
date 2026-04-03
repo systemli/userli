@@ -1,5 +1,31 @@
 # Changelog
 
+## 6.6.0 (2026.04.04)
+
+### Features and Improvements
+
+- ✨ Show notice when invitations are disabled on voucher admin page (#1222)
+- ✨ Allow domain admins to view and edit their own domain settings (#1221)
+- ✨ Grant DOMAIN_ADMIN access to vouchers in admin panel (#1220)
+- ✨ Add per-domain invitation settings, replace REGISTRATION_OPEN (#1218)
+- 🚸 Make password change implications more explicit (#1211)
+
+### Technical Changes
+
+- 🌐 Generalize closed registration translations (#1219)
+- 🔨 Add make setup and make dev targets for easier onboarding (#1216)
+- ♻️ Remove PasswordStrengthHandler and umlaut password restriction (#1207)
+- ⬆️ Update composer dependencies (#1213, #1208)
+- ⬆️ Update npm dependencies (#1215, #1209)
+- ⬆️ Update GitHub Actions dependencies (#1214, #1210)
+- ⬆️ (deps): Bump serialize-javascript from 7.0.4 to 7.0.5 (#1212)
+- ⬆️ (deps): Bump lodash from 4.17.23 to 4.18.1 (#1217)
+
+### Bug Fixes
+
+- 🐛 Allow quote characters in passwords (#1206)
+- 🐛 Fix release script: auth variable, JSON encoding, and timing (#1204)
+
 ## 6.5.0 (2026.03.18)
 
 ### Features and Improvements
