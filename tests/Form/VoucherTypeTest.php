@@ -45,9 +45,20 @@ class VoucherTypeTest extends TypeTestCase
         ];
     }
 
-    public function testFormFieldsExist(): void
+    public function testFormFieldsExistForNonAdmin(): void
     {
         $form = $this->factory->create(VoucherType::class);
+        $view = $form->createView();
+
+        self::assertArrayHasKey('code', $view->children);
+        self::assertArrayHasKey('user', $view->children);
+        self::assertArrayNotHasKey('domain', $view->children);
+        self::assertArrayHasKey('submit', $view->children);
+    }
+
+    public function testFormFieldsExistForAdmin(): void
+    {
+        $form = $this->factory->create(VoucherType::class, null, ['is_admin' => true]);
         $view = $form->createView();
 
         self::assertArrayHasKey('code', $view->children);
@@ -66,7 +77,7 @@ class VoucherTypeTest extends TypeTestCase
 
     public function testDomainFieldIsAutocomplete(): void
     {
-        $form = $this->factory->create(VoucherType::class);
+        $form = $this->factory->create(VoucherType::class, null, ['is_admin' => true]);
         $view = $form->createView();
 
         self::assertContains('domain_autocomplete', $view->children['domain']->vars['block_prefixes']);
@@ -84,7 +95,7 @@ class VoucherTypeTest extends TypeTestCase
 
     public function testDomainFieldHasAutocompleteVars(): void
     {
-        $form = $this->factory->create(VoucherType::class);
+        $form = $this->factory->create(VoucherType::class, null, ['is_admin' => true]);
         $view = $form->createView();
 
         self::assertArrayHasKey('autocomplete_url', $view->children['domain']->vars);

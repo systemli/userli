@@ -7,9 +7,11 @@ namespace App\Tests\Voter;
 use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\User;
+use App\Entity\Voucher;
 use App\Enum\Roles;
 use App\Form\Model\AliasAdminModel;
 use App\Form\Model\UserAdminModel;
+use App\Form\Model\VoucherModel;
 use App\Service\DomainGuesser;
 use App\Voter\DomainVoter;
 use PHPUnit\Framework\TestCase;
@@ -481,6 +483,142 @@ class DomainVoterTest extends TestCase
 
         $result = $voter->vote($this->createToken(), $model, [DomainVoter::CREATE]);
         self::assertSame(VoterInterface::ACCESS_GRANTED, $result);
+    }
+
+    // --- supports(): Voucher ---
+
+    public function testSupportsVoucherForViewAndDelete(): void
+    {
+        $voter = $this->createVoter(isAdmin: true);
+        $voucher = new Voucher('abc123');
+        $voucher->setDomain($this->domainA);
+
+        foreach ([DomainVoter::VIEW, DomainVoter::DELETE] as $attribute) {
+            $result = $voter->vote($this->createToken(), $voucher, [$attribute]);
+            self::assertNotSame(VoterInterface::ACCESS_ABSTAIN, $result, sprintf('Voter should not abstain for attribute "%s" on Voucher', $attribute));
+        }
+    }
+
+    public function testAbstainsOnVoucherForCreateAndEdit(): void
+    {
+        $voter = $this->createVoter(isAdmin: true);
+        $voucher = new Voucher('abc123');
+        $voucher->setDomain($this->domainA);
+
+        foreach ([DomainVoter::CREATE, DomainVoter::EDIT] as $attribute) {
+            $result = $voter->vote($this->createToken(), $voucher, [$attribute]);
+            self::assertSame(VoterInterface::ACCESS_ABSTAIN, $result, sprintf('Voter should abstain for attribute "%s" on Voucher', $attribute));
+        }
+    }
+
+    public function testSupportsVoucherModelForCreate(): void
+    {
+        $voter = $this->createVoter(isAdmin: true);
+        $model = new VoucherModel();
+        $model->setDomain($this->domainA);
+
+        $result = $voter->vote($this->createToken(), $model, [DomainVoter::CREATE]);
+        self::assertNotSame(VoterInterface::ACCESS_ABSTAIN, $result, 'Voter should not abstain for attribute "create" on VoucherModel');
+    }
+
+    public function testAbstainsOnVoucherModelForViewEditDelete(): void
+    {
+        $voter = $this->createVoter(isAdmin: true);
+        $model = new VoucherModel();
+        $model->setDomain($this->domainA);
+
+        foreach ([DomainVoter::VIEW, DomainVoter::EDIT, DomainVoter::DELETE] as $attribute) {
+            $result = $voter->vote($this->createToken(), $model, [$attribute]);
+            self::assertSame(VoterInterface::ACCESS_ABSTAIN, $result, sprintf('Voter should abstain for attribute "%s" on VoucherModel', $attribute));
+        }
+    }
+
+    // --- Full admin: voucher operations ---
+
+    public function testFullAdminCanViewAndDeleteVoucher(): void
+    {
+        $voter = $this->createVoter(isAdmin: true);
+        $voucher = new Voucher('abc123');
+        $voucher->setDomain($this->domainA);
+
+        foreach ([DomainVoter::VIEW, DomainVoter::DELETE] as $attribute) {
+            $result = $voter->vote($this->createToken(), $voucher, [$attribute]);
+            self::assertSame(VoterInterface::ACCESS_GRANTED, $result, sprintf('Full admin should be granted "%s" on Voucher', $attribute));
+        }
+    }
+
+    public function testFullAdminCanCreateViaVoucherModel(): void
+    {
+        $voter = $this->createVoter(isAdmin: true);
+        $model = new VoucherModel();
+        $model->setDomain($this->domainA);
+
+        $result = $voter->vote($this->createToken(), $model, [DomainVoter::CREATE]);
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $result);
+    }
+
+    // --- Domain admin: voucher in same domain ---
+
+    public function testDomainAdminCanViewVoucherInSameDomain(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true);
+        $voucher = new Voucher('abc123');
+        $voucher->setDomain($this->domainA);
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $voucher, [DomainVoter::VIEW]);
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $result);
+    }
+
+    public function testDomainAdminCanDeleteVoucherInSameDomain(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true);
+        $voucher = new Voucher('abc123');
+        $voucher->setDomain($this->domainA);
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $voucher, [DomainVoter::DELETE]);
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $result);
+    }
+
+    public function testDomainAdminCanCreateViaVoucherModelInSameDomain(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true);
+        $model = new VoucherModel();
+        $model->setDomain($this->domainA);
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $model, [DomainVoter::CREATE]);
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $result);
+    }
+
+    // --- Domain admin: voucher in different domain ---
+
+    public function testDomainAdminCannotViewVoucherInDifferentDomain(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true);
+        $voucher = new Voucher('abc123');
+        $voucher->setDomain($this->domainB);
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $voucher, [DomainVoter::VIEW]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
+    }
+
+    public function testDomainAdminCannotDeleteVoucherInDifferentDomain(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true);
+        $voucher = new Voucher('abc123');
+        $voucher->setDomain($this->domainB);
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $voucher, [DomainVoter::DELETE]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
+    }
+
+    public function testDomainAdminCannotCreateViaVoucherModelInDifferentDomain(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true);
+        $model = new VoucherModel();
+        $model->setDomain($this->domainB);
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $model, [DomainVoter::CREATE]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
     }
 
     // --- Regular user (neither admin nor domain admin) ---

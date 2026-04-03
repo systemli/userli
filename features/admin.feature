@@ -90,10 +90,10 @@ Feature: Admin
     Then the response status code should be 403
 
   @admin
-  Scenario: Domain admin cannot access vouchers page
+  Scenario: Domain admin can access vouchers page
     When I am authenticated as "domain@example.com"
     And I am on "/admin/vouchers/"
-    Then the response status code should be 403
+    Then the response status code should be 200
 
   @admin
   Scenario: Domain admin cannot access API tokens page

@@ -20,9 +20,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[IsGranted(Roles::ADMIN)]
 final class VoucherController extends AbstractController
 {
     public function __construct(
@@ -59,6 +57,7 @@ final class VoucherController extends AbstractController
     #[Route('/admin/vouchers/create', name: 'admin_voucher_create', methods: ['GET'])]
     public function create(): Response
     {
+        $isAdmin = $this->isGranted(Roles::ADMIN);
         $model = new VoucherModel();
         $model->setCode(RandomStringGenerator::generate(6, true));
 
@@ -70,6 +69,7 @@ final class VoucherController extends AbstractController
         $form = $this->createForm(VoucherType::class, $model, [
             'action' => $this->generateUrl('admin_voucher_create_post'),
             'method' => 'POST',
+            'is_admin' => $isAdmin,
         ]);
 
         return $this->render('Admin/Voucher/create.html.twig', [
@@ -80,11 +80,24 @@ final class VoucherController extends AbstractController
     #[Route('/admin/vouchers/create', name: 'admin_voucher_create_post', methods: ['POST'])]
     public function createSubmit(Request $request): Response
     {
+        $isAdmin = $this->isGranted(Roles::ADMIN);
         $model = new VoucherModel();
-        $form = $this->createForm(VoucherType::class, $model);
+
+        if (!$isAdmin) {
+            $user = $this->getUser();
+            if ($user instanceof User) {
+                $model->setDomain($user->getDomain());
+            }
+        }
+
+        $form = $this->createForm(VoucherType::class, $model, [
+            'is_admin' => $isAdmin,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->denyAccessUnlessGranted('create', $model);
+
             try {
                 $this->manager->createForAdmin($model->getCode(), $model->getUser(), $model->getDomain());
                 $this->addFlash('success', 'admin.voucher.create.success');
@@ -103,6 +116,8 @@ final class VoucherController extends AbstractController
     #[Route('/admin/vouchers/delete/{id}', name: 'admin_voucher_delete', methods: ['POST'])]
     public function delete(#[MapEntity] Voucher $voucher, Request $request): RedirectResponse
     {
+        $this->denyAccessUnlessGranted('view', $voucher);
+
         if (!$this->isCsrfTokenValid('delete_voucher_'.$voucher->getId(), $request->request->get('_token'))) {
             return $this->redirectToRoute('admin_voucher_index');
         }

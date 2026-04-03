@@ -7,9 +7,11 @@ namespace App\Voter;
 use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\User;
+use App\Entity\Voucher;
 use App\Enum\Roles;
 use App\Form\Model\AliasAdminModel;
 use App\Form\Model\UserAdminModel;
+use App\Form\Model\VoucherModel;
 use App\Service\DomainGuesser;
 use Override;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -18,7 +20,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * @extends Voter<string, User|UserAdminModel|Alias|AliasAdminModel>
+ * @extends Voter<string, User|UserAdminModel|Alias|AliasAdminModel|Voucher|VoucherModel>
  */
 final class DomainVoter extends Voter
 {
@@ -46,7 +48,7 @@ final class DomainVoter extends Voter
         }
 
         if ($attribute === self::CREATE) {
-            return $subject instanceof User || $subject instanceof UserAdminModel || $subject instanceof Alias || $subject instanceof AliasAdminModel;
+            return $subject instanceof User || $subject instanceof UserAdminModel || $subject instanceof Alias || $subject instanceof AliasAdminModel || $subject instanceof VoucherModel;
         }
 
         if ($attribute === self::EDIT) {
@@ -54,10 +56,10 @@ final class DomainVoter extends Voter
         }
 
         if ($attribute === self::DELETE) {
-            return $subject instanceof User;
+            return $subject instanceof User || $subject instanceof Voucher;
         }
 
-        return $subject instanceof User || $subject instanceof Alias;
+        return $subject instanceof User || $subject instanceof Alias || $subject instanceof Voucher;
     }
 
     #[Override]
@@ -109,6 +111,14 @@ final class DomainVoter extends Voter
             return $this->voteOnAliasAdminModel($subject, $currentDomain);
         }
 
+        if ($subject instanceof Voucher) {
+            return $this->voteOnVoucher($attribute, $subject, $currentDomain);
+        }
+
+        if ($subject instanceof VoucherModel) {
+            return $this->voteOnVoucherModel($subject, $currentDomain);
+        }
+
         return false;
     }
 
@@ -138,5 +148,18 @@ final class DomainVoter extends Voter
     private function voteOnAliasAdminModel(AliasAdminModel $model, Domain $currentDomain): bool
     {
         return $currentDomain->getId() === $this->domainGuesser->guess($model->getSource())?->getId();
+    }
+
+    private function voteOnVoucher(string $attribute, Voucher $voucher, Domain $currentDomain): bool
+    {
+        return match ($attribute) {
+            self::VIEW, self::DELETE => $currentDomain->getId() === $voucher->getDomain()?->getId(),
+            default => false,
+        };
+    }
+
+    private function voteOnVoucherModel(VoucherModel $model, Domain $currentDomain): bool
+    {
+        return $currentDomain->getId() === $model->getDomain()?->getId();
     }
 }

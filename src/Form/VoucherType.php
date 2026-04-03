@@ -22,9 +22,13 @@ final class VoucherType extends AbstractType
     {
         $builder
             ->add('code', TextType::class)
-            ->add('user', UserAutocompleteType::class)
-            ->add('domain', DomainAutocompleteType::class)
-            ->add('submit', SubmitType::class);
+            ->add('user', UserAutocompleteType::class);
+
+        if ($options['is_admin']) {
+            $builder->add('domain', DomainAutocompleteType::class);
+        }
+
+        $builder->add('submit', SubmitType::class);
     }
 
     #[Override]
@@ -32,6 +36,8 @@ final class VoucherType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => VoucherModel::class,
+            'is_admin' => false,
         ]);
+        $resolver->setAllowedTypes('is_admin', 'bool');
     }
 }
