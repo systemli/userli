@@ -238,8 +238,8 @@ delete:
     lead: Mit der Bestätigung deines Passworts kannst du den OpenPGP-Schlüssel für <strong>%email%</strong> aus dem Web Key Directory löschen.
   domain:
     headline: Domain löschen
-    lead_generic: "Bist du sicher, dass du diese Domain löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungen unwiderruflich gelöscht."
-    lead_specific: "Bist du sicher, dass du <strong>%name%</strong> löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungen unwiderruflich gelöscht."
+    lead_generic: "Bist du sicher, dass du diese Domain löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungscodes unwiderruflich gelöscht."
+    lead_specific: "Bist du sicher, dass du <strong>%name%</strong> löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungscodes unwiderruflich gelöscht."
     submit: Domain löschen
   cancel: Abbrechen
   confirm: Löschen
@@ -487,7 +487,7 @@ admin:
     maintenance: Wartung
     reserved-names: Reservierte Namen
     aliases: Aliase
-    vouchers: Einladungen
+    vouchers: Einladungscodes
     domains: Domains
     user-notifications: Benachrichtigungen
     users: Benutzer:innen
@@ -505,8 +505,8 @@ admin:
       recent_users: Neue Konten (7 Tage)
       aliases: Aliase
       domains: Domains
-      vouchers_redeemed: Einladungen eingelöst
-      vouchers_unredeemed: Einladungen offen
+      vouchers_redeemed: Einladungscodes eingelöst
+      vouchers_unredeemed: Einladungscodes offen
       openpgp_keys: OpenPGP-Schlüssel
   page_title: Admin
   page_subtitle: Verwaltung und Konfiguration
@@ -523,8 +523,8 @@ admin:
       description: Entfernt Webhook-Zustellungsprotokolle, die älter als 14 Tage sind.
       button: Bereinigung starten
     unlinkRedeemedVouchers:
-      title: Eingelöste Einladungen anonymisieren
-      description: Trennt eingelöste Einladungs-Codes nach 3 Monaten von eingeladenen Nutzer:innen.
+      title: Eingelöste Einladungscodes anonymisieren
+      description: Trennt eingelöste Einladungscodes nach 3 Monaten von eingeladenen Nutzer:innen.
       button: Anonymisieren
     removeInactiveUsers:
       title: Inaktive Nutzer:innen entfernen
@@ -793,16 +793,16 @@ admin:
       page: "Seite %page% von %totalPages%"
 
   voucher:
-    title: Einladungen
-    heading: Einladungen
-    description: Verwalte Einladungs-Codes für die Benutzerregistrierung
+    title: Einladungscodes
+    heading: Einladungscodes
+    description: Verwalte Einladungscodes für die Benutzerregistrierung
     table:
       code: Code
       user: Benutzer
       domain: Domain
       status: Status
-      empty-title: Keine Einladungen
-      empty-description: Es sind noch keine Einladungen vorhanden. Erstelle eine Einladung, um neue Benutzer einzuladen.
+      empty-title: Keine Einladungscodes
+      empty-description: Es sind noch keine Einladungscodes vorhanden. Erstelle einen Einladungscode, um neue Benutzer einzuladen.
     filter:
       domain: Domain
       status: Status
@@ -814,27 +814,27 @@ admin:
       redeemed: Eingelöst
       unredeemed: Nicht eingelöst
     create:
-      button: Einladung erstellen
-      title: Einladung erstellen
-      heading: Einladung erstellen
-      description: Erstelle einen neuen Einladungs-Code für einen Benutzer.
-      success: Einladung wurde erfolgreich erstellt.
-      error: Einladung konnte nicht erstellt werden.
+      button: Einladungscode erstellen
+      title: Einladungscode erstellen
+      heading: Einladungscode erstellen
+      description: Erstelle einen neuen Einladungscode für einen Benutzer.
+      success: Einladungscode wurde erfolgreich erstellt.
+      error: Einladungscode konnte nicht erstellt werden.
     delete:
-      confirm: "Möchtest du die Einladung \"%code%\" wirklich löschen?"
-      success: Einladung wurde erfolgreich gelöscht.
+      confirm: "Möchtest du den Einladungscode \"%code%\" wirklich löschen?"
+      success: Einladungscode wurde erfolgreich gelöscht.
     actions:
       delete: Löschen
     form:
       code:
         label: Code
-        help: Ein vorgenerierter Einladungs-Code. Du kannst ihn durch einen eigenen Wert ersetzen.
+        help: Ein vorgenerierter Einladungscode. Du kannst ihn durch einen eigenen Wert ersetzen.
       user:
         label: Benutzer
-        help: Wähle den Benutzer, dem diese Einladung gehören soll.
+        help: Wähle den Benutzer, dem dieser Einladungscode gehören soll.
       domain:
         label: Domain
-        help: Wähle die Domain für diese Einladung.
+        help: Wähle die Domain für diesen Einladungscode.
       cancel: Abbrechen
       submit:
         create: Erstellen
@@ -843,9 +843,9 @@ admin:
       submit: Suchen
     invitations_disabled:
       title: Einladungen sind für deine Domain deaktiviert
-      description: Bestehende Einladungs-Codes können nicht eingelöst werden und neue Registrierungen sind nicht möglich. Du kannst Einladungen in den Domain-Einstellungen aktivieren.
+      description: Bestehende Einladungscodes können nicht eingelöst werden und neue Registrierungen sind nicht möglich. Du kannst Einladungen in den Domain-Einstellungen aktivieren.
     pagination:
-      total: "%count% Einladungen insgesamt"
+      total: "%count% Einladungscodes insgesamt"
       previous: Zurück
       next: Weiter
       page: "Seite %page% von %totalPages%"
@@ -870,9 +870,11 @@ admin:
         placeholder: z.B. "example.org"
         help: Der hinzuzufügende Domainname (nur Kleinbuchstaben). Muss ein gültiger Hostname mit einer anerkannten TLD sein.
       invitation_enabled: Einladungen aktivieren
-      invitation_enabled_help: "Wenn aktiviert, erhalten Benutzer:innen 7 Tage nach der Registrierung Einladungscodes und neue Registrierungen über diese Codes sind möglich. Wenn deaktiviert, können auch bestehende Einladungscodes nicht eingelöst werden."
-      invitation_limit: Initiale Einladungen pro Benutzer:in
-      invitation_limit_help: "Anzahl der Einladungscodes, die jede:r Benutzer:in 7 Tage nach der Registrierung automatisch erhält. Benutzer:innen mit der Multiplier-Rolle können zusätzliche Codes erstellen."
+      invitation_enabled_help: "Wenn aktiviert, können Domain-Admins und Multiplikator:innen Einladungscodes erstellen und neue Registrierungen über diese Codes sind möglich. Wenn deaktiviert, können auch bestehende Einladungscodes nicht eingelöst werden."
+      auto_invitations: Benutzer:innen erhalten automatisch Einladungscodes
+      auto_invitations_help: "Benutzer:innen erhalten 7 Tage nach der Registrierung automatisch Einladungscodes."
+      invitation_limit: Anzahl der Einladungscodes pro Benutzer:in
+      invitation_limit_help: "Anzahl der Einladungscodes, die jede:r Benutzer:in 7 Tage nach der Registrierung automatisch erhält."
       cancel: Abbrechen
       submit:
         create: Erstellen
@@ -889,7 +891,7 @@ admin:
       edit: Bearbeiten
       delete: Löschen
     delete:
-      confirm: 'Bist du sicher, dass du die Domain "%name%" löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungen unwiderruflich gelöscht.'
+      confirm: 'Bist du sicher, dass du die Domain "%name%" löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungscodes unwiderruflich gelöscht.'
       success: Domain und alle zugehörigen Daten wurden erfolgreich gelöscht.
       error:
         own_domain: Du kannst deine eigene Domain nicht löschen.
@@ -898,12 +900,14 @@ admin:
       users: Benutzer
       aliases: Aliase
       admins: Domain-Admins
-      vouchers: Einladungen
+      vouchers: Einladungscodes
       back: Zurück zu Domains
       invitation_enabled: Einladungen
       invitation_enabled_yes: Aktiviert
       invitation_enabled_no: Deaktiviert
-      invitation_limit: Initiale Einladungen
+      auto_invitations: Automatische Einladungen
+      auto_invitations_yes: "Aktiviert (%limit% pro Benutzer:in)"
+      auto_invitations_no: Deaktiviert
     pagination:
       total: "%count% Domains insgesamt"
       previous: Zurück
