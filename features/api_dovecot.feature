@@ -10,10 +10,11 @@ Feature: Dovecot API
             | name        |
             | example.org |
         And the following User exists:
-            | email                 | password | roles     | mailCrypt | mailCryptPublicKey | mailCryptSecretBox |
-            | user@example.org      | password | ROLE_USER | 0         |                    |                    |
-            | spam@example.org      | password | ROLE_SPAM | 0         |                    |                    |
-            | support@example.org   | password | ROLE_USER | 0         |                    |                    |
+            | email                 | password   | roles     | mailCrypt | mailCryptPublicKey | mailCryptSecretBox |
+            | user@example.org      | password   | ROLE_USER | 0         |                    |                    |
+            | spam@example.org      | password   | ROLE_SPAM | 0         |                    |                    |
+            | special@example.org   | abc\x01def | ROLE_USER | 0         |                    |                    |
+            | support@example.org   | password   | ROLE_USER | 0         |                    |                    |
         And the following ApiToken exists:
             | token            | name          | scopes  |
             | dovecot-test-123 | Dovecot Token | dovecot |
@@ -35,6 +36,13 @@ Feature: Dovecot API
         Given I have a valid API token "dovecot-test-123"
         When I send a POST request to "/api/dovecot/support@example.org" with form data:
             | password | password |
+        Then the response status code should equal 200
+
+    @passdb
+    Scenario: Passdb lookup with correct password, with escape sequence
+        Given I have a valid API token "dovecot-test-123"
+        When I send a POST request to "/api/dovecot/special@example.org" with form data:
+            | password | abc\x01def |
         Then the response status code should equal 200
 
     @passdb
