@@ -61,9 +61,9 @@ Feature: Settings (Domains)
     And I should see "Users"
     And I should see "Aliases"
     And I should see "Domain Admins"
-    And I should see "Vouchers"
+    And I should see "Invite Codes"
     And I should see "Invitations"
-    And I should see "Initial Invitations"
+    And I should see "Automatic Invitations"
 
   @domains
   Scenario: Admin can search domains
@@ -141,7 +141,7 @@ Feature: Settings (Domains)
 
     Then the response status code should be 200
     And I should see "Enable Invitations"
-    And I should see "Initial Invitations per User"
+    And I should see "Number of invite codes per user"
 
     When I fill in "domain_edit[invitationLimit]" with "5"
     And I press "Save Changes"

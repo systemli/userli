@@ -29,8 +29,8 @@ Feature: Admin
     And I should see "Aliases"
     And I should see "Domains"
     And I should see "OpenPGP Keys"
-    And I should see "Vouchers redeemed"
-    And I should see "Vouchers unredeemed"
+    And I should see "Invite codes redeemed"
+    And I should see "Invite codes unredeemed"
 
   @admin
   Scenario: Domain admin can access admin dashboard
@@ -42,8 +42,8 @@ Feature: Admin
     And I should see "Aliases"
     And I should see "OpenPGP Keys"
     And I should not see "Domains"
-    And I should not see "Vouchers redeemed"
-    And I should not see "Vouchers unredeemed"
+    And I should not see "Invite codes redeemed"
+    And I should not see "Invite codes unredeemed"
 
   @admin
   Scenario: Domain admin can access users page
