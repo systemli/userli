@@ -73,7 +73,7 @@ Feature: Invitation settings per domain
 
     Then the response status code should be 200
     And I should see "Enable Invitations"
-    And I should see "Initial Invitations per User"
+    And I should see "Number of invite codes per user"
 
     When I fill in "domain_edit[invitationLimit]" with "5"
     And I press "Save Changes"

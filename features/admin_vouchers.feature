@@ -1,4 +1,4 @@
-Feature: Settings (Vouchers)
+Feature: Settings (Invite Codes)
 
   Background:
     Given the database is clean
@@ -26,7 +26,7 @@ Feature: Settings (Vouchers)
     When I am on "/admin/vouchers/"
 
     Then the response status code should be 200
-    And I should see "Vouchers"
+    And I should see "Invite Codes"
 
   @vouchers
   Scenario: Admin can access create voucher page
@@ -34,7 +34,7 @@ Feature: Settings (Vouchers)
     When I am on "/admin/vouchers/create"
 
     Then the response status code should be 200
-    And I should see "Create Voucher"
+    And I should see "Create Invite Code"
 
   @vouchers
   Scenario: Admin can filter vouchers by status
@@ -42,7 +42,7 @@ Feature: Settings (Vouchers)
     When I am on "/admin/vouchers/?status=unredeemed"
 
     Then the response status code should be 200
-    And I should see "Vouchers"
+    And I should see "Invite Codes"
 
   @vouchers
   Scenario: Admin can create a voucher
@@ -55,7 +55,7 @@ Feature: Settings (Vouchers)
     And I set hidden field "voucher_domain" to "1"
     And I press "Create"
 
-    Then I should see "Voucher has been created successfully"
+    Then I should see "Invite code has been created successfully"
     And I should see "abc123"
 
   @vouchers
@@ -69,7 +69,7 @@ Feature: Settings (Vouchers)
     And I press "Create"
 
     Then the response status code should be 422
-    And I should see "Create Voucher"
+    And I should see "Create Invite Code"
 
   @vouchers
   Scenario: Admin can list existing vouchers
@@ -105,7 +105,7 @@ Feature: Settings (Vouchers)
     And I wait for the modal to appear
     When I click "Delete" in the modal
 
-    Then I wait for text "Voucher has been deleted successfully" to appear
+    Then I wait for text "Invite code has been deleted successfully" to appear
 
   # --- Domain admin scenarios ---
 
@@ -115,7 +115,7 @@ Feature: Settings (Vouchers)
     When I am on "/admin/vouchers/"
 
     Then the response status code should be 200
-    And I should see "Vouchers"
+    And I should see "Invite Codes"
 
   @vouchers
   Scenario: Domain admin can access create voucher page
@@ -123,7 +123,7 @@ Feature: Settings (Vouchers)
     When I am on "/admin/vouchers/create"
 
     Then the response status code should be 200
-    And I should see "Create Voucher"
+    And I should see "Create Invite Code"
 
   @vouchers
   Scenario: Domain admin can create voucher in own domain
@@ -135,7 +135,7 @@ Feature: Settings (Vouchers)
     And I set hidden field "voucher_user" to "3"
     And I press "Create"
 
-    Then I should see "Voucher has been created successfully"
+    Then I should see "Invite code has been created successfully"
     And I should see "dom123"
 
   @vouchers
@@ -163,7 +163,7 @@ Feature: Settings (Vouchers)
     Then I should see "del001"
 
     When I press the 1st "Delete" button
-    Then I should see "Voucher has been deleted successfully"
+    Then I should see "Invite code has been deleted successfully"
 
   @vouchers
   Scenario: Domain admin cannot delete voucher in different domain

@@ -25,7 +25,7 @@ Feature: Admin (Maintenance)
     And I should see "Prune User Notifications"
     And I should see "Prune Webhook Deliveries"
     And I should see "Remove Inactive Users"
-    And I should see "Unlink Redeemed Vouchers"
+    And I should see "Unlink Redeemed Invite Codes"
 
   @maintenance
   Scenario: Admin can dispatch prune user notifications task
@@ -52,5 +52,5 @@ Feature: Admin (Maintenance)
   Scenario: Admin can dispatch unlink redeemed vouchers task
     Given I am authenticated as "louis@example.org"
     When I am on "/admin/maintenance"
-    And I press "Unlink vouchers"
+    And I press "Unlink invite codes"
     Then I should see "Maintenance task dispatched successfully"

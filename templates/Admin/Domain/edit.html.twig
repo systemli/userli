@@ -19,10 +19,17 @@
             {{ form_start(form) }}
             {{ form_errors(form) }}
 
-            <div class="space-y-6">
+            <div class="space-y-6"
+                 data-controller="invitation-settings"
+            >
+                {# Toggle 1: Enable Invitations #}
                 <div class="flex items-start">
                     <label for="{{ form.invitationEnabled.vars.id }}" class="relative inline-flex items-center cursor-pointer flex-shrink-0 mt-0.5 mr-4">
-                        {{ form_widget(form.invitationEnabled, {'attr': {'class': 'sr-only peer'}}) }}
+                        {{ form_widget(form.invitationEnabled, {'attr': {
+                            'class': 'sr-only peer',
+                            'data-invitation-settings-target': 'invitationsToggle',
+                            'data-action': 'change->invitation-settings#invitationsChanged',
+                        }}) }}
                         <div class="w-11 h-6 bg-gray-200 dark:bg-gray-600 rounded-full peer peer-checked:bg-blue-600 dark:peer-checked:bg-blue-500 peer-focus:ring-2 peer-focus:ring-blue-500 dark:peer-focus:ring-blue-400 peer-focus:ring-offset-2 dark:peer-focus:ring-offset-gray-800 transition-colors duration-200 after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all after:duration-200 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full"></div>
                     </label>
                     <div>
@@ -32,18 +39,44 @@
                     </div>
                 </div>
 
-                <div>
+                {# Toggle 2: Automatic Invitations (greyed out when invitations disabled) #}
+                <div class="flex items-start transition-opacity duration-200"
+                     data-invitation-settings-target="autoSection"
+                >
+                    <label class="relative inline-flex items-center cursor-pointer flex-shrink-0 mt-0.5 mr-4">
+                        <input type="checkbox"
+                               class="sr-only peer"
+                               data-invitation-settings-target="autoToggle"
+                               data-action="change->invitation-settings#autoChanged"
+                        />
+                        <div class="w-11 h-6 bg-gray-200 dark:bg-gray-600 rounded-full peer peer-checked:bg-blue-600 dark:peer-checked:bg-blue-500 peer-focus:ring-2 peer-focus:ring-blue-500 dark:peer-focus:ring-blue-400 peer-focus:ring-offset-2 dark:peer-focus:ring-offset-gray-800 transition-colors duration-200 after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all after:duration-200 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full"></div>
+                    </label>
+                    <div>
+                        <span class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'admin.domain.form.auto_invitations'|trans }}</span>
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ 'admin.domain.form.auto_invitations_help'|trans }}</p>
+                    </div>
+                </div>
+
+                {# Limit input: visible only when both toggles are on #}
+                <div class="hidden"
+                     data-invitation-settings-target="limitSection"
+                >
                     {{ form_label(form.invitationLimit, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
                     {{ form_errors(form.invitationLimit) }}
                     {{ form_widget(form.invitationLimit, {
                         attr: {
-                            class: 'w-32 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors'
+                            class: 'w-32 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors',
+                            'data-invitation-settings-target': 'limitInput',
+                            'data-action': 'change->invitation-settings#limitChanged',
                         }
                     }) }}
                     {{ form_help(form.invitationLimit) }}
                 </div>
 
-                <div>
+                {# Waiting period: visible only when both toggles are on #}
+                <div class="hidden"
+                     data-invitation-settings-target="waitingPeriodSection"
+                >
                     {{ form_label(form.waitingPeriodDays, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
                     {{ form_errors(form.waitingPeriodDays) }}
                     {{ form_widget(form.waitingPeriodDays, {
