@@ -23,7 +23,7 @@
     "postcss": "^8.5.8",
     "postcss-loader": "^8.2.1",
     "tailwindcss": "^4.1.18",
-    "ts-loader": "^9.5.4",
+    "ts-loader": "^9.5.7",
     "typescript": "^6.0.2",
     "vitest": "^4.1.2",
     "webpack": "^5.105.4",
