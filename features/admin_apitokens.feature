@@ -61,4 +61,4 @@ Feature: Settings (API Tokens)
     And I wait for the modal to appear
     When I click "Delete" in the modal
 
-    Then I should see "API token deleted successfully"
+    Then I wait for text "API token deleted successfully" to appear

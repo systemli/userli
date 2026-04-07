@@ -190,4 +190,4 @@ Feature: Settings (Users)
 
     When I click "Delete" in the modal
 
-    Then I should see "User has been deleted successfully"
+    Then I wait for text "User has been deleted successfully" to appear
