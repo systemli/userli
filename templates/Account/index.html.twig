@@ -48,7 +48,7 @@
                 {% endif %}
 
                 {# Invite Codes card #}
-                {% if app.user.domain.invitationEnabled and not is_granted('ROLE_SUSPICIOUS') %}
+                {% if app.user.domain.invitationSettings.enabled and not is_granted('ROLE_SUSPICIOUS') %}
                     <div class="group w-80 flex-shrink-0">
                         <a href="{{ path('vouchers') }}"
                            class="block bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-xl hover:border-green-300 dark:hover:border-green-600 transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"

@@ -38,6 +38,7 @@ final class VoucherController extends AbstractController
         );
 
         $vouchers = $this->voucherManager->getVouchersByUser($user);
+        $invitationSettings = $user->getDomain()?->getInvitationSettings();
 
         return $this->render(
             'Voucher/show.html.twig',
@@ -45,7 +46,8 @@ final class VoucherController extends AbstractController
                 'user' => $user,
                 'vouchers' => $vouchers,
                 'voucher_form' => $voucherCreateForm,
-                'invitations_enabled' => $user->getDomain()?->isInvitationEnabled() ?? false,
+                'invitations_enabled' => $invitationSettings?->isEnabled() ?? false,
+                'waiting_period_days' => $invitationSettings?->getWaitingPeriodDays() ?? 7,
             ]
         );
     }

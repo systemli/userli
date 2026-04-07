@@ -9,10 +9,10 @@
 {% block page_content %}
     <div class="max-w-4xl mx-auto">
         {# Brief motivational explanation #}
-        {% if user.domain.invitationLimit > 0 %}
+        {% if user.domain.invitationSettings.limit > 0 %}
             <div class="mb-8 text-center">
                 <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto">
-                    {{ "index.voucher-explanation-short"|trans({'%limit%': user.domain.invitationLimit}) }}
+                    {{ "index.voucher-explanation-short"|trans({'%limit%': user.domain.invitationSettings.limit, '%waitingPeriodDays%': waiting_period_days}) }}
                 </p>
             </div>
         {% endif %}
@@ -113,13 +113,13 @@
                                 {% endif %}
                             {% endfor %}
                         </div>
-                    {% elseif user.creationTime|date('U') > '-7 days'|date('U') and not is_granted('ROLE_MULTIPLIER') %}
+                    {% elseif user.creationTime|date_modify("+" ~ waiting_period_days ~ " days")|date('U') > "now"|date('U') and not is_granted('ROLE_MULTIPLIER') %}
                         {# Waiting period for regular users only #}
                         <div class="text-center py-8 text-gray-500 dark:text-gray-300">
                             {{ ux_icon('heroicons:clock', {'class': 'w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600'}) }}
                             <p class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">{{ "index.voucher-waiting-title"|trans }}</p>
                             <p class="text-sm text-gray-600 dark:text-gray-300">
-                                {{ "index.voucher-disable"|trans({'%date%': user.creationTime|date_modify("+7 days")|date("d. F Y, H:i"), '%limit%': user.domain.invitationLimit}) }}
+                                {{ "index.voucher-disable"|trans({'%date%': user.creationTime|date_modify("+" ~ waiting_period_days ~ " days")|date("d. F Y, H:i"), '%limit%': user.domain.invitationSettings.limit}) }}
                             </p>
                         </div>
                     {% elseif is_granted('ROLE_MULTIPLIER') %}

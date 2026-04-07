@@ -120,10 +120,13 @@ class FeatureContext extends MinkContext
                         $domain->setName($value);
                         break;
                     case 'invitation_enabled':
-                        $domain->setInvitationEnabled((bool) $value);
+                        $domain->getInvitationSettings()->setEnabled((bool) $value);
                         break;
                     case 'invitation_limit':
-                        $domain->setInvitationLimit((int) $value);
+                        $domain->getInvitationSettings()->setLimit((int) $value);
+                        break;
+                    case 'waiting_period_days':
+                        $domain->getInvitationSettings()->setWaitingPeriodDays((int) $value);
                         break;
                 }
             }

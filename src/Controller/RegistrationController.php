@@ -176,7 +176,7 @@ final class RegistrationController extends AbstractController
             return $this->redirectToRoute('index');
         }
 
-        if (!$voucher->getDomain()->isInvitationEnabled()) {
+        if (!$voucher->getDomain()->getInvitationSettings()->isEnabled()) {
             return $this->render('Registration/closed.html.twig');
         }
 
