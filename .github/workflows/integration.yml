@@ -72,7 +72,7 @@ jobs:
 
       - name: SonarCloud Scan
         if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
-        uses: sonarsource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9 # v7.0.0
+        uses: sonarsource/sonarqube-scan-action@299e4b793aaa83bf2aba7c9c14bedbb485688ec4 # v7.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -91,7 +91,7 @@ jobs:
 
       - name: Login to Docker Hub
         if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
-        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
