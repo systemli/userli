@@ -157,4 +157,4 @@ Feature: Settings
     And I wait for the modal to appear
     When I click "Delete" in the modal
 
-    Then I should see "Webhook deleted successfully"
+    Then I wait for text "Webhook deleted successfully" to appear

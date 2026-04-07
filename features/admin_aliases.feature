@@ -119,7 +119,7 @@ Feature: Admin (Aliases)
     And I wait for the modal to appear
     When I click "Delete" in the modal
 
-    Then I should see "Alias has been deleted successfully"
+    Then I wait for text "Alias has been deleted successfully" to appear
 
   # --- Domain admin scenarios ---
 

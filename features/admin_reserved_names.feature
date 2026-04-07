@@ -142,4 +142,4 @@ Feature: Admin (Reserved Names)
     And I wait for the modal to appear
     When I click "Delete" in the modal
 
-    Then I should see "Reserved name has been deleted successfully"
+    Then I wait for text "Reserved name has been deleted successfully" to appear
