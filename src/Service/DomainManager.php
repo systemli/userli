@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Dto\PaginatedResult;
 use App\Entity\Domain;
+use App\Entity\InvitationSettings;
 use App\Event\DomainEvent;
 use App\Form\Model\DomainAdminModel;
 use App\Repository\AliasRepository;
@@ -63,8 +64,12 @@ final readonly class DomainManager
 
     public function update(Domain $domain, DomainAdminModel $model): void
     {
-        $domain->setInvitationEnabled($model->isInvitationEnabled());
-        $domain->setInvitationLimit($model->getInvitationLimit());
+        $settings = new InvitationSettings();
+        $settings->setEnabled($model->isInvitationEnabled());
+        $settings->setLimit($model->getInvitationLimit());
+        $settings->setWaitingPeriodDays($model->getWaitingPeriodDays());
+
+        $domain->setInvitationSettings($settings);
 
         $this->em->flush();
     }

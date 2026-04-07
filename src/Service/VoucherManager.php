@@ -119,14 +119,16 @@ final readonly class VoucherManager
 
         $domain = $user->getDomain();
 
-        if (null === $domain || !$domain->isInvitationEnabled()) {
+        if (null === $domain || !$domain->getInvitationSettings()->isEnabled()) {
             return [];
         }
 
-        $limit = $domain->getInvitationLimit();
+        $settings = $domain->getInvitationSettings();
+        $limit = $settings->getLimit();
         $vouchers = $this->repository->findByUser($user);
+        $waitingDays = $settings->getWaitingPeriodDays();
 
-        if (null !== $user->getLastLoginTime() && count($vouchers) < $limit && $user->getCreationTime() <= new DateTimeImmutable('-7 days')) {
+        if (null !== $user->getLastLoginTime() && count($vouchers) < $limit && $user->getCreationTime() <= new DateTimeImmutable(sprintf('-%d days', $waitingDays))) {
             for ($i = count($vouchers); $i < $limit; ++$i) {
                 try {
                     $vouchers[] = $this->create($user, $user->getDomain());

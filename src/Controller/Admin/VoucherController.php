@@ -50,7 +50,7 @@ final class VoucherController extends AbstractController
             $user = $this->getUser();
             if ($user instanceof User) {
                 $userDomain = $user->getDomain();
-                $invitationDisabled = null === $userDomain || !$userDomain->isInvitationEnabled();
+                $invitationDisabled = null === $userDomain || !$userDomain->getInvitationSettings()->isEnabled();
             }
         }
 
@@ -159,6 +159,6 @@ final class VoucherController extends AbstractController
 
         $domain = $user->getDomain();
 
-        return null === $domain || !$domain->isInvitationEnabled();
+        return null === $domain || !$domain->getInvitationSettings()->isEnabled();
     }
 }

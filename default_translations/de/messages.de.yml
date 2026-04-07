@@ -38,7 +38,7 @@ start:
 index:
   title: Verwalte dein E-Mail-Konto
   voucher-subtitle: Lade Freund:innen ein
-  voucher-explanation-short: Nutze deine Einladungscodes um Freund:innen einzuladen. Du erhältst standardmäßig %limit% Einladungen nach 7 Tagen.
+  voucher-explanation-short: Nutze deine Einladungscodes um Freund:innen einzuladen. Du erhältst standardmäßig %limit% Einladungen nach %waitingPeriodDays% Tagen.
   voucher-limit: Du hast keine Einladungscodes mehr verfügbar.
   voucher-disable: Du bekommst am %date% Uhr %limit% Einladungscodes gutgeschrieben. Dies dient der Vermeidung von Massenregistrierungen und Spam.
   voucher-waiting-title: Wartezeit für neue Einladungscodes
@@ -870,9 +870,11 @@ admin:
         placeholder: z.B. "example.org"
         help: Der hinzuzufügende Domainname (nur Kleinbuchstaben). Muss ein gültiger Hostname mit einer anerkannten TLD sein.
       invitation_enabled: Einladungen aktivieren
-      invitation_enabled_help: "Wenn aktiviert, erhalten Benutzer:innen 7 Tage nach der Registrierung Einladungscodes und neue Registrierungen über diese Codes sind möglich. Wenn deaktiviert, können auch bestehende Einladungscodes nicht eingelöst werden."
+      invitation_enabled_help: "Wenn aktiviert, erhalten Benutzer:innen nach der konfigurierten Wartezeit Einladungscodes und neue Registrierungen über diese Codes sind möglich. Wenn deaktiviert, können auch bestehende Einladungscodes nicht eingelöst werden."
       invitation_limit: Initiale Einladungen pro Benutzer:in
-      invitation_limit_help: "Anzahl der Einladungscodes, die jede:r Benutzer:in 7 Tage nach der Registrierung automatisch erhält. Benutzer:innen mit der Multiplier-Rolle können zusätzliche Codes erstellen."
+      invitation_limit_help: "Anzahl der Einladungscodes, die jede:r Benutzer:in nach der Wartezeit automatisch erhält. Benutzer:innen mit der Multiplier-Rolle können zusätzliche Codes erstellen."
+      waiting_period_days: Wartezeit (Tage)
+      waiting_period_days_help: "Anzahl der Tage nach der Registrierung, bevor Benutzer:innen automatisch ihre Einladungscodes erhalten."
       cancel: Abbrechen
       submit:
         create: Erstellen
@@ -904,6 +906,7 @@ admin:
       invitation_enabled_yes: Aktiviert
       invitation_enabled_no: Deaktiviert
       invitation_limit: Initiale Einladungen
+      waiting_period_days: Wartezeit (Tage)
     pagination:
       total: "%count% Domains insgesamt"
       previous: Zurück

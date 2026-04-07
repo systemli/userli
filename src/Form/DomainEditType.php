@@ -36,6 +36,14 @@ final class DomainEditType extends AbstractType
                     new Assert\PositiveOrZero(),
                 ],
             ])
+            ->add('waitingPeriodDays', IntegerType::class, [
+                'label' => 'admin.domain.form.waiting_period_days',
+                'help' => 'admin.domain.form.waiting_period_days_help',
+                'constraints' => [
+                    new Assert\NotNull(),
+                    new Assert\Positive(),
+                ],
+            ])
             ->add('submit', SubmitType::class);
     }
 

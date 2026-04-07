@@ -37,8 +37,8 @@ class VoucherManagerTest extends TestCase
 
         $this->domain = new Domain();
         $this->domain->setName('example.org');
-        $this->domain->setInvitationEnabled(true);
-        $this->domain->setInvitationLimit(3);
+        $this->domain->getInvitationSettings()->setEnabled(true);
+        $this->domain->getInvitationSettings()->setLimit(3);
 
         $this->manager = new VoucherManager(
             $this->entityManager,
@@ -133,8 +133,8 @@ class VoucherManagerTest extends TestCase
     {
         $domain = new Domain();
         $domain->setName('disabled.org');
-        $domain->setInvitationEnabled(false);
-        $domain->setInvitationLimit(3);
+        $domain->getInvitationSettings()->setEnabled(false);
+        $domain->getInvitationSettings()->setLimit(3);
 
         $user = new User('test@disabled.org');
         $user->setDomain($domain);
@@ -150,8 +150,8 @@ class VoucherManagerTest extends TestCase
 
         $domain = new Domain();
         $domain->setName('custom.org');
-        $domain->setInvitationEnabled(true);
-        $domain->setInvitationLimit(5);
+        $domain->getInvitationSettings()->setEnabled(true);
+        $domain->getInvitationSettings()->setLimit(5);
 
         $user = new User('test@custom.org');
         $user->setDomain($domain);
@@ -229,6 +229,31 @@ class VoucherManagerTest extends TestCase
         $vouchers = $this->manager->getVouchersByUser($user);
 
         self::assertNotEmpty($vouchers);
+        self::assertCount(3, $vouchers);
+    }
+
+    public function testGetVouchersByUserCustomWaitingPeriod(): void
+    {
+        $this->repository->method('findByUser')->willReturn([]);
+
+        $domain = new Domain();
+        $domain->setName('custom.org');
+        $domain->getInvitationSettings()->setEnabled(true);
+        $domain->getInvitationSettings()->setLimit(3);
+        $domain->getInvitationSettings()->setWaitingPeriodDays(14);
+
+        $user = new User('test@custom.org');
+        $user->setDomain($domain);
+        $user->setCreationTime(new DateTimeImmutable('-8 days'));
+        $user->setLastLoginTime(new DateTimeImmutable());
+
+        // 8 days old, but waiting period is 14 — should not create vouchers
+        $vouchers = $this->manager->getVouchersByUser($user);
+        self::assertEmpty($vouchers);
+
+        // 15 days old — should create vouchers
+        $user->setCreationTime(new DateTimeImmutable('-15 days'));
+        $vouchers = $this->manager->getVouchersByUser($user);
         self::assertCount(3, $vouchers);
     }
 

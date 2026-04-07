@@ -40,7 +40,7 @@ index:
   voucher-subtitle: Invite your friends
   voucher-explanation-short: >
     Use your invite codes to invite friends.
-    You receive %limit% invitations after 7 days by default.
+    You receive %limit% invitations after %waitingPeriodDays% days by default.
   voucher-limit: You don't have any invite codes left.
   voucher-disable: >
     At %date% you will receive %limit% invite codes.
@@ -872,9 +872,11 @@ admin:
         placeholder: e.g. "example.org"
         help: The domain name to add (lowercase only). Must be a valid hostname with a recognized TLD.
       invitation_enabled: Enable Invitations
-      invitation_enabled_help: "When enabled, users receive invite codes after 7 days and new registrations via those codes are allowed. When disabled, existing invite codes cannot be used either."
+      invitation_enabled_help: "When enabled, users receive invite codes after the configured waiting period and new registrations via those codes are allowed. When disabled, existing invite codes cannot be used either."
       invitation_limit: Initial Invitations per User
-      invitation_limit_help: "Number of invite codes automatically given to each user 7 days after registration. Users with the multiplier role can create additional codes."
+      invitation_limit_help: "Number of invite codes automatically given to each user after the waiting period. Users with the multiplier role can create additional codes."
+      waiting_period_days: Waiting Period (Days)
+      waiting_period_days_help: "Number of days after registration before users automatically receive their invite codes."
       cancel: Cancel
       submit:
         create: Create
@@ -906,6 +908,7 @@ admin:
       invitation_enabled_yes: Enabled
       invitation_enabled_no: Disabled
       invitation_limit: Initial Invitations
+      waiting_period_days: Waiting Period (Days)
     pagination:
       total: "%count% domains total"
       previous: Previous
