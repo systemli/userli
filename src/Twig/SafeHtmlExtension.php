@@ -20,12 +20,6 @@ final readonly class SafeHtmlExtension
     #[AsTwigFilter(name: 'safe_html', isSafe: ['html'])]
     public function safeHtml(string $content): Markup
     {
-        $cleaned = $this->sanitizer->sanitize($content);
-
-        // Add a data attribute to indicate this content should be processed by DOMPurify
-        // Use span with inherit class to properly inherit text styling (including dark mode colors)
-        $wrapped = sprintf('<span data-safe-html class="text-inherit">%s</span>', $cleaned);
-
-        return new Markup($wrapped, 'UTF-8');
+        return new Markup($this->sanitizer->sanitize($content), 'UTF-8');
     }
 }

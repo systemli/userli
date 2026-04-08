@@ -83,7 +83,7 @@ userli/
 ## Anti-Patterns (This Project)
 
 - **NEVER** use `|raw` for user-supplied data in Twig — use `|safe_html` filter (`src/Twig/SafeHtmlExtension.php`)
-- **NEVER** set `innerHTML` without `sanitizeHTML()` (`assets/js/app.js`)
+- **NEVER** set `innerHTML` with unsanitized user content
 - **NEVER** bind entities directly to Symfony forms — always use `src/Form/Model/`
 - **NEVER** suppress type errors (`@ts-ignore`, `as any`, psalm suppression)
 - **NEVER** create Message without matching MessageHandler (always paired 1:1)
@@ -94,7 +94,7 @@ userli/
 - User checks: `UserChecker` validates account status before auth
 - Voters: `AliasVoter`, `DomainVoter` for resource-level auth
 - Twig: `|safe_html` filter for user content, never `|raw`
-- JS: `sanitizeHTML()` before `innerHTML`
+- HTML sanitization handled server-side via Symfony HTML Sanitizer
 - CSRF: Symfony CSRF protection on all forms
 
 ## Frontend

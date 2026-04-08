@@ -29,13 +29,11 @@ class SafeHtmlExtensionTest extends TestCase
         self::assertInstanceOf(Markup::class, $result);
     }
 
-    public function testSafeHtmlWrapsContentInSpan(): void
+    public function testSafeHtmlReturnsSanitizedContent(): void
     {
         $result = (string) self::$extension->safeHtml('Hello');
 
-        self::assertStringContainsString('<span data-safe-html class="text-inherit">', $result);
-        self::assertStringContainsString('Hello', $result);
-        self::assertStringEndsWith('</span>', $result);
+        self::assertSame('Hello', $result);
     }
 
     public function testSafeHtmlAllowsSafeTags(): void
@@ -147,7 +145,7 @@ class SafeHtmlExtensionTest extends TestCase
     {
         $result = (string) self::$extension->safeHtml('');
 
-        self::assertSame('<span data-safe-html class="text-inherit"></span>', $result);
+        self::assertSame('', $result);
     }
 
     public function testSafeHtmlHandlesPlainText(): void
