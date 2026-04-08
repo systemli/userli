@@ -32,11 +32,23 @@ describe("sanitizeHTML", () => {
     expect(sanitizeHTML(input)).toBe("<b>bold</b>");
   });
 
+  it("allows heading and list tags", () => {
+    const input = "<h1>heading</h1><h3>sub</h3><ul><li>item</li></ul><ol><li>first</li></ol>";
+    expect(sanitizeHTML(input)).toContain("<h1>heading</h1>");
+    expect(sanitizeHTML(input)).toContain("<h3>sub</h3>");
+    expect(sanitizeHTML(input)).toContain("<ul><li>item</li></ul>");
+    expect(sanitizeHTML(input)).toContain("<ol><li>first</li></ol>");
+  });
+
+  it("allows blockquote and hr tags", () => {
+    const input = "<blockquote>quote</blockquote><hr>";
+    expect(sanitizeHTML(input)).toContain("<blockquote>quote</blockquote>");
+    expect(sanitizeHTML(input)).toContain("<hr>");
+  });
+
   it("strips disallowed tags but keeps their text content", () => {
-    const input = "<h1>heading</h1><table><tr><td>cell</td></tr></table>";
-    expect(sanitizeHTML(input)).not.toContain("<h1>");
+    const input = "<table><tr><td>cell</td></tr></table>";
     expect(sanitizeHTML(input)).not.toContain("<table>");
-    expect(sanitizeHTML(input)).toContain("heading");
     expect(sanitizeHTML(input)).toContain("cell");
   });
 

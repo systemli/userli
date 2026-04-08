@@ -46,6 +46,25 @@ class SafeHtmlExtensionTest extends TestCase
         self::assertStringContainsString('<u>underline</u>', $result);
     }
 
+    public function testSafeHtmlAllowsHeadingsAndLists(): void
+    {
+        $input = '<h3>Title</h3><ul><li>Item 1</li><li>Item 2</li></ul><ol><li>First</li></ol>';
+        $result = (string) $this->extension->safeHtml($input);
+
+        self::assertStringContainsString('<h3>Title</h3>', $result);
+        self::assertStringContainsString('<ul><li>Item 1</li><li>Item 2</li></ul>', $result);
+        self::assertStringContainsString('<ol><li>First</li></ol>', $result);
+    }
+
+    public function testSafeHtmlAllowsBlockquoteAndHr(): void
+    {
+        $input = '<blockquote>Quote</blockquote><hr>';
+        $result = (string) $this->extension->safeHtml($input);
+
+        self::assertStringContainsString('<blockquote>Quote</blockquote>', $result);
+        self::assertStringContainsString('<hr />', $result);
+    }
+
     public function testSafeHtmlStripsDisallowedTags(): void
     {
         $input = '<script>alert("xss")</script><img src="x" onerror="alert(1)">';

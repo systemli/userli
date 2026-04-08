@@ -25,7 +25,21 @@ final readonly class SafeHtmlExtension
             ->allowElement('p')
             ->allowElement('span')
             ->allowElement('div')
-            ->allowElement('a', ['href', 'target']);
+            ->allowElement('a', ['href', 'target'])
+            ->allowElement('h1')
+            ->allowElement('h2')
+            ->allowElement('h3')
+            ->allowElement('h4')
+            ->allowElement('h5')
+            ->allowElement('h6')
+            ->allowElement('ul')
+            ->allowElement('ol')
+            ->allowElement('li')
+            ->allowElement('dl')
+            ->allowElement('dt')
+            ->allowElement('dd')
+            ->allowElement('blockquote')
+            ->allowElement('hr');
 
         $this->sanitizer = new HtmlSanitizer($config);
     }
