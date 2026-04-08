@@ -1,0 +1,5 @@
+framework:
+    html_sanitizer:
+        sanitizers:
+            app.safe_html_sanitizer:
+                allow_safe_elements: true

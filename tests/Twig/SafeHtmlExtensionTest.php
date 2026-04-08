@@ -7,37 +7,39 @@ namespace App\Tests\Twig;
 use App\Twig\SafeHtmlExtension;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
 use Twig\Markup;
 
 class SafeHtmlExtensionTest extends TestCase
 {
-    private SafeHtmlExtension $extension;
+    private static SafeHtmlExtension $extension;
 
-    protected function setUp(): void
+    public static function setUpBeforeClass(): void
     {
-        $this->extension = new SafeHtmlExtension();
+        $config = new HtmlSanitizerConfig()->allowSafeElements();
+        $sanitizer = new HtmlSanitizer($config);
+        self::$extension = new SafeHtmlExtension($sanitizer);
     }
 
     public function testSafeHtmlReturnsMarkupInstance(): void
     {
-        $result = $this->extension->safeHtml('Hello');
+        $result = self::$extension->safeHtml('Hello');
 
         self::assertInstanceOf(Markup::class, $result);
     }
 
-    public function testSafeHtmlWrapsContentInSpan(): void
+    public function testSafeHtmlReturnsSanitizedContent(): void
     {
-        $result = (string) $this->extension->safeHtml('Hello');
+        $result = (string) self::$extension->safeHtml('Hello');
 
-        self::assertStringContainsString('<span data-safe-html class="text-inherit">', $result);
-        self::assertStringContainsString('Hello', $result);
-        self::assertStringEndsWith('</span>', $result);
+        self::assertSame('Hello', $result);
     }
 
     public function testSafeHtmlAllowsSafeTags(): void
     {
         $input = '<b>bold</b> <i>italic</i> <em>em</em> <strong>strong</strong> <u>underline</u>';
-        $result = (string) $this->extension->safeHtml($input);
+        $result = (string) self::$extension->safeHtml($input);
 
         self::assertStringContainsString('<b>bold</b>', $result);
         self::assertStringContainsString('<i>italic</i>', $result);
@@ -46,19 +48,38 @@ class SafeHtmlExtensionTest extends TestCase
         self::assertStringContainsString('<u>underline</u>', $result);
     }
 
+    public function testSafeHtmlAllowsHeadingsAndLists(): void
+    {
+        $input = '<h3>Title</h3><ul><li>Item 1</li><li>Item 2</li></ul><ol><li>First</li></ol>';
+        $result = (string) self::$extension->safeHtml($input);
+
+        self::assertStringContainsString('<h3>Title</h3>', $result);
+        self::assertStringContainsString('<ul><li>Item 1</li><li>Item 2</li></ul>', $result);
+        self::assertStringContainsString('<ol><li>First</li></ol>', $result);
+    }
+
+    public function testSafeHtmlAllowsBlockquoteAndHr(): void
+    {
+        $input = '<blockquote>Quote</blockquote><hr>';
+        $result = (string) self::$extension->safeHtml($input);
+
+        self::assertStringContainsString('<blockquote>Quote</blockquote>', $result);
+        self::assertStringContainsString('<hr />', $result);
+    }
+
     public function testSafeHtmlStripsDisallowedTags(): void
     {
         $input = '<script>alert("xss")</script><img src="x" onerror="alert(1)">';
-        $result = (string) $this->extension->safeHtml($input);
+        $result = (string) self::$extension->safeHtml($input);
 
         self::assertStringNotContainsString('<script>', $result);
-        self::assertStringNotContainsString('<img', $result);
+        self::assertStringNotContainsString('onerror', $result);
     }
 
     public function testSafeHtmlStripsEventHandlers(): void
     {
         $input = '<a href="https://example.org" onclick="alert(1)">click</a>';
-        $result = (string) $this->extension->safeHtml($input);
+        $result = (string) self::$extension->safeHtml($input);
 
         self::assertStringNotContainsString('onclick', $result);
         self::assertStringContainsString('href="https://example.org"', $result);
@@ -66,12 +87,11 @@ class SafeHtmlExtensionTest extends TestCase
 
     public function testSafeHtmlStripsEventHandlersOnAllowedTags(): void
     {
-        $input = '<div onmouseover="alert(1)">hover</div><span onfocus="alert(1)" tabindex="0">focus</span>';
-        $result = (string) $this->extension->safeHtml($input);
+        $input = '<div onmouseover="alert(1)">hover</div><span onfocus="alert(1)">focus</span>';
+        $result = (string) self::$extension->safeHtml($input);
 
         self::assertStringNotContainsString('onmouseover', $result);
         self::assertStringNotContainsString('onfocus', $result);
-        self::assertStringNotContainsString('tabindex', $result);
         self::assertStringContainsString('hover', $result);
         self::assertStringContainsString('focus', $result);
     }
@@ -79,7 +99,7 @@ class SafeHtmlExtensionTest extends TestCase
     public function testSafeHtmlStripsStyleAttribute(): void
     {
         $input = '<div style="background-image:url(javascript:alert(1))">content</div>';
-        $result = (string) $this->extension->safeHtml($input);
+        $result = (string) self::$extension->safeHtml($input);
 
         self::assertStringNotContainsString('style', $result);
         self::assertStringContainsString('content', $result);
@@ -88,7 +108,7 @@ class SafeHtmlExtensionTest extends TestCase
     #[DataProvider('javascriptUrlProvider')]
     public function testSafeHtmlRemovesJavascriptUrls(string $input, string $notExpected): void
     {
-        $result = (string) $this->extension->safeHtml($input);
+        $result = (string) self::$extension->safeHtml($input);
 
         self::assertStringNotContainsString($notExpected, $result);
         self::assertStringNotContainsString('href=', $result);
@@ -115,7 +135,7 @@ class SafeHtmlExtensionTest extends TestCase
     public function testSafeHtmlAllowsNormalLinks(): void
     {
         $input = '<a href="https://example.org">link</a>';
-        $result = (string) $this->extension->safeHtml($input);
+        $result = (string) self::$extension->safeHtml($input);
 
         self::assertStringContainsString('href="https://example.org"', $result);
         self::assertStringContainsString('>link</a>', $result);
@@ -123,14 +143,14 @@ class SafeHtmlExtensionTest extends TestCase
 
     public function testSafeHtmlHandlesEmptyString(): void
     {
-        $result = (string) $this->extension->safeHtml('');
+        $result = (string) self::$extension->safeHtml('');
 
-        self::assertSame('<span data-safe-html class="text-inherit"></span>', $result);
+        self::assertSame('', $result);
     }
 
     public function testSafeHtmlHandlesPlainText(): void
     {
-        $result = (string) $this->extension->safeHtml('Just plain text');
+        $result = (string) self::$extension->safeHtml('Just plain text');
 
         self::assertStringContainsString('Just plain text', $result);
     }
