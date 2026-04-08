@@ -3,6 +3,15 @@
 /* Dark Mode Configuration - Uses system preference by default */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Link styles for main content */
+#main-content a {
+  @apply text-blue-600 underline hover:text-blue-800;
+}
+
+.dark #main-content a {
+  @apply text-blue-400 hover:text-blue-300;
+}
+
 /* Browser Autofill Styles - Override default browser autofill background */
 :root {
   color-scheme: light dark;
