@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.6.1 (2026.04.08)
+
+- Fix 6.6.0 release (release immutability issue from GitHub)
+
 ## 6.6.0 (2026.04.08)
 
 ### Features and Improvements
