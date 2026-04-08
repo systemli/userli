@@ -214,10 +214,34 @@ welcome:
   headline: Welcome to %project_name%!
   lead: You have set up an account with us successfully. What are the next steps?
   next-button: To the overview
-  text: >
-    In the web you can find guides for setting up your e-mail account with several client programs.
-    In one week you will receive three invite codes, which you can collect at <a href="%app_url%">%app_url%</a>.
-    You can pass these on to friends and invite them to register with %project_name%.
+  setup:
+    headline: Set up your email account
+    text: You can find guides on the web for setting up your email account with various client programs.
+    text-webmail: >
+      You can use your email account via our <a href="%webmail_url%">webmail</a>
+      or set it up with a client program of your choice.
+  security:
+    headline: Secure your account
+    text: >
+      You can <a href="%app_url%/account/twofactor">enable two-factor authentication</a>
+      to protect your account with a second factor when logging in.
+      You will need a TOTP app such as
+      Aegis (Android) or Tofu (iOS).
+  openpgp:
+    headline: Publish your OpenPGP key
+    text: >
+      You can <a href="%app_url%/account/openpgp">upload your OpenPGP key</a>
+      to publish it in our Web Key Directory.
+      This helps others automatically discover your key when they
+      want to send you an encrypted email.
+  invitations:
+    headline: Invite friends
+    text: >
+      After %waitingPeriodDays% days you will receive %limit% invite codes,
+      which you can collect at <a href="%app_url%">%app_url%</a>.
+      Pass these on to friends and invite them to register
+      with %project_name%.
+  custom-bottom: ""
 closed:
   headline: Registration closed
   lead: The registration for new accounts is currently closed.

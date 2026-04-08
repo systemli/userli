@@ -210,10 +210,34 @@ welcome:
   headline: Willkommen bei %project_name%!
   lead: Du hast erfolgreich ein E-Mail-Konto bei uns erstellt! Wie geht es weiter?
   next-button: Zur Übersicht
-  text: >
-    Im Web findest du Anleitungen zur Einrichtung deines E-Mail-Kontos mit verschiedenen Client-Programmen.
-    In einer Woche bekommst du drei Einladungscodes gutgeschrieben, die du unter <a href="%app_url%">%app_url%</a> abrufen kannst.
-    Diese kannst du an Freundinnen und Freunde weiterleiten und sie so zu %project_name% einladen.
+  setup:
+    headline: E-Mail-Konto einrichten
+    text: Im Web findest du Anleitungen zur Einrichtung deines E-Mail-Kontos mit verschiedenen Client-Programmen.
+    text-webmail: >
+      Du kannst dein E-Mail-Konto über unser <a href="%webmail_url%">Webmail</a> nutzen
+      oder es mit einem Client-Programm deiner Wahl einrichten.
+  security:
+    headline: Konto absichern
+    text: >
+      Du kannst die <a href="%app_url%/account/twofactor">Zwei-Faktor-Authentifizierung aktivieren</a>,
+      um dein Konto mit einem zweiten Faktor beim Login zu schützen.
+      Du benötigst dafür eine TOTP-App wie
+      Aegis (Android) oder Tofu (iOS).
+  openpgp:
+    headline: OpenPGP-Schlüssel veröffentlichen
+    text: >
+      Du kannst deinen <a href="%app_url%/account/openpgp">OpenPGP-Schlüssel hochladen</a>,
+      um ihn in unserem Web Key Directory zu veröffentlichen.
+      So können andere deinen Schlüssel automatisch finden, wenn sie
+      dir eine verschlüsselte E-Mail senden möchten.
+  invitations:
+    headline: Freundinnen und Freunde einladen
+    text: >
+      Nach %waitingPeriodDays% Tagen bekommst du %limit% Einladungscodes
+      gutgeschrieben, die du unter <a href="%app_url%">%app_url%</a>
+      abrufen kannst. Diese kannst du weiterleiten und so andere
+      zu %project_name% einladen.
+  custom-bottom: ""
 closed:
   headline: Registrierung deaktiviert
   lead: Die Registrierung neuer Konten ist derzeit nicht möglich.
