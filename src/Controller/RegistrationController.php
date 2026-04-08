@@ -161,9 +161,17 @@ final class RegistrationController extends AbstractController
     #[Route(path: '/register/welcome', name: 'register_welcome', methods: ['GET'])]
     public function welcome(Request $request): Response
     {
+        $user = $this->getUser();
+
+        if (!$user instanceof User) {
+            return $this->redirectToRoute('index');
+        }
+
         $this->addFlash('success', 'flashes.registration-successful');
 
-        return $this->render('Registration/welcome.html.twig');
+        return $this->render('Registration/welcome.html.twig', [
+            'user' => $user,
+        ]);
     }
 
     private function resolveVoucher(string $code): Voucher|Response

@@ -2,6 +2,7 @@
 
 {% set project_name = setting('project_name') %}
 {% set app_url = setting('app_url') %}
+{% set webmail_url = setting('webmail_url') %}
 
 {% block title %}{{ setting('app_name') }} - {{ "welcome.headline"|trans({'%project_name%': project_name}) }}{% endblock %}
 
@@ -13,7 +14,33 @@
     <div class="max-w-4xl mx-auto">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-8 sm:p-12">
             <div class="prose prose-lg dark:prose-invert max-w-none">
-                {{ "welcome.text"|trans({'%project_name%': project_name, '%app_url%': app_url})|safe_html }}
+                <h3>{{ 'welcome.setup.headline'|trans }}</h3>
+                {% if webmail_url is not empty %}
+                    <p>{{ 'welcome.setup.text-webmail'|trans({'%webmail_url%': webmail_url})|safe_html }}</p>
+                {% else %}
+                    <p>{{ 'welcome.setup.text'|trans }}</p>
+                {% endif %}
+
+                <h3>{{ 'welcome.security.headline'|trans }}</h3>
+                <p>{{ 'welcome.security.text'|trans({'%app_url%': app_url})|safe_html }}</p>
+
+                <h3>{{ 'welcome.openpgp.headline'|trans }}</h3>
+                <p>{{ 'welcome.openpgp.text'|trans({'%app_url%': app_url})|safe_html }}</p>
+
+                {% if user is defined and user.domain.invitationSettings.enabled and user.domain.invitationSettings.limit > 0  %}
+                    <h3>{{ 'welcome.invitations.headline'|trans }}</h3>
+                    <p>{{ 'welcome.invitations.text'|trans({
+                        '%app_url%': app_url,
+                        '%project_name%': project_name,
+                        '%limit%': user.domain.invitationSettings.limit,
+                        '%waitingPeriodDays%': user.domain.invitationSettings.waitingPeriodDays,
+                    })|safe_html }}</p>
+                {% endif %}
+
+                {% set custom_bottom = 'welcome.custom-bottom'|trans %}
+                {% if custom_bottom is not empty %}
+                    {{ custom_bottom|safe_html }}
+                {% endif %}
             </div>
 
             <div class="mt-8 text-right">

@@ -249,6 +249,14 @@ Feature: registration
 
     Then I should see "Welcome to example.org!"
     And I should see "You have set up an account with us successfully. What are the next steps?"
+    And I should see "Set up your email account"
+    And I should see "Secure your account"
+    And I should see "Publish your OpenPGP key"
+
+  @registration
+  Scenario: Welcome page redirects unauthenticated users to start page
+    When I am on "/register/welcome"
+    Then I should be on "/"
 
   @registration
   Scenario: GET /register redirects to start page

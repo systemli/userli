@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /* Dark Mode Configuration - Uses system preference by default */
 @custom-variant dark (&:where(.dark, .dark *));
