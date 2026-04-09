@@ -7,6 +7,7 @@ namespace App\Tests\Schedule;
 use App\Message\PruneUserNotifications;
 use App\Message\PruneWebhookDeliveries;
 use App\Message\RemoveInactiveUsers;
+use App\Message\RemoveUnredeemedVouchers;
 use App\Message\SendWeeklyReport;
 use App\Message\UnlinkRedeemedVouchers;
 use App\Schedule\MaintenanceSchedule;
@@ -27,10 +28,11 @@ class MaintenanceScheduleTest extends TestCase
             $recurringMessages,
         );
 
-        self::assertCount(5, $recurringMessages);
+        self::assertCount(6, $recurringMessages);
         self::assertContains(PruneWebhookDeliveries::class, $messageTypes);
         self::assertContains(PruneUserNotifications::class, $messageTypes);
         self::assertContains(UnlinkRedeemedVouchers::class, $messageTypes);
+        self::assertContains(RemoveUnredeemedVouchers::class, $messageTypes);
         self::assertContains(RemoveInactiveUsers::class, $messageTypes);
         self::assertContains(SendWeeklyReport::class, $messageTypes);
     }
