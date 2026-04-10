@@ -8,11 +8,16 @@ use App\Dto\PaginatedResult;
 use App\Entity\User;
 use App\Enum\MailCrypt;
 use App\Enum\Roles;
+use App\Enum\UserNotificationType;
 use App\Form\Model\UserAdminModel;
 use App\Handler\DeleteHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
+use App\Repository\AliasRepository;
+use App\Repository\OpenPgpKeyRepository;
+use App\Repository\UserNotificationRepository;
 use App\Repository\UserRepository;
+use App\Repository\VoucherRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class UserManager
@@ -28,6 +33,10 @@ final readonly class UserManager
         private DomainGuesser $domainGuesser,
         private UserResetService $userResetService,
         private DeleteHandler $deleteHandler,
+        private AliasRepository $aliasRepository,
+        private VoucherRepository $voucherRepository,
+        private OpenPgpKeyRepository $openPgpKeyRepository,
+        private UserNotificationRepository $userNotificationRepository,
     ) {
     }
 
@@ -126,5 +135,19 @@ final readonly class UserManager
     public function delete(User $user): void
     {
         $this->deleteHandler->deleteUser($user);
+    }
+
+    /**
+     * @return array{aliases: int, vouchers: int, vouchers_redeemed: int, openpgp_keys: int, password_compromised: bool}
+     */
+    public function getUserStats(User $user): array
+    {
+        return [
+            'aliases' => count($this->aliasRepository->findByUser($user)),
+            'vouchers' => $this->voucherRepository->countVouchersByUser($user, null),
+            'vouchers_redeemed' => $this->voucherRepository->countVouchersByUser($user, true),
+            'openpgp_keys' => count($this->openPgpKeyRepository->findByUploader($user)),
+            'password_compromised' => $this->userNotificationRepository->hasRecentNotification($user, UserNotificationType::PASSWORD_COMPROMISED, 24 * 365),
+        ];
     }
 }

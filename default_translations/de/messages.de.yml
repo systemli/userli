@@ -977,8 +977,42 @@ admin:
       confirm: "Möchtest du den Benutzer \"%email%\" wirklich löschen?"
       success: Benutzer wurde erfolgreich gelöscht.
     actions:
+      show: Anzeigen
       edit: Bearbeiten
       delete: Löschen
+    show:
+      description: Benutzerdetails und Statistiken
+      back: Zurück zu Benutzer:innen
+      back_to_user: Zurück zum Benutzer
+      roles: Rollen
+      status: Status
+      twofactor: 2FA
+      mailcrypt: MailCrypt
+      password_change_required: Passwortänderung erforderlich
+      password_change_required_warning: Bei der nächsten Anmeldung muss das Passwort geändert werden.
+      password_compromised: Das Passwort wurde in einem Datenleck gefunden.
+      recovery_token: Recovery-Token
+      recovery_token_yes: Konfiguriert
+      recovery_token_no: Nicht konfiguriert
+      quota: Quota (MB)
+      quota_default: Standard
+      smtp_limits: SMTP-Limits
+      smtp_limits_default: Standard
+      smtp_limits_format: "%per_hour%/h · %per_day%/d"
+      last_login: Letzte Anmeldung
+      created: Erstellt
+      invited_by: Eingeladen von
+      related_data: Verknüpfte Daten
+      aliases: Aliase
+      vouchers: Einladungscodes
+      vouchers_redeemed: "%count% eingelöst"
+      openpgp_keys: OpenPGP-Schlüssel
+      enabled: Aktiviert
+      disabled: Deaktiviert
+      deleted: Gelöscht
+      yes: "Ja"
+      no: "Nein"
+      never: Nie
     search:
       placeholder: Nach E-Mail suchen...
       submit: Suchen

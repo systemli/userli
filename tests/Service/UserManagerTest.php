@@ -12,7 +12,11 @@ use App\Form\Model\UserAdminModel;
 use App\Handler\DeleteHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
+use App\Repository\AliasRepository;
+use App\Repository\OpenPgpKeyRepository;
+use App\Repository\UserNotificationRepository;
 use App\Repository\UserRepository;
+use App\Repository\VoucherRepository;
 use App\Service\DomainGuesser;
 use App\Service\SettingsService;
 use App\Service\UserManager;
@@ -32,6 +36,10 @@ class UserManagerTest extends TestCase
     private DomainGuesser&Stub $domainGuesser;
     private UserResetService&Stub $userResetService;
     private DeleteHandler&Stub $deleteHandler;
+    private AliasRepository&Stub $aliasRepository;
+    private VoucherRepository&Stub $voucherRepository;
+    private OpenPgpKeyRepository&Stub $openPgpKeyRepository;
+    private UserNotificationRepository&Stub $userNotificationRepository;
     private UserManager $manager;
     private Domain $domain;
 
@@ -45,6 +53,10 @@ class UserManagerTest extends TestCase
         $this->domainGuesser = $this->createStub(DomainGuesser::class);
         $this->userResetService = $this->createStub(UserResetService::class);
         $this->deleteHandler = $this->createStub(DeleteHandler::class);
+        $this->aliasRepository = $this->createStub(AliasRepository::class);
+        $this->voucherRepository = $this->createStub(VoucherRepository::class);
+        $this->openPgpKeyRepository = $this->createStub(OpenPgpKeyRepository::class);
+        $this->userNotificationRepository = $this->createStub(UserNotificationRepository::class);
 
         $this->domain = new Domain();
         $this->domain->setName('example.org');
@@ -61,6 +73,10 @@ class UserManagerTest extends TestCase
             $this->domainGuesser,
             $this->userResetService,
             $this->deleteHandler,
+            $this->aliasRepository,
+            $this->voucherRepository,
+            $this->openPgpKeyRepository,
+            $this->userNotificationRepository,
         );
     }
 
@@ -130,6 +146,10 @@ class UserManagerTest extends TestCase
             $this->domainGuesser,
             $this->userResetService,
             $this->deleteHandler,
+            $this->aliasRepository,
+            $this->voucherRepository,
+            $this->openPgpKeyRepository,
+            $this->userNotificationRepository,
         );
 
         $model = new UserAdminModel();
@@ -163,6 +183,10 @@ class UserManagerTest extends TestCase
             $this->domainGuesser,
             $this->userResetService,
             $this->deleteHandler,
+            $this->aliasRepository,
+            $this->voucherRepository,
+            $this->openPgpKeyRepository,
+            $this->userNotificationRepository,
         );
 
         $model = new UserAdminModel();
@@ -199,6 +223,10 @@ class UserManagerTest extends TestCase
             $this->domainGuesser,
             $this->userResetService,
             $this->deleteHandler,
+            $this->aliasRepository,
+            $this->voucherRepository,
+            $this->openPgpKeyRepository,
+            $this->userNotificationRepository,
         );
 
         $model = new UserAdminModel();
@@ -223,6 +251,10 @@ class UserManagerTest extends TestCase
             $this->domainGuesser,
             $this->userResetService,
             $this->deleteHandler,
+            $this->aliasRepository,
+            $this->voucherRepository,
+            $this->openPgpKeyRepository,
+            $this->userNotificationRepository,
         );
 
         $user = new User('user@example.org');
@@ -261,6 +293,10 @@ class UserManagerTest extends TestCase
             $this->domainGuesser,
             $userResetService,
             $this->deleteHandler,
+            $this->aliasRepository,
+            $this->voucherRepository,
+            $this->openPgpKeyRepository,
+            $this->userNotificationRepository,
         );
 
         $user = new User('user@example.org');
@@ -295,6 +331,10 @@ class UserManagerTest extends TestCase
             $this->domainGuesser,
             $this->userResetService,
             $this->deleteHandler,
+            $this->aliasRepository,
+            $this->voucherRepository,
+            $this->openPgpKeyRepository,
+            $this->userNotificationRepository,
         );
 
         $user = new User('user@example.org');
@@ -324,6 +364,10 @@ class UserManagerTest extends TestCase
             $this->domainGuesser,
             $this->userResetService,
             $this->deleteHandler,
+            $this->aliasRepository,
+            $this->voucherRepository,
+            $this->openPgpKeyRepository,
+            $this->userNotificationRepository,
         );
 
         $user = new User('user@example.org');
@@ -359,6 +403,10 @@ class UserManagerTest extends TestCase
             $this->domainGuesser,
             $this->userResetService,
             $deleteHandler,
+            $this->aliasRepository,
+            $this->voucherRepository,
+            $this->openPgpKeyRepository,
+            $this->userNotificationRepository,
         );
 
         $manager->delete($user);
