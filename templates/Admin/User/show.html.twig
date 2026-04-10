@@ -1,0 +1,198 @@
+{% set current_section = 'users' %}
+{% extends 'Admin/base_admin.html.twig' %}
+{% block title %}{{ setting('app_name') }} - {{ user.email }}{% endblock %}
+{% block admin_content %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
+         data-controller="modal">
+            <div class="p-6 sm:p-8">
+                <div class="flex items-center mb-6">
+                    <div class="w-12 h-12 bg-violet-100 dark:bg-violet-900/50 rounded-xl flex items-center justify-center mr-4">
+                        {{ ux_icon('heroicons:user', {class: 'w-6 h-6 text-violet-600 dark:text-violet-400'}) }}
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ user.email }}</h3>
+                            {% if user.deleted %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200">
+                                    {{ ux_icon('heroicons:x-mark', {class: 'w-3 h-3 mr-1'}) }}{{ 'admin.user.show.deleted'|trans }}
+                                </span>
+                            {% endif %}
+                        </div>
+                        <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ 'admin.user.show.description'|trans }}</p>
+                    </div>
+                </div>
+
+                <div class="mb-6 flex gap-2">
+                    <a href="{{ path('admin_user_index') }}"
+                       class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
+                        {{ ux_icon('heroicons:arrow-left', {class: 'w-4 h-4 mr-1'}) }} {{ 'admin.user.show.back'|trans }}
+                    </a>
+                    {% if not user.deleted and is_granted('edit', user) %}
+                        <a href="{{ path('admin_user_edit', {id: user.id}) }}"
+                           class="inline-flex items-center px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600">
+                            {{ ux_icon('heroicons:pencil-square', {class: 'w-4 h-4 mr-1'}) }} {{ 'admin.user.actions.edit'|trans }}
+                        </a>
+                        <form method="post"
+                              action="{{ path('admin_user_delete', {id: user.id}) }}"
+                              data-action="submit->modal#open"
+                              data-modal-title-param="{{ 'delete.confirm-title'|trans|e('html_attr') }}"
+                              data-modal-message-param="{{ 'admin.user.delete.confirm'|trans({'%email%': user.email})|e('html_attr') }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_user_' ~ user.id) }}">
+                            <button type="submit"
+                                    class="inline-flex items-center px-3 py-1.5 text-sm text-red-700 dark:text-red-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30">
+                                {{ ux_icon('heroicons:trash', {class: 'w-4 h-4 mr-1'}) }} {{ 'admin.user.actions.delete'|trans }}
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+
+                {# Warning banners #}
+                {% if stats.password_compromised %}
+                    <div class="mb-4 p-4 bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700 rounded-lg">
+                        <div class="flex items-center">
+                            {{ ux_icon('heroicons:exclamation-triangle', {class: 'w-5 h-5 text-amber-600 dark:text-amber-400 mr-2 shrink-0'}) }}
+                            <p class="text-sm font-medium text-amber-800 dark:text-amber-200">{{ 'admin.user.show.password_compromised'|trans }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if user.passwordChangeRequired %}
+                    <div class="mb-4 p-4 bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-700 rounded-lg">
+                        <div class="flex items-center">
+                            {{ ux_icon('heroicons:exclamation-triangle', {class: 'w-5 h-5 text-amber-600 dark:text-amber-400 mr-2 shrink-0'}) }}
+                            <p class="text-sm font-medium text-amber-800 dark:text-amber-200">{{ 'admin.user.show.password_change_required_warning'|trans }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {# User properties — compact info bar #}
+                <div class="mb-6 grid grid-cols-2 sm:grid-cols-4 divide-x divide-gray-200 dark:divide-gray-600 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'admin.user.show.status'|trans }}</dt>
+                        <dd class="mt-1">
+                            {% if user.deleted %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200">{{ 'admin.user.status.deleted'|trans }}</span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">{{ 'admin.user.status.active'|trans }}</span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'admin.user.show.twofactor'|trans }}</dt>
+                        <dd class="mt-1">
+                            {% if user.totpAuthenticationEnabled %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">{{ 'admin.user.show.enabled'|trans }}</span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">{{ 'admin.user.show.disabled'|trans }}</span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'admin.user.show.mailcrypt'|trans }}</dt>
+                        <dd class="mt-1">
+                            {% if user.mailCryptEnabled %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">{{ 'admin.user.show.enabled'|trans }}</span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">{{ 'admin.user.show.disabled'|trans }}</span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'admin.user.show.recovery_token'|trans }}</dt>
+                        <dd class="mt-1">
+                            {% if user.recoverySecretBox %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">{{ 'admin.user.show.recovery_token_yes'|trans }}</span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">{{ 'admin.user.show.recovery_token_no'|trans }}</span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                </div>
+
+                {# Activity: Last Login, Created, Invited By #}
+                <div class="mb-6 grid grid-cols-1 sm:grid-cols-3 divide-x divide-gray-200 dark:divide-gray-600 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'admin.user.show.last_login'|trans }}</dt>
+                        <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ user.lastLoginTime ? user.lastLoginTime|format_datetime('short', 'short') : 'admin.user.show.never'|trans }}</dd>
+                    </div>
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'admin.user.show.created'|trans }}</dt>
+                        <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ user.creationTime ? user.creationTime|format_datetime('short', 'short') : '—' }}</dd>
+                    </div>
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'admin.user.show.invited_by'|trans }}</dt>
+                        <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ user.invitationVoucher and user.invitationVoucher.user ? user.invitationVoucher.user.email : '—' }}</dd>
+                    </div>
+                </div>
+
+                {# Configuration: Roles, Quota, SMTP Limits #}
+                <div class="mb-6 grid grid-cols-1 sm:grid-cols-3 divide-x divide-gray-200 dark:divide-gray-600 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'admin.user.show.roles'|trans }}</dt>
+                        <dd class="mt-1 flex flex-wrap justify-center gap-1">
+                            {% for role in user.roles %}
+                                {% if role == 'ROLE_SPAM' %}
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200">{{ role }}</span>
+                                {% elseif role == 'ROLE_SUSPICIOUS' %}
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200">{{ role }}</span>
+                                {% else %}
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300">{{ role }}</span>
+                                {% endif %}
+                            {% endfor %}
+                        </dd>
+                    </div>
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'admin.user.show.quota'|trans }}</dt>
+                        <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ user.quota ? user.quota : 'admin.user.show.quota_default'|trans }}</dd>
+                    </div>
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'admin.user.show.smtp_limits'|trans }}</dt>
+                        <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">
+                            {% if user.smtpQuotaLimits and (user.smtpQuotaLimits.per_hour is not null or user.smtpQuotaLimits.per_day is not null) %}
+                                {{ 'admin.user.show.smtp_limits_format'|trans({'%per_hour%': user.smtpQuotaLimits.per_hour, '%per_day%': user.smtpQuotaLimits.per_day}) }}
+                            {% else %}
+                                {{ 'admin.user.show.smtp_limits_default'|trans }}
+                            {% endif %}
+                        </dd>
+                    </div>
+                </div>
+
+                {# Related entities #}
+                <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-4">{{ 'admin.user.show.related_data'|trans }}</h4>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {# Aliases #}
+                    <a href="{{ path('admin_alias_index', {search: user.email}) }}"
+                       class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors group">
+                        <div class="flex items-center mb-2">
+                            {{ ux_icon('heroicons:at-symbol', {class: 'w-5 h-5 text-green-500 dark:text-green-400 mr-2'}) }}
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">{{ 'admin.user.show.aliases'|trans }}</span>
+                        </div>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ stats.aliases }}</p>
+                    </a>
+
+                    {# Vouchers #}
+                    <a href="{{ path('admin_voucher_index', {search: user.email}) }}"
+                       class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors group">
+                        <div class="flex items-center mb-2">
+                            {{ ux_icon('heroicons:ticket', {class: 'w-5 h-5 text-orange-500 dark:text-orange-400 mr-2'}) }}
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">{{ 'admin.user.show.vouchers'|trans }}</span>
+                        </div>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ stats.vouchers }}</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ 'admin.user.show.vouchers_redeemed'|trans({'%count%': stats.vouchers_redeemed}) }}</p>
+                    </a>
+
+                    {# OpenPGP Keys #}
+                    <a href="{{ path('admin_openpgp_key_index', {search: user.email}) }}"
+                       class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors group">
+                        <div class="flex items-center mb-2">
+                            {{ ux_icon('heroicons:finger-print', {class: 'w-5 h-5 text-rose-500 dark:text-rose-400 mr-2'}) }}
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">{{ 'admin.user.show.openpgp_keys'|trans }}</span>
+                        </div>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ stats.openpgp_keys }}</p>
+                    </a>
+                </div>
+            </div>
+
+        {% include 'Admin/_confirm_modal.html.twig' %}
+    </div>
+{% endblock %}
