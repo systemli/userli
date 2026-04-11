@@ -26,7 +26,7 @@
                     placeholder_key: 'admin.alias.search.placeholder',
                     submit_key: 'admin.alias.search.submit',
                     search: search,
-                    extra_params: {deleted: deleted}|filter(v => v and v != 'active'),
+                    extra_params: {deleted: deleted}|filter(v => v and v not in ['active', 'all']),
                 } %}
             </div>
 
@@ -39,7 +39,7 @@
                             class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         <option value="{{ path('admin_alias_index', {search: search, deleted: 'active'}|filter(v => v)) }}"{% if deleted == 'active' %} selected{% endif %}>{{ 'admin.alias.filter.active'|trans }}</option>
                         <option value="{{ path('admin_alias_index', {search: search, deleted: 'deleted'}|filter(v => v)) }}"{% if deleted == 'deleted' %} selected{% endif %}>{{ 'admin.alias.filter.deleted'|trans }}</option>
-                        <option value="{{ path('admin_alias_index', {search: search}|filter(v => v)) }}"{% if deleted == '' %} selected{% endif %}>{{ 'admin.alias.filter.all'|trans }}</option>
+                        <option value="{{ path('admin_alias_index', {search: search, deleted: 'all'}|filter(v => v)) }}"{% if deleted == 'all' %} selected{% endif %}>{{ 'admin.alias.filter.all'|trans }}</option>
                     </select>
                 </div>
             </div>
@@ -117,7 +117,7 @@
                     page_key: 'admin.alias.pagination.page',
                     pagination: pagination,
                     search: search,
-                    extra_params: {deleted: deleted}|filter(v => v and v != 'active'),
+                    extra_params: {deleted: deleted}|filter(v => v and v not in ['active', 'all']),
                 } %}
             {% endif %}
         </div>
