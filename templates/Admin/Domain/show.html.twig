@@ -29,23 +29,63 @@
                     {% endif %}
                 </div>
 
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600">
+                {# Domain properties — compact info bar #}
+                <div class="mb-6 grid grid-cols-2 sm:grid-cols-4 divide-x divide-gray-200 dark:divide-gray-600 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'admin.domain.show.invitation_enabled'|trans }}</dt>
+                        <dd class="mt-1">
+                            {% if domain.invitationSettings.enabled %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">{{ 'admin.domain.show.invitation_enabled_yes'|trans }}</span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">{{ 'admin.domain.show.invitation_enabled_no'|trans }}</span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'admin.domain.show.auto_invitations'|trans }}</dt>
+                        <dd class="mt-1">
+                            {% if domain.invitationSettings.limit > 0 %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">{{ 'admin.domain.show.auto_invitations_yes'|trans({'%limit%': domain.invitationSettings.limit}) }}</span>
+                            {% else %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400">{{ 'admin.domain.show.auto_invitations_no'|trans }}</span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'admin.domain.show.waiting_period_days'|trans }}</dt>
+                        <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ domain.invitationSettings.waitingPeriodDays }} {{ 'admin.domain.show.waiting_period_days_unit'|trans }}</dd>
+                    </div>
+                    <div class="text-center px-3">
+                        <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'admin.domain.show.created'|trans }}</dt>
+                        <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ domain.creationTime ? domain.creationTime|format_datetime('short', 'short') : '—' }}</dd>
+                    </div>
+                </div>
+
+                {# Related entities #}
+                <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-4">{{ 'admin.domain.show.related_data'|trans }}</h4>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {# Users #}
+                    <a href="{{ path('admin_user_index', {domain: domain.id}) }}"
+                       class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors group">
                         <div class="flex items-center mb-2">
                             {{ ux_icon('heroicons:users', {class: 'w-5 h-5 text-blue-500 dark:text-blue-400 mr-2'}) }}
-                            <span class="text-sm font-medium text-gray-600 dark:text-gray-300">{{ 'admin.domain.show.users'|trans }}</span>
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">{{ 'admin.domain.show.users'|trans }}</span>
                         </div>
                         <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ stats.users }}</p>
-                    </div>
+                    </a>
 
-                    <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600">
+                    {# Aliases #}
+                    <a href="{{ path('admin_alias_index', {domain: domain.id}) }}"
+                       class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors group">
                         <div class="flex items-center mb-2">
                             {{ ux_icon('heroicons:at-symbol', {class: 'w-5 h-5 text-green-500 dark:text-green-400 mr-2'}) }}
-                            <span class="text-sm font-medium text-gray-600 dark:text-gray-300">{{ 'admin.domain.show.aliases'|trans }}</span>
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">{{ 'admin.domain.show.aliases'|trans }}</span>
                         </div>
                         <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ stats.aliases }}</p>
-                    </div>
+                    </a>
 
+                    {# Admins #}
                     <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600">
                         <div class="flex items-center mb-2">
                             {{ ux_icon('heroicons:shield-check', {class: 'w-5 h-5 text-purple-500 dark:text-purple-400 mr-2'}) }}
@@ -54,53 +94,15 @@
                         <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ stats.admins }}</p>
                     </div>
 
-                    <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600">
+                    {# Vouchers #}
+                    <a href="{{ path('admin_voucher_index', {domain: domain.id}) }}"
+                       class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors group">
                         <div class="flex items-center mb-2">
                             {{ ux_icon('heroicons:ticket', {class: 'w-5 h-5 text-orange-500 dark:text-orange-400 mr-2'}) }}
-                            <span class="text-sm font-medium text-gray-600 dark:text-gray-300">{{ 'admin.domain.show.vouchers'|trans }}</span>
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">{{ 'admin.domain.show.vouchers'|trans }}</span>
                         </div>
                         <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ stats.vouchers }}</p>
-                    </div>
-
-                    <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600">
-                        <div class="flex items-center mb-2">
-                            {{ ux_icon('heroicons:user-plus', {class: 'w-5 h-5 text-teal-500 dark:text-teal-400 mr-2'}) }}
-                            <span class="text-sm font-medium text-gray-600 dark:text-gray-300">{{ 'admin.domain.show.invitation_enabled'|trans }}</span>
-                        </div>
-                        {% if domain.invitationSettings.enabled %}
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">
-                                {{ ux_icon('heroicons:check', {class: 'w-3 h-3 mr-1'}) }}{{ 'admin.domain.show.invitation_enabled_yes'|trans }}
-                            </span>
-                        {% else %}
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
-                                {{ ux_icon('heroicons:x-mark', {class: 'w-3 h-3 mr-1'}) }}{{ 'admin.domain.show.invitation_enabled_no'|trans }}
-                            </span>
-                        {% endif %}
-                    </div>
-
-                    <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600">
-                        <div class="flex items-center mb-2">
-                            {{ ux_icon('heroicons:sparkles', {class: 'w-5 h-5 text-teal-500 dark:text-teal-400 mr-2'}) }}
-                            <span class="text-sm font-medium text-gray-600 dark:text-gray-300">{{ 'admin.domain.show.auto_invitations'|trans }}</span>
-                        </div>
-                        {% if domain.invitationSettings.limit > 0 %}
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200">
-                                {{ ux_icon('heroicons:check', {class: 'w-3 h-3 mr-1'}) }}{{ 'admin.domain.show.auto_invitations_yes'|trans({'%limit%': domain.invitationSettings.limit}) }}
-                            </span>
-                        {% else %}
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
-                                {{ ux_icon('heroicons:x-mark', {class: 'w-3 h-3 mr-1'}) }}{{ 'admin.domain.show.auto_invitations_no'|trans }}
-                            </span>
-                        {% endif %}
-                    </div>
-
-                    <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600">
-                        <div class="flex items-center mb-2">
-                            {{ ux_icon('heroicons:clock', {class: 'w-5 h-5 text-teal-500 dark:text-teal-400 mr-2'}) }}
-                            <span class="text-sm font-medium text-gray-600 dark:text-gray-300">{{ 'admin.domain.show.waiting_period_days'|trans }}</span>
-                        </div>
-                        <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ domain.invitationSettings.waitingPeriodDays }}</p>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
