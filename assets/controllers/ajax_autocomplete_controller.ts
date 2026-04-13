@@ -78,6 +78,7 @@ export default class extends Controller {
   private input!: HTMLInputElement;
   private dropdown!: HTMLUListElement;
   private tagContainer!: HTMLDivElement;
+  private clearButton: HTMLButtonElement | null = null;
   private isOpen = false;
   private activeIndex = -1;
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -118,7 +119,7 @@ export default class extends Controller {
     this.input.type = "text";
     this.input.autocomplete = "off";
     this.input.className = this.compactValue
-      ? "w-full px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg " +
+      ? "w-full h-9 px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg " +
         "focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 " +
         "transition-colors bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 " +
         "placeholder-gray-400 dark:placeholder-gray-500"
@@ -161,6 +162,34 @@ export default class extends Controller {
     this.dropdown.setAttribute("role", "listbox");
     this.wrapper.appendChild(this.dropdown);
 
+    // Filter mode: render inline clear button (hidden until a value is selected)
+    if (this.filterParamValue) {
+      this.clearButton = document.createElement("button");
+      this.clearButton.type = "button";
+      this.clearButton.className =
+        "absolute right-2 top-1/2 -translate-y-1/2 p-0.5 rounded " +
+        "text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 " +
+        "transition-colors cursor-pointer hidden";
+      this.clearButton.setAttribute("aria-label", "Clear filter");
+      this.clearButton.innerHTML =
+        '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>' +
+        "</svg>";
+      this.clearButton.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        const url = new URL(globalThis.location.href);
+        url.searchParams.delete(this.filterParamValue);
+        url.searchParams.delete("page");
+        globalThis.location.href = url.toString();
+      });
+      this.wrapper.appendChild(this.clearButton);
+
+      // Show immediately if a value is already selected
+      if (this.hiddenTarget.value && this.hiddenTarget.value !== "0") {
+        this.showClearButton();
+      }
+    }
+
     // Insert wrapper after hidden input
     this.hiddenTarget.parentNode!.insertBefore(this.wrapper, this.hiddenTarget.nextSibling);
   }
@@ -187,6 +216,7 @@ export default class extends Controller {
     if (!this.multipleValue && this.selectedLabel && this.input.value !== this.selectedLabel) {
       this.hiddenTarget.value = "";
       this.selectedLabel = "";
+      this.hideClearButton();
     }
 
     if (query.length < this.minCharsValue) {
@@ -210,7 +240,7 @@ export default class extends Controller {
     this.abortController = new AbortController();
 
     try {
-      const url = new URL(this.urlValue, window.location.origin);
+      const url = new URL(this.urlValue, globalThis.location.origin);
       url.searchParams.set("q", query);
 
       const response = await fetch(url.toString(), {
@@ -353,11 +383,11 @@ export default class extends Controller {
 
     // Filter mode: navigate instead of storing
     if (this.filterParamValue) {
-      const url = new URL(window.location.href);
+      const url = new URL(globalThis.location.href);
       url.searchParams.set(this.filterParamValue, String(result.id));
       // Reset to page 1 when changing filter
       url.searchParams.delete("page");
-      window.location.href = url.toString();
+      globalThis.location.href = url.toString();
       return;
     }
 
@@ -427,6 +457,18 @@ export default class extends Controller {
     if (this.selectedItems.length > 0) {
       this.removeTag(this.selectedItems[this.selectedItems.length - 1].id);
     }
+  }
+
+  private showClearButton(): void {
+    if (!this.clearButton) return;
+    this.clearButton.classList.remove("hidden");
+    this.input.classList.add("pr-8");
+  }
+
+  private hideClearButton(): void {
+    if (!this.clearButton) return;
+    this.clearButton.classList.add("hidden");
+    this.input.classList.remove("pr-8");
   }
 
   private _onOutsideClick(event: Event): void {

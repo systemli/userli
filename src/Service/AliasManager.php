@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Dto\PaginatedResult;
 use App\Entity\Alias;
+use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Exception\ValidationException;
@@ -35,13 +36,13 @@ final readonly class AliasManager
      *
      * @return PaginatedResult<Alias>
      */
-    public function findPaginated(int $page = 1, string $search = '', string $deleted = 'active'): PaginatedResult
+    public function findPaginated(int $page = 1, string $search = '', ?Domain $domain = null, string $deleted = 'active'): PaginatedResult
     {
         $page = max(1, $page);
         $offset = ($page - 1) * self::PAGE_SIZE;
-        $total = $this->repository->countByFilters($search, null, $deleted);
+        $total = $this->repository->countByFilters($search, $domain, $deleted);
         $totalPages = max(1, (int) ceil($total / self::PAGE_SIZE));
-        $items = $this->repository->findPaginatedByFilters($search, null, $deleted, self::PAGE_SIZE, $offset);
+        $items = $this->repository->findPaginatedByFilters($search, $domain, $deleted, self::PAGE_SIZE, $offset);
 
         return new PaginatedResult($items, $page, $totalPages, $total);
     }

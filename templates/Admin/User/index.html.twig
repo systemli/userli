@@ -26,51 +26,62 @@
                     placeholder_key: 'admin.user.search.placeholder',
                     submit_key: 'admin.user.search.submit',
                     search: search,
-                    extra_params: {deleted: deleted, role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v and v not in ['active', 'all']),
+                    extra_params: {deleted: deleted, role: role, mailCrypt: mailCrypt, twofactor: twofactor, domain: selectedDomain}|filter(v => v and v not in ['active', 'all']),
                 } %}
             </div>
 
-            <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-4">
-                <div class="flex flex-wrap items-center gap-2">
-                    <label for="deleted-filter" class="text-sm text-gray-600 dark:text-gray-400">{{ 'admin.user.filter.status'|trans }}:</label>
+            <div class="mb-4 flex flex-wrap items-end gap-4">
+                {% include 'Admin/_domain_filter.html.twig' with {
+                    selectedDomain: selectedDomain,
+                    selectedDomainName: selectedDomainName,
+                } %}
+
+                <div>
+                    <label for="deleted-filter" class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-0.5">{{ 'admin.user.filter.status'|trans }}</label>
                     <select id="deleted-filter"
                             data-controller="navigate"
                             data-action="change->navigate#go"
-                            class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="{{ path('admin_user_index', {search: search, deleted: 'active', role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v)) }}"{% if deleted == 'active' %} selected{% endif %}>{{ 'admin.user.filter.active'|trans }}</option>
-                        <option value="{{ path('admin_user_index', {search: search, deleted: 'deleted', role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v)) }}"{% if deleted == 'deleted' %} selected{% endif %}>{{ 'admin.user.filter.deleted'|trans }}</option>
-                        <option value="{{ path('admin_user_index', {search: search, deleted: 'all', role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v)) }}"{% if deleted == 'all' %} selected{% endif %}>{{ 'admin.user.filter.all'|trans }}</option>
+                            class="h-9 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="{{ path('admin_user_index', {search: search, deleted: 'active', role: role, mailCrypt: mailCrypt, twofactor: twofactor, domain: selectedDomain}|filter(v => v)) }}"{% if deleted == 'active' %} selected{% endif %}>{{ 'admin.user.filter.active'|trans }}</option>
+                        <option value="{{ path('admin_user_index', {search: search, deleted: 'deleted', role: role, mailCrypt: mailCrypt, twofactor: twofactor, domain: selectedDomain}|filter(v => v)) }}"{% if deleted == 'deleted' %} selected{% endif %}>{{ 'admin.user.filter.deleted'|trans }}</option>
+                        <option value="{{ path('admin_user_index', {search: search, deleted: 'all', role: role, mailCrypt: mailCrypt, twofactor: twofactor, domain: selectedDomain}|filter(v => v)) }}"{% if deleted == 'all' %} selected{% endif %}>{{ 'admin.user.filter.all'|trans }}</option>
                     </select>
+                </div>
 
-                    <label for="role-filter" class="text-sm text-gray-600 dark:text-gray-400 ml-2">{{ 'admin.user.filter.role'|trans }}:</label>
+                <div>
+                    <label for="role-filter" class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-0.5">{{ 'admin.user.filter.role'|trans }}</label>
                     <select id="role-filter"
                             data-controller="navigate"
                             data-action="change->navigate#go"
-                            class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v and v != 'active')) }}"{% if role == '' %} selected{% endif %}>{{ 'admin.user.filter.all'|trans }}</option>
+                            class="h-9 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, mailCrypt: mailCrypt, twofactor: twofactor, domain: selectedDomain}|filter(v => v and v != 'active')) }}"{% if role == '' %} selected{% endif %}>{{ 'admin.user.filter.all'|trans }}</option>
                         {% for role_key, role_value in all_roles %}
-                            <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role_value, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v and v != 'active')) }}"{% if role == role_value %} selected{% endif %}>{{ role_value }}</option>
+                            <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role_value, mailCrypt: mailCrypt, twofactor: twofactor, domain: selectedDomain}|filter(v => v and v != 'active')) }}"{% if role == role_value %} selected{% endif %}>{{ role_value }}</option>
                         {% endfor %}
                     </select>
+                </div>
 
-                    <label for="mailcrypt-filter" class="text-sm text-gray-600 dark:text-gray-400 ml-2">{{ 'admin.user.filter.mailcrypt'|trans }}:</label>
+                <div>
+                    <label for="mailcrypt-filter" class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-0.5">{{ 'admin.user.filter.mailcrypt'|trans }}</label>
                     <select id="mailcrypt-filter"
                             data-controller="navigate"
                             data-action="change->navigate#go"
-                            class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, twofactor: twofactor}|filter(v => v and v != 'active')) }}"{% if mailCrypt == '' %} selected{% endif %}>{{ 'admin.user.filter.all'|trans }}</option>
-                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, mailCrypt: 'enabled', twofactor: twofactor}|filter(v => v and v != 'active')) }}"{% if mailCrypt == 'enabled' %} selected{% endif %}>{{ 'admin.user.filter.enabled'|trans }}</option>
-                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, mailCrypt: 'disabled', twofactor: twofactor}|filter(v => v and v != 'active')) }}"{% if mailCrypt == 'disabled' %} selected{% endif %}>{{ 'admin.user.filter.disabled'|trans }}</option>
+                            class="h-9 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, twofactor: twofactor, domain: selectedDomain}|filter(v => v and v != 'active')) }}"{% if mailCrypt == '' %} selected{% endif %}>{{ 'admin.user.filter.all'|trans }}</option>
+                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, mailCrypt: 'enabled', twofactor: twofactor, domain: selectedDomain}|filter(v => v and v != 'active')) }}"{% if mailCrypt == 'enabled' %} selected{% endif %}>{{ 'admin.user.filter.enabled'|trans }}</option>
+                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, mailCrypt: 'disabled', twofactor: twofactor, domain: selectedDomain}|filter(v => v and v != 'active')) }}"{% if mailCrypt == 'disabled' %} selected{% endif %}>{{ 'admin.user.filter.disabled'|trans }}</option>
                     </select>
+                </div>
 
-                    <label for="twofactor-filter" class="text-sm text-gray-600 dark:text-gray-400 ml-2">{{ 'admin.user.filter.twofactor'|trans }}:</label>
+                <div>
+                    <label for="twofactor-filter" class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-0.5">{{ 'admin.user.filter.twofactor'|trans }}</label>
                     <select id="twofactor-filter"
                             data-controller="navigate"
                             data-action="change->navigate#go"
-                            class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, mailCrypt: mailCrypt}|filter(v => v and v != 'active')) }}"{% if twofactor == '' %} selected{% endif %}>{{ 'admin.user.filter.all'|trans }}</option>
-                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, mailCrypt: mailCrypt, twofactor: 'enabled'}|filter(v => v and v != 'active')) }}"{% if twofactor == 'enabled' %} selected{% endif %}>{{ 'admin.user.filter.enabled'|trans }}</option>
-                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, mailCrypt: mailCrypt, twofactor: 'disabled'}|filter(v => v and v != 'active')) }}"{% if twofactor == 'disabled' %} selected{% endif %}>{{ 'admin.user.filter.disabled'|trans }}</option>
+                            class="h-9 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, mailCrypt: mailCrypt, domain: selectedDomain}|filter(v => v and v != 'active')) }}"{% if twofactor == '' %} selected{% endif %}>{{ 'admin.user.filter.all'|trans }}</option>
+                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, mailCrypt: mailCrypt, twofactor: 'enabled', domain: selectedDomain}|filter(v => v and v != 'active')) }}"{% if twofactor == 'enabled' %} selected{% endif %}>{{ 'admin.user.filter.enabled'|trans }}</option>
+                        <option value="{{ path('admin_user_index', {search: search, deleted: deleted, role: role, mailCrypt: mailCrypt, twofactor: 'disabled', domain: selectedDomain}|filter(v => v and v != 'active')) }}"{% if twofactor == 'disabled' %} selected{% endif %}>{{ 'admin.user.filter.disabled'|trans }}</option>
                     </select>
                 </div>
             </div>
@@ -178,7 +189,7 @@
                     page_key: 'admin.user.pagination.page',
                     pagination: pagination,
                     search: search,
-                    extra_params: {deleted: deleted, role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v and v not in ['active', 'all']),
+                    extra_params: {deleted: deleted, role: role, mailCrypt: mailCrypt, twofactor: twofactor, domain: selectedDomain}|filter(v => v and v not in ['active', 'all']),
                 } %}
             {% endif %}
         </div>

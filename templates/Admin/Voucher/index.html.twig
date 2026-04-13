@@ -44,41 +44,22 @@
                 } %}
             </div>
 
-            <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-4">
-                <div class="flex flex-wrap items-center gap-4">
-                    <div class="flex items-center gap-2">
-                        <label class="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">{{ 'admin.voucher.filter.domain'|trans }}:</label>
-                        <div class="min-w-[200px]"
-                             data-controller="ajax-autocomplete"
-                             data-ajax-autocomplete-url-value="{{ path('admin_domain_search') }}"
-                             data-ajax-autocomplete-label-field-value="name"
-                             data-ajax-autocomplete-min-chars-value="0"
-                             data-ajax-autocomplete-filter-param-value="domain"
-                             data-ajax-autocomplete-compact-value="true">
-                            <input type="hidden"
-                                   data-ajax-autocomplete-target="hidden"
-                                   value="{{ selectedDomain }}"
-                                   data-label="{{ selectedDomainName }}">
-                        </div>
-                        {% if selectedDomain %}
-                            <a href="{{ path('admin_voucher_index', {search: search, status: status}|filter(v => v)) }}"
-                               class="inline-flex items-center px-2 py-1 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                               title="{{ 'admin.voucher.filter.clear'|trans }}">
-                                {{ ux_icon('heroicons:x-mark', {class: 'w-3 h-3'}) }}
-                            </a>
-                        {% endif %}
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <label for="status-filter" class="text-sm text-gray-600 dark:text-gray-400">{{ 'admin.voucher.filter.status'|trans }}:</label>
-                        <select id="status-filter"
-                                data-controller="navigate"
-                                data-action="change->navigate#go"
-                                class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-                            <option value="{{ path('admin_voucher_index', {search: search, domain: selectedDomain}|filter(v => v)) }}"{% if status == '' %} selected{% endif %}>{{ 'admin.voucher.filter.all'|trans }}</option>
-                            <option value="{{ path('admin_voucher_index', {search: search, domain: selectedDomain, status: 'redeemed'}|filter(v => v)) }}"{% if status == 'redeemed' %} selected{% endif %}>{{ 'admin.voucher.filter.redeemed'|trans }}</option>
-                            <option value="{{ path('admin_voucher_index', {search: search, domain: selectedDomain, status: 'unredeemed'}|filter(v => v)) }}"{% if status == 'unredeemed' %} selected{% endif %}>{{ 'admin.voucher.filter.unredeemed'|trans }}</option>
-                        </select>
-                    </div>
+            <div class="mb-4 flex flex-wrap items-end gap-4">
+                {% include 'Admin/_domain_filter.html.twig' with {
+                    selectedDomain: selectedDomain,
+                    selectedDomainName: selectedDomainName,
+                } %}
+
+                <div>
+                    <label for="status-filter" class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-0.5">{{ 'admin.voucher.filter.status'|trans }}</label>
+                    <select id="status-filter"
+                            data-controller="navigate"
+                            data-action="change->navigate#go"
+                            class="h-9 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                        <option value="{{ path('admin_voucher_index', {search: search, domain: selectedDomain}|filter(v => v)) }}"{% if status == '' %} selected{% endif %}>{{ 'admin.voucher.filter.all'|trans }}</option>
+                        <option value="{{ path('admin_voucher_index', {search: search, domain: selectedDomain, status: 'redeemed'}|filter(v => v)) }}"{% if status == 'redeemed' %} selected{% endif %}>{{ 'admin.voucher.filter.redeemed'|trans }}</option>
+                        <option value="{{ path('admin_voucher_index', {search: search, domain: selectedDomain, status: 'unredeemed'}|filter(v => v)) }}"{% if status == 'unredeemed' %} selected{% endif %}>{{ 'admin.voucher.filter.unredeemed'|trans }}</option>
+                    </select>
                 </div>
             </div>
 

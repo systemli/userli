@@ -11,14 +11,20 @@
                 description_key: 'admin.openpgp-key.description',
             } %}
 
-            <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div></div>
+            <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+                <div class="flex flex-wrap items-end gap-4">
+                    {% include 'Admin/_domain_filter.html.twig' with {
+                        selectedDomain: selectedDomain,
+                        selectedDomainName: selectedDomainName,
+                    } %}
+                </div>
 
                 {% include 'Admin/_search_form.html.twig' with {
                     index_route: 'admin_openpgp_key_index',
                     placeholder_key: 'admin.openpgp-key.search.placeholder',
                     submit_key: 'admin.openpgp-key.search.submit',
                     search: search,
+                    extra_params: {domain: selectedDomain}|filter(v => v),
                 } %}
             </div>
 
@@ -65,6 +71,7 @@
                     page_key: 'admin.openpgp-key.pagination.page',
                     pagination: pagination,
                     search: search,
+                    extra_params: {domain: selectedDomain}|filter(v => v),
                 } %}
             {% endif %}
         </div>

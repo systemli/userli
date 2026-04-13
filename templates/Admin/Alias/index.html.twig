@@ -26,20 +26,25 @@
                     placeholder_key: 'admin.alias.search.placeholder',
                     submit_key: 'admin.alias.search.submit',
                     search: search,
-                    extra_params: {deleted: deleted}|filter(v => v and v not in ['active', 'all']),
+                    extra_params: {deleted: deleted, domain: selectedDomain}|filter(v => v and v not in ['active', 'all']),
                 } %}
             </div>
 
-            <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-4">
-                <div class="flex items-center gap-2">
-                    <label for="deleted-filter" class="text-sm text-gray-600 dark:text-gray-400">{{ 'admin.alias.filter.status'|trans }}:</label>
+            <div class="mb-4 flex flex-wrap items-end gap-4">
+                {% include 'Admin/_domain_filter.html.twig' with {
+                    selectedDomain: selectedDomain,
+                    selectedDomainName: selectedDomainName,
+                } %}
+
+                <div>
+                    <label for="deleted-filter" class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-0.5">{{ 'admin.alias.filter.status'|trans }}</label>
                     <select id="deleted-filter"
                             data-controller="navigate"
                             data-action="change->navigate#go"
-                            class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="{{ path('admin_alias_index', {search: search, deleted: 'active'}|filter(v => v)) }}"{% if deleted == 'active' %} selected{% endif %}>{{ 'admin.alias.filter.active'|trans }}</option>
-                        <option value="{{ path('admin_alias_index', {search: search, deleted: 'deleted'}|filter(v => v)) }}"{% if deleted == 'deleted' %} selected{% endif %}>{{ 'admin.alias.filter.deleted'|trans }}</option>
-                        <option value="{{ path('admin_alias_index', {search: search, deleted: 'all'}|filter(v => v)) }}"{% if deleted == 'all' %} selected{% endif %}>{{ 'admin.alias.filter.all'|trans }}</option>
+                            class="h-9 px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="{{ path('admin_alias_index', {search: search, deleted: 'active', domain: selectedDomain}|filter(v => v)) }}"{% if deleted == 'active' %} selected{% endif %}>{{ 'admin.alias.filter.active'|trans }}</option>
+                        <option value="{{ path('admin_alias_index', {search: search, deleted: 'deleted', domain: selectedDomain}|filter(v => v)) }}"{% if deleted == 'deleted' %} selected{% endif %}>{{ 'admin.alias.filter.deleted'|trans }}</option>
+                        <option value="{{ path('admin_alias_index', {search: search, deleted: 'all', domain: selectedDomain}|filter(v => v)) }}"{% if deleted == 'all' %} selected{% endif %}>{{ 'admin.alias.filter.all'|trans }}</option>
                     </select>
                 </div>
             </div>
@@ -117,7 +122,7 @@
                     page_key: 'admin.alias.pagination.page',
                     pagination: pagination,
                     search: search,
-                    extra_params: {deleted: deleted}|filter(v => v and v not in ['active', 'all']),
+                    extra_params: {deleted: deleted, domain: selectedDomain}|filter(v => v and v not in ['active', 'all']),
                 } %}
             {% endif %}
         </div>

@@ -241,12 +241,12 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
             ->getSingleScalarResult();
     }
 
-    public function countByFilters(string $search = '', string $deleted = 'active', string $role = '', string $mailCrypt = '', string $twofactor = ''): int
+    public function countByFilters(string $search = '', ?Domain $domain = null, string $deleted = 'active', string $role = '', string $mailCrypt = '', string $twofactor = ''): int
     {
         $qb = $this->createQueryBuilder('u')
             ->select('COUNT(u.id)');
 
-        $this->applyFilters($qb, $search, $deleted, $role, $mailCrypt, $twofactor);
+        $this->applyFilters($qb, $search, $domain, $deleted, $role, $mailCrypt, $twofactor);
 
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
@@ -254,23 +254,28 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
     /**
      * @return User[]
      */
-    public function findPaginatedByFilters(string $search = '', string $deleted = 'active', string $role = '', string $mailCrypt = '', string $twofactor = '', int $limit = 20, int $offset = 0): array
+    public function findPaginatedByFilters(string $search = '', ?Domain $domain = null, string $deleted = 'active', string $role = '', string $mailCrypt = '', string $twofactor = '', int $limit = 20, int $offset = 0): array
     {
         $qb = $this->createQueryBuilder('u')
             ->orderBy('u.id', 'DESC')
             ->setMaxResults($limit)
             ->setFirstResult($offset);
 
-        $this->applyFilters($qb, $search, $deleted, $role, $mailCrypt, $twofactor);
+        $this->applyFilters($qb, $search, $domain, $deleted, $role, $mailCrypt, $twofactor);
 
         return $qb->getQuery()->getResult();
     }
 
-    private function applyFilters(QueryBuilder $qb, string $search, string $deleted, string $role, string $mailCrypt, string $twofactor): void
+    private function applyFilters(QueryBuilder $qb, string $search, ?Domain $domain, string $deleted, string $role, string $mailCrypt, string $twofactor): void
     {
         if ('' !== $search) {
             $qb->andWhere('u.email LIKE :search')
                 ->setParameter('search', '%'.$search.'%');
+        }
+
+        if (null !== $domain) {
+            $qb->andWhere('u.domain = :domain')
+                ->setParameter('domain', $domain);
         }
 
         if ('active' === $deleted) {

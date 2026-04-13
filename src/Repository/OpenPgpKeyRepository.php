@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Domain;
 use App\Entity\OpenPgpKey;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Override;
 
@@ -56,15 +58,7 @@ final class OpenPgpKeyRepository extends ServiceEntityRepository implements Sear
     #[Override]
     public function countBySearch(string $search = ''): int
     {
-        $qb = $this->createQueryBuilder('k')
-            ->select('COUNT(k.id)');
-
-        if ('' !== $search) {
-            $qb->andWhere('k.email LIKE :search')
-                ->setParameter('search', '%'.$search.'%');
-        }
-
-        return (int) $qb->getQuery()->getSingleScalarResult();
+        return $this->countByFilters($search);
     }
 
     /**
@@ -73,16 +67,44 @@ final class OpenPgpKeyRepository extends ServiceEntityRepository implements Sear
     #[Override]
     public function findPaginatedBySearch(string $search, int $limit, int $offset): array
     {
+        return $this->findPaginatedByFilters($search, null, $limit, $offset);
+    }
+
+    public function countByFilters(string $search = '', ?Domain $domain = null): int
+    {
+        $qb = $this->createQueryBuilder('k')
+            ->select('COUNT(k.id)');
+
+        $this->applyFilters($qb, $search, $domain);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * @return array<OpenPgpKey>
+     */
+    public function findPaginatedByFilters(string $search = '', ?Domain $domain = null, int $limit = 20, int $offset = 0): array
+    {
         $qb = $this->createQueryBuilder('k')
             ->orderBy('k.id', 'DESC')
             ->setMaxResults($limit)
             ->setFirstResult($offset);
 
+        $this->applyFilters($qb, $search, $domain);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    private function applyFilters(QueryBuilder $qb, string $search, ?Domain $domain): void
+    {
         if ('' !== $search) {
             $qb->andWhere('k.email LIKE :search')
                 ->setParameter('search', '%'.$search.'%');
         }
 
-        return $qb->getQuery()->getResult();
+        if (null !== $domain) {
+            $qb->andWhere('k.domain = :domain')
+                ->setParameter('domain', $domain);
+        }
     }
 }
