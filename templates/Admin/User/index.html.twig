@@ -26,7 +26,7 @@
                     placeholder_key: 'admin.user.search.placeholder',
                     submit_key: 'admin.user.search.submit',
                     search: search,
-                    extra_params: {deleted: deleted, role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v and v != 'active'),
+                    extra_params: {deleted: deleted, role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v and v not in ['active', 'all']),
                 } %}
             </div>
 
@@ -39,7 +39,7 @@
                             class="px-3 py-1.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         <option value="{{ path('admin_user_index', {search: search, deleted: 'active', role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v)) }}"{% if deleted == 'active' %} selected{% endif %}>{{ 'admin.user.filter.active'|trans }}</option>
                         <option value="{{ path('admin_user_index', {search: search, deleted: 'deleted', role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v)) }}"{% if deleted == 'deleted' %} selected{% endif %}>{{ 'admin.user.filter.deleted'|trans }}</option>
-                        <option value="{{ path('admin_user_index', {search: search, role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v)) }}"{% if deleted == '' %} selected{% endif %}>{{ 'admin.user.filter.all'|trans }}</option>
+                        <option value="{{ path('admin_user_index', {search: search, deleted: 'all', role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v)) }}"{% if deleted == 'all' %} selected{% endif %}>{{ 'admin.user.filter.all'|trans }}</option>
                     </select>
 
                     <label for="role-filter" class="text-sm text-gray-600 dark:text-gray-400 ml-2">{{ 'admin.user.filter.role'|trans }}:</label>
@@ -171,7 +171,7 @@
                     page_key: 'admin.user.pagination.page',
                     pagination: pagination,
                     search: search,
-                    extra_params: {deleted: deleted, role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v and v != 'active'),
+                    extra_params: {deleted: deleted, role: role, mailCrypt: mailCrypt, twofactor: twofactor}|filter(v => v and v not in ['active', 'all']),
                 } %}
             {% endif %}
         </div>
