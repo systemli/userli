@@ -9,7 +9,7 @@ navbar:
   select-language: Sprache auswählen
   language: Sprache
   signed-in-as: Angemeldet als
-  open-user-menu: Benutzermenü öffnen
+  open-user-menu: Menü öffnen
   open-main-menu: Hauptmenü öffnen
   toggle-dark-mode: Dunkelmodus umschalten
   dark-mode: Dunkelmodus
@@ -231,7 +231,7 @@ welcome:
       So können andere deinen Schlüssel automatisch finden, wenn sie
       dir eine verschlüsselte E-Mail senden möchten.
   invitations:
-    headline: Freundinnen und Freunde einladen
+    headline: Freund:innen einladen
     text: >
       Nach %waitingPeriodDays% Tagen bekommst du %limit% Einladungscodes
       gutgeschrieben, die du unter <a href="%app_url%">%app_url%</a>
@@ -262,8 +262,8 @@ delete:
     lead: Mit der Bestätigung deines Passworts kannst du den OpenPGP-Schlüssel für <strong>%email%</strong> aus dem Web Key Directory löschen.
   domain:
     headline: Domain löschen
-    lead_generic: "Bist du sicher, dass du diese Domain löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungscodes unwiderruflich gelöscht."
-    lead_specific: "Bist du sicher, dass du <strong>%name%</strong> löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungscodes unwiderruflich gelöscht."
+    lead_generic: "Bist du sicher, dass du diese Domain löschen möchtest? Damit werden alle zugehörigen Benutzer:innen, Aliase und Einladungscodes unwiderruflich gelöscht."
+    lead_specific: "Bist du sicher, dass du <strong>%name%</strong> löschen möchtest? Damit werden alle zugehörigen Benutzer:innen, Aliase und Einladungscodes unwiderruflich gelöscht."
     submit: Domain löschen
   cancel: Abbrechen
   confirm: Löschen
@@ -366,7 +366,7 @@ mail:
     Weiterhin viel Spaß mit deinem E-Mail-Konto, wünscht dir
     dein %project_name%-Verwaltungsteam.
 Ratio: Verhältnis
-User: Nutzer
+User: Nutzer:innen
 Domain: Domäne
 Alias: Alias-Adresse
 Voucher: Einladungscode
@@ -386,7 +386,7 @@ init_user:
     Wähle ein Kennwort für dieses erste Administratorkonto aus und melde dich anschließend an.
 init_settings:
   lead: Konfiguriere deine Userli-Installation
-  text: Bevor du Userli verwenden kannst, konfiguriere bitte die grundlegenden Einstellungen. Diese Einstellungen definieren, wie dein E-Mail-Dienst funktioniert und wie Benutzer damit interagieren.
+  text: Bevor du Userli verwenden kannst, konfiguriere bitte die grundlegenden Einstellungen. Diese Einstellungen definieren, wie dein E-Mail-Dienst funktioniert und wie Benutzer:innen damit interagieren.
   info: Du kannst diese Einstellungen später im Admin-Panel unter Einstellungen ändern.
   form:
     title: Grundeinstellungen
@@ -482,12 +482,12 @@ admin:
       help: Maximale Anzahl an E-Mails, die ein:e Benutzer:in pro Tag senden kann (0 = unbegrenzt)
     mail_crypt:
       label: Verschlüsselungsmodus
-      help: "Steuert die Postfachverschlüsselung: Deaktiviert (0), optional für Nutzer (1), erzwungen für neue Nutzer (2) oder erzwungen für alle Nutzer (3)"
+      help: "Steuert die Postfachverschlüsselung: Deaktiviert (0), optional für Nutzer:innen (1), erzwungen für neue Nutzer:innen (2) oder erzwungen für alle Nutzer:innen (3)"
       choice:
         0: Deaktiviert
-        1: Optional (Nutzer kann aktivieren)
-        2: Für neue Nutzer erzwingen
-        3: Für alle Nutzer erzwingen
+        1: Optional (Nutzer:in kann aktivieren)
+        2: Für neue Nutzer:innen erzwingen
+        3: Für alle Nutzer:innen erzwingen
     mta_sts_mode:
       label: MTA-STS Modus
       help: "Richtlinienmodus: testing (nur Berichte), enforce (bei Fehler ablehnen) oder none (deaktivieren)"
@@ -778,7 +778,7 @@ admin:
     edit:
       title: Alias bearbeiten
       success: Alias wurde erfolgreich aktualisiert.
-      error_cross_domain: Dieser Alias kann nicht bearbeitet werden, da der zugehörige Benutzer zu einer anderen Domain gehört.
+      error_cross_domain: Dieser Alias kann nicht bearbeitet werden, da die:der zugehörige Benutzer:in zu einer anderen Domain gehört.
     delete:
       confirm: "Möchtest du den Alias \"%source%\" wirklich löschen?"
       success: Alias wurde erfolgreich gelöscht.
@@ -790,18 +790,18 @@ admin:
         create: Neuen Alias erstellen
         edit: Alias bearbeiten
       description:
-        create: Gib die Quell-E-Mail-Adresse, optional einen Benutzer und ein Ziel für den Alias an.
+        create: Gib die Quell-E-Mail-Adresse, optional eine:n Benutzer:in und ein Ziel für den Alias an.
       source:
         label: Quelle
         help:
           create: Die Quell-E-Mail-Adresse, die weitergeleitet wird.
           edit: Die Quell-E-Mail-Adresse kann nicht geändert werden. Erstelle stattdessen einen neuen Alias.
       user:
-        label: Benutzer
-        help: Wähle den Benutzer, dem dieser Alias gehört. Wenn leer, wird der aktuelle Benutzer verwendet.
+        label: Benutzer:in
+        help: Wähle die:den Benutzer:in, der:dem dieser Alias gehört. Wenn leer, wird die:der aktuelle Benutzer:in verwendet.
       destination:
         label: Ziel
-        help: Die Ziel-E-Mail-Adresse. Wenn leer, wird die E-Mail-Adresse des ausgewählten Benutzers verwendet.
+        help: Die Ziel-E-Mail-Adresse. Wenn leer, wird die E-Mail-Adresse der:des ausgewählten Benutzer:in verwendet.
       smtp_quota_limits:
         label: SMTP-Quota Limits
         help: Überschreibe die Standard-SMTP-Quota-Limits für diesen Alias.
@@ -810,7 +810,7 @@ admin:
         save: Speichern
       cancel: Abbrechen
     search:
-      placeholder: Nach Quelle, Ziel oder Benutzer suchen...
+      placeholder: Nach Quelle, Ziel oder Benutzer:in suchen...
       submit: Suchen
     pagination:
       total: "%count% Aliase insgesamt"
@@ -821,14 +821,14 @@ admin:
   voucher:
     title: Einladungscodes
     heading: Einladungscodes
-    description: Verwalte Einladungscodes für die Benutzerregistrierung
+    description: Verwalte Einladungscodes für die Registrierung
     table:
       code: Code
-      user: Benutzer
+      user: Benutzer:in
       domain: Domain
       status: Status
       empty-title: Keine Einladungscodes
-      empty-description: Es sind noch keine Einladungscodes vorhanden. Erstelle einen Einladungscode, um neue Benutzer einzuladen.
+      empty-description: Es sind noch keine Einladungscodes vorhanden. Erstelle einen Einladungscode, um neue Benutzer:innen einzuladen.
     filter:
       status: Status
       all: Alle
@@ -841,7 +841,7 @@ admin:
       button: Einladungscode erstellen
       title: Einladungscode erstellen
       heading: Einladungscode erstellen
-      description: Erstelle einen neuen Einladungscode für einen Benutzer.
+      description: Erstelle einen neuen Einladungscode für eine:n Benutzer:in.
       success: Einladungscode wurde erfolgreich erstellt.
       error: Einladungscode konnte nicht erstellt werden.
     delete:
@@ -854,8 +854,8 @@ admin:
         label: Code
         help: Ein vorgenerierter Einladungscode. Du kannst ihn durch einen eigenen Wert ersetzen.
       user:
-        label: Benutzer
-        help: Wähle den Benutzer, dem dieser Einladungscode gehören soll.
+        label: Benutzer:in
+        help: Wähle die:den Benutzer:in, der:dem dieser Einladungscode gehören soll.
       domain:
         label: Domain
         help: Wähle die Domain für diesen Einladungscode.
@@ -863,7 +863,7 @@ admin:
       submit:
         create: Erstellen
     search:
-      placeholder: Nach Code oder Benutzer suchen...
+      placeholder: Nach Code oder Benutzer:in suchen...
       submit: Suchen
     invitations_disabled:
       title: Einladungen sind für deine Domain deaktiviert
@@ -917,13 +917,13 @@ admin:
       edit: Bearbeiten
       delete: Löschen
     delete:
-      confirm: 'Bist du sicher, dass du die Domain "%name%" löschen möchtest? Damit werden alle zugehörigen Benutzer, Aliase und Einladungscodes unwiderruflich gelöscht.'
+      confirm: 'Bist du sicher, dass du die Domain "%name%" löschen möchtest? Damit werden alle zugehörigen Benutzer:innen, Aliase und Einladungscodes unwiderruflich gelöscht.'
       success: Domain und alle zugehörigen Daten wurden erfolgreich gelöscht.
       error:
         own_domain: Du kannst deine eigene Domain nicht löschen.
     show:
       description: Domain-Details und Statistiken
-      users: Benutzer
+      users: Benutzer:innen
       aliases: Aliase
       admins: Domain-Admins
       vouchers: Einladungscodes
@@ -945,17 +945,17 @@ admin:
       page: "Seite %page% von %totalPages%"
 
   user:
-    title: Benutzer
-    heading: Benutzer
-    description: Verwalte Benutzerkonten, Rollen und Sicherheitseinstellungen
+    title: Benutzer:innen
+    heading: Benutzer:innen
+    description: Verwalte Konten, Rollen und Sicherheitseinstellungen
     table:
       email: E-Mail
       roles: Rollen
       twofactor: 2FA
       mailcrypt: MailCrypt
       status: Status
-      empty-title: Keine Benutzer gefunden
-      empty-description: Keine Benutzerkonten entsprechen deinen aktuellen Filtern.
+      empty-title: Keine Benutzer:innen gefunden
+      empty-description: Keine Konten entsprechen deinen aktuellen Filtern.
     filter:
       status: Status
       active: Aktiv
@@ -970,23 +970,23 @@ admin:
       active: Aktiv
       deleted: Gelöscht
     create:
-      button: Benutzer erstellen
-      title: Benutzer erstellen
-      success: Benutzer wurde erfolgreich erstellt.
+      button: Benutzer:in erstellen
+      title: Benutzer:in erstellen
+      success: Benutzer:in wurde erfolgreich erstellt.
     edit:
-      title: Benutzer bearbeiten
-      success: Benutzer wurde erfolgreich aktualisiert.
+      title: Benutzer:in bearbeiten
+      success: Benutzer:in wurde erfolgreich aktualisiert.
     delete:
-      confirm: "Möchtest du den Benutzer \"%email%\" wirklich löschen?"
-      success: Benutzer wurde erfolgreich gelöscht.
+      confirm: "Möchtest du die:den Benutzer:in \"%email%\" wirklich löschen?"
+      success: Benutzer:in wurde erfolgreich gelöscht.
     actions:
       show: Anzeigen
       edit: Bearbeiten
       delete: Löschen
     show:
-      description: Benutzerdetails und Statistiken
+      description: Kontodetails und Statistiken
       back: Zurück zu Benutzer:innen
-      back_to_user: Zurück zum Benutzer
+      back_to_user: Zurück zur:zum Benutzer:in
       roles: Rollen
       status: Status
       twofactor: 2FA
@@ -1020,43 +1020,43 @@ admin:
       placeholder: Nach E-Mail suchen...
       submit: Suchen
     pagination:
-      total: "%count% Benutzer insgesamt"
+      total: "%count% Benutzer:innen insgesamt"
       previous: Zurück
       next: Weiter
       page: "Seite %page% von %totalPages%"
     form:
       title:
-        edit: Benutzer bearbeiten
-        create: Neuen Benutzer erstellen
+        edit: Benutzer:in bearbeiten
+        create: Neue:n Benutzer:in erstellen
       description:
-        create: Gib E-Mail-Adresse, Passwort und Rollen für das neue Benutzerkonto an.
+        create: Gib E-Mail-Adresse, Passwort und Rollen für das neue Konto an.
       email:
         label: E-Mail
         help:
           edit: Die E-Mail-Adresse kann nicht geändert werden.
-          create: Die vollständige E-Mail-Adresse für das neue Benutzerkonto.
+          create: Die vollständige E-Mail-Adresse für das neue Konto.
       password:
         label: Passwort
         help:
-          mailcrypt: "Achtung: Das Ändern des Passworts setzt die Postfachverschlüsselung des Benutzers zurück, und alle existierenden E-Mails gehen verloren. Ein neuer Wiederherstellungscode wird generiert."
+          mailcrypt: "Achtung: Das Ändern des Passworts setzt die Postfachverschlüsselung der:des Benutzer:in zurück, und alle existierenden E-Mails gehen verloren. Ein neuer Wiederherstellungscode wird generiert."
       password_confirmation:
         label: Passwort bestätigen
       roles:
         label: Rollen
-        help: Wähle die Rollen, die diesem Benutzer zugewiesen werden sollen.
+        help: Wähle die Rollen, die dieser:m Benutzer:in zugewiesen werden sollen.
       quota:
         label: Quota (MB)
         help: Postfach-Quota in Megabyte. Leer lassen für das Standard-Quota.
       smtp_quota_limits:
         label: SMTP-Quota Limits
-        help: Überschreibe die Standard-SMTP-Quota-Limits für diesen Benutzer.
+        help: Überschreibe die Standard-SMTP-Quota-Limits für diese:n Benutzer:in.
       totp:
         label: Zwei-Faktor-Authentifizierung aktiviert
-        help: Deaktivieren, um die Zwei-Faktor-Authentifizierung für diesen Benutzer zu entfernen. Das TOTP-Secret und die Backup-Codes werden gelöscht.
-        help_disabled: Die Zwei-Faktor-Authentifizierung kann nur von der Benutzerin/dem Benutzer selbst aktiviert werden. Als Admin kann sie nur deaktiviert werden.
+        help: Deaktivieren, um die Zwei-Faktor-Authentifizierung für diese:n Benutzer:in zu entfernen. Das TOTP-Secret und die Backup-Codes werden gelöscht.
+        help_disabled: Die Zwei-Faktor-Authentifizierung kann nur von der:dem Benutzer:in selbst aktiviert werden. Als Admin kann sie nur deaktiviert werden.
       password_change_required:
         label: Passwortänderung erforderlich
-        help: Wenn aktiviert, wird der Benutzer beim nächsten Login gezwungen, sein Passwort zu ändern.
+        help: Wenn aktiviert, wird die:der Benutzer:in beim nächsten Login gezwungen, das Passwort zu ändern.
       last_login: Letzter Login
       recovery_token:
         label: Wiederherstellungscode
@@ -1068,9 +1068,9 @@ admin:
         create: Erstellen
 
   user-notification:
-    title: Benutzerbenachrichtigungen
-    heading: Benutzerbenachrichtigungen
-    description: Benachrichtigungsprotokolle für Benutzer anzeigen
+    title: Benachrichtigungen
+    heading: Benachrichtigungen
+    description: Benachrichtigungsprotokolle anzeigen
     filter:
       type: Typ
       all: Alle
@@ -1078,10 +1078,10 @@ admin:
       placeholder: Nach E-Mail suchen...
       submit: Suchen
     table:
-      user: Benutzer
+      user: Benutzer:in
       type: Typ
       empty-title: Keine Benachrichtigungen
-      empty-description: Es wurden noch keine Benutzerbenachrichtigungen aufgezeichnet.
+      empty-description: Es wurden noch keine Benachrichtigungen aufgezeichnet.
     pagination:
       total: "%count% Benachrichtigungen insgesamt"
       newer: Neuer
