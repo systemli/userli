@@ -191,3 +191,97 @@ Feature: Settings (Users)
     When I click "Delete" in the modal
 
     Then I wait for text "User has been deleted successfully" to appear
+
+  @settings-users
+  Scenario: Admin can view user show page
+    Given I am authenticated as "admin@example.org"
+    And I set the placeholder "__user_id__" with property "id" for "user@example.org"
+    When I am on "/admin/users/__user_id__"
+
+    Then the response status code should be 200
+    And I should see "user@example.org"
+    And I should see "User details and statistics"
+    And I should see "Status"
+    And I should see "2FA"
+    And I should see "MailCrypt"
+    And I should see "Related Data"
+    And I should see "Aliases"
+    And I should see "Invite Codes"
+    And I should see "OpenPGP Keys"
+
+  @settings-users
+  Scenario: Show page displays password compromised warning
+    Given the following UserNotification exists:
+      | email            | type                 |
+      | user@example.org | password_compromised |
+    And I am authenticated as "admin@example.org"
+    And I set the placeholder "__user_id__" with property "id" for "user@example.org"
+    When I am on "/admin/users/__user_id__"
+
+    Then the response status code should be 200
+    And I should see "password has been found in a data breach"
+
+  @settings-users
+  Scenario: Show page displays password change required warning
+    Given the following User exists:
+      | email                   | password | roles     | passwordChangeRequired |
+      | pwchange@example.org    | asdasd   | ROLE_USER | true                   |
+    And I am authenticated as "admin@example.org"
+    And I set the placeholder "__user_id__" with property "id" for "pwchange@example.org"
+    When I am on "/admin/users/__user_id__"
+
+    Then the response status code should be 200
+    And I should see "password change is required on next login"
+
+  @settings-users
+  Scenario: Regular user cannot access user show page
+    Given I am authenticated as "user@example.org"
+    And I set the placeholder "__user_id__" with property "id" for "user@example.org"
+    When I am on "/admin/users/__user_id__"
+
+    Then I should see "Access Denied"
+    And the response status code should be 403
+
+  @settings-users
+  Scenario: Domain admin can view user in own domain
+    Given I am authenticated as "support@example.org"
+    And I set the placeholder "__user_id__" with property "id" for "user@example.org"
+    When I am on "/admin/users/__user_id__"
+
+    Then the response status code should be 200
+    And I should see "user@example.org"
+
+  @settings-users
+  Scenario: Domain admin cannot view user in other domain
+    Given the following Domain exists:
+      | name      |
+      | other.org |
+    And the following User exists:
+      | email          | password | roles     |
+      | foo@other.org  | asdasd   | ROLE_USER |
+    And I am authenticated as "support@example.org"
+    And I set the placeholder "__user_id__" with property "id" for "foo@other.org"
+    When I am on "/admin/users/__user_id__"
+
+    Then the response status code should be 404
+
+  @javascript @settings-users @delete-modal
+  Scenario: Admin can delete a user via modal on show page
+    Given I am authenticated as "admin@example.org"
+    And I set the placeholder "__user_id__" with property "id" for "user@example.org"
+    When I am on "/admin/users/__user_id__"
+    Then I should see "user@example.org"
+
+    When I press "Delete"
+    And I wait for the modal to appear
+    Then I should see "Confirm deletion" in the modal
+
+    When I click "Cancel" in the modal
+    And I wait for the modal to close
+    Then I should see "user@example.org"
+
+    When I press "Delete"
+    And I wait for the modal to appear
+    When I click "Delete" in the modal
+
+    Then I wait for text "User has been deleted successfully" to appear

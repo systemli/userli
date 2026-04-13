@@ -132,6 +132,13 @@
                                 </td>
                                 <td class="px-4 py-3 text-right">
                                     <div class="inline-flex items-center gap-1">
+                                        <a href="{{ path('admin_user_show', {id: user.id}) }}"
+                                           title="{{ 'admin.user.actions.show'|trans }}"
+                                           data-controller="tooltip"
+                                           class="inline-flex items-center justify-center p-1.5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg transition-colors">
+                                            {{ ux_icon('heroicons:eye', {class: 'w-4 h-4'}) }}
+                                            <span class="sr-only">{{ 'admin.user.actions.show'|trans }}</span>
+                                        </a>
                                         {% if not user.deleted %}
                                             <a href="{{ path('admin_user_edit', {id: user.id}) }}"
                                                title="{{ 'admin.user.actions.edit'|trans }}"

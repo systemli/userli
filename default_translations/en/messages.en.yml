@@ -979,8 +979,42 @@ admin:
       confirm: "Are you sure you want to delete the user \"%email%\"?"
       success: User has been deleted successfully.
     actions:
+      show: Show
       edit: Edit
       delete: Delete
+    show:
+      description: User details and statistics
+      back: Back to Users
+      back_to_user: Back to User
+      roles: Roles
+      status: Status
+      twofactor: 2FA
+      mailcrypt: MailCrypt
+      password_change_required: Password Change Required
+      password_change_required_warning: A password change is required on next login.
+      password_compromised: This user's password has been found in a data breach.
+      recovery_token: Recovery Token
+      recovery_token_yes: Configured
+      recovery_token_no: Not configured
+      quota: Quota (MB)
+      quota_default: Default
+      smtp_limits: SMTP Limits
+      smtp_limits_default: Default
+      smtp_limits_format: "%per_hour%/h · %per_day%/d"
+      last_login: Last Login
+      created: Created
+      invited_by: Invited By
+      related_data: Related Data
+      aliases: Aliases
+      vouchers: Invite Codes
+      vouchers_redeemed: "%count% redeemed"
+      openpgp_keys: OpenPGP Keys
+      enabled: Enabled
+      disabled: Disabled
+      deleted: Deleted
+      yes: "Yes"
+      no: "No"
+      never: Never
     search:
       placeholder: Search by email...
       submit: Search

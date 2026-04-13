@@ -150,6 +150,17 @@ final class UserController extends AbstractController
         ]);
     }
 
+    #[Route('/admin/users/{id}', name: 'admin_user_show', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function show(#[MapEntity] User $user): Response
+    {
+        $this->denyAccessUnlessGranted('view', $user);
+
+        return $this->render('Admin/User/show.html.twig', [
+            'user' => $user,
+            'stats' => $this->manager->getUserStats($user),
+        ]);
+    }
+
     #[Route('/admin/users/delete/{id}', name: 'admin_user_delete', methods: ['POST'])]
     public function delete(#[MapEntity] User $user, Request $request): RedirectResponse
     {

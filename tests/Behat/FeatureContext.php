@@ -193,6 +193,9 @@ class FeatureContext extends MinkContext
                     case 'totpSecret':
                         $user->setTotpSecret($value);
                         break;
+                    case 'deleted':
+                        $user->setDeleted((bool) $value);
+                        break;
                     case 'passwordChangeRequired':
                         $user->setPasswordChangeRequired((bool) $value);
                         break;
