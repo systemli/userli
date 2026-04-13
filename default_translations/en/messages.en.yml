@@ -936,7 +936,10 @@ admin:
       auto_invitations: Automatic Invitations
       auto_invitations_yes: "Enabled (%limit% per user)"
       auto_invitations_no: Disabled
-      waiting_period_days: Waiting Period (Days)
+      waiting_period_days: Waiting Period
+      waiting_period_days_unit: days
+      created: Created
+      related_data: Related Data
     pagination:
       total: "%count% domains total"
       previous: Previous
