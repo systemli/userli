@@ -556,6 +556,8 @@ admin:
       button: Inaktive entfernen
     unknown_task: Unbekannte Wartungsaufgabe.
     dispatched: Wartungsaufgabe erfolgreich gestartet.
+  filter:
+    domain: Domain
   table:
     id: ID
     actions: Aktionen
@@ -828,12 +830,10 @@ admin:
       empty-title: Keine Einladungscodes
       empty-description: Es sind noch keine Einladungscodes vorhanden. Erstelle einen Einladungscode, um neue Benutzer einzuladen.
     filter:
-      domain: Domain
       status: Status
       all: Alle
       redeemed: Eingelöst
       unredeemed: Nicht eingelöst
-      clear: Filter zurücksetzen
     status:
       redeemed: Eingelöst
       unredeemed: Nicht eingelöst

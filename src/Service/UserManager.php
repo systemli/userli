@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Dto\PaginatedResult;
+use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\MailCrypt;
 use App\Enum\Roles;
@@ -45,13 +46,13 @@ final readonly class UserManager
      *
      * @return PaginatedResult<User>
      */
-    public function findPaginated(int $page = 1, string $search = '', string $deleted = 'active', string $role = '', string $mailCrypt = '', string $twofactor = ''): PaginatedResult
+    public function findPaginated(int $page = 1, string $search = '', ?Domain $domain = null, string $deleted = 'active', string $role = '', string $mailCrypt = '', string $twofactor = ''): PaginatedResult
     {
         $page = max(1, $page);
         $offset = ($page - 1) * self::PAGE_SIZE;
-        $total = $this->repository->countByFilters($search, $deleted, $role, $mailCrypt, $twofactor);
+        $total = $this->repository->countByFilters($search, $domain, $deleted, $role, $mailCrypt, $twofactor);
         $totalPages = max(1, (int) ceil($total / self::PAGE_SIZE));
-        $items = $this->repository->findPaginatedByFilters($search, $deleted, $role, $mailCrypt, $twofactor, self::PAGE_SIZE, $offset);
+        $items = $this->repository->findPaginatedByFilters($search, $domain, $deleted, $role, $mailCrypt, $twofactor, self::PAGE_SIZE, $offset);
 
         return new PaginatedResult($items, $page, $totalPages, $total);
     }

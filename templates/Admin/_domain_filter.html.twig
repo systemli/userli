@@ -1,0 +1,25 @@
+{# Domain autocomplete filter — only shown to full admins (domain admins are automatically scoped).
+   The clear button is rendered inline by the ajax-autocomplete Stimulus controller
+   (filter mode removes the URL parameter automatically on clear).
+
+   Parameters:
+     - selectedDomain (int): Selected domain ID (0 = none)
+     - selectedDomainName (string): Display name of selected domain
+#}
+{% if is_granted('ROLE_ADMIN') %}
+    <div>
+        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-0.5">{{ 'admin.filter.domain'|trans }}</label>
+        <div class="min-w-[200px]"
+             data-controller="ajax-autocomplete"
+             data-ajax-autocomplete-url-value="{{ path('admin_domain_search') }}"
+             data-ajax-autocomplete-label-field-value="name"
+             data-ajax-autocomplete-min-chars-value="0"
+             data-ajax-autocomplete-filter-param-value="domain"
+             data-ajax-autocomplete-compact-value="true">
+            <input type="hidden"
+                   data-ajax-autocomplete-target="hidden"
+                   value="{{ selectedDomain }}"
+                   data-label="{{ selectedDomainName }}">
+        </div>
+    </div>
+{% endif %}

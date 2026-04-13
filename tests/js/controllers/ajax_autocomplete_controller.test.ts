@@ -39,6 +39,32 @@ const MULTI_HTML = `
            data-selected='[{"id":1,"name":"example.org"},{"id":2,"name":"test.de"}]'>
   </div>`;
 
+const FILTER_PRESELECTED_HTML = `
+  <div data-controller="ajax-autocomplete"
+       data-ajax-autocomplete-url-value="/api/domains/search"
+       data-ajax-autocomplete-label-field-value="name"
+       data-ajax-autocomplete-min-chars-value="0"
+       data-ajax-autocomplete-filter-param-value="domain"
+       data-ajax-autocomplete-compact-value="true">
+    <input type="hidden"
+           data-ajax-autocomplete-target="hidden"
+           value="5"
+           data-label="example.org">
+  </div>`;
+
+const FILTER_EMPTY_HTML = `
+  <div data-controller="ajax-autocomplete"
+       data-ajax-autocomplete-url-value="/api/domains/search"
+       data-ajax-autocomplete-label-field-value="name"
+       data-ajax-autocomplete-min-chars-value="0"
+       data-ajax-autocomplete-filter-param-value="domain"
+       data-ajax-autocomplete-compact-value="true">
+    <input type="hidden"
+           data-ajax-autocomplete-target="hidden"
+           value="0"
+           data-label="">
+  </div>`;
+
 function mockFetchResponse(data: unknown): void {
   vi.stubGlobal(
     "fetch",
@@ -593,6 +619,109 @@ describe("AjaxAutocompleteController", () => {
       const option = element.querySelector("[role='option']")!;
       expect(option.innerHTML).not.toContain("<script>");
       expect(option.innerHTML).toContain("&lt;script&gt;");
+    });
+  });
+
+  describe("filter mode clear button", () => {
+    it("renders inline clear button when filter has pre-selected value", async () => {
+      const { element } = await startController(
+        AjaxAutocompleteController,
+        FILTER_PRESELECTED_HTML,
+        "ajax-autocomplete",
+      );
+
+      const clearButton = element.querySelector(
+        "button[aria-label='Clear filter']",
+      );
+      expect(clearButton).not.toBeNull();
+
+      // Input should have right padding for the clear button
+      const textInput = element.querySelector(
+        "input[type='text']",
+      ) as HTMLInputElement;
+      expect(textInput.classList.contains("pr-8")).toBe(true);
+    });
+
+    it("does not show clear button when filter has no pre-selected value", async () => {
+      const { element } = await startController(
+        AjaxAutocompleteController,
+        FILTER_EMPTY_HTML,
+        "ajax-autocomplete",
+      );
+
+      const clearButton = element.querySelector(
+        "button[aria-label='Clear filter']",
+      ) as HTMLButtonElement;
+      expect(clearButton).not.toBeNull();
+      expect(clearButton.classList.contains("hidden")).toBe(true);
+
+      // Input should not have right padding when button is hidden
+      const textInput = element.querySelector(
+        "input[type='text']",
+      ) as HTMLInputElement;
+      expect(textInput.classList.contains("pr-8")).toBe(false);
+    });
+
+    it("navigates to URL without filter param on clear button click", async () => {
+      // Set up a URL with a domain filter parameter
+      const originalLocation = globalThis.location.href;
+      Object.defineProperty(globalThis, "location", {
+        writable: true,
+        value: new URL("http://localhost/admin/users?search=test&domain=5&page=2"),
+      });
+
+      const { element } = await startController(
+        AjaxAutocompleteController,
+        FILTER_PRESELECTED_HTML,
+        "ajax-autocomplete",
+      );
+
+      const clearButton = element.querySelector(
+        "button[aria-label='Clear filter']",
+      ) as HTMLButtonElement;
+
+      clearButton.dispatchEvent(
+        new MouseEvent("mousedown", { bubbles: true }),
+      );
+
+      // Should navigate to URL without "domain" and "page" params
+      const resultUrl = new URL(globalThis.location.href);
+      expect(resultUrl.searchParams.has("domain")).toBe(false);
+      expect(resultUrl.searchParams.has("page")).toBe(false);
+      expect(resultUrl.searchParams.get("search")).toBe("test");
+
+      // Restore
+      Object.defineProperty(globalThis, "location", {
+        writable: true,
+        value: new URL(originalLocation),
+      });
+    });
+
+    it("hides clear button when user edits input after selecting", async () => {
+      const { element } = await startController(
+        AjaxAutocompleteController,
+        FILTER_PRESELECTED_HTML,
+        "ajax-autocomplete",
+      );
+
+      const textInput = element.querySelector(
+        "input[type='text']",
+      ) as HTMLInputElement;
+      const clearButton = element.querySelector(
+        "button[aria-label='Clear filter']",
+      ) as HTMLButtonElement;
+
+      // Initially visible
+      expect(clearButton.classList.contains("hidden")).toBe(false);
+      expect(textInput.classList.contains("pr-8")).toBe(true);
+
+      // User edits the input
+      textInput.value = "exam";
+      textInput.dispatchEvent(new Event("input"));
+
+      // Clear button should be hidden
+      expect(clearButton.classList.contains("hidden")).toBe(true);
+      expect(textInput.classList.contains("pr-8")).toBe(false);
     });
   });
 });

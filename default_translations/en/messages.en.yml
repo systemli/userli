@@ -556,6 +556,8 @@ admin:
   page_title: Admin
   page_subtitle: Administration and configuration
   coming-soon: Coming Soon
+  filter:
+    domain: Domain
   table:
     id: ID
     actions: Actions
@@ -830,12 +832,10 @@ admin:
       empty-title: No invite codes
       empty-description: There are no invite codes yet. Create an invite code to invite new users.
     filter:
-      domain: Domain
       status: Status
       all: All
       redeemed: Redeemed
       unredeemed: Unredeemed
-      clear: Clear filter
     status:
       redeemed: Redeemed
       unredeemed: Unredeemed

@@ -69,7 +69,7 @@ class AliasManagerTest extends TestCase
             new Alias(),
         ]);
 
-        $result = $this->manager->findPaginated(1, '', 'active');
+        $result = $this->manager->findPaginated(1, '', null, 'active');
 
         self::assertInstanceOf(PaginatedResult::class, $result);
         self::assertSame(1, $result->page);
@@ -85,7 +85,7 @@ class AliasManagerTest extends TestCase
             new Alias(),
         ]);
 
-        $result = $this->manager->findPaginated(1, 'test', 'deleted');
+        $result = $this->manager->findPaginated(1, 'test', null, 'deleted');
 
         self::assertSame(1, $result->page);
         self::assertSame(1, $result->totalPages);

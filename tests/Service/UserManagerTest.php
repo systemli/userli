@@ -88,7 +88,7 @@ class UserManagerTest extends TestCase
             new User('user2@example.org'),
         ]);
 
-        $result = $this->manager->findPaginated(1, '', 'active');
+        $result = $this->manager->findPaginated(1, '', null, 'active');
 
         self::assertInstanceOf(PaginatedResult::class, $result);
         self::assertSame(1, $result->page);
@@ -104,7 +104,7 @@ class UserManagerTest extends TestCase
             new User('user@example.org'),
         ]);
 
-        $result = $this->manager->findPaginated(1, 'test', 'deleted', 'ROLE_ADMIN', 'enabled', 'enabled');
+        $result = $this->manager->findPaginated(1, 'test', null, 'deleted', 'ROLE_ADMIN', 'enabled', 'enabled');
 
         self::assertSame(1, $result->page);
         self::assertSame(1, $result->totalPages);

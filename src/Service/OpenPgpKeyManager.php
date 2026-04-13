@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Dto\PaginatedResult;
+use App\Entity\Domain;
 use App\Entity\OpenPgpKey;
 use App\Entity\User;
 use App\Exception\MultipleGpgKeysForUserException;
@@ -30,9 +31,15 @@ final readonly class OpenPgpKeyManager
     /**
      * @return PaginatedResult<OpenPgpKey>
      */
-    public function findPaginated(int $page = 1, string $search = ''): PaginatedResult
+    public function findPaginated(int $page = 1, string $search = '', ?Domain $domain = null): PaginatedResult
     {
-        return PaginatedResult::fromSearchableRepository($this->repository, $page, self::PAGE_SIZE, $search);
+        $page = max(1, $page);
+        $offset = ($page - 1) * self::PAGE_SIZE;
+        $total = $this->repository->countByFilters($search, $domain);
+        $totalPages = max(1, (int) ceil($total / self::PAGE_SIZE));
+        $items = $this->repository->findPaginatedByFilters($search, $domain, self::PAGE_SIZE, $offset);
+
+        return new PaginatedResult($items, $page, $totalPages, $total);
     }
 
     /**

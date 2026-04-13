@@ -62,12 +62,12 @@ class OpenPgpKeyManagerTest extends TestCase
     {
         $repo = $this->createMock(OpenPgpKeyRepository::class);
         $repo->expects($this->once())
-            ->method('countBySearch')
-            ->with('')
+            ->method('countByFilters')
+            ->with('', null)
             ->willReturn(2);
         $repo->expects($this->once())
-            ->method('findPaginatedBySearch')
-            ->with('', 20, 0)
+            ->method('findPaginatedByFilters')
+            ->with('', null, 20, 0)
             ->willReturn(['item1', 'item2']);
 
         $em = $this->createStub(EntityManagerInterface::class);
@@ -87,12 +87,12 @@ class OpenPgpKeyManagerTest extends TestCase
     {
         $repo = $this->createMock(OpenPgpKeyRepository::class);
         $repo->expects($this->once())
-            ->method('countBySearch')
-            ->with('user@example.org')
+            ->method('countByFilters')
+            ->with('user@example.org', null)
             ->willReturn(1);
         $repo->expects($this->once())
-            ->method('findPaginatedBySearch')
-            ->with('user@example.org', 20, 0)
+            ->method('findPaginatedByFilters')
+            ->with('user@example.org', null, 20, 0)
             ->willReturn(['item1']);
 
         $em = $this->createStub(EntityManagerInterface::class);
@@ -109,12 +109,12 @@ class OpenPgpKeyManagerTest extends TestCase
     {
         $repo = $this->createMock(OpenPgpKeyRepository::class);
         $repo->expects($this->once())
-            ->method('countBySearch')
-            ->with('')
+            ->method('countByFilters')
+            ->with('', null)
             ->willReturn(50);
         $repo->expects($this->once())
-            ->method('findPaginatedBySearch')
-            ->with('', 20, 20)
+            ->method('findPaginatedByFilters')
+            ->with('', null, 20, 20)
             ->willReturn([]);
 
         $em = $this->createStub(EntityManagerInterface::class);
@@ -132,11 +132,11 @@ class OpenPgpKeyManagerTest extends TestCase
     {
         $repo = $this->createMock(OpenPgpKeyRepository::class);
         $repo->expects($this->once())
-            ->method('countBySearch')
+            ->method('countByFilters')
             ->willReturn(0);
         $repo->expects($this->once())
-            ->method('findPaginatedBySearch')
-            ->with('', 20, 0)
+            ->method('findPaginatedByFilters')
+            ->with('', null, 20, 0)
             ->willReturn([]);
 
         $em = $this->createStub(EntityManagerInterface::class);
