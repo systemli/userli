@@ -121,7 +121,7 @@ final class Roles
     public static function getRoleHierarchy(): array
     {
         return [
-            self::DOMAIN_ADMIN => [self::USER, self::PERMANENT],
+            self::DOMAIN_ADMIN => [self::DOMAIN_ADMIN, self::USER, self::PERMANENT],
             self::ADMIN => [self::ADMIN, self::DOMAIN_ADMIN, self::USER, self::PERMANENT, self::SPAM, self::MULTIPLIER, self::SUSPICIOUS],
         ];
     }

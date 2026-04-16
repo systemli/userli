@@ -265,6 +265,19 @@ Feature: Settings (Users)
 
     Then the response status code should be 404
 
+  @settings-users
+  Scenario: Domain admin keeps role when editing themselves
+    Given I am authenticated as "support@example.org"
+    And I set the placeholder "__user_id__" with property "id" for "support@example.org"
+    When I am on "/admin/users/edit/__user_id__"
+    Then the response status code should be 200
+
+    When I press "Save"
+    Then I should see "User has been updated successfully"
+
+    When I am on "/admin/users/"
+    Then the response status code should be 200
+
   @javascript @settings-users @delete-modal
   Scenario: Admin can delete a user via modal on show page
     Given I am authenticated as "admin@example.org"

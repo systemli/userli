@@ -88,7 +88,7 @@ class AllowedRolesValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    public function testDomainAdminCannotAssignDomainAdmin(): void
+    public function testDomainAdminCanAssignDomainAdmin(): void
     {
         $this->security->method('isGranted')->willReturnMap([
             [Roles::ADMIN, null, false],
@@ -99,8 +99,6 @@ class AllowedRolesValidatorTest extends ConstraintValidatorTestCase
             new AllowedRoles(),
         );
 
-        $this->buildViolation('form.role-not-allowed')
-            ->setParameter('{{ role }}', Roles::DOMAIN_ADMIN)
-            ->assertRaised();
+        $this->assertNoViolation();
     }
 }

@@ -28,6 +28,7 @@ class RolesTest extends TestCase
     {
         $reachable = Roles::getReachableRoles([Roles::DOMAIN_ADMIN]);
         self::assertSame([
+            Roles::DOMAIN_ADMIN,
             Roles::USER,
             Roles::PERMANENT,
         ], $reachable);
