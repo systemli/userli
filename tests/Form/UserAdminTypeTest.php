@@ -244,7 +244,7 @@ class UserAdminTypeTest extends TypeTestCase
         self::assertContains(Roles::USER, $choices);
         self::assertContains(Roles::PERMANENT, $choices);
         self::assertNotContains(Roles::ADMIN, $choices);
-        self::assertNotContains(Roles::DOMAIN_ADMIN, $choices);
+        self::assertContains(Roles::DOMAIN_ADMIN, $choices);
         self::assertNotContains(Roles::SPAM, $choices);
         self::assertNotContains(Roles::MULTIPLIER, $choices);
         self::assertNotContains(Roles::SUSPICIOUS, $choices);
