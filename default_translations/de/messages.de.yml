@@ -983,6 +983,24 @@ admin:
       show: Anzeigen
       edit: Bearbeiten
       delete: Löschen
+      restore: Wiederherstellen
+    restore:
+      title: Benutzer:in wiederherstellen
+      success: Benutzer:in wurde erfolgreich wiederhergestellt.
+      warning: "Die Wiederherstellung setzt ein neues Passwort, setzt die Zwei-Faktor-Authentifizierung und die Postfachverschlüsselung zurück. Die:der Benutzer:in erhält eine Willkommens-E-Mail."
+      recovery_token_headline: Recovery-Token für diese:n Benutzer:in
+      recovery_token_info: >
+        Für diese:n Benutzer:in wurde ein neuer Recovery-Token erstellt.
+        Bitte gib ihn auf sicherem Weg an die Person weiter — sie benötigt ihn, um ihr Konto wiederherzustellen, falls sie ihr Passwort vergisst.
+      recovery_token_displayed_once: >
+        Aus Sicherheitsgründen wird dieser Recovery-Token nur einmal angezeigt und kann später nicht erneut abgerufen werden.
+      form:
+        title: Benutzer:in wiederherstellen
+        password:
+          label: Neues Passwort
+        password_confirmation:
+          label: Passwort bestätigen
+        submit: Wiederherstellen
     show:
       description: Kontodetails und Statistiken
       back: Zurück zu Benutzer:innen

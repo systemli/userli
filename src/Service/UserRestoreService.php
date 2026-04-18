@@ -31,7 +31,7 @@ final readonly class UserRestoreService
 
         $this->manager->flush();
 
-        $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_CREATED);
+        $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_RESTORED);
 
         return $recoveryToken;
     }

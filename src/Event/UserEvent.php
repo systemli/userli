@@ -17,6 +17,8 @@ final class UserEvent extends Event
 
     public const string PASSWORD_CHANGED = 'user.password_changed';
 
+    public const string USER_RESTORED = 'user.restored';
+
     public const string RECOVERY_PROCESS_STARTED = 'recovery_process_started';
 
     public function __construct(private readonly User $user)

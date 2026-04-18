@@ -18,9 +18,44 @@
                                 </span>
                             {% endif %}
                         </div>
-                        <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ 'admin.user.show.description'|trans }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ 'admin.user.show.description'|trans }}</p>
+                </div>
+            </div>
+
+            {% if recovery_token is defined and recovery_token is not null %}
+                <div class="mb-6 p-5 bg-yellow-50 dark:bg-yellow-950/50 border border-yellow-300 dark:border-yellow-700 rounded-lg">
+                    <div class="flex items-start">
+                        <div class="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/50 rounded-xl flex items-center justify-center mr-4 shrink-0">
+                            {{ ux_icon('heroicons:exclamation-triangle', {class: 'w-5 h-5 text-yellow-600 dark:text-yellow-400'}) }}
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">
+                                {{ 'admin.user.restore.recovery_token_headline'|trans }}
+                            </h4>
+                            <p class="text-sm text-yellow-800 dark:text-yellow-200 mb-1">
+                                {{ 'admin.user.restore.recovery_token_info'|trans }}
+                            </p>
+                            <p class="text-sm text-yellow-800 dark:text-yellow-200 mb-4">
+                                {{ 'admin.user.restore.recovery_token_displayed_once'|trans }}
+                            </p>
+                            <div class="bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3">
+                                    <code class="font-stretch-semi-condensed text-sm font-mono text-gray-900 dark:text-gray-100 break-all select-all min-w-0 flex-1">{{ recovery_token }}</code>
+                                    <button type="button"
+                                            class="inline-flex items-center p-2 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-500 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-700 transition-colors duration-200 self-end sm:self-auto flex-shrink-0"
+                                            data-controller="clipboard tooltip"
+                                            data-clipboard-content-value="{{ recovery_token }}"
+                                            data-action="clipboard#copy"
+                                            title="{{ 'copy-to-clipboard'|trans }}"
+                                            aria-label="{{ 'copy-to-clipboard'|trans }}">
+                                        {{ ux_icon('heroicons:clipboard', {class: 'w-4 h-4'}) }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            {% endif %}
 
                 <div class="mb-6 flex gap-2">
                     <a href="{{ path('admin_user_index') }}"
@@ -43,6 +78,11 @@
                                 {{ ux_icon('heroicons:trash', {class: 'w-4 h-4 mr-1'}) }} {{ 'admin.user.actions.delete'|trans }}
                             </button>
                         </form>
+                    {% elseif user.deleted and is_granted('edit', user) %}
+                        <a href="{{ path('admin_user_restore', {id: user.id}) }}"
+                           class="inline-flex items-center px-3 py-1.5 text-sm text-green-700 dark:text-green-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/30">
+                            {{ ux_icon('heroicons:arrow-path', {class: 'w-4 h-4 mr-1'}) }} {{ 'admin.user.actions.restore'|trans }}
+                        </a>
                     {% endif %}
                 </div>
 
