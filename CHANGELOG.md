@@ -1,5 +1,25 @@
 # Changelog
 
+## 6.7.0 (2026.04.18)
+
+### Features and Improvements
+
+- 💬 Use gender-inclusive language in German translations (#1245)
+- 💄 Align domain show page layout with user show page (#1244)
+- ✨ Add domain filter to all admin entity lists (#1243)
+- ✨ Add admin user show page with detail view and delete action (#1238)
+
+### Technical Changes
+
+- ⬆️ (deps-dev): Bump the npm-dependencies group with 5 updates (#1242)
+- ⬆️ (deps): Bump the github-actions group with 3 updates (#1241)
+- ⬆️ Update composer dependencies (#1240)
+
+### Bug Fixes
+
+- 🐛 Fix domain admin losing role when editing themselves (#1246)
+- 🐛 Fix admin status filter "All" option always reverting to "Active" (#1239)
+
 ## 6.6.1 (2026.04.08)
 
 - Fix 6.6.0 release (release immutability issue from GitHub)
