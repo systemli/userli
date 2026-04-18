@@ -213,6 +213,20 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @Given the User :email has TOTP backup codes :codes
+     */
+    public function theUserHasTotpBackupCodes(string $email, string $codes): void
+    {
+        $user = $this->getUserRepository()->findByEmail($email);
+        if (null === $user) {
+            throw new RuntimeException(sprintf('User "%s" not found', $email));
+        }
+
+        $user->setTotpBackupCodes(array_map('trim', explode(',', $codes)));
+        $this->manager->flush();
+    }
+
+    /**
      * @When the following Voucher exists:
      */
     public function theFollowingVoucherExists(TableNode $table): void
