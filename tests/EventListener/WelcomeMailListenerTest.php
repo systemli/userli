@@ -20,7 +20,9 @@ class WelcomeMailListenerTest extends TestCase
     {
         $events = WelcomeMailListener::getSubscribedEvents();
         self::assertArrayHasKey(UserEvent::USER_CREATED, $events);
+        self::assertArrayHasKey(UserEvent::USER_RESTORED, $events);
         self::assertEquals('onUserCreated', $events[UserEvent::USER_CREATED]);
+        self::assertEquals('onUserCreated', $events[UserEvent::USER_RESTORED]);
     }
 
     public function testOnUserCreatedDispatchesWelcomeMailWithLocale(): void

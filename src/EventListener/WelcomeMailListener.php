@@ -25,6 +25,7 @@ final readonly class WelcomeMailListener implements EventSubscriberInterface
     {
         return [
             UserEvent::USER_CREATED => 'onUserCreated',
+            UserEvent::USER_RESTORED => 'onUserCreated',
         ];
     }
 

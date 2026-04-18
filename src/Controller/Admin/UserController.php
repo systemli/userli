@@ -9,7 +9,9 @@ use App\Entity\User;
 use App\Enum\Roles;
 use App\Form\Model\UserAdminModel;
 use App\Form\UserAdminType;
+use App\Form\UserRestoreType;
 use App\Service\UserManager;
+use App\Service\UserRestoreService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,6 +24,7 @@ final class UserController extends AbstractController
 {
     public function __construct(
         private readonly UserManager $manager,
+        private readonly UserRestoreService $restoreService,
         private readonly EntityManagerInterface $em,
     ) {
     }
@@ -173,6 +176,55 @@ final class UserController extends AbstractController
         return $this->render('Admin/User/show.html.twig', [
             'user' => $user,
             'stats' => $this->manager->getUserStats($user),
+        ]);
+    }
+
+    #[Route('/admin/users/restore/{id}', name: 'admin_user_restore', methods: ['GET'])]
+    public function restore(#[MapEntity] User $user): Response
+    {
+        if (!$user->isDeleted()) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->denyAccessUnlessGranted('edit', $user);
+
+        $form = $this->createForm(UserRestoreType::class, null, [
+            'action' => $this->generateUrl('admin_user_restore_post', ['id' => $user->getId()]),
+            'method' => 'POST',
+        ]);
+
+        return $this->render('Admin/User/restore.html.twig', [
+            'form' => $form,
+            'user' => $user,
+        ]);
+    }
+
+    #[Route('/admin/users/restore/{id}', name: 'admin_user_restore_post', methods: ['POST'])]
+    public function restoreSubmit(#[MapEntity] User $user, Request $request): Response
+    {
+        if (!$user->isDeleted()) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->denyAccessUnlessGranted('edit', $user);
+
+        $form = $this->createForm(UserRestoreType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $recoveryToken = $this->restoreService->restoreUser($user, $form->get('plainPassword')->getData());
+            $this->addFlash('success', 'admin.user.restore.success');
+
+            return $this->render('Admin/User/show.html.twig', [
+                'user' => $user,
+                'stats' => $this->manager->getUserStats($user),
+                'recovery_token' => $recoveryToken,
+            ]);
+        }
+
+        return $this->render('Admin/User/restore.html.twig', [
+            'form' => $form,
+            'user' => $user,
         ]);
     }
 

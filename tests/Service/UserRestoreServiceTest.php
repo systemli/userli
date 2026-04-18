@@ -106,7 +106,7 @@ class UserRestoreServiceTest extends TestCase
         $service->restoreUser($user, 'password123');
     }
 
-    public function testRestoreUserDispatchesUserCreatedEvent(): void
+    public function testRestoreUserDispatchesUserRestoredEvent(): void
     {
         $user = new User('deleted@example.org');
         $user->setDeleted(true);
@@ -117,7 +117,7 @@ class UserRestoreServiceTest extends TestCase
             ->method('dispatch')
             ->with(
                 $this->callback(static fn ($event) => $event instanceof UserEvent && $event->getUser() === $user),
-                UserEvent::USER_CREATED
+                UserEvent::USER_RESTORED
             );
 
         $service = new UserRestoreService(

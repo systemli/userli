@@ -985,6 +985,24 @@ admin:
       show: Show
       edit: Edit
       delete: Delete
+      restore: Restore
+    restore:
+      title: Restore User
+      success: User has been restored successfully.
+      warning: "Restoring this user will set a new password, reset two-factor authentication and mailbox encryption. The user will receive a welcome email."
+      recovery_token_headline: Recovery token for this user
+      recovery_token_info: >
+        A new recovery token has been generated for this user.
+        Please pass it on to the user securely — they will need it to recover their account if they forget their password.
+      recovery_token_displayed_once: >
+        For security reasons, this recovery token is displayed only once and cannot be retrieved later.
+      form:
+        title: Restore User
+        password:
+          label: New Password
+        password_confirmation:
+          label: Confirm Password
+        submit: Restore
     show:
       description: User details and statistics
       back: Back to Users

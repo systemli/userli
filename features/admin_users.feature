@@ -298,3 +298,87 @@ Feature: Settings (Users)
     When I click "Delete" in the modal
 
     Then I wait for text "User has been deleted successfully" to appear
+
+  @settings-users
+  Scenario: Admin can access restore form for deleted user
+    Given the following User exists:
+      | email               | password | roles     | deleted |
+      | deleted@example.org | asdasd   | ROLE_USER | true    |
+    And I am authenticated as "admin@example.org"
+    And I set the placeholder "__user_id__" with property "id" for "deleted@example.org"
+    When I am on "/admin/users/restore/__user_id__"
+
+    Then the response status code should be 200
+    And I should see "deleted@example.org"
+    And I should see "Restore User"
+
+  @settings-users
+  Scenario: Restore form returns 404 for active user
+    Given I am authenticated as "admin@example.org"
+    And I set the placeholder "__user_id__" with property "id" for "user@example.org"
+    When I am on "/admin/users/restore/__user_id__"
+
+    Then the response status code should be 404
+
+  @settings-users
+  Scenario: Admin can restore a deleted user
+    Given the following User exists:
+      | email               | password | roles     | deleted |
+      | deleted@example.org | asdasd   | ROLE_USER | true    |
+    And I am authenticated as "admin@example.org"
+    And I set the placeholder "__user_id__" with property "id" for "deleted@example.org"
+    When I am on "/admin/users/restore/__user_id__"
+    And I fill in "user_restore_plainPassword_first" with "newSecurePassword123!"
+    And I fill in "user_restore_plainPassword_second" with "newSecurePassword123!"
+    And I press "Restore"
+
+    Then I should see "User has been restored successfully"
+
+  @settings-users
+  Scenario: Restore fails with mismatched passwords
+    Given the following User exists:
+      | email               | password | roles     | deleted |
+      | deleted@example.org | asdasd   | ROLE_USER | true    |
+    And I am authenticated as "admin@example.org"
+    And I set the placeholder "__user_id__" with property "id" for "deleted@example.org"
+    When I am on "/admin/users/restore/__user_id__"
+    And I fill in "user_restore_plainPassword_first" with "newSecurePassword123!"
+    And I fill in "user_restore_plainPassword_second" with "differentPassword456!"
+    And I press "Restore"
+
+    Then the response status code should be 422
+
+  @settings-users
+  Scenario: Admin sees restore button on show page of deleted user
+    Given the following User exists:
+      | email               | password | roles     | deleted |
+      | deleted@example.org | asdasd   | ROLE_USER | true    |
+    And I am authenticated as "admin@example.org"
+    And I set the placeholder "__user_id__" with property "id" for "deleted@example.org"
+    When I am on "/admin/users/__user_id__"
+
+    Then the response status code should be 200
+    And I should see "Restore"
+
+  @settings-users
+  Scenario: Admin does not see restore button for active users on show page
+    Given I am authenticated as "admin@example.org"
+    And I set the placeholder "__user_id__" with property "id" for "user@example.org"
+    When I am on "/admin/users/__user_id__"
+
+    Then the response status code should be 200
+    And I should not see "Restore"
+
+  @settings-users
+  Scenario: Domain admin cannot restore user from another domain
+    Given the following Domain exists:
+      | name      |
+      | other.org |
+    And the following User exists:
+      | email              | password | roles     | deleted |
+      | deleted@other.org  | asdasd   | ROLE_USER | true    |
+    And I am authenticated as "support@example.org"
+    And I set the placeholder "__user_id__" with property "id" for "deleted@other.org"
+    When I am on "/admin/users/restore/__user_id__"
+
+    Then the response status code should be 404
