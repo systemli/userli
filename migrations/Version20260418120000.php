@@ -40,7 +40,7 @@ final class Version20260418120000 extends AbstractMigration
 
             if (false === $exists) {
                 $this->connection->executeStatement(
-                    'INSERT INTO reserved_names (name, created_time) VALUES (:name, NOW())',
+                    'INSERT INTO reserved_names (name, creation_time, updated_time) VALUES (:name, NOW(), NOW())',
                     ['name' => $name]
                 );
             }
