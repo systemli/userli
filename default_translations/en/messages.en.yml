@@ -331,7 +331,7 @@ mail:
     your e-mail account may not function properly.
 
     In one week you will receive three invite codes, which you can collect
-    at %app_url%/voucher. You can pass these on to friends and
+    at %voucher_url%. You can pass these on to friends and
     invite them to register with %project_name%.
 
     Sincerly,
@@ -342,17 +342,17 @@ mail:
 
     Your account password has been attemptedly reset by authenticating with
     your  e-mail address and corresponding recovery code at
-    %app_url%/recovery.
+    %recovery_url%.
 
     If this wasn't you, then somebody else with access to your recovery
     token tried to get ahold of your account. Go to
-    %app_url%/user/recovery_token immediately and create a
+    %recovery_token_url% immediately and create a
     new recovery token. This will invalidate the old recovery token and stop
     the process.
 
     If you did trigger the process yourself, the 48 hour waiting period started
     now. It will end at %time%. Afterwards, you can set a new password at
-    %app_url%/recovery.
+    %recovery_url%.
 
     We hope you continue to enjoy your e-mail account.
     Your %project_name% admin team.
@@ -363,7 +363,7 @@ mail:
     For your e-mail address %email% a new alias has been added:
     %alias%
 
-    Manage your e-mail aliases here: %app_url%/alias
+    Manage your e-mail aliases here: %alias_url%
 
     We hope you continue to enjoy your e-mail account.
     Your %project_name% admin team.

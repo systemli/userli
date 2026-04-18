@@ -74,6 +74,34 @@ class FeatureContext extends MinkContext
         $this->cache = $this->getContainer()->get('cache.app');
     }
 
+    /**
+     * @BeforeScenario
+     */
+    public function resetMailCollector(): void
+    {
+        $this->getContainer()->get(MailCollector::class)->reset();
+    }
+
+    /**
+     * @Then /^the last sent mail body should contain "([^"]*)"$/
+     */
+    public function theLastSentMailBodyShouldContain(string $text): void
+    {
+        // Fetch through the container each time: SymfonyExtension's Mink driver
+        // re-resolves services per request, so a constructor-injected collector
+        // would miss messages dispatched during the HTTP round-trip.
+        $collector = $this->getContainer()->get(MailCollector::class);
+        $email = $collector->last();
+        if (null === $email) {
+            throw new RuntimeException('No mail has been sent in this scenario');
+        }
+
+        $body = (string) $email->getTextBody();
+        if (!str_contains($body, $text)) {
+            throw new RuntimeException(sprintf("Expected last mail body to contain \"%s\"\nGot:\n%s", $text, $body));
+        }
+    }
+
     public function getContainer(): ContainerInterface
     {
         $container = $this->kernel->getContainer();

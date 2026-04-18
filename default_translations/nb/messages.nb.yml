@@ -165,7 +165,7 @@ mail:
     hende din e-postkonto ikke fungerer riktig.
 
     Om en uke vil du motta tre invitasjonskoder, som du kan samle i
-    %app_url%/voucher. Du kan gi disse til venner og invitere
+    %voucher_url%. Du kan gi disse til venner og invitere
     dem til å registrere seg med %project_name%.
 
     Ærbødigst, ditt %project_name%-administratorlag.
@@ -175,17 +175,17 @@ mail:
 
     Noen har forsøkt å tilbakestille ditt kontopassord. For å gjøre dette,
     har vedkommende identitetsbekreftet seg med din e-postadresse og
-    tilhørende tilbakestillingskode på %app_url%/recovery.
+    tilhørende tilbakestillingskode på %recovery_url%.
 
     Har du ikke utløst dette selv? Da har noen andre med tilgang til
     ditt gjenopprettingssymbol forsøkt å få tilgang til kontoen din. Gå til
-    %app_url%/user/recovery_token umiddelbart og opprett et nytt
+    %recovery_token_url% umiddelbart og opprett et nytt
     gjenopprettingssymbol. Dette vil ugyldiggjøre det gamle gjenopprettings-
     symbolet og stoppe prosessen.
 
     Hvis du utløser prosessen selv, startet venteperioden på 48 timer nå.
     Den vil avsluttes klokken %time%. Etterpå kan du sette et nytt passord
-    på %app_url%/recovery.
+    på %recovery_url%.
 
     Vi håper du vil fortsette å ha glede av din e-postkonto.
     Ditt %project_name%-administratorlag.
@@ -195,7 +195,7 @@ mail:
     Et nytt alias har blitt satt opp for %email% e-postkontoen din:
     %alias%
 
-    Håndter dine e-postaliaser her: %app_url%/alias
+    Håndter dine e-postaliaser her: %alias_url%
 
     Vi håper du fortsetter å ha glede av din e-postkonto.
     Ditt %project_name%-administratorlag.

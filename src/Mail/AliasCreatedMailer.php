@@ -8,6 +8,7 @@ use App\Entity\Alias;
 use App\Entity\User;
 use App\Handler\MailHandler;
 use App\Service\SettingsService;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class AliasCreatedMailer
@@ -16,6 +17,7 @@ final readonly class AliasCreatedMailer
         private MailHandler $handler,
         private TranslatorInterface $translator,
         private SettingsService $settingsService,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -29,13 +31,15 @@ final readonly class AliasCreatedMailer
 
     private function buildBody(string $locale, string $email, string $alias): string
     {
+        $appUrl = rtrim((string) $this->settingsService->get('app_url'), '/');
+
         return $this->translator->trans(
             'mail.alias-created-body',
             [
-                '%app_url%' => $this->settingsService->get('app_url'),
                 '%project_name%' => $this->settingsService->get('project_name'),
                 '%email%' => $email,
                 '%alias%' => $alias,
+                '%alias_url%' => $appUrl.$this->urlGenerator->generate('aliases', [], UrlGeneratorInterface::ABSOLUTE_PATH),
             ],
             null,
             $locale

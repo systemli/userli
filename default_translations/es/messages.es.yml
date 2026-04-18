@@ -226,7 +226,7 @@ mail:
 
     Obtienes un buzón con una cuota de 1 GB. Si excedes tu límite, tu cuenta de e-mail podría no funcionar correctamente.
 
-    En una semana recibirás tres códigos de invitación, que puedes recoger en %app_url%/voucher. Puedes pasárselos a tus amigos e invitarlos a registrarse en %project_name%.
+    En una semana recibirás tres códigos de invitación, que puedes recoger en %voucher_url%. Puedes pasárselos a tus amigos e invitarlos a registrarse en %project_name%.
 
     Atentamente,
     tu equipo de administración de %project_name%.
@@ -234,11 +234,11 @@ mail:
   recovery-body: |
     Hola %email%,
 
-    Se ha intentado restablecer la contraseña de tu cuenta autenticándose con tu dirección de e-mail y el código de recuperación correspondiente en %app_url%/recovery.
+    Se ha intentado restablecer la contraseña de tu cuenta autenticándose con tu dirección de e-mail y el código de recuperación correspondiente en %recovery_url%.
 
-    Si no fuiste tú, entonces alguien más con acceso to tu token de recuperación intentó apoderarse de tu cuenta. Ve a %app_url%/user/recovery_token inmediatamente y crea un nuevo token de recuperación. Esto invalidará el antiguo token de recuperación y detendrá el proceso.
+    Si no fuiste tú, entonces alguien más con acceso to tu token de recuperación intentó apoderarse de tu cuenta. Ve a %recovery_token_url% inmediatamente y crea un nuevo token de recuperación. Esto invalidará el antiguo token de recuperación y detendrá el proceso.
 
-    Si tú mismo iniciaste el proceso, el período de espera de 48 horas ha comenzado ahora. Terminará a las %time%. Después, puedes establecer una nueva contraseña en %app_url%/recovery.
+    Si tú mismo iniciaste el proceso, el período de espera de 48 horas ha comenzado ahora. Terminará a las %time%. Después, puedes establecer una nueva contraseña en %recovery_url%.
 
     Esperamos que sigas disfrutando de tu cuenta de e-mail.
     Tu equipo de administración de %project_name%.
@@ -249,7 +249,7 @@ mail:
     Para tu dirección de e-mail %email% se ha añadido un nuevo alias:
     %alias%
 
-    Gestiona tus alias de e-mail aquí: %app_url%/alias
+    Gestiona tus alias de e-mail aquí: %alias_url%
 
     Esperamos que sigas disfrutando de tu cuenta de e-mail.
     Tu equipo de administración de %project_name%.

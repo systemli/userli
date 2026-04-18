@@ -9,6 +9,7 @@ use App\Handler\MailHandler;
 use App\Mail\WelcomeMailer;
 use App\Service\SettingsService;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WelcomeMailerTest extends TestCase
@@ -16,11 +17,10 @@ class WelcomeMailerTest extends TestCase
     public function testSendCallsTranslatorAndMailHandler(): void
     {
         $settingsService = $this->createStub(SettingsService::class);
-        $settingsService->method('get')
-            ->willReturnMap([
-                ['app_url', null, 'https://www.example.com'],
-                ['project_name', null, 'Test Project'],
-            ]);
+        $settingsService->method('get')->willReturnMap([
+            ['app_url', null, 'https://www.example.com'],
+            ['project_name', null, 'Test Project'],
+        ]);
 
         $translator = $this->createStub(TranslatorInterface::class);
         $translator->method('trans')
@@ -34,7 +34,7 @@ class WelcomeMailerTest extends TestCase
             ->method('send')
             ->with('user@example.org', 'Welcome body', 'Welcome subject');
 
-        $mailer = new WelcomeMailer($handler, $translator, $settingsService);
+        $mailer = new WelcomeMailer($handler, $translator, $settingsService, $this->createStub(UrlGeneratorInterface::class));
         $mailer->send(new User('user@example.org'), 'en');
     }
 
@@ -55,26 +55,31 @@ class WelcomeMailerTest extends TestCase
         $handler = $this->createMock(MailHandler::class);
         $handler->expects(self::once())->method('send');
 
-        $mailer = new WelcomeMailer($handler, $translator, $settingsService);
+        $mailer = new WelcomeMailer($handler, $translator, $settingsService, $this->createStub(UrlGeneratorInterface::class));
         $mailer->send(new User('user@example.org'), 'de');
     }
 
-    public function testSendPassesCorrectParametersToTranslator(): void
+    public function testSendBuildsVoucherUrlFromAppUrlSettingAndRoutePath(): void
     {
         $settingsService = $this->createStub(SettingsService::class);
-        $settingsService->method('get')
-            ->willReturnMap([
-                ['app_url', null, 'https://www.example.com'],
-                ['project_name', null, 'Test Project'],
-            ]);
+        $settingsService->method('get')->willReturnMap([
+            ['app_url', null, 'https://www.example.com'],
+            ['project_name', null, 'Test Project'],
+        ]);
+
+        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+        $urlGenerator->expects(self::once())
+            ->method('generate')
+            ->with('vouchers', [], UrlGeneratorInterface::ABSOLUTE_PATH)
+            ->willReturn('/account/voucher');
 
         $translator = $this->createMock(TranslatorInterface::class);
         $translator->expects(self::exactly(2))
             ->method('trans')
             ->willReturnCallback(static function (string $id, array $parameters) {
                 if ('mail.welcome-body' === $id) {
-                    self::assertSame('https://www.example.com', $parameters['%app_url%']);
                     self::assertSame('Test Project', $parameters['%project_name%']);
+                    self::assertSame('https://www.example.com/account/voucher', $parameters['%voucher_url%']);
                 }
                 if ('mail.welcome-subject' === $id) {
                     self::assertSame('Test Project', $parameters['%project_name%']);
@@ -85,7 +90,7 @@ class WelcomeMailerTest extends TestCase
 
         $handler = $this->createStub(MailHandler::class);
 
-        $mailer = new WelcomeMailer($handler, $translator, $settingsService);
+        $mailer = new WelcomeMailer($handler, $translator, $settingsService, $urlGenerator);
         $mailer->send(new User('user@example.org'), 'en');
     }
 }

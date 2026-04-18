@@ -6,3 +6,8 @@ when@test:
   framework:
     mailer:
       dsn: 'null://null'
+      # Send synchronously in tests: the default behaviour routes through the
+      # Messenger bus to the async transport, which in-memory queues the
+      # message and never fires MessageEvent (workers don't run). Behat steps
+      # that assert on mail content rely on MessageEvent being dispatched.
+      message_bus: false
