@@ -23,6 +23,14 @@ use const DIRECTORY_SEPARATOR;
 
 class GpgKeyParser
 {
+    /**
+     * Characters outside this allowlist must not be interpolated into the
+     * GnuPG `--import-filter` expression. Reject at the sink rather than
+     * mutating the admin email-validation rules, which legitimately accept
+     * a broader RFC 5321 atext set than this sink can safely embed.
+     */
+    private const string SAFE_EMAIL_PATTERN = '/^[A-Za-z0-9._+@-]+$/';
+
     protected function createGpg(string $homedir): Crypt_GPG
     {
         return new Crypt_GPG(['homedir' => $homedir]);
@@ -36,6 +44,10 @@ class GpgKeyParser
      */
     public function parse(string $email, string $data): GpgKeyResult
     {
+        if (1 !== preg_match(self::SAFE_EMAIL_PATTERN, $email)) {
+            throw new GpgKeyParserException(sprintf('Email "%s" contains characters not allowed in a GnuPG key lookup.', $email));
+        }
+
         $tempDir = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'userli_'.mt_rand().microtime(true);
         if (!mkdir($concurrentDirectory = $tempDir) && !is_dir($concurrentDirectory)) {
             throw new GpgKeyParserException('Failed to create directory: '.$concurrentDirectory);
