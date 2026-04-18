@@ -66,8 +66,20 @@ Every constraint in `Validator/` is paired: `EmailAvailable.php` (constraint att
 
 Commands in `Command/`. Many extend `AbstractUsersCommand` which provides domain filtering and batch user operations. Commands are prefixed: `app:users:*`, `app:voucher:*`, `app:domain:*`, `app:admin:*`, `app:api-token:*`.
 
+### Mail URLs
+
+Mail bodies in `Mail/` pass URLs to translations via dedicated placeholders
+(`%voucher_url%`, `%alias_url%`, `%recovery_url%`, `%recovery_token_url%`).
+The host comes from `SettingsService->get('app_url')` (admin-editable), the
+path from `UrlGenerator::generate($route, [], ABSOLUTE_PATH)` — `ABSOLUTE_PATH`
+doesn't require a Request context, so this works in messenger background
+workers. **Never hardcode `/account/...` paths directly into translation
+strings** — routes drift, translations don't follow, and eight languages
+silently break at once (see #97).
+
 ## Anti-Patterns
 
 - **NEVER** put business logic in controllers — use `Service/`
 - **NEVER** access entity properties directly from outside — use repository methods
 - **NEVER** create a Message without a matching MessageHandler
+- **NEVER** hardcode route paths in translation strings — inject `UrlGeneratorInterface` into the mailer and pass the URL as a placeholder

@@ -9,7 +9,6 @@ use App\Handler\MailHandler;
 use App\Mail\RecoveryProcessMailer;
 use App\Service\SettingsService;
 use DateTimeImmutable;
-use LogicException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -67,23 +66,22 @@ class RecoveryProcessMailerTest extends TestCase
         $mailer->send($user, 'de');
     }
 
-    public function testSendBuildsUrlsFromAppUrlSettingAndRoutePath(): void
+    public function testSendPassesExpectedPlaceholdersToTranslator(): void
     {
         $user = new User('user@example.org');
         $user->setRecoveryStartTime(new DateTimeImmutable('2026-01-15 10:00:00'));
 
         $settingsService = $this->createStub(SettingsService::class);
         $settingsService->method('get')->willReturnMap([
-            ['app_url', null, 'https://mail.example.com/'], // trailing slash: must be normalised
+            ['app_url', null, 'https://mail.example.com/'], // trailing slash gets normalised
             ['project_name', null, 'Example Mail'],
         ]);
 
-        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $urlGenerator->method('generate')
-            ->willReturnCallback(static fn (string $name, array $params, int $refType) => match ($name) {
-                'recovery' => $refType === UrlGeneratorInterface::ABSOLUTE_PATH ? '/recovery' : throw new LogicException('mailer must request ABSOLUTE_PATH so host comes from app_url setting (works in background workers)'),
-                'account_recovery_token' => $refType === UrlGeneratorInterface::ABSOLUTE_PATH ? '/account/recovery-token' : throw new LogicException('mailer must request ABSOLUTE_PATH'),
-            });
+        $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
+        $urlGenerator->method('generate')->willReturnMap([
+            ['recovery', [], UrlGeneratorInterface::ABSOLUTE_PATH, '/recovery'],
+            ['account_recovery_token', [], UrlGeneratorInterface::ABSOLUTE_PATH, '/account/recovery-token'],
+        ]);
 
         $translator = $this->createMock(TranslatorInterface::class);
         $translator->expects(self::exactly(2))
@@ -103,9 +101,7 @@ class RecoveryProcessMailerTest extends TestCase
                 return 'translated';
             });
 
-        $handler = $this->createStub(MailHandler::class);
-
-        $mailer = new RecoveryProcessMailer($handler, $translator, $settingsService, $urlGenerator);
+        $mailer = new RecoveryProcessMailer($this->createStub(MailHandler::class), $translator, $settingsService, $urlGenerator);
         $mailer->send($user, 'en');
     }
 }
