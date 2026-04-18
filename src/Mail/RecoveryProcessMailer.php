@@ -35,14 +35,19 @@ final readonly class RecoveryProcessMailer
 
     private function buildBody(string $locale, string $email, string $time): string
     {
+        // Host from the admin-editable `app_url` setting, path from the router. This keeps
+        // a single source of truth for the host and works in background workers where no
+        // request context is available.
+        $appUrl = rtrim((string) $this->settingsService->get('app_url'), '/');
+
         return $this->translator->trans(
             'mail.recovery-body',
             [
                 '%project_name%' => $this->settingsService->get('project_name'),
                 '%email%' => $email,
                 '%time%' => $time,
-                '%recovery_url%' => $this->urlGenerator->generate('recovery', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                '%recovery_token_url%' => $this->urlGenerator->generate('account_recovery_token', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                '%recovery_url%' => $appUrl.$this->urlGenerator->generate('recovery', [], UrlGeneratorInterface::ABSOLUTE_PATH),
+                '%recovery_token_url%' => $appUrl.$this->urlGenerator->generate('account_recovery_token', [], UrlGeneratorInterface::ABSOLUTE_PATH),
             ],
             null,
             $locale

@@ -23,6 +23,7 @@ class AliasCreatedMailerTest extends TestCase
 
         $settingsService = $this->createStub(SettingsService::class);
         $settingsService->method('get')->willReturnMap([
+            ['app_url', null, 'https://mail.example.com'],
             ['project_name', null, 'Example Mail'],
         ]);
 
@@ -67,7 +68,7 @@ class AliasCreatedMailerTest extends TestCase
         $mailer->send($user, $alias, 'de');
     }
 
-    public function testSendPassesCorrectParametersToTranslator(): void
+    public function testSendBuildsAliasUrlFromAppUrlSettingAndRoutePath(): void
     {
         $user = new User('user@example.org');
         $alias = new Alias();
@@ -75,13 +76,15 @@ class AliasCreatedMailerTest extends TestCase
 
         $settingsService = $this->createStub(SettingsService::class);
         $settingsService->method('get')->willReturnMap([
+            ['app_url', null, 'https://mail.example.com'],
             ['project_name', null, 'Example Mail'],
         ]);
 
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $urlGenerator->method('generate')
-            ->with('aliases', [], UrlGeneratorInterface::ABSOLUTE_URL)
-            ->willReturn('https://mail.example.com/account/alias');
+        $urlGenerator->expects(self::once())
+            ->method('generate')
+            ->with('aliases', [], UrlGeneratorInterface::ABSOLUTE_PATH)
+            ->willReturn('/account/alias');
 
         $translator = $this->createMock(TranslatorInterface::class);
         $translator->expects(self::exactly(2))

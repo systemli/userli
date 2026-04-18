@@ -31,13 +31,15 @@ final readonly class AliasCreatedMailer
 
     private function buildBody(string $locale, string $email, string $alias): string
     {
+        $appUrl = rtrim((string) $this->settingsService->get('app_url'), '/');
+
         return $this->translator->trans(
             'mail.alias-created-body',
             [
                 '%project_name%' => $this->settingsService->get('project_name'),
                 '%email%' => $email,
                 '%alias%' => $alias,
-                '%alias_url%' => $this->urlGenerator->generate('aliases', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                '%alias_url%' => $appUrl.$this->urlGenerator->generate('aliases', [], UrlGeneratorInterface::ABSOLUTE_PATH),
             ],
             null,
             $locale

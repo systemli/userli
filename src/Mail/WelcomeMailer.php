@@ -30,11 +30,13 @@ final readonly class WelcomeMailer
 
     private function buildBody(string $locale): string
     {
+        $appUrl = rtrim((string) $this->settingsService->get('app_url'), '/');
+
         return $this->translator->trans(
             'mail.welcome-body',
             [
                 '%project_name%' => $this->settingsService->get('project_name'),
-                '%voucher_url%' => $this->urlGenerator->generate('vouchers', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                '%voucher_url%' => $appUrl.$this->urlGenerator->generate('vouchers', [], UrlGeneratorInterface::ABSOLUTE_PATH),
             ],
             null,
             $locale

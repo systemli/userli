@@ -18,6 +18,7 @@ class WelcomeMailerTest extends TestCase
     {
         $settingsService = $this->createStub(SettingsService::class);
         $settingsService->method('get')->willReturnMap([
+            ['app_url', null, 'https://www.example.com'],
             ['project_name', null, 'Test Project'],
         ]);
 
@@ -58,17 +59,19 @@ class WelcomeMailerTest extends TestCase
         $mailer->send(new User('user@example.org'), 'de');
     }
 
-    public function testSendPassesCorrectParametersToTranslator(): void
+    public function testSendBuildsVoucherUrlFromAppUrlSettingAndRoutePath(): void
     {
         $settingsService = $this->createStub(SettingsService::class);
         $settingsService->method('get')->willReturnMap([
+            ['app_url', null, 'https://www.example.com'],
             ['project_name', null, 'Test Project'],
         ]);
 
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $urlGenerator->method('generate')
-            ->with('vouchers', [], UrlGeneratorInterface::ABSOLUTE_URL)
-            ->willReturn('https://www.example.com/account/voucher');
+        $urlGenerator->expects(self::once())
+            ->method('generate')
+            ->with('vouchers', [], UrlGeneratorInterface::ABSOLUTE_PATH)
+            ->willReturn('/account/voucher');
 
         $translator = $this->createMock(TranslatorInterface::class);
         $translator->expects(self::exactly(2))
