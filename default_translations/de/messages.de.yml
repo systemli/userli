@@ -342,9 +342,12 @@ mail:
     %app_url%/recovery eingegeben.
 
     Wenn du das nicht selbst warst, hat jemand anderes Zugang zu deinem
-    Wiederherstellungscode. Öffne diesen Link, um den Vorgang abzubrechen
-    und den Code in einem Schritt ungültig zu machen:
+    Wiederherstellungscode. Öffne den folgenden Link und logge dich ein,
+    um einen neuen Wiederherstellungscode zu erstellen. Dadurch wird der
+    alte Code ungültig und der Vorgang in einem Schritt abgebrochen:
     %reset_link%
+
+    Denke daran, den neuen Wiederherstellungscode sicher aufzubewahren.
 
     Hast du den Vorgang selbst ausgelöst, startet nun die 48-stündige Wartezeit.
     Diese geht bis zum %time%. Anschließend kannst du mit einem
