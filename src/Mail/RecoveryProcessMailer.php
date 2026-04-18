@@ -33,13 +33,16 @@ final readonly class RecoveryProcessMailer
 
     private function buildBody(string $locale, string $email, string $time): string
     {
+        $appUrl = (string) $this->settingsService->get('app_url');
+
         return $this->translator->trans(
             'mail.recovery-body',
             [
-                '%app_url%' => $this->settingsService->get('app_url'),
+                '%app_url%' => $appUrl,
                 '%project_name%' => $this->settingsService->get('project_name'),
                 '%email%' => $email,
                 '%time%' => $time,
+                '%reset_link%' => rtrim($appUrl, '/').'/account/recovery-token',
             ],
             null,
             $locale

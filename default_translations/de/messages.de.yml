@@ -341,11 +341,10 @@ mail:
     E-Mail-Addresse und der zugehörige Wiederherstellungscode unter
     %app_url%/recovery eingegeben.
 
-    Wenn du das nicht selbst warst, versucht jemand anderes mit Zugang zu
-    deinem Wiederherstellungscode, Kontrolle über dein Konto zu bekommen.
-    Gehe schnellstmöglich zu %app_url%/user/recovery_token
-    und erstelle dir einen neuen Wiederherstellungscode. Dadurch wird der
-    alte Code ungültig und der Vorgang abgebrochen.
+    Wenn du das nicht selbst warst, hat jemand anderes Zugang zu deinem
+    Wiederherstellungscode. Öffne diesen Link, um den Vorgang abzubrechen
+    und den Code in einem Schritt ungültig zu machen:
+    %reset_link%
 
     Hast du den Vorgang selbst ausgelöst, startet nun die 48-stündige Wartezeit.
     Diese geht bis zum %time%. Anschließend kannst du mit einem

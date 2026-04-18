@@ -344,11 +344,9 @@ mail:
     your  e-mail address and corresponding recovery code at
     %app_url%/recovery.
 
-    If this wasn't you, then somebody else with access to your recovery
-    token tried to get ahold of your account. Go to
-    %app_url%/user/recovery_token immediately and create a
-    new recovery token. This will invalidate the old recovery token and stop
-    the process.
+    If this wasn't you, somebody else has your recovery token. Open this
+    link to cancel the process and invalidate the leaked token in one step:
+    %reset_link%
 
     If you did trigger the process yourself, the 48 hour waiting period started
     now. It will end at %time%. Afterwards, you can set a new password at

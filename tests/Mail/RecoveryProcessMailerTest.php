@@ -100,4 +100,40 @@ class RecoveryProcessMailerTest extends TestCase
         $mailer = new RecoveryProcessMailer($handler, $translator, $settingsService);
         $mailer->send($user, 'en');
     }
+
+    public function testSendPassesResetLinkToTranslator(): void
+    {
+        $user = new User('user@example.org');
+        $user->setRecoveryStartTime(new DateTimeImmutable('2026-01-15 10:00:00'));
+
+        $settingsService = $this->createStub(SettingsService::class);
+        $settingsService->method('get')
+            ->willReturnMap([
+                ['app_url', null, 'https://mail.example.com/'],
+                ['project_name', null, 'Example Mail'],
+            ]);
+
+        $capturedResetLink = null;
+        $translator = $this->createMock(TranslatorInterface::class);
+        $translator->method('trans')
+            ->willReturnCallback(static function (string $id, array $parameters) use (&$capturedResetLink): string {
+                if ('mail.recovery-body' === $id) {
+                    self::assertArrayHasKey('%reset_link%', $parameters);
+                    $capturedResetLink = $parameters['%reset_link%'];
+                }
+
+                return 'translated';
+            });
+
+        $handler = $this->createStub(MailHandler::class);
+
+        $mailer = new RecoveryProcessMailer($handler, $translator, $settingsService);
+        $mailer->send($user, 'en');
+
+        self::assertSame(
+            'https://mail.example.com/account/recovery-token',
+            $capturedResetLink,
+            'Reset link should point at the account recovery-token page (login + password invalidates the old token and stops the recovery process)',
+        );
+    }
 }
