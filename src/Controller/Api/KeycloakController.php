@@ -8,6 +8,7 @@ use App\Dto\KeycloakUserValidateDto;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\ApiScope;
+use App\Enum\Roles;
 use App\Handler\UserAuthenticationHandler;
 use App\Security\RequireApiScope;
 use Doctrine\ORM\EntityManagerInterface;
@@ -93,6 +94,10 @@ final class KeycloakController extends AbstractController
             ], Response::HTTP_FORBIDDEN);
         }
 
+        if (null !== $statusResponse = $this->rejectForAccountStatus($user)) {
+            return $statusResponse;
+        }
+
         return match ($requestData->getCredentialType()) {
             'password' => $this->handlePasswordValidate($user, $requestData),
             'otp' => $this->handleTotpValidate($user, $requestData),
@@ -100,6 +105,23 @@ final class KeycloakController extends AbstractController
                 'message' => self::MESSAGE_NOT_SUPPORTED,
             ], Response::HTTP_BAD_REQUEST),
         };
+    }
+
+    private function rejectForAccountStatus(User $user): ?Response
+    {
+        if ($user->isDeleted() || $user->hasRole(Roles::SPAM)) {
+            return $this->json([
+                'message' => self::MESSAGE_AUTHENTICATION_FAILED,
+            ], Response::HTTP_FORBIDDEN);
+        }
+
+        if ($user->isPasswordChangeRequired()) {
+            return $this->json([
+                'message' => self::MESSAGE_PASSWORD_CHANGE_REQUIRED,
+            ], Response::HTTP_FORBIDDEN);
+        }
+
+        return null;
     }
 
     #[Route(path: '/api/keycloak/{domainUrl}/configured/{credentialType}/{email}', name: 'api_keycloak_get_is_configured_for', methods: ['GET'], stateless: true)]
@@ -143,15 +165,26 @@ final class KeycloakController extends AbstractController
             ], Response::HTTP_FORBIDDEN);
         }
 
-        if (!$this->totpAuthenticator->checkCode($user, $requestData->getPassword())) {
+        $code = $requestData->getPassword();
+
+        if ($this->totpAuthenticator->checkCode($user, $code)) {
             return $this->json([
-                'message' => self::MESSAGE_AUTHENTICATION_FAILED,
-            ], Response::HTTP_FORBIDDEN);
+                'message' => self::MESSAGE_SUCCESS,
+            ]);
+        }
+
+        if ($user->isBackupCode($code)) {
+            $user->invalidateBackupCode($code);
+            $this->manager->flush();
+
+            return $this->json([
+                'message' => self::MESSAGE_SUCCESS,
+            ]);
         }
 
         return $this->json([
-            'message' => self::MESSAGE_SUCCESS,
-        ]);
+            'message' => self::MESSAGE_AUTHENTICATION_FAILED,
+        ], Response::HTTP_FORBIDDEN);
     }
 
     private function handleTotpConfigured(User $user): Response

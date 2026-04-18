@@ -52,6 +52,31 @@ Search users:
     GET /api/keycloak/<domain>/?search=john&max=10&first=0
     Authorization: Bearer <PLAIN_TOKEN_WITH_keycloak_SCOPE>
 
+### Credential validation
+
+Validate a user's password or OTP:
+
+    POST /api/keycloak/<domain>/validate/<email>
+    Authorization: Bearer <PLAIN_TOKEN_WITH_keycloak_SCOPE>
+    Content-Type: application/json
+
+    { "credentialType": "password", "password": "<user-password>" }
+
+`credentialType` is either `password` or `otp`. For `otp`, `password` is
+the 6-digit TOTP code **or** a single-use backup code — a matching backup
+code is consumed on success.
+
+Account status is enforced before the credential check, mirroring
+`/api/dovecot/`:
+
+| State                           | HTTP | `message`                 |
+|---------------------------------|-----:|---------------------------|
+| Authenticated                   |  200 | `success`                 |
+| Unknown user or bad credentials |  403 | `authentication failed`   |
+| Soft-deleted or `ROLE_SPAM`     |  403 | `authentication failed`   |
+| `passwordChangeRequired=true`   |  403 | `password change required`|
+| OTP requested but not enrolled  |  403 | `not supported`           |
+| Unknown `credentialType`        |  400 | `not supported`           |
 
 ## Dovecot
 
