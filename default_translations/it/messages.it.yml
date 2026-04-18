@@ -113,7 +113,7 @@ mail:
     Per il tuo indirizzo e-mail %email% è stato aggiunto un nuovo alias:
     %alias%
 
-    Gestisci i tuoi alias di posta elettronica qui: %app_url%/alias
+    Gestisci i tuoi alias di posta elettronica qui: %alias_url%
 
     Ci auguriamo che tu continui a goderti il tuo account di posta elettronica.
     La tua squadra gestione %project_name%.
@@ -127,7 +127,7 @@ mail:
     il tuo account di posta elettronica potrebbe non funzionare correttamente.
 
     In una settimana riceverai tre codici invito, che potrai ritirare
-    su %app_url%/voucher. Puoi passarli ai tuoi amici e
+    su %voucher_url%. Puoi passarli ai tuoi amici e
     invitarli a registrarsi con %project_name%.
 
     Sinceramente,
@@ -138,17 +138,17 @@ mail:
 
     La password del tuo account è stata tentata di resettare l'autenticazione con
     il tuo indirizzo e-mail e il codice di recupero corrispondente a
-    %app_url%/recupero.
+    %recovery_url%.
 
     Se non sei stato/a tu, allora qualcun altro con accesso al tuo gettone di recupero
     ha tentato di entrare in possesso del tuo account. Vai su
-    %app_url%/user/recovery_token immediatamente e crea un
+    %recovery_token_url% immediatamente e crea un
     nuovo token di recupero. Questo invaliderà il vecchio token di recupero e fermerà
     il processo.
 
     Se hai attivato il processo da solo, il periodo di attesa di 48 ore è iniziato
     ora. Finirà a %time%. In seguito, puoi impostare una nuova password su
-    %app_url%/recupero.
+    %recovery_url%.
 
     Speriamo che tu continui a goderti il tuo account di posta elettronica.
     Il tuo %project_name% admin team.

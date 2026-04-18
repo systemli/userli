@@ -328,7 +328,7 @@ mail:
     E-Mail-Kontos kommen.
 
     In einer Woche erhälst du drei Einladungscodes, die du unter
-    %app_url%/voucher abrufen kannst. Diese kannst du an Freund:innen
+    %voucher_url% abrufen kannst. Diese kannst du an Freund:innen
     weiterleiten und sie so zu %project_name% einladen.
 
     Viel Spaß mit deinem E-Mail-Konto, wünscht dir
@@ -339,17 +339,17 @@ mail:
 
     Es wurde versucht dein Passwort zurückzusetzen. Dazu wurden deine
     E-Mail-Addresse und der zugehörige Wiederherstellungscode unter
-    %app_url%/recovery eingegeben.
+    %recovery_url% eingegeben.
 
     Wenn du das nicht selbst warst, versucht jemand anderes mit Zugang zu
     deinem Wiederherstellungscode, Kontrolle über dein Konto zu bekommen.
-    Gehe schnellstmöglich zu %app_url%/user/recovery_token
+    Gehe schnellstmöglich zu %recovery_token_url%
     und erstelle dir einen neuen Wiederherstellungscode. Dadurch wird der
     alte Code ungültig und der Vorgang abgebrochen.
 
     Hast du den Vorgang selbst ausgelöst, startet nun die 48-stündige Wartezeit.
     Diese geht bis zum %time%. Anschließend kannst du mit einem
-    Besuch von %app_url%/recovery dein Passwort neu setzen.
+    Besuch von %recovery_url% dein Passwort neu setzen.
 
     Weiterhin viel Spaß mit deinem E-Mail-Konto, wünscht dir
     dein %project_name%-Verwaltungsteam.
@@ -361,7 +361,7 @@ mail:
     %alias%
 
     Du kannst deine E-Mail-Aliase hier verwalten:
-    %app_url%/alias
+    %alias_url%
 
     Weiterhin viel Spaß mit deinem E-Mail-Konto, wünscht dir
     dein %project_name%-Verwaltungsteam.

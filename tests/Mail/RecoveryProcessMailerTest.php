@@ -10,6 +10,7 @@ use App\Mail\RecoveryProcessMailer;
 use App\Service\SettingsService;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RecoveryProcessMailerTest extends TestCase
@@ -20,11 +21,9 @@ class RecoveryProcessMailerTest extends TestCase
         $user->setRecoveryStartTime(new DateTimeImmutable('2026-01-15 10:00:00'));
 
         $settingsService = $this->createStub(SettingsService::class);
-        $settingsService->method('get')
-            ->willReturnMap([
-                ['app_url', null, 'https://mail.example.com'],
-                ['project_name', null, 'Example Mail'],
-            ]);
+        $settingsService->method('get')->willReturnMap([
+            ['project_name', null, 'Example Mail'],
+        ]);
 
         $translator = $this->createStub(TranslatorInterface::class);
         $translator->method('trans')
@@ -38,7 +37,7 @@ class RecoveryProcessMailerTest extends TestCase
             ->method('send')
             ->with('user@example.org', 'Recovery body', 'Recovery subject');
 
-        $mailer = new RecoveryProcessMailer($handler, $translator, $settingsService);
+        $mailer = new RecoveryProcessMailer($handler, $translator, $settingsService, $this->createStub(UrlGeneratorInterface::class));
         $mailer->send($user, 'en');
     }
 
@@ -62,7 +61,7 @@ class RecoveryProcessMailerTest extends TestCase
         $handler = $this->createMock(MailHandler::class);
         $handler->expects(self::once())->method('send');
 
-        $mailer = new RecoveryProcessMailer($handler, $translator, $settingsService);
+        $mailer = new RecoveryProcessMailer($handler, $translator, $settingsService, $this->createStub(UrlGeneratorInterface::class));
         $mailer->send($user, 'de');
     }
 
@@ -72,21 +71,27 @@ class RecoveryProcessMailerTest extends TestCase
         $user->setRecoveryStartTime(new DateTimeImmutable('2026-01-15 10:00:00'));
 
         $settingsService = $this->createStub(SettingsService::class);
-        $settingsService->method('get')
-            ->willReturnMap([
-                ['app_url', null, 'https://mail.example.com'],
-                ['project_name', null, 'Example Mail'],
-            ]);
+        $settingsService->method('get')->willReturnMap([
+            ['project_name', null, 'Example Mail'],
+        ]);
+
+        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
+        $urlGenerator->method('generate')
+            ->willReturnCallback(static fn (string $name) => match ($name) {
+                'recovery' => 'https://mail.example.com/recovery',
+                'account_recovery_token' => 'https://mail.example.com/account/recovery-token',
+            });
 
         $translator = $this->createMock(TranslatorInterface::class);
         $translator->expects(self::exactly(2))
             ->method('trans')
             ->willReturnCallback(static function (string $id, array $parameters) {
                 if ('mail.recovery-body' === $id) {
-                    self::assertSame('https://mail.example.com', $parameters['%app_url%']);
                     self::assertSame('Example Mail', $parameters['%project_name%']);
                     self::assertSame('user@example.org', $parameters['%email%']);
                     self::assertArrayHasKey('%time%', $parameters);
+                    self::assertSame('https://mail.example.com/recovery', $parameters['%recovery_url%']);
+                    self::assertSame('https://mail.example.com/account/recovery-token', $parameters['%recovery_token_url%']);
                 }
                 if ('mail.recovery-subject' === $id) {
                     self::assertSame('user@example.org', $parameters['%email%']);
@@ -97,7 +102,7 @@ class RecoveryProcessMailerTest extends TestCase
 
         $handler = $this->createStub(MailHandler::class);
 
-        $mailer = new RecoveryProcessMailer($handler, $translator, $settingsService);
+        $mailer = new RecoveryProcessMailer($handler, $translator, $settingsService, $urlGenerator);
         $mailer->send($user, 'en');
     }
 }

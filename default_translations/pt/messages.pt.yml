@@ -168,7 +168,7 @@ mail:
     funcione corretamente se você ultrapassar essa cota.
 
     Daqui uma semana, você receberá três convites, os quais você pode pegar
-    em %app_url%/voucher. Você pode dá-los aos seus contatos e convidá-los
+    em %voucher_url%. Você pode dá-los aos seus contatos e convidá-los
     a se cadastrar no %project_name%.
 
     Sinceramente, time %project_name%.
@@ -178,17 +178,17 @@ mail:
 
     Alguém tentou redefinir a senha da sua conta. E para isso, esse alguém
     se autenticou com o seu endereço de e-mail e token de recuperação
-    correspondente em %app_url%/recovery.
+    correspondente em %recovery_url%.
 
     Não foi você que fez essa ativação? Pode ser que alguma outra pessoa
     com acesso ao seu token de recuperação esteja tentando tomar posse da sua conta.
-    Se esse for o caso, é importante que você vá até %app_url%/user/recovery_token imediatamente
+    Se esse for o caso, é importante que você vá até %recovery_token_url% imediatamente
     para criar um novo token de recuperação. Dessa forma você vai invalidar o
     token antigo e interromper o processo.
 
     Se foi você quem ativou o processo, o período de espera de 48 horas
     começa agora. A espera acaba %time%. Depois disso, você poderá configurar
-    uma nova senha em %app_url%/recovery.
+    uma nova senha em %recovery_url%.
 
     Esperamos que continue a tirar proveito da sua conta.
     Time %project_name%.
@@ -199,7 +199,7 @@ mail:
     Um novo endereço alias foi criado para o seu email %email%:
     %alias%
 
-    Gerencie os seus endereços alias aqui: %app_url%/alias
+    Gerencie os seus endereços alias aqui: %alias_url%
 
     Esperamos que continue a tirar proveito da sua conta.
     Time %project_name%.

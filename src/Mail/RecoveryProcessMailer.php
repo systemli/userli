@@ -9,6 +9,7 @@ use App\Handler\MailHandler;
 use App\Service\SettingsService;
 use DateInterval;
 use IntlDateFormatter;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 final readonly class RecoveryProcessMailer
@@ -17,6 +18,7 @@ final readonly class RecoveryProcessMailer
         private MailHandler $handler,
         private TranslatorInterface $translator,
         private SettingsService $settingsService,
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 
@@ -36,10 +38,11 @@ final readonly class RecoveryProcessMailer
         return $this->translator->trans(
             'mail.recovery-body',
             [
-                '%app_url%' => $this->settingsService->get('app_url'),
                 '%project_name%' => $this->settingsService->get('project_name'),
                 '%email%' => $email,
                 '%time%' => $time,
+                '%recovery_url%' => $this->urlGenerator->generate('recovery', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                '%recovery_token_url%' => $this->urlGenerator->generate('account_recovery_token', [], UrlGeneratorInterface::ABSOLUTE_URL),
             ],
             null,
             $locale
