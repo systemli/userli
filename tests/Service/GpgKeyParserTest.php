@@ -18,6 +18,7 @@ use Crypt_GPG_KeyNotFoundException;
 use Crypt_GPG_NoDataException;
 use Crypt_GPG_SubKey;
 use DateTimeImmutable;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 
@@ -277,6 +278,28 @@ zg5FDph+OpdBuInEpzFyovIpSMF67TAY1b96p8doFaWQ0g==
         $this->expectException(NoGpgDataException::class);
 
         new GpgKeyParser()->parse($this->email, $this->brokenKeyAscii);
+    }
+
+    #[DataProvider('emailWithFilterOperatorsProvider')]
+    public function testParseRejectsEmailWithFilterOperators(string $email): void
+    {
+        $this->expectException(GpgKeyParserException::class);
+        $this->expectExceptionMessage('contains characters not allowed in a GnuPG key lookup');
+
+        new GpgKeyParser()->parse($email, $this->validKeyAscii);
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function emailWithFilterOperatorsProvider(): iterable
+    {
+        yield 'pipe (or-operator)' => ['a||b@example.org'];
+        yield 'ampersand (and-operator)' => ['a&&b@example.org'];
+        yield 'parenthesis (grouping)' => ['a(b)c@example.org'];
+        yield 'bang (negation)' => ['a!b@example.org'];
+        yield 'backslash' => ['a\\b@example.org'];
+        yield 'single pipe' => ['a|b@example.org'];
     }
 
     public function testOtherKey(): void
