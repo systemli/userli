@@ -108,3 +108,31 @@ Feature: Recovery
 
     Then I should be on "/recovery"
     And I should see text matching "This token has an invalid format."
+
+  @recovery
+  Scenario: Regenerate recovery token via signed mail link in a single password entry
+    Given I have a signed recovery-token regenerate URL for "user@example.org" as placeholder "regenerate_url"
+    When I am on "regenerate_url"
+    Then the response status code should be 200
+    And I should see text matching "Create a new recovery token"
+    When I fill in "recovery_token_regenerate[password]" with "passwordtest"
+    And I press "recovery_token_regenerate[submit]"
+
+    Then I should be on "/recovery/recovery_token/ack"
+    And I should see text matching "Your new recovery token has been generated."
+    And the response status code should be 200
+
+  @recovery
+  Scenario: Deep-link regeneration rejects a wrong password without generating a new token
+    Given I have a signed recovery-token regenerate URL for "user@example.org" as placeholder "regenerate_url"
+    When I am on "regenerate_url"
+    And I fill in "recovery_token_regenerate[password]" with "wrong-password"
+    And I press "recovery_token_regenerate[submit]"
+
+    Then I should see text matching "The password you entered is incorrect"
+    And the response status code should be 200
+
+  @recovery
+  Scenario: Deep-link regeneration rejects tampered signatures
+    When I am on "/recovery/token/regenerate?user=1&_expiration=9999999999&_hash=invalid"
+    Then the response status code should be 403
