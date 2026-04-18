@@ -471,6 +471,7 @@ admin:
       reports: Reports
       smtp_quota: SMTP Quota Limits
       mta_sts: MTA-STS
+      rfc_addresses: RFC Email Addresses
     app_name:
       label: Application Name
       help: The name displayed in the application header and browser title
@@ -522,6 +523,12 @@ admin:
     mta_sts_max_age:
       label: Max Age (seconds)
       help: How long sending servers should cache the policy (default 604800 = 1 week)
+    postmaster_address:
+      label: Postmaster Address
+      help: Destination email address for postmaster@ on all domains (RFC 5321). Leave empty to disable.
+    abuse_address:
+      label: Abuse Address
+      help: Destination email address for abuse@ on all domains (RFC 2142). Leave empty to disable.
   navigation:
     aria-label: Admin navigation
     dashboard: Dashboard

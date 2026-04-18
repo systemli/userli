@@ -12,6 +12,7 @@ use App\Repository\AliasRepository;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
 use App\Security\RequireApiScope;
+use App\Service\RfcAliasResolver;
 use App\Service\SettingsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +29,7 @@ final class PostfixController extends AbstractController
         private readonly UserRepository $userRepository,
         private readonly CacheInterface $cache,
         private readonly SettingsService $settingsService,
+        private readonly RfcAliasResolver $rfcAliasResolver,
     ) {
     }
 
@@ -37,7 +39,7 @@ final class PostfixController extends AbstractController
         $result = $this->cache->get(AliasCacheKey::POSTFIX_ALIAS->key($alias), function (ItemInterface $item) use ($alias) {
             $item->expiresAfter(AliasCacheKey::TTL);
 
-            return $this->aliasRepository->findDestinationsBySource($alias);
+            return $this->rfcAliasResolver->resolveDestinations($alias);
         });
 
         return $this->json($result);

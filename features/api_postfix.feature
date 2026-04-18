@@ -46,6 +46,42 @@ Feature: Postfix API
             []
             """
 
+    @alias
+    Scenario: Get postmaster alias from setting
+        Given the following Setting exists:
+            | name                | value              |
+            | postmaster_address  | admin@example.org  |
+        And I have a valid API token "postfix-test-123"
+        When I send a GET request to "/api/postfix/alias/postmaster@example.org"
+        Then the response status code should equal 200
+        And the JSON response should be:
+            """
+            ["admin@example.org"]
+            """
+
+    @alias
+    Scenario: Get abuse alias from setting
+        Given the following Setting exists:
+            | name           | value                   |
+            | abuse_address  | abuse-team@example.org  |
+        And I have a valid API token "postfix-test-123"
+        When I send a GET request to "/api/postfix/alias/abuse@example.org"
+        Then the response status code should equal 200
+        And the JSON response should be:
+            """
+            ["abuse-team@example.org"]
+            """
+
+    @alias
+    Scenario: Get postmaster alias without setting returns empty
+        Given I have a valid API token "postfix-test-123"
+        When I send a GET request to "/api/postfix/alias/postmaster@example.org"
+        Then the response status code should equal 200
+        And the JSON response should be:
+            """
+            []
+            """
+
     @domain
     Scenario: Get domain with wrong API token
         Given I have an invalid API token

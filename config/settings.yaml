@@ -70,3 +70,13 @@ settings:
     validation:
       min: 86400
       max: 31557600
+
+  postmaster_address:
+    type: email
+    default: ""
+    optional: true
+
+  abuse_address:
+    type: email
+    default: ""
+    optional: true
