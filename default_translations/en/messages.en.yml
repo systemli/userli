@@ -412,10 +412,9 @@ openpgp:
   upload-key: Upload
   update-key: Replace
   upload-modal-title: Upload key
-  upload-modal-continue: Continue
   upload-for: "for"
   replace-modal-title: Confirm account password
-  replace-modal-description: "We need to verify your account password before replacing the OpenPGP key for"
+  replace-modal-description: We need to verify your password before replacing your OpenPGP key.
   replace-modal-hint: This is your account password, not the passphrase of your OpenPGP key.
   replace-modal-password-label: Account password
   replace-modal-back: Back

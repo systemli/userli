@@ -65,9 +65,7 @@ final class OpenPGPController extends AbstractController
             }
 
             $existingKey = $this->openPgpKeyManager->getKey($email);
-            /** @var string|null $password */
-            $password = $form->get('password')->getData();
-            if (null !== $existingKey && !$this->isValidPassword($user, $password)) {
+            if (null !== $existingKey && !$this->isValidPassword($user, $this->extractPassword($request))) {
                 $this->addFlash('error', 'flashes.password-confirmation-failed');
 
                 return $this->redirectToRoute('openpgp');
@@ -106,6 +104,14 @@ final class OpenPGPController extends AbstractController
         $hasher = $this->passwordHasherFactory->getPasswordHasher($user);
 
         return $hasher->verify($user->getPassword(), $password);
+    }
+
+    private function extractPassword(Request $request): ?string
+    {
+        $payload = $request->request->all(OpenPgpKeyType::NAME);
+        $password = $payload['password'] ?? null;
+
+        return is_string($password) ? $password : null;
     }
 
     private function importOpenPgpKey(User $user, string $key, string $email): void

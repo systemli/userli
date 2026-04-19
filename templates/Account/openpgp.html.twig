@@ -7,7 +7,7 @@
 {% block page_subtitle %}{{ "openpgp.manage-subtitle"|trans }}{% endblock %}
 
 {% block page_content %}
-    <div class="max-w-3xl mx-auto" data-controller="openpgp-upload delete-modal">
+    <div class="max-w-3xl mx-auto" data-controller="modal openpgp-replace delete-modal">
         {# Brief information explanation #}
         <div class="mb-8 text-center">
             <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl mx-auto">
@@ -48,8 +48,24 @@
         {# ── Upload Modal ────────────────────────────────── #}
         {% include 'Account/_openpgp_upload_modal.html.twig' %}
 
+        {# ── Replace password-verification modal ─────────── #}
+        {% include '_password_verification_modal.html.twig' with {
+            controller_name: 'openpgp-replace',
+            tone: 'warning',
+            external_form_id: 'openpgp-upload-form',
+            password_name: 'upload_openpgp_key[password]',
+            modal_title: 'openpgp.replace-modal-title'|trans,
+            modal_description: 'openpgp.replace-modal-description'|trans,
+            modal_hint: 'openpgp.replace-modal-hint'|trans,
+            modal_password_label: 'openpgp.replace-modal-password-label'|trans,
+            modal_submit_label: 'openpgp-key-submit'|trans,
+            secondary_label: 'openpgp.replace-modal-back'|trans,
+            secondary_action: 'openpgp-replace#close',
+            modal_id: 'openpgp-replace-modal-title',
+        } %}
+
         {# ── Delete Modal ────────────────────────────────── #}
-        {% include '_delete_password_modal.html.twig' with {
+        {% include '_password_verification_modal.html.twig' with {
             modal_title: 'delete.openpgp.headline'|trans,
             modal_description: 'delete.openpgp.lead'|trans({'%email%': ''}),
             modal_submit_label: 'openpgp-delete'|trans,

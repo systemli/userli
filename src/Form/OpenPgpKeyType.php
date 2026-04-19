@@ -11,7 +11,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -58,10 +57,6 @@ final class OpenPgpKeyType extends AbstractType implements EventSubscriberInterf
                 'label' => 'openpgp-key-text',
                 'required' => false,
                 'attr' => ['placeholder' => 'openpgp-key-text-placeholder'],
-            ])
-            ->add('password', PasswordType::class, [
-                'label' => 'form.delete-password',
-                'required' => false,
             ])
             ->add('submit', SubmitType::class, ['label' => 'openpgp-key-submit']);
 

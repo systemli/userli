@@ -174,7 +174,7 @@
     </div>
 
     {# Delete account modal #}
-    {% include '_delete_password_modal.html.twig' with {
+    {% include '_password_verification_modal.html.twig' with {
         modal_title: 'delete.user.headline'|trans,
         modal_description: 'delete.user.lead'|trans,
         modal_action: path('account_delete_submit'),
