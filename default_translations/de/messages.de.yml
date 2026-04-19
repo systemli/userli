@@ -417,7 +417,7 @@ openpgp:
   upload-for: "für"
   replace-modal-title: Kontopasswort bestätigen
   replace-modal-description: "Zum Ersetzen des OpenPGP-Schlüssels müssen wir dein Kontopasswort überprüfen für"
-  replace-modal-hint: Das ist dein Userli-Kontopasswort – nicht die Passphrase deines OpenPGP-Schlüssels.
+  replace-modal-hint: Das ist dein Kontopasswort – nicht die Passphrase deines OpenPGP-Schlüssels.
   replace-modal-password-label: Kontopasswort
   replace-modal-back: Zurück
 
