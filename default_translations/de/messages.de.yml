@@ -413,8 +413,13 @@ openpgp:
   upload-key: Hochladen
   update-key: Ersetzen
   upload-modal-title: Schlüssel hochladen
+  upload-modal-continue: Weiter
   upload-for: "für"
-  password-help: Erforderlich, wenn ein vorhandener Schlüssel ersetzt wird.
+  replace-modal-title: Kontopasswort bestätigen
+  replace-modal-description: "Zum Ersetzen des OpenPGP-Schlüssels müssen wir dein Kontopasswort überprüfen für"
+  replace-modal-hint: Das ist dein Userli-Kontopasswort – nicht die Passphrase deines OpenPGP-Schlüssels.
+  replace-modal-password-label: Kontopasswort
+  replace-modal-back: Zurück
 
 index.alias-motivation: Erstelle personalisierte E-Mail-Aliasse, um deinen Posteingang besser zu organisieren und deine Privatsphäre zu schützen.
 

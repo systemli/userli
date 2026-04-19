@@ -412,8 +412,13 @@ openpgp:
   upload-key: Upload
   update-key: Replace
   upload-modal-title: Upload key
+  upload-modal-continue: Continue
   upload-for: "for"
-  password-help: Required when replacing an existing key.
+  replace-modal-title: Confirm account password
+  replace-modal-description: "We need to verify your account password before replacing the OpenPGP key for"
+  replace-modal-hint: This is your Userli account password, not the passphrase of your OpenPGP key.
+  replace-modal-password-label: Account password
+  replace-modal-back: Back
 
 index.alias-motivation: Create personalized email aliases to better organize your inbox and protect your privacy.
 
