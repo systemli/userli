@@ -27,8 +27,8 @@ import { Controller } from "@hotwired/stimulus";
  *   - backdropCloseUpload:  Closes when the step-1 backdrop is clicked.
  *   - backdropClosePassword: Closes when the step-2 backdrop is clicked.
  */
-export default class extends Controller {
-  static targets = [
+export default class OpenpgpUploadController extends Controller {
+  static readonly targets = [
     "uploadOverlay",
     "uploadDialog",
     "passwordOverlay",
@@ -158,8 +158,8 @@ export default class extends Controller {
 
   private showOverlay(overlay: HTMLElement, dialog: HTMLElement): void {
     overlay.classList.remove("hidden");
-    // Reflow so the opacity/scale transition plays after unhiding.
-    void overlay.offsetHeight;
+    // Force reflow so the opacity/scale transition plays after unhiding.
+    overlay.getBoundingClientRect();
     overlay.classList.remove("opacity-0");
     overlay.classList.add("opacity-100");
     dialog.classList.remove("opacity-0", "scale-95");
