@@ -12,6 +12,8 @@ final class OpenPgpKey
 
     private ?string $keyText = null;
 
+    private ?string $password = null;
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -45,5 +47,15 @@ final class OpenPgpKey
     public function setKeyText(string $keyText): void
     {
         $this->keyText = $keyText;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(?string $password): void
+    {
+        $this->password = $password;
     }
 }

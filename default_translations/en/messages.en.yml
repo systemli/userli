@@ -413,6 +413,7 @@ openpgp:
   update-key: Replace
   upload-modal-title: Upload key
   upload-for: "for"
+  password-help: Required when replacing an existing key.
 
 index.alias-motivation: Create personalized email aliases to better organize your inbox and protect your privacy.
 

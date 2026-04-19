@@ -325,13 +325,34 @@ Feature: OpenPGP
     And the response status code should be 200
 
   @upload-openpgp-file-replace-valid-key
-  Scenario: Upload file with another matching key
+  Scenario: Upload file with another matching key requires password
+    Given the following OpenPgpKey exists:
+      | email             | keyId      | keyFingerprint                             | keyData    | uploader          |
+      | alice@example.org | 2281FEC2   | 7301 2547 C25D E2A0 D097 8C46 AD8D 52CD   | dummydata  | alice@example.org |
     When I am authenticated as "alice@example.org"
     And I am on "/account/openpgp"
     And I set hidden field "upload_openpgp_key_email" to "alice@example.org"
     And I fill in the following:
       | upload_openpgp_key_keyFile       | /tmp/alice2.asc   |
       | upload_openpgp_key_keyText       |                   |
+      | upload_openpgp_key_password      |                   |
+    And I press "Publish OpenPGP key"
+
+    Then I should be on "/account/openpgp"
+    And I should see text matching "The password you entered is incorrect. Please try again."
+
+  @upload-openpgp-file-replace-valid-key-password
+  Scenario: Upload file with another matching key with password
+    Given the following OpenPgpKey exists:
+      | email             | keyId      | keyFingerprint                             | keyData    | uploader          |
+      | alice@example.org | 2281FEC2   | 7301 2547 C25D E2A0 D097 8C46 AD8D 52CD   | dummydata  | alice@example.org |
+    When I am authenticated as "alice@example.org"
+    And I am on "/account/openpgp"
+    And I set hidden field "upload_openpgp_key_email" to "alice@example.org"
+    And I fill in the following:
+      | upload_openpgp_key_keyFile       | /tmp/alice2.asc   |
+      | upload_openpgp_key_keyText       |                   |
+      | upload_openpgp_key_password      | asdasd            |
     And I press "Publish OpenPGP key"
 
     Then I should be on "/account/openpgp"

@@ -14,6 +14,7 @@ use App\Form\OpenPgpKeyType;
 use App\Form\PasswordConfirmationType;
 use App\Repository\AliasRepository;
 use App\Service\OpenPgpKeyManager;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,6 +27,7 @@ final class OpenPGPController extends AbstractController
     public function __construct(
         private readonly OpenPgpKeyManager $openPgpKeyManager,
         private readonly AliasRepository $aliasRepository,
+        private readonly PasswordHasherFactoryInterface $passwordHasherFactory,
     ) {
     }
 
@@ -62,6 +64,15 @@ final class OpenPGPController extends AbstractController
                 return $this->redirectToRoute('openpgp');
             }
 
+            $existingKey = $this->openPgpKeyManager->getKey($email);
+            /** @var string|null $password */
+            $password = $form->get('password')->getData();
+            if (null !== $existingKey && !$this->isValidPassword($user, $password)) {
+                $this->addFlash('error', 'flashes.password-confirmation-failed');
+
+                return $this->redirectToRoute('openpgp');
+            }
+
             /** @var UploadedFile $keyFile */
             $keyFile = $form->get('keyFile')->getData();
             /** @var string $keyText */
@@ -84,6 +95,17 @@ final class OpenPGPController extends AbstractController
             'form' => $form,
             'identities' => $identities,
         ]);
+    }
+
+    private function isValidPassword(User $user, ?string $password): bool
+    {
+        if (null === $password || '' === $password) {
+            return false;
+        }
+
+        $hasher = $this->passwordHasherFactory->getPasswordHasher($user);
+
+        return $hasher->verify($user->getPassword(), $password);
     }
 
     private function importOpenPgpKey(User $user, string $key, string $email): void

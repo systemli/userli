@@ -414,6 +414,7 @@ openpgp:
   update-key: Ersetzen
   upload-modal-title: Schlüssel hochladen
   upload-for: "für"
+  password-help: Erforderlich, wenn ein vorhandener Schlüssel ersetzt wird.
 
 index.alias-motivation: Erstelle personalisierte E-Mail-Aliasse, um deinen Posteingang besser zu organisieren und deine Privatsphäre zu schützen.
 
