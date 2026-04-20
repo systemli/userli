@@ -44,7 +44,7 @@ final class PostfixController extends AbstractController
         $result = $this->cache->get(AliasCacheKey::POSTFIX_ALIAS->key($alias), function (ItemInterface $item) use ($alias) {
             $item->expiresAfter(AliasCacheKey::TTL);
 
-            return $this->rfcAliasResolver->resolveDestinations($alias);
+            return $this->aliasRepository->findDestinationsBySource($alias);
         });
 
         return $this->json($result);
