@@ -12,6 +12,7 @@ use App\Repository\AliasRepository;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
 use App\Security\RequireApiScope;
+use App\Service\RfcAliasResolver;
 use App\Service\SettingsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,12 +29,18 @@ final class PostfixController extends AbstractController
         private readonly UserRepository $userRepository,
         private readonly CacheInterface $cache,
         private readonly SettingsService $settingsService,
+        private readonly RfcAliasResolver $rfcAliasResolver,
     ) {
     }
 
     #[Route(path: '/api/postfix/alias/{alias}', name: 'api_postfix_get_alias_users', methods: ['GET'], stateless: true)]
     public function getAliasUsers(string $alias): Response
     {
+        // RFC addresses are resolved from settings (cached separately), skip alias cache
+        if ($this->rfcAliasResolver->isRfcAddress($alias)) {
+            return $this->json($this->rfcAliasResolver->resolveDestinations($alias));
+        }
+
         $result = $this->cache->get(AliasCacheKey::POSTFIX_ALIAS->key($alias), function (ItemInterface $item) use ($alias) {
             $item->expiresAfter(AliasCacheKey::TTL);
 

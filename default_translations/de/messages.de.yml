@@ -450,6 +450,7 @@ admin:
       reports: Berichte
       smtp_quota: SMTP-Quota Limits
       mta_sts: MTA-STS
+      rfc_addresses: RFC E-Mail-Adressen
     app_name:
       label: Anwendungsname
       help: Der im Anwendungsheader und Browsertitel angezeigte Name
@@ -501,6 +502,12 @@ admin:
     mta_sts_max_age:
       label: Max. Alter (Sekunden)
       help: Wie lange sendende Server die Richtlinie zwischenspeichern sollen (Standard 604800 = 1 Woche)
+    postmaster_address:
+      label: Postmaster-Adresse
+      help: Ziel-E-Mail-Adresse für postmaster@ auf allen Domains (RFC 5321). Leer lassen zum Deaktivieren.
+    abuse_address:
+      label: Abuse-Adresse
+      help: Ziel-E-Mail-Adresse für abuse@ auf allen Domains (RFC 2142). Leer lassen zum Deaktivieren.
   navigation:
     aria-label: Admin Navigation
     dashboard: Dashboard

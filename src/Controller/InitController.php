@@ -113,6 +113,7 @@ final class InitController extends AbstractController
             'project_url' => $domainName ? 'https://'.$domainName : null,
             'email_sender_address' => $domainName ? 'noreply@'.$domainName : null,
             'email_notification_address' => $domainName ? 'admin@'.$domainName : null,
+            'postmaster_address' => $domainName ? 'postmaster@'.$domainName : null,
         ];
 
         $form = $this->createForm(SettingsType::class, $defaultData, [
