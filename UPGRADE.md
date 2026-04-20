@@ -1,5 +1,24 @@
 # Upgrade documentation
 
+## Upgrade to 6.8.0
+
+### Postmaster aliases replaced with RFC address settings
+
+Per-domain postmaster aliases have been replaced with global `postmaster_address`
+and `abuse_address` settings (per RFC 2142).
+
+**Action required:**
+
+1. Run the database migration:
+   ```shell
+   bin/console doctrine:migrations:migrate --no-interaction
+   ```
+   The migration migrates existing postmaster alias destinations to the new
+   setting and removes the old aliases.
+
+2. Review the new **RFC Email Addresses** settings in **Admin → Settings** and
+   adjust `postmaster_address` and `abuse_address` if needed.
+
 ## Upgrade to 6.6.0
 
 ### Per-domain invitation settings / REGISTRATION_OPEN removed
