@@ -8,6 +8,7 @@ use App\Enum\Roles;
 use App\Message\PruneUserNotifications;
 use App\Message\PruneWebhookDeliveries;
 use App\Message\RemoveInactiveUsers;
+use App\Message\RemoveUnredeemedVouchers;
 use App\Message\UnlinkRedeemedVouchers;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,6 +25,7 @@ final class MaintenanceController extends AbstractController
         'prune_user_notifications' => PruneUserNotifications::class,
         'prune_webhook_deliveries' => PruneWebhookDeliveries::class,
         'remove_inactive_users' => RemoveInactiveUsers::class,
+        'remove_unredeemed_vouchers' => RemoveUnredeemedVouchers::class,
         'unlink_redeemed_vouchers' => UnlinkRedeemedVouchers::class,
     ];
 

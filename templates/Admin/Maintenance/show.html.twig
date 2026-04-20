@@ -49,6 +49,15 @@
                     task: 'unlink_redeemed_vouchers',
                     csrf_token_id: 'maintenance_unlink_redeemed_vouchers',
                 } %}
+
+                {% include 'Admin/_maintenance_card.html.twig' with {
+                    icon: 'heroicons:trash',
+                    title_key: 'admin.maintenance.removeUnredeemedVouchers.title',
+                    description_key: 'admin.maintenance.removeUnredeemedVouchers.description',
+                    button_key: 'admin.maintenance.removeUnredeemedVouchers.button',
+                    task: 'remove_unredeemed_vouchers',
+                    csrf_token_id: 'maintenance_remove_unredeemed_vouchers',
+                } %}
             </div>
         </div>
     </div>

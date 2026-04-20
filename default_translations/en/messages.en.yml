@@ -453,6 +453,10 @@ admin:
       title: Remove Inactive Users
       description: Delete users who have been inactive for more than 2 years. Admin and permanent users are excluded.
       button: Remove inactive users
+    removeUnredeemedVouchers:
+      title: Remove Unredeemed Invite Codes
+      description: Remove unredeemed invite codes from deleted users.
+      button: Remove unredeemed invite codes
     unknown_task: Unknown maintenance task.
     dispatched: Maintenance task dispatched successfully.
   title: Settings

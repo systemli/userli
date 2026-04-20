@@ -554,6 +554,10 @@ admin:
       title: Inaktive Nutzer:innen entfernen
       description: Löscht Nutzer:innen, die seit mehr als 2 Jahren inaktiv sind. Admin- und permanente Konten werden ausgenommen.
       button: Inaktive entfernen
+    removeUnredeemedVouchers:
+      title: Nicht eingelöste Einladungscodes entfernen
+      description: Entfernt nicht eingelöste Einladungscodes von gelöschten Nutzer:innen.
+      button: Einladungscodes entfernen
     unknown_task: Unbekannte Wartungsaufgabe.
     dispatched: Wartungsaufgabe erfolgreich gestartet.
   filter:
