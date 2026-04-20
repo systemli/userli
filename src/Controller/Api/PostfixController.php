@@ -36,6 +36,11 @@ final class PostfixController extends AbstractController
     #[Route(path: '/api/postfix/alias/{alias}', name: 'api_postfix_get_alias_users', methods: ['GET'], stateless: true)]
     public function getAliasUsers(string $alias): Response
     {
+        // RFC addresses are resolved from settings (cached separately), skip alias cache
+        if ($this->rfcAliasResolver->isRfcAddress($alias)) {
+            return $this->json($this->rfcAliasResolver->resolveDestinations($alias));
+        }
+
         $result = $this->cache->get(AliasCacheKey::POSTFIX_ALIAS->key($alias), function (ItemInterface $item) use ($alias) {
             $item->expiresAfter(AliasCacheKey::TTL);
 

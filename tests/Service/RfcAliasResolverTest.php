@@ -89,4 +89,26 @@ class RfcAliasResolverTest extends TestCase
 
         self::assertSame([], $resolver->resolveDestinations('nodomain'));
     }
+
+    public function testIsRfcAddressReturnsTrueForPostmaster(): void
+    {
+        $resolver = new RfcAliasResolver(
+            $this->createMock(AliasRepository::class),
+            $this->createMock(SettingsService::class),
+        );
+
+        self::assertTrue($resolver->isRfcAddress('postmaster@example.org'));
+        self::assertTrue($resolver->isRfcAddress('abuse@example.org'));
+    }
+
+    public function testIsRfcAddressReturnsFalseForRegularAddress(): void
+    {
+        $resolver = new RfcAliasResolver(
+            $this->createMock(AliasRepository::class),
+            $this->createMock(SettingsService::class),
+        );
+
+        self::assertFalse($resolver->isRfcAddress('info@example.org'));
+        self::assertFalse($resolver->isRfcAddress('nodomain'));
+    }
 }

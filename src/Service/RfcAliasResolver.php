@@ -20,6 +20,16 @@ final readonly class RfcAliasResolver
     }
 
     /**
+     * Check if the source address matches an RFC address prefix.
+     */
+    public function isRfcAddress(string $source): bool
+    {
+        $localPart = strstr($source, '@', true);
+
+        return false !== $localPart && isset(self::RFC_ADDRESS_SETTINGS[$localPart]);
+    }
+
+    /**
      * Resolve destinations for an email alias source.
      *
      * Checks RFC address settings first, then falls back to database aliases.
