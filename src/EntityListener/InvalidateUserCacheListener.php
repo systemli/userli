@@ -10,14 +10,15 @@ use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Events;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-#[AsEntityListener(event: Events::postPersist, method: 'postPersist', entity: User::class)]
+#[AsEntityListener(event: Events::postPersist, method: 'invalidate', entity: User::class)]
+#[AsEntityListener(event: Events::postUpdate, method: 'invalidate', entity: User::class)]
 final readonly class InvalidateUserCacheListener
 {
     public function __construct(private MessageBusInterface $bus)
     {
     }
 
-    public function postPersist(User $user): void
+    public function invalidate(User $user): void
     {
         $this->bus->dispatch(new InvalidateUserCache($user->getEmail()));
     }
