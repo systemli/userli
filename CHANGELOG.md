@@ -1,5 +1,30 @@
 # Changelog
 
+## 6.8.0 (2026.04.21)
+
+### Features and Improvements
+
+- 🔧 Generate mail URLs from app_url setting + route path (#1254)
+- ✨ Add admin UI for restoring deleted users (#1248)
+- ✨ Add maintenance task to remove unredeemed vouchers of deleted users (#1237)
+
+### Technical Changes
+
+- ⬆️ (deps): Bump the github-actions group with 3 updates (#1259)
+- ⬆️ (deps-dev): Bump the npm-dependencies group with 3 updates (#1258)
+- ⬆️ Update composer dependencies (#1257)
+- ♻️ Replace postmaster aliases with RFC address settings (#1252)
+- ⬆️ Bump phpunit/phpunit from 12.5.19 to 12.5.22 (#1251)
+
+### Bug Fixes
+
+- 🐛 Fix stale SMTP quota cache on user/alias update and global settings change (#1261)
+
+### Security
+
+- 🔒 Reject filter-DSL metacharacters in GpgKeyParser email argument (#1250)
+- 🔒 Enforce account-status checks on Keycloak API and consume TOTP backup codes (#1249)
+
 ## 6.7.0 (2026.04.18)
 
 ### Features and Improvements
