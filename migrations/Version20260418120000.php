@@ -23,13 +23,26 @@ final class Version20260418120000 extends AbstractMigration
 
         if (false !== $destination && '' !== $destination) {
             $this->connection->executeStatement(
-                'INSERT INTO settings (name, value) VALUES (:name, :value) ON DUPLICATE KEY UPDATE value = :value',
+                'INSERT INTO settings (name, value, creation_time, updated_time) VALUES (:name, :value, NOW(), NOW()) ON DUPLICATE KEY UPDATE value = :value, updated_time = NOW()',
                 ['name' => 'postmaster_address', 'value' => $destination]
             );
         }
 
-        // Delete all postmaster aliases
-        $this->addSql("DELETE FROM aliases WHERE source LIKE 'postmaster@%'");
+        // Migrate destination of first abuse alias to setting
+        $abuseDestination = $this->connection->fetchOne(
+            "SELECT destination FROM aliases WHERE source LIKE 'abuse@%' AND deleted = 0 LIMIT 1"
+        );
+
+        if (false !== $abuseDestination && '' !== $abuseDestination) {
+            $this->connection->executeStatement(
+                'INSERT INTO settings (name, value, creation_time, updated_time) VALUES (:name, :value, NOW(), NOW()) ON DUPLICATE KEY UPDATE value = :value, updated_time = NOW()',
+                ['name' => 'abuse_address', 'value' => $abuseDestination]
+            );
+        }
+
+        // Delete all postmaster and abuse aliases
+        $this->connection->executeStatement("DELETE FROM aliases WHERE source LIKE 'postmaster@%'");
+        $this->connection->executeStatement("DELETE FROM aliases WHERE source LIKE 'abuse@%'");
 
         // Ensure reserved names exist
         foreach (['postmaster', 'abuse'] as $name) {
