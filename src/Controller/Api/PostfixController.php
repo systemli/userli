@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Dto\PostfixAuthDto;
 use App\Enum\AliasCacheKey;
 use App\Enum\ApiScope;
 use App\Enum\DomainCacheKey;
+use App\Enum\Roles;
 use App\Enum\UserCacheKey;
+use App\Handler\UserAuthenticationHandler;
 use App\Repository\AliasRepository;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
@@ -15,7 +18,9 @@ use App\Security\RequireApiScope;
 use App\Service\RfcAliasResolver;
 use App\Service\SettingsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -23,6 +28,14 @@ use Symfony\Contracts\Cache\ItemInterface;
 #[RequireApiScope(scope: ApiScope::POSTFIX)]
 final class PostfixController extends AbstractController
 {
+    public const string MESSAGE_SUCCESS = 'success';
+
+    public const string MESSAGE_AUTHENTICATION_FAILED = 'authentication failed';
+
+    public const string MESSAGE_USER_DISABLED = 'user disabled due to spam role';
+
+    public const string MESSAGE_USER_PASSWORD_CHANGE_REQUIRED = 'user password change required';
+
     public function __construct(
         private readonly AliasRepository $aliasRepository,
         private readonly DomainRepository $domainRepository,
@@ -30,6 +43,7 @@ final class PostfixController extends AbstractController
         private readonly CacheInterface $cache,
         private readonly SettingsService $settingsService,
         private readonly RfcAliasResolver $rfcAliasResolver,
+        private readonly UserAuthenticationHandler $authHandler,
     ) {
     }
 
@@ -112,5 +126,29 @@ final class PostfixController extends AbstractController
             'per_hour' => $limits['per_hour'] ?? (int) $this->settingsService->get('smtp_quota_limit_per_hour', 0),
             'per_day' => $limits['per_day'] ?? (int) $this->settingsService->get('smtp_quota_limit_per_day', 0),
         ]);
+    }
+
+    #[Route(path: '/api/postfix/auth', name: 'api_postfix_authenticate', methods: ['POST'], stateless: true)]
+    public function authenticate(#[MapRequestPayload] PostfixAuthDto $request): JsonResponse
+    {
+        $user = $this->userRepository->findByEmail($request->getEmail());
+
+        if (null === $user || $user->isDeleted()) {
+            return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
+        }
+
+        if (null === $this->authHandler->authenticate($user, $request->getPassword())) {
+            return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
+        }
+
+        if ($user->hasRole(Roles::SPAM)) {
+            return $this->json(['message' => self::MESSAGE_USER_DISABLED], Response::HTTP_FORBIDDEN);
+        }
+
+        if ($user->isPasswordChangeRequired()) {
+            return $this->json(['message' => self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED], Response::HTTP_FORBIDDEN);
+        }
+
+        return $this->json(['message' => self::MESSAGE_SUCCESS]);
     }
 }
