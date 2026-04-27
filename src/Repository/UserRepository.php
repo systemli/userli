@@ -228,6 +228,18 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
             ->getOneOrNullResult();
     }
 
+    public function countActiveUsersSince(DateTimeImmutable $since): int
+    {
+        return (int) $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->where('u.deleted = :deleted')
+            ->andWhere('u.lastLoginTime >= :since')
+            ->setParameter('deleted', false)
+            ->setParameter('since', $since)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     public function countUsersWithTwofactor(): int
     {
         return (int) $this->createQueryBuilder('u')

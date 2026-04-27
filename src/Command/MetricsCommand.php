@@ -9,6 +9,8 @@ use App\Repository\DomainRepository;
 use App\Repository\OpenPgpKeyRepository;
 use App\Repository\UserRepository;
 use App\Repository\VoucherRepository;
+use DateInterval;
+use DateTimeImmutable;
 use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -71,6 +73,17 @@ final class MetricsCommand extends Command
         $output->writeln('# HELP userli_users_twofactor_total Total number of users with enabled two factor authentication');
         $output->writeln('# TYPE userli_users_twofactor_total gauge');
         $output->writeln('userli_users_twofactor_total '.$usersTwofactorTotal);
+
+        $now = new DateTimeImmutable();
+        $weeklyActiveUsers = $this->userRepository->countActiveUsersSince($now->sub(new DateInterval('P7D')));
+        $output->writeln('# HELP userli_users_weekly_active_total Number of users who logged in within the last 7 days');
+        $output->writeln('# TYPE userli_users_weekly_active_total gauge');
+        $output->writeln('userli_users_weekly_active_total '.$weeklyActiveUsers);
+
+        $monthlyActiveUsers = $this->userRepository->countActiveUsersSince($now->sub(new DateInterval('P30D')));
+        $output->writeln('# HELP userli_users_monthly_active_total Number of users who logged in within the last 30 days');
+        $output->writeln('# TYPE userli_users_monthly_active_total gauge');
+        $output->writeln('userli_users_monthly_active_total '.$monthlyActiveUsers);
 
         $redeemedVouchersTotal = $this->voucherRepository->countRedeemedVouchers();
         $unredeemedVouchersTotal = $this->voucherRepository->countUnredeemedVouchers();

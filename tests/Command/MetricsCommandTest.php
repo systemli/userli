@@ -23,6 +23,7 @@ class MetricsCommandTest extends TestCase
         $userRepository->method('countUsersWithRecoveryToken')->willReturn(5);
         $userRepository->method('countUsersWithMailCrypt')->willReturn(7);
         $userRepository->method('countUsersWithTwofactor')->willReturn(9);
+        $userRepository->method('countActiveUsersSince')->willReturn(42);
 
         $openPgpKeyRepository = $this->createStub(OpenPgpKeyRepository::class);
         $openPgpKeyRepository->method('countKeys')->willReturn(2);
@@ -50,6 +51,8 @@ class MetricsCommandTest extends TestCase
         self::assertStringContainsString('userli_users_recovery_token_total 5', $output);
         self::assertStringContainsString('userli_users_mailcrypt_total 7', $output);
         self::assertStringContainsString('userli_users_twofactor_total 9', $output);
+        self::assertStringContainsString('userli_users_weekly_active_total 42', $output);
+        self::assertStringContainsString('userli_users_monthly_active_total 42', $output);
         self::assertStringContainsString('userli_vouchers_total{type="unredeemed"} 7', $output);
         self::assertStringContainsString('userli_vouchers_total{type="redeemed"} 1', $output);
         self::assertStringContainsString('userli_domains_total 6', $output);
