@@ -1,5 +1,12 @@
 # Changelog
 
+## 6.8.1 (2026.04.27)
+
+### Bug Fixes
+
+- 🐛 Fix postmaster/abuse migration: missing columns and abuse settings (#1262)
+- 🐛 Fix usage of AliasRepository::findByUser method (#1202)
+
 ## 6.8.0 (2026.04.21)
 
 ### Features and Improvements
