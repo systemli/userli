@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\User;
-use App\Factory\AliasFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -23,7 +22,7 @@ final class LoadRandomAliasData extends Fixture implements FixtureGroupInterface
         $user = $manager->getRepository(User::class)->findByEmail('admin@example.org');
 
         for ($i = 1; $i < 5; ++$i) {
-            $alias = AliasFactory::create($user, null);
+            $alias = LoadAliasData::buildAlias($user, null);
             $manager->persist($alias);
         }
 
@@ -37,7 +36,7 @@ final class LoadRandomAliasData extends Fixture implements FixtureGroupInterface
         for ($i = 1; $i < 500; ++$i) {
             $userId = $userIds[array_rand($userIds)];
             $user = $manager->getReference(User::class, $userId);
-            $alias = AliasFactory::create($user, 'alias'.$i);
+            $alias = LoadAliasData::buildAlias($user, 'alias'.$i);
 
             $manager->persist($alias);
 

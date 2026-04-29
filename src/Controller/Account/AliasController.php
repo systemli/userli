@@ -12,8 +12,8 @@ use App\Form\Model\AliasCreate;
 use App\Form\Model\PasswordConfirmation;
 use App\Form\PasswordConfirmationType;
 use App\Form\RandomAliasCreateType;
-use App\Handler\AliasHandler;
 use App\Handler\DeleteHandler;
+use App\Service\AliasManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +26,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class AliasController extends AbstractController
 {
     public function __construct(
-        private readonly AliasHandler $aliasHandler,
+        private readonly AliasManager $aliasManager,
         private readonly DeleteHandler $deleteHandler,
         private readonly EntityManagerInterface $manager,
     ) {
@@ -65,8 +65,8 @@ final class AliasController extends AbstractController
             [
                 'user' => $user,
                 'user_domain' => $user->getDomain(),
-                'alias_creation_random' => $this->aliasHandler->checkAliasLimit($aliasesRandom, true),
-                'alias_creation_custom' => $this->aliasHandler->checkAliasLimit($aliasesCustom),
+                'alias_creation_random' => $this->aliasManager->checkAliasLimit($aliasesRandom, true),
+                'alias_creation_custom' => $this->aliasManager->checkAliasLimit($aliasesCustom),
                 'aliases_custom' => $aliasesCustom,
                 'aliases_random' => $aliasesRandom,
                 'random_alias_form' => $randomAliasCreateForm,
@@ -110,7 +110,7 @@ final class AliasController extends AbstractController
     private function processRandomAliasCreation(User $user, ?string $note = null): void
     {
         try {
-            $created = $this->aliasHandler->create($user);
+            $created = $this->aliasManager->createForUser($user);
             if ($created instanceof Alias) {
                 if ($note) {
                     $created->setNote($note);
@@ -127,7 +127,7 @@ final class AliasController extends AbstractController
     private function processCustomAliasCreation(User $user, string $alias, ?string $note = null): void
     {
         try {
-            $created = $this->aliasHandler->create($user, $alias);
+            $created = $this->aliasManager->createForUser($user, $alias);
             if ($created instanceof Alias) {
                 if ($note) {
                     $created->setNote($note);

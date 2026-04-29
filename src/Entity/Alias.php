@@ -36,6 +36,8 @@ class Alias implements SoftDeletableInterface, UpdatedTimeInterface, Stringable
     use UpdatedTimeTrait;
     use UserAwareTrait;
 
+    public const int RANDOM_ALIAS_LENGTH = 24;
+
     #[ORM\Column]
     protected ?string $source = null;
 

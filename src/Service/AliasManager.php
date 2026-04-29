@@ -9,17 +9,26 @@ use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
+use App\Event\AliasCreatedEvent;
 use App\Exception\ValidationException;
 use App\Form\Model\AliasAdminModel;
 use App\Handler\DeleteHandler;
+use App\Helper\RandomStringGenerator;
 use App\Repository\AliasRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final readonly class AliasManager
 {
     private const int PAGE_SIZE = 20;
+
+    public const int ALIAS_LIMIT_CUSTOM = 3;
+
+    public const int ALIAS_LIMIT_RANDOM = 100;
+
+    private const int MAX_RANDOM_RETRIES = 3;
 
     public function __construct(
         private EntityManagerInterface $em,
@@ -28,6 +37,7 @@ final readonly class AliasManager
         private DeleteHandler $deleteHandler,
         private Security $security,
         private ValidatorInterface $validator,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -77,6 +87,47 @@ final readonly class AliasManager
     }
 
     /**
+     * Create a new alias for a user (user-facing).
+     *
+     * Returns null if the alias limit is reached. For random aliases,
+     * retries with a new random source on uniqueness collisions.
+     *
+     * @throws ValidationException
+     */
+    public function createForUser(User $user, ?string $localPart = null): ?Alias
+    {
+        $random = null === $localPart;
+
+        $aliases = $this->repository->findByUser($user, $random);
+        if (!$this->checkAliasLimit($aliases, $random)) {
+            return null;
+        }
+
+        $localPart = (null !== $localPart) ? strtolower($localPart) : null;
+        $alias = $this->buildAlias($user, $localPart);
+
+        if ($random) {
+            $this->persistRandomAliasWithRetry($alias);
+        } else {
+            $this->validateAndPersist($alias);
+        }
+
+        $this->eventDispatcher->dispatch(new AliasCreatedEvent($alias), AliasCreatedEvent::NAME);
+
+        return $alias;
+    }
+
+    /**
+     * @param Alias[] $aliases
+     */
+    public function checkAliasLimit(array $aliases, bool $random = false): bool
+    {
+        $limit = $random ? self::ALIAS_LIMIT_RANDOM : self::ALIAS_LIMIT_CUSTOM;
+
+        return count($aliases) < $limit;
+    }
+
+    /**
      * Update an existing alias from the admin form model.
      */
     public function update(Alias $alias, AliasAdminModel $model): void
@@ -99,6 +150,62 @@ final readonly class AliasManager
     public function delete(Alias $alias): void
     {
         $this->deleteHandler->deleteAlias($alias);
+    }
+
+    private function buildAlias(User $user, ?string $localPart): Alias
+    {
+        $domain = $user->getDomain();
+
+        $alias = new Alias();
+        $alias->setUser($user);
+        $alias->setDomain($domain);
+        $alias->setDestination($user->getEmail());
+
+        if (null === $localPart) {
+            $localPart = RandomStringGenerator::generate(Alias::RANDOM_ALIAS_LENGTH, false);
+            $alias->setRandom(true);
+        }
+
+        $alias->setSource($localPart.'@'.$domain->getName());
+
+        return $alias;
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    private function validateAndPersist(Alias $alias): void
+    {
+        $violations = $this->validator->validate($alias, null, ['Default', 'unique']);
+        if ($violations->count() > 0) {
+            throw new ValidationException($violations);
+        }
+
+        $this->em->persist($alias);
+        $this->em->flush();
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    private function persistRandomAliasWithRetry(Alias $alias): void
+    {
+        for ($attempt = 0; $attempt <= self::MAX_RANDOM_RETRIES; ++$attempt) {
+            if ($attempt > 0) {
+                $localPart = RandomStringGenerator::generate(Alias::RANDOM_ALIAS_LENGTH, false);
+                $alias->setSource($localPart.'@'.$alias->getDomain()->getName());
+            }
+
+            try {
+                $this->validateAndPersist($alias);
+
+                return;
+            } catch (ValidationException $e) {
+                if ($attempt === self::MAX_RANDOM_RETRIES) {
+                    throw $e;
+                }
+            }
+        }
     }
 
     /**
