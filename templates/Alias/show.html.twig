@@ -30,7 +30,7 @@
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ "custom-aliases.title"|trans }}</h3>
                                     <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ "custom-aliases.subtitle"|trans({
-                                        '%alias_limit_custom%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_CUSTOM')
+                                        '%alias_limit_custom%': constant('App\\Service\\AliasManager::ALIAS_LIMIT_CUSTOM')
                                     }) }}</p>
                                 </div>
                             </div>
@@ -52,7 +52,7 @@
                                 <div class="flex items-start">
                                     {{ ux_icon('heroicons:exclamation-triangle-20-solid', {class: 'w-5 h-5 text-amber-500 dark:text-amber-400 mt-0.5 mr-2 flex-shrink-0'}) }}
                                     <span class="text-gray-700 dark:text-gray-300">{{ "custom-aliases.limitation-limited"|trans({
-                                        '%alias_limit_custom%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_CUSTOM')
+                                        '%alias_limit_custom%': constant('App\\Service\\AliasManager::ALIAS_LIMIT_CUSTOM')
                                     })|safe_html }}</span>
                                 </div>
 
@@ -93,7 +93,7 @@
                                             <h3 class="text-sm font-medium text-amber-800 dark:text-amber-200">{{ "index.alias-limit-reached"|trans }}</h3>
                                             <p class="text-sm text-amber-700 dark:text-amber-300 mt-1">
                                                 {{ "index.alias-limit"|trans({
-                                                    '%alias_limit%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_CUSTOM'),
+                                                    '%alias_limit%': constant('App\\Service\\AliasManager::ALIAS_LIMIT_CUSTOM'),
                                                     '%alias_type%': 'custom'|trans
                                                 }) }} {{ "index.alias-deletion-custom"|trans }}
                                             </p>
@@ -160,7 +160,7 @@
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ "random-aliases.title"|trans }}</h3>
                                     <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">{{ "random-aliases.subtitle"|trans({
-                                        '%alias_limit_random%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_RANDOM')
+                                        '%alias_limit_random%': constant('App\\Service\\AliasManager::ALIAS_LIMIT_RANDOM')
                                     }) }}</p>
                                 </div>
                             </div>
@@ -224,7 +224,7 @@
                                             <h3 class="text-sm font-medium text-amber-800 dark:text-amber-200">{{ "index.alias-limit-reached"|trans }}</h3>
                                             <p class="text-sm text-amber-700 dark:text-amber-300 mt-1">
                                                 {{ "index.alias-limit"|trans({
-                                                    '%alias_limit%': constant('App\\Handler\\AliasHandler::ALIAS_LIMIT_RANDOM'),
+                                                    '%alias_limit%': constant('App\\Service\\AliasManager::ALIAS_LIMIT_RANDOM'),
                                                     '%alias_type%': 'random'|trans
                                                 }) }} {{ "index.alias-deletion-random"|trans }}
                                             </p>

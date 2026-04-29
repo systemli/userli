@@ -19,6 +19,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -31,6 +32,7 @@ class AliasManagerTest extends TestCase
     private DeleteHandler&Stub $deleteHandler;
     private Security&Stub $security;
     private ValidatorInterface&Stub $validator;
+    private EventDispatcherInterface&Stub $eventDispatcher;
     private AliasManager $manager;
     private Domain $domain;
 
@@ -43,6 +45,7 @@ class AliasManagerTest extends TestCase
         $this->security = $this->createStub(Security::class);
         $this->validator = $this->createStub(ValidatorInterface::class);
         $this->validator->method('validate')->willReturn(new ConstraintViolationList());
+        $this->eventDispatcher = $this->createStub(EventDispatcherInterface::class);
 
         $this->domain = new Domain();
         $this->domain->setName('example.org');
@@ -58,6 +61,7 @@ class AliasManagerTest extends TestCase
             $this->deleteHandler,
             $this->security,
             $this->validator,
+            $this->eventDispatcher,
         );
     }
 
@@ -122,6 +126,7 @@ class AliasManagerTest extends TestCase
             $this->deleteHandler,
             $this->security,
             $this->validator,
+            $this->eventDispatcher,
         );
 
         $model = new AliasAdminModel();
@@ -150,6 +155,7 @@ class AliasManagerTest extends TestCase
             $this->deleteHandler,
             $this->security,
             $validator,
+            $this->eventDispatcher,
         );
 
         $model = new AliasAdminModel();
@@ -178,6 +184,7 @@ class AliasManagerTest extends TestCase
             $this->deleteHandler,
             $security,
             $this->validator,
+            $this->eventDispatcher,
         );
 
         $model = new AliasAdminModel();
@@ -204,6 +211,7 @@ class AliasManagerTest extends TestCase
             $this->deleteHandler,
             $this->security,
             $this->validator,
+            $this->eventDispatcher,
         );
 
         $model = new AliasAdminModel();
@@ -230,6 +238,7 @@ class AliasManagerTest extends TestCase
             $this->deleteHandler,
             $this->security,
             $this->validator,
+            $this->eventDispatcher,
         );
 
         $alias = new Alias();
@@ -264,6 +273,7 @@ class AliasManagerTest extends TestCase
             $deleteHandler,
             $this->security,
             $this->validator,
+            $this->eventDispatcher,
         );
 
         $manager->delete($alias);
@@ -288,6 +298,7 @@ class AliasManagerTest extends TestCase
             $this->deleteHandler,
             $security,
             $this->validator,
+            $this->eventDispatcher,
         );
 
         $model = new AliasAdminModel();
@@ -299,5 +310,95 @@ class AliasManagerTest extends TestCase
 
         // Domain admin should have destination forced to user's email
         self::assertSame('user@example.org', $alias->getDestination());
+    }
+
+    private function createUser(): User
+    {
+        $domain = new Domain();
+        $domain->setName('example.org');
+        $user = new User('user@example.org');
+        $user->setDomain($domain);
+
+        return $user;
+    }
+
+    public function testCreateForUserCustomAlias(): void
+    {
+        $user = $this->createUser();
+        $this->repository->method('findByUser')->willReturn([]);
+
+        $alias = $this->manager->createForUser($user, 'myalias');
+
+        self::assertInstanceOf(Alias::class, $alias);
+        self::assertSame('myalias@example.org', $alias->getSource());
+        self::assertFalse($alias->isRandom());
+        self::assertSame('user@example.org', $alias->getDestination());
+    }
+
+    public function testCreateForUserRandomAlias(): void
+    {
+        $user = $this->createUser();
+        $this->repository->method('findByUser')->willReturn([]);
+
+        $alias = $this->manager->createForUser($user);
+
+        self::assertInstanceOf(Alias::class, $alias);
+        self::assertTrue($alias->isRandom());
+        self::assertSame(Alias::RANDOM_ALIAS_LENGTH + 1 + strlen('example.org'), strlen($alias->getSource()));
+    }
+
+    public function testCreateForUserReturnsNullWhenLimitReached(): void
+    {
+        $user = $this->createUser();
+        $aliases = array_fill(0, AliasManager::ALIAS_LIMIT_CUSTOM, new Alias());
+        $this->repository->method('findByUser')->willReturn($aliases);
+
+        $result = $this->manager->createForUser($user, 'myalias');
+
+        self::assertNull($result);
+    }
+
+    public function testCreateForUserRandomRetriesOnCollision(): void
+    {
+        $user = $this->createUser();
+        $this->repository->method('findByUser')->willReturn([]);
+
+        $violation = new ConstraintViolation('message', 'messageTemplate', [], null, null, 'someValue');
+
+        $callCount = 0;
+        $validator = $this->createMock(ValidatorInterface::class);
+        $validator->method('validate')->willReturnCallback(
+            static function () use (&$callCount, $violation): ConstraintViolationList {
+                ++$callCount;
+                if (1 === $callCount) {
+                    return new ConstraintViolationList([$violation]);
+                }
+
+                return new ConstraintViolationList();
+            }
+        );
+
+        $manager = new AliasManager(
+            $this->entityManager,
+            $this->repository,
+            $this->domainGuesser,
+            $this->deleteHandler,
+            $this->security,
+            $validator,
+            $this->eventDispatcher,
+        );
+
+        $alias = $manager->createForUser($user);
+
+        self::assertInstanceOf(Alias::class, $alias);
+        self::assertEquals(2, $callCount);
+    }
+
+    public function testCheckAliasLimit(): void
+    {
+        self::assertTrue($this->manager->checkAliasLimit([], false));
+        self::assertTrue($this->manager->checkAliasLimit([], true));
+        self::assertFalse($this->manager->checkAliasLimit(array_fill(0, AliasManager::ALIAS_LIMIT_CUSTOM, new Alias()), false));
+        self::assertFalse($this->manager->checkAliasLimit(array_fill(0, AliasManager::ALIAS_LIMIT_RANDOM, new Alias()), true));
     }
 }
