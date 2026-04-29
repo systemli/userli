@@ -167,3 +167,68 @@ Feature: Postfix API
         Then the response status code should equal 200
         And the JSON path "per_hour" should equal "0"
         And the JSON path "per_day" should equal "0"
+
+    @auth
+    Scenario: Authenticate with wrong API token
+        Given I have an invalid API token
+        When I send a POST request to "/api/postfix/auth" with JSON:
+            """
+            {"email": "user@example.org", "password": "password"}
+            """
+        Then the response status code should equal 401
+
+    @auth
+    Scenario: Authenticate with correct credentials
+        Given I have a valid API token "postfix-test-123"
+        When I send a POST request to "/api/postfix/auth" with JSON:
+            """
+            {"email": "user@example.org", "password": "password"}
+            """
+        Then the response status code should equal 200
+        And the JSON path "message" should equal "success"
+
+    @auth
+    Scenario: Authenticate with wrong password
+        Given I have a valid API token "postfix-test-123"
+        When I send a POST request to "/api/postfix/auth" with JSON:
+            """
+            {"email": "user@example.org", "password": "wrong"}
+            """
+        Then the response status code should equal 401
+        And the JSON path "message" should equal "authentication failed"
+
+    @auth
+    Scenario: Authenticate nonexistent user
+        Given I have a valid API token "postfix-test-123"
+        When I send a POST request to "/api/postfix/auth" with JSON:
+            """
+            {"email": "nonexistent@example.org", "password": "password"}
+            """
+        Then the response status code should equal 401
+        And the JSON path "message" should equal "authentication failed"
+
+    @auth
+    Scenario: Authenticate spam user is forbidden
+        Given the following User exists:
+            | email            | password | roles     |
+            | spam@example.org | password | ROLE_SPAM |
+        And I have a valid API token "postfix-test-123"
+        When I send a POST request to "/api/postfix/auth" with JSON:
+            """
+            {"email": "spam@example.org", "password": "password"}
+            """
+        Then the response status code should equal 403
+        And the JSON path "message" should equal "user disabled due to spam role"
+
+    @auth
+    Scenario: Authenticate user with password change required
+        Given the following User exists:
+            | email                   | password | roles     | passwordChangeRequired |
+            | pwchange@example.org    | password | ROLE_USER | true                   |
+        And I have a valid API token "postfix-test-123"
+        When I send a POST request to "/api/postfix/auth" with JSON:
+            """
+            {"email": "pwchange@example.org", "password": "password"}
+            """
+        Then the response status code should equal 403
+        And the JSON path "message" should equal "user password change required"
