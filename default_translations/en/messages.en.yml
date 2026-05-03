@@ -559,6 +559,8 @@ admin:
     stats:
       users: Users
       recent_users: New accounts (7 days)
+      weekly_active_users: Active users (7 days)
+      monthly_active_users: Active users (30 days)
       aliases: Aliases
       domains: Domains
       vouchers_redeemed: Invite codes redeemed

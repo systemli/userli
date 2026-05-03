@@ -10,6 +10,7 @@ use App\Repository\DomainRepository;
 use App\Repository\OpenPgpKeyRepository;
 use App\Repository\UserRepository;
 use App\Repository\VoucherRepository;
+use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -31,6 +32,8 @@ final class DashboardController extends AbstractController
         $stats = [
             'users' => $this->userRepository->countUsers(),
             'recent_users' => $this->userRepository->countRecentUsers(),
+            'weekly_active_users' => $this->userRepository->countActiveUsersSince(new DateTimeImmutable('-7 days')),
+            'monthly_active_users' => $this->userRepository->countActiveUsersSince(new DateTimeImmutable('-30 days')),
             'aliases' => $this->aliasRepository->countByFilters(),
             'openpgp_keys' => $this->openPgpKeyRepository->countKeys(),
         ];

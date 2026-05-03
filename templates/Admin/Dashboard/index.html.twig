@@ -32,6 +32,20 @@
                 } %}
 
                 {% include 'Admin/Dashboard/_stat_card.html.twig' with {
+                    icon: 'heroicons:arrow-trending-up',
+                    icon_color: 'cyan',
+                    label_key: 'admin.dashboard.stats.weekly_active_users',
+                    value: stats.weekly_active_users,
+                } %}
+
+                {% include 'Admin/Dashboard/_stat_card.html.twig' with {
+                    icon: 'heroicons:arrow-trending-up',
+                    icon_color: 'teal',
+                    label_key: 'admin.dashboard.stats.monthly_active_users',
+                    value: stats.monthly_active_users,
+                } %}
+
+                {% include 'Admin/Dashboard/_stat_card.html.twig' with {
                     icon: 'heroicons:at-symbol',
                     icon_color: 'indigo',
                     label_key: 'admin.dashboard.stats.aliases',
