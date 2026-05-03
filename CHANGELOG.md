@@ -1,5 +1,22 @@
 # Changelog
 
+## 6.9.0 (2026.05.03)
+
+### Features and Improvements
+
+- ✨ Add WAU and MAU stats to admin dashboard (#1269)
+- ✨ Add weekly and monthly active user metrics for Prometheus (#1264)
+- ✨ Add Postfix SASL authentication endpoint (#1263)
+
+### Technical Changes
+
+- ⬆️ (deps-dev): Bump the npm-dependencies group with 6 updates (#1267)
+- ⬆️ Update composer dependencies (#1266)
+
+### Bug Fixes
+
+- 🐛 Fix random alias email mismatch and consolidate alias creation (#1268)
+
 ## 6.8.1 (2026.04.27)
 
 ### Bug Fixes
