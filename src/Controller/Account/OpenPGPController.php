@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class OpenPGPController extends AbstractController
@@ -26,6 +27,7 @@ final class OpenPGPController extends AbstractController
     public function __construct(
         private readonly OpenPgpKeyManager $openPgpKeyManager,
         private readonly AliasRepository $aliasRepository,
+        private readonly PasswordHasherFactoryInterface $passwordHasherFactory,
     ) {
     }
 
@@ -62,6 +64,13 @@ final class OpenPGPController extends AbstractController
                 return $this->redirectToRoute('openpgp');
             }
 
+            $existingKey = $this->openPgpKeyManager->getKey($email);
+            if (null !== $existingKey && !$this->isValidPassword($user, $this->extractPassword($request))) {
+                $this->addFlash('error', 'flashes.password-confirmation-failed');
+
+                return $this->redirectToRoute('openpgp');
+            }
+
             /** @var UploadedFile $keyFile */
             $keyFile = $form->get('keyFile')->getData();
             /** @var string $keyText */
@@ -84,6 +93,25 @@ final class OpenPGPController extends AbstractController
             'form' => $form,
             'identities' => $identities,
         ]);
+    }
+
+    private function isValidPassword(User $user, ?string $password): bool
+    {
+        if (null === $password || '' === $password) {
+            return false;
+        }
+
+        $hasher = $this->passwordHasherFactory->getPasswordHasher($user);
+
+        return $hasher->verify($user->getPassword(), $password);
+    }
+
+    private function extractPassword(Request $request): ?string
+    {
+        $payload = $request->request->all(OpenPgpKeyType::NAME);
+        $password = $payload['password'] ?? null;
+
+        return is_string($password) ? $password : null;
     }
 
     private function importOpenPgpKey(User $user, string $key, string $email): void

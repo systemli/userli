@@ -41,8 +41,9 @@
 
                 <div class="flex items-center gap-2 flex-shrink-0">
                     <button type="button"
-                            data-action="modal#open"
+                            data-action="modal#open openpgp-replace#arm"
                             data-modal-email-param="{{ identity.email }}"
+                            data-openpgp-replace-email-param="{{ identity.email }}"
                             class="inline-flex items-center justify-center p-2 sm:px-3.5 sm:py-2 text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800
                                 bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white focus:ring-blue-500"
                             title="{{ "openpgp.update-key"|trans }}">
@@ -66,7 +67,7 @@
                 <p class="text-xs text-gray-400 dark:text-gray-500">{{ "openpgp.no-key-uploaded"|trans }}</p>
 
                 <button type="button"
-                        data-action="modal#open"
+                        data-action="modal#open openpgp-replace#disarm"
                         data-modal-email-param="{{ identity.email }}"
                         class="inline-flex items-center justify-center p-2 sm:px-3.5 sm:py-2 text-sm font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800
                             bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white focus:ring-blue-500 flex-shrink-0"

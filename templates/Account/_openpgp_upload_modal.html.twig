@@ -37,7 +37,7 @@
 
             {# Upload form #}
             {% form_theme form 'Form/fields.html.twig' %}
-            {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+            {{ form_start(form, {'attr': {'class': 'space-y-6', 'id': 'openpgp-upload-form'}}) }}
 
             {# Hidden email field – populated by the Stimulus controller #}
             {{ form_widget(form.email, {'attr': {'data-modal-target': 'emailField'}}) }}
