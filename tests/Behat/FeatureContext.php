@@ -28,6 +28,7 @@ use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\MinkContext;
+use DateInterval;
 use DateTimeImmutable;
 use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\ORM\EntityManagerInterface;
@@ -626,6 +627,70 @@ class FeatureContext extends MinkContext
                 }
             }
         }
+    }
+
+    /**
+     * @Given /^I have a signed recovery-token regenerate URL for "([^"]*)" as placeholder "([^"]*)"$/
+     */
+    public function iHaveASignedRecoveryTokenRegenerateUrl(string $email, string $placeholder): void
+    {
+        $user = $this->getUserRepository()->findByEmail($email);
+        if (null === $user) {
+            throw new RuntimeException(sprintf('User "%s" does not exist', $email));
+        }
+
+        $container = $this->getContainer();
+        $urlGenerator = $container->get('router');
+        $uriSigner = $container->get('uri_signer');
+
+        $path = $urlGenerator->generate(
+            'recovery_token_regenerate',
+            ['user' => $user->getId()],
+            \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_PATH,
+        );
+
+        $this->setPlaceholder($placeholder, $uriSigner->sign($path, new DateInterval('P30D')));
+    }
+
+    /**
+     * @Given /^the User "([^"]*)" has a mailcrypt secret box for password "([^"]*)"$/
+     */
+    public function theUserHasAMailcryptSecretBox(string $email, string $password): void
+    {
+        $user = $this->getUserRepository()->findByEmail($email);
+        if (null === $user) {
+            throw new RuntimeException(sprintf('User "%s" does not exist', $email));
+        }
+
+        $this->getContainer()
+            ->get(\App\Handler\MailCryptKeyHandler::class)
+            ->create($user, $password);
+    }
+
+    /**
+     * @Given /^the User "([^"]*)" is soft-deleted$/
+     */
+    public function theUserIsSoftDeleted(string $email): void
+    {
+        $user = $this->getUserRepository()->findByEmail($email);
+        if (null === $user) {
+            throw new RuntimeException(sprintf('User "%s" does not exist', $email));
+        }
+
+        $user->setDeleted(true);
+        $this->manager->flush();
+    }
+
+    /**
+     * @When /^I fill field "([^"]*)" with the first TOTP backup code$/
+     */
+    public function iFillFieldWithFirstTotpBackupCode(string $fieldId): void
+    {
+        $backupCodes = $this->getPlaceholder('totp_backup_codes');
+        if (!is_array($backupCodes) || [] === $backupCodes) {
+            throw new RuntimeException('No TOTP backup codes cached');
+        }
+        $this->fillField($fieldId, $backupCodes[0]);
     }
 
     /**

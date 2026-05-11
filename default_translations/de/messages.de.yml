@@ -108,6 +108,7 @@ form:
   twofactor-login: Zwei-Faktor-Authentifizierung
   twofactor-login-placeholder: 6-stelliger Code
   twofactor-login-auth-code: Authentifizierungs-Code
+  twofactor-code: Authentifizierungs-Code (oder Backup-Code)
   twofactor-backup-code-confirm: Backup-Codes sicher abgelegt
   twofactor-login-desc: Öffne deine Zwei-Faktor (TOTP) App für den Code.
   twofactor-login-cancel: Login abbrechen
@@ -278,6 +279,11 @@ recovery-token:
   created-subtitle: Bitte kopiere und speicher dein Wiederherstellungscode sicher.
   created-info: Mit dem Wiederherstellungscode kannst du jederzeit dein Passwort zurücksetzen, wenn du dieses vergessen hast. Notiere ihn dir und speichere ihn an einem sicheren Ort ab.
   displayed-once: Der Wiederherstellungscode wird aus Sicherheitsgründen nur einmal angezeigt. Wir können ihn nicht für dich wiederherstellen.
+recovery-token-regenerate:
+  headline: Neuen Wiederherstellungscode erstellen
+  lead: >
+    Gib das Passwort für %email% ein, um den aktuellen Wiederherstellungscode
+    sofort zu entwerten und einen neuen zu erzeugen.
 flashes:
   dismiss: Schließen
   logout-successful: Du bist jetzt abgemeldet.
@@ -299,6 +305,8 @@ flashes:
   openpgp-key-upload-error-multiple-keys: Die hochgeladene Datei enhält mehr als einen Schlüssel für deine E-Mail-Adresse. Bitte lade nur einen Schlüssel hoch.
   openpgp-key-unauthorized: Du bist nicht berechtigt, Schlüssel für diese Adresse zu verwalten.
   password-confirmation-failed: Das eingegebene Passwort ist falsch. Bitte versuche es erneut.
+  recovery-token-regenerated: Dein neuer Wiederherstellungscode wurde erzeugt.
+  twofactor-code-invalid: Der eingegebene Zwei-Faktor-Code ist ungültig.
 flash_batch_remove_vouchers_success: Nicht eingelöste Einladungscodes gelöscht.
 error:
   title: Oops, es ist ein Fehler passiert.
