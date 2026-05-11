@@ -128,9 +128,6 @@
             "config/packages/nelmio_security.yaml"
         ]
     },
-    "pear/console_commandline": {
-        "version": "v1.2.3"
-    },
     "pear/crypt_gpg": {
         "version": "v1.6.4"
     },
