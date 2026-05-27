@@ -95,7 +95,6 @@ release: build
 		--exclude='${TMP_DIR}/assets/js' \
 		--exclude='${TMP_DIR}/behat.yml' \
 		--exclude='${TMP_DIR}/bin/github-release.sh' \
-		--exclude='${TMP_DIR}/bin/local-php-security-checker' \
 		--exclude='${TMP_DIR}/build' \
 		--exclude='${TMP_DIR}/config/services_test.yaml' \
 		--exclude='${TMP_DIR}/contrib' \
@@ -164,7 +163,7 @@ behat: assets
 	bin/behat -f progress
 
 security-check: vendors
-	bin/local-php-security-checker
+	symfony security:check
 
 psalm: vendors
 	composer psalm
