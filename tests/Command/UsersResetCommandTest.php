@@ -7,7 +7,7 @@ namespace App\Tests\Command;
 use App\Command\UsersResetCommand;
 use App\Entity\User;
 use App\Repository\UserRepository;
-use App\Service\UserResetService;
+use App\Service\UserLifecycleService;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -33,9 +33,9 @@ class UsersResetCommandTest extends TestCase
         $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturn($repository);
 
-        $userResetService = $this->createStub(UserResetService::class);
+        $userLifecycleService = $this->createStub(UserLifecycleService::class);
 
-        $this->command = new UsersResetCommand($manager, $userResetService);
+        $this->command = new UsersResetCommand($manager, $userLifecycleService);
     }
 
     public function testExecuteDryRun(): void

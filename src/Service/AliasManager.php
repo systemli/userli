@@ -10,9 +10,9 @@ use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Event\AliasCreatedEvent;
+use App\Event\AliasDeletedEvent;
 use App\Exception\ValidationException;
 use App\Form\Model\AliasAdminModel;
-use App\Handler\DeleteHandler;
 use App\Helper\RandomStringGenerator;
 use App\Repository\AliasRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,7 +34,6 @@ final readonly class AliasManager
         private EntityManagerInterface $em,
         private AliasRepository $repository,
         private DomainGuesser $domainGuesser,
-        private DeleteHandler $deleteHandler,
         private Security $security,
         private ValidatorInterface $validator,
         private EventDispatcherInterface $eventDispatcher,
@@ -145,11 +144,22 @@ final readonly class AliasManager
     }
 
     /**
-     * Soft-delete an alias.
+     * Soft-delete an alias. Optionally verify the alias belongs to $user before deleting.
      */
-    public function delete(Alias $alias): void
+    public function delete(Alias $alias, ?User $user = null): void
     {
-        $this->deleteHandler->deleteAlias($alias);
+        if (null !== $user && $alias->getUser() !== $user) {
+            return;
+        }
+
+        $alias->setDeleted(true);
+        $alias->clearSensitiveData();
+
+        $this->em->flush();
+
+        if (!$alias->isRandom()) {
+            $this->eventDispatcher->dispatch(new AliasDeletedEvent($alias), AliasDeletedEvent::CUSTOM);
+        }
     }
 
     private function buildAlias(User $user, ?string $localPart): Alias

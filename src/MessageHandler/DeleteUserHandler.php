@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\MessageHandler;
 
 use App\Entity\User;
-use App\Handler\DeleteHandler;
 use App\Message\DeleteUser;
+use App\Service\UserLifecycleService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -16,7 +16,7 @@ final readonly class DeleteUserHandler
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private DeleteHandler $deleteHandler,
+        private UserLifecycleService $userLifecycleService,
         private LoggerInterface $logger,
     ) {
     }
@@ -37,7 +37,7 @@ final readonly class DeleteUserHandler
             return;
         }
 
-        $this->deleteHandler->deleteUser($user);
+        $this->userLifecycleService->delete($user);
         $this->logger->info('Deleted user', ['userId' => $message->userId, 'email' => $user->getEmail()]);
     }
 }

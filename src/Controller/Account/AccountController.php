@@ -13,11 +13,11 @@ use App\Form\Model\RecoveryTokenConfirm;
 use App\Form\PasswordConfirmationType;
 use App\Form\PasswordType;
 use App\Form\RecoveryTokenConfirmType;
-use App\Handler\DeleteHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use App\Service\OpenPgpKeyManager;
+use App\Service\UserLifecycleService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,7 +32,7 @@ final class AccountController extends AbstractController
         private readonly PasswordUpdater $passwordUpdater,
         private readonly MailCryptKeyHandler $mailCryptKeyHandler,
         private readonly EntityManagerInterface $manager,
-        private readonly DeleteHandler $deleteHandler,
+        private readonly UserLifecycleService $userLifecycleService,
         private readonly RecoveryTokenHandler $recoveryTokenHandler,
         private readonly OpenPgpKeyManager $openPgpKeyManager,
         private readonly EventDispatcherInterface $eventDispatcher,
@@ -143,7 +143,7 @@ final class AccountController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $this->deleteHandler->deleteUser($user);
+            $this->userLifecycleService->delete($user);
 
             return $this->redirectToRoute('logout');
         }

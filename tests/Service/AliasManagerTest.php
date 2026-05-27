@@ -8,9 +8,9 @@ use App\Dto\PaginatedResult;
 use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\User;
+use App\Event\AliasDeletedEvent;
 use App\Exception\ValidationException;
 use App\Form\Model\AliasAdminModel;
-use App\Handler\DeleteHandler;
 use App\Repository\AliasRepository;
 use App\Service\AliasManager;
 use App\Service\DomainGuesser;
@@ -29,7 +29,6 @@ class AliasManagerTest extends TestCase
     private AliasRepository&Stub $repository;
     private EntityManagerInterface&Stub $entityManager;
     private DomainGuesser&Stub $domainGuesser;
-    private DeleteHandler&Stub $deleteHandler;
     private Security&Stub $security;
     private ValidatorInterface&Stub $validator;
     private EventDispatcherInterface&Stub $eventDispatcher;
@@ -41,7 +40,6 @@ class AliasManagerTest extends TestCase
         $this->repository = $this->createStub(AliasRepository::class);
         $this->entityManager = $this->createStub(EntityManagerInterface::class);
         $this->domainGuesser = $this->createStub(DomainGuesser::class);
-        $this->deleteHandler = $this->createStub(DeleteHandler::class);
         $this->security = $this->createStub(Security::class);
         $this->validator = $this->createStub(ValidatorInterface::class);
         $this->validator->method('validate')->willReturn(new ConstraintViolationList());
@@ -58,7 +56,6 @@ class AliasManagerTest extends TestCase
             $this->entityManager,
             $this->repository,
             $this->domainGuesser,
-            $this->deleteHandler,
             $this->security,
             $this->validator,
             $this->eventDispatcher,
@@ -123,7 +120,6 @@ class AliasManagerTest extends TestCase
             $entityManager,
             $this->repository,
             $this->domainGuesser,
-            $this->deleteHandler,
             $this->security,
             $this->validator,
             $this->eventDispatcher,
@@ -152,7 +148,6 @@ class AliasManagerTest extends TestCase
             $this->entityManager,
             $this->repository,
             $this->domainGuesser,
-            $this->deleteHandler,
             $this->security,
             $validator,
             $this->eventDispatcher,
@@ -181,7 +176,6 @@ class AliasManagerTest extends TestCase
             $entityManager,
             $this->repository,
             $this->domainGuesser,
-            $this->deleteHandler,
             $security,
             $this->validator,
             $this->eventDispatcher,
@@ -208,7 +202,6 @@ class AliasManagerTest extends TestCase
             $entityManager,
             $this->repository,
             $this->domainGuesser,
-            $this->deleteHandler,
             $this->security,
             $this->validator,
             $this->eventDispatcher,
@@ -235,7 +228,6 @@ class AliasManagerTest extends TestCase
             $entityManager,
             $this->repository,
             $this->domainGuesser,
-            $this->deleteHandler,
             $this->security,
             $this->validator,
             $this->eventDispatcher,
@@ -255,28 +247,83 @@ class AliasManagerTest extends TestCase
         self::assertSame('dest@example.org', $alias->getDestination());
     }
 
-    public function testDelete(): void
+    public function testDeleteSoftDeletesAliasAndDispatchesEventForCustomAlias(): void
     {
         $alias = new Alias();
+        $alias->setSource('alias@example.org');
 
-        /** @var DeleteHandler&MockObject $deleteHandler */
-        $deleteHandler = $this->createMock(DeleteHandler::class);
-        $deleteHandler
-            ->expects($this->once())
-            ->method('deleteAlias')
-            ->with($alias);
+        /** @var EventDispatcherInterface&MockObject $eventDispatcher */
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects(self::once())
+            ->method('dispatch')
+            ->with(self::isInstanceOf(AliasDeletedEvent::class), AliasDeletedEvent::CUSTOM);
+
+        /** @var EntityManagerInterface&MockObject $entityManager */
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects(self::once())->method('flush');
+
+        $manager = new AliasManager(
+            $entityManager,
+            $this->repository,
+            $this->domainGuesser,
+            $this->security,
+            $this->validator,
+            $eventDispatcher,
+        );
+
+        $manager->delete($alias);
+
+        self::assertTrue($alias->isDeleted());
+    }
+
+    public function testDeleteDoesNotDispatchEventForRandomAlias(): void
+    {
+        $alias = new Alias();
+        $alias->setRandom(true);
+
+        /** @var EventDispatcherInterface&MockObject $eventDispatcher */
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects(self::never())->method('dispatch');
 
         $manager = new AliasManager(
             $this->entityManager,
             $this->repository,
             $this->domainGuesser,
-            $deleteHandler,
+            $this->security,
+            $this->validator,
+            $eventDispatcher,
+        );
+
+        $manager->delete($alias);
+
+        self::assertTrue($alias->isDeleted());
+    }
+
+    public function testDeleteRespectsUserOwnershipGuard(): void
+    {
+        $owner = new User('owner@example.org');
+        $other = new User('other@example.org');
+
+        $alias = new Alias();
+        $alias->setSource('alias@example.org');
+        $alias->setUser($owner);
+
+        /** @var EntityManagerInterface&MockObject $entityManager */
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects(self::never())->method('flush');
+
+        $manager = new AliasManager(
+            $entityManager,
+            $this->repository,
+            $this->domainGuesser,
             $this->security,
             $this->validator,
             $this->eventDispatcher,
         );
 
-        $manager->delete($alias);
+        $manager->delete($alias, $other);
+
+        self::assertFalse($alias->isDeleted());
     }
 
     public function testDomainAdminForcesDestinationToUserEmail(): void
@@ -295,7 +342,6 @@ class AliasManagerTest extends TestCase
             $entityManager,
             $this->repository,
             $this->domainGuesser,
-            $this->deleteHandler,
             $security,
             $this->validator,
             $this->eventDispatcher,
@@ -382,7 +428,6 @@ class AliasManagerTest extends TestCase
             $this->entityManager,
             $this->repository,
             $this->domainGuesser,
-            $this->deleteHandler,
             $this->security,
             $validator,
             $this->eventDispatcher,

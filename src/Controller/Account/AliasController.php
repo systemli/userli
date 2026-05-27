@@ -12,7 +12,6 @@ use App\Form\Model\AliasCreate;
 use App\Form\Model\PasswordConfirmation;
 use App\Form\PasswordConfirmationType;
 use App\Form\RandomAliasCreateType;
-use App\Handler\DeleteHandler;
 use App\Service\AliasManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -27,7 +26,6 @@ final class AliasController extends AbstractController
 {
     public function __construct(
         private readonly AliasManager $aliasManager,
-        private readonly DeleteHandler $deleteHandler,
         private readonly EntityManagerInterface $manager,
     ) {
     }
@@ -156,7 +154,7 @@ final class AliasController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $this->deleteHandler->deleteAlias($alias, $this->getUser());
+            $this->aliasManager->delete($alias, $this->getUser());
 
             $this->addFlash('success', 'flashes.alias-deletion-successful');
 
