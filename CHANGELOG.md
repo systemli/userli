@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.9.1 (2026.05.27)
+
+### Technical Changes
+
+- ⬆️ Update composer dependencies (#1285, #1280)
+- ⬆️ Update npm dependencies (#1284, #1283, #1279, #1274, #1273)
+- ⬆️ Update GitHub Actions (#1282, #1278, #1272)
+
 ## 6.9.0 (2026.05.03)
 
 ### Features and Improvements
