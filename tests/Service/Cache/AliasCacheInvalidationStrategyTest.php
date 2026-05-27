@@ -2,19 +2,29 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\MessageHandler;
+namespace App\Tests\Service\Cache;
 
 use App\Enum\AliasCacheKey;
 use App\Enum\UserCacheKey;
-use App\Message\InvalidateAliasCache;
-use App\MessageHandler\InvalidateAliasCacheHandler;
 use App\Repository\AliasRepository;
+use App\Service\Cache\AliasCacheInvalidationStrategy;
+use App\Service\Cache\EntityCacheType;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\Cache\CacheInterface;
 
-class InvalidateAliasCacheHandlerTest extends TestCase
+class AliasCacheInvalidationStrategyTest extends TestCase
 {
-    public function testInvoke(): void
+    public function testTypeIsAlias(): void
+    {
+        $strategy = new AliasCacheInvalidationStrategy(
+            $this->createStub(CacheInterface::class),
+            $this->createStub(AliasRepository::class),
+        );
+
+        self::assertSame(EntityCacheType::ALIAS, $strategy->type());
+    }
+
+    public function testInvalidateDropsAliasUserQuotaAndDestinationSenderKeys(): void
     {
         $source = 'alias@example.org';
         $destinations = ['user1@example.org', 'user2@example.org'];
@@ -33,7 +43,7 @@ class InvalidateAliasCacheHandlerTest extends TestCase
         $cache = $this->createMock(CacheInterface::class);
         $cache->expects(self::exactly(4))
             ->method('delete')
-            ->with($this->callback(static function (string $key) use (&$expectedKeys): bool {
+            ->with(self::callback(static function (string $key) use (&$expectedKeys): bool {
                 $index = array_search($key, $expectedKeys, true);
                 if ($index === false) {
                     return false;
@@ -44,13 +54,13 @@ class InvalidateAliasCacheHandlerTest extends TestCase
             }))
             ->willReturn(true);
 
-        $handler = new InvalidateAliasCacheHandler($cache, $aliasRepository);
-        $handler(new InvalidateAliasCache($source));
+        $strategy = new AliasCacheInvalidationStrategy($cache, $aliasRepository);
+        $strategy->invalidate($source);
 
         self::assertEmpty($expectedKeys, 'All expected cache keys should have been deleted');
     }
 
-    public function testInvokeWithNoDestinations(): void
+    public function testInvalidateWithNoDestinations(): void
     {
         $source = 'alias@example.org';
 
@@ -66,7 +76,7 @@ class InvalidateAliasCacheHandlerTest extends TestCase
         $cache = $this->createMock(CacheInterface::class);
         $cache->expects(self::exactly(2))
             ->method('delete')
-            ->with($this->callback(static function (string $key) use (&$expectedKeys): bool {
+            ->with(self::callback(static function (string $key) use (&$expectedKeys): bool {
                 $index = array_search($key, $expectedKeys, true);
                 if ($index === false) {
                     return false;
@@ -77,8 +87,8 @@ class InvalidateAliasCacheHandlerTest extends TestCase
             }))
             ->willReturn(true);
 
-        $handler = new InvalidateAliasCacheHandler($cache, $aliasRepository);
-        $handler(new InvalidateAliasCache($source));
+        $strategy = new AliasCacheInvalidationStrategy($cache, $aliasRepository);
+        $strategy->invalidate($source);
 
         self::assertEmpty($expectedKeys, 'All expected cache keys should have been deleted');
     }
