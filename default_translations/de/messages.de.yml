@@ -286,6 +286,7 @@ flashes:
   voucher-creation-successful: Neuer Einladungscode erstellt.
   alias-creation-successful: Deine neue Alias-Adresse wurde erstellt.
   alias-deletion-successful: Deine Alias-Adresse wurde gelöscht.
+  alias-deletion-failed: Deine Alias-Adresse konnte nicht gelöscht werden. Bitte versuche es erneut.
   recovery-token-invalid: E-Mail-Adresse oder Wiederherstellungscode sind falsch!
   recovery-token-ack: Du hast einen Wiederherstellungscode erzeugt.
   recovery-reauthenticate: Etwas ist schief gelaufen. Bitte erneut authentifizieren!

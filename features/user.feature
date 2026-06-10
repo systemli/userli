@@ -95,7 +95,6 @@ Feature: User
 
     When I press the "Delete alias random_alias_4@example.org" button
     And I wait for the modal to appear
-    And I fill in "password_confirmation[password]" with "asdasd" in the modal
     And I click "Delete alias address" in the modal
     And I wait for text "Your alias address was deleted." to appear
 
