@@ -6,8 +6,8 @@ namespace App\Tests\Command;
 
 use App\Command\UsersDeleteCommand;
 use App\Entity\User;
-use App\Handler\DeleteHandler;
 use App\Repository\UserRepository;
+use App\Service\UserLifecycleService;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -29,9 +29,9 @@ class UsersDeleteCommandTest extends TestCase
         $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturn($repository);
 
-        $deleteHandler = $this->createStub(DeleteHandler::class);
+        $userLifecycleService = $this->createStub(UserLifecycleService::class);
 
-        $this->command = new UsersDeleteCommand($manager, $deleteHandler);
+        $this->command = new UsersDeleteCommand($manager, $userLifecycleService);
     }
 
     public function testExecute(): void

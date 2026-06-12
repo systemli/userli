@@ -7,7 +7,7 @@ namespace App\Tests\Command;
 use App\Command\UsersRestoreCommand;
 use App\Entity\User;
 use App\Repository\UserRepository;
-use App\Service\UserRestoreService;
+use App\Service\UserLifecycleService;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -17,7 +17,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 class UsersRestoreCommandTest extends TestCase
 {
     private UsersRestoreCommand $command;
-    private UserRestoreService $userRestoreService;
+    private UserLifecycleService $userLifecycleService;
     private User $user;
 
     protected function setUp(): void
@@ -32,14 +32,14 @@ class UsersRestoreCommandTest extends TestCase
         $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturn($repository);
 
-        $this->userRestoreService = $this->createStub(UserRestoreService::class);
+        $this->userLifecycleService = $this->createStub(UserLifecycleService::class);
 
-        $this->command = new UsersRestoreCommand($manager, $this->userRestoreService);
+        $this->command = new UsersRestoreCommand($manager, $this->userLifecycleService);
     }
 
     public function testExecuteWithoutMailCrypt(): void
     {
-        $this->userRestoreService->method('restoreUser')->willReturnCallback(static function (User $user, string $password) {
+        $this->userLifecycleService->method('restore')->willReturnCallback(static function (User $user, string $password) {
             $user->setDeleted(false);
 
             return null;
@@ -73,7 +73,7 @@ class UsersRestoreCommandTest extends TestCase
 
     public function testExecuteWithMailCrypt(): void
     {
-        $this->userRestoreService->method('restoreUser')->willReturnCallback(static function (User $user, string $password) {
+        $this->userLifecycleService->method('restore')->willReturnCallback(static function (User $user, string $password) {
             $user->setDeleted(false);
             $user->setMailCryptEnabled(true);
 

@@ -6,7 +6,7 @@ namespace App\Command;
 
 use App\Exception\PasswordMismatchException;
 use App\Exception\PasswordPolicyException;
-use App\Service\UserRestoreService;
+use App\Service\UserLifecycleService;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -19,7 +19,7 @@ final class UsersRestoreCommand extends AbstractUsersCommand
 {
     public function __construct(
         EntityManagerInterface $manager,
-        private readonly UserRestoreService $userRestoreService,
+        private readonly UserLifecycleService $userLifecycleService,
     ) {
         parent::__construct($manager);
     }
@@ -54,7 +54,7 @@ final class UsersRestoreCommand extends AbstractUsersCommand
 
         $output->write(sprintf("\nRestoring user %s ...\n\n", $user->getEmail()));
 
-        $recoveryToken = $this->userRestoreService->restoreUser($user, $password);
+        $recoveryToken = $this->userLifecycleService->restore($user, $password);
 
         if ($recoveryToken !== null) {
             $output->write(sprintf("<info>New recovery token (please hand over to user): %s</info>\n\n", $recoveryToken));

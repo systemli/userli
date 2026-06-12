@@ -11,7 +11,6 @@ use App\Enum\MailCrypt;
 use App\Enum\Roles;
 use App\Enum\UserNotificationType;
 use App\Form\Model\UserAdminModel;
-use App\Handler\DeleteHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use App\Repository\AliasRepository;
@@ -32,8 +31,7 @@ final readonly class UserManager
         private MailCryptKeyHandler $mailCryptKeyHandler,
         private SettingsService $settingsService,
         private DomainGuesser $domainGuesser,
-        private UserResetService $userResetService,
-        private DeleteHandler $deleteHandler,
+        private UserLifecycleService $userLifecycleService,
         private AliasRepository $aliasRepository,
         private VoucherRepository $voucherRepository,
         private OpenPgpKeyRepository $openPgpKeyRepository,
@@ -110,7 +108,7 @@ final readonly class UserManager
         $plainPassword = $model->getPlainPassword();
         if (!empty($plainPassword)) {
             if ($user->hasMailCryptSecretBox()) {
-                $recoveryToken = $this->userResetService->resetUser($user, $plainPassword);
+                $recoveryToken = $this->userLifecycleService->reset($user, $plainPassword);
             } else {
                 $this->passwordUpdater->updatePassword($user, $plainPassword);
             }
@@ -135,7 +133,7 @@ final readonly class UserManager
      */
     public function delete(User $user): void
     {
-        $this->deleteHandler->deleteUser($user);
+        $this->userLifecycleService->delete($user);
     }
 
     /**

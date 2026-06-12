@@ -10,8 +10,8 @@ use App\Enum\Roles;
 use App\Form\Model\UserAdminModel;
 use App\Form\UserAdminType;
 use App\Form\UserRestoreType;
+use App\Service\UserLifecycleService;
 use App\Service\UserManager;
-use App\Service\UserRestoreService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,7 +24,7 @@ final class UserController extends AbstractController
 {
     public function __construct(
         private readonly UserManager $manager,
-        private readonly UserRestoreService $restoreService,
+        private readonly UserLifecycleService $userLifecycleService,
         private readonly EntityManagerInterface $em,
     ) {
     }
@@ -212,7 +212,7 @@ final class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $recoveryToken = $this->restoreService->restoreUser($user, $form->get('plainPassword')->getData());
+            $recoveryToken = $this->userLifecycleService->restore($user, $form->get('plainPassword')->getData());
             $this->addFlash('success', 'admin.user.restore.success');
 
             return $this->render('Admin/User/show.html.twig', [

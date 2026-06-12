@@ -762,8 +762,8 @@ class FeatureContext extends MinkContext
             throw new RuntimeException(sprintf('User "%s" does not exist', $email));
         }
 
-        $deleteHandler = $this->getContainer()->get('App\Handler\DeleteHandler');
-        $deleteHandler->deleteUser($user);
+        $userLifecycleService = $this->getContainer()->get('App\Service\UserLifecycleService');
+        $userLifecycleService->delete($user);
     }
 
     /**

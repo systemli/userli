@@ -7,9 +7,9 @@ namespace App\Tests\Command;
 use App\Command\AliasDeleteCommand;
 use App\Entity\Alias;
 use App\Entity\User;
-use App\Handler\DeleteHandler;
 use App\Repository\AliasRepository;
 use App\Repository\UserRepository;
+use App\Service\AliasManager;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -41,9 +41,9 @@ class AliasDeleteCommandTest extends TestCase
             [Alias::class, $aliasRepository],
         ]);
 
-        $deleteHandler = $this->createStub(DeleteHandler::class);
+        $aliasManager = $this->createStub(AliasManager::class);
 
-        $this->command = new AliasDeleteCommand($manager, $deleteHandler);
+        $this->command = new AliasDeleteCommand($manager, $aliasManager);
     }
 
     public function testExecute(): void

@@ -6,7 +6,7 @@ namespace App\Command;
 
 use App\Entity\Alias;
 use App\Entity\User;
-use App\Handler\DeleteHandler;
+use App\Service\AliasManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:alias:delete', description: 'Delete an alias')]
 final class AliasDeleteCommand extends Command
 {
-    public function __construct(private readonly EntityManagerInterface $manager, private readonly DeleteHandler $deleteHandler)
+    public function __construct(private readonly EntityManagerInterface $manager, private readonly AliasManager $aliasManager)
     {
         parent::__construct();
     }
@@ -60,10 +60,10 @@ final class AliasDeleteCommand extends Command
         } else {
             if ($user) {
                 $output->write(sprintf("Deleting alias %s of user %s\n", $source, $email));
-                $this->deleteHandler->deleteAlias($alias, $user);
+                $this->aliasManager->delete($alias, $user);
             } else {
                 $output->write(sprintf("Deleting alias %s\n", $source));
-                $this->deleteHandler->deleteAlias($alias);
+                $this->aliasManager->delete($alias);
             }
         }
 

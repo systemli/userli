@@ -9,7 +9,6 @@ use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Form\Model\UserAdminModel;
-use App\Handler\DeleteHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use App\Repository\AliasRepository;
@@ -19,8 +18,8 @@ use App\Repository\UserRepository;
 use App\Repository\VoucherRepository;
 use App\Service\DomainGuesser;
 use App\Service\SettingsService;
+use App\Service\UserLifecycleService;
 use App\Service\UserManager;
-use App\Service\UserResetService;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
@@ -34,8 +33,7 @@ class UserManagerTest extends TestCase
     private MailCryptKeyHandler&Stub $mailCryptKeyHandler;
     private SettingsService&Stub $settingsService;
     private DomainGuesser&Stub $domainGuesser;
-    private UserResetService&Stub $userResetService;
-    private DeleteHandler&Stub $deleteHandler;
+    private UserLifecycleService&Stub $userLifecycleService;
     private AliasRepository&Stub $aliasRepository;
     private VoucherRepository&Stub $voucherRepository;
     private OpenPgpKeyRepository&Stub $openPgpKeyRepository;
@@ -51,8 +49,7 @@ class UserManagerTest extends TestCase
         $this->mailCryptKeyHandler = $this->createStub(MailCryptKeyHandler::class);
         $this->settingsService = $this->createStub(SettingsService::class);
         $this->domainGuesser = $this->createStub(DomainGuesser::class);
-        $this->userResetService = $this->createStub(UserResetService::class);
-        $this->deleteHandler = $this->createStub(DeleteHandler::class);
+        $this->userLifecycleService = $this->createStub(UserLifecycleService::class);
         $this->aliasRepository = $this->createStub(AliasRepository::class);
         $this->voucherRepository = $this->createStub(VoucherRepository::class);
         $this->openPgpKeyRepository = $this->createStub(OpenPgpKeyRepository::class);
@@ -71,8 +68,7 @@ class UserManagerTest extends TestCase
             $this->mailCryptKeyHandler,
             $this->settingsService,
             $this->domainGuesser,
-            $this->userResetService,
-            $this->deleteHandler,
+            $this->userLifecycleService,
             $this->aliasRepository,
             $this->voucherRepository,
             $this->openPgpKeyRepository,
@@ -144,8 +140,7 @@ class UserManagerTest extends TestCase
             $mailCryptKeyHandler,
             $this->settingsService,
             $this->domainGuesser,
-            $this->userResetService,
-            $this->deleteHandler,
+            $this->userLifecycleService,
             $this->aliasRepository,
             $this->voucherRepository,
             $this->openPgpKeyRepository,
@@ -181,8 +176,7 @@ class UserManagerTest extends TestCase
             $this->mailCryptKeyHandler,
             $this->settingsService,
             $this->domainGuesser,
-            $this->userResetService,
-            $this->deleteHandler,
+            $this->userLifecycleService,
             $this->aliasRepository,
             $this->voucherRepository,
             $this->openPgpKeyRepository,
@@ -221,8 +215,7 @@ class UserManagerTest extends TestCase
             $mailCryptKeyHandler,
             $settingsService,
             $this->domainGuesser,
-            $this->userResetService,
-            $this->deleteHandler,
+            $this->userLifecycleService,
             $this->aliasRepository,
             $this->voucherRepository,
             $this->openPgpKeyRepository,
@@ -249,8 +242,7 @@ class UserManagerTest extends TestCase
             $this->mailCryptKeyHandler,
             $this->settingsService,
             $this->domainGuesser,
-            $this->userResetService,
-            $this->deleteHandler,
+            $this->userLifecycleService,
             $this->aliasRepository,
             $this->voucherRepository,
             $this->openPgpKeyRepository,
@@ -275,9 +267,9 @@ class UserManagerTest extends TestCase
 
     public function testUpdateWithPasswordChangeAndMailCrypt(): void
     {
-        /** @var UserResetService&MockObject $userResetService */
-        $userResetService = $this->createMock(UserResetService::class);
-        $userResetService->expects($this->once())->method('resetUser')
+        /** @var UserLifecycleService&MockObject $userLifecycleService */
+        $userLifecycleService = $this->createMock(UserLifecycleService::class);
+        $userLifecycleService->expects($this->once())->method('reset')
             ->with($this->isInstanceOf(User::class), 'newPassword123')
             ->willReturn('recovery-token-abc123');
 
@@ -291,8 +283,7 @@ class UserManagerTest extends TestCase
             $this->mailCryptKeyHandler,
             $this->settingsService,
             $this->domainGuesser,
-            $userResetService,
-            $this->deleteHandler,
+            $userLifecycleService,
             $this->aliasRepository,
             $this->voucherRepository,
             $this->openPgpKeyRepository,
@@ -329,8 +320,7 @@ class UserManagerTest extends TestCase
             $this->mailCryptKeyHandler,
             $this->settingsService,
             $this->domainGuesser,
-            $this->userResetService,
-            $this->deleteHandler,
+            $this->userLifecycleService,
             $this->aliasRepository,
             $this->voucherRepository,
             $this->openPgpKeyRepository,
@@ -362,8 +352,7 @@ class UserManagerTest extends TestCase
             $this->mailCryptKeyHandler,
             $this->settingsService,
             $this->domainGuesser,
-            $this->userResetService,
-            $this->deleteHandler,
+            $this->userLifecycleService,
             $this->aliasRepository,
             $this->voucherRepository,
             $this->openPgpKeyRepository,
@@ -390,9 +379,9 @@ class UserManagerTest extends TestCase
     {
         $user = new User('user@example.org');
 
-        /** @var DeleteHandler&MockObject $deleteHandler */
-        $deleteHandler = $this->createMock(DeleteHandler::class);
-        $deleteHandler->expects($this->once())->method('deleteUser')->with($user);
+        /** @var UserLifecycleService&MockObject $userLifecycleService */
+        $userLifecycleService = $this->createMock(UserLifecycleService::class);
+        $userLifecycleService->expects($this->once())->method('delete')->with($user);
 
         $manager = new UserManager(
             $this->entityManager,
@@ -401,8 +390,7 @@ class UserManagerTest extends TestCase
             $this->mailCryptKeyHandler,
             $this->settingsService,
             $this->domainGuesser,
-            $this->userResetService,
-            $deleteHandler,
+            $userLifecycleService,
             $this->aliasRepository,
             $this->voucherRepository,
             $this->openPgpKeyRepository,

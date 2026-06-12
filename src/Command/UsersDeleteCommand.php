@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Handler\DeleteHandler;
+use App\Service\UserLifecycleService;
 use Doctrine\ORM\EntityManagerInterface;
 use Override;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -17,7 +17,7 @@ final class UsersDeleteCommand extends AbstractUsersCommand
 {
     public function __construct(
         EntityManagerInterface $manager,
-        private readonly DeleteHandler $deleteHandler,
+        private readonly UserLifecycleService $userLifecycleService,
     ) {
         parent::__construct($manager);
     }
@@ -34,7 +34,7 @@ final class UsersDeleteCommand extends AbstractUsersCommand
             $output->write(sprintf("Would delete user %s\n", $user->getEmail()));
         } else {
             $output->write(sprintf("Deleting user %s\n", $user->getEmail()));
-            $this->deleteHandler->deleteUser($user);
+            $this->userLifecycleService->delete($user);
         }
 
         return Command::SUCCESS;
