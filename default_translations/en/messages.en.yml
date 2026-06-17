@@ -290,6 +290,7 @@ flashes:
   voucher-creation-successful: New invite code created.
   alias-creation-successful: Your new alias address was created.
   alias-deletion-successful: Your alias address was deleted.
+  alias-deletion-failed: Your alias address could not be deleted. Please try again.
   recovery-token-invalid: E-mail address and/or recovery token are wrong!
   recovery-token-ack: You generated a recovery token.
   recovery-reauthenticate: Something went wrong. Please re-authenticate!

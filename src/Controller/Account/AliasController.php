@@ -9,8 +9,6 @@ use App\Entity\User;
 use App\Exception\ValidationException;
 use App\Form\CustomAliasCreateType;
 use App\Form\Model\AliasCreate;
-use App\Form\Model\PasswordConfirmation;
-use App\Form\PasswordConfirmationType;
 use App\Form\RandomAliasCreateType;
 use App\Handler\DeleteHandler;
 use App\Service\AliasManager;
@@ -148,22 +146,17 @@ final class AliasController extends AbstractController
         #[MapEntity(class: Alias::class, expr: 'repository.findOneBy({id: id, deleted: false})')]
         Alias $alias): RedirectResponse
     {
-        $form = $this->createForm(
-            PasswordConfirmationType::class,
-            new PasswordConfirmation(),
-            ['submit_label' => 'form.delete-alias'],
-        );
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $this->deleteHandler->deleteAlias($alias, $this->getUser());
-
-            $this->addFlash('success', 'flashes.alias-deletion-successful');
+        // Access is gated by the delete voter (random alias owner, or admin).
+        // Authorized deletions only need a CSRF-protected confirmation — no
+        // password re-entry.
+        if (!$this->isCsrfTokenValid('delete_alias_'.$alias->getId(), (string) $request->request->get('_token'))) {
+            $this->addFlash('error', 'flashes.alias-deletion-failed');
 
             return $this->redirectToRoute('aliases');
         }
 
-        $this->addFlash('error', 'flashes.password-confirmation-failed');
+        $this->deleteHandler->deleteAlias($alias, $this->getUser());
+        $this->addFlash('success', 'flashes.alias-deletion-successful');
 
         return $this->redirectToRoute('aliases');
     }
