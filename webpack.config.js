@@ -1,4 +1,6 @@
-const Encore = require("@symfony/webpack-encore");
+const _encore = require("@symfony/webpack-encore");
+// webpack-encore >=7 is ESM; require() on Node 22+ returns the namespace object
+const Encore = _encore.default ?? _encore;
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 Encore
