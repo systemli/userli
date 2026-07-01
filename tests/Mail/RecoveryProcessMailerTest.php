@@ -10,6 +10,7 @@ use App\Mail\RecoveryProcessMailer;
 use App\Service\SettingsService;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -38,7 +39,13 @@ class RecoveryProcessMailerTest extends TestCase
             ->method('send')
             ->with('user@example.org', 'Recovery body', 'Recovery subject');
 
-        $mailer = new RecoveryProcessMailer($handler, $translator, $settingsService, $this->createStub(UrlGeneratorInterface::class));
+        $mailer = new RecoveryProcessMailer(
+            $handler,
+            $translator,
+            $settingsService,
+            $this->createStub(UrlGeneratorInterface::class),
+            new UriSigner('secret'),
+        );
         $mailer->send($user, 'en');
     }
 
@@ -62,13 +69,20 @@ class RecoveryProcessMailerTest extends TestCase
         $handler = $this->createMock(MailHandler::class);
         $handler->expects(self::once())->method('send');
 
-        $mailer = new RecoveryProcessMailer($handler, $translator, $settingsService, $this->createStub(UrlGeneratorInterface::class));
+        $mailer = new RecoveryProcessMailer(
+            $handler,
+            $translator,
+            $settingsService,
+            $this->createStub(UrlGeneratorInterface::class),
+            new UriSigner('secret'),
+        );
         $mailer->send($user, 'de');
     }
 
     public function testSendPassesExpectedPlaceholdersToTranslator(): void
     {
         $user = new User('user@example.org');
+        $user->setId(42);
         $user->setRecoveryStartTime(new DateTimeImmutable('2026-01-15 10:00:00'));
 
         $settingsService = $this->createStub(SettingsService::class);
@@ -80,19 +94,27 @@ class RecoveryProcessMailerTest extends TestCase
         $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
         $urlGenerator->method('generate')->willReturnMap([
             ['recovery', [], UrlGeneratorInterface::ABSOLUTE_PATH, '/recovery'],
-            ['account_recovery_token', [], UrlGeneratorInterface::ABSOLUTE_PATH, '/account/recovery-token'],
+            ['recovery_token_regenerate', ['user' => 42], UrlGeneratorInterface::ABSOLUTE_PATH, '/recovery/token/regenerate?user=42'],
         ]);
+
+        $uriSigner = new UriSigner('secret');
 
         $translator = $this->createMock(TranslatorInterface::class);
         $translator->expects(self::exactly(2))
             ->method('trans')
-            ->willReturnCallback(static function (string $id, array $parameters) {
+            ->willReturnCallback(static function (string $id, array $parameters) use ($uriSigner) {
                 if ('mail.recovery-body' === $id) {
                     self::assertSame('Example Mail', $parameters['%project_name%']);
                     self::assertSame('user@example.org', $parameters['%email%']);
                     self::assertArrayHasKey('%time%', $parameters);
                     self::assertSame('https://mail.example.com/recovery', $parameters['%recovery_url%']);
-                    self::assertSame('https://mail.example.com/account/recovery-token', $parameters['%recovery_token_url%']);
+
+                    // The regenerate URL is signed and time-limited; verify it's valid
+                    // and points at the expected route with the user id.
+                    $regenerateUrl = $parameters['%recovery_token_url%'];
+                    self::assertStringStartsWith('https://mail.example.com/recovery/token/regenerate?', $regenerateUrl);
+                    self::assertStringContainsString('user=42', $regenerateUrl);
+                    self::assertTrue($uriSigner->check(substr($regenerateUrl, strlen('https://mail.example.com'))));
                 }
                 if ('mail.recovery-subject' === $id) {
                     self::assertSame('user@example.org', $parameters['%email%']);
@@ -101,7 +123,13 @@ class RecoveryProcessMailerTest extends TestCase
                 return 'translated';
             });
 
-        $mailer = new RecoveryProcessMailer($this->createStub(MailHandler::class), $translator, $settingsService, $urlGenerator);
+        $mailer = new RecoveryProcessMailer(
+            $this->createStub(MailHandler::class),
+            $translator,
+            $settingsService,
+            $urlGenerator,
+            $uriSigner,
+        );
         $mailer->send($user, 'en');
     }
 }
