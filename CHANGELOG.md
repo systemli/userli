@@ -7,7 +7,7 @@
 - ♻️ Allow alias deletion without password confirmation (#1294)
 - ✅ Remove obsolete fixtures (#1296)
 - ⬆️ Update composer dependencies (#1310, #1299, #1290)
-- ⬆️ Update npm dependencies (#1307, #1306, #1302, #1300, #1291)
+- ⬆️ Update npm dependencies (#1307, #1306, #1302, #1300, #1291, #1309)
 - ⬆️ Update GitHub Actions (#1308, #1298, #1292)
 
 ## 6.9.1 (2026.05.27)
