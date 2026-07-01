@@ -131,14 +131,14 @@ export default class extends Controller<HTMLElement> {
       const translations =
         locale === "de" || locale === "gsw" ? de.translations : en.translations;
 
-      core.zxcvbnOptions.setOptions({
+      const factory = new core.ZxcvbnFactory({
         dictionary: { ...common.dictionary, ...en.dictionary, ...de.dictionary },
         graphs: common.adjacencyGraphs,
         translations,
         useLevenshteinDistance: true,
       });
 
-      this._zxcvbn = core.zxcvbn;
+      this._zxcvbn = factory.check.bind(factory);
     });
   }
 
