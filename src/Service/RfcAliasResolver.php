@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Repository\AliasRepository;
+use App\Repository\DomainRepository;
 
 final readonly class RfcAliasResolver
 {
@@ -15,18 +16,23 @@ final readonly class RfcAliasResolver
 
     public function __construct(
         private AliasRepository $aliasRepository,
+        private DomainRepository $domainRepository,
         private SettingsService $settingsService,
     ) {
     }
 
     /**
-     * Check if the source address matches an RFC address prefix.
+     * Check if the source address matches an RFC address prefix on a managed domain.
      */
     public function isRfcAddress(string $source): bool
     {
         $localPart = strstr($source, '@', true);
 
-        return false !== $localPart && isset(self::RFC_ADDRESS_SETTINGS[$localPart]);
+        if (false === $localPart || !isset(self::RFC_ADDRESS_SETTINGS[$localPart])) {
+            return false;
+        }
+
+        return $this->domainRepository->existsByName(substr($source, strlen($localPart) + 1));
     }
 
     /**
@@ -38,9 +44,8 @@ final readonly class RfcAliasResolver
      */
     public function resolveDestinations(string $source): array
     {
-        $localPart = strstr($source, '@', true);
-
-        if (false !== $localPart && isset(self::RFC_ADDRESS_SETTINGS[$localPart])) {
+        if ($this->isRfcAddress($source)) {
+            $localPart = strstr($source, '@', true);
             $settingKey = self::RFC_ADDRESS_SETTINGS[$localPart];
             $destination = (string) $this->settingsService->get($settingKey, '');
 

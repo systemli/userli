@@ -5,12 +5,22 @@ declare(strict_types=1);
 namespace App\Tests\Service;
 
 use App\Repository\AliasRepository;
+use App\Repository\DomainRepository;
 use App\Service\RfcAliasResolver;
 use App\Service\SettingsService;
 use PHPUnit\Framework\TestCase;
 
 class RfcAliasResolverTest extends TestCase
 {
+    private function createDomainRepository(array $managedDomains = ['example.org']): DomainRepository
+    {
+        $domainRepository = $this->createMock(DomainRepository::class);
+        $domainRepository->method('existsByName')
+            ->willReturnCallback(static fn (string $name): bool => in_array($name, $managedDomains, true));
+
+        return $domainRepository;
+    }
+
     public function testReturnsSettingDestinationForPostmaster(): void
     {
         $settingsService = $this->createMock(SettingsService::class);
@@ -21,7 +31,7 @@ class RfcAliasResolverTest extends TestCase
         $aliasRepository = $this->createMock(AliasRepository::class);
         $aliasRepository->expects(self::never())->method('findDestinationsBySource');
 
-        $resolver = new RfcAliasResolver($aliasRepository, $settingsService);
+        $resolver = new RfcAliasResolver($aliasRepository, $this->createDomainRepository(), $settingsService);
 
         self::assertSame(['admin@example.org'], $resolver->resolveDestinations('postmaster@example.org'));
     }
@@ -36,7 +46,7 @@ class RfcAliasResolverTest extends TestCase
         $aliasRepository = $this->createMock(AliasRepository::class);
         $aliasRepository->expects(self::never())->method('findDestinationsBySource');
 
-        $resolver = new RfcAliasResolver($aliasRepository, $settingsService);
+        $resolver = new RfcAliasResolver($aliasRepository, $this->createDomainRepository(), $settingsService);
 
         self::assertSame(['abuse-team@example.org'], $resolver->resolveDestinations('abuse@example.org'));
     }
@@ -54,7 +64,7 @@ class RfcAliasResolverTest extends TestCase
             ->with('postmaster@example.org')
             ->willReturn(['fallback@example.org']);
 
-        $resolver = new RfcAliasResolver($aliasRepository, $settingsService);
+        $resolver = new RfcAliasResolver($aliasRepository, $this->createDomainRepository(), $settingsService);
 
         self::assertSame(['fallback@example.org'], $resolver->resolveDestinations('postmaster@example.org'));
     }
@@ -70,9 +80,25 @@ class RfcAliasResolverTest extends TestCase
             ->with('info@example.org')
             ->willReturn(['user@example.org']);
 
-        $resolver = new RfcAliasResolver($aliasRepository, $settingsService);
+        $resolver = new RfcAliasResolver($aliasRepository, $this->createDomainRepository(), $settingsService);
 
         self::assertSame(['user@example.org'], $resolver->resolveDestinations('info@example.org'));
+    }
+
+    public function testDelegatesUnmanagedDomainToRepository(): void
+    {
+        $settingsService = $this->createMock(SettingsService::class);
+        $settingsService->expects(self::never())->method('get');
+
+        $aliasRepository = $this->createMock(AliasRepository::class);
+        $aliasRepository->expects(self::once())
+            ->method('findDestinationsBySource')
+            ->with('postmaster@unmanaged.org')
+            ->willReturn([]);
+
+        $resolver = new RfcAliasResolver($aliasRepository, $this->createDomainRepository(), $settingsService);
+
+        self::assertSame([], $resolver->resolveDestinations('postmaster@unmanaged.org'));
     }
 
     public function testHandlesSourceWithoutAtSign(): void
@@ -85,7 +111,7 @@ class RfcAliasResolverTest extends TestCase
             ->with('nodomain')
             ->willReturn([]);
 
-        $resolver = new RfcAliasResolver($aliasRepository, $settingsService);
+        $resolver = new RfcAliasResolver($aliasRepository, $this->createDomainRepository(), $settingsService);
 
         self::assertSame([], $resolver->resolveDestinations('nodomain'));
     }
@@ -94,6 +120,7 @@ class RfcAliasResolverTest extends TestCase
     {
         $resolver = new RfcAliasResolver(
             $this->createMock(AliasRepository::class),
+            $this->createDomainRepository(),
             $this->createMock(SettingsService::class),
         );
 
@@ -105,10 +132,23 @@ class RfcAliasResolverTest extends TestCase
     {
         $resolver = new RfcAliasResolver(
             $this->createMock(AliasRepository::class),
+            $this->createDomainRepository(),
             $this->createMock(SettingsService::class),
         );
 
         self::assertFalse($resolver->isRfcAddress('info@example.org'));
         self::assertFalse($resolver->isRfcAddress('nodomain'));
+    }
+
+    public function testIsRfcAddressReturnsFalseForUnmanagedDomain(): void
+    {
+        $resolver = new RfcAliasResolver(
+            $this->createMock(AliasRepository::class),
+            $this->createDomainRepository(),
+            $this->createMock(SettingsService::class),
+        );
+
+        self::assertFalse($resolver->isRfcAddress('postmaster@unmanaged.org'));
+        self::assertFalse($resolver->isRfcAddress('abuse@unmanaged.org'));
     }
 }

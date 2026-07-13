@@ -73,6 +73,19 @@ Feature: Postfix API
             """
 
     @alias
+    Scenario: Get postmaster alias for unmanaged domain returns empty
+        Given the following Setting exists:
+            | name                | value              |
+            | postmaster_address  | admin@example.org  |
+        And I have a valid API token "postfix-test-123"
+        When I send a GET request to "/api/postfix/alias/postmaster@unmanaged.org"
+        Then the response status code should equal 200
+        And the JSON response should be:
+            """
+            []
+            """
+
+    @alias
     Scenario: Get postmaster alias without setting returns empty
         Given I have a valid API token "postfix-test-123"
         When I send a GET request to "/api/postfix/alias/postmaster@example.org"
