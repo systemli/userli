@@ -15,7 +15,6 @@ final class LoadReservedNameData extends Fixture implements FixtureGroupInterfac
     private const array RESERVED_NAMES = [
         'admin',
         'root',
-        'abuse',
         'webmaster',
     ];
 
