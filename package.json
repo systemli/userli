@@ -22,7 +22,7 @@
     "copy-webpack-plugin": "^14.0.0",
     "css-minimizer-webpack-plugin": "^8.0.0",
     "jsdom": "^29.1.1",
-    "postcss": "^8.5.16",
+    "postcss": "^8.5.19",
     "postcss-loader": "^8.2.1",
     "tailwindcss": "^4.1.18",
     "typescript": "^7.0.2",
