@@ -55,6 +55,9 @@ jobs:
           yarn install --frozen-lockfile
           yarn encore dev
 
+      - name: TypeScript Typecheck
+        run: yarn typecheck
+
       - name: Vitest
         run: yarn test:coverage
 

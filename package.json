@@ -4,6 +4,7 @@
     "dev": "encore dev",
     "watch": "encore dev --watch",
     "build": "encore production --progress",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
@@ -11,6 +12,7 @@
   "devDependencies": {
     "@babel/core": "^8.0.1",
     "@babel/preset-env": "^8.0.2",
+    "@babel/preset-typescript": "^8",
     "@hotwired/stimulus": "^3.0.0",
     "@symfony/stimulus-bridge": "^4.0.1",
     "@symfony/webpack-encore": "^7.1.0",
@@ -23,8 +25,7 @@
     "postcss": "^8.5.16",
     "postcss-loader": "^8.2.1",
     "tailwindcss": "^4.1.18",
-    "ts-loader": "^9.6.2",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.10",
     "webpack": "^5.108.4",
     "webpack-cli": "^7.2.1"

@@ -33,8 +33,10 @@ Encore
   // enables hashed filenames (e.g. app.abc123.css)
   .enableVersioning(Encore.isProduction())
 
-  // Enable TypeScript support
-  .enableTypeScriptLoader()
+  // Enable TypeScript support via Babel (type checking runs separately
+  // with `yarn typecheck`, since the native TypeScript 7 compiler no
+  // longer exposes the API used by ts-loader)
+  .enableBabelTypeScriptPreset()
 
   // uncomment if you use Sass/SCSS files
   //.enableSassLoader()
