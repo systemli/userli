@@ -1,5 +1,18 @@
 # Changelog
 
+## 6.10.1 (2026.07.14)
+
+### Technical Changes
+
+- ⬆️ Upgrade to TypeScript 7 with Babel-based transpilation (#1321)
+- ⬆️ Update composer dependencies (#1320, #1316)
+- ⬆️ Update GitHub Actions (#1318, #1315)
+- ⬆️ Update npm dependencies (#1314)
+
+### Bug Fixes
+
+- 🐛 fix: Only resolve RFC aliases for managed domains (#1319)
+
 ## 6.10.0 (2026.07.01)
 
 ### Technical Changes
