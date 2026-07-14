@@ -1,0 +1,6 @@
+img.screenshot {
+  border: 2px solid #e5e7eb; /* Tailwind gray-200 */
+  border-radius: 0.25rem; /* Tailwind rounded */
+  box-shadow: 0 4px 24px 0 rgba(31, 41, 55, 0.1),
+    0 1.5px 4px 0 rgba(31, 41, 55, 0.06); /* Tailwind shadow-xl */
+}
