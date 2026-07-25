@@ -44,7 +44,8 @@ jobs:
       # PHP and Node toolchains are independent - install concurrently.
       # Syntax per GitHub's 2026-06-25 "parallel steps" changelog; docs weren't published
       # yet at time of writing, so re-verify against the first CI run of this workflow.
-      - parallel:
+      - name: Install PHP & Node dependencies
+        parallel:
           - name: Install dependencies
             run: composer install --no-scripts
 
@@ -54,7 +55,8 @@ jobs:
               yarn encore dev
 
       # Each of these only depends on its own toolchain's install above, not on each other.
-      - parallel:
+      - name: Run independent checks & tests
+        parallel:
           - name: Check Code Style
             run: composer cs-check
 
