@@ -41,25 +41,41 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
+      # PHP and Node toolchains are independent - install concurrently.
+      # `parallel:` is not a real step property (GitHub's validator rejects it); the
+      # actual primitives from the 2026-06-25 changelog are `background`/`wait-all`.
       - name: Install dependencies
         run: composer install --no-scripts
-
-      - name: Check Code Style
-        run: composer cs-check
-
-      - name: Prepare Database Schema
-        run: bin/console doctrine:schema:create --env=test
+        background: true
 
       - name: Prepare Assets
         run: |
           yarn install --frozen-lockfile
           yarn encore dev
+        background: true
+
+      - name: Wait for installs
+        wait-all: true
+
+      # Each of these only depends on its own toolchain's install above, not on each other.
+      - name: Check Code Style
+        run: composer cs-check
+        background: true
+
+      - name: Prepare Database Schema
+        run: bin/console doctrine:schema:create --env=test
+        background: true
 
       - name: TypeScript Typecheck
         run: yarn typecheck
+        background: true
 
       - name: Vitest
         run: yarn test:coverage
+        background: true
+
+      - name: Wait for checks
+        wait-all: true
 
       - name: PHPUnit
         run: |
