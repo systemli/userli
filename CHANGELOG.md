@@ -1,5 +1,15 @@
 # Changelog
 
+## 6.10.2 (2026.07.25)
+
+### Technical Changes
+
+- ⚡ Parallelize independent steps in Integration workflow (#1332)
+- 🔧 fix: Correct mismatched version comments on pinned GitHub Actions (#1331)
+- ⬆️ Update composer dependencies (#1326)
+- ⬆️ Update npm dependencies (#1330, #1328, #1327, #1325)
+- ⬆️ Update GitHub Actions (#1324)
+
 ## 6.10.1 (2026.07.14)
 
 ### Technical Changes
