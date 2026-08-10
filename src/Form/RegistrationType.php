@@ -51,10 +51,4 @@ final class RegistrationType extends AbstractType
         $resolver->setRequired('domain');
         $resolver->setAllowedTypes('domain', 'string');
     }
-
-    #[Override]
-    public function getBlockPrefix(): string
-    {
-        return self::NAME;
-    }
 }

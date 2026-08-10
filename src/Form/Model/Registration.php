@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Model;
 
+use Symfony\Component\Validator\Constraints\Email;
 use App\Validator\EmailAllowedSymbols;
 use App\Validator\EmailAvailable;
 use App\Validator\EmailDomain;
@@ -18,7 +19,7 @@ final class Registration
     #[VoucherExists(exists: true)]
     private string $voucher = '';
 
-    #[Assert\Email(message: 'form.invalid-email', mode: 'strict')]
+    #[Assert\Email(message: 'form.invalid-email', mode: Email::VALIDATION_MODE_STRICT)]
     #[EmailAvailable]
     #[EmailAllowedSymbols]
     #[EmailDomain]

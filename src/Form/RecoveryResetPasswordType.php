@@ -41,10 +41,4 @@ final class RecoveryResetPasswordType extends AbstractType
     {
         $resolver->setDefaults(['data_class' => RecoveryResetPassword::class]);
     }
-
-    #[Override]
-    public function getBlockPrefix(): string
-    {
-        return self::NAME;
-    }
 }

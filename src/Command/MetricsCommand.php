@@ -107,6 +107,6 @@ final class MetricsCommand extends Command
         $output->writeln('# TYPE userli_openpgpkeys_total gauge');
         $output->writeln('userli_openpgpkeys_total '.$openPgpKeysTotal);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

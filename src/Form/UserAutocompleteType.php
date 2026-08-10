@@ -52,10 +52,4 @@ final class UserAutocompleteType extends AbstractType
     {
         return HiddenType::class;
     }
-
-    #[Override]
-    public function getBlockPrefix(): string
-    {
-        return 'user_autocomplete';
-    }
 }

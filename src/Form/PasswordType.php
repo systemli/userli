@@ -39,10 +39,4 @@ final class PasswordType extends AbstractType
     {
         $resolver->setDefaults(['data_class' => Password::class]);
     }
-
-    #[Override]
-    public function getBlockPrefix(): string
-    {
-        return self::NAME;
-    }
 }

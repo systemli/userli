@@ -35,10 +35,4 @@ final class TwofactorBackupConfirmType extends AbstractType
     {
         $resolver->setDefaults(['data_class' => TwofactorBackupConfirm::class]);
     }
-
-    #[Override]
-    public function getBlockPrefix(): string
-    {
-        return self::NAME;
-    }
 }

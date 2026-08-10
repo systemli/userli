@@ -38,10 +38,4 @@ final class InitUserType extends AbstractType
     {
         $resolver->setDefaults(['data_class' => InitUser::class]);
     }
-
-    #[Override]
-    public function getBlockPrefix(): string
-    {
-        return self::NAME;
-    }
 }
