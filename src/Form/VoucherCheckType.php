@@ -44,10 +44,4 @@ final class VoucherCheckType extends AbstractType
             'data_class' => VoucherCheck::class,
         ]);
     }
-
-    #[Override]
-    public function getBlockPrefix(): string
-    {
-        return 'voucher_check';
-    }
 }

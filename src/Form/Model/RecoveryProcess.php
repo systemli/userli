@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Form\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Email;
 
 final class RecoveryProcess
 {
-    #[Assert\Email(mode: 'strict')]
+    #[Email(mode: Email::VALIDATION_MODE_STRICT)]
     private string $email;
 
     #[Assert\Uuid(message: 'form.invalid-token')]

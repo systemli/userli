@@ -37,10 +37,4 @@ final class RecoveryTokenConfirmType extends AbstractType
     {
         $resolver->setDefaults(['data_class' => RecoveryTokenConfirm::class]);
     }
-
-    #[Override]
-    public function getBlockPrefix(): string
-    {
-        return self::NAME;
-    }
 }

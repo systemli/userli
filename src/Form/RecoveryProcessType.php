@@ -33,10 +33,4 @@ final class RecoveryProcessType extends AbstractType
     {
         $resolver->setDefaults(['data_class' => RecoveryProcess::class]);
     }
-
-    #[Override]
-    public function getBlockPrefix(): string
-    {
-        return self::NAME;
-    }
 }

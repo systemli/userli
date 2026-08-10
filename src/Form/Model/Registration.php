@@ -11,6 +11,7 @@ use App\Validator\EmailLength;
 use App\Validator\Lowercase;
 use App\Validator\VoucherExists;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Email;
 
 final class Registration
 {
@@ -18,7 +19,7 @@ final class Registration
     #[VoucherExists(exists: true)]
     private string $voucher = '';
 
-    #[Assert\Email(message: 'form.invalid-email', mode: 'strict')]
+    #[Email(message: 'form.invalid-email', mode: Email::VALIDATION_MODE_STRICT)]
     #[EmailAvailable]
     #[EmailAllowedSymbols]
     #[EmailDomain]

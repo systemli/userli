@@ -47,6 +47,6 @@ final class AdminPasswordCommand extends Command
 
         $this->updater->updateAdminPassword($password);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

@@ -52,10 +52,4 @@ final class DomainAutocompleteType extends AbstractType
     {
         return HiddenType::class;
     }
-
-    #[Override]
-    public function getBlockPrefix(): string
-    {
-        return 'domain_autocomplete';
-    }
 }
