@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.10.3 (2026.08.10)
+
+### Technical Changes
+
+- ⬆️ Update composer dependencies (#1339, #1336)
+- ⬆️ Update npm dependencies (#1341, #1340, #1337, #1334)
+- ⬆️ Update GitHub Actions (#1338, #1335)
+
 ## 6.10.2 (2026.07.25)
 
 ### Technical Changes
