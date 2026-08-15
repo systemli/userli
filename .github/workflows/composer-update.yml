@@ -2,7 +2,7 @@ name: Composer Update
 
 on:
   schedule:
-    - cron: "0 8 * * 1"
+    - cron: "0 8 1 * *"
   workflow_dispatch: {}
 
 jobs:
@@ -51,4 +51,4 @@ jobs:
           branch: automated/composer-update
           title: "⬆️ Update composer dependencies"
           body-path: /tmp/composer-diff.md
-          draft: true
+          draft: false
