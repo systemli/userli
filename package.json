@@ -18,7 +18,7 @@
     "@symfony/webpack-encore": "^7.2.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/typography": "^0.5.20",
-    "@vitest/coverage-v8": "^4.1.10",
+    "@vitest/coverage-v8": "^4.1.11",
     "copy-webpack-plugin": "^14.0.0",
     "css-minimizer-webpack-plugin": "^8.0.0",
     "jsdom": "^30.0.1",
@@ -26,9 +26,9 @@
     "postcss-loader": "^8.2.1",
     "tailwindcss": "^4.1.18",
     "typescript": "^7.0.2",
-    "vitest": "^4.1.10",
-    "webpack": "^5.109.2",
-    "webpack-cli": "^7.2.2"
+    "vitest": "^4.1.11",
+    "webpack": "^5.110.1",
+    "webpack-cli": "^7.2.3"
   },
   "packageManager": "yarn@1.22.19",
   "dependencies": {
