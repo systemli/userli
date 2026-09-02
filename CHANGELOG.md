@@ -4,15 +4,12 @@
 
 ### Technical Changes
 
-- ⬆️ (deps): Bump browserslist from 4.28.1 to 4.28.8 (#1351)
 - :construction_worker: Add automatic merge for Composer Update PRs (#1350)
-- ⬆️ Update composer dependencies (#1349)
 - :construction_worker: Add automatic merge for Dependabot PRs (#1348)
-- ⬆️ (deps): Bump the github-actions group across 1 directory with 4 updates (#1347)
-- ⬆️ (deps-dev): Bump the npm-dependencies group across 1 directory with 4 updates (#1346)
-- ⬆️ (deps): Bump the github-actions group with 3 updates (#1345)
-- ⬆️ (deps): Bump the npm-dependencies group with 2 updates (#1344)
 - 👷 Reduce update interval to monthly (#1343)
+- ⬆️ Update composer dependencies (#1349)
+- ⬆️ Update npm dependencies (#1351, #1346, #1344)
+- ⬆️ Update GitHub Actions (#1347, #1345)
 
 ## 6.10.3 (2026.08.10)
 
