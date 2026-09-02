@@ -140,16 +140,24 @@ jobs:
     name: Merge Automatically
     needs: [test]
     runs-on: ubuntu-24.04
-    if: ${{ github.actor == 'dependabot[bot]' }}
+    if: ${{ github.actor == 'dependabot[bot]' || github.actor == 'systemli[bot]' }}
 
     steps:
       - name: Obtain Access Token
         id: acces_token
         run: |
           TOKEN="$(npx obtain-github-app-installation-access-token ci ${{ secrets.SYSTEMLI_APP_CREDENTIALS_TOKEN }})"
+          echo "::add-mask::$TOKEN"
           echo "token=$TOKEN" >> $GITHUB_OUTPUT
 
-      - name: Merge
+      - name: Merge Dependabot PR
+        if: ${{ github.actor == 'dependabot[bot]' }}
         uses: fastify/github-action-merge-dependabot@73ec4cbb5e56df5591eae286972d5b2201ffe90f # v3.15.0
         with:
           github-token: ${{ steps.acces_token.outputs.token }}
+
+      - name: Merge Composer Update PR
+        if: ${{ github.actor == 'systemli[bot]' }}
+        env:
+          GH_TOKEN: ${{ steps.acces_token.outputs.token }}
+        run: gh pr merge --squash --delete-branch "${{ github.event.pull_request.html_url }}"
