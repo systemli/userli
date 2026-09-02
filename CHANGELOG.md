@@ -1,5 +1,16 @@
 # Changelog
 
+## 6.10.4 (2026.09.02)
+
+### Technical Changes
+
+- :construction_worker: Add automatic merge for Composer Update PRs (#1350)
+- :construction_worker: Add automatic merge for Dependabot PRs (#1348)
+- 👷 Reduce update interval to monthly (#1343)
+- ⬆️ Update composer dependencies (#1349)
+- ⬆️ Update npm dependencies (#1351, #1346, #1344)
+- ⬆️ Update GitHub Actions (#1347, #1345)
+
 ## 6.10.3 (2026.08.10)
 
 ### Technical Changes

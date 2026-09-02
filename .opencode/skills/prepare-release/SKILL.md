@@ -60,6 +60,22 @@ If a PR title does not start with a recognized emoji, place it under **Features 
 
 Within each section, sort PRs by PR number in **descending** order (newest first).
 
+### Grouping Dependency Update PRs
+
+Automated dependency-bump PRs (Dependabot, Renovate, or similar bots) are often numerous and repetitive. Group them into a single combined entry per dependency ecosystem instead of listing each one separately:
+
+- **Composer dependencies**: combine into one entry titled `⬆️ Update composer dependencies (#<num>, #<num>, ...)`
+- **npm dependencies**: combine into one entry titled `⬆️ Update npm dependencies (#<num>, #<num>, ...)`
+- **GitHub Actions**: combine into one entry titled `⬆️ Update GitHub Actions (#<num>, #<num>, ...)`
+
+Rules for grouping:
+
+- Only group PRs that are pure automated dependency bumps (e.g. titles like "Bump X from A to B", "Update dependency X", "(deps): Bump the npm-dependencies group ..."). Do NOT group PRs that make other, non-bump changes even if they touch dependency files.
+- Within a group's PR number list, order numbers in **descending** order (newest first).
+- Place the grouped entry in the **Technical Changes** section.
+- CI/workflow changes that are not dependency bumps themselves (e.g. "Add automatic merge for Dependabot PRs", "Reduce update interval to monthly") stay as separate, individual entries — do not fold them into the dependency groups.
+- If there's only one dependency-bump PR for an ecosystem, it's fine to still use the grouped title format (e.g. `⬆️ Update composer dependencies (#1349)`).
+
 ## Step 6: Update CHANGELOG.md
 
 Read the current `CHANGELOG.md`. Insert a new version block **directly after** the `# Changelog` heading (before any existing version entries).
