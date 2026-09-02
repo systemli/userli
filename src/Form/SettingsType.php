@@ -66,9 +66,7 @@ final class SettingsType extends AbstractType
             $currentValue = $this->settingsService->get($name);
 
             // If no value was found, use the default from definition
-            if ($currentValue === null) {
-                $currentValue = $default;
-            }
+            $currentValue ??= $default;
         }
 
         $options = [

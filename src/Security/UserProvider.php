@@ -60,7 +60,7 @@ final readonly class UserProvider implements UserProviderInterface
     }
 
     #[Override]
-    public function supportsClass($class): bool
+    public function supportsClass(string $class): bool
     {
         $userClass = User::class;
 
