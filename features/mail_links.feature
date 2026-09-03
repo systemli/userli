@@ -26,4 +26,4 @@ Feature: Mail links
 
     Then I should see text matching "Second step starts at"
     And the last sent mail body should contain "https://mail.example.org/recovery"
-    And the last sent mail body should contain "https://mail.example.org/account/recovery-token"
+    And the last sent mail body should contain "https://mail.example.org/recovery/token/regenerate?"
