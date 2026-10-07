@@ -108,3 +108,86 @@ Feature: Recovery
 
     Then I should be on "/recovery"
     And I should see text matching "This token has an invalid format."
+
+  @recovery
+  Scenario: Regenerate recovery token via signed mail link in a single password entry
+    Given I have a signed recovery-token regenerate URL for "user@example.org" as placeholder "regenerate_url"
+    When I am on "regenerate_url"
+    Then the response status code should be 200
+    And I should see text matching "Create a new recovery token"
+    When I fill in "recovery_token_regenerate[password]" with "passwordtest"
+    And I press "recovery_token_regenerate[submit]"
+
+    Then I should be on "/recovery/recovery_token/ack"
+    And I should see text matching "Your new recovery token has been generated."
+    And the response status code should be 200
+
+  @recovery
+  Scenario: Deep-link regeneration rejects a wrong password without generating a new token
+    Given I have a signed recovery-token regenerate URL for "user@example.org" as placeholder "regenerate_url"
+    When I am on "regenerate_url"
+    And I fill in "recovery_token_regenerate[password]" with "wrong-password"
+    And I press "recovery_token_regenerate[submit]"
+
+    Then I should see text matching "The password you entered is incorrect"
+    And the response status code should be 200
+
+  @recovery
+  Scenario: Deep-link regeneration rejects tampered signatures
+    When I am on "/recovery/token/regenerate?user=1&_expiration=9999999999&_hash=invalid"
+    Then the response status code should be 403
+
+  @recovery
+  Scenario: Deep-link regeneration re-encrypts an existing mailcrypt key
+    Given the User "user@example.org" has a mailcrypt secret box for password "passwordtest"
+    And I have a signed recovery-token regenerate URL for "user@example.org" as placeholder "regenerate_url"
+    When I am on "regenerate_url"
+    And I fill in "recovery_token_regenerate[password]" with "passwordtest"
+    And I press "recovery_token_regenerate[submit]"
+
+    Then I should be on "/recovery/recovery_token/ack"
+    And I should see text matching "Your new recovery token has been generated."
+
+  @recovery
+  Scenario: Deep-link regeneration rejects wrong password when a mailcrypt box exists
+    Given the User "user@example.org" has a mailcrypt secret box for password "passwordtest"
+    And I have a signed recovery-token regenerate URL for "user@example.org" as placeholder "regenerate_url"
+    When I am on "regenerate_url"
+    And I fill in "recovery_token_regenerate[password]" with "wrong-password"
+    And I press "recovery_token_regenerate[submit]"
+
+    Then I should see text matching "The password you entered is incorrect"
+
+  @recovery
+  Scenario: Deep-link regeneration requires TOTP when two-factor auth is enabled
+    Given the following User exists:
+      | email             | password     | roles     | totpConfirmed | totpSecret       | recoverySecretBox                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | recoveryStartTime | totp_backup_codes |
+      | twofa@example.org | passwordtest | ROLE_USER | 1             | JBSWY3DPEHPK3PXP | jsMdwp9tMK+6x1wuaWbtW67pJxSCYZTWOGhFL12LVMPAIWnR5Zjoe8pAdkUcg/J/S16xEqAvD6uWaBSw43aUk03TXdGKb1mW67dTSf/1UcG98meaIuyY+RrvhQn7KRKQ97PYb40T9BHP77GQkO0EajaNUBSodQpNDoZ3flZHe5wxfiZs6822HRe1hNtuURv/8sRSQG859ff0w4cdaqcd2hBbo0nQT1wDtjLN7t2rbtUeXemI+1tfMXiEK+wTu22Zkv/LiyZSBrhW8hdZBYri1O4nB4XwFsRILDj6ei7gZkebcoT0YwdZE1KNmKmjOxTjG78UJrCyp0uw+HuI2A3iA3wAbxCTJODkGuMVdJdG0fFF/k5PgAUt2rWrLmQEQs3jJQNKh5uy6bCoVnSmmfaRAWBj7klDgV98PJWr4D+K1ZrWngS/wCO4AuM7NiStGUR3IUZKhfLrAA5KBBva5LOrxyn+u8TVY6K9gaOvKLfl0DIYHKJtntiMRjNvoAHlaCpO9F2VZBjwIOsybVh6Dul+vclFMWNMtm10aHS9fRyk9t0j4rTELCV65ORKWHQLirlyhdUjDpQ/wy867h9aiNP2QfgRrQG3t5Dyh9Xg6b0b+RpqHQ5FJIxsL2ZNm73JoAXYnMbqep0idBXUZkdeOD++ezg7e+qsl6Zkvm6dqj+Cp8UHV0sNY5o0E3rMxZeh79Tu6TxvADNnRPdMnMWPssjppU3jHzdvGEkXViDGN3V2X140cy6RqH79Wg== | NOW               | true              |
+    And I have a signed recovery-token regenerate URL for "twofa@example.org" as placeholder "regenerate_url"
+    When I am on "regenerate_url"
+    Then I should see text matching "Authentication code"
+
+    When I fill in "recovery_token_regenerate[password]" with "passwordtest"
+    And I fill in "recovery_token_regenerate[totpCode]" with "000000"
+    And I press "recovery_token_regenerate[submit]"
+    Then I should see text matching "two-factor authentication code you entered is invalid"
+
+  @recovery
+  Scenario: Deep-link regeneration accepts a TOTP backup code and consumes it
+    Given the following User exists:
+      | email               | password     | roles     | totpConfirmed | totpSecret       | recoverySecretBox                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | recoveryStartTime | totp_backup_codes |
+      | backups@example.org | passwordtest | ROLE_USER | 1             | JBSWY3DPEHPK3PXP | jsMdwp9tMK+6x1wuaWbtW67pJxSCYZTWOGhFL12LVMPAIWnR5Zjoe8pAdkUcg/J/S16xEqAvD6uWaBSw43aUk03TXdGKb1mW67dTSf/1UcG98meaIuyY+RrvhQn7KRKQ97PYb40T9BHP77GQkO0EajaNUBSodQpNDoZ3flZHe5wxfiZs6822HRe1hNtuURv/8sRSQG859ff0w4cdaqcd2hBbo0nQT1wDtjLN7t2rbtUeXemI+1tfMXiEK+wTu22Zkv/LiyZSBrhW8hdZBYri1O4nB4XwFsRILDj6ei7gZkebcoT0YwdZE1KNmKmjOxTjG78UJrCyp0uw+HuI2A3iA3wAbxCTJODkGuMVdJdG0fFF/k5PgAUt2rWrLmQEQs3jJQNKh5uy6bCoVnSmmfaRAWBj7klDgV98PJWr4D+K1ZrWngS/wCO4AuM7NiStGUR3IUZKhfLrAA5KBBva5LOrxyn+u8TVY6K9gaOvKLfl0DIYHKJtntiMRjNvoAHlaCpO9F2VZBjwIOsybVh6Dul+vclFMWNMtm10aHS9fRyk9t0j4rTELCV65ORKWHQLirlyhdUjDpQ/wy867h9aiNP2QfgRrQG3t5Dyh9Xg6b0b+RpqHQ5FJIxsL2ZNm73JoAXYnMbqep0idBXUZkdeOD++ezg7e+qsl6Zkvm6dqj+Cp8UHV0sNY5o0E3rMxZeh79Tu6TxvADNnRPdMnMWPssjppU3jHzdvGEkXViDGN3V2X140cy6RqH79Wg== | NOW               | true              |
+    And I have a signed recovery-token regenerate URL for "backups@example.org" as placeholder "regenerate_url"
+    When I am on "regenerate_url"
+    And I fill in "recovery_token_regenerate[password]" with "passwordtest"
+    And I fill field "recovery_token_regenerate[totpCode]" with the first TOTP backup code
+    And I press "recovery_token_regenerate[submit]"
+
+    Then I should be on "/recovery/recovery_token/ack"
+
+  @recovery
+  Scenario: Deep-link regeneration returns 404 for a soft-deleted user
+    Given I have a signed recovery-token regenerate URL for "user@example.org" as placeholder "regenerate_url"
+    And the User "user@example.org" is soft-deleted
+    When I am on "regenerate_url"
+    Then the response status code should be 404

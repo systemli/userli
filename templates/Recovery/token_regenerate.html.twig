@@ -1,0 +1,33 @@
+{% extends 'Recovery/recovery.html.twig' %}
+
+{% block step_title %}{{ "recovery-token-regenerate.headline"|trans }}{% endblock %}
+
+{% block step_description %}
+    <p class="text-gray-600 dark:text-gray-300">
+        {{ "recovery-token-regenerate.lead"|trans({'%email%': user.email}) }}
+    </p>
+{% endblock %}
+
+{% block recovery_content %}
+    {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+    {{ form_errors(form) }}
+
+    <div>
+        {{ form_label(form.password, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+        {{ form_errors(form.password) }}
+        {{ form_widget(form.password, {'attr': {'placeholder': 'Password'|trans, 'autocomplete': 'current-password'}}) }}
+    </div>
+
+    {% if form.totpCode is defined %}
+        <div>
+            {{ form_label(form.totpCode, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+            {{ form_errors(form.totpCode) }}
+            {{ form_widget(form.totpCode) }}
+        </div>
+    {% endif %}
+
+    <div class="pt-4">
+        {{ form_widget(form.submit, {'attr': {'class': 'w-full'}}) }}
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
