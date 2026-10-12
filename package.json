@@ -26,6 +26,7 @@
     "postcss-loader": "^8.2.1",
     "tailwindcss": "^4.1.18",
     "typescript": "^7.0.2",
+    "vite": "^8",
     "vitest": "^5.0.2",
     "webpack": "^5.111.1",
     "webpack-cli": "^7.2.3"
