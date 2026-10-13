@@ -1,51 +1,137 @@
 ---
 site_name: Userli
+site_description: Web application to (self-) manage email users and encrypt their mailboxes
 site_author: Systemli
+site_url: https://systemli.github.io/userli/
 repo_url: https://github.com/systemli/userli
+edit_uri: edit/main/docs/
+
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+  anchors: warn
 
 nav:
   - Home: index.md
+  - "User Guide":
+      - user/index.md
+      - "Create an account": user/register.md
+      - "Sign in and your account": user/account.md
+      - "Secure your account": user/security.md
+      - "Forgot your password": user/recovery.md
+      - Aliases: user/aliases.md
+      - "Invite codes": user/invite-codes.md
+      - "OpenPGP keys": user/openpgp.md
+  - "Admin Guide":
+      - admin/index.md
+      - "Roles and permissions": admin/roles.md
+      - Users: admin/users.md
+      - Aliases: admin/aliases.md
+      - "Invite codes": admin/invite-codes.md
+      - Domains: admin/domains.md
+      - "Reserved names": admin/reserved-names.md
+      - Notifications: admin/notifications.md
+      - Settings: admin/settings.md
+      - "API tokens": admin/api-tokens.md
+      - Webhooks: admin/webhooks.md
+      - Maintenance: admin/maintenance.md
+  - Operations:
+      - operations/index.md
+      - Installation:
+          - Requirements: operations/requirements.md
+          - "Install from release": operations/installation.md
+          - "Run with containers": operations/docker.md
+          - Configuration: operations/configuration.md
+          - Webserver: operations/webserver.md
+          - "Background services": operations/background-services.md
+          - "Initial setup": operations/initial-setup.md
+      - "Mail server integration":
+          - operations/integrations/index.md
+          - Dovecot: operations/integrations/dovecot.md
+          - Postfix: operations/integrations/postfix.md
+          - Roundcube: operations/integrations/roundcube.md
+          - Keycloak: operations/integrations/keycloak.md
+          - Retention: operations/integrations/retention.md
+          - Webhooks: operations/integrations/webhooks.md
+      - Features:
+          - MailCrypt: operations/mailcrypt.md
+          - "Web Key Directory": operations/wkd.md
+          - MTA-STS: operations/mta-sts.md
+      - Operating:
+          - Updating: operations/updating.md
+          - "Console commands": operations/commands.md
+          - "Monitoring and logs": operations/monitoring.md
+          - "Backup and restore": operations/backup.md
+          - Security: operations/security.md
+          - Customization: operations/customization.md
+          - Troubleshooting: operations/troubleshooting.md
+      - "API reference": operations/api.md
   - Development:
       - "Getting started": development/index.md
+      - Architecture: development/architecture.md
       - Contributing: development/contributing.md
       - Testing: development/testing.md
+      - Translations: development/translations.md
+      - Documentation: development/documentation.md
       - Release: development/release.md
       - "Code of Conduct": development/code_of_conduct.md
-  - Installation:
-      - Installation: installation/index.md
-      - Code: installation/code.md
-      - Commands: installation/commands.md
-      - Configuration: installation/configuration.md
-      - Customize: installation/customize.md
-      - Database: installation/database.md
-      - Dovecot: installation/dovecot.md
-      - Finalize: installation/finalize.md
-      - Webserver: installation/webserver.md
-  - Update: update/index.md
-  - Admin: admin/index.md
-  - Features:
-      - MailCrypt: features/mail_crypt.md
-      - MTA-STS: features/mta-sts.md
-      - "Web Key Directory": features/wkd.md
-      - Integrations: features/integrations.md
-      - Webhooks: features/webhooks.md
-  - Screenshots: screenshots/index.md
 
 theme:
   name: material
   features:
+    - content.action.edit
     - content.code.copy
     - content.code.select
     - content.code.annotate
     - content.tabs.link
+    - navigation.indexes
+    - navigation.footer
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.sections
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - toc.follow
   logo: assets/logo.png
   favicon: assets/logo.png
   palette:
-    primary: "blue"
-    accent: "blue"
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search
+  - redirects:
+      redirect_maps:
+        installation/index.md: operations/requirements.md
+        installation/code.md: operations/installation.md
+        installation/database.md: operations/installation.md
+        installation/configuration.md: operations/configuration.md
+        installation/webserver.md: operations/webserver.md
+        installation/finalize.md: operations/initial-setup.md
+        installation/dovecot.md: operations/integrations/dovecot.md
+        installation/commands.md: operations/commands.md
+        installation/customize.md: operations/customization.md
+        update/index.md: operations/updating.md
+        features/mail_crypt.md: operations/mailcrypt.md
+        features/mta-sts.md: operations/mta-sts.md
+        features/wkd.md: operations/wkd.md
+        features/integrations.md: operations/integrations/index.md
+        features/webhooks.md: operations/integrations/webhooks.md
+        screenshots/index.md: user/index.md
 
 extra:
   generator: false
@@ -53,7 +139,7 @@ extra:
     - icon: fontawesome/solid/globe
       link: https://www.systemli.org
     - icon: fontawesome/brands/github
-      link: https://github.com/systemli
+      link: https://github.com/systemli/userli
 
 extra_css:
   - stylesheets/extra.css
@@ -61,11 +147,23 @@ extra_css:
 markdown_extensions:
   - admonition
   - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
   - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.highlight
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
-
+  - pymdownx.tasklist:
+      custom_checkbox: true

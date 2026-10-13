@@ -20,15 +20,15 @@ Web application to (self-) manage e-mail users and encrypt their mailboxes.
 * Recovery tokens to restore accounts when password got lost
 * Support for [Dovecot mailbox encryption](https://doc.dovecot.org/main/core/plugins/mail_crypt.html)
 * Two-factor authentication (TOTP) with backup codes
-* OpenPGP key publishing via [Web Key Directory](https://systemli.github.io/userli/features/wkd/)
+* OpenPGP key publishing via [Web Key Directory](https://systemli.github.io/userli/operations/wkd/)
 * Admin interface for users, aliases, domains, invite codes, API tokens and webhooks
-* APIs for Dovecot, Postfix, Keycloak and Roundcube, and [webhooks](https://systemli.github.io/userli/features/webhooks/)
-* [MTA-STS](https://systemli.github.io/userli/features/mta-sts/) policy hosting
+* APIs for Dovecot, Postfix, Keycloak and Roundcube, and [webhooks](https://systemli.github.io/userli/operations/integrations/webhooks/)
+* [MTA-STS](https://systemli.github.io/userli/operations/mta-sts/) policy hosting
 * Multi-language support (English, German, Spanish, French, Italian, Portuguese, Bokmål, and Swiss German provided)
 
 ## Installation
 
-Find more information on [how to install Userli](https://systemli.github.io/userli/installation) in
+Find more information on [how to install Userli](https://systemli.github.io/userli/operations/) in
 our docs.
 
 ## Upgrading

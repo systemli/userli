@@ -33,7 +33,7 @@ make dev
 This will:
 
 1. Install PHP dependencies and build frontend assets (`make assets`)
-2. Start all containers (MariaDB, Redis, Caddy, Userli, worker, scheduler, mailcatcher, webhook tester)
+2. Start all containers (MariaDB, Redis, Caddy, Userli, worker, scheduler, Mailcatcher, webhook tester)
 3. Wait for MariaDB to be ready
 4. Run database migrations
 
@@ -47,9 +47,10 @@ To populate the environment with example data, run
 make fixtures 
 ```
 
-This 
-1. Load sample data (users, domains, API-tokens...)
-2. Start Dovecot and Roundcube (mail profile)
+This
+
+1. loads sample data (users, domains, API tokens, ...) and
+2. starts Dovecot and Roundcube (`mail` profile).
 
 When it finishes, open [http://localhost:8000](http://localhost:8000) and log in with `admin@example.org` / `password`.
 
@@ -65,51 +66,16 @@ When it finishes, open [http://localhost:8000](http://localhost:8000) and log in
 !!! tip
     Run `make` without arguments to see all available targets.
 
-## Project structure
+## Next steps
 
-```text
-src/
-├── Controller/       HTTP controllers (separate GET/POST methods)
-├── Entity/           Doctrine entities (User, Domain, Alias, Voucher, …)
-├── Enum/             PHP enums (Roles, webhook events, …)
-├── Event/            Domain events dispatched via EventDispatcher
-├── EventListener/    Symfony event subscribers
-├── Form/             Symfony form types
-│   └── Model/        Form data models (never bind entities directly)
-├── Handler/          Business logic (registration, mail encryption, …)
-├── MessageHandler/   Symfony Messenger async handlers
-├── Repository/       Doctrine repositories
-├── Schedule/         Symfony Scheduler definitions
-├── Security/         Authentication and authorization
-├── Service/          Business services (UserResetService, WebhookDispatcher, …)
-├── Twig/             Twig extensions and filters
-└── Validator/        Custom validation constraints
-```
+* Get to know the code: [Architecture](architecture.md)
+* Read the [contribution guidelines](contributing.md)
+* Run the [tests](testing.md)
+* Watch the frontend while you work:
 
-### Key patterns
-
-- **Controllers** separate GET and POST into distinct methods with explicit HTTP method constraints.
-  See `RegistrationController` as a reference.
-- **Form models** in `src/Form/Model/` are used instead of binding entities directly to forms.
-- **Domain events** (e.g. `UserEvent::USER_CREATED`) are dispatched via `EventDispatcherInterface`.
-- **Roles** are defined in `src/Enum/Roles.php`: `ROLE_USER`, `ROLE_ADMIN`, `ROLE_DOMAIN_ADMIN`, `ROLE_SUSPICIOUS`, `ROLE_SPAM`, `ROLE_PERMANENT`, `ROLE_MULTIPLIER`.
-
-### Templates
-
-Three base templates exist:
-
-| Template                | Use case                                    | Key blocks                                      |
-| ----------------------- | ------------------------------------------- | ------------------------------------------------ |
-| `base.html.twig`        | Root layout (dark mode, assets, navbar)     | —                                                |
-| `base_page.html.twig`   | Full pages                                  | `page_title`, `page_subtitle`, `page_content`    |
-| `base_step.html.twig`   | Multi-step flows (registration, recovery)   | `step_icon`, `step_title`, `step_description`, `step_content`, `step_footer` |
-
-Styling uses Tailwind CSS utility classes.
-Icons use [Heroicons](https://heroicons.com/) via Symfony UX Icons:
-
-```twig
-{{ ux_icon('heroicons:arrow-left', {class: 'size-5'}) }}
-```
+    ```shell
+    yarn watch
+    ```
 
 ## Background services
 
@@ -117,7 +83,7 @@ The development environment runs three containers for the Userli application:
 
 | Container          | Purpose                                           |
 | ------------------ | ------------------------------------------------- |
-| `userli`           | Web server (Apache + PHP)                         |
+| `userli`           | PHP-FPM, served by the `caddy` container          |
 | `userli-worker`    | Async message consumer (`messenger:consume async`) |
 | `userli-scheduler` | Scheduled tasks (`messenger:consume scheduler_maintenance`) |
 
