@@ -22,6 +22,7 @@ nav:
       - Finalize: installation/finalize.md
       - Webserver: installation/webserver.md
   - Update: update/index.md
+  - Admin: admin/index.md
   - Features:
       - MailCrypt: features/mail_crypt.md
       - MTA-STS: features/mta-sts.md
