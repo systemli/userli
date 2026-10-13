@@ -1,0 +1,6 @@
+[tools]
+uv = "latest"
+
+[tasks.docs]
+description = "Serve the documentation locally with live reload"
+run = "uvx --with-requirements docs/requirements.txt mkdocs serve --livereload --dev-addr 127.0.0.1:8100"
