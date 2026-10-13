@@ -124,4 +124,4 @@ After loading the fixtures (see [Getting started](index.md)), you can test authe
 
 You can also test the full flow by connecting an IMAP client to `localhost:1143` or by using Roundcube at [http://localhost:8001](http://localhost:8001).
 
-See the Dovecot [documentation](https://doc.dovecot.org/2.3/admin_manual/debugging/debugging_authentication/) for more context.
+See the Dovecot [documentation](https://doc.dovecot.org/main/core/admin/debugging/debugging_authentication.html) for more context.

@@ -59,3 +59,7 @@ coverage/
 ###> symfony/panther ###
 /drivers/
 ###< symfony/panther ###
+
+###> mkdocs ###
+/site/
+###< mkdocs ###
