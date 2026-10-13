@@ -7,18 +7,14 @@ Keys are created and maintained by userli and handed over via an API and can
 be consumed by Dovecot by a Lua script. See [here](../installation/dovecot.md)
 for how to configure authentication and mailcrypt in Dovecot.
 
-The MailCrypt feature is enabled per default and can optionally be switched
-off globally by setting `MAIL_CRYPT=0` in the dotenv (`.env`) file.
+MailCrypt is configured globally in the admin interface under
+**Admin → Settings → Mailbox Encryption** (setting `mail_crypt`, default `2`).
+The following values are supported:
 
-If you want to enable MailCrypt for some users, but don't want new users to
-have MailCrypt enabled per default, you can set `MAIL_CRYPT=1` in the dotenv
-(`.env`) file. The following values are supported for `MAIL_CRYPT`:
-
-* `MAIL_CRYPT=0` - Disable MailCrypt globally
-* `MAIL_CRYPT=1` - Allow to use MailCrypt, needs to be enabled manually for new
-  users
-* `MAIL_CRYPT=2` - Enforce MailCrypt key generation for new users
-* `MAIL_CRYPT=3` - Enforce MailCrypt key generation for all users, see the
+* `0` - Disable MailCrypt globally
+* `1` - Allow to use MailCrypt, needs to be enabled manually for new users
+* `2` - Enforce MailCrypt key generation for new users
+* `3` - Enforce MailCrypt key generation for all users, see the
   documentation about migrating legacy users for more info
 
 MailCrypt can be turned on/off for individual users by setting the `mail_crypt`
@@ -58,7 +54,7 @@ In order to enable MailCrypt for a legacy user, do the following:
 
 Or, alternatively, to enforce MailCrypt for all legacy users:
 
-1. Set `MAIL_CRYPT=3` in the dotenv (`.env`) file. This will result in a
+1. Set the MailCrypt setting to `3` in **Admin → Settings**. This will result in a
    MailCrypt key pair being generated automatically when legacy users log
    in the next time. Again, we cannot do this step without the user logging
    in, as the user password is required to do so.

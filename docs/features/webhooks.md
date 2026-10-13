@@ -18,7 +18,7 @@ The following events can trigger webhooks:
 
 ## Configuring Webhooks
 
-To configure webhooks create an endpoint via UI: Settings → Webhooks (`/settings/webhooks`).
+To configure webhooks create an endpoint via UI: Admin → Webhooks (`/admin/webhooks/`).
 You need to provide the following information:
 
 - **URL**: The endpoint URL where the webhook payload will be sent.

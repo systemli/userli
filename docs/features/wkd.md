@@ -18,8 +18,8 @@ following routes are provided:
   key for the given WKD hash
 - `/.well-known/openpgpkey/{domain}/policy` — returns an empty policy file
 
-Key lookups are cached in Redis with a 24-hour TTL and automatically
-invalidated when keys are created, updated, or deleted.
+Key lookups are cached with a 24-hour TTL (in Redis if `REDIS_URL` is
+configured, otherwise on the filesystem) and automatically invalidated when keys are created, updated, or deleted.
 
 ## Reverse Proxy Setup
 

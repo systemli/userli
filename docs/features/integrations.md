@@ -5,7 +5,7 @@ Access is now controlled via API Tokens with fine-grained scopes. The previous e
 
 ## API tokens and scopes
 
-Create and manage tokens via UI: Settings → API Tokens (`/settings/api`).
+Create and manage tokens via UI: Admin → API Tokens (`/admin/api/`).
 
 CLI:
 
@@ -97,7 +97,7 @@ User exposes `/api/postfix/` endpoints for Postfix integration, intended to be c
 Userli provides generic API methods at `/api/retention/` to:
 
 - Touch a user’s last login timestamp independent of authentication
-- List deleted users for a domain
+- List inactive users (no login for two years)
 
 Background: Each time a user authenticates (classic login, or via Keycloak/Dovecot APIs), Userli updates the user's last login time.
 Some services issue long-lived tokens and won’t re-authenticate regularly, which can make last-login based retention inaccurate
@@ -115,9 +115,9 @@ Touch last login (optional unix timestamp, must not be in the future):
 
     { "timestamp": 1693843200 }
 
-List deleted users for a domain:
+List inactive users:
 
-    GET /api/retention/<domain>/users
+    GET /api/retention/users
     Authorization: Bearer <PLAIN_TOKEN_WITH_retention_SCOPE>
 
 ## Migration notes (deprecated settings)
