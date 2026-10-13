@@ -1,2 +1,2 @@
-mkdocs-material
-mkdocs-redirects
+mkdocs-material>=9.5
+mkdocs-redirects>=1.2
