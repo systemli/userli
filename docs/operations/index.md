@@ -45,8 +45,9 @@ flowchart TB
 ## Where to start
 
 1. Check the [requirements](requirements.md).
-2. Install Userli [from a release tarball](installation.md) or
-   [with containers](docker.md).
+2. Install Userli [from a release tarball](installation.md). Running
+   [with containers](docker.md) is intended for local development and not
+   recommended for production.
 3. [Configure](configuration.md) it, set up the [webserver](webserver.md) and
    the [background services](background-services.md).
 4. Run the [initial setup](initial-setup.md).

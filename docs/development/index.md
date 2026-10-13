@@ -5,6 +5,12 @@ It is built with PHP, Symfony, Doctrine ORM, and uses TailwindCSS with Symfony U
 
 We provide a `docker-compose.yml` that starts Userli with MariaDB, Dovecot, Roundcube, Mailcatcher, Redis, and a webhook tester to set up a complete development environment.
 
+!!! warning
+
+    This setup is meant for local development only. Do not use it in
+    production. See the [Operations Guide](../operations/index.md) for
+    production installations.
+
 | Service      | URL                                                          | Purpose                     |
 | ------------ | ------------------------------------------------------------ | --------------------------- |
 | Userli       | [http://localhost:8000](http://localhost:8000)                | Main application            |
