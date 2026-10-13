@@ -10,7 +10,7 @@ If the mailcrypt is enabled in Userli, the adapter script will also forward the 
 
 Create an API token with the scope `dovecot` and use it to authenticate requests from the Dovecot host.
 
-- Via UI: Settings → API Tokens (`/settings/api`) → Create token → select scope `dovecot`.
+- Via UI: Admin → API Tokens (`/admin/api/`) → Create token → select scope `dovecot`.
 - Via CLI:
 
     ```bash

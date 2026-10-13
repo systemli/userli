@@ -3,11 +3,14 @@
 Userli supports [MTA-STS (SMTP MTA Strict Transport Security)](https://datatracker.ietf.org/doc/html/rfc8461), a mechanism that allows mail domains to declare that they support TLS for inbound SMTP connections. 
 Sending servers will refuse to deliver email without a valid TLS connection, protecting against downgrade and man-in-the-middle attacks.
 
-MTA-STS is configured globally in the admin settings under **Settings → General**. The following settings are available:
+MTA-STS is configured globally in the admin interface under **Admin → Settings → MTA-STS**. The following settings are available:
 
 - **MTA-STS Mode** — `testing` (default), `enforce`, or `none`
 - **MX Hosts** — allowed MX hostnames, one per line (e.g. `mail.example.org`)
 - **Max Age** — policy cache duration in seconds (default: 604800 = 1 week)
+
+
+![MTA-STS settings](../assets/images/admin-settings-mta-sts.png){class="screenshot"}
 
 Userli serves the MTA-STS policy at `/.well-known/mta-sts.txt`, returning the policy for the domain derived from the `Host` header.
 

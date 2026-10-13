@@ -384,7 +384,7 @@ init_domain:
   text: Please choose your primary domain, which Userli should handle.
 init_user:
   lead: You have created your primary domain.
-  text: E-mail standards require the account postmaster@%domain% to be present. Please pick a password for this first administrator account and log in afterwards."
+  text: E-mail standards require the account postmaster@%domain% to be present. Please pick a password for this first administrator account and log in afterwards.
 init_settings:
   lead: Configure your Userli installation
   text: Before you can start using Userli, please configure the basic settings. These settings define how your mail service will operate and how users will interact with it.

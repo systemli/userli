@@ -18,8 +18,13 @@ Web application to (self-) manage e-mail users and encrypt their mailboxes.
 * Domain admins (accounts with admin rights for one domain)
 * Random alias feature for users
 * Recovery tokens to restore accounts when password got lost
-* Support for [Dovecot mailbox encryption](https://doc.dovecot.org/configuration_manual/mail_crypt_plugin/)
-* Multi-language support (English, French, Spanish, Portuguese, Bokmål, and German provided)
+* Support for [Dovecot mailbox encryption](https://doc.dovecot.org/main/core/plugins/mail_crypt.html)
+* Two-factor authentication (TOTP) with backup codes
+* OpenPGP key publishing via [Web Key Directory](https://systemli.github.io/userli/features/wkd/)
+* Admin interface for users, aliases, domains, invite codes, API tokens and webhooks
+* APIs for Dovecot, Postfix, Keycloak and Roundcube, and [webhooks](https://systemli.github.io/userli/features/webhooks/)
+* [MTA-STS](https://systemli.github.io/userli/features/mta-sts/) policy hosting
+* Multi-language support (English, German, Spanish, French, Italian, Portuguese, Bokmål, and Swiss German provided)
 
 ## Installation
 

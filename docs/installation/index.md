@@ -10,4 +10,4 @@
   [`pear/crypt_gpg`](https://pear.php.net/manual/en/package.encryption.crypt-gpg.intro.php)
   for OpenPGP key import)
 
-You can also run this application with PostgreSQL oder SQLite.
+You can also run this application with PostgreSQL or SQLite.

@@ -69,7 +69,6 @@ When it finishes, open [http://localhost:8000](http://localhost:8000) and log in
 
 ```text
 src/
-├── Admin/            Sonata Admin classes (backend management)
 ├── Controller/       HTTP controllers (separate GET/POST methods)
 ├── Entity/           Doctrine entities (User, Domain, Alias, Voucher, …)
 ├── Enum/             PHP enums (Roles, webhook events, …)

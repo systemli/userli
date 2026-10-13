@@ -11,6 +11,18 @@ or newer) to be installed, as the
 [`pear/crypt_gpg`](https://pear.php.net/manual/en/package.encryption.crypt-gpg.intro.php)
 library uses it to parse and validate uploaded keys.
 
+Users publish their key in **Account → OpenPGP Keys**, either by uploading a
+file or by pasting the key as text. The key can be published for the account
+and for each alias address.
+
+![Upload an OpenPGP key](../assets/images/openpgp-upload.png){class="screenshot"}
+
+![Published OpenPGP key](../assets/images/openpgp-published.png){class="screenshot"}
+
+Admins can list all published keys in **Admin → OpenPGP Keys**.
+
+![Published OpenPGP keys (admin)](../assets/images/admin-openpgp-keys.png){class="screenshot"}
+
 Userli serves WKD keys directly via HTTP using the **Advanced** method. The
 following routes are provided:
 
@@ -18,8 +30,8 @@ following routes are provided:
   key for the given WKD hash
 - `/.well-known/openpgpkey/{domain}/policy` — returns an empty policy file
 
-Key lookups are cached in Redis with a 24-hour TTL and automatically
-invalidated when keys are created, updated, or deleted.
+Key lookups are cached with a 24-hour TTL (in Redis if `REDIS_URL` is
+configured, otherwise on the filesystem) and automatically invalidated when keys are created, updated, or deleted.
 
 ## Reverse Proxy Setup
 

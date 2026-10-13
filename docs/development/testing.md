@@ -14,7 +14,7 @@ Tests use SQLite (configured in `.env.test`), so no running database container i
 === "make"
 
     ```shell
-    make test
+    make phpunit
     ```
 
 ## Vitest
@@ -33,7 +33,7 @@ Test files live in `tests/js/` and mirror the `assets/` structure.
 === "make"
 
     ```shell
-    make jstest
+    make vitest
     ```
 
 ## Behat
@@ -50,7 +50,7 @@ They test user-facing functionality through a browser simulation.
 === "make"
 
     ```shell
-    make integration
+    make behat
     ```
 
 ## Dovecot integration

@@ -18,7 +18,12 @@ The following events can trigger webhooks:
 
 ## Configuring Webhooks
 
-To configure webhooks create an endpoint via UI: Settings → Webhooks (`/settings/webhooks`).
+To configure webhooks create an endpoint via UI: Admin → Webhooks (`/admin/webhooks/`).
+
+![Webhooks](../assets/images/admin-webhooks.png){class="screenshot"}
+
+![Create a webhook](../assets/images/admin-webhook-create.png){class="screenshot"}
+
 You need to provide the following information:
 
 - **URL**: The endpoint URL where the webhook payload will be sent.
@@ -91,6 +96,9 @@ Your receiver should treat webhook handling as idempotent; use `X-Webhook-Id` to
 ### Manual Retries
 
 You can manually trigger a retry for a specific webhook delivery from the Userli admin interface.
+The deliveries of an endpoint, including their status, are listed there.
+
+![Webhook deliveries](../assets/images/admin-webhook-deliveries.png){class="screenshot"}
 This is useful if you have fixed an issue with your endpoint and want to reprocess a failed webhook event.
 
 ### Success Criteria
