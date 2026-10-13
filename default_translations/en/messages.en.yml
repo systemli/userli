@@ -150,7 +150,7 @@ account:
     unset: You don't have two-factor authentication enabled yet.
     unset-extra: You need a TOTP app on your mobile device to enable two-factor authentication.
     set: Two-factor authentication is enabled.
-    lead: Secure your account with a second factorUpdate your password
+    lead: Secure your account with a second factor
     enable-lead: Scan the image below with your two-factor app.
     enable-title: Enable 2FA
     enable-description: Two-factor authentication is currently not active. We recommend enabling it to significantly increase the security of your account.
