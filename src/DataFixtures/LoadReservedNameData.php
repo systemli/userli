@@ -22,7 +22,14 @@ final class LoadReservedNameData extends Fixture implements FixtureGroupInterfac
     #[Override]
     public function load(ObjectManager $manager): void
     {
+        $repository = $manager->getRepository(ReservedName::class);
+
         foreach (self::RESERVED_NAMES as $name) {
+            // migrations already seed some reserved names (e.g. abuse)
+            if (null !== $repository->findOneBy(['name' => $name])) {
+                continue;
+            }
+
             $reservedName = new ReservedName();
             $reservedName->setName($name);
             $manager->persist($reservedName);
