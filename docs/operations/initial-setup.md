@@ -63,7 +63,9 @@ domain in **Admin → Domains → Edit** and create the first invite codes. See
 Userli has no access to the mailboxes on the mail server (usually owned by the
 system user `vmail`) and therefore does not delete them. To remove the mailbox
 of a deleted account, react to the `user.deleted`
-[webhook](integrations/webhooks.md) with a script on the mail server.
+[webhook](integrations/webhooks.md) on the mail server. The
+[mailbox janitor](integrations/mailbox-janitor.md) does this for you and also
+purges mailboxes of reset accounts.
 
 ## Checklist
 
