@@ -10,6 +10,14 @@ Here you can find screenshots of the web interface of Userli.
 
 ![register](../assets/images/register.png){class="screenshot"}
 
+## Recovery token after registration
+
+![new_recovery_token](../assets/images/new_recovery_token.png){class="screenshot"}
+
+## Welcome
+
+![welcome](../assets/images/welcome.png){class="screenshot"}
+
 ## Login
 
 ![login](../assets/images/login.png){class="screenshot"}
@@ -30,7 +38,17 @@ Here you can find screenshots of the web interface of Userli.
 
 ![manage_recovery_token](../assets/images/manage_recovery_token.png){class="screenshot"}
 
-![new_recovery_token](../assets/images/new_recovery_token.png){class="screenshot"}
+## Account settings - Password
+
+![password](../assets/images/password.png){class="screenshot"}
+
+## Account settings - Two-factor authentication
+
+![twofactor](../assets/images/twofactor.png){class="screenshot"}
+
+## Account settings - OpenPGP keys
+
+![openpgp](../assets/images/openpgp.png){class="screenshot"}
 
 ## Password Recovery
 
@@ -38,4 +56,6 @@ Here you can find screenshots of the web interface of Userli.
 
 ## Admin Frontend
 
-![admin](../assets/images/admin.png){class="screenshot"}
+![admin](../assets/images/admin-dashboard.png){class="screenshot"}
+
+See the [Admin Guide](../admin/index.md) for all admin pages.
