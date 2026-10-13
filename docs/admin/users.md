@@ -88,8 +88,8 @@ address can never be registered again, but:
 * the `user.deleted` [webhook](webhooks.md) is sent.
 
 The mailbox on the mail server is **not** deleted by Userli. Your server
-operator can do this with a webhook, see
-[Initial setup](../operations/initial-setup.md#removing-mailboxes-of-deleted-users).
+operator can do this with the
+[mailbox janitor](../operations/integrations/mailbox-janitor.md).
 
 ## Restore a user
 

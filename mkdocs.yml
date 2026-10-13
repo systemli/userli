@@ -54,6 +54,7 @@ nav:
           - Keycloak: operations/integrations/keycloak.md
           - Retention: operations/integrations/retention.md
           - Webhooks: operations/integrations/webhooks.md
+          - "Mailbox janitor": operations/integrations/mailbox-janitor.md
       - Features:
           - MailCrypt: operations/mailcrypt.md
           - "Web Key Directory": operations/wkd.md

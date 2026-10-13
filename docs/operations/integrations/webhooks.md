@@ -9,6 +9,8 @@ the mailbox of a deleted user on the mail server.
     We provide a webhook listener to inform Nextcloud and Synapse about user
     changes. See
     [userli-webhook-listener](https://github.com/systemli/userli-webhook-listener/).
+    To delete and reset mailboxes on a Dovecot server, use the
+    [mailbox janitor](mailbox-janitor.md).
 
 Webhooks are configured by admins in **Admin → Webhooks**, see
 [Admin Guide → Webhooks](../../admin/webhooks.md). This page describes what a

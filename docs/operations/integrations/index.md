@@ -12,6 +12,7 @@ HTTP APIs: the mail server asks Userli, Userli answers.
 | Keycloak   | [Keycloak user provider](keycloak.md) | `keycloak` | optional |
 | Other services | [Retention API](retention.md) | `retention` | optional |
 | Other services | [Webhooks](webhooks.md) | – | optional |
+| Dovecot (mailbox cleanup) | [userli-mailbox-janitor](mailbox-janitor.md) | `retention` | optional |
 
 ## API tokens
 
