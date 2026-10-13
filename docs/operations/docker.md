@@ -3,12 +3,20 @@
 A container image is published on Docker Hub as
 [`systemli/userli`](https://hub.docker.com/r/systemli/userli).
 
+!!! danger "Not recommended for production"
+
+    We use the container image and the Compose setup for
+    [local development](../development/index.md) only. They are not intended
+    for production, are not maintained to production standards and have not
+    been hardened for it. For production, install Userli
+    [from a release tarball](installation.md).
+
 !!! warning "Only `latest`"
 
     The image is built from the `main` branch on every push and only tagged
     `latest` (for `linux/amd64` and `linux/arm64`). There are no version tags
-    yet. Pin the image by digest and test updates before deploying them. For
-    stable releases, prefer the [release tarballs](installation.md).
+    yet. If you use it anyway, pin the image by digest and test updates before
+    deploying them.
 
 ## The image
 
