@@ -15,14 +15,20 @@ bin/console cache:warmup
 ## Initial setup
 
 Open Userli in your browser. As long as no domain exists, you are redirected to
-the setup wizard at `/init`, which guides you through three steps:
+the setup wizard at `/init`, which guides you through two steps:
 
 1. Create the first mail domain.
-2. Set the password of the first admin account `postmaster@<domain>`.
-3. Review the global settings (names, URLs, sender addresses, ...).
 
-Afterwards, log in with the new admin account. You can also set the admin
-password on the command line with `bin/console app:admin:password`.
+![Setup wizard: domain](../assets/images/init-domain.png){class="screenshot"}
+
+2. Set the password of the first admin account `postmaster@<domain>`.
+
+![Setup wizard: admin password](../assets/images/init-user.png){class="screenshot"}
+
+Afterwards, log in with the new admin account and review the global settings
+(names, URLs, sender addresses, ...) in **Admin → Settings**, see the
+[Admin Guide](../admin/index.md#settings). You can also set the admin password
+on the command line with `bin/console app:admin:password`.
 
 ## Import reserved names
 

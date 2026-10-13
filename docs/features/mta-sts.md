@@ -9,6 +9,9 @@ MTA-STS is configured globally in the admin interface under **Admin → Settings
 - **MX Hosts** — allowed MX hostnames, one per line (e.g. `mail.example.org`)
 - **Max Age** — policy cache duration in seconds (default: 604800 = 1 week)
 
+
+![MTA-STS settings](../assets/images/admin-settings-mta-sts.png){class="screenshot"}
+
 Userli serves the MTA-STS policy at `/.well-known/mta-sts.txt`, returning the policy for the domain derived from the `Host` header.
 
 The controller extracts the domain from the `Host` header by stripping the `mta-sts.` prefix (e.g. `mta-sts.example.org` → `example.org`) and validates it against configured domains. 

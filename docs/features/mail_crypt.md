@@ -17,6 +17,12 @@ The following values are supported:
 * `3` - Enforce MailCrypt key generation for all users, see the
   documentation about migrating legacy users for more info
 
+![MailCrypt settings](../assets/images/admin-settings-mailcrypt.png){class="screenshot"}
+
+The admin interface shows for every user whether MailCrypt is enabled:
+
+![User details with MailCrypt status](../assets/images/admin-user-show.png){class="screenshot"}
+
 MailCrypt can be turned on/off for individual users by setting the `mail_crypt`
 switch in the `users` database table. This switch is mainly meant to
 provide a migration path from legacy users without MailCrypt keys. On new

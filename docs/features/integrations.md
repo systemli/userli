@@ -7,6 +7,10 @@ Access is now controlled via API Tokens with fine-grained scopes. The previous e
 
 Create and manage tokens via UI: Admin → API Tokens (`/admin/api/`).
 
+![API tokens](../assets/images/admin-api-tokens.png){class="screenshot"}
+
+![Create an API token](../assets/images/admin-api-token-create.png){class="screenshot"}
+
 CLI:
 
 - Create: `bin/console app:api-token:create --name "My Token" --scopes keycloak --scopes dovecot`
