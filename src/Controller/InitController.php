@@ -99,7 +99,7 @@ final class InitController extends AbstractController
     public function settings(): Response
     {
         // redirect if already configured
-        if (0 < $this->manager->getRepository(Setting::class)->count([])) {
+        if (null !== $this->manager->getRepository(Setting::class)->findOneBy(['name' => 'app_url'])) {
             return $this->redirectToRoute('index');
         }
 
