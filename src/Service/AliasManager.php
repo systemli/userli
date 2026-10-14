@@ -132,6 +132,8 @@ final readonly class AliasManager
      */
     public function update(Alias $alias, AliasAdminModel $model): void
     {
+        $followsUser = $alias->getDestination() === $alias->getUser()?->getEmail();
+
         if (null !== $model->getUser()) {
             $alias->setUser($model->getUser());
         }
@@ -139,7 +141,7 @@ final readonly class AliasManager
         $alias->setDestination($model->getDestination());
         $alias->setSmtpQuotaLimits($model->getSmtpQuotaLimits());
 
-        $this->applyDefaults($alias);
+        $this->applyDefaults($alias, $followsUser);
 
         $this->em->flush();
     }
@@ -215,9 +217,10 @@ final readonly class AliasManager
      * - If no destination and no user: set user to current user
      * - If user set but no destination: set destination to user's email
      * - Guess domain from source email
-     * - Domain admins (non-ROLE_ADMIN) are forced to use the user's email as destination
+     * - Domain admins (non-ROLE_ADMIN) are forced to use the user's email as destination,
+     *   unless the existing destination is a custom one ($followsUser = false), which is kept
      */
-    private function applyDefaults(Alias $alias): void
+    private function applyDefaults(Alias $alias, bool $followsUser = true): void
     {
         if (null === $alias->getDestination() && null === $alias->getUser()) {
             $user = $this->security->getUser();
@@ -238,7 +241,7 @@ final readonly class AliasManager
         }
 
         // Domain admins are only allowed to set alias destination to existing user's email
-        if (!$this->security->isGranted(Roles::ADMIN)) {
+        if ($followsUser && !$this->security->isGranted(Roles::ADMIN)) {
             $alias->setDestination($alias->getUser()?->getEmail());
         }
     }
