@@ -6,6 +6,10 @@ contain the application, all PHP dependencies and the built frontend assets.
 The steps below assume Debian/Ubuntu, a system user `userli` and the
 installation directory `/var/www/userli`. Adjust them to your system.
 
+!!! tip
+
+    To automate these steps, use our [Ansible role](ansible.md).
+
 ## 1. Download
 
 Get the [latest release](https://github.com/systemli/userli/releases/latest).
