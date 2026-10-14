@@ -68,9 +68,12 @@ if [ ! -f "$tarball_adapter" ]; then
     exit 1
 fi
 
-# gpg-sign release tarballs
-gpg -u ${GPG_SIGN_KEY} --output "${tarball_userli}.asc" --armor --detach-sign --batch --yes "$tarball_userli"
-gpg -u ${GPG_SIGN_KEY} --output "${tarball_adapter}.asc" --armor --detach-sign --batch --yes "$tarball_adapter"
+# gpg-sign hashsum files
+for tarball in ${tarball_userli} ${tarball_adapter}; do
+    for sha in sha256 sha512; do
+    gpg -u ${GPG_SIGN_KEY} --output "${tarball}.${sha}.asc" --armor --detach-sign --batch --yes "${tarball}.${sha}"
+    done
+done
 
 # validate token
 curl --output /dev/null --silent --header "$gh_auth" $gh_repo || { printf "Error: Invalid repo, token or network issue\n" >&2; exit 1; }
@@ -93,7 +96,7 @@ eval $(printf "$gh_release" | grep -m 1 "id.:" | grep -w id | tr : = | tr -cd '[
 
 # upload to Github
 for tarball in ${tarball_userli} ${tarball_adapter}; do
-    for ext in "" ".asc" ".sha256" ".sha512"; do
+    for ext in "" ".sha256" ".sha256.asc" ".sha512" ".sha512.asc"; do
         gh_asset="https://uploads.github.com/repos/${gh_group}/${gh_project}/releases/${id}/assets?name=$(basename ${tarball}${ext})"
         curl --silent --proto-redir https "$gh_asset" \
                 -H "Content-Type: application/octet-stream" \
