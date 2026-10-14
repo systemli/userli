@@ -126,9 +126,9 @@ release: build
 		-czf build/${RELEASE_FILE_ADAPTER} \
 		userli-dovecot-adapter.lua
 	# Generate SHA hash sum files
-	for sha in ${SHA_ALGORITHMS}; do \
-		shasum -a "$${sha}" "build/${RELEASE_FILE_USERLI}" >"build/${RELEASE_FILE_USERLI}.sha$${sha}"; \
-		shasum -a "$${sha}" "build/${RELEASE_FILE_ADAPTER}" >"build/${RELEASE_FILE_ADAPTER}.sha$${sha}"; \
+	cd build; for sha in ${SHA_ALGORITHMS}; do \
+		shasum -a "$${sha}" "${RELEASE_FILE_USERLI}" > "${RELEASE_FILE_USERLI}.sha$${sha}"; \
+		shasum -a "$${sha}" "${RELEASE_FILE_ADAPTER}" > "${RELEASE_FILE_ADAPTER}.sha$${sha}"; \
 	done
 
 reset:
