@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Enum\MailCrypt;
 use App\Enum\Roles;
 use App\Enum\UserNotificationType;
+use App\Event\UserEvent;
 use App\Form\Model\UserAdminModel;
 use App\Handler\DeleteHandler;
 use App\Handler\MailCryptKeyHandler;
@@ -20,6 +21,7 @@ use App\Repository\UserNotificationRepository;
 use App\Repository\UserRepository;
 use App\Repository\VoucherRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final readonly class UserManager
 {
@@ -38,6 +40,7 @@ final readonly class UserManager
         private VoucherRepository $voucherRepository,
         private OpenPgpKeyRepository $openPgpKeyRepository,
         private UserNotificationRepository $userNotificationRepository,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -88,6 +91,8 @@ final readonly class UserManager
 
         $this->em->persist($user);
         $this->em->flush();
+
+        $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::USER_CREATED);
 
         return $user;
     }
