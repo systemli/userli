@@ -58,7 +58,6 @@ form:
   password: Contraseña
   password-help: Introduce tu contraseña
   password_confirmation: Confirmar contraseña
-  remember-me: Mantener la sesión iniciada
   signin: Iniciar sesión
   recovery-link: ¿Contraseña olvidada?
   auth-failed: Autenticación fallida

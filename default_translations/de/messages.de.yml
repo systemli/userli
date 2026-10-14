@@ -70,7 +70,6 @@ form:
   password_confirmation: Passwort bestätigen
   password-strong: Gute Wahl! Dein Passwort ist stark.
   password-min-length: Mindestens %min% Zeichen erforderlich.
-  remember-me: Angemeldet bleiben
   signin: Anmelden
   recovery-link: Passwort vergessen?
   auth-failed: Authentifizierung fehlgeschlagen

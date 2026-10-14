@@ -40,7 +40,6 @@ form:
   email: E-mail
   signin-header: Accedi
   register-header: Crea un account
-  remember-me: Rimani connesso/a
   signin: Accedi
   recovery-link: Password dimenticata?
   roles: Ruoli

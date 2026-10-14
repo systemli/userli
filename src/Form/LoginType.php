@@ -6,7 +6,6 @@ namespace App\Form;
 
 use Override;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -39,10 +38,6 @@ final class LoginType extends AbstractType
                     'autocomplete' => 'current-password',
                 ],
                 'help' => 'form.password-help',
-            ])
-            ->add('_remember_me', CheckboxType::class, [
-                'label' => 'form.remember-me',
-                'required' => false,
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'form.signin',

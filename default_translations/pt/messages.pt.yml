@@ -43,7 +43,6 @@ form:
   email: E-mail
   password: Senha
   password_confirmation: Confirme sua senha
-  remember-me: Lembrar meu login
   signin: Login
   recovery-link: Esqueceu a sua palavra-passe?
   roles: Roles

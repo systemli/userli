@@ -42,7 +42,6 @@ form:
   email: E-post
   password: Passord
   password_confirmation: Bekreft passord
-  remember-me: Forbli innlogget
   signin: Logg inn
   recovery-link: Glemt passordet?
   roles: Roller
