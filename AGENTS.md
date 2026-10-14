@@ -79,6 +79,8 @@ userli/
 - **Translations**: All user-facing text uses `|trans` filter with keys from `default_translations/`. EN/DE managed manually.
 - **Commit messages**: Gitmoji prefix, English language.
 - **PRs**: Open as draft, English description with goal/improvement summary.
+- **PR labels**: Always add matching standard GitHub labels (`bug` for bugfixes, `enhancement` for features/improvements, `documentation` for docs, `dependencies`, `security`, `ux/ui`, `testing`, ...). Check `gh label list` for available labels.
+- **Docs check**: Before committing / opening a PR, check whether `docs/` (MkDocs: `docs/user/`, `docs/admin/`, `docs/operations/`, `docs/development/`) needs an update for the change. If the UI changed, also update affected screenshots in `docs/assets/images/`. Example: #1382 (login form change, updated `login.png` and `start.png`), #1378 (new docs page plus `delete.png`).
 
 ## Anti-Patterns (This Project)
 
