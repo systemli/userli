@@ -25,12 +25,12 @@ After signing in you see the overview of your account:
 
 ![Account overview](../assets/images/account.png){class="screenshot"}
 
-| Card              | What it does                                                        |
-|-------------------|---------------------------------------------------------------------|
-| **Webmail**       | Opens the webmail of your provider (only shown if available).       |
-| **Invite codes**  | Shows your [invite codes](invite-codes.md) (only shown if invitations are enabled). |
-| **Alias addresses** | Manage your [aliases](aliases.md).                                |
-| **Account settings** | Password, two-factor authentication, recovery token, OpenPGP keys and account deletion. |
+| Card                 | What it does                                                                                         |
+|----------------------|------------------------------------------------------------------------------------------------------|
+| **Webmail**          | Opens the webmail of your provider (only shown if available).                                        |
+| **Invite codes**     | Shows your [invite codes](invite-codes.md) (only shown if invitations are enabled).                  |
+| **Alias addresses**  | Manage your [aliases](aliases.md).                                                                   |
+| **Account settings** | Password, two-factor authentication, recovery token, OpenPGP keys and [account deletion](delete.md). |
 
 ### Security alert
 
@@ -80,21 +80,3 @@ sent in the language you are using.
 
 You can switch between light and dark mode with the toggle in the navigation
 bar.
-
-### Delete your account
-
-Go to **Account settings → Delete Account**, enter your password and confirm.
-
-!!! danger "Deletion cannot be undone"
-
-    * Your password, recovery token and mailbox encryption keys are deleted.
-      Your encrypted emails can't be decrypted anymore.
-    * All your aliases are deleted.
-    * Unused invite codes are deleted.
-    * Your address can **never** be registered again – not by you, not by
-      anybody else.
-
-!!! note "Inactive accounts"
-
-    Your provider may delete accounts that were not used for about two years.
-    Signing in to the web interface or your email program counts as use.
