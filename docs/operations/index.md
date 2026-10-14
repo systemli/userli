@@ -45,7 +45,8 @@ flowchart TB
 ## Where to start
 
 1. Check the [requirements](requirements.md).
-2. Install Userli [from a release tarball](installation.md).
+2. Install Userli [from a release tarball](installation.md) or
+   [with Ansible](ansible.md).
 3. [Configure](configuration.md) it, set up the [webserver](webserver.md) and
    the [background services](background-services.md).
 4. Run the [initial setup](initial-setup.md).

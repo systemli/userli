@@ -36,6 +36,10 @@ releases.
 Using one directory per version makes rollbacks of the code easy. Rolling back
 database migrations is usually not possible – restore the backup instead.
 
+## Update with Ansible
+
+See [Deploy with Ansible](ansible.md#updating).
+
 ## Update a container installation
 
 See [Run with containers](docker.md#updating).

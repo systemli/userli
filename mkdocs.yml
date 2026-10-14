@@ -42,6 +42,7 @@ nav:
       - Installation:
           - Requirements: operations/requirements.md
           - "Install from release": operations/installation.md
+          - "Deploy with Ansible": operations/ansible.md
           - "Run with containers": operations/docker.md
           - Configuration: operations/configuration.md
           - Webserver: operations/webserver.md
