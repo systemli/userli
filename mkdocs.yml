@@ -23,6 +23,7 @@ nav:
       - Aliases: user/aliases.md
       - "Invite codes": user/invite-codes.md
       - "OpenPGP keys": user/openpgp.md
+      - "Delete your account": user/delete.md
   - "Admin Guide":
       - admin/index.md
       - "Roles and permissions": admin/roles.md

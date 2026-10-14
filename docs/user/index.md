@@ -13,15 +13,16 @@ Userli – or who want to get one. You don't need any technical knowledge.
 
 ## What you can do
 
-| I want to …                                   | Read                                        |
-|-----------------------------------------------|---------------------------------------------|
-| get a new email account                       | [Create an account](register.md)            |
-| sign in, change my password or language       | [Sign in and your account](account.md)      |
-| protect my account with a second factor       | [Secure your account](security.md)          |
-| get back into my account after losing my password | [Forgot your password](recovery.md)     |
-| use extra addresses that forward to my inbox  | [Aliases](aliases.md)                       |
-| invite a friend                               | [Invite codes](invite-codes.md)             |
-| let others find my OpenPGP key automatically  | [OpenPGP keys](openpgp.md)                  |
+| I want to …                                       | Read                                        |
+|---------------------------------------------------|---------------------------------------------|
+| get a new email account                           | [Create an account](register.md)            |
+| sign in, change my password or language           | [Sign in and your account](account.md)      |
+| protect my account with a second factor           | [Secure your account](security.md)          |
+| get back into my account after losing my password | [Forgot your password](recovery.md)         |
+| use extra addresses that forward to my inbox      | [Aliases](aliases.md)                       |
+| invite a friend                                   | [Invite codes](invite-codes.md)             |
+| let others find my OpenPGP key automatically      | [OpenPGP keys](openpgp.md)                  |
+| delete my account                                 | [Delete your account](delete.md)            |
 
 ## Reading and writing emails
 
