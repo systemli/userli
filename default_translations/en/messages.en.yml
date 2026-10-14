@@ -327,15 +327,20 @@ mail:
     Welcome aboard. You can find guides for setting up your e-mail account
     with several client programs on the Internet.
 
-    You get a mailbox with a 1 GB quota. If you exceed your limit,
-    your e-mail account may not function properly.
+    %quota_text%
 
-    In one week you will receive three invite codes, which you can collect
-    at %voucher_url%. You can pass these on to friends and
-    invite them to register with %project_name%.
+    %invitation_text%
 
     Sincerly,
     your %project_name% admin team.
+  welcome-quota: |
+    You get a mailbox with a %quota% MB quota. If you exceed your limit,
+    your e-mail account may not function properly.
+  welcome-quota-unlimited: You get a mailbox without a quota limit.
+  welcome-invitations: |
+    In %waitingPeriodDays% days you will receive %limit% invite codes, which you can collect
+    at %voucher_url%. You can pass these on to friends and
+    invite them to register with %project_name%.
   recovery-subject: The password for your e-mail account %email% will be reset
   recovery-body: |
     Hello %email%,

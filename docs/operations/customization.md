@@ -38,7 +38,7 @@ Useful keys:
 | Key | Where |
 |-----|-------|
 | `welcome.custom-bottom` | Additional block at the bottom of the welcome page after registration. Empty by default. HTML is allowed and sanitized. |
-| `mail.welcome-body` | Welcome email. It mentions a quota and invite codes – adjust it to your setup. |
+| `mail.welcome-body` | Welcome email. Placeholders `%quota_text%` and `%invitation_text%` are filled from `mail.welcome-quota`, `mail.welcome-quota-unlimited` and `mail.welcome-invitations` (the latter is omitted if invitations are disabled for the user's domain). |
 
 !!! note
 

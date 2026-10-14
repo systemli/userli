@@ -323,16 +323,21 @@ mail:
     willkommen an Bord. Im Web findest du Anleitungen zur Einrichtung deines
     E-Mail-Kontos mit verschiedenen Client-Programmen.
 
-    Dein Postfachgröße beträgt 1 GB. Sollte dein Postfach diese Größe
-    überschreiten, kann es zu Einschränkungen der Funktionalität deines
-    E-Mail-Kontos kommen.
+    %quota_text%
 
-    In einer Woche erhälst du drei Einladungscodes, die du unter
-    %voucher_url% abrufen kannst. Diese kannst du an Freund:innen
-    weiterleiten und sie so zu %project_name% einladen.
+    %invitation_text%
 
     Viel Spaß mit deinem E-Mail-Konto, wünscht dir
     dein %project_name%-Verwaltungsteam.
+  welcome-quota: |
+    Deine Postfachgröße beträgt %quota% MB. Sollte dein Postfach diese Größe
+    überschreiten, kann es zu Einschränkungen der Funktionalität deines
+    E-Mail-Kontos kommen.
+  welcome-quota-unlimited: Dein Postfach hat keine Größenbeschränkung.
+  welcome-invitations: |
+    In %waitingPeriodDays% Tagen erhältst du %limit% Einladungscodes, die du unter
+    %voucher_url% abrufen kannst. Diese kannst du an Freund:innen
+    weiterleiten und sie so zu %project_name% einladen.
   recovery-subject: Das Passwort zu deinem E-Mail-Konto %email% wird zurückgesetzt
   recovery-body: |
     Hallo %email%,
