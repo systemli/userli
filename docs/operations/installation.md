@@ -20,11 +20,10 @@ GPG signature (`.asc`).
 cd /tmp
 wget https://github.com/systemli/userli/releases/download/x.y.z/userli-x.y.z.tar.gz
 wget https://github.com/systemli/userli/releases/download/x.y.z/userli-x.y.z.tar.gz.sha256
-wget https://github.com/systemli/userli/releases/download/x.y.z/userli-x.y.z.tar.gz.asc
+wget https://github.com/systemli/userli/releases/download/x.y.z/userli-x.y.z.tar.gz.sha256.asc
 
-# Compare the checksum with the content of the .sha256 file
-sha256sum userli-x.y.z.tar.gz
-cat userli-x.y.z.tar.gz.sha256
+# Verify the hash of the release tarball against the hashsum file
+sha256sum -c userli-x.y.z.tar.gz.sha256
 
 # Verify the signature
 gpg --verify userli-x.y.z.tar.gz.asc userli-x.y.z.tar.gz
