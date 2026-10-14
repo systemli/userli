@@ -8,6 +8,7 @@ use App\Dto\PaginatedResult;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
+use App\Event\UserEvent;
 use App\Form\Model\UserAdminModel;
 use App\Handler\DeleteHandler;
 use App\Handler\MailCryptKeyHandler;
@@ -25,6 +26,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class UserManagerTest extends TestCase
 {
@@ -40,6 +42,7 @@ class UserManagerTest extends TestCase
     private VoucherRepository&Stub $voucherRepository;
     private OpenPgpKeyRepository&Stub $openPgpKeyRepository;
     private UserNotificationRepository&Stub $userNotificationRepository;
+    private EventDispatcherInterface&Stub $eventDispatcher;
     private UserManager $manager;
     private Domain $domain;
 
@@ -57,6 +60,7 @@ class UserManagerTest extends TestCase
         $this->voucherRepository = $this->createStub(VoucherRepository::class);
         $this->openPgpKeyRepository = $this->createStub(OpenPgpKeyRepository::class);
         $this->userNotificationRepository = $this->createStub(UserNotificationRepository::class);
+        $this->eventDispatcher = $this->createStub(EventDispatcherInterface::class);
 
         $this->domain = new Domain();
         $this->domain->setName('example.org');
@@ -77,6 +81,7 @@ class UserManagerTest extends TestCase
             $this->voucherRepository,
             $this->openPgpKeyRepository,
             $this->userNotificationRepository,
+            $this->eventDispatcher,
         );
     }
 
@@ -137,6 +142,11 @@ class UserManagerTest extends TestCase
         $mailCryptKeyHandler = $this->createMock(MailCryptKeyHandler::class);
         $mailCryptKeyHandler->expects($this->once())->method('create');
 
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->once())
+            ->method('dispatch')
+            ->with($this->isInstanceOf(UserEvent::class), UserEvent::USER_CREATED);
+
         $manager = new UserManager(
             $entityManager,
             $this->repository,
@@ -150,6 +160,7 @@ class UserManagerTest extends TestCase
             $this->voucherRepository,
             $this->openPgpKeyRepository,
             $this->userNotificationRepository,
+            $eventDispatcher,
         );
 
         $model = new UserAdminModel();
@@ -187,6 +198,7 @@ class UserManagerTest extends TestCase
             $this->voucherRepository,
             $this->openPgpKeyRepository,
             $this->userNotificationRepository,
+            $this->eventDispatcher,
         );
 
         $model = new UserAdminModel();
@@ -227,6 +239,7 @@ class UserManagerTest extends TestCase
             $this->voucherRepository,
             $this->openPgpKeyRepository,
             $this->userNotificationRepository,
+            $this->eventDispatcher,
         );
 
         $model = new UserAdminModel();
@@ -255,6 +268,7 @@ class UserManagerTest extends TestCase
             $this->voucherRepository,
             $this->openPgpKeyRepository,
             $this->userNotificationRepository,
+            $this->eventDispatcher,
         );
 
         $user = new User('user@example.org');
@@ -297,6 +311,7 @@ class UserManagerTest extends TestCase
             $this->voucherRepository,
             $this->openPgpKeyRepository,
             $this->userNotificationRepository,
+            $this->eventDispatcher,
         );
 
         $user = new User('user@example.org');
@@ -335,6 +350,7 @@ class UserManagerTest extends TestCase
             $this->voucherRepository,
             $this->openPgpKeyRepository,
             $this->userNotificationRepository,
+            $this->eventDispatcher,
         );
 
         $user = new User('user@example.org');
@@ -368,6 +384,7 @@ class UserManagerTest extends TestCase
             $this->voucherRepository,
             $this->openPgpKeyRepository,
             $this->userNotificationRepository,
+            $this->eventDispatcher,
         );
 
         $user = new User('user@example.org');
@@ -407,6 +424,7 @@ class UserManagerTest extends TestCase
             $this->voucherRepository,
             $this->openPgpKeyRepository,
             $this->userNotificationRepository,
+            $this->eventDispatcher,
         );
 
         $manager->delete($user);
