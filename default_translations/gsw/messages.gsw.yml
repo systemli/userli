@@ -10,7 +10,6 @@ navbar:
   open-main-menu: Hauptmenü ufmache
 
 form:
-  remember-me: Igloggt blibe
   email: E-Mail
   change-password: Dis Passwort ändere
   create-random-alias: Zuefäuigi Alias Adrässe generiere

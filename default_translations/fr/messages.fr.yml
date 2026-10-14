@@ -61,7 +61,6 @@ form:
   password: Mot de passe
   password-help: Entrez votre mot de passe
   password_confirmation: Confirmer le mot de passe
-  remember-me: Rester connecté
   signin: Se connecter
   recovery-link: Mot de passe oublié ?
   auth-failed: Échec de l'authentification

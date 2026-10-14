@@ -40,14 +40,7 @@
                             {{ form_row(login_form._username) }}
                             {{ form_row(login_form._password) }}
 
-                            {# Remember me and forgot password in a row #}
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    {{ form_widget(login_form._remember_me) }}
-                                    <label for="{{ login_form._remember_me.vars.id }}" class="ml-2 block text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
-                                        {{ "form.remember-me"|trans }}
-                                    </label>
-                                </div>
+                            <div class="flex items-center justify-end">
                                 <div class="text-sm">
                                     <a href="{{ path('recovery') }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 focus:outline-none focus:underline transition-colors duration-200">
                                         {{ "form.recovery-link"|trans }}

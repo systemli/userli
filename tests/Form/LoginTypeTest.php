@@ -21,7 +21,6 @@ class LoginTypeTest extends TypeTestCase
         $formData = [
             '_username' => 'user@example.org',
             '_password' => 'secure-password',
-            '_remember_me' => true,
         ];
 
         $form = $this->factory->create(LoginType::class);
@@ -32,23 +31,6 @@ class LoginTypeTest extends TypeTestCase
         $data = $form->getData();
         self::assertSame('user@example.org', $data['_username']);
         self::assertSame('secure-password', $data['_password']);
-        self::assertTrue($data['_remember_me']);
-    }
-
-    public function testSubmitWithoutRememberMe(): void
-    {
-        $formData = [
-            '_username' => 'user@example.org',
-            '_password' => 'secure-password',
-        ];
-
-        $form = $this->factory->create(LoginType::class);
-        $form->submit($formData);
-
-        self::assertTrue($form->isSynchronized());
-
-        $data = $form->getData();
-        self::assertFalse($data['_remember_me']);
     }
 
     public function testLastUsernameOption(): void
@@ -68,7 +50,6 @@ class LoginTypeTest extends TypeTestCase
 
         self::assertArrayHasKey('_username', $view->children);
         self::assertArrayHasKey('_password', $view->children);
-        self::assertArrayHasKey('_remember_me', $view->children);
         self::assertArrayHasKey('submit', $view->children);
     }
 
