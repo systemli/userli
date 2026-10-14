@@ -22,11 +22,11 @@ wget https://github.com/systemli/userli/releases/download/x.y.z/userli-x.y.z.tar
 wget https://github.com/systemli/userli/releases/download/x.y.z/userli-x.y.z.tar.gz.sha256
 wget https://github.com/systemli/userli/releases/download/x.y.z/userli-x.y.z.tar.gz.sha256.asc
 
+# Verify the signature of the hashsum file
+gpg --verify userli-x.y.z.tar.gz.sha256.asc userli-x.y.z.tar.gz.sha256
+
 # Verify the hash of the release tarball against the hashsum file
 sha256sum -c userli-x.y.z.tar.gz.sha256
-
-# Verify the signature
-gpg --verify userli-x.y.z.tar.gz.asc userli-x.y.z.tar.gz
 ```
 
 !!! tip
