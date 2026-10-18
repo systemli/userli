@@ -60,7 +60,12 @@ export default class extends Clipboard {
       return;
     }
 
-    navigator.clipboard.writeText(text).then(() => this.copied());
+    navigator.clipboard
+      .writeText(text)
+      .then(() => this.copied())
+      .catch(() => {
+        // Clipboard access denied or unavailable; leave button state unchanged
+      });
   }
 
   get _feedbackElement(): HTMLElement {

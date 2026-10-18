@@ -146,7 +146,7 @@ export default class extends Controller {
     this.input.addEventListener("focus", () => {
       // For minChars=0, fetch immediately on focus
       if (this.minCharsValue === 0 && this.results.length === 0 && this.input.value === "") {
-        this.fetchResults("");
+        void this.fetchResults("");
       } else if (this.input.value && this.results.length > 0) {
         this.open();
       }
