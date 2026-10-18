@@ -25,7 +25,6 @@ start:
   vouchers-desc: Invita a tus amigos
   webmail: Webmail
   webmail-desc: Leer y escribir e-mails
-  openpgp-delete: eliminar clave OpenPGP
   openpgp-settings: OpenPGP
 
 index:
@@ -62,9 +61,7 @@ form:
   recovery-link: ¿Contraseña olvidada?
   auth-failed: Autenticación fallida
   errors-found: Por favor corrige los siguientes errores
-  no-account: ¿No tienes una cuenta?
   have-account: ¿Ya tienes una cuenta?
-  create-account: Crea una aquí
   roles: Roles
   submit: Enviar
   voucher: Código de invitación
@@ -86,17 +83,8 @@ form:
   registration-recovery-token-confirm: He guardado el token de recuperación en un lugar seguro
   registration-recovery-token-next-button: Continuar
   domain: Dominio
-  add: Añadir
 
 openpgp:
-  key-file: "Sube tu archivo de clave:"
-  key-file-mimetype: El archivo subido no contiene datos OpenPGP.
-  upload-or: o
-  key-text: "Pega tu clave como texto:"
-  key-text-placeholder: Clave OpenPGP en formato ASCII
-  select-one: Por favor, sube la clave como archivo o como texto ASCII.
-  submit: Publicar clave OpenPGP
-  delete: Eliminar clave OpenPGP
   delete-button: Eliminar clave OpenPGP
   information: Información
   information-details: >
@@ -107,9 +95,7 @@ openpgp:
   expiretime-label: "Fecha de caducidad:"
   no-expiration: Sin fecha de caducidad (válida indefinidamente)
   manage-subtitle: Gestiona tu clave OpenPGP
-  current-key: Clave OpenPGP actual
   no-key-uploaded: Aún no se ha subido ninguna clave OpenPGP
-  upload-prompt: Sube una clave usando el formulario de la derecha
 
 recovery:
   header: Recuperar tu cuenta
@@ -144,11 +130,6 @@ welcome:
   headline: ¡Bienvenido a %project_name%!
   lead: Has configurado una cuenta con nosotros con éxito. ¿Cuáles son los siguientes pasos?
   next-button: Al resumen
-  text: >
-    <h3>Listo para empezar</h3>
-    En la web puedes encontrar guías para configurar tu cuenta de e-mail con varios programas cliente.
-    En una semana recibirás tres códigos de invitación, que puedes recoger en <a href="%app_url%">%app_url%</a>.
-    Puedes pasárselos a tus amigos e invitarlos a registrarse en %project_name%.
 
 closed:
   headline: Registro cerrado
@@ -196,8 +177,6 @@ flashes:
   openpgp-key-upload-error-no-openpgp: El archivo subido no contiene datos OpenPGP.
   openpgp-key-upload-error-no-keys: No se encontraron claves para tu dirección de correo en los datos subidos.
   openpgp-key-upload-error-multiple-keys: Se encontró más de una clave para tu dirección de correo en los datos subidos. Por favor, sube solo una clave.
-
-flash_batch_remove_vouchers_success: Códigos de invitación no canjeados eliminados.
 
 error:
   title: Vaya, ha ocurrido un error.
@@ -255,12 +234,6 @@ mail:
 
 admin: ~
 
-Ratio: Ratio
-User: Usuario
-Domain: Dominio
-Alias: Dirección alias
-Voucher: Código de invitación
-Reserved Name: Nombre reservado
 copy-to-clipboard: Copiar al portapapeles
 
 alias:

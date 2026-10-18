@@ -12,7 +12,6 @@ registration:
 form:
   invalid-token: Ce jeton a un format invalide.
   registration-recovery-token-noack: Ce champ doit être vérifié.
-  missing-domain: Le domaine n'est pas géré par ce système.
   identical-passwords: Le nouveau mot de passe est identique à l'ancien.
   wrong-password: Mauvais mot de passe
   invalid-email: L'adresse électronique n'est pas valide.

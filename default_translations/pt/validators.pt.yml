@@ -4,7 +4,6 @@ form:
   invalid-email: O email é inválido.
   wrong-password: Palavra-passe errada
   identical-passwords: A palavra-passe nova é idêntica à antiga.
-  missing-domain: O domínio não é gerenciado dentro deste sistema.
   registration-recovery-token-noack: Esse campo precisa ser verificado.
   invalid-token: Este token tem um formato inválido.
 registration:

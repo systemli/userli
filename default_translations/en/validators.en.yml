@@ -5,7 +5,6 @@ form:
   invalid-email: "The email is not valid."
   wrong-password: "Wrong password"
   identical-passwords: "The new password is identical with the old one."
-  missing-domain: "The domain is not under management in this system."
   registration-recovery-token-noack: "This field needs to be checked."
   invalid-token: "This token has an invalid format."
   twofactor-secret-invalid: "The verification code is not valid."

@@ -25,7 +25,6 @@ start:
   vouchers-desc: Invitez vos amis
   webmail: Messagerie Web
   webmail-desc: Lisez et écrivez des courriels
-  openpgp-delete: supprimer la clé OpenPGP
   openpgp-settings: OpenPGP
 
 index:
@@ -65,9 +64,7 @@ form:
   recovery-link: Mot de passe oublié ?
   auth-failed: Échec de l'authentification
   errors-found: Veuillez corriger les erreurs suivantes
-  no-account: Vous n'avez pas de compte ?
   have-account: Vous avez déjà un compte ?
-  create-account: Créer un compte ici
   roles: Rôles
   submit: Valider
   voucher: Code d'invitation
@@ -89,7 +86,6 @@ form:
   registration-recovery-token-confirm: J'ai stocké le jeton de récupération de façon sécurisée
   registration-recovery-token-next-button: Continuer
   domain: Domaine
-  add: Ajouter
 
 openpgp-key-file: "Téléverser votre clé sous forme de fichier:"
 openpgp-key-file-mimetype: "Le fichier téléversé ne contient pas de données OpenPGP."
@@ -134,11 +130,6 @@ welcome:
   headline: Bienvenue dans %project_name% !
   lead: Vous avez bien créé un compte chez nous. Quelles sont les étapes suivantes ?
   next-button: Vers le tableau de bord
-  text: >
-    <h3>Vous êtes fin prêt(e)</h3>
-    Sur le Web, vous pouvez trouvez des instructions pour configurer votre compte de messagerie avec différents programmes clients
-    Dans une semaine, vous recevrez trois codes d'invitation que vous pourrez récupérer à <a href="%app_url%">%app_url%</a>.
-    Vous pouvez les donner à vos amis et les inviter à s'inscrire sur %project_name%.
 
 closed:
   headline: Inscription fermée
@@ -190,8 +181,6 @@ flashes:
   openpgp-key-upload-error-multiple-keys: >
     Plus d'une clé pour votre adresse électronique a été trouvée dans les données téléversées.
     Veuillez téléverser une seule clé.
-
-flash_batch_remove_vouchers_success: Codes d'invitation non demandés supprimés.
 
 error:
   title: Oups, une erreur s'est produite.
@@ -249,12 +238,6 @@ mail:
 
 admin: ~
 
-Ratio: Ratio
-User: Utilisateur
-Domain: Domaine
-Alias: Adresse alias
-Voucher: Code d'invitation
-Reserved Name: Nom réservé
 copy-to-clipboard: Copier dans le presse-papiers
 
 alias:
@@ -279,9 +262,7 @@ openpgp:
   expiretime-label: "Date d'expiration:"
   no-expiration: "Pas de date d'expiration (validité indéfinie)"
   manage-subtitle: "Gérer votre clé OpenPGP"
-  current-key: "Clé OpenPGP actuelle"
   no-key-uploaded: "Aucune clé OpenPGP téléversée"
-  upload-prompt: "Téléversez une clé en utilisant le formulaire à droite"
 
 index.alias-motivation: Crée des alias de messagerie personnalisés pour mieux organiser ta boîte de réception et protéger ta vie privée.
 

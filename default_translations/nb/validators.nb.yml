@@ -12,7 +12,6 @@ form:
   registration-recovery-token-noack: Dette feltet må merkes av.
   different-password: Passordet og bekreftelseskoden stemmer ikke overens.
   wrong-password: Feil passord
-  missing-domain: Domenet er ikke i behandling i dette systemet.
   weak_password: Passordet overholder ikke vår sikkerhetspraksis.
   invalid-email: E-posten er ikke gyldig.
   identical-passwords: Passordet er det samme som det gamle.

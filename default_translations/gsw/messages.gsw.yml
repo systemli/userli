@@ -50,7 +50,6 @@ index:
   voucher-disable: Am %date% bechunnsch drü Invite Codes. Das isch so glöst zum Masse-Regischtrierige und Spam verhindere.
   alias-limit: Du hesch s Limit vo %alias_limit% %alias_type% Alias Adrässene erreicht.
 admin: ~
-Voucher: Invite Code
 delete:
   user:
     headline: Account lösche
@@ -73,11 +72,6 @@ start:
   title: Wiukomme bi %app_name%
   webmail: Webmail
 welcome:
-  text: >
-    <h3>Gschafft</h3>
-    Im Internet fingsch Aleitige wie du die E-Mail Account i verschiedenschte Programm konfiguriere chasch.
-    I einere Wuche bechunnsch du drü Invite Codes wo bi <a href=\"%app_url%\">%app_url%</a> chasch abhole.
-    Du chasch die dine Fründe witerleite und se drmit ilade e Account bi %project_name% z erschteue.
   lead: Du hesch erfougriich e Account bi üs erschteut. Was si die nächschte Schritte?
   headline: Wiukomme bi %project_name%!
   next-button: Zur Übersicht
@@ -104,7 +98,6 @@ recovery-token:
   displayed-once: Us Sicherheitsgründ wird s Recovery Token nume einisch azeigt. Mir chöi das Token nid wiederhärschteue.
   headline: Recovery Token verwaute
   unset: Du hesch no kes Recovery Token gsetzt. Mir emfpähle dringend iz eis z mache.
-Reserved Name: Reservierte Name
 error:
   generic_error: E Fähler isch ufträtte. Excusé.
   title: Ups, mir hei hie e Fähler.
@@ -183,11 +176,9 @@ registration:
   recovery-token-headline: Recovery Token
   title: Regischtriere bi %project_name%
   label-email: Dini bevorzugti E-Mail Adrässe
-Domain: Domain
 closed:
   headline: Regischtrierig gschlosse
   lead: D Regischtrierig vo nöiie Accounts isch im Momänt gschlosse.
-  title: Regischtrierig gschlosse
   text: >
     Im Momänt chöi kei nöiie Accounts erschtellt wärde.
     <strong>Bishärigi Accounts si da drvo nid betroffe.</strong>
@@ -197,9 +188,5 @@ spam:
     E-Mail Zuegriff isch deaktiviert worde.
     Bitte kontaktier dr Support zum di Account entschperre.
   title: Account isch gschperrt
-User: User
-Alias: Alias Adrässe
 random: zuefäuig
-flash_batch_remove_vouchers_success: Nid iglösti Invite Codes glöscht.
 custom: benutzerdefiniert
-Ratio: Verhäutnis
