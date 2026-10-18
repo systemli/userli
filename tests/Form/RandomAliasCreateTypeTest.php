@@ -7,7 +7,9 @@ namespace App\Tests\Form;
 use App\Form\Model\AliasCreate;
 use App\Form\RandomAliasCreateType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RandomAliasCreateTypeTest extends TypeTestCase
 {
@@ -15,6 +17,26 @@ class RandomAliasCreateTypeTest extends TypeTestCase
     {
         $this->dispatcher = $this->createStub(EventDispatcherInterface::class);
         parent::setUp();
+    }
+
+    protected function getExtensions(): array
+    {
+        $translator = $this->createStub(TranslatorInterface::class);
+        $translator->method('trans')->willReturnCallback(static fn (string $id): string => 'translated:'.$id);
+
+        return [
+            new PreloadedExtension([new RandomAliasCreateType($translator)], []),
+        ];
+    }
+
+    public function testNoteAriaLabelIsTranslated(): void
+    {
+        $form = $this->factory->create(RandomAliasCreateType::class);
+
+        self::assertSame(
+            'translated:form.alias-note-placeholder',
+            $form->get('note')->getConfig()->getOption('attr')['aria-label']
+        );
     }
 
     public function testSubmitValidData(): void
