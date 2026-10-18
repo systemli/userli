@@ -59,6 +59,8 @@ destroy:
 	$(check_compose)
 	$(COMPOSE) --profile mail down -v
 
+.PHONY: build release
+
 build:
 	rm -rf build/
 	mkdir -p build

@@ -56,6 +56,7 @@ git tag --sign --message "Release $version" "$version"
 # create release tarball
 tarball_userli="build/userli-$(git --no-pager describe --tags --always).tar.gz"
 tarball_adapter="build/userli-dovecot-adapter-$(git --no-pager describe --tags --always).tar.gz"
+rm -rf build/
 make release
 
 if [ ! -f "$tarball_userli" ]; then
