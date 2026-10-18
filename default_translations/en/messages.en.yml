@@ -180,6 +180,7 @@ account:
       Create one password per app or device, so you can revoke it on its own.
     name: Name
     name-placeholder: e.g. Thunderbird on laptop
+    password-help: Only to confirm it's you. The app password is generated for you.
     create: Create app password
     created-headline: Copy your new app password now
     created-subtitle: It will not be shown again. Use it instead of your password in your mail app.

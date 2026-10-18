@@ -14,7 +14,10 @@ Feature: App passwords
   Scenario: Create app password
     When I am authenticated as "user@example.org"
     And I am on "/account/app-passwords"
-    And I fill in the following:
+    Then I should see text matching "Current password"
+    And I should see text matching "The app password is generated for you"
+
+    When I fill in the following:
       | app_password_create_name     | Thunderbird |
       | app_password_create_password | asdasd      |
     And I press "Create app password"

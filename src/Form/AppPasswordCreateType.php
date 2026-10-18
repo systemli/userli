@@ -23,7 +23,7 @@ final class AppPasswordCreateType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, ['label' => 'account.app-passwords.name', 'attr' => ['maxlength' => 64, 'placeholder' => 'account.app-passwords.name-placeholder']])
-            ->add('password', PasswordType::class, ['label' => 'form.password'])
+            ->add('password', PasswordType::class, ['label' => 'form.actual-password', 'help' => 'account.app-passwords.password-help', 'attr' => ['autocomplete' => 'current-password']])
             ->add('submit', SubmitType::class, ['label' => 'account.app-passwords.create']);
     }
 

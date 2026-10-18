@@ -176,6 +176,7 @@ account:
       Lege pro App oder Gerät ein eigenes Passwort an, damit du es einzeln widerrufen kannst.
     name: Name
     name-placeholder: z.B. Thunderbird auf dem Laptop
+    password-help: Nur zur Bestätigung, dass du es bist. Das App-Passwort wird automatisch erzeugt.
     create: App-Passwort erstellen
     created-headline: Kopiere jetzt dein neues App-Passwort
     created-subtitle: Es wird nicht noch einmal angezeigt. Nutze es in deiner Mail-App statt deines Passworts.
