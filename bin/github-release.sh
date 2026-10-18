@@ -21,10 +21,12 @@ if [ -z "$GITHUB_API_TOKEN" ]; then
     exit 1
 fi
 
-if ! command -v jq >/dev/null 2>&1; then
-    printf "Error: jq is required but not installed\n" >&2
-    exit 1
-fi
+for tool in git gpg curl jq make tar shasum composer yarn; do
+    if ! command -v "$tool" >/dev/null 2>&1; then
+        printf "Error: %s is required but not installed\n" "$tool" >&2
+        exit 1
+    fi
+done
 
 # set release variables
 version="$1"
