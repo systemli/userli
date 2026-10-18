@@ -65,7 +65,6 @@ form:
   new-password: Nytt passord
   new-password_confirmation: Bekreft nytt passord
   domain: Domene
-  add: Legg till
 recovery:
   header: Gjenopprett kontoen din
   lead: Tilbakestill passordet med ditt gjenopprettingssymbol
@@ -81,8 +80,6 @@ recovery:
 navbar_right:
   login: Logg inn
   logout: Logg ut
-  register: Registrering
-  password-change: Endre passord
   admin: Administrator
 registration:
   title: Registrering med %project_name%
@@ -98,11 +95,6 @@ welcome:
   headline: Velkommen til %project_name%.
   lead: Du har nå satt opp en konto hos oss. Hva skal du foreta deg nå?
   next-button: Til oversikten
-  text: >
-    <h3>Klar til bruk</h3>
-    På veven kan du finne veiledninger for å sette opp din e-postkonto med forskjellige klientprogrammer.
-    Om én uke vil du motta tre invitasjonskoder, som du kan samle på <a href="%app_url%">%app_url%</a>.
-    Du kan gi disse til venner og invitere dem til å registrere seg på %project_name%.
 closed:
   headline: Registrering stengt
   lead: Registrering av nye kontoer er for øyeblikket stengt.
@@ -198,14 +190,7 @@ mail:
 
     Vi håper du fortsetter å ha glede av din e-postkonto.
     Ditt %project_name%-administratorlag.
-flash_batch_remove_vouchers_success: Uinnløste invitasjonskoder slettet.
 admin: ~
-Ratio: Forhold
-User: Bruker
-Domain: Domene
-Alias: Alias-adresse
-Voucher: Invitasjonskode
-Reserved Name: Reservert navn
 copy-to-clipboard: Kopier til utklippstavle
 init.title: Skaper grunnleggende oppsett
 init_domain:

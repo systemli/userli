@@ -95,21 +95,12 @@ welcome:
   headline: Te damos as boas-vindas a %project_name%!
   lead: Você criou sua conta com sucesso. E agora?
   next-button: Seus próximos passos
-  text: >
-    <h3>Tudo pronto</h3>
-    Pela web você pode encontrar guias de como configurar sua conta de e-mail com diferentes programas de e-mail.</a
-    Em uma semana você vai receber três códigos de convite, os quais você pode pegar em <a href="%app_url%">%app_url%</a>.
-    Você pode enviá-los a seus contatos e chamá-los para se cadastrar no %project_name%.
 closed:
   headline: Cadastros fechados
   lead: O registo de novas contas está atualmente fechado.
   text: >
     Atualmente, não é possível criar novas contas.
     <strong>As contas existentes não são afetadas.</strong>
-  user:
-    headline: Apagar a conta
-    lead: Precisamos verificar a sua palavra-passe para apagar a sua conta.
-  cancel: Cancelar
 recovery-token:
   headline: Gerenciar token de recuperação
   lead: O token de recuperação pode ser usado para redefinir a sua palavra-passe se esquecê-la.
@@ -140,7 +131,6 @@ flashes:
   openpgp-key-upload-error-multiple-keys: ""
   openpgp-key-upload-successful: ""
   openpgp-key-upload-error-no-openpgp: ""
-flash_batch_remove_vouchers_success: Códigos de convite excluidos com sucesso
 error:
   title: Oops, houve um erro.
   back_link: Voltar para o início

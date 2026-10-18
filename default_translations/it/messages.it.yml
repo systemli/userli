@@ -19,7 +19,6 @@ start:
   vouchers-desc: Invita i tuoi amici
   webmail: Webmail
   webmail-desc: Leggi e scrivi e-mail
-  openpgp-delete: elimina la chiave OpenPGP
   openpgp-settings: OpenPGP
   intro: Qui puoi impostare e gestire il tuo account di posta elettronica.
   registration-text: >
@@ -49,13 +48,10 @@ form:
   new-custom-alias: Nuovo indirizzo alias
   delete-account: Elimina l'account
   create-voucher: Crea un codice d'invito
-  openpgp-key-file: "Carica il tuo file chiave:"
-  openpgp-key-file-mimetype: Il file caricato non contiene dati OpenPGP.
   delete-password: Password
   create-random-alias: Genera un indirizzo alias casuale
   password: Password
   registration-recovery-token-next-button: Continua
-  add: Aggiungi
   password_confirmation: Conferma la password
   domain: Dominio
   new-password: Nuova password
@@ -63,14 +59,7 @@ form:
   change-password: Cambia la tua password
   create-custom-alias: Aggiungi
   delete-alias: Elimina l'indirizzo alias
-  openpgp-key-text: "Incolla la tua chiave come testo:"
-  openpgp-key-upload-or: o
 welcome:
-  text: >
-    <h3>Pronto a partire</h3>
-    Nel web puoi trovare delle guide per impostare il tuo account di posta elettronica con diversi programmi client.
-    In una settimana riceverai tre codici invito, che potrai raccogliere a <a href="%app_url%">%app_url%</a>.
-    Puoi passarli ai tuoi amici e invitarli a registrarsi con %project_name%.
   headline: Benvenuto/a a %project_name%!
   next-button: Alla panoramica
 navbar_right:
@@ -152,7 +141,6 @@ mail:
     Speriamo che tu continui a goderti il tuo account di posta elettronica.
     Il tuo %project_name% admin team.
 admin: ~
-User: Utente
 init_user:
   lead: Hai creato il tuo dominio primario.
   text: >
@@ -163,8 +151,4 @@ openpgp:
   expiretime-label: "Data di scadenza:"
 recovery:
   cancel: Annulla
-Alias: Indirizzo alias
 copy-to-clipboard: Copia negli appunti
-Domain: Dominio
-Voucher: Codice d'invito
-Reserved Name: Nome riservato

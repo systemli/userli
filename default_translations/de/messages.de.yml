@@ -32,7 +32,6 @@ start:
   vouchers-desc: Lade Freund:innen ein
   webmail: Webmail
   webmail-desc: Lies und schreib E-Mails
-  openpgp-delete: OpenPGP-Schlüssel löschen
   openpgp-settings: OpenPGP
 
 index:
@@ -59,7 +58,6 @@ index:
   alias-active-random: Aktive zufällige Aliase
 
 form:
-  required: Pflichtfeld
   signin-header: Anmelden
   signin-subtitle: Willkommen zurück zu deinem Konto
   register-header: Konto erstellen
@@ -74,16 +72,13 @@ form:
   recovery-link: Passwort vergessen?
   auth-failed: Authentifizierung fehlgeschlagen
   errors-found: Bitte korrigiere die folgenden Fehler
-  no-account: Du hast ein Einladungscode?
   have-account: Bereits ein Konto?
-  create-account: Account erstellen
   roles: Rollen
   submit: Senden
   voucher: Einladungscode
   voucher-redeemed-on: Eingelöst am
   actual-password: Aktuelles Passwort
   new-custom-alias: Neue Alias-Adresse
-  alias-note: Notiz (optional)
   alias-note-placeholder: Optionale Notiz um den Zweck zu merken
   new-password: Neues Passwort
   new-password_confirmation: Neues Passwort bestätigen
@@ -100,10 +95,7 @@ form:
   registration-recovery-token-confirm: Ich habe den Code an einem sicheren Ort abgespeichert
   registration-recovery-token-next-button: Weiter
   domain: Domain
-  add: Hinzufügen
   verify: Überprüfen
-  twofactor: Zwei-Faktor-Authentifizierung
-  twofactor-short: 2FA
   twofactor-login: Zwei-Faktor-Authentifizierung
   twofactor-login-placeholder: 6-stelliger Code
   twofactor-login-auth-code: Authentifizierungs-Code
@@ -247,9 +239,6 @@ closed:
 delete:
   alias:
     headline_generic: Alias-Adresse löschen
-    lead_generic: >
-      Bist du dir sicher, dass du diese Alias-Adresse löschen möchtest?
-      Die Adresse wird unwiderruflich gelöscht.
     lead_specific: >
       Bist du dir sicher, dass du <strong>%alias%</strong> löschen möchtest?
       Die Adresse wird unwiderruflich gelöscht.
@@ -299,7 +288,6 @@ flashes:
   openpgp-key-upload-error-multiple-keys: Die hochgeladene Datei enhält mehr als einen Schlüssel für deine E-Mail-Adresse. Bitte lade nur einen Schlüssel hoch.
   openpgp-key-unauthorized: Du bist nicht berechtigt, Schlüssel für diese Adresse zu verwalten.
   password-confirmation-failed: Das eingegebene Passwort ist falsch. Bitte versuche es erneut.
-flash_batch_remove_vouchers_success: Nicht eingelöste Einladungscodes gelöscht.
 error:
   title: Oops, es ist ein Fehler passiert.
   back_link: Zurück zur Startseite
@@ -370,12 +358,6 @@ mail:
 
     Weiterhin viel Spaß mit deinem E-Mail-Konto, wünscht dir
     dein %project_name%-Verwaltungsteam.
-Ratio: Verhältnis
-User: Nutzer:innen
-Domain: Domäne
-Alias: Alias-Adresse
-Voucher: Einladungscode
-Reserved Name: Reservierter Name
 copy-to-clipboard: In Zwischenablage kopieren
 
 alias:
@@ -410,9 +392,7 @@ openpgp:
   expiretime-label: "Ablaufdatum:"
   no-expiration: Kein Ablaufdatum (unbegrenzt gültig)
   manage-subtitle: Verwalte deine OpenPGP-Schlüssel
-  current-key: Aktueller OpenPGP-Schlüssel
   no-key-uploaded: Noch kein Schlüssel hochgeladen
-  upload-prompt: Lade einen Schlüssel über das Formular rechts hoch
   your-email: Deine E-Mail
   alias-addresses: Alias-Adressen
   upload-key: Hochladen
@@ -440,7 +420,6 @@ random-aliases.management-hint: <strong>Tipp:</strong> Lösche ungenutzte zufäl
 
 admin:
   title: Einstellungen
-  subtitle: Systemeinstellungen und Integrationen verwalten
   flash:
     updated_successfully: Die Einstellungen wurden erfolgreich aktualisiert
   form:
@@ -519,7 +498,6 @@ admin:
     settings: Einstellungen
     api: API Tokens
     webhooks: Webhooks
-    general: Allgemein
     maintenance: Wartung
     reserved-names: Reservierte Namen
     aliases: Aliase
@@ -550,7 +528,6 @@ admin:
   page_subtitle: Verwaltung und Konfiguration
   maintenance:
     title: Wartung
-    subtitle: Führe Wartungsaufgaben bei Bedarf aus
     description: Führe Wartungsaufgaben bei Bedarf aus
     pruneUserNotifications:
       title: Alte Benachrichtigungen aufräumen
@@ -583,7 +560,6 @@ admin:
     created: Erstellt
   api:
     title: API Tokens
-    subtitle: Verwalte deine API Tokens
     table:
       title: API Tokens
       description: Liste der vorhandenen API Tokens
@@ -595,7 +571,6 @@ admin:
       delete: Löschen
     create:
       title: Neuen API Token erstellen
-      subtitle: Generiere einen neuen API-Token
       button: Neuen API Token erstellen
       form:
         title: API Token erstellen
@@ -625,7 +600,6 @@ admin:
       empty-title: Noch keine Webhooks vorhanden
       empty-description: Erstelle einen Webhook um Echtzeit-Benachrichtigungen über Systemereignisse zu erhalten.
       url: URL
-      secret: Secret
       events: Ereignisse
       domains: Domains
       enabled: Aktiv
@@ -637,7 +611,6 @@ admin:
       title: Webhook bearbeiten
       success: Webhook erfolgreich aktualisiert.
     delete:
-      label: Löschen
       confirm: Möchtest du den Webhook wirklich löschen?
       success: Webhook erfolgreich gelöscht.
     actions:
@@ -715,7 +688,6 @@ admin:
       request_headers: Request-Header
       request_body: Request-Body
       response_status: Response-Status
-      response_headers: Response-Header
       response_body: Response-Body
       error: Fehler
 
@@ -789,8 +761,6 @@ admin:
     create:
       button: Alias erstellen
       title: Alias erstellen
-      heading: Alias erstellen
-      description: Erstelle einen neuen E-Mail-Alias.
       success: Alias wurde erfolgreich erstellt.
       error: Alias konnte nicht erstellt werden.
     edit:
@@ -935,7 +905,6 @@ admin:
       edit: Bearbeiten
       delete: Löschen
     delete:
-      confirm: 'Bist du sicher, dass du die Domain "%name%" löschen möchtest? Damit werden alle zugehörigen Benutzer:innen, Aliase und Einladungscodes unwiderruflich gelöscht.'
       success: Domain und alle zugehörigen Daten wurden erfolgreich gelöscht.
       error:
         own_domain: Du kannst deine eigene Domain nicht löschen.
@@ -1027,7 +996,6 @@ admin:
       status: Status
       twofactor: 2FA
       mailcrypt: MailCrypt
-      password_change_required: Passwortänderung erforderlich
       password_change_required_warning: Bei der nächsten Anmeldung muss das Passwort geändert werden.
       password_compromised: Das Passwort wurde in einem Datenleck gefunden.
       recovery_token: Recovery-Token
@@ -1049,8 +1017,6 @@ admin:
       enabled: Aktiviert
       disabled: Deaktiviert
       deleted: Gelöscht
-      yes: "Ja"
-      no: "Nein"
       never: Nie
     search:
       placeholder: Nach E-Mail suchen...
@@ -1093,11 +1059,6 @@ admin:
       password_change_required:
         label: Passwortänderung erforderlich
         help: Wenn aktiviert, wird die:der Benutzer:in beim nächsten Login gezwungen, das Passwort zu ändern.
-      last_login: Letzter Login
-      recovery_token:
-        label: Wiederherstellungscode
-        "yes": Konfiguriert
-        "no": Nicht konfiguriert
       cancel: Abbrechen
       submit:
         save: Speichern

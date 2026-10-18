@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @extends AbstractType<AliasCreate>
@@ -18,6 +19,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class RandomAliasCreateType extends AbstractType
 {
     public const string NAME = 'create_alias';
+
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+    }
 
     #[Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -28,7 +33,8 @@ final class RandomAliasCreateType extends AbstractType
                 'label' => false, // hide visual label
                 'attr' => [
                     'placeholder' => 'form.alias-note-placeholder',
-                    'aria-label' => 'form.alias-note-placeholder',
+                    // attribute values other than placeholder/title are not translated by the form theme
+                    'aria-label' => $this->translator->trans('form.alias-note-placeholder'),
                     'maxlength' => 40,
                 ],
             ])
