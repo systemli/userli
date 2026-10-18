@@ -12,7 +12,7 @@
 - ⬆️ Update composer dependencies (#1389)
 - ⬆️ Update symfony/expression-language to fix CVE-2026-109449 (#1387)
 - 📝 Add PR label and docs check guidelines to AGENTS.md (#1383)
-- Fix hashsum files and improve release tarball validation flow (#1381)
+- 👷 Fix hashsum files and improve release tarball validation flow (#1381)
 - 📝 Document deployment with the Ansible role (#1379)
 - 📝 Add separate page for account deletion (#1378)
 - 📝 Mark container setup as not recommended for production (#1377)
