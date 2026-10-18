@@ -1,5 +1,36 @@
 # Changelog
 
+## 6.10.6 (2026.10.18)
+
+### Features and Improvements
+
+- 🔥 Remove unused translations (#1386)
+- 🔥 Remove "stay logged in" checkbox from login form (#1382)
+
+### Technical Changes
+
+- ⬆️ Update composer dependencies (#1389)
+- ⬆️ Update symfony/expression-language to fix CVE-2026-109449 (#1387)
+- 📝 Add PR label and docs check guidelines to AGENTS.md (#1383)
+- 👷 Fix hashsum files and improve release tarball validation flow (#1381)
+- 📝 Document deployment with the Ansible role (#1379)
+- 📝 Add separate page for account deletion (#1378)
+- 📝 Mark container setup as not recommended for production (#1377)
+- 📝 Document userli-mailbox-janitor (#1376)
+- 💚 Require mkdocs-material >= 9.5 for docs deployment (#1375)
+- 📝 Restructure documentation by audience (#1374)
+- 📝 Fix outdated documentation and add screenshots to feature pages (#1363)
+- 📝 Update screenshots and add admin guide (#1362)
+
+### Bug Fixes
+
+- 🐛 Handle unawaited promises flagged by SonarCloud (#1388)
+- 🐛 Keep custom alias destination when domain admin edits alias (#1385)
+- 🐛 Use real quota and invitation settings in welcome email (#1384)
+- 🐛 Dispatch user.created event for admin-created users (#1380)
+- 🐛 Skip existing reserved names when loading fixtures (#1365)
+- 🐛 Show setup wizard settings step on fresh installs (#1364)
+
 ## 6.10.5 (2026.10.12)
 
 ### Technical Changes
