@@ -78,6 +78,18 @@ Feature: Keycloak API
         Then the response status code should equal 200
         And the JSON path "message" should equal "success"
 
+    @validate @app-password
+    Scenario: Validate user with app password is rejected
+        Given the following AppPassword exists:
+            | email            | name        | password     |
+            | user@example.org | Thunderbird | app-password |
+        And I have a valid API token "keycloak-test-123"
+        When I send a POST request to "/api/keycloak/example.org/validate/user@example.org" with form data:
+            | credentialType | password     |
+            | password       | app-password |
+        Then the response status code should equal 403
+        And the JSON path "message" should equal "authentication failed"
+
     @validate
     Scenario: Validate user with wrong password
         Given I have a valid API token "keycloak-test-123"

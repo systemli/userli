@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Handler;
 
 use App\Entity\Alias;
+use App\Entity\AppPassword;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Entity\UserNotification;
@@ -14,6 +15,7 @@ use App\Event\UserEvent;
 use App\Handler\DeleteHandler;
 use App\Helper\PasswordUpdater;
 use App\Repository\AliasRepository;
+use App\Repository\AppPasswordRepository;
 use App\Repository\UserNotificationRepository;
 use App\Repository\VoucherRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,8 +28,10 @@ class DeleteHandlerTest extends TestCase
     private array $removedEntities = [];
     private array $dispatchedEvents = [];
 
-    protected function createHandler(array $aliases = [], array $vouchers = [], array $notifications = []): DeleteHandler
+    protected function createHandler(array $aliases = [], array $vouchers = [], array $notifications = [], ?AppPasswordRepository $appPasswordRepository = null): DeleteHandler
     {
+        $appPasswordRepository ??= $this->createStub(AppPasswordRepository::class);
+
         $passwordUpdater = $this->createStub(PasswordUpdater::class);
         $passwordUpdater->method('updatePassword')->willReturnCallback(static function (User $user): void {
             $user->setPassword('new_password');
@@ -50,6 +54,7 @@ class DeleteHandlerTest extends TestCase
                 Alias::class => $aliasRepository,
                 Voucher::class => $voucherRepository,
                 UserNotification::class => $notificationRepository,
+                AppPassword::class => $appPasswordRepository,
                 default => throw new InvalidArgumentException("Unknown repository: $class"),
             }
         );
@@ -185,6 +190,15 @@ class DeleteHandlerTest extends TestCase
         self::assertTrue($alias1->isDeleted());
         self::assertTrue($alias2->isDeleted());
         self::assertTrue($alias3->isDeleted());
+    }
+
+    public function testDeleteUserDeletesAppPasswords(): void
+    {
+        $user = new User('alice@example.org');
+        $appPasswordRepository = $this->createMock(AppPasswordRepository::class);
+        $appPasswordRepository->expects($this->once())->method('deleteByUser')->with($user);
+
+        $this->createHandler(appPasswordRepository: $appPasswordRepository)->deleteUser($user);
     }
 
     public function testDeleteUserRemovesNotifications(): void

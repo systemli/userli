@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Behat;
 
 use App\Entity\Alias;
+use App\Entity\AppPassword;
 use App\Entity\Domain;
 use App\Entity\OpenPgpKey;
 use App\Entity\ReservedName;
@@ -17,6 +18,8 @@ use App\Entity\WebhookEndpoint;
 use App\Enum\ApiScope;
 use App\Enum\UserNotificationType;
 use App\Enum\WebhookEvent;
+use App\Handler\CryptoSecretHandler;
+use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use App\Helper\TotpBackupCodeGenerator;
 use App\Service\ApiTokenManager;
@@ -880,6 +883,30 @@ class FeatureContext extends MinkContext
             $scopes = array_map(static fn (string $scope) => ApiScope::from(trim($scope))->value, $scopeStrings);
 
             $apiTokenManager->create($token, $name, $scopes);
+        }
+    }
+
+    /**
+     * @When the following AppPassword exists:
+     */
+    public function theFollowingAppPasswordExists(TableNode $table): void
+    {
+        $mailCryptKeyHandler = $this->getContainer()->get(MailCryptKeyHandler::class);
+
+        foreach ($table->getColumnsHash() as $data) {
+            $user = $this->manager->getRepository(User::class)->findByEmail($data['email']);
+            $userPassword = $data['userPassword'] ?? 'password';
+
+            if ($user->hasMailCryptSecretBox()) {
+                $privateKey = $mailCryptKeyHandler->decrypt($user, $userPassword);
+            } else {
+                $mailCryptKeyHandler->create($user, $userPassword);
+                $privateKey = (string) $user->getPlainMailCryptPrivateKey();
+            }
+
+            $secretBox = CryptoSecretHandler::create($privateKey, $data['password'])->encode();
+            $this->manager->persist(new AppPassword($user, $data['name'] ?? 'Test', hash('sha256', $data['password']), $secretBox));
+            $this->manager->flush();
         }
     }
 

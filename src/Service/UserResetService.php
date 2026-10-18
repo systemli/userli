@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Entity\AppPassword;
 use App\Entity\User;
 use App\Enum\MailCrypt;
 use App\Event\UserEvent;
@@ -45,6 +46,9 @@ final readonly class UserResetService
             $this->recoveryTokenHandler->create($user);
             $recoveryToken = $user->getPlainRecoveryToken();
         }
+
+        // App passwords hold copies of the old MailCrypt key
+        $this->manager->getRepository(AppPassword::class)->deleteByUser($user);
 
         // Reset twofactor settings
         $user->setTotpConfirmed(false);

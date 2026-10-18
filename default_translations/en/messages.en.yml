@@ -170,6 +170,23 @@ account:
     desc: Publish your OpenPGP key
     configured: Key uploaded
     not-configured: No key
+  app-passwords:
+    title: App Passwords
+    desc: Passwords for mail apps
+    lead: Use a separate password for each mail app
+    help: >
+      App passwords work for IMAP, SMTP and Webmail.
+      They do not work for logging in here or for other services.
+      Create one password per app or device, so you can revoke it on its own.
+    name: Name
+    name-placeholder: e.g. Thunderbird on laptop
+    create: Create app password
+    created-headline: Copy your new app password now
+    created-subtitle: It will not be shown again. Use it instead of your password in your mail app.
+    list: Your app passwords
+    empty: You have no app passwords yet.
+    created-at: Created
+    delete: Delete
   delete:
     title: Delete Account
     desc: Close and delete your account permanently
@@ -280,6 +297,8 @@ flashes:
   voucher-creation-successful: New invite code created.
   alias-creation-successful: Your new alias address was created.
   alias-deletion-successful: Your alias address was deleted.
+  app-password-deletion-successful: The app password was deleted.
+  app-password-deletion-failed: The app password could not be deleted.
   alias-deletion-failed: Your alias address could not be deleted. Please try again.
   recovery-token-invalid: E-mail address and/or recovery token are wrong!
   recovery-token-ack: You generated a recovery token.

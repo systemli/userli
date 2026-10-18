@@ -31,7 +31,7 @@ final class RoundcubeController extends AbstractController
         #[MapRequestPayload] RoundcubeUserAliasesDto $data,
     ): Response {
         $user = $this->manager->getRepository(User::class)->findByEmail($data->getEmail());
-        if (!$user || null === $this->userAuthenticationHandler->authenticate($user, $data->getPassword())) {
+        if (!$user || null === $this->userAuthenticationHandler->authenticate($user, $data->getPassword(), true)) {
             throw new AuthenticationException('Bad credentials', 401);
         }
 
