@@ -19,6 +19,7 @@ nav:
       - "Create an account": user/register.md
       - "Sign in and your account": user/account.md
       - "Secure your account": user/security.md
+      - "App passwords": user/app-passwords.md
       - "Forgot your password": user/recovery.md
       - Aliases: user/aliases.md
       - "Invite codes": user/invite-codes.md
