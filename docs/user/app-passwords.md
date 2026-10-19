@@ -17,7 +17,7 @@ your other devices keep working.
 
 1. Go to **Account settings → App Passwords**.
 2. Enter a **Name** that tells you where you use it, for example
-   *Thunderbird on laptop*.
+   *Thunderbird on laptop*. Each name can be used only once.
 3. Enter your current password to confirm it's you and click **Create app
    password**. The app password itself is generated for you.
 4. Copy the new app password and enter it in your email program instead of

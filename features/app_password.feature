@@ -27,6 +27,21 @@ Feature: App passwords
     And I should see text matching "Thunderbird"
     And I should see a "code[data-app-password]" element
 
+  Scenario: Create app password with a name that already exists
+    Given the following AppPassword exists:
+      | email            | name        | password     | userPassword |
+      | user@example.org | Thunderbird | app-password | asdasd       |
+    When I am authenticated as "user@example.org"
+    And I am on "/account/app-passwords"
+    And I fill in the following:
+      | app_password_create_name     | Thunderbird |
+      | app_password_create_password | asdasd      |
+    And I press "Create app password"
+
+    Then I should see text matching "This value is already used."
+    And I should see 1 "[data-app-password-row]" elements
+    And I should not see a "code[data-app-password]" element
+
   Scenario: Create app password with wrong password
     When I am authenticated as "user@example.org"
     And I am on "/account/app-passwords"

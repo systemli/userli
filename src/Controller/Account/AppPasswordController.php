@@ -12,17 +12,20 @@ use App\Repository\AppPasswordRepository;
 use App\Service\AppPasswordManager;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AppPasswordController extends AbstractController
 {
     public function __construct(
         private readonly AppPasswordManager $appPasswordManager,
         private readonly AppPasswordRepository $appPasswordRepository,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -45,6 +48,12 @@ final class AppPasswordController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (null !== $this->appPasswordRepository->findOneBy(['user' => $user, 'name' => $data->getName()])) {
+                $form->get('name')->addError(new FormError($this->translator->trans('form.unique-field', [], 'validators')));
+
+                return $this->renderPage($form);
+            }
+
             $plain = $this->appPasswordManager->create($user, $data->getName(), $data->getPassword());
 
             // Rendered directly so the plaintext never ends up in a URL or session
