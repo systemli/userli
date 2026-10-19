@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AppPasswordRepository::class)]
 #[ORM\Table(name: 'app_passwords')]
+#[ORM\UniqueConstraint(name: 'UNIQ_APP_PASSWORD_USER_NAME', columns: ['user_id', 'name'])]
 class AppPassword
 {
     use CreationTimeTrait;
