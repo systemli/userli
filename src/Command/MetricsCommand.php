@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Repository\AliasRepository;
+use App\Repository\AppPasswordRepository;
 use App\Repository\DomainRepository;
 use App\Repository\OpenPgpKeyRepository;
 use App\Repository\UserRepository;
@@ -36,6 +37,7 @@ final class MetricsCommand extends Command
         private readonly DomainRepository $domainRepository,
         private readonly AliasRepository $aliasRepository,
         private readonly OpenPgpKeyRepository $openPgpKeyRepository,
+        private readonly AppPasswordRepository $appPasswordRepository,
     ) {
         parent::__construct();
     }
@@ -73,6 +75,16 @@ final class MetricsCommand extends Command
         $output->writeln('# HELP userli_users_twofactor_total Total number of users with enabled two factor authentication');
         $output->writeln('# TYPE userli_users_twofactor_total gauge');
         $output->writeln('userli_users_twofactor_total '.$usersTwofactorTotal);
+
+        $usersAppPasswordTotal = $this->appPasswordRepository->countUsers();
+        $output->writeln('# HELP userli_users_app_password_total Total number of users with at least one app password');
+        $output->writeln('# TYPE userli_users_app_password_total gauge');
+        $output->writeln('userli_users_app_password_total '.$usersAppPasswordTotal);
+
+        $appPasswordsTotal = $this->appPasswordRepository->count([]);
+        $output->writeln('# HELP userli_app_passwords_total Total number of app passwords');
+        $output->writeln('# TYPE userli_app_passwords_total gauge');
+        $output->writeln('userli_app_passwords_total '.$appPasswordsTotal);
 
         $now = new DateTimeImmutable();
         $weeklyActiveUsers = $this->userRepository->countActiveUsersSince($now->sub(new DateInterval('P7D')));

@@ -36,4 +36,12 @@ final class AppPasswordRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute();
     }
+
+    public function countUsers(): int
+    {
+        return (int) $this->createQueryBuilder('a')
+            ->select('COUNT(DISTINCT a.user)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
