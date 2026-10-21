@@ -77,12 +77,12 @@ final class MetricsCommand extends Command
         $output->writeln('userli_users_twofactor_total '.$usersTwofactorTotal);
 
         $usersAppPasswordTotal = $this->appPasswordRepository->countUsers();
-        $output->writeln('# HELP userli_users_app_password_total Total number of users with at least one app password');
+        $output->writeln('# HELP userli_users_app_password_total Total number of users with at least one mail app password');
         $output->writeln('# TYPE userli_users_app_password_total gauge');
         $output->writeln('userli_users_app_password_total '.$usersAppPasswordTotal);
 
         $appPasswordsTotal = $this->appPasswordRepository->count([]);
-        $output->writeln('# HELP userli_app_passwords_total Total number of app passwords');
+        $output->writeln('# HELP userli_app_passwords_total Total number of mail app passwords');
         $output->writeln('# TYPE userli_app_passwords_total gauge');
         $output->writeln('userli_app_passwords_total '.$appPasswordsTotal);
 

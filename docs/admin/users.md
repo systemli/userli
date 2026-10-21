@@ -71,7 +71,7 @@ password and their [recovery token](../user/recovery.md).
     * a new recovery token is created and shown to you once – pass it on to
       the user securely,
     * two-factor authentication is turned off,
-    * all app passwords are deleted,
+    * all mail app passwords are deleted,
     * the `user.reset` [webhook](webhooks.md) is sent.
 
     The user has to change the password at the next sign-in.
@@ -82,7 +82,7 @@ Deleting is a **soft delete**. The account remains in the database so that the
 address can never be registered again, but:
 
 * the password is replaced by a random one, recovery token, MailCrypt keys and
-  app passwords are erased,
+  mail app passwords are erased,
 * all aliases of the user are deleted,
 * unused invite codes and notifications are removed,
 * the published OpenPGP key is removed,

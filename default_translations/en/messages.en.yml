@@ -171,21 +171,21 @@ account:
     configured: Key uploaded
     not-configured: No key
   app-passwords:
-    title: App Passwords
+    title: Mail App Passwords
     desc: Passwords for mail apps
     lead: Use a separate password for each mail app
     help: >
-      App passwords work for IMAP, SMTP and Webmail.
+      Mail app passwords work for IMAP, SMTP and Webmail.
       They do not work for logging in here or for other services.
       Create one password per app or device, so you can revoke it on its own.
     name: Name
     name-placeholder: e.g. Thunderbird on laptop
-    password-help: Only to confirm it's you. The app password is generated for you.
-    create: Create app password
-    created-headline: Copy your new app password now
+    password-help: Only to confirm it's you. The mail app password is generated for you.
+    create: Create mail app password
+    created-headline: Copy your new mail app password now
     created-subtitle: It will not be shown again. Use it instead of your password in your mail app.
-    list: Your app passwords
-    empty: You have no app passwords yet.
+    list: Your mail app passwords
+    empty: You have no mail app passwords yet.
     created-at: Created
     delete: Delete
   delete:
@@ -298,8 +298,8 @@ flashes:
   voucher-creation-successful: New invite code created.
   alias-creation-successful: Your new alias address was created.
   alias-deletion-successful: Your alias address was deleted.
-  app-password-deletion-successful: The app password was deleted.
-  app-password-deletion-failed: The app password could not be deleted.
+  app-password-deletion-successful: The mail app password was deleted.
+  app-password-deletion-failed: The mail app password could not be deleted.
   alias-deletion-failed: Your alias address could not be deleted. Please try again.
   recovery-token-invalid: E-mail address and/or recovery token are wrong!
   recovery-token-ack: You generated a recovery token.

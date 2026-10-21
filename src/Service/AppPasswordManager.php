@@ -16,7 +16,7 @@ use Random\Randomizer;
 
 final readonly class AppPasswordManager
 {
-    // Same format as Nextcloud app passwords: 5 groups of 5, without look-alike characters
+    // 6 groups of 4 (137 bits), so they can't be mistaken for Nextcloud app passwords (5 groups of 5)
     private const string CHARS = 'abcdefgijkmnopqrstwxyzABCDEFGHJKLMNPQRSTWXYZ23456789';
 
     public function __construct(
@@ -43,7 +43,7 @@ final readonly class AppPasswordManager
         }
 
         $randomizer = new Randomizer();
-        $plain = implode('-', array_map(static fn (): string => $randomizer->getBytesFromString(self::CHARS, 5), range(1, 5)));
+        $plain = implode('-', array_map(static fn (): string => $randomizer->getBytesFromString(self::CHARS, 4), range(1, 6)));
         $secretBox = CryptoSecretHandler::create($privateKey, $plain);
         sodium_memzero($privateKey);
 

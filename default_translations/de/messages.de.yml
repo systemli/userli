@@ -167,21 +167,21 @@ account:
     configured: Schlüssel hochgeladen
     not-configured: Kein Schlüssel
   app-passwords:
-    title: App-Passwörter
+    title: Mail-App-Passwörter
     desc: Passwörter für Mail-Apps
     lead: Nutze für jede Mail-App ein eigenes Passwort
     help: >
-      App-Passwörter funktionieren für IMAP, SMTP und Webmail.
+      Mail-App-Passwörter funktionieren für IMAP, SMTP und Webmail.
       Für die Anmeldung hier und für andere Dienste funktionieren sie nicht.
       Lege pro App oder Gerät ein eigenes Passwort an, damit du es einzeln widerrufen kannst.
     name: Name
     name-placeholder: z.B. Thunderbird auf dem Laptop
-    password-help: Nur zur Bestätigung, dass du es bist. Das App-Passwort wird automatisch erzeugt.
-    create: App-Passwort erstellen
-    created-headline: Kopiere jetzt dein neues App-Passwort
+    password-help: Nur zur Bestätigung, dass du es bist. Das Mail-App-Passwort wird automatisch erzeugt.
+    create: Mail-App-Passwort erstellen
+    created-headline: Kopiere jetzt dein neues Mail-App-Passwort
     created-subtitle: Es wird nicht noch einmal angezeigt. Nutze es in deiner Mail-App statt deines Passworts.
-    list: Deine App-Passwörter
-    empty: Du hast noch keine App-Passwörter.
+    list: Deine Mail-App-Passwörter
+    empty: Du hast noch keine Mail-App-Passwörter.
     created-at: Erstellt
     delete: Löschen
   delete:
@@ -292,8 +292,8 @@ flashes:
   voucher-creation-successful: Neuer Einladungscode erstellt.
   alias-creation-successful: Deine neue Alias-Adresse wurde erstellt.
   alias-deletion-successful: Deine Alias-Adresse wurde gelöscht.
-  app-password-deletion-successful: Das App-Passwort wurde gelöscht.
-  app-password-deletion-failed: Das App-Passwort konnte nicht gelöscht werden.
+  app-password-deletion-successful: Das Mail-App-Passwort wurde gelöscht.
+  app-password-deletion-failed: Das Mail-App-Passwort konnte nicht gelöscht werden.
   alias-deletion-failed: Deine Alias-Adresse konnte nicht gelöscht werden. Bitte versuche es erneut.
   recovery-token-invalid: E-Mail-Adresse oder Wiederherstellungscode sind falsch!
   recovery-token-ack: Du hast einen Wiederherstellungscode erzeugt.

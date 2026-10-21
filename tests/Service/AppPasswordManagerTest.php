@@ -39,7 +39,7 @@ class AppPasswordManagerTest extends TestCase
         $manager = new AppPasswordManager($this->createStub(AppPasswordRepository::class), $entityManager, $this->mailCryptKeyHandler);
         $plain = $manager->create($user, 'Thunderbird', 'password');
 
-        self::assertMatchesRegularExpression('/^[abcdefgijkmnopqrstwxyzABCDEFGHJKLMNPQRSTWXYZ23456789]{5}(-[abcdefgijkmnopqrstwxyzABCDEFGHJKLMNPQRSTWXYZ23456789]{5}){4}$/', $plain);
+        self::assertMatchesRegularExpression('/^[abcdefgijkmnopqrstwxyzABCDEFGHJKLMNPQRSTWXYZ23456789]{4}(-[abcdefgijkmnopqrstwxyzABCDEFGHJKLMNPQRSTWXYZ23456789]{4}){5}$/', $plain);
         self::assertInstanceOf(AppPassword::class, $persisted);
         self::assertSame($user, $persisted->getUser());
         self::assertSame('Thunderbird', $persisted->getName());
