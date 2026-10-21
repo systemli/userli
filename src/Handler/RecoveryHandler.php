@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Handler;
 
 use App\Dto\RecoveryResult;
+use App\Entity\MailAppPassword;
 use App\Entity\User;
 use App\Enum\RecoveryStatus;
 use App\Event\UserEvent;
@@ -110,6 +111,9 @@ final readonly class RecoveryHandler
         $user->setTotpConfirmed(false);
         $user->setTotpSecret(null);
         $user->setTotpBackupCodes([]);
+
+        // Recovery assumes a compromised account, so drop mail access an attacker may have added
+        $this->manager->getRepository(MailAppPassword::class)->deleteByUser($user);
 
         // Clear sensitive plaintext data from User object
         $user->eraseCredentials();

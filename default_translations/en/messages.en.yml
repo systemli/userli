@@ -204,7 +204,7 @@ recovery:
   waiting-time: Second step starts at %time%.
   reset-lead: You're now allowed to reset your password
   token-lead: New recovery token
-  information-extra: Two-factor authentication will be reset.
+  information-extra: Two-factor authentication will be reset and all mail app passwords will be deleted.
 navbar_right:
   login: Log in
   logout: Log out

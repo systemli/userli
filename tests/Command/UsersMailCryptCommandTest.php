@@ -249,6 +249,34 @@ class UsersMailCryptCommandTest extends TestCase
         self::assertStringContainsString('User with email', $commandTester->getDisplay());
     }
 
+    public function testExecuteDoesNotAllowMailAppPasswords(): void
+    {
+        $user = $this->createStub(User::class);
+        $user->method('getMailCryptEnabled')->willReturn(true);
+        $user->method('hasMailCryptPublicKey')->willReturn(true);
+        $user->method('hasMailCryptSecretBox')->willReturn(true);
+        $this->userRepository->method('findByEmail')->willReturn($user);
+
+        $allowMailAppPassword = null;
+        $authenticationHandler = $this->createMock(UserAuthenticationHandler::class);
+        $authenticationHandler->expects(self::once())
+            ->method('authenticate')
+            ->willReturnCallback(static function (User $user, string $password, bool $allow = false) use (&$allowMailAppPassword): ?User {
+                $allowMailAppPassword = $allow;
+
+                return null;
+            });
+
+        $application = new Application();
+        $application->addCommand(new UsersMailCryptCommand($this->entityManager, $authenticationHandler, $this->mailCryptKeyHandler, $this->settingsService));
+
+        $commandTester = new CommandTester($application->find('app:users:mailcrypt'));
+        $commandTester->execute(['--user' => 'mailcrypt@example.org', 'password' => 'mail-app-password']);
+
+        self::assertSame(Command::FAILURE, $commandTester->getStatusCode());
+        self::assertFalse($allowMailAppPassword);
+    }
+
     public function testExecuteWithAuthenticationFailure(): void
     {
         $email = 'mailcrypt@example.org';

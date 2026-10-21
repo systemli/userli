@@ -19,7 +19,7 @@ your other devices keep working.
 2. Enter a **Name** that tells you where you use it, for example
    *Thunderbird on laptop*. Each name can be used only once.
 3. Enter your current password to confirm it's you and click **Create mail
-   mail app password**. The mail app password itself is generated for you.
+   app password**. The mail app password itself is generated for you.
 4. Copy the new mail app password and enter it in your email program instead of
    your password.
 
@@ -35,5 +35,6 @@ your other devices keep working.
 Go to **Account settings → Mail App Passwords** and click **Delete** next to the
 mail app password. The app using it can't sign in anymore.
 
-Changing your password does not delete your mail app passwords. If your provider
-resets your account or you delete your account, all mail app passwords are deleted.
+Changing your password does not delete your mail app passwords. If you reset
+your password with your recovery token, your provider resets your account or you
+delete your account, all mail app passwords are deleted.

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Handler;
 
+use App\Entity\MailAppPassword;
 use App\Entity\User;
 use App\Enum\RecoveryStatus;
 use App\Exception\RecoveryException;
@@ -11,6 +12,7 @@ use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
+use App\Repository\MailAppPasswordRepository;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -196,6 +198,33 @@ class RecoveryHandlerTest extends TestCase
         self::assertFalse($user->isTotpAuthenticationEnabled());
         self::assertNull($user->getTotpSecret());
         self::assertEmpty($user->getTotpBackupCodes());
+    }
+
+    public function testResetPasswordDeletesMailAppPasswords(): void
+    {
+        $user = new User('test@example.org');
+        $user->setRecoveryStartTime(new DateTimeImmutable('-3 days'));
+        $this->userRepository->method('findByEmail')->willReturn($user);
+
+        $mailAppPasswordRepository = $this->createMock(MailAppPasswordRepository::class);
+        $mailAppPasswordRepository->expects($this->once())->method('deleteByUser')->with($user);
+
+        $manager = $this->createStub(EntityManagerInterface::class);
+        $manager->method('getRepository')->willReturnMap([
+            [User::class, $this->userRepository],
+            [MailAppPassword::class, $mailAppPasswordRepository],
+        ]);
+
+        $recoveryTokenHandler = $this->createStub(RecoveryTokenHandler::class);
+        $recoveryTokenHandler->method('verify')->willReturn(true);
+        $recoveryTokenHandler->method('decrypt')->willReturn('decryptedPrivateKey');
+        $recoveryTokenHandler->method('create')
+            ->willReturnCallback(static function (User $user): void {
+                $user->setPlainRecoveryToken('new-recovery-token');
+            });
+
+        $this->createHandler(manager: $manager, recoveryTokenHandler: $recoveryTokenHandler)
+            ->resetPassword('test@example.org', 'valid-token', 'newpassword');
     }
 
     public function testVerifyRecoveryTokenWithEmail(): void
