@@ -50,19 +50,15 @@ Feature: Roundcube API
             """
 
     @aliases @app-password
-    Scenario: Get user aliases with app password
+    Scenario: Get user aliases with app password is rejected
         Given the following AppPassword exists:
-            | email             | name      | password     |
-            | user2@example.org | Roundcube | app-password |
+            | email             | name        | password     |
+            | user2@example.org | Thunderbird | app-password |
         And I have a valid API token "roundcube-test-123"
         When I send a POST request to "/api/roundcube/aliases" with form data:
             | email    | user2@example.org |
             | password | app-password      |
-        Then the response status code should equal 200
-        And the JSON response should be:
-            """
-            ["alias@example.org", "alias2@example.org"]
-            """
+        Then the response status code should equal 401
 
     @aliases
     Scenario: Get user aliases for user without aliases
