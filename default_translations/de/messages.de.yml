@@ -167,21 +167,20 @@ account:
     configured: Schlüssel hochgeladen
     not-configured: Kein Schlüssel
   app-passwords:
-    title: Mail-App-Passwörter
+    title: App-Passwörter
     desc: Passwörter für Mail-Apps
     lead: Nutze für jede Mail-App ein eigenes Passwort
-    help: >
-      Mail-App-Passwörter funktionieren für IMAP, SMTP und Webmail.
-      Für die Anmeldung hier und für andere Dienste funktionieren sie nicht.
-      Lege pro App oder Gerät ein eigenes Passwort an, damit du es einzeln widerrufen kannst.
+    feature-mail-programs: Funktioniert in Mail-Programmen wie Thunderbird oder Apple Mail (IMAP und SMTP)
+    feature-lost-device: Gerät verloren? Widerrufe nur dessen Passwort, alle anderen funktionieren weiter
+    feature-leaked: Wer ein App-Passwort herausfindet, kann nur deine Mails lesen und senden, aber nicht deinen Account übernehmen
+    limitation-login: Funktioniert nicht für die Anmeldung hier oder bei anderen Diensten
     name: Name
     name-placeholder: z.B. Thunderbird auf dem Laptop
-    password-help: Nur zur Bestätigung, dass du es bist. Das Mail-App-Passwort wird automatisch erzeugt.
-    create: Mail-App-Passwort erstellen
-    created-headline: Kopiere jetzt dein neues Mail-App-Passwort
+    password-help: Nur zur Bestätigung, dass du es bist. Das App-Passwort wird automatisch erzeugt.
+    create: App-Passwort generieren
+    created-headline: Kopiere jetzt dein neues App-Passwort
     created-subtitle: Es wird nicht noch einmal angezeigt. Nutze es in deiner Mail-App statt deines Passworts.
-    list: Deine Mail-App-Passwörter
-    empty: Du hast noch keine Mail-App-Passwörter.
+    empty: Du hast noch keine App-Passwörter.
     created-at: Erstellt
     delete: Löschen
   delete:
@@ -200,7 +199,7 @@ recovery:
   waiting-time: Der zweite Schritt ist möglich ab dem %time%.
   reset-lead: Du kannst nun dein Passwort zurücksetzen
   token-lead: Neuer Wiederherstellungscode
-  information-extra: Die Zwei-Faktor-Authentifizierung wird dadurch zurückgesetzt und alle Mail-App-Passwörter werden gelöscht.
+  information-extra: Die Zwei-Faktor-Authentifizierung wird dadurch zurückgesetzt und alle App-Passwörter werden gelöscht.
 navbar_right:
   login: Anmelden
   logout: Abmelden
@@ -255,6 +254,9 @@ closed:
 
     <strong>Für bestehende Konten ändert sich nichts.</strong>
 delete:
+  app-password:
+    headline: App-Passwort löschen
+    lead_specific: Bist du sicher, dass du <strong>%name%</strong> löschen möchtest? Mail-Apps, die es nutzen, können sich dann nicht mehr anmelden.
   alias:
     headline_generic: Alias-Adresse löschen
     lead_specific: >
@@ -292,8 +294,8 @@ flashes:
   voucher-creation-successful: Neuer Einladungscode erstellt.
   alias-creation-successful: Deine neue Alias-Adresse wurde erstellt.
   alias-deletion-successful: Deine Alias-Adresse wurde gelöscht.
-  app-password-deletion-successful: Das Mail-App-Passwort wurde gelöscht.
-  app-password-deletion-failed: Das Mail-App-Passwort konnte nicht gelöscht werden.
+  app-password-deletion-successful: Das App-Passwort wurde gelöscht.
+  app-password-deletion-failed: Das App-Passwort konnte nicht gelöscht werden.
   alias-deletion-failed: Deine Alias-Adresse konnte nicht gelöscht werden. Bitte versuche es erneut.
   recovery-token-invalid: E-Mail-Adresse oder Wiederherstellungscode sind falsch!
   recovery-token-ack: Du hast einen Wiederherstellungscode erzeugt.
@@ -526,6 +528,7 @@ admin:
     user-notifications: Benachrichtigungen
     users: Benutzer:innen
     openpgp-keys: OpenPGP-Schlüssel
+    app-passwords: App-Passwörter
     domain_settings: Domain-Einstellungen
     group:
       management: Verwaltung
@@ -1034,6 +1037,7 @@ admin:
       vouchers: Einladungscodes
       vouchers_redeemed: "%count% eingelöst"
       openpgp_keys: OpenPGP-Schlüssel
+      app_passwords: App-Passwörter
       enabled: Aktiviert
       disabled: Deaktiviert
       deleted: Gelöscht
@@ -1122,6 +1126,23 @@ admin:
       empty-description: Es wurden noch keine OpenPGP-Schlüssel veröffentlicht.
     pagination:
       total: "%count% Schlüssel insgesamt"
+      newer: Neuer
+      older: Älter
+      page: "Seite %page% von %totalPages%"
+
+  app-password:
+    title: App-Passwörter
+    heading: App-Passwörter
+    description: Von Benutzer:innen generierte App-Passwörter anzeigen
+    search:
+      placeholder: Nach E-Mail suchen...
+      submit: Suchen
+    table:
+      email: E-Mail
+      empty-title: Keine App-Passwörter
+      empty-description: Es wurden noch keine App-Passwörter generiert.
+    pagination:
+      total: "%count% App-Passwörter insgesamt"
       newer: Neuer
       older: Älter
       page: "Seite %page% von %totalPages%"

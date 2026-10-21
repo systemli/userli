@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Dto\PaginatedResult;
+use App\Entity\AppPassword;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\MailCrypt;
@@ -144,7 +145,7 @@ final readonly class UserManager
     }
 
     /**
-     * @return array{aliases: int, vouchers: int, vouchers_redeemed: int, openpgp_keys: int, password_compromised: bool}
+     * @return array{aliases: int, vouchers: int, vouchers_redeemed: int, openpgp_keys: int, app_passwords: int, password_compromised: bool}
      */
     public function getUserStats(User $user): array
     {
@@ -153,6 +154,7 @@ final readonly class UserManager
             'vouchers' => $this->voucherRepository->countVouchersByUser($user, null),
             'vouchers_redeemed' => $this->voucherRepository->countVouchersByUser($user, true),
             'openpgp_keys' => count($this->openPgpKeyRepository->findByUploader($user)),
+            'app_passwords' => $this->em->getRepository(AppPassword::class)->count(['user' => $user]),
             'password_compromised' => $this->userNotificationRepository->hasRecentNotification($user, UserNotificationType::PASSWORD_COMPROMISED, 24 * 365),
         ];
     }

@@ -199,7 +199,7 @@
                 {# Related entities #}
                 <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-4">{{ 'admin.user.show.related_data'|trans }}</h4>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {# Aliases #}
                     <a href="{{ path('admin_alias_index', {search: user.email}) }}"
                        class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors group">
@@ -219,6 +219,16 @@
                         </div>
                         <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ stats.vouchers }}</p>
                         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ 'admin.user.show.vouchers_redeemed'|trans({'%count%': stats.vouchers_redeemed}) }}</p>
+                    </a>
+
+                    {# App Passwords #}
+                    <a href="{{ path('admin_app_password_index', {search: user.email}) }}"
+                       class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors group">
+                        <div class="flex items-center mb-2">
+                            {{ ux_icon('heroicons:device-phone-mobile', {class: 'w-5 h-5 text-purple-500 dark:text-purple-400 mr-2'}) }}
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400">{{ 'admin.user.show.app_passwords'|trans }}</span>
+                        </div>
+                        <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">{{ stats.app_passwords }}</p>
                     </a>
 
                     {# OpenPGP Keys #}

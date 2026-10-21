@@ -18,9 +18,9 @@ of their own domain.
 ![User details](../assets/images/admin-user-show.png){class="screenshot"}
 
 The detail page shows roles, status, MailCrypt and 2FA state, creation and last
-sign-in date, and the number of aliases, invite codes, redeemed invite codes
-and OpenPGP keys. It also warns if the user's password was found in a data
-breach recently.
+sign-in date, and the number of aliases, invite codes, redeemed invite codes,
+app passwords and OpenPGP keys. Click a card to see the matching list. It also
+warns if the user's password was found in a data breach recently.
 
 ## Create a user
 
@@ -71,7 +71,7 @@ password and their [recovery token](../user/recovery.md).
     * a new recovery token is created and shown to you once – pass it on to
       the user securely,
     * two-factor authentication is turned off,
-    * all mail app passwords are deleted,
+    * all app passwords are deleted,
     * the `user.reset` [webhook](webhooks.md) is sent.
 
     The user has to change the password at the next sign-in.
@@ -82,7 +82,7 @@ Deleting is a **soft delete**. The account remains in the database so that the
 address can never be registered again, but:
 
 * the password is replaced by a random one, recovery token, MailCrypt keys and
-  mail app passwords are erased,
+  app passwords are erased,
 * all aliases of the user are deleted,
 * unused invite codes and notifications are removed,
 * the published OpenPGP key is removed,

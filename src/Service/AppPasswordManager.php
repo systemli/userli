@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Dto\PaginatedResult;
 use App\Entity\AppPassword;
+use App\Entity\Domain;
 use App\Entity\User;
 use App\Handler\CryptoSecretHandler;
 use App\Handler\MailCryptKeyHandler;
@@ -18,6 +20,8 @@ final readonly class AppPasswordManager
 {
     // 6 groups of 4 (137 bits), so they can't be mistaken for Nextcloud app passwords (5 groups of 5)
     private const string CHARS = 'abcdefgijkmnopqrstwxyzABCDEFGHJKLMNPQRSTWXYZ23456789';
+
+    private const int PAGE_SIZE = 20;
 
     public function __construct(
         private AppPasswordRepository $repository,
@@ -80,5 +84,19 @@ final readonly class AppPasswordManager
     private function hash(string $plain): string
     {
         return hash('sha256', $plain);
+    }
+
+    /**
+     * @return PaginatedResult<AppPassword>
+     */
+    public function findPaginated(int $page = 1, string $search = '', ?Domain $domain = null): PaginatedResult
+    {
+        $page = max(1, $page);
+        $offset = ($page - 1) * self::PAGE_SIZE;
+        $total = $this->repository->countByFilters($search, $domain);
+        $totalPages = max(1, (int) ceil($total / self::PAGE_SIZE));
+        $items = $this->repository->findPaginatedByFilters($search, $domain, self::PAGE_SIZE, $offset);
+
+        return new PaginatedResult($items, $page, $totalPages, $total);
     }
 }

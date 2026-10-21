@@ -15,8 +15,8 @@
 | `userli_users_recovery_token_total` | Users with a recovery token |
 | `userli_users_mailcrypt_total` | Users with MailCrypt enabled |
 | `userli_users_twofactor_total` | Users with 2FA enabled |
-| `userli_users_app_password_total` | Users with at least one mail app password |
-| `userli_app_passwords_total` | Mail app passwords |
+| `userli_users_app_password_total` | Users with at least one app password |
+| `userli_app_passwords_total` | App passwords |
 | `userli_vouchers_total{type="redeemed"\|"unredeemed"}` | Invite codes |
 | `userli_domains_total` | Domains |
 | `userli_aliases_total` | Aliases |

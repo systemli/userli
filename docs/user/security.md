@@ -19,7 +19,7 @@ password manager.
 !!! note
 
     2FA protects the sign-in to the web interface. Your email program keeps
-    using only your password, or a [mail app password](app-passwords.md).
+    using only your password, or an [app password](app-passwords.md).
 
 ### Turn on 2FA
 
