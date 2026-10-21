@@ -137,7 +137,7 @@ final class PostfixController extends AbstractController
             return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
         }
 
-        if (null === $this->authHandler->authenticate($user, $request->getPassword())) {
+        if (null === $this->authHandler->authenticate($user, $request->getPassword(), true)) {
             return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
         }
 

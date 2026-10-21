@@ -84,7 +84,7 @@ Scope `roundcube`. Used by the [Roundcube plugin](integrations/roundcube.md).
 
 | Method | Path | Description |
 |--------|------|-------------|
-| `POST` | `/api/roundcube/aliases` | Body `{"email": "...", "password": "..."}`. Returns the list of the user's alias addresses. `401` on wrong credentials. |
+| `POST` | `/api/roundcube/aliases` | Body `{"email": "...", "password": "..."}`. Returns the list of the user's alias addresses. `401` on wrong credentials. App passwords are rejected. |
 
 ## Keycloak
 
@@ -95,7 +95,7 @@ Scope `keycloak`. Used by the [Keycloak user provider](integrations/keycloak.md)
 | `GET`  | `/api/keycloak/{domain}?search=&max=10&first=0` | Search users. Returns `[{"id": "<local part>", "email": "..."}]`. |
 | `GET`  | `/api/keycloak/{domain}/count` | Number of users in the domain. |
 | `GET`  | `/api/keycloak/{domain}/user/{email}` | Get a single user. |
-| `POST` | `/api/keycloak/{domain}/validate/{email}` | Validate a credential, body `{"credentialType": "password"\|"otp", "password": "..."}`. |
+| `POST` | `/api/keycloak/{domain}/validate/{email}` | Validate a credential, body `{"credentialType": "password"\|"otp", "password": "..."}`. App passwords are rejected. |
 | `GET`  | `/api/keycloak/{domain}/configured/{credentialType}/{email}` | Whether the user has the credential type (e.g. `otp`) configured. |
 
 For `otp`, `password` is the 6-digit TOTP code **or** a backup code – a

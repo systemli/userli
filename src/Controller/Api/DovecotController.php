@@ -14,6 +14,7 @@ use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
 use App\Repository\UserRepository;
 use App\Security\RequireApiScope;
+use App\Service\AppPasswordManager;
 use App\Service\SettingsService;
 use Exception;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -41,6 +42,7 @@ final class DovecotController extends AbstractController
     public function __construct(
         private readonly MailCryptKeyHandler $mailCryptKeyHandler,
         private readonly UserAuthenticationHandler $authHandler,
+        private readonly AppPasswordManager $appPasswordManager,
         private readonly UserRepository $userRepository,
         private readonly CacheInterface $cache,
         private readonly SettingsService $settingsService,
@@ -115,7 +117,7 @@ final class DovecotController extends AbstractController
             return $this->json(['message' => self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED], Response::HTTP_FORBIDDEN);
         }
 
-        if (null === $this->authHandler->authenticate($user, $request->getPassword())) {
+        if (null === $this->authHandler->authenticate($user, $request->getPassword(), true)) {
             return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -123,7 +125,10 @@ final class DovecotController extends AbstractController
         $mailCrypt = MailCrypt::from($this->settingsService->get('mail_crypt'));
         if ($mailCrypt->isAtLeast(MailCrypt::ENABLED_OPTIONAL) && $user->getMailCryptEnabled()) {
             try {
-                $privateKey = $this->mailCryptKeyHandler->decrypt($user, $request->getPassword());
+                $appPassword = $this->appPasswordManager->find($user, $request->getPassword());
+                $privateKey = null !== $appPassword
+                    ? $this->appPasswordManager->decryptMailCryptKey($appPassword, $request->getPassword())
+                    : $this->mailCryptKeyHandler->decrypt($user, $request->getPassword());
             } catch (Exception $exception) {
                 return $this->json(['error' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
             }

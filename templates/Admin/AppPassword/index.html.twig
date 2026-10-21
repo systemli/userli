@@ -1,0 +1,71 @@
+{% set current_section = 'app-passwords' %}
+{% extends 'Admin/base_admin.html.twig' %}
+{% block title %}{{ setting('app_name') }} - {{ 'admin.app-password.title'|trans }}{% endblock %}
+{% block admin_content %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="p-6 sm:p-8">
+            {% include 'Admin/_section_header.html.twig' with {
+                icon: 'heroicons:device-phone-mobile',
+                icon_color: 'purple',
+                heading_key: 'admin.app-password.heading',
+                description_key: 'admin.app-password.description',
+            } %}
+
+            <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+                <div class="flex flex-wrap items-end gap-4">
+                    {% include 'Admin/_domain_filter.html.twig' with {
+                        selectedDomain: selectedDomain,
+                        selectedDomainName: selectedDomainName,
+                    } %}
+                </div>
+
+                {% include 'Admin/_search_form.html.twig' with {
+                    index_route: 'admin_app_password_index',
+                    placeholder_key: 'admin.app-password.search.placeholder',
+                    submit_key: 'admin.app-password.search.submit',
+                    search: search,
+                    extra_params: {domain: selectedDomain}|filter(v => v),
+                } %}
+            </div>
+
+            {% if pagination.items is empty %}
+                {% include 'Admin/_empty_state.html.twig' with {
+                    icon: 'heroicons:device-phone-mobile',
+                    title_key: 'admin.app-password.table.empty-title',
+                    description_key: 'admin.app-password.table.empty-description',
+                } %}
+            {% else %}
+                {% embed 'Admin/_table.html.twig' with {
+                    headers: [
+                        {label: 'admin.table.id'},
+                        {label: 'admin.app-password.table.email'},
+                        {label: 'admin.table.name'},
+                        {label: 'admin.app-password.table.last-used'},
+                    ]
+                } %}
+                    {% block table_body %}
+                        {% for item in pagination.items %}
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ item.id }}</td>
+                                <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-gray-100">{{ item.user.email }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{{ item.name }}</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{{ item.lastLoginTime ? item.lastLoginTime|format_date('short') : 'admin.user.show.never'|trans }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endblock %}
+                {% endembed %}
+
+                {% include 'Admin/_pagination.html.twig' with {
+                    index_route: 'admin_app_password_index',
+                    total_key: 'admin.app-password.pagination.total',
+                    previous_key: 'admin.app-password.pagination.newer',
+                    next_key: 'admin.app-password.pagination.older',
+                    page_key: 'admin.app-password.pagination.page',
+                    pagination: pagination,
+                    search: search,
+                    extra_params: {domain: selectedDomain}|filter(v => v),
+                } %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

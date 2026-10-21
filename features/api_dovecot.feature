@@ -14,6 +14,7 @@ Feature: Dovecot API
             | user@example.org      | password | ROLE_USER | 0         |                    |                    |
             | spam@example.org      | password | ROLE_SPAM | 0         |                    |                    |
             | support@example.org   | password | ROLE_USER | 0         |                    |                    |
+            | mailcrypt@example.org | password | ROLE_USER | 1         |                    |                    |
         And the following ApiToken exists:
             | token            | name          | scopes  |
             | dovecot-test-123 | Dovecot Token | dovecot |
@@ -43,6 +44,63 @@ Feature: Dovecot API
         When I send a POST request to "/api/dovecot/support@example.org" with form data:
             | password | wrong |
         Then the response status code should equal 401
+
+    @passdb @app-password
+    Scenario: Passdb lookup with app password
+        Given the following AppPassword exists:
+            | email               | name        | password     |
+            | support@example.org | Thunderbird | app-password |
+        And I have a valid API token "dovecot-test-123"
+        When I send a POST request to "/api/dovecot/support@example.org" with form data:
+            | password | app-password |
+        Then the response status code should equal 200
+
+    @passdb @app-password @last-login
+    Scenario: Passdb lookup with app password updates last login of user and app password
+        Given the following AppPassword exists:
+            | email               | name        | password     |
+            | support@example.org | Thunderbird | app-password |
+        And I have a valid API token "dovecot-test-123"
+        When I send a POST request to "/api/dovecot/support@example.org" with form data:
+            | password | app-password |
+        Then the response status code should equal 200
+        And the user "support@example.org" should have a last login time of this week
+        And the app password "Thunderbird" of "support@example.org" should have a last login time of this week
+
+    @passdb @app-password @last-login
+    Scenario: Passdb lookup with password only updates last login of user
+        Given the following AppPassword exists:
+            | email               | name        | password     |
+            | support@example.org | Thunderbird | app-password |
+        And I have a valid API token "dovecot-test-123"
+        When I send a POST request to "/api/dovecot/support@example.org" with form data:
+            | password | password |
+        Then the response status code should equal 200
+        And the user "support@example.org" should have a last login time of this week
+        And the app password "Thunderbird" of "support@example.org" should have no last login time
+
+    @passdb @app-password
+    Scenario: Passdb lookup with another user's app password
+        Given the following AppPassword exists:
+            | email            | name        | password     |
+            | user@example.org | Thunderbird | app-password |
+        And I have a valid API token "dovecot-test-123"
+        When I send a POST request to "/api/dovecot/support@example.org" with form data:
+            | password | app-password |
+        Then the response status code should equal 401
+
+    @passdb @app-password
+    Scenario: Passdb lookup with app password returns MailCrypt key
+        Given the following AppPassword exists:
+            | email                 | name        | password     |
+            | mailcrypt@example.org | Thunderbird | app-password |
+        And I have a valid API token "dovecot-test-123"
+        When I send a POST request to "/api/dovecot/mailcrypt@example.org" with form data:
+            | password | app-password |
+        Then the response status code should equal 200
+        And the JSON path "body.mailCrypt" should equal "2"
+        And the JSON path "body.mailCryptPrivateKey" should not be empty
+        And the JSON path "body.mailCryptPublicKey" should not be empty
 
     @passdb
     Scenario: Passdb lookup for nonexistent user

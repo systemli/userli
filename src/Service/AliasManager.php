@@ -48,13 +48,12 @@ final readonly class AliasManager
      */
     public function findPaginated(int $page = 1, string $search = '', ?Domain $domain = null, string $deleted = 'active'): PaginatedResult
     {
-        $page = max(1, $page);
-        $offset = ($page - 1) * self::PAGE_SIZE;
-        $total = $this->repository->countByFilters($search, $domain, $deleted);
-        $totalPages = max(1, (int) ceil($total / self::PAGE_SIZE));
-        $items = $this->repository->findPaginatedByFilters($search, $domain, $deleted, self::PAGE_SIZE, $offset);
-
-        return new PaginatedResult($items, $page, $totalPages, $total);
+        return PaginatedResult::paginate(
+            $page,
+            self::PAGE_SIZE,
+            fn (): int => $this->repository->countByFilters($search, $domain, $deleted),
+            fn (int $limit, int $offset): array => $this->repository->findPaginatedByFilters($search, $domain, $deleted, $limit, $offset),
+        );
     }
 
     /**

@@ -30,7 +30,7 @@ After signing in you see the overview of your account:
 | **Webmail**          | Opens the webmail of your provider (only shown if available).                                        |
 | **Invite codes**     | Shows your [invite codes](invite-codes.md) (only shown if invitations are enabled).                  |
 | **Alias addresses**  | Manage your [aliases](aliases.md).                                                                   |
-| **Account settings** | Password, two-factor authentication, recovery token, OpenPGP keys and [account deletion](delete.md). |
+| **Account settings** | Password, two-factor authentication, recovery token, [app passwords](app-passwords.md), OpenPGP keys and [account deletion](delete.md). |
 
 ### Security alert
 

@@ -6,6 +6,7 @@ namespace App\Tests\Command;
 
 use App\Command\MetricsCommand;
 use App\Repository\AliasRepository;
+use App\Repository\AppPasswordRepository;
 use App\Repository\DomainRepository;
 use App\Repository\OpenPgpKeyRepository;
 use App\Repository\UserRepository;
@@ -34,11 +35,15 @@ class MetricsCommandTest extends TestCase
         $domainRepository = $this->createStub(DomainRepository::class);
         $domainRepository->method('count')->willReturn(6);
 
+        $appPasswordRepository = $this->createStub(AppPasswordRepository::class);
+        $appPasswordRepository->method('countUsers')->willReturn(8);
+        $appPasswordRepository->method('count')->willReturn(11);
+
         $voucherRepository = $this->createStub(VoucherRepository::class);
         $voucherRepository->method('countRedeemedVouchers')->willReturn(1);
         $voucherRepository->method('countUnredeemedVouchers')->willReturn(7);
 
-        $command = new MetricsCommand($userRepository, $voucherRepository, $domainRepository, $aliasRepository, $openPgpKeyRepository);
+        $command = new MetricsCommand($userRepository, $voucherRepository, $domainRepository, $aliasRepository, $openPgpKeyRepository, $appPasswordRepository);
 
         $commandTester = new CommandTester($command);
         $commandTester->execute([]);
@@ -51,6 +56,8 @@ class MetricsCommandTest extends TestCase
         self::assertStringContainsString('userli_users_recovery_token_total 5', $output);
         self::assertStringContainsString('userli_users_mailcrypt_total 7', $output);
         self::assertStringContainsString('userli_users_twofactor_total 9', $output);
+        self::assertStringContainsString('userli_users_app_password_total 8', $output);
+        self::assertStringContainsString('userli_app_passwords_total 11', $output);
         self::assertStringContainsString('userli_users_weekly_active_total 42', $output);
         self::assertStringContainsString('userli_users_monthly_active_total 42', $output);
         self::assertStringContainsString('userli_vouchers_total{type="unredeemed"} 7', $output);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Behat;
 
 use App\Entity\Alias;
+use App\Entity\AppPassword;
 use App\Entity\Domain;
 use App\Entity\OpenPgpKey;
 use App\Entity\ReservedName;
@@ -17,6 +18,8 @@ use App\Entity\WebhookEndpoint;
 use App\Enum\ApiScope;
 use App\Enum\UserNotificationType;
 use App\Enum\WebhookEvent;
+use App\Handler\CryptoSecretHandler;
+use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use App\Helper\TotpBackupCodeGenerator;
 use App\Service\ApiTokenManager;
@@ -880,6 +883,83 @@ class FeatureContext extends MinkContext
             $scopes = array_map(static fn (string $scope) => ApiScope::from(trim($scope))->value, $scopeStrings);
 
             $apiTokenManager->create($token, $name, $scopes);
+        }
+    }
+
+    /**
+     * @When the following AppPassword exists:
+     */
+    public function theFollowingAppPasswordExists(TableNode $table): void
+    {
+        $mailCryptKeyHandler = $this->getContainer()->get(MailCryptKeyHandler::class);
+
+        foreach ($table->getColumnsHash() as $data) {
+            $user = $this->manager->getRepository(User::class)->findByEmail($data['email']);
+            $userPassword = $data['userPassword'] ?? 'password';
+
+            if ($user->hasMailCryptSecretBox()) {
+                $privateKey = $mailCryptKeyHandler->decrypt($user, $userPassword);
+            } else {
+                $mailCryptKeyHandler->create($user, $userPassword);
+                $privateKey = (string) $user->getPlainMailCryptPrivateKey();
+            }
+
+            $secretBox = CryptoSecretHandler::create($privateKey, $data['password'])->encode();
+            $appPassword = new AppPassword($user, $data['name'] ?? 'Test', hash('sha256', $data['password']), $secretBox);
+            if (!empty($data['lastLoginTime'])) {
+                $appPassword->setLastLoginTime(new DateTimeImmutable($data['lastLoginTime']));
+            }
+            $this->manager->persist($appPassword);
+            $this->manager->flush();
+        }
+    }
+
+    /**
+     * @Then the user :email should have a last login time of this week
+     */
+    public function theUserShouldHaveALastLoginTimeOfThisWeek(string $email): void
+    {
+        $this->manager->clear();
+        $user = $this->manager->getRepository(User::class)->findByEmail($email);
+
+        $this->assertLastLoginTimeOfThisWeek($user?->getLastLoginTime(), $email);
+    }
+
+    /**
+     * @Then the app password :name of :email should have a last login time of this week
+     */
+    public function theAppPasswordShouldHaveALastLoginTimeOfThisWeek(string $name, string $email): void
+    {
+        $this->assertLastLoginTimeOfThisWeek($this->findAppPassword($name, $email)->getLastLoginTime(), $name);
+    }
+
+    /**
+     * @Then the app password :name of :email should have no last login time
+     */
+    public function theAppPasswordShouldHaveNoLastLoginTime(string $name, string $email): void
+    {
+        if (null !== $this->findAppPassword($name, $email)->getLastLoginTime()) {
+            throw new RuntimeException(sprintf('Expected app password "%s" to have no last login time', $name));
+        }
+    }
+
+    private function findAppPassword(string $name, string $email): AppPassword
+    {
+        $this->manager->clear();
+        $user = $this->manager->getRepository(User::class)->findByEmail($email);
+        $appPassword = $this->manager->getRepository(AppPassword::class)->findOneBy(['user' => $user, 'name' => $name]);
+        if (!$appPassword instanceof AppPassword) {
+            throw new RuntimeException(sprintf('App password "%s" of "%s" not found', $name, $email));
+        }
+
+        return $appPassword;
+    }
+
+    private function assertLastLoginTimeOfThisWeek(?DateTimeImmutable $lastLoginTime, string $subject): void
+    {
+        $thisWeek = new DateTimeImmutable('monday this week midnight');
+        if ($lastLoginTime?->getTimestamp() !== $thisWeek->getTimestamp()) {
+            throw new RuntimeException(sprintf('Expected last login time of "%s" to be %s, got %s', $subject, $thisWeek->format('c'), $lastLoginTime?->format('c') ?? 'null'));
         }
     }
 

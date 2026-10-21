@@ -15,7 +15,8 @@ after a while.
 
 !!! danger "Deletion cannot be undone"
 
-    * Your password, recovery token and mailbox encryption keys are deleted.
+    * Your password, app passwords, recovery token and mailbox encryption keys
+      are deleted.
       Your encrypted emails can't be decrypted anymore.
     * All your aliases are deleted.
     * Unused invite codes are deleted.

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
+use App\Entity\AppPassword;
 use App\Entity\User;
 use App\Service\UserLastLoginUpdateService;
 use DateTimeImmutable;
@@ -102,5 +103,50 @@ class UserLastLoginUpdateServiceTest extends TestCase
         // Assert - the time should remain unchanged
         $lastLoginTime = $user->getLastLoginTime();
         self::assertEquals($currentWeekStart->getTimestamp(), $lastLoginTime->getTimestamp());
+    }
+
+    public function testUpdateLastLoginUpdatesAppPassword(): void
+    {
+        $user = new User('test@example.org');
+        $appPassword = new AppPassword($user, 'Phone', 'hash', 'box');
+        $thisWeek = new DateTimeImmutable('monday this week midnight');
+
+        $this->entityManager->expects($this->exactly(2))->method('persist');
+        $this->entityManager->expects($this->once())->method('flush');
+
+        $this->service->updateLastLogin($user, $appPassword);
+
+        self::assertEquals($thisWeek->getTimestamp(), $user->getLastLoginTime()?->getTimestamp());
+        self::assertEquals($thisWeek->getTimestamp(), $appPassword->getLastLoginTime()?->getTimestamp());
+    }
+
+    public function testUpdateLastLoginUpdatesAppPasswordWhenUserAlreadyCurrentWeek(): void
+    {
+        $user = new User('test@example.org');
+        $thisWeek = new DateTimeImmutable('monday this week midnight');
+        $user->setLastLoginTime($thisWeek);
+        $appPassword = new AppPassword($user, 'Phone', 'hash', 'box');
+        $appPassword->setLastLoginTime(new DateTimeImmutable('-1 week'));
+
+        $this->entityManager->expects($this->once())->method('persist')->with($appPassword);
+        $this->entityManager->expects($this->once())->method('flush');
+
+        $this->service->updateLastLogin($user, $appPassword);
+
+        self::assertEquals($thisWeek->getTimestamp(), $appPassword->getLastLoginTime()?->getTimestamp());
+    }
+
+    public function testUpdateLastLoginDoesNotUpdateAppPasswordWhenAlreadyCurrentWeek(): void
+    {
+        $user = new User('test@example.org');
+        $thisWeek = new DateTimeImmutable('monday this week midnight');
+        $user->setLastLoginTime($thisWeek);
+        $appPassword = new AppPassword($user, 'Phone', 'hash', 'box');
+        $appPassword->setLastLoginTime($thisWeek);
+
+        $this->entityManager->expects($this->never())->method('persist');
+        $this->entityManager->expects($this->never())->method('flush');
+
+        $this->service->updateLastLogin($user, $appPassword);
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Dto\PaginatedResult;
+use App\Entity\AppPassword;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\MailCrypt;
@@ -51,13 +52,12 @@ final readonly class UserManager
      */
     public function findPaginated(int $page = 1, string $search = '', ?Domain $domain = null, string $deleted = 'active', string $role = '', string $mailCrypt = '', string $twofactor = ''): PaginatedResult
     {
-        $page = max(1, $page);
-        $offset = ($page - 1) * self::PAGE_SIZE;
-        $total = $this->repository->countByFilters($search, $domain, $deleted, $role, $mailCrypt, $twofactor);
-        $totalPages = max(1, (int) ceil($total / self::PAGE_SIZE));
-        $items = $this->repository->findPaginatedByFilters($search, $domain, $deleted, $role, $mailCrypt, $twofactor, self::PAGE_SIZE, $offset);
-
-        return new PaginatedResult($items, $page, $totalPages, $total);
+        return PaginatedResult::paginate(
+            $page,
+            self::PAGE_SIZE,
+            fn (): int => $this->repository->countByFilters($search, $domain, $deleted, $role, $mailCrypt, $twofactor),
+            fn (int $limit, int $offset): array => $this->repository->findPaginatedByFilters($search, $domain, $deleted, $role, $mailCrypt, $twofactor, $limit, $offset),
+        );
     }
 
     /**
@@ -144,7 +144,7 @@ final readonly class UserManager
     }
 
     /**
-     * @return array{aliases: int, vouchers: int, vouchers_redeemed: int, openpgp_keys: int, password_compromised: bool}
+     * @return array{aliases: int, vouchers: int, vouchers_redeemed: int, openpgp_keys: int, app_passwords: int, password_compromised: bool}
      */
     public function getUserStats(User $user): array
     {
@@ -153,6 +153,7 @@ final readonly class UserManager
             'vouchers' => $this->voucherRepository->countVouchersByUser($user, null),
             'vouchers_redeemed' => $this->voucherRepository->countVouchersByUser($user, true),
             'openpgp_keys' => count($this->openPgpKeyRepository->findByUploader($user)),
+            'app_passwords' => $this->em->getRepository(AppPassword::class)->count(['user' => $user]),
             'password_compromised' => $this->userNotificationRepository->hasRecentNotification($user, UserNotificationType::PASSWORD_COMPROMISED, 24 * 365),
         ];
     }

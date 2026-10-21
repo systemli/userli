@@ -16,7 +16,7 @@ The sidebar groups all pages:
 
 | Group             | Pages                                                        | Admin | Domain admin |
 |-------------------|--------------------------------------------------------------|:-----:|:------------:|
-| **Management**    | Dashboard, [Users](users.md), [Aliases](aliases.md), OpenPGP Keys, [Invite Codes](invite-codes.md) | ✓ | ✓ (own domain) |
+| **Management**    | Dashboard, [Users](users.md), [Aliases](aliases.md), [Invite Codes](invite-codes.md), App Passwords, OpenPGP Keys | ✓ | ✓ (own domain) |
 |                   | Domain settings ([own domain](domains.md#domain-admins))     |       | ✓            |
 | **Configuration** | [Domains](domains.md), [Reserved Names](reserved-names.md), [Notifications](notifications.md) | ✓ |  |
 | **System**        | [Settings](settings.md), [API Tokens](api-tokens.md), [Webhooks](webhooks.md), [Maintenance](maintenance.md) | ✓ |  |
@@ -42,6 +42,16 @@ find keys by email address or domain. Users manage their keys themselves, see
 [OpenPGP keys](../user/openpgp.md) in the User Guide.
 
 ![OpenPGP keys](../assets/images/admin-openpgp-keys.png){class="screenshot"}
+
+## App passwords
+
+**Management → App Passwords** is a read-only list of the app passwords users
+have generated, with name and last use (rounded to the start of the week, like
+the last login of users). Use the search to find them by
+email address or domain. Users manage their app passwords themselves, see
+[App passwords](../user/app-passwords.md) in the User Guide.
+
+![App passwords](../assets/images/admin-app-passwords.png){class="screenshot"}
 
 ## Common tasks
 
