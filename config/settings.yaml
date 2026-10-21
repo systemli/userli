@@ -35,6 +35,11 @@ settings:
     type: boolean
     default: true
 
+  # The setup wizard turns it on for new installations
+  twofactor_app_passwords_required:
+    type: boolean
+    default: false
+
   smtp_quota_limit_per_hour:
     type: integer
     default: 0

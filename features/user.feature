@@ -224,6 +224,22 @@ Feature: User
 
     Then I should be on "/account/twofactor"
 
+  @twofactor-auth
+  Scenario: Two-factor page links to app passwords when they are required
+    Given the setting "twofactor_app_passwords_required" is "1"
+    When I am authenticated as "user@example.org"
+    And I am on "/account/twofactor"
+    Then I should see text matching "only work with app passwords"
+    When I follow "Create app passwords"
+    Then I should be on "/account/app-passwords"
+
+  @twofactor-auth
+  Scenario: Two-factor page does not mention app passwords when they are not required
+    Given the setting "twofactor_app_passwords_required" is "0"
+    When I am authenticated as "user@example.org"
+    And I am on "/account/twofactor"
+    Then I should not see text matching "only work with app passwords"
+
   @password-compromised
   Scenario: User sees password compromised message
     Given the following UserNotification exists:

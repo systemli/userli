@@ -18,8 +18,9 @@ password manager.
 
 !!! note
 
-    2FA protects the sign-in to the web interface. Your email program keeps
-    using only your password, or an [app password](app-passwords.md).
+    2FA protects the sign-in to the web interface and, if your provider
+    uses Roundcube, to webmail. Depending on your provider, email programs
+    then need an [app password](app-passwords.md) instead of your password.
 
 ### Turn on 2FA
 

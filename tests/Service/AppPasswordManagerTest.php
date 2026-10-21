@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
 use App\Repository\AppPasswordRepository;
 use App\Service\AppPasswordManager;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -78,12 +79,33 @@ class AppPasswordManagerTest extends TestCase
         $appPassword = new AppPassword($user, 'Phone', hash('sha256', 'secret'), 'box');
 
         $repository = $this->createMock(AppPasswordRepository::class);
-        $repository->expects($this->exactly(2))->method('findOneBy')
-            ->willReturnCallback(static fn (array $criteria) => $criteria === ['user' => $user, 'hash' => hash('sha256', 'secret')] ? $appPassword : null);
+        $repository->expects($this->exactly(2))->method('findValidByHash')
+            ->willReturnCallback(static fn (User $u, string $hash) => $u === $user && hash('sha256', 'secret') === $hash ? $appPassword : null);
 
         $manager = new AppPasswordManager($repository, $this->createStub(EntityManagerInterface::class), $this->mailCryptKeyHandler);
 
         self::assertSame($appPassword, $manager->find($user, 'secret'));
         self::assertNull($manager->find($user, 'wrong'));
+    }
+
+    public function testCreateWebmailCredentialExpires(): void
+    {
+        $user = new User('user@example.org');
+
+        $persisted = null;
+        $entityManager = $this->createStub(EntityManagerInterface::class);
+        $entityManager->method('persist')
+            ->willReturnCallback(static function (AppPassword $appPassword) use (&$persisted): void {
+                $persisted = $appPassword;
+            });
+
+        $manager = new AppPasswordManager($this->createStub(AppPasswordRepository::class), $entityManager, $this->mailCryptKeyHandler);
+        [$plain, $expiresAt] = $manager->createWebmailCredential($user, 'password');
+
+        self::assertInstanceOf(AppPassword::class, $persisted);
+        self::assertSame(hash('sha256', $plain), $persisted->getHash());
+        self::assertStringStartsWith('Webmail ', $persisted->getName());
+        self::assertSame($expiresAt, $persisted->getExpiresAt());
+        self::assertEqualsWithDelta(new DateTimeImmutable('+12 hours')->getTimestamp(), $expiresAt->getTimestamp(), 5);
     }
 }
