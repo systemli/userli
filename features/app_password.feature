@@ -38,6 +38,17 @@ Feature: App passwords
     Then I should see text matching "Used this week"
     And I should see text matching "Never used"
 
+  Scenario: List hides webmail credentials
+    Given the following AppPassword exists:
+      | email            | name             | password       | userPassword | expiresAt |
+      | user@example.org | Thunderbird      | app-password-1 | asdasd       |           |
+      | user@example.org | Webmail 1a2b3c4d | app-password-2 | asdasd       | +1 hour   |
+    When I am authenticated as "user@example.org"
+    And I am on "/account/app-passwords"
+
+    Then I should see text matching "Thunderbird"
+    And I should not see text matching "Webmail 1a2b3c4d"
+
   Scenario: Create app password with a name that already exists
     Given the following AppPassword exists:
       | email            | name        | password     | userPassword |
