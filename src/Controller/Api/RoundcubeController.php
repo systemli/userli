@@ -23,6 +23,8 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
+use const DATE_ATOM;
+
 #[RequireApiScope(scope: ApiScope::ROUNDCUBE)]
 final class RoundcubeController extends AbstractController
 {
@@ -67,7 +69,9 @@ final class RoundcubeController extends AbstractController
             }
         }
 
-        return $this->json(['password' => $this->appPasswordManager->createWebmailCredential($user, $data->getPassword())]);
+        [$password, $expiresAt] = $this->appPasswordManager->createWebmailCredential($user, $data->getPassword());
+
+        return $this->json(['password' => $password, 'expiresAt' => $expiresAt->format(DATE_ATOM)]);
     }
 
     #[Route(path: '/api/roundcube/logout', name: 'api_roundcube_post_logout', methods: ['POST'], stateless: true)]

@@ -64,12 +64,16 @@ final readonly class AppPasswordManager
     /**
      * Creates a short-lived app password that Roundcube uses instead of the main password.
      *
+     * @return array{string, DateTimeImmutable} plaintext and expiry
+     *
      * @throws Exception
      */
-    public function createWebmailCredential(User $user, string $mainPassword): string
+    public function createWebmailCredential(User $user, string $mainPassword): array
     {
         // Fixed lifetime on purpose: webmail sessions end after it and users log in again
-        return $this->create($user, 'Webmail '.bin2hex(random_bytes(8)), $mainPassword, new DateTimeImmutable(self::WEBMAIL_CREDENTIAL_LIFETIME));
+        $expiresAt = new DateTimeImmutable(self::WEBMAIL_CREDENTIAL_LIFETIME);
+
+        return [$this->create($user, 'Webmail '.bin2hex(random_bytes(8)), $mainPassword, $expiresAt), $expiresAt];
     }
 
     public function find(User $user, string $plain): ?AppPassword

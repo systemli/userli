@@ -96,6 +96,7 @@ Feature: Roundcube API
             | password | password         |
         Then the response status code should equal 200
         And the JSON path "password" should not be empty
+        And the JSON path "expiresAt" should not be empty
         When I store the JSON path "password" as "%webmail%"
         And I have a valid API token "dovecot-test-123"
         And I send a POST request to "/api/dovecot/user@example.org" with form data:
