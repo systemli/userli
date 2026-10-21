@@ -31,6 +31,7 @@ Feature: Initialization
       | settings[email_sender_address]       | noreply@example.org      |
       | settings[email_notification_address] | admin@example.org        |
     And I press "settings_save"
+    Then the setting "twofactor_app_passwords_required" should be "1"
 
     Then I should be on "/"
 

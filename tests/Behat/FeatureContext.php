@@ -896,6 +896,17 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @Then the setting :name should be :value
+     */
+    public function theSettingShouldBe(string $name, string $value): void
+    {
+        $setting = $this->manager->getRepository(Setting::class)->findOneBy(['name' => $name]);
+        if ($setting?->getValue() !== $value) {
+            throw new RuntimeException(sprintf('Setting "%s" is "%s", expected "%s"', $name, $setting?->getValue(), $value));
+        }
+    }
+
+    /**
      * @When the following AppPassword exists:
      */
     public function theFollowingAppPasswordExists(TableNode $table): void
