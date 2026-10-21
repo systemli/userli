@@ -15,6 +15,9 @@ Feature: Dovecot API
             | spam@example.org      | password | ROLE_SPAM | 0         |                    |                    |
             | support@example.org   | password | ROLE_USER | 0         |                    |                    |
             | mailcrypt@example.org | password | ROLE_USER | 1         |                    |                    |
+        And the following User exists:
+            | email            | password | roles     | totpConfirmed | totpSecret                       |
+            | totp@example.org | password | ROLE_USER | 1             | GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ |
         And the following ApiToken exists:
             | token            | name          | scopes  |
             | dovecot-test-123 | Dovecot Token | dovecot |
@@ -111,6 +114,31 @@ Feature: Dovecot API
         When I send a POST request to "/api/dovecot/support@example.org" with form data:
             | password | app-password |
         Then the response status code should equal 401
+
+    @passdb @twofactor
+    Scenario: Passdb lookup with main password of 2FA user is rejected
+        Given I have a valid API token "dovecot-test-123"
+        When I send a POST request to "/api/dovecot/totp@example.org" with form data:
+            | password | password |
+        Then the response status code should equal 401
+
+    @passdb @twofactor
+    Scenario: Passdb lookup with main password of 2FA user when app passwords are not required
+        Given the setting "twofactor_app_passwords_required" is "0"
+        And I have a valid API token "dovecot-test-123"
+        When I send a POST request to "/api/dovecot/totp@example.org" with form data:
+            | password | password |
+        Then the response status code should equal 200
+
+    @passdb @twofactor @app-password
+    Scenario: Passdb lookup with app password of 2FA user
+        Given the following AppPassword exists:
+            | email            | name        | password     |
+            | totp@example.org | Thunderbird | app-password |
+        And I have a valid API token "dovecot-test-123"
+        When I send a POST request to "/api/dovecot/totp@example.org" with form data:
+            | password | app-password |
+        Then the response status code should equal 200
 
     @passdb
     Scenario: Passdb lookup for nonexistent user

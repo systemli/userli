@@ -25,6 +25,7 @@ use App\Helper\TotpBackupCodeGenerator;
 use App\Service\ApiTokenManager;
 use App\Service\DomainGuesser;
 use App\Service\OpenPgpKeyManager;
+use App\Service\SettingsService;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
@@ -884,6 +885,14 @@ class FeatureContext extends MinkContext
 
             $apiTokenManager->create($token, $name, $scopes);
         }
+    }
+
+    /**
+     * @Given the setting :name is :value
+     */
+    public function theSettingIs(string $name, string $value): void
+    {
+        $this->getContainer()->get(SettingsService::class)->set($name, $value);
     }
 
     /**

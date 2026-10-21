@@ -480,6 +480,7 @@ admin:
       project: Project Settings
       email: Email Configuration
       mail_crypt: Mailbox Encryption
+      twofactor: Two-Factor Authentication
       reports: Reports
       smtp_quota: SMTP Quota Limits
       mta_sts: MTA-STS
@@ -505,6 +506,9 @@ admin:
     email_notification_address:
       label: Notification Email Address
       help: The email address that receives system notifications
+    twofactor_app_passwords_required:
+      label: Require app passwords with 2FA
+      help: Users with two-factor authentication can only sign in to mail programs (IMAP, SMTP) with app passwords, not with their password. Webmail needs the Roundcube plugin.
     weekly_report_enabled:
       label: Weekly Report
       help: Send a weekly report with new registrations to the notification email address

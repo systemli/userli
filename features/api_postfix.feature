@@ -13,6 +13,9 @@ Feature: Postfix API
             | email             | password | roles     |
             | user@example.org  | password | ROLE_USER |
             | user2@example.org | password | ROLE_USER |
+        And the following User exists:
+            | email            | password | roles     | totpConfirmed | totpSecret                       |
+            | totp@example.org | password | ROLE_USER | 1             | GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ |
         And the following Alias exists:
             | user_id | source            | destination       |
             | 2       | alias@example.org | user2@example.org |
@@ -212,6 +215,15 @@ Feature: Postfix API
             """
         Then the response status code should equal 200
         And the JSON path "message" should equal "success"
+
+    @auth @twofactor
+    Scenario: Authenticate with main password of 2FA user is rejected
+        Given I have a valid API token "postfix-test-123"
+        When I send a POST request to "/api/postfix/auth" with JSON:
+            """
+            {"email": "totp@example.org", "password": "password"}
+            """
+        Then the response status code should equal 401
 
     @auth
     Scenario: Authenticate with wrong password
