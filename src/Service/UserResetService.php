@@ -35,11 +35,13 @@ final readonly class UserResetService
     {
         $this->passwordUpdater->updatePassword($user, $password);
 
-        // Generate MailCrypt key with new password (overwrites old MailCrypt key)
+        // Generate MailCrypt key with new password (overwrites old MailCrypt key).
+        // An existing key is encrypted with the old password, so it is replaced in any mode.
         $recoveryToken = null;
         $mailCrypt = MailCrypt::from($this->settingsService->get('mail_crypt'));
-        if ($mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS)) {
-            $this->mailCryptKeyHandler->create($user, $password, true);
+        $enforced = $mailCrypt->isAtLeast(MailCrypt::ENABLED_ENFORCE_NEW_USERS);
+        if ($enforced || $user->hasMailCryptSecretBox()) {
+            $this->mailCryptKeyHandler->create($user, $password, $enforced || $user->getMailCryptEnabled());
 
             // Reset recovery token
             $this->recoveryTokenHandler->create($user);

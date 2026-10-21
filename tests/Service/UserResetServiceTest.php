@@ -12,6 +12,7 @@ use App\Helper\PasswordUpdater;
 use App\Service\SettingsService;
 use App\Service\UserResetService;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -129,6 +130,83 @@ class UserResetServiceTest extends TestCase
         $recoveryToken = $service->resetUser($user, $password);
 
         self::assertEquals('generated-recovery-token', $recoveryToken);
+    }
+
+    #[TestWith([true])]
+    #[TestWith([false])]
+    public function testResetUserWithOptionalMailCryptRegeneratesExistingKey(bool $mailCryptEnabled): void
+    {
+        $user = new User('user@example.org');
+        $user->setMailCryptSecretBox('old-secret-box');
+        $user->setMailCryptEnabled($mailCryptEnabled);
+        $password = 'newSecurePassword123';
+
+        $mailCryptKeyHandler = $this->createMock(MailCryptKeyHandler::class);
+        $mailCryptKeyHandler
+            ->expects($this->once())
+            ->method('create')
+            ->with($user, $password, $mailCryptEnabled);
+
+        $recoveryTokenHandler = $this->createMock(RecoveryTokenHandler::class);
+        $recoveryTokenHandler
+            ->expects($this->once())
+            ->method('create')
+            ->with($user)
+            ->willReturnCallback(static function (User $user): void {
+                $user->setPlainRecoveryToken('generated-recovery-token');
+            });
+
+        $service = new UserResetService(
+            $this->manager,
+            $this->passwordUpdater,
+            $mailCryptKeyHandler,
+            $recoveryTokenHandler,
+            $this->eventDispatcher,
+            $this->createSettingsServiceStub(1),
+        );
+
+        self::assertEquals('generated-recovery-token', $service->resetUser($user, $password));
+    }
+
+    public function testResetUserWithOptionalMailCryptKeyDecryptsWithNewPassword(): void
+    {
+        $mailCryptKeyHandler = new MailCryptKeyHandler($this->manager);
+        $user = new User('user@example.org');
+        $mailCryptKeyHandler->create($user, 'oldPassword', true);
+        $user->eraseCredentials();
+
+        $service = new UserResetService(
+            $this->manager,
+            $this->passwordUpdater,
+            $mailCryptKeyHandler,
+            new RecoveryTokenHandler($this->manager),
+            $this->eventDispatcher,
+            $this->createSettingsServiceStub(1),
+        );
+        $service->resetUser($user, 'newPassword');
+
+        self::assertNotEmpty($mailCryptKeyHandler->decrypt($user, 'newPassword'));
+    }
+
+    public function testResetUserWithOptionalMailCryptWithoutKeyDoesNotCreateKey(): void
+    {
+        $user = new User('user@example.org');
+
+        $mailCryptKeyHandler = $this->createMock(MailCryptKeyHandler::class);
+        $mailCryptKeyHandler
+            ->expects($this->never())
+            ->method('create');
+
+        $service = new UserResetService(
+            $this->manager,
+            $this->passwordUpdater,
+            $mailCryptKeyHandler,
+            $this->recoveryTokenHandler,
+            $this->eventDispatcher,
+            $this->createSettingsServiceStub(1),
+        );
+
+        self::assertNull($service->resetUser($user, 'newSecurePassword123'));
     }
 
     public function testResetUserWithoutMailCryptDoesNotRegenerateKeys(): void
