@@ -100,10 +100,12 @@ class AppPasswordManagerTest extends TestCase
             });
 
         $manager = new AppPasswordManager($this->createStub(AppPasswordRepository::class), $entityManager, $this->mailCryptKeyHandler);
-        $manager->createWebmailCredential($user, 'password');
+        [$plain, $expiresAt] = $manager->createWebmailCredential($user, 'password');
 
         self::assertInstanceOf(AppPassword::class, $persisted);
+        self::assertSame(hash('sha256', $plain), $persisted->getHash());
         self::assertStringStartsWith('Webmail ', $persisted->getName());
-        self::assertEqualsWithDelta(new DateTimeImmutable('+12 hours')->getTimestamp(), $persisted->getExpiresAt()?->getTimestamp(), 5);
+        self::assertSame($expiresAt, $persisted->getExpiresAt());
+        self::assertEqualsWithDelta(new DateTimeImmutable('+12 hours')->getTimestamp(), $expiresAt->getTimestamp(), 5);
     }
 }
