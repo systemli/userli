@@ -160,6 +160,8 @@ account:
     info-security: Adds an extra layer of security to protect your account from unauthorized access
     info-simple: Simple to use with privacy-friendly apps like Aegis (Android) or Tofu (iOS), or any TOTP-compatible authenticator app
     info-backup: Backup codes ensure you can always access your account, even if you lose your phone
+    info-app-passwords: With two-factor authentication, email programs like Thunderbird or the mail app on your phone only work with app passwords, not with your password.
+    info-app-passwords-link: Create app passwords
   recovery:
     title: Recovery Token
     desc: Backup access to your account

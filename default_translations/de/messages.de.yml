@@ -156,6 +156,8 @@ account:
     info-security: Bietet eine zusätzliche Sicherheitsebene zum Schutz deines Kontos vor unbefugtem Zugriff
     info-simple: Einfach zu verwenden mit datenschutzfreundlichen Apps wie Aegis (Android) oder Tofu (iOS), aber auch mit anderen TOTP-Apps
     info-backup: Backup-Codes stellen sicher, dass du immer auf dein Konto zugreifen kannst, auch wenn du dein Handy verlierst
+    info-app-passwords: Mit Zwei-Faktor-Authentifizierung funktionieren Mailprogramme wie Thunderbird oder die Mail-App auf deinem Handy nur noch mit App-Passwörtern, nicht mehr mit deinem Passwort.
+    info-app-passwords-link: App-Passwörter erstellen
   recovery:
     title: Wiederherstellungscode
     desc: Backup-Zugang zu deinem Konto
