@@ -5,6 +5,12 @@ creates a Roundcube identity for each alias of a user when they sign in to
 [Roundcube](https://roundcube.net/). Users can then send emails from their
 aliases without setting up identities manually.
 
+The plugin also handles the sign-in: users with two-factor authentication enter
+their code in a second step. Roundcube then uses a webmail credential from
+Userli for IMAP and SMTP instead of the password. The credential is valid for
+12 hours and is revoked on logout. This is required for webmail if
+[app passwords are required with 2FA](../../admin/settings.md#two-factor-authentication).
+
 ## On the Userli host
 
 Create an API token with the scope `roundcube`:
