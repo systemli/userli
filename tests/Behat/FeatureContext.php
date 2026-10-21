@@ -905,7 +905,8 @@ class FeatureContext extends MinkContext
             }
 
             $secretBox = CryptoSecretHandler::create($privateKey, $data['password'])->encode();
-            $appPassword = new AppPassword($user, $data['name'] ?? 'Test', hash('sha256', $data['password']), $secretBox);
+            $expiresAt = empty($data['expiresAt']) ? null : new DateTimeImmutable($data['expiresAt']);
+            $appPassword = new AppPassword($user, $data['name'] ?? 'Test', hash('sha256', $data['password']), $secretBox, $expiresAt);
             if (!empty($data['lastLoginTime'])) {
                 $appPassword->setLastLoginTime(new DateTimeImmutable($data['lastLoginTime']));
             }

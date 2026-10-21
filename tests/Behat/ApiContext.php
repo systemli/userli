@@ -10,6 +10,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
+use OTPHP\TOTP;
 use RuntimeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -22,6 +23,9 @@ use const JSON_PRETTY_PRINT;
 class ApiContext extends RawMinkContext implements Context
 {
     private ?string $authToken = null;
+
+    /** @var array<string, string> Values that replace matching form data values */
+    private array $values = [];
 
     /**
      * @Given I have a valid API token :token
@@ -48,6 +52,22 @@ class ApiContext extends RawMinkContext implements Context
     }
 
     /**
+     * @Given I store the TOTP code for secret :secret as :name
+     */
+    public function iStoreTheTotpCodeForSecretAs(string $secret, string $name): void
+    {
+        $this->values[$name] = TOTP::create($secret)->now();
+    }
+
+    /**
+     * @When I store the JSON path :path as :name
+     */
+    public function iStoreTheJsonPathAs(string $path, string $name): void
+    {
+        $this->values[$name] = (string) $this->getJsonPathValue($path);
+    }
+
+    /**
      * @When I send a :method request to :path
      *
      * @throws UnsupportedDriverActionException
@@ -64,7 +84,7 @@ class ApiContext extends RawMinkContext implements Context
      */
     public function iSendARequestToWithFormData(string $method, string $path, TableNode $table): void
     {
-        $data = $table->getRowsHash();
+        $data = array_map(fn (string $value): string => $this->values[$value] ?? $value, $table->getRowsHash());
         $this->sendRequest($method, $path, $data);
     }
 
