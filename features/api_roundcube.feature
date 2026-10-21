@@ -15,6 +15,10 @@ Feature: Roundcube API
             | user@example.org  | password | ROLE_USER |               |                                  |
             | user2@example.org | password | ROLE_USER |               |                                  |
             | totp@example.org  | password | ROLE_USER | 1             | GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ |
+        And the following User exists:
+            | email            | password | roles     | passwordChangeRequired |
+            | spam@example.org | password | ROLE_SPAM | 0                      |
+            | pwc@example.org  | password | ROLE_USER | 1                      |
         And the following Alias exists:
             | user_id | source             | destination       |
             | 2       | alias@example.org  | user2@example.org |
@@ -168,6 +172,46 @@ Feature: Roundcube API
             | password | password         |
             | code     | 11111111         |
         Then the response status code should equal 401
+
+    @login
+    Scenario: Login of spam user is rejected
+        Given I have a valid API token "roundcube-test-123"
+        When I send a POST request to "/api/roundcube/login" with form data:
+            | email    | spam@example.org |
+            | password | password         |
+        Then the response status code should equal 403
+        And the JSON path "message" should equal "user disabled due to spam role"
+
+    @login
+    Scenario: Login of user who must change the password is rejected
+        Given I have a valid API token "roundcube-test-123"
+        When I send a POST request to "/api/roundcube/login" with form data:
+            | email    | pwc@example.org |
+            | password | password        |
+        Then the response status code should equal 403
+        And the JSON path "message" should equal "user password change required"
+
+    @login @rate-limit
+    Scenario: Too many login attempts are rejected, even with the right password
+        Given I have a valid API token "roundcube-test-123"
+        When I send a POST request to "/api/roundcube/login" with form data:
+            | email    | totp@example.org |
+            | password | password         |
+            | code     | 000000           |
+        And I send a POST request to "/api/roundcube/login" with form data:
+            | email    | totp@example.org |
+            | password | password         |
+            | code     | 000001           |
+        And I send a POST request to "/api/roundcube/login" with form data:
+            | email    | totp@example.org |
+            | password | wrong            |
+        And I store the TOTP code for secret "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ" as "%code%"
+        And I send a POST request to "/api/roundcube/login" with form data:
+            | email    | totp@example.org |
+            | password | password         |
+            | code     | %code%           |
+        Then the response status code should equal 429
+        And the JSON path "message" should equal "too many attempts"
 
     @logout
     Scenario: Logout revokes the webmail credential
