@@ -29,13 +29,13 @@ Feature: App passwords
 
   Scenario: List shows when app passwords were last used
     Given the following AppPassword exists:
-      | email            | name        | password       | userPassword | lastLoginTime |
-      | user@example.org | Thunderbird | app-password-1 | asdasd       | 2026-10-19    |
-      | user@example.org | iPhone      | app-password-2 | asdasd       |               |
+      | email            | name        | password       | userPassword | lastLoginTime             |
+      | user@example.org | Thunderbird | app-password-1 | asdasd       | monday this week midnight |
+      | user@example.org | iPhone      | app-password-2 | asdasd       |                           |
     When I am authenticated as "user@example.org"
     And I am on "/account/app-passwords"
 
-    Then I should see text matching "Last used 2026-10-19"
+    Then I should see text matching "Used this week"
     And I should see text matching "Never used"
 
   Scenario: Create app password with a name that already exists

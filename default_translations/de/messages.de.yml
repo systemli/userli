@@ -181,7 +181,7 @@ account:
     created-headline: Kopiere jetzt dein neues App-Passwort
     created-subtitle: Es wird nicht noch einmal angezeigt. Nutze es in deiner Mail-App statt deines Passworts.
     empty: Du hast noch keine App-Passwörter.
-    last-used: Zuletzt verwendet
+    last-used: Zuletzt verwendet %when%
     never-used: Nie verwendet
     delete: Löschen
   delete:
@@ -1148,6 +1148,13 @@ admin:
       newer: Neuer
       older: Älter
       page: "Seite %page% von %totalPages%"
+
+last-use:
+  this-week: diese Woche
+  last-week: letzte Woche
+  weeks-ago: "vor %count% Wochen"
+  months-ago: "vor einem Monat|vor %count% Monaten"
+  years-ago: "vor einem Jahr|vor %count% Jahren"
 
 notifications:
   password_compromised:

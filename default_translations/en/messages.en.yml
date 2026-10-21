@@ -185,7 +185,7 @@ account:
     created-headline: Copy your new app password now
     created-subtitle: It will not be shown again. Use it instead of your password in your mail app.
     empty: You have no app passwords yet.
-    last-used: Last used
+    last-used: Used %when%
     never-used: Never used
     delete: Delete
   delete:
@@ -1151,6 +1151,13 @@ admin:
       newer: Newer
       older: Older
       page: "Page %page% of %totalPages%"
+
+last-use:
+  this-week: this week
+  last-week: last week
+  weeks-ago: "%count% weeks ago"
+  months-ago: "%count% month ago|%count% months ago"
+  years-ago: "%count% year ago|%count% years ago"
 
 notifications:
   password_compromised:

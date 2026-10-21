@@ -39,8 +39,8 @@ This makes them safer than using your password everywhere:
 
 ## Delete an app password
 
-The list shows when each app password was last used, rounded to the start of
-the week. Delete the ones you no longer need.
+The list shows roughly when each app password was last used, for example
+*last week* or *3 months ago*. Delete the ones you no longer need.
 
 Go to **Account settings → App Passwords**, click the delete button (×) next to
 the app password and confirm. The app using it can't sign in anymore.
