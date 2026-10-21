@@ -67,7 +67,7 @@ final readonly class AppPasswordManager
      */
     public function createWebmailCredential(User $user, string $mainPassword): string
     {
-        // shortcut: fixed lifetime, webmail sessions end after it; make it sliding if users complain
+        // Fixed lifetime on purpose: webmail sessions end after it and users log in again
         return $this->create($user, 'Webmail '.bin2hex(random_bytes(8)), $mainPassword, new DateTimeImmutable(self::WEBMAIL_CREDENTIAL_LIFETIME));
     }
 
