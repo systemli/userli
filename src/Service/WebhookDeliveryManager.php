@@ -34,19 +34,12 @@ final readonly class WebhookDeliveryManager
         string $status = '',
         string $eventType = '',
     ): PaginatedResult {
-        $page = max(1, $page);
-        $offset = ($page - 1) * self::PAGE_SIZE;
-        $total = $this->repository->countByEndpointAndStatus($endpoint, $status, $eventType);
-        $totalPages = max(1, (int) ceil($total / self::PAGE_SIZE));
-        $items = $this->repository->findByEndpointAndStatus(
-            $endpoint,
-            $status,
+        return PaginatedResult::paginate(
+            $page,
             self::PAGE_SIZE,
-            $offset,
-            $eventType,
+            fn (): int => $this->repository->countByEndpointAndStatus($endpoint, $status, $eventType),
+            fn (int $limit, int $offset): array => $this->repository->findByEndpointAndStatus($endpoint, $status, $limit, $offset, $eventType),
         );
-
-        return new PaginatedResult($items, $page, $totalPages, $total);
     }
 
     public function retry(WebhookDelivery $delivery): void

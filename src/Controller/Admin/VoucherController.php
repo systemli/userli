@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
-use App\Entity\Domain;
 use App\Entity\User;
 use App\Entity\Voucher;
 use App\Enum\Roles;
@@ -23,6 +22,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class VoucherController extends AbstractController
 {
+    use DomainFilterTrait;
+
     public function __construct(
         private readonly VoucherManager $manager,
         private readonly EntityManagerInterface $em,
@@ -34,16 +35,7 @@ final class VoucherController extends AbstractController
     {
         $search = $request->query->getString('search', '');
         $status = $request->query->getString('status', '');
-        $domainId = $request->query->getInt('domain', 0);
-
-        $domain = null;
-        $selectedDomainName = '';
-        if ($domainId > 0) {
-            $domain = $this->em->getRepository(Domain::class)->find($domainId);
-            if ($domain instanceof Domain) {
-                $selectedDomainName = $domain->getName() ?? '';
-            }
-        }
+        [$domain, $domainId, $selectedDomainName] = $this->resolveDomainFilter($request, $this->em);
 
         $invitationDisabled = false;
         if (!$this->isGranted(Roles::ADMIN)) {

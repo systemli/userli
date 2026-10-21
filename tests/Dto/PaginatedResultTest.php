@@ -103,4 +103,32 @@ class PaginatedResultTest extends TestCase
         self::assertEquals(0, $result->total);
         self::assertEmpty($result->items);
     }
+
+    public function testPaginatePassesLimitAndOffset(): void
+    {
+        $items = [new stdClass()];
+        $calls = [];
+
+        $result = PaginatedResult::paginate(3, 20, static fn (): int => 45, static function (int $limit, int $offset) use (&$calls, $items): array {
+            $calls[] = [$limit, $offset];
+
+            return $items;
+        });
+
+        self::assertSame([[20, 40]], $calls);
+        self::assertSame($items, $result->items);
+        self::assertSame(3, $result->page);
+        self::assertSame(3, $result->totalPages);
+        self::assertSame(45, $result->total);
+    }
+
+    public function testPaginateClampsPageAndKeepsOneEmptyPage(): void
+    {
+        $result = PaginatedResult::paginate(0, 20, static fn (): int => 0, static fn (int $limit, int $offset): array => 0 === $offset ? [] : ['wrong offset']);
+
+        self::assertSame([], $result->items);
+        self::assertSame(1, $result->page);
+        self::assertSame(1, $result->totalPages);
+        self::assertSame(0, $result->total);
+    }
 }

@@ -52,13 +52,12 @@ final readonly class UserManager
      */
     public function findPaginated(int $page = 1, string $search = '', ?Domain $domain = null, string $deleted = 'active', string $role = '', string $mailCrypt = '', string $twofactor = ''): PaginatedResult
     {
-        $page = max(1, $page);
-        $offset = ($page - 1) * self::PAGE_SIZE;
-        $total = $this->repository->countByFilters($search, $domain, $deleted, $role, $mailCrypt, $twofactor);
-        $totalPages = max(1, (int) ceil($total / self::PAGE_SIZE));
-        $items = $this->repository->findPaginatedByFilters($search, $domain, $deleted, $role, $mailCrypt, $twofactor, self::PAGE_SIZE, $offset);
-
-        return new PaginatedResult($items, $page, $totalPages, $total);
+        return PaginatedResult::paginate(
+            $page,
+            self::PAGE_SIZE,
+            fn (): int => $this->repository->countByFilters($search, $domain, $deleted, $role, $mailCrypt, $twofactor),
+            fn (int $limit, int $offset): array => $this->repository->findPaginatedByFilters($search, $domain, $deleted, $role, $mailCrypt, $twofactor, $limit, $offset),
+        );
     }
 
     /**

@@ -91,12 +91,11 @@ final readonly class AppPasswordManager
      */
     public function findPaginated(int $page = 1, string $search = '', ?Domain $domain = null): PaginatedResult
     {
-        $page = max(1, $page);
-        $offset = ($page - 1) * self::PAGE_SIZE;
-        $total = $this->repository->countByFilters($search, $domain);
-        $totalPages = max(1, (int) ceil($total / self::PAGE_SIZE));
-        $items = $this->repository->findPaginatedByFilters($search, $domain, self::PAGE_SIZE, $offset);
-
-        return new PaginatedResult($items, $page, $totalPages, $total);
+        return PaginatedResult::paginate(
+            $page,
+            self::PAGE_SIZE,
+            fn (): int => $this->repository->countByFilters($search, $domain),
+            fn (int $limit, int $offset): array => $this->repository->findPaginatedByFilters($search, $domain, $limit, $offset),
+        );
     }
 }

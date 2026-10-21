@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Dto;
 
 use App\Repository\SearchableRepositoryInterface;
+use Closure;
 
 /**
  * @template T
@@ -31,12 +32,28 @@ final readonly class PaginatedResult
         int $pageSize,
         string $search = '',
     ): self {
-        $page = max(1, $page);
-        $offset = ($page - 1) * $pageSize;
-        $total = $repository->countBySearch($search);
-        $totalPages = max(1, (int) ceil($total / $pageSize));
-        $items = $repository->findPaginatedBySearch($search, $pageSize, $offset);
+        return self::paginate(
+            $page,
+            $pageSize,
+            static fn (): int => $repository->countBySearch($search),
+            static fn (int $limit, int $offset): array => $repository->findPaginatedBySearch($search, $limit, $offset),
+        );
+    }
 
-        return new self($items, $page, $totalPages, $total);
+    /**
+     * @template TItem
+     *
+     * @param Closure(): int                            $count
+     * @param Closure(int $limit, int $offset): TItem[] $find
+     *
+     * @return self<TItem>
+     */
+    public static function paginate(int $page, int $pageSize, Closure $count, Closure $find): self
+    {
+        $page = max(1, $page);
+        $total = $count();
+        $totalPages = max(1, (int) ceil($total / $pageSize));
+
+        return new self($find($pageSize, ($page - 1) * $pageSize), $page, $totalPages, $total);
     }
 }
