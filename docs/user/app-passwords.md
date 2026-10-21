@@ -35,5 +35,6 @@ your other devices keep working.
 Go to **Account settings → Mail App Passwords** and click **Delete** next to the
 mail app password. The app using it can't sign in anymore.
 
-Changing your password does not delete your mail app passwords. If your provider
-resets your account or you delete your account, all mail app passwords are deleted.
+Changing your password does not delete your mail app passwords. If you reset
+your password with your recovery token, your provider resets your account or you
+delete your account, all mail app passwords are deleted.

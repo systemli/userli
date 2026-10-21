@@ -57,8 +57,11 @@ Your old recovery token has been used up. Userli shows you a **new recovery
 token**. Store it safely, confirm and click **Continue**. Then sign in with your
 new password.
 
-!!! note "Two-factor authentication is reset"
+!!! note "Two-factor authentication and mail app passwords are reset"
 
     The recovery turns off two-factor authentication, because you may have lost
     your phone as well. [Turn it on again](security.md#turn-on-2fa) after
     signing in.
+
+    It also deletes all [mail app passwords](app-passwords.md), in case
+    someone else created one. Create new ones for your mail apps.

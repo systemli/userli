@@ -200,7 +200,7 @@ recovery:
   waiting-time: Der zweite Schritt ist möglich ab dem %time%.
   reset-lead: Du kannst nun dein Passwort zurücksetzen
   token-lead: Neuer Wiederherstellungscode
-  information-extra: Die Zwei-Faktor-Authentifizierung wird dadurch zurückgesetzt.
+  information-extra: Die Zwei-Faktor-Authentifizierung wird dadurch zurückgesetzt und alle Mail-App-Passwörter werden gelöscht.
 navbar_right:
   login: Anmelden
   logout: Abmelden
