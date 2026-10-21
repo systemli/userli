@@ -454,6 +454,7 @@ admin:
       project: Projekteinstellungen
       email: E-Mail Einstellungen
       mail_crypt: Postfachverschlüsselung
+      twofactor: Zwei-Faktor-Authentifizierung
       reports: Berichte
       smtp_quota: SMTP-Quota Limits
       mta_sts: MTA-STS
@@ -479,6 +480,9 @@ admin:
     email_notification_address:
       label: E-Mail-Adresse für Benachrichtigungen
       help: Die E-Mail-Adresse, die Systembenachrichtigungen erhält
+    twofactor_app_passwords_required:
+      label: App-Passwörter bei 2FA erzwingen
+      help: Benutzer:innen mit Zwei-Faktor-Authentifizierung können sich in Mailprogrammen (IMAP, SMTP) nur mit App-Passwörtern anmelden, nicht mit ihrem Passwort. Webmail braucht dafür das Roundcube-Plugin.
     weekly_report_enabled:
       label: Wöchentlicher Bericht
       help: Einen wöchentlichen Bericht über neue Registrierungen an die Benachrichtigungs-E-Mail-Adresse senden
