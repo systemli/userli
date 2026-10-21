@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Handler;
 
 use App\Entity\Alias;
-use App\Entity\AppPassword;
 use App\Entity\Domain;
+use App\Entity\MailAppPassword;
 use App\Entity\User;
 use App\Entity\UserNotification;
 use App\Entity\Voucher;
@@ -15,7 +15,7 @@ use App\Event\UserEvent;
 use App\Handler\DeleteHandler;
 use App\Helper\PasswordUpdater;
 use App\Repository\AliasRepository;
-use App\Repository\AppPasswordRepository;
+use App\Repository\MailAppPasswordRepository;
 use App\Repository\UserNotificationRepository;
 use App\Repository\VoucherRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,9 +28,9 @@ class DeleteHandlerTest extends TestCase
     private array $removedEntities = [];
     private array $dispatchedEvents = [];
 
-    protected function createHandler(array $aliases = [], array $vouchers = [], array $notifications = [], ?AppPasswordRepository $appPasswordRepository = null): DeleteHandler
+    protected function createHandler(array $aliases = [], array $vouchers = [], array $notifications = [], ?MailAppPasswordRepository $mailAppPasswordRepository = null): DeleteHandler
     {
-        $appPasswordRepository ??= $this->createStub(AppPasswordRepository::class);
+        $mailAppPasswordRepository ??= $this->createStub(MailAppPasswordRepository::class);
 
         $passwordUpdater = $this->createStub(PasswordUpdater::class);
         $passwordUpdater->method('updatePassword')->willReturnCallback(static function (User $user): void {
@@ -54,7 +54,7 @@ class DeleteHandlerTest extends TestCase
                 Alias::class => $aliasRepository,
                 Voucher::class => $voucherRepository,
                 UserNotification::class => $notificationRepository,
-                AppPassword::class => $appPasswordRepository,
+                MailAppPassword::class => $mailAppPasswordRepository,
                 default => throw new InvalidArgumentException("Unknown repository: $class"),
             }
         );
@@ -192,13 +192,13 @@ class DeleteHandlerTest extends TestCase
         self::assertTrue($alias3->isDeleted());
     }
 
-    public function testDeleteUserDeletesAppPasswords(): void
+    public function testDeleteUserDeletesMailAppPasswords(): void
     {
         $user = new User('alice@example.org');
-        $appPasswordRepository = $this->createMock(AppPasswordRepository::class);
-        $appPasswordRepository->expects($this->once())->method('deleteByUser')->with($user);
+        $mailAppPasswordRepository = $this->createMock(MailAppPasswordRepository::class);
+        $mailAppPasswordRepository->expects($this->once())->method('deleteByUser')->with($user);
 
-        $this->createHandler(appPasswordRepository: $appPasswordRepository)->deleteUser($user);
+        $this->createHandler(mailAppPasswordRepository: $mailAppPasswordRepository)->deleteUser($user);
     }
 
     public function testDeleteUserRemovesNotifications(): void

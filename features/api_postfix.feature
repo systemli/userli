@@ -200,15 +200,15 @@ Feature: Postfix API
         Then the response status code should equal 200
         And the JSON path "message" should equal "success"
 
-    @auth @app-password
-    Scenario: Authenticate with app password
-        Given the following AppPassword exists:
+    @auth @mail-app-password
+    Scenario: Authenticate with mail app password
+        Given the following MailAppPassword exists:
             | email            | name        | password     |
-            | user@example.org | Thunderbird | app-password |
+            | user@example.org | Thunderbird | mail-app-password |
         And I have a valid API token "postfix-test-123"
         When I send a POST request to "/api/postfix/auth" with JSON:
             """
-            {"email": "user@example.org", "password": "app-password"}
+            {"email": "user@example.org", "password": "mail-app-password"}
             """
         Then the response status code should equal 200
         And the JSON path "message" should equal "success"

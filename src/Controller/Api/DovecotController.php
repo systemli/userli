@@ -14,7 +14,7 @@ use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
 use App\Repository\UserRepository;
 use App\Security\RequireApiScope;
-use App\Service\AppPasswordManager;
+use App\Service\MailAppPasswordManager;
 use App\Service\SettingsService;
 use Exception;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -42,7 +42,7 @@ final class DovecotController extends AbstractController
     public function __construct(
         private readonly MailCryptKeyHandler $mailCryptKeyHandler,
         private readonly UserAuthenticationHandler $authHandler,
-        private readonly AppPasswordManager $appPasswordManager,
+        private readonly MailAppPasswordManager $mailAppPasswordManager,
         private readonly UserRepository $userRepository,
         private readonly CacheInterface $cache,
         private readonly SettingsService $settingsService,
@@ -125,9 +125,9 @@ final class DovecotController extends AbstractController
         $mailCrypt = MailCrypt::from($this->settingsService->get('mail_crypt'));
         if ($mailCrypt->isAtLeast(MailCrypt::ENABLED_OPTIONAL) && $user->getMailCryptEnabled()) {
             try {
-                $appPassword = $this->appPasswordManager->find($user, $request->getPassword());
-                $privateKey = null !== $appPassword
-                    ? $this->appPasswordManager->decryptMailCryptKey($appPassword, $request->getPassword())
+                $mailAppPassword = $this->mailAppPasswordManager->find($user, $request->getPassword());
+                $privateKey = null !== $mailAppPassword
+                    ? $this->mailAppPasswordManager->decryptMailCryptKey($mailAppPassword, $request->getPassword())
                     : $this->mailCryptKeyHandler->decrypt($user, $request->getPassword());
             } catch (Exception $exception) {
                 return $this->json(['error' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);

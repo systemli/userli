@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Handler;
 
-use App\Entity\AppPassword;
+use App\Entity\MailAppPassword;
 use App\Entity\User;
 use App\Handler\UserAuthenticationHandler;
-use App\Service\AppPasswordManager;
+use App\Service\MailAppPasswordManager;
 use App\Service\UserLastLoginUpdateService;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -18,7 +18,7 @@ class UserAuthenticationHandlerTest extends TestCase
 {
     private string $password = 'password';
     private string $wrong = 'wrong';
-    private string $appPassword = 'app-password';
+    private string $mailAppPassword = 'mail-app-password';
     private User $user;
 
     protected function setUp(): void
@@ -40,17 +40,17 @@ class UserAuthenticationHandlerTest extends TestCase
         $passwordHasherFactory->method('getPasswordHasher')
             ->willReturn($hasher);
 
-        $appPasswordManager = $this->createStub(AppPasswordManager::class);
-        $appPasswordManager->method('find')->willReturnCallback(
-            fn (User $user, string $plain) => $plain === $this->appPassword
-                ? new AppPassword($user, 'Phone', hash('sha256', $plain), 'box')
+        $mailAppPasswordManager = $this->createStub(MailAppPasswordManager::class);
+        $mailAppPasswordManager->method('find')->willReturnCallback(
+            fn (User $user, string $plain) => $plain === $this->mailAppPassword
+                ? new MailAppPassword($user, 'Phone', hash('sha256', $plain), 'box')
                 : null
         );
 
         return new UserAuthenticationHandler(
             $passwordHasherFactory,
             $eventDispatcher ?? $this->createStub(EventDispatcherInterface::class),
-            $appPasswordManager,
+            $mailAppPasswordManager,
             $lastLoginUpdateService ?? $this->createStub(UserLastLoginUpdateService::class),
         );
     }
@@ -63,14 +63,14 @@ class UserAuthenticationHandlerTest extends TestCase
         self::assertNull($handler->authenticate($this->user, $this->wrong));
     }
 
-    public function testAppPasswordRejectedByDefault(): void
+    public function testMailAppPasswordRejectedByDefault(): void
     {
         $handler = $this->createHandler();
 
-        self::assertNull($handler->authenticate($this->user, $this->appPassword));
+        self::assertNull($handler->authenticate($this->user, $this->mailAppPassword));
     }
 
-    public function testAppPasswordAcceptedWhenAllowed(): void
+    public function testMailAppPasswordAcceptedWhenAllowed(): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher->expects($this->never())->method('dispatch');
@@ -79,10 +79,10 @@ class UserAuthenticationHandlerTest extends TestCase
 
         $handler = $this->createHandler($eventDispatcher, $lastLoginUpdateService);
 
-        self::assertSame($this->user, $handler->authenticate($this->user, $this->appPassword, true));
+        self::assertSame($this->user, $handler->authenticate($this->user, $this->mailAppPassword, true));
     }
 
-    public function testMainPasswordStillWorksWhenAppPasswordAllowed(): void
+    public function testMainPasswordStillWorksWhenMailAppPasswordAllowed(): void
     {
         $handler = $this->createHandler();
 

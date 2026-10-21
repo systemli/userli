@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Behat;
 
 use App\Entity\Alias;
-use App\Entity\AppPassword;
 use App\Entity\Domain;
+use App\Entity\MailAppPassword;
 use App\Entity\OpenPgpKey;
 use App\Entity\ReservedName;
 use App\Entity\Setting;
@@ -887,9 +887,9 @@ class FeatureContext extends MinkContext
     }
 
     /**
-     * @When the following AppPassword exists:
+     * @When the following MailAppPassword exists:
      */
-    public function theFollowingAppPasswordExists(TableNode $table): void
+    public function theFollowingMailAppPasswordExists(TableNode $table): void
     {
         $mailCryptKeyHandler = $this->getContainer()->get(MailCryptKeyHandler::class);
 
@@ -905,7 +905,7 @@ class FeatureContext extends MinkContext
             }
 
             $secretBox = CryptoSecretHandler::create($privateKey, $data['password'])->encode();
-            $this->manager->persist(new AppPassword($user, $data['name'] ?? 'Test', hash('sha256', $data['password']), $secretBox));
+            $this->manager->persist(new MailAppPassword($user, $data['name'] ?? 'Test', hash('sha256', $data['password']), $secretBox));
             $this->manager->flush();
         }
     }

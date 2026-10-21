@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
-use App\Entity\AppPassword;
+use App\Entity\MailAppPassword;
 use App\Entity\User;
 use App\Handler\MailCryptKeyHandler;
-use App\Repository\AppPasswordRepository;
-use App\Service\AppPasswordManager;
+use App\Repository\MailAppPasswordRepository;
+use App\Service\MailAppPasswordManager;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 
-class AppPasswordManagerTest extends TestCase
+class MailAppPasswordManagerTest extends TestCase
 {
     private MailCryptKeyHandler $mailCryptKeyHandler;
 
@@ -31,16 +31,16 @@ class AppPasswordManagerTest extends TestCase
         $persisted = null;
         $entityManager = $this->createMock(EntityManagerInterface::class);
         $entityManager->expects($this->once())->method('persist')
-            ->willReturnCallback(static function (AppPassword $appPassword) use (&$persisted): void {
-                $persisted = $appPassword;
+            ->willReturnCallback(static function (MailAppPassword $mailAppPassword) use (&$persisted): void {
+                $persisted = $mailAppPassword;
             });
         $entityManager->expects($this->once())->method('flush');
 
-        $manager = new AppPasswordManager($this->createStub(AppPasswordRepository::class), $entityManager, $this->mailCryptKeyHandler);
+        $manager = new MailAppPasswordManager($this->createStub(MailAppPasswordRepository::class), $entityManager, $this->mailCryptKeyHandler);
         $plain = $manager->create($user, 'Thunderbird', 'password');
 
         self::assertMatchesRegularExpression('/^[abcdefgijkmnopqrstwxyzABCDEFGHJKLMNPQRSTWXYZ23456789]{4}(-[abcdefgijkmnopqrstwxyzABCDEFGHJKLMNPQRSTWXYZ23456789]{4}){5}$/', $plain);
-        self::assertInstanceOf(AppPassword::class, $persisted);
+        self::assertInstanceOf(MailAppPassword::class, $persisted);
         self::assertSame($user, $persisted->getUser());
         self::assertSame('Thunderbird', $persisted->getName());
         self::assertSame(hash('sha256', $plain), $persisted->getHash());
@@ -56,16 +56,16 @@ class AppPasswordManagerTest extends TestCase
         $persisted = null;
         $entityManager = $this->createStub(EntityManagerInterface::class);
         $entityManager->method('persist')
-            ->willReturnCallback(static function (AppPassword $appPassword) use (&$persisted): void {
-                $persisted = $appPassword;
+            ->willReturnCallback(static function (MailAppPassword $mailAppPassword) use (&$persisted): void {
+                $persisted = $mailAppPassword;
             });
 
-        $manager = new AppPasswordManager($this->createStub(AppPasswordRepository::class), $entityManager, $this->mailCryptKeyHandler);
+        $manager = new MailAppPasswordManager($this->createStub(MailAppPasswordRepository::class), $entityManager, $this->mailCryptKeyHandler);
         $plain = $manager->create($user, 'Phone', 'password');
 
         self::assertTrue($user->hasMailCryptSecretBox());
         self::assertFalse($user->getMailCryptEnabled());
-        self::assertInstanceOf(AppPassword::class, $persisted);
+        self::assertInstanceOf(MailAppPassword::class, $persisted);
         self::assertSame(
             $this->mailCryptKeyHandler->decrypt($user, 'password'),
             $manager->decryptMailCryptKey($persisted, $plain)
@@ -75,15 +75,15 @@ class AppPasswordManagerTest extends TestCase
     public function testFindLooksUpByUserAndHash(): void
     {
         $user = new User('user@example.org');
-        $appPassword = new AppPassword($user, 'Phone', hash('sha256', 'secret'), 'box');
+        $mailAppPassword = new MailAppPassword($user, 'Phone', hash('sha256', 'secret'), 'box');
 
-        $repository = $this->createMock(AppPasswordRepository::class);
+        $repository = $this->createMock(MailAppPasswordRepository::class);
         $repository->expects($this->exactly(2))->method('findOneBy')
-            ->willReturnCallback(static fn (array $criteria) => $criteria === ['user' => $user, 'hash' => hash('sha256', 'secret')] ? $appPassword : null);
+            ->willReturnCallback(static fn (array $criteria) => $criteria === ['user' => $user, 'hash' => hash('sha256', 'secret')] ? $mailAppPassword : null);
 
-        $manager = new AppPasswordManager($repository, $this->createStub(EntityManagerInterface::class), $this->mailCryptKeyHandler);
+        $manager = new MailAppPasswordManager($repository, $this->createStub(EntityManagerInterface::class), $this->mailCryptKeyHandler);
 
-        self::assertSame($appPassword, $manager->find($user, 'secret'));
+        self::assertSame($mailAppPassword, $manager->find($user, 'secret'));
         self::assertNull($manager->find($user, 'wrong'));
     }
 }

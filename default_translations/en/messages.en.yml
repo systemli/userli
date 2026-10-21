@@ -170,7 +170,7 @@ account:
     desc: Publish your OpenPGP key
     configured: Key uploaded
     not-configured: No key
-  app-passwords:
+  mail-app-passwords:
     title: Mail App Passwords
     desc: Passwords for mail apps
     lead: Use a separate password for each mail app
@@ -298,8 +298,8 @@ flashes:
   voucher-creation-successful: New invite code created.
   alias-creation-successful: Your new alias address was created.
   alias-deletion-successful: Your alias address was deleted.
-  app-password-deletion-successful: The mail app password was deleted.
-  app-password-deletion-failed: The mail app password could not be deleted.
+  mail-app-password-deletion-successful: The mail app password was deleted.
+  mail-app-password-deletion-failed: The mail app password could not be deleted.
   alias-deletion-failed: Your alias address could not be deleted. Please try again.
   recovery-token-invalid: E-mail address and/or recovery token are wrong!
   recovery-token-ack: You generated a recovery token.

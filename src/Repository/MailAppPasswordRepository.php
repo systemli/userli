@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\AppPassword;
+use App\Entity\MailAppPassword;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<AppPassword>
+ * @extends ServiceEntityRepository<MailAppPassword>
  */
-final class AppPasswordRepository extends ServiceEntityRepository
+final class MailAppPasswordRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, AppPassword::class);
+        parent::__construct($registry, MailAppPassword::class);
     }
 
     /**
-     * @return AppPassword[]
+     * @return MailAppPassword[]
      */
     public function findByUser(User $user): array
     {

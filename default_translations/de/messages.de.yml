@@ -166,7 +166,7 @@ account:
     desc: Veröffentliche deinen OpenPGP-Schlüssel
     configured: Schlüssel hochgeladen
     not-configured: Kein Schlüssel
-  app-passwords:
+  mail-app-passwords:
     title: Mail-App-Passwörter
     desc: Passwörter für Mail-Apps
     lead: Nutze für jede Mail-App ein eigenes Passwort
@@ -292,8 +292,8 @@ flashes:
   voucher-creation-successful: Neuer Einladungscode erstellt.
   alias-creation-successful: Deine neue Alias-Adresse wurde erstellt.
   alias-deletion-successful: Deine Alias-Adresse wurde gelöscht.
-  app-password-deletion-successful: Das Mail-App-Passwort wurde gelöscht.
-  app-password-deletion-failed: Das Mail-App-Passwort konnte nicht gelöscht werden.
+  mail-app-password-deletion-successful: Das Mail-App-Passwort wurde gelöscht.
+  mail-app-password-deletion-failed: Das Mail-App-Passwort konnte nicht gelöscht werden.
   alias-deletion-failed: Deine Alias-Adresse konnte nicht gelöscht werden. Bitte versuche es erneut.
   recovery-token-invalid: E-Mail-Adresse oder Wiederherstellungscode sind falsch!
   recovery-token-ack: Du hast einen Wiederherstellungscode erzeugt.

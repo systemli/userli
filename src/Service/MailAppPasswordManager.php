@@ -4,30 +4,30 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\AppPassword;
+use App\Entity\MailAppPassword;
 use App\Entity\User;
 use App\Handler\CryptoSecretHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Model\CryptoSecret;
-use App\Repository\AppPasswordRepository;
+use App\Repository\MailAppPasswordRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Random\Randomizer;
 
-final readonly class AppPasswordManager
+final readonly class MailAppPasswordManager
 {
-    // 6 groups of 4 (137 bits), so they can't be mistaken for Nextcloud app passwords (5 groups of 5)
+    // 6 groups of 4 (137 bits), so they can't be mistaken for Nextcloud mail app passwords (5 groups of 5)
     private const string CHARS = 'abcdefgijkmnopqrstwxyzABCDEFGHJKLMNPQRSTWXYZ23456789';
 
     public function __construct(
-        private AppPasswordRepository $repository,
+        private MailAppPasswordRepository $repository,
         private EntityManagerInterface $entityManager,
         private MailCryptKeyHandler $mailCryptKeyHandler,
     ) {
     }
 
     /**
-     * Creates an app password and returns its plaintext, which is not stored.
+     * Creates a mail app password and returns its plaintext, which is not stored.
      *
      * @throws Exception
      */
@@ -36,7 +36,7 @@ final readonly class AppPasswordManager
         if ($user->hasMailCryptSecretBox()) {
             $privateKey = $this->mailCryptKeyHandler->decrypt($user, $mainPassword);
         } else {
-            // Dovecot needs the MailCrypt key on login, so every app password carries a copy
+            // Dovecot needs the MailCrypt key on login, so every mail app password carries a copy
             $this->mailCryptKeyHandler->create($user, $mainPassword);
             $privateKey = (string) $user->getPlainMailCryptPrivateKey();
             $user->eraseCredentials();
@@ -47,13 +47,13 @@ final readonly class AppPasswordManager
         $secretBox = CryptoSecretHandler::create($privateKey, $plain);
         sodium_memzero($privateKey);
 
-        $this->entityManager->persist(new AppPassword($user, $name, $this->hash($plain), $secretBox->encode()));
+        $this->entityManager->persist(new MailAppPassword($user, $name, $this->hash($plain), $secretBox->encode()));
         $this->entityManager->flush();
 
         return $plain;
     }
 
-    public function find(User $user, string $plain): ?AppPassword
+    public function find(User $user, string $plain): ?MailAppPassword
     {
         return $this->repository->findOneBy(['user' => $user, 'hash' => $this->hash($plain)]);
     }
@@ -61,9 +61,9 @@ final readonly class AppPasswordManager
     /**
      * @throws Exception
      */
-    public function decryptMailCryptKey(AppPassword $appPassword, string $plain): string
+    public function decryptMailCryptKey(MailAppPassword $mailAppPassword, string $plain): string
     {
-        $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($appPassword->getMailCryptSecretBox()), $plain);
+        $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($mailAppPassword->getMailCryptSecretBox()), $plain);
         if (null === $privateKey) {
             throw new Exception(MailCryptKeyHandler::MESSAGE_DECRYPTION_FAILED);
         }
@@ -71,9 +71,9 @@ final readonly class AppPasswordManager
         return $privateKey;
     }
 
-    public function delete(AppPassword $appPassword): void
+    public function delete(MailAppPassword $mailAppPassword): void
     {
-        $this->entityManager->remove($appPassword);
+        $this->entityManager->remove($mailAppPassword);
         $this->entityManager->flush();
     }
 

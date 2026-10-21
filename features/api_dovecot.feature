@@ -45,34 +45,34 @@ Feature: Dovecot API
             | password | wrong |
         Then the response status code should equal 401
 
-    @passdb @app-password
-    Scenario: Passdb lookup with app password
-        Given the following AppPassword exists:
+    @passdb @mail-app-password
+    Scenario: Passdb lookup with mail app password
+        Given the following MailAppPassword exists:
             | email               | name        | password     |
-            | support@example.org | Thunderbird | app-password |
+            | support@example.org | Thunderbird | mail-app-password |
         And I have a valid API token "dovecot-test-123"
         When I send a POST request to "/api/dovecot/support@example.org" with form data:
-            | password | app-password |
+            | password | mail-app-password |
         Then the response status code should equal 200
 
-    @passdb @app-password
-    Scenario: Passdb lookup with another user's app password
-        Given the following AppPassword exists:
+    @passdb @mail-app-password
+    Scenario: Passdb lookup with another user's mail app password
+        Given the following MailAppPassword exists:
             | email            | name        | password     |
-            | user@example.org | Thunderbird | app-password |
+            | user@example.org | Thunderbird | mail-app-password |
         And I have a valid API token "dovecot-test-123"
         When I send a POST request to "/api/dovecot/support@example.org" with form data:
-            | password | app-password |
+            | password | mail-app-password |
         Then the response status code should equal 401
 
-    @passdb @app-password
-    Scenario: Passdb lookup with app password returns MailCrypt key
-        Given the following AppPassword exists:
+    @passdb @mail-app-password
+    Scenario: Passdb lookup with mail app password returns MailCrypt key
+        Given the following MailAppPassword exists:
             | email                 | name        | password     |
-            | mailcrypt@example.org | Thunderbird | app-password |
+            | mailcrypt@example.org | Thunderbird | mail-app-password |
         And I have a valid API token "dovecot-test-123"
         When I send a POST request to "/api/dovecot/mailcrypt@example.org" with form data:
-            | password | app-password |
+            | password | mail-app-password |
         Then the response status code should equal 200
         And the JSON path "body.mailCrypt" should equal "2"
         And the JSON path "body.mailCryptPrivateKey" should not be empty

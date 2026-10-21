@@ -7,7 +7,7 @@ namespace App\Form\Model;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class AppPasswordCreate
+final class MailAppPasswordCreate
 {
     #[Assert\NotBlank]
     #[Assert\Length(max: 64)]

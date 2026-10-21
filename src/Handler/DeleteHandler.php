@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Handler;
 
 use App\Entity\Alias;
-use App\Entity\AppPassword;
+use App\Entity\MailAppPassword;
 use App\Entity\User;
 use App\Entity\UserNotification;
 use App\Entity\Voucher;
@@ -69,7 +69,7 @@ final readonly class DeleteHandler
             $this->manager->remove($notification);
         }
 
-        $this->manager->getRepository(AppPassword::class)->deleteByUser($user);
+        $this->manager->getRepository(MailAppPassword::class)->deleteByUser($user);
 
         // Set password to random new one
         $password = PasswordGenerator::generate();

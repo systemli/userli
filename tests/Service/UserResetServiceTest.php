@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Tests\Service;
 
-use App\Entity\AppPassword;
+use App\Entity\MailAppPassword;
 use App\Entity\User;
 use App\Event\UserEvent;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
-use App\Repository\AppPasswordRepository;
+use App\Repository\MailAppPasswordRepository;
 use App\Service\SettingsService;
 use App\Service\UserResetService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -83,14 +83,14 @@ class UserResetServiceTest extends TestCase
         $service->resetUser($user, $password);
     }
 
-    public function testResetUserDeletesAppPasswords(): void
+    public function testResetUserDeletesMailAppPasswords(): void
     {
         $user = new User('user@example.org');
 
-        $appPasswordRepository = $this->createMock(AppPasswordRepository::class);
-        $appPasswordRepository->expects($this->once())->method('deleteByUser')->with($user);
+        $mailAppPasswordRepository = $this->createMock(MailAppPasswordRepository::class);
+        $mailAppPasswordRepository->expects($this->once())->method('deleteByUser')->with($user);
 
-        $this->manager->method('getRepository')->willReturnMap([[AppPassword::class, $appPasswordRepository]]);
+        $this->manager->method('getRepository')->willReturnMap([[MailAppPassword::class, $mailAppPasswordRepository]]);
 
         $this->createService(0)->resetUser($user, 'password123');
     }

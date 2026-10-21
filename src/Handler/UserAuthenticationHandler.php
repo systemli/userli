@@ -6,7 +6,7 @@ namespace App\Handler;
 
 use App\Entity\User;
 use App\Event\LoginEvent;
-use App\Service\AppPasswordManager;
+use App\Service\MailAppPasswordManager;
 use App\Service\UserLastLoginUpdateService;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -16,15 +16,15 @@ final readonly class UserAuthenticationHandler
     public function __construct(
         private PasswordHasherFactoryInterface $passwordHasherFactory,
         private EventDispatcherInterface $eventDispatcher,
-        private AppPasswordManager $appPasswordManager,
+        private MailAppPasswordManager $mailAppPasswordManager,
         private UserLastLoginUpdateService $userLastLoginUpdateService,
     ) {
     }
 
-    public function authenticate(User $user, string $password, bool $allowAppPassword = false): ?User
+    public function authenticate(User $user, string $password, bool $allowMailAppPassword = false): ?User
     {
-        // App passwords skip LoginEvent: it would create MailCrypt keys with them and run HIBP checks
-        if ($allowAppPassword && null !== $this->appPasswordManager->find($user, $password)) {
+        // Mail app passwords skip LoginEvent: it would create MailCrypt keys with them and run HIBP checks
+        if ($allowMailAppPassword && null !== $this->mailAppPasswordManager->find($user, $password)) {
             $this->userLastLoginUpdateService->updateLastLogin($user);
 
             return $user;

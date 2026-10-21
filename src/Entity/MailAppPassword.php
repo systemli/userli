@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\AppPasswordRepository;
+use App\Repository\MailAppPasswordRepository;
 use App\Traits\CreationTimeTrait;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: AppPasswordRepository::class)]
-#[ORM\Table(name: 'app_passwords')]
-#[ORM\UniqueConstraint(name: 'UNIQ_APP_PASSWORD_USER_NAME', columns: ['user_id', 'name'])]
-class AppPassword
+#[ORM\Entity(repositoryClass: MailAppPasswordRepository::class)]
+#[ORM\Table(name: 'mail_app_passwords')]
+#[ORM\UniqueConstraint(name: 'UNIQ_MAIL_APP_PASSWORD_USER_NAME', columns: ['user_id', 'name'])]
+class MailAppPassword
 {
     use CreationTimeTrait;
 
