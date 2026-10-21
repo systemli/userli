@@ -218,7 +218,8 @@ Feature: Postfix API
 
     @auth @twofactor
     Scenario: Authenticate with main password of 2FA user is rejected
-        Given I have a valid API token "postfix-test-123"
+        Given the setting "twofactor_app_passwords_required" is "1"
+        And I have a valid API token "postfix-test-123"
         When I send a POST request to "/api/postfix/auth" with JSON:
             """
             {"email": "totp@example.org", "password": "password"}

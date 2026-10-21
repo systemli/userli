@@ -117,7 +117,8 @@ Feature: Dovecot API
 
     @passdb @twofactor
     Scenario: Passdb lookup with main password of 2FA user is rejected
-        Given I have a valid API token "dovecot-test-123"
+        Given the setting "twofactor_app_passwords_required" is "1"
+        And I have a valid API token "dovecot-test-123"
         When I send a POST request to "/api/dovecot/totp@example.org" with form data:
             | password | password |
         Then the response status code should equal 401
