@@ -12,9 +12,13 @@ use App\Model\CryptoSecret;
 use App\Repository\AppPasswordRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Random\Randomizer;
 
 final readonly class AppPasswordManager
 {
+    // Same format as Nextcloud app passwords: 5 groups of 5, without look-alike characters
+    private const string CHARS = 'abcdefgijkmnopqrstwxyzABCDEFGHJKLMNPQRSTWXYZ23456789';
+
     public function __construct(
         private AppPasswordRepository $repository,
         private EntityManagerInterface $entityManager,
@@ -38,7 +42,8 @@ final readonly class AppPasswordManager
             $user->eraseCredentials();
         }
 
-        $plain = bin2hex(random_bytes(16));
+        $randomizer = new Randomizer();
+        $plain = implode('-', array_map(static fn (): string => $randomizer->getBytesFromString(self::CHARS, 5), range(1, 5)));
         $secretBox = CryptoSecretHandler::create($privateKey, $plain);
         sodium_memzero($privateKey);
 
