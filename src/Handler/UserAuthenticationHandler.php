@@ -24,8 +24,8 @@ final readonly class UserAuthenticationHandler
     public function authenticate(User $user, string $password, bool $allowAppPassword = false): ?User
     {
         // App passwords skip LoginEvent: it would create MailCrypt keys with them and run HIBP checks
-        if ($allowAppPassword && null !== $this->appPasswordManager->find($user, $password)) {
-            $this->userLastLoginUpdateService->updateLastLogin($user);
+        if ($allowAppPassword && null !== $appPassword = $this->appPasswordManager->find($user, $password)) {
+            $this->userLastLoginUpdateService->updateLastLogin($user, $appPassword);
 
             return $user;
         }

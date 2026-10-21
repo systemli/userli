@@ -181,7 +181,8 @@ account:
     created-headline: Kopiere jetzt dein neues App-Passwort
     created-subtitle: Es wird nicht noch einmal angezeigt. Nutze es in deiner Mail-App statt deines Passworts.
     empty: Du hast noch keine App-Passwörter.
-    created-at: Erstellt
+    last-used: Zuletzt verwendet
+    never-used: Nie verwendet
     delete: Löschen
   delete:
     title: Konto löschen
@@ -1139,6 +1140,7 @@ admin:
       submit: Suchen
     table:
       email: E-Mail
+      last-used: Zuletzt verwendet
       empty-title: Keine App-Passwörter
       empty-description: Es wurden noch keine App-Passwörter generiert.
     pagination:

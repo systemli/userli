@@ -185,7 +185,8 @@ account:
     created-headline: Copy your new app password now
     created-subtitle: It will not be shown again. Use it instead of your password in your mail app.
     empty: You have no app passwords yet.
-    created-at: Created
+    last-used: Last used
+    never-used: Never used
     delete: Delete
   delete:
     title: Delete Account
@@ -1142,6 +1143,7 @@ admin:
       submit: Search
     table:
       email: Email
+      last-used: Last Used
       empty-title: No app passwords
       empty-description: No app passwords have been generated yet.
     pagination:

@@ -46,7 +46,8 @@ find keys by email address or domain. Users manage their keys themselves, see
 ## App passwords
 
 **Management → App Passwords** is a read-only list of the app passwords users
-have generated, with name and creation date. Use the search to find them by
+have generated, with name and last use (rounded to the start of the week, like
+the last login of users). Use the search to find them by
 email address or domain. Users manage their app passwords themselves, see
 [App passwords](../user/app-passwords.md) in the User Guide.
 

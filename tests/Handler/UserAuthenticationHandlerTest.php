@@ -20,11 +20,13 @@ class UserAuthenticationHandlerTest extends TestCase
     private string $wrong = 'wrong';
     private string $appPassword = 'app-password';
     private User $user;
+    private AppPassword $appPasswordEntity;
 
     protected function setUp(): void
     {
         $this->user = new User('test@example.org');
         $this->user->setPassword($this->password);
+        $this->appPasswordEntity = new AppPassword($this->user, 'Phone', hash('sha256', $this->appPassword), 'box');
     }
 
     protected function createHandler(
@@ -42,9 +44,7 @@ class UserAuthenticationHandlerTest extends TestCase
 
         $appPasswordManager = $this->createStub(AppPasswordManager::class);
         $appPasswordManager->method('find')->willReturnCallback(
-            fn (User $user, string $plain) => $plain === $this->appPassword
-                ? new AppPassword($user, 'Phone', hash('sha256', $plain), 'box')
-                : null
+            fn (User $user, string $plain) => $plain === $this->appPassword ? $this->appPasswordEntity : null
         );
 
         return new UserAuthenticationHandler(
@@ -75,7 +75,7 @@ class UserAuthenticationHandlerTest extends TestCase
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher->expects($this->never())->method('dispatch');
         $lastLoginUpdateService = $this->createMock(UserLastLoginUpdateService::class);
-        $lastLoginUpdateService->expects($this->once())->method('updateLastLogin')->with($this->user);
+        $lastLoginUpdateService->expects($this->once())->method('updateLastLogin')->with($this->user, $this->appPasswordEntity);
 
         $handler = $this->createHandler($eventDispatcher, $lastLoginUpdateService);
 
@@ -88,5 +88,17 @@ class UserAuthenticationHandlerTest extends TestCase
 
         self::assertSame($this->user, $handler->authenticate($this->user, $this->password, true));
         self::assertNull($handler->authenticate($this->user, $this->wrong, true));
+    }
+
+    public function testMainPasswordLeavesLastLoginToLoginEvent(): void
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->once())->method('dispatch');
+        $lastLoginUpdateService = $this->createMock(UserLastLoginUpdateService::class);
+        $lastLoginUpdateService->expects($this->never())->method('updateLastLogin');
+
+        $handler = $this->createHandler($eventDispatcher, $lastLoginUpdateService);
+
+        self::assertSame($this->user, $handler->authenticate($this->user, $this->password, true));
     }
 }

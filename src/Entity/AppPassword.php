@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Repository\AppPasswordRepository;
 use App\Traits\CreationTimeTrait;
+use App\Traits\LastLoginTimeTrait;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 class AppPassword
 {
     use CreationTimeTrait;
+    use LastLoginTimeTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

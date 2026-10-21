@@ -55,6 +55,30 @@ Feature: Dovecot API
             | password | app-password |
         Then the response status code should equal 200
 
+    @passdb @app-password @last-login
+    Scenario: Passdb lookup with app password updates last login of user and app password
+        Given the following AppPassword exists:
+            | email               | name        | password     |
+            | support@example.org | Thunderbird | app-password |
+        And I have a valid API token "dovecot-test-123"
+        When I send a POST request to "/api/dovecot/support@example.org" with form data:
+            | password | app-password |
+        Then the response status code should equal 200
+        And the user "support@example.org" should have a last login time of this week
+        And the app password "Thunderbird" of "support@example.org" should have a last login time of this week
+
+    @passdb @app-password @last-login
+    Scenario: Passdb lookup with password only updates last login of user
+        Given the following AppPassword exists:
+            | email               | name        | password     |
+            | support@example.org | Thunderbird | app-password |
+        And I have a valid API token "dovecot-test-123"
+        When I send a POST request to "/api/dovecot/support@example.org" with form data:
+            | password | password |
+        Then the response status code should equal 200
+        And the user "support@example.org" should have a last login time of this week
+        And the app password "Thunderbird" of "support@example.org" should have no last login time
+
     @passdb @app-password
     Scenario: Passdb lookup with another user's app password
         Given the following AppPassword exists:
