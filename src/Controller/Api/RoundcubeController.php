@@ -9,6 +9,7 @@ use App\Dto\RoundcubeUserAliasesDto;
 use App\Entity\Alias;
 use App\Entity\User;
 use App\Enum\ApiScope;
+use App\Enum\Roles;
 use App\Handler\UserAuthenticationHandler;
 use App\Security\RequireApiScope;
 use App\Service\AppPasswordManager;
@@ -20,6 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
@@ -32,12 +34,19 @@ final class RoundcubeController extends AbstractController
 
     private const string MESSAGE_TWOFACTOR_REQUIRED = 'twofactor required';
 
+    private const string MESSAGE_TOO_MANY_ATTEMPTS = 'too many attempts';
+
+    private const string MESSAGE_USER_DISABLED = 'user disabled due to spam role';
+
+    private const string MESSAGE_USER_PASSWORD_CHANGE_REQUIRED = 'user password change required';
+
     public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly UserAuthenticationHandler $userAuthenticationHandler,
         private readonly AppPasswordManager $appPasswordManager,
         private readonly TotpAuthenticatorInterface $totpAuthenticator,
         private readonly BackupCodeManagerInterface $backupCodeManager,
+        private readonly RateLimiterFactoryInterface $roundcubeLoginLimiter,
     ) {
     }
 
@@ -49,11 +58,27 @@ final class RoundcubeController extends AbstractController
     #[Route(path: '/api/roundcube/login', name: 'api_roundcube_post_login', methods: ['POST'], stateless: true)]
     public function postLogin(#[MapRequestPayload] RoundcubeLoginDto $data): JsonResponse
     {
+        // Unlike IMAP logins, failed attempts here get no Dovecot auth penalty
+        $limiter = $this->roundcubeLoginLimiter->create(mb_strtolower($data->getEmail()));
+        if (!$limiter->consume()->isAccepted()) {
+            return $this->json(['message' => self::MESSAGE_TOO_MANY_ATTEMPTS], Response::HTTP_TOO_MANY_REQUESTS);
+        }
+
         $user = $this->manager->getRepository(User::class)->findByEmail($data->getEmail());
-        if (!$user || null === $this->userAuthenticationHandler->authenticate($user, $data->getPassword())) {
+        if (!$user || $user->isDeleted() || null === $this->userAuthenticationHandler->authenticate($user, $data->getPassword())) {
             return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
         }
 
+        // Same checks as the Dovecot API, so Roundcube can show why the login fails
+        if ($user->hasRole(Roles::SPAM)) {
+            return $this->json(['message' => self::MESSAGE_USER_DISABLED], Response::HTTP_FORBIDDEN);
+        }
+
+        if ($user->isPasswordChangeRequired()) {
+            return $this->json(['message' => self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED], Response::HTTP_FORBIDDEN);
+        }
+
+        $backupCode = null;
         if ($user->isTotpAuthenticationEnabled()) {
             $code = $data->getCode();
             if ('' === $code) {
@@ -65,11 +90,18 @@ final class RoundcubeController extends AbstractController
                     return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
                 }
 
-                $this->backupCodeManager->invalidateBackupCode($user, $code);
+                $backupCode = $code;
             }
         }
 
         [$password, $expiresAt] = $this->appPasswordManager->createWebmailCredential($user, $data->getPassword());
+
+        // Only now, so a failure above does not use up the backup code
+        if (null !== $backupCode) {
+            $this->backupCodeManager->invalidateBackupCode($user, $backupCode);
+        }
+
+        $limiter->reset();
 
         return $this->json(['password' => $password, 'expiresAt' => $expiresAt->format(DATE_ATOM)]);
     }

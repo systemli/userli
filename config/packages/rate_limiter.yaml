@@ -1,0 +1,17 @@
+framework:
+  rate_limiter:
+    # Login attempts (password or 2FA code) per user through the Roundcube API
+    roundcube_login:
+      policy: sliding_window
+      limit: 10
+      interval: '15 minutes'
+      cache_pool: cache.app
+
+when@test:
+  framework:
+    rate_limiter:
+      roundcube_login:
+        policy: sliding_window
+        limit: 3
+        interval: '15 minutes'
+        cache_pool: cache.app
