@@ -102,6 +102,16 @@ Feature: Dovecot API
         And the JSON path "body.mailCryptPrivateKey" should not be empty
         And the JSON path "body.mailCryptPublicKey" should not be empty
 
+    @passdb @app-password
+    Scenario: Passdb lookup with expired webmail credential
+        Given the following AppPassword exists:
+            | email               | name    | password     | expiresAt |
+            | support@example.org | Webmail | app-password | -1 minute |
+        And I have a valid API token "dovecot-test-123"
+        When I send a POST request to "/api/dovecot/support@example.org" with form data:
+            | password | app-password |
+        Then the response status code should equal 401
+
     @passdb
     Scenario: Passdb lookup for nonexistent user
         Given I have a valid API token "dovecot-test-123"

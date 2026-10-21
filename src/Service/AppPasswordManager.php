@@ -12,6 +12,7 @@ use App\Handler\CryptoSecretHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Model\CryptoSecret;
 use App\Repository\AppPasswordRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Random\Randomizer;
@@ -22,6 +23,8 @@ final readonly class AppPasswordManager
     private const string CHARS = 'abcdefgijkmnopqrstwxyzABCDEFGHJKLMNPQRSTWXYZ23456789';
 
     private const int PAGE_SIZE = 20;
+
+    private const string WEBMAIL_CREDENTIAL_LIFETIME = '+12 hours';
 
     public function __construct(
         private AppPasswordRepository $repository,
@@ -35,7 +38,7 @@ final readonly class AppPasswordManager
      *
      * @throws Exception
      */
-    public function create(User $user, string $name, string $mainPassword): string
+    public function create(User $user, string $name, string $mainPassword, ?DateTimeImmutable $expiresAt = null): string
     {
         if ($user->hasMailCryptSecretBox()) {
             $privateKey = $this->mailCryptKeyHandler->decrypt($user, $mainPassword);
@@ -51,15 +54,26 @@ final readonly class AppPasswordManager
         $secretBox = CryptoSecretHandler::create($privateKey, $plain);
         sodium_memzero($privateKey);
 
-        $this->entityManager->persist(new AppPassword($user, $name, $this->hash($plain), $secretBox->encode()));
+        $this->entityManager->persist(new AppPassword($user, $name, $this->hash($plain), $secretBox->encode(), $expiresAt));
         $this->entityManager->flush();
 
         return $plain;
     }
 
+    /**
+     * Creates a short-lived app password that Roundcube uses instead of the main password.
+     *
+     * @throws Exception
+     */
+    public function createWebmailCredential(User $user, string $mainPassword): string
+    {
+        // shortcut: fixed lifetime, webmail sessions end after it; make it sliding if users complain
+        return $this->create($user, 'Webmail '.bin2hex(random_bytes(8)), $mainPassword, new DateTimeImmutable(self::WEBMAIL_CREDENTIAL_LIFETIME));
+    }
+
     public function find(User $user, string $plain): ?AppPassword
     {
-        return $this->repository->findOneBy(['user' => $user, 'hash' => $this->hash($plain)]);
+        return $this->repository->findValidByHash($user, $this->hash($plain));
     }
 
     /**
