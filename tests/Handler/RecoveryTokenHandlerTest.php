@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Handler;
 
 use App\Entity\User;
+use App\Exception\DecryptionFailedException;
 use App\Handler\RecoveryTokenHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -71,7 +72,7 @@ class RecoveryTokenHandlerTest extends TestCase
 
     public function testDecryptExceptionDecryptionFailed(): void
     {
-        $this->expectException(Exception::class);
+        $this->expectException(DecryptionFailedException::class);
         $this->expectExceptionMessage('decryption of recoverySecretBox failed');
         $handler = $this->createHandler();
         $user = new User('test@example.org');

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Handler;
 
 use App\Entity\User;
+use App\Exception\DecryptionFailedException;
 use App\Model\CryptoSecret;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -83,7 +84,7 @@ final readonly class RecoveryTokenHandler
         }
 
         if (null === $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($secret), $recoveryToken)) {
-            throw new Exception('decryption of recoverySecretBox failed');
+            throw new DecryptionFailedException('decryption of recoverySecretBox failed');
         }
 
         sodium_memzero($recoveryToken);

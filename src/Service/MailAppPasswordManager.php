@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Entity\MailAppPassword;
 use App\Entity\User;
+use App\Exception\DecryptionFailedException;
 use App\Handler\CryptoSecretHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Model\CryptoSecret;
@@ -59,13 +60,13 @@ final readonly class MailAppPasswordManager
     }
 
     /**
-     * @throws Exception
+     * @throws DecryptionFailedException
      */
     public function decryptMailCryptKey(MailAppPassword $mailAppPassword, string $plain): string
     {
         $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($mailAppPassword->getMailCryptSecretBox()), $plain);
         if (null === $privateKey) {
-            throw new Exception(MailCryptKeyHandler::MESSAGE_DECRYPTION_FAILED);
+            throw new DecryptionFailedException(MailCryptKeyHandler::MESSAGE_DECRYPTION_FAILED);
         }
 
         return $privateKey;
