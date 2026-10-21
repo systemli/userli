@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use App\Entity\AppPassword;
 use App\Entity\User;
 use App\Entity\UserNotification;
 use App\Enum\UserNotificationType;
@@ -71,5 +72,8 @@ final readonly class PasswordChangeListener implements EventSubscriberInterface
         $repo = $this->entityManager->getRepository(UserNotification::class);
 
         $repo->deleteByUserAndType($user, UserNotificationType::PASSWORD_COMPROMISED);
+
+        // End webmail sessions that may belong to whoever knew the old password
+        $this->entityManager->getRepository(AppPassword::class)->deleteWebmailCredentialsByUser($user);
     }
 }

@@ -43,6 +43,17 @@ final class AppPasswordRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    public function deleteWebmailCredentialsByUser(User $user): void
+    {
+        $this->createQueryBuilder('a')
+            ->delete()
+            ->where('a.user = :user')
+            ->andWhere('a.expiresAt IS NOT NULL')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->execute();
+    }
+
     public function deleteExpired(): int
     {
         return $this->createQueryBuilder('a')
