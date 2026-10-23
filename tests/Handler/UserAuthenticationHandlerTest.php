@@ -63,14 +63,14 @@ class UserAuthenticationHandlerTest extends TestCase
         self::assertNull($handler->authenticate($this->user, $this->wrong));
     }
 
-    public function testAppPasswordRejectedByDefault(): void
+    public function testAppPasswordRejectedByAuthenticate(): void
     {
         $handler = $this->createHandler();
 
         self::assertNull($handler->authenticate($this->user, $this->appPassword));
     }
 
-    public function testAppPasswordAcceptedWhenAllowed(): void
+    public function testMailClientWithAppPasswordReturnsAppPassword(): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher->expects($this->never())->method('dispatch');
@@ -79,18 +79,18 @@ class UserAuthenticationHandlerTest extends TestCase
 
         $handler = $this->createHandler($eventDispatcher, $lastLoginUpdateService);
 
-        self::assertSame($this->user, $handler->authenticate($this->user, $this->appPassword, true));
+        self::assertSame($this->appPasswordEntity, $handler->authenticateMailClient($this->user, $this->appPassword));
     }
 
-    public function testMainPasswordStillWorksWhenAppPasswordAllowed(): void
+    public function testMailClientWithMainPasswordReturnsUser(): void
     {
         $handler = $this->createHandler();
 
-        self::assertSame($this->user, $handler->authenticate($this->user, $this->password, true));
-        self::assertNull($handler->authenticate($this->user, $this->wrong, true));
+        self::assertSame($this->user, $handler->authenticateMailClient($this->user, $this->password));
+        self::assertNull($handler->authenticateMailClient($this->user, $this->wrong));
     }
 
-    public function testMainPasswordLeavesLastLoginToLoginEvent(): void
+    public function testMailClientWithMainPasswordLeavesLastLoginToLoginEvent(): void
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher->expects($this->once())->method('dispatch');
@@ -99,6 +99,6 @@ class UserAuthenticationHandlerTest extends TestCase
 
         $handler = $this->createHandler($eventDispatcher, $lastLoginUpdateService);
 
-        self::assertSame($this->user, $handler->authenticate($this->user, $this->password, true));
+        self::assertSame($this->user, $handler->authenticateMailClient($this->user, $this->password));
     }
 }

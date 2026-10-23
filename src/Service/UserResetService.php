@@ -34,6 +34,10 @@ final readonly class UserResetService
      */
     public function resetUser(User $user, string $password): ?string
     {
+        // App passwords hold copies of the old MailCrypt key. Scheduled before the first flush,
+        // so credentials never change while they are left behind.
+        $this->manager->getRepository(AppPassword::class)->removeByUser($user);
+
         $this->passwordUpdater->updatePassword($user, $password);
 
         // Generate MailCrypt key with new password (overwrites old MailCrypt key)
@@ -46,9 +50,6 @@ final readonly class UserResetService
             $this->recoveryTokenHandler->create($user);
             $recoveryToken = $user->getPlainRecoveryToken();
         }
-
-        // App passwords hold copies of the old MailCrypt key
-        $this->manager->getRepository(AppPassword::class)->deleteByUser($user);
 
         // Reset twofactor settings
         $user->setTotpConfirmed(false);

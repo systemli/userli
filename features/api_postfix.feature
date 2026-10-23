@@ -246,6 +246,22 @@ Feature: Postfix API
         Then the response status code should equal 403
         And the JSON path "message" should equal "user disabled due to spam role"
 
+    @auth @app-password @last-login
+    Scenario: Authenticate spam user with app password does not update last login
+        Given the following User exists:
+            | email            | password | roles     |
+            | spam@example.org | password | ROLE_SPAM |
+        And the following AppPassword exists:
+            | email            | name        | password     |
+            | spam@example.org | Thunderbird | app-password |
+        And I have a valid API token "postfix-test-123"
+        When I send a POST request to "/api/postfix/auth" with JSON:
+            """
+            {"email": "spam@example.org", "password": "app-password"}
+            """
+        Then the response status code should equal 403
+        And the app password "Thunderbird" of "spam@example.org" should have no last login time
+
     @auth
     Scenario: Authenticate user with password change required
         Given the following User exists:

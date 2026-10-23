@@ -207,7 +207,7 @@ class RecoveryHandlerTest extends TestCase
         $this->userRepository->method('findByEmail')->willReturn($user);
 
         $appPasswordRepository = $this->createMock(AppPasswordRepository::class);
-        $appPasswordRepository->expects($this->once())->method('deleteByUser')->with($user);
+        $appPasswordRepository->expects($this->once())->method('removeByUser')->with($user);
 
         $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturnMap([
