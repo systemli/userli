@@ -196,7 +196,7 @@ class DeleteHandlerTest extends TestCase
     {
         $user = new User('alice@example.org');
         $appPasswordRepository = $this->createMock(AppPasswordRepository::class);
-        $appPasswordRepository->expects($this->once())->method('deleteByUser')->with($user);
+        $appPasswordRepository->expects($this->once())->method('removeByUser')->with($user);
 
         $this->createHandler(appPasswordRepository: $appPasswordRepository)->deleteUser($user);
     }

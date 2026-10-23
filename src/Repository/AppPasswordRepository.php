@@ -29,14 +29,15 @@ final class AppPasswordRepository extends ServiceEntityRepository
         return $this->findBy(['user' => $user], ['creationTime' => 'DESC']);
     }
 
-    public function deleteByUser(User $user): void
+    /**
+     * Schedules the removal of all app passwords of the user, so it is flushed
+     * together with the other changes to the user.
+     */
+    public function removeByUser(User $user): void
     {
-        $this->createQueryBuilder('a')
-            ->delete()
-            ->where('a.user = :user')
-            ->setParameter('user', $user)
-            ->getQuery()
-            ->execute();
+        foreach ($this->findBy(['user' => $user]) as $appPassword) {
+            $this->getEntityManager()->remove($appPassword);
+        }
     }
 
     public function countUsers(): int

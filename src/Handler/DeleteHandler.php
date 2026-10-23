@@ -69,7 +69,7 @@ final readonly class DeleteHandler
             $this->manager->remove($notification);
         }
 
-        $this->manager->getRepository(AppPassword::class)->deleteByUser($user);
+        $this->manager->getRepository(AppPassword::class)->removeByUser($user);
 
         // Set password to random new one
         $password = PasswordGenerator::generate();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Entity\AppPassword;
 use App\Entity\User;
 use App\Event\LoginEvent;
 use App\Service\AppPasswordManager;
@@ -21,15 +22,8 @@ final readonly class UserAuthenticationHandler
     ) {
     }
 
-    public function authenticate(User $user, string $password, bool $allowAppPassword = false): ?User
+    public function authenticate(User $user, string $password): ?User
     {
-        // App passwords skip LoginEvent: it would create MailCrypt keys with them and run HIBP checks
-        if ($allowAppPassword && null !== $appPassword = $this->appPasswordManager->find($user, $password)) {
-            $this->userLastLoginUpdateService->updateLastLogin($user, $appPassword);
-
-            return $user;
-        }
-
         $hasher = $this->passwordHasherFactory->getPasswordHasher($user);
         if (!$hasher->verify($user->getPassword(), $password)) {
             return null;
@@ -41,5 +35,22 @@ final readonly class UserAuthenticationHandler
         );
 
         return $user;
+    }
+
+    /**
+     * Authenticates mail clients, which may also use app passwords.
+     *
+     * Returns the matched app password, the user if the main password matched, or null.
+     */
+    public function authenticateMailClient(User $user, string $password): AppPassword|User|null
+    {
+        // App passwords skip LoginEvent: it would create MailCrypt keys with them and run HIBP checks
+        if (null !== $appPassword = $this->appPasswordManager->find($user, $password)) {
+            $this->userLastLoginUpdateService->updateLastLogin($user, $appPassword);
+
+            return $appPassword;
+        }
+
+        return $this->authenticate($user, $password);
     }
 }

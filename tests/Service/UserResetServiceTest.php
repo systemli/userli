@@ -88,7 +88,7 @@ class UserResetServiceTest extends TestCase
         $user = new User('user@example.org');
 
         $appPasswordRepository = $this->createMock(AppPasswordRepository::class);
-        $appPasswordRepository->expects($this->once())->method('deleteByUser')->with($user);
+        $appPasswordRepository->expects($this->once())->method('removeByUser')->with($user);
 
         $this->manager->method('getRepository')->willReturnMap([[AppPassword::class, $appPasswordRepository]]);
 
