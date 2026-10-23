@@ -64,6 +64,21 @@ Feature: App passwords
     Then I should see text matching "Wrong password"
     And I should not see a "code[data-app-password]" element
 
+  Scenario: Create app password when MailCrypt key is encrypted with another password
+    Given the following User exists:
+      | email                 | password | roles     | mailCryptPublicKey | mailCryptSecretBox                                                                                   |
+      | stale@example.org     | asdasd   | ROLE_USER | public-key         | gCBP1rDKiqKk5FKPSZIXjFT4QP19GNwBWdAT6WujwCsQPLwocCpWBwa91udyJuM2BklX2ZSbGvIGUFA4J/XI1hPE+acItA== |
+    When I am authenticated as "stale@example.org"
+    And I am on "/account/app-passwords"
+    And I fill in the following:
+      | app_password_create_name     | Thunderbird |
+      | app_password_create_password | asdasd      |
+    And I press "Generate app password"
+
+    Then I should see text matching "Your mailbox encryption key could not be unlocked with your password"
+    And I should not see a "code[data-app-password]" element
+    And I should not see a "[data-app-password-row]" element
+
   Scenario: List and delete app password
     Given the following AppPassword exists:
       | email            | name        | password     | userPassword |
