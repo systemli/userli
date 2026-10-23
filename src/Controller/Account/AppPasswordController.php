@@ -54,7 +54,14 @@ final class AppPasswordController extends AbstractController
                 return $this->renderPage($form);
             }
 
-            $plain = $this->appPasswordManager->create($user, $data->getName(), $data->getPassword());
+            try {
+                $plain = $this->appPasswordManager->create($user, $data->getName(), $data->getPassword());
+            } catch (Exception) {
+                // e.g. the MailCrypt secret box is still encrypted with a password set before an admin reset
+                $form->addError(new FormError($this->translator->trans('form.app-password-mailcrypt-failed', [], 'validators')));
+
+                return $this->renderPage($form);
+            }
 
             // Rendered directly so the plaintext never ends up in a URL or session
             return $this->renderPage($this->createCreateForm(new AppPasswordCreate()), $plain);
