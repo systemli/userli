@@ -43,6 +43,9 @@ final readonly class AppPasswordManager
     {
         if ($user->hasMailCryptSecretBox()) {
             $privateKey = $this->mailCryptKeyHandler->decrypt($user, $mainPassword);
+        } elseif (null !== $expiresAt) {
+            // Webmail credentials expire before MailCrypt could be turned on, so they need no key
+            $privateKey = null;
         } else {
             // Dovecot needs the MailCrypt key on login, so every app password carries a copy
             $this->mailCryptKeyHandler->create($user, $mainPassword);
@@ -52,10 +55,13 @@ final readonly class AppPasswordManager
 
         $randomizer = new Randomizer();
         $plain = implode('-', array_map(static fn (): string => $randomizer->getBytesFromString(self::CHARS, 4), range(1, 6)));
-        $secretBox = CryptoSecretHandler::create($privateKey, $plain);
-        sodium_memzero($privateKey);
+        $secretBox = '';
+        if (null !== $privateKey) {
+            $secretBox = CryptoSecretHandler::create($privateKey, $plain)->encode();
+            sodium_memzero($privateKey);
+        }
 
-        $this->entityManager->persist(new AppPassword($user, $name, $this->hash($plain), $secretBox->encode(), $expiresAt));
+        $this->entityManager->persist(new AppPassword($user, $name, $this->hash($plain), $secretBox, $expiresAt));
         $this->entityManager->flush();
 
         return $plain;

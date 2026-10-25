@@ -122,4 +122,23 @@ class AppPasswordManagerTest extends TestCase
         self::assertSame($expiresAt, $persisted->getExpiresAt());
         self::assertEqualsWithDelta(new DateTimeImmutable('+12 hours')->getTimestamp(), $expiresAt->getTimestamp(), 5);
     }
+
+    public function testCreateWebmailCredentialWithoutMailCryptKeyCreatesNoKey(): void
+    {
+        $user = new User('user@example.org');
+
+        $persisted = null;
+        $entityManager = $this->createStub(EntityManagerInterface::class);
+        $entityManager->method('persist')
+            ->willReturnCallback(static function (AppPassword $appPassword) use (&$persisted): void {
+                $persisted = $appPassword;
+            });
+
+        $manager = new AppPasswordManager($this->createStub(AppPasswordRepository::class), $entityManager, $this->mailCryptKeyHandler);
+        $manager->createWebmailCredential($user, 'password');
+
+        self::assertFalse($user->hasMailCryptSecretBox());
+        self::assertNull($user->getMailCryptPublicKey());
+        self::assertSame('', $persisted?->getMailCryptSecretBox());
+    }
 }

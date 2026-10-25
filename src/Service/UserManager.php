@@ -118,6 +118,7 @@ final readonly class UserManager
                 $recoveryToken = $this->userResetService->resetUser($user, $plainPassword);
             } else {
                 $this->passwordUpdater->updatePassword($user, $plainPassword);
+                $this->em->getRepository(AppPassword::class)->removeByUser($user);
             }
 
             $user->setPasswordChangeRequired(true);

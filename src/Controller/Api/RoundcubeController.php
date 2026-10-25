@@ -10,6 +10,7 @@ use App\Entity\Alias;
 use App\Entity\User;
 use App\Enum\ApiScope;
 use App\Enum\Roles;
+use App\Exception\DecryptionFailedException;
 use App\Handler\UserAuthenticationHandler;
 use App\Security\RequireApiScope;
 use App\Service\AppPasswordManager;
@@ -99,7 +100,12 @@ final class RoundcubeController extends AbstractController
         }
 
         $this->userAuthenticationHandler->dispatchLoginEvent($user, $data->getPassword());
-        [$password, $expiresAt] = $this->appPasswordManager->createWebmailCredential($user, $data->getPassword());
+        try {
+            [$password, $expiresAt] = $this->appPasswordManager->createWebmailCredential($user, $data->getPassword());
+        } catch (DecryptionFailedException $decryptionFailedException) {
+            // Same response as the Dovecot API for a MailCrypt key that doesn't decrypt
+            return $this->json(['error' => $decryptionFailedException->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         // Only now, so a failure above does not use up the backup code
         if (null !== $backupCode) {
