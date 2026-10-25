@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Dto\DovecotPassdbDto;
+use App\Entity\AppPassword;
 use App\Entity\User;
 use App\Enum\ApiScope;
 use App\Enum\MailCrypt;
@@ -117,7 +118,8 @@ final class DovecotController extends AbstractController
             return $this->json(['message' => self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED], Response::HTTP_FORBIDDEN);
         }
 
-        if (null === $this->authHandler->authenticate($user, $request->getPassword(), true)) {
+        $credential = $this->authHandler->authenticateMailClient($user, $request->getPassword());
+        if (null === $credential) {
             return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -125,9 +127,8 @@ final class DovecotController extends AbstractController
         $mailCrypt = MailCrypt::from($this->settingsService->get('mail_crypt'));
         if ($mailCrypt->isAtLeast(MailCrypt::ENABLED_OPTIONAL) && $user->getMailCryptEnabled()) {
             try {
-                $appPassword = $this->appPasswordManager->find($user, $request->getPassword());
-                $privateKey = null !== $appPassword
-                    ? $this->appPasswordManager->decryptMailCryptKey($appPassword, $request->getPassword())
+                $privateKey = $credential instanceof AppPassword
+                    ? $this->appPasswordManager->decryptMailCryptKey($credential, $request->getPassword())
                     : $this->mailCryptKeyHandler->decrypt($user, $request->getPassword());
             } catch (Exception $exception) {
                 return $this->json(['error' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);

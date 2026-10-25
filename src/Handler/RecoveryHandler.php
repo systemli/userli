@@ -88,6 +88,10 @@ final readonly class RecoveryHandler
             throw new RecoveryException('Invalid email or recovery token');
         }
 
+        // Recovery assumes a compromised account, so drop mail access an attacker may have added.
+        // Scheduled before the first flush, so the password never changes while they are left behind.
+        $this->manager->getRepository(AppPassword::class)->removeByUser($user);
+
         $this->passwordUpdater->updatePassword($user, $newPassword);
 
         $mailCryptPrivateKey = $this->recoveryTokenHandler->decrypt($user, $recoveryToken);
@@ -111,9 +115,6 @@ final readonly class RecoveryHandler
         $user->setTotpConfirmed(false);
         $user->setTotpSecret(null);
         $user->setTotpBackupCodes([]);
-
-        // Recovery assumes a compromised account, so drop mail access an attacker may have added
-        $this->manager->getRepository(AppPassword::class)->deleteByUser($user);
 
         // Clear sensitive plaintext data from User object
         $user->eraseCredentials();
