@@ -114,8 +114,8 @@ class UserAuthenticationHandlerTest extends TestCase
         $this->user->setTotpConfirmed(true);
         $handler = $this->createHandler();
 
-        self::assertNull($handler->authenticate($this->user, $this->password, true));
-        self::assertSame($this->user, $handler->authenticate($this->user, $this->appPassword, true));
+        self::assertNull($handler->authenticateMailClient($this->user, $this->password));
+        self::assertSame($this->appPasswordEntity, $handler->authenticateMailClient($this->user, $this->appPassword));
         self::assertSame($this->user, $handler->authenticate($this->user, $this->password));
     }
 
@@ -125,6 +125,6 @@ class UserAuthenticationHandlerTest extends TestCase
         $this->user->setTotpConfirmed(true);
         $handler = $this->createHandler(appPasswordsRequired: false);
 
-        self::assertSame($this->user, $handler->authenticate($this->user, $this->password, true));
+        self::assertSame($this->user, $handler->authenticateMailClient($this->user, $this->password));
     }
 }

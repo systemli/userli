@@ -31,11 +31,6 @@ final readonly class UserAuthenticationHandler
             return null;
         }
 
-        // Mail clients (the callers that allow app passwords) of 2FA users must not get by with the main password alone
-        if ($allowAppPassword && $user->isTotpAuthenticationEnabled() && $this->settingsService->get('twofactor_app_passwords_required')) {
-            return null;
-        }
-
         $this->eventDispatcher->dispatch(
             new LoginEvent($user, $password),
             LoginEvent::NAME
@@ -56,6 +51,11 @@ final readonly class UserAuthenticationHandler
             $this->userLastLoginUpdateService->updateLastLogin($user, $appPassword);
 
             return $appPassword;
+        }
+
+        // Mail clients of 2FA users must not get by with the main password alone
+        if ($user->isTotpAuthenticationEnabled() && $this->settingsService->get('twofactor_app_passwords_required')) {
+            return null;
         }
 
         return $this->authenticate($user, $password);
