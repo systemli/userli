@@ -43,15 +43,21 @@ final class AppPasswordRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function deleteWebmailCredentialsByUser(User $user): void
+    /**
+     * Schedules the removal of the user's webmail credentials, like removeByUser().
+     */
+    public function removeWebmailCredentialsByUser(User $user): void
     {
-        $this->createQueryBuilder('a')
-            ->delete()
+        $credentials = $this->createQueryBuilder('a')
             ->where('a.user = :user')
             ->andWhere('a.expiresAt IS NOT NULL')
             ->setParameter('user', $user)
             ->getQuery()
-            ->execute();
+            ->getResult();
+
+        foreach ($credentials as $credential) {
+            $this->getEntityManager()->remove($credential);
+        }
     }
 
     public function deleteExpired(): int

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Account;
 
+use App\Entity\AppPassword;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Event\UserEvent;
@@ -111,6 +112,9 @@ final class AccountController extends AbstractController
 
             $user->setPasswordChangeRequired(false);
             $user->eraseCredentials();
+
+            // End webmail sessions that may belong to whoever knew the old password
+            $this->manager->getRepository(AppPassword::class)->removeWebmailCredentialsByUser($user);
 
             $this->manager->flush();
 

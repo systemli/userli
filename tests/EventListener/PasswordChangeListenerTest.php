@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\EventListener;
 
-use App\Entity\AppPassword;
 use App\Entity\User;
-use App\Entity\UserNotification;
 use App\Enum\UserNotificationType;
 use App\Event\UserEvent;
 use App\EventListener\PasswordChangeListener;
-use App\Repository\AppPasswordRepository;
 use App\Repository\UserNotificationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -184,18 +181,11 @@ class PasswordChangeListenerTest extends TestCase
         $user = new User('test@example.org');
         $event = new UserEvent($user);
         $repo = $this->createMock(UserNotificationRepository::class);
-        $appPasswordRepo = $this->createMock(AppPasswordRepository::class);
 
-        $this->entityManager->method('getRepository')->willReturnMap([
-            [UserNotification::class, $repo],
-            [AppPassword::class, $appPasswordRepo],
-        ]);
+        $this->entityManager->method('getRepository')->willReturn($repo);
         $repo->expects($this->once())
             ->method('deleteByUserAndType')
             ->with($user, UserNotificationType::PASSWORD_COMPROMISED);
-        $appPasswordRepo->expects($this->once())
-            ->method('deleteWebmailCredentialsByUser')
-            ->with($user);
 
         $this->listener->onPasswordChanged($event);
     }

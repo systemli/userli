@@ -33,6 +33,23 @@ Feature: User
     And I should see text matching "Your new password is now active!"
     And the response status code should not be 403
 
+  @password-change
+  Scenario: Change password ends webmail sessions but keeps app passwords
+    Given the following AppPassword exists:
+      | email            | name             | password       | userPassword | expiresAt |
+      | user@example.org | Thunderbird      | app-password-1 | asdasd       |           |
+      | user@example.org | Webmail 1a2b3c4d | app-password-2 | asdasd       | +1 hour   |
+    When I am authenticated as "user@example.org"
+    And I am on "/account/password"
+    And I fill in the following:
+      | password_password           | asdasd       |
+      | password_newPassword_first  | P4ssW0rd!!!1 |
+      | password_newPassword_second | P4ssW0rd!!!1 |
+    And I press "Submit"
+
+    Then I should see text matching "Your new password is now active!"
+    And the user "user@example.org" should have 1 app passwords
+
   @create-random-alias
   Scenario: Create random alias
     When I am authenticated as "user@example.org"

@@ -896,6 +896,18 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @Then the user :email should have :count app passwords
+     */
+    public function theUserShouldHaveAppPasswords(string $email, int $count): void
+    {
+        $user = $this->getUserRepository()->findByEmail($email);
+        $actual = $this->manager->getRepository(AppPassword::class)->count(['user' => $user]);
+        if ($actual !== $count) {
+            throw new RuntimeException(sprintf('User "%s" has %d app passwords, expected %d', $email, $actual, $count));
+        }
+    }
+
+    /**
      * @Then the setting :name should be :value
      */
     public function theSettingShouldBe(string $name, string $value): void

@@ -65,17 +65,21 @@ final class RoundcubeController extends AbstractController
         }
 
         $user = $this->manager->getRepository(User::class)->findByEmail($data->getEmail());
-        if (!$user || $user->isDeleted() || null === $this->userAuthenticationHandler->authenticate($user, $data->getPassword())) {
+        if (!$user || $user->isDeleted()) {
             return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
         }
 
-        // Same checks as the Dovecot API, so Roundcube can show why the login fails
+        // Same checks as the Dovecot and Postfix APIs, before authenticating, so rejected logins don't count as last login
         if ($user->hasRole(Roles::SPAM)) {
             return $this->json(['message' => self::MESSAGE_USER_DISABLED], Response::HTTP_FORBIDDEN);
         }
 
         if ($user->isPasswordChangeRequired()) {
             return $this->json(['message' => self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED], Response::HTTP_FORBIDDEN);
+        }
+
+        if (null === $this->userAuthenticationHandler->authenticate($user, $data->getPassword())) {
+            return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
         }
 
         $backupCode = null;
