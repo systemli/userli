@@ -26,17 +26,28 @@ final readonly class UserAuthenticationHandler
 
     public function authenticate(User $user, string $password): ?User
     {
-        $hasher = $this->passwordHasherFactory->getPasswordHasher($user);
-        if (!$hasher->verify($user->getPassword(), $password)) {
+        if (!$this->verifyPassword($user, $password)) {
             return null;
         }
 
+        $this->dispatchLoginEvent($user, $password);
+
+        return $user;
+    }
+
+    public function verifyPassword(User $user, string $password): bool
+    {
+        $hasher = $this->passwordHasherFactory->getPasswordHasher($user);
+
+        return $hasher->verify($user->getPassword(), $password);
+    }
+
+    public function dispatchLoginEvent(User $user, string $password): void
+    {
         $this->eventDispatcher->dispatch(
             new LoginEvent($user, $password),
             LoginEvent::NAME
         );
-
-        return $user;
     }
 
     /**

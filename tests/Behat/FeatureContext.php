@@ -959,6 +959,18 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @Then the user :email should have no last login time
+     */
+    public function theUserShouldHaveNoLastLoginTime(string $email): void
+    {
+        $this->manager->clear();
+        $user = $this->manager->getRepository(User::class)->findByEmail($email);
+        if (!$user instanceof User || null !== $user->getLastLoginTime()) {
+            throw new RuntimeException(sprintf('Expected user "%s" to have no last login time', $email));
+        }
+    }
+
+    /**
      * @Then the app password :name of :email should have a last login time of this week
      */
     public function theAppPasswordShouldHaveALastLoginTimeOfThisWeek(string $name, string $email): void

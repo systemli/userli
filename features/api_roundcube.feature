@@ -136,6 +136,7 @@ Feature: Roundcube API
             | password | password         |
         Then the response status code should equal 401
         And the JSON path "message" should equal "twofactor required"
+        And the user "totp@example.org" should have no last login time
 
     @login @twofactor
     Scenario: Login with wrong code for user with 2FA
@@ -146,6 +147,7 @@ Feature: Roundcube API
             | code     | 000000           |
         Then the response status code should equal 401
         And the JSON path "message" should equal "authentication failed"
+        And the user "totp@example.org" should have no last login time
 
     @login @twofactor
     Scenario: Login with TOTP code for user with 2FA
@@ -157,6 +159,7 @@ Feature: Roundcube API
             | code     | %code%           |
         Then the response status code should equal 200
         And the JSON path "password" should not be empty
+        And the user "totp@example.org" should have a last login time of this week
 
     @login @twofactor
     Scenario: Login with backup code works only once

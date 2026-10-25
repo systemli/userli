@@ -63,10 +63,23 @@ class UserAuthenticationHandlerTest extends TestCase
 
     public function testAuthenticate(): void
     {
-        $handler = $this->createHandler();
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->once())->method('dispatch');
+        $handler = $this->createHandler($eventDispatcher);
 
         self::assertEquals($this->user, $handler->authenticate($this->user, $this->password));
         self::assertNull($handler->authenticate($this->user, $this->wrong));
+    }
+
+    public function testVerifyPasswordDoesNotDispatchLoginEvent(): void
+    {
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->never())->method('dispatch');
+        $handler = $this->createHandler($eventDispatcher);
+
+        self::assertTrue($handler->verifyPassword($this->user, $this->password));
+        self::assertFalse($handler->verifyPassword($this->user, $this->wrong));
+        self::assertFalse($handler->verifyPassword($this->user, $this->appPassword));
     }
 
     public function testAppPasswordRejectedByAuthenticate(): void

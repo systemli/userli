@@ -78,7 +78,7 @@ final class RoundcubeController extends AbstractController
             return $this->json(['message' => self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED], Response::HTTP_FORBIDDEN);
         }
 
-        if (null === $this->userAuthenticationHandler->authenticate($user, $data->getPassword())) {
+        if (!$this->userAuthenticationHandler->verifyPassword($user, $data->getPassword())) {
             return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -98,6 +98,7 @@ final class RoundcubeController extends AbstractController
             }
         }
 
+        $this->userAuthenticationHandler->dispatchLoginEvent($user, $data->getPassword());
         [$password, $expiresAt] = $this->appPasswordManager->createWebmailCredential($user, $data->getPassword());
 
         // Only now, so a failure above does not use up the backup code
