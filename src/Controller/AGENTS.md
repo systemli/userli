@@ -72,3 +72,4 @@ public function submit(Request $request): Response { /* handle submission */ }
 - Scope-based access control: `#[RequireApiScope(ApiScope::DOVECOT)]`
 - Return JSON responses
 - No Twig rendering — pure data endpoints
+- Endpoints that check a user's password (Dovecot, Postfix, Roundcube) reject deleted users, `ROLE_SPAM` and `passwordChangeRequired` before calling `UserAuthenticationHandler`, so rejected logins don't update the last login time

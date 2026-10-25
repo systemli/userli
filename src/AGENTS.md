@@ -62,6 +62,10 @@ Every constraint in `Validator/` is paired: `EmailAvailable.php` (constraint att
 
 `EntityListener/` contains Doctrine lifecycle listeners that dispatch Messenger messages to invalidate caches. Pattern: entity change → listener → Message → MessageHandler → cache clear.
 
+### App Password Removal
+
+When a password or MailCrypt key changes, remove the user's app passwords with `AppPasswordRepository::removeByUser()` (or `removeWebmailCredentialsByUser()` for webmail credentials only) before the flush, so the removal is persisted together with the change. App passwords hold copies of the MailCrypt key and must not outlive the password they were created with. Don't use bulk DQL deletes for this.
+
 ### Console Commands
 
 Commands in `Command/`. Many extend `AbstractUsersCommand` which provides domain filtering and batch user operations. Commands are prefixed: `app:users:*`, `app:voucher:*`, `app:domain:*`, `app:admin:*`, `app:api-token:*`.
