@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Handler;
 
 use App\Entity\User;
+use App\Exception\DecryptionFailedException;
 use App\Model\CryptoSecret;
 use App\Model\MailCryptKeyPair;
 use Doctrine\ORM\EntityManagerInterface;
@@ -107,7 +108,7 @@ final readonly class MailCryptKeyHandler
         }
 
         if (null === $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($secret), $oldPassword)) {
-            throw new Exception(self::MESSAGE_DECRYPTION_FAILED);
+            throw new DecryptionFailedException(self::MESSAGE_DECRYPTION_FAILED);
         }
 
         $this->updateWithPrivateKey($user, $privateKey, $newPassword);
@@ -134,7 +135,7 @@ final readonly class MailCryptKeyHandler
         }
 
         if (null === $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($secret), $password)) {
-            throw new Exception(self::MESSAGE_DECRYPTION_FAILED);
+            throw new DecryptionFailedException(self::MESSAGE_DECRYPTION_FAILED);
         }
 
         sodium_memzero($password);

@@ -6,6 +6,7 @@ namespace App\Tests\Service;
 
 use App\Entity\AppPassword;
 use App\Entity\User;
+use App\Exception\DecryptionFailedException;
 use App\Handler\MailCryptKeyHandler;
 use App\Repository\AppPasswordRepository;
 use App\Service\AppPasswordManager;
@@ -70,6 +71,19 @@ class AppPasswordManagerTest extends TestCase
             $this->mailCryptKeyHandler->decrypt($user, 'password'),
             $manager->decryptMailCryptKey($persisted, $plain)
         );
+    }
+
+    public function testDecryptMailCryptKeyWithWrongPasswordThrows(): void
+    {
+        $user = new User('user@example.org');
+        $manager = new AppPasswordManager($this->createStub(AppPasswordRepository::class), $this->createStub(EntityManagerInterface::class), $this->mailCryptKeyHandler);
+        $manager->create($user, 'Phone', 'password');
+
+        $appPassword = new AppPassword($user, 'Phone', hash('sha256', 'secret'), (string) $user->getMailCryptSecretBox());
+
+        $this->expectException(DecryptionFailedException::class);
+        $this->expectExceptionMessage(MailCryptKeyHandler::MESSAGE_DECRYPTION_FAILED);
+        $manager->decryptMailCryptKey($appPassword, 'wrong');
     }
 
     public function testFindLooksUpByUserAndHash(): void

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Handler;
 
 use App\Entity\User;
+use App\Exception\DecryptionFailedException;
 use App\Handler\MailCryptKeyHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -67,7 +68,7 @@ UQ==
 
     public function testUpdateExceptionDecryptionFailed(): void
     {
-        $this->expectException(Exception::class);
+        $this->expectException(DecryptionFailedException::class);
         $this->expectExceptionMessage(MailCryptKeyHandler::MESSAGE_DECRYPTION_FAILED);
         $handler = $this->createHandler();
         $user = new User('test@example.org');
@@ -114,7 +115,7 @@ UQ==
 
     public function testDecryptExceptionDecryptionFailed(): void
     {
-        $this->expectException(Exception::class);
+        $this->expectException(DecryptionFailedException::class);
         $this->expectExceptionMessage(MailCryptKeyHandler::MESSAGE_DECRYPTION_FAILED);
         $handler = $this->createHandler();
         $user = new User('test@example.org');
