@@ -21,9 +21,7 @@ final class Version20261025120000 extends AbstractMigration
             return;
         }
 
-        $this->connection->executeStatement(
-            "INSERT IGNORE INTO settings (name, value, creation_time, updated_time) VALUES ('twofactor_app_passwords_required', '0', NOW(), NOW())"
-        );
+        $this->addSql("INSERT IGNORE INTO settings (name, value, creation_time, updated_time) VALUES ('twofactor_app_passwords_required', '0', NOW(), NOW())");
     }
 
     public function down(Schema $schema): void

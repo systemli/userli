@@ -44,7 +44,7 @@ final readonly class AppPasswordManager
         if ($user->hasMailCryptSecretBox()) {
             $privateKey = $this->mailCryptKeyHandler->decrypt($user, $mainPassword);
         } elseif (null !== $expiresAt) {
-            // Webmail credentials expire before MailCrypt could be turned on, so they need no key
+            // No key to copy; MailCryptKeyHandler::create() removes these credentials once a key exists
             $privateKey = null;
         } else {
             // Dovecot needs the MailCrypt key on login, so every app password carries a copy

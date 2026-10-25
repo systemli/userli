@@ -103,6 +103,7 @@ final class RoundcubeController extends AbstractController
      */
     private function issueWebmailCredential(User $user, RoundcubeLoginDto $data, LimiterInterface $limiter): JsonResponse
     {
+        // Before the credential: LoginListener may create the MailCrypt key it copies
         $this->userAuthenticationHandler->dispatchLoginEvent($user, $data->getPassword());
 
         try {
