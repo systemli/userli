@@ -114,7 +114,6 @@ final class InitController extends AbstractController
             'email_sender_address' => $domainName ? 'noreply@'.$domainName : null,
             'email_notification_address' => $domainName ? 'admin@'.$domainName : null,
             'postmaster_address' => $domainName ? 'postmaster@'.$domainName : null,
-            'twofactor_app_passwords_required' => true,
         ];
 
         $form = $this->createForm(SettingsType::class, $defaultData, [

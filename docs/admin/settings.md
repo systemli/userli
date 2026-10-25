@@ -45,8 +45,8 @@ migrate existing users. Keep the default unless you know why to change it.
 |---------------------------------------|---------|-------------|
 | **Require app passwords with 2FA**    | on      | Users with 2FA can sign in to mail programs (IMAP, SMTP) only with [app passwords](../user/app-passwords.md), not with their password. |
 
-The setup wizard turns this setting on. Upgraded installations start with it
-off, so mail programs of existing 2FA users keep working. Tell your users to create app passwords before
+Upgraded installations start with this setting off, so mail programs of
+existing 2FA users keep working. Tell your users to create app passwords before
 you turn it on. Webmail needs the
 [Roundcube plugin](../operations/integrations/roundcube.md) to sign in with 2FA.
 

@@ -35,10 +35,10 @@ settings:
     type: boolean
     default: true
 
-  # The setup wizard turns it on for new installations
+  # A migration turns it off for existing installations
   twofactor_app_passwords_required:
     type: boolean
-    default: false
+    default: true
 
   smtp_quota_limit_per_hour:
     type: integer
