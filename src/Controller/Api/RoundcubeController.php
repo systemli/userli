@@ -22,6 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
+use Symfony\Component\RateLimiter\LimiterInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -70,36 +71,40 @@ final class RoundcubeController extends AbstractController
             return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
         }
 
+        $rejection = $this->checkLogin($user, $data);
+        if (null !== $rejection) {
+            return $this->json(['message' => $rejection[0]], $rejection[1]);
+        }
+
+        return $this->issueWebmailCredential($user, $data, $limiter);
+    }
+
+    /**
+     * @return array{string, int}|null message and status code, or null if the login is valid
+     */
+    private function checkLogin(User $user, RoundcubeLoginDto $data): ?array
+    {
+        $code = $data->getCode();
+
         // Same checks as the Dovecot and Postfix APIs, before authenticating, so rejected logins don't count as last login
-        if ($user->hasRole(Roles::SPAM)) {
-            return $this->json(['message' => self::MESSAGE_USER_DISABLED], Response::HTTP_FORBIDDEN);
-        }
+        return match (true) {
+            $user->hasRole(Roles::SPAM) => [self::MESSAGE_USER_DISABLED, Response::HTTP_FORBIDDEN],
+            $user->isPasswordChangeRequired() => [self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED, Response::HTTP_FORBIDDEN],
+            !$this->userAuthenticationHandler->verifyPassword($user, $data->getPassword()) => [self::MESSAGE_AUTHENTICATION_FAILED, Response::HTTP_UNAUTHORIZED],
+            !$user->isTotpAuthenticationEnabled() => null,
+            '' === $code => [self::MESSAGE_TWOFACTOR_REQUIRED, Response::HTTP_UNAUTHORIZED],
+            !$this->totpAuthenticator->checkCode($user, $code) && !$this->backupCodeManager->isBackupCode($user, $code) => [self::MESSAGE_AUTHENTICATION_FAILED, Response::HTTP_UNAUTHORIZED],
+            default => null,
+        };
+    }
 
-        if ($user->isPasswordChangeRequired()) {
-            return $this->json(['message' => self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED], Response::HTTP_FORBIDDEN);
-        }
-
-        if (!$this->userAuthenticationHandler->verifyPassword($user, $data->getPassword())) {
-            return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
-        }
-
-        $backupCode = null;
-        if ($user->isTotpAuthenticationEnabled()) {
-            $code = $data->getCode();
-            if ('' === $code) {
-                return $this->json(['message' => self::MESSAGE_TWOFACTOR_REQUIRED], Response::HTTP_UNAUTHORIZED);
-            }
-
-            if (!$this->totpAuthenticator->checkCode($user, $code)) {
-                if (!$this->backupCodeManager->isBackupCode($user, $code)) {
-                    return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
-                }
-
-                $backupCode = $code;
-            }
-        }
-
+    /**
+     * @throws Exception
+     */
+    private function issueWebmailCredential(User $user, RoundcubeLoginDto $data, LimiterInterface $limiter): JsonResponse
+    {
         $this->userAuthenticationHandler->dispatchLoginEvent($user, $data->getPassword());
+
         try {
             [$password, $expiresAt] = $this->appPasswordManager->createWebmailCredential($user, $data->getPassword());
         } catch (DecryptionFailedException $decryptionFailedException) {
@@ -107,9 +112,9 @@ final class RoundcubeController extends AbstractController
             return $this->json(['error' => $decryptionFailedException->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        // Only now, so a failure above does not use up the backup code
-        if (null !== $backupCode) {
-            $this->backupCodeManager->invalidateBackupCode($user, $backupCode);
+        // Only now, so a failure above does not use up a backup code. A no-op for TOTP codes.
+        if ($user->isTotpAuthenticationEnabled()) {
+            $this->backupCodeManager->invalidateBackupCode($user, $data->getCode());
         }
 
         $limiter->reset();
