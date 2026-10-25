@@ -68,8 +68,8 @@ they lost their password.
 ## Migrating legacy users
 
 Legacy users (without MailCrypt keys) continue to work without mailbox
-encryption. If they generate a recovery token in the account settings, a
-MailCrypt key pair is created for them. This doesn't enable MailCrypt for them
+encryption. If they generate a recovery token or create an app password in the
+account settings, a MailCrypt key pair is created for them. This doesn't enable MailCrypt for them
 automatically, because this would result in accounts with partially
 unencrypted (old) and partially encrypted (new) emails. Enabling it is left to
 the server operators.
