@@ -64,7 +64,7 @@ Every constraint in `Validator/` is paired: `EmailAvailable.php` (constraint att
 
 ### App Password Removal
 
-When a password or MailCrypt key changes, remove the user's app passwords with `AppPasswordRepository::removeByUser()` (or `removeWebmailCredentialsByUser()` for webmail credentials only) before the flush, so the removal is persisted together with the change. App passwords hold copies of the MailCrypt key and must not outlive the password they were created with. Don't use bulk DQL deletes for this.
+Recovery, admin reset and account deletion remove all app passwords with `AppPasswordRepository::removeByUser()`. A normal password change removes only webmail credentials with `removeWebmailCredentialsByUser()`, because app passwords carry their own copy of the MailCrypt key. Call these before the flush, so the removal is persisted together with the password change. Don't use bulk DQL deletes for this.
 
 ### Console Commands
 
