@@ -194,6 +194,15 @@ Feature: Roundcube API
         Then the response status code should equal 403
         And the JSON path "message" should equal "user password change required"
 
+    @login
+    Scenario: Login of user who must change the password with wrong password reveals nothing
+        Given I have a valid API token "roundcube-test-123"
+        When I send a POST request to "/api/roundcube/login" with form data:
+            | email    | pwc@example.org |
+            | password | wrong           |
+        Then the response status code should equal 401
+        And the JSON path "message" should equal "authentication failed"
+
     @login @rate-limit
     Scenario: Too many login attempts are rejected, even with the right password
         Given I have a valid API token "roundcube-test-123"

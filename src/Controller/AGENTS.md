@@ -72,4 +72,4 @@ public function submit(Request $request): Response { /* handle submission */ }
 - Scope-based access control: `#[RequireApiScope(ApiScope::DOVECOT)]`
 - Return JSON responses
 - No Twig rendering — pure data endpoints
-- Endpoints that check a user's password (Dovecot, Postfix, Roundcube) reject deleted users, `ROLE_SPAM` and `passwordChangeRequired` before calling `UserAuthenticationHandler`, so rejected logins don't update the last login time
+- Endpoints that check a user's password reject deleted users, `ROLE_SPAM` and `passwordChangeRequired` before the login event, so rejected logins don't update the last login time. Dovecot and Postfix check these before `authenticate()`. Roundcube checks the password first with `verifyPassword()`, which dispatches no event, so the account state isn't revealed without it

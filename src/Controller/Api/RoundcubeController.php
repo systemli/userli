@@ -86,11 +86,11 @@ final class RoundcubeController extends AbstractController
     {
         $code = $data->getCode();
 
-        // Same checks as the Dovecot and Postfix APIs, before authenticating, so rejected logins don't count as last login
+        // Password first, so the account state isn't revealed without it. verifyPassword() dispatches no login event.
         return match (true) {
+            !$this->userAuthenticationHandler->verifyPassword($user, $data->getPassword()) => [self::MESSAGE_AUTHENTICATION_FAILED, Response::HTTP_UNAUTHORIZED],
             $user->hasRole(Roles::SPAM) => [self::MESSAGE_USER_DISABLED, Response::HTTP_FORBIDDEN],
             $user->isPasswordChangeRequired() => [self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED, Response::HTTP_FORBIDDEN],
-            !$this->userAuthenticationHandler->verifyPassword($user, $data->getPassword()) => [self::MESSAGE_AUTHENTICATION_FAILED, Response::HTTP_UNAUTHORIZED],
             !$user->isTotpAuthenticationEnabled() => null,
             '' === $code => [self::MESSAGE_TWOFACTOR_REQUIRED, Response::HTTP_UNAUTHORIZED],
             !$this->totpAuthenticator->checkCode($user, $code) && !$this->backupCodeManager->isBackupCode($user, $code) => [self::MESSAGE_AUTHENTICATION_FAILED, Response::HTTP_UNAUTHORIZED],
