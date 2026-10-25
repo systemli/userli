@@ -8,6 +8,7 @@ use App\Dto\PaginatedResult;
 use App\Entity\AppPassword;
 use App\Entity\Domain;
 use App\Entity\User;
+use App\Exception\DecryptionFailedException;
 use App\Handler\CryptoSecretHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Model\CryptoSecret;
@@ -63,13 +64,13 @@ final readonly class AppPasswordManager
     }
 
     /**
-     * @throws Exception
+     * @throws DecryptionFailedException
      */
     public function decryptMailCryptKey(AppPassword $appPassword, string $plain): string
     {
         $privateKey = CryptoSecretHandler::decrypt(CryptoSecret::decode($appPassword->getMailCryptSecretBox()), $plain);
         if (null === $privateKey) {
-            throw new Exception(MailCryptKeyHandler::MESSAGE_DECRYPTION_FAILED);
+            throw new DecryptionFailedException(MailCryptKeyHandler::MESSAGE_DECRYPTION_FAILED);
         }
 
         return $privateKey;
