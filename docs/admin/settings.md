@@ -39,6 +39,17 @@ basic settings are first set in the [setup wizard](../operations/initial-setup.m
 See [MailCrypt](../operations/mailcrypt.md) for what the levels mean and how to
 migrate existing users. Keep the default unless you know why to change it.
 
+## Two-factor authentication
+
+| Setting                               | Default | Description |
+|---------------------------------------|---------|-------------|
+| **Require app passwords with 2FA**    | on      | Users with 2FA can sign in to mail programs (IMAP, SMTP) only with [app passwords](../user/app-passwords.md), not with their password. |
+
+Upgraded installations start with this setting off, so mail programs of
+existing 2FA users keep working. Tell your users to create app passwords before
+you turn it on. Webmail needs the
+[Roundcube plugin](../operations/integrations/roundcube.md) to sign in with 2FA.
+
 ## Reports
 
 | Setting           | Default | Description |

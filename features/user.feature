@@ -33,6 +33,23 @@ Feature: User
     And I should see text matching "Your new password is now active!"
     And the response status code should not be 403
 
+  @password-change
+  Scenario: Change password ends webmail sessions but keeps app passwords
+    Given the following AppPassword exists:
+      | email            | name             | password       | userPassword | expiresAt |
+      | user@example.org | Thunderbird      | app-password-1 | asdasd       |           |
+      | user@example.org | Webmail 1a2b3c4d | app-password-2 | asdasd       | +1 hour   |
+    When I am authenticated as "user@example.org"
+    And I am on "/account/password"
+    And I fill in the following:
+      | password_password           | asdasd       |
+      | password_newPassword_first  | P4ssW0rd!!!1 |
+      | password_newPassword_second | P4ssW0rd!!!1 |
+    And I press "Submit"
+
+    Then I should see text matching "Your new password is now active!"
+    And the user "user@example.org" should have 1 app passwords
+
   @create-random-alias
   Scenario: Create random alias
     When I am authenticated as "user@example.org"
@@ -223,6 +240,22 @@ Feature: User
     And I press "Verify"
 
     Then I should be on "/account/twofactor"
+
+  @twofactor-auth
+  Scenario: Two-factor page links to app passwords when they are required
+    Given the setting "twofactor_app_passwords_required" is "1"
+    When I am authenticated as "user@example.org"
+    And I am on "/account/twofactor"
+    Then I should see text matching "only work with app passwords"
+    When I follow "Create app passwords"
+    Then I should be on "/account/app-passwords"
+
+  @twofactor-auth
+  Scenario: Two-factor page does not mention app passwords when they are not required
+    Given the setting "twofactor_app_passwords_required" is "0"
+    When I am authenticated as "user@example.org"
+    And I am on "/account/twofactor"
+    Then I should not see text matching "only work with app passwords"
 
   @password-compromised
   Scenario: User sees password compromised message

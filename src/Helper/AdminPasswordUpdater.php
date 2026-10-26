@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Helper;
 
+use App\Entity\AppPassword;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
@@ -29,6 +30,8 @@ final readonly class AdminPasswordUpdater
             $admin = new User($adminEmail);
             $admin->setRoles([Roles::ADMIN]);
             $admin->setDomain($domain);
+        } else {
+            $this->manager->getRepository(AppPassword::class)->removeWebmailCredentialsByUser($admin);
         }
 
         $this->updater->updatePassword($admin, $password);

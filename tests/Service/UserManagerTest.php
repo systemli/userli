@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Service;
 
 use App\Dto\PaginatedResult;
+use App\Entity\AppPassword;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
@@ -14,6 +15,7 @@ use App\Handler\DeleteHandler;
 use App\Handler\MailCryptKeyHandler;
 use App\Helper\PasswordUpdater;
 use App\Repository\AliasRepository;
+use App\Repository\AppPasswordRepository;
 use App\Repository\OpenPgpKeyRepository;
 use App\Repository\UserNotificationRepository;
 use App\Repository\UserRepository;
@@ -334,8 +336,12 @@ class UserManagerTest extends TestCase
         $passwordUpdater = $this->createMock(PasswordUpdater::class);
         $passwordUpdater->expects($this->once())->method('updatePassword');
 
+        $appPasswordRepository = $this->createMock(AppPasswordRepository::class);
+        $appPasswordRepository->expects($this->once())->method('removeByUser');
+
         $entityManager = $this->createMock(EntityManagerInterface::class);
         $entityManager->expects($this->once())->method('flush');
+        $entityManager->method('getRepository')->with(AppPassword::class)->willReturn($appPasswordRepository);
 
         $manager = new UserManager(
             $entityManager,

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Handler;
 
+use App\Entity\AppPassword;
 use App\Entity\User;
 use App\Exception\DecryptionFailedException;
 use App\Handler\MailCryptKeyHandler;
+use App\Repository\AppPasswordRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -55,6 +57,20 @@ UQ==
         self::assertNotEmpty($user->getMailCryptPublicKey());
         self::assertNotEmpty($user->getMailCryptSecretBox());
         self::assertNotEmpty($user->getPlainMailCryptPrivateKey());
+    }
+
+    public function testCreateWithMailCryptEnableRemovesWebmailCredentials(): void
+    {
+        $user = new User('test@example.org');
+        $user->setId(1);
+
+        $appPasswordRepository = $this->createMock(AppPasswordRepository::class);
+        $appPasswordRepository->expects($this->once())->method('removeWebmailCredentialsByUser')->with($user);
+
+        $manager = $this->createStub(EntityManagerInterface::class);
+        $manager->method('getRepository')->willReturnMap([[AppPassword::class, $appPasswordRepository]]);
+
+        new MailCryptKeyHandler($manager)->create($user, 'password', true);
     }
 
     public function testUpdateExceptionNullSecret(): void

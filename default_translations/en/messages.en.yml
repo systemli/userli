@@ -160,6 +160,8 @@ account:
     info-security: Adds an extra layer of security to protect your account from unauthorized access
     info-simple: Simple to use with privacy-friendly apps like Aegis (Android) or Tofu (iOS), or any TOTP-compatible authenticator app
     info-backup: Backup codes ensure you can always access your account, even if you lose your phone
+    info-app-passwords: With two-factor authentication, email programs like Thunderbird or the mail app on your phone only work with app passwords, not with your password.
+    info-app-passwords-link: Create app passwords
   recovery:
     title: Recovery Token
     desc: Backup access to your account
@@ -480,6 +482,7 @@ admin:
       project: Project Settings
       email: Email Configuration
       mail_crypt: Mailbox Encryption
+      twofactor: Two-Factor Authentication
       reports: Reports
       smtp_quota: SMTP Quota Limits
       mta_sts: MTA-STS
@@ -505,6 +508,9 @@ admin:
     email_notification_address:
       label: Notification Email Address
       help: The email address that receives system notifications
+    twofactor_app_passwords_required:
+      label: Require app passwords with 2FA
+      help: Users with two-factor authentication can only sign in to mail programs (IMAP, SMTP) with app passwords, not with their password. Webmail needs the Roundcube plugin.
     weekly_report_enabled:
       label: Weekly Report
       help: Send a weekly report with new registrations to the notification email address

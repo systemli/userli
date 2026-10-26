@@ -36,12 +36,17 @@ class AppPassword
     #[ORM\Column(type: 'text')]
     private string $mailCryptSecretBox;
 
-    public function __construct(User $user, string $name, string $hash, string $mailCryptSecretBox)
+    // Set only for webmail credentials, which are hidden from users
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $expiresAt;
+
+    public function __construct(User $user, string $name, string $hash, string $mailCryptSecretBox, ?DateTimeImmutable $expiresAt = null)
     {
         $this->user = $user;
         $this->name = $name;
         $this->hash = $hash;
         $this->mailCryptSecretBox = $mailCryptSecretBox;
+        $this->expiresAt = $expiresAt;
         $this->creationTime = new DateTimeImmutable();
     }
 
@@ -68,5 +73,10 @@ class AppPassword
     public function getMailCryptSecretBox(): string
     {
         return $this->mailCryptSecretBox;
+    }
+
+    public function getExpiresAt(): ?DateTimeImmutable
+    {
+        return $this->expiresAt;
     }
 }

@@ -33,6 +33,18 @@ Feature: Admin (App Passwords)
     And I should not see "app-password-1"
 
   @app-passwords
+  Scenario: Admin list hides webmail credentials
+    Given the following AppPassword exists:
+      | email             | name             | password       | userPassword | expiresAt |
+      | louis@example.org | Thunderbird      | app-password-1 | asdasd       |           |
+      | louis@example.org | Webmail 1a2b3c4d | app-password-2 | asdasd       | +1 hour   |
+    And I am authenticated as "louis@example.org"
+    When I am on "/admin/app-passwords/"
+
+    Then I should see "Thunderbird"
+    And I should not see "Webmail 1a2b3c4d"
+
+  @app-passwords
   Scenario: Admin sees when app passwords were last used
     Given the following AppPassword exists:
       | email             | name        | password       | userPassword | lastLoginTime |

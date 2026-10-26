@@ -81,7 +81,7 @@ final class MetricsCommand extends Command
         $output->writeln('# TYPE userli_users_app_password_total gauge');
         $output->writeln('userli_users_app_password_total '.$usersAppPasswordTotal);
 
-        $appPasswordsTotal = $this->appPasswordRepository->count([]);
+        $appPasswordsTotal = $this->appPasswordRepository->count(['expiresAt' => null]);
         $output->writeln('# HELP userli_app_passwords_total Total number of app passwords');
         $output->writeln('# TYPE userli_app_passwords_total gauge');
         $output->writeln('userli_app_passwords_total '.$appPasswordsTotal);

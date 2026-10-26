@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Tests\Helper;
 
+use App\Entity\AppPassword;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Helper\AdminPasswordUpdater;
 use App\Helper\PasswordUpdater;
+use App\Repository\AppPasswordRepository;
 use App\Repository\DomainRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,6 +22,8 @@ class AdminPasswordUpdaterTest extends TestCase
 {
     private string $defaultDomain;
 
+    private AppPasswordRepository $appPasswordRepository;
+
     protected function setUp(): void
     {
         $this->defaultDomain = 'example.org';
@@ -27,6 +31,9 @@ class AdminPasswordUpdaterTest extends TestCase
 
     public function testUpdateAdminPassword(): void
     {
+        $this->appPasswordRepository = $this->createMock(AppPasswordRepository::class);
+        $this->appPasswordRepository->expects($this->once())->method('removeWebmailCredentialsByUser');
+
         $admin = new User('postmaster@example.org');
         $admin->setPassword('impossible_login');
 
@@ -53,6 +60,7 @@ class AdminPasswordUpdaterTest extends TestCase
             [
                 [Domain::class, $domainRepo],
                 [User::class, $userRepo],
+                [AppPassword::class, $this->appPasswordRepository],
             ]);
 
         return $manager;

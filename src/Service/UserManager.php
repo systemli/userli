@@ -118,6 +118,7 @@ final readonly class UserManager
                 $recoveryToken = $this->userResetService->resetUser($user, $plainPassword);
             } else {
                 $this->passwordUpdater->updatePassword($user, $plainPassword);
+                $this->em->getRepository(AppPassword::class)->removeByUser($user);
             }
 
             $user->setPasswordChangeRequired(true);
@@ -153,7 +154,7 @@ final readonly class UserManager
             'vouchers' => $this->voucherRepository->countVouchersByUser($user, null),
             'vouchers_redeemed' => $this->voucherRepository->countVouchersByUser($user, true),
             'openpgp_keys' => count($this->openPgpKeyRepository->findByUploader($user)),
-            'app_passwords' => $this->em->getRepository(AppPassword::class)->count(['user' => $user]),
+            'app_passwords' => $this->em->getRepository(AppPassword::class)->count(['user' => $user, 'expiresAt' => null]),
             'password_compromised' => $this->userNotificationRepository->hasRecentNotification($user, UserNotificationType::PASSWORD_COMPROMISED, 24 * 365),
         ];
     }

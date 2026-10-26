@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Entity\AppPassword;
 use App\Entity\User;
 use App\Exception\DecryptionFailedException;
 use App\Model\CryptoSecret;
@@ -93,6 +94,11 @@ final readonly class MailCryptKeyHandler
 
         if (true === $mailCryptEnable) {
             $user->setMailCryptEnabled(true);
+
+            // Webmail credentials created without a key carry no key copy, which Dovecot now needs
+            if (null !== $user->getId()) {
+                $this->manager->getRepository(AppPassword::class)->removeWebmailCredentialsByUser($user);
+            }
         }
 
         $this->manager->flush();

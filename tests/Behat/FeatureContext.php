@@ -25,6 +25,7 @@ use App\Helper\TotpBackupCodeGenerator;
 use App\Service\ApiTokenManager;
 use App\Service\DomainGuesser;
 use App\Service\OpenPgpKeyManager;
+use App\Service\SettingsService;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
@@ -887,6 +888,37 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @Given the setting :name is :value
+     */
+    public function theSettingIs(string $name, string $value): void
+    {
+        $this->getContainer()->get(SettingsService::class)->set($name, $value);
+    }
+
+    /**
+     * @Then the user :email should have :count app passwords
+     */
+    public function theUserShouldHaveAppPasswords(string $email, int $count): void
+    {
+        $user = $this->getUserRepository()->findByEmail($email);
+        $actual = $this->manager->getRepository(AppPassword::class)->count(['user' => $user]);
+        if ($actual !== $count) {
+            throw new RuntimeException(sprintf('User "%s" has %d app passwords, expected %d', $email, $actual, $count));
+        }
+    }
+
+    /**
+     * @Then the setting :name should be :value
+     */
+    public function theSettingShouldBe(string $name, string $value): void
+    {
+        $setting = $this->manager->getRepository(Setting::class)->findOneBy(['name' => $name]);
+        if ($setting?->getValue() !== $value) {
+            throw new RuntimeException(sprintf('Setting "%s" is "%s", expected "%s"', $name, $setting?->getValue(), $value));
+        }
+    }
+
+    /**
      * @When the following AppPassword exists:
      */
     public function theFollowingAppPasswordExists(TableNode $table): void
@@ -905,7 +937,8 @@ class FeatureContext extends MinkContext
             }
 
             $secretBox = CryptoSecretHandler::create($privateKey, $data['password'])->encode();
-            $appPassword = new AppPassword($user, $data['name'] ?? 'Test', hash('sha256', $data['password']), $secretBox);
+            $expiresAt = empty($data['expiresAt']) ? null : new DateTimeImmutable($data['expiresAt']);
+            $appPassword = new AppPassword($user, $data['name'] ?? 'Test', hash('sha256', $data['password']), $secretBox, $expiresAt);
             if (!empty($data['lastLoginTime'])) {
                 $appPassword->setLastLoginTime(new DateTimeImmutable($data['lastLoginTime']));
             }
@@ -923,6 +956,18 @@ class FeatureContext extends MinkContext
         $user = $this->manager->getRepository(User::class)->findByEmail($email);
 
         $this->assertLastLoginTimeOfThisWeek($user?->getLastLoginTime(), $email);
+    }
+
+    /**
+     * @Then the user :email should have no last login time
+     */
+    public function theUserShouldHaveNoLastLoginTime(string $email): void
+    {
+        $this->manager->clear();
+        $user = $this->manager->getRepository(User::class)->findByEmail($email);
+        if (!$user instanceof User || null !== $user->getLastLoginTime()) {
+            throw new RuntimeException(sprintf('Expected user "%s" to have no last login time', $email));
+        }
     }
 
     /**
