@@ -8,6 +8,7 @@ after changing data or when the scheduler is not running.
 
 | Task | Schedule | What it does |
 |------|----------|--------------|
+| **Prune expired app passwords** | daily, 02:30 | Removes expired webmail credentials. Can't be started manually. |
 | **Prune webhook deliveries** | daily, 03:00 | Removes **successful** webhook deliveries older than 14 days. Failed ones are kept. |
 | **Prune user notifications** | daily, 03:30 | Removes [notifications](notifications.md) older than 30 days. |
 | **Unlink redeemed invite codes** | daily, 04:00 | Removes the link between an invite code and the account that used it, three months after registration. |

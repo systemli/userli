@@ -108,6 +108,27 @@ Feature: Roundcube API
         Then the response status code should equal 200
 
     @login
+    Scenario: Login returns a webmail credential that carries the MailCrypt key
+        Given the following User exists:
+            | email                 | password | roles     | mailCrypt |
+            | mailcrypt@example.org | password | ROLE_USER | 1         |
+        And the following AppPassword exists:
+            | email                 | name        | password     |
+            | mailcrypt@example.org | Thunderbird | app-password |
+        And I have a valid API token "roundcube-test-123"
+        When I send a POST request to "/api/roundcube/login" with form data:
+            | email    | mailcrypt@example.org |
+            | password | password              |
+        Then the response status code should equal 200
+        When I store the JSON path "password" as "%webmail%"
+        And I have a valid API token "dovecot-test-123"
+        And I send a POST request to "/api/dovecot/mailcrypt@example.org" with form data:
+            | password | %webmail% |
+        Then the response status code should equal 200
+        And the JSON path "body.mailCrypt" should equal "2"
+        And the JSON path "body.mailCryptPrivateKey" should not be empty
+
+    @login
     Scenario: Login with wrong password
         Given I have a valid API token "roundcube-test-123"
         When I send a POST request to "/api/roundcube/login" with form data:
