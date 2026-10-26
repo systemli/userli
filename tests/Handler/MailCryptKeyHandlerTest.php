@@ -59,7 +59,7 @@ UQ==
         self::assertNotEmpty($user->getPlainMailCryptPrivateKey());
     }
 
-    public function testCreateRemovesWebmailCredentials(): void
+    public function testCreateWithMailCryptEnableRemovesWebmailCredentials(): void
     {
         $user = new User('test@example.org');
         $user->setId(1);
@@ -70,7 +70,7 @@ UQ==
         $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('getRepository')->willReturnMap([[AppPassword::class, $appPasswordRepository]]);
 
-        new MailCryptKeyHandler($manager)->create($user, 'password');
+        new MailCryptKeyHandler($manager)->create($user, 'password', true);
     }
 
     public function testUpdateExceptionNullSecret(): void

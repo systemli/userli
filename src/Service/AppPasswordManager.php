@@ -44,7 +44,7 @@ final readonly class AppPasswordManager
         if ($user->hasMailCryptSecretBox()) {
             $privateKey = $this->mailCryptKeyHandler->decrypt($user, $mainPassword);
         } elseif (null !== $expiresAt) {
-            // No key to copy; MailCryptKeyHandler::create() removes these credentials once a key exists
+            // No key to copy; MailCryptKeyHandler::create() removes these credentials once MailCrypt is turned on
             $privateKey = null;
         } else {
             // Dovecot needs the MailCrypt key on login, so every app password carries a copy

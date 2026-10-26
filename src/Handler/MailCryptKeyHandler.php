@@ -94,11 +94,11 @@ final readonly class MailCryptKeyHandler
 
         if (true === $mailCryptEnable) {
             $user->setMailCryptEnabled(true);
-        }
 
-        // Webmail credentials created without a key carry no key copy and would fail in Dovecot from now on
-        if (null !== $user->getId()) {
-            $this->manager->getRepository(AppPassword::class)->removeWebmailCredentialsByUser($user);
+            // Webmail credentials created without a key carry no key copy, which Dovecot now needs
+            if (null !== $user->getId()) {
+                $this->manager->getRepository(AppPassword::class)->removeWebmailCredentialsByUser($user);
+            }
         }
 
         $this->manager->flush();
