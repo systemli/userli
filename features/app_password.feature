@@ -18,8 +18,8 @@ Feature: App passwords
     And I should see text matching "The app password is generated for you"
 
     When I fill in the following:
-      | app_password_create_name     | Thunderbird |
-      | app_password_create_password | asdasd      |
+      | app_password_name     | Thunderbird |
+      | app_password_password | asdasd      |
     And I press "Generate app password"
 
     Then the response status code should be 200
@@ -56,8 +56,8 @@ Feature: App passwords
     When I am authenticated as "user@example.org"
     And I am on "/account/app-passwords"
     And I fill in the following:
-      | app_password_create_name     | Thunderbird |
-      | app_password_create_password | asdasd      |
+      | app_password_name     | Thunderbird |
+      | app_password_password | asdasd      |
     And I press "Generate app password"
 
     Then I should see text matching "This value is already used."
@@ -68,8 +68,8 @@ Feature: App passwords
     When I am authenticated as "user@example.org"
     And I am on "/account/app-passwords"
     And I fill in the following:
-      | app_password_create_name     | Thunderbird |
-      | app_password_create_password | wrong       |
+      | app_password_name     | Thunderbird |
+      | app_password_password | wrong       |
     And I press "Generate app password"
 
     Then I should see text matching "Wrong password"
@@ -82,8 +82,8 @@ Feature: App passwords
     When I am authenticated as "stale@example.org"
     And I am on "/account/app-passwords"
     And I fill in the following:
-      | app_password_create_name     | Thunderbird |
-      | app_password_create_password | asdasd      |
+      | app_password_name     | Thunderbird |
+      | app_password_password | asdasd      |
     And I press "Generate app password"
 
     Then I should see text matching "Your mailbox encryption key could not be unlocked with your password"

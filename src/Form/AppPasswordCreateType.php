@@ -36,6 +36,6 @@ final class AppPasswordCreateType extends AbstractType
     #[Override]
     public function getBlockPrefix(): string
     {
-        return 'app_password_create';
+        return 'app_password';
     }
 }
