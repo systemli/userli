@@ -1,5 +1,17 @@
 # Upgrade documentation
 
+## Upgrade to 6.11.0
+
+### App passwords required with 2FA
+
+The new setting **Require app passwords with 2FA** blocks the account password
+of users with two-factor authentication for IMAP and SMTP. The migration should
+turn it off on existing installations, but check it anyway.
+
+**Action required:** After the migration, open **Admin → Settings** and make
+sure [Require app passwords with 2FA](docs/admin/settings.md#two-factor-authentication)
+has the value you want.
+
 ## Upgrade to 6.8.0
 
 ### Postmaster aliases replaced with RFC address settings
