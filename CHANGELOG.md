@@ -1,5 +1,23 @@
 # Changelog
 
+## 6.11.0 (2026.10.26)
+
+### Features and Improvements
+
+- ✨ Add Roundcube login with 2FA and short-lived webmail credentials (#1394)
+- ✨ Add app passwords (#1391)
+
+### Technical Changes
+
+- ♻️ Throw a dedicated exception when decryption fails (#1393)
+
+### Bug Fixes
+
+- 🐛 Return 401 on failed login instead of redirecting (#1401)
+- 🐛 Show form error when MailCrypt key can't be unlocked for app password (#1397)
+- 🐛 Fix app password review findings (#1396)
+- 🐛 Replace the MailCrypt key on reset also in optional mode (#1392)
+
 ## 6.10.6 (2026.10.18)
 
 ### Features and Improvements
