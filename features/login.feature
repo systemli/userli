@@ -44,7 +44,8 @@ Feature: Login
       | _password | test123           |
     And I press "Sign in"
 
-    Then I should see text matching "The presented password is invalid."
+    Then the response status code should be 401
+    And I should see text matching "The presented password is invalid."
 
   @login
   Scenario: Login as Admin
