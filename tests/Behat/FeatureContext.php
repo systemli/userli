@@ -789,6 +789,26 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @Then /^the password of "([^"]*)" should be "([^"]*)"$/
+     */
+    public function thePasswordOfShouldBe(string $email, string $password): void
+    {
+        $this->manager->clear();
+
+        $user = $this->getUserRepository()->findByEmail($email);
+
+        if (null === $user) {
+            throw new RuntimeException(sprintf('User "%s" does not exist', $email));
+        }
+
+        $hasher = $this->getContainer()->get('security.password_hasher_factory')->getPasswordHasher($user);
+
+        if (!$hasher->verify((string) $user->getPassword(), $password)) {
+            throw new RuntimeException(sprintf('Password of "%s" does not match "%s"', $email, $password));
+        }
+    }
+
+    /**
      * @Then /^the user "([^"]*)" should have passwordChangeRequired$/
      */
     public function theUserShouldHavePasswordChangeRequired(string $email): void
