@@ -22,8 +22,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\RateLimiter\LimiterInterface;
-use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
@@ -36,8 +34,6 @@ final class RoundcubeController extends AbstractController
 
     private const string MESSAGE_TWOFACTOR_REQUIRED = 'twofactor required';
 
-    private const string MESSAGE_TOO_MANY_ATTEMPTS = 'too many attempts';
-
     private const string MESSAGE_USER_DISABLED = 'user disabled due to spam role';
 
     private const string MESSAGE_USER_PASSWORD_CHANGE_REQUIRED = 'user password change required';
@@ -48,7 +44,6 @@ final class RoundcubeController extends AbstractController
         private readonly AppPasswordManager $appPasswordManager,
         private readonly TotpAuthenticatorInterface $totpAuthenticator,
         private readonly BackupCodeManagerInterface $backupCodeManager,
-        private readonly RateLimiterFactoryInterface $roundcubeLoginLimiter,
     ) {
     }
 
@@ -60,12 +55,6 @@ final class RoundcubeController extends AbstractController
     #[Route(path: '/api/roundcube/login', name: 'api_roundcube_post_login', methods: ['POST'], stateless: true)]
     public function postLogin(#[MapRequestPayload] RoundcubeLoginDto $data): JsonResponse
     {
-        // Unlike IMAP logins, failed attempts here get no Dovecot auth penalty
-        $limiter = $this->roundcubeLoginLimiter->create(mb_strtolower($data->getEmail()));
-        if (!$limiter->consume()->isAccepted()) {
-            return $this->json(['message' => self::MESSAGE_TOO_MANY_ATTEMPTS], Response::HTTP_TOO_MANY_REQUESTS);
-        }
-
         $user = $this->manager->getRepository(User::class)->findByEmail($data->getEmail());
         if (!$user || $user->isDeleted()) {
             return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
@@ -76,7 +65,7 @@ final class RoundcubeController extends AbstractController
             return $this->json(['message' => $rejection[0]], $rejection[1]);
         }
 
-        return $this->issueWebmailCredential($user, $data, $limiter);
+        return $this->issueWebmailCredential($user, $data);
     }
 
     /**
@@ -101,7 +90,7 @@ final class RoundcubeController extends AbstractController
     /**
      * @throws Exception
      */
-    private function issueWebmailCredential(User $user, RoundcubeLoginDto $data, LimiterInterface $limiter): JsonResponse
+    private function issueWebmailCredential(User $user, RoundcubeLoginDto $data): JsonResponse
     {
         // Before the credential: LoginListener may create the MailCrypt key it copies
         $this->userAuthenticationHandler->dispatchLoginEvent($user, $data->getPassword());
@@ -117,8 +106,6 @@ final class RoundcubeController extends AbstractController
         if ($user->isTotpAuthenticationEnabled()) {
             $this->backupCodeManager->invalidateBackupCode($user, $data->getCode());
         }
-
-        $limiter->reset();
 
         return $this->json(['password' => $password, 'expiresAt' => $expiresAt->format(DATE_ATOM)]);
     }

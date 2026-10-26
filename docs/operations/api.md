@@ -85,7 +85,7 @@ Scope `roundcube`. Used by the [Roundcube plugin](integrations/roundcube.md).
 | Method | Path | Description |
 |--------|------|-------------|
 | `POST` | `/api/roundcube/aliases` | Body `{"email": "...", "password": "..."}`. Returns the list of the user's alias addresses. `401` on wrong credentials. App passwords are rejected. |
-| `POST` | `/api/roundcube/login` | Body `{"email": "...", "password": "...", "code": "..."}`. Checks the main password and, if the user has two-factor authentication, the TOTP or backup code in `code`. Returns `{"password": "...", "expiresAt": "<ISO 8601>"}`, a webmail credential that is valid for 12 hours in Dovecot and Postfix. `401` with message `twofactor required` if `code` is missing, `authentication failed` otherwise. `403` for users with the spam role or a required password change, only after the password is correct. `429` after 10 attempts per user within 15 minutes. App passwords are rejected. |
+| `POST` | `/api/roundcube/login` | Body `{"email": "...", "password": "...", "code": "..."}`. Checks the main password and, if the user has two-factor authentication, the TOTP or backup code in `code`. Returns `{"password": "...", "expiresAt": "<ISO 8601>"}`, a webmail credential that is valid for 12 hours in Dovecot and Postfix. `401` with message `twofactor required` if `code` is missing, `authentication failed` otherwise. `403` for users with the spam role or a required password change, only after the password is correct. App passwords are rejected. |
 | `POST` | `/api/roundcube/logout` | Body `{"email": "...", "password": "<webmail credential>"}`. Revokes the webmail credential. Always returns `204`. |
 
 ## Keycloak

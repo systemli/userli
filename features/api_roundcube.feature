@@ -203,28 +203,6 @@ Feature: Roundcube API
         Then the response status code should equal 401
         And the JSON path "message" should equal "authentication failed"
 
-    @login @rate-limit
-    Scenario: Too many login attempts are rejected, even with the right password
-        Given I have a valid API token "roundcube-test-123"
-        When I send a POST request to "/api/roundcube/login" with form data:
-            | email    | totp@example.org |
-            | password | password         |
-            | code     | 000000           |
-        And I send a POST request to "/api/roundcube/login" with form data:
-            | email    | totp@example.org |
-            | password | password         |
-            | code     | 000001           |
-        And I send a POST request to "/api/roundcube/login" with form data:
-            | email    | totp@example.org |
-            | password | wrong            |
-        And I store the TOTP code for secret "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ" as "%code%"
-        And I send a POST request to "/api/roundcube/login" with form data:
-            | email    | totp@example.org |
-            | password | password         |
-            | code     | %code%           |
-        Then the response status code should equal 429
-        And the JSON path "message" should equal "too many attempts"
-
     @logout
     Scenario: Logout revokes the webmail credential
         Given I have a valid API token "roundcube-test-123"
