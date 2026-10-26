@@ -49,6 +49,11 @@ final class InitController extends AbstractController
     #[Route(path: '/init', name: 'init_submit', methods: ['POST'])]
     public function initSubmit(Request $request): Response
     {
+        // redirect if already configured
+        if (0 < $this->manager->getRepository(Domain::class)->count([])) {
+            return $this->redirectToRoute('init_user');
+        }
+
         $domain = new Domain();
         $form = $this->createForm(DomainType::class, $domain);
         $form->handleRequest($request);
@@ -81,6 +86,11 @@ final class InitController extends AbstractController
     #[Route(path: '/init/user', name: 'init_user_submit', methods: ['POST'])]
     public function userSubmit(Request $request): Response
     {
+        // redirect if already configured
+        if (0 < $this->manager->getRepository(User::class)->count([])) {
+            return $this->redirectToRoute('init_settings');
+        }
+
         $form = $this->createForm(InitUserType::class, new InitUser());
         $form->handleRequest($request);
 
@@ -130,6 +140,11 @@ final class InitController extends AbstractController
     #[Route(path: '/init/settings', name: 'init_settings_submit', methods: ['POST'])]
     public function settingsSubmit(Request $request): Response
     {
+        // redirect if already configured
+        if (null !== $this->manager->getRepository(Setting::class)->findOneBy(['name' => 'app_url'])) {
+            return $this->redirectToRoute('index');
+        }
+
         $form = $this->createForm(SettingsType::class);
         $form->handleRequest($request);
 

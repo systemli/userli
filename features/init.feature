@@ -71,3 +71,18 @@ Feature: Initialization
 
     When I am on "/init/settings"
     Then I should be on "/"
+
+  @init
+  Scenario: A setup form obtained before the first user cannot overwrite the admin afterwards
+    When the following Domain exists:
+      | name        |
+      | example.org |
+    And I am on "/init/user"
+    And the following User exists:
+      | email                  | password | roles      |
+      | postmaster@example.org | P4ssW0rt | ROLE_ADMIN |
+    When I fill in the following:
+      | init_user[password][first]  | H4ckedPass!!1 |
+      | init_user[password][second] | H4ckedPass!!1 |
+    And I press "Submit"
+    Then the password of "postmaster@example.org" should be "P4ssW0rt"
