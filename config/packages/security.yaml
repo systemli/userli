@@ -74,6 +74,7 @@ security:
             two_factor:
                 auth_form_path: 2fa_login
                 check_path: 2fa_login_check
+                failure_handler: app.security.two_factor_failure_handler
                 enable_csrf: true
 
             # activate different ways to authenticate

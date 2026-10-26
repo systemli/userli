@@ -138,7 +138,8 @@ Feature: Login
     And I fill in "_auth_code" with "invalid-token"
     And I press "Verify"
 
-    Then I should be on "/2fa"
+    Then I should be on "/2fa_check"
+    And the response status code should be 401
     And I should see text matching "The verification code is not valid."
 
     And I follow "Cancel login"

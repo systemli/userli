@@ -40,3 +40,14 @@ services:
             $decoratedAuthenticator: '@App\Service\SettingsAwareTotpAuthenticator.inner'
 
 
+
+    # Render the login and 2FA forms with HTTP 401 on failure instead of redirecting
+    App\Security\LoginFailureHandler:
+        arguments:
+            $route: login
+
+    app.security.two_factor_failure_handler:
+        class: App\Security\LoginFailureHandler
+        arguments:
+            $route: 2fa_login
+            $errorInSession: true

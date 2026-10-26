@@ -118,6 +118,8 @@ final class RecoveryController extends AbstractController
 
             // Verification of $email + $recoveryToken failed, start over
             $this->addFlash('error', 'flashes.recovery-reauthenticate');
+
+            return $this->render('Recovery/reset_password.html.twig', ['form' => $form], new Response(status: Response::HTTP_UNAUTHORIZED));
         }
 
         return $this->render('Recovery/reset_password.html.twig', ['form' => $form]);
@@ -169,7 +171,7 @@ final class RecoveryController extends AbstractController
     {
         $this->addFlash('error', 'flashes.recovery-token-invalid');
 
-        return $this->render('Recovery/recovery_new.html.twig', ['form' => $form]);
+        return $this->render('Recovery/recovery_new.html.twig', ['form' => $form], new Response(status: Response::HTTP_UNAUTHORIZED));
     }
 
     private function redirectToResetPassword(string $email, string $recoveryToken): Response

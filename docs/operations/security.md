@@ -41,6 +41,11 @@ endpoints at the webserver or with a tool like
 * `POST /login` – web login
 * `POST /2fa_check` – two-factor codes
 * `POST /recovery` – recovery tokens
+* `POST /recovery/reset_password` – recovery tokens during password reset
+
+Failed attempts on these endpoints answer with HTTP `401`, successful ones with
+a redirect (`302`). Match on `POST` requests with status `401` in the access
+log, for example with the generic CrowdSec `http-generic-bf` scenario.
 
 Failed SMTP and IMAP logins are visible in the Postfix and Dovecot logs.
 
