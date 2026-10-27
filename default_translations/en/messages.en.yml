@@ -328,11 +328,14 @@ error:
 spam:
   title: Account restricted
   text: >
-    Your account is flagged as a spammer or as compromised.
-    You can still sign in and read your e-mails,
-    but you can only send e-mails to our support.
-    Please contact support to get your account unlocked.
-  contact: 'Support: %address%'
+    Your account has been compromised and/or has sent spam.
+    Therefore your account has been restricted.
+    You can no longer send e-mails (except to the support)
+    or sign in to other services linked to your account.
+  contact: >
+    Please contact the support to clarify the matter
+    and to regain access to all features.
+  contact_address: 'To do so, send an e-mail to %address%.'
 Bad credentials.: The presented password is invalid.
 custom: custom
 random: random

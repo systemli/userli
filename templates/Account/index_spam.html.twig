@@ -8,9 +8,10 @@
 
 {% block page_content %}
     {% set support_address = setting('support_address') %}
-    {% if support_address %}
-        <p class="text-center text-gray-700 dark:text-gray-300">
-            {{ "spam.contact"|trans({'%address%': support_address}) }}
-        </p>
-    {% endif %}
+    <div class="space-y-4 text-center text-gray-700 dark:text-gray-300">
+        <p>{{ "spam.contact"|trans }}</p>
+        {% if support_address %}
+            <p>{{ "spam.contact_address"|trans({'%address%': support_address}) }}</p>
+        {% endif %}
+    </div>
 {% endblock %}

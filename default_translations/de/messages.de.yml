@@ -322,11 +322,14 @@ error:
 spam:
   title: Konto eingeschränkt
   text: >
-    Dein Konto ist als Spammer oder als kompromittiert gespeichert.
-    Du kannst dich weiterhin anmelden und deine E-Mails lesen,
-    E-Mails aber nur an unseren Support senden.
-    Bitte kontaktiere den Support, um dein Konto freizuschalten.
-  contact: 'Support: %address%'
+    Dein Konto wurde kompromittiert und/oder hat Spam versendet.
+    Daher wurde dein Konto eingeschränkt.
+    Es ist nicht mehr möglich, E-Mails zu senden (abgesehen vom Support)
+    oder dich bei anderen Services anzumelden, die mit dem Konto verknüpft sind.
+  contact: >
+    Bitte kontaktiere den Support, um den Sachverhalt aufzuklären
+    und wieder Zugang zu allen Features zu bekommen.
+  contact_address: 'Dazu sendest du eine E-Mail an %address%.'
 Bad credentials.: Das angegebene Passwort ist ungültig.
 custom: gewählten
 random: zufälligen
