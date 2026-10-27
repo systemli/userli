@@ -329,7 +329,7 @@ spam:
   title: Account restricted
   text: Your account has been compromised and/or has sent spam. Therefore it has been restricted.
   limits-title: What this means for you
-  limit-send: You can no longer send e-mails, except to the support.
+  limit-send: You can only send e-mails to the support.
   limit-services: You can't sign in to other services linked to your account.
   contact: >
     Please contact the support to clarify the matter

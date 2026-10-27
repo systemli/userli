@@ -323,7 +323,7 @@ spam:
   title: Konto eingeschränkt
   text: Dein Konto wurde kompromittiert und/oder hat Spam versendet. Daher wurde es eingeschränkt.
   limits-title: Das bedeutet für dich
-  limit-send: Du kannst keine E-Mails mehr senden, abgesehen vom Support.
+  limit-send: Du kannst nur noch E-Mails an den Support senden.
   limit-services: Du kannst dich nicht bei anderen Services anmelden, die mit deinem Konto verknüpft sind.
   contact: >
     Bitte kontaktiere den Support, um den Sachverhalt aufzuklären
