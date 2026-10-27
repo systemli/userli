@@ -22,13 +22,15 @@
         {% endif %}
 
         {# Aliases #}
-        <a href="{{ path('aliases') }}"
-           class="flex items-center justify-center px-3 xl:px-4 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:scale-105 {{ current_route == 'aliases' ? 'bg-white/20 text-white shadow-lg' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}"
-           title="{{ "navbar.aliases"|trans }}"
-           {{ current_route == 'aliases' ? 'aria-current="page"' : '' }}>
-            {{ ux_icon('heroicons:at-symbol', {class: 'w-4 h-4 mr-1 xl:mr-2 flex-shrink-0'}) }}
-            <span>{{ "navbar.aliases"|trans }}</span>
-        </a>
+        {% if not is_granted('ROLE_SPAM') %}
+            <a href="{{ path('aliases') }}"
+               class="flex items-center justify-center px-3 xl:px-4 py-2 rounded-2xl text-sm font-medium transition-all duration-300 hover:scale-105 {{ current_route == 'aliases' ? 'bg-white/20 text-white shadow-lg' : 'text-gray-300 hover:bg-white/10 hover:text-white' }}"
+               title="{{ "navbar.aliases"|trans }}"
+               {{ current_route == 'aliases' ? 'aria-current="page"' : '' }}>
+                {{ ux_icon('heroicons:at-symbol', {class: 'w-4 h-4 mr-1 xl:mr-2 flex-shrink-0'}) }}
+                <span>{{ "navbar.aliases"|trans }}</span>
+            </a>
+        {% endif %}
 
         {# Konto #}
         <a href="{{ path('account_settings') }}"

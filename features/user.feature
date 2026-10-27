@@ -338,6 +338,14 @@ Feature: User
     And I should see "Custom Aliases"
 
   @alias-access
+  Scenario: Spammer does not see the alias link in the navigation
+    When I am authenticated as "spam@example.org"
+    And I am on "/account/settings"
+    Then the response status code should be 200
+    And I should not see "Aliases"
+    And I should not see "OpenPGP"
+
+  @alias-access
   Scenario: Spammer cannot access alias page
     When I am authenticated as "spam@example.org"
     And I am on "/account/alias"
