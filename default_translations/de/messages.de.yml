@@ -321,15 +321,14 @@ error:
   generic_error: Es ist ein Fehler passiert. Das tut uns leid.
 spam:
   title: Konto eingeschränkt
-  text: >
-    Dein Konto wurde kompromittiert und/oder hat Spam versendet.
-    Daher wurde dein Konto eingeschränkt.
-    Es ist nicht mehr möglich, E-Mails zu senden (abgesehen vom Support)
-    oder dich bei anderen Services anzumelden, die mit dem Konto verknüpft sind.
+  text: Dein Konto wurde kompromittiert und/oder hat Spam versendet. Daher wurde es eingeschränkt.
+  limits-title: Das bedeutet für dich
+  limit-send: Du kannst keine E-Mails mehr senden, abgesehen vom Support.
+  limit-services: Du kannst dich nicht bei anderen Services anmelden, die mit deinem Konto verknüpft sind.
   contact: >
     Bitte kontaktiere den Support, um den Sachverhalt aufzuklären
     und wieder Zugang zu allen Features zu bekommen.
-  contact_address: 'Dazu sendest du eine E-Mail an %address%.'
+  contact_address: 'Dazu sendest du eine E-Mail an:'
 Bad credentials.: Das angegebene Passwort ist ungültig.
 custom: gewählten
 random: zufälligen

@@ -327,15 +327,14 @@ error:
   generic_error: An error occured. We're sorry.
 spam:
   title: Account restricted
-  text: >
-    Your account has been compromised and/or has sent spam.
-    Therefore your account has been restricted.
-    You can no longer send e-mails (except to the support)
-    or sign in to other services linked to your account.
+  text: Your account has been compromised and/or has sent spam. Therefore it has been restricted.
+  limits-title: What this means for you
+  limit-send: You can no longer send e-mails, except to the support.
+  limit-services: You can't sign in to other services linked to your account.
   contact: >
     Please contact the support to clarify the matter
     and to regain access to all features.
-  contact_address: 'To do so, send an e-mail to %address%.'
+  contact_address: 'To do so, send an e-mail to:'
 Bad credentials.: The presented password is invalid.
 custom: custom
 random: random

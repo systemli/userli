@@ -311,7 +311,8 @@ Feature: User
     When I am authenticated as "spam@example.org"
     And I am on "/account"
     Then the response status code should be 200
-    And I should see "To do so, send an e-mail to support@example.org."
+    And I should see "To do so, send an e-mail to:"
+    And I should see "support@example.org"
 
   @account-settings-access
   Scenario: Unauthenticated user is redirected to login from account settings

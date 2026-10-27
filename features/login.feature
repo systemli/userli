@@ -119,7 +119,7 @@ Feature: Login
 
     Then I should be on "/account"
     And the response status code should be 200
-    And I should see text matching "Therefore your account has been restricted"
+    And I should see text matching "Therefore it has been restricted"
 
   @login-2fa
   Scenario: Login fails with invalid TOTP code if two-factor auth is enabled
