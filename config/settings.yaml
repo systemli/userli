@@ -26,6 +26,11 @@ settings:
     type: email
     default: "monitoring@example.org"
 
+  support_address:
+    type: email
+    default: ""
+    optional: true
+
   webmail_url:
     type: url
     default: ""

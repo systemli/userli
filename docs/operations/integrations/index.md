@@ -56,7 +56,7 @@ logic:
 |---------------|:-------------------------:|:-------------------:|:-------------:|
 | active        | ✓ | ✓ | ✓ |
 | password change required | ✗ | ✗ | ✓ |
-| role *Spam*   | ✗ | ✗ | ✓ |
+| role *Spam*   | ✓ | ✓, but sending is limited to the support address | ✓ |
 | deleted       | ✗ | ✗ | ✗ |
 
 !!! warning "Replaced by scoped API tokens"

@@ -7,5 +7,10 @@
 {% block page_subtitle %}{{ "spam.text"|trans }}{% endblock %}
 
 {% block page_content %}
-    {# Content is displayed in the page subtitle above #}
+    {% set support_address = setting('support_address') %}
+    {% if support_address %}
+        <p class="text-center text-gray-700 dark:text-gray-300">
+            {{ "spam.contact"|trans({'%address%': support_address}) }}
+        </p>
+    {% endif %}
 {% endblock %}

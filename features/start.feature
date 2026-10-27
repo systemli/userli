@@ -26,11 +26,11 @@ Feature: Start Page
         Then I should be on "/account"
 
     @start
-    Scenario: Spammer sees locked message
+    Scenario: Spammer sees restricted message
         Given I am authenticated as "spam@example.org"
         When I am on "/account"
         Then the response status code should be 200
-        And I should see "Account locked"
+        And I should see "Account restricted"
 
     @start
     Scenario: Regular user sees dashboard

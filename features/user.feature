@@ -297,11 +297,21 @@ Feature: User
     And I should see "Manage your e-mail account"
 
   @account-access
-  Scenario: Spammer sees locked message on account page
+  Scenario: Spammer sees restricted message on account page
     When I am authenticated as "spam@example.org"
     And I am on "/account"
     Then the response status code should be 200
-    And I should see "Account locked"
+    And I should see "Account restricted"
+
+  @account-access
+  Scenario: Spammer sees the support address on account page
+    Given the following Setting exists:
+      | name            | value               |
+      | support_address | support@example.org |
+    When I am authenticated as "spam@example.org"
+    And I am on "/account"
+    Then the response status code should be 200
+    And I should see "Support: support@example.org"
 
   @account-settings-access
   Scenario: Unauthenticated user is redirected to login from account settings

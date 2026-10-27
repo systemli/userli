@@ -11,18 +11,24 @@ Every account has one or more roles. Roles are set by admins when
 | **Permanent**     | `ROLE_PERMANENT`    | The account is never removed as inactive. |
 | **Multiplier**    | `ROLE_MULTIPLIER`   | Can create invite codes at any time, without limit and waiting period. |
 | **Suspicious**    | `ROLE_SUSPICIOUS`   | No invite codes; already issued codes of this user become invalid. |
-| **Spam**          | `ROLE_SPAM`         | Account is locked: no sending, no IMAP/POP3 login. Includes *Suspicious*. |
+| **Spam**          | `ROLE_SPAM`         | Account is restricted: can read mails, but only send to the support address. Includes *Suspicious*. |
 
 ## Spam
 
 Use *Spam* when an account is compromised or sends spam.
 
-* SMTP authentication (Postfix) and IMAP/POP3 login (Dovecot) are refused.
-  The user can't send or read emails anymore.
+* SMTP authentication (Postfix), IMAP/POP3 login (Dovecot) and webmail login
+  (Roundcube) still work. The user can read emails.
+* The user can only send emails to the
+  [support address](settings.md#email-configuration). Mails to any other
+  recipient are rejected. Without a support address, no sending is possible.
+  This needs the [Postfix adapter](../operations/integrations/postfix.md#sending-restrictions).
 * Incoming emails are still delivered to the mailbox.
-* The user can still sign in to the web interface but only sees an
-  *"Account locked"* page with a request to contact support. Aliases and
-  OpenPGP keys can't be managed.
+* The user can sign in to the web interface but only sees an
+  *"Account restricted"* page that says the account is flagged as spammer or
+  compromised, with a request to contact support. Aliases and OpenPGP keys
+  can't be managed.
+* Single sign-on via Keycloak is still refused.
 * All effects of *Suspicious* apply, too.
 
 To unlock the account, remove the role. Consider requiring a password change

@@ -9,7 +9,6 @@ use App\Entity\AppPassword;
 use App\Entity\User;
 use App\Enum\ApiScope;
 use App\Enum\MailCrypt;
-use App\Enum\Roles;
 use App\Enum\UserCacheKey;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\UserAuthenticationHandler;
@@ -35,8 +34,6 @@ final class DovecotController extends AbstractController
     public const string MESSAGE_AUTHENTICATION_FAILED = 'authentication failed';
 
     public const string MESSAGE_USER_NOT_FOUND = 'user not found';
-
-    public const string MESSAGE_USER_DISABLED = 'user disabled due to spam role';
 
     public const string MESSAGE_USER_PASSWORD_CHANGE_REQUIRED = 'user password change required';
 
@@ -108,10 +105,6 @@ final class DovecotController extends AbstractController
     ): JsonResponse {
         if ($user->isDeleted()) {
             return $this->json(['message' => self::MESSAGE_USER_NOT_FOUND], Response::HTTP_NOT_FOUND);
-        }
-
-        if ($user->hasRole(Roles::SPAM)) {
-            return $this->json(['message' => self::MESSAGE_USER_DISABLED], Response::HTTP_FORBIDDEN);
         }
 
         if ($user->isPasswordChangeRequired()) {

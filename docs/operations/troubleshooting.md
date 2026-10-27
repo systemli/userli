@@ -53,8 +53,7 @@ worker. `bin/console debug:scheduler` shows the next run of each task.
     `{"message":"success"}` means the token works. `401` means the token is
     invalid, `403` that it lacks the `dovecot` scope.
 
-* The account may be deleted, have the role *Spam* or require a password
-  change. Check it in **Admin → Users**.
+* The account may be deleted or require a password change. Check it in **Admin → Users**.
 
 ## New users can't receive mail with MailCrypt
 

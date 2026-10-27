@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\Domain;
 use App\Entity\User;
+use App\Enum\Roles;
 use DateInterval;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -111,10 +112,13 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
      *
      * @return array<string, int>|null
      */
-    public function findSmtpQuotaLimitsByEmail(string $email): ?array
+    /**
+     * @return array{limits: array, sending_allowed: bool}|null
+     */
+    public function findSmtpQuotaByEmail(string $email): ?array
     {
         $result = $this->createQueryBuilder('u')
-            ->select('u.smtpQuotaLimits')
+            ->select('u.smtpQuotaLimits', 'u.roles')
             ->where('u.email = :email')
             ->andWhere('u.deleted = :deleted')
             ->setParameter('email', $email)
@@ -127,7 +131,10 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
             return null;
         }
 
-        return $result['smtpQuotaLimits'] ?? [];
+        return [
+            'limits' => $result['smtpQuotaLimits'] ?? [],
+            'sending_allowed' => !in_array(Roles::SPAM, $result['roles'] ?? [], true),
+        ];
     }
 
     public function countUsers(): int

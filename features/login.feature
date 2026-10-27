@@ -119,7 +119,7 @@ Feature: Login
 
     Then I should be on "/account"
     And the response status code should be 200
-    And I should see text matching "E-mail access has been turned off"
+    And I should see text matching "you can only send e-mails to our support"
 
   @login-2fa
   Scenario: Login fails with invalid TOTP code if two-factor auth is enabled

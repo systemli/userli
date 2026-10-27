@@ -175,6 +175,33 @@ Feature: Postfix API
         Then the response status code should equal 200
         And the JSON path "per_hour" should equal "0"
         And the JSON path "per_day" should equal "0"
+        And the JSON path "sending_allowed" should equal "true"
+        And the JSON path "allowed_recipients" should be empty
+
+    @quota
+    Scenario: Get SMTP quota for spam user without support address
+        Given the following User exists:
+            | email            | password | roles     |
+            | spam@example.org | password | ROLE_SPAM |
+        And I have a valid API token "postfix-test-123"
+        When I send a GET request to "/api/postfix/smtp_quota/spam@example.org"
+        Then the response status code should equal 200
+        And the JSON path "sending_allowed" should equal "false"
+        And the JSON path "allowed_recipients" should be empty
+
+    @quota
+    Scenario: Get SMTP quota for spam user with support address
+        Given the following User exists:
+            | email            | password | roles     |
+            | spam@example.org | password | ROLE_SPAM |
+        And the following Setting exists:
+            | name            | value               |
+            | support_address | support@example.org |
+        And I have a valid API token "postfix-test-123"
+        When I send a GET request to "/api/postfix/smtp_quota/spam@example.org"
+        Then the response status code should equal 200
+        And the JSON path "sending_allowed" should equal "false"
+        And the JSON path "allowed_recipients.0" should equal "support@example.org"
 
     @quota
     Scenario: Get SMTP quota for existing alias
@@ -183,6 +210,7 @@ Feature: Postfix API
         Then the response status code should equal 200
         And the JSON path "per_hour" should equal "0"
         And the JSON path "per_day" should equal "0"
+        And the JSON path "sending_allowed" should equal "true"
 
     @auth
     Scenario: Authenticate with wrong API token
@@ -247,7 +275,7 @@ Feature: Postfix API
         And the JSON path "message" should equal "authentication failed"
 
     @auth
-    Scenario: Authenticate spam user is forbidden
+    Scenario: Authenticate spam user succeeds
         Given the following User exists:
             | email            | password | roles     |
             | spam@example.org | password | ROLE_SPAM |
@@ -256,11 +284,11 @@ Feature: Postfix API
             """
             {"email": "spam@example.org", "password": "password"}
             """
-        Then the response status code should equal 403
-        And the JSON path "message" should equal "user disabled due to spam role"
+        Then the response status code should equal 200
+        And the JSON path "message" should equal "success"
 
     @auth @app-password @last-login
-    Scenario: Authenticate spam user with app password does not update last login
+    Scenario: Authenticate spam user with app password updates last login
         Given the following User exists:
             | email            | password | roles     |
             | spam@example.org | password | ROLE_SPAM |
@@ -272,8 +300,8 @@ Feature: Postfix API
             """
             {"email": "spam@example.org", "password": "app-password"}
             """
-        Then the response status code should equal 403
-        And the app password "Thunderbird" of "spam@example.org" should have no last login time
+        Then the response status code should equal 200
+        And the app password "Thunderbird" of "spam@example.org" should have a last login time of this week
 
     @auth
     Scenario: Authenticate user with password change required

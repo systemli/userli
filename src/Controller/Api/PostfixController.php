@@ -8,7 +8,6 @@ use App\Dto\PostfixAuthDto;
 use App\Enum\AliasCacheKey;
 use App\Enum\ApiScope;
 use App\Enum\DomainCacheKey;
-use App\Enum\Roles;
 use App\Enum\UserCacheKey;
 use App\Handler\UserAuthenticationHandler;
 use App\Repository\AliasRepository;
@@ -31,8 +30,6 @@ final class PostfixController extends AbstractController
     public const string MESSAGE_SUCCESS = 'success';
 
     public const string MESSAGE_AUTHENTICATION_FAILED = 'authentication failed';
-
-    public const string MESSAGE_USER_DISABLED = 'user disabled due to spam role';
 
     public const string MESSAGE_USER_PASSWORD_CHANGE_REQUIRED = 'user password change required';
 
@@ -111,20 +108,31 @@ final class PostfixController extends AbstractController
     #[Route(path: '/api/postfix/smtp_quota/{email}', name: 'api_postfix_get_smtp_quota', methods: ['GET'], stateless: true)]
     public function getSmtpQuota(string $email): Response
     {
-        $limits = $this->cache->get(UserCacheKey::POSTFIX_QUOTA->key($email), function (ItemInterface $item) use ($email) {
+        $quota = $this->cache->get(UserCacheKey::POSTFIX_QUOTA->key($email), function (ItemInterface $item) use ($email) {
             $item->expiresAfter(UserCacheKey::TTL);
 
-            return $this->userRepository->findSmtpQuotaLimitsByEmail($email)
-                ?? $this->aliasRepository->findSmtpQuotaLimitsBySource($email);
+            $userQuota = $this->userRepository->findSmtpQuotaByEmail($email);
+            if (null !== $userQuota) {
+                return $userQuota;
+            }
+
+            $aliasLimits = $this->aliasRepository->findSmtpQuotaLimitsBySource($email);
+
+            return null === $aliasLimits ? null : ['limits' => $aliasLimits, 'sending_allowed' => true];
         });
 
-        if ($limits === null) {
+        if ($quota === null) {
             return $this->json(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
         }
 
+        // Read per request instead of cached, so a changed setting applies immediately
+        $supportAddress = (string) $this->settingsService->get('support_address', '');
+
         return $this->json([
-            'per_hour' => $limits['per_hour'] ?? (int) $this->settingsService->get('smtp_quota_limit_per_hour', 0),
-            'per_day' => $limits['per_day'] ?? (int) $this->settingsService->get('smtp_quota_limit_per_day', 0),
+            'per_hour' => $quota['limits']['per_hour'] ?? (int) $this->settingsService->get('smtp_quota_limit_per_hour', 0),
+            'per_day' => $quota['limits']['per_day'] ?? (int) $this->settingsService->get('smtp_quota_limit_per_day', 0),
+            'sending_allowed' => $quota['sending_allowed'],
+            'allowed_recipients' => $quota['sending_allowed'] || '' === $supportAddress ? [] : [$supportAddress],
         ]);
     }
 
@@ -135,11 +143,6 @@ final class PostfixController extends AbstractController
 
         if (null === $user || $user->isDeleted()) {
             return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
-        }
-
-        // Checked before authenticating, so rejected logins don't count as last login
-        if ($user->hasRole(Roles::SPAM)) {
-            return $this->json(['message' => self::MESSAGE_USER_DISABLED], Response::HTTP_FORBIDDEN);
         }
 
         if ($user->isPasswordChangeRequired()) {

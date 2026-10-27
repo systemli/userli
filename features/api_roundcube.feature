@@ -198,13 +198,13 @@ Feature: Roundcube API
         Then the response status code should equal 401
 
     @login
-    Scenario: Login of spam user is rejected
+    Scenario: Login of spam user succeeds
         Given I have a valid API token "roundcube-test-123"
         When I send a POST request to "/api/roundcube/login" with form data:
             | email    | spam@example.org |
             | password | password         |
-        Then the response status code should equal 403
-        And the JSON path "message" should equal "user disabled due to spam role"
+        Then the response status code should equal 200
+        And the JSON path "password" should not be empty
 
     @login
     Scenario: Login of user who must change the password is rejected

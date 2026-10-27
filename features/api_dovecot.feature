@@ -149,11 +149,12 @@ Feature: Dovecot API
         Then the response status code should equal 404
 
     @passdb
-    Scenario: Passdb lookup for spam user is forbidden
+    Scenario: Passdb lookup for spam user succeeds
         Given I have a valid API token "dovecot-test-123"
         When I send a POST request to "/api/dovecot/spam@example.org" with form data:
             | password | password |
-        Then the response status code should equal 403
+        Then the response status code should equal 200
+        And the user "spam@example.org" should have a last login time of this week
 
     @userdb
     Scenario: Userdb lookup for existing user
@@ -171,7 +172,7 @@ Feature: Dovecot API
         Then the response status code should equal 404
 
     @userdb
-    Scenario: Userdb lookup for spam user succeeds (only passdb blocked)
+    Scenario: Userdb lookup for spam user succeeds
         Given I have a valid API token "dovecot-test-123"
         When I send a GET request to "/api/dovecot/spam@example.org"
         Then the response status code should equal 200

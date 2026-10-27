@@ -39,11 +39,12 @@ If your password was found in a database of known data breaches, a red
 automatically when you sign in. Change your password as soon as possible – the
 banner disappears afterwards.
 
-### Account locked
+### Account restricted
 
-If you see the page *"Account locked"*, your provider believes that a spammer
-has misused your account and has turned off email access. Contact the support
-of your provider to unlock it.
+If you see the page *"Account restricted"*, your provider has flagged your
+account as a spammer or as compromised. You can still sign in and read your
+emails, but you can only send emails to the support of your provider. Contact
+the support to unlock your account.
 
 ## Account settings
 
