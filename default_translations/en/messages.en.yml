@@ -1002,6 +1002,13 @@ admin:
     title: Users
     heading: Users
     description: Manage user accounts, roles, and security settings
+    roles_info:
+      admin: Full access to the admin interface, all domains and all settings.
+      domain_admin: Manages users, aliases and invite codes of their own domain. Includes Permanent and Multiplier.
+      permanent: The account is never removed as inactive. Use it for role or function accounts that nobody signs in to.
+      multiplier: The user can create invite codes at any time, without limit and waiting period.
+      suspicious: The user gets no invite codes and unused invite codes of this user become invalid. Use it for accounts that invite spammers or abusers.
+      spam: The account is restricted. The user can read emails, but can only send to the support address. Includes Suspicious. Use it for compromised accounts or accounts that send spam.
     table:
       email: Email
       roles: Roles

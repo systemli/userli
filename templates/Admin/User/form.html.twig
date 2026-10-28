@@ -89,12 +89,18 @@
                 <div>
                     {{ form_label(form.roles, 'admin.user.form.roles.label', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
                     {{ form_errors(form.roles) }}
-                    <div class="flex flex-wrap gap-4">
+                    <div class="space-y-3">
                         {% for child in form.roles %}
-                            <label class="inline-flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-                                {{ form_widget(child) }}
-                                {{ child.vars.label }}
-                            </label>
+                            {% set role_key = child.vars.value|replace({'ROLE_': ''})|lower %}
+                            <div>
+                                <label class="inline-flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                                    {{ form_widget(child) }}
+                                    {{ child.vars.label }}
+                                </label>
+                                {% if role_key in ['admin', 'domain_admin', 'permanent', 'multiplier', 'suspicious', 'spam'] %}
+                                    <p class="mt-0.5 ml-6 text-xs text-gray-500 dark:text-gray-400">{{ ('admin.user.roles_info.' ~ role_key)|trans }}</p>
+                                {% endif %}
+                            </div>
                         {% endfor %}
                     </div>
                     <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">

@@ -999,6 +999,13 @@ admin:
     title: Benutzer:innen
     heading: Benutzer:innen
     description: Verwalte Konten, Rollen und Sicherheitseinstellungen
+    roles_info:
+      admin: Voller Zugriff auf die Administration, alle Domains und alle Einstellungen.
+      domain_admin: Verwaltet Benutzer:innen, Aliase und Einladungscodes der eigenen Domain. Beinhaltet Permanent und Multiplier.
+      permanent: Das Konto wird nie wegen Inaktivität gelöscht. Geeignet für Rollen- oder Funktionskonten, bei denen sich niemand anmeldet.
+      multiplier: Die:der Benutzer:in kann jederzeit Einladungscodes erstellen, ohne Limit und Wartezeit.
+      suspicious: Die:der Benutzer:in erhält keine Einladungscodes, und noch nicht eingelöste Einladungscodes werden ungültig. Geeignet für Konten, die Spammer:innen oder Missbrauch einladen.
+      spam: Das Konto ist eingeschränkt. Die:der Benutzer:in kann E-Mails lesen, aber nur an die Support-Adresse senden. Beinhaltet Suspicious. Geeignet für kompromittierte Konten oder Konten, die Spam versenden.
     table:
       email: E-Mail
       roles: Rollen
