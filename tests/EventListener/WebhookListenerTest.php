@@ -13,6 +13,8 @@ use PHPUnit\Framework\TestCase;
 
 class WebhookListenerTest extends TestCase
 {
+    use EventListenerAttributes;
+
     public function testOnUserCreated(): void
     {
         $user = new User('test@example.org');
@@ -40,14 +42,12 @@ class WebhookListenerTest extends TestCase
         $listener->onUserReset(new UserEvent($user));
     }
 
-    public function testGetSubscribedEvents(): void
+    public function testListensToEvents(): void
     {
-        $events = WebhookListener::getSubscribedEvents();
-        self::assertArrayHasKey(UserEvent::USER_CREATED, $events);
-        self::assertArrayHasKey(UserEvent::USER_DELETED, $events);
-        self::assertArrayHasKey(UserEvent::USER_RESET, $events);
-        self::assertEquals('onUserCreated', $events[UserEvent::USER_CREATED]);
-        self::assertEquals('onUserDeleted', $events[UserEvent::USER_DELETED]);
-        self::assertEquals('onUserReset', $events[UserEvent::USER_RESET]);
+        self::assertEquals([
+            UserEvent::USER_CREATED => ['onUserCreated', 0],
+            UserEvent::USER_DELETED => ['onUserDeleted', 0],
+            UserEvent::USER_RESET => ['onUserReset', 0],
+        ], self::listenedEvents(WebhookListener::class));
     }
 }

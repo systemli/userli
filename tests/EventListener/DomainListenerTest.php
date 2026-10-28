@@ -13,13 +13,13 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class DomainListenerTest extends TestCase
 {
-    public function testGetSubscribedEvents(): void
-    {
-        $events = DomainListener::getSubscribedEvents();
+    use EventListenerAttributes;
 
-        self::assertArrayHasKey(DomainEvent::DELETED, $events);
-        self::assertEquals('onDomainDeleted', $events[DomainEvent::DELETED]);
-        self::assertArrayNotHasKey(DomainEvent::CREATED, $events);
+    public function testListensToEvents(): void
+    {
+        self::assertEquals([
+            DomainEvent::DELETED => ['onDomainDeleted', 0],
+        ], self::listenedEvents(DomainListener::class));
     }
 
     public function testOnDomainDeletedDispatchesClearCache(): void

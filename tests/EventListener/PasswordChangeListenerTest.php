@@ -22,6 +22,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PasswordChangeListenerTest extends TestCase
 {
+    use EventListenerAttributes;
+
     private Security $security;
     private UrlGeneratorInterface $urlGenerator;
     private EntityManagerInterface $entityManager;
@@ -40,12 +42,12 @@ class PasswordChangeListenerTest extends TestCase
         );
     }
 
-    public function testGetSubscribedEvents(): void
+    public function testListensToEvents(): void
     {
         self::assertEquals([
-            KernelEvents::REQUEST => [['onRequest', 0]],
-            UserEvent::PASSWORD_CHANGED => [['onPasswordChanged', 0]],
-        ], PasswordChangeListener::getSubscribedEvents());
+            KernelEvents::REQUEST => ['onRequest', 0],
+            UserEvent::PASSWORD_CHANGED => ['onPasswordChanged', 0],
+        ], self::listenedEvents(PasswordChangeListener::class));
     }
 
     public function testIgnoresSubRequests(): void

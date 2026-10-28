@@ -7,13 +7,12 @@ namespace App\EventListener;
 use App\Entity\User;
 use App\Enum\Roles;
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-final readonly class BeforeRequestListener implements EventSubscriberInterface
+final readonly class BeforeRequestListener
 {
     /**
      * BeforeRequestListener constructor.
@@ -22,6 +21,7 @@ final readonly class BeforeRequestListener implements EventSubscriberInterface
     {
     }
 
+    #[AsEventListener(event: KernelEvents::REQUEST)]
     public function onKernelRequest(RequestEvent $event): void
     {
         if (($user = $this->getNonAdminUser()) !== null) {
@@ -40,11 +40,5 @@ final readonly class BeforeRequestListener implements EventSubscriberInterface
         }
 
         return $this->entityManager->getRepository(User::class)->findByEmail($user->getUserIdentifier());
-    }
-
-    #[Override]
-    public static function getSubscribedEvents(): array
-    {
-        return [KernelEvents::REQUEST => [['onKernelRequest']]];
     }
 }

@@ -18,6 +18,8 @@ use Throwable;
 
 class JsonExceptionListenerTest extends TestCase
 {
+    use EventListenerAttributes;
+
     private JsonExceptionListener $subscriber;
 
     protected function setUp(): void
@@ -25,12 +27,11 @@ class JsonExceptionListenerTest extends TestCase
         $this->subscriber = new JsonExceptionListener('prod');
     }
 
-    public function testGetSubscribedEvents(): void
+    public function testListensToEvents(): void
     {
-        $events = JsonExceptionListener::getSubscribedEvents();
-
-        self::assertArrayHasKey(KernelEvents::EXCEPTION, $events);
-        self::assertEquals(['onKernelException', 0], $events[KernelEvents::EXCEPTION]);
+        self::assertEquals([
+            KernelEvents::EXCEPTION => ['onKernelException', 0],
+        ], self::listenedEvents(JsonExceptionListener::class));
     }
 
     public function testOnKernelExceptionWithApiRequest(): void

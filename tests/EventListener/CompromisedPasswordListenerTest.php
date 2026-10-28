@@ -17,14 +17,14 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 class CompromisedPasswordListenerTest extends TestCase
 {
-    public function testGetSubscribedEvents(): void
-    {
-        $events = CompromisedPasswordListener::getSubscribedEvents();
+    use EventListenerAttributes;
 
-        self::assertArrayHasKey(SecurityEvents::INTERACTIVE_LOGIN, $events);
-        self::assertEquals('onSecurityInteractiveLogin', $events[SecurityEvents::INTERACTIVE_LOGIN]);
-        self::assertArrayHasKey(LoginEvent::NAME, $events);
-        self::assertEquals('onLogin', $events[LoginEvent::NAME]);
+    public function testListensToEvents(): void
+    {
+        self::assertEquals([
+            SecurityEvents::INTERACTIVE_LOGIN => ['onSecurityInteractiveLogin', 0],
+            LoginEvent::NAME => ['onLogin', 0],
+        ], self::listenedEvents(CompromisedPasswordListener::class));
     }
 
     public function testOnSecurityInteractiveLoginCallsCheckAndNotify(): void

@@ -16,14 +16,14 @@ use PHPUnit\Framework\TestCase;
 
 class OpenPgpKeyListenerTest extends TestCase
 {
-    public function testGetSubscribedEvents(): void
-    {
-        $events = OpenPgpKeyListener::getSubscribedEvents();
+    use EventListenerAttributes;
 
-        self::assertArrayHasKey(AliasDeletedEvent::CUSTOM, $events);
-        self::assertArrayHasKey(UserEvent::USER_DELETED, $events);
-        self::assertEquals('onCustomAliasDeleted', $events[AliasDeletedEvent::CUSTOM]);
-        self::assertEquals('onUserDeleted', $events[UserEvent::USER_DELETED]);
+    public function testListensToEvents(): void
+    {
+        self::assertEquals([
+            AliasDeletedEvent::CUSTOM => ['onCustomAliasDeleted', 0],
+            UserEvent::USER_DELETED => ['onUserDeleted', 0],
+        ], self::listenedEvents(OpenPgpKeyListener::class));
     }
 
     public function testOnAliasDeletedCleansUpOrphanedKey(): void

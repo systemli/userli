@@ -7,37 +7,29 @@ namespace App\EventListener;
 use App\Enum\WebhookEvent;
 use App\Event\UserEvent;
 use App\Service\WebhookDispatcher;
-use Override;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-final readonly class WebhookListener implements EventSubscriberInterface
+final readonly class WebhookListener
 {
     public function __construct(private WebhookDispatcher $dispatcher)
     {
     }
 
+    #[AsEventListener(event: UserEvent::USER_CREATED)]
     public function onUserCreated(UserEvent $event): void
     {
         $this->dispatcher->dispatchUserEvent($event->getUser(), WebhookEvent::USER_CREATED);
     }
 
+    #[AsEventListener(event: UserEvent::USER_DELETED)]
     public function onUserDeleted(UserEvent $event): void
     {
         $this->dispatcher->dispatchUserEvent($event->getUser(), WebhookEvent::USER_DELETED);
     }
 
+    #[AsEventListener(event: UserEvent::USER_RESET)]
     public function onUserReset(UserEvent $event): void
     {
         $this->dispatcher->dispatchUserEvent($event->getUser(), WebhookEvent::USER_RESET);
-    }
-
-    #[Override]
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            UserEvent::USER_CREATED => 'onUserCreated',
-            UserEvent::USER_DELETED => 'onUserDeleted',
-            UserEvent::USER_RESET => 'onUserReset',
-        ];
     }
 }

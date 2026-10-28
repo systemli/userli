@@ -21,6 +21,8 @@ use Symfony\Component\Security\Http\SecurityEvents;
 
 class LoginListenerTest extends TestCase
 {
+    use EventListenerAttributes;
+
     private Stub&UserLastLoginUpdateService $userLastLoginUpdateService;
     private Stub&LoggerInterface $logger;
     private LoginListener $listener;
@@ -155,14 +157,11 @@ class LoginListenerTest extends TestCase
         );
     }
 
-    public function testGetSubscribedEvents(): void
+    public function testListensToEvents(): void
     {
-        self::assertEquals(
-            [
-                SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
-                LoginEvent::NAME => 'onAuthenticationHandlerSuccess',
-            ],
-            $this->listener::getSubscribedEvents()
-        );
+        self::assertEquals([
+            SecurityEvents::INTERACTIVE_LOGIN => ['onSecurityInteractiveLogin', 0],
+            LoginEvent::NAME => ['onAuthenticationHandlerSuccess', 0],
+        ], self::listenedEvents(LoginListener::class));
     }
 }

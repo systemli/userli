@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Rector\Config\RectorConfig;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector;
+use Rector\Symfony\CodeQuality\Rector\Class_\EventSubscriberToAttributeRector;
 use Rector\Symfony\CodeQuality\Rector\ClassMethod\ActionSuffixRemoverRector;
 
 return RectorConfig::configure()
@@ -22,6 +23,11 @@ return RectorConfig::configure()
         ControllerMethodInjectionToConstructorRector::class => [
             __DIR__.'/src/Controller/UserCRUDController.php',
             __DIR__.'/src/Controller/AliasCRUDController.php',
+        ],
+        // Form event subscribers are registered via FormBuilder::addEventSubscriber(),
+        // which requires EventSubscriberInterface.
+        EventSubscriberToAttributeRector::class => [
+            __DIR__.'/src/Form/OpenPgpKeyType.php',
         ],
         // Doctrine entities: keep ORM attributes above class properties for readability,
         // rather than inlining them into constructor promotion.

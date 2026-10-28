@@ -7,12 +7,11 @@ namespace App\EventListener;
 use App\Entity\User;
 use App\Event\UserEvent;
 use App\Message\WelcomeMail;
-use Override;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final readonly class WelcomeMailListener implements EventSubscriberInterface
+final readonly class WelcomeMailListener
 {
     public function __construct(
         private RequestStack $request,
@@ -20,15 +19,8 @@ final readonly class WelcomeMailListener implements EventSubscriberInterface
     ) {
     }
 
-    #[Override]
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            UserEvent::USER_CREATED => 'onUserCreated',
-            UserEvent::USER_RESTORED => 'onUserCreated',
-        ];
-    }
-
+    #[AsEventListener(event: UserEvent::USER_CREATED)]
+    #[AsEventListener(event: UserEvent::USER_RESTORED)]
     public function onUserCreated(UserEvent $event): void
     {
         /** @var User $user */

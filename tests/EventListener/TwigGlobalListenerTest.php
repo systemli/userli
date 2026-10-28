@@ -17,12 +17,13 @@ use Twig\Environment;
 
 class TwigGlobalListenerTest extends TestCase
 {
-    public function testGetSubscribedEvents(): void
-    {
-        $events = TwigGlobalListener::getSubscribedEvents();
+    use EventListenerAttributes;
 
-        self::assertArrayHasKey(KernelEvents::CONTROLLER, $events);
-        self::assertEquals('injectGlobalVariables', $events[KernelEvents::CONTROLLER]);
+    public function testListensToEvents(): void
+    {
+        self::assertEquals([
+            KernelEvents::CONTROLLER => ['injectGlobalVariables', 0],
+        ], self::listenedEvents(TwigGlobalListener::class));
     }
 
     public function testInjectGlobalVariablesSetsDomainName(): void

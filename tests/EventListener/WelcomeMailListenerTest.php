@@ -16,13 +16,14 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class WelcomeMailListenerTest extends TestCase
 {
-    public function testGetSubscribedEvents(): void
+    use EventListenerAttributes;
+
+    public function testListensToEvents(): void
     {
-        $events = WelcomeMailListener::getSubscribedEvents();
-        self::assertArrayHasKey(UserEvent::USER_CREATED, $events);
-        self::assertArrayHasKey(UserEvent::USER_RESTORED, $events);
-        self::assertEquals('onUserCreated', $events[UserEvent::USER_CREATED]);
-        self::assertEquals('onUserCreated', $events[UserEvent::USER_RESTORED]);
+        self::assertEquals([
+            UserEvent::USER_CREATED => ['onUserCreated', 0],
+            UserEvent::USER_RESTORED => ['onUserCreated', 0],
+        ], self::listenedEvents(WelcomeMailListener::class));
     }
 
     public function testOnUserCreatedDispatchesWelcomeMailWithLocale(): void

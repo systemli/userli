@@ -17,12 +17,13 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AliasCreationListenerTest extends TestCase
 {
-    public function testGetSubscribedEvents(): void
-    {
-        $events = AliasCreationListener::getSubscribedEvents();
+    use EventListenerAttributes;
 
-        self::assertArrayHasKey(AliasCreatedEvent::NAME, $events);
-        self::assertEquals('onAliasCreated', $events[AliasCreatedEvent::NAME]);
+    public function testListensToEvents(): void
+    {
+        self::assertEquals([
+            AliasCreatedEvent::NAME => ['onAliasCreated', 0],
+        ], self::listenedEvents(AliasCreationListener::class));
     }
 
     public function testOnAliasCreatedSendsMessageWithSessionLocale(): void

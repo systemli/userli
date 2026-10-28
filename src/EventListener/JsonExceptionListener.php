@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace App\EventListener;
 
 use App\Helper\JsonRequestHelper;
-use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-final readonly class JsonExceptionListener implements EventSubscriberInterface
+final readonly class JsonExceptionListener
 {
     public function __construct(
         #[Autowire('kernel.environment')]
@@ -21,14 +20,7 @@ final readonly class JsonExceptionListener implements EventSubscriberInterface
     ) {
     }
 
-    #[Override]
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            KernelEvents::EXCEPTION => ['onKernelException', 0],
-        ];
-    }
-
+    #[AsEventListener(event: KernelEvents::EXCEPTION, priority: 0)]
     public function onKernelException(ExceptionEvent $event): void
     {
         $request = $event->getRequest();
