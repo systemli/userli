@@ -31,6 +31,9 @@ class RolesTest extends TestCase
             Roles::DOMAIN_ADMIN,
             Roles::USER,
             Roles::PERMANENT,
+            Roles::SPAM,
+            Roles::MULTIPLIER,
+            Roles::SUSPICIOUS,
         ], $reachable);
     }
 

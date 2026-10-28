@@ -79,7 +79,7 @@ final class Roles
      *   // -> ['ROLE_ADMIN', 'ROLE_DOMAIN_ADMIN', 'ROLE_USER', 'ROLE_PERMANENT', 'ROLE_SPAM', 'ROLE_MULTIPLIER', 'ROLE_SUSPICIOUS']
      *
      *   Roles::getReachableRoles([Roles::DOMAIN_ADMIN, Roles::SPAM]);
-     *   // -> ['ROLE_USER', 'ROLE_PERMANENT']
+     *   // -> ['ROLE_DOMAIN_ADMIN', 'ROLE_USER', 'ROLE_PERMANENT', 'ROLE_SPAM', 'ROLE_MULTIPLIER', 'ROLE_SUSPICIOUS']
      *
      * @param array<int, string> $roles List of role names
      *
@@ -121,7 +121,7 @@ final class Roles
     public static function getRoleHierarchy(): array
     {
         return [
-            self::DOMAIN_ADMIN => [self::DOMAIN_ADMIN, self::USER, self::PERMANENT],
+            self::DOMAIN_ADMIN => [self::DOMAIN_ADMIN, self::USER, self::PERMANENT, self::SPAM, self::MULTIPLIER, self::SUSPICIOUS],
             self::ADMIN => [self::ADMIN, self::DOMAIN_ADMIN, self::USER, self::PERMANENT, self::SPAM, self::MULTIPLIER, self::SUSPICIOUS],
         ];
     }

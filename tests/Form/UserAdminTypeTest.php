@@ -245,9 +245,9 @@ class UserAdminTypeTest extends TypeTestCase
         self::assertContains(Roles::PERMANENT, $choices);
         self::assertNotContains(Roles::ADMIN, $choices);
         self::assertContains(Roles::DOMAIN_ADMIN, $choices);
-        self::assertNotContains(Roles::SPAM, $choices);
-        self::assertNotContains(Roles::MULTIPLIER, $choices);
-        self::assertNotContains(Roles::SUSPICIOUS, $choices);
+        self::assertContains(Roles::SPAM, $choices);
+        self::assertContains(Roles::MULTIPLIER, $choices);
+        self::assertContains(Roles::SUSPICIOUS, $choices);
     }
 
     public function testDomainAdminCannotSubmitAdminRole(): void
