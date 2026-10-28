@@ -69,7 +69,7 @@ to.
 |--------------------------------------------|:-----:|:------------:|
 | Users, aliases, invite codes, OpenPGP keys | all domains | own domain |
 | Manage users with role *Admin*             | ✓     |              |
-| Assignable roles                           | all   | User, Domain admin, Permanent |
+| Assignable roles                           | all   | all except Admin |
 | Set alias destination and SMTP quota       | ✓     |              |
 | Edit invitation settings of a domain       | all domains | own domain |
 | Create and delete domains                  | ✓     |              |
@@ -77,12 +77,6 @@ to.
 | Settings, API tokens, webhooks, maintenance | ✓    |              |
 
 The domain of a domain admin is the domain of their own email address.
-
-!!! warning "Domain admins and restricted roles"
-
-    Domain admins can't assign *Spam*, *Suspicious* or *Multiplier*. When a
-    domain admin saves a user who has one of these roles, the role may be
-    removed. Ask an admin to edit such accounts.
 
 ## The first admin
 
