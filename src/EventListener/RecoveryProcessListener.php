@@ -6,12 +6,11 @@ namespace App\EventListener;
 
 use App\Event\UserEvent;
 use App\Mail\RecoveryProcessMailer;
-use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-final readonly class RecoveryProcessListener implements EventSubscriberInterface
+final readonly class RecoveryProcessListener
 {
     public function __construct(
         private RequestStack $request,
@@ -21,14 +20,7 @@ final readonly class RecoveryProcessListener implements EventSubscriberInterface
     ) {
     }
 
-    #[Override]
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            UserEvent::RECOVERY_PROCESS_STARTED => 'onRecoveryProcessStarted',
-        ];
-    }
-
+    #[AsEventListener(event: UserEvent::RECOVERY_PROCESS_STARTED)]
     public function onRecoveryProcessStarted(UserEvent $event): void
     {
         $user = $event->getUser();

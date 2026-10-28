@@ -13,12 +13,13 @@ use Symfony\Component\Security\Http\Event\LogoutEvent;
 
 class LogoutListenerTest extends TestCase
 {
-    public function testGetSubscribedEvents(): void
-    {
-        $events = LogoutListener::getSubscribedEvents();
+    use EventListenerAttributes;
 
-        self::assertArrayHasKey(LogoutEvent::class, $events);
-        self::assertEquals(['onLogoutSuccess', -1], $events[LogoutEvent::class]);
+    public function testListensToEvents(): void
+    {
+        self::assertEquals([
+            LogoutEvent::class => ['onLogoutSuccess', -1],
+        ], self::listenedEvents(LogoutListener::class));
     }
 
     public function testOnLogoutSuccessAddsFlashMessage(): void

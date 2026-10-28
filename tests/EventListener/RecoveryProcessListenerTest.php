@@ -15,12 +15,13 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class RecoveryProcessListenerTest extends TestCase
 {
-    public function testGetSubscribedEvents(): void
-    {
-        $events = RecoveryProcessListener::getSubscribedEvents();
+    use EventListenerAttributes;
 
-        self::assertArrayHasKey(UserEvent::RECOVERY_PROCESS_STARTED, $events);
-        self::assertEquals('onRecoveryProcessStarted', $events[UserEvent::RECOVERY_PROCESS_STARTED]);
+    public function testListensToEvents(): void
+    {
+        self::assertEquals([
+            UserEvent::RECOVERY_PROCESS_STARTED => ['onRecoveryProcessStarted', 0],
+        ], self::listenedEvents(RecoveryProcessListener::class));
     }
 
     public function testOnRecoveryProcessStartedSendsMessageWithSessionLocale(): void

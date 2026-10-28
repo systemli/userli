@@ -10,16 +10,15 @@ use App\Enum\UserNotificationType;
 use App\Event\UserEvent;
 use App\Helper\JsonRequestHelper;
 use Doctrine\ORM\EntityManagerInterface;
-use Override;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-final readonly class PasswordChangeListener implements EventSubscriberInterface
+final readonly class PasswordChangeListener
 {
     public function __construct(
         private Security $security,
@@ -28,15 +27,7 @@ final readonly class PasswordChangeListener implements EventSubscriberInterface
     ) {
     }
 
-    #[Override]
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            KernelEvents::REQUEST => [['onRequest', 0]],
-            UserEvent::PASSWORD_CHANGED => [['onPasswordChanged', 0]],
-        ];
-    }
-
+    #[AsEventListener(event: KernelEvents::REQUEST, priority: 0)]
     public function onRequest(RequestEvent $event): void
     {
         // Return if not the main request or the user is not fully authenticated
@@ -65,6 +56,7 @@ final readonly class PasswordChangeListener implements EventSubscriberInterface
         $event->setResponse(new RedirectResponse($this->urlGenerator->generate('account_password')));
     }
 
+    #[AsEventListener(event: UserEvent::PASSWORD_CHANGED, priority: 0)]
     public function onPasswordChanged(UserEvent $event): void
     {
         $user = $event->getUser();

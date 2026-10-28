@@ -7,13 +7,12 @@ namespace App\EventListener;
 use App\Entity\User;
 use App\Event\LoginEvent;
 use App\Service\PasswordCompromisedService;
-use Override;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
-final readonly class CompromisedPasswordListener implements EventSubscriberInterface
+final readonly class CompromisedPasswordListener
 {
     public function __construct(
         private PasswordCompromisedService $passwordCompromisedService,
@@ -22,15 +21,7 @@ final readonly class CompromisedPasswordListener implements EventSubscriberInter
     ) {
     }
 
-    #[Override]
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
-            LoginEvent::NAME => 'onLogin',
-        ];
-    }
-
+    #[AsEventListener(event: SecurityEvents::INTERACTIVE_LOGIN)]
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $user = $event->getAuthenticationToken()->getUser();
@@ -49,6 +40,7 @@ final readonly class CompromisedPasswordListener implements EventSubscriberInter
         $this->checkAndNotify($user, $password, $locale);
     }
 
+    #[AsEventListener(event: LoginEvent::NAME)]
     public function onLogin(LoginEvent $event): void
     {
         $plainPassword = $event->getPlainPassword();

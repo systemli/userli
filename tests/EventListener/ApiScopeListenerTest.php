@@ -17,6 +17,8 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class ApiScopeListenerTest extends TestCase
 {
+    use EventListenerAttributes;
+
     private ApiScopeListener $listener;
 
     protected function setUp(): void
@@ -24,12 +26,11 @@ class ApiScopeListenerTest extends TestCase
         $this->listener = new ApiScopeListener();
     }
 
-    public function testGetSubscribedEvents(): void
+    public function testListensToEvents(): void
     {
-        $events = ApiScopeListener::getSubscribedEvents();
-
-        self::assertArrayHasKey(ControllerArgumentsEvent::class, $events);
-        self::assertEquals('onKernelControllerArguments', $events[ControllerArgumentsEvent::class]);
+        self::assertEquals([
+            ControllerArgumentsEvent::class => ['onKernelControllerArguments', 0],
+        ], self::listenedEvents(ApiScopeListener::class));
     }
 
     public function testIgnoresNonApiRequests(): void

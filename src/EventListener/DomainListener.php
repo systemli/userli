@@ -6,24 +6,16 @@ namespace App\EventListener;
 
 use App\Event\DomainEvent;
 use App\Message\ClearCache;
-use Override;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final readonly class DomainListener implements EventSubscriberInterface
+final readonly class DomainListener
 {
     public function __construct(private MessageBusInterface $bus)
     {
     }
 
-    #[Override]
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            DomainEvent::DELETED => 'onDomainDeleted',
-        ];
-    }
-
+    #[AsEventListener(event: DomainEvent::DELETED)]
     public function onDomainDeleted(DomainEvent $event): void
     {
         $this->bus->dispatch(new ClearCache());

@@ -6,22 +6,14 @@ namespace App\EventListener;
 
 use App\Entity\ApiToken;
 use App\Security\RequireApiScope;
-use Override;
 use ReflectionClass;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-final readonly class ApiScopeListener implements EventSubscriberInterface
+final readonly class ApiScopeListener
 {
-    #[Override]
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            ControllerArgumentsEvent::class => 'onKernelControllerArguments',
-        ];
-    }
-
+    #[AsEventListener(event: ControllerArgumentsEvent::class)]
     public function onKernelControllerArguments(ControllerArgumentsEvent $event): void
     {
         $request = $event->getRequest();

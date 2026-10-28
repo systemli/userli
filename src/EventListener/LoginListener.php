@@ -10,13 +10,12 @@ use App\Event\LoginEvent;
 use App\Handler\MailCryptKeyHandler;
 use App\Service\SettingsService;
 use App\Service\UserLastLoginUpdateService;
-use Override;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
-final readonly class LoginListener implements EventSubscriberInterface
+final readonly class LoginListener
 {
     public function __construct(
         private UserLastLoginUpdateService $userLastLoginUpdateService,
@@ -26,6 +25,7 @@ final readonly class LoginListener implements EventSubscriberInterface
     ) {
     }
 
+    #[AsEventListener(event: SecurityEvents::INTERACTIVE_LOGIN)]
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $user = $event->getAuthenticationToken()->getUser();
@@ -47,6 +47,7 @@ final readonly class LoginListener implements EventSubscriberInterface
         $this->handleLogin($user, $password);
     }
 
+    #[AsEventListener(event: LoginEvent::NAME)]
     public function onAuthenticationHandlerSuccess(LoginEvent $event): void
     {
         $this->handleLogin($event->getUser(), $event->getPlainPassword());
@@ -69,14 +70,5 @@ final readonly class LoginListener implements EventSubscriberInterface
         }
 
         $this->mailCryptKeyHandler->create($user, $password, true);
-    }
-
-    #[Override]
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
-            LoginEvent::NAME => 'onAuthenticationHandlerSuccess',
-        ];
     }
 }

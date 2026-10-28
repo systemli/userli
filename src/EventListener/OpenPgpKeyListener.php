@@ -9,10 +9,9 @@ use App\Event\UserEvent;
 use App\Repository\AliasRepository;
 use App\Repository\UserRepository;
 use App\Service\OpenPgpKeyManager;
-use Override;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-final readonly class OpenPgpKeyListener implements EventSubscriberInterface
+final readonly class OpenPgpKeyListener
 {
     public function __construct(
         private OpenPgpKeyManager $openPgpKeyManager,
@@ -21,6 +20,7 @@ final readonly class OpenPgpKeyListener implements EventSubscriberInterface
     ) {
     }
 
+    #[AsEventListener(event: AliasDeletedEvent::CUSTOM)]
     public function onCustomAliasDeleted(AliasDeletedEvent $event): void
     {
         $source = $event->getAlias()->getSource();
@@ -30,6 +30,7 @@ final readonly class OpenPgpKeyListener implements EventSubscriberInterface
         }
     }
 
+    #[AsEventListener(event: UserEvent::USER_DELETED)]
     public function onUserDeleted(UserEvent $event): void
     {
         $email = $event->getUser()->getEmail();
@@ -53,14 +54,5 @@ final readonly class OpenPgpKeyListener implements EventSubscriberInterface
         }
 
         $this->openPgpKeyManager->deleteKey($email);
-    }
-
-    #[Override]
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            AliasDeletedEvent::CUSTOM => 'onCustomAliasDeleted',
-            UserEvent::USER_DELETED => 'onUserDeleted',
-        ];
     }
 }

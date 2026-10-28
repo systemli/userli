@@ -7,12 +7,11 @@ namespace App\EventListener;
 use App\Event\AliasCreatedEvent;
 use App\Mail\AliasCreatedMailer;
 use Exception;
-use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-final readonly class AliasCreationListener implements EventSubscriberInterface
+final readonly class AliasCreationListener
 {
     public function __construct(
         private RequestStack $request,
@@ -25,6 +24,7 @@ final readonly class AliasCreationListener implements EventSubscriberInterface
     /**
      * @throws Exception
      */
+    #[AsEventListener(event: AliasCreatedEvent::NAME)]
     public function onAliasCreated(AliasCreatedEvent $event): void
     {
         $alias = $event->getAlias();
@@ -35,13 +35,5 @@ final readonly class AliasCreationListener implements EventSubscriberInterface
 
         $locale = $this->request->getSession()->get('_locale', $this->defaultLocale);
         $this->mailer->send($user, $alias, $locale);
-    }
-
-    #[Override]
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            AliasCreatedEvent::NAME => 'onAliasCreated',
-        ];
     }
 }

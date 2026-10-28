@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
-use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-final readonly class LocaleListener implements EventSubscriberInterface
+final readonly class LocaleListener
 {
     public function __construct(
         #[Autowire('kernel.default_locale')]
@@ -20,6 +19,7 @@ final readonly class LocaleListener implements EventSubscriberInterface
     ) {
     }
 
+    #[AsEventListener(event: KernelEvents::REQUEST, priority: 20)]
     public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
@@ -46,12 +46,5 @@ final readonly class LocaleListener implements EventSubscriberInterface
         }
 
         $request->setLocale($sessionLocale);
-    }
-
-    #[Override]
-    public static function getSubscribedEvents(): array
-    {
-        // must be registered before (i.e. with a higher priority than) the default Locale listener
-        return [KernelEvents::REQUEST => [['onKernelRequest', 20]]];
     }
 }
