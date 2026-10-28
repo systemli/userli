@@ -170,13 +170,17 @@
                         <dt class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{{ 'admin.user.show.roles'|trans }}</dt>
                         <dd class="mt-1 flex flex-wrap justify-center gap-1">
                             {% for role in user.roles %}
+                                {% set role_key = role|replace({'ROLE_': ''})|lower %}
+                                {% set role_info = role_key in ['admin', 'domain_admin', 'permanent', 'multiplier', 'suspicious', 'spam'] ? ('admin.user.roles_info.' ~ role_key)|trans : null %}
                                 {% if role == 'ROLE_SPAM' %}
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200">{{ role }}</span>
+                                    {% set role_classes = 'bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200' %}
                                 {% elseif role == 'ROLE_SUSPICIOUS' %}
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200">{{ role }}</span>
+                                    {% set role_classes = 'bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200' %}
                                 {% else %}
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300">{{ role }}</span>
+                                    {% set role_classes = 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300' %}
                                 {% endif %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium {{ role_classes }}{{ role_info ? ' cursor-help' : '' }}"
+                                    {%- if role_info %} data-controller="tooltip" title="{{ role_info }}" tabindex="0"{% endif %}>{{ role }}</span>
                             {% endfor %}
                         </dd>
                     </div>
