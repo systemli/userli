@@ -1,5 +1,21 @@
 # Changelog
 
+## 6.12.0 (2026.10.28)
+
+### Features and Improvements
+
+- 💄 Explain user roles in the admin user form and detail page (#1412)
+- ✉️ Notify users by email when they are flagged as spam (#1410)
+- ✨ Let spammers sign in but restrict sending to the support address (#1409)
+
+### Technical Changes
+
+- ⬆️ Update composer dependencies (#1413)
+
+### Bug Fixes
+
+- 🐛 Let domain admins assign spam, suspicious and multiplier roles (#1411)
+
 ## 6.11.0 (2026.10.26)
 
 ### Features and Improvements
