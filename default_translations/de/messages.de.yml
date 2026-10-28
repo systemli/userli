@@ -355,6 +355,33 @@ mail:
     In %waitingPeriodDays% Tagen erhältst du %limit% Einladungscodes, die du unter
     %voucher_url% abrufen kannst. Diese kannst du an Freund:innen
     weiterleiten und sie so zu %project_name% einladen.
+  spam-subject: Dein %project_name%-Konto wurde eingeschränkt
+  spam-body: |
+    Liebe Nutzer:in,
+
+    dein Konto wurde als Spam-Versender oder als kompromittiert markiert und
+    deshalb eingeschränkt: Du kannst dich weiterhin anmelden und deine E-Mails
+    lesen, aber keine E-Mails mehr an andere als den Support senden. Andere mit
+    deinem Konto verknüpfte Dienste sind ebenfalls nicht verfügbar.
+
+    Bitte melde dich beim Support unter %support_address%, um die Angelegenheit
+    zu klären und wieder Zugriff auf alle Funktionen zu erhalten.
+
+    Viele Grüße
+    dein %project_name%-Admin-Team
+  spam-body-no-support: |
+    Liebe Nutzer:in,
+
+    dein Konto wurde als Spam-Versender oder als kompromittiert markiert und
+    deshalb eingeschränkt: Du kannst dich weiterhin anmelden und deine E-Mails
+    lesen, aber keine E-Mails mehr senden. Andere mit deinem Konto verknüpfte
+    Dienste sind ebenfalls nicht verfügbar.
+
+    Bitte melde dich beim Support, um die Angelegenheit zu klären und wieder
+    Zugriff auf alle Funktionen zu erhalten.
+
+    Viele Grüße
+    dein %project_name%-Admin-Team
   recovery-subject: Das Passwort zu deinem E-Mail-Konto %email% wird zurückgesetzt
   recovery-body: |
     Hallo %email%,

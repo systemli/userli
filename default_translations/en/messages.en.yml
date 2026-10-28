@@ -360,6 +360,33 @@ mail:
     In %waitingPeriodDays% days you will receive %limit% invite codes, which you can collect
     at %voucher_url%. You can pass these on to friends and
     invite them to register with %project_name%.
+  spam-subject: Your %project_name% account has been restricted
+  spam-body: |
+    Dear user,
+
+    your account has been flagged as a spammer or as compromised. Therefore it
+    has been restricted: you can still sign in and read your e-mails, but you
+    can no longer send e-mails to anyone except the support. Other services
+    linked to your account are not available either.
+
+    Please contact the support at %support_address% to clarify the matter and
+    to regain access to all features.
+
+    Sincerely,
+    your %project_name% admin team.
+  spam-body-no-support: |
+    Dear user,
+
+    your account has been flagged as a spammer or as compromised. Therefore it
+    has been restricted: you can still sign in and read your e-mails, but you
+    can no longer send e-mails. Other services linked to your account are not
+    available either.
+
+    Please contact the support to clarify the matter and to regain access to
+    all features.
+
+    Sincerely,
+    your %project_name% admin team.
   recovery-subject: The password for your e-mail account %email% will be reset
   recovery-body: |
     Hello %email%,

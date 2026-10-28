@@ -24,6 +24,9 @@ Use *Spam* when an account is compromised or sends spam.
   recipient are rejected. Without a support address, no sending is possible.
   This needs the [Postfix adapter](../operations/integrations/postfix.md#sending-restrictions).
 * Incoming emails are still delivered to the mailbox.
+* When the role is added, Userli sends the user an email (in English and
+  German) that the account is restricted and that they should contact the
+  support. The mail contains the support address, if one is set.
 * The user can sign in to the web interface but only sees an
   *"Account restricted"* page that says the account is flagged as spammer or
   compromised, with a request to contact support. Aliases and OpenPGP keys
