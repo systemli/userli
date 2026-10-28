@@ -320,11 +320,15 @@ error:
   access_denied: Zugriff verweigert. Du hast keine Berechtigung für diese Ressource.
   generic_error: Es ist ein Fehler passiert. Das tut uns leid.
 spam:
-  title: Konto gesperrt
-  text: >
-    Oh nein! Wir glauben, dein Konto wurde von einem Spammer missbraucht.
-    Daher haben wir den E-Mail-Zugang deaktiviert.
-    Bitte kontaktiere den Support um dein  Konto freizuschalten.
+  title: Konto eingeschränkt
+  text: Dein Konto wurde kompromittiert und/oder hat Spam versendet. Daher wurde es eingeschränkt.
+  limits-title: Das bedeutet für dich
+  limit-send: Du kannst nur noch E-Mails an den Support senden.
+  limit-services: Du kannst dich nicht bei anderen Services anmelden, die mit deinem Konto verknüpft sind.
+  contact: >
+    Bitte kontaktiere den Support, um den Sachverhalt aufzuklären
+    und wieder Zugang zu allen Features zu bekommen.
+  contact_address: 'Dazu sendest du eine E-Mail an:'
 Bad credentials.: Das angegebene Passwort ist ungültig.
 custom: gewählten
 random: zufälligen
@@ -482,6 +486,9 @@ admin:
     email_notification_address:
       label: E-Mail-Adresse für Benachrichtigungen
       help: Die E-Mail-Adresse, die Systembenachrichtigungen erhält
+    support_address:
+      label: E-Mail-Adresse des Supports
+      help: Die E-Mail-Adresse deines Supports. Konten, die als Spam markiert sind, können nur an diese Adresse E-Mails senden und sehen sie auf ihrer Kontoseite. Leer lassen, um den E-Mail-Versand dieser Konten komplett zu sperren.
     twofactor_app_passwords_required:
       label: App-Passwörter bei 2FA erzwingen
       help: Benutzer:innen mit Zwei-Faktor-Authentifizierung können sich in Mailprogrammen (IMAP, SMTP) nur mit App-Passwörtern anmelden, nicht mit ihrem Passwort. Webmail braucht dafür das Roundcube-Plugin.

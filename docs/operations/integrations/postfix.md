@@ -76,9 +76,10 @@ smtpd_sasl_path = inet:localhost:10006
 smtpd_sasl_auth_enable = yes
 ```
 
-Authentication fails for deleted accounts, accounts with the role
-[*Spam*](../../admin/roles.md#spam) and accounts that have to change their
-password. You can also use Dovecot's SASL server instead.
+Authentication fails for deleted accounts and accounts that have to change
+their password. Accounts with the role [*Spam*](../../admin/roles.md#spam) can
+authenticate, but the [policy server](#sending-restrictions) limits what they
+can send. You can also use Dovecot's SASL server instead.
 
 ### Rate limiting
 
@@ -88,6 +89,29 @@ smtpd_end_of_data_restrictions = check_policy_service inet:localhost:10003
 
 The limits come from Userli: per user or alias, or the global default (see
 [Admin Guide → Settings](../../admin/settings.md#smtp-quota-limits)).
+
+### Sending restrictions
+
+```text title="/etc/postfix/main.cf"
+smtpd_recipient_restrictions =
+    check_policy_service inet:localhost:10003,
+    permit_sasl_authenticated,
+    reject_unauth_destination
+```
+
+For authenticated senders the adapter reads `sending_allowed` and
+`allowed_recipients` from the SMTP quota response. If sending is not allowed,
+the adapter rejects every recipient except the allowed ones. This is how
+accounts with the role *Spam* can only write to the
+[support address](../../admin/settings.md#email-configuration). If Userli is
+unreachable, the adapter defers the mail (`450`) instead of letting it pass.
+
+!!! warning
+
+    Place the policy service **before** `permit_sasl_authenticated`. Without it,
+    accounts with the role *Spam* can send to anyone. Update the adapter and
+    Postfix before you upgrade Userli, because older adapters ignore these
+    fields.
 
 ## Test
 

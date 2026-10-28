@@ -9,7 +9,6 @@ use App\Dto\RoundcubeUserAliasesDto;
 use App\Entity\Alias;
 use App\Entity\User;
 use App\Enum\ApiScope;
-use App\Enum\Roles;
 use App\Exception\DecryptionFailedException;
 use App\Handler\UserAuthenticationHandler;
 use App\Security\RequireApiScope;
@@ -33,8 +32,6 @@ final class RoundcubeController extends AbstractController
     private const string MESSAGE_AUTHENTICATION_FAILED = 'authentication failed';
 
     private const string MESSAGE_TWOFACTOR_REQUIRED = 'twofactor required';
-
-    private const string MESSAGE_USER_DISABLED = 'user disabled due to spam role';
 
     private const string MESSAGE_USER_PASSWORD_CHANGE_REQUIRED = 'user password change required';
 
@@ -78,7 +75,6 @@ final class RoundcubeController extends AbstractController
         // Password first, so the account state isn't revealed without it. verifyPassword() dispatches no login event.
         return match (true) {
             !$this->userAuthenticationHandler->verifyPassword($user, $data->getPassword()) => [self::MESSAGE_AUTHENTICATION_FAILED, Response::HTTP_UNAUTHORIZED],
-            $user->hasRole(Roles::SPAM) => [self::MESSAGE_USER_DISABLED, Response::HTTP_FORBIDDEN],
             $user->isPasswordChangeRequired() => [self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED, Response::HTTP_FORBIDDEN],
             !$user->isTotpAuthenticationEnabled() => null,
             '' === $code => [self::MESSAGE_TWOFACTOR_REQUIRED, Response::HTTP_UNAUTHORIZED],

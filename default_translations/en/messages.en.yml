@@ -326,11 +326,15 @@ error:
   access_denied: Access denied. You don't have permission to access this resource.
   generic_error: An error occured. We're sorry.
 spam:
-  title: Account locked
-  text: >
-    Oh no! We believe your account has been misused by a spammer.
-    E-mail access has been turned off.
-    Please contact support to unlock your account.
+  title: Account restricted
+  text: Your account has been compromised and/or has sent spam. Therefore it has been restricted.
+  limits-title: What this means for you
+  limit-send: You can only send e-mails to the support.
+  limit-services: You can't sign in to other services linked to your account.
+  contact: >
+    Please contact the support to clarify the matter
+    and to regain access to all features.
+  contact_address: 'To do so, send an e-mail to:'
 Bad credentials.: The presented password is invalid.
 custom: custom
 random: random
@@ -508,6 +512,9 @@ admin:
     email_notification_address:
       label: Notification Email Address
       help: The email address that receives system notifications
+    support_address:
+      label: Support Email Address
+      help: The email address of your support. Accounts flagged as spam can only send emails to this address and see it on their account page. Leave empty to block all outgoing emails of these accounts.
     twofactor_app_passwords_required:
       label: Require app passwords with 2FA
       help: Users with two-factor authentication can only sign in to mail programs (IMAP, SMTP) with app passwords, not with their password. Webmail needs the Roundcube plugin.

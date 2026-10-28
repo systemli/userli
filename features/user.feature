@@ -297,11 +297,22 @@ Feature: User
     And I should see "Manage your e-mail account"
 
   @account-access
-  Scenario: Spammer sees locked message on account page
+  Scenario: Spammer sees restricted message on account page
     When I am authenticated as "spam@example.org"
     And I am on "/account"
     Then the response status code should be 200
-    And I should see "Account locked"
+    And I should see "Account restricted"
+
+  @account-access
+  Scenario: Spammer sees the support address on account page
+    Given the following Setting exists:
+      | name            | value               |
+      | support_address | support@example.org |
+    When I am authenticated as "spam@example.org"
+    And I am on "/account"
+    Then the response status code should be 200
+    And I should see "To do so, send an e-mail to:"
+    And I should see "support@example.org"
 
   @account-settings-access
   Scenario: Unauthenticated user is redirected to login from account settings
@@ -326,6 +337,14 @@ Feature: User
     And I am on "/account/alias"
     Then the response status code should be 200
     And I should see "Custom Aliases"
+
+  @alias-access
+  Scenario: Spammer does not see the alias link in the navigation
+    When I am authenticated as "spam@example.org"
+    And I am on "/account/settings"
+    Then the response status code should be 200
+    And I should not see "Aliases"
+    And I should not see "OpenPGP"
 
   @alias-access
   Scenario: Spammer cannot access alias page

@@ -58,7 +58,7 @@ Scope `dovecot`. Used by the [Dovecot Lua adapter](integrations/dovecot.md).
 |-------:|---------|
 | `200`  | Authenticated |
 | `401`  | Wrong password, or the main password of a 2FA user if [app passwords are required](../admin/settings.md#two-factor-authentication) |
-| `403`  | Role *Spam* or password change required |
+| `403`  | Password change required |
 | `404`  | Unknown or deleted user |
 | `500`  | MailCrypt key could not be decrypted |
 
@@ -72,12 +72,12 @@ Scope `postfix`. Used by the [Postfix adapter](integrations/postfix.md).
 | `GET`  | `/api/postfix/mailbox/{email}` | `true` if an active user with this address exists |
 | `GET`  | `/api/postfix/alias/{email}` | List of destinations of the alias, e.g. `["user@example.org"]` |
 | `GET`  | `/api/postfix/senders/{email}` | List of users allowed to send with this address |
-| `GET`  | `/api/postfix/smtp_quota/{email}` | `{"per_hour": 100, "per_day": 1000}`, `0` = unlimited; `404` for unknown users |
+| `GET`  | `/api/postfix/smtp_quota/{email}` | `{"per_hour": 100, "per_day": 1000, "sending_allowed": true, "allowed_recipients": []}`, `0` = unlimited. If `sending_allowed` is `false` (role *Spam*), the user may only send to the addresses in `allowed_recipients` (the support address). `404` for unknown users |
 | `POST` | `/api/postfix/auth` | SMTP authentication, body `{"email": "...", "password": "..."}` |
 
 **auth** status codes: `200` success, `401` authentication failed (also the
-main password of a 2FA user if app passwords are required), `403` role *Spam*
-or password change required.
+main password of a 2FA user if app passwords are required), `403` password
+change required.
 
 ## Roundcube
 
@@ -86,7 +86,7 @@ Scope `roundcube`. Used by the [Roundcube plugin](integrations/roundcube.md).
 | Method | Path | Description |
 |--------|------|-------------|
 | `POST` | `/api/roundcube/aliases` | Body `{"email": "...", "password": "..."}`. Returns the list of the user's alias addresses. `401` on wrong credentials. App passwords are rejected. |
-| `POST` | `/api/roundcube/login` | Body `{"email": "...", "password": "...", "code": "..."}`. Checks the main password and, if the user has two-factor authentication, the TOTP or backup code in `code`. Returns `{"password": "...", "expiresAt": "<ISO 8601>"}`, a webmail credential that is valid for 12 hours in Dovecot and Postfix. `401` with message `twofactor required` if `code` is missing, `authentication failed` otherwise. `403` for users with the spam role or a required password change, only after the password is correct. `422` for an invalid body. `500` if the MailCrypt key can't be decrypted. App passwords are rejected. |
+| `POST` | `/api/roundcube/login` | Body `{"email": "...", "password": "...", "code": "..."}`. Checks the main password and, if the user has two-factor authentication, the TOTP or backup code in `code`. Returns `{"password": "...", "expiresAt": "<ISO 8601>"}`, a webmail credential that is valid for 12 hours in Dovecot and Postfix. `401` with message `twofactor required` if `code` is missing, `authentication failed` otherwise. `403` for users with a required password change, only after the password is correct. `422` for an invalid body. `500` if the MailCrypt key can't be decrypted. App passwords are rejected. |
 | `POST` | `/api/roundcube/logout` | Body `{"email": "...", "password": "<webmail credential>"}`. Revokes the webmail credential. Always returns `204`. |
 
 ## Keycloak
