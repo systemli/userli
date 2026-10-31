@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Dto\KeycloakUserValidateDto;
+use App\Dto\KeycloakWebauthnValidateDto;
 use App\Entity\Domain;
 use App\Entity\User;
+use App\Entity\WebauthnCredential;
 use App\Enum\ApiScope;
 use App\Enum\Roles;
 use App\Handler\UserAuthenticationHandler;
 use App\Security\RequireApiScope;
+use App\Service\WebauthnService;
 use Doctrine\ORM\EntityManagerInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -19,6 +22,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
+
+use const DATE_ATOM;
 
 #[RequireApiScope(scope: ApiScope::KEYCLOAK)]
 final class KeycloakController extends AbstractController
@@ -37,6 +42,7 @@ final class KeycloakController extends AbstractController
         private readonly EntityManagerInterface $manager,
         private readonly UserAuthenticationHandler $handler,
         private readonly TotpAuthenticatorInterface $totpAuthenticator,
+        private readonly WebauthnService $webauthnService,
     ) {
     }
 
@@ -101,10 +107,75 @@ final class KeycloakController extends AbstractController
         return match ($requestData->getCredentialType()) {
             'password' => $this->handlePasswordValidate($user, $requestData),
             'otp' => $this->handleTotpValidate($user, $requestData),
+            'backup-code' => $this->handleBackupCodeValidate($user, $requestData),
             default => $this->json([
                 'message' => self::MESSAGE_NOT_SUPPORTED,
             ], Response::HTTP_BAD_REQUEST),
         };
+    }
+
+    #[Route(path: '/api/keycloak/{domainUrl}/validate/webauthn/{email}', name: 'api_keycloak_post_user_validate_webauthn', methods: ['POST'], stateless: true)]
+    public function postUserValidateWebauthn(
+        #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
+        #[MapRequestPayload] KeycloakWebauthnValidateDto $requestData,
+        string $email,
+    ): Response {
+        if (null === $user = $this->manager->getRepository(User::class)->findByDomainAndEmail($domain, $email)) {
+            return $this->json([
+                'message' => self::MESSAGE_AUTHENTICATION_FAILED,
+            ], Response::HTTP_FORBIDDEN);
+        }
+
+        if (null !== $statusResponse = $this->rejectForAccountStatus($user)) {
+            return $statusResponse;
+        }
+
+        if (!$user->isWebauthnAuthenticationEnabled()) {
+            return $this->json([
+                'message' => self::MESSAGE_NOT_SUPPORTED,
+            ], Response::HTTP_FORBIDDEN);
+        }
+
+        $valid = $this->webauthnService->verifyExternalAssertion(
+            $user,
+            $requestData->getChallenge(),
+            $requestData->getCredentialId(),
+            $requestData->getClientDataJSON(),
+            $requestData->getAuthenticatorData(),
+            $requestData->getSignature(),
+            $requestData->getUserHandle(),
+        );
+
+        if (!$valid) {
+            return $this->json([
+                'message' => self::MESSAGE_AUTHENTICATION_FAILED,
+            ], Response::HTTP_FORBIDDEN);
+        }
+
+        return $this->json([
+            'message' => self::MESSAGE_SUCCESS,
+        ]);
+    }
+
+    /**
+     * Lists the WebAuthn credentials of a user, so Keycloak can ask the browser for one of them.
+     */
+    #[Route(path: '/api/keycloak/{domainUrl}/credentials/webauthn/{email}', name: 'api_keycloak_get_webauthn_credentials', methods: ['GET'], stateless: true)]
+    public function getWebauthnCredentials(#[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain, string $email): Response
+    {
+        if (null === $user = $this->manager->getRepository(User::class)->findByDomainAndEmail($domain, $email)) {
+            return $this->json([
+                'message' => self::MESSAGE_USER_NOT_FOUND,
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->json(array_map(static fn (WebauthnCredential $credential) => [
+            'id' => $credential->getId(),
+            'name' => $credential->getName(),
+            'credentialId' => $credential->getCredentialId(),
+            'transports' => $credential->getTransports(),
+            'createdAt' => $credential->getCreationTime()?->format(DATE_ATOM),
+        ], $user->getWebauthnCredentials()->toArray()));
     }
 
     private function rejectForAccountStatus(User $user): ?Response
@@ -140,6 +211,8 @@ final class KeycloakController extends AbstractController
         return match ($credentialType) {
             'password' => $this->json(['message' => self::MESSAGE_SUCCESS]),
             'otp' => $this->handleTotpConfigured($user),
+            'webauthn' => $user->isWebauthnAuthenticationEnabled() ? $this->json(['message' => self::MESSAGE_SUCCESS]) : $this->json(['message' => self::MESSAGE_USER_NOT_FOUND], Response::HTTP_NOT_FOUND),
+            'backup-code' => $user->isTwofactorEnabled() && [] !== $user->getTotpBackupCodes() ? $this->json(['message' => self::MESSAGE_SUCCESS]) : $this->json(['message' => self::MESSAGE_USER_NOT_FOUND], Response::HTTP_NOT_FOUND),
             default => $this->json(['message' => self::MESSAGE_NOT_SUPPORTED], Response::HTTP_NOT_FOUND),
         };
     }
@@ -185,6 +258,32 @@ final class KeycloakController extends AbstractController
         return $this->json([
             'message' => self::MESSAGE_AUTHENTICATION_FAILED,
         ], Response::HTTP_FORBIDDEN);
+    }
+
+    /**
+     * Backup codes work with every second factor, so also for users with only security keys.
+     */
+    private function handleBackupCodeValidate(User $user, KeycloakUserValidateDto $requestData): Response
+    {
+        if (!$user->isTwofactorEnabled()) {
+            return $this->json([
+                'message' => self::MESSAGE_NOT_SUPPORTED,
+            ], Response::HTTP_FORBIDDEN);
+        }
+
+        $code = $requestData->getPassword();
+        if (!$user->isBackupCode($code)) {
+            return $this->json([
+                'message' => self::MESSAGE_AUTHENTICATION_FAILED,
+            ], Response::HTTP_FORBIDDEN);
+        }
+
+        $user->invalidateBackupCode($code);
+        $this->manager->flush();
+
+        return $this->json([
+            'message' => self::MESSAGE_SUCCESS,
+        ]);
     }
 
     private function handleTotpConfigured(User $user): Response

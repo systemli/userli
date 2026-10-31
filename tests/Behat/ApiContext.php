@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Behat;
 
+use App\Tests\Webauthn\SoftwareAuthenticator;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
@@ -11,6 +12,7 @@ use Behat\Mink\Driver\BrowserKitDriver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use OTPHP\TOTP;
+use ParagonIE\ConstantTime\Base64UrlSafe;
 use RuntimeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -57,6 +59,22 @@ class ApiContext extends RawMinkContext implements Context
     public function iStoreTheTotpCodeForSecretAs(string $secret, string $name): void
     {
         $this->values[$name] = TOTP::create($secret)->now();
+    }
+
+    /**
+     * Signs a fresh challenge with the security key of the user, like a browser on the origin would.
+     * The parts are stored as "<name>.challenge", "<name>.credentialId", "<name>.clientDataJSON",
+     * "<name>.authenticatorData" and "<name>.signature".
+     *
+     * @Given I store a security key assertion of :email for RP ID :rpId on origin :origin as :name
+     */
+    public function iStoreASecurityKeyAssertion(string $email, string $rpId, string $origin, string $name): void
+    {
+        $challenge = Base64UrlSafe::encodeUnpadded(random_bytes(32));
+        $this->values[$name.'.challenge'] = $challenge;
+        foreach (SoftwareAuthenticator::forUser($email)->assert($rpId, $challenge, $origin) as $key => $value) {
+            $this->values[$name.'.'.$key] = $value;
+        }
     }
 
     /**
