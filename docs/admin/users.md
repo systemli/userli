@@ -54,7 +54,8 @@ Users created in the admin interface:
 The same fields as above, except the email address. Additionally:
 
 * **Two-factor authentication:** uncheck to turn off 2FA for a user who lost
-  their phone and backup codes.
+  their phone, security keys and backup codes. This removes the authenticator
+  app, all security keys and the backup codes.
 
 ### Set a new password
 
@@ -70,7 +71,7 @@ password and their [recovery token](../user/recovery.md).
       unreadable,
     * a new recovery token is created and shown to you once – pass it on to
       the user securely,
-    * two-factor authentication is turned off,
+    * two-factor authentication is turned off and all security keys are removed,
     * all app passwords are deleted,
     * the `user.reset` [webhook](webhooks.md) is sent.
 
