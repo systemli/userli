@@ -124,11 +124,12 @@ class SettingsTypeTest extends TestCase
             'string type default' => [[], 'string', 1], // NotBlank constraint for string types
             'string with length' => [['min_length' => 1, 'max_length' => 10], 'string', 2], // NotBlank + Length constraint
             'string with only max length' => [['max_length' => 10], 'string', 2], // NotBlank + Length constraint
-            'string with regex' => [['regex' => '/test/'], 'string', 1], // NotBlank (regex skipped due to delimiter issue)
+            'string with regex' => [['regex' => '/test/'], 'string', 2], // NotBlank + Regex constraint
             'integer with min/max' => [['min' => 0, 'max' => 100], 'integer', 3], // Type + Min + Max (no NotBlank for integers)
             'boolean type' => [[], 'boolean', 0], // No constraints for boolean types
             'choices' => [['choices' => ['a', 'b']], 'string', 2], // NotBlank + Choice constraint
             'empty choices ignored' => [['choices' => []], 'string', 1], // Only NotBlank constraint
+            'optional regex with message' => [['regex' => '/^[a-z]+$/', 'regex_message' => 'form.invalid'], 'string', 1, true], // Regex only
             'url type' => [[], 'url', 2], // NotBlank + URL constraint
             'email type' => [[], 'email', 2], // NotBlank + Email constraint
             'password type' => [[], 'password', 1], // NotBlank constraint
