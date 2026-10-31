@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Dto\KeycloakUserValidateDto;
-use App\Dto\KeycloakWebauthnValidateDto;
+use App\Dto\WebauthnAssertionDto;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Entity\WebauthnCredential;
@@ -117,7 +117,7 @@ final class KeycloakController extends AbstractController
     #[Route(path: '/api/keycloak/{domainUrl}/validate/webauthn/{email}', name: 'api_keycloak_post_user_validate_webauthn', methods: ['POST'], stateless: true)]
     public function postUserValidateWebauthn(
         #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
-        #[MapRequestPayload] KeycloakWebauthnValidateDto $requestData,
+        #[MapRequestPayload] WebauthnAssertionDto $requestData,
         string $email,
     ): Response {
         if (null === $user = $this->manager->getRepository(User::class)->findByDomainAndEmail($domain, $email)) {
@@ -169,6 +169,10 @@ final class KeycloakController extends AbstractController
             ], Response::HTTP_NOT_FOUND);
         }
 
+        if (null !== $statusResponse = $this->rejectForAccountStatus($user)) {
+            return $statusResponse;
+        }
+
         return $this->json(array_map(static fn (WebauthnCredential $credential) => [
             'id' => $credential->getId(),
             'name' => $credential->getName(),
@@ -176,6 +180,33 @@ final class KeycloakController extends AbstractController
             'transports' => $credential->getTransports(),
             'createdAt' => $credential->getCreationTime()?->format(DATE_ATOM),
         ], $user->getWebauthnCredentials()->toArray()));
+    }
+
+    /**
+     * Creates a single-use challenge for the WebAuthn login page of Keycloak.
+     */
+    #[Route(path: '/api/keycloak/{domainUrl}/challenge/webauthn/{email}', name: 'api_keycloak_post_webauthn_challenge', methods: ['POST'], stateless: true)]
+    public function postWebauthnChallenge(#[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain, string $email): Response
+    {
+        if (null === $user = $this->manager->getRepository(User::class)->findByDomainAndEmail($domain, $email)) {
+            return $this->json([
+                'message' => self::MESSAGE_USER_NOT_FOUND,
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        if (null !== $statusResponse = $this->rejectForAccountStatus($user)) {
+            return $statusResponse;
+        }
+
+        if (!$user->isWebauthnAuthenticationEnabled()) {
+            return $this->json([
+                'message' => self::MESSAGE_NOT_SUPPORTED,
+            ], Response::HTTP_FORBIDDEN);
+        }
+
+        return $this->json([
+            'challenge' => $this->webauthnService->createExternalChallenge($user),
+        ]);
     }
 
     private function rejectForAccountStatus(User $user): ?Response
@@ -246,18 +277,7 @@ final class KeycloakController extends AbstractController
             ]);
         }
 
-        if ($user->isBackupCode($code)) {
-            $user->invalidateBackupCode($code);
-            $this->manager->flush();
-
-            return $this->json([
-                'message' => self::MESSAGE_SUCCESS,
-            ]);
-        }
-
-        return $this->json([
-            'message' => self::MESSAGE_AUTHENTICATION_FAILED,
-        ], Response::HTTP_FORBIDDEN);
+        return $this->checkBackupCode($user, $code);
     }
 
     /**
@@ -271,7 +291,14 @@ final class KeycloakController extends AbstractController
             ], Response::HTTP_FORBIDDEN);
         }
 
-        $code = $requestData->getPassword();
+        return $this->checkBackupCode($user, $requestData->getPassword());
+    }
+
+    /**
+     * Uses up the backup code if it is valid.
+     */
+    private function checkBackupCode(User $user, string $code): Response
+    {
         if (!$user->isBackupCode($code)) {
             return $this->json([
                 'message' => self::MESSAGE_AUTHENTICATION_FAILED,

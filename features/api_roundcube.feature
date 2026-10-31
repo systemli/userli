@@ -264,6 +264,88 @@ Feature: Roundcube API
             | password | password         |
         Then the response status code should equal 401
         And the JSON path "message" should equal "twofactor required"
+        And the JSON path "webauthn.challenge" should not be empty
+        And the JSON path "webauthn.allowCredentials.0.id" should not be empty
+
+    @login @twofactor @webauthn
+    Scenario: Login with wrong password does not reveal the security keys
+        Given the User "user@example.org" has the security key "YubiKey"
+        And I have a valid API token "roundcube-test-123"
+        When I send a POST request to "/api/roundcube/login" with form data:
+            | email    | user@example.org |
+            | password | wrong            |
+        Then the response status code should equal 401
+        And the JSON path "message" should equal "authentication failed"
+        And the JSON path "webauthn" should be empty
+
+    @login @twofactor @webauthn
+    Scenario: Login with a security key
+        Given the setting "webauthn_rp_id" is "example.org"
+        And the setting "webauthn_origins" is "https://mail.example.org"
+        And the User "user@example.org" has the security key "YubiKey"
+        And I have a valid API token "roundcube-test-123"
+        When I send a POST request to "/api/roundcube/login" with form data:
+            | email    | user@example.org |
+            | password | password         |
+        And I store the JSON path "webauthn.challenge" as "challenge"
+        And I store a security key assertion of "user@example.org" for RP ID "example.org" on origin "https://mail.example.org" with challenge "challenge" as "assertion"
+        And I send a POST request to "/api/roundcube/login" with form data:
+            | email                        | user@example.org            |
+            | password                     | password                    |
+            | webauthn[challenge]          | assertion.challenge         |
+            | webauthn[credentialId]       | assertion.credentialId      |
+            | webauthn[clientDataJSON]     | assertion.clientDataJSON    |
+            | webauthn[authenticatorData]  | assertion.authenticatorData |
+            | webauthn[signature]          | assertion.signature         |
+        Then the response status code should equal 200
+        And the JSON path "password" should not be empty
+        When I send a POST request to "/api/roundcube/login" with form data:
+            | email                        | user@example.org            |
+            | password                     | password                    |
+            | webauthn[challenge]          | assertion.challenge         |
+            | webauthn[credentialId]       | assertion.credentialId      |
+            | webauthn[clientDataJSON]     | assertion.clientDataJSON    |
+            | webauthn[authenticatorData]  | assertion.authenticatorData |
+            | webauthn[signature]          | assertion.signature         |
+        Then the response status code should equal 401
+        And the JSON path "message" should equal "authentication failed"
+        And the JSON path "webauthn.challenge" should not be empty
+
+    @login @twofactor @webauthn
+    Scenario: Login with a security key from an unknown origin is rejected
+        Given the setting "webauthn_rp_id" is "example.org"
+        And the User "user@example.org" has the security key "YubiKey"
+        And I have a valid API token "roundcube-test-123"
+        When I send a POST request to "/api/roundcube/login" with form data:
+            | email    | user@example.org |
+            | password | password         |
+        And I store the JSON path "webauthn.challenge" as "challenge"
+        And I store a security key assertion of "user@example.org" for RP ID "example.org" on origin "https://mail.example.org" with challenge "challenge" as "assertion"
+        And I send a POST request to "/api/roundcube/login" with form data:
+            | email                        | user@example.org            |
+            | password                     | password                    |
+            | webauthn[challenge]          | assertion.challenge         |
+            | webauthn[credentialId]       | assertion.credentialId      |
+            | webauthn[clientDataJSON]     | assertion.clientDataJSON    |
+            | webauthn[authenticatorData]  | assertion.authenticatorData |
+            | webauthn[signature]          | assertion.signature         |
+        Then the response status code should equal 401
+        And the JSON path "message" should equal "authentication failed"
+
+    @login @twofactor @webauthn
+    Scenario: Login with a security key for user with only TOTP is rejected
+        Given I have a valid API token "roundcube-test-123"
+        When I send a POST request to "/api/roundcube/login" with form data:
+            | email                        | totp@example.org |
+            | password                     | password         |
+            | webauthn[challenge]          | AAAA             |
+            | webauthn[credentialId]       | AAAA             |
+            | webauthn[clientDataJSON]     | AAAA             |
+            | webauthn[authenticatorData]  | AAAA             |
+            | webauthn[signature]          | AAAA             |
+        Then the response status code should equal 401
+        And the JSON path "message" should equal "authentication failed"
+        And the JSON path "webauthn" should be empty
 
     @login @twofactor @webauthn
     Scenario: Login with backup code for user with only a security key

@@ -62,15 +62,29 @@ class ApiContext extends RawMinkContext implements Context
     }
 
     /**
-     * Signs a fresh challenge with the security key of the user, like a browser on the origin would.
-     * The parts are stored as "<name>.challenge", "<name>.credentialId", "<name>.clientDataJSON",
-     * "<name>.authenticatorData" and "<name>.signature".
+     * Signs a random challenge that Userli did not issue, see iStoreASecurityKeyAssertionWithChallenge().
      *
      * @Given I store a security key assertion of :email for RP ID :rpId on origin :origin as :name
      */
     public function iStoreASecurityKeyAssertion(string $email, string $rpId, string $origin, string $name): void
     {
-        $challenge = Base64UrlSafe::encodeUnpadded(random_bytes(32));
+        $this->storeSecurityKeyAssertion($email, $rpId, $origin, Base64UrlSafe::encodeUnpadded(random_bytes(32)), $name);
+    }
+
+    /**
+     * Signs the stored challenge with the security key of the user, like a browser on the origin would.
+     * The parts are stored as "<name>.challenge", "<name>.credentialId", "<name>.clientDataJSON",
+     * "<name>.authenticatorData" and "<name>.signature".
+     *
+     * @Given I store a security key assertion of :email for RP ID :rpId on origin :origin with challenge :challenge as :name
+     */
+    public function iStoreASecurityKeyAssertionWithChallenge(string $email, string $rpId, string $origin, string $challenge, string $name): void
+    {
+        $this->storeSecurityKeyAssertion($email, $rpId, $origin, $this->values[$challenge] ?? throw new RuntimeException(sprintf('No value "%s" stored', $challenge)), $name);
+    }
+
+    private function storeSecurityKeyAssertion(string $email, string $rpId, string $origin, string $challenge, string $name): void
+    {
         $this->values[$name.'.challenge'] = $challenge;
         foreach (SoftwareAuthenticator::forUser($email)->assert($rpId, $challenge, $origin) as $key => $value) {
             $this->values[$name.'.'.$key] = $value;
@@ -103,6 +117,8 @@ class ApiContext extends RawMinkContext implements Context
     public function iSendARequestToWithFormData(string $method, string $path, TableNode $table): void
     {
         $data = array_map(fn (string $value): string => $this->values[$value] ?? $value, $table->getRowsHash());
+        // Nests keys like "webauthn[challenge]", as PHP does for a real form request
+        parse_str(http_build_query($data), $data);
         $this->sendRequest($method, $path, $data);
     }
 

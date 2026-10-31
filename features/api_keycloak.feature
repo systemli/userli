@@ -269,8 +269,10 @@ Feature: Keycloak API
         Given the setting "webauthn_rp_id" is "example.org"
         And the setting "webauthn_origins" is "https://login.example.org"
         And the User "user@example.org" has the security key "YubiKey"
-        And I store a security key assertion of "user@example.org" for RP ID "example.org" on origin "https://login.example.org" as "assertion"
         And I have a valid API token "keycloak-test-123"
+        When I send a POST request to "/api/keycloak/example.org/challenge/webauthn/user@example.org"
+        And I store the JSON path "challenge" as "challenge"
+        And I store a security key assertion of "user@example.org" for RP ID "example.org" on origin "https://login.example.org" with challenge "challenge" as "assertion"
         When I send a POST request to "/api/keycloak/example.org/validate/webauthn/user@example.org" with form data:
             | challenge         | assertion.challenge         |
             | credentialId      | assertion.credentialId      |
@@ -285,8 +287,10 @@ Feature: Keycloak API
         Given the setting "webauthn_rp_id" is "example.org"
         And the setting "webauthn_origins" is "https://login.example.org"
         And the User "user@example.org" has the security key "YubiKey"
-        And I store a security key assertion of "user@example.org" for RP ID "example.org" on origin "https://login.example.org" as "assertion"
         And I have a valid API token "keycloak-test-123"
+        When I send a POST request to "/api/keycloak/example.org/challenge/webauthn/user@example.org"
+        And I store the JSON path "challenge" as "challenge"
+        And I store a security key assertion of "user@example.org" for RP ID "example.org" on origin "https://login.example.org" with challenge "challenge" as "assertion"
         When I send a POST request to "/api/keycloak/example.org/validate/webauthn/user@example.org" with form data:
             | challenge         | assertion.challenge         |
             | credentialId      | assertion.credentialId      |
@@ -307,7 +311,25 @@ Feature: Keycloak API
     Scenario: WebAuthn assertion from an unknown origin is rejected
         Given the setting "webauthn_rp_id" is "example.org"
         And the User "user@example.org" has the security key "YubiKey"
-        And I store a security key assertion of "user@example.org" for RP ID "example.org" on origin "https://evil.example.com" as "assertion"
+        And I have a valid API token "keycloak-test-123"
+        When I send a POST request to "/api/keycloak/example.org/challenge/webauthn/user@example.org"
+        And I store the JSON path "challenge" as "challenge"
+        And I store a security key assertion of "user@example.org" for RP ID "example.org" on origin "https://evil.example.com" with challenge "challenge" as "assertion"
+        When I send a POST request to "/api/keycloak/example.org/validate/webauthn/user@example.org" with form data:
+            | challenge         | assertion.challenge         |
+            | credentialId      | assertion.credentialId      |
+            | clientDataJSON    | assertion.clientDataJSON    |
+            | authenticatorData | assertion.authenticatorData |
+            | signature         | assertion.signature         |
+        Then the response status code should equal 403
+        And the JSON path "message" should equal "authentication failed"
+
+    @validate @webauthn
+    Scenario: WebAuthn assertion for a challenge not issued by Userli is rejected
+        Given the setting "webauthn_rp_id" is "example.org"
+        And the setting "webauthn_origins" is "https://login.example.org"
+        And the User "user@example.org" has the security key "YubiKey"
+        And I store a security key assertion of "user@example.org" for RP ID "example.org" on origin "https://login.example.org" as "assertion"
         And I have a valid API token "keycloak-test-123"
         When I send a POST request to "/api/keycloak/example.org/validate/webauthn/user@example.org" with form data:
             | challenge         | assertion.challenge         |
@@ -315,6 +337,37 @@ Feature: Keycloak API
             | clientDataJSON    | assertion.clientDataJSON    |
             | authenticatorData | assertion.authenticatorData |
             | signature         | assertion.signature         |
+        Then the response status code should equal 403
+        And the JSON path "message" should equal "authentication failed"
+
+    @webauthn
+    Scenario: Create WebAuthn challenge
+        Given the User "user@example.org" has the security key "YubiKey"
+        And I have a valid API token "keycloak-test-123"
+        When I send a POST request to "/api/keycloak/example.org/challenge/webauthn/user@example.org"
+        Then the response status code should equal 200
+        And the JSON path "challenge" should not be empty
+
+    @webauthn
+    Scenario: Create WebAuthn challenge for user without security key
+        Given I have a valid API token "keycloak-test-123"
+        When I send a POST request to "/api/keycloak/example.org/challenge/webauthn/user@example.org"
+        Then the response status code should equal 403
+        And the JSON path "message" should equal "not supported"
+
+    @webauthn
+    Scenario: Create WebAuthn challenge for user that has to change the password
+        Given the User "pwchange@example.org" has the security key "YubiKey"
+        And I have a valid API token "keycloak-test-123"
+        When I send a POST request to "/api/keycloak/example.org/challenge/webauthn/pwchange@example.org"
+        Then the response status code should equal 403
+        And the JSON path "message" should equal "password change required"
+
+    @webauthn
+    Scenario: List WebAuthn credentials of a deleted user
+        Given the User "deleted@example.org" has the security key "YubiKey"
+        And I have a valid API token "keycloak-test-123"
+        When I send a GET request to "/api/keycloak/example.org/credentials/webauthn/deleted@example.org"
         Then the response status code should equal 403
         And the JSON path "message" should equal "authentication failed"
 
