@@ -104,6 +104,13 @@ form:
   twofactor-login-cancel: Login abbrechen
   twofactor-disable: Zwei-Faktor-Authentifizierung deaktivieren
   twofactor-login-help: Deine Zwei-Faktor-Authentifikator-App generiert einen 6-stelligen Code, den du hier eingeben musst.
+  twofactor-webauthn-desc: Bestätige die Anmeldung mit deinem Sicherheitsschlüssel.
+  twofactor-webauthn-button: Sicherheitsschlüssel verwenden
+  twofactor-webauthn-error: Der Sicherheitsschlüssel konnte nicht verwendet werden. Versuche es erneut oder wähle eine andere Methode.
+  twofactor-use-totp: Stattdessen Authenticator-App verwenden
+  twofactor-use-webauthn: Stattdessen Sicherheitsschlüssel verwenden
+  twofactor-use-backup-code: Backup-Code verwenden
+  twofactor-backup-code: Backup-Code
 
 # OpenPGP Keys
 openpgp-key-file: "Deinen Schlüssel als Datei hochladen:"
@@ -158,6 +165,22 @@ account:
     info-backup: Backup-Codes stellen sicher, dass du immer auf dein Konto zugreifen kannst, auch wenn du dein Handy verlierst
     info-app-passwords: Mit Zwei-Faktor-Authentifizierung funktionieren Mailprogramme wie Thunderbird oder die Mail-App auf deinem Handy nur noch mit App-Passwörtern, nicht mehr mit deinem Passwort.
     info-app-passwords-link: App-Passwörter erstellen
+    info-app-passwords-recommended: "Tipp: Nutze App-Passwörter in Mailprogrammen. Dort öffnet dein Passwort sonst weiterhin dein Postfach, ohne zweiten Faktor."
+    overview-enabled: Zwei-Faktor-Authentifizierung ist aktiv
+    overview-disabled: Zwei-Faktor-Authentifizierung ist nicht aktiv
+    overview-enabled-description: Nach deinem Passwort bestätigst du die Anmeldung mit einer der Methoden unten.
+    totp-title: Authenticator-App
+    totp-description: Gib einen 6-stelligen Code aus einer App wie Aegis (Android) oder Tofu (iOS) ein.
+    totp-manage: Verwalten
+    backup-count: "{0} Keine Codes übrig|{1} Ein Code übrig|]1,Inf[ %count% Codes übrig"
+    backup-regenerate-short: Neu erzeugen
+    backup-regenerate-title: Neue Backup-Codes erzeugen?
+    add: Hinzufügen
+    backup-description: Einmal-Codes für die Anmeldung, falls du dein Gerät oder deinen Sicherheitsschlüssel verlierst.
+    backup-unavailable: Werden erstellt, wenn du deinen ersten zweiten Faktor einrichtest.
+    backup-regenerate-confirm: Erzeugen
+    backup-regenerate-help: Deine alten Backup-Codes werden ungültig.
+    back: Zurück zur Zwei-Faktor-Authentifizierung
   recovery:
     title: Wiederherstellungscode
     desc: Backup-Zugang zu deinem Konto
@@ -186,6 +209,27 @@ account:
     last-used: Zuletzt verwendet %when%
     never-used: Nie verwendet
     delete: Löschen
+  webauthn:
+    title: Sicherheitsschlüssel
+    lead: Nutze einen Sicherheitsschlüssel oder dein Gerät als zweiten Faktor
+    link: Sicherheitsschlüssel verwalten
+    count: "{0} Keine Sicherheitsschlüssel|{1} Ein Sicherheitsschlüssel|]1,Inf[ %count% Sicherheitsschlüssel"
+    feature-phishing: Sicherheitsschlüssel können nicht gephisht werden, sie funktionieren nur auf dieser Seite
+    feature-devices: Funktioniert mit USB- und NFC-Schlüsseln wie YubiKey oder Nitrokey und mit der Bildschirmsperre deines Smartphones oder Computers
+    feature-backup: Registriere einen zweiten Schlüssel als Reserve. Deine Backup-Codes funktionieren weiterhin.
+    name: Name
+    name-placeholder: z.B. YubiKey am Schlüsselbund
+    create: Sicherheitsschlüssel hinzufügen
+    empty: Du hast noch keine Sicherheitsschlüssel.
+    unsupported: Dein Browser unterstützt keine Sicherheitsschlüssel.
+    added: Hinzugefügt %when%
+    last-used: Zuletzt verwendet %when%
+    never-used: Nie verwendet
+    delete: Entfernen
+    info-title: Warum Sicherheitsschlüssel?
+    create-description: Gib dem Schlüssel einen Namen, damit du ihn später wiedererkennst, bestätige mit deinem Passwort und folge den Anweisungen deines Browsers.
+    delete-title: Sicherheitsschlüssel entfernen?
+    delete-description: Mit diesem Sicherheitsschlüssel kannst du dich danach nicht mehr anmelden.
   delete:
     title: Konto löschen
     desc: Schließe und lösche dein Konto permanent
@@ -298,6 +342,8 @@ flashes:
   alias-creation-successful: Deine neue Alias-Adresse wurde erstellt.
   alias-deletion-successful: Deine Alias-Adresse wurde gelöscht.
   app-password-deletion-successful: Das App-Passwort wurde gelöscht.
+  webauthn-creation-successful: Der Sicherheitsschlüssel wurde hinzugefügt.
+  webauthn-deletion-successful: Der Sicherheitsschlüssel wurde entfernt.
   app-password-deletion-failed: Das App-Passwort konnte nicht gelöscht werden.
   alias-deletion-failed: Deine Alias-Adresse konnte nicht gelöscht werden. Bitte versuche es erneut.
   recovery-token-invalid: E-Mail-Adresse oder Wiederherstellungscode sind falsch!
@@ -519,6 +565,12 @@ admin:
     twofactor_app_passwords_required:
       label: App-Passwörter bei 2FA erzwingen
       help: Benutzer:innen mit Zwei-Faktor-Authentifizierung können sich in Mailprogrammen (IMAP, SMTP) nur mit App-Passwörtern anmelden, nicht mit ihrem Passwort. Webmail braucht dafür das Roundcube-Plugin.
+    webauthn_rp_id:
+      label: Domain für Sicherheitsschlüssel (WebAuthn RP ID)
+      help: Domain, an die Sicherheitsschlüssel gebunden sind (z.B. example.org). Sie muss der Host der Anwendungs-URL oder eine übergeordnete Domain davon sein. Leer lassen, um den Host der Anwendungs-URL zu verwenden. Eine Änderung macht alle registrierten Sicherheitsschlüssel unbrauchbar.
+    webauthn_origins:
+      label: Weitere Origins für Sicherheitsschlüssel
+      help: "Weitere Origins, die Sicherheitsschlüssel verwenden dürfen, eine pro Zeile (z.B. https://login.example.org für Keycloak). Sie müssen zur Domain für Sicherheitsschlüssel gehören."
     weekly_report_enabled:
       label: Wöchentlicher Bericht
       help: Einen wöchentlichen Bericht über neue Registrierungen an die Benachrichtigungs-E-Mail-Adresse senden

@@ -13,6 +13,7 @@ use App\Entity\Setting;
 use App\Entity\User;
 use App\Entity\UserNotification;
 use App\Entity\Voucher;
+use App\Entity\WebauthnCredential;
 use App\Entity\WebhookDelivery;
 use App\Entity\WebhookEndpoint;
 use App\Enum\ApiScope;
@@ -26,6 +27,7 @@ use App\Service\ApiTokenManager;
 use App\Service\DomainGuesser;
 use App\Service\OpenPgpKeyManager;
 use App\Service\SettingsService;
+use App\Tests\Webauthn\SoftwareAuthenticator;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\BrowserKitDriver;
@@ -40,6 +42,7 @@ use Doctrine\ORM\Tools\ToolsException;
 use Doctrine\Persistence\ObjectRepository;
 use Exception;
 use OTPHP\TOTP;
+use ParagonIE\ConstantTime\Base64UrlSafe;
 use Psr\Cache\CacheItemPoolInterface;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Test\TestBrowserToken;
@@ -136,6 +139,8 @@ class FeatureContext extends MinkContext
 
         // Clear the cache to ensure settings are not cached between tests
         $this->cache->clear();
+
+        SoftwareAuthenticator::reset();
     }
 
     /**
@@ -256,6 +261,102 @@ class FeatureContext extends MinkContext
 
         $user->setTotpBackupCodes(array_map('trim', explode(',', $codes)));
         $this->manager->flush();
+    }
+
+    /**
+     * @Given the User :email has the security key :name
+     */
+    public function theUserHasTheSecurityKey(string $email, string $name): void
+    {
+        $user = $this->getUserRepository()->findByEmail($email);
+        if (null === $user) {
+            throw new RuntimeException(sprintf('User "%s" not found', $email));
+        }
+
+        $authenticator = SoftwareAuthenticator::forUser($email);
+        $credential = new WebauthnCredential(
+            $user,
+            $name,
+            Base64UrlSafe::encodeUnpadded($authenticator->credentialId),
+            Base64UrlSafe::encodeUnpadded($authenticator->publicKey()),
+            Base64UrlSafe::encodeUnpadded(random_bytes(32)),
+            $authenticator->signCount,
+            ['usb'],
+            '00000000-0000-0000-0000-000000000000',
+            'none',
+            false,
+            false,
+            false,
+        );
+        $this->manager->persist($credential);
+        $user->getWebauthnCredentials()->add($credential);
+        $this->manager->flush();
+
+        // e.g. "/account/webauthn/{YubiKey}/delete"
+        $this->placeholders['{'.$name.'}'] = (string) $credential->getId();
+    }
+
+    /**
+     * Submits a password confirmation like the password modal does, with the CSRF token of the current page.
+     *
+     * @When I confirm with password :password at :path
+     *
+     * @throws UnsupportedDriverActionException
+     */
+    public function iConfirmWithPasswordAt(string $password, string $path): void
+    {
+        $driver = $this->getSession()->getDriver();
+        if (!$driver instanceof BrowserKitDriver) {
+            throw new UnsupportedDriverActionException('This step is only supported by the BrowserKitDriver', $driver);
+        }
+
+        $token = $this->getSession()->getPage()->find('css', 'input[name="password_confirmation[_token]"]');
+        if (null === $token) {
+            throw new RuntimeException('No password confirmation form on the current page');
+        }
+
+        $driver->getClient()->request('POST', $this->locatePath($this->replacePlaceholders($path)), [
+            'password_confirmation' => ['_token' => $token->getValue(), 'password' => $password],
+        ]);
+    }
+
+    /**
+     * Submits a code to the two-factor login form like the backup code field does, which is only
+     * rendered by JavaScript.
+     *
+     * @When I submit the two-factor code :code
+     *
+     * @throws UnsupportedDriverActionException
+     */
+    public function iSubmitTheTwoFactorCode(string $code): void
+    {
+        $driver = $this->getSession()->getDriver();
+        if (!$driver instanceof BrowserKitDriver) {
+            throw new UnsupportedDriverActionException('This step is only supported by the BrowserKitDriver', $driver);
+        }
+
+        $token = $this->getSession()->getPage()->find('css', 'input[name="_csrf_token"]');
+        if (null === $token) {
+            throw new RuntimeException('No two-factor form on the current page');
+        }
+
+        $driver->getClient()->request('POST', $this->locatePath('/2fa_check'), [
+            '_auth_code' => $code,
+            '_csrf_token' => $token->getValue(),
+        ]);
+    }
+
+    /**
+     * @Then the User :email should have :count security keys
+     */
+    public function theUserShouldHaveSecurityKeys(string $email, int $count): void
+    {
+        $this->manager->clear();
+        $user = $this->getUserRepository()->findByEmail($email);
+        $actual = $this->manager->getRepository(WebauthnCredential::class)->count(['user' => $user]);
+        if ($actual !== $count) {
+            throw new RuntimeException(sprintf('User "%s" has %d security keys, expected %d', $email, $actual, $count));
+        }
     }
 
     /**

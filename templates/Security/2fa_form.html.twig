@@ -63,6 +63,12 @@
         {% endif %}
 
         <div class="flex flex-col space-y-4">
+            {% if 'webauthn' in availableTwoFactorProviders %}
+                <a href="{{ path('2fa_login', {'preferProvider': 'webauthn'}) }}" class="text-center text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
+                    {{ "form.twofactor-use-webauthn"|trans }}
+                </a>
+            {% endif %}
+
             <button
                 type="submit"
                 class="w-full px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
