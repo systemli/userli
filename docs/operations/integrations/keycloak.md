@@ -30,8 +30,9 @@ Keycloak's documentation on
 
 The provider adds two authenticators for Keycloak's browser flow:
 
-* **Userli Security Key**: Keycloak creates the challenge and shows its
-  WebAuthn login page, Userli verifies the response against the stored key.
+* **Userli Security Key**: Userli creates a single-use challenge, Keycloak
+  shows its WebAuthn login page with it and Userli verifies the response
+  against the stored key.
 * **Userli Backup Code**: accepts the backup codes from Userli, also for users
   with only security keys. The **OTP Form** accepts backup codes as well.
 

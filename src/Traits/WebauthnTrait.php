@@ -15,6 +15,10 @@ trait WebauthnTrait
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: WebauthnCredential::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private Collection $webauthnCredentials;
 
+    /** Base64url encoded, shared by all credentials of the user */
+    #[ORM\Column(nullable: true)]
+    private ?string $webauthnUserHandle = null;
+
     /**
      * @return Collection<int, WebauthnCredential>
      */
@@ -29,6 +33,16 @@ trait WebauthnTrait
     public function removeWebauthnCredentials(): void
     {
         $this->webauthnCredentials->clear();
+    }
+
+    public function getWebauthnUserHandle(): ?string
+    {
+        return $this->webauthnUserHandle;
+    }
+
+    public function setWebauthnUserHandle(?string $webauthnUserHandle): void
+    {
+        $this->webauthnUserHandle = $webauthnUserHandle;
     }
 
     public function isWebauthnAuthenticationEnabled(): bool

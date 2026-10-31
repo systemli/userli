@@ -21,6 +21,8 @@ use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 use Throwable;
 use Webauthn\AttestationStatement\AttestationStatementSupportManager;
 use Webauthn\AttestationStatement\NoneAttestationStatementSupport;
@@ -43,6 +45,8 @@ use Webauthn\TrustPath\EmptyTrustPath;
 
 use const JSON_THROW_ON_ERROR;
 use const PHP_URL_HOST;
+use const PHP_URL_PORT;
+use const PHP_URL_SCHEME;
 
 /**
  * WebAuthn ceremonies for security keys used as second factor.
@@ -61,6 +65,11 @@ final readonly class WebauthnService
     // Several forms may be rendered before one is submitted, e.g. in other tabs or after a failed attempt
     private const int MAX_PENDING_OPTIONS = 5;
 
+    // Keycloak renders the login page with the challenge, so it has to outlive the ceremony timeout
+    private const int EXTERNAL_CHALLENGE_TTL = 300;
+
+    private const string EXTERNAL_CHALLENGE_CACHE_PREFIX = 'webauthn_external_challenge_';
+
     private SerializerInterface $serializer;
 
     public function __construct(
@@ -69,6 +78,7 @@ final readonly class WebauthnService
         private EntityManagerInterface $manager,
         private RequestStack $requestStack,
         private LoggerInterface $logger,
+        private CacheInterface $cache,
     ) {
         $this->serializer = new WebauthnSerializerFactory(
             new AttestationStatementSupportManager([new NoneAttestationStatementSupport()])
@@ -94,7 +104,7 @@ final readonly class WebauthnService
                 residentKey: AuthenticatorSelectionCriteria::RESIDENT_KEY_REQUIREMENT_DISCOURAGED,
             ),
             attestation: PublicKeyCredentialCreationOptions::ATTESTATION_CONVEYANCE_PREFERENCE_NONE,
-            excludeCredentials: $this->getDescriptors($user),
+            excludeCredentials: $this->getDescriptors($this->repository->findByUser($user)),
             timeout: self::TIMEOUT,
         );
 
@@ -218,8 +228,30 @@ final readonly class WebauthnService
     }
 
     /**
+     * Creates a challenge for a relying party with an allowed origin (e.g. Keycloak), base64url encoded.
+     * It can be used once with verifyExternalAssertion() for the same user, within a few minutes.
+     */
+    public function createExternalChallenge(User $user): string
+    {
+        return Base64UrlSafe::encodeUnpadded($this->issueExternalChallenge($user));
+    }
+
+    /**
+     * Options for navigator.credentials.get() with a challenge from createExternalChallenge(),
+     * for a relying party that has no own WebAuthn support (e.g. Roundcube).
+     *
+     * @return array<string, mixed>
+     */
+    public function createExternalAuthenticationOptions(User $user): array
+    {
+        $json = $this->toJson($this->createRequestOptions($user, $this->issueExternalChallenge($user)));
+
+        return (array) json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+    }
+
+    /**
      * Verifies an assertion that a relying party with an allowed origin (e.g. Keycloak) collected
-     * for a challenge it created. All binary values are base64url encoded.
+     * for a challenge from createExternalChallenge(). All binary values are base64url encoded.
      */
     public function verifyExternalAssertion(
         User $user,
@@ -242,12 +274,19 @@ final readonly class WebauthnService
                     'userHandle' => $userHandle,
                 ],
             ], JSON_THROW_ON_ERROR), PublicKeyCredential::class, 'json');
-            $options = $this->createRequestOptions($user, Base64UrlSafe::decode($challenge));
+            $challenge = Base64UrlSafe::decode($challenge);
         } catch (Throwable) {
             return false;
         }
 
-        return $this->verifyAssertion($user, $publicKeyCredential, $options);
+        // Without this, a captured assertion could be replayed with its own challenge
+        if (!$this->takeExternalChallenge($user, $challenge)) {
+            $this->logger->notice('WebAuthn assertion failed: unknown, expired or already used challenge');
+
+            return false;
+        }
+
+        return $this->verifyAssertion($user, $publicKeyCredential, $this->createRequestOptions($user, $challenge));
     }
 
     public function getRpId(): string
@@ -265,7 +304,12 @@ final readonly class WebauthnService
      */
     public function getAllowedOrigins(): array
     {
-        $origins = [(string) $this->settingsService->get('app_url')];
+        // Browsers report the origin only (scheme, host, port), app_url may also contain a path
+        $appUrl = (string) $this->settingsService->get('app_url');
+        $scheme = parse_url($appUrl, PHP_URL_SCHEME);
+        $host = parse_url($appUrl, PHP_URL_HOST);
+        $port = parse_url($appUrl, PHP_URL_PORT);
+        $origins = [is_string($scheme) && is_string($host) ? $scheme.'://'.$host.(is_int($port) ? ':'.$port : '') : $appUrl];
         $additional = (string) $this->settingsService->get('webauthn_origins', '');
         foreach (preg_split('/\R/', $additional) ?: [] as $origin) {
             $origins[] = trim($origin);
@@ -342,12 +386,45 @@ final readonly class WebauthnService
         return is_string($json) ? $json : null;
     }
 
+    private function issueExternalChallenge(User $user): string
+    {
+        $challenge = random_bytes(32);
+        $this->cache->get($this->getExternalChallengeKey($challenge), static function (ItemInterface $item) use ($user): string {
+            $item->expiresAfter(self::EXTERNAL_CHALLENGE_TTL);
+
+            return $user->getEmail();
+        });
+
+        return $challenge;
+    }
+
+    /**
+     * Removes the challenge and tells whether it was issued for the user and has not expired.
+     */
+    private function takeExternalChallenge(User $user, string $challenge): bool
+    {
+        $key = $this->getExternalChallengeKey($challenge);
+        $email = $this->cache->get($key, static function (ItemInterface $item, bool &$save): ?string {
+            $save = false;
+
+            return null;
+        });
+        $this->cache->delete($key);
+
+        return null !== $email && $email === $user->getEmail();
+    }
+
+    private function getExternalChallengeKey(string $challenge): string
+    {
+        return self::EXTERNAL_CHALLENGE_CACHE_PREFIX.hash('sha256', $challenge);
+    }
+
     private function createRequestOptions(User $user, string $challenge): PublicKeyCredentialRequestOptions
     {
         return PublicKeyCredentialRequestOptions::create(
             challenge: $challenge,
             rpId: $this->getRpId(),
-            allowCredentials: $this->getDescriptors($user),
+            allowCredentials: $this->getDescriptors($this->repository->findByUser($user)),
             userVerification: PublicKeyCredentialRequestOptions::USER_VERIFICATION_REQUIREMENT_DISCOURAGED,
             timeout: self::TIMEOUT,
         );
@@ -363,9 +440,11 @@ final readonly class WebauthnService
     }
 
     /**
+     * @param WebauthnCredential[] $credentials
+     *
      * @return PublicKeyCredentialDescriptor[]
      */
-    private function getDescriptors(User $user): array
+    private function getDescriptors(array $credentials): array
     {
         return array_map(
             static fn (WebauthnCredential $credential): PublicKeyCredentialDescriptor => PublicKeyCredentialDescriptor::create(
@@ -373,21 +452,24 @@ final readonly class WebauthnService
                 Base64UrlSafe::decode($credential->getCredentialId()),
                 $credential->getTransports(),
             ),
-            $this->repository->findByUser($user),
+            $credentials,
         );
     }
 
     /**
-     * All credentials of a user share one random user handle.
+     * All credentials of a user share one random user handle, stored before the first registration
+     * so that registrations started in parallel get the same one.
      */
     private function getUserHandle(User $user): string
     {
-        $credentials = $this->repository->findByUser($user);
-        if ([] !== $credentials) {
-            return Base64UrlSafe::decode($credentials[0]->getUserHandle());
+        if (null === $user->getWebauthnUserHandle()) {
+            // Credentials registered before the handle was stored on the user keep theirs
+            $credentials = $this->repository->findByUser($user);
+            $user->setWebauthnUserHandle([] !== $credentials ? $credentials[0]->getUserHandle() : Base64UrlSafe::encodeUnpadded(random_bytes(32)));
+            $this->manager->flush();
         }
 
-        return random_bytes(32);
+        return Base64UrlSafe::decode((string) $user->getWebauthnUserHandle());
     }
 
     private function toCredentialRecord(WebauthnCredential $credential): CredentialRecord

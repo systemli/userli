@@ -31,23 +31,4 @@ final class WebauthnCredentialRepository extends ServiceEntityRepository
     {
         return $this->findOneBy(['credentialIdHash' => WebauthnCredential::hashCredentialId($credentialId)]);
     }
-
-    /**
-     * Schedules the removal of all WebAuthn credentials of the user, so it is flushed
-     * together with the other changes to the user.
-     */
-    public function removeByUser(User $user): void
-    {
-        foreach ($this->findBy(['user' => $user]) as $credential) {
-            $this->getEntityManager()->remove($credential);
-        }
-    }
-
-    public function countUsers(): int
-    {
-        return (int) $this->createQueryBuilder('w')
-            ->select('COUNT(DISTINCT w.user)')
-            ->getQuery()
-            ->getSingleScalarResult();
-    }
 }

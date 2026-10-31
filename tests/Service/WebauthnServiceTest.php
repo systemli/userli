@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use ParagonIE\ConstantTime\Base64UrlSafe;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -69,7 +70,7 @@ class WebauthnServiceTest extends TestCase
         $requestStack = new RequestStack();
         $requestStack->push($request);
 
-        $this->service = new WebauthnService($settings, $repository, $manager, $requestStack, new NullLogger());
+        $this->service = new WebauthnService($settings, $repository, $manager, $requestStack, new NullLogger(), new ArrayAdapter());
         $this->user = new User('user@example.org');
     }
 
@@ -99,6 +100,25 @@ class WebauthnServiceTest extends TestCase
         self::assertSame('example.org', $options['rp']['id']);
         self::assertSame('none', $options['attestation']);
         self::assertSame(Base64UrlSafe::encodeUnpadded($authenticator->credentialId), $options['excludeCredentials'][0]['id']);
+    }
+
+    public function testRegistrationsStartedInParallelShareTheUserHandle(): void
+    {
+        $first = json_decode($this->service->createRegistrationOptions($this->user), true);
+        $second = json_decode($this->service->createRegistrationOptions($this->user), true);
+
+        self::assertSame($first['user']['id'], $second['user']['id']);
+        self::assertSame($first['user']['id'], $this->user->getWebauthnUserHandle());
+    }
+
+    public function testUserHandleOfExistingCredentialIsKept(): void
+    {
+        $credential = $this->register(new SoftwareAuthenticator());
+        $this->user->setWebauthnUserHandle(null);
+
+        $options = json_decode($this->service->createRegistrationOptions($this->user), true);
+
+        self::assertSame($credential->getUserHandle(), $options['user']['id']);
     }
 
     public function testRegistrationFailsWithoutOptionsInSession(): void
@@ -190,7 +210,7 @@ class WebauthnServiceTest extends TestCase
     {
         $authenticator = new SoftwareAuthenticator();
         $credential = $this->register($authenticator);
-        $challenge = Base64UrlSafe::encodeUnpadded(random_bytes(32));
+        $challenge = $this->service->createExternalChallenge($this->user);
 
         $assertion = $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN);
 
@@ -205,14 +225,58 @@ class WebauthnServiceTest extends TestCase
 
         $assertion = $authenticator->assert('example.org', Base64UrlSafe::encodeUnpadded(random_bytes(32)), self::KEYCLOAK_ORIGIN);
 
-        self::assertFalse($this->verifyExternal(Base64UrlSafe::encodeUnpadded(random_bytes(32)), $assertion));
+        self::assertFalse($this->verifyExternal($this->service->createExternalChallenge($this->user), $assertion));
+    }
+
+    public function testExternalAuthenticationOptions(): void
+    {
+        $authenticator = new SoftwareAuthenticator();
+        $this->register($authenticator);
+
+        $options = $this->service->createExternalAuthenticationOptions($this->user);
+
+        self::assertSame('example.org', $options['rpId']);
+        self::assertSame(Base64UrlSafe::encodeUnpadded($authenticator->credentialId), $options['allowCredentials'][0]['id']);
+        self::assertTrue($this->verifyExternal($options['challenge'], $authenticator->assert('example.org', $options['challenge'], self::KEYCLOAK_ORIGIN)));
+    }
+
+    public function testExternalAssertionFailsForChallengeNotIssued(): void
+    {
+        $authenticator = new SoftwareAuthenticator();
+        $this->register($authenticator);
+        $challenge = Base64UrlSafe::encodeUnpadded(random_bytes(32));
+
+        self::assertFalse($this->verifyExternal($challenge, $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN)));
+    }
+
+    public function testExternalAssertionFailsForChallengeOfOtherUser(): void
+    {
+        $authenticator = new SoftwareAuthenticator();
+        $this->register($authenticator);
+        $challenge = $this->service->createExternalChallenge(new User('other@example.org'));
+
+        self::assertFalse($this->verifyExternal($challenge, $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN)));
+    }
+
+    public function testExternalAssertionCannotBeReplayedWithoutSignCount(): void
+    {
+        $authenticator = new SoftwareAuthenticator();
+        $this->register($authenticator);
+        $challenge = $this->service->createExternalChallenge($this->user);
+
+        // Like many passkeys, the authenticator always reports a sign count of 0
+        $authenticator->signCount = -1;
+        $assertion = $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN);
+
+        self::assertTrue($this->verifyExternal($challenge, $assertion));
+        self::assertFalse($this->verifyExternal($challenge, $assertion));
     }
 
     public function testExternalAssertionFailsForUnknownOrigin(): void
     {
         $authenticator = new SoftwareAuthenticator();
         $this->register($authenticator);
-        $challenge = Base64UrlSafe::encodeUnpadded(random_bytes(32));
+        $challenge = $this->service->createExternalChallenge($this->user);
 
         $assertion = $authenticator->assert('example.org', $challenge, 'https://evil.example.com');
 
@@ -223,7 +287,7 @@ class WebauthnServiceTest extends TestCase
     {
         $authenticator = new SoftwareAuthenticator();
         $this->register($authenticator);
-        $challenge = Base64UrlSafe::encodeUnpadded(random_bytes(32));
+        $challenge = $this->service->createExternalChallenge($this->user);
 
         $assertion = $authenticator->assert('evil.example.com', $challenge, self::KEYCLOAK_ORIGIN);
 
@@ -234,12 +298,12 @@ class WebauthnServiceTest extends TestCase
     {
         $authenticator = new SoftwareAuthenticator();
         $this->register($authenticator);
-        $challenge = Base64UrlSafe::encodeUnpadded(random_bytes(32));
+        $challenge = $this->service->createExternalChallenge($this->user);
         self::assertTrue($this->verifyExternal($challenge, $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN)));
 
         // A cloned authenticator reuses an old counter value
         $authenticator->signCount = 0;
-        $challenge = Base64UrlSafe::encodeUnpadded(random_bytes(32));
+        $challenge = $this->service->createExternalChallenge($this->user);
 
         self::assertFalse($this->verifyExternal($challenge, $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN)));
     }
@@ -248,7 +312,7 @@ class WebauthnServiceTest extends TestCase
     {
         $authenticator = new SoftwareAuthenticator();
         $this->register($authenticator);
-        $challenge = Base64UrlSafe::encodeUnpadded(random_bytes(32));
+        $challenge = $this->service->createExternalChallenge($this->user);
 
         $assertion = $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN);
         $assertion['signature'] = new SoftwareAuthenticator()->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN)['signature'];

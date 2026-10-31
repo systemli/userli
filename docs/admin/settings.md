@@ -46,13 +46,14 @@ migrate existing users. Keep the default unless you know why to change it.
 |---------------------------------------|---------|-------------|
 | **Require app passwords with 2FA**    | on      | Users with 2FA can sign in to mail programs (IMAP, SMTP) only with [app passwords](../user/app-passwords.md), not with their password. |
 | **Security Key Domain**               | empty   | Domain that [security keys](../user/security.md#add-a-security-key) are bound to (WebAuthn RP ID), e.g. `example.org`. Empty means the host of the application URL. |
-| **Additional Security Key Origins**   | empty   | Further origins that may use security keys, one per line, e.g. `https://login.example.org` for [Keycloak](../operations/integrations/keycloak.md). The application URL is always allowed. |
+| **Additional Security Key Origins**   | empty   | Further origins that may use security keys, one per line, e.g. `https://login.example.org` for [Keycloak](../operations/integrations/keycloak.md) or `https://mail.example.org` for [Roundcube](../operations/integrations/roundcube.md#security-keys). The application URL is always allowed. |
 
 Upgraded installations start with this setting off, so mail programs of
 existing 2FA users keep working. Tell your users to create app passwords before
 you turn it on. Webmail needs the
 [Roundcube plugin](../operations/integrations/roundcube.md) to sign in with 2FA.
-Users with only security keys sign in to webmail with a backup code.
+With version 1.1 of the plugin or later, users can also sign in to webmail with
+a security key if the webmail origin is allowed below.
 
 !!! warning
 
