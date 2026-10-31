@@ -61,7 +61,7 @@
                     </div>
                     <div class="flex-grow flex justify-center items-end">
                         <div class="flex-shrink-0">
-                            {% if user.totpAuthenticationEnabled %}
+                            {% if user.twofactorEnabled %}
                                 <div class="inline-flex items-center px-2 py-1 bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 text-xs font-medium rounded-full">
                                     {{ ux_icon('heroicons:check-circle-20-solid', {class: 'w-3 h-3 mr-1'}) }}
                                     {{ "account.twofactor.enabled"|trans }}

@@ -121,7 +121,7 @@
                                     </div>
                                 </td>
                                 <td class="hidden lg:table-cell px-4 py-3 text-center">
-                                    {% if user.totpAuthenticationEnabled %}
+                                    {% if user.twofactorEnabled %}
                                         {{ ux_icon('heroicons:check-circle-20-solid', {class: 'w-5 h-5 text-green-500 dark:text-green-400 inline', title: 'admin.user.filter.enabled'|trans}) }}
                                     {% else %}
                                         {{ ux_icon('heroicons:x-circle-20-solid', {class: 'w-5 h-5 text-gray-300 dark:text-gray-600 inline', title: 'admin.user.filter.disabled'|trans}) }}
