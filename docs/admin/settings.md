@@ -45,11 +45,22 @@ migrate existing users. Keep the default unless you know why to change it.
 | Setting                               | Default | Description |
 |---------------------------------------|---------|-------------|
 | **Require app passwords with 2FA**    | on      | Users with 2FA can sign in to mail programs (IMAP, SMTP) only with [app passwords](../user/app-passwords.md), not with their password. |
+| **Security Key Domain**               | empty   | Domain that [security keys](../user/security.md#add-a-security-key) are bound to (WebAuthn RP ID), e.g. `example.org`. Empty means the host of the application URL. |
+| **Additional Security Key Origins**   | empty   | Further origins that may use security keys, one per line, e.g. `https://login.example.org` for [Keycloak](../operations/integrations/keycloak.md). The application URL is always allowed. |
 
 Upgraded installations start with this setting off, so mail programs of
 existing 2FA users keep working. Tell your users to create app passwords before
 you turn it on. Webmail needs the
 [Roundcube plugin](../operations/integrations/roundcube.md) to sign in with 2FA.
+Users with only security keys sign in to webmail with a backup code.
+
+!!! warning
+
+    Security keys only work on the domain they were added for. The security key
+    domain must be the host of the application URL or a parent domain of it, and
+    changing it later makes all registered security keys unusable. Set a parent
+    domain like `example.org` from the start if other services, for example
+    Keycloak on `login.example.org`, should accept the keys too.
 
 ## Reports
 
