@@ -21,6 +21,9 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 final class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
+    // Same as User::isTwofactorEnabled(), needs the parameter totpConfirmed set to true
+    private const string TWOFACTOR_ENABLED_DQL = '((u.totpConfirmed = :totpConfirmed AND u.totpSecret IS NOT NULL) OR EXISTS (SELECT w.id FROM App\Entity\WebauthnCredential w WHERE w.user = u))';
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
@@ -252,8 +255,7 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
         return (int) $this->createQueryBuilder('u')
             ->select('COUNT(u.id)')
             ->where('u.deleted = :deleted')
-            ->andWhere('u.totpConfirmed = :totpConfirmed')
-            ->andWhere('u.totpSecret IS NOT NULL')
+            ->andWhere(self::TWOFACTOR_ENABLED_DQL)
             ->setParameter('deleted', false)
             ->setParameter('totpConfirmed', true)
             ->getQuery()
@@ -319,16 +321,11 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
         }
 
         if ('enabled' === $twofactor) {
-            $qb->andWhere('u.totpConfirmed = :totpConfirmed')
-                ->andWhere('u.totpSecret IS NOT NULL')
+            $qb->andWhere(self::TWOFACTOR_ENABLED_DQL)
                 ->setParameter('totpConfirmed', true);
         } elseif ('disabled' === $twofactor) {
-            $qb->andWhere(
-                $qb->expr()->orX(
-                    'u.totpConfirmed = :totpConfirmed',
-                    'u.totpSecret IS NULL'
-                )
-            )->setParameter('totpConfirmed', false);
+            $qb->andWhere('NOT '.self::TWOFACTOR_ENABLED_DQL)
+                ->setParameter('totpConfirmed', true);
         }
     }
 

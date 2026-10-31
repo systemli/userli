@@ -1,0 +1,112 @@
+{% extends 'base_page.html.twig' %}
+
+{% block title %}{{ setting('app_name') }} - {{ "account.webauthn.title"|trans }}{% endblock %}
+
+{% form_theme form 'Form/fields.html.twig' %}
+
+{% block page_title %}{{ "account.webauthn.title"|trans }}{% endblock %}
+
+{% block page_subtitle %}{{ "account.webauthn.lead"|trans }}{% endblock %}
+
+{% block page_content %}
+    <div class="max-w-5xl mx-auto space-y-8" data-controller="modal">
+        <div class="mb-6">{% include 'Account/_twofactor_back.html.twig' %}</div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 sm:p-8">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center mr-4">
+                        {{ ux_icon('heroicons:key', {'class': 'w-6 h-6 text-blue-600 dark:text-blue-400'}) }}
+                    </div>
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                        {{ "account.webauthn.create"|trans }}
+                    </h2>
+                </div>
+
+                <p class="text-gray-600 dark:text-gray-300 mb-6">
+                    {{ "account.webauthn.create-description"|trans }}
+                </p>
+
+                {{ form_start(form, {'attr': {
+                    'class': 'space-y-6',
+                    'data-controller': 'webauthn',
+                    'data-webauthn-options-value': options,
+                    'data-webauthn-ceremony-value': 'create',
+                }}) }}
+                {{ form_errors(form) }}
+
+                <p hidden data-webauthn-target="error" role="alert" class="text-sm text-red-600 dark:text-red-400">
+                    {{ "form.webauthn-failed"|trans({}, 'validators') }}
+                </p>
+
+                <div>
+                    {{ form_label(form.name, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                    {{ form_errors(form.name) }}
+                    {{ form_widget(form.name) }}
+                </div>
+
+                <div>
+                    {{ form_label(form.password, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                    {{ form_errors(form.password) }}
+                    {{ form_widget(form.password) }}
+                </div>
+
+                {{ form_widget(form.response) }}
+
+                <div class="pt-4">
+                    {{ form_widget(form.submit, {'attr': {'class': 'w-full'}}) }}
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+
+            {% include 'Account/_twofactor_info.html.twig' with {
+                info_title: 'account.webauthn.info-title',
+                info_items: [
+                    {icon: 'heroicons:shield-check', text: 'account.webauthn.feature-phishing'},
+                    {icon: 'heroicons:key', text: 'account.webauthn.feature-devices'},
+                    {icon: 'heroicons:lifebuoy', text: 'account.webauthn.feature-backup'},
+                ],
+            } %}
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 sm:p-8">
+            {% if credentials is empty %}
+                <div class="text-center py-8 text-gray-500 dark:text-gray-300">
+                    {{ ux_icon('heroicons:key', {class: 'w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600'}) }}
+                    <p class="text-sm">{{ "account.webauthn.empty"|trans }}</p>
+                </div>
+            {% else %}
+                <div class="space-y-2">
+                    {% for item in credentials %}
+                        <div data-webauthn-credential-row class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-md gap-3">
+                            <div class="flex-1 min-w-0">
+                                <span class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate block" title="{{ item.name }}">{{ item.name }}</span>
+                                <span class="text-xs text-gray-500 dark:text-gray-400">
+                                    {{ "account.webauthn.added"|trans({'%when%': item.creationTime|date('Y-m-d')}) }} ·
+                                    {% if item.lastUsedTime %}{{ "account.webauthn.last-used"|trans({'%when%': item.lastUsedTime|last_use}) }}{% else %}{{ "account.webauthn.never-used"|trans }}{% endif %}
+                                </span>
+                            </div>
+                            <button type="button"
+                                    data-action="modal#open"
+                                    data-modal-action-param="{{ path('account_webauthn_delete', {id: item.id}) }}"
+                                    class="inline-flex items-center p-2 text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-900/50 rounded hover:bg-red-200 dark:hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 dark:focus:ring-offset-gray-700 transition-colors"
+                                    title="{{ "account.webauthn.delete"|trans }}"
+                                    aria-label="{{ "account.webauthn.delete"|trans }} {{ item.name }}"
+                                    data-controller="tooltip">
+                                {{ ux_icon('heroicons:x-mark', {class: 'w-4 h-4'}) }}
+                            </button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        {% include '_delete_password_modal.html.twig' with {
+            modal_title: 'account.webauthn.delete-title'|trans,
+            modal_description: 'account.webauthn.delete-description'|trans,
+            modal_submit_label: 'account.webauthn.delete'|trans,
+            modal_password_label: 'form.password'|trans,
+            modal_id: 'delete-webauthn-modal-title',
+        } %}
+    </div>
+{% endblock %}

@@ -254,3 +254,36 @@ Feature: Roundcube API
         And I send a POST request to "/api/dovecot/user@example.org" with form data:
             | password | app-password |
         Then the response status code should equal 200
+
+    @login @twofactor @webauthn
+    Scenario: Login without code for user with only a security key
+        Given the User "user@example.org" has the security key "YubiKey"
+        And I have a valid API token "roundcube-test-123"
+        When I send a POST request to "/api/roundcube/login" with form data:
+            | email    | user@example.org |
+            | password | password         |
+        Then the response status code should equal 401
+        And the JSON path "message" should equal "twofactor required"
+
+    @login @twofactor @webauthn
+    Scenario: Login with backup code for user with only a security key
+        Given the User "user@example.org" has the security key "YubiKey"
+        And the User "user@example.org" has TOTP backup codes "111111,222222"
+        And I have a valid API token "roundcube-test-123"
+        When I send a POST request to "/api/roundcube/login" with form data:
+            | email    | user@example.org |
+            | password | password         |
+            | code     | 111111           |
+        Then the response status code should equal 200
+        And the JSON path "password" should not be empty
+
+    @login @twofactor @webauthn
+    Scenario: Login with a TOTP-like code for user with only a security key is rejected
+        Given the User "user@example.org" has the security key "YubiKey"
+        And I have a valid API token "roundcube-test-123"
+        When I send a POST request to "/api/roundcube/login" with form data:
+            | email    | user@example.org |
+            | password | password         |
+            | code     | 123456           |
+        Then the response status code should equal 401
+        And the JSON path "message" should equal "authentication failed"

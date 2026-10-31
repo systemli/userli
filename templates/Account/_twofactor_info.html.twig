@@ -1,34 +1,36 @@
-{# Two-factor authentication information section - shared across all 2FA templates #}
-<!-- Right column: Information -->
+{#
+    Two-factor authentication information section - shared across all 2FA templates.
+
+    Variables (optional):
+        info_title – translation key of the heading
+        info_items – list of {icon, text} with heroicon names and translation keys
+
+    A hint about app passwords for mail programs is always added: a warning when they are required,
+    a recommendation otherwise.
+#}
+{% set info_title = info_title|default('account.twofactor.info-title') %}
+{% set info_items = info_items|default([
+    {icon: 'heroicons:lock-closed', text: 'account.twofactor.info-security'},
+    {icon: 'heroicons:device-phone-mobile', text: 'account.twofactor.info-simple'},
+    {icon: 'heroicons:key', text: 'account.twofactor.info-backup'},
+]) %}
 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 sm:p-8">
     <div class="flex items-center mb-6">
         <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center mr-4">
             {{ ux_icon('heroicons:information-circle', {'class': 'w-6 h-6 text-blue-600 dark:text-blue-400'}) }}
         </div>
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ "account.twofactor.info-title"|trans }}</h2>
+        <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ info_title|trans }}</h2>
     </div>
 
     <div class="space-y-4">
-        <div class="flex items-start">
-            <div class="w-6 h-6 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                {{ ux_icon('heroicons:lock-closed', {'class': 'w-3 h-3 text-blue-600 dark:text-blue-400'}) }}
+        {% for item in info_items %}
+            <div class="flex items-start">
+                <div class="w-6 h-6 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                    {{ ux_icon(item.icon, {'class': 'w-3 h-3 text-blue-600 dark:text-blue-400'}) }}
+                </div>
+                <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{{ item.text|trans }}</p>
             </div>
-            <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{{ "account.twofactor.info-security"|trans }}</p>
-        </div>
-
-        <div class="flex items-start">
-            <div class="w-6 h-6 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                {{ ux_icon('heroicons:device-phone-mobile', {'class': 'w-3 h-3 text-blue-600 dark:text-blue-400'}) }}
-            </div>
-            <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{{ "account.twofactor.info-simple"|trans }}</p>
-        </div>
-
-        <div class="flex items-start">
-            <div class="w-6 h-6 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                {{ ux_icon('heroicons:key', {'class': 'w-3 h-3 text-blue-600 dark:text-blue-400'}) }}
-            </div>
-            <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{{ "account.twofactor.info-backup"|trans }}</p>
-        </div>
+        {% endfor %}
 
         {% if setting('twofactor_app_passwords_required') %}
             <div class="flex items-start">
@@ -37,6 +39,16 @@
                 </div>
                 <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
                     {{ "account.twofactor.info-app-passwords"|trans }}
+                    <a href="{{ path('account_app_passwords') }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 focus:outline-none focus:underline transition-colors duration-200">{{ "account.twofactor.info-app-passwords-link"|trans }}</a>
+                </p>
+            </div>
+        {% else %}
+            <div class="flex items-start">
+                <div class="w-6 h-6 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                    {{ ux_icon('heroicons:envelope', {'class': 'w-3 h-3 text-blue-600 dark:text-blue-400'}) }}
+                </div>
+                <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                    {{ "account.twofactor.info-app-passwords-recommended"|trans }}
                     <a href="{{ path('account_app_passwords') }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 focus:outline-none focus:underline transition-colors duration-200">{{ "account.twofactor.info-app-passwords-link"|trans }}</a>
                 </p>
             </div>

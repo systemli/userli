@@ -205,18 +205,21 @@ Feature: User
   @twofactor-auth
   Scenario: Enable two-factor authentication #1 and enter wrong password
     When I am authenticated as "user@example.org"
-    And I am on "/account/twofactor"
+    And I am on "/account/twofactor/totp"
     And I fill in the following:
       | password_confirmation_password | wrong-password |
     And I press "Set up"
 
-    Then I should be on "/account/twofactor"
+    Then I should be on "/account/twofactor/totp"
     And I should see text matching "Wrong password"
 
   @twofactor-auth
   Scenario: Enable two-factor authentication
     When I am authenticated as "user@example.org"
     And I am on "/account/twofactor"
+    And I should see "Two-factor authentication is not active"
+    And I follow "Set up"
+    Then I should be on "/account/twofactor/totp"
     And I fill in the following:
       | password_confirmation_password | asdasd |
     And I press "Set up"
@@ -240,6 +243,66 @@ Feature: User
     And I press "Verify"
 
     Then I should be on "/account/twofactor"
+    And I should see "Two-factor authentication is active"
+    And I should see "6 codes left"
+
+  @twofactor-auth
+  Scenario: Enable two-factor authentication app with a security key keeps backup codes
+    Given the User "user@example.org" has the security key "YubiKey"
+    And the User "user@example.org" has TOTP backup codes "111111,222222"
+    When I am authenticated as "user@example.org"
+    And I am on "/account/twofactor/totp"
+    And I fill in the following:
+      | password_confirmation_password | asdasd |
+    And I press "Set up"
+    Then I should be on "/account/twofactor/confirm"
+    And I set the placeholder "totpCode" from html element "code#totp-secret"
+    And I generate a TOTP code from "totpCode" and fill to field "twofactor_confirm_code"
+    And I press "Verify"
+    Then I should be on "/account/twofactor"
+    And I should see "2 codes left"
+
+  @twofactor-auth
+  Scenario: Two-factor overview shows security keys
+    Given the User "user@example.org" has the security key "YubiKey"
+    And the User "user@example.org" has TOTP backup codes "111111,222222"
+    When I am authenticated as "user@example.org"
+    And I am on "/account/twofactor"
+    Then I should see "Two-factor authentication is active"
+    And I should see "One security key"
+    And I should not see "YubiKey"
+    And I should see "2 codes left"
+    When I follow "Manage"
+    Then I should be on "/account/webauthn"
+    When I follow "Back to two-factor authentication"
+    Then I should be on "/account/twofactor"
+
+  @twofactor-auth
+  Scenario: Regenerate backup codes
+    Given the User "user@example.org" has the security key "YubiKey"
+    And the User "user@example.org" has TOTP backup codes "111111,222222"
+    When I am authenticated as "user@example.org"
+    And I am on "/account/twofactor"
+    And I fill in "password_confirmation[password]" with "wrong-password"
+    And I press "Generate"
+    Then I should be on "/account/twofactor"
+    And I should see "The password you entered is incorrect."
+    And I should see "2 codes left"
+    When I fill in "password_confirmation[password]" with "asdasd"
+    And I press "Generate"
+    Then I should be on "/account/twofactor/backup-codes/new"
+    And I should not see "111111"
+    When I check "twofactor_backup_confirm_confirm"
+    And I press "Verify"
+    Then I should be on "/account/twofactor"
+    And I should see "6 codes left"
+
+  @twofactor-auth
+  Scenario: Backup codes cannot be regenerated without a second factor
+    When I am authenticated as "user@example.org"
+    And I am on "/account/twofactor"
+    Then I should see "Created when you set up your first second factor."
+    And I should not see "Regenerate"
 
   @twofactor-auth
   Scenario: Two-factor page links to app passwords when they are required
@@ -251,11 +314,14 @@ Feature: User
     Then I should be on "/account/app-passwords"
 
   @twofactor-auth
-  Scenario: Two-factor page does not mention app passwords when they are not required
+  Scenario: Two-factor page recommends app passwords when they are not required
     Given the setting "twofactor_app_passwords_required" is "0"
     When I am authenticated as "user@example.org"
     And I am on "/account/twofactor"
     Then I should not see text matching "only work with app passwords"
+    And I should see text matching "Tip: Use app passwords in email programs."
+    When I follow "Create app passwords"
+    Then I should be on "/account/app-passwords"
 
   @password-compromised
   Scenario: User sees password compromised message
