@@ -23,6 +23,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class TwofactorController extends AbstractController
 {
+    private const string BACKUP_CODES_TEMPLATE = 'Account/twofactor_backup_code_confirm.html.twig';
+
     public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly TotpAuthenticatorInterface $totpAuthenticator,
@@ -85,7 +87,7 @@ final class TwofactorController extends AbstractController
             'method' => 'POST',
         ]);
 
-        return $this->render('Account/twofactor_backup_code_confirm.html.twig', [
+        return $this->render(self::BACKUP_CODES_TEMPLATE, [
             'form' => $form,
             'backup_codes' => $codes,
         ]);
@@ -107,7 +109,7 @@ final class TwofactorController extends AbstractController
             return $this->redirectToRoute('account_twofactor');
         }
 
-        return $this->render('Account/twofactor_backup_code_confirm.html.twig', [
+        return $this->render(self::BACKUP_CODES_TEMPLATE, [
             'form' => $form,
             'backup_codes' => $codes,
         ]);
@@ -251,7 +253,7 @@ final class TwofactorController extends AbstractController
             'method' => 'POST',
         ]);
 
-        return $this->render('Account/twofactor_backup_code_confirm.html.twig',
+        return $this->render(self::BACKUP_CODES_TEMPLATE,
             [
                 'form' => $form,
                 'backup_codes' => $codes,
@@ -279,7 +281,7 @@ final class TwofactorController extends AbstractController
             return $this->redirectToRoute('account_twofactor');
         }
 
-        return $this->render('Account/twofactor_backup_code_confirm.html.twig',
+        return $this->render(self::BACKUP_CODES_TEMPLATE,
             [
                 'form' => $form,
                 'backup_codes' => $codes,
