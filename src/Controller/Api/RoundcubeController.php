@@ -76,9 +76,10 @@ final class RoundcubeController extends AbstractController
         return match (true) {
             !$this->userAuthenticationHandler->verifyPassword($user, $data->getPassword()) => [self::MESSAGE_AUTHENTICATION_FAILED, Response::HTTP_UNAUTHORIZED],
             $user->isPasswordChangeRequired() => [self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED, Response::HTTP_FORBIDDEN],
-            !$user->isTotpAuthenticationEnabled() => null,
+            !$user->isTwofactorEnabled() => null,
             '' === $code => [self::MESSAGE_TWOFACTOR_REQUIRED, Response::HTTP_UNAUTHORIZED],
-            !$this->totpAuthenticator->checkCode($user, $code) && !$this->backupCodeManager->isBackupCode($user, $code) => [self::MESSAGE_AUTHENTICATION_FAILED, Response::HTTP_UNAUTHORIZED],
+            // Security keys can't be used there, so users with only those need a backup code
+            !($user->isTotpAuthenticationEnabled() && $this->totpAuthenticator->checkCode($user, $code)) && !$this->backupCodeManager->isBackupCode($user, $code) => [self::MESSAGE_AUTHENTICATION_FAILED, Response::HTTP_UNAUTHORIZED],
             default => null,
         };
     }
@@ -99,7 +100,7 @@ final class RoundcubeController extends AbstractController
         }
 
         // Only now, so a failure above does not use up a backup code. A no-op for TOTP codes.
-        if ($user->isTotpAuthenticationEnabled()) {
+        if ($user->isTwofactorEnabled()) {
             $this->backupCodeManager->invalidateBackupCode($user, $data->getCode());
         }
 

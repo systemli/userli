@@ -31,7 +31,7 @@ final class UserAdminModel
         $model->roles = $user->getRoles();
         $model->quota = $user->getQuota();
         $model->smtpQuotaLimits = $user->getSmtpQuotaLimits();
-        $model->totpConfirmed = $user->isTotpAuthenticationEnabled();
+        $model->totpConfirmed = $user->isTwofactorEnabled();
         $model->passwordChangeRequired = $user->isPasswordChangeRequired();
 
         return $model;
