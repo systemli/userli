@@ -278,6 +278,18 @@ Feature: User
     Then I should be on "/account/twofactor"
 
   @twofactor-auth
+  Scenario: Backup codes are not shown again
+    Given the User "user@example.org" has the security key "YubiKey"
+    And the User "user@example.org" has TOTP backup codes "111111,222222"
+    When I am authenticated as "user@example.org"
+    And I am on "/account/twofactor/backup-codes/new"
+    Then I should be on "/account/twofactor"
+    And I should not see "111111"
+    When I am on "/account/twofactor/backup-codes"
+    Then I should be on "/account/twofactor"
+    And I should not see "111111"
+
+  @twofactor-auth
   Scenario: Regenerate backup codes
     Given the User "user@example.org" has the security key "YubiKey"
     And the User "user@example.org" has TOTP backup codes "111111,222222"
