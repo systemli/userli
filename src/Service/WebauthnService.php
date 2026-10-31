@@ -62,6 +62,8 @@ final readonly class WebauthnService
 
     private const int TIMEOUT = 60000;
 
+    private const string INVALID_REGISTRATION = 'Invalid registration response.';
+
     // Several forms may be rendered before one is submitted, e.g. in other tabs or after a failed attempt
     private const int MAX_PENDING_OPTIONS = 5;
 
@@ -125,12 +127,12 @@ final readonly class WebauthnService
         try {
             $publicKeyCredential = $this->serializer->deserialize($credentialJson, PublicKeyCredential::class, 'json');
         } catch (Throwable $throwable) {
-            throw new WebauthnException('Invalid registration response.', 0, $throwable);
+            throw new WebauthnException(self::INVALID_REGISTRATION, 0, $throwable);
         }
 
         $response = $publicKeyCredential->response;
         if (!$response instanceof AuthenticatorAttestationResponse) {
-            throw new WebauthnException('Invalid registration response.');
+            throw new WebauthnException(self::INVALID_REGISTRATION);
         }
 
         $optionsJson = $this->takeOptions(self::SESSION_REGISTRATION_OPTIONS, $response->clientDataJSON->challenge);
@@ -149,7 +151,7 @@ final readonly class WebauthnService
             // Usually a misconfigured RP ID or origin, see the settings webauthn_rp_id and webauthn_origins
             $this->logger->warning('WebAuthn registration failed: {message}', ['message' => $exception->getMessage(), 'rpId' => $this->getRpId(), 'origins' => $this->getAllowedOrigins()]);
 
-            throw new WebauthnException('Invalid registration response.', 0, $exception);
+            throw new WebauthnException(self::INVALID_REGISTRATION, 0, $exception);
         }
 
         if (null !== $this->repository->findOneByCredentialId(Base64UrlSafe::encodeUnpadded($record->publicKeyCredentialId))) {

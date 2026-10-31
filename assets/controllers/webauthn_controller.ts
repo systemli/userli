@@ -79,7 +79,7 @@ export default class extends Controller<HTMLFormElement> {
             });
 
       if (!(credential instanceof PublicKeyCredential)) {
-        throw new Error("No credential returned");
+        throw new TypeError("No credential returned");
       }
 
       // Fields may have been changed during the ceremony; an invalid form would not be submitted
@@ -106,12 +106,12 @@ export default class extends Controller<HTMLFormElement> {
 }
 
 export function base64UrlToBuffer(value: string): ArrayBuffer {
-  const base64 = value.replace(/-/g, "+").replace(/_/g, "/");
+  const base64 = value.replaceAll("-", "+").replaceAll("_", "/");
   const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), "=");
   const binary = atob(padded);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) {
-    bytes[i] = binary.charCodeAt(i);
+    bytes[i] = binary.codePointAt(i) ?? 0;
   }
 
   return bytes.buffer;
@@ -121,10 +121,10 @@ export function bufferToBase64Url(buffer: ArrayBuffer): string {
   const bytes = new Uint8Array(buffer);
   let binary = "";
   for (const byte of bytes) {
-    binary += String.fromCharCode(byte);
+    binary += String.fromCodePoint(byte);
   }
 
-  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  return btoa(binary).replaceAll("+", "-").replaceAll("/", "_").replace(/={1,2}$/, "");
 }
 
 function toDescriptors(descriptors: Json[] | undefined): PublicKeyCredentialDescriptor[] {
