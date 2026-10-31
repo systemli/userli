@@ -60,7 +60,8 @@ remove a key, click the **×** next to it and confirm with your password.
 ### Backup codes
 
 Each backup code works **once**. The overview shows how many codes are left
-and warns when only a few remain.
+and warns when only a few remain. The codes are shown only once, right after
+they are created, so store them before you continue.
 
 To get new codes, click **Regenerate** under *Backup Codes* and confirm with
 your password. Your old codes stop working.
