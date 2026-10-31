@@ -11,8 +11,8 @@ use App\Form\Model\PasswordConfirmation;
 use App\Form\Model\WebauthnCredentialCreate;
 use App\Form\PasswordConfirmationType;
 use App\Form\WebauthnCredentialCreateType;
-use App\Helper\TotpBackupCodeGenerator;
 use App\Repository\WebauthnCredentialRepository;
+use App\Service\TwofactorBackupCodeService;
 use App\Service\WebauthnService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,7 +29,7 @@ final class WebauthnController extends AbstractController
         private readonly EntityManagerInterface $manager,
         private readonly WebauthnService $webauthnService,
         private readonly WebauthnCredentialRepository $repository,
-        private readonly TotpBackupCodeGenerator $totpBackupCodeGenerator,
+        private readonly TwofactorBackupCodeService $backupCodeService,
         private readonly TranslatorInterface $translator,
     ) {
     }
@@ -71,7 +71,7 @@ final class WebauthnController extends AbstractController
         }
 
         if ($firstFactor) {
-            $user->setTotpBackupCodes($this->totpBackupCodeGenerator->generate());
+            $this->backupCodeService->regenerate($user);
             $this->manager->flush();
 
             return $this->redirectToRoute('account_twofactor_backup_codes');
