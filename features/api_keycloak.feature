@@ -232,3 +232,153 @@ Feature: Keycloak API
             | password       | 222222 |
         Then the response status code should equal 403
         And the JSON path "message" should equal "authentication failed"
+
+    @configured @webauthn
+    Scenario: Check if WebAuthn is configured for user without security key
+        Given I have a valid API token "keycloak-test-123"
+        When I send a GET request to "/api/keycloak/example.org/configured/webauthn/user@example.org"
+        Then the response status code should equal 404
+
+    @configured @webauthn
+    Scenario: Check if WebAuthn is configured for user with security key
+        Given the User "user@example.org" has the security key "YubiKey"
+        And I have a valid API token "keycloak-test-123"
+        When I send a GET request to "/api/keycloak/example.org/configured/webauthn/user@example.org"
+        Then the response status code should equal 200
+        And the JSON path "message" should equal "success"
+
+    @webauthn
+    Scenario: List WebAuthn credentials of a user
+        Given the User "user@example.org" has the security key "YubiKey"
+        And I have a valid API token "keycloak-test-123"
+        When I send a GET request to "/api/keycloak/example.org/credentials/webauthn/user@example.org"
+        Then the response status code should equal 200
+        And the JSON response should contain 1 items
+        And the JSON path "0.name" should equal "YubiKey"
+        And the JSON path "0.transports.0" should equal "usb"
+        And the JSON path "0.credentialId" should not be empty
+
+    @webauthn
+    Scenario: List WebAuthn credentials of a nonexistent user
+        Given I have a valid API token "keycloak-test-123"
+        When I send a GET request to "/api/keycloak/example.org/credentials/webauthn/404@example.org"
+        Then the response status code should equal 404
+
+    @validate @webauthn
+    Scenario: Validate WebAuthn assertion from Keycloak
+        Given the setting "webauthn_rp_id" is "example.org"
+        And the setting "webauthn_origins" is "https://login.example.org"
+        And the User "user@example.org" has the security key "YubiKey"
+        And I store a security key assertion of "user@example.org" for RP ID "example.org" on origin "https://login.example.org" as "assertion"
+        And I have a valid API token "keycloak-test-123"
+        When I send a POST request to "/api/keycloak/example.org/validate/webauthn/user@example.org" with form data:
+            | challenge         | assertion.challenge         |
+            | credentialId      | assertion.credentialId      |
+            | clientDataJSON    | assertion.clientDataJSON    |
+            | authenticatorData | assertion.authenticatorData |
+            | signature         | assertion.signature         |
+        Then the response status code should equal 200
+        And the JSON path "message" should equal "success"
+
+    @validate @webauthn
+    Scenario: Replayed WebAuthn assertion is rejected
+        Given the setting "webauthn_rp_id" is "example.org"
+        And the setting "webauthn_origins" is "https://login.example.org"
+        And the User "user@example.org" has the security key "YubiKey"
+        And I store a security key assertion of "user@example.org" for RP ID "example.org" on origin "https://login.example.org" as "assertion"
+        And I have a valid API token "keycloak-test-123"
+        When I send a POST request to "/api/keycloak/example.org/validate/webauthn/user@example.org" with form data:
+            | challenge         | assertion.challenge         |
+            | credentialId      | assertion.credentialId      |
+            | clientDataJSON    | assertion.clientDataJSON    |
+            | authenticatorData | assertion.authenticatorData |
+            | signature         | assertion.signature         |
+        Then the response status code should equal 200
+        When I send a POST request to "/api/keycloak/example.org/validate/webauthn/user@example.org" with form data:
+            | challenge         | assertion.challenge         |
+            | credentialId      | assertion.credentialId      |
+            | clientDataJSON    | assertion.clientDataJSON    |
+            | authenticatorData | assertion.authenticatorData |
+            | signature         | assertion.signature         |
+        Then the response status code should equal 403
+        And the JSON path "message" should equal "authentication failed"
+
+    @validate @webauthn
+    Scenario: WebAuthn assertion from an unknown origin is rejected
+        Given the setting "webauthn_rp_id" is "example.org"
+        And the User "user@example.org" has the security key "YubiKey"
+        And I store a security key assertion of "user@example.org" for RP ID "example.org" on origin "https://evil.example.com" as "assertion"
+        And I have a valid API token "keycloak-test-123"
+        When I send a POST request to "/api/keycloak/example.org/validate/webauthn/user@example.org" with form data:
+            | challenge         | assertion.challenge         |
+            | credentialId      | assertion.credentialId      |
+            | clientDataJSON    | assertion.clientDataJSON    |
+            | authenticatorData | assertion.authenticatorData |
+            | signature         | assertion.signature         |
+        Then the response status code should equal 403
+        And the JSON path "message" should equal "authentication failed"
+
+    @validate @webauthn
+    Scenario: WebAuthn assertion for user without security key is rejected
+        Given I have a valid API token "keycloak-test-123"
+        When I send a POST request to "/api/keycloak/example.org/validate/webauthn/totp@example.org" with form data:
+            | challenge         | AAAA |
+            | credentialId      | AAAA |
+            | clientDataJSON    | AAAA |
+            | authenticatorData | AAAA |
+            | signature         | AAAA |
+        Then the response status code should equal 403
+        And the JSON path "message" should equal "not supported"
+
+    @validate @webauthn
+    Scenario: WebAuthn assertion for deleted user is rejected
+        Given the User "deleted@example.org" has the security key "YubiKey"
+        And I have a valid API token "keycloak-test-123"
+        When I send a POST request to "/api/keycloak/example.org/validate/webauthn/deleted@example.org" with form data:
+            | challenge         | AAAA |
+            | credentialId      | AAAA |
+            | clientDataJSON    | AAAA |
+            | authenticatorData | AAAA |
+            | signature         | AAAA |
+        Then the response status code should equal 403
+        And the JSON path "message" should equal "authentication failed"
+
+    @configured @backup-code
+    Scenario: Check if backup codes are configured for user with only a security key
+        Given the User "user@example.org" has the security key "YubiKey"
+        And the User "user@example.org" has TOTP backup codes "111111,222222"
+        And I have a valid API token "keycloak-test-123"
+        When I send a GET request to "/api/keycloak/example.org/configured/backup-code/user@example.org"
+        Then the response status code should equal 200
+
+    @configured @backup-code
+    Scenario: Backup codes are not configured for user without second factor
+        Given the User "user@example.org" has TOTP backup codes "111111,222222"
+        And I have a valid API token "keycloak-test-123"
+        When I send a GET request to "/api/keycloak/example.org/configured/backup-code/user@example.org"
+        Then the response status code should equal 404
+
+    @validate @backup-code
+    Scenario: Validate backup code for user with only a security key
+        Given the User "user@example.org" has the security key "YubiKey"
+        And the User "user@example.org" has TOTP backup codes "111111,222222"
+        And I have a valid API token "keycloak-test-123"
+        When I send a POST request to "/api/keycloak/example.org/validate/user@example.org" with form data:
+            | credentialType | backup-code |
+            | password       | 111111      |
+        Then the response status code should equal 200
+        When I send a POST request to "/api/keycloak/example.org/validate/user@example.org" with form data:
+            | credentialType | backup-code |
+            | password       | 111111      |
+        Then the response status code should equal 403
+        And the JSON path "message" should equal "authentication failed"
+
+    @validate @backup-code
+    Scenario: Backup code is rejected for user without second factor
+        Given the User "user@example.org" has TOTP backup codes "111111,222222"
+        And I have a valid API token "keycloak-test-123"
+        When I send a POST request to "/api/keycloak/example.org/validate/user@example.org" with form data:
+            | credentialType | backup-code |
+            | password       | 111111      |
+        Then the response status code should equal 403
+        And the JSON path "message" should equal "not supported"
