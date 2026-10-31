@@ -13,6 +13,7 @@ use App\Exception\DecryptionFailedException;
 use App\Handler\UserAuthenticationHandler;
 use App\Security\RequireApiScope;
 use App\Service\AppPasswordManager;
+use App\Service\WebauthnService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Backup\BackupCodeManagerInterface;
@@ -41,11 +42,13 @@ final class RoundcubeController extends AbstractController
         private readonly AppPasswordManager $appPasswordManager,
         private readonly TotpAuthenticatorInterface $totpAuthenticator,
         private readonly BackupCodeManagerInterface $backupCodeManager,
+        private readonly WebauthnService $webauthnService,
     ) {
     }
 
     /**
-     * Checks the main password and 2FA code and returns a webmail credential, which Roundcube uses for IMAP and SMTP.
+     * Checks the main password and the second factor (TOTP code, backup code or security key) and returns
+     * a webmail credential, which Roundcube uses for IMAP and SMTP.
      *
      * @throws Exception
      */
@@ -57,31 +60,47 @@ final class RoundcubeController extends AbstractController
             return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
         }
 
-        $rejection = $this->checkLogin($user, $data);
-        if (null !== $rejection) {
-            return $this->json(['message' => $rejection[0]], $rejection[1]);
+        // Password first, so the account state isn't revealed without it. verifyPassword() dispatches no login event.
+        if (!$this->userAuthenticationHandler->verifyPassword($user, $data->getPassword())) {
+            return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
+        }
+
+        if ($user->isPasswordChangeRequired()) {
+            return $this->json(['message' => self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED], Response::HTTP_FORBIDDEN);
+        }
+
+        if ($user->isTwofactorEnabled() && !$this->checkSecondFactor($user, $data)) {
+            $missing = '' === $data->getCode() && null === $data->getWebauthn();
+            $body = ['message' => $missing ? self::MESSAGE_TWOFACTOR_REQUIRED : self::MESSAGE_AUTHENTICATION_FAILED];
+            // Only after the password, so the keys of a user aren't revealed without it. A new challenge for each attempt.
+            if ($user->isWebauthnAuthenticationEnabled()) {
+                $body['webauthn'] = $this->webauthnService->createExternalAuthenticationOptions($user);
+            }
+
+            return $this->json($body, Response::HTTP_UNAUTHORIZED);
         }
 
         return $this->issueWebmailCredential($user, $data);
     }
 
-    /**
-     * @return array{string, int}|null message and status code, or null if the login is valid
-     */
-    private function checkLogin(User $user, RoundcubeLoginDto $data): ?array
+    private function checkSecondFactor(User $user, RoundcubeLoginDto $data): bool
     {
+        $assertion = $data->getWebauthn();
+        if (null !== $assertion) {
+            return $user->isWebauthnAuthenticationEnabled() && $this->webauthnService->verifyExternalAssertion(
+                $user,
+                $assertion->getChallenge(),
+                $assertion->getCredentialId(),
+                $assertion->getClientDataJSON(),
+                $assertion->getAuthenticatorData(),
+                $assertion->getSignature(),
+                $assertion->getUserHandle(),
+            );
+        }
+
         $code = $data->getCode();
 
-        // Password first, so the account state isn't revealed without it. verifyPassword() dispatches no login event.
-        return match (true) {
-            !$this->userAuthenticationHandler->verifyPassword($user, $data->getPassword()) => [self::MESSAGE_AUTHENTICATION_FAILED, Response::HTTP_UNAUTHORIZED],
-            $user->isPasswordChangeRequired() => [self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED, Response::HTTP_FORBIDDEN],
-            !$user->isTwofactorEnabled() => null,
-            '' === $code => [self::MESSAGE_TWOFACTOR_REQUIRED, Response::HTTP_UNAUTHORIZED],
-            // Security keys can't be used there, so users with only those need a backup code
-            !($user->isTotpAuthenticationEnabled() && $this->totpAuthenticator->checkCode($user, $code)) && !$this->backupCodeManager->isBackupCode($user, $code) => [self::MESSAGE_AUTHENTICATION_FAILED, Response::HTTP_UNAUTHORIZED],
-            default => null,
-        };
+        return '' !== $code && (($user->isTotpAuthenticationEnabled() && $this->totpAuthenticator->checkCode($user, $code)) || $this->backupCodeManager->isBackupCode($user, $code));
     }
 
     /**
@@ -99,8 +118,8 @@ final class RoundcubeController extends AbstractController
             return $this->json(['error' => $decryptionFailedException->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        // Only now, so a failure above does not use up a backup code. A no-op for TOTP codes.
-        if ($user->isTwofactorEnabled()) {
+        // Only now, so a failure above does not use up a backup code. A no-op for TOTP codes and security keys.
+        if ($user->isTwofactorEnabled() && '' !== $data->getCode()) {
             $this->backupCodeManager->invalidateBackupCode($user, $data->getCode());
         }
 

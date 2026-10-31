@@ -82,6 +82,11 @@ export default class extends Controller<HTMLFormElement> {
         throw new Error("No credential returned");
       }
 
+      // Fields may have been changed during the ceremony; an invalid form would not be submitted
+      if (!this.element.reportValidity()) {
+        return;
+      }
+
       this.submitted = true;
       this.responseTarget.value = JSON.stringify(serializeCredential(credential));
       this.element.requestSubmit();

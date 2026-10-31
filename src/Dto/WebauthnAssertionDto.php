@@ -7,9 +7,9 @@ namespace App\Dto;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * WebAuthn assertion that Keycloak collected for a challenge it created. Binary values are base64url encoded.
+ * WebAuthn assertion collected by Keycloak or Roundcube for a challenge from Userli. Binary values are base64url encoded.
  */
-final class KeycloakWebauthnValidateDto
+final class WebauthnAssertionDto
 {
     private const string BASE64URL = '/^[A-Za-z0-9_-]+$/';
 
