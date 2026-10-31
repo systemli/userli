@@ -98,11 +98,19 @@ Scope `keycloak`. Used by the [Keycloak user provider](integrations/keycloak.md)
 | `GET`  | `/api/keycloak/{domain}?search=&max=10&first=0` | Search users. Returns `[{"id": "<local part>", "email": "..."}]`. |
 | `GET`  | `/api/keycloak/{domain}/count` | Number of users in the domain. |
 | `GET`  | `/api/keycloak/{domain}/user/{email}` | Get a single user. |
-| `POST` | `/api/keycloak/{domain}/validate/{email}` | Validate a credential, body `{"credentialType": "password"\|"otp", "password": "..."}`. App passwords are rejected. |
-| `GET`  | `/api/keycloak/{domain}/configured/{credentialType}/{email}` | Whether the user has the credential type (e.g. `otp`) configured. |
+| `POST` | `/api/keycloak/{domain}/validate/{email}` | Validate a credential, body `{"credentialType": "password"\|"otp"\|"backup-code", "password": "..."}`. App passwords are rejected. |
+| `POST` | `/api/keycloak/{domain}/validate/webauthn/{email}` | Validate a security key assertion, body `{"challenge", "credentialId", "clientDataJSON", "authenticatorData", "signature", "userHandle"}`, all base64url encoded. `userHandle` is optional. |
+| `GET`  | `/api/keycloak/{domain}/credentials/webauthn/{email}` | Security keys of the user: `[{"id", "name", "credentialId", "transports", "createdAt"}]`. |
+| `GET`  | `/api/keycloak/{domain}/configured/{credentialType}/{email}` | Whether the user has the credential type (`password`, `otp`, `webauthn` or `backup-code`) configured. |
 
-For `otp`, `password` is the 6-digit TOTP code **or** a backup code – a
-matching backup code is consumed. See [Keycloak](integrations/keycloak.md#account-status)
+For `otp`, `password` is the 6-digit TOTP code **or** a backup code. For
+`backup-code`, it is a backup code; this works for every user with 2FA, also with
+only security keys. A matching backup code is consumed.
+
+For `webauthn/{email}`, Keycloak passes the challenge it created. Userli checks
+that the origin in `clientDataJSON` is the application URL or one of the
+*Additional Security Key Origins*, the RP ID hash, the challenge, the signature
+and the sign counter. See [Keycloak](integrations/keycloak.md#account-status)
 for status codes.
 
 ## Retention
