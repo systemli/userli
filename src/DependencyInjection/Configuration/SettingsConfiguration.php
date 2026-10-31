@@ -35,6 +35,7 @@ final class SettingsConfiguration implements ConfigurationInterface
                         ->addDefaultsIfNotSet()
                         ->children()
                             ->scalarNode('regex')->defaultNull()->end()
+                            ->scalarNode('regex_message')->defaultNull()->end()
                             ->integerNode('min_length')->defaultNull()->end()
                             ->integerNode('max_length')->defaultNull()->end()
                             ->integerNode('min')->defaultNull()->end()
