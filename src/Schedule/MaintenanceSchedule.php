@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Schedule;
 
 use App\Message\PruneExpiredAppPasswords;
+use App\Message\PruneExpiredWebauthnChallenges;
 use App\Message\PruneUserNotifications;
 use App\Message\PruneWebhookDeliveries;
 use App\Message\RemoveInactiveUsers;
@@ -33,6 +34,7 @@ final readonly class MaintenanceSchedule implements ScheduleProviderInterface
         return new Schedule()
             ->stateful($this->cache) // ensure missed tasks are executed
             ->add(RecurringMessage::every('1 day', new PruneExpiredAppPasswords(), new DateTimeImmutable('02:30')))
+            ->add(RecurringMessage::every('1 day', new PruneExpiredWebauthnChallenges(), new DateTimeImmutable('02:45')))
             ->add(RecurringMessage::every('1 day', new PruneWebhookDeliveries(), new DateTimeImmutable('03:00')))
             ->add(RecurringMessage::every('1 day', new PruneUserNotifications(), new DateTimeImmutable('03:30')))
             ->add(RecurringMessage::every('1 day', new UnlinkRedeemedVouchers(), new DateTimeImmutable('04:00')))

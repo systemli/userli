@@ -5,17 +5,19 @@ declare(strict_types=1);
 namespace App\Tests\Service;
 
 use App\Entity\User;
+use App\Entity\WebauthnChallenge;
 use App\Entity\WebauthnCredential;
 use App\Exception\WebauthnException;
+use App\Repository\WebauthnChallengeRepository;
 use App\Repository\WebauthnCredentialRepository;
 use App\Service\SettingsService;
 use App\Service\WebauthnService;
 use App\Tests\Webauthn\SoftwareAuthenticator;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use ParagonIE\ConstantTime\Base64UrlSafe;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -29,6 +31,11 @@ class WebauthnServiceTest extends TestCase
 
     /** @var WebauthnCredential[] */
     private array $credentials = [];
+
+    /** @var WebauthnChallenge[] */
+    private array $challenges = [];
+
+    private Session $session;
 
     private WebauthnService $service;
 
@@ -58,19 +65,36 @@ class WebauthnServiceTest extends TestCase
             return null;
         });
 
+        // Like the DELETE of the repository: only a pending, unexpired challenge of the user is used up
+        $challengeRepository = $this->createStub(WebauthnChallengeRepository::class);
+        $challengeRepository->method('consume')->willReturnCallback(function (User $user, string $challenge): bool {
+            foreach ($this->challenges as $key => $pending) {
+                if ($pending->getChallengeHash() === WebauthnChallenge::hashChallenge($challenge) && $pending->getUser() === $user && $pending->getExpiresAt() > new DateTimeImmutable()) {
+                    unset($this->challenges[$key]);
+
+                    return true;
+                }
+            }
+
+            return false;
+        });
+
         $manager = $this->createStub(EntityManagerInterface::class);
         $manager->method('persist')->willReturnCallback(function (object $entity): void {
             if ($entity instanceof WebauthnCredential) {
                 $this->credentials[] = $entity;
+            } elseif ($entity instanceof WebauthnChallenge) {
+                $this->challenges[] = $entity;
             }
         });
 
+        $this->session = new Session(new MockArraySessionStorage());
         $request = new Request();
-        $request->setSession(new Session(new MockArraySessionStorage()));
+        $request->setSession($this->session);
         $requestStack = new RequestStack();
         $requestStack->push($request);
 
-        $this->service = new WebauthnService($settings, $repository, $manager, $requestStack, new NullLogger(), new ArrayAdapter());
+        $this->service = new WebauthnService($settings, $repository, $challengeRepository, $manager, $requestStack, new NullLogger());
         $this->user = new User('user@example.org');
     }
 
@@ -147,6 +171,27 @@ class WebauthnServiceTest extends TestCase
 
         self::assertTrue($this->service->verifyAuthentication($this->user, $response));
         self::assertFalse($this->service->verifyAuthentication($this->user, $response));
+    }
+
+    public function testExpiredAuthenticationOptionsAreRefused(): void
+    {
+        $authenticator = new SoftwareAuthenticator();
+        $this->register($authenticator);
+
+        $options = $this->service->createAuthenticationOptions($this->user);
+        $this->expireSessionOptions('webauthn_authentication_options');
+
+        self::assertFalse($this->service->verifyAuthentication($this->user, $authenticator->get($options, self::ORIGIN)));
+    }
+
+    public function testExpiredRegistrationOptionsAreRefused(): void
+    {
+        $options = $this->service->createRegistrationOptions($this->user);
+        $this->expireSessionOptions('webauthn_registration_options');
+
+        $this->expectException(WebauthnException::class);
+
+        $this->service->verifyRegistration($this->user, new SoftwareAuthenticator()->create($options, self::ORIGIN), 'My key');
     }
 
     public function testAuthenticationWithOlderOfSeveralRenderedForms(): void
@@ -352,6 +397,16 @@ class WebauthnServiceTest extends TestCase
 
         self::assertTrue($this->service->recordExternalUsage($credential, 0));
         self::assertNotNull($credential->getLastUsedTime());
+    }
+
+    private function expireSessionOptions(string $key): void
+    {
+        $pending = $this->session->get($key);
+        self::assertIsArray($pending);
+        foreach (array_keys($pending) as $challenge) {
+            $pending[$challenge]['expires'] = time() - 1;
+        }
+        $this->session->set($key, $pending);
     }
 
     private function register(SoftwareAuthenticator $authenticator): WebauthnCredential
