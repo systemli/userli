@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Dto\KeycloakUserValidateDto;
-use App\Dto\WebauthnAssertionDto;
+use App\Dto\KeycloakWebauthnUsageDto;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Entity\WebauthnCredential;
@@ -37,6 +37,10 @@ final class KeycloakController extends AbstractController
     public const string MESSAGE_USER_NOT_FOUND = 'user not found';
 
     public const string MESSAGE_NOT_SUPPORTED = 'not supported';
+
+    public const string MESSAGE_NOT_FOUND = 'not found';
+
+    public const string MESSAGE_SIGN_COUNT_REJECTED = 'sign count rejected';
 
     public function __construct(
         private readonly EntityManagerInterface $manager,
@@ -114,51 +118,9 @@ final class KeycloakController extends AbstractController
         };
     }
 
-    #[Route(path: '/api/keycloak/{domainUrl}/validate/webauthn/{email}', name: 'api_keycloak_post_user_validate_webauthn', methods: ['POST'], stateless: true)]
-    public function postUserValidateWebauthn(
-        #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
-        #[MapRequestPayload] WebauthnAssertionDto $requestData,
-        string $email,
-    ): Response {
-        if (null === $user = $this->manager->getRepository(User::class)->findByDomainAndEmail($domain, $email)) {
-            return $this->json([
-                'message' => self::MESSAGE_AUTHENTICATION_FAILED,
-            ], Response::HTTP_FORBIDDEN);
-        }
-
-        if (null !== $statusResponse = $this->rejectForAccountStatus($user)) {
-            return $statusResponse;
-        }
-
-        if (!$user->isWebauthnAuthenticationEnabled()) {
-            return $this->json([
-                'message' => self::MESSAGE_NOT_SUPPORTED,
-            ], Response::HTTP_FORBIDDEN);
-        }
-
-        $valid = $this->webauthnService->verifyExternalAssertion(
-            $user,
-            $requestData->getChallenge(),
-            $requestData->getCredentialId(),
-            $requestData->getClientDataJSON(),
-            $requestData->getAuthenticatorData(),
-            $requestData->getSignature(),
-            $requestData->getUserHandle(),
-        );
-
-        if (!$valid) {
-            return $this->json([
-                'message' => self::MESSAGE_AUTHENTICATION_FAILED,
-            ], Response::HTTP_FORBIDDEN);
-        }
-
-        return $this->json([
-            'message' => self::MESSAGE_SUCCESS,
-        ]);
-    }
-
     /**
-     * Lists the WebAuthn credentials of a user, so Keycloak can ask the browser for one of them.
+     * Lists the WebAuthn credentials of a user, so Keycloak can verify assertions against them.
+     * The public key is the COSE key, base64url encoded.
      */
     #[Route(path: '/api/keycloak/{domainUrl}/credentials/webauthn/{email}', name: 'api_keycloak_get_webauthn_credentials', methods: ['GET'], stateless: true)]
     public function getWebauthnCredentials(#[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain, string $email): Response
@@ -177,17 +139,25 @@ final class KeycloakController extends AbstractController
             'id' => $credential->getId(),
             'name' => $credential->getName(),
             'credentialId' => $credential->getCredentialId(),
+            'publicKey' => $credential->getPublicKey(),
+            'aaguid' => $credential->getAaguid(),
+            'attestationType' => $credential->getAttestationType(),
+            'signCount' => $credential->getSignCount(),
             'transports' => $credential->getTransports(),
             'createdAt' => $credential->getCreationTime()?->format(DATE_ATOM),
         ], $user->getWebauthnCredentials()->toArray()));
     }
 
     /**
-     * Creates a single-use challenge for the WebAuthn login page of Keycloak.
+     * Stores the sign count after Keycloak verified an assertion, so a cloned key is noticed.
      */
-    #[Route(path: '/api/keycloak/{domainUrl}/challenge/webauthn/{email}', name: 'api_keycloak_post_webauthn_challenge', methods: ['POST'], stateless: true)]
-    public function postWebauthnChallenge(#[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain, string $email): Response
-    {
+    #[Route(path: '/api/keycloak/{domainUrl}/credentials/webauthn/{email}/{id}', name: 'api_keycloak_put_webauthn_credential_usage', requirements: ['id' => '\d+'], methods: ['PUT'], stateless: true)]
+    public function putWebauthnCredentialUsage(
+        #[MapEntity(mapping: ['domainUrl' => 'name'])] Domain $domain,
+        #[MapRequestPayload] KeycloakWebauthnUsageDto $requestData,
+        string $email,
+        int $id,
+    ): Response {
         if (null === $user = $this->manager->getRepository(User::class)->findByDomainAndEmail($domain, $email)) {
             return $this->json([
                 'message' => self::MESSAGE_USER_NOT_FOUND,
@@ -198,14 +168,21 @@ final class KeycloakController extends AbstractController
             return $statusResponse;
         }
 
-        if (!$user->isWebauthnAuthenticationEnabled()) {
+        $credential = $this->manager->getRepository(WebauthnCredential::class)->findOneBy(['id' => $id, 'user' => $user]);
+        if (null === $credential) {
             return $this->json([
-                'message' => self::MESSAGE_NOT_SUPPORTED,
-            ], Response::HTTP_FORBIDDEN);
+                'message' => self::MESSAGE_NOT_FOUND,
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        if (!$this->webauthnService->recordExternalUsage($credential, $requestData->getSignCount())) {
+            return $this->json([
+                'message' => self::MESSAGE_SIGN_COUNT_REJECTED,
+            ], Response::HTTP_CONFLICT);
         }
 
         return $this->json([
-            'challenge' => $this->webauthnService->createExternalChallenge($user),
+            'message' => self::MESSAGE_SUCCESS,
         ]);
     }
 

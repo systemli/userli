@@ -99,22 +99,19 @@ Scope `keycloak`. Used by the [Keycloak user provider](integrations/keycloak.md)
 | `GET`  | `/api/keycloak/{domain}/count` | Number of users in the domain. |
 | `GET`  | `/api/keycloak/{domain}/user/{email}` | Get a single user. |
 | `POST` | `/api/keycloak/{domain}/validate/{email}` | Validate a credential, body `{"credentialType": "password"\|"otp"\|"backup-code", "password": "..."}`. App passwords are rejected. |
-| `POST` | `/api/keycloak/{domain}/validate/webauthn/{email}` | Validate a security key assertion, body `{"challenge", "credentialId", "clientDataJSON", "authenticatorData", "signature", "userHandle"}`, all base64url encoded. `userHandle` is optional. |
-| `POST` | `/api/keycloak/{domain}/challenge/webauthn/{email}` | Create a challenge for a security key login: `{"challenge"}`, base64url encoded. `403` with `not supported` for users without security keys. |
-| `GET`  | `/api/keycloak/{domain}/credentials/webauthn/{email}` | Security keys of the user: `[{"id", "name", "credentialId", "transports", "createdAt"}]`. |
+| `GET`  | `/api/keycloak/{domain}/credentials/webauthn/{email}` | Security keys of the user: `[{"id", "name", "credentialId", "publicKey", "aaguid", "attestationType", "signCount", "transports", "createdAt"}]`. `credentialId` and `publicKey` (the COSE key) are base64url encoded. |
+| `PUT`  | `/api/keycloak/{domain}/credentials/webauthn/{email}/{id}` | Store the sign count after Keycloak verified an assertion, body `{"signCount": 3}`. `409` with `sign count rejected` if it does not increase, `404` with `not found` for a key of another user. |
 | `GET`  | `/api/keycloak/{domain}/configured/{credentialType}/{email}` | Whether the user has the credential type (`password`, `otp`, `webauthn` or `backup-code`) configured. |
 
 For `otp`, `password` is the 6-digit TOTP code **or** a backup code. For
 `backup-code`, it is a backup code; this works for every user with 2FA, also with
 only security keys. A matching backup code is consumed.
 
-For `validate/webauthn/{email}`, Keycloak passes a challenge from
-`challenge/webauthn/{email}`. It works once, for that user and for five
-minutes, so a captured assertion can't be replayed. Userli also checks that
-the origin in `clientDataJSON` is the application URL or one of the
-*Additional Security Key Origins*, the RP ID hash, the challenge, the signature
-and the sign counter. See [Keycloak](integrations/keycloak.md#account-status)
-for status codes.
+Keycloak verifies security key assertions itself, against the keys from
+`credentials/webauthn/{email}`, and stores the new sign count in Userli. A sign
+count of `0` is accepted as long as the key never reported a higher one, like
+many passkeys do. See [Keycloak](integrations/keycloak.md#account-status) for
+status codes.
 
 ## Retention
 

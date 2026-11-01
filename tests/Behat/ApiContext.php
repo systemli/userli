@@ -322,6 +322,9 @@ class ApiContext extends RawMinkContext implements Context
 
         $client = $driver->getClient();
 
+        // Stored values replace placeholders like "{keyId}" in the path
+        $path = preg_replace_callback('/\{([\w.]+)\}/', fn (array $matches): string => $this->values[$matches[1]] ?? $matches[0], $path) ?? $path;
+
         $server = [
             'HTTP_ACCEPT' => 'application/json',
         ];

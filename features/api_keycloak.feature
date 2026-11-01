@@ -257,6 +257,70 @@ Feature: Keycloak API
         And the JSON path "0.name" should equal "YubiKey"
         And the JSON path "0.transports.0" should equal "usb"
         And the JSON path "0.credentialId" should not be empty
+        And the JSON path "0.publicKey" should not be empty
+        And the JSON path "0.aaguid" should equal "00000000-0000-0000-0000-000000000000"
+        And the JSON path "0.attestationType" should equal "none"
+        And the JSON path "0.signCount" should equal "0"
+
+    @webauthn
+    Scenario: Store the sign count of a WebAuthn credential
+        Given the User "user@example.org" has the security key "YubiKey"
+        And I have a valid API token "keycloak-test-123"
+        When I send a GET request to "/api/keycloak/example.org/credentials/webauthn/user@example.org"
+        And I store the JSON path "0.id" as "keyId"
+        When I send a PUT request to "/api/keycloak/example.org/credentials/webauthn/user@example.org/{keyId}" with JSON:
+            """
+            {"signCount": 3}
+            """
+        Then the response status code should equal 200
+        And the JSON path "message" should equal "success"
+        When I send a GET request to "/api/keycloak/example.org/credentials/webauthn/user@example.org"
+        Then the JSON path "0.signCount" should equal "3"
+
+    @webauthn
+    Scenario: Sign count of a WebAuthn credential that does not increase is rejected
+        Given the User "user@example.org" has the security key "YubiKey"
+        And I have a valid API token "keycloak-test-123"
+        When I send a GET request to "/api/keycloak/example.org/credentials/webauthn/user@example.org"
+        And I store the JSON path "0.id" as "keyId"
+        When I send a PUT request to "/api/keycloak/example.org/credentials/webauthn/user@example.org/{keyId}" with JSON:
+            """
+            {"signCount": 3}
+            """
+        Then the response status code should equal 200
+        When I send a PUT request to "/api/keycloak/example.org/credentials/webauthn/user@example.org/{keyId}" with JSON:
+            """
+            {"signCount": 2}
+            """
+        Then the response status code should equal 409
+        And the JSON path "message" should equal "sign count rejected"
+
+    @webauthn
+    Scenario: Sign count of a WebAuthn credential of another user is rejected
+        Given the User "admin@example.org" has the security key "YubiKey"
+        And I have a valid API token "keycloak-test-123"
+        When I send a GET request to "/api/keycloak/example.org/credentials/webauthn/admin@example.org"
+        And I store the JSON path "0.id" as "keyId"
+        When I send a PUT request to "/api/keycloak/example.org/credentials/webauthn/user@example.org/{keyId}" with JSON:
+            """
+            {"signCount": 3}
+            """
+        Then the response status code should equal 404
+        And the JSON path "message" should equal "not found"
+
+    @webauthn
+    Scenario: Sign count of a WebAuthn credential of a deleted user is rejected
+        Given the User "deleted@example.org" has the security key "YubiKey"
+        And the User "user@example.org" has the security key "YubiKey"
+        And I have a valid API token "keycloak-test-123"
+        When I send a GET request to "/api/keycloak/example.org/credentials/webauthn/user@example.org"
+        And I store the JSON path "0.id" as "keyId"
+        When I send a PUT request to "/api/keycloak/example.org/credentials/webauthn/deleted@example.org/{keyId}" with JSON:
+            """
+            {"signCount": 3}
+            """
+        Then the response status code should equal 403
+        And the JSON path "message" should equal "authentication failed"
 
     @webauthn
     Scenario: List WebAuthn credentials of a nonexistent user
@@ -264,135 +328,11 @@ Feature: Keycloak API
         When I send a GET request to "/api/keycloak/example.org/credentials/webauthn/404@example.org"
         Then the response status code should equal 404
 
-    @validate @webauthn
-    Scenario: Validate WebAuthn assertion from Keycloak
-        Given the setting "webauthn_rp_id" is "example.org"
-        And the setting "webauthn_origins" is "https://login.example.org"
-        And the User "user@example.org" has the security key "YubiKey"
-        And I have a valid API token "keycloak-test-123"
-        When I send a POST request to "/api/keycloak/example.org/challenge/webauthn/user@example.org"
-        And I store the JSON path "challenge" as "challenge"
-        And I store a security key assertion of "user@example.org" for RP ID "example.org" on origin "https://login.example.org" with challenge "challenge" as "assertion"
-        When I send a POST request to "/api/keycloak/example.org/validate/webauthn/user@example.org" with form data:
-            | challenge         | assertion.challenge         |
-            | credentialId      | assertion.credentialId      |
-            | clientDataJSON    | assertion.clientDataJSON    |
-            | authenticatorData | assertion.authenticatorData |
-            | signature         | assertion.signature         |
-        Then the response status code should equal 200
-        And the JSON path "message" should equal "success"
-
-    @validate @webauthn
-    Scenario: Replayed WebAuthn assertion is rejected
-        Given the setting "webauthn_rp_id" is "example.org"
-        And the setting "webauthn_origins" is "https://login.example.org"
-        And the User "user@example.org" has the security key "YubiKey"
-        And I have a valid API token "keycloak-test-123"
-        When I send a POST request to "/api/keycloak/example.org/challenge/webauthn/user@example.org"
-        And I store the JSON path "challenge" as "challenge"
-        And I store a security key assertion of "user@example.org" for RP ID "example.org" on origin "https://login.example.org" with challenge "challenge" as "assertion"
-        When I send a POST request to "/api/keycloak/example.org/validate/webauthn/user@example.org" with form data:
-            | challenge         | assertion.challenge         |
-            | credentialId      | assertion.credentialId      |
-            | clientDataJSON    | assertion.clientDataJSON    |
-            | authenticatorData | assertion.authenticatorData |
-            | signature         | assertion.signature         |
-        Then the response status code should equal 200
-        When I send a POST request to "/api/keycloak/example.org/validate/webauthn/user@example.org" with form data:
-            | challenge         | assertion.challenge         |
-            | credentialId      | assertion.credentialId      |
-            | clientDataJSON    | assertion.clientDataJSON    |
-            | authenticatorData | assertion.authenticatorData |
-            | signature         | assertion.signature         |
-        Then the response status code should equal 403
-        And the JSON path "message" should equal "authentication failed"
-
-    @validate @webauthn
-    Scenario: WebAuthn assertion from an unknown origin is rejected
-        Given the setting "webauthn_rp_id" is "example.org"
-        And the User "user@example.org" has the security key "YubiKey"
-        And I have a valid API token "keycloak-test-123"
-        When I send a POST request to "/api/keycloak/example.org/challenge/webauthn/user@example.org"
-        And I store the JSON path "challenge" as "challenge"
-        And I store a security key assertion of "user@example.org" for RP ID "example.org" on origin "https://evil.example.com" with challenge "challenge" as "assertion"
-        When I send a POST request to "/api/keycloak/example.org/validate/webauthn/user@example.org" with form data:
-            | challenge         | assertion.challenge         |
-            | credentialId      | assertion.credentialId      |
-            | clientDataJSON    | assertion.clientDataJSON    |
-            | authenticatorData | assertion.authenticatorData |
-            | signature         | assertion.signature         |
-        Then the response status code should equal 403
-        And the JSON path "message" should equal "authentication failed"
-
-    @validate @webauthn
-    Scenario: WebAuthn assertion for a challenge not issued by Userli is rejected
-        Given the setting "webauthn_rp_id" is "example.org"
-        And the setting "webauthn_origins" is "https://login.example.org"
-        And the User "user@example.org" has the security key "YubiKey"
-        And I store a security key assertion of "user@example.org" for RP ID "example.org" on origin "https://login.example.org" as "assertion"
-        And I have a valid API token "keycloak-test-123"
-        When I send a POST request to "/api/keycloak/example.org/validate/webauthn/user@example.org" with form data:
-            | challenge         | assertion.challenge         |
-            | credentialId      | assertion.credentialId      |
-            | clientDataJSON    | assertion.clientDataJSON    |
-            | authenticatorData | assertion.authenticatorData |
-            | signature         | assertion.signature         |
-        Then the response status code should equal 403
-        And the JSON path "message" should equal "authentication failed"
-
-    @webauthn
-    Scenario: Create WebAuthn challenge
-        Given the User "user@example.org" has the security key "YubiKey"
-        And I have a valid API token "keycloak-test-123"
-        When I send a POST request to "/api/keycloak/example.org/challenge/webauthn/user@example.org"
-        Then the response status code should equal 200
-        And the JSON path "challenge" should not be empty
-
-    @webauthn
-    Scenario: Create WebAuthn challenge for user without security key
-        Given I have a valid API token "keycloak-test-123"
-        When I send a POST request to "/api/keycloak/example.org/challenge/webauthn/user@example.org"
-        Then the response status code should equal 403
-        And the JSON path "message" should equal "not supported"
-
-    @webauthn
-    Scenario: Create WebAuthn challenge for user that has to change the password
-        Given the User "pwchange@example.org" has the security key "YubiKey"
-        And I have a valid API token "keycloak-test-123"
-        When I send a POST request to "/api/keycloak/example.org/challenge/webauthn/pwchange@example.org"
-        Then the response status code should equal 403
-        And the JSON path "message" should equal "password change required"
-
     @webauthn
     Scenario: List WebAuthn credentials of a deleted user
         Given the User "deleted@example.org" has the security key "YubiKey"
         And I have a valid API token "keycloak-test-123"
         When I send a GET request to "/api/keycloak/example.org/credentials/webauthn/deleted@example.org"
-        Then the response status code should equal 403
-        And the JSON path "message" should equal "authentication failed"
-
-    @validate @webauthn
-    Scenario: WebAuthn assertion for user without security key is rejected
-        Given I have a valid API token "keycloak-test-123"
-        When I send a POST request to "/api/keycloak/example.org/validate/webauthn/totp@example.org" with form data:
-            | challenge         | AAAA |
-            | credentialId      | AAAA |
-            | clientDataJSON    | AAAA |
-            | authenticatorData | AAAA |
-            | signature         | AAAA |
-        Then the response status code should equal 403
-        And the JSON path "message" should equal "not supported"
-
-    @validate @webauthn
-    Scenario: WebAuthn assertion for deleted user is rejected
-        Given the User "deleted@example.org" has the security key "YubiKey"
-        And I have a valid API token "keycloak-test-123"
-        When I send a POST request to "/api/keycloak/example.org/validate/webauthn/deleted@example.org" with form data:
-            | challenge         | AAAA |
-            | credentialId      | AAAA |
-            | clientDataJSON    | AAAA |
-            | authenticatorData | AAAA |
-            | signature         | AAAA |
         Then the response status code should equal 403
         And the JSON path "message" should equal "authentication failed"
 
