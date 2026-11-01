@@ -200,4 +200,13 @@ class WebauthnCredential
         $this->uvInitialized = $uvInitialized;
         $this->lastUsedTime = new DateTimeImmutable();
     }
+
+    /**
+     * Records a successful assertion that another relying party (e.g. Keycloak) verified.
+     */
+    public function recordSignCount(int $signCount): void
+    {
+        $this->signCount = $signCount;
+        $this->lastUsedTime = new DateTimeImmutable();
+    }
 }

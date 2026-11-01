@@ -325,6 +325,35 @@ class WebauthnServiceTest extends TestCase
         self::assertSame([self::ORIGIN, self::KEYCLOAK_ORIGIN], $this->service->getAllowedOrigins());
     }
 
+    public function testRecordExternalUsage(): void
+    {
+        $credential = $this->register(new SoftwareAuthenticator());
+
+        self::assertTrue($this->service->recordExternalUsage($credential, 5));
+        self::assertSame(5, $credential->getSignCount());
+        self::assertNotNull($credential->getLastUsedTime());
+    }
+
+    public function testRecordExternalUsageRefusesCountThatDoesNotIncrease(): void
+    {
+        $credential = $this->register(new SoftwareAuthenticator());
+        self::assertTrue($this->service->recordExternalUsage($credential, 5));
+
+        self::assertFalse($this->service->recordExternalUsage($credential, 5));
+        self::assertFalse($this->service->recordExternalUsage($credential, 0));
+        self::assertSame(5, $credential->getSignCount());
+    }
+
+    public function testRecordExternalUsageWithoutSignCount(): void
+    {
+        // Like many passkeys, the authenticator always reports a sign count of 0
+        $credential = $this->register(new SoftwareAuthenticator());
+        self::assertSame(0, $credential->getSignCount());
+
+        self::assertTrue($this->service->recordExternalUsage($credential, 0));
+        self::assertNotNull($credential->getLastUsedTime());
+    }
+
     private function register(SoftwareAuthenticator $authenticator): WebauthnCredential
     {
         $options = $this->service->createRegistrationOptions($this->user);
