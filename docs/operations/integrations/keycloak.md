@@ -53,6 +53,18 @@ parent domain, for example `users.example.org` and `login.example.org`:
 Keycloak checks the origin of the login page itself, so its origin doesn't need
 to be in **Additional Security Key Origins**.
 
+Set the rest of the **WebAuthn Policy** to match Userli:
+
+| Option | Value | Why |
+|--------|-------|-----|
+| Signature algorithms | `ES256`, `EdDSA`, `RS256` | Userli accepts these three when a key is registered. Without `EdDSA` (Keycloak's default is `ES256` and `RS256` only), keys that use Ed25519 may fail in Keycloak. |
+| User verification requirement | `discouraged` or `not specified` | The security key is the second factor after the password, so Userli asks for touch only, not for a PIN or fingerprint. With `required`, keys without a PIN can't be used. |
+
+!!! note "Keycloak version"
+
+    Keycloak supports Ed25519 since version 24. Use version 24 or later, else
+    users with an Ed25519 key can only use backup codes in Keycloak.
+
 See the [provider README](https://github.com/systemli/userli-keycloak-provider)
 for details.
 
