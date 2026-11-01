@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\User;
+use App\Entity\WebauthnChallenge;
 use App\Entity\WebauthnCredential;
 use App\Exception\WebauthnException;
+use App\Repository\WebauthnChallengeRepository;
 use App\Repository\WebauthnCredentialRepository;
 use Cose\Algorithm\Manager;
 use Cose\Algorithm\Signature\ECDSA\ES256;
 use Cose\Algorithm\Signature\EdDSA\Ed25519;
 use Cose\Algorithm\Signature\RSA\RS256;
 use Cose\Algorithms;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use ParagonIE\ConstantTime\Base64UrlSafe;
 use Psr\Log\LoggerInterface;
@@ -21,8 +24,6 @@ use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Cache\ItemInterface;
 use Throwable;
 use Webauthn\AttestationStatement\AttestationStatementSupportManager;
 use Webauthn\AttestationStatement\NoneAttestationStatementSupport;
@@ -67,20 +68,19 @@ final readonly class WebauthnService
     // Several forms may be rendered before one is submitted, e.g. in other tabs or after a failed attempt
     private const int MAX_PENDING_OPTIONS = 5;
 
-    // Roundcube renders the login page with the challenge, so it has to outlive the ceremony timeout
-    private const int EXTERNAL_CHALLENGE_TTL = 300;
-
-    private const string EXTERNAL_CHALLENGE_CACHE_PREFIX = 'webauthn_external_challenge_';
+    // Seconds a challenge can be used. The timeout only starts when the user uses the key,
+    // the challenge is issued when the page is rendered, so it has to outlive the timeout.
+    private const int CHALLENGE_TTL = 300;
 
     private SerializerInterface $serializer;
 
     public function __construct(
         private SettingsService $settingsService,
         private WebauthnCredentialRepository $repository,
+        private WebauthnChallengeRepository $challengeRepository,
         private EntityManagerInterface $manager,
         private RequestStack $requestStack,
         private LoggerInterface $logger,
-        private CacheInterface $cache,
     ) {
         $this->serializer = new WebauthnSerializerFactory(
             new AttestationStatementSupportManager([new NoneAttestationStatementSupport()])
@@ -282,7 +282,7 @@ final readonly class WebauthnService
         }
 
         // Without this, a captured assertion could be replayed with its own challenge
-        if (!$this->takeExternalChallenge($user, $challenge)) {
+        if (!$this->challengeRepository->consume($user, $challenge)) {
             $this->logger->notice('WebAuthn assertion failed: unknown, expired or already used challenge');
 
             return false;
@@ -380,19 +380,19 @@ final readonly class WebauthnService
     }
 
     /**
-     * Keeps the options of the latest ceremonies in the session, by challenge.
+     * Keeps the options of the latest ceremonies in the session, by challenge, with their expiry.
      */
     private function storeOptions(string $key, string $challenge, string $json): void
     {
         $session = $this->requestStack->getSession();
         $pending = $session->get($key);
         $pending = is_array($pending) ? $pending : [];
-        $pending[Base64UrlSafe::encodeUnpadded($challenge)] = $json;
+        $pending[Base64UrlSafe::encodeUnpadded($challenge)] = ['options' => $json, 'expires' => time() + self::CHALLENGE_TTL];
         $session->set($key, array_slice($pending, -self::MAX_PENDING_OPTIONS, null, true));
     }
 
     /**
-     * Removes and returns the options created with the challenge, if they are pending.
+     * Removes and returns the options created with the challenge, if they are pending and not expired.
      */
     private function takeOptions(string $key, string $challenge): ?string
     {
@@ -401,44 +401,24 @@ final readonly class WebauthnService
         $pending = is_array($pending) ? $pending : [];
 
         $id = Base64UrlSafe::encodeUnpadded($challenge);
-        $json = $pending[$id] ?? null;
+        $entry = $pending[$id] ?? null;
         unset($pending[$id]);
         $session->set($key, $pending);
 
-        return is_string($json) ? $json : null;
+        if (!is_array($entry) || !is_string($entry['options'] ?? null) || !is_int($entry['expires'] ?? null) || $entry['expires'] <= time()) {
+            return null;
+        }
+
+        return $entry['options'];
     }
 
     private function issueExternalChallenge(User $user): string
     {
         $challenge = random_bytes(32);
-        $this->cache->get($this->getExternalChallengeKey($challenge), static function (ItemInterface $item) use ($user): string {
-            $item->expiresAfter(self::EXTERNAL_CHALLENGE_TTL);
-
-            return $user->getEmail();
-        });
+        $this->manager->persist(new WebauthnChallenge($user, $challenge, new DateTimeImmutable(sprintf('+%d seconds', self::CHALLENGE_TTL))));
+        $this->manager->flush();
 
         return $challenge;
-    }
-
-    /**
-     * Removes the challenge and tells whether it was issued for the user and has not expired.
-     */
-    private function takeExternalChallenge(User $user, string $challenge): bool
-    {
-        $key = $this->getExternalChallengeKey($challenge);
-        $email = $this->cache->get($key, static function (ItemInterface $item, bool &$save): ?string {
-            $save = false;
-
-            return null;
-        });
-        $this->cache->delete($key);
-
-        return null !== $email && $email === $user->getEmail();
-    }
-
-    private function getExternalChallengeKey(string $challenge): string
-    {
-        return self::EXTERNAL_CHALLENGE_CACHE_PREFIX.hash('sha256', $challenge);
     }
 
     private function createRequestOptions(User $user, string $challenge): PublicKeyCredentialRequestOptions
