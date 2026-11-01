@@ -6,9 +6,10 @@ Users can then sign in to other services (for example Nextcloud, Matrix or a
 wiki) with their email address and password – and their Userli second factor:
 authenticator app, security key or backup code.
 
-The provider uses the `/api/keycloak/` endpoints to search users, count them
-and validate passwords, TOTP codes, backup codes and security keys. Keycloak
-doesn't store passwords or keys: users manage their factors in Userli only.
+The provider uses the `/api/keycloak/` endpoints to search users, count them,
+validate passwords, TOTP codes and backup codes, and to read the public keys of
+security keys. Keycloak doesn't store passwords or keys: users manage their
+factors in Userli only.
 
 ## On the Userli host
 
@@ -28,30 +29,32 @@ Keycloak's documentation on
 
 ## Two-factor authentication
 
-The provider adds two authenticators for Keycloak's browser flow:
+Keycloak checks security keys with its own **WebAuthn Authenticator**. The
+provider hands it the keys of the user from Userli, so Keycloak verifies the
+assertion against the stored public key and reports the new sign count back to
+Userli. For backup codes, the provider adds the authenticator
+**Userli Backup Code**, which also works for users with only security keys.
+The **OTP Form** accepts backup codes as well.
 
-* **Userli Security Key**: Userli creates a single-use challenge, Keycloak
-  shows its WebAuthn login page with it and Userli verifies the response
-  against the stored key.
-* **Userli Backup Code**: accepts the backup codes from Userli, also for users
-  with only security keys. The **OTP Form** accepts backup codes as well.
-
-Add both as *Alternative* next to **OTP Form** in the conditional 2FA sub-flow
-(**Condition - user configured**) of your browser flow. Users switch between
-their factors with *Try another way*.
+Add **WebAuthn Authenticator** and **Userli Backup Code** as *Alternative* next
+to **OTP Form** in the conditional 2FA sub-flow (**Condition - user
+configured**) of your browser flow. Users switch between their factors with
+*Try another way*. Keep the required action **Webauthn Register** disabled,
+security keys are registered in Userli.
 
 Security keys are bound to a domain, so Userli and Keycloak need a common
 parent domain, for example `users.example.org` and `login.example.org`:
 
-1. In Userli, set **Security Key Domain** to `example.org` and add the Keycloak
-   origin, e.g. `https://login.example.org`, to
-   **Additional Security Key Origins** (see [Settings](../../admin/settings.md#two-factor-authentication)).
+1. In Userli, set **Security Key Domain** to `example.org` (see
+   [Settings](../../admin/settings.md#two-factor-authentication)).
 2. In Keycloak, set **Authentication → Policies → WebAuthn Policy → Relying
    Party ID** to the same domain.
 
-The authenticators need version 1.1 of the provider or later. See the
-[provider README](https://github.com/systemli/userli-keycloak-provider) for
-details.
+Keycloak checks the origin of the login page itself, so its origin doesn't need
+to be in **Additional Security Key Origins**.
+
+See the [provider README](https://github.com/systemli/userli-keycloak-provider)
+for details.
 
 ## Account status
 

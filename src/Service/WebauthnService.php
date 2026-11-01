@@ -51,8 +51,8 @@ use const PHP_URL_SCHEME;
 /**
  * WebAuthn ceremonies for security keys used as second factor.
  *
- * Credentials are registered and verified here only, both for the Userli login
- * and for assertions forwarded by the Keycloak user storage provider.
+ * Credentials are registered here only. They are verified here for the Userli login
+ * and for assertions forwarded by Roundcube, Keycloak verifies them itself.
  */
 final readonly class WebauthnService
 {
@@ -67,7 +67,7 @@ final readonly class WebauthnService
     // Several forms may be rendered before one is submitted, e.g. in other tabs or after a failed attempt
     private const int MAX_PENDING_OPTIONS = 5;
 
-    // Keycloak renders the login page with the challenge, so it has to outlive the ceremony timeout
+    // Roundcube renders the login page with the challenge, so it has to outlive the ceremony timeout
     private const int EXTERNAL_CHALLENGE_TTL = 300;
 
     private const string EXTERNAL_CHALLENGE_CACHE_PREFIX = 'webauthn_external_challenge_';
@@ -230,7 +230,7 @@ final readonly class WebauthnService
     }
 
     /**
-     * Creates a challenge for a relying party with an allowed origin (e.g. Keycloak), base64url encoded.
+     * Creates a challenge for a relying party with an allowed origin (e.g. Roundcube), base64url encoded.
      * It can be used once with verifyExternalAssertion() for the same user, within a few minutes.
      */
     public function createExternalChallenge(User $user): string
@@ -252,7 +252,7 @@ final readonly class WebauthnService
     }
 
     /**
-     * Verifies an assertion that a relying party with an allowed origin (e.g. Keycloak) collected
+     * Verifies an assertion that a relying party with an allowed origin (e.g. Roundcube) collected
      * for a challenge from createExternalChallenge(). All binary values are base64url encoded.
      */
     public function verifyExternalAssertion(
@@ -289,6 +289,26 @@ final readonly class WebauthnService
         }
 
         return $this->verifyAssertion($user, $publicKeyCredential, $this->createRequestOptions($user, $challenge));
+    }
+
+    /**
+     * Stores the sign count of an assertion that another relying party (e.g. Keycloak) verified.
+     * Like the check of the assertion, a count that does not increase is refused, unless the
+     * authenticator does not count at all.
+     */
+    public function recordExternalUsage(WebauthnCredential $credential, int $signCount): bool
+    {
+        $current = $credential->getSignCount();
+        if (($current > 0 || $signCount > 0) && $signCount <= $current) {
+            $this->logger->notice('WebAuthn sign count refused: {signCount} is not above {current}', ['signCount' => $signCount, 'current' => $current, 'credential' => $credential->getId()]);
+
+            return false;
+        }
+
+        $credential->recordSignCount($signCount);
+        $this->manager->flush();
+
+        return true;
     }
 
     public function getRpId(): string
