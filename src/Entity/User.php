@@ -27,6 +27,7 @@ use App\Traits\SaltTrait;
 use App\Traits\TwofactorBackupCodeTrait;
 use App\Traits\TwofactorTrait;
 use App\Traits\UpdatedTimeTrait;
+use App\Traits\WebauthnTrait;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -35,6 +36,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
 use Override;
 use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
+use Scheb\TwoFactorBundle\Model\PreferredProviderInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
 use Stringable;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
@@ -49,7 +51,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[Index(columns: ['email', 'deleted'], name: 'email_deleted_idx')]
 #[Index(columns: ['domain_id', 'deleted'], name: 'domain_deleted_idx')]
 #[Index(columns: ['email', 'domain_id'], name: 'email_domain_idx')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface, UpdatedTimeInterface, Stringable
+class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TwoFactorInterface, BackupCodeInterface, PreferredProviderInterface, UpdatedTimeInterface, Stringable
 {
     use CreationTimeTrait;
     use DeleteTrait;
@@ -72,6 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     use TwofactorBackupCodeTrait;
     use TwofactorTrait;
     use UpdatedTimeTrait;
+    use WebauthnTrait;
 
     public const CURRENT_PASSWORD_VERSION = 2;
 
@@ -97,6 +100,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         $this->passwordChangeRequired = false;
         $this->creationTime = new DateTimeImmutable();
         $this->uploadedKeys = new ArrayCollection();
+        $this->webauthnCredentials = new ArrayCollection();
     }
 
     #[Override]

@@ -123,6 +123,15 @@ Feature: Dovecot API
             | password | password |
         Then the response status code should equal 401
 
+    @passdb @twofactor @webauthn
+    Scenario: Passdb lookup with main password of user with only a security key is rejected
+        Given the setting "twofactor_app_passwords_required" is "1"
+        And the User "user@example.org" has the security key "YubiKey"
+        And I have a valid API token "dovecot-test-123"
+        When I send a POST request to "/api/dovecot/user@example.org" with form data:
+            | password | password |
+        Then the response status code should equal 401
+
     @passdb @twofactor
     Scenario: Passdb lookup with main password of 2FA user when app passwords are not required
         Given the setting "twofactor_app_passwords_required" is "0"

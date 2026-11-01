@@ -112,9 +112,7 @@ final readonly class RecoveryHandler
         }
 
         // Reset twofactor settings
-        $user->setTotpConfirmed(false);
-        $user->setTotpSecret(null);
-        $user->setTotpBackupCodes([]);
+        $user->resetTwofactor();
 
         // Clear sensitive plaintext data from User object
         $user->eraseCredentials();

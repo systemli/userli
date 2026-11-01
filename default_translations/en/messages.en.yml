@@ -108,6 +108,13 @@ form:
   twofactor-login-cancel: Cancel login
   twofactor-disable: Disable two-factor authentication
   twofactor-login-help: Your two-factor authenticator app generates a 6-digit code that you need to enter here.
+  twofactor-webauthn-desc: Confirm the login with your security key.
+  twofactor-webauthn-button: Use security key
+  twofactor-webauthn-error: The security key could not be used. Try again or choose another method.
+  twofactor-use-totp: Use authenticator app instead
+  twofactor-use-webauthn: Use security key instead
+  twofactor-use-backup-code: Use a backup code
+  twofactor-backup-code: Backup code
 
 # OpenPGP Keys
 openpgp-key-file: "Upload your key file:"
@@ -162,6 +169,22 @@ account:
     info-backup: Backup codes ensure you can always access your account, even if you lose your phone
     info-app-passwords: With two-factor authentication, email programs like Thunderbird or the mail app on your phone only work with app passwords, not with your password.
     info-app-passwords-link: Create app passwords
+    info-app-passwords-recommended: "Tip: Use app passwords in email programs. There your password still opens your mailbox, without a second factor."
+    overview-enabled: Two-factor authentication is active
+    overview-disabled: Two-factor authentication is not active
+    overview-enabled-description: After your password, you confirm the login with one of the methods below.
+    totp-title: Authenticator App
+    totp-description: Enter a 6-digit code from an app like Aegis (Android) or Tofu (iOS).
+    totp-manage: Manage
+    backup-count: "{0} No codes left|{1} One code left|]1,Inf[ %count% codes left"
+    backup-regenerate-short: Regenerate
+    backup-regenerate-title: Create new backup codes?
+    add: Add
+    backup-description: One-time codes to sign in if you lose your device or security key.
+    backup-unavailable: Created when you set up your first second factor.
+    backup-regenerate-confirm: Generate
+    backup-regenerate-help: Your old backup codes stop working.
+    back: Back to two-factor authentication
   recovery:
     title: Recovery Token
     desc: Backup access to your account
@@ -190,6 +213,27 @@ account:
     last-used: Used %when%
     never-used: Never used
     delete: Delete
+  webauthn:
+    title: Security Keys
+    lead: Use a security key or your device as second factor
+    link: Manage security keys
+    count: "{0} No security keys|{1} One security key|]1,Inf[ %count% security keys"
+    feature-phishing: Security keys cannot be phished, they only work on this site
+    feature-devices: Works with USB and NFC keys like YubiKey or Nitrokey, and with the screen lock of your phone or computer
+    feature-backup: Register a second key as backup. Your backup codes keep working too.
+    name: Name
+    name-placeholder: e.g. YubiKey on keychain
+    create: Add security key
+    empty: You have no security keys yet.
+    unsupported: Your browser does not support security keys.
+    added: Added %when%
+    last-used: Used %when%
+    never-used: Never used
+    delete: Remove
+    info-title: Why security keys?
+    create-description: Give the key a name so you can tell it apart later, confirm with your password and follow the instructions of your browser.
+    delete-title: Remove security key?
+    delete-description: You can no longer sign in with this security key.
   delete:
     title: Delete Account
     desc: Close and delete your account permanently
@@ -304,6 +348,8 @@ flashes:
   alias-creation-successful: Your new alias address was created.
   alias-deletion-successful: Your alias address was deleted.
   app-password-deletion-successful: The app password was deleted.
+  webauthn-creation-successful: The security key was added.
+  webauthn-deletion-successful: The security key was removed.
   app-password-deletion-failed: The app password could not be deleted.
   alias-deletion-failed: Your alias address could not be deleted. Please try again.
   recovery-token-invalid: E-mail address and/or recovery token are wrong!
@@ -545,6 +591,12 @@ admin:
     twofactor_app_passwords_required:
       label: Require app passwords with 2FA
       help: Users with two-factor authentication can only sign in to mail programs (IMAP, SMTP) with app passwords, not with their password. Webmail needs the Roundcube plugin.
+    webauthn_rp_id:
+      label: Security Key Domain (WebAuthn RP ID)
+      help: Domain that security keys are bound to (e.g., example.org). It must be the host of the application URL or a parent domain of it. Leave empty to use the host of the application URL. Changing it makes all registered security keys unusable.
+    webauthn_origins:
+      label: Additional Security Key Origins
+      help: "Further origins that may use security keys, one per line (e.g., https://login.example.org for Keycloak). They must belong to the security key domain."
     weekly_report_enabled:
       label: Weekly Report
       help: Send a weekly report with new registrations to the notification email address

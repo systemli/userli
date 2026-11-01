@@ -86,7 +86,7 @@ Scope `roundcube`. Used by the [Roundcube plugin](integrations/roundcube.md).
 | Method | Path | Description |
 |--------|------|-------------|
 | `POST` | `/api/roundcube/aliases` | Body `{"email": "...", "password": "..."}`. Returns the list of the user's alias addresses. `401` on wrong credentials. App passwords are rejected. |
-| `POST` | `/api/roundcube/login` | Body `{"email": "...", "password": "...", "code": "..."}`. Checks the main password and, if the user has two-factor authentication, the TOTP or backup code in `code`. Returns `{"password": "...", "expiresAt": "<ISO 8601>"}`, a webmail credential that is valid for 12 hours in Dovecot and Postfix. `401` with message `twofactor required` if `code` is missing, `authentication failed` otherwise. `403` for users with a required password change, only after the password is correct. `422` for an invalid body. `500` if the MailCrypt key can't be decrypted. App passwords are rejected. |
+| `POST` | `/api/roundcube/login` | Body `{"email": "...", "password": "...", "code": "..."}`. Checks the main password and, if the user has two-factor authentication, the TOTP or backup code in `code` or a security key assertion in `webauthn` (`{"challenge", "credentialId", "clientDataJSON", "authenticatorData", "signature", "userHandle"}`, base64url encoded). Returns `{"password": "...", "expiresAt": "<ISO 8601>"}`, a webmail credential that is valid for 12 hours in Dovecot and Postfix. `401` with message `twofactor required` if `code` and `webauthn` are missing, `authentication failed` otherwise; after a correct password, users with security keys also get `webauthn`, the options for `navigator.credentials.get()` with a new single-use challenge. `403` for users with a required password change, only after the password is correct. `422` for an invalid body. `500` if the MailCrypt key can't be decrypted. App passwords are rejected. |
 | `POST` | `/api/roundcube/logout` | Body `{"email": "...", "password": "<webmail credential>"}`. Revokes the webmail credential. Always returns `204`. |
 
 ## Keycloak
@@ -98,12 +98,20 @@ Scope `keycloak`. Used by the [Keycloak user provider](integrations/keycloak.md)
 | `GET`  | `/api/keycloak/{domain}?search=&max=10&first=0` | Search users. Returns `[{"id": "<local part>", "email": "..."}]`. |
 | `GET`  | `/api/keycloak/{domain}/count` | Number of users in the domain. |
 | `GET`  | `/api/keycloak/{domain}/user/{email}` | Get a single user. |
-| `POST` | `/api/keycloak/{domain}/validate/{email}` | Validate a credential, body `{"credentialType": "password"\|"otp", "password": "..."}`. App passwords are rejected. |
-| `GET`  | `/api/keycloak/{domain}/configured/{credentialType}/{email}` | Whether the user has the credential type (e.g. `otp`) configured. |
+| `POST` | `/api/keycloak/{domain}/validate/{email}` | Validate a credential, body `{"credentialType": "password"\|"otp"\|"backup-code", "password": "..."}`. App passwords are rejected. |
+| `GET`  | `/api/keycloak/{domain}/credentials/webauthn/{email}` | Security keys of the user: `[{"id", "name", "credentialId", "publicKey", "aaguid", "attestationType", "signCount", "transports", "createdAt"}]`. `credentialId` and `publicKey` (the COSE key) are base64url encoded. |
+| `PUT`  | `/api/keycloak/{domain}/credentials/webauthn/{email}/{id}` | Store the sign count after Keycloak verified an assertion, body `{"signCount": 3}`. `409` with `sign count rejected` if it does not increase, `404` with `not found` for a key of another user. |
+| `GET`  | `/api/keycloak/{domain}/configured/{credentialType}/{email}` | Whether the user has the credential type (`password`, `otp`, `webauthn` or `backup-code`) configured. |
 
-For `otp`, `password` is the 6-digit TOTP code **or** a backup code – a
-matching backup code is consumed. See [Keycloak](integrations/keycloak.md#account-status)
-for status codes.
+For `otp`, `password` is the 6-digit TOTP code **or** a backup code. For
+`backup-code`, it is a backup code; this works for every user with 2FA, also with
+only security keys. A matching backup code is consumed.
+
+Keycloak verifies security key assertions itself, against the keys from
+`credentials/webauthn/{email}`, and stores the new sign count in Userli. A sign
+count of `0` is accepted as long as the key never reported a higher one, like
+many passkeys do. See [Keycloak](integrations/keycloak.md#account-status) for
+status codes.
 
 ## Retention
 

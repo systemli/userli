@@ -52,7 +52,8 @@
     "twig/extra-bundle": "^2.12|^3.0",
     "twig/intl-extra": "*",
     "twig/string-extra": "^3.23",
-    "twig/twig": "^2.12|^3.0"
+    "twig/twig": "^2.12|^3.0",
+    "web-auth/webauthn-lib": "^5.2"
   },
   "require-dev": {
     "behat/mink": "^1.13",

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Entity;
 
 use App\Entity\User;
+use App\Entity\WebauthnCredential;
 use App\Enum\Roles;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
@@ -108,5 +109,50 @@ class UserTest extends TestCase
         // getTotpAuthenticationConfiguration
         $totpConfiguration = new TotpConfiguration($totpSecret, TotpConfiguration::ALGORITHM_SHA1, 30, 6);
         self::assertEquals($totpConfiguration, $user->getTotpAuthenticationConfiguration());
+    }
+
+    public function testTwofactorWithSecurityKey(): void
+    {
+        $user = new User('user@example.org');
+        self::assertFalse($user->isWebauthnAuthenticationEnabled());
+        self::assertFalse($user->isTwofactorEnabled());
+        self::assertNull($user->getPreferredTwoFactorProvider());
+
+        $user->getWebauthnCredentials()->add($this->createCredential($user));
+
+        self::assertTrue($user->isWebauthnAuthenticationEnabled());
+        self::assertTrue($user->isTwofactorEnabled());
+        self::assertSame('webauthn', $user->getPreferredTwoFactorProvider());
+    }
+
+    public function testTwofactorWithTotpOnly(): void
+    {
+        $user = new User('user@example.org');
+        $user->setTotpSecret('secret');
+        $user->setTotpConfirmed(true);
+
+        self::assertTrue($user->isTwofactorEnabled());
+        self::assertNull($user->getPreferredTwoFactorProvider());
+    }
+
+    public function testResetTwofactor(): void
+    {
+        $user = new User('user@example.org');
+        $user->setTotpSecret('secret');
+        $user->setTotpConfirmed(true);
+        $user->setTotpBackupCodes(['111111', '222222']);
+        $user->getWebauthnCredentials()->add($this->createCredential($user));
+
+        $user->resetTwofactor();
+
+        self::assertFalse($user->isTwofactorEnabled());
+        self::assertNull($user->getTotpSecret());
+        self::assertSame([], $user->getTotpBackupCodes());
+        self::assertCount(0, $user->getWebauthnCredentials());
+    }
+
+    private function createCredential(User $user): WebauthnCredential
+    {
+        return new WebauthnCredential($user, 'YubiKey', 'Y3JlZGVudGlhbA', 'cHVibGljLWtleQ', 'aGFuZGxl', 0, ['usb'], '00000000-0000-0000-0000-000000000000', 'none', false, false, false);
     }
 }

@@ -123,6 +123,8 @@ services:
       ROUNDCUBEMAIL_SMTP_PORT: 1025
       ROUNDCUBEMAIL_USERNAME_DOMAIN: example.org
       ROUNDCUBEMAIL_DB_TYPE: sqlite
+      ROUNDCUBEMAIL_PLUGINS: archive,zipdownload,userli
+      ROUNDCUBEMAIL_COMPOSER_PLUGINS: systemli/userli
     volumes:
       - ./docker/roundcube/config:/var/roundcube/config:ro
     ports:

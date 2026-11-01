@@ -121,6 +121,25 @@ To inspect container logs:
     docker compose logs -f userli
     ```
 
+## Roundcube plugin
+
+Roundcube uses the released [Roundcube Userli plugin](https://github.com/systemli/roundcube-userli-plugin).
+To work on a local checkout instead, mount it in a `docker-compose.override.yml`:
+
+```yaml
+---
+services:
+  roundcube:
+    environment:
+      ROUNDCUBEMAIL_COMPOSER_PLUGINS: ""
+    volumes:
+      - ../roundcube-userli-plugin:/var/www/html/plugins/userli:ro
+```
+
+To sign in to Roundcube with a security key, set **Additional Security Key
+Origins** to `http://localhost:8001` in the admin settings. Both ports share
+the security key domain `localhost`.
+
 ## Troubleshooting
 
 On systems with SELinux enabled, the webserver might throw an error due to broken filesystem permissions.

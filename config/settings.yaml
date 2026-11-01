@@ -45,6 +45,24 @@ settings:
     type: boolean
     default: true
 
+  # Empty means the host of app_url. A domain without scheme or port, e.g. example.org
+  webauthn_rp_id:
+    type: string
+    default: ""
+    optional: true
+    validation:
+      regex: '/^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i'
+      regex_message: settings.webauthn-rp-id-invalid
+
+  # Origins besides app_url that may use WebAuthn credentials, e.g. Keycloak. One per line, e.g. https://login.example.org
+  webauthn_origins:
+    type: textarea
+    default: ""
+    optional: true
+    validation:
+      regex: '/^\h*(?:https?:\/\/[a-z0-9.-]+(?::\d+)?\/?)?\h*(?:\R\h*(?:https?:\/\/[a-z0-9.-]+(?::\d+)?\/?)?\h*)*$/i'
+      regex_message: settings.webauthn-origins-invalid
+
   smtp_quota_limit_per_hour:
     type: integer
     default: 0

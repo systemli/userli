@@ -6,7 +6,7 @@ creates a Roundcube identity for each alias of a user when they sign in to
 aliases without setting up identities manually.
 
 The plugin also handles the sign-in: users with two-factor authentication enter
-their code in a second step. Roundcube then uses a webmail credential from
+their code or use their security key in a second step. Roundcube then uses a webmail credential from
 Userli for IMAP and SMTP instead of the password. The credential is valid for
 12 hours and is revoked on logout. This is required for webmail if
 [app passwords are required with 2FA](../../admin/settings.md#two-factor-authentication).
@@ -38,6 +38,19 @@ $config['userli_url'] = 'https://users.example.org';
 $config['userli_token'] = '<PLAIN_TOKEN>';
 $config['userli_ssl_verify'] = true;
 ```
+
+## Security keys
+
+With version 1.1 of the plugin or later, users can sign in with a security key.
+Security keys are bound to a domain, so Userli and Roundcube need a common
+parent domain, for example `users.example.org` and `mail.example.org`. In
+Userli, set **Security Key Domain** to `example.org` and add the Roundcube
+origin, e.g. `https://mail.example.org`, to **Additional Security Key Origins**
+(see [Settings](../../admin/settings.md#two-factor-authentication)).
+
+Keys that users added before the domain was set only work on the Userli host.
+Users have to add them again. Without a security key that works there, users
+sign in to webmail with a TOTP or backup code.
 
 ## Webmail link
 

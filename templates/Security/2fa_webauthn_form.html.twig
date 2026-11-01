@@ -1,0 +1,106 @@
+{% extends 'base_step.html.twig' %}
+
+{% block title %}{{ setting('app_name') }} - {{ "form.twofactor-login"|trans }}{% endblock %}
+
+{% block step_icon %}
+    <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center">
+        {{ ux_icon('heroicons:key', {'class': 'w-6 h-6 text-blue-600 dark:text-blue-400'}) }}
+    </div>
+{% endblock %}
+
+{% block step_title %}{{ "form.twofactor-login"|trans }}{% endblock %}
+
+{% block step_description %}
+    <p class="text-gray-600 dark:text-gray-300">
+        {{ "form.twofactor-webauthn-desc"|trans }}
+    </p>
+{% endblock %}
+
+{% block step_content %}
+    {% set checkPath = checkPathUrl ? checkPathUrl : path(checkPathRoute) %}
+
+    {% if authenticationError %}
+        <div class="mb-6 p-4 rounded-lg bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800" role="alert" aria-live="polite">
+            <div class="flex items-start">
+                {{ ux_icon('heroicons:x-circle', {'class': 'w-5 h-5 text-red-400 dark:text-red-500 mt-0.5 mr-3 flex-shrink-0'}) }}
+                <div>
+                    <h3 class="text-sm font-medium text-red-800 dark:text-red-200 mb-1">{{ "form.auth-failed"|trans }}</h3>
+                    <p class="text-sm text-red-700 dark:text-red-300">{{ authenticationError|trans(authenticationErrorData, 'SchebTwoFactorBundle') }}</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <form method="post" action="{{ checkPath }}" class="space-y-6"
+          data-controller="webauthn"
+          data-webauthn-options-value="{{ webauthnOptions }}"
+          data-webauthn-ceremony-value="get">
+        <input type="hidden" name="{{ authCodeParameterName }}" data-webauthn-target="response">
+
+        {% if isCsrfProtectionEnabled %}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token(csrfTokenId) }}">
+        {% endif %}
+
+        <p hidden data-webauthn-target="error" role="alert" class="text-sm text-red-600 dark:text-red-400">
+            {{ "form.twofactor-webauthn-error"|trans }}
+        </p>
+
+        <button
+            type="button"
+            autofocus
+            data-action="webauthn#start"
+            class="w-full flex justify-center items-center gap-2 px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200"
+        >
+            {{ ux_icon('heroicons:key', {'class': 'w-5 h-5'}) }}
+            {{ "form.twofactor-webauthn-button"|trans }}
+        </button>
+    </form>
+
+    {# Rendered on demand, so password managers do not fill in and submit a one-time code on page load #}
+    <details class="mt-6 group" data-controller="lazy-template" data-action="toggle->lazy-template#reveal">
+        <summary class="cursor-pointer text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
+            {{ "form.twofactor-use-backup-code"|trans }}
+        </summary>
+        <template data-lazy-template-target="template">
+            <form method="post" action="{{ checkPath }}" class="mt-4 space-y-4" novalidate>
+                <label for="_auth_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {{ "form.twofactor-backup-code"|trans }}
+                </label>
+                <input
+                    type="text"
+                    id="_auth_code"
+                    name="{{ authCodeParameterName }}"
+                    autocomplete="off"
+                    inputmode="numeric"
+                    required
+                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-colors duration-200"
+                >
+                {% if isCsrfProtectionEnabled %}
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token(csrfTokenId) }}">
+                {% endif %}
+                <button
+                    type="submit"
+                    class="w-full px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200"
+                >
+                    {{ "form.verify"|trans }}
+                </button>
+            </form>
+        </template>
+        <div data-lazy-template-target="container"></div>
+    </details>
+
+    <div class="mt-6 flex flex-col space-y-4">
+        {% if 'totp' in availableTwoFactorProviders %}
+            <a href="{{ path('2fa_login', {'preferProvider': 'totp'}) }}" class="text-center text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
+                {{ "form.twofactor-use-totp"|trans }}
+            </a>
+        {% endif %}
+
+        <a
+            href="{{ logoutPath }}"
+            class="w-full flex justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200"
+        >
+            {{ "form.twofactor-login-cancel"|trans }}
+        </a>
+    </div>
+{% endblock %}

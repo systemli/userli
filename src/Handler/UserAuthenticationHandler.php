@@ -65,7 +65,7 @@ final readonly class UserAuthenticationHandler
         }
 
         // Mail clients of 2FA users must not get by with the main password alone
-        if ($user->isTotpAuthenticationEnabled() && $this->settingsService->get('twofactor_app_passwords_required')) {
+        if ($user->isTwofactorEnabled() && $this->settingsService->get('twofactor_app_passwords_required')) {
             return null;
         }
 
