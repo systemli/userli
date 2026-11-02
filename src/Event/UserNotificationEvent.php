@@ -11,6 +11,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 final class UserNotificationEvent extends Event
 {
     public const string COMPROMISED_PASSWORD = 'user.notification.compromised_password';
+    public const string OPENPGP_KEY_EXPIRING = 'user.notification.openpgp_key_expiring';
 
     public function __construct(
         private readonly User $user,
