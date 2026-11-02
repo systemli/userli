@@ -8,6 +8,7 @@ use App\Repository\OpenPgpKeyRepository;
 use App\Traits\EmailTrait;
 use App\Traits\IdTrait;
 use App\Traits\OpenPgpKeyTrait;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OpenPgpKeyRepository::class)]
@@ -29,6 +30,9 @@ class OpenPgpKey
 
     #[ORM\Column(length: 32, nullable: true)]
     private ?string $wkdHash = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $expiryNotifiedAt = null;
 
     public function getUploader(): ?User
     {
@@ -63,5 +67,15 @@ class OpenPgpKey
     public function toBinary(): ?string
     {
         return ($this->getKeyData()) ? base64_decode($this->getKeyData()) : null;
+    }
+
+    public function getExpiryNotifiedAt(): ?DateTimeImmutable
+    {
+        return $this->expiryNotifiedAt;
+    }
+
+    public function setExpiryNotifiedAt(?DateTimeImmutable $expiryNotifiedAt): void
+    {
+        $this->expiryNotifiedAt = $expiryNotifiedAt;
     }
 }

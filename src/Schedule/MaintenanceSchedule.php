@@ -38,6 +38,7 @@ final readonly class MaintenanceSchedule implements ScheduleProviderInterface
             ->add(RecurringMessage::every('1 day', new UnlinkRedeemedVouchers(), new DateTimeImmutable('04:00')))
             ->add(RecurringMessage::every('1 week', new RemoveUnredeemedVouchers(), new DateTimeImmutable('05:00')))
             ->add(RecurringMessage::every('1 week', new RemoveInactiveUsers(), new DateTimeImmutable('06:00')))
-            ->add(RecurringMessage::every('1 week', new SendWeeklyReport(), new DateTimeImmutable('07:00')));
+            ->add(RecurringMessage::every('1 week', new SendWeeklyReport(), new DateTimeImmutable('07:00')))
+            ->add(RecurringMessage::every('1 week', new NotifyUserKeyExpired(), new DateTimeImmutable('07:00')));
     }
 }

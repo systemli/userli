@@ -7,6 +7,8 @@ namespace App\Repository;
 use App\Entity\Domain;
 use App\Entity\OpenPgpKey;
 use App\Entity\User;
+use DateInterval;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -106,5 +108,44 @@ final class OpenPgpKeyRepository extends ServiceEntityRepository implements Sear
             $qb->andWhere('k.domain = :domain')
                 ->setParameter('domain', $domain);
         }
+    }
+
+    /**
+     * @return array<OpenPgpKey>
+     */
+    public function findExpiringKeys(?DateTimeImmutable $now = null): array
+    {
+        $now ??= new DateTimeImmutable();
+        $noticeUntil = $now->add(new DateInterval('P30D'));
+
+        return $this->createQueryBuilder('k')
+            ->where('k.keyExpireTime IS NOT NULL')
+            ->andWhere('k.keyExpireTime <= :noticeUntil')
+            ->setParameter('noticeUntil', $noticeUntil)
+            ->orderBy('k.keyExpireTime', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * This is the user that uploaded the key plus the owner of the email addresses
+     * the key is listed for.
+     *
+     * @return array<User>
+     */
+    public function getUsersFor(OpenPgpKey $key): array
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder()
+            ->select('u')
+            ->from(User::class, 'u')
+            ->where('u.email = :email')
+            ->setParameter('email', $key->getEmail());
+
+        if (null !== $key->getUploader()) {
+            $qb->orWhere('u.id = :uploader')
+                ->setParameter('uploader', $key->getUploader());
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }
