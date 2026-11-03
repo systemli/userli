@@ -111,7 +111,7 @@ package:
 		--exclude='${TMP_DIR}/assets/images' \
 		--exclude='${TMP_DIR}/assets/js' \
 		--exclude='${TMP_DIR}/behat.yml' \
-		--exclude='${TMP_DIR}/bin/github-release.sh' \
+		--exclude='${TMP_DIR}/bin/release.sh' \
 		--exclude='${TMP_DIR}/build' \
 		--exclude='${TMP_DIR}/config/services_test.yaml' \
 		--exclude='${TMP_DIR}/contrib' \

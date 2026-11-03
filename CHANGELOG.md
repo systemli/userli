@@ -1,5 +1,8 @@
 # Changelog
 
+Starting with the release after 6.12.0, the release notes are published on
+[GitHub Releases](https://github.com/systemli/userli/releases).
+
 ## 6.12.0 (2026.10.28)
 
 ### Features and Improvements
