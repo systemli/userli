@@ -24,3 +24,15 @@ updates:
       github-actions:
         patterns:
           - "*"
+
+  - package-ecosystem: "docker"
+    directory: "/docker/release"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "⬆️ "
+      include: "scope"
+    groups:
+      release-images:
+        patterns:
+          - "*"

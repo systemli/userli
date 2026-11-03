@@ -1,0 +1,84 @@
+name: Release Drafter
+
+on:
+  push:
+    branches:
+      - main
+  # Only used for labeling; never check out or run pull request code here.
+  pull_request_target:
+    types: [opened, reopened, synchronize, edited]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  autolabel:
+    if: github.event_name == 'pull_request_target'
+    runs-on: ubuntu-24.04
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Label pull request
+        uses: release-drafter/release-drafter/autolabeler@978bb0b30c5ee8cdd332ced253758157150d43f0 # v7.10.0
+
+  draft:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: read
+    outputs:
+      id: ${{ steps.drafter.outputs.id }}
+      tag_name: ${{ steps.drafter.outputs.tag_name }}
+    steps:
+      - name: Update release draft
+        id: drafter
+        uses: release-drafter/release-drafter@978bb0b30c5ee8cdd332ced253758157150d43f0 # v7.10.0
+        with:
+          commitish: ${{ github.sha }}
+
+  # Build the release tarballs for the draft. Maintainers rebuild them
+  # locally with bin/release.sh and only sign if the checksums match.
+  build:
+    needs: draft
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      VERSION: ${{ needs.draft.outputs.tag_name }}
+      RELEASE_ID: ${{ needs.draft.outputs.id }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Build release tarballs
+        run: make release-container VERSION="$VERSION"
+
+      - name: Write build info
+        run: |
+          jq --null-input \
+            --arg version "$VERSION" \
+            --arg commit "$GITHUB_SHA" \
+            --arg source_date_epoch "$(git log -1 --format=%ct)" \
+            --arg run "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            '{version: $version, commit: $commit, source_date_epoch: $source_date_epoch, run: $run}' \
+            > build/build-info.json
+
+      # The version can change between pushes (e.g. 6.12.1 -> 6.13.0), so old
+      # assets are removed first. Only ever done on a draft release.
+      - name: Replace draft assets
+        run: |
+          if [ "$(gh api "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" --jq .draft)" != "true" ]; then
+            echo "Release $RELEASE_ID is not a draft, refusing to touch its assets" >&2
+            exit 1
+          fi
+          for asset in $(gh api "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID/assets" --jq '.[].id'); do
+            gh api --method DELETE "repos/$GITHUB_REPOSITORY/releases/assets/$asset"
+          done
+          gh release upload "$VERSION" --clobber \
+            build/*.tar.gz build/*.sha256 build/*.sha512 build/build-info.json

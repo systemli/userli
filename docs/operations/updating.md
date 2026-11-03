@@ -3,8 +3,9 @@
 Userli follows [semantic versioning](https://semver.org/). Read the release
 notes before every update:
 
-* [`CHANGELOG.md`](https://github.com/systemli/userli/blob/main/CHANGELOG.md) –
-  all changes per release
+* [GitHub Releases](https://github.com/systemli/userli/releases) – all changes
+  per release (up to 6.12.0 in
+  [`CHANGELOG.md`](https://github.com/systemli/userli/blob/main/CHANGELOG.md))
 * [`UPGRADE.md`](https://github.com/systemli/userli/blob/main/UPGRADE.md) –
   manual steps required for a release, for example removed environment
   variables or changed Dovecot configuration
