@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: ".nvmrc"
-          cache: "yarn"
+          cache: "npm"
 
       - name: Get composer cache directory
         id: composer-cache
@@ -50,8 +50,8 @@ jobs:
 
       - name: Prepare Assets
         run: |
-          yarn install --frozen-lockfile
-          yarn encore dev
+          npm ci
+          npx encore dev
         background: true
 
       - name: Wait for installs
@@ -67,11 +67,11 @@ jobs:
         background: true
 
       - name: TypeScript Typecheck
-        run: yarn typecheck
+        run: npm run typecheck
         background: true
 
       - name: Vitest
-        run: yarn test:coverage
+        run: npm run test:coverage
         background: true
 
       - name: Wait for checks

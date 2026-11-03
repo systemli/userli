@@ -64,7 +64,7 @@ tests/
 
 - Config: `vitest.config.ts`
 - Tests: `tests/js/controllers/` (Stimulus controller tests)
-- Run: `yarn test`
+- Run: `npm test`
 
 ## Special Files
 

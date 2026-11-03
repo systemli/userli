@@ -59,7 +59,7 @@ Code style is enforced by [PHP CS Fixer](https://cs.symfony.com/), [Rector](http
 For TypeScript:
 
 ```shell
-yarn typecheck
+npm run typecheck
 ```
 
 !!! tip

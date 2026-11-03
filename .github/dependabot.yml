@@ -37,7 +37,7 @@ updates:
         patterns:
           - "*"
     ignore:
-      # stay on Node 22 LTS
+      # stay on Node 26 LTS
       - dependency-name: "library/node"
         update-types: ["version-update:semver-major"]
       # stay on PHP 8.4

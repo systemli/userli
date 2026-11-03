@@ -21,7 +21,7 @@ We provide a `docker-compose.yml` that starts Userli with MariaDB, Dovecot, Roun
 ## Requirements
 
 - `podman` (or `docker`) with compose support
-- `yarn`
+- Node.js 26 (LTS) with `npm`
 - `composer`
 - `make`
 
@@ -80,7 +80,7 @@ When it finishes, open [http://localhost:8000](http://localhost:8000) and log in
 * Watch the frontend while you work:
 
     ```shell
-    yarn watch
+    npm run watch
     ```
 
 ## Background services

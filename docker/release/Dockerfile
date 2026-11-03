@@ -6,9 +6,9 @@
 
 FROM docker.io/library/composer:2.10@sha256:2cf275428757e5435a667bfc0d038b14520ca02be2b1b70d44a05c8c19e2de48 AS composer
 
-FROM docker.io/library/node:22-bookworm-slim@sha256:4b150b48b4116e2a22f2c39cc27025fbf4f153e2078fd3b14d159fdb5c7279da AS node
+FROM docker.io/library/node:26-trixie-slim@sha256:e4db4c914bf8ad241bd24804fc25d272d89bad97e68cdc8a1414862790a02c39 AS node
 
-FROM docker.io/library/php:8.4-cli-bookworm@sha256:54b467ede1db96c66675e7b78457dd43729d0e7be31978d4a1e5c069ceabcf76
+FROM docker.io/library/php:8.4-cli-trixie@sha256:7e7413ed31b8c42b31c939cc83b3758b1cd618f7bf3803f5a0c39f98d4adcbee
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends gzip make perl tar unzip && \
@@ -18,10 +18,10 @@ COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 COPY --from=node /usr/local/bin/node /usr/local/bin/node
 COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
 RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm && \
-    npm install --global yarn@1.22.19
+    ln -s ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
 
 ENV COMPOSER_HOME=/tmp/composer \
-    YARN_CACHE_FOLDER=/tmp/yarn-cache \
+    npm_config_cache=/tmp/npm-cache \
     TZ=UTC \
     LC_ALL=C.UTF-8
 
