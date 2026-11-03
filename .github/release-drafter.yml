@@ -31,7 +31,7 @@ categories:
     exclusive: true
     when:
       labels:
-        - "technical dept"
+        - "technical debt"
         - "documentation"
         - "testing"
   - title: "Maintenance"
@@ -73,7 +73,7 @@ autolabeler:
     stop-on-match: true
     title:
       - "/^(✅|:white_check_mark:)/"
-  - labels: ["technical dept"]
+  - labels: ["technical debt"]
     stop-on-match: true
     title:
       - "/^(♻|🗃|🌐|🔧|🔥|:recycle:|:card_file_box:|:globe_with_meridians:|:wrench:|:fire:)/"
