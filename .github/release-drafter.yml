@@ -60,7 +60,7 @@ autolabeler:
   - labels: ["dependencies"]
     stop-on-match: true
     title:
-      - "/^(⬆|:arrow_up:|Bump )/"
+      - "/^(⬆|⬇|:arrow_up:|:arrow_down:|Bump )/"
   - labels: ["github_actions"]
     stop-on-match: true
     title:
