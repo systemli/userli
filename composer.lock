@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "arubacao/tld-checker",
-            "version": "2.0.19",
+            "version": "2.0.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/arubacao/tld-checker.git",
-                "reference": "00316422fd675a74fb69298906bba725f7506e9b"
+                "reference": "054ad4040a9c4e8580de1510f6dbcaccd6c3b95b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arubacao/tld-checker/zipball/00316422fd675a74fb69298906bba725f7506e9b",
-                "reference": "00316422fd675a74fb69298906bba725f7506e9b",
+                "url": "https://api.github.com/repos/arubacao/tld-checker/zipball/054ad4040a9c4e8580de1510f6dbcaccd6c3b95b",
+                "reference": "054ad4040a9c4e8580de1510f6dbcaccd6c3b95b",
                 "shasum": ""
             },
             "require": {
@@ -65,10 +65,10 @@
             ],
             "support": {
                 "issues": "https://github.com/arubacao/tld-checker/issues",
-                "source": "https://github.com/arubacao/tld-checker/tree/2.0.19"
+                "source": "https://github.com/arubacao/tld-checker/tree/2.0.20"
             },
-            "time": "2026-10-25T09:04:10+00:00",
-            "published-time": "2026-10-25T09:04:16+00:00"
+            "time": "2026-11-01T11:11:39+00:00",
+            "published-time": "2026-11-01T11:11:44+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
