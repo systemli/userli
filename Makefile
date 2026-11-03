@@ -83,8 +83,8 @@ compile:
 		composer dump-autoload; \
 	APP_ENV=prod \
 		bin/console assets:install --no-interaction; \
-	yarn --frozen-lockfile; \
-	yarn encore production
+	npm ci; \
+	npx encore production
 
 build: source
 	$(MAKE) compile
@@ -135,7 +135,7 @@ package:
 		--exclude='${TMP_DIR}/var/db_test.sqlite' \
 		--exclude='${TMP_DIR}/var/log/*' \
 		--exclude='${TMP_DIR}/webpack.config.js' \
-		--exclude='${TMP_DIR}/yarn.lock' \
+		--exclude='${TMP_DIR}/package-lock.json' \
 		-cf - ${TMP_DIR} | gzip -9n > build/${RELEASE_FILE_USERLI}
 	# Create a release tarball for adapter
 	tar ${TAR_REPRODUCIBLE} --directory=build/${TMP_DIR}/contrib/ \
@@ -186,8 +186,8 @@ lint: vendors
 	composer rector-check
 
 assets: vendors
-	yarn
-	yarn encore dev
+	npm install
+	npx encore dev
 
 behat: assets
 	bin/behat -f progress
@@ -202,4 +202,4 @@ phpunit: vendors
 	bin/phpunit
 
 vitest: assets
-	yarn test
+	npm test

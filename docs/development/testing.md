@@ -25,9 +25,9 @@ Test files live in `tests/js/` and mirror the `assets/` structure.
 === "direct"
 
     ```shell
-    yarn test              # Single run
-    yarn test:watch        # Watch mode during development
-    yarn test:coverage     # Run with coverage report
+    npm test               # Single run
+    npm run test:watch     # Watch mode during development
+    npm run test:coverage  # Run with coverage report
     ```
 
 === "make"
