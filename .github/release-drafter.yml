@@ -56,7 +56,7 @@ autolabeler:
   - labels: ["bug"]
     stop-on-match: true
     title:
-      - "/^(🐛|🚑|:bug:|:ambulance:)/"
+      - "/^(🐛|🚑|⏪|:bug:|:ambulance:|:rewind:)/"
   - labels: ["dependencies"]
     stop-on-match: true
     title:
