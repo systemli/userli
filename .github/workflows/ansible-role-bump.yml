@@ -1,0 +1,86 @@
+name: Bump Ansible Role
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Userli version to bump the Ansible role to (e.g. 6.12.1)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    name: Open PR in systemli/ansible-role-userli
+    runs-on: ubuntu-24.04
+    if: github.event_name == 'workflow_dispatch' || github.event.release.prerelease == false
+    env:
+      VERSION: ${{ github.event.release.tag_name || inputs.version }}
+    steps:
+      - name: Validate version
+        run: |
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid version: $VERSION" >&2
+            exit 1
+          fi
+
+      - name: Fetch checksum
+        id: checksum
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download "$VERSION" --repo "$GITHUB_REPOSITORY" \
+            --pattern "userli-$VERSION.tar.gz.sha512" --output checksum.sha512
+          SHA512="$(awk '{print $1}' checksum.sha512)"
+          if ! [[ "$SHA512" =~ ^[0-9a-f]{128}$ ]]; then
+            echo "Invalid sha512 checksum: $SHA512" >&2
+            exit 1
+          fi
+          echo "sha512=$SHA512" >> "$GITHUB_OUTPUT"
+
+      - name: Obtain Access Token
+        id: access_token
+        run: |
+          TOKEN="$(npx obtain-github-app-installation-access-token ci ${{ secrets.SYSTEMLI_APP_CREDENTIALS_TOKEN }})"
+          echo "::add-mask::$TOKEN"
+          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout Ansible role
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: systemli/ansible-role-userli
+          token: ${{ steps.access_token.outputs.token }}
+          path: ansible-role-userli
+
+      - name: Update version and checksum
+        working-directory: ansible-role-userli
+        env:
+          SHA512: ${{ steps.checksum.outputs.sha512 }}
+        run: |
+          sed -i "s/^userli_version: \".*\"$/userli_version: \"$VERSION\"/" defaults/main.yml
+          if ! grep -q "^  $VERSION:" vars/main.yml; then
+            sed -i "/^userli_sha512_checksum:$/a\\  $VERSION: $SHA512" vars/main.yml
+          fi
+          git diff
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          path: ansible-role-userli
+          token: ${{ steps.access_token.outputs.token }}
+          commit-message: "Bump Userli to ${{ env.VERSION }}"
+          branch: automated/bump-userli-${{ env.VERSION }}
+          title: "Bump Userli to ${{ env.VERSION }}"
+          body: |
+            Bump Userli to [${{ env.VERSION }}](${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ env.VERSION }}).
+
+            The sha512 checksum is taken from the `userli-${{ env.VERSION }}.tar.gz.sha512` release asset.
+          draft: false
