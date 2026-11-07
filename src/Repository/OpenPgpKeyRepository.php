@@ -113,7 +113,7 @@ final class OpenPgpKeyRepository extends ServiceEntityRepository implements Sear
     /**
      * @return array<OpenPgpKey>
      */
-    public function findExpiringKeys(?DateTimeImmutable $now = null): array
+    public function findKeysByExpiry(?DateTimeImmutable $expiry = null): array
     {
         $now ??= new DateTimeImmutable();
         $noticeUntil = $now->add(new DateInterval('P30D'));
@@ -125,27 +125,5 @@ final class OpenPgpKeyRepository extends ServiceEntityRepository implements Sear
             ->orderBy('k.keyExpireTime', 'ASC')
             ->getQuery()
             ->getResult();
-    }
-
-    /**
-     * This is the user that uploaded the key plus the owner of the email addresses
-     * the key is listed for.
-     *
-     * @return array<User>
-     */
-    public function getUsersFor(OpenPgpKey $key): array
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder()
-            ->select('u')
-            ->from(User::class, 'u')
-            ->where('u.email = :email')
-            ->setParameter('email', $key->getEmail());
-
-        if (null !== $key->getUploader()) {
-            $qb->orWhere('u.id = :uploader')
-                ->setParameter('uploader', $key->getUploader());
-        }
-
-        return $qb->getQuery()->getResult();
     }
 }

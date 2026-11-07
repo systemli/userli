@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\MessageHandler;
 
 use App\Entity\User;
+use App\Message\NotifyUserKeyExpired;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -22,22 +23,29 @@ final readonly class NotifyUserKeyExpiredHandler
 
     public function __invoke(NotifyUserKeyExpired $message): void
     {
-        $expiringKeys = $this->entityManager->getRepository(OpenPGPKey::class)->getExpiringKeys($today);
+        $expiringKeys = $this->entityManager->getRepository(OpenPGPKey::class)->findKeysByExpiry(new DateTimeImmutable());
         $this->logger->info('Found expiring keys', ['count' => count($expiringKeys)]);
         $dispatched = 0;
 
         foreach ($expiringKeys as $expiringKey) {
             $usersNotified = $expiringKey->getExpiryNotifiedAt();
             if ($usersNotified !== null) {
-                $users = $this->entityManager->getRepository(OpenPgpKey::class)->getUsers($expiringKey); // TODO: implement getUsers() on OpenPgyKey
-                foreach ($users as $user) {
-                    $this->messageBus->dispatch(new UserNotification($user->getId()));
-                    $this->eventDispatcher->dispatch(new UserNotificationEvent($user, UserNotificationType::OPENPGP_KEY_EXPIRING, $locale), UserNotificationEvent::OPENPGP_KEY_EXPIRING);
-                    ++$dispatched;
+                $email = $this->entityManager->getRepository(OpenPgpKey::class)->getEmail($expiringKey);
+                $alias = $this->entityManager->getRepository(Alias::class)->findOneBySource($email);
+                if (alias != null){
+                    $aliasUsers = array_map(static fn ($alias) => $alias->findUsersForSource(), $aliases);
+                    foreach ($aliasUsers as $user) {
+                        $this->messageBus->dispatch(new UserNotification($user->getId()));
+                        ++$dispatched;
+                    }
                 }
-            }
-            else {
-                continue;
+                else {
+
+                    $user = $this->entityManager->getRepository(UserRepository::Class)->findByEmail($email);
+                    $this->messageBus->dispatch(new UserNotification($user->getId()));
+                    ++$dispatched;
+
+                }
             }
         }
 
