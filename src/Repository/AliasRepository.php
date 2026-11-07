@@ -177,4 +177,20 @@ final class AliasRepository extends ServiceEntityRepository
             }
         }
     }
+
+   // TODO: Soll alle user finden, die 'source' eines gegebenen Aliases sind, also alle user die diesem alias subscribed sind
+    public function findUsersForSource(Alias $alias): array
+    {
+        $result = $this->createQueryBuilder('u')
+            ->select('u.users')
+            ->where('a.source = :source')
+            ->andWhere('a.uploadedKeys != null')
+            ->getQuery();
+
+        if ($result === null) {
+            return null;
+        }
+
+        return $result['destination'] ?? [];
+    }
 }

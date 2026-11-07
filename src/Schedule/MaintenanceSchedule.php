@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Schedule;
 
+use App\Message\NotifyUserKeyExpired;
 use App\Message\PruneExpiredAppPasswords;
 use App\Message\PruneUserNotifications;
 use App\Message\PruneWebhookDeliveries;
