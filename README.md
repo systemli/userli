@@ -34,7 +34,8 @@ our docs.
 ## Upgrading
 
 Please see `UPGRADE.md` for instructions on how to upgrade from an earlier
-release and also check `CHANGELOG.md` for important changes.
+release and also check the [release notes](https://github.com/systemli/userli/releases)
+for important changes.
 
 ## Get involved!
 

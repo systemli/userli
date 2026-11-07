@@ -34,7 +34,7 @@ Encore
   .enableVersioning(Encore.isProduction())
 
   // Enable TypeScript support via Babel (type checking runs separately
-  // with `yarn typecheck`, since the native TypeScript 7 compiler no
+  // with `npm run typecheck`, since the native TypeScript 7 compiler no
   // longer exposes the API used by ts-loader)
   .enableBabelTypeScriptPreset()
 

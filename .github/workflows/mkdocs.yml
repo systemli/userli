@@ -5,6 +5,10 @@ on:
     branches:
       - 'main'
 
+concurrency:
+  group: docs-deploy
+  cancel-in-progress: true
+
 jobs:
   mkdocs:
     name: Build & Deploy Documentation

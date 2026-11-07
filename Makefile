@@ -1,12 +1,19 @@
 COMPOSE              := $(shell podman compose version >/dev/null 2>&1 && echo "podman compose" || (docker compose version >/dev/null 2>&1 && echo "docker compose" || echo ""))
-GIT_VERSION          := $(shell git --no-pager describe --tags --always)
-GIT_COMMIT           := $(shell git rev-parse --verify HEAD)
-GIT_DATE             := $(firstword $(shell git --no-pager show --date=iso-strict --format="%ad" --name-only))
+GIT_VERSION          := $(shell git --no-pager describe --tags --always 2>/dev/null)
+VERSION              ?= ${GIT_VERSION}
+SOURCE_DATE_EPOCH    ?= $(shell git log -1 --format=%ct 2>/dev/null)
+GIT_COMMIT           := $(shell git rev-parse --verify HEAD 2>/dev/null)
+GIT_DATE             := $(firstword $(shell git --no-pager show --date=iso-strict --format="%ad" --name-only 2>/dev/null))
 BUILD_DATE           := $(shell date)
-RELEASE_FILE_USERLI  := userli-${GIT_VERSION}.tar.gz
-RELEASE_FILE_ADAPTER := userli-dovecot-adapter-${GIT_VERSION}.tar.gz
+RELEASE_FILE_USERLI  := userli-${VERSION}.tar.gz
+RELEASE_FILE_ADAPTER := userli-dovecot-adapter-${VERSION}.tar.gz
 SHA_ALGORITHMS       := 256 512
-TMP_DIR              := userli-${GIT_VERSION}
+TMP_DIR              := userli-${VERSION}
+CONTAINER            := $(shell command -v podman 2>/dev/null || command -v docker 2>/dev/null)
+RELEASE_IMAGE        := localhost/userli-release
+# Normalize metadata so release tarballs are reproducible (requires GNU tar)
+TAR_REPRODUCIBLE     := --format=gnu --sort=name --mtime=@${SOURCE_DATE_EPOCH} \
+                        --owner=0 --group=0 --numeric-owner --mode=u+rwX,go=rX
 
 define check_compose
 	@if [ -z "$(COMPOSE)" ]; then \
@@ -59,12 +66,16 @@ destroy:
 	$(check_compose)
 	$(COMPOSE) --profile mail down -v
 
-.PHONY: build release
+.PHONY: source compile build package release release-container
 
-build:
+# Export the committed source tree (HEAD) into build/
+source:
 	rm -rf build/
-	mkdir -p build
-	git clone $(shell pwd) build/${TMP_DIR}
+	mkdir -p build/${TMP_DIR}
+	git archive --format=tar HEAD | tar -x -C build/${TMP_DIR}
+
+# Install dependencies and build assets in the exported source tree
+compile:
 	cd build/${TMP_DIR}; \
 	APP_ENV=prod \
 		composer install --no-dev --ignore-platform-reqs --no-scripts; \
@@ -72,13 +83,17 @@ build:
 		composer dump-autoload; \
 	APP_ENV=prod \
 		bin/console assets:install --no-interaction; \
-	yarn --pure-lockfile; \
-	yarn encore production
+	npm ci; \
+	npx encore production
 
-# Create a release tarball for Userli
-# To be used by bin/github-release.sh
-release: build
-	tar --directory=build \
+build: source
+	$(MAKE) compile
+
+# Create release tarballs and checksums from the compiled tree
+package: SHELL := /bin/bash
+package: .SHELLFLAGS := -o pipefail -ec
+package:
+	tar ${TAR_REPRODUCIBLE} --directory=build \
 		--exclude='${TMP_DIR}/.dockerignore' \
 		--exclude='${TMP_DIR}/.*.yml' \
 		--exclude='${TMP_DIR}/.editorconfig' \
@@ -96,7 +111,7 @@ release: build
 		--exclude='${TMP_DIR}/assets/images' \
 		--exclude='${TMP_DIR}/assets/js' \
 		--exclude='${TMP_DIR}/behat.yml' \
-		--exclude='${TMP_DIR}/bin/github-release.sh' \
+		--exclude='${TMP_DIR}/bin/release.sh' \
 		--exclude='${TMP_DIR}/build' \
 		--exclude='${TMP_DIR}/config/services_test.yaml' \
 		--exclude='${TMP_DIR}/contrib' \
@@ -120,18 +135,31 @@ release: build
 		--exclude='${TMP_DIR}/var/db_test.sqlite' \
 		--exclude='${TMP_DIR}/var/log/*' \
 		--exclude='${TMP_DIR}/webpack.config.js' \
-		--exclude='${TMP_DIR}/yarn.lock' \
-		-czf build/${RELEASE_FILE_USERLI} \
-		${TMP_DIR}
+		--exclude='${TMP_DIR}/package-lock.json' \
+		-cf - ${TMP_DIR} | gzip -9n > build/${RELEASE_FILE_USERLI}
 	# Create a release tarball for adapter
-	tar --directory=build/${TMP_DIR}/contrib/ \
-		-czf build/${RELEASE_FILE_ADAPTER} \
-		userli-dovecot-adapter.lua
+	tar ${TAR_REPRODUCIBLE} --directory=build/${TMP_DIR}/contrib/ \
+		-cf - userli-dovecot-adapter.lua | gzip -9n > build/${RELEASE_FILE_ADAPTER}
 	# Generate SHA hash sum files
 	cd build; for sha in ${SHA_ALGORITHMS}; do \
 		shasum -a "$${sha}" "${RELEASE_FILE_USERLI}" > "${RELEASE_FILE_USERLI}.sha$${sha}"; \
 		shasum -a "$${sha}" "${RELEASE_FILE_ADAPTER}" > "${RELEASE_FILE_ADAPTER}.sha$${sha}"; \
 	done
+
+# Create release tarballs with the local toolchain (not reproducible)
+release: build
+	$(MAKE) package
+
+# Create release tarballs reproducibly inside the pinned toolchain container.
+# The source is exported on the host, the container only compiles and packages.
+release-container: source
+	@if [ -z "${CONTAINER}" ]; then echo "Error: podman or docker is required"; exit 1; fi
+	${CONTAINER} build --tag ${RELEASE_IMAGE} docker/release
+	${CONTAINER} run --rm \
+		--volume "$(CURDIR)/build:/src/build" \
+		--volume "$(CURDIR)/Makefile:/src/Makefile:ro" \
+		${RELEASE_IMAGE} \
+		make compile package VERSION=${VERSION} SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH}
 
 reset:
 	rm -rf build
@@ -158,8 +186,8 @@ lint: vendors
 	composer rector-check
 
 assets: vendors
-	yarn
-	yarn encore dev
+	npm install
+	npx encore dev
 
 behat: assets
 	bin/behat -f progress
@@ -174,4 +202,4 @@ phpunit: vendors
 	bin/phpunit
 
 vitest: assets
-	yarn test
+	npm test

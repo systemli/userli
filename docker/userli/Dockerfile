@@ -1,9 +1,9 @@
 # Stage 1: JS build (independent, no PHP needed)
-FROM docker.io/node:22-alpine AS node-builder
+FROM docker.io/node:26-alpine AS node-builder
 WORKDIR /app
-COPY package.json yarn.lock webpack.config.js postcss.config.mjs tsconfig.json ./
+COPY package.json package-lock.json webpack.config.js postcss.config.mjs tsconfig.json ./
 COPY assets/ assets/
-RUN yarn install --frozen-lockfile && yarn encore production
+RUN npm ci && npx encore production
 
 # Stage 2: PHP build
 FROM docker.io/composer:2.8 AS composer

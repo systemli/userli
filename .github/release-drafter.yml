@@ -1,0 +1,88 @@
+---
+# Release Drafter configuration (v7), see https://github.com/release-drafter/release-drafter
+# Pull requests are labeled by the leading gitmoji in their title (autolabeler).
+# The labels decide the release notes section and the next version.
+
+name-template: "$RESOLVED_VERSION"
+tag-template: "$RESOLVED_VERSION"
+change-template: "- $TITLE (#$NUMBER)"
+category-template: "### $TITLE"
+no-changes-template: "No changes"
+
+# Categories are evaluated in order; `exclusive` lists a pull request only in
+# the first matching section.
+categories:
+  - title: "Features and Improvements"
+    semver-increment: minor
+    exclusive: true
+    when:
+      labels:
+        - "enhancement"
+        - "breaking"
+  - title: "Security"
+    exclusive: true
+    when:
+      label: "security"
+  - title: "Bug Fixes"
+    exclusive: true
+    when:
+      label: "bug"
+  - title: "Technical Changes"
+    exclusive: true
+    when:
+      labels:
+        - "technical debt"
+        - "documentation"
+        - "testing"
+  - title: "Maintenance"
+    exclusive: true
+    when:
+      labels:
+        - "dependencies"
+        - "github_actions"
+  - type: "version-resolver"
+    semver-increment: major
+    when:
+      label: "breaking"
+  - type: "version-resolver"
+    semver-increment: patch
+
+# Labels from the leading gitmoji; anything else is labeled as enhancement.
+autolabeler:
+  - labels: ["security"]
+    stop-on-match: true
+    title:
+      - "/^(🔒|🔐|:lock:|:closed_lock_with_key:)/"
+  - labels: ["bug"]
+    stop-on-match: true
+    title:
+      - "/^(🐛|🚑|⏪|:bug:|:ambulance:|:rewind:)/"
+  - labels: ["dependencies"]
+    stop-on-match: true
+    title:
+      - "/^(⬆|⬇|:arrow_up:|:arrow_down:|Bump )/"
+  - labels: ["github_actions"]
+    stop-on-match: true
+    title:
+      - "/^(👷|💚|:construction_worker:|:green_heart:)/"
+  - labels: ["documentation"]
+    stop-on-match: true
+    title:
+      - "/^(📝|:memo:)/"
+  - labels: ["testing"]
+    stop-on-match: true
+    title:
+      - "/^(✅|:white_check_mark:)/"
+  - labels: ["technical debt"]
+    stop-on-match: true
+    title:
+      - "/^(♻|🗃|🌐|🔧|🔥|:recycle:|:card_file_box:|:globe_with_meridians:|:wrench:|:fire:)/"
+  - labels: ["enhancement"]
+    stop-on-match: true
+    title:
+      - "/^(✨|🚸|⚡|💄|♿|:sparkles:|:children_crossing:|:zap:|:lipstick:|:wheelchair:)/"
+  - labels: ["enhancement"]
+    fallback: true
+
+template: |
+  $CHANGES

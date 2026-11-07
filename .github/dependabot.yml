@@ -24,3 +24,22 @@ updates:
       github-actions:
         patterns:
           - "*"
+
+  - package-ecosystem: "docker"
+    directory: "/docker/release"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "⬆️ "
+      include: "scope"
+    groups:
+      release-images:
+        patterns:
+          - "*"
+    ignore:
+      # stay on Node 26 LTS
+      - dependency-name: "library/node"
+        update-types: ["version-update:semver-major"]
+      # stay on PHP 8.4
+      - dependency-name: "library/php"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
