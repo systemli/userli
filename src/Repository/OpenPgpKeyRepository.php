@@ -111,12 +111,14 @@ final class OpenPgpKeyRepository extends ServiceEntityRepository implements Sear
     }
 
     /**
+     * Find keys that expire at or before $now plus the given expiry window.
+     *
      * @return array<OpenPgpKey>
      */
-    public function findKeysByExpiry(?DateTimeImmutable $expiry = null): array
+    public function findKeysByExpiry(?DateTimeImmutable $now = null, ?DateInterval $expiryWindow = null): array
     {
         $now ??= new DateTimeImmutable();
-        $noticeUntil = $now->add(new DateInterval('P30D'));
+        $noticeUntil = $now->add($expiryWindow ?? new DateInterval('P30D'));
 
         return $this->createQueryBuilder('k')
             ->where('k.keyExpireTime IS NOT NULL')

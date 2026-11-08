@@ -30,6 +30,25 @@ final class AliasRepository extends ServiceEntityRepository
         return $this->findOneBy(['source' => $email, 'deleted' => false]);
     }
 
+    /**
+     * Counts aliases using the given source address.
+     * Deleted aliases are ignored unless $includeDeleted is set.
+     */
+    public function countBySource(string $source, ?bool $includeDeleted = false): int
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->select('COUNT(a.id)')
+            ->where('a.source = :source')
+            ->setParameter('source', $source)
+        ;
+
+        if (!$includeDeleted) {
+            $qb->andWhere('a.deleted = false');
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
     public function countDomainAliases(Domain $domain): int
     {
         return (int) $this->createQueryBuilder('a')
@@ -178,19 +197,20 @@ final class AliasRepository extends ServiceEntityRepository
         }
     }
 
-   // TODO: Soll alle user finden, die 'source' eines gegebenen Aliases sind, also alle user die diesem alias subscribed sind
-    public function findUsersForSource(Alias $alias): array
+    /**
+     * Finds all users that have an alias with the given source address.
+     * Users of deleted aliases are ignored.
+     */
+    public function findUsersBySource(string $source): array
     {
-        $result = $this->createQueryBuilder('u')
-            ->select('u.users')
+        $qb = $this->createQueryBuilder('a')
+            ->select('DISTINCT u')
+            ->innerJoin('a.user', 'u')
             ->where('a.source = :source')
-            ->andWhere('a.uploadedKeys != null')
-            ->getQuery();
+            ->andWhere('a.deleted = false')
+            ->setParameter('source', $source)
+        ;
 
-        if ($result === null) {
-            return null;
-        }
-
-        return $result['destination'] ?? [];
+        return $qb->getQuery()->getResult();
     }
 }
