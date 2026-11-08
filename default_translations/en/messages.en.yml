@@ -350,7 +350,7 @@ mail:
 
     %invitation_text%
 
-    Sincerly,
+    Sincerely,
     your %project_name% admin team.
   welcome-quota: |
     You get a mailbox with a %quota% MB quota. If you exceed your limit,
@@ -417,6 +417,18 @@ mail:
     Manage your e-mail aliases here: %alias_url%
 
     We hope you continue to enjoy your e-mail account.
+    Your %project_name% admin team.
+  key-expired-subject: Your OpenPGP key for %email% has expired
+  key-expired-body: |
+    Hello %email%,
+
+    the OpenPGP key for your e-mail address %email% has expired on %expiration_date%.
+
+    If you use this key for encrypted e-mail, communication with your contact
+    partners who rely on it no longer works. Please create a new key and
+    upload it under: %openpgp_url%
+
+    Sincerely,
     Your %project_name% admin team.
 copy-to-clipboard: Copy to clipboard
 

@@ -8,6 +8,7 @@ use App\Entity\Alias;
 use App\Entity\OpenPgpKey;
 use App\Entity\User;
 use App\Message\NotifyUserKeyExpired;
+use App\Message\UserKeyExpiredNotification;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -48,7 +49,7 @@ final readonly class NotifyUserKeyExpiredHandler
                 }
 
                 foreach ($recipients as $user) {
-                    $this->messageBus->dispatch(new UserNotification($user->getId()));
+                    $this->messageBus->dispatch(new UserKeyExpiredNotification($user->getId(), $expiringKey->getId()));
                     ++$dispatched;
                 }
             } else {
@@ -58,7 +59,7 @@ final readonly class NotifyUserKeyExpiredHandler
                     continue;
                 }
 
-                $this->messageBus->dispatch(new UserNotification($user->getId()));
+                $this->messageBus->dispatch(new UserKeyExpiredNotification($user->getId(), $expiringKey->getId()));
                 ++$dispatched;
             }
         }

@@ -414,6 +414,19 @@ mail:
 
     Weiterhin viel Spaß mit deinem E-Mail-Konto, wünscht dir
     dein %project_name%-Verwaltungsteam.
+  key-expired-subject: Dein OpenPGP-Schlüssel für %email% ist abgelaufen
+  key-expired-body: |
+    Hallo %email%,
+
+    der OpenPGP-Schlüssel für deine E-Mail-Adresse %email% ist am %expiration_date% abgelaufen.
+
+    Falls du diesen Schlüssel für verschlüsselte E-Mails nutzt, funktioniert
+    die Kommunikation mit deinen Kontakten, die ihn verwenden, nicht mehr.
+    Bitte erstelle einen neuen Schlüssel und lade ihn hoch unter:
+    %openpgp_url%
+
+    Weiterhin viel Spaß mit deinem E-Mail-Konto, wünscht dir
+    dein %project_name%-Verwaltungsteam.
 copy-to-clipboard: In Zwischenablage kopieren
 
 alias:
