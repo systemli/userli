@@ -80,13 +80,6 @@ The script will:
 Use `bin/release.sh --dry-run` to only rebuild and compare, without signing or
 publishing.
 
-Publishing the release triggers `.github/workflows/ansible-role-bump.yml`,
-which opens a pull request in
-[systemli/ansible-role-userli](https://github.com/systemli/ansible-role-userli)
-that bumps `userli_version` and adds the sha512 checksum of the tarball.
-Pre-releases are skipped. To run it again for a version, start the workflow
-manually with that version.
-
 ## Reproducible builds
 
 `make release-container` builds the tarballs in a container defined in
