@@ -13,6 +13,7 @@ use App\Service\AnnouncementManager;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -36,6 +37,20 @@ class AnnouncementManagerTest extends TestCase
 
         self::assertNotNull($announcement);
         self::assertSame('token', $announcement->getSendToken());
+    }
+
+    public function testSendMarksAnnouncementFailedWhenDispatchFails(): void
+    {
+        $repository = $this->createMock(AnnouncementRepository::class);
+        $repository->method('findOneBy')->willReturn(null);
+        $repository->expects($this->once())->method('markFailed');
+
+        $bus = $this->createStub(MessageBusInterface::class);
+        $bus->method('dispatch')->willThrowException(new RuntimeException('Transport down'));
+
+        $this->expectException(RuntimeException::class);
+
+        $this->createManager($repository, $this->createStub(EntityManagerInterface::class), $bus)->send(new Domain(), 'Subject', 'Body', null, 'token');
     }
 
     public function testSendIgnoresAlreadyUsedToken(): void

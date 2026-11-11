@@ -14,6 +14,7 @@ use App\Repository\UserRepository;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Throwable;
 
 final readonly class AnnouncementManager
 {
@@ -66,7 +67,14 @@ final readonly class AnnouncementManager
             return null;
         }
 
-        $this->bus->dispatch(new SendAnnouncement((int) $announcement->getId()));
+        try {
+            $this->bus->dispatch(new SendAnnouncement((int) $announcement->getId()));
+        } catch (Throwable $e) {
+            // Without a fan-out message nothing would ever process the row, so don't leave it queued
+            $this->repository->markFailed((int) $announcement->getId());
+
+            throw $e;
+        }
 
         return $announcement;
     }

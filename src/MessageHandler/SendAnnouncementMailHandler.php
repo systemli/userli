@@ -10,7 +10,9 @@ use App\Mail\AnnouncementMailer;
 use App\Message\SendAnnouncementMail;
 use App\Repository\AnnouncementRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Throwable;
 
 #[AsMessageHandler(sign: true)]
 final readonly class SendAnnouncementMailHandler
@@ -19,6 +21,7 @@ final readonly class SendAnnouncementMailHandler
         private EntityManagerInterface $entityManager,
         private AnnouncementRepository $announcementRepository,
         private AnnouncementMailer $mailer,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -41,6 +44,17 @@ final readonly class SendAnnouncementMailHandler
         }
 
         $this->mailer->send($user->getEmail(), $announcement->getSubject(), $announcement->getBody());
-        $this->announcementRepository->incrementSentCount($message->announcementId);
+
+        // The mail is out. Failing here would retry the message and send it twice,
+        // so a lost counter update is only logged.
+        try {
+            $this->announcementRepository->incrementSentCount($message->announcementId);
+        } catch (Throwable $e) {
+            $this->logger->error('Could not count sent announcement mail', [
+                'announcementId' => $message->announcementId,
+                'userId' => $message->userId,
+                'exception' => $e,
+            ]);
+        }
     }
 }

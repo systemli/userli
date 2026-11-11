@@ -15,6 +15,8 @@ use App\Repository\AnnouncementRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
+use RuntimeException;
 
 class SendAnnouncementMailHandlerTest extends TestCase
 {
@@ -39,6 +41,17 @@ class SendAnnouncementMailHandlerTest extends TestCase
         $repository->expects($this->never())->method('incrementNotSentCount');
 
         $this->createHandler($repository, $user, $mailer)(new SendAnnouncementMail(1, 1));
+    }
+
+    public function testInvokeDoesNotRetryWhenCountingFailsAfterSending(): void
+    {
+        $mailer = $this->createMock(AnnouncementMailer::class);
+        $mailer->expects($this->once())->method('send');
+
+        $repository = $this->announcementRepository($this->createAnnouncement());
+        $repository->method('incrementSentCount')->willThrowException(new RuntimeException('DB gone'));
+
+        $this->createHandler($repository, $this->createUser($this->domain), $mailer)(new SendAnnouncementMail(1, 1));
     }
 
     public function testInvokeSkipsDeletedUser(): void
@@ -135,6 +148,6 @@ class SendAnnouncementMailHandlerTest extends TestCase
         $em = $this->createStub(EntityManagerInterface::class);
         $em->method('getRepository')->willReturn($userRepository);
 
-        return new SendAnnouncementMailHandler($em, $announcementRepository, $mailer);
+        return new SendAnnouncementMailHandler($em, $announcementRepository, $mailer, $this->createStub(LoggerInterface::class));
     }
 }
