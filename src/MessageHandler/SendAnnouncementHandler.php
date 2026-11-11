@@ -32,8 +32,6 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
 #[AsMessageHandler(sign: true)]
 final readonly class SendAnnouncementHandler
 {
-    private const int DEFAULT_MAILS_PER_MINUTE = 60;
-
     private const int BATCH_SIZE = 500;
 
     public function __construct(
@@ -73,7 +71,7 @@ final readonly class SendAnnouncementHandler
             $this->entityManager->flush();
         }
 
-        $mailsPerMinute = max(1, (int) $this->settingsService->get('announcement_mails_per_minute', self::DEFAULT_MAILS_PER_MINUTE));
+        $mailsPerMinute = max(1, (int) $this->settingsService->get('announcement_mails_per_minute'));
 
         while ($this->queueNextBatch($announcement, $domain, $mailsPerMinute)) {
             // Continue until all recipients are queued

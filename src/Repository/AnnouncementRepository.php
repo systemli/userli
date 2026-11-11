@@ -55,7 +55,11 @@ final class AnnouncementRepository extends ServiceEntityRepository
      */
     public function findPaginatedByDomain(?Domain $domain, int $limit, int $offset): array
     {
+        // Fetch-join the author, so that an author hidden by the domain filter
+        // (e.g. an admin of another domain) is null instead of a failing proxy
         $qb = $this->createQueryBuilder('a')
+            ->leftJoin('a.author', 'author')
+            ->addSelect('author')
             ->orderBy('a.id', 'DESC')
             ->setMaxResults($limit)
             ->setFirstResult($offset);
