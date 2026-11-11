@@ -14,4 +14,7 @@ enum AnnouncementStatus: string
 
     /** Mails for all recipients are queued. */
     case DONE = 'done';
+
+    /** Queueing the mails failed even after retries. Mails queued before the failure are still delivered. */
+    case FAILED = 'failed';
 }

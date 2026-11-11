@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Entity\Announcement;
 use App\Entity\Domain;
+use App\Enum\AnnouncementStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -27,6 +28,18 @@ final class AnnouncementRepository extends ServiceEntityRepository
     public function incrementNotSentCount(int $id): void
     {
         $this->increment($id, 'notSentCount');
+    }
+
+    /**
+     * Marks an announcement as failed, unless all its mails were queued in the meantime.
+     */
+    public function markFailed(int $id): void
+    {
+        $this->getEntityManager()->createQuery(sprintf('UPDATE %s a SET a.status = :failed WHERE a.id = :id AND a.status != :done', Announcement::class))
+            ->setParameter('failed', AnnouncementStatus::FAILED->value)
+            ->setParameter('done', AnnouncementStatus::DONE->value)
+            ->setParameter('id', $id)
+            ->execute();
     }
 
     /**

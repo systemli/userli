@@ -68,8 +68,12 @@
                                     {% endif %}
                                 </td>
                                 <td class="px-4 py-3">
-                                    {% set display_status = announcement.status.value == 'queued' ? 'queued' : (announcement.delivered ? 'sent' : 'delivering') %}
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ display_status == 'sent' ? 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200' : 'bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200' }}">
+                                    {% set display_status = announcement.status.value in ['queued', 'failed'] ? announcement.status.value : (announcement.delivered ? 'sent' : 'delivering') %}
+                                    {% set status_classes = {
+                                        sent: 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200',
+                                        failed: 'bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200',
+                                    } %}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ status_classes[display_status] ?? 'bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200' }}">
                                         {{ ('admin.announcement.status.' ~ display_status)|trans }}
                                     </span>
                                 </td>

@@ -1178,6 +1178,7 @@ admin:
       test-sent: Eine Test-E-Mail wurde an deine Adresse gesendet.
       preview-outdated: Die Mitteilung wurde nach der Vorschau geändert. Bitte prüfe die aktualisierte Vorschau und sende erneut.
     status:
+      failed: Fehlgeschlagen
       queued: Wartend
       delivering: Wird zugestellt
       sent: Gesendet

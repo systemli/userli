@@ -38,6 +38,7 @@ recipients, delivery progress and status:
 | **Queued**     | The announcement is saved, the worker has not picked it up yet. |
 | **Delivering** | The worker is sending the emails. The delivery column shows how many emails are sent, not sent and still pending. If the worker is interrupted, it continues where it stopped. |
 | **Sent**       | Every email is either sent or not sent. |
+| **Failed**     | The worker could not queue the emails, even after several retries. Emails queued before the failure are still delivered, the others are not. Check the worker logs and send the announcement again to the missing users if needed. |
 
 Emails are **not sent** to users who were deleted or flagged as spam after the
 announcement was created, and when the mail server rejected an email even after

@@ -55,6 +55,20 @@ class SendAnnouncementHandlerTest extends TestCase
         self::assertSame(AnnouncementStatus::DONE, $announcement->getStatus());
     }
 
+    public function testInvokeResumesFailedAnnouncementWhenRetriedManually(): void
+    {
+        $announcement = $this->createAnnouncement();
+        $announcement->setStatus(AnnouncementStatus::FAILED);
+        $announcement->setRecipientCount(2);
+        $announcement->setLastQueuedUserId(12);
+
+        $this->createHandler($announcement, $this->recipients([11, 12, 13]), $this->recordingBus(), 2)(new SendAnnouncement(7));
+
+        self::assertSame([13], $this->dispatchedUserIds());
+        self::assertSame(3, $announcement->getRecipientCount());
+        self::assertSame(AnnouncementStatus::DONE, $announcement->getStatus());
+    }
+
     public function testInvokeKeepsProgressWhenBatchFails(): void
     {
         $announcement = $this->createAnnouncement();
