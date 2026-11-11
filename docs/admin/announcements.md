@@ -35,7 +35,7 @@ recipients and status:
 | Status      | Meaning |
 |-------------|---------|
 | **Queued**  | The announcement is saved, the worker has not picked it up yet. |
-| **Sending** | The worker is queueing the emails for the recipients. |
+| **Sending** | The worker is queueing the emails for the recipients. The number of recipients shows the progress. If the worker is interrupted, it continues where it stopped. |
 | **Sent**    | The emails for all recipients are queued. |
 
 ## Delivery

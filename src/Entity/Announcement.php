@@ -40,6 +40,10 @@ class Announcement
     #[ORM\Column(type: 'string', length: 20)]
     private string $status;
 
+    /** Highest user ID whose mail is queued, to resume the fan-out after a failure. */
+    #[ORM\Column(type: 'integer')]
+    private int $lastQueuedUserId = 0;
+
     #[ORM\Column(type: 'datetime_immutable')]
     private DateTimeImmutable $creationTime;
 
@@ -92,6 +96,16 @@ class Announcement
     public function setStatus(AnnouncementStatus $status): void
     {
         $this->status = $status->value;
+    }
+
+    public function getLastQueuedUserId(): int
+    {
+        return $this->lastQueuedUserId;
+    }
+
+    public function setLastQueuedUserId(int $lastQueuedUserId): void
+    {
+        $this->lastQueuedUserId = $lastQueuedUserId;
     }
 
     public function getCreationTime(): DateTimeImmutable

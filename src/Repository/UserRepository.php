@@ -186,18 +186,22 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
     }
 
     /**
-     * @return iterable<int>
+     * Returns the next recipient IDs in ascending order, starting after the given user ID.
+     *
+     * @return list<int>
      */
-    public function iterateAnnouncementRecipientIds(Domain $domain): iterable
+    public function findAnnouncementRecipientIds(Domain $domain, int $afterUserId, int $limit): array
     {
-        $query = $this->createAnnouncementRecipientsQueryBuilder($domain)
+        $rows = $this->createAnnouncementRecipientsQueryBuilder($domain)
             ->select('u.id')
+            ->andWhere('u.id > :afterUserId')
+            ->setParameter('afterUserId', $afterUserId)
             ->orderBy('u.id', 'ASC')
-            ->getQuery();
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getSingleColumnResult();
 
-        foreach ($query->toIterable() as $row) {
-            yield (int) $row['id'];
-        }
+        return array_values(array_map(intval(...), $rows));
     }
 
     private function createAnnouncementRecipientsQueryBuilder(Domain $domain): QueryBuilder
