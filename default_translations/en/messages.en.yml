@@ -1176,6 +1176,7 @@ admin:
       subject: Subject
       warning: Sending cannot be undone. The emails are delivered gradually in the background.
     flash:
+      already-sent: This announcement has already been sent.
       sent: The announcement has been queued for sending.
       test-sent: A test email has been sent to your address.
       preview-outdated: The announcement was changed after the preview. Please check the updated preview and send again.

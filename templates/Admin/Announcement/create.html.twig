@@ -49,6 +49,7 @@
                 </div>
 
                 {{ form_widget(form.previewFingerprint, {value: preview ? preview.fingerprint : ''}) }}
+                {{ form_widget(form.sendToken, {value: preview ? preview.sendToken : ''}) }}
 
                 {% if preview %}
                     <section class="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 p-4 sm:p-6"

@@ -1173,6 +1173,7 @@ admin:
       subject: Betreff
       warning: Das Senden kann nicht rückgängig gemacht werden. Die E-Mails werden nach und nach im Hintergrund zugestellt.
     flash:
+      already-sent: Diese Mitteilung wurde bereits gesendet.
       sent: Die Mitteilung wird jetzt versendet.
       test-sent: Eine Test-E-Mail wurde an deine Adresse gesendet.
       preview-outdated: Die Mitteilung wurde nach der Vorschau geändert. Bitte prüfe die aktualisierte Vorschau und sende erneut.

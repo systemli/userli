@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 #[ORM\Entity(repositoryClass: AnnouncementRepository::class)]
 #[ORM\Table(name: 'announcements')]
+#[ORM\UniqueConstraint(name: 'UNIQ_ANNOUNCEMENT_SEND_TOKEN', columns: ['send_token'])]
 class Announcement
 {
     use DomainAwareTrait;
@@ -51,11 +52,16 @@ class Announcement
     #[ORM\Column(type: 'integer')]
     private int $notSentCount = 0;
 
+    /** One-time token from the preview, so that a form submitted twice sends only one announcement. */
+    #[ORM\Column(type: 'string', length: 64)]
+    private string $sendToken;
+
     #[ORM\Column(type: 'datetime_immutable')]
     private DateTimeImmutable $creationTime;
 
-    public function __construct(Domain $domain, string $subject, string $body, ?User $author, int $recipientCount)
+    public function __construct(Domain $domain, string $subject, string $body, ?User $author, int $recipientCount, string $sendToken)
     {
+        $this->sendToken = $sendToken;
         $this->domain = $domain;
         $this->subject = $subject;
         $this->body = $body;
@@ -139,6 +145,11 @@ class Announcement
     public function isDelivered(): bool
     {
         return AnnouncementStatus::DONE === $this->getStatus() && 0 === $this->getPendingCount();
+    }
+
+    public function getSendToken(): string
+    {
+        return $this->sendToken;
     }
 
     public function getCreationTime(): DateTimeImmutable

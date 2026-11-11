@@ -82,8 +82,18 @@ final class AnnouncementController extends AbstractController
                     break;
                 }
 
-                $this->manager->send($domain, $model->getSubject(), $model->getBody(), $author);
-                $this->addFlash('success', 'admin.announcement.flash.sent');
+                $sendToken = (string) $form->get('sendToken')->getData();
+                if (1 !== preg_match('/^[0-9a-f]{32}$/', $sendToken)) {
+                    $this->addFlash('error', 'admin.announcement.flash.preview-outdated');
+                    break;
+                }
+
+                // The token is used once, so a form submitted twice doesn't send twice
+                if (null === $this->manager->send($domain, $model->getSubject(), $model->getBody(), $author, $sendToken)) {
+                    $this->addFlash('error', 'admin.announcement.flash.already-sent');
+                } else {
+                    $this->addFlash('success', 'admin.announcement.flash.sent');
+                }
 
                 return $this->redirectToRoute('admin_announcement_index');
             case 'test':
@@ -101,6 +111,7 @@ final class AnnouncementController extends AbstractController
             'body' => $this->mailer->buildBody($model->getBody()),
             'recipientCount' => $this->manager->countRecipients($domain),
             'fingerprint' => $fingerprint,
+            'sendToken' => bin2hex(random_bytes(16)),
         ]);
     }
 

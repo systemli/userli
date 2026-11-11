@@ -100,7 +100,7 @@ class SendAnnouncementHandlerTest extends TestCase
         $domain = new Domain();
         $domain->setName('example.org');
 
-        $announcement = new Announcement($domain, 'Subject', 'Body', null, 5);
+        $announcement = new Announcement($domain, 'Subject', 'Body', null, 5, 'token');
         new ReflectionProperty(Announcement::class, 'id')->setValue($announcement, 7);
 
         return $announcement;

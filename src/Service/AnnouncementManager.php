@@ -11,6 +11,7 @@ use App\Entity\User;
 use App\Message\SendAnnouncement;
 use App\Repository\AnnouncementRepository;
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -46,13 +47,24 @@ final readonly class AnnouncementManager
 
     /**
      * Persists the announcement and queues the mails to all recipients of the domain.
+     *
+     * @return Announcement|null null if an announcement with this send token was already sent
      */
-    public function send(Domain $domain, string $subject, string $body, ?User $author): Announcement
+    public function send(Domain $domain, string $subject, string $body, ?User $author, string $sendToken): ?Announcement
     {
-        $announcement = new Announcement($domain, $subject, $body, $author, $this->countRecipients($domain));
+        if (null !== $this->repository->findOneBy(['sendToken' => $sendToken])) {
+            return null;
+        }
 
-        $this->entityManager->persist($announcement);
-        $this->entityManager->flush();
+        $announcement = new Announcement($domain, $subject, $body, $author, $this->countRecipients($domain), $sendToken);
+
+        try {
+            $this->entityManager->persist($announcement);
+            $this->entityManager->flush();
+        } catch (UniqueConstraintViolationException) {
+            // A concurrent request with the same token was faster
+            return null;
+        }
 
         $this->bus->dispatch(new SendAnnouncement((int) $announcement->getId()));
 

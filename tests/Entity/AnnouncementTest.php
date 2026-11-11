@@ -14,7 +14,7 @@ class AnnouncementTest extends TestCase
 {
     public function testPendingCountAndDelivered(): void
     {
-        $announcement = new Announcement(new Domain(), 'Subject', 'Body', null, 5);
+        $announcement = new Announcement(new Domain(), 'Subject', 'Body', null, 5, 'token');
         $announcement->setStatus(AnnouncementStatus::DONE);
         $this->setCounters($announcement, 3, 1);
 
@@ -29,7 +29,7 @@ class AnnouncementTest extends TestCase
 
     public function testNotDeliveredWhileRecipientsAreQueued(): void
     {
-        $announcement = new Announcement(new Domain(), 'Subject', 'Body', null, 2);
+        $announcement = new Announcement(new Domain(), 'Subject', 'Body', null, 2, 'token');
         $announcement->setStatus(AnnouncementStatus::SENDING);
         $this->setCounters($announcement, 2, 0);
 

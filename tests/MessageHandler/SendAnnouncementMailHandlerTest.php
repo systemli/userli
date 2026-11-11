@@ -106,7 +106,7 @@ class SendAnnouncementMailHandlerTest extends TestCase
 
     private function createAnnouncement(): Announcement
     {
-        return new Announcement($this->domain, 'Subject', 'Body', null, 1);
+        return new Announcement($this->domain, 'Subject', 'Body', null, 1, 'token');
     }
 
     private function createUser(Domain $domain): User

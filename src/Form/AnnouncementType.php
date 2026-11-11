@@ -30,6 +30,7 @@ final class AnnouncementType extends AbstractType
             ->add('subject', TextType::class)
             ->add('body', TextareaType::class)
             ->add('previewFingerprint', HiddenType::class, ['mapped' => false])
+            ->add('sendToken', HiddenType::class, ['mapped' => false])
             ->add('preview', SubmitType::class)
             ->add('test', SubmitType::class)
             ->add('send', SubmitType::class);

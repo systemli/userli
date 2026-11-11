@@ -27,7 +27,8 @@ before their email went out, are skipped as well.
 3. Optionally, click **Send test to me** to receive the email at your own
    address.
 4. Click **Send to all users**. If you changed the text after the preview, you
-   have to check the updated preview first.
+   have to check the updated preview first. Each preview can be sent only once,
+   so submitting the form twice doesn't send the announcement twice.
 
 Sending can't be undone. Sent announcements are listed with author, number of
 recipients, delivery progress and status:
