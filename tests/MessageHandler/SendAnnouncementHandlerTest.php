@@ -10,10 +10,10 @@ use App\Enum\AnnouncementStatus;
 use App\Message\SendAnnouncement;
 use App\Message\SendAnnouncementMail;
 use App\MessageHandler\SendAnnouncementHandler;
+use App\Repository\AnnouncementRepository;
 use App\Repository\UserRepository;
 use App\Service\SettingsService;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use ReflectionProperty;
@@ -174,16 +174,15 @@ class SendAnnouncementHandlerTest extends TestCase
 
     private function createHandler(?Announcement $announcement, UserRepository $userRepository, MessageBusInterface $bus, int $mailsPerMinute): SendAnnouncementHandler
     {
-        $repository = $this->createStub(EntityRepository::class);
+        $repository = $this->createStub(AnnouncementRepository::class);
         $repository->method('find')->willReturn($announcement);
 
         $em = $this->createStub(EntityManagerInterface::class);
-        $em->method('getRepository')->willReturn($repository);
         $em->method('wrapInTransaction')->willReturnCallback(static fn (callable $callback): mixed => $callback($em));
 
         $settings = $this->createStub(SettingsService::class);
         $settings->method('get')->willReturn($mailsPerMinute);
 
-        return new SendAnnouncementHandler($em, $userRepository, $bus, $settings, $this->createStub(LoggerInterface::class));
+        return new SendAnnouncementHandler($em, $repository, $userRepository, $bus, $settings, $this->createStub(LoggerInterface::class));
     }
 }

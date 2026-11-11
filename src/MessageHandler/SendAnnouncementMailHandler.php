@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\MessageHandler;
 
-use App\Entity\User;
 use App\Enum\Roles;
 use App\Mail\AnnouncementMailer;
 use App\Message\SendAnnouncementMail;
 use App\Repository\AnnouncementRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Throwable;
@@ -18,8 +17,8 @@ use Throwable;
 final readonly class SendAnnouncementMailHandler
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
         private AnnouncementRepository $announcementRepository,
+        private UserRepository $userRepository,
         private AnnouncementMailer $mailer,
         private LoggerInterface $logger,
     ) {
@@ -33,7 +32,7 @@ final readonly class SendAnnouncementMailHandler
             return;
         }
 
-        $user = $this->entityManager->getRepository(User::class)->find($message->userId);
+        $user = $this->userRepository->find($message->userId);
         $domain = $announcement->getDomain();
 
         // The user may have been removed, deleted, flagged as spam or moved since the mail was queued

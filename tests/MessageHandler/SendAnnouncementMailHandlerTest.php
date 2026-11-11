@@ -12,8 +12,7 @@ use App\Mail\AnnouncementMailer;
 use App\Message\SendAnnouncementMail;
 use App\MessageHandler\SendAnnouncementMailHandler;
 use App\Repository\AnnouncementRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
+use App\Repository\UserRepository;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -142,12 +141,9 @@ class SendAnnouncementMailHandlerTest extends TestCase
 
     private function createHandler(AnnouncementRepository $announcementRepository, ?User $user, AnnouncementMailer $mailer): SendAnnouncementMailHandler
     {
-        $userRepository = $this->createStub(EntityRepository::class);
+        $userRepository = $this->createStub(UserRepository::class);
         $userRepository->method('find')->willReturn($user);
 
-        $em = $this->createStub(EntityManagerInterface::class);
-        $em->method('getRepository')->willReturn($userRepository);
-
-        return new SendAnnouncementMailHandler($em, $announcementRepository, $mailer, $this->createStub(LoggerInterface::class));
+        return new SendAnnouncementMailHandler($announcementRepository, $userRepository, $mailer, $this->createStub(LoggerInterface::class));
     }
 }

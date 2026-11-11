@@ -9,6 +9,7 @@ use App\Entity\Domain;
 use App\Enum\AnnouncementStatus;
 use App\Message\SendAnnouncement;
 use App\Message\SendAnnouncementMail;
+use App\Repository\AnnouncementRepository;
 use App\Repository\UserRepository;
 use App\Service\SettingsService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,6 +37,7 @@ final readonly class SendAnnouncementHandler
 
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private AnnouncementRepository $announcementRepository,
         private UserRepository $userRepository,
         private MessageBusInterface $bus,
         private SettingsService $settingsService,
@@ -45,7 +47,7 @@ final readonly class SendAnnouncementHandler
 
     public function __invoke(SendAnnouncement $message): void
     {
-        $announcement = $this->entityManager->getRepository(Announcement::class)->find($message->announcementId);
+        $announcement = $this->announcementRepository->find($message->announcementId);
 
         if (null === $announcement) {
             $this->logger->warning('Announcement not found', ['announcementId' => $message->announcementId]);
