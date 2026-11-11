@@ -1,0 +1,82 @@
+{% set current_section = 'announcements' %}
+{% extends 'Admin/base_admin.html.twig' %}
+{% block title %}{{ setting('app_name') }} - {{ 'admin.announcement.title'|trans }}{% endblock %}
+{% block admin_content %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="p-6 sm:p-8">
+            {% include 'Admin/_section_header.html.twig' with {
+                icon: 'heroicons:megaphone',
+                icon_color: 'blue',
+                heading_key: 'admin.announcement.heading',
+                description_key: 'admin.announcement.description',
+            } %}
+
+            <div class="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                <a href="{{ path('admin_announcement_create') }}"
+                   class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
+                    {{ ux_icon('heroicons:plus', {class: 'w-4 h-4 mr-2'}) }}
+                    {{ 'admin.announcement.create.button'|trans }}
+                </a>
+
+                {% include 'Admin/_domain_filter.html.twig' with {
+                    selectedDomain: selectedDomain,
+                    selectedDomainName: selectedDomainName,
+                } %}
+            </div>
+
+            {% if pagination.items is empty %}
+                {% include 'Admin/_empty_state.html.twig' with {
+                    icon: 'heroicons:megaphone',
+                    title_key: 'admin.announcement.table.empty-title',
+                    description_key: 'admin.announcement.table.empty-description',
+                } %}
+            {% else %}
+                {% embed 'Admin/_table.html.twig' with {
+                    headers: [
+                        {label: 'admin.announcement.table.subject'},
+                        {label: 'admin.announcement.table.domain'},
+                        {label: 'admin.announcement.table.author'},
+                        {label: 'admin.announcement.table.recipients'},
+                        {label: 'admin.announcement.table.status'},
+                        {label: 'admin.table.created'},
+                    ]
+                } %}
+                    {% block table_body %}
+                        {% for announcement in pagination.items %}
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                    <details>
+                                        <summary class="cursor-pointer">{{ announcement.subject }}</summary>
+                                        <pre class="mt-2 whitespace-pre-wrap break-words font-mono text-xs text-gray-700 dark:text-gray-300">{{ announcement.body }}</pre>
+                                    </details>
+                                </td>
+                                <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{{ announcement.domain.name }}</td>
+                                <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-gray-100">{{ announcement.author ? announcement.author.email : '–' }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{{ announcement.recipientCount }}</td>
+                                <td class="px-4 py-3">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ announcement.status.value == 'done' ? 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200' : 'bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200' }}">
+                                        {{ ('admin.announcement.status.' ~ announcement.status.value)|trans }}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">
+                                    {{ announcement.creationTime|format_datetime('short', 'short') }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endblock %}
+                {% endembed %}
+
+                {% include 'Admin/_pagination.html.twig' with {
+                    index_route: 'admin_announcement_index',
+                    total_key: 'admin.announcement.pagination.total',
+                    previous_key: 'admin.announcement.pagination.newer',
+                    next_key: 'admin.announcement.pagination.older',
+                    page_key: 'admin.announcement.pagination.page',
+                    pagination: pagination,
+                    search: '',
+                    extra_params: {domain: selectedDomain},
+                } %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

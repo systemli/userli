@@ -174,6 +174,43 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
             ->getSingleScalarResult();
     }
 
+    /**
+     * Counts users of a domain who receive announcements: not deleted and not flagged as spam.
+     */
+    public function countAnnouncementRecipients(Domain $domain): int
+    {
+        return (int) $this->createAnnouncementRecipientsQueryBuilder($domain)
+            ->select('COUNT(u.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @return iterable<int>
+     */
+    public function iterateAnnouncementRecipientIds(Domain $domain): iterable
+    {
+        $query = $this->createAnnouncementRecipientsQueryBuilder($domain)
+            ->select('u.id')
+            ->orderBy('u.id', 'ASC')
+            ->getQuery();
+
+        foreach ($query->toIterable() as $row) {
+            yield (int) $row['id'];
+        }
+    }
+
+    private function createAnnouncementRecipientsQueryBuilder(Domain $domain): QueryBuilder
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.domain = :domain')
+            ->andWhere('u.deleted = :deleted')
+            ->andWhere('u.roles NOT LIKE :spamRole')
+            ->setParameter('domain', $domain)
+            ->setParameter('deleted', false)
+            ->setParameter('spamRole', '%'.Roles::SPAM.'%');
+    }
+
     public function countDomainAdmins(Domain $domain): int
     {
         return (int) $this->createQueryBuilder('u')
