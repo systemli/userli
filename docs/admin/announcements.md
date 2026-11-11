@@ -30,13 +30,18 @@ before their email went out, are skipped as well.
    have to check the updated preview first.
 
 Sending can't be undone. Sent announcements are listed with author, number of
-recipients and status:
+recipients, delivery progress and status:
 
-| Status      | Meaning |
-|-------------|---------|
-| **Queued**  | The announcement is saved, the worker has not picked it up yet. |
-| **Sending** | The worker is queueing the emails for the recipients. The number of recipients shows the progress. If the worker is interrupted, it continues where it stopped. |
-| **Sent**    | The emails for all recipients are queued. |
+| Status         | Meaning |
+|----------------|---------|
+| **Queued**     | The announcement is saved, the worker has not picked it up yet. |
+| **Delivering** | The worker is sending the emails. The delivery column shows how many emails are sent, not sent and still pending. If the worker is interrupted, it continues where it stopped. |
+| **Sent**       | Every email is either sent or not sent. |
+
+Emails are **not sent** to users who were deleted or flagged as spam after the
+announcement was created, and when the mail server rejected an email even after
+several retries. Users who register while the announcement is being sent may or
+may not receive it.
 
 ## Delivery
 

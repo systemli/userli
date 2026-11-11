@@ -1181,13 +1181,18 @@ admin:
       preview-outdated: The announcement was changed after the preview. Please check the updated preview and send again.
     status:
       queued: Queued
-      sending: Sending
-      done: Sent
+      delivering: Delivering
+      sent: Sent
+    delivery:
+      sent: "%count% sent"
+      not-sent: "%count% not sent"
+      pending: "%count% pending"
     table:
       subject: Subject
       domain: Domain
       author: Author
       recipients: Recipients
+      delivery: Delivery
       status: Status
       empty-title: No announcements
       empty-description: No announcements have been sent yet.

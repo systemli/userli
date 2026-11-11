@@ -19,6 +19,26 @@ final class AnnouncementRepository extends ServiceEntityRepository
         parent::__construct($registry, Announcement::class);
     }
 
+    public function incrementSentCount(int $id): void
+    {
+        $this->increment($id, 'sentCount');
+    }
+
+    public function incrementNotSentCount(int $id): void
+    {
+        $this->increment($id, 'notSentCount');
+    }
+
+    /**
+     * Increments a counter in the database, so that concurrent workers don't overwrite each other.
+     */
+    private function increment(int $id, string $field): void
+    {
+        $this->getEntityManager()->createQuery(sprintf('UPDATE %s a SET a.%2$s = a.%2$s + 1 WHERE a.id = :id', Announcement::class, $field))
+            ->setParameter('id', $id)
+            ->execute();
+    }
+
     public function countByDomain(?Domain $domain = null): int
     {
         $qb = $this->createQueryBuilder('a')->select('COUNT(a.id)');

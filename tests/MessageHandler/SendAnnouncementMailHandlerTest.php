@@ -11,6 +11,7 @@ use App\Enum\Roles;
 use App\Mail\AnnouncementMailer;
 use App\Message\SendAnnouncementMail;
 use App\MessageHandler\SendAnnouncementMailHandler;
+use App\Repository\AnnouncementRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;
@@ -33,7 +34,11 @@ class SendAnnouncementMailHandlerTest extends TestCase
             ->method('send')
             ->with('user@example.org', 'Subject', 'Body');
 
-        $this->createHandler($this->createAnnouncement(), $user, $mailer)(new SendAnnouncementMail(1, 1));
+        $repository = $this->announcementRepository($this->createAnnouncement());
+        $repository->expects($this->once())->method('incrementSentCount')->with(1);
+        $repository->expects($this->never())->method('incrementNotSentCount');
+
+        $this->createHandler($repository, $user, $mailer)(new SendAnnouncementMail(1, 1));
     }
 
     public function testInvokeSkipsDeletedUser(): void
@@ -59,18 +64,44 @@ class SendAnnouncementMailHandlerTest extends TestCase
         $this->assertSkipped($this->createAnnouncement(), $user);
     }
 
-    public function testInvokeSkipsMissingEntities(): void
+    public function testInvokeSkipsRemovedUser(): void
     {
-        $this->assertSkipped(null, $this->createUser($this->domain));
         $this->assertSkipped($this->createAnnouncement(), null);
     }
 
-    private function assertSkipped(?Announcement $announcement, ?User $user): void
+    public function testInvokeIgnoresMissingAnnouncement(): void
     {
         $mailer = $this->createMock(AnnouncementMailer::class);
         $mailer->expects($this->never())->method('send');
 
-        $this->createHandler($announcement, $user, $mailer)(new SendAnnouncementMail(1, 1));
+        $repository = $this->announcementRepository(null);
+        $repository->expects($this->never())->method('incrementSentCount');
+        $repository->expects($this->never())->method('incrementNotSentCount');
+
+        $this->createHandler($repository, $this->createUser($this->domain), $mailer)(new SendAnnouncementMail(1, 1));
+    }
+
+    private function assertSkipped(Announcement $announcement, ?User $user): void
+    {
+        $mailer = $this->createMock(AnnouncementMailer::class);
+        $mailer->expects($this->never())->method('send');
+
+        $repository = $this->announcementRepository($announcement);
+        $repository->expects($this->once())->method('incrementNotSentCount')->with(1);
+        $repository->expects($this->never())->method('incrementSentCount');
+
+        $this->createHandler($repository, $user, $mailer)(new SendAnnouncementMail(1, 1));
+    }
+
+    /**
+     * @return AnnouncementRepository&\PHPUnit\Framework\MockObject\MockObject
+     */
+    private function announcementRepository(?Announcement $announcement): AnnouncementRepository
+    {
+        $repository = $this->createMock(AnnouncementRepository::class);
+        $repository->method('find')->willReturn($announcement);
+
+        return $repository;
     }
 
     private function createAnnouncement(): Announcement
@@ -96,20 +127,14 @@ class SendAnnouncementMailHandlerTest extends TestCase
         return $domain;
     }
 
-    private function createHandler(?Announcement $announcement, ?User $user, AnnouncementMailer $mailer): SendAnnouncementMailHandler
+    private function createHandler(AnnouncementRepository $announcementRepository, ?User $user, AnnouncementMailer $mailer): SendAnnouncementMailHandler
     {
-        $announcementRepository = $this->createStub(EntityRepository::class);
-        $announcementRepository->method('find')->willReturn($announcement);
-
         $userRepository = $this->createStub(EntityRepository::class);
         $userRepository->method('find')->willReturn($user);
 
         $em = $this->createStub(EntityManagerInterface::class);
-        $em->method('getRepository')->willReturnMap([
-            [Announcement::class, $announcementRepository],
-            [User::class, $userRepository],
-        ]);
+        $em->method('getRepository')->willReturn($userRepository);
 
-        return new SendAnnouncementMailHandler($em, $mailer);
+        return new SendAnnouncementMailHandler($em, $announcementRepository, $mailer);
     }
 }

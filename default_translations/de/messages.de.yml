@@ -1178,13 +1178,18 @@ admin:
       preview-outdated: Die Mitteilung wurde nach der Vorschau geändert. Bitte prüfe die aktualisierte Vorschau und sende erneut.
     status:
       queued: Wartend
-      sending: Wird gesendet
-      done: Gesendet
+      delivering: Wird zugestellt
+      sent: Gesendet
+    delivery:
+      sent: "%count% gesendet"
+      not-sent: "%count% nicht gesendet"
+      pending: "%count% ausstehend"
     table:
       subject: Betreff
       domain: Domain
       author: Verfasser:in
       recipients: Empfänger:innen
+      delivery: Zustellung
       status: Status
       empty-title: Keine Mitteilungen
       empty-description: Es wurden noch keine Mitteilungen versendet.

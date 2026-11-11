@@ -37,6 +37,7 @@
                         {label: 'admin.announcement.table.domain'},
                         {label: 'admin.announcement.table.author'},
                         {label: 'admin.announcement.table.recipients'},
+                        {label: 'admin.announcement.table.delivery'},
                         {label: 'admin.announcement.table.status'},
                         {label: 'admin.table.created'},
                     ]
@@ -53,9 +54,23 @@
                                 <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{{ announcement.domain.name }}</td>
                                 <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-gray-100">{{ announcement.author ? announcement.author.email : '–' }}</td>
                                 <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{{ announcement.recipientCount }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
+                                    {% if announcement.status.value == 'queued' %}
+                                        –
+                                    {% else %}
+                                        <span class="text-green-700 dark:text-green-300">{{ 'admin.announcement.delivery.sent'|trans({'%count%': announcement.sentCount}) }}</span><br>
+                                        {% if announcement.notSentCount > 0 %}
+                                            <span class="text-red-700 dark:text-red-300">{{ 'admin.announcement.delivery.not-sent'|trans({'%count%': announcement.notSentCount}) }}</span><br>
+                                        {% endif %}
+                                        {% if announcement.pendingCount > 0 %}
+                                            <span>{{ 'admin.announcement.delivery.pending'|trans({'%count%': announcement.pendingCount}) }}</span>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
                                 <td class="px-4 py-3">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ announcement.status.value == 'done' ? 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200' : 'bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200' }}">
-                                        {{ ('admin.announcement.status.' ~ announcement.status.value)|trans }}
+                                    {% set display_status = announcement.status.value == 'queued' ? 'queued' : (announcement.delivered ? 'sent' : 'delivering') %}
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ display_status == 'sent' ? 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200' : 'bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200' }}">
+                                        {{ ('admin.announcement.status.' ~ display_status)|trans }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">

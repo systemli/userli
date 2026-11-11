@@ -44,6 +44,13 @@ class Announcement
     #[ORM\Column(type: 'integer')]
     private int $lastQueuedUserId = 0;
 
+    #[ORM\Column(type: 'integer')]
+    private int $sentCount = 0;
+
+    /** Recipients that were skipped (deleted, flagged as spam) or whose mail failed permanently. */
+    #[ORM\Column(type: 'integer')]
+    private int $notSentCount = 0;
+
     #[ORM\Column(type: 'datetime_immutable')]
     private DateTimeImmutable $creationTime;
 
@@ -106,6 +113,32 @@ class Announcement
     public function setLastQueuedUserId(int $lastQueuedUserId): void
     {
         $this->lastQueuedUserId = $lastQueuedUserId;
+    }
+
+    public function getSentCount(): int
+    {
+        return $this->sentCount;
+    }
+
+    public function getNotSentCount(): int
+    {
+        return $this->notSentCount;
+    }
+
+    /**
+     * Number of queued mails that are neither sent nor given up yet.
+     */
+    public function getPendingCount(): int
+    {
+        return max(0, $this->recipientCount - $this->sentCount - $this->notSentCount);
+    }
+
+    /**
+     * All recipients are queued and every mail is either sent or given up.
+     */
+    public function isDelivered(): bool
+    {
+        return AnnouncementStatus::DONE === $this->getStatus() && 0 === $this->getPendingCount();
     }
 
     public function getCreationTime(): DateTimeImmutable
