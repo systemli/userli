@@ -1,5 +1,27 @@
-:80 {
+{
+	auto_https off
+}
+
+# Userli. `caddy` and `localhost` are used by the other containers (Dovecot, Keycloak)
+# and by clients that do not resolve *.localhost.
+http://userli.localhost, http://caddy, http://localhost {
 	root * /var/www/html/public
 	php_fastcgi userli:9000
 	file_server
+}
+
+http://keycloak.localhost {
+	reverse_proxy keycloak:8080
+}
+
+http://roundcube.localhost {
+	reverse_proxy roundcube:80
+}
+
+http://mailcatcher.localhost {
+	reverse_proxy mailcatcher:1080
+}
+
+http://webhook.localhost {
+	reverse_proxy webhook:8080
 }
