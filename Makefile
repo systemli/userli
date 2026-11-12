@@ -1,3 +1,6 @@
+HTTP_PORT            ?= 80
+PORT_SUFFIX          := $(if $(filter 80,$(HTTP_PORT)),,:$(HTTP_PORT))
+export HTTP_PORT
 COMPOSE              := $(shell podman compose version >/dev/null 2>&1 && echo "podman compose" || (docker compose version >/dev/null 2>&1 && echo "docker compose" || echo ""))
 GIT_VERSION          := $(shell git --no-pager describe --tags --always 2>/dev/null)
 VERSION              ?= ${GIT_VERSION}
@@ -45,28 +48,28 @@ dev: assets migrations
 	@echo ""
 	@echo "Started container environment."
 	@echo "Services:"
-	@echo "  Userli:      http://localhost:8000"
-	@echo "  Mailcatcher: http://localhost:1080"
-	@echo "  Webhook:     http://localhost:9000"
+	@echo "  Userli:      http://userli.localhost$(PORT_SUFFIX)"
+	@echo "  Mailcatcher: http://mailcatcher.localhost$(PORT_SUFFIX)"
+	@echo "  Webhook:     http://webhook.localhost$(PORT_SUFFIX)"
 	@echo ""
 	@echo "Run 'make fixtures' to load example user data and start mail containers"
 	@echo ""
 
 fixtures: migrations
-	$(COMPOSE) exec userli bin/console doctrine:fixtures:load --group=basic --append --no-interaction --no-debug --quiet
+	$(COMPOSE) exec userli bin/console doctrine:fixtures:load --group=basic --group=dev --append --no-interaction --no-debug --quiet
 	$(COMPOSE) --profile mail up -d
 	@echo ""
 	@echo "Fixtures have been loaded."
 	@echo "Services:"
-	@echo "  Roundcube:   http://localhost:8001"
+	@echo "  Roundcube:   http://roundcube.localhost$(PORT_SUFFIX)"
 	@echo ""
 	@echo "Login with: admin@example.org / password"
 
 keycloak: containers
 	$(COMPOSE) --profile sso up -d --build keycloak
 	@echo ""
-	@echo "Keycloak:      http://localhost:8080 (admin / admin)"
-	@echo "Userli realm:  http://localhost:8080/realms/userli/account"
+	@echo "Keycloak:      http://keycloak.localhost$(PORT_SUFFIX) (admin / admin)"
+	@echo "Userli realm:  http://keycloak.localhost$(PORT_SUFFIX)/realms/userli/account"
 	@echo ""
 	@echo "Login with: user / password (run 'make fixtures' first)"
 

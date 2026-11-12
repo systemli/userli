@@ -9,6 +9,7 @@ services:
         INSTALL_XDEBUG: "true"
     environment:
       REDIS_URL: redis://redis:6379
+      DEV_APP_URL: http://userli.localhost:${HTTP_PORT:-80}
     volumes:
       - ./docker/userli/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro
       - ./docker/userli/php-override.ini:/usr/local/etc/php/conf.d/override.ini:ro
@@ -20,7 +21,7 @@ services:
   caddy:
     image: docker.io/caddy:2-alpine
     ports:
-      - 8000:80
+      - ${HTTP_PORT:-80}:80
     volumes:
       - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - ./public:/var/www/html/public:ro
@@ -104,7 +105,6 @@ services:
     image: schickling/mailcatcher:latest
     ports:
       - "1025:1025" # SMTP port for testing
-      - "1080:1080" # Web UI to view caught emails
     restart: always
     networks:
       - userli
@@ -121,12 +121,11 @@ services:
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-      KC_HOSTNAME: http://localhost:8080
+      KC_HOSTNAME: http://keycloak.localhost:${HTTP_PORT:-80}
       KC_HTTP_ENABLED: "true"
+      KC_PROXY_HEADERS: xforwarded
     volumes:
       - ./docker/keycloak/realm-userli.json:/opt/keycloak/data/import/realm-userli.json:ro
-    ports:
-      - 8080:8080
     restart: always
     networks:
       - userli
@@ -147,8 +146,6 @@ services:
       ROUNDCUBEMAIL_DB_TYPE: sqlite
     volumes:
       - ./docker/roundcube/config:/var/roundcube/config:ro
-    ports:
-      - 8001:80
     restart: always
     networks:
       - userli
@@ -163,8 +160,6 @@ services:
   webhook:
     image: ghcr.io/tarampampam/webhook-tester:2
     command: server --auto-create-sessions
-    ports:
-      - 9000:8080
     restart: always
     networks:
       - userli

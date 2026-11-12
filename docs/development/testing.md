@@ -122,6 +122,6 @@ After loading the fixtures (see [Getting started](index.md)), you can test authe
     docker compose exec dovecot doveadm auth test user@example.org password
     ```
 
-You can also test the full flow by connecting an IMAP client to `localhost:1143` or by using Roundcube at [http://localhost:8001](http://localhost:8001).
+You can also test the full flow by connecting an IMAP client to `localhost:1143` or by using Roundcube at [http://roundcube.localhost](http://roundcube.localhost).
 
 See the Dovecot [documentation](https://doc.dovecot.org/main/core/admin/debugging/debugging_authentication.html) for more context.
