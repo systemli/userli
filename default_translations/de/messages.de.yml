@@ -382,6 +382,7 @@ mail:
 
     Viele Grüße
     dein %project_name%-Admin-Team
+  announcement-footer: Dies ist eine offizielle Mitteilung von %project_name%.
   recovery-subject: Das Passwort zu deinem E-Mail-Konto %email% wird zurückgesetzt
   recovery-body: |
     Hallo %email%,
@@ -513,6 +514,9 @@ admin:
     email_notification_address:
       label: E-Mail-Adresse für Benachrichtigungen
       help: Die E-Mail-Adresse, die Systembenachrichtigungen erhält
+    announcement_mails_per_minute:
+      label: Mitteilungs-E-Mails pro Minute
+      help: Maximale Anzahl an Mitteilungs-E-Mails, die pro Minute versendet werden. Verringere den Wert, wenn dein Mailserver oder Empfänger Massen-E-Mails drosseln.
     support_address:
       label: E-Mail-Adresse des Supports
       help: Die E-Mail-Adresse deines Supports. Konten, die als Spam markiert sind, können nur an diese Adresse E-Mails senden und sehen sie auf ihrer Kontoseite. Leer lassen, um den E-Mail-Versand dieser Konten komplett zu sperren.
@@ -567,6 +571,7 @@ admin:
     vouchers: Einladungscodes
     domains: Domains
     user-notifications: Benachrichtigungen
+    announcements: Mitteilungen
     users: Benutzer:innen
     openpgp-keys: OpenPGP-Schlüssel
     app-passwords: App-Passwörter
@@ -1135,6 +1140,66 @@ admin:
       submit:
         save: Speichern
         create: Erstellen
+
+  announcement:
+    title: Mitteilungen
+    heading: Mitteilungen
+    description: Sende eine E-Mail an alle aktiven Nutzer:innen einer Domain
+    create:
+      button: Neue Mitteilung
+      title: Neue Mitteilung
+      heading: Neue Mitteilung
+      description: Schreibe eine E-Mail an alle Nutzer:innen einer Domain. Gelöschte und als Spam markierte Konten sind ausgenommen.
+    form:
+      domain:
+        label: Domain
+        help: Alle aktiven Nutzer:innen dieser Domain erhalten die Mitteilung.
+      subject:
+        label: Betreff
+      body:
+        label: Nachricht
+        help: Reiner Text. Eine kurze Fußzeile, die die E-Mail als offizielle Mitteilung kennzeichnet, wird automatisch angehängt.
+      cancel: Abbrechen
+      submit:
+        preview: Vorschau
+        update-preview: Vorschau aktualisieren
+        test: Test an mich senden
+        send: An alle senden
+    preview:
+      heading: Vorschau
+      domain: Domain
+      recipients: Empfänger:innen
+      recipient-count: "%count% Nutzer:innen"
+      subject: Betreff
+      warning: Das Senden kann nicht rückgängig gemacht werden. Die E-Mails werden nach und nach im Hintergrund zugestellt.
+    flash:
+      already-sent: Diese Mitteilung wurde bereits gesendet.
+      sent: Die Mitteilung wird jetzt versendet.
+      test-sent: Eine Test-E-Mail wurde an deine Adresse gesendet.
+      preview-outdated: Die Mitteilung wurde nach der Vorschau geändert. Bitte prüfe die aktualisierte Vorschau und sende erneut.
+    status:
+      failed: Fehlgeschlagen
+      queued: Wartend
+      delivering: Wird zugestellt
+      sent: Gesendet
+    delivery:
+      sent: "%count% gesendet"
+      not-sent: "%count% nicht gesendet"
+      pending: "%count% ausstehend"
+    table:
+      subject: Betreff
+      domain: Domain
+      author: Verfasser:in
+      recipients: Empfänger:innen
+      delivery: Zustellung
+      status: Status
+      empty-title: Keine Mitteilungen
+      empty-description: Es wurden noch keine Mitteilungen versendet.
+    pagination:
+      total: "%count% Mitteilungen insgesamt"
+      newer: Neuer
+      older: Älter
+      page: "Seite %page% von %totalPages%"
 
   user-notification:
     title: Benachrichtigungen

@@ -174,6 +174,47 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
             ->getSingleScalarResult();
     }
 
+    /**
+     * Counts users of a domain who receive announcements: not deleted and not flagged as spam.
+     */
+    public function countAnnouncementRecipients(Domain $domain): int
+    {
+        return (int) $this->createAnnouncementRecipientsQueryBuilder($domain)
+            ->select('COUNT(u.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * Returns the next recipient IDs in ascending order, starting after the given user ID.
+     *
+     * @return list<int>
+     */
+    public function findAnnouncementRecipientIds(Domain $domain, int $afterUserId, int $limit): array
+    {
+        $rows = $this->createAnnouncementRecipientsQueryBuilder($domain)
+            ->select('u.id')
+            ->andWhere('u.id > :afterUserId')
+            ->setParameter('afterUserId', $afterUserId)
+            ->orderBy('u.id', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getSingleColumnResult();
+
+        return array_values(array_map(intval(...), $rows));
+    }
+
+    private function createAnnouncementRecipientsQueryBuilder(Domain $domain): QueryBuilder
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.domain = :domain')
+            ->andWhere('u.deleted = :deleted')
+            ->andWhere('u.roles NOT LIKE :spamRole')
+            ->setParameter('domain', $domain)
+            ->setParameter('deleted', false)
+            ->setParameter('spamRole', '%'.Roles::SPAM.'%');
+    }
+
     public function countDomainAdmins(Domain $domain): int
     {
         return (int) $this->createQueryBuilder('u')

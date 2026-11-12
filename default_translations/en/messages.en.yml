@@ -387,6 +387,7 @@ mail:
 
     Sincerely,
     your %project_name% admin team.
+  announcement-footer: This is an official announcement from %project_name%.
   recovery-subject: The password for your e-mail account %email% will be reset
   recovery-body: |
     Hello %email%,
@@ -539,6 +540,9 @@ admin:
     email_notification_address:
       label: Notification Email Address
       help: The email address that receives system notifications
+    announcement_mails_per_minute:
+      label: Announcement Mails per Minute
+      help: Maximum number of announcement emails queued per minute. Lower it if your mail server or receivers throttle bulk mail.
     support_address:
       label: Support Email Address
       help: The email address of your support. Accounts flagged as spam can only send emails to this address and see it on their account page. Leave empty to block all outgoing emails of these accounts.
@@ -593,6 +597,7 @@ admin:
     vouchers: Invite Codes
     domains: Domains
     user-notifications: Notifications
+    announcements: Announcements
     users: Users
     openpgp-keys: OpenPGP Keys
     app-passwords: App Passwords
@@ -1138,6 +1143,66 @@ admin:
       submit:
         save: Save
         create: Create
+
+  announcement:
+    title: Announcements
+    heading: Announcements
+    description: Send an email to all active users of a domain
+    create:
+      button: New Announcement
+      title: New Announcement
+      heading: New Announcement
+      description: Write an email to all users of a domain. Deleted accounts and accounts flagged as spam are excluded.
+    form:
+      domain:
+        label: Domain
+        help: All active users of this domain receive the announcement.
+      subject:
+        label: Subject
+      body:
+        label: Message
+        help: Plain text. A short footer that marks the email as official announcement is added automatically.
+      cancel: Cancel
+      submit:
+        preview: Preview
+        update-preview: Update preview
+        test: Send test to me
+        send: Send to all users
+    preview:
+      heading: Preview
+      domain: Domain
+      recipients: Recipients
+      recipient-count: "%count% users"
+      subject: Subject
+      warning: Sending cannot be undone. The emails are delivered gradually in the background.
+    flash:
+      already-sent: This announcement has already been sent.
+      sent: The announcement has been queued for sending.
+      test-sent: A test email has been sent to your address.
+      preview-outdated: The announcement was changed after the preview. Please check the updated preview and send again.
+    status:
+      failed: Failed
+      queued: Queued
+      delivering: Delivering
+      sent: Sent
+    delivery:
+      sent: "%count% sent"
+      not-sent: "%count% not sent"
+      pending: "%count% pending"
+    table:
+      subject: Subject
+      domain: Domain
+      author: Author
+      recipients: Recipients
+      delivery: Delivery
+      status: Status
+      empty-title: No announcements
+      empty-description: No announcements have been sent yet.
+    pagination:
+      total: "%count% announcements total"
+      newer: Newer
+      older: Older
+      page: "Page %page% of %totalPages%"
 
   user-notification:
     title: User Notifications

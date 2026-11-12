@@ -33,6 +33,7 @@ nav:
       - "Invite codes": admin/invite-codes.md
       - Domains: admin/domains.md
       - "Reserved names": admin/reserved-names.md
+      - Announcements: admin/announcements.md
       - Notifications: admin/notifications.md
       - Settings: admin/settings.md
       - "API tokens": admin/api-tokens.md

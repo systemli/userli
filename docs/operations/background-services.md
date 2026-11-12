@@ -4,7 +4,7 @@ Besides the webserver, Userli needs two long-running processes:
 
 | Process       | Command | Purpose |
 |---------------|---------|---------|
-| **Worker**    | `bin/console messenger:consume async` | Sends emails (welcome, recovery, notifications, reports) and webhooks, and runs the maintenance tasks. |
+| **Worker**    | `bin/console messenger:consume async` | Sends emails (welcome, recovery, notifications, reports, announcements) and webhooks, and runs the maintenance tasks. |
 | **Scheduler** | `bin/console messenger:consume scheduler_maintenance` | Triggers the recurring [maintenance tasks](../admin/maintenance.md) on schedule. |
 
 !!! warning
