@@ -48,11 +48,11 @@ final readonly class SendAnnouncementMailHandler
         // so a lost counter update is only logged.
         try {
             $this->announcementRepository->incrementSentCount($message->announcementId);
-        } catch (Throwable $e) {
+        } catch (Throwable $throwable) {
             $this->logger->error('Could not count sent announcement mail', [
                 'announcementId' => $message->announcementId,
                 'userId' => $message->userId,
-                'exception' => $e,
+                'exception' => $throwable,
             ]);
         }
     }

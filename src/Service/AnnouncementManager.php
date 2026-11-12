@@ -69,11 +69,11 @@ final readonly class AnnouncementManager
 
         try {
             $this->bus->dispatch(new SendAnnouncement((int) $announcement->getId()));
-        } catch (Throwable $e) {
+        } catch (Throwable $throwable) {
             // Without a fan-out message nothing would ever process the row, so don't leave it queued
             $this->repository->markFailed((int) $announcement->getId());
 
-            throw $e;
+            throw $throwable;
         }
 
         return $announcement;
