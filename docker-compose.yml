@@ -109,6 +109,28 @@ services:
     networks:
       - userli
 
+  keycloak:
+    profiles:
+      - sso
+    image: docker.io/systemli/userli-keycloak:dev
+    build:
+      context: ./docker/keycloak
+    command: start-dev --import-realm
+    depends_on:
+      - caddy
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HOSTNAME: http://localhost:8080
+      KC_HTTP_ENABLED: "true"
+    volumes:
+      - ./docker/keycloak/realm-userli.json:/opt/keycloak/data/import/realm-userli.json:ro
+    ports:
+      - 8080:8080
+    restart: always
+    networks:
+      - userli
+
   roundcube:
     profiles:
       - mail

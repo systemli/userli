@@ -62,9 +62,17 @@ fixtures: migrations
 	@echo ""
 	@echo "Login with: admin@example.org / password"
 
+keycloak: containers
+	$(COMPOSE) --profile sso up -d --build keycloak
+	@echo ""
+	@echo "Keycloak:      http://localhost:8080 (admin / admin)"
+	@echo "Userli realm:  http://localhost:8080/realms/userli/account"
+	@echo ""
+	@echo "Login with: user / password (run 'make fixtures' first)"
+
 destroy:
 	$(check_compose)
-	$(COMPOSE) --profile mail down -v
+	$(COMPOSE) --profile mail --profile sso down -v
 
 .PHONY: source compile build package release release-container
 
