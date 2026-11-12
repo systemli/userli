@@ -16,6 +16,7 @@ form:
   email-domain-not-allowed: "You are not allowed to create users in this domain."
   email-domain-not-found: "The email domain does not exist."
   app-password-mailcrypt-failed: "Your mailbox encryption key could not be unlocked with your password, so no app password was created. Please contact the support."
+  webauthn-failed: "The security key could not be registered. Please try again."
 
 registration:
   voucher-invalid: "The invite code is invalid."
@@ -28,3 +29,7 @@ registration:
 
 voucher:
   suspicious-user: "Not allowed to create voucher for suspicious users."
+
+settings:
+  webauthn-rp-id-invalid: "Enter a domain without scheme, port or path, e.g. example.org."
+  webauthn-origins-invalid: "Enter one origin per line with scheme and without path, e.g. https://login.example.org."

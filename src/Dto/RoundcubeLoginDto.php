@@ -17,6 +17,9 @@ final class RoundcubeLoginDto
 
     private string $code = '';
 
+    #[Assert\Valid]
+    private ?WebauthnAssertionDto $webauthn = null;
+
     public function getEmail(): string
     {
         return $this->email;
@@ -45,5 +48,15 @@ final class RoundcubeLoginDto
     public function setCode(string $code): void
     {
         $this->code = $code;
+    }
+
+    public function getWebauthn(): ?WebauthnAssertionDto
+    {
+        return $this->webauthn;
+    }
+
+    public function setWebauthn(?WebauthnAssertionDto $webauthn): void
+    {
+        $this->webauthn = $webauthn;
     }
 }

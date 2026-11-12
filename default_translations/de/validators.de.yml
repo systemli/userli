@@ -16,6 +16,7 @@ form:
   email-domain-not-allowed: "Du darfst keine Benutzer:innen in dieser Domain anlegen."
   email-domain-not-found: "Die E-Mail-Domain existiert nicht."
   app-password-mailcrypt-failed: "Dein Schlüssel für die Postfachverschlüsselung konnte nicht mit deinem Passwort entsperrt werden, daher wurde kein App-Passwort erstellt. Bitte wende dich an den Support."
+  webauthn-failed: "Der Sicherheitsschlüssel konnte nicht registriert werden. Bitte versuche es erneut."
 
 registration:
   voucher-invalid: Der Einladungscode ist ungültig.
@@ -30,3 +31,7 @@ registration:
 
 voucher:
   suspicious-user: "Nicht erlaubt, Einladungscodes für verdächtige Benutzer:innen anzulegen."
+
+settings:
+  webauthn-rp-id-invalid: "Gib eine Domain ohne Schema, Port oder Pfad ein, z.B. example.org."
+  webauthn-origins-invalid: "Gib eine Origin pro Zeile mit Schema und ohne Pfad ein, z.B. https://login.example.org."
