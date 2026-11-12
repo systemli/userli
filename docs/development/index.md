@@ -15,6 +15,7 @@ We provide a `docker-compose.yml` that starts Userli with MariaDB, Dovecot, Roun
 | ------------ | ------------------------------------------------------------ | --------------------------- |
 | Userli       | [http://localhost:8000](http://localhost:8000)                | Main application            |
 | Roundcube    | [http://localhost:8001](http://localhost:8001)                | Webmail client              |
+| Keycloak     | [http://localhost:8080](http://localhost:8080)                | Single sign-on (optional)   |
 | Mailcatcher  | [http://localhost:1080](http://localhost:1080)                | Catches all outgoing emails |
 | Webhook test | [http://localhost:9000](http://localhost:9000)                | Webhook endpoint testing    |
 
@@ -71,6 +72,31 @@ When it finishes, open [http://localhost:8000](http://localhost:8000) and log in
 
 !!! tip
     Run `make` without arguments to see all available targets.
+
+### Keycloak
+
+To test the [Keycloak integration](../operations/integrations/keycloak.md), run
+
+```shell
+make keycloak
+```
+
+This builds Keycloak with the latest release of the
+[Userli user provider](https://github.com/systemli/userli-keycloak-provider) and imports the realm `userli`
+(`sso` profile). The realm uses the dev environment as user federation, so you can sign in at
+[http://localhost:8080/realms/userli/account](http://localhost:8080/realms/userli/account) with `user` / `password`.
+The admin console is at [http://localhost:8080](http://localhost:8080) (`admin` / `admin`).
+
+Load the fixtures first, because the realm uses their Keycloak API token.
+
+To test an unreleased provider, build it in its repository and mount the jar in `docker-compose.override.yml`:
+
+```yaml
+services:
+  keycloak:
+    volumes:
+      - ../userli-keycloak-provider/target/userli-storage-provider-1.0.0.jar:/opt/keycloak/providers/userli.jar:ro
+```
 
 ## Next steps
 
