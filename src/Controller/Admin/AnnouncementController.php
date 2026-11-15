@@ -76,20 +76,15 @@ final class AnnouncementController extends AbstractController
         $footerDomain = $this->isGranted(Roles::ADMIN) ? null : (string) $domain->getName();
         $button = $form instanceof Form ? $form->getClickedButton() : null;
 
-        switch ($button instanceof FormInterface ? $button->getName() : null) {
-            case 'send':
-                // Only content the admin has seen in the preview may be sent
-                if ($form->get('previewFingerprint')->getData() !== $fingerprint) {
-                    $this->addFlash('error', 'admin.announcement.flash.preview-outdated');
-                    break;
-                }
+        $clicked = $button instanceof FormInterface ? $button->getName() : null;
 
-                $sendToken = (string) $form->get('sendToken')->getData();
-                if (1 !== preg_match('/^[0-9a-f]{32}$/', $sendToken)) {
-                    $this->addFlash('error', 'admin.announcement.flash.preview-outdated');
-                    break;
-                }
+        if ('send' === $clicked) {
+            $sendToken = (string) $form->get('sendToken')->getData();
 
+            // Only content the admin has seen in the preview may be sent
+            if ($form->get('previewFingerprint')->getData() !== $fingerprint || 1 !== preg_match('/^[0-9a-f]{32}$/', $sendToken)) {
+                $this->addFlash('error', 'admin.announcement.flash.preview-outdated');
+            } else {
                 // The token is used once, so a form submitted twice doesn't send twice
                 if (null === $this->manager->send($domain, $model->getSubject(), $model->getBody(), $author, $sendToken)) {
                     $this->addFlash('error', 'admin.announcement.flash.already-sent');
@@ -98,13 +93,12 @@ final class AnnouncementController extends AbstractController
                 }
 
                 return $this->redirectToRoute('admin_announcement_index');
-            case 'test':
-                if (null !== $author) {
-                    $this->mailer->send($author->getEmail(), $model->getSubject(), $model->getBody(), $footerDomain);
-                    $this->addFlash('success', 'admin.announcement.flash.test-sent');
-                }
+            }
+        }
 
-                break;
+        if ('test' === $clicked && null !== $author) {
+            $this->mailer->send($author->getEmail(), $model->getSubject(), $model->getBody(), $footerDomain);
+            $this->addFlash('success', 'admin.announcement.flash.test-sent');
         }
 
         return $this->renderCreate($form, [
