@@ -80,6 +80,12 @@ Feature: Admin - Announcements
 
     Then the response status code should be 422
 
+    When I fill in "announcement_subject" with "Subject"
+    And I fill in "announcement_body" with "   "
+    And I press "Preview"
+
+    Then the response status code should be 422
+
   @announcements
   Scenario: Domain admin sends announcements only to their own domain
     Given I am authenticated as "domain@example.com"

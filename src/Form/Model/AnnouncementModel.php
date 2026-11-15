@@ -16,7 +16,7 @@ final class AnnouncementModel
     #[Assert\Length(max: 255)]
     private string $subject = '';
 
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(normalizer: 'trim')]
     #[Assert\Length(max: 20000)]
     private string $body = '';
 
