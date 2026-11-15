@@ -223,6 +223,32 @@ Feature: Admin (Aliases)
     Then the response status code should be 403
 
   @aliases
+  Scenario: Domain admin cannot add a destination to an alias owned by an admin of another domain
+    Given the following Alias exists:
+      | source                 | destination       | user_id |
+      | crossadmin@example.com | louis@example.org | 1       |
+    And I am authenticated as "domain@example.com"
+    When I am on "/admin/aliases/create"
+
+    When I fill in "alias_admin_source" with "crossadmin@example.com"
+    And I press "Create"
+
+    Then the response status code should be 403
+
+  @aliases
+  Scenario: Domain admin cannot delete an alias owned by an admin of another domain
+    Given the following Alias exists:
+      | source                 | destination       | user_id |
+      | crossadmin@example.com | louis@example.org | 1       |
+    And I am authenticated as "domain@example.com"
+    When I am on "/admin/aliases/"
+    Then I should see "crossadmin@example.com"
+
+    When I press the 1st "Delete" button
+
+    Then the response status code should be 403
+
+  @aliases
   Scenario: Domain admin cannot view alias in different domain
     Given the following Alias exists:
       | source                  | destination       |
