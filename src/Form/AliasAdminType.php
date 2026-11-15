@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use App\Entity\User;
 use App\Form\Model\AliasAdminModel;
 use App\Validator\EmailAllowedSymbols;
 use App\Validator\EmailDomain;
 use App\Validator\Lowercase;
+use App\Validator\UniqueField;
 use Override;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -36,6 +38,7 @@ final class AliasAdminType extends AbstractType
                     new Lowercase(),
                     new EmailAllowedSymbols(),
                     new EmailDomain(),
+                    new UniqueField(entityClass: User::class, field: 'email', message: 'registration.email-already-taken'),
                 ],
             ]);
         }

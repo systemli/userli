@@ -13,7 +13,9 @@ use App\Form\Model\AliasAdminModel;
 use App\Form\Model\DomainAdminModel;
 use App\Form\Model\UserAdminModel;
 use App\Form\Model\VoucherModel;
+use App\Repository\AliasRepository;
 use App\Service\DomainGuesser;
+use Doctrine\ORM\EntityNotFoundException;
 use Override;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -38,6 +40,7 @@ final class DomainVoter extends Voter
     public function __construct(
         private readonly Security $security,
         private readonly DomainGuesser $domainGuesser,
+        private readonly AliasRepository $aliasRepository,
     ) {
     }
 
@@ -86,6 +89,10 @@ final class DomainVoter extends Voter
         }
 
         if ($subject instanceof UserAdminModel && in_array(Roles::ADMIN, $subject->getRoles(), true)) {
+            return false;
+        }
+
+        if ($subject instanceof Alias && $this->isOwnedByAdmin($subject)) {
             return false;
         }
 
@@ -160,7 +167,27 @@ final class DomainVoter extends Voter
 
     private function voteOnAliasAdminModel(AliasAdminModel $model, Domain $currentDomain): bool
     {
-        return $currentDomain->getId() === $this->domainGuesser->guess($model->getSource())?->getId();
+        if ($currentDomain->getId() !== $this->domainGuesser->guess($model->getSource())?->getId()) {
+            return false;
+        }
+
+        foreach ($this->aliasRepository->findBy(['source' => $model->getSource(), 'deleted' => false]) as $existing) {
+            if ($this->isOwnedByAdmin($existing)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function isOwnedByAdmin(Alias $alias): bool
+    {
+        try {
+            return true === $alias->getUser()?->hasRole(Roles::ADMIN);
+        } catch (EntityNotFoundException) {
+            // DomainFilter hides users of other domains; AliasController handles those.
+            return false;
+        }
     }
 
     private function voteOnVoucher(string $attribute, Voucher $voucher, Domain $currentDomain): bool
