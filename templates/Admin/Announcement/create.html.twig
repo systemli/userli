@@ -1,0 +1,104 @@
+{% set current_section = 'announcements' %}
+{% extends 'Admin/base_admin.html.twig' %}
+
+{% form_theme form 'Form/fields.html.twig' %}
+
+{% block title %}{{ setting('app_name') }} - {{ 'admin.announcement.create.title'|trans }}{% endblock %}
+
+{% set button_secondary = 'inline-flex items-center px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors' %}
+{% set button_primary = 'inline-flex items-center px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors' %}
+
+{% block admin_content %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="p-6 sm:p-8">
+            {% include 'Admin/_section_header.html.twig' with {
+                icon: 'heroicons:megaphone',
+                icon_color: 'blue',
+                heading_key: 'admin.announcement.create.heading',
+                description_key: 'admin.announcement.create.description',
+            } %}
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="space-y-6">
+                {% if form.domain is defined %}
+                <div>
+                    {{ form_label(form.domain, 'admin.announcement.form.domain.label') }}
+                    {{ form_errors(form.domain) }}
+                    {{ form_widget(form.domain) }}
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
+                        {{ 'admin.announcement.form.domain.help'|trans }}
+                    </p>
+                </div>
+                {% endif %}
+
+                <div>
+                    {{ form_label(form.subject, 'admin.announcement.form.subject.label') }}
+                    {{ form_errors(form.subject) }}
+                    {{ form_widget(form.subject) }}
+                </div>
+
+                <div>
+                    {{ form_label(form.body, 'admin.announcement.form.body.label') }}
+                    {{ form_errors(form.body) }}
+                    {{ form_widget(form.body, {attr: {rows: 12}}) }}
+                    <p class="mt-2 text-sm text-gray-500 dark:text-gray-300">
+                        {{ 'admin.announcement.form.body.help'|trans }}
+                    </p>
+                </div>
+
+                {{ form_widget(form.previewFingerprint, {value: preview ? preview.fingerprint : ''}) }}
+                {{ form_widget(form.sendToken, {value: preview ? preview.sendToken : ''}) }}
+
+                {% if preview %}
+                    <section class="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 p-4 sm:p-6"
+                             aria-labelledby="announcement-preview-heading">
+                        <h4 id="announcement-preview-heading" class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
+                            {{ 'admin.announcement.preview.heading'|trans }}
+                        </h4>
+                        <dl class="grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm mb-4">
+                            <dt class="font-medium text-gray-500 dark:text-gray-400">{{ 'admin.announcement.preview.domain'|trans }}</dt>
+                            <dd class="text-gray-900 dark:text-gray-100">{{ preview.domain.name }}</dd>
+                            <dt class="font-medium text-gray-500 dark:text-gray-400">{{ 'admin.announcement.preview.recipients'|trans }}</dt>
+                            <dd class="text-gray-900 dark:text-gray-100" data-test="recipient-count">{{ 'admin.announcement.preview.recipient-count'|trans({'%count%': preview.recipientCount}) }}</dd>
+                            <dt class="font-medium text-gray-500 dark:text-gray-400">{{ 'admin.announcement.preview.subject'|trans }}</dt>
+                            <dd class="text-gray-900 dark:text-gray-100">{{ preview.subject }}</dd>
+                        </dl>
+                        <pre class="whitespace-pre-wrap break-words font-mono text-sm text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">{{ preview.body }}</pre>
+                        <p class="mt-4 text-sm text-amber-700 dark:text-amber-300">
+                            {{ 'admin.announcement.preview.warning'|trans }}
+                        </p>
+                    </section>
+                {% endif %}
+
+                <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 pt-6">
+                    <a href="{{ path('admin_announcement_index') }}" class="{{ button_secondary }} justify-center">
+                        {{ ux_icon('heroicons:arrow-left', {class: 'w-4 h-4 mr-2'}) }}
+                        {{ 'admin.announcement.form.cancel'|trans }}
+                    </a>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        {% if preview %}
+                            {# The form theme forces primary colors on buttons, so secondary buttons are rendered manually #}
+                            <button type="submit" id="{{ form.preview.vars.id }}" name="{{ form.preview.vars.full_name }}" class="{{ button_secondary }} justify-center">
+                                {{ 'admin.announcement.form.submit.update-preview'|trans }}
+                            </button>
+                            <button type="submit" id="{{ form.test.vars.id }}" name="{{ form.test.vars.full_name }}" class="{{ button_secondary }} justify-center">
+                                {{ ux_icon('heroicons:envelope', {class: 'w-4 h-4 mr-2'}) }}
+                                {{ 'admin.announcement.form.submit.test'|trans }}
+                            </button>
+                            {% do form.preview.setRendered() %}
+                            {% do form.test.setRendered() %}
+                            {{ form_widget(form.send, {label: 'admin.announcement.form.submit.send', attr: {class: button_primary ~ ' justify-center'}}) }}
+                        {% else %}
+                            {{ form_widget(form.preview, {label: 'admin.announcement.form.submit.preview', attr: {class: button_primary ~ ' justify-center'}}) }}
+                            {% do form.test.setRendered() %}
+                            {% do form.send.setRendered() %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -72,6 +72,7 @@ to.
 | Assignable roles                           | all   | all except Admin |
 | Set alias destination and SMTP quota       | ✓     |              |
 | Edit invitation settings of a domain       | all domains | own domain |
+| Send announcements                         | all domains | own domain |
 | Create and delete domains                  | ✓     |              |
 | Reserved names, notifications              | ✓     |              |
 | Settings, API tokens, webhooks, maintenance | ✓    |              |

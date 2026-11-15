@@ -28,6 +28,7 @@ basic settings are first set in the [setup wizard](../operations/initial-setup.m
 | **Sender address**             | `admin@example.org`      | Sender of all emails from Userli. |
 | **Notification address**       | `monitoring@example.org` | Receives the weekly report and reports about suspicious users. |
 | **Support address**            | empty                    | Accounts with the role [*Spam*](roles.md#spam) can only send emails to this address, and see it on their account page. If empty, they can't send any emails. |
+| **Announcement mails per minute** | `60`                 | Maximum number of [announcement](announcements.md) emails sent per minute. Lower it if your mail server or receiving servers throttle bulk mail. |
 
 ## Mailbox encryption
 
