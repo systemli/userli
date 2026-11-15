@@ -10,6 +10,8 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Override;
 
+use const PHP_URL_PORT;
+
 /**
  * Settings for the local dev environment (group "dev"), so links in emails and
  * redirects point to the dev URL instead of the example domain, and security keys
@@ -29,6 +31,7 @@ final class LoadSettingData extends Fixture implements FixtureGroupInterface
 
         // Compose always appends the port, the default port is not part of the URL
         $appUrl = (string) preg_replace('/:80$/', '', $appUrl);
+
         $this->settingsService->set('app_url', $appUrl);
 
         // The RP ID has to be a suffix of every origin, so it is the shared parent of
