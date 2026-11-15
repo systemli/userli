@@ -383,6 +383,7 @@ mail:
     Viele Grüße
     dein %project_name%-Admin-Team
   announcement-footer: Dies ist eine offizielle Mitteilung von %project_name%.
+  announcement-footer-domain: Dies ist eine Mitteilung der Admins von %domain%.
   recovery-subject: Das Passwort zu deinem E-Mail-Konto %email% wird zurückgesetzt
   recovery-body: |
     Hallo %email%,

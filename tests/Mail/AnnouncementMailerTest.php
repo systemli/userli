@@ -14,16 +14,6 @@ class AnnouncementMailerTest extends TestCase
 {
     public function testSendAppendsFooterInAllLocales(): void
     {
-        $translator = $this->createStub(TranslatorInterface::class);
-        $translator->method('trans')
-            ->willReturnCallback(static fn (string $id, array $parameters, ?string $domain, ?string $locale): string => match ($id) {
-                'mail.announcement-footer' => $locale.' footer '.$parameters['%project_name%'],
-                default => 'unexpected',
-            });
-
-        $settings = $this->createStub(SettingsService::class);
-        $settings->method('get')->willReturnMap([['project_name', null, 'example.org']]);
-
         $handler = $this->createMock(MailHandler::class);
         $handler->expects(self::once())
             ->method('send')
@@ -33,6 +23,30 @@ class AnnouncementMailerTest extends TestCase
                 'Maintenance'
             );
 
-        new AnnouncementMailer($handler, $translator, $settings)->send('user@example.org', 'Maintenance', "Hello\nworld\n\n");
+        $this->createMailer($handler)->send('user@example.org', 'Maintenance', "Hello\nworld\n\n", null);
+    }
+
+    public function testBuildBodyNamesDomainForDomainAdmins(): void
+    {
+        self::assertSame(
+            "Hello\n\n-- \nen domain footer example.com\nde domain footer example.com\n",
+            $this->createMailer($this->createStub(MailHandler::class))->buildBody('Hello', 'example.com')
+        );
+    }
+
+    private function createMailer(MailHandler $handler): AnnouncementMailer
+    {
+        $translator = $this->createStub(TranslatorInterface::class);
+        $translator->method('trans')
+            ->willReturnCallback(static fn (string $id, array $parameters, ?string $domain, ?string $locale): string => match ($id) {
+                'mail.announcement-footer' => $locale.' footer '.$parameters['%project_name%'],
+                'mail.announcement-footer-domain' => $locale.' domain footer '.$parameters['%domain%'],
+                default => 'unexpected',
+            });
+
+        $settings = $this->createStub(SettingsService::class);
+        $settings->method('get')->willReturnMap([['project_name', null, 'example.org']]);
+
+        return new AnnouncementMailer($handler, $translator, $settings);
     }
 }

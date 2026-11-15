@@ -42,7 +42,9 @@ final readonly class SendAnnouncementMailHandler
             return;
         }
 
-        $this->mailer->send($user->getEmail(), $announcement->getSubject(), $announcement->getBody());
+        // Without an author who is still admin, fall back to the domain admins' footer
+        $footerDomain = true === $announcement->getAuthor()?->hasRole(Roles::ADMIN) ? null : (string) $domain->getName();
+        $this->mailer->send($user->getEmail(), $announcement->getSubject(), $announcement->getBody(), $footerDomain);
 
         // The mail is out. Failing here would retry the message and send it twice,
         // so a lost counter update is only logged.

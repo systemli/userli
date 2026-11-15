@@ -94,6 +94,8 @@ Feature: Admin - Announcements
 
     Then I should see "example.com"
     And I should see "2 users"
+    And I should see "This is an announcement from the admins of example.com."
+    And I should not see "This is an official announcement from"
 
     When I press "Send to all users"
     Then I should see "The announcement has been queued for sending."

@@ -22,8 +22,8 @@ before their email went out, are skipped as well.
    and message. The message is sent as plain text.
 2. Click **Preview**. The preview shows the email as users will receive it and
    the number of recipients. Userli adds a footer in English and German that
-   marks the email as official announcement of your project (setting
-   **Project name**).
+   names the sender: for admins the project (setting **Project name**), for
+   domain admins the admins of their domain.
 3. Optionally, click **Send test to me** to receive the email at your own
    address.
 4. Click **Send to all users**. If you changed the text after the preview, you

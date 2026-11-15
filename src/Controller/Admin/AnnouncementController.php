@@ -12,7 +12,7 @@ use App\Mail\AnnouncementMailer;
 use App\Service\AnnouncementManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\ClickableInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -73,8 +73,10 @@ final class AnnouncementController extends AbstractController
         $user = $this->getUser();
         $author = $user instanceof User ? $user : null;
         $fingerprint = $model->getFingerprint();
+        $footerDomain = $this->isGranted(Roles::ADMIN) ? null : (string) $domain->getName();
+        $button = $form instanceof Form ? $form->getClickedButton() : null;
 
-        switch ($this->getClickedButtonName($form)) {
+        switch ($button instanceof FormInterface ? $button->getName() : null) {
             case 'send':
                 // Only content the admin has seen in the preview may be sent
                 if ($form->get('previewFingerprint')->getData() !== $fingerprint) {
@@ -98,7 +100,7 @@ final class AnnouncementController extends AbstractController
                 return $this->redirectToRoute('admin_announcement_index');
             case 'test':
                 if (null !== $author) {
-                    $this->mailer->send($author->getEmail(), $model->getSubject(), $model->getBody());
+                    $this->mailer->send($author->getEmail(), $model->getSubject(), $model->getBody(), $footerDomain);
                     $this->addFlash('success', 'admin.announcement.flash.test-sent');
                 }
 
@@ -108,7 +110,7 @@ final class AnnouncementController extends AbstractController
         return $this->renderCreate($form, [
             'domain' => $domain,
             'subject' => $model->getSubject(),
-            'body' => $this->mailer->buildBody($model->getBody()),
+            'body' => $this->mailer->buildBody($model->getBody(), $footerDomain),
             'recipientCount' => $this->manager->countRecipients($domain),
             'fingerprint' => $fingerprint,
             'sendToken' => bin2hex(random_bytes(16)),
@@ -138,21 +140,6 @@ final class AnnouncementController extends AbstractController
             'method' => 'POST',
             'is_admin' => $this->isGranted(Roles::ADMIN),
         ]);
-    }
-
-    /**
-     * @param FormInterface<AnnouncementModel> $form
-     */
-    private function getClickedButtonName(FormInterface $form): ?string
-    {
-        foreach (['send', 'test', 'preview'] as $name) {
-            $button = $form->get($name);
-            if ($button instanceof ClickableInterface && $button->isClicked()) {
-                return $name;
-            }
-        }
-
-        return null;
     }
 
     /**

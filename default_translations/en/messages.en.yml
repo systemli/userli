@@ -388,6 +388,7 @@ mail:
     Sincerely,
     your %project_name% admin team.
   announcement-footer: This is an official announcement from %project_name%.
+  announcement-footer-domain: This is an announcement from the admins of %domain%.
   recovery-subject: The password for your e-mail account %email% will be reset
   recovery-body: |
     Hello %email%,

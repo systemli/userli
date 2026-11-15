@@ -33,13 +33,28 @@ class SendAnnouncementMailHandlerTest extends TestCase
         $mailer = $this->createMock(AnnouncementMailer::class);
         $mailer->expects($this->once())
             ->method('send')
-            ->with('user@example.org', 'Subject', 'Body');
+            ->with('user@example.org', 'Subject', 'Body', 'example.org');
 
         $repository = $this->announcementRepository($this->createAnnouncement());
         $repository->expects($this->once())->method('incrementSentCount')->with(1);
         $repository->expects($this->never())->method('incrementNotSentCount');
 
         $this->createHandler($repository, $user, $mailer)(new SendAnnouncementMail(1, 1));
+    }
+
+    public function testInvokeSendsProjectFooterForAdminAuthor(): void
+    {
+        $author = $this->createUser($this->domain);
+        $author->setRoles([Roles::ADMIN]);
+
+        $mailer = $this->createMock(AnnouncementMailer::class);
+        $mailer->expects($this->once())
+            ->method('send')
+            ->with('user@example.org', 'Subject', 'Body', null);
+
+        $repository = $this->announcementRepository(new Announcement($this->domain, 'Subject', 'Body', $author, 1, 'token'));
+
+        $this->createHandler($repository, $this->createUser($this->domain), $mailer)(new SendAnnouncementMail(1, 1));
     }
 
     public function testInvokeDoesNotRetryWhenCountingFailsAfterSending(): void
