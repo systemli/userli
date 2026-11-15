@@ -1162,7 +1162,7 @@ admin:
         label: Subject
       body:
         label: Message
-        help: Plain text. A short footer that marks the email as official announcement is added automatically.
+        help: Plain text. A short footer that names the sender is added automatically.
       cancel: Cancel
       submit:
         preview: Preview

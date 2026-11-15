@@ -1159,7 +1159,7 @@ admin:
         label: Betreff
       body:
         label: Nachricht
-        help: Reiner Text. Eine kurze Fußzeile, die die E-Mail als offizielle Mitteilung kennzeichnet, wird automatisch angehängt.
+        help: Reiner Text. Eine kurze Fußzeile, die den Absender nennt, wird automatisch angehängt.
       cancel: Abbrechen
       submit:
         preview: Vorschau
