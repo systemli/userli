@@ -30,7 +30,7 @@ class CustomAliasCreateTypeTest extends TypeTestCase
         self::assertEquals('testalias@example.org', $data->getAlias());
     }
 
-    public function testClientSuppliedDomainIsIgnored(): void
+    public function testDomainComesFromOption(): void
     {
         $form = $this->factory->create(CustomAliasCreateType::class, null, ['domain' => 'example.org']);
 
@@ -54,5 +54,14 @@ class CustomAliasCreateTypeTest extends TypeTestCase
         /** @var AliasCreate $data */
         $data = $form->getData();
         self::assertEquals('testalias@example.org', $data->getAlias());
+    }
+
+    public function testArrayAliasIsNotSynchronized(): void
+    {
+        $form = $this->factory->create(CustomAliasCreateType::class, null, ['domain' => 'example.org']);
+
+        $form->submit(['alias' => ['a']]);
+
+        self::assertFalse($form->get('alias')->isSynchronized());
     }
 }

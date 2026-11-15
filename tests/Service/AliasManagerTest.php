@@ -15,6 +15,8 @@ use App\Repository\AliasRepository;
 use App\Service\AliasManager;
 use App\Service\DomainGuesser;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
@@ -386,6 +388,19 @@ class AliasManagerTest extends TestCase
         self::assertSame('myalias@example.org', $alias->getSource());
         self::assertFalse($alias->isRandom());
         self::assertSame('user@example.org', $alias->getDestination());
+    }
+
+    #[DataProvider('invalidLocalParts')]
+    public function testCreateForUserRejectsInvalidLocalPart(string $localPart): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->manager->createForUser($this->createUser(), $localPart);
+    }
+
+    public static function invalidLocalParts(): array
+    {
+        return [[''], ['victim@example.org']];
     }
 
     public function testCreateForUserRandomAlias(): void

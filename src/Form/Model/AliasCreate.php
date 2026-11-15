@@ -7,6 +7,7 @@ namespace App\Form\Model;
 use App\Validator\EmailAllowedSymbols;
 use App\Validator\EmailAvailable;
 use App\Validator\EmailDomain;
+use App\Validator\EmailLength;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class AliasCreate
@@ -19,6 +20,7 @@ final class AliasCreate
     #[EmailAvailable]
     #[EmailAllowedSymbols]
     #[EmailDomain]
+    #[EmailLength(minLength: 3, maxLength: 32)]
     private string $alias;
 
     #[Assert\Length(max: 40)]

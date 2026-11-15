@@ -108,6 +108,21 @@ Feature: User
     And I should see "The username contains unexpected characters."
     And the response status code should be 200
 
+  @fail-to-create-custom-alias-with-foreign-domain
+  Scenario: Fail to create custom alias with a client-supplied domain
+    When I am authenticated as "user@example.org"
+    And I am on "/account/alias"
+    And I set the placeholder "__token__" from field "create_custom_alias__token"
+    And I have the request params for "create_custom_alias":
+      | alias  | user2       |
+      | domain | example.com |
+      | _token | __token__   |
+    And I request "POST /account/alias/create"
+
+    Then I should be on "/account/alias"
+    And I should see "This form should not contain extra fields."
+    And I should not see "user2@example.org"
+
   @fail-to-create-empty-custom-alias
   Scenario: Fail to create empty custom alias
     When I am authenticated as "user@example.org"

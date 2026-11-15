@@ -33,11 +33,11 @@ final class CustomAliasCreateType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SUBMIT, static function (FormEvent $event): void {
             $data = $event->getData();
 
-            if (!is_array($data) || empty($data['alias'])) {
+            if (!is_array($data) || !isset($data['alias']) || !is_string($data['alias'])) {
                 return;
             }
 
-            $data['alias'] = strtolower((string) $data['alias']);
+            $data['alias'] = strtolower($data['alias']);
             $event->setData($data);
         });
     }
