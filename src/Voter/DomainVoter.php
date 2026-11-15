@@ -15,7 +15,6 @@ use App\Form\Model\UserAdminModel;
 use App\Form\Model\VoucherModel;
 use App\Repository\AliasRepository;
 use App\Service\DomainGuesser;
-use Doctrine\ORM\EntityNotFoundException;
 use Override;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -92,7 +91,7 @@ final class DomainVoter extends Voter
             return false;
         }
 
-        if ($subject instanceof Alias && $this->isOwnedByAdmin($subject)) {
+        if ($subject instanceof Alias && $this->aliasRepository->isSourceOwnedByAdmin((string) $subject->getSource())) {
             return false;
         }
 
@@ -167,27 +166,8 @@ final class DomainVoter extends Voter
 
     private function voteOnAliasAdminModel(AliasAdminModel $model, Domain $currentDomain): bool
     {
-        if ($currentDomain->getId() !== $this->domainGuesser->guess($model->getSource())?->getId()) {
-            return false;
-        }
-
-        foreach ($this->aliasRepository->findBy(['source' => $model->getSource(), 'deleted' => false]) as $existing) {
-            if ($this->isOwnedByAdmin($existing)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private function isOwnedByAdmin(Alias $alias): bool
-    {
-        try {
-            return true === $alias->getUser()?->hasRole(Roles::ADMIN);
-        } catch (EntityNotFoundException) {
-            // DomainFilter hides users of other domains; AliasController handles those.
-            return false;
-        }
+        return $currentDomain->getId() === $this->domainGuesser->guess($model->getSource())?->getId()
+            && !$this->aliasRepository->isSourceOwnedByAdmin((string) $model->getSource());
     }
 
     private function voteOnVoucher(string $attribute, Voucher $voucher, Domain $currentDomain): bool
