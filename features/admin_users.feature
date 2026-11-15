@@ -89,6 +89,22 @@ Feature: Settings (Users)
     And the user "new@example.org" should have passwordChangeRequired
 
   @settings-users
+  Scenario: Admin cannot create a user for an existing alias address
+    Given the following Alias exists:
+      | source              | destination       |
+      | aliased@example.org | admin@example.org |
+    And I am authenticated as "admin@example.org"
+    When I am on "/admin/users/create"
+
+    When I fill in "user_admin_email" with "aliased@example.org"
+    And I fill in "user_admin_plainPassword_first" with "securePassword123!"
+    And I fill in "user_admin_plainPassword_second" with "securePassword123!"
+    And I press "Create"
+
+    Then the response status code should be 422
+    And I should see "The e-mail address is already taken."
+
+  @settings-users
   Scenario: Admin can create a user with a complex password
     Given I am authenticated as "admin@example.org"
     When I am on "/admin/users/create"
