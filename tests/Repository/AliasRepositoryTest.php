@@ -56,6 +56,20 @@ class AliasRepositoryTest extends KernelTestCase
         self::assertFalse($this->repository->isSourceOwnedByAdmin('unknown@domain-b.org'));
     }
 
+    public function testIsSourceOwnedByAdminTreatsAliasWithoutOwnerAsAdminOwned(): void
+    {
+        $alias = new Alias();
+        $alias->setSource('forward@domain-b.org');
+        $alias->setDestination('external@example.com');
+        $alias->setDomain($this->domainB);
+        $this->em->persist($alias);
+        $this->em->flush();
+        $this->em->clear();
+        $this->enableDomainFilter($this->domainB);
+
+        self::assertTrue($this->repository->isSourceOwnedByAdmin('forward@domain-b.org'));
+    }
+
     public function testIsSourceOwnedByAdminDoesNotLoadUsersOrLeakFilter(): void
     {
         $admin = $this->createUser('admin@domain-a.org', $this->domainA, [Roles::ADMIN]);

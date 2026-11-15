@@ -142,8 +142,11 @@ final readonly class AliasManager
             $alias->setUser($model->getUser());
         }
 
-        $alias->setDestination($model->getDestination());
-        $alias->setSmtpQuotaLimits($model->getSmtpQuotaLimits());
+        // Only the admin form has the destination and quota fields
+        if ($this->security->isGranted(Roles::ADMIN)) {
+            $alias->setDestination($model->getDestination());
+            $alias->setSmtpQuotaLimits($model->getSmtpQuotaLimits());
+        }
 
         $this->applyDefaults($alias, $followsUser);
 
