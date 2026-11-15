@@ -51,6 +51,7 @@ final class AliasController extends AbstractController
             [
                 'action' => $this->generateUrl('aliases_create'),
                 'method' => 'post',
+                'domain' => $user->getDomain()->getName(),
             ]
         );
 
@@ -81,7 +82,7 @@ final class AliasController extends AbstractController
 
         $randomAliasCreateForm = $this->createForm(RandomAliasCreateType::class, new AliasCreate());
         $aliasCreate = new AliasCreate();
-        $customAliasCreateForm = $this->createForm(CustomAliasCreateType::class, $aliasCreate);
+        $customAliasCreateForm = $this->createForm(CustomAliasCreateType::class, $aliasCreate, ['domain' => $user->getDomain()->getName()]);
 
         $randomAliasCreateForm->handleRequest($request);
         $customAliasCreateForm->handleRequest($request);

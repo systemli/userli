@@ -77,6 +77,7 @@ class EmailAllowedSymbolsValidatorTest extends ConstraintValidatorTestCase
             ['!nvalid@example.org'],
             ['user+name@example.org'],
             ['user name@example.org'],
+            ['user@example.org@example.com'],
         ];
     }
 }

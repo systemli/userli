@@ -7,18 +7,20 @@ namespace App\Form\Model;
 use App\Validator\EmailAllowedSymbols;
 use App\Validator\EmailAvailable;
 use App\Validator\EmailDomain;
+use App\Validator\EmailLength;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class AliasCreate
 {
     /**
      * Full email address (alias@domain).
-     * The form combines the local part with the domain before submission.
+     * The form appends the user's domain to the submitted local part.
      */
-    #[Assert\NotNull]
+    #[Assert\NotBlank]
     #[EmailAvailable]
     #[EmailAllowedSymbols]
     #[EmailDomain]
+    #[EmailLength(minLength: 3, maxLength: 32)]
     private string $alias;
 
     #[Assert\Length(max: 40)]

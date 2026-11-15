@@ -16,6 +16,7 @@ use App\Handler\DeleteHandler;
 use App\Helper\RandomStringGenerator;
 use App\Repository\AliasRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -95,6 +96,10 @@ final readonly class AliasManager
      */
     public function createForUser(User $user, ?string $localPart = null): ?Alias
     {
+        if (null !== $localPart && ('' === $localPart || str_contains($localPart, '@'))) {
+            throw new InvalidArgumentException('Invalid alias local part.');
+        }
+
         $random = null === $localPart;
 
         $aliases = $this->repository->findByUser($user, $random);

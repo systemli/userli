@@ -15,6 +15,7 @@ Custom aliases have a name you choose, for example `newsletter@example.org`.
 
 * You can create up to **3** custom aliases.
 * Allowed are lowercase letters, digits and `-`, `_` and `.`.
+* Use 3 to 32 characters.
 * The name must not be in use or reserved.
 * **Custom aliases can't be deleted by you.** Choose carefully. If you need
   one removed, contact your provider.

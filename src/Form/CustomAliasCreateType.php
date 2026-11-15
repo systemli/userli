@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use App\Form\DataTransformer\TextToEmailTransformer;
 use App\Form\Model\AliasCreate;
 use Override;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,19 +26,18 @@ final class CustomAliasCreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('alias', TextType::class, ['label' => 'form.new-custom-alias'])
-            ->add('domain', HiddenType::class, ['mapped' => false])
+            ->add($builder->create('alias', TextType::class, ['label' => 'form.new-custom-alias'])
+                ->addViewTransformer(new TextToEmailTransformer($options['domain'])))
             ->add('submit', SubmitType::class, ['label' => 'form.create-custom-alias']);
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, static function (FormEvent $event): void {
             $data = $event->getData();
 
-            if (!is_array($data) || empty($data['alias']) || empty($data['domain'])) {
+            if (!is_array($data) || !isset($data['alias']) || !is_string($data['alias'])) {
                 return;
             }
 
-            // Combine local part + domain into full email address
-            $data['alias'] = strtolower((string) $data['alias']).'@'.$data['domain'];
+            $data['alias'] = strtolower($data['alias']);
             $event->setData($data);
         });
     }
@@ -49,6 +48,8 @@ final class CustomAliasCreateType extends AbstractType
         $resolver->setDefaults([
             'data_class' => AliasCreate::class,
         ]);
+        $resolver->setRequired('domain');
+        $resolver->setAllowedTypes('domain', 'string');
     }
 
     #[Override]

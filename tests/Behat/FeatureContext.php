@@ -518,7 +518,7 @@ class FeatureContext extends MinkContext
     public function iHaveTheRequestParams(string $field, TableNode $table): void
     {
         foreach ($table->getRowsHash() as $var => $value) {
-            $this->requestParams[$field][$var] = $value;
+            $this->requestParams[$field][$var] = $this->replacePlaceholders($value);
         }
     }
 
@@ -646,6 +646,22 @@ class FeatureContext extends MinkContext
         }
 
         $this->fillField($field, $code);
+    }
+
+    /**
+     * @When I set the placeholder :name from field :fieldId
+     *
+     * @throws Exception
+     */
+    public function iSetPlaceholderFromField(string $name, string $fieldId): void
+    {
+        $element = $this->getSession()->getPage()->find('css', sprintf('input[id="%s"]', $fieldId));
+
+        if (null === $element) {
+            throw new Exception(sprintf('Field "%s" not found', $fieldId));
+        }
+
+        $this->setPlaceholder($name, $element->getValue());
     }
 
     /**

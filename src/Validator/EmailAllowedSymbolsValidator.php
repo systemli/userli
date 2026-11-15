@@ -26,7 +26,8 @@ final class EmailAllowedSymbolsValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, 'string');
         }
 
-        [$localPart] = explode('@', $value);
+        $pos = strrpos($value, '@');
+        $localPart = false === $pos ? $value : substr($value, 0, $pos);
 
         if (1 !== preg_match('/^[a-z0-9\-_.]*$/ui', $localPart)) {
             $this->context->addViolation('registration.email-unexpected-characters');
