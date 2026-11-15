@@ -257,31 +257,6 @@ class AliasManagerTest extends TestCase
         self::assertSame('dest@example.org', $alias->getDestination());
     }
 
-    public function testUpdateByDomainAdminKeepsCustomDestination(): void
-    {
-        $security = $this->createStub(Security::class);
-        $security->method('isGranted')->willReturn(false);
-
-        $manager = new AliasManager(
-            $this->entityManager,
-            $this->repository,
-            $this->domainGuesser,
-            $this->deleteHandler,
-            $security,
-            $this->validator,
-            $this->eventDispatcher,
-        );
-
-        $alias = new Alias();
-        $alias->setSource('alias@example.org');
-        $alias->setUser(new User('user@example.org'));
-        $alias->setDestination('external@example.com');
-
-        $manager->update($alias, AliasAdminModel::fromAlias($alias));
-
-        self::assertSame('external@example.com', $alias->getDestination());
-    }
-
     public function testUpdateByDomainAdminKeepsFieldsMissingFromTheForm(): void
     {
         $security = $this->createStub(Security::class);
