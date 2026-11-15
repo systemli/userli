@@ -13,9 +13,9 @@ final class AliasCreate
 {
     /**
      * Full email address (alias@domain).
-     * The form combines the local part with the domain before submission.
+     * The form appends the user's domain to the submitted local part.
      */
-    #[Assert\NotNull]
+    #[Assert\NotBlank]
     #[EmailAvailable]
     #[EmailAllowedSymbols]
     #[EmailDomain]

@@ -96,6 +96,30 @@ Feature: User
     And I should see "The e-mail address is already taken."
     And the response status code should be 200
 
+  @fail-to-create-custom-alias-with-domain
+  Scenario: Fail to create custom alias with a domain in the local part
+    When I am authenticated as "user@example.org"
+    And I am on "/account/alias"
+    And I fill in the following:
+      | create_custom_alias_alias | user2@example.org |
+    And I press "Add"
+
+    Then I should be on "/account/alias"
+    And I should see "The username contains unexpected characters."
+    And the response status code should be 200
+
+  @fail-to-create-empty-custom-alias
+  Scenario: Fail to create empty custom alias
+    When I am authenticated as "user@example.org"
+    And I am on "/account/alias"
+    And I fill in the following:
+      | create_custom_alias_alias | |
+    And I press "Add"
+
+    Then I should be on "/account/alias"
+    And I should see "This value should not be blank."
+    And the response status code should be 200
+
   @delete-alias
   Scenario: User tries to delete a custom alias via POST
     When I am authenticated as "user@example.org"

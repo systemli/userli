@@ -19,61 +19,40 @@ class CustomAliasCreateTypeTest extends TypeTestCase
 
     public function testSubmitValidData(): void
     {
-        $localPart = 'testalias';
-        $domain = 'example.org';
-        $formData = ['alias' => $localPart, 'domain' => $domain];
+        $form = $this->factory->create(CustomAliasCreateType::class, null, ['domain' => 'example.org']);
 
-        $form = $this->factory->create(CustomAliasCreateType::class);
-
-        $form->submit($formData);
+        $form->submit(['alias' => 'testalias']);
 
         self::assertTrue($form->isSynchronized());
 
         /** @var AliasCreate $data */
         $data = $form->getData();
-        // alias now contains the full email
-        self::assertEquals($localPart.'@'.$domain, $data->getAlias());
+        self::assertEquals('testalias@example.org', $data->getAlias());
     }
 
-    public function testSubmitWithoutDomainKeepsLocalPart(): void
+    public function testClientSuppliedDomainIsIgnored(): void
     {
-        $localPart = 'testalias';
-        $formData = ['alias' => $localPart];
+        $form = $this->factory->create(CustomAliasCreateType::class, null, ['domain' => 'example.org']);
 
-        $form = $this->factory->create(CustomAliasCreateType::class);
+        $form->submit(['alias' => 'testalias', 'domain' => 'example.com']);
 
-        $form->submit($formData);
-
-        self::assertTrue($form->isSynchronized());
+        self::assertFalse($form->has('domain'));
 
         /** @var AliasCreate $data */
         $data = $form->getData();
-        // Without domain, alias stays as local part only
-        self::assertEquals($localPart, $data->getAlias());
+        self::assertEquals('testalias@example.org', $data->getAlias());
     }
 
     public function testAliasIsLowercased(): void
     {
-        $localPart = 'TestAlias';
-        $domain = 'example.org';
-        $formData = ['alias' => $localPart, 'domain' => $domain];
+        $form = $this->factory->create(CustomAliasCreateType::class, null, ['domain' => 'example.org']);
 
-        $form = $this->factory->create(CustomAliasCreateType::class);
-
-        $form->submit($formData);
+        $form->submit(['alias' => 'TestAlias']);
 
         self::assertTrue($form->isSynchronized());
 
         /** @var AliasCreate $data */
         $data = $form->getData();
-        self::assertEquals('testalias@'.$domain, $data->getAlias());
-    }
-
-    public function testDomainFieldIsUnmapped(): void
-    {
-        $form = $this->factory->create(CustomAliasCreateType::class);
-
-        $domainField = $form->get('domain');
-        self::assertFalse($domainField->getConfig()->getMapped());
+        self::assertEquals('testalias@example.org', $data->getAlias());
     }
 }
