@@ -181,6 +181,7 @@ final class AliasRepository extends ServiceEntityRepository
 
     /**
      * Whether an active alias with this source belongs to an admin, in any domain.
+     * An alias without owner counts too: only admins can create one.
      *
      * Counts only, so no User entity of another domain ends up in the identity map.
      */
@@ -196,10 +197,10 @@ final class AliasRepository extends ServiceEntityRepository
         try {
             return (int) $this->createQueryBuilder('a')
                 ->select('COUNT(a.id)')
-                ->join('a.user', 'u')
+                ->leftJoin('a.user', 'u')
                 ->where('a.source = :source')
                 ->andWhere('a.deleted = :deleted')
-                ->andWhere('u.roles LIKE :role')
+                ->andWhere('u.id IS NULL OR u.roles LIKE :role')
                 ->setParameter('source', $source)
                 ->setParameter('deleted', false)
                 ->setParameter('role', '%'.Roles::ADMIN.'%')
