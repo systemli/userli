@@ -40,6 +40,15 @@ class SendAnnouncementHandlerTest extends TestCase
         self::assertSame(AnnouncementStatus::DONE, $announcement->getStatus());
     }
 
+    public function testInvokeQueuesAfterMailsPendingFromOtherAnnouncements(): void
+    {
+        $announcement = $this->createAnnouncement();
+
+        $this->createHandler($announcement, $this->recipients([11, 12, 13]), $this->recordingBus(), 2, 3)(new SendAnnouncement(7));
+
+        self::assertSame([60_000, 120_000, 120_000], $this->dispatchedDelays());
+    }
+
     public function testInvokeResumesAfterLastQueuedUser(): void
     {
         $announcement = $this->createAnnouncement();
@@ -172,10 +181,11 @@ class SendAnnouncementHandlerTest extends TestCase
         }, $this->dispatched);
     }
 
-    private function createHandler(?Announcement $announcement, UserRepository $userRepository, MessageBusInterface $bus, int $mailsPerMinute): SendAnnouncementHandler
+    private function createHandler(?Announcement $announcement, UserRepository $userRepository, MessageBusInterface $bus, int $mailsPerMinute, int $pendingMails = 0): SendAnnouncementHandler
     {
         $repository = $this->createStub(AnnouncementRepository::class);
         $repository->method('find')->willReturn($announcement);
+        $repository->method('countPendingMails')->willReturn($pendingMails);
 
         $em = $this->createStub(EntityManagerInterface::class);
         $em->method('wrapInTransaction')->willReturnCallback(static fn (callable $callback): mixed => $callback($em));

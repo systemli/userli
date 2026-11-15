@@ -12,6 +12,7 @@ use App\Message\SendAnnouncementMail;
 use App\Repository\AnnouncementRepository;
 use App\Repository\UserRepository;
 use App\Service\SettingsService;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -22,7 +23,9 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
  * Fans out an announcement into one message per recipient.
  *
  * Messages are spread over time with a DelayStamp, so that at most
- * `announcement_mails_per_minute` mails become due per minute.
+ * `announcement_mails_per_minute` mails become due per minute. Mails still
+ * pending from other announcements are queued first, so the limit holds
+ * across announcements.
  *
  * Recipients are queued in batches. Each batch and the progress marker on the
  * announcement are written in one transaction, so a retried message resumes
@@ -34,6 +37,9 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
 final readonly class SendAnnouncementHandler
 {
     private const int BATCH_SIZE = 500;
+
+    /** Older announcements are ignored, so that lost counter updates can't delay new ones forever. */
+    private const string PENDING_WINDOW = '-7 days';
 
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -74,8 +80,9 @@ final readonly class SendAnnouncementHandler
         }
 
         $mailsPerMinute = max(1, (int) $this->settingsService->get('announcement_mails_per_minute'));
+        $offset = $this->announcementRepository->countPendingMails((int) $announcement->getId(), new DateTimeImmutable(self::PENDING_WINDOW));
 
-        while ($this->queueNextBatch($announcement, $domain, $mailsPerMinute)) {
+        while ($this->queueNextBatch($announcement, $domain, $mailsPerMinute, $offset)) {
             // Continue until all recipients are queued
         }
 
@@ -88,7 +95,7 @@ final readonly class SendAnnouncementHandler
     /**
      * @return bool whether a batch was queued
      */
-    private function queueNextBatch(Announcement $announcement, Domain $domain, int $mailsPerMinute): bool
+    private function queueNextBatch(Announcement $announcement, Domain $domain, int $mailsPerMinute, int $offset): bool
     {
         $userIds = $this->userRepository->findAnnouncementRecipientIds($domain, $announcement->getLastQueuedUserId(), self::BATCH_SIZE);
 
@@ -96,11 +103,11 @@ final readonly class SendAnnouncementHandler
             return false;
         }
 
-        $this->entityManager->wrapInTransaction(function () use ($announcement, $userIds, $mailsPerMinute): void {
+        $this->entityManager->wrapInTransaction(function () use ($announcement, $userIds, $mailsPerMinute, $offset): void {
             $count = $announcement->getRecipientCount();
 
             foreach ($userIds as $userId) {
-                $delay = intdiv($count, $mailsPerMinute) * 60_000;
+                $delay = intdiv($offset + $count, $mailsPerMinute) * 60_000;
                 $this->bus->dispatch(
                     new SendAnnouncementMail((int) $announcement->getId(), $userId),
                     $delay > 0 ? [new DelayStamp($delay)] : []

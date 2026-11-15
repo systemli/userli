@@ -7,6 +7,7 @@ namespace App\Repository;
 use App\Entity\Announcement;
 use App\Entity\Domain;
 use App\Enum\AnnouncementStatus;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -40,6 +41,25 @@ final class AnnouncementRepository extends ServiceEntityRepository
             ->setParameter('done', AnnouncementStatus::DONE->value)
             ->setParameter('id', $id)
             ->execute();
+    }
+
+    /**
+     * Counts the queued mails of other announcements that are neither sent nor given up yet.
+     */
+    public function countPendingMails(int $excludeId, DateTimeImmutable $since): int
+    {
+        // A positive last queued user ID means the recipient count holds the number of queued mails
+        $pending = (int) $this->createQueryBuilder('a')
+            ->select('SUM(a.recipientCount - a.sentCount - a.notSentCount)')
+            ->where('a.id != :id')
+            ->andWhere('a.lastQueuedUserId > 0')
+            ->andWhere('a.creationTime > :since')
+            ->setParameter('id', $excludeId)
+            ->setParameter('since', $since)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return max(0, $pending);
     }
 
     /**

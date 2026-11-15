@@ -51,4 +51,6 @@ The emails are sent in the background by the [worker](../operations/background-s
 from the [sender address](settings.md#email-configuration). To avoid overloading
 the mail server, at most **Announcement mails per minute** emails are sent per
 minute (default `60`, see [Settings](settings.md#email-configuration)). An
-announcement to 6000 users therefore takes about 100 minutes.
+announcement to 6000 users therefore takes about 100 minutes. The limit applies
+to all announcements together: a new announcement starts after the emails still
+pending from earlier ones.
