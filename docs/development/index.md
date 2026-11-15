@@ -64,7 +64,7 @@ make fixtures
 
 This
 
-1. loads sample data (users, domains, API tokens, ...) and the dev settings (`app_url`), and
+1. loads sample data (users, domains, API tokens, ...) and the dev settings (`app_url` and the WebAuthn RP ID `localhost` with Keycloak and Roundcube as additional origins), so security keys work right away, and
 2. starts Dovecot and Roundcube (`mail` profile).
 
 When it finishes, open [http://userli.localhost](http://userli.localhost) and log in with `admin@example.org` / `password`.
