@@ -8,13 +8,19 @@ in if you forget your password.
 
 ![Two-factor authentication](../assets/images/twofactor.png){class="screenshot"}
 
-With two-factor authentication (2FA) you need a 6-digit code from an
-authenticator app on your phone, in addition to your password, to sign in to
-the web interface. The code changes every 30 seconds.
+With two-factor authentication (2FA) you confirm every sign-in to the web
+interface with a second factor, in addition to your password. Go to
+**Account settings → Two-Factor Authentication** to see which factors are set
+up. You can use one or several of them:
 
-You need an authenticator app (TOTP), for example
-[Aegis](https://getaegis.app/) (Android), Tofu (iOS) or the app of your
-password manager.
+- **Authenticator app**: a 6-digit code that changes every 30 seconds, from an
+  app like [Aegis](https://getaegis.app/) (Android), Tofu (iOS) or your
+  password manager.
+- **Security keys**: a USB or NFC key like a YubiKey or Nitrokey, or the screen
+  lock of your phone or computer. Security keys can't be phished: they only
+  work on the website they were added on.
+- **Backup codes**: one-time codes for when you lose your phone or key. They
+  are created when you set up your first factor.
 
 !!! note
 
@@ -22,36 +28,62 @@ password manager.
     uses Roundcube, to webmail. Depending on your provider, email programs
     then need an [app password](app-passwords.md) instead of your password.
 
-### Turn on 2FA
+### Set up an authenticator app
 
-1. Go to **Account settings → Two-Factor Authentication**.
+1. Go to **Account settings → Two-Factor Authentication** and click **Set up**
+   under *Authenticator App*.
 2. Enter your password and click **Set up**.
 3. Scan the **QR code** with your authenticator app. If you can't scan it,
    copy the **Setup Key** and enter it manually in the app.
 4. Enter the 6-digit code shown in the app under **Authentication code** and
    click **Verify**.
-5. You now see six **backup codes**. Each backup code can be used **once**
-   instead of a code from the app – for example, if you lose your phone. Copy
+5. If this is your first factor, you now see your six **backup codes**. Copy
    them and store them safely, check *Backup codes stored securely* and click
    **Verify**.
 
-2FA is now active.
+### Add a security key
 
-!!! warning
+![Security keys](../assets/images/twofactor-security-keys.png){class="screenshot"}
 
-    The backup codes are shown only once. To get new ones, turn 2FA off and on
-    again.
+1. Go to **Account settings → Two-Factor Authentication** and click **Add**
+   under *Security Keys*.
+2. Enter a **Name** that helps you recognize the key later, for example
+   *YubiKey on keychain*, and your password.
+3. Click **Add security key** and follow the instructions of your browser:
+   insert and touch the key, or confirm with your device or password manager.
+4. If this is your first factor, you now see your six **backup codes**. Store
+   them safely, check *Backup codes stored securely* and click **Verify**.
+
+Add a second key as a spare, so you can still sign in if you lose one. To
+remove a key, click the **×** next to it and confirm with your password.
+
+### Backup codes
+
+Each backup code works **once**. The overview shows how many codes are left
+and warns when only a few remain. The codes are shown only once, right after
+they are created, so store them before you continue.
+
+To get new codes, click **Regenerate** under *Backup Codes* and confirm with
+your password. Your old codes stop working.
 
 ### Sign in with 2FA
 
-After entering your email address and password, open your authenticator app
-and enter the current code under **Authentication code**. Instead of the code
-you can also enter one of your unused backup codes.
+After entering your email address and password, you confirm the sign-in with
+one of your factors:
+
+- With security keys, click **Use security key** and follow the instructions
+  of your browser.
+- With an authenticator app, enter the current code under
+  **Authentication code**.
+
+The page offers to switch to your other factors. To use a backup code, click
+**Use a backup code** – or enter it instead of the code from the app.
 
 ### Turn off 2FA
 
-Go to **Account settings → Two-Factor Authentication**, enter your password and
-click **Disable**.
+Remove all security keys and turn off the authenticator app (**Manage → Disable**
+under *Authenticator App*). When the last factor is gone, 2FA is off and the
+backup codes are deleted.
 
 ## Recovery token
 

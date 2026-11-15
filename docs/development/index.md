@@ -64,7 +64,7 @@ make fixtures
 
 This
 
-1. loads sample data (users, domains, API tokens, ...) and the dev settings (`app_url`), and
+1. loads sample data (users, domains, API tokens, ...) and the dev settings (`app_url`, which is also the WebAuthn RP ID, so security keys work right away in Userli), and
 2. starts Dovecot and Roundcube (`mail` profile).
 
 When it finishes, open [http://userli.localhost](http://userli.localhost) and log in with `admin@example.org` / `password`.
@@ -154,6 +154,25 @@ To inspect container logs:
     ```shell
     docker compose logs -f userli
     ```
+
+## Roundcube plugin
+
+Roundcube uses the released [Roundcube Userli plugin](https://github.com/systemli/roundcube-userli-plugin).
+To work on a local checkout instead, mount it in a `docker-compose.override.yml`:
+
+```yaml
+---
+services:
+  roundcube:
+    environment:
+      ROUNDCUBEMAIL_COMPOSER_PLUGINS: ""
+    volumes:
+      - ../roundcube-userli-plugin:/var/www/html/plugins/userli:ro
+```
+
+To sign in to Roundcube with a security key, set **Additional Security Key
+Origins** to `http://localhost:8001` in the admin settings. Both ports share
+the security key domain `localhost`.
 
 ## Troubleshooting
 

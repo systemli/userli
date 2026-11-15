@@ -125,10 +125,8 @@ final readonly class UserManager
         }
 
         // Deactivate 2FA if checkbox was unchecked
-        if (!$model->isTotpConfirmed() && $user->isTotpAuthenticationEnabled()) {
-            $user->setTotpSecret(null);
-            $user->setTotpConfirmed(false);
-            $user->setTotpBackupCodes([]);
+        if (!$model->isTotpConfirmed() && $user->isTwofactorEnabled()) {
+            $user->resetTwofactor();
         }
 
         $this->em->flush();

@@ -1,5 +1,31 @@
 # Upgrade documentation
 
+## Upgrade to 6.13.0
+
+### Security keys (WebAuthn) as second factor
+
+Users can add security keys as second factor. The migration adds the table
+`webauthn_credentials` and the column `users.webauthn_user_handle`.
+
+**Action required:**
+
+1. Run the database migration:
+   ```shell
+   bin/console doctrine:migrations:migrate --no-interaction
+   ```
+2. Security keys are bound to a domain, by default the host of the application
+   URL. If other services like Keycloak or Roundcube should accept them, set
+   [Security Key Domain and Additional Security Key Origins](docs/admin/settings.md#two-factor-authentication)
+   in **Admin → Settings** before users add keys. Changing the domain later makes
+   registered keys unusable.
+3. For security keys and backup codes in Keycloak, update the
+   [Keycloak provider](docs/operations/integrations/keycloak.md#two-factor-authentication)
+   and add its new authenticators to the browser flow. The provider now gets
+   the challenge from Userli, so update Userli and the provider together.
+4. For security keys in webmail, update the
+   [Roundcube plugin](docs/operations/integrations/roundcube.md#security-keys)
+   to version 1.1 or later.
+
 ## Upgrade to 6.11.0
 
 ### App passwords required with 2FA
