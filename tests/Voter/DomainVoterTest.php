@@ -13,6 +13,7 @@ use App\Form\Model\AliasAdminModel;
 use App\Form\Model\DomainAdminModel;
 use App\Form\Model\UserAdminModel;
 use App\Form\Model\VoucherModel;
+use App\Repository\AliasRepository;
 use App\Service\DomainGuesser;
 use App\Voter\DomainVoter;
 use PHPUnit\Framework\TestCase;
@@ -499,6 +500,50 @@ class DomainVoterTest extends TestCase
         self::assertSame(VoterInterface::ACCESS_DENIED, $result);
     }
 
+    public function testDomainAdminCannotViewOrEditAliasOwnedByAdmin(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainA);
+        $admin = new User('postmaster@domain-a.org');
+        $admin->setRoles([Roles::ADMIN]);
+        $alias = new Alias();
+        $alias->setDomain($this->domainA);
+        $alias->setSource('abuse@domain-a.org');
+        $alias->setUser($admin);
+
+        foreach ([DomainVoter::VIEW, DomainVoter::EDIT] as $attribute) {
+            $result = $voter->vote($this->createToken($this->domainAdminA), $alias, [$attribute]);
+            self::assertSame(VoterInterface::ACCESS_DENIED, $result, $attribute);
+        }
+    }
+
+    public function testDomainAdminCannotCreateViaAliasModelForSourceOwnedByAdmin(): void
+    {
+        $admin = new User('postmaster@domain-a.org');
+        $admin->setRoles([Roles::ADMIN]);
+        $existing = new Alias();
+        $existing->setUser($admin);
+        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainA, existingAliases: [$existing]);
+        $model = new AliasAdminModel();
+        $model->setSource('abuse@domain-a.org');
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $model, [DomainVoter::CREATE]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
+    }
+
+    public function testDomainAdminCanCreateViaAliasModelForSourceOwnedByUser(): void
+    {
+        $user = new User('user@domain-a.org');
+        $user->setRoles([Roles::USER]);
+        $existing = new Alias();
+        $existing->setUser($user);
+        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainA, existingAliases: [$existing]);
+        $model = new AliasAdminModel();
+        $model->setSource('team@domain-a.org');
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $model, [DomainVoter::CREATE]);
+        self::assertSame(VoterInterface::ACCESS_GRANTED, $result);
+    }
+
     // --- Full admin: alias operations ---
 
     public function testFullAdminCanCreateAlias(): void
@@ -815,7 +860,10 @@ class DomainVoterTest extends TestCase
 
     // --- Helpers ---
 
-    private function createVoter(bool $isAdmin = false, bool $isDomainAdmin = false, ?Domain $guessedDomain = null): DomainVoter
+    /**
+     * @param Alias[] $existingAliases
+     */
+    private function createVoter(bool $isAdmin = false, bool $isDomainAdmin = false, ?Domain $guessedDomain = null, array $existingAliases = []): DomainVoter
     {
         $security = $this->createStub(Security::class);
         $security->method('isGranted')->willReturnCallback(
@@ -831,7 +879,10 @@ class DomainVoterTest extends TestCase
         $domainGuesser = $this->createStub(DomainGuesser::class);
         $domainGuesser->method('guess')->willReturn($guessedDomain);
 
-        return new DomainVoter($security, $domainGuesser);
+        $aliasRepository = $this->createStub(AliasRepository::class);
+        $aliasRepository->method('findBy')->willReturn($existingAliases);
+
+        return new DomainVoter($security, $domainGuesser, $aliasRepository);
     }
 
     private function createToken(?User $user = null): TokenInterface

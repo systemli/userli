@@ -209,6 +209,20 @@ Feature: Admin (Aliases)
     And I should see "Edit Alias"
 
   @aliases
+  Scenario: Domain admin cannot edit alias owned by an admin
+    Given the following User exists:
+      | email             | password | roles      |
+      | admin@example.com | asdasd   | ROLE_ADMIN |
+    And the following Alias exists:
+      | source                 | destination       | user_id |
+      | adminalias@example.com | admin@example.com | 4       |
+    And I am authenticated as "domain@example.com"
+    And I set the placeholder "__alias_id__" with property "id" for alias "adminalias@example.com"
+    When I am on "/admin/aliases/edit/__alias_id__"
+
+    Then the response status code should be 403
+
+  @aliases
   Scenario: Domain admin cannot view alias in different domain
     Given the following Alias exists:
       | source                  | destination       |
