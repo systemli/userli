@@ -22,7 +22,7 @@ final class UserKeyExpiredNotificationHandler
     ) {
     }
 
-    public function handleMessage(UserKeyExpiredNotification $message): void
+    public function __invoke(UserKeyExpiredNotification $message): void
     {
         $user = $this->entityManager->getRepository(User::class)->find($message->userId);
         if (null === $user) {
