@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Schedule;
 
+use App\Message\NotifyUserKeyExpired;
 use App\Message\PruneExpiredAppPasswords;
 use App\Message\PruneUserNotifications;
 use App\Message\PruneWebhookDeliveries;
@@ -29,7 +30,7 @@ class MaintenanceScheduleTest extends TestCase
             $recurringMessages,
         );
 
-        self::assertCount(7, $recurringMessages);
+        self::assertCount(8, $recurringMessages);
         self::assertContains(PruneExpiredAppPasswords::class, $messageTypes);
         self::assertContains(PruneWebhookDeliveries::class, $messageTypes);
         self::assertContains(PruneUserNotifications::class, $messageTypes);
@@ -37,5 +38,6 @@ class MaintenanceScheduleTest extends TestCase
         self::assertContains(RemoveUnredeemedVouchers::class, $messageTypes);
         self::assertContains(RemoveInactiveUsers::class, $messageTypes);
         self::assertContains(SendWeeklyReport::class, $messageTypes);
+        self::assertContains(NotifyUserKeyExpired::class, $messageTypes);
     }
 }
