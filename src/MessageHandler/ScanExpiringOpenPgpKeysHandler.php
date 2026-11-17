@@ -7,7 +7,7 @@ namespace App\MessageHandler;
 use App\Entity\Alias;
 use App\Entity\OpenPgpKey;
 use App\Entity\User;
-use App\Message\NotifyUserKeyExpired;
+use App\Message\ScanExpiringOpenPgpKeys;
 use App\Message\UserKeyExpiredNotification;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler(sign: true)]
-final readonly class NotifyUserKeyExpiredHandler
+final readonly class ScanExpiringOpenPgpKeysHandler
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -25,7 +25,7 @@ final readonly class NotifyUserKeyExpiredHandler
     ) {
     }
 
-    public function __invoke(NotifyUserKeyExpired $message): void
+    public function __invoke(ScanExpiringOpenPgpKeys $message): void
     {
         $expiringKeys = $this->entityManager->getRepository(OpenPgpKey::class)->findKeysByExpiry(new DateTimeImmutable());
         $this->logger->info('Found expiring keys', ['count' => count($expiringKeys)]);
