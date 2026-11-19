@@ -52,6 +52,10 @@ jobs:
         with:
           app-id: ${{ vars.SYSTEMLI_APP_ID }}
           private-key: ${{ secrets.SYSTEMLI_APP_PRIVATE_KEY }}
+          owner: systemli
+          repositories: ansible-role-userli
+          permission-contents: write
+          permission-pull-requests: write
 
       - name: Checkout Ansible role
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
