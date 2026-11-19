@@ -9,6 +9,7 @@ use App\Message\PruneUserNotifications;
 use App\Message\PruneWebhookDeliveries;
 use App\Message\RemoveInactiveUsers;
 use App\Message\RemoveUnredeemedVouchers;
+use App\Message\ScanExpiringOpenPgpKeys;
 use App\Message\SendWeeklyReport;
 use App\Message\UnlinkRedeemedVouchers;
 use App\Schedule\MaintenanceSchedule;
@@ -29,7 +30,7 @@ class MaintenanceScheduleTest extends TestCase
             $recurringMessages,
         );
 
-        self::assertCount(7, $recurringMessages);
+        self::assertCount(8, $recurringMessages);
         self::assertContains(PruneExpiredAppPasswords::class, $messageTypes);
         self::assertContains(PruneWebhookDeliveries::class, $messageTypes);
         self::assertContains(PruneUserNotifications::class, $messageTypes);
@@ -37,5 +38,6 @@ class MaintenanceScheduleTest extends TestCase
         self::assertContains(RemoveUnredeemedVouchers::class, $messageTypes);
         self::assertContains(RemoveInactiveUsers::class, $messageTypes);
         self::assertContains(SendWeeklyReport::class, $messageTypes);
+        self::assertContains(ScanExpiringOpenPgpKeys::class, $messageTypes);
     }
 }
