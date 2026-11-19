@@ -32,20 +32,6 @@ jobs:
             exit 1
           fi
 
-      - name: Fetch checksum
-        id: checksum
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release download "$VERSION" --repo "$GITHUB_REPOSITORY" \
-            --pattern "userli-$VERSION.tar.gz.sha512" --output checksum.sha512
-          SHA512="$(awk '{print $1}' checksum.sha512)"
-          if ! [[ "$SHA512" =~ ^[0-9a-f]{128}$ ]]; then
-            echo "Invalid sha512 checksum: $SHA512" >&2
-            exit 1
-          fi
-          echo "sha512=$SHA512" >> "$GITHUB_OUTPUT"
-
       - name: Obtain Access Token
         id: access_token
         uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
@@ -64,15 +50,10 @@ jobs:
           token: ${{ steps.access_token.outputs.token }}
           path: ansible-role-userli
 
-      - name: Update version and checksum
+      - name: Update version
         working-directory: ansible-role-userli
-        env:
-          SHA512: ${{ steps.checksum.outputs.sha512 }}
         run: |
           sed -i "s/^userli_version: \".*\"$/userli_version: \"$VERSION\"/" defaults/main.yml
-          if ! grep -q "^  $VERSION:" vars/main.yml; then
-            sed -i "/^userli_sha512_checksum:$/a\\  $VERSION: $SHA512" vars/main.yml
-          fi
           git diff
 
       - name: Create Pull Request
@@ -85,6 +66,4 @@ jobs:
           title: "Bump Userli to ${{ env.VERSION }}"
           body: |
             Bump Userli to [${{ env.VERSION }}](${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ env.VERSION }}).
-
-            The sha512 checksum is taken from the `userli-${{ env.VERSION }}.tar.gz.sha512` release asset.
           draft: false
