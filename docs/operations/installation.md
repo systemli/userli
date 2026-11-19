@@ -16,6 +16,8 @@ Get the [latest release](https://github.com/systemli/userli/releases/latest).
 Each release provides `userli-x.y.z.tar.gz`, SHA-256/SHA-512 checksums and a
 GPG signature (`.asc`).
 
+The checksums are signed by `<admin@systemli.org>` with fingerprint `878DDC6841321962FDD95D5C935B3C4009C45E24`
+
 ```shell
 cd /tmp
 wget https://github.com/systemli/userli/releases/download/x.y.z/userli-x.y.z.tar.gz
