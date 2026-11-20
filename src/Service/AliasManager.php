@@ -102,8 +102,7 @@ final readonly class AliasManager
 
         $random = null === $localPart;
 
-        $aliases = $this->repository->findByUser($user, $random);
-        if (!$this->checkAliasLimit($aliases, $random)) {
+        if (!$this->canCreateAlias($user, $random)) {
             return null;
         }
 
@@ -122,13 +121,21 @@ final readonly class AliasManager
     }
 
     /**
-     * @param Alias[] $aliases
+     * Whether the user may create another alias of the given type.
+     *
+     * Only aliases in the user's own domain count towards the limit. Aliases
+     * on other domains are assigned by admins and can't be managed by the user.
      */
-    public function checkAliasLimit(array $aliases, bool $random = false): bool
+    public function canCreateAlias(User $user, bool $random = false): bool
     {
         $limit = $random ? self::ALIAS_LIMIT_RANDOM : self::ALIAS_LIMIT_CUSTOM;
 
-        return count($aliases) < $limit;
+        return $this->repository->count([
+            'user' => $user,
+            'domain' => $user->getDomain(),
+            'random' => $random,
+            'deleted' => false,
+        ]) < $limit;
     }
 
     /**

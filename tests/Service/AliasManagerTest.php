@@ -380,7 +380,6 @@ class AliasManagerTest extends TestCase
     public function testCreateForUserCustomAlias(): void
     {
         $user = $this->createUser();
-        $this->repository->method('findByUser')->willReturn([]);
 
         $alias = $this->manager->createForUser($user, 'myalias');
 
@@ -406,7 +405,6 @@ class AliasManagerTest extends TestCase
     public function testCreateForUserRandomAlias(): void
     {
         $user = $this->createUser();
-        $this->repository->method('findByUser')->willReturn([]);
 
         $alias = $this->manager->createForUser($user);
 
@@ -418,8 +416,7 @@ class AliasManagerTest extends TestCase
     public function testCreateForUserReturnsNullWhenLimitReached(): void
     {
         $user = $this->createUser();
-        $aliases = array_fill(0, AliasManager::ALIAS_LIMIT_CUSTOM, new Alias());
-        $this->repository->method('findByUser')->willReturn($aliases);
+        $this->repository->method('count')->willReturn(AliasManager::ALIAS_LIMIT_CUSTOM);
 
         $result = $this->manager->createForUser($user, 'myalias');
 
@@ -429,7 +426,6 @@ class AliasManagerTest extends TestCase
     public function testCreateForUserRandomRetriesOnCollision(): void
     {
         $user = $this->createUser();
-        $this->repository->method('findByUser')->willReturn([]);
 
         $violation = new ConstraintViolation('message', 'messageTemplate', [], null, null, 'someValue');
 
@@ -462,11 +458,42 @@ class AliasManagerTest extends TestCase
         self::assertEquals(2, $callCount);
     }
 
-    public function testCheckAliasLimit(): void
+    #[DataProvider('aliasLimitProvider')]
+    public function testCanCreateAliasCountsOwnDomainOnly(bool $random, int $count, bool $expected): void
     {
-        self::assertTrue($this->manager->checkAliasLimit([], false));
-        self::assertTrue($this->manager->checkAliasLimit([], true));
-        self::assertFalse($this->manager->checkAliasLimit(array_fill(0, AliasManager::ALIAS_LIMIT_CUSTOM, new Alias()), false));
-        self::assertFalse($this->manager->checkAliasLimit(array_fill(0, AliasManager::ALIAS_LIMIT_RANDOM, new Alias()), true));
+        $user = $this->createUser();
+
+        $repository = $this->createMock(AliasRepository::class);
+        $repository->expects($this->once())
+            ->method('count')
+            ->with([
+                'user' => $user,
+                'domain' => $user->getDomain(),
+                'random' => $random,
+                'deleted' => false,
+            ])
+            ->willReturn($count);
+
+        $manager = new AliasManager(
+            $this->entityManager,
+            $repository,
+            $this->domainGuesser,
+            $this->deleteHandler,
+            $this->security,
+            $this->validator,
+            $this->eventDispatcher,
+        );
+
+        self::assertSame($expected, $manager->canCreateAlias($user, $random));
+    }
+
+    public static function aliasLimitProvider(): array
+    {
+        return [
+            'custom below limit' => [false, AliasManager::ALIAS_LIMIT_CUSTOM - 1, true],
+            'custom at limit' => [false, AliasManager::ALIAS_LIMIT_CUSTOM, false],
+            'random below limit' => [true, AliasManager::ALIAS_LIMIT_RANDOM - 1, true],
+            'random at limit' => [true, AliasManager::ALIAS_LIMIT_RANDOM, false],
+        ];
     }
 }

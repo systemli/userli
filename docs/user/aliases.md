@@ -7,7 +7,8 @@ who passed on your address.
 ![Aliases](../assets/images/alias.png){class="screenshot"}
 
 Go to **Aliases** in the navigation. All aliases use the same domain as your
-account.
+account. Aliases on other domains that your provider set up for you are listed
+as well, but they don't count towards the limits below.
 
 ## Custom aliases
 
