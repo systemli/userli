@@ -191,6 +191,12 @@ account:
     desc: Schließe und lösche dein Konto permanent
 
 recovery:
+  intro: "Die Wiederherstellung braucht zwei Besuche: Gib deine E-Mail-Adresse und deinen Wiederherstellungscode jetzt ein und nach %hours% Stunden noch einmal, um ein neues Passwort zu setzen."
+  started: Wiederherstellung gestartet. Zu deiner Sicherheit musst du %hours% Stunden warten.
+  pending: Die Wiederherstellung läuft bereits.
+  time-left: "Verbleibende Zeit: %hours% Std. %minutes% Min."
+  waiting-time: Ab dem %time% kannst du ein neues Passwort setzen.
+  come-back: Komm dann zurück zu %url% und gib E-Mail-Adresse und Wiederherstellungscode erneut ein.
   steps:
     label: Fortschritt der Wiederherstellung
     start: Starten
@@ -201,15 +207,9 @@ recovery:
   header: Konto wiederherstellen
   lead: Passwort zurücksetzen mit Hilfe des Wiederherstellungscodes
   cancel: Abbrechen
-  started: >
-    Der erste Schritt um dein Passwort zurückzusetzen, ist gemacht.
-    Jetzt musst du noch %hours% Stunden warten. Anschließend kannst du im zweiten Schritt
-    ein neues Passwort setzen. Bitte behalte deinen Wiederherstellungscode bis dahin.
-  waiting-info: Die Wartezeit dient deiner eigenen Sicherheit und kann nicht verkürzt oder umgangen werden.
-  waiting-time: Der zweite Schritt ist möglich ab dem %time%.
   reset-lead: Du kannst nun dein Passwort zurücksetzen
   token-lead: Neuer Wiederherstellungscode
-  information-extra: Die Zwei-Faktor-Authentifizierung wird dadurch zurückgesetzt und alle App-Passwörter werden gelöscht.
+  information-extra: Dabei werden die Zwei-Faktor-Authentifizierung ausgeschaltet und alle App-Passwörter gelöscht.
 navbar_right:
   login: Anmelden
   logout: Abmelden

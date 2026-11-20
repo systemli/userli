@@ -97,6 +97,13 @@ welcome:
   headline: Wiukomme bi %project_name%!
   next-button: Zur Übersicht
 recovery:
+  information-extra: Das schautet d Zwöi-Faktor-Authentifizierig us und löscht aui App-Passwörter.
+  intro: "D Wiederhärschteuig bruucht zwe Bsüech: Gib dini E-Mail Adrässe und dis Recovery Token iz i, und nach %hours% Schtung nomou, zum es nöis Passwort z setze."
+  started: Wiederhärschteuig gschtartet. Für dini Sicherheit muesch %hours% Schtung warte.
+  pending: D Wiederhärschteuig louft scho.
+  time-left: "Verbliibendi Zyt: %hours% Std. %minutes% Min."
+  waiting-time: Ab em %time% chasch es nöis Passwort setze.
+  come-back: Chumm när zrügg uf %url% und gib dini E-Mail Adrässe und dis Recovery Token nomou i.
   steps:
     label: Fortschritt vor Wiederhärschteuig
     start: Schtarte
@@ -107,15 +114,7 @@ recovery:
   lead: S Passwort mittem Recovery Token zrüggsetze
   token-lead: Nöis Recovery Token
   header: Di Account wiederhärschteue
-  waiting-info: >
-    Die Wartezyt isch für dini eigeti Sicherheit und cha weder verchürzt
-    no überschprunge wärde.
-  waiting-time: Dr zwöit Schritt startet am %time%.
   reset-lead: Du hesch ke Berächtigung zum dis Passwort zrüggzsetze
-  started: >
-    Dr erscht Schritt zum Passwort zrüggsetze isch erledigt.
-    Iz muesch %hours% Schtung warte. Ab denn chasch es nöis Passwort setze im zwöite Schritt.
-    Bitte bewahr dis Recovery Token bis denn uf.
   cancel: Abbbräche
 recovery-token:
   download: Aus Textdatei abelade

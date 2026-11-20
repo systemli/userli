@@ -66,6 +66,13 @@ form:
   new-password_confirmation: Bekreft nytt passord
   domain: Domene
 recovery:
+  information-extra: Dette slår av tofaktorautentisering og sletter alle app-passord.
+  intro: "Gjenoppretting krever to besøk: Skriv inn e-postadressen og gjenopprettingssymbolet ditt nå, og igjen etter %hours% timer for å sette et nytt passord."
+  started: Gjenoppretting startet. Av sikkerhetshensyn må du vente i %hours% timer.
+  pending: Gjenopprettingen pågår allerede.
+  time-left: "Gjenstående tid: %hours% t %minutes% min."
+  waiting-time: Du kan sette et nytt passord fra %time%.
+  come-back: Kom da tilbake til %url% og skriv inn e-postadressen og gjenopprettingssymbolet ditt på nytt.
   steps:
     label: Fremdrift for gjenoppretting
     start: Start
@@ -76,14 +83,8 @@ recovery:
   header: Gjenopprett kontoen din
   lead: Tilbakestill passordet med ditt gjenopprettingssymbol
   cancel: Avbryt
-  waiting-info: Ventetiden opprettholder din sikkerhet, og kan ikke forkortes eller
-  waiting-time: Andre steg starter %time%.
   reset-lead: Du kan nå tilbakestille passordet ditt
   token-lead: Nytt gjenopprettingssymbol
-  started: >
-    Første steg i gjenoppretting av passordet ditt er ferdig.
-    Vent i %hours% timer. Deretter kan du sette et nytt passord i andre steg.
-    Behold gjenopprettingssymbolet dit til da.
 navbar_right:
   login: Logg inn
   logout: Logg ut

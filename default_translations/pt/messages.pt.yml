@@ -66,6 +66,13 @@ form:
   registration-recovery-token-confirm: Eu guardei o token de recuperação em um lugar seguro
   registration-recovery-token-next-button: Continuar
 recovery:
+  information-extra: Isso desativa a autenticação de dois fatores e exclui todas as senhas de aplicativo.
+  intro: "A recuperação requer duas visitas: insira seu endereço de e-mail e seu token de recuperação agora e novamente após %hours% horas para criar uma nova senha."
+  started: Recuperação iniciada. Para sua segurança, você precisa esperar %hours% horas.
+  pending: A recuperação já está em andamento.
+  time-left: "Tempo restante: %hours% h %minutes% min."
+  waiting-time: Você poderá criar uma nova senha a partir de %time%.
+  come-back: Então volte a %url% e insira novamente seu endereço de e-mail e seu token de recuperação.
   steps:
     label: Progresso da recuperação
     start: Iniciar
@@ -76,12 +83,6 @@ recovery:
   header: Recuperar sua conta
   lead: Redefina a sua palavra-passe usando o seu token de recuperação
   cancel: Cancelar
-  started: >
-    Quase lá. Esse foi o primeiro passo para redefinir sua senha.
-    Agora você precisa esperar por %hours% horas. Depois disso, no segundo passo, você pode criar uma nova senha.
-    Por favor mantenha seu token guardado até lá.
-  waiting-info: Esse tempo de espera é pela sua segurança e não pode ser encurtado ou ignorado.
-  waiting-time: O segundo passo começa %time%.
   reset-lead: Agora você pode redefinir sua senha
   token-lead: Novo token de recuperação
 navbar_right:

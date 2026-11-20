@@ -97,6 +97,13 @@ openpgp-key-submit: "Publier la clé OpenPGP"
 openpgp-delete: "Supprimer la clé OpenPGP"
 
 recovery:
+  information-extra: Cela désactive l'authentification à deux facteurs et supprime tous les mots de passe d'application.
+  intro: "La récupération se fait en deux visites : saisissez votre adresse électronique et votre jeton de récupération maintenant, puis à nouveau après %hours% heures pour définir un nouveau mot de passe."
+  started: Récupération lancée. Pour votre sécurité, vous devez attendre %hours% heures.
+  pending: La récupération est déjà en cours.
+  time-left: "Temps restant : %hours% h %minutes% min."
+  waiting-time: Vous pourrez définir un nouveau mot de passe à partir du %time%.
+  come-back: Revenez alors sur %url% et saisissez à nouveau votre adresse électronique et votre jeton de récupération.
   steps:
     label: Progression de la récupération
     start: Lancer
@@ -107,13 +114,6 @@ recovery:
   header: Récupérer votre compte
   lead: Réinitialisez le mot de passe en utilisant le jeton de récupération
   cancel: Annuler
-  started: >
-    La première étape pour réinitialiser votre mot de passe est faite.
-    Veuillez maintenant attendre %hours% heures.
-    Par la suite, vous pouvez définir un nouveau mot de passe dans une deuxième étape.
-    Veuillez conserver votre jeton de récupération jusque là.
-  waiting-info: Cette période d'attente est mise en place pour votre propre sécurité et ne peut pas être réduite ou passée.
-  waiting-time: La deuxième étape commence à %time%.
   reset-lead: Vous n'êtes pas autorisé à réinitialiser votre mot de passe
   token-lead: Nouveau jeton de récupération
 

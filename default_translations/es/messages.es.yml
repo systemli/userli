@@ -98,6 +98,13 @@ openpgp:
   no-key-uploaded: Aún no se ha subido ninguna clave OpenPGP
 
 recovery:
+  information-extra: Esto desactiva la autenticación de dos factores y elimina todas las contraseñas de aplicación.
+  intro: "La recuperación requiere dos visitas: introduce tu dirección de e-mail y tu token de recuperación ahora, y de nuevo tras %hours% horas para establecer una nueva contraseña."
+  started: Recuperación iniciada. Por tu seguridad, tienes que esperar %hours% horas.
+  pending: La recuperación ya está en curso.
+  time-left: "Tiempo restante: %hours% h %minutes% min."
+  waiting-time: Podrás establecer una nueva contraseña a partir del %time%.
+  come-back: Entonces vuelve a %url% e introduce de nuevo tu dirección de e-mail y tu token de recuperación.
   steps:
     label: Progreso de la recuperación
     start: Iniciar
@@ -108,12 +115,6 @@ recovery:
   header: Recuperar tu cuenta
   lead: Restablecer la contraseña usando tu token de recuperación
   cancel: Cancelar
-  started: >
-    El primer paso para restablecer tu contraseña está hecho.
-    Ahora espera %hours% horas. Después, puedes establecer una nueva contraseña en el segundo paso.
-    Por favor, guarda tu token de recuperación hasta entonces.
-  waiting-info: El período de espera es por tu propia seguridad y no puede ser acortado ni omitido.
-  waiting-time: El segundo paso comienza a las %time%.
   reset-lead: Ahora puedes restablecer tu contraseña
   token-lead: Nuevo token de recuperación
 

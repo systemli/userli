@@ -195,6 +195,12 @@ account:
     desc: Close and delete your account permanently
 
 recovery:
+  intro: "Recovery takes two visits: enter your e-mail address and recovery token now, and again after %hours% hours to set a new password."
+  started: Recovery started. For your security, you have to wait %hours% hours.
+  pending: Recovery is already in progress.
+  time-left: "Time left: %hours% h %minutes% min."
+  waiting-time: You can set a new password from %time%.
+  come-back: Then come back to %url% and enter your e-mail address and recovery token again.
   steps:
     label: Recovery progress
     start: Start
@@ -205,15 +211,9 @@ recovery:
   header: Recover your account
   lead: Reset the password using your recovery token
   cancel: Cancel
-  started: >
-    The first step to reset your password is done.
-    Now wait for %hours% hours. Afterwards, you can set a new password in the second step.
-    Please keep your recovery token until then.
-  waiting-info: The waiting period is for your own security and cannot be shortened or skipped.
-  waiting-time: Second step starts at %time%.
   reset-lead: You're now allowed to reset your password
   token-lead: New recovery token
-  information-extra: Two-factor authentication will be reset and all app passwords will be deleted.
+  information-extra: This turns off two-factor authentication and deletes all app passwords.
 navbar_right:
   login: Log in
   logout: Log out

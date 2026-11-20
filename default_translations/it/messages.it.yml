@@ -185,6 +185,13 @@ openpgp:
   information: Informazioni
   expiretime-label: "Data di scadenza:"
 recovery:
+  information-extra: Questo disattiva l'autenticazione a due fattori ed elimina tutte le password per le app.
+  intro: "Il recupero richiede due visite: inserisci il tuo indirizzo e-mail e il tuo gettone di recupero ora, e di nuovo dopo %hours% ore per impostare una nuova password."
+  started: Recupero avviato. Per la tua sicurezza, devi attendere %hours% ore.
+  pending: Il recupero è già in corso.
+  time-left: "Tempo rimanente: %hours% h %minutes% min."
+  waiting-time: Potrai impostare una nuova password a partire dal %time%.
+  come-back: Torna quindi su %url% e inserisci di nuovo il tuo indirizzo e-mail e il tuo gettone di recupero.
   steps:
     label: Avanzamento del recupero
     start: Avvia
@@ -193,10 +200,6 @@ recovery:
     token: Salva gettone
     done: completato
   cancel: Annulla
-  started: >
-    Il primo passo per reimpostare la tua password è fatto.
-    Ora attendi %hours% ore. Dopo potrai impostare una nuova password nel secondo passo.
-    Conserva il tuo gettone di recupero fino ad allora.
 copy-to-clipboard: Copia negli appunti
 recovery-token:
   created-info: Se dimentichi la password, puoi impostarne una nuova con questo gettone.
