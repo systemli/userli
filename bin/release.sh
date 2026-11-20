@@ -7,17 +7,18 @@
 # locally from the same commit in the pinned release container and only
 # signs and publishes the release if the checksums are identical.
 #
-# Usage: GPG_SIGN_KEY=<key_id> bin/release.sh [--dry-run]
+# Usage: bin/release.sh [--dry-run]
 
 set -eu
 
 repo="${GH_REPO:-systemli/userli}"
+sign_key="878DDC6841321962FDD95D5C935B3C4009C45E24" # <admin@systemli.org>
 dry_run=false
 
 case "${1:-}" in
     --dry-run) dry_run=true ;;
     "") ;;
-    *) printf "Usage: GPG_SIGN_KEY=<key_id> %s [--dry-run]\n" "$0" >&2; exit 1 ;;
+    *) printf "Usage: %s [--dry-run]\n" "$0" >&2; exit 1 ;;
 esac
 
 die() {
@@ -25,15 +26,15 @@ die() {
     exit 1
 }
 
-if [ "$dry_run" = false ] && [ -z "${GPG_SIGN_KEY:-}" ]; then
-    die "environment variable \$GPG_SIGN_KEY needs to be set"
-fi
-
 for tool in git gh gpg jq make shasum; do
     command -v "$tool" >/dev/null 2>&1 || die "$tool is required but not installed"
 done
 command -v podman >/dev/null 2>&1 || command -v docker >/dev/null 2>&1 ||
     die "podman or docker is required but not installed"
+
+if [ "$dry_run" = false ] && ! gpg --list-secret-keys "$sign_key" >/dev/null 2>&1; then
+    die "release key $sign_key (<admin@systemli.org>) not found in secret keyring"
+fi
 
 cd "$(git rev-parse --show-toplevel)"
 
@@ -110,7 +111,7 @@ fi
 
 # Sign the checksum files
 for file in "$local_build"/*.sha256 "$local_build"/*.sha512; do
-    gpg --local-user "$GPG_SIGN_KEY" --armor --detach-sign --batch --yes --output "$file.asc" "$file"
+    gpg --local-user "$sign_key" --armor --detach-sign --batch --yes --output "$file.asc" "$file"
 done
 
 # Make sure the draft did not move while we were building
@@ -118,7 +119,7 @@ current="$(gh api "repos/$repo/releases/$release_id" --jq '[.draft, .tag_name, .
 [ "$current" = "true $version $commit" ] || die "release draft changed during verification, run again"
 
 # Signed tag, signatures, publish
-git tag --sign --local-user "$GPG_SIGN_KEY" --message "Release $version" "$version" "$commit"
+git tag --sign --local-user "$sign_key" --message "Release $version" "$version" "$commit"
 git push --quiet origin "refs/tags/$version"
 gh release upload "$version" --repo "$repo" "$local_build"/*.asc
 gh release edit "$version" --repo "$repo" --draft=false --latest

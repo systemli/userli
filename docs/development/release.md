@@ -57,14 +57,16 @@ Add them in the pull request that introduces the change.
 - `git`, `gh` (logged in with write access to the repository), `gpg`, `jq`,
   `make`, `shasum`
 - `podman` or `docker`
-- a GPG key for signing the tag and the checksums
+- the secret release GPG key `<admin@systemli.org>`
+  (`878DDC6841321962FDD95D5C935B3C4009C45E24`) for signing the tag and the
+  checksums (the script exits if it is missing)
 
 ## Create the release
 
 Check the release draft on GitHub (version, release notes), then run:
 
 ```shell
-GPG_SIGN_KEY="<key_id>" bin/release.sh
+bin/release.sh
 ```
 
 The script will:
