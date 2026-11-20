@@ -248,10 +248,20 @@ init.title: Création de la configuration initiale
 init_domain:
   lead: Merci d'avoir installé Userli. Pour le moment il n'y a aucun domaine et aucune compte.
   text: Veuillez choisir votre domaine principal, celui que Userli doit gérer.
+  form:
+    name:
+      label: Domaine de messagerie principal
+      help: La partie après le « @ » dans les adresses électroniques de vos utilisateurs.
 
 init_user:
   lead: Vous avez créé votre domaine principal.
   text: Les standards de courrier électronique nécessitent la présence du compte postmaster@%domain%. Veuillez définir un mot de passe pour ce premier compte administrateur puis vous y connecter.
+  account: Compte administrateur
+  account-help: Vous utiliserez cette adresse et le mot de passe ci-dessous pour vous connecter.
+
+init_settings:
+  flash:
+    login_hint: Vous pouvez maintenant vous connecter avec <strong>%email%</strong> et le mot de passe choisi.
 
 openpgp:
   delete-button: "Supprimer la clé OpenPGP"

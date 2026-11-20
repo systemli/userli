@@ -141,11 +141,21 @@ mail:
     Speriamo che tu continui a goderti il tuo account di posta elettronica.
     Il tuo %project_name% admin team.
 admin: ~
+init_domain:
+  form:
+    name:
+      label: Dominio di posta primario
+      help: La parte dopo la "@" negli indirizzi email dei tuoi utenti.
 init_user:
   lead: Hai creato il tuo dominio primario.
   text: >
-    Gli standard di posta elettronica richiedono la presenza dell'account postmaster@%dominio%.
+    Gli standard di posta elettronica richiedono la presenza dell'account postmaster@%domain%.
     Scegli una password per questo primo account di amministratore e accedi successivamente.
+  account: Account di amministratore
+  account-help: Userai questo indirizzo e la password qui sotto per accedere.
+init_settings:
+  flash:
+    login_hint: Ora puoi accedere con <strong>%email%</strong> e la password che hai scelto.
 openpgp:
   information: Informazioni
   expiretime-label: "Data di scadenza:"

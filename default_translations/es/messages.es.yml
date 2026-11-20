@@ -244,12 +244,22 @@ init.title: Creando configuración inicial
 init_domain:
   lead: Gracias por instalar Userli. Actualmente, no hay dominios ni cuentas presentes.
   text: Por favor, elige tu dominio principal, que Userli debe gestionar.
+  form:
+    name:
+      label: Dominio de correo principal
+      help: La parte después de la "@" en las direcciones de correo de tus usuarios.
 
 init_user:
   lead: Has creado tu dominio principal.
   text: >
     Los estándares de e-mail requieren que la cuenta postmaster@%domain% esté presente.
     Por favor, elige una contraseña para esta primera cuenta de administrador e inicia sesión después.
+  account: Cuenta de administrador
+  account-help: Usarás esta dirección y la contraseña de abajo para iniciar sesión.
+
+init_settings:
+  flash:
+    login_hint: Ahora puedes iniciar sesión con <strong>%email%</strong> y la contraseña que elegiste.
 
 index.alias-motivation: Crea alias de correo personalizados para organizar mejor tu bandeja de entrada y proteger tu privacidad.
 
