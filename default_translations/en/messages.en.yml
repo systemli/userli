@@ -195,6 +195,13 @@ account:
     desc: Close and delete your account permanently
 
 recovery:
+  steps:
+    label: Recovery progress
+    start: Start
+    wait: Wait
+    password: New password
+    token: Save token
+    done: done
   header: Recover your account
   lead: Reset the password using your recovery token
   cancel: Cancel

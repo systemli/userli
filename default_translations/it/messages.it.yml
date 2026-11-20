@@ -185,6 +185,13 @@ openpgp:
   information: Informazioni
   expiretime-label: "Data di scadenza:"
 recovery:
+  steps:
+    label: Avanzamento del recupero
+    start: Avvia
+    wait: Attendi
+    password: Nuova password
+    token: Salva gettone
+    done: completato
   cancel: Annulla
   started: >
     Il primo passo per reimpostare la tua password è fatto.

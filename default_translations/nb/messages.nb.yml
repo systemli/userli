@@ -66,6 +66,13 @@ form:
   new-password_confirmation: Bekreft nytt passord
   domain: Domene
 recovery:
+  steps:
+    label: Fremdrift for gjenoppretting
+    start: Start
+    wait: Vent
+    password: Nytt passord
+    token: Lagre symbol
+    done: fullført
   header: Gjenopprett kontoen din
   lead: Tilbakestill passordet med ditt gjenopprettingssymbol
   cancel: Avbryt

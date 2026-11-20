@@ -97,6 +97,13 @@ welcome:
   headline: Wiukomme bi %project_name%!
   next-button: Zur Übersicht
 recovery:
+  steps:
+    label: Fortschritt vor Wiederhärschteuig
+    start: Schtarte
+    wait: Warte
+    password: Nöis Passwort
+    token: Token sichere
+    done: erledigt
   lead: S Passwort mittem Recovery Token zrüggsetze
   token-lead: Nöis Recovery Token
   header: Di Account wiederhärschteue

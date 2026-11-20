@@ -97,6 +97,13 @@ openpgp-key-submit: "Publier la clé OpenPGP"
 openpgp-delete: "Supprimer la clé OpenPGP"
 
 recovery:
+  steps:
+    label: Progression de la récupération
+    start: Lancer
+    wait: Attendre
+    password: Nouveau mot de passe
+    token: Sauvegarder le jeton
+    done: terminé
   header: Récupérer votre compte
   lead: Réinitialisez le mot de passe en utilisant le jeton de récupération
   cancel: Annuler

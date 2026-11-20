@@ -66,6 +66,13 @@ form:
   registration-recovery-token-confirm: Eu guardei o token de recuperação em um lugar seguro
   registration-recovery-token-next-button: Continuar
 recovery:
+  steps:
+    label: Progresso da recuperação
+    start: Iniciar
+    wait: Aguardar
+    password: Nova senha
+    token: Salvar token
+    done: concluído
   header: Recuperar sua conta
   lead: Redefina a sua palavra-passe usando o seu token de recuperação
   cancel: Cancelar

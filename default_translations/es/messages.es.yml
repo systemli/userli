@@ -98,6 +98,13 @@ openpgp:
   no-key-uploaded: Aún no se ha subido ninguna clave OpenPGP
 
 recovery:
+  steps:
+    label: Progreso de la recuperación
+    start: Iniciar
+    wait: Esperar
+    password: Nueva contraseña
+    token: Guardar token
+    done: completado
   header: Recuperar tu cuenta
   lead: Restablecer la contraseña usando tu token de recuperación
   cancel: Cancelar

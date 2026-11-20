@@ -1,5 +1,9 @@
 {% extends 'Recovery/recovery.html.twig' %}
 
+{% block step_progress %}
+    {% include 'Recovery/_steps.html.twig' with {current_step: 1} only %}
+{% endblock %}
+
 {% block recovery_content %}
     {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
     {{ form_errors(form) }}

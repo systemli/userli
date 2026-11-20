@@ -1,0 +1,35 @@
+{#
+    Progress indicator for the password recovery.
+
+    Variables:
+      - current_step: 1 (start) to 4 (save the new recovery token)
+#}
+{% set recovery_steps = [
+    'recovery.steps.start',
+    'recovery.steps.wait',
+    'recovery.steps.password',
+    'recovery.steps.token',
+] %}
+
+<nav aria-label="{{ 'recovery.steps.label'|trans }}" class="mb-8">
+    <ol class="flex items-start justify-between gap-2">
+        {% for label in recovery_steps %}
+            {% set step = loop.index %}
+            <li class="flex-1 flex flex-col items-center text-center"{% if step == current_step %} aria-current="step"{% endif %}>
+                {% if step < current_step %}
+                    <span class="w-8 h-8 rounded-full flex items-center justify-center bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300">
+                        {{ ux_icon('heroicons:check', {'class': 'w-4 h-4', 'aria-hidden': 'true'}) }}
+                    </span>
+                {% elseif step == current_step %}
+                    <span class="w-8 h-8 rounded-full flex items-center justify-center bg-blue-600 dark:bg-blue-500 text-white text-sm font-semibold" aria-hidden="true">{{ step }}</span>
+                {% else %}
+                    <span class="w-8 h-8 rounded-full flex items-center justify-center border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 text-sm" aria-hidden="true">{{ step }}</span>
+                {% endif %}
+                <span class="mt-2 text-xs {% if step == current_step %}font-semibold text-gray-900 dark:text-gray-100{% else %}text-gray-500 dark:text-gray-400{% endif %}">
+                    {{ label|trans }}
+                    {% if step < current_step %}<span class="sr-only">({{ 'recovery.steps.done'|trans }})</span>{% endif %}
+                </span>
+            </li>
+        {% endfor %}
+    </ol>
+</nav>

@@ -20,6 +20,7 @@ Feature: Recovery
 
     Then I should be on "/recovery"
     And I should see text matching "Second step starts at"
+    And the "li[aria-current='step']" element should contain "Wait"
     And the response status code should be 200
 
   @recovery
@@ -32,6 +33,7 @@ Feature: Recovery
 
     Then I should be on "/recovery/reset_password"
     And I should see text matching "You're now allowed to reset your password"
+    And the "li[aria-current='step']" element should contain "New password"
     And the response status code should be 200
 
   @recovery
@@ -98,6 +100,7 @@ Feature: Recovery
     Then I should be on "/recovery/recovery_token/ack"
     And I should see text matching "Please copy and securely store this recovery token"
     And I should see a "button[data-action='download#save']" element
+    And the "li[aria-current='step']" element should contain "Save token"
 
     When I press "recovery_token_confirm[submit]"
 

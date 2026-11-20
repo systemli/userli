@@ -191,6 +191,13 @@ account:
     desc: Schließe und lösche dein Konto permanent
 
 recovery:
+  steps:
+    label: Fortschritt der Wiederherstellung
+    start: Starten
+    wait: Warten
+    password: Neues Passwort
+    token: Code sichern
+    done: erledigt
   header: Konto wiederherstellen
   lead: Passwort zurücksetzen mit Hilfe des Wiederherstellungscodes
   cancel: Abbrechen

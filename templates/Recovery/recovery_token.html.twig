@@ -4,6 +4,10 @@
 
 {% form_theme form 'Form/fields.html.twig' %}
 
+{% block step_progress %}
+    {% include 'Recovery/_steps.html.twig' with {current_step: 4} only %}
+{% endblock %}
+
 {% block step_title %}{{ "recovery.token-lead"|trans }}{% endblock %}
 
 {% block step_description %}
