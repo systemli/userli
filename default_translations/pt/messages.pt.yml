@@ -125,8 +125,8 @@ flashes:
   recovery-token-ack: Você gerou um token de recuperação com sucesso!
   recovery-reauthenticate: Algo deu errado. Por favor se autentique novamente!
   recovery-session-expired: Por favor, insira novamente seu endereço de e-mail e seu token de recuperação para criar uma nova senha.
+  recovery-reset-hint: A autenticação de dois fatores está desativada e suas senhas de aplicativo foram excluídas. Ative a 2FA novamente e crie novas senhas de aplicativo.
   recovery-password-changed: Você mudou a sua senha com sucesso.
-  recovery-next-login: Inicie sua sessão agora.
   openpgp-key-upload-error-no-keys: ""
   openpgp-deletion-successful: ""
   openpgp-key-upload-error-multiple-keys: ""

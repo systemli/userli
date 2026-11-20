@@ -171,8 +171,8 @@ flashes:
   recovery-token-ack: Has generado un token de recuperación.
   recovery-reauthenticate: ¡Algo salió mal. Por favor, vuelve a autenticarte!
   recovery-session-expired: Por favor, introduce de nuevo tu dirección de e-mail y tu token de recuperación para establecer una nueva contraseña.
+  recovery-reset-hint: La autenticación de dos factores está desactivada y se han eliminado tus contraseñas de aplicación. Vuelve a activar la 2FA y crea nuevas contraseñas de aplicación.
   recovery-password-changed: Has cambiado tu contraseña.
-  recovery-next-login: Continúa con el inicio de sesión.
   openpgp-deletion-successful: Tu clave OpenPGP fue eliminada.
   openpgp-key-upload-successful: Tu clave OpenPGP se ha subido.
   openpgp-key-upload-error-no-openpgp: El archivo subido no contiene datos OpenPGP.

@@ -185,8 +185,8 @@ flashes:
   password-change-successful: Dis nöie Passwort isch iz aktiv!
   recovery-reauthenticate: Irgendöppis isch schief gloffe. Bitte nöi amäude!
   recovery-session-expired: Bitte gib dini E-Mail Adrässe und dis Recovery Token nomou i, zum es nöis Passwort z setze.
+  recovery-reset-hint: D Zwöi-Faktor-Authentifizierig isch us und dini App-Passwörter si glöscht worde. Schaut 2FA wider i und erschteu nöii App-Passwörter.
   registration-successful: Du bisch iz regischtriert.
-  recovery-next-login: Witerfahre mittem Ilogge.
 navbar_right:
   login: Ilogge
   logout: Uslogge

@@ -173,8 +173,8 @@ flashes:
   recovery-token-ack: Vous avez généré un jeton de récupération.
   recovery-reauthenticate: Une erreur s'est produite. Veuillez vous identifier à nouveau!
   recovery-session-expired: Veuillez saisir à nouveau votre adresse électronique et votre jeton de récupération pour définir un nouveau mot de passe.
+  recovery-reset-hint: L'authentification à deux facteurs est désactivée et vos mots de passe d'application ont été supprimés. Réactivez la 2FA et créez de nouveaux mots de passe d'application.
   recovery-password-changed: Vous avez modifié votre mot de passe.
-  recovery-next-login: Aller à l'écran de connexion.
   openpgp-deletion-successful: Votre clé OpenPGP a été supprimée.
   openpgp-key-upload-successful: Votre clé OpenPGP a été téléversée.
   openpgp-key-upload-error-no-openpgp: Le fichier téléversé ne contient pas de données OpenPGP.

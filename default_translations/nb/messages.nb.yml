@@ -120,7 +120,6 @@ recovery-token:
 flashes:
   logout-successful: Du har blitt utlogget.
   voucher-creation-successful: Ny invitasjonskode opprettet.
-  recovery-next-login: Fortsett med innloggingen.
   password-change-successful: Ditt nye passord er nå aktivt.
   registration-successful: Du har registrert deg.
   alias-creation-successful: Din nye alias-adresse ble opprettet.
@@ -129,6 +128,7 @@ flashes:
   recovery-token-ack: Du genererte et gjenopprettingssymbol.
   recovery-reauthenticate: Noe gikk galt. Identitetsbekreft deg igjen.
   recovery-session-expired: Skriv inn e-postadressen og gjenopprettingssymbolet ditt på nytt for å sette et nytt passord.
+  recovery-reset-hint: Tofaktorautentisering er slått av, og app-passordene dine ble slettet. Slå på 2FA igjen og opprett nye app-passord.
   recovery-password-changed: Du endret passordet ditt.
 error:
   page_not_found: Siden du forsøker å nå finnes ikke.

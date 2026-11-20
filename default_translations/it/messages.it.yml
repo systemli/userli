@@ -87,6 +87,7 @@ flashes:
     Si prega di caricare solo una chiave.
   recovery-token-invalid: L'indirizzo e-mail e/o il gettone di recupero sono sbagliati!
   recovery-session-expired: Inserisci di nuovo il tuo indirizzo e-mail e il tuo gettone di recupero per impostare una nuova password.
+  recovery-reset-hint: L'autenticazione a due fattori è disattivata e le tue password per le app sono state eliminate. Riattiva la 2FA e crea nuove password per le app.
 spam:
   title: Account bloccato
   text: >

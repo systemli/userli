@@ -311,7 +311,7 @@ flashes:
   recovery-reauthenticate: Something went wrong. Please re-authenticate!
   recovery-session-expired: Please enter your e-mail address and recovery token again to set a new password.
   recovery-password-changed: You changed your password.
-  recovery-next-login: Go on with the login.
+  recovery-reset-hint: Two-factor authentication is off and your app passwords were deleted. Turn 2FA back on and create new app passwords.
   openpgp-deletion-successful: Your OpenPGP key was deleted.
   openpgp-key-upload-successful: Your OpenPGP key got uploaded.
   openpgp-key-upload-error-no-openpgp: The uploaded file doesn't contain OpenPGP data.

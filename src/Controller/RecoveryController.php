@@ -12,7 +12,10 @@ use App\Form\RecoveryProcessType;
 use App\Form\RecoveryResetPasswordType;
 use App\Form\RecoveryTokenConfirmType;
 use App\Handler\RecoveryHandler;
+use App\Repository\UserRepository;
+use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -31,6 +34,8 @@ final class RecoveryController extends AbstractController
 
     public function __construct(
         private readonly RecoveryHandler $recoveryHandler,
+        private readonly UserRepository $userRepository,
+        private readonly Security $security,
     ) {
     }
 
@@ -119,6 +124,9 @@ final class RecoveryController extends AbstractController
             if ($this->recoveryHandler->verifyRecoveryToken($email, $recoveryToken, true)) {
                 if ($form->isValid()) {
                     $newRecoveryToken = $this->recoveryHandler->resetPassword($email, $recoveryToken, $data->getPassword());
+                    $this->logInUser($email);
+
+                    // Session is migrated on login, so only fetch it afterwards
                     $session = $request->getSession();
                     $session->remove(self::SESSION_KEY);
                     // Kept in the session to keep it out of URLs (browser history, server logs)
@@ -147,7 +155,7 @@ final class RecoveryController extends AbstractController
         $recoveryToken = $request->getSession()->get(self::SESSION_NEW_TOKEN_KEY);
         if (!is_string($recoveryToken)) {
             // Page opened directly or token already acknowledged
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('account');
         }
 
         $form = $this->createForm(RecoveryTokenConfirmType::class, new RecoveryTokenConfirm(), [
@@ -167,7 +175,7 @@ final class RecoveryController extends AbstractController
         $session = $request->getSession();
         $recoveryToken = $session->get(self::SESSION_NEW_TOKEN_KEY);
         if (!is_string($recoveryToken)) {
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('account');
         }
 
         $form = $this->createForm(RecoveryTokenConfirmType::class, new RecoveryTokenConfirm());
@@ -176,9 +184,9 @@ final class RecoveryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $session->remove(self::SESSION_NEW_TOKEN_KEY);
             $this->addFlash('success', 'flashes.recovery-token-ack');
-            $this->addFlash('success', 'flashes.recovery-next-login');
+            $this->addFlash('info', 'flashes.recovery-reset-hint');
 
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('account');
         }
 
         return $this->render('Recovery/recovery_token.html.twig', [
@@ -192,6 +200,21 @@ final class RecoveryController extends AbstractController
         $this->addFlash('error', 'flashes.recovery-token-invalid');
 
         return $this->render('Recovery/recovery_new.html.twig', ['form' => $form], new Response(status: Response::HTTP_UNAUTHORIZED));
+    }
+
+    /**
+     * Logs in the user after a successful password reset.
+     *
+     * The user proved ownership with email, recovery token and the waiting period, and just set a new password.
+     */
+    private function logInUser(string $email): void
+    {
+        $user = $this->userRepository->findByEmail($email);
+        if (null === $user) {
+            throw new LogicException('User should exist after resetting the password');
+        }
+
+        $this->security->login($user, 'form_login');
     }
 
     private function redirectToResetPassword(SessionInterface $session, string $email, string $recoveryToken): Response

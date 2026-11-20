@@ -106,13 +106,14 @@ Feature: Recovery
     When I check "recovery_token_confirm[confirm]"
     And I press "recovery_token_confirm[submit]"
 
-    Then I should be on "/login"
-    And I should see text matching "Go on with the login."
+    Then I should be on "/account"
+    And I should see text matching "You generated a recovery token."
+    And I should see text matching "Two-factor authentication is off"
     And the response status code should be 200
 
     When I am on "/recovery/recovery_token/ack"
 
-    Then I should be on "/login"
+    Then I should be on "/account"
 
   @recovery
   Scenario: Open new recovery token page without recovery process

@@ -305,7 +305,7 @@ flashes:
   recovery-reauthenticate: Etwas ist schief gelaufen. Bitte erneut authentifizieren!
   recovery-session-expired: Bitte gib deine E-Mail-Adresse und deinen Wiederherstellungscode erneut ein, um ein neues Passwort zu setzen.
   recovery-password-changed: Dein Passwort wurde geändert.
-  recovery-next-login: Du kannst dich nun einloggen.
+  recovery-reset-hint: Die Zwei-Faktor-Authentifizierung ist aus und deine App-Passwörter wurden gelöscht. Schalte 2FA wieder ein und erstelle neue App-Passwörter.
   openpgp-deletion-successful: Dein OpenPGP-Schlüssel wurde gelöscht.
   openpgp-key-upload-successful: Dein OpenPGP-Schlüssel wurde hochgeladen.
   voucher-invalid: Der Einladungscode ist ungültig.
