@@ -257,7 +257,7 @@ class AliasManagerTest extends TestCase
         self::assertSame('dest@example.org', $alias->getDestination());
     }
 
-    public function testUpdateByDomainAdminKeepsCustomDestination(): void
+    public function testUpdateByDomainAdminKeepsFieldsMissingFromTheForm(): void
     {
         $security = $this->createStub(Security::class);
         $security->method('isGranted')->willReturn(false);
@@ -276,10 +276,13 @@ class AliasManagerTest extends TestCase
         $alias->setSource('alias@example.org');
         $alias->setUser(new User('user@example.org'));
         $alias->setDestination('external@example.com');
+        $alias->setSmtpQuotaLimits(['per_hour' => 10]);
 
-        $manager->update($alias, AliasAdminModel::fromAlias($alias));
+        // The domain admin form has no destination or quota field, like AliasController::editSubmit
+        $manager->update($alias, new AliasAdminModel());
 
         self::assertSame('external@example.com', $alias->getDestination());
+        self::assertSame(['per_hour' => 10], $alias->getSmtpQuotaLimits());
     }
 
     public function testUpdateByDomainAdminFollowsNewUser(): void

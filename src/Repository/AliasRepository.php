@@ -7,6 +7,7 @@ namespace App\Repository;
 use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\User;
+use App\Enum\Roles;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -166,14 +167,48 @@ final class AliasRepository extends ServiceEntityRepository
         $wasEnabled = $filters->isEnabled('domain_filter');
 
         if ($wasEnabled) {
-            $filters->disable('domain_filter');
+            $filters->suspend('domain_filter');
         }
 
         try {
             return $this->findByUser($user, $random);
         } finally {
             if ($wasEnabled) {
-                $filters->enable('domain_filter');
+                $filters->restore('domain_filter');
+            }
+        }
+    }
+
+    /**
+     * Whether an active alias with this source belongs to an admin, in any domain.
+     * An alias without owner counts too: only admins can create one.
+     *
+     * Counts only, so no User entity of another domain ends up in the identity map.
+     */
+    public function isSourceOwnedByAdmin(string $source): bool
+    {
+        $filters = $this->getEntityManager()->getFilters();
+        $wasEnabled = $filters->isEnabled('domain_filter');
+
+        if ($wasEnabled) {
+            $filters->suspend('domain_filter');
+        }
+
+        try {
+            return (int) $this->createQueryBuilder('a')
+                ->select('COUNT(a.id)')
+                ->leftJoin('a.user', 'u')
+                ->where('a.source = :source')
+                ->andWhere('a.deleted = :deleted')
+                ->andWhere('u.id IS NULL OR u.roles LIKE :role')
+                ->setParameter('source', $source)
+                ->setParameter('deleted', false)
+                ->setParameter('role', '%'.Roles::ADMIN.'%')
+                ->getQuery()
+                ->getSingleScalarResult() > 0;
+        } finally {
+            if ($wasEnabled) {
+                $filters->restore('domain_filter');
             }
         }
     }

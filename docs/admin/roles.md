@@ -71,6 +71,7 @@ to.
 | Manage users with role *Admin*             | ✓     |              |
 | Assignable roles                           | all   | all except Admin |
 | Set alias destination and SMTP quota       | ✓     |              |
+| Manage aliases owned by an admin           | ✓     |              |
 | Edit invitation settings of a domain       | all domains | own domain |
 | Send announcements                         | all domains | own domain |
 | Create and delete domains                  | ✓     |              |

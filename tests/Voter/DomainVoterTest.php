@@ -13,6 +13,7 @@ use App\Form\Model\AliasAdminModel;
 use App\Form\Model\DomainAdminModel;
 use App\Form\Model\UserAdminModel;
 use App\Form\Model\VoucherModel;
+use App\Repository\AliasRepository;
 use App\Service\DomainGuesser;
 use App\Voter\DomainVoter;
 use PHPUnit\Framework\TestCase;
@@ -499,6 +500,29 @@ class DomainVoterTest extends TestCase
         self::assertSame(VoterInterface::ACCESS_DENIED, $result);
     }
 
+    public function testDomainAdminCannotViewOrEditAliasOwnedByAdmin(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainA, sourceOwnedByAdmin: true);
+        $alias = new Alias();
+        $alias->setDomain($this->domainA);
+        $alias->setSource('abuse@domain-a.org');
+
+        foreach ([DomainVoter::VIEW, DomainVoter::EDIT] as $attribute) {
+            $result = $voter->vote($this->createToken($this->domainAdminA), $alias, [$attribute]);
+            self::assertSame(VoterInterface::ACCESS_DENIED, $result, $attribute);
+        }
+    }
+
+    public function testDomainAdminCannotCreateViaAliasModelForSourceOwnedByAdmin(): void
+    {
+        $voter = $this->createVoter(isDomainAdmin: true, guessedDomain: $this->domainA, sourceOwnedByAdmin: true);
+        $model = new AliasAdminModel();
+        $model->setSource('abuse@domain-a.org');
+
+        $result = $voter->vote($this->createToken($this->domainAdminA), $model, [DomainVoter::CREATE]);
+        self::assertSame(VoterInterface::ACCESS_DENIED, $result);
+    }
+
     // --- Full admin: alias operations ---
 
     public function testFullAdminCanCreateAlias(): void
@@ -815,7 +839,7 @@ class DomainVoterTest extends TestCase
 
     // --- Helpers ---
 
-    private function createVoter(bool $isAdmin = false, bool $isDomainAdmin = false, ?Domain $guessedDomain = null): DomainVoter
+    private function createVoter(bool $isAdmin = false, bool $isDomainAdmin = false, ?Domain $guessedDomain = null, bool $sourceOwnedByAdmin = false): DomainVoter
     {
         $security = $this->createStub(Security::class);
         $security->method('isGranted')->willReturnCallback(
@@ -831,7 +855,10 @@ class DomainVoterTest extends TestCase
         $domainGuesser = $this->createStub(DomainGuesser::class);
         $domainGuesser->method('guess')->willReturn($guessedDomain);
 
-        return new DomainVoter($security, $domainGuesser);
+        $aliasRepository = $this->createStub(AliasRepository::class);
+        $aliasRepository->method('isSourceOwnedByAdmin')->willReturn($sourceOwnedByAdmin);
+
+        return new DomainVoter($security, $domainGuesser, $aliasRepository);
     }
 
     private function createToken(?User $user = null): TokenInterface
