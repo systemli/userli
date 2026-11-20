@@ -56,6 +56,47 @@ Feature: Admin (Aliases)
     Then I should see "Alias has been created successfully"
 
   @aliases
+  Scenario: Admin cannot create an alias with the address of an existing user
+    Given I am authenticated as "louis@example.org"
+    When I am on "/admin/aliases/create"
+    Then the response status code should be 200
+
+    When I fill in "alias_admin_source" with "user@example.org"
+    And I press "Create"
+
+    Then the response status code should be 422
+    And I should see "The e-mail address is already taken."
+
+  @aliases
+  Scenario: Admin can create an alias with a source already used by another alias
+    Given the following Alias exists:
+      | source               | destination       |
+      | shared@example.org   | louis@example.org |
+    And I am authenticated as "louis@example.org"
+    When I am on "/admin/aliases/create"
+    Then the response status code should be 200
+
+    When I fill in "alias_admin_source" with "shared@example.org"
+    And I press "Create"
+
+    Then I should see "Alias has been created successfully"
+
+  @aliases
+  Scenario: Domain admin cannot create an alias with the address of an existing user
+    Given the following User exists:
+      | email                | password | roles     |
+      | mailbox@example.com  | asdasd   | ROLE_USER |
+    And I am authenticated as "domain@example.com"
+    When I am on "/admin/aliases/create"
+    Then the response status code should be 200
+
+    When I fill in "alias_admin_source" with "mailbox@example.com"
+    And I press "Create"
+
+    Then the response status code should be 422
+    And I should see "The e-mail address is already taken."
+
+  @aliases
   Scenario: Admin can list existing aliases
     Given the following Alias exists:
       | source              | destination       |

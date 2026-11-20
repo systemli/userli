@@ -34,14 +34,31 @@ final class EmailAvailableValidator extends ConstraintValidator
             throw new UnexpectedTypeException($value, 'string');
         }
 
-        [$localPart] = explode('@', $value);
-
-        if (
-            null !== $this->manager->getRepository(User::class)->findOneBy(['email' => $value])
-            || null !== $this->manager->getRepository(Alias::class)->findOneBySource($value, true)
-            || null !== $this->manager->getRepository(ReservedName::class)->findByName($localPart)
-        ) {
+        if ($this->isTaken($value, $constraint)) {
             $this->context->addViolation('registration.email-already-taken');
         }
+    }
+
+    private function isTaken(string $value, EmailAvailable $constraint): bool
+    {
+        if ($constraint->checkUser
+            && null !== $this->manager->getRepository(User::class)->findOneBy(['email' => $value])) {
+            return true;
+        }
+
+        if ($constraint->checkAlias
+            && null !== $this->manager->getRepository(Alias::class)->findOneBySource($value, true)) {
+            return true;
+        }
+
+        if ($constraint->checkReservedName) {
+            [$localPart] = explode('@', $value);
+
+            if (null !== $this->manager->getRepository(ReservedName::class)->findByName($localPart)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -6,6 +6,7 @@ namespace App\Form;
 
 use App\Form\Model\AliasAdminModel;
 use App\Validator\EmailAllowedSymbols;
+use App\Validator\EmailAvailable;
 use App\Validator\EmailDomain;
 use App\Validator\Lowercase;
 use Override;
@@ -36,6 +37,9 @@ final class AliasAdminType extends AbstractType
                     new Lowercase(),
                     new EmailAllowedSymbols(),
                     new EmailDomain(),
+                    // Aliases sharing a source or using reserved names are allowed for admins,
+                    // but an alias must never shadow the mailbox of an existing user.
+                    new EmailAvailable(checkAlias: false, checkReservedName: false),
                 ],
             ]);
         }
