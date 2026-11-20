@@ -428,6 +428,10 @@ init.title: Creating initial configuration
 init_domain:
   lead: Thank your for installing Userli. Currently, there are no domains or accounts present.
   text: Please choose your primary domain, which Userli should handle.
+  form:
+    name:
+      label: Primary mail domain
+      help: The part after the "@" in your users' email addresses.
 init_user:
   lead: You have created your primary domain.
   text: E-mail standards require the account postmaster@%domain% to be present. Please pick a password for this first administrator account and log in afterwards.

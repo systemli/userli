@@ -25,9 +25,10 @@
                         {{ form_errors(form) }}
 
                         <div>
-                            {{ form_label(form.name, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                            {{ form_label(form.name, 'init_domain.form.name.label', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
                             {{ form_errors(form.name) }}
-                            {{ form_widget(form.name) }}
+                            {{ form_widget(form.name, {'attr': {'placeholder': 'example.org'}}) }}
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ 'init_domain.form.name.help'|trans }}</p>
                         </div>
 
                         <div class="pt-4">

@@ -248,6 +248,10 @@ init.title: Création de la configuration initiale
 init_domain:
   lead: Merci d'avoir installé Userli. Pour le moment il n'y a aucun domaine et aucune compte.
   text: Veuillez choisir votre domaine principal, celui que Userli doit gérer.
+  form:
+    name:
+      label: Domaine de messagerie principal
+      help: La partie après le « @ » dans les adresses électroniques de vos utilisateurs.
 
 init_user:
   lead: Vous avez créé votre domaine principal.

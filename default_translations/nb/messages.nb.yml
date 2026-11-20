@@ -196,6 +196,10 @@ init.title: Skaper grunnleggende oppsett
 init_domain:
   lead: Takk for installasjonen av Userli. Ingen domener eller kontoer er satt opp.
   text: Velg ditt primære domene, som Userli skal håndtere.
+  form:
+    name:
+      label: Primært e-postdomene
+      help: Delen etter «@» i e-postadressene til brukerne dine.
 init_user:
   lead: Du har opprettet ditt primære domene.
   text: E-poststandarder krever at kontoen postmaster@%domain% finnes. Velg et passord for denne første administratorkontoen og logg inn etterpå.

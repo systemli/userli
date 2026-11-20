@@ -424,6 +424,10 @@ init.title: Erstellen der Erstkonfiguration
 init_domain:
   lead: Vielen Dank fürs installieren von Userli. Derzeit sind keine Domänen oder Konten vorhanden.
   text: Bitte wähle Deine primäre Domäne aus, die Userli behandeln soll.
+  form:
+    name:
+      label: Primäre E-Mail-Domäne
+      help: Der Teil nach dem „@" in den E-Mail-Adressen deiner Nutzer:innen.
 init_user:
   lead: Primäre Domäne wurde erstellt.
   text: >
