@@ -130,6 +130,8 @@ recovery-token:
   created-info: Se você esquecer sua senha, poderá criar uma nova com este token.
   displayed-once: Este token é exibido apenas uma vez.
 flashes:
+  recovery-cancelled: "A recuperação de senha foi cancelada."
+  recovery-cancel-failed: "Não foi possível cancelar a recuperação de senha. Tente novamente."
   logout-successful: Sua sessão foi encerrada.
   password-change-successful: A sua nova palavra-passe está ativa!
   registration-successful: Você se cadastrou com sucesso!
@@ -246,3 +248,9 @@ recovery-cancel:
   done-button: "Criar novo token de recuperação"
   invalid-headline: "O link não é mais válido"
   invalid-text: "Este link expirou ou a recuperação de senha não está mais em andamento. Não há nada para cancelar."
+notifications:
+  recovery_in_progress:
+    title: "Recuperação de senha em andamento"
+    message: "Uma recuperação de senha para a sua conta foi iniciada em %time%. Se não foi você, alguém conhece o seu token de recuperação. Crie agora um novo token de recuperação; isso interrompe a recuperação."
+    button: "Criar novo token de recuperação"
+    cancel: "Cancelar recuperação"

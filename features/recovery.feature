@@ -74,6 +74,17 @@ Feature: Recovery
     And I should see text matching "Link no longer valid"
 
   @recovery
+  Scenario: Signed-in user sees a running recovery and cancels it
+    Given I am authenticated as "user2@example.org"
+    When I am on "/account"
+    Then I should see text matching "Password recovery in progress"
+
+    When I press "Cancel recovery"
+    Then I should be on "/account"
+    And I should see text matching "The password recovery was cancelled."
+    And I should not see text matching "Password recovery in progress"
+
+  @recovery
   Scenario: Continue recovery process as user (#2)
     When I am on "/recovery"
     And I fill in the following:

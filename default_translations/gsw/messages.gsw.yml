@@ -193,6 +193,8 @@ mail:
 
     Beschti Grüess, dis %project_name% Admin Team.
 flashes:
+  recovery-cancelled: "D Passwort-Wiederhärschteuig isch abbroche worde."
+  recovery-cancel-failed: "D Passwort-Wiederhärschteuig het nid chönne abbroche wärde. Probier s bitte nomou."
   recovery-token-ack: Du hesch es Recovery Token generiert.
   logout-successful: Du bisch iz usgloggt.
   recovery-token-invalid: D E-Mail Adrässe oder s Recovery Token isch nid korrekt. Bitte prüef beides und versuechs nomou.
@@ -246,3 +248,9 @@ recovery-cancel:
   done-button: "Nöis Recovery Token erschteue"
   invalid-headline: "Link nümm gültig"
   invalid-text: "Dä Link isch abgloffe, oder d Passwort-Wiederhärschteuig louft nümm. Es git nüt abzbräche."
+notifications:
+  recovery_in_progress:
+    title: "Passwort-Wiederhärschteuig louft"
+    message: "Für di Account isch am %time% e Passwort-Wiederhärschteuig gschtartet worde. Faus du das nid bisch gsi, kennt öpper dis Recovery Token. Erschteu iz es nöis Recovery Token, das bricht d Wiederhärschteuig ab."
+    button: "Nöis Recovery Token erschteue"
+    cancel: "Wiederhärschteuig abbräche"

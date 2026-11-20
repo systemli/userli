@@ -179,6 +179,8 @@ recovery-token:
   displayed-once: Ce jeton n'est affiché qu'une seule fois.
 
 flashes:
+  recovery-cancelled: "La récupération du mot de passe a été annulée."
+  recovery-cancel-failed: "La récupération du mot de passe n'a pas pu être annulée. Veuillez réessayer."
   logout-successful: Vous vous êtes déconnecté.
   password-change-successful: Votre nouveau mot de passe est maintenant actif !
   registration-successful: Vous êtes désormais inscrit.
@@ -352,3 +354,9 @@ recovery-cancel:
   done-button: "Créer un nouveau jeton de récupération"
   invalid-headline: "Ce lien n'est plus valide"
   invalid-text: "Ce lien a expiré ou la récupération du mot de passe n'est plus en cours. Il n'y a rien à annuler."
+notifications:
+  recovery_in_progress:
+    title: "Récupération du mot de passe en cours"
+    message: "Une récupération du mot de passe de votre compte a été lancée le %time%. Si ce n'était pas vous, quelqu'un connaît votre jeton de récupération. Créez maintenant un nouveau jeton de récupération, cela arrête la récupération."
+    button: "Créer un nouveau jeton de récupération"
+    cancel: "Annuler la récupération"

@@ -48,6 +48,9 @@ can't be shortened.
        immediately. Otherwise the other person can start a new recovery with
        the old token.
 
+    While a recovery is running, Userli also shows a warning on every page
+    after you sign in, with buttons for both steps.
+
 ## Step 2: Set a new password
 
 After 48 hours, open **Password forgotten?** again and enter the same address

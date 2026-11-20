@@ -135,6 +135,8 @@ recovery-token:
   created-info: Hvis du glemmer passordet ditt, kan du sette et nytt med dette symbolet.
   displayed-once: Dette symbolet vises bare én gang.
 flashes:
+  recovery-cancelled: "Gjenopprettingen av passordet ble avbrutt."
+  recovery-cancel-failed: "Gjenopprettingen av passordet kunne ikke avbrytes. Prøv igjen."
   logout-successful: Du har blitt utlogget.
   voucher-creation-successful: Ny invitasjonskode opprettet.
   password-change-successful: Ditt nye passord er nå aktivt.
@@ -262,3 +264,9 @@ recovery-cancel:
   done-button: "Opprett nytt gjenopprettingssymbol"
   invalid-headline: "Lenken er ikke lenger gyldig"
   invalid-text: "Denne lenken er utløpt, eller gjenopprettingen av passordet pågår ikke lenger. Det er ingenting å avbryte."
+notifications:
+  recovery_in_progress:
+    title: "Gjenoppretting av passord pågår"
+    message: "En gjenoppretting av passordet for kontoen din ble startet %time%. Hvis det ikke var deg, kjenner noen gjenopprettingssymbolet ditt. Opprett et nytt gjenopprettingssymbol nå, det stopper gjenopprettingen."
+    button: "Opprett nytt gjenopprettingssymbol"
+    cancel: "Avbryt gjenoppretting"

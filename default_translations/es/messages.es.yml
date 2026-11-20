@@ -180,6 +180,8 @@ recovery-token:
   displayed-once: Este token solo se muestra una vez.
 
 flashes:
+  recovery-cancelled: "La recuperación de contraseña se ha cancelado."
+  recovery-cancel-failed: "No se pudo cancelar la recuperación de contraseña. Inténtalo de nuevo."
   logout-successful: Has cerrado la sesión.
   password-change-successful: ¡Tu nueva contraseña ya está activa!
   registration-successful: Ya estás registrado.
@@ -342,3 +344,9 @@ recovery-cancel:
   done-button: "Crear nuevo token de recuperación"
   invalid-headline: "El enlace ya no es válido"
   invalid-text: "Este enlace ha caducado o la recuperación de contraseña ya no está en curso. No hay nada que cancelar."
+notifications:
+  recovery_in_progress:
+    title: "Recuperación de contraseña en curso"
+    message: "El %time% se inició una recuperación de contraseña para tu cuenta. Si no fuiste tú, alguien conoce tu token de recuperación. Crea ahora un nuevo token de recuperación; esto detiene la recuperación."
+    button: "Crear nuevo token de recuperación"
+    cancel: "Cancelar recuperación"

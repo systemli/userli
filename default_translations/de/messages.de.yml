@@ -308,6 +308,8 @@ recovery-token:
   created-info: Wenn du dein Passwort vergisst, kannst du mit diesem Code ein neues setzen.
   displayed-once: Dieser Code wird nur einmal angezeigt.
 flashes:
+  recovery-cancelled: "Die Passwort-Wiederherstellung wurde abgebrochen."
+  recovery-cancel-failed: "Die Passwort-Wiederherstellung konnte nicht abgebrochen werden. Bitte versuche es erneut."
   dismiss: Schließen
   logout-successful: Du bist jetzt abgemeldet.
   password-change-successful: Dein neues Passwort ist ab sofort aktiv!
@@ -1322,6 +1324,11 @@ notifications:
     title: Sicherheitswarnung
     message: Dein Passwort wurde in einer Datenbank mit bekannten kompromittierten Passwörtern gefunden. Bitte ändere es, um dein Konto zu schützen.
     button: Passwort ändern
+  recovery_in_progress:
+    title: "Passwort-Wiederherstellung läuft"
+    message: "Für dein Konto wurde am %time% eine Passwort-Wiederherstellung gestartet. Wenn du das nicht warst, kennt jemand deinen Wiederherstellungscode. Erstelle jetzt einen neuen Wiederherstellungscode, das bricht die Wiederherstellung ab."
+    button: "Neuen Wiederherstellungscode erstellen"
+    cancel: "Wiederherstellung abbrechen"
 recovery-cancel:
   headline: "Passwort-Wiederherstellung abbrechen"
   lead: "Für %email% wurde am %time% eine Passwort-Wiederherstellung gestartet."

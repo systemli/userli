@@ -310,6 +310,8 @@ recovery-token:
   created-info: If you forget your password, you can set a new one with this token.
   displayed-once: This token is shown only once.
 flashes:
+  recovery-cancelled: "The password recovery was cancelled."
+  recovery-cancel-failed: "The password recovery could not be cancelled. Please try again."
   dismiss: Dismiss
   logout-successful: You are now logged out.
   password-change-successful: Your new password is now active!
@@ -1321,6 +1323,11 @@ notifications:
     title: Security Alert
     message: Your password has been found in a database of known compromised passwords. Please change it to secure your account.
     button: Change Password
+  recovery_in_progress:
+    title: "Password recovery in progress"
+    message: "A password recovery for your account was started on %time%. If this wasn't you, someone knows your recovery token. Create a new recovery token now, this stops the recovery."
+    button: "Create new recovery token"
+    cancel: "Cancel recovery"
 recovery-cancel:
   headline: "Cancel password recovery"
   lead: "A password recovery for %email% was started on %time%."
