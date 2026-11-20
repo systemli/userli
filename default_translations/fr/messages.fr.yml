@@ -179,6 +179,8 @@ recovery-token:
   displayed-once: Ce jeton n'est affiché qu'une seule fois.
 
 flashes:
+  recovery-cancelled: "La récupération du mot de passe a été annulée."
+  recovery-cancel-failed: "La récupération du mot de passe n'a pas pu être annulée. Veuillez réessayer."
   logout-successful: Vous vous êtes déconnecté.
   password-change-successful: Votre nouveau mot de passe est maintenant actif !
   registration-successful: Vous êtes désormais inscrit.
@@ -245,10 +247,32 @@ mail:
 
     Si ce n'était pas vous :
     Quelqu'un d'autre connaît votre jeton de récupération et tente de prendre
-    le contrôle de votre compte. Avant le %time%, connectez-vous ici :
+    le contrôle de votre compte. Annulez la récupération avant le %time% :
+    %cancel_url%
+    Connectez-vous ensuite et créez un nouveau jeton de récupération, afin
+    que l'ancien jeton ne fonctionne plus :
     %recovery_token_url%
-    Créez ensuite un nouveau jeton de récupération. L'ancien jeton devient
-    alors invalide et la récupération est arrêtée.
+
+    Votre équipe d'administration de %project_name%.
+  recovery-token-created-subject: "Nouveau jeton de récupération pour %email%"
+  recovery-token-created-body: |
+    Bonjour %email%,
+
+    Un nouveau jeton de récupération a été créé pour votre compte. Votre
+    ancien jeton de récupération ne fonctionne plus.
+
+    Si c'était vous :
+    Vous n'avez rien d'autre à faire. Conservez le nouveau jeton de
+    récupération en lieu sûr.
+
+    Si ce n'était pas vous :
+    Quelqu'un d'autre a accès à votre compte. Connectez-vous et changez
+    votre mot de passe :
+    %password_url%
+    Créez ensuite un nouveau jeton de récupération :
+    %recovery_token_url%
+    Si vous ne pouvez plus vous connecter, contactez votre équipe
+    d'administration de %project_name%.
 
     Votre équipe d'administration de %project_name%.
   alias-created-subject: Nouvel alias d'adresse créé
@@ -339,3 +363,21 @@ random-aliases.feature-privacy: Parfait pour les achats en ligne et les inscript
 random-aliases.feature-deletable: Peuvent être supprimés à tout moment lorsqu'ils ne sont plus nécessaires
 random-aliases.limitation-random-name: Noms aléatoires plus difficiles à retenir
 random-aliases.management-hint: <strong>Conseil :</strong> Supprime les alias aléatoires inutilisés pour faire de la place aux nouveaux.
+recovery-cancel:
+  headline: "Annuler la récupération du mot de passe"
+  lead: "Une récupération du mot de passe de %email% a été lancée le %time%."
+  warning: "N'annulez la récupération que si vous ne l'avez pas lancée vous-même. La personne qui l'a lancée connaît votre jeton de récupération et peut lancer une nouvelle récupération."
+  next-step: "Après l'annulation, connectez-vous et créez un nouveau jeton de récupération. L'ancien jeton devient alors invalide."
+  button: "Annuler la récupération"
+  done-headline: "Récupération annulée"
+  done-text: "La récupération du mot de passe a été annulée."
+  done-next-step: "Connectez-vous maintenant et créez un nouveau jeton de récupération, afin que l'ancien jeton ne fonctionne plus."
+  done-button: "Créer un nouveau jeton de récupération"
+  invalid-headline: "Ce lien n'est plus valide"
+  invalid-text: "Ce lien a expiré ou la récupération du mot de passe n'est plus en cours. Il n'y a rien à annuler."
+notifications:
+  recovery_in_progress:
+    title: "Récupération du mot de passe en cours"
+    message: "Une récupération du mot de passe de votre compte a été lancée le %time%. Si ce n'était pas vous, quelqu'un connaît votre jeton de récupération. Créez maintenant un nouveau jeton de récupération, cela arrête la récupération."
+    button: "Créer un nouveau jeton de récupération"
+    cancel: "Annuler la récupération"

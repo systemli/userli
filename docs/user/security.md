@@ -77,3 +77,8 @@ if your account doesn't have one yet (the card shows *Not configured*).
 
 The old token stops working immediately. A password recovery that somebody
 started with the old token is cancelled.
+
+You receive an email whenever a new recovery token is created, also after a
+[password recovery](recovery.md). If you didn't create it, someone else has
+access to your account: change your password and create a new recovery token
+right away.

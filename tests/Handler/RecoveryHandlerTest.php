@@ -7,6 +7,7 @@ namespace App\Tests\Handler;
 use App\Entity\AppPassword;
 use App\Entity\User;
 use App\Enum\RecoveryStatus;
+use App\Event\UserEvent;
 use App\Exception\RecoveryException;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryHandler;
@@ -193,7 +194,11 @@ class RecoveryHandlerTest extends TestCase
                 $user->setPlainRecoveryToken('new-recovery-token');
             });
 
-        $handler = $this->createHandler(recoveryTokenHandler: $recoveryTokenHandler);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->once())->method('dispatch')
+            ->with(self::isInstanceOf(UserEvent::class), UserEvent::RECOVERY_TOKEN_CREATED);
+
+        $handler = $this->createHandler(eventDispatcher: $eventDispatcher, recoveryTokenHandler: $recoveryTokenHandler);
         $newToken = $handler->resetPassword('test@example.org', 'valid-token', 'newpassword');
 
         self::assertEquals('new-recovery-token', $newToken);
@@ -322,5 +327,33 @@ class RecoveryHandlerTest extends TestCase
         $handler = $this->createHandler();
 
         self::assertTrue($handler->verifyRecoveryToken($user, 'valid-token'));
+    }
+
+    public function testCancelRecoveryErasesStartTimeAndFlushes(): void
+    {
+        $user = new User('test@example.org');
+        $user->setRecoveryStartTime(new DateTimeImmutable());
+
+        $manager = $this->createMock(EntityManagerInterface::class);
+        $manager->expects(self::once())->method('flush');
+
+        $this->createHandler(manager: $manager)->cancelRecovery($user);
+
+        self::assertNull($user->getRecoveryStartTime());
+    }
+
+    public function testGetExpireTime(): void
+    {
+        $start = new DateTimeImmutable('2026-01-15 10:00:00');
+
+        self::assertEquals(new DateTimeImmutable('2026-02-14 10:00:00'), RecoveryHandler::getExpireTime($start));
+    }
+
+    public function testIsInProgress(): void
+    {
+        self::assertFalse(RecoveryHandler::isInProgress(null));
+        self::assertTrue(RecoveryHandler::isInProgress(new DateTimeImmutable()));
+        self::assertTrue(RecoveryHandler::isInProgress(new DateTimeImmutable('-29 days')));
+        self::assertFalse(RecoveryHandler::isInProgress(new DateTimeImmutable('-31 days')));
     }
 }

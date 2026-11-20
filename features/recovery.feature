@@ -39,6 +39,52 @@ Feature: Recovery
     And the "li[aria-current='step']" element should contain "Wait"
 
   @recovery
+  Scenario: Cancel recovery process from the notification mail
+    When I am on "/recovery"
+    And I fill in the following:
+      | recovery_process[email]         | user@example.org                     |
+      | recovery_process[recoveryToken] | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
+    And I press "recovery_process[submit]"
+    Then I should see text matching "Recovery started"
+
+    When I follow the "/recovery/cancel" link in the last sent mail
+    Then the response status code should be 200
+    And I should see text matching "Cancel password recovery"
+    And I should see text matching "A password recovery for user@example.org was started"
+
+    When I press "Cancel recovery"
+    Then the response status code should be 200
+    And I should see text matching "The password recovery was cancelled."
+
+    When I follow the "/recovery/cancel" link in the last sent mail
+    Then the response status code should be 404
+    And I should see text matching "Link no longer valid"
+
+    When I am on "/recovery"
+    And I fill in the following:
+      | recovery_process[email]         | user@example.org                     |
+      | recovery_process[recoveryToken] | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
+    And I press "recovery_process[submit]"
+    Then I should see text matching "Recovery started"
+
+  @recovery
+  Scenario: Cancel recovery process with an invalid link
+    When I am on "/recovery/cancel?email=user%40example.org&started=1&_hash=invalid"
+    Then the response status code should be 404
+    And I should see text matching "Link no longer valid"
+
+  @recovery
+  Scenario: Signed-in user sees a running recovery and cancels it
+    Given I am authenticated as "user2@example.org"
+    When I am on "/account"
+    Then I should see text matching "Password recovery in progress"
+
+    When I press "Cancel recovery"
+    Then I should be on "/account"
+    And I should see text matching "The password recovery was cancelled."
+    And I should not see text matching "Password recovery in progress"
+
+  @recovery
   Scenario: Continue recovery process as user (#2)
     When I am on "/recovery"
     And I fill in the following:
@@ -113,6 +159,7 @@ Feature: Recovery
     And I press "recovery_reset_password[submit]"
 
     Then I should be on "/recovery/recovery_token/ack"
+    And the last sent mail body should contain "A new recovery token was created for your account."
     And I should see text matching "Please copy and securely store this recovery token"
     And I should see a "button[data-action='download#save']" element
     And the "li[aria-current='step']" element should contain "Save token"

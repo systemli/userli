@@ -180,6 +180,8 @@ recovery-token:
   displayed-once: Este token solo se muestra una vez.
 
 flashes:
+  recovery-cancelled: "La recuperación de contraseña se ha cancelado."
+  recovery-cancel-failed: "No se pudo cancelar la recuperación de contraseña. Inténtalo de nuevo."
   logout-successful: Has cerrado la sesión.
   password-change-successful: ¡Tu nueva contraseña ya está activa!
   registration-successful: Ya estás registrado.
@@ -244,10 +246,32 @@ mail:
 
     Si no fuiste tú:
     Alguien más conoce tu token de recuperación e intenta apoderarse de tu
-    cuenta. Inicia sesión aquí antes del %time%:
+    cuenta. Cancela la recuperación antes del %time%:
+    %cancel_url%
+    Después, inicia sesión y crea un nuevo token de recuperación para que el
+    token antiguo deje de funcionar:
     %recovery_token_url%
-    Después, crea un nuevo token de recuperación. Así el token antiguo deja
-    de ser válido y la recuperación se detiene.
+
+    Tu equipo de administración de %project_name%.
+  recovery-token-created-subject: "Nuevo token de recuperación para %email%"
+  recovery-token-created-body: |
+    Hola %email%,
+
+    Se ha creado un nuevo token de recuperación para tu cuenta. Tu token de
+    recuperación anterior ya no funciona.
+
+    Si fuiste tú:
+    No tienes que hacer nada más. Guarda el nuevo token de recuperación en
+    un lugar seguro.
+
+    Si no fuiste tú:
+    Alguien más tiene acceso a tu cuenta. Inicia sesión y cambia tu
+    contraseña:
+    %password_url%
+    Después, crea un nuevo token de recuperación:
+    %recovery_token_url%
+    Si ya no puedes iniciar sesión, contacta con tu equipo de administración
+    de %project_name%.
 
     Tu equipo de administración de %project_name%.
   alias-created-subject: Nueva dirección alias creada
@@ -329,3 +353,21 @@ random-aliases.feature-privacy: Perfecto para compras en línea y registros
 random-aliases.feature-deletable: Se pueden eliminar en cualquier momento cuando ya no se necesiten
 random-aliases.limitation-random-name: Nombres aleatorios más difíciles de recordar
 random-aliases.management-hint: <strong>Consejo:</strong> Elimina los alias aleatorios no utilizados para hacer espacio para nuevos.
+recovery-cancel:
+  headline: "Cancelar la recuperación de contraseña"
+  lead: "Se inició una recuperación de contraseña para %email% el %time%."
+  warning: "Cancela la recuperación solo si no la iniciaste tú. Quien la inició conoce tu token de recuperación y puede iniciar una nueva recuperación."
+  next-step: "Después de cancelar, inicia sesión y crea un nuevo token de recuperación. Así el token antiguo deja de ser válido."
+  button: "Cancelar recuperación"
+  done-headline: "Recuperación cancelada"
+  done-text: "La recuperación de contraseña se ha cancelado."
+  done-next-step: "Ahora inicia sesión y crea un nuevo token de recuperación para que el token antiguo deje de funcionar."
+  done-button: "Crear nuevo token de recuperación"
+  invalid-headline: "El enlace ya no es válido"
+  invalid-text: "Este enlace ha caducado o la recuperación de contraseña ya no está en curso. No hay nada que cancelar."
+notifications:
+  recovery_in_progress:
+    title: "Recuperación de contraseña en curso"
+    message: "El %time% se inició una recuperación de contraseña para tu cuenta. Si no fuiste tú, alguien conoce tu token de recuperación. Crea ahora un nuevo token de recuperación; esto detiene la recuperación."
+    button: "Crear nuevo token de recuperación"
+    cancel: "Cancelar recuperación"

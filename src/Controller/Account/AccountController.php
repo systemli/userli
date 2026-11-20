@@ -16,6 +16,7 @@ use App\Form\PasswordType;
 use App\Form\RecoveryTokenConfirmType;
 use App\Handler\DeleteHandler;
 use App\Handler\MailCryptKeyHandler;
+use App\Handler\RecoveryHandler;
 use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use App\Service\OpenPgpKeyManager;
@@ -39,6 +40,7 @@ final class AccountController extends AbstractController
         private readonly RecoveryTokenHandler $recoveryTokenHandler,
         private readonly OpenPgpKeyManager $openPgpKeyManager,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly RecoveryHandler $recoveryHandler,
     ) {
     }
 
@@ -218,6 +220,8 @@ final class AccountController extends AbstractController
             // Clear sensitive plaintext data from User object
             $user->eraseCredentials();
 
+            $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::RECOVERY_TOKEN_CREATED);
+
             // Kept in the session to keep it out of URLs (browser history, server logs)
             $request->getSession()->set(self::SESSION_NEW_TOKEN_KEY, $recoveryToken);
 
@@ -286,5 +290,25 @@ final class AccountController extends AbstractController
                 'recovery_token' => $recoveryToken,
             ]
         );
+    }
+
+    /**
+     * Cancel a running recovery process from the banner shown to signed-in users.
+     */
+    #[Route(path: '/account/recovery/cancel', name: 'account_recovery_cancel', methods: ['POST'])]
+    public function recoveryCancel(Request $request): Response
+    {
+        if (!$this->isCsrfTokenValid('account_recovery_cancel', $request->request->getString('_token'))) {
+            $this->addFlash('error', 'flashes.recovery-cancel-failed');
+
+            return $this->redirectToRoute('account');
+        }
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $this->recoveryHandler->cancelRecovery($user);
+        $this->addFlash('success', 'flashes.recovery-cancelled');
+
+        return $this->redirectToRoute('account');
     }
 }

@@ -135,6 +135,8 @@ recovery-token:
   created-info: Hvis du glemmer passordet ditt, kan du sette et nytt med dette symbolet.
   displayed-once: Dette symbolet vises bare én gang.
 flashes:
+  recovery-cancelled: "Gjenopprettingen av passordet ble avbrutt."
+  recovery-cancel-failed: "Gjenopprettingen av passordet kunne ikke avbrytes. Prøv igjen."
   logout-successful: Du har blitt utlogget.
   voucher-creation-successful: Ny invitasjonskode opprettet.
   password-change-successful: Ditt nye passord er nå aktivt.
@@ -194,10 +196,31 @@ mail:
 
     Hvis det ikke var deg:
     Noen andre kjenner gjenopprettingssymbolet ditt og prøver å ta over
-    kontoen din. Logg inn her før %time%:
+    kontoen din. Avbryt gjenopprettingen før %time%:
+    %cancel_url%
+    Logg deretter inn og opprett et nytt gjenopprettingssymbol, slik at det
+    gamle symbolet ikke lenger virker:
     %recovery_token_url%
-    Opprett deretter et nytt gjenopprettingssymbol. Da blir det gamle
-    symbolet ugyldig og gjenopprettingen stoppes.
+
+    Ditt %project_name%-administratorlag.
+  recovery-token-created-subject: "Nytt gjenopprettingssymbol for %email%"
+  recovery-token-created-body: |
+    Hei %email%,
+
+    Et nytt gjenopprettingssymbol ble opprettet for kontoen din. Det
+    forrige gjenopprettingssymbolet ditt virker ikke lenger.
+
+    Hvis det var deg:
+    Du trenger ikke gjøre noe mer. Oppbevar det nye gjenopprettingssymbolet
+    på et trygt sted.
+
+    Hvis det ikke var deg:
+    Noen andre har tilgang til kontoen din. Logg inn og endre passordet
+    ditt:
+    %password_url%
+    Opprett deretter et nytt gjenopprettingssymbol:
+    %recovery_token_url%
+    Hvis du ikke lenger kan logge inn, kontakt %project_name%-administratorlaget.
 
     Ditt %project_name%-administratorlag.
   alias-created-body: >
@@ -249,3 +272,21 @@ init_user:
 init_settings:
   flash:
     login_hint: Du kan nå logge inn med <strong>%email%</strong> og passordet du valgte.
+recovery-cancel:
+  headline: "Avbryt gjenoppretting av passord"
+  lead: "En gjenoppretting av passordet for %email% ble startet %time%."
+  warning: "Avbryt gjenopprettingen bare hvis du ikke startet den selv. Den som startet den, kjenner gjenopprettingssymbolet ditt og kan starte en ny gjenoppretting."
+  next-step: "Når du har avbrutt, logger du inn og oppretter et nytt gjenopprettingssymbol. Da blir det gamle symbolet ugyldig."
+  button: "Avbryt gjenoppretting"
+  done-headline: "Gjenoppretting avbrutt"
+  done-text: "Gjenopprettingen av passordet ble avbrutt."
+  done-next-step: "Logg inn nå og opprett et nytt gjenopprettingssymbol, slik at det gamle symbolet ikke lenger virker."
+  done-button: "Opprett nytt gjenopprettingssymbol"
+  invalid-headline: "Lenken er ikke lenger gyldig"
+  invalid-text: "Denne lenken er utløpt, eller gjenopprettingen av passordet pågår ikke lenger. Det er ingenting å avbryte."
+notifications:
+  recovery_in_progress:
+    title: "Gjenoppretting av passord pågår"
+    message: "En gjenoppretting av passordet for kontoen din ble startet %time%. Hvis det ikke var deg, kjenner noen gjenopprettingssymbolet ditt. Opprett et nytt gjenopprettingssymbol nå, det stopper gjenopprettingen."
+    button: "Opprett nytt gjenopprettingssymbol"
+    cancel: "Avbryt gjenoppretting"

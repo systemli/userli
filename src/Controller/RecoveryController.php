@@ -14,6 +14,7 @@ use App\Form\RecoveryResetPasswordType;
 use App\Form\RecoveryTokenConfirmType;
 use App\Handler\RecoveryHandler;
 use App\Repository\UserRepository;
+use App\Service\RecoveryCancelLinkService;
 use DateTimeImmutable;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,6 +40,7 @@ final class RecoveryController extends AbstractController
         private readonly RecoveryHandler $recoveryHandler,
         private readonly UserRepository $userRepository,
         private readonly Security $security,
+        private readonly RecoveryCancelLinkService $cancelLinkService,
     ) {
     }
 
@@ -190,6 +192,44 @@ final class RecoveryController extends AbstractController
             'form' => $form,
             'recovery_token' => $recoveryToken,
         ]);
+    }
+
+    /**
+     * Linked from the notification mail, so the account owner can cancel without signing in.
+     *
+     * Only shows a confirmation: mail scanners open links, so GET must not change anything.
+     */
+    #[Route(path: '/recovery/cancel', name: 'recovery_cancel', methods: ['GET'])]
+    public function recoveryCancel(Request $request): Response
+    {
+        $user = $this->cancelLinkService->resolve($request);
+        if (null === $user) {
+            return $this->renderRecoveryCancel('invalid', Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->render('Recovery/cancel.html.twig', [
+            'state' => 'confirm',
+            'email' => $user->getEmail(),
+            'started' => $user->getRecoveryStartTime(),
+        ]);
+    }
+
+    #[Route(path: '/recovery/cancel', name: 'recovery_cancel_submit', methods: ['POST'])]
+    public function recoveryCancelSubmit(Request $request): Response
+    {
+        $user = $this->cancelLinkService->resolve($request);
+        if (null === $user || !$this->isCsrfTokenValid('recovery_cancel', $request->request->getString('_token'))) {
+            return $this->renderRecoveryCancel('invalid', Response::HTTP_NOT_FOUND);
+        }
+
+        $this->recoveryHandler->cancelRecovery($user);
+
+        return $this->renderRecoveryCancel('cancelled');
+    }
+
+    private function renderRecoveryCancel(string $state, int $status = Response::HTTP_OK): Response
+    {
+        return $this->render('Recovery/cancel.html.twig', ['state' => $state], new Response(status: $status));
     }
 
     private function renderRecoveryStarted(FormInterface $form, RecoveryResult $result): Response

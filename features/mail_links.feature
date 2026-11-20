@@ -27,3 +27,4 @@ Feature: Mail links
     Then I should see text matching "You can set a new password from"
     And the last sent mail body should contain "https://mail.example.org/recovery"
     And the last sent mail body should contain "https://mail.example.org/account/recovery-token"
+    And the last sent mail body should contain "https://mail.example.org/recovery/cancel?"

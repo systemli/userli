@@ -130,6 +130,8 @@ recovery-token:
   created-info: Se você esquecer sua senha, poderá criar uma nova com este token.
   displayed-once: Este token é exibido apenas uma vez.
 flashes:
+  recovery-cancelled: "A recuperação de senha foi cancelada."
+  recovery-cancel-failed: "Não foi possível cancelar a recuperação de senha. Tente novamente."
   logout-successful: Sua sessão foi encerrada.
   password-change-successful: A sua nova palavra-passe está ativa!
   registration-successful: Você se cadastrou com sucesso!
@@ -193,10 +195,31 @@ mail:
 
     Se não foi você:
     Outra pessoa conhece o seu token de recuperação e está tentando tomar
-    posse da sua conta. Antes de %time%, entre aqui:
+    posse da sua conta. Cancele a recuperação antes de %time%:
+    %cancel_url%
+    Depois, entre e crie um novo token de recuperação, para que o token
+    antigo deixe de funcionar:
     %recovery_token_url%
-    Depois, crie um novo token de recuperação. Assim o token antigo deixa de
-    ser válido e a recuperação é interrompida.
+
+    Time %project_name%.
+  recovery-token-created-subject: "Novo token de recuperação para %email%"
+  recovery-token-created-body: |
+    Olá %email%,
+
+    Um novo token de recuperação foi criado para a sua conta. O seu token de
+    recuperação anterior não funciona mais.
+
+    Se foi você:
+    Não é preciso fazer mais nada. Guarde o novo token de recuperação em um
+    lugar seguro.
+
+    Se não foi você:
+    Outra pessoa tem acesso à sua conta. Entre e altere a sua senha:
+    %password_url%
+    Depois, crie um novo token de recuperação:
+    %recovery_token_url%
+    Se você não consegue mais entrar, entre em contato com o time
+    %project_name%.
 
     Time %project_name%.
   alias-created-subject: Novo endereço alias criado
@@ -233,3 +256,21 @@ admin:
         user_exists: "Já existe ou existiu um usuário com este endereço. O endereço não pode ser usado novamente."
     actions:
       convert: "Converter em usuário"
+recovery-cancel:
+  headline: "Cancelar a recuperação de senha"
+  lead: "Uma recuperação de senha para %email% foi iniciada em %time%."
+  warning: "Cancele a recuperação apenas se não foi você quem a iniciou. Quem a iniciou conhece o seu token de recuperação e pode iniciar uma nova recuperação."
+  next-step: "Depois de cancelar, entre e crie um novo token de recuperação. Assim o token antigo deixa de ser válido."
+  button: "Cancelar recuperação"
+  done-headline: "Recuperação cancelada"
+  done-text: "A recuperação de senha foi cancelada."
+  done-next-step: "Agora entre e crie um novo token de recuperação, para que o token antigo deixe de funcionar."
+  done-button: "Criar novo token de recuperação"
+  invalid-headline: "O link não é mais válido"
+  invalid-text: "Este link expirou ou a recuperação de senha não está mais em andamento. Não há nada para cancelar."
+notifications:
+  recovery_in_progress:
+    title: "Recuperação de senha em andamento"
+    message: "Uma recuperação de senha para a sua conta foi iniciada em %time%. Se não foi você, alguém conhece o seu token de recuperação. Crie agora um novo token de recuperação; isso interrompe a recuperação."
+    button: "Criar novo token de recuperação"
+    cancel: "Cancelar recuperação"
