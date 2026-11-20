@@ -309,6 +309,7 @@ flashes:
   recovery-token-invalid: E-mail address and/or recovery token are wrong!
   recovery-token-ack: You generated a recovery token.
   recovery-reauthenticate: Something went wrong. Please re-authenticate!
+  recovery-session-expired: Please enter your e-mail address and recovery token again to set a new password.
   recovery-password-changed: You changed your password.
   recovery-next-login: Go on with the login.
   openpgp-deletion-successful: Your OpenPGP key was deleted.

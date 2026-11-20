@@ -35,6 +35,40 @@ Feature: Recovery
     And the response status code should be 200
 
   @recovery
+  Scenario: Reload password reset page in recovery process
+    When I am on "/recovery"
+    And I fill in the following:
+      | recovery_process[email]         | user2@example.org                    |
+      | recovery_process[recoveryToken] | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
+    And I press "recovery_process[submit]"
+    And I reload the page
+
+    Then I should be on "/recovery/reset_password"
+    And I should see text matching "You're now allowed to reset your password"
+    And the response status code should be 200
+
+    When I fill in the following:
+      | recovery_reset_password[password][first]  | XV7FxQWj9dApApN |
+      | recovery_reset_password[password][second] | XV7FxQWj9dApApN |
+    And I press "recovery_reset_password[submit]"
+
+    Then I should be on "/recovery/recovery_token/ack"
+    And I should see text matching "You changed your password."
+
+    When I am on "/recovery/reset_password"
+
+    Then I should be on "/recovery"
+    And I should see text matching "Please enter your e-mail address and recovery token again"
+
+  @recovery
+  Scenario: Open password reset page without authentication
+    When I am on "/recovery/reset_password"
+
+    Then I should be on "/recovery"
+    And I should see text matching "Please enter your e-mail address and recovery token again"
+    And the response status code should be 200
+
+  @recovery
   Scenario: Reset password in recovery process as user (#3)
     When I have the request params for "recovery_reset_password":
       | email         | user2@example.org                    |

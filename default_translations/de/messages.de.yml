@@ -303,6 +303,7 @@ flashes:
   recovery-token-invalid: E-Mail-Adresse oder Wiederherstellungscode sind falsch!
   recovery-token-ack: Du hast einen Wiederherstellungscode erzeugt.
   recovery-reauthenticate: Etwas ist schief gelaufen. Bitte erneut authentifizieren!
+  recovery-session-expired: Bitte gib deine E-Mail-Adresse und deinen Wiederherstellungscode erneut ein, um ein neues Passwort zu setzen.
   recovery-password-changed: Dein Passwort wurde geändert.
   recovery-next-login: Du kannst dich nun einloggen.
   openpgp-deletion-successful: Dein OpenPGP-Schlüssel wurde gelöscht.

@@ -15,12 +15,19 @@ use App\Handler\RecoveryHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 final class RecoveryController extends AbstractController
 {
+    private const string SESSION_KEY = 'recovery_reset_password';
+
+    /**
+     * Seconds the user may stay on the reset password page after authenticating with email and recovery token.
+     */
+    private const int SESSION_TTL = 900;
+
     public function __construct(
         private readonly RecoveryHandler $recoveryHandler,
     ) {
@@ -61,6 +68,7 @@ final class RecoveryController extends AbstractController
                     ],
                 ),
                 RecoveryStatus::Ready => $this->redirectToResetPassword(
+                    $request->getSession(),
                     $data->getEmail(),
                     $result->recoveryToken,
                 ),
@@ -73,13 +81,15 @@ final class RecoveryController extends AbstractController
     #[Route(path: '/recovery/reset_password', name: 'recovery_reset_password', methods: ['GET'])]
     public function recoveryResetPassword(Request $request): Response
     {
-        $email = $request->query->get('email');
-        $session = $request->getSession();
-        assert($session instanceof Session);
-        $recoveryToken = $session->getFlashBag()->get('recoveryToken')[0];
-        if (null === $email || null === $recoveryToken) {
-            throw new InvalidParameterException('Email and recoveryToken must be provided');
+        $credentials = $this->getResetPasswordCredentials($request->getSession());
+        if (null === $credentials) {
+            // Page opened directly or authentication expired, start over
+            $this->addFlash('info', 'flashes.recovery-session-expired');
+
+            return $this->redirectToRoute('recovery');
         }
+
+        [$email, $recoveryToken] = $credentials;
 
         $data = new RecoveryResetPassword();
         $data->setEmail($email);
@@ -107,6 +117,7 @@ final class RecoveryController extends AbstractController
             if ($this->recoveryHandler->verifyRecoveryToken($email, $recoveryToken, true)) {
                 if ($form->isValid()) {
                     $newRecoveryToken = $this->recoveryHandler->resetPassword($email, $recoveryToken, $data->getPassword());
+                    $request->getSession()->remove(self::SESSION_KEY);
                     $this->addFlash('success', 'flashes.recovery-password-changed');
 
                     return $this->redirectToRoute('recovery_recovery_token_ack', ['recoveryToken' => $newRecoveryToken]);
@@ -174,10 +185,39 @@ final class RecoveryController extends AbstractController
         return $this->render('Recovery/recovery_new.html.twig', ['form' => $form], new Response(status: Response::HTTP_UNAUTHORIZED));
     }
 
-    private function redirectToResetPassword(string $email, string $recoveryToken): Response
+    private function redirectToResetPassword(SessionInterface $session, string $email, string $recoveryToken): Response
     {
-        $this->addFlash('recoveryToken', $recoveryToken);
+        // Kept in the session (not a flash message) so that reloading the page keeps working
+        $session->set(self::SESSION_KEY, [
+            'email' => $email,
+            'recoveryToken' => $recoveryToken,
+            'verifiedAt' => time(),
+        ]);
 
-        return $this->redirectToRoute('recovery_reset_password', ['email' => $email]);
+        return $this->redirectToRoute('recovery_reset_password');
+    }
+
+    /**
+     * Returns email and recovery token if the user authenticated recently, null otherwise.
+     *
+     * @return array{0: string, 1: string}|null
+     */
+    private function getResetPasswordCredentials(SessionInterface $session): ?array
+    {
+        $data = $session->get(self::SESSION_KEY);
+
+        if (!is_array($data)
+            || !isset($data['email'], $data['recoveryToken'], $data['verifiedAt'])
+            || !is_string($data['email'])
+            || !is_string($data['recoveryToken'])
+            || !is_int($data['verifiedAt'])
+            || $data['verifiedAt'] < time() - self::SESSION_TTL
+        ) {
+            $session->remove(self::SESSION_KEY);
+
+            return null;
+        }
+
+        return [$data['email'], $data['recoveryToken']];
     }
 }
