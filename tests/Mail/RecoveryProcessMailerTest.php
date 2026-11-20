@@ -7,10 +7,13 @@ namespace App\Tests\Mail;
 use App\Entity\User;
 use App\Handler\MailHandler;
 use App\Mail\RecoveryProcessMailer;
+use App\Repository\UserRepository;
+use App\Service\RecoveryCancelLinkService;
 use App\Service\SettingsService;
 use DateTimeImmutable;
 use LogicException;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -39,7 +42,8 @@ class RecoveryProcessMailerTest extends TestCase
             ->method('send')
             ->with('user@example.org', 'Recovery body', 'Recovery subject');
 
-        $mailer = new RecoveryProcessMailer($handler, $translator, $settingsService, $this->createStub(UrlGeneratorInterface::class));
+        $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
+        $mailer = new RecoveryProcessMailer($handler, $translator, $settingsService, $urlGenerator, $this->createCancelLinkService($urlGenerator));
         $mailer->send($user, 'en');
     }
 
@@ -48,11 +52,13 @@ class RecoveryProcessMailerTest extends TestCase
         $handler = $this->createMock(MailHandler::class);
         $handler->expects(self::never())->method('send');
 
+        $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
         $mailer = new RecoveryProcessMailer(
             $handler,
             $this->createStub(TranslatorInterface::class),
             $this->createStub(SettingsService::class),
-            $this->createStub(UrlGeneratorInterface::class),
+            $urlGenerator,
+            $this->createCancelLinkService($urlGenerator),
         );
 
         $this->expectException(LogicException::class);
@@ -79,7 +85,8 @@ class RecoveryProcessMailerTest extends TestCase
         $handler = $this->createMock(MailHandler::class);
         $handler->expects(self::once())->method('send');
 
-        $mailer = new RecoveryProcessMailer($handler, $translator, $settingsService, $this->createStub(UrlGeneratorInterface::class));
+        $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
+        $mailer = new RecoveryProcessMailer($handler, $translator, $settingsService, $urlGenerator, $this->createCancelLinkService($urlGenerator));
         $mailer->send($user, 'de');
     }
 
@@ -95,10 +102,11 @@ class RecoveryProcessMailerTest extends TestCase
         ]);
 
         $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
-        $urlGenerator->method('generate')->willReturnMap([
-            ['recovery', [], UrlGeneratorInterface::ABSOLUTE_PATH, '/recovery'],
-            ['account_recovery_token', [], UrlGeneratorInterface::ABSOLUTE_PATH, '/account/recovery-token'],
-        ]);
+        $urlGenerator->method('generate')->willReturnCallback(static fn (string $name, array $parameters) => match ($name) {
+            'recovery' => '/recovery',
+            'account_recovery_token' => '/account/recovery-token',
+            'recovery_cancel' => '/recovery/cancel?'.http_build_query($parameters),
+        });
 
         $translator = $this->createMock(TranslatorInterface::class);
         $translator->expects(self::exactly(2))
@@ -111,6 +119,8 @@ class RecoveryProcessMailerTest extends TestCase
                     self::assertSame(48, $parameters['%hours%']);
                     self::assertSame('https://mail.example.com/recovery', $parameters['%recovery_url%']);
                     self::assertSame('https://mail.example.com/account/recovery-token', $parameters['%recovery_token_url%']);
+                    self::assertStringStartsWith('https://mail.example.com/recovery/cancel?', $parameters['%cancel_url%']);
+                    self::assertStringContainsString('_hash=', $parameters['%cancel_url%']);
                 }
                 if ('mail.recovery-subject' === $id) {
                     self::assertSame('user@example.org', $parameters['%email%']);
@@ -119,7 +129,12 @@ class RecoveryProcessMailerTest extends TestCase
                 return 'translated';
             });
 
-        $mailer = new RecoveryProcessMailer($this->createStub(MailHandler::class), $translator, $settingsService, $urlGenerator);
+        $mailer = new RecoveryProcessMailer($this->createStub(MailHandler::class), $translator, $settingsService, $urlGenerator, $this->createCancelLinkService($urlGenerator));
         $mailer->send($user, 'en');
+    }
+
+    private function createCancelLinkService(UrlGeneratorInterface $urlGenerator): RecoveryCancelLinkService
+    {
+        return new RecoveryCancelLinkService(new UriSigner('secret'), $urlGenerator, $this->createStub(UserRepository::class));
     }
 }

@@ -420,10 +420,11 @@ mail:
 
     If this wasn't you:
     Someone else knows your recovery token and is trying to take over your
-    account. Before %time%, sign in here:
+    account. Cancel the recovery before %time%:
+    %cancel_url%
+    Then sign in and create a new recovery token, so that the old token no
+    longer works:
     %recovery_token_url%
-    Then create a new recovery token. This makes the old token invalid and
-    stops the recovery.
 
     Your %project_name% admin team.
   alias-created-subject: New alias address created
@@ -1320,3 +1321,15 @@ notifications:
     title: Security Alert
     message: Your password has been found in a database of known compromised passwords. Please change it to secure your account.
     button: Change Password
+recovery-cancel:
+  headline: "Cancel password recovery"
+  lead: "A password recovery for %email% was started on %time%."
+  warning: "Only cancel the recovery if you didn't start it. Whoever started it knows your recovery token and can start a new recovery."
+  next-step: "After cancelling, sign in and create a new recovery token. This makes the old token invalid."
+  button: "Cancel recovery"
+  done-headline: "Recovery cancelled"
+  done-text: "The password recovery was cancelled."
+  done-next-step: "Now sign in and create a new recovery token, so that the old token no longer works."
+  done-button: "Create new recovery token"
+  invalid-headline: "Link no longer valid"
+  invalid-text: "This link has expired, or the password recovery is no longer running. There is nothing to cancel."

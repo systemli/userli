@@ -1,0 +1,94 @@
+{% extends 'base_step.html.twig' %}
+
+{#
+    Cancel a recovery process from the link in the notification mail.
+
+    Variables:
+      - state: 'confirm', 'cancelled' or 'invalid'
+      - email, started: only for 'confirm'
+#}
+
+{% set headline = {
+    confirm: 'recovery-cancel.headline',
+    cancelled: 'recovery-cancel.done-headline',
+    invalid: 'recovery-cancel.invalid-headline',
+}[state] %}
+
+{% block title %}{{ setting('app_name') }} - {{ headline|trans }}{% endblock %}
+
+{% block step_icon %}
+    {% if state == 'cancelled' %}
+        <div class="w-16 h-16 bg-green-100 dark:bg-green-900/50 rounded-xl flex items-center justify-center">
+            {{ ux_icon('heroicons:check-circle', {'class': 'w-8 h-8 text-green-600 dark:text-green-400'}) }}
+        </div>
+    {% else %}
+        <div class="w-16 h-16 bg-yellow-100 dark:bg-yellow-900/50 rounded-xl flex items-center justify-center">
+            {{ ux_icon('heroicons:shield-exclamation', {'class': 'w-8 h-8 text-yellow-600 dark:text-yellow-400'}) }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block step_title %}{{ headline|trans }}{% endblock %}
+
+{% block step_description %}
+    {% if state == 'confirm' %}
+        <p class="text-gray-600 dark:text-gray-300">
+            {{ 'recovery-cancel.lead'|trans({'%email%': email, '%time%': started|format_datetime('medium', 'short')}) }}
+        </p>
+    {% endif %}
+{% endblock %}
+
+{% block step_content %}
+    {% if state == 'confirm' %}
+        <div class="mb-6 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4" role="note">
+            <div class="flex">
+                {{ ux_icon('heroicons:exclamation-triangle', {'class': 'w-5 h-5 text-yellow-500 dark:text-yellow-400 mt-0.5 mr-3 flex-shrink-0'}) }}
+                <div class="text-sm text-yellow-800 dark:text-yellow-200">
+                    <p>{{ 'recovery-cancel.warning'|trans }}</p>
+                    <p class="mt-2">{{ 'recovery-cancel.next-step'|trans }}</p>
+                </div>
+            </div>
+        </div>
+
+        {# Posts back to the signed URL, the signature is checked again #}
+        <form method="post" action="{{ app.request.requestUri }}" class="flex flex-col sm:flex-row gap-3">
+            <input type="hidden" name="_token" value="{{ csrf_token('recovery_cancel') }}">
+            <button type="submit"
+                    class="px-6 py-3 cursor-pointer bg-red-600 dark:bg-red-500 text-white font-medium rounded-lg hover:bg-red-700 dark:hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200">
+                {{ 'recovery-cancel.button'|trans }}
+            </button>
+            <a href="{{ path('index') }}"
+               class="px-6 py-3 text-center bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-medium rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200">
+                {{ 'error.back_link'|trans }}
+            </a>
+        </form>
+    {% elseif state == 'cancelled' %}
+        <div class="mb-6 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-lg p-4">
+            <div class="flex">
+                {{ ux_icon('heroicons:check-circle-solid', {'class': 'w-5 h-5 text-green-500 dark:text-green-400 mt-0.5 mr-3 flex-shrink-0'}) }}
+                <div class="text-sm text-green-800 dark:text-green-200">
+                    <p>{{ 'recovery-cancel.done-text'|trans }}</p>
+                    <p class="mt-2 font-medium">{{ 'recovery-cancel.done-next-step'|trans }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-center">
+            <a href="{{ path('account_recovery_token') }}"
+               class="px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200">
+                {{ 'recovery-cancel.done-button'|trans }}
+            </a>
+        </div>
+    {% else %}
+        <div class="mb-6 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+            <p class="text-sm text-gray-700 dark:text-gray-300">{{ 'recovery-cancel.invalid-text'|trans }}</p>
+        </div>
+
+        <div class="flex justify-center">
+            <a href="{{ path('index') }}"
+               class="px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200">
+                {{ 'error.back_link'|trans }}
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}

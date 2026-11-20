@@ -132,6 +132,17 @@ final readonly class RecoveryHandler
     }
 
     /**
+     * Cancel a running recovery process, e.g. because the account owner didn't start it.
+     *
+     * The recovery token stays valid, so whoever knows it can start a new recovery process.
+     */
+    public function cancelRecovery(User $user): void
+    {
+        $user->eraseRecoveryStartTime();
+        $this->manager->flush();
+    }
+
+    /**
      * Verify that the recovery token is valid for the given email.
      */
     public function verifyRecoveryToken(string|User $emailOrUser, string $recoveryToken, bool $verifyTime = false): bool
@@ -163,6 +174,22 @@ final readonly class RecoveryHandler
         return $recoveryStartTime->add(new DateInterval(sprintf('PT%dH', self::PROCESS_DELAY_HOURS)));
     }
 
+    /**
+     * Point in time when a started recovery process expires.
+     */
+    public static function getExpireTime(DateTimeImmutable $recoveryStartTime): DateTimeImmutable
+    {
+        return $recoveryStartTime->add(new DateInterval(sprintf('P%dD', self::PROCESS_EXPIRE_DAYS)));
+    }
+
+    /**
+     * Whether a recovery process has been started and not expired yet.
+     */
+    public static function isInProgress(?DateTimeImmutable $recoveryStartTime): bool
+    {
+        return null !== $recoveryStartTime && !self::isExpired($recoveryStartTime);
+    }
+
     private static function isPending(DateTimeImmutable $recoveryStartTime): bool
     {
         return self::getActiveTime($recoveryStartTime) > new DateTimeImmutable();
@@ -170,7 +197,7 @@ final readonly class RecoveryHandler
 
     private static function isExpired(DateTimeImmutable $recoveryStartTime): bool
     {
-        return $recoveryStartTime->add(new DateInterval(sprintf('P%dD', self::PROCESS_EXPIRE_DAYS))) <= new DateTimeImmutable();
+        return self::getExpireTime($recoveryStartTime) <= new DateTimeImmutable();
     }
 
     private function findUserByEmail(string $email): ?User

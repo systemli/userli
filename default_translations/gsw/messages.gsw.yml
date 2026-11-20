@@ -169,10 +169,11 @@ mail:
 
     Faus du das nid bisch gsi:
     Öpper angers kennt dis Recovery Token und versuecht di Account z
-    übernäh. Meud di vor em %time% hie a:
+    übernäh. Brich d Wiederhärschteuig vor em %time% hie ab:
+    %cancel_url%
+    Meud di när a und erschteu es nöis Recovery Token, dass s alte Token
+    nümm funktioniert:
     %recovery_token_url%
-    Erschteu när es nöis Recovery Token. Das invalidiert s alte Token und
-    stoppt d Wiederhärschteuig.
 
     Dis %project_name% Admin Team.
   alias-created-subject: Nöii Alias Adrässe erscheut
@@ -233,3 +234,15 @@ spam:
   title: Account isch gschperrt
 random: zuefäuig
 custom: benutzerdefiniert
+recovery-cancel:
+  headline: "Passwort-Wiederhärschteuig abbräche"
+  lead: "Für %email% isch am %time% e Passwort-Wiederhärschteuig gschtartet worde."
+  warning: "Brich d Wiederhärschteuig nume ab, wenn du se nid säuber gschtartet hesch. Wär se gschtartet het, kennt dis Recovery Token und cha e nöii Wiederhärschteuig schtarte."
+  next-step: "Meud di nach em Abbräche a und erschteu es nöis Recovery Token. Das invalidiert s alte Token."
+  button: "Wiederhärschteuig abbräche"
+  done-headline: "Wiederhärschteuig abbroche"
+  done-text: "D Passwort-Wiederhärschteuig isch abbroche worde."
+  done-next-step: "Meud di iz a und erschteu es nöis Recovery Token, dass s alte Token nümm funktioniert."
+  done-button: "Nöis Recovery Token erschteue"
+  invalid-headline: "Link nümm gültig"
+  invalid-text: "Dä Link isch abgloffe, oder d Passwort-Wiederhärschteuig louft nümm. Es git nüt abzbräche."

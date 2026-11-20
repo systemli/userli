@@ -139,10 +139,11 @@ mail:
 
     Se non sei stato/a tu:
     Qualcun altro conosce il tuo gettone di recupero e sta cercando di
-    impossessarsi del tuo account. Prima del %time%, accedi qui:
+    impossessarsi del tuo account. Annulla il recupero prima del %time%:
+    %cancel_url%
+    Poi accedi e crea un nuovo gettone di recupero, così il vecchio gettone
+    non funzionerà più:
     %recovery_token_url%
-    Poi crea un nuovo gettone di recupero. Così il vecchio gettone non sarà
-    più valido e il recupero verrà interrotto.
 
     Il team di amministrazione di %project_name%.
 admin:
@@ -216,3 +217,15 @@ recovery-token:
     Se dimentichi la password, puoi impostarne una nuova con questo gettone di
     recupero. Conserva questo file in un posto sicuro: chiunque lo abbia può
     avviare il recupero della password per il tuo account.
+recovery-cancel:
+  headline: "Annulla il recupero della password"
+  lead: "Il %time% è stato avviato un recupero della password per %email%."
+  warning: "Annulla il recupero solo se non l'hai avviato tu. Chi l'ha avviato conosce il tuo gettone di recupero e può avviare un nuovo recupero."
+  next-step: "Dopo l'annullamento, accedi e crea un nuovo gettone di recupero. Così il vecchio gettone non sarà più valido."
+  button: "Annulla il recupero"
+  done-headline: "Recupero annullato"
+  done-text: "Il recupero della password è stato annullato."
+  done-next-step: "Ora accedi e crea un nuovo gettone di recupero, così il vecchio gettone non funzionerà più."
+  done-button: "Crea un nuovo gettone di recupero"
+  invalid-headline: "Link non più valido"
+  invalid-text: "Questo link è scaduto oppure il recupero della password non è più in corso. Non c'è niente da annullare."

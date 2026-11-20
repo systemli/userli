@@ -323,4 +323,32 @@ class RecoveryHandlerTest extends TestCase
 
         self::assertTrue($handler->verifyRecoveryToken($user, 'valid-token'));
     }
+
+    public function testCancelRecoveryErasesStartTimeAndFlushes(): void
+    {
+        $user = new User('test@example.org');
+        $user->setRecoveryStartTime(new DateTimeImmutable());
+
+        $manager = $this->createMock(EntityManagerInterface::class);
+        $manager->expects(self::once())->method('flush');
+
+        $this->createHandler(manager: $manager)->cancelRecovery($user);
+
+        self::assertNull($user->getRecoveryStartTime());
+    }
+
+    public function testGetExpireTime(): void
+    {
+        $start = new DateTimeImmutable('2026-01-15 10:00:00');
+
+        self::assertEquals(new DateTimeImmutable('2026-02-14 10:00:00'), RecoveryHandler::getExpireTime($start));
+    }
+
+    public function testIsInProgress(): void
+    {
+        self::assertFalse(RecoveryHandler::isInProgress(null));
+        self::assertTrue(RecoveryHandler::isInProgress(new DateTimeImmutable()));
+        self::assertTrue(RecoveryHandler::isInProgress(new DateTimeImmutable('-29 days')));
+        self::assertFalse(RecoveryHandler::isInProgress(new DateTimeImmutable('-31 days')));
+    }
 }

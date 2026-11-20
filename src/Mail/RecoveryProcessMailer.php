@@ -7,6 +7,7 @@ namespace App\Mail;
 use App\Entity\User;
 use App\Handler\MailHandler;
 use App\Handler\RecoveryHandler;
+use App\Service\RecoveryCancelLinkService;
 use App\Service\SettingsService;
 use IntlDateFormatter;
 use LogicException;
@@ -20,6 +21,7 @@ final readonly class RecoveryProcessMailer
         private TranslatorInterface $translator,
         private SettingsService $settingsService,
         private UrlGeneratorInterface $urlGenerator,
+        private RecoveryCancelLinkService $cancelLinkService,
     ) {
     }
 
@@ -34,12 +36,12 @@ final readonly class RecoveryProcessMailer
         $formatter = IntlDateFormatter::create($locale, IntlDateFormatter::MEDIUM, IntlDateFormatter::SHORT);
         $time = $formatter->format(RecoveryHandler::getActiveTime($recoveryStartTime));
 
-        $body = $this->buildBody($locale, $email, $time);
+        $body = $this->buildBody($locale, $email, $time, $this->cancelLinkService->generatePath($user));
         $subject = $this->buildSubject($locale, $email);
         $this->handler->send($email, $body, $subject);
     }
 
-    private function buildBody(string $locale, string $email, string $time): string
+    private function buildBody(string $locale, string $email, string $time, string $cancelPath): string
     {
         // Host from the admin-editable `app_url` setting, path from the router. This keeps
         // a single source of truth for the host and works in background workers where no
@@ -55,6 +57,7 @@ final readonly class RecoveryProcessMailer
                 '%hours%' => RecoveryHandler::PROCESS_DELAY_HOURS,
                 '%recovery_url%' => $appUrl.$this->urlGenerator->generate('recovery', [], UrlGeneratorInterface::ABSOLUTE_PATH),
                 '%recovery_token_url%' => $appUrl.$this->urlGenerator->generate('account_recovery_token', [], UrlGeneratorInterface::ABSOLUTE_PATH),
+                '%cancel_url%' => $appUrl.$cancelPath,
             ],
             null,
             $locale

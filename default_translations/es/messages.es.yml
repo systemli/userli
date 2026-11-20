@@ -244,10 +244,11 @@ mail:
 
     Si no fuiste tú:
     Alguien más conoce tu token de recuperación e intenta apoderarse de tu
-    cuenta. Inicia sesión aquí antes del %time%:
+    cuenta. Cancela la recuperación antes del %time%:
+    %cancel_url%
+    Después, inicia sesión y crea un nuevo token de recuperación para que el
+    token antiguo deje de funcionar:
     %recovery_token_url%
-    Después, crea un nuevo token de recuperación. Así el token antiguo deja
-    de ser válido y la recuperación se detiene.
 
     Tu equipo de administración de %project_name%.
   alias-created-subject: Nueva dirección alias creada
@@ -329,3 +330,15 @@ random-aliases.feature-privacy: Perfecto para compras en línea y registros
 random-aliases.feature-deletable: Se pueden eliminar en cualquier momento cuando ya no se necesiten
 random-aliases.limitation-random-name: Nombres aleatorios más difíciles de recordar
 random-aliases.management-hint: <strong>Consejo:</strong> Elimina los alias aleatorios no utilizados para hacer espacio para nuevos.
+recovery-cancel:
+  headline: "Cancelar la recuperación de contraseña"
+  lead: "Se inició una recuperación de contraseña para %email% el %time%."
+  warning: "Cancela la recuperación solo si no la iniciaste tú. Quien la inició conoce tu token de recuperación y puede iniciar una nueva recuperación."
+  next-step: "Después de cancelar, inicia sesión y crea un nuevo token de recuperación. Así el token antiguo deja de ser válido."
+  button: "Cancelar recuperación"
+  done-headline: "Recuperación cancelada"
+  done-text: "La recuperación de contraseña se ha cancelado."
+  done-next-step: "Ahora inicia sesión y crea un nuevo token de recuperación para que el token antiguo deje de funcionar."
+  done-button: "Crear nuevo token de recuperación"
+  invalid-headline: "El enlace ya no es válido"
+  invalid-text: "Este enlace ha caducado o la recuperación de contraseña ya no está en curso. No hay nada que cancelar."

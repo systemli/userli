@@ -39,9 +39,14 @@ can't be shortened.
 !!! danger "You didn't start this?"
 
     If you receive this email but did not start the recovery, someone else knows
-    your recovery token. Sign in and
-    [create a new recovery token](security.md#create-a-new-recovery-token)
-    immediately. This stops the recovery.
+    your recovery token.
+
+    1. Open the cancel link in the email and click **Cancel recovery**. This
+       works without signing in.
+    2. Sign in and
+       [create a new recovery token](security.md#create-a-new-recovery-token)
+       immediately. Otherwise the other person can start a new recovery with
+       the old token.
 
 ## Step 2: Set a new password
 

@@ -419,10 +419,11 @@ mail:
 
     Wenn du das nicht warst:
     Jemand anderes kennt deinen Wiederherstellungscode und versucht, dein
-    Konto zu übernehmen. Melde dich vor dem %time% hier an:
+    Konto zu übernehmen. Brich die Wiederherstellung vor dem %time% ab:
+    %cancel_url%
+    Melde dich dann an und erstelle einen neuen Wiederherstellungscode, damit
+    der alte Code nicht mehr funktioniert:
     %recovery_token_url%
-    Erstelle dann einen neuen Wiederherstellungscode. Dadurch wird der alte
-    Code ungültig und die Wiederherstellung abgebrochen.
 
     Dein %project_name%-Verwaltungsteam
   alias-created-subject: Neue Alias-Adresse erstellt
@@ -1321,3 +1322,15 @@ notifications:
     title: Sicherheitswarnung
     message: Dein Passwort wurde in einer Datenbank mit bekannten kompromittierten Passwörtern gefunden. Bitte ändere es, um dein Konto zu schützen.
     button: Passwort ändern
+recovery-cancel:
+  headline: "Passwort-Wiederherstellung abbrechen"
+  lead: "Für %email% wurde am %time% eine Passwort-Wiederherstellung gestartet."
+  warning: "Brich die Wiederherstellung nur ab, wenn du sie nicht selbst gestartet hast. Wer sie gestartet hat, kennt deinen Wiederherstellungscode und kann eine neue Wiederherstellung starten."
+  next-step: "Melde dich nach dem Abbrechen an und erstelle einen neuen Wiederherstellungscode. Dadurch wird der alte Code ungültig."
+  button: "Wiederherstellung abbrechen"
+  done-headline: "Wiederherstellung abgebrochen"
+  done-text: "Die Passwort-Wiederherstellung wurde abgebrochen."
+  done-next-step: "Melde dich jetzt an und erstelle einen neuen Wiederherstellungscode, damit der alte Code nicht mehr funktioniert."
+  done-button: "Neuen Wiederherstellungscode erstellen"
+  invalid-headline: "Link nicht mehr gültig"
+  invalid-text: "Dieser Link ist abgelaufen, oder die Passwort-Wiederherstellung läuft nicht mehr. Es gibt nichts abzubrechen."
