@@ -96,4 +96,48 @@ class EmailAvailableValidatorTest extends ConstraintValidatorTestCase
             ['reserved@example.org'],
         ];
     }
+
+    public function testDefaultConstraintChecksEverything(): void
+    {
+        $constraint = new EmailAvailable();
+
+        self::assertTrue($constraint->checkUser);
+        self::assertTrue($constraint->checkAlias);
+        self::assertTrue($constraint->checkReservedName);
+    }
+
+    #[DataProvider('getPartialChecks')]
+    public function testPartialChecks(string $address, EmailAvailable $constraint, bool $expectViolation): void
+    {
+        $this->validator->validate($address, $constraint);
+
+        if ($expectViolation) {
+            $this->buildViolation('registration.email-already-taken')
+                ->assertRaised();
+        } else {
+            self::assertNoViolation();
+        }
+    }
+
+    public static function getPartialChecks(): array
+    {
+        $userOnly = new EmailAvailable(checkAlias: false, checkReservedName: false);
+        $reservedNameOnly = new EmailAvailable(checkUser: false, checkAlias: false);
+        $userAndReservedName = new EmailAvailable(checkAlias: false);
+        $nothing = new EmailAvailable(checkUser: false, checkAlias: false, checkReservedName: false);
+
+        return [
+            'user only: user taken' => ['user@example.org', $userOnly, true],
+            'user only: alias ignored' => ['alias@example.org', $userOnly, false],
+            'user only: reserved name ignored' => ['reserved@example.org', $userOnly, false],
+            'user only: new address' => ['new@example.org', $userOnly, false],
+            'reserved name only: reserved name taken' => ['reserved@example.org', $reservedNameOnly, true],
+            'reserved name only: user ignored' => ['user@example.org', $reservedNameOnly, false],
+            'reserved name only: alias ignored' => ['alias@example.org', $reservedNameOnly, false],
+            'user and reserved name: user taken' => ['user@example.org', $userAndReservedName, true],
+            'user and reserved name: reserved name taken' => ['reserved@example.org', $userAndReservedName, true],
+            'user and reserved name: alias ignored' => ['alias@example.org', $userAndReservedName, false],
+            'nothing checked: user ignored' => ['user@example.org', $nothing, false],
+        ];
+    }
 }
