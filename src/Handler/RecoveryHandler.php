@@ -140,7 +140,11 @@ final readonly class RecoveryHandler
 
         if ($verifyTime) {
             $recoveryStartTime = $user->getRecoveryStartTime();
-            if (null === $recoveryStartTime || new DateTimeImmutable(self::PROCESS_DELAY) < $recoveryStartTime) {
+            if (null === $recoveryStartTime
+                || new DateTimeImmutable(self::PROCESS_DELAY) < $recoveryStartTime
+                || new DateTimeImmutable(self::PROCESS_EXPIRE) >= $recoveryStartTime
+            ) {
+                // Waiting period not elapsed yet or recovery process expired
                 return false;
             }
         }

@@ -276,6 +276,32 @@ class RecoveryHandlerTest extends TestCase
         self::assertTrue($handler->verifyRecoveryToken('test@example.org', 'valid-token', true));
     }
 
+    public function testVerifyRecoveryTokenWithTimeCheckExpired(): void
+    {
+        $user = new User('test@example.org');
+        // Set recoveryStartTime to 31 days ago => process expired
+        $user->setRecoveryStartTime(new DateTimeImmutable('-31 days'));
+        $this->userRepository->method('findByEmail')->willReturn($user);
+        $this->recoveryTokenHandler->method('verify')->willReturn(true);
+
+        $handler = $this->createHandler();
+
+        self::assertFalse($handler->verifyRecoveryToken('test@example.org', 'valid-token', true));
+    }
+
+    public function testResetPasswordWithExpiredProcess(): void
+    {
+        $user = new User('test@example.org');
+        $user->setRecoveryStartTime(new DateTimeImmutable('-31 days'));
+        $this->userRepository->method('findByEmail')->willReturn($user);
+        $this->recoveryTokenHandler->method('verify')->willReturn(true);
+
+        $handler = $this->createHandler();
+
+        $this->expectException(RecoveryException::class);
+        $handler->resetPassword('test@example.org', 'valid-token', 'new-password');
+    }
+
     public function testVerifyRecoveryTokenWithTimeCheckNoStartTime(): void
     {
         $user = new User('test@example.org');
