@@ -186,9 +186,9 @@ flashes:
   voucher-creation-successful: Nuevo código de invitación creado.
   alias-creation-successful: Se ha creado tu nueva dirección alias.
   alias-deletion-successful: Se ha eliminado tu dirección alias.
-  recovery-token-invalid: ¡La dirección de e-mail y/o el token de recuperación son incorrectos!
+  recovery-token-invalid: La dirección de e-mail o el token de recuperación no son correctos. Comprueba ambos e inténtalo de nuevo.
   recovery-token-ack: Has generado un token de recuperación.
-  recovery-reauthenticate: ¡Algo salió mal. Por favor, vuelve a autenticarte!
+  recovery-reauthenticate: No se pudo verificar la recuperación de tu contraseña. Introduce de nuevo tu dirección de e-mail y tu token de recuperación.
   recovery-session-expired: Por favor, introduce de nuevo tu dirección de e-mail y tu token de recuperación para establecer una nueva contraseña.
   recovery-reset-hint: La autenticación de dos factores está desactivada y se han eliminado tus contraseñas de aplicación. Vuelve a activar la 2FA y crea nuevas contraseñas de aplicación.
   recovery-password-changed: Has cambiado tu contraseña.

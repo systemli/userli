@@ -85,7 +85,8 @@ flashes:
   openpgp-key-upload-error-multiple-keys: >
     Nei dati caricati è stata trovata più di una chiave per il tuo indirizzo e-mail.
     Si prega di caricare solo una chiave.
-  recovery-token-invalid: L'indirizzo e-mail e/o il gettone di recupero sono sbagliati!
+  recovery-token-invalid: L'indirizzo e-mail o il gettone di recupero non è corretto. Controlla entrambi e riprova.
+  recovery-reauthenticate: Non è stato possibile verificare il recupero della password. Inserisci di nuovo il tuo indirizzo e-mail e il tuo gettone di recupero.
   recovery-session-expired: Inserisci di nuovo il tuo indirizzo e-mail e il tuo gettone di recupero per impostare una nuova password.
   recovery-reset-hint: L'autenticazione a due fattori è disattivata e le tue password per le app sono state eliminate. Riattiva la 2FA e crea nuove password per le app.
 spam:

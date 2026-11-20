@@ -141,9 +141,9 @@ flashes:
   registration-successful: Du har registrert deg.
   alias-creation-successful: Din nye alias-adresse ble opprettet.
   alias-deletion-successful: Din alias-adresse ble slettet.
-  recovery-token-invalid: E-postadresse og/eller gjenopprettingssymbol er galt.
+  recovery-token-invalid: E-postadressen eller gjenopprettingssymbolet er ikke riktig. Kontroller begge og prøv igjen.
   recovery-token-ack: Du genererte et gjenopprettingssymbol.
-  recovery-reauthenticate: Noe gikk galt. Identitetsbekreft deg igjen.
+  recovery-reauthenticate: Gjenopprettingen av passordet kunne ikke bekreftes. Skriv inn e-postadressen og gjenopprettingssymbolet ditt på nytt.
   recovery-session-expired: Skriv inn e-postadressen og gjenopprettingssymbolet ditt på nytt for å sette et nytt passord.
   recovery-reset-hint: Tofaktorautentisering er slått av, og app-passordene dine ble slettet. Slå på 2FA igjen og opprett nye app-passord.
   recovery-password-changed: Du endret passordet ditt.

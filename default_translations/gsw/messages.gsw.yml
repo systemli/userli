@@ -194,13 +194,13 @@ mail:
 flashes:
   recovery-token-ack: Du hesch es Recovery Token generiert.
   logout-successful: Du bisch iz usgloggt.
-  recovery-token-invalid: E-Mail Adrässe und/oder Recovery Token isch fautsch!
+  recovery-token-invalid: D E-Mail Adrässe oder s Recovery Token isch nid korrekt. Bitte prüef beides und versuechs nomou.
   voucher-creation-successful: Nöie Invite Code isch erschtellt.
   recovery-password-changed: Du hesch dis Passwort gänderet.
   alias-deletion-successful: Alias Adrässe isch glöscht.
   alias-creation-successful: Nöie Alias Adrässe isch erschtellt.
   password-change-successful: Dis nöie Passwort isch iz aktiv!
-  recovery-reauthenticate: Irgendöppis isch schief gloffe. Bitte nöi amäude!
+  recovery-reauthenticate: Dini Passwort-Wiederhärschteuig het nid chönne bestätigt wärde. Bitte gib dini E-Mail Adrässe und dis Recovery Token nomou i.
   recovery-session-expired: Bitte gib dini E-Mail Adrässe und dis Recovery Token nomou i, zum es nöis Passwort z setze.
   recovery-reset-hint: D Zwöi-Faktor-Authentifizierig isch us und dini App-Passwörter si glöscht worde. Schaut 2FA wider i und erschteu nöii App-Passwörter.
   registration-successful: Du bisch iz regischtriert.

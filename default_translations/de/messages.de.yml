@@ -318,9 +318,9 @@ flashes:
   app-password-deletion-successful: Das App-Passwort wurde gelöscht.
   app-password-deletion-failed: Das App-Passwort konnte nicht gelöscht werden.
   alias-deletion-failed: Deine Alias-Adresse konnte nicht gelöscht werden. Bitte versuche es erneut.
-  recovery-token-invalid: E-Mail-Adresse oder Wiederherstellungscode sind falsch!
+  recovery-token-invalid: Die E-Mail-Adresse oder der Wiederherstellungscode ist nicht korrekt. Bitte prüfe beides und versuche es erneut.
   recovery-token-ack: Du hast einen Wiederherstellungscode erzeugt.
-  recovery-reauthenticate: Etwas ist schief gelaufen. Bitte erneut authentifizieren!
+  recovery-reauthenticate: Deine Passwort-Wiederherstellung konnte nicht bestätigt werden. Bitte gib deine E-Mail-Adresse und deinen Wiederherstellungscode erneut ein.
   recovery-session-expired: Bitte gib deine E-Mail-Adresse und deinen Wiederherstellungscode erneut ein, um ein neues Passwort zu setzen.
   recovery-password-changed: Dein Passwort wurde geändert.
   recovery-reset-hint: Die Zwei-Faktor-Authentifizierung ist aus und deine App-Passwörter wurden gelöscht. Schalte 2FA wieder ein und erstelle neue App-Passwörter.

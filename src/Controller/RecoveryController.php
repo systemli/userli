@@ -136,10 +136,11 @@ final class RecoveryController extends AbstractController
                 return $this->render('Recovery/reset_password.html.twig', ['form' => $form]);
             }
 
-            // Verification of $email + $recoveryToken failed, start over
+            // Verification of $email + $recoveryToken failed (e.g. process expired), start over
+            $request->getSession()->remove(self::SESSION_KEY);
             $this->addFlash('error', 'flashes.recovery-reauthenticate');
 
-            return $this->render('Recovery/reset_password.html.twig', ['form' => $form], new Response(status: Response::HTTP_UNAUTHORIZED));
+            return $this->redirectToRoute('recovery');
         }
 
         return $this->render('Recovery/reset_password.html.twig', ['form' => $form]);

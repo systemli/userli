@@ -320,9 +320,9 @@ flashes:
   app-password-deletion-successful: The app password was deleted.
   app-password-deletion-failed: The app password could not be deleted.
   alias-deletion-failed: Your alias address could not be deleted. Please try again.
-  recovery-token-invalid: E-mail address and/or recovery token are wrong!
+  recovery-token-invalid: The e-mail address or recovery token is not correct. Please check both and try again.
   recovery-token-ack: You generated a recovery token.
-  recovery-reauthenticate: Something went wrong. Please re-authenticate!
+  recovery-reauthenticate: Your password recovery could not be verified. Please enter your e-mail address and recovery token again.
   recovery-session-expired: Please enter your e-mail address and recovery token again to set a new password.
   recovery-password-changed: You changed your password.
   recovery-reset-hint: Two-factor authentication is off and your app passwords were deleted. Turn 2FA back on and create new app passwords.

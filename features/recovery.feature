@@ -150,7 +150,7 @@ Feature: Recovery
 
     Then I should be on "/recovery"
     And the response status code should be 401
-    And I should see text matching "E-mail address and/or recovery token are wrong!"
+    And I should see text matching "The e-mail address or recovery token is not correct."
 
   @recovery
   Scenario: Reset password with invalid password in recovery process
@@ -172,12 +172,9 @@ Feature: Recovery
       | email         | user2@example.org                    |
       | recoveryToken | 11111111-1111-4111-8111-111111111111 |
     And I request "POST /recovery/reset_password"
-    And I fill in the following:
-      | recovery_reset_password[password][first]  | XV7FxQWj9dApApN |
-      | recovery_reset_password[password][second] | XV7FxQWj9dApApN |
-    And I press "recovery_reset_password[submit]"
 
-    Then the response status code should be 401
+    Then I should be on "/recovery"
+    And I should see text matching "Your password recovery could not be verified."
 
   @recovery
   Scenario: Recovery invalid UUID

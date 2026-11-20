@@ -185,9 +185,9 @@ flashes:
   voucher-creation-successful: Nouveau code d'invitation créé.
   alias-creation-successful: Votre nouvel alias d'adresse a été créé.
   alias-deletion-successful: Votre alias d'adresse a été supprimé.
-  recovery-token-invalid: L'adresse électronique et/ou le jeton de récupération sont incorrects!
+  recovery-token-invalid: L'adresse électronique ou le jeton de récupération est incorrect. Vérifiez les deux et réessayez.
   recovery-token-ack: Vous avez généré un jeton de récupération.
-  recovery-reauthenticate: Une erreur s'est produite. Veuillez vous identifier à nouveau!
+  recovery-reauthenticate: La récupération de votre mot de passe n'a pas pu être vérifiée. Veuillez saisir à nouveau votre adresse électronique et votre jeton de récupération.
   recovery-session-expired: Veuillez saisir à nouveau votre adresse électronique et votre jeton de récupération pour définir un nouveau mot de passe.
   recovery-reset-hint: L'authentification à deux facteurs est désactivée et vos mots de passe d'application ont été supprimés. Réactivez la 2FA et créez de nouveaux mots de passe d'application.
   recovery-password-changed: Vous avez modifié votre mot de passe.
