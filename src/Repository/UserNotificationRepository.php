@@ -50,6 +50,21 @@ final class UserNotificationRepository extends ServiceEntityRepository
         return (int) $result > 0;
     }
 
+    public function emailHasExpiryNotification(string $email, UserNotificationType $type) :bool
+    {
+        $result = $this->createQueryBuilder('un')
+            ->select('COUNT(un.id)')
+            ->where('un.type = :type')
+            ->andWhere('un.metadata.email = :email')
+            ->setParameter('type', $type->value)
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getSingleScalarResult();
+        
+        return $result > 0;
+    }
+
+
     /**
      * Save a new notification record.
      */
@@ -69,6 +84,31 @@ final class UserNotificationRepository extends ServiceEntityRepository
             ->setParameter('type', $type->value)
             ->getQuery()
             ->execute();
+    }
+
+    public function deleteByIds(array $ids): void
+    {
+        $this->createQueryBuilder('n')
+            ->delete()
+            ->where('n.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->execute();
+    }
+
+    public function findNotificationsByUsersAndType(array $users, UserNotificationType $type) {
+        if ($users === []) {
+            return [];
+        }
+
+        $qb = $this->createQueryBuilder('un')
+            ->where('un.user IN (:users)')
+            ->andWhere('un.type = :type')
+            ->setParameter('users', $users)
+            ->setParameter('type', $type->value);
+            
+            return (array) $qb->getQuery()->getResult();
+            
     }
 
     public function countByFilters(string $email = '', string $type = ''): int

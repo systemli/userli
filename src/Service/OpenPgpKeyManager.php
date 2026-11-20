@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Dto\PaginatedResult;
+use App\Entity\Alias;
 use App\Entity\Domain;
 use App\Entity\OpenPgpKey;
 use App\Entity\User;
@@ -15,6 +16,7 @@ use App\Repository\OpenPgpKeyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 use Tuupola\Base32;
+use function PHPUnit\Framework\throwException;
 
 final readonly class OpenPgpKeyManager
 {
@@ -104,5 +106,25 @@ final readonly class OpenPgpKeyManager
 
         $this->em->remove($openPgpKey);
         $this->em->flush();
+    }
+
+    /**
+     * @return User[]
+     */
+    public function findUsersByEmail(string $email): array
+    {
+        $users = [];
+        $aliasUsers = $this->em->getRepository(Alias::class)->findUsersBySource($email);
+        $user = $this->em->getRepository(User::class)->findOneBy(['email' => $email, 'deleted' => false]);
+        if ($user !== null) {
+            $users[] = $user;
+        }
+        foreach ($aliasUsers as $aliasUser) {
+            if ($aliasUser !== null && ($aliasUser->getId() !== $user->getId() || $user === null)) {
+                    $users[] = $aliasUser;
+            }
+        }
+
+        return $users;
     }
 }

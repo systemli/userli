@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\MessageHandler;
 
-use App\Entity\OpenPgpKey;
-use App\Entity\User;
+use App\Enum\UserNotificationType;
 use App\Mail\UserKeyExpiredMailer;
 use App\Message\UserKeyExpiredNotification;
-use DateTimeImmutable;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\UserNotificationRateLimiter;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -17,31 +15,22 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 final class UserKeyExpiredNotificationHandler
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
         private readonly UserKeyExpiredMailer $userKeyExpiredMailer,
         private readonly LoggerInterface $logger,
+        private readonly UserNotificationRateLimiter $userNotificationRateLimiter,
     ) {
     }
 
     public function __invoke(UserKeyExpiredNotification $message): void
     {
-        $user = $this->entityManager->getRepository(User::class)->find($message->userId);
-        if (null === $user) {
-            $this->logger->warning('User with id {user-id} not found', ['user-id' => $message->userId]);
-
-            return;
-        }
-
-        $key = $this->entityManager->getRepository(OpenPgpKey::class)->find($message->keyId);
-        if (null === $key) {
-            $this->logger->warning('OpenPgpKey with id {key-id} not found', ['key-id' => $message->keyId]);
-
-            return;
-        }
+        $user = $message->user;
+        $key = $message->key;
 
         $this->userKeyExpiredMailer->sendToUser($user, $key);
-
-        $key->setExpiryNotifiedAt(new DateTimeImmutable());
-        $this->entityManager->flush();
+        $this->userNotificationRateLimiter->save(
+            $user,
+            UserNotificationType::OPEN_PGP_KEY_EXPIRED,
+            metadata: ['email' => $key->getEmail(), 'fingerprint' => $key->getKeyFingerprint()],
+        );
     }
 }
