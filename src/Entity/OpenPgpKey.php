@@ -31,9 +31,6 @@ class OpenPgpKey
     #[ORM\Column(length: 32, nullable: true)]
     private ?string $wkdHash = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?DateTimeImmutable $expiryNotifiedAt = null;
-
     public function getUploader(): ?User
     {
         return $this->uploader;
@@ -67,15 +64,5 @@ class OpenPgpKey
     public function toBinary(): ?string
     {
         return ($this->getKeyData()) ? base64_decode($this->getKeyData()) : null;
-    }
-
-    public function getExpiryNotifiedAt(): ?DateTimeImmutable
-    {
-        return $this->expiryNotifiedAt;
-    }
-
-    public function setExpiryNotifiedAt(?DateTimeImmutable $expiryNotifiedAt): void
-    {
-        $this->expiryNotifiedAt = $expiryNotifiedAt;
     }
 }

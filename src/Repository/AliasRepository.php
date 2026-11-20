@@ -30,25 +30,6 @@ final class AliasRepository extends ServiceEntityRepository
         return $this->findOneBy(['source' => $email, 'deleted' => false]);
     }
 
-    /**
-     * Counts aliases using the given source address.
-     * Deleted aliases are ignored unless $includeDeleted is set.
-     */
-    public function countBySource(string $source, ?bool $includeDeleted = false): int
-    {
-        $qb = $this->createQueryBuilder('a')
-            ->select('COUNT(a.id)')
-            ->where('a.source = :source')
-            ->setParameter('source', $source)
-        ;
-
-        if (!$includeDeleted) {
-            $qb->andWhere('a.deleted = false');
-        }
-
-        return (int) $qb->getQuery()->getSingleScalarResult();
-    }
-
     public function countDomainAliases(Domain $domain): int
     {
         return (int) $this->createQueryBuilder('a')
