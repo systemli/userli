@@ -385,26 +385,28 @@ mail:
     dein %project_name%-Admin-Team
   announcement-footer: Dies ist eine offizielle Mitteilung von %project_name%.
   announcement-footer-domain: Dies ist eine Mitteilung der Admins von %domain%.
-  recovery-subject: Das Passwort zu deinem E-Mail-Konto %email% wird zurückgesetzt
+  recovery-subject: Passwort-Wiederherstellung für %email% gestartet
   recovery-body: |
     Hallo %email%,
 
-    Es wurde versucht dein Passwort zurückzusetzen. Dazu wurden deine
-    E-Mail-Addresse und der zugehörige Wiederherstellungscode unter
-    %recovery_url% eingegeben.
+    Unter %recovery_url%
+    wurde mit deiner E-Mail-Adresse und deinem Wiederherstellungscode eine
+    Passwort-Wiederherstellung für dein Konto gestartet.
 
-    Wenn du das nicht selbst warst, versucht jemand anderes mit Zugang zu
-    deinem Wiederherstellungscode, Kontrolle über dein Konto zu bekommen.
-    Gehe schnellstmöglich zu %recovery_token_url%
-    und erstelle dir einen neuen Wiederherstellungscode. Dadurch wird der
-    alte Code ungültig und der Vorgang abgebrochen.
+    Wenn du das warst:
+    Nach der Wartezeit von %hours% Stunden kannst du ab dem %time%
+    hier ein neues Passwort setzen:
+    %recovery_url%
+    Gib dazu erneut deine E-Mail-Adresse und deinen Wiederherstellungscode ein.
 
-    Hast du den Vorgang selbst ausgelöst, startet nun die %hours%-stündige Wartezeit.
-    Diese geht bis zum %time%. Anschließend kannst du mit einem
-    Besuch von %recovery_url% dein Passwort neu setzen.
+    Wenn du das nicht warst:
+    Jemand anderes kennt deinen Wiederherstellungscode und versucht, dein
+    Konto zu übernehmen. Melde dich vor dem %time% hier an:
+    %recovery_token_url%
+    Erstelle dann einen neuen Wiederherstellungscode. Dadurch wird der alte
+    Code ungültig und die Wiederherstellung abgebrochen.
 
-    Weiterhin viel Spaß mit deinem E-Mail-Konto, wünscht dir
-    dein %project_name%-Verwaltungsteam.
+    Dein %project_name%-Verwaltungsteam
   alias-created-subject: Neue Alias-Adresse erstellt
   alias-created-body: |
     Hallo %email%,
