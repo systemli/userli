@@ -107,7 +107,7 @@ recovery:
   reset-lead: Du hesch ke Berächtigung zum dis Passwort zrüggzsetze
   started: >
     Dr erscht Schritt zum Passwort zrüggsetze isch erledigt.
-    Iz muesch 48 Schtung warte. Ab denn chasch es nöis Passwort setze im zwöite Schritt.
+    Iz muesch %hours% Schtung warte. Ab denn chasch es nöis Passwort setze im zwöite Schritt.
     Bitte bewahr dis Recovery Token bis denn uf.
   cancel: Abbbräche
 recovery-token:
@@ -135,24 +135,28 @@ mail:
 
     Mir hoffe dass du witerhin Fröid a dim E-Mail Account hesch.
     Dis %project_name% Admin Team.
-  recovery-subject: S Passwort für di E-Mail Account %email% wird zrügggsetzt
+  recovery-subject: Passwort-Wiederhärschteuig für %email% gschtartet
   recovery-body: |
     Hallo %email%,
 
-    Dis Account Passwort isch versuecht worde zrüggzsetze mit
-    dire E-Mail Adrässe und em passende Recovery Code bi %recovery_url%.
+    Öpper het bi
+    %recovery_url%
+    mit dire E-Mail Adrässe und dim Recovery Token e Passwort-Wiederhärschteuig
+    für di Account gschtartet.
 
-    Faus du das nid säuber bisch gsi, het öpper angers mit Zuegriff uf
-    dis Recovery Token versuecht di Account z übernäh. Gang so schnäu wie
-    müglech uf %recovery_token_url% und erschteu
-    es nöis Recovery Token. Das invalidiert s alte Token und stoppt
-    dr Prozäss.
+    Faus du das bisch gsi:
+    Nach dr Wartezyt vo %hours% Schtung chasch ab em %time%
+    hie es nöis Passwort setze:
+    %recovery_url%
+    Gib drzue dini E-Mail Adrässe und dis Recovery Token nomou i.
 
-    Faus du dä Prozäss säuber hesch igleitet, schtartet iz die 48
-    stündigi Wartezyt. Sie wird am %time% ände. När chasch bi
-    %recovery_url% es nöis Passwort setze.
+    Faus du das nid bisch gsi:
+    Öpper angers kennt dis Recovery Token und versuecht di Account z
+    übernäh. Meud di vor em %time% hie a:
+    %recovery_token_url%
+    Erschteu när es nöis Recovery Token. Das invalidiert s alte Token und
+    stoppt d Wiederhärschteuig.
 
-    Mir hoffe dass du witerhin Fröid a dim E-Mail Account hesch.
     Dis %project_name% Admin Team.
   alias-created-subject: Nöii Alias Adrässe erscheut
   welcome-subject: Wiukomme bi %project_name%
@@ -180,6 +184,7 @@ flashes:
   alias-creation-successful: Nöie Alias Adrässe isch erschtellt.
   password-change-successful: Dis nöie Passwort isch iz aktiv!
   recovery-reauthenticate: Irgendöppis isch schief gloffe. Bitte nöi amäude!
+  recovery-session-expired: Bitte gib dini E-Mail Adrässe und dis Recovery Token nomou i, zum es nöis Passwort z setze.
   registration-successful: Du bisch iz regischtriert.
   recovery-next-login: Witerfahre mittem Ilogge.
 navbar_right:

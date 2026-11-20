@@ -71,7 +71,7 @@ recovery:
   cancel: Cancelar
   started: >
     Quase lá. Esse foi o primeiro passo para redefinir sua senha.
-    Agora você precisa esperar por 48 horas. Depois disso, no segundo passo, você pode criar uma nova senha.
+    Agora você precisa esperar por %hours% horas. Depois disso, no segundo passo, você pode criar uma nova senha.
     Por favor mantenha seu token guardado até lá.
   waiting-info: Esse tempo de espera é pela sua segurança e não pode ser encurtado ou ignorado.
   waiting-time: O segundo passo começa %time%.
@@ -124,6 +124,7 @@ flashes:
   recovery-token-invalid: O endereço de e-mail ou o token de recuperação está errado!
   recovery-token-ack: Você gerou um token de recuperação com sucesso!
   recovery-reauthenticate: Algo deu errado. Por favor se autentique novamente!
+  recovery-session-expired: Por favor, insira novamente seu endereço de e-mail e seu token de recuperação para criar uma nova senha.
   recovery-password-changed: Você mudou a sua senha com sucesso.
   recovery-next-login: Inicie sua sessão agora.
   openpgp-key-upload-error-no-keys: ""
@@ -161,25 +162,27 @@ mail:
     a se cadastrar no %project_name%.
 
     Sinceramente, time %project_name%.
-  recovery-subject: A senha do seu email %email% será redefinida
-  recovery-body: >
+  recovery-subject: Recuperação de senha iniciada para %email%
+  recovery-body: |
     Olá %email%,
 
-    Alguém tentou redefinir a senha da sua conta. E para isso, esse alguém
-    se autenticou com o seu endereço de e-mail e token de recuperação
-    correspondente em %recovery_url%.
+    Alguém iniciou a recuperação de senha da sua conta em
+    %recovery_url%
+    usando o seu endereço de e-mail e o seu token de recuperação.
 
-    Não foi você que fez essa ativação? Pode ser que alguma outra pessoa
-    com acesso ao seu token de recuperação esteja tentando tomar posse da sua conta.
-    Se esse for o caso, é importante que você vá até %recovery_token_url% imediatamente
-    para criar um novo token de recuperação. Dessa forma você vai invalidar o
-    token antigo e interromper o processo.
+    Se foi você:
+    Após o período de espera de %hours% horas, a partir de %time%,
+    você poderá criar uma nova senha aqui:
+    %recovery_url%
+    Insira novamente o seu endereço de e-mail e o seu token de recuperação.
 
-    Se foi você quem ativou o processo, o período de espera de 48 horas
-    começa agora. A espera acaba %time%. Depois disso, você poderá configurar
-    uma nova senha em %recovery_url%.
+    Se não foi você:
+    Outra pessoa conhece o seu token de recuperação e está tentando tomar
+    posse da sua conta. Antes de %time%, entre aqui:
+    %recovery_token_url%
+    Depois, crie um novo token de recuperação. Assim o token antigo deixa de
+    ser válido e a recuperação é interrompida.
 
-    Esperamos que continue a tirar proveito da sua conta.
     Time %project_name%.
   alias-created-subject: Novo endereço alias criado
   alias-created-body: >

@@ -75,7 +75,7 @@ recovery:
   token-lead: Nytt gjenopprettingssymbol
   started: >
     Første steg i gjenoppretting av passordet ditt er ferdig.
-    Vent i 48 timer. Deretter kan du sette et nytt passord i andre steg.
+    Vent i %hours% timer. Deretter kan du sette et nytt passord i andre steg.
     Behold gjenopprettingssymbolet dit til da.
 navbar_right:
   login: Logg inn
@@ -128,6 +128,7 @@ flashes:
   recovery-token-invalid: E-postadresse og/eller gjenopprettingssymbol er galt.
   recovery-token-ack: Du genererte et gjenopprettingssymbol.
   recovery-reauthenticate: Noe gikk galt. Identitetsbekreft deg igjen.
+  recovery-session-expired: Skriv inn e-postadressen og gjenopprettingssymbolet ditt på nytt for å sette et nytt passord.
   recovery-password-changed: Du endret passordet ditt.
 error:
   page_not_found: Siden du forsøker å nå finnes ikke.
@@ -160,25 +161,27 @@ mail:
     dem til å registrere seg med %project_name%.
 
     Ærbødigst, ditt %project_name%-administratorlag.
-  recovery-subject: Passordet for din e-postkonto %email% vil bli tilbakestilt
-  recovery-body: >
+  recovery-subject: Gjenoppretting av passord startet for %email%
+  recovery-body: |
     Hei %email%,
 
-    Noen har forsøkt å tilbakestille ditt kontopassord. For å gjøre dette,
-    har vedkommende identitetsbekreftet seg med din e-postadresse og
-    tilhørende tilbakestillingskode på %recovery_url%.
+    Noen har startet gjenoppretting av passordet for kontoen din på
+    %recovery_url%
+    med e-postadressen og gjenopprettingssymbolet ditt.
 
-    Har du ikke utløst dette selv? Da har noen andre med tilgang til
-    ditt gjenopprettingssymbol forsøkt å få tilgang til kontoen din. Gå til
-    %recovery_token_url% umiddelbart og opprett et nytt
-    gjenopprettingssymbol. Dette vil ugyldiggjøre det gamle gjenopprettings-
-    symbolet og stoppe prosessen.
+    Hvis det var deg:
+    Etter venteperioden på %hours% timer kan du sette et nytt passord
+    her fra %time%:
+    %recovery_url%
+    Skriv inn e-postadressen og gjenopprettingssymbolet ditt på nytt.
 
-    Hvis du utløser prosessen selv, startet venteperioden på 48 timer nå.
-    Den vil avsluttes klokken %time%. Etterpå kan du sette et nytt passord
-    på %recovery_url%.
+    Hvis det ikke var deg:
+    Noen andre kjenner gjenopprettingssymbolet ditt og prøver å ta over
+    kontoen din. Logg inn her før %time%:
+    %recovery_token_url%
+    Opprett deretter et nytt gjenopprettingssymbol. Da blir det gamle
+    symbolet ugyldig og gjenopprettingen stoppes.
 
-    Vi håper du vil fortsette å ha glede av din e-postkonto.
     Ditt %project_name%-administratorlag.
   alias-created-body: >
     Hei %email%,

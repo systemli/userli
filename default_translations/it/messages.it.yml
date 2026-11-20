@@ -86,6 +86,7 @@ flashes:
     Nei dati caricati è stata trovata più di una chiave per il tuo indirizzo e-mail.
     Si prega di caricare solo una chiave.
   recovery-token-invalid: L'indirizzo e-mail e/o il gettone di recupero sono sbagliati!
+  recovery-session-expired: Inserisci di nuovo il tuo indirizzo e-mail e il tuo gettone di recupero per impostare una nuova password.
 spam:
   title: Account bloccato
   text: >
@@ -120,26 +121,28 @@ mail:
 
     Sinceramente,
     il tuo team di amministrazione di %project_name%.
-  recovery-subject: La password del tuo account di posta elettronica %email% sarà reimpostata
-  recovery-body: >
+  recovery-subject: Recupero della password avviato per %email%
+  recovery-body: |
     Ciao %email%,
 
-    La password del tuo account è stata tentata di resettare l'autenticazione con
-    il tuo indirizzo e-mail e il codice di recupero corrispondente a
-    %recovery_url%.
+    Qualcuno ha avviato il recupero della password per il tuo account su
+    %recovery_url%
+    usando il tuo indirizzo e-mail e il tuo gettone di recupero.
 
-    Se non sei stato/a tu, allora qualcun altro con accesso al tuo gettone di recupero
-    ha tentato di entrare in possesso del tuo account. Vai su
-    %recovery_token_url% immediatamente e crea un
-    nuovo token di recupero. Questo invaliderà il vecchio token di recupero e fermerà
-    il processo.
+    Se sei stato/a tu:
+    Dopo il periodo di attesa di %hours% ore, a partire dal %time%,
+    puoi impostare una nuova password qui:
+    %recovery_url%
+    Inserisci di nuovo il tuo indirizzo e-mail e il tuo gettone di recupero.
 
-    Se hai attivato il processo da solo, il periodo di attesa di 48 ore è iniziato
-    ora. Finirà a %time%. In seguito, puoi impostare una nuova password su
-    %recovery_url%.
+    Se non sei stato/a tu:
+    Qualcun altro conosce il tuo gettone di recupero e sta cercando di
+    impossessarsi del tuo account. Prima del %time%, accedi qui:
+    %recovery_token_url%
+    Poi crea un nuovo gettone di recupero. Così il vecchio gettone non sarà
+    più valido e il recupero verrà interrotto.
 
-    Speriamo che tu continui a goderti il tuo account di posta elettronica.
-    Il tuo %project_name% admin team.
+    Il team di amministrazione di %project_name%.
 admin:
   alias:
     convert:
@@ -182,4 +185,8 @@ openpgp:
   expiretime-label: "Data di scadenza:"
 recovery:
   cancel: Annulla
+  started: >
+    Il primo passo per reimpostare la tua password è fatto.
+    Ora attendi %hours% ore. Dopo potrai impostare una nuova password nel secondo passo.
+    Conserva il tuo gettone di recupero fino ad allora.
 copy-to-clipboard: Copia negli appunti
