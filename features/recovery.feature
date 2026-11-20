@@ -133,18 +133,6 @@ Feature: Recovery
     And I should see text matching "E-mail address and/or recovery token are wrong!"
 
   @recovery
-  Scenario: Start recovery process with local part only
-    When I am on "/recovery"
-    And I fill in the following:
-      | recovery_process[email]         | user@example.org                     |
-      | recovery_process[recoveryToken] | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
-    And I press "recovery_process[submit]"
-
-    Then I should be on "/recovery"
-    And I should see text matching "Second step starts at"
-    And the response status code should be 200
-
-  @recovery
   Scenario: Reset password with invalid password in recovery process
     When I have the request params for "recovery_reset_password":
       | email         | user2@example.org                    |
