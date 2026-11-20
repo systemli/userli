@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Tests\Service;
 
 use App\Dto\PaginatedResult;
+use App\Entity\Alias;
 use App\Entity\AppPassword;
 use App\Entity\Domain;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Event\UserEvent;
+use App\Exception\AliasConversionException;
 use App\Form\Model\UserAdminModel;
 use App\Handler\DeleteHandler;
 use App\Handler\MailCryptKeyHandler;
@@ -25,9 +27,11 @@ use App\Service\SettingsService;
 use App\Service\UserManager;
 use App\Service\UserResetService;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class UserManagerTest extends TestCase
@@ -434,5 +438,191 @@ class UserManagerTest extends TestCase
         );
 
         $manager->delete($user);
+    }
+
+    public function testAssertConvertibleAcceptsCustomAlias(): void
+    {
+        $this->manager->assertConvertible($this->createAlias('alias@example.org'));
+
+        $this->addToAssertionCount(1);
+    }
+
+    public function testAssertConvertibleRejectsDeletedAlias(): void
+    {
+        $alias = $this->createAlias('alias@example.org');
+        $alias->setDeleted(true);
+
+        $this->expectException(AliasConversionException::class);
+        $this->expectExceptionMessage('Alias alias@example.org is deleted.');
+
+        $this->manager->assertConvertible($alias);
+    }
+
+    public function testAssertConvertibleRejectsRandomAlias(): void
+    {
+        $alias = $this->createAlias('alias@example.org');
+        $alias->setRandom(true);
+
+        try {
+            $this->manager->assertConvertible($alias);
+            self::fail('Expected AliasConversionException');
+        } catch (AliasConversionException $e) {
+            self::assertSame('admin.alias.convert.error.random', $e->getReason());
+        }
+    }
+
+    public function testAssertConvertibleRejectsUnmanagedDomain(): void
+    {
+        $domainGuesser = $this->createStub(DomainGuesser::class);
+        $domainGuesser->method('guess')->willReturn(null);
+
+        $manager = $this->createManager(domainGuesser: $domainGuesser);
+
+        try {
+            $manager->assertConvertible($this->createAlias('alias@external.org'));
+            self::fail('Expected AliasConversionException');
+        } catch (AliasConversionException $e) {
+            self::assertSame('admin.alias.convert.error.domain', $e->getReason());
+        }
+    }
+
+    #[DataProvider('existingUserProvider')]
+    public function testAssertConvertibleRejectsExistingUser(bool $deleted): void
+    {
+        $existingUser = new User('alias@example.org');
+        $existingUser->setDeleted($deleted);
+
+        $repository = $this->createStub(UserRepository::class);
+        $repository->method('findByEmail')->willReturn($existingUser);
+
+        $manager = $this->createManager(repository: $repository);
+
+        try {
+            $manager->assertConvertible($this->createAlias('alias@example.org'));
+            self::fail('Expected AliasConversionException');
+        } catch (AliasConversionException $e) {
+            self::assertSame('admin.alias.convert.error.user_exists', $e->getReason());
+        }
+    }
+
+    public static function existingUserProvider(): array
+    {
+        return [
+            'active user' => [false],
+            'deleted user' => [true],
+        ];
+    }
+
+    public function testCreateFromAlias(): void
+    {
+        $alias = $this->createAlias('alias@example.org');
+        $calls = [];
+
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->once())->method('wrapInTransaction')
+            ->willReturnCallback(static fn (callable $callback): mixed => $callback($entityManager));
+        $entityManager->expects($this->once())->method('persist')
+            ->with($this->isInstanceOf(User::class))
+            ->willReturnCallback(static function () use (&$calls): void {
+                $calls[] = 'persist';
+            });
+        // DeleteHandler::deleteAlias() flushes the new user as well
+        $entityManager->expects($this->never())->method('flush');
+
+        /** @var DeleteHandler&MockObject $deleteHandler */
+        $deleteHandler = $this->createMock(DeleteHandler::class);
+        $deleteHandler->expects($this->once())->method('deleteAlias')
+            ->with($alias)
+            ->willReturnCallback(static function () use (&$calls): void {
+                $calls[] = 'deleteAlias';
+            });
+
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->once())
+            ->method('dispatch')
+            ->with($this->isInstanceOf(UserEvent::class), UserEvent::USER_CREATED);
+
+        $manager = $this->createManager(
+            entityManager: $entityManager,
+            deleteHandler: $deleteHandler,
+            eventDispatcher: $eventDispatcher,
+        );
+
+        $user = $manager->createFromAlias($alias, 'securePassword123');
+
+        self::assertSame('alias@example.org', $user->getEmail());
+        self::assertSame([Roles::USER], $user->getRoles());
+        self::assertSame($this->domain, $user->getDomain());
+        self::assertTrue($user->isPasswordChangeRequired());
+        // The user must exist before the alias is deleted, otherwise the
+        // OpenPGP key of the address is removed as orphaned
+        self::assertSame(['persist', 'deleteAlias'], $calls);
+    }
+
+    public function testCreateFromAliasDoesNotStartTransactionForRandomAlias(): void
+    {
+        $alias = $this->createAlias('alias@example.org');
+        $alias->setRandom(true);
+
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->never())->method('wrapInTransaction');
+
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->never())->method('dispatch');
+
+        $manager = $this->createManager(entityManager: $entityManager, eventDispatcher: $eventDispatcher);
+
+        $this->expectException(AliasConversionException::class);
+
+        $manager->createFromAlias($alias, 'securePassword123');
+    }
+
+    public function testCreateFromAliasDoesNotDispatchEventWhenTransactionFails(): void
+    {
+        $entityManager = $this->createStub(EntityManagerInterface::class);
+        $entityManager->method('wrapInTransaction')->willThrowException(new RuntimeException('Database error'));
+
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->never())->method('dispatch');
+
+        $manager = $this->createManager(entityManager: $entityManager, eventDispatcher: $eventDispatcher);
+
+        $this->expectException(RuntimeException::class);
+
+        $manager->createFromAlias($this->createAlias('alias@example.org'), 'securePassword123');
+    }
+
+    private function createAlias(string $source): Alias
+    {
+        $alias = new Alias();
+        $alias->setSource($source);
+        $alias->setDomain($this->domain);
+        $alias->setDestination('owner@example.org');
+
+        return $alias;
+    }
+
+    private function createManager(
+        ?EntityManagerInterface $entityManager = null,
+        ?UserRepository $repository = null,
+        ?DomainGuesser $domainGuesser = null,
+        ?DeleteHandler $deleteHandler = null,
+        ?EventDispatcherInterface $eventDispatcher = null,
+    ): UserManager {
+        return new UserManager(
+            $entityManager ?? $this->entityManager,
+            $repository ?? $this->repository,
+            $this->passwordUpdater,
+            $this->mailCryptKeyHandler,
+            $this->settingsService,
+            $domainGuesser ?? $this->domainGuesser,
+            $this->userResetService,
+            $deleteHandler ?? $this->deleteHandler,
+            $this->aliasRepository,
+            $this->voucherRepository,
+            $this->openPgpKeyRepository,
+            $this->userNotificationRepository,
+            $eventDispatcher ?? $this->eventDispatcher,
+        );
     }
 }

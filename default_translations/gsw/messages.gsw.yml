@@ -49,7 +49,28 @@ index:
   title: Di E-Mail Account verwaute
   voucher-disable: Am %date% bechunnsch drü Invite Codes. Das isch so glöst zum Masse-Regischtrierige und Spam verhindere.
   alias-limit: Du hesch s Limit vo %alias_limit% %alias_type% Alias Adrässene erreicht.
-admin: ~
+admin:
+  alias:
+    convert:
+      title: "Alias in e Benutzer umwandle"
+      info:
+        removed_from_user: "Dr Alias %source% wird bim Benutzer %user% glöscht und e nöie Benutzer wird erstellt."
+        removed: "Dr Alias %source% wird glöscht und e nöie Benutzer wird erstellt."
+      success: "Dr Alias isch erfolgriich in e Benutzer umgwandlet worde."
+      form:
+        password:
+          label: "Passwort für dr nöi Benutzer"
+          help: "Dr Benutzer mues das Passwort bim erschte Amäude ändere."
+        password_confirmation:
+          label: "Passwort beschtätige"
+        submit: "Umwandle"
+      error:
+        deleted: "Dä Alias isch glöscht worde."
+        random: "Zuefäuigi Aliase chöi nid in Benutzer umgwandlet wärde."
+        domain: "D Domain vo däm Alias wird nid hie verwautet."
+        user_exists: "Es git oder het scho e Benutzer mit dere Adrässe gä. D Adrässe cha nid nomau bruucht wärde."
+    actions:
+      convert: "In e Benutzer umwandle"
 delete:
   user:
     headline: Account lösche

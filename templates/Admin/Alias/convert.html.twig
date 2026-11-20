@@ -1,0 +1,86 @@
+{% set current_section = 'aliases' %}
+{% extends 'Admin/base_admin.html.twig' %}
+
+{% form_theme form 'Form/fields.html.twig' %}
+
+{% block title %}
+    {{ setting('app_name') }} - {{ 'admin.alias.convert.title'|trans }}
+{% endblock %}
+
+{% block admin_content %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="p-6 sm:p-8">
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-xl flex items-center justify-center mr-4">
+                    {{ ux_icon('heroicons:user-plus', {class: 'w-6 h-6 text-blue-600 dark:text-blue-400'}) }}
+                </div>
+                <div class="min-w-0">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">
+                        {{ 'admin.alias.convert.title'|trans }}
+                    </h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-300 mt-1 break-all">{{ alias.source }}</p>
+                </div>
+            </div>
+
+            <div class="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg">
+                <div class="flex items-start">
+                    {{ ux_icon('heroicons:information-circle', {class: 'w-5 h-5 text-blue-600 dark:text-blue-400 mr-2 mt-0.5 shrink-0'}) }}
+                    {# Addresses are escaped here, wrapped in <em> and passed through safe_html #}
+                    {% set source_html = '<em>' ~ alias.source|e ~ '</em>' %}
+                    {% set user_html = owner_email ? '<em>' ~ owner_email|e ~ '</em>' : '' %}
+                    <p class="text-sm text-blue-800 dark:text-blue-200 break-words min-w-0">
+                        {% if owner_email %}
+                            {{ 'admin.alias.convert.info.removed_from_user'|trans({'%source%': source_html, '%user%': user_html})|safe_html }}
+                        {% else %}
+                            {{ 'admin.alias.convert.info.removed'|trans({'%source%': source_html})|safe_html }}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="space-y-6">
+                <div data-controller="password-strength"
+                     data-password-strength-strong-label-value="{{ "form.password-strong"|trans }}"
+                     data-password-strength-min-length-value="12"
+                     data-password-strength-min-length-label-value="{{ "form.password-min-length"|trans({'%min%': 12}) }}"
+                >
+                    {{ form_label(form.plainPassword.first, 'admin.alias.convert.form.password.label', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                    {{ form_errors(form.plainPassword) }}
+                    {{ form_widget(form.plainPassword.first, {'attr': {'data-password-strength-target': 'input', 'data-action': 'focus->password-strength#loadAndEvaluate:once input->password-strength#evaluate', 'autocomplete': 'new-password'}}) }}
+                    {# Password strength meter #}
+                    <div class="flex gap-1 mt-2" data-password-strength-meter aria-hidden="true">
+                        <div class="h-1 flex-1 rounded-full bg-gray-200 dark:bg-gray-600 transition-colors duration-300" data-password-strength-target="segment"></div>
+                        <div class="h-1 flex-1 rounded-full bg-gray-200 dark:bg-gray-600 transition-colors duration-300" data-password-strength-target="segment"></div>
+                        <div class="h-1 flex-1 rounded-full bg-gray-200 dark:bg-gray-600 transition-colors duration-300" data-password-strength-target="segment"></div>
+                        <div class="h-1 flex-1 rounded-full bg-gray-200 dark:bg-gray-600 transition-colors duration-300" data-password-strength-target="segment"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 hidden mt-1" data-password-strength-target="feedback" aria-live="polite"></p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ 'admin.alias.convert.form.password.help'|trans }}</p>
+                </div>
+
+                <div>
+                    {{ form_label(form.plainPassword.second, 'admin.alias.convert.form.password_confirmation.label', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                    {{ form_widget(form.plainPassword.second, {'attr': {'autocomplete': 'new-password'}}) }}
+                </div>
+
+                <div class="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between pt-6">
+                    <a href="{{ path('admin_alias_index') }}"
+                       class="inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors">
+                        {{ ux_icon('heroicons:arrow-left', {class: 'w-4 h-4 mr-2'}) }}
+                        {{ 'admin.alias.form.cancel'|trans }}
+                    </a>
+                    {{ form_widget(form.submit, {
+                        label: 'admin.alias.convert.form.submit',
+                        attr: {
+                            class: 'inline-flex items-center justify-center px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors'
+                        }
+                    }) }}
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

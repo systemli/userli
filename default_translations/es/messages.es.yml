@@ -232,7 +232,28 @@ mail:
     Esperamos que sigas disfrutando de tu cuenta de e-mail.
     Tu equipo de administración de %project_name%.
 
-admin: ~
+admin:
+  alias:
+    convert:
+      title: "Convertir alias en usuario"
+      info:
+        removed_from_user: "El alias %source% se eliminará del usuario %user% y se creará un nuevo usuario."
+        removed: "El alias %source% se eliminará y se creará un nuevo usuario."
+      success: "El alias se ha convertido en un usuario correctamente."
+      form:
+        password:
+          label: "Contraseña para el nuevo usuario"
+          help: "El usuario tendrá que cambiar esta contraseña en el primer inicio de sesión."
+        password_confirmation:
+          label: "Confirmar contraseña"
+        submit: "Convertir"
+      error:
+        deleted: "Este alias ha sido eliminado."
+        random: "Los alias aleatorios no se pueden convertir en usuarios."
+        domain: "El dominio de este alias no se gestiona aquí."
+        user_exists: "Ya existe o existió un usuario con esta dirección. La dirección no se puede volver a usar."
+    actions:
+      convert: "Convertir en usuario"
 
 copy-to-clipboard: Copiar al portapapeles
 

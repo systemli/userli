@@ -248,3 +248,115 @@ Feature: Admin (Aliases)
 
     Then I should be on "/admin/aliases/"
     And I should see "This alias cannot be edited because its user belongs to another domain"
+
+  # --- Convert alias to user ---
+
+  @aliases @alias-convert
+  Scenario: Admin can convert an alias into a user
+    Given the following Alias exists:
+      | user_id | source                | destination      |
+      | 2       | convert@example.org   | user@example.org |
+    And the following OpenPgpKey exists:
+      | email               | keyId            | keyFingerprint                           | keyData    | uploader         |
+      | convert@example.org | AAAA1111BBBB2222 | AAAA1111BBBB2222CCCC3333DDDD4444EEEE5555 | dummydata1 | user@example.org |
+    And I am authenticated as "louis@example.org"
+    When I am on "/admin/aliases/"
+    And I follow "Convert to user"
+
+    Then the response status code should be 200
+    And I should see "Convert Alias to User"
+    And I should see "The alias convert@example.org will be deleted from the user user@example.org and a new user will be created."
+
+    When I fill in "alias_convert_plainPassword_first" with "securePassword123!"
+    And I fill in "alias_convert_plainPassword_second" with "securePassword123!"
+    And I press "Convert"
+
+    Then I should see "Alias has been converted into a user successfully"
+    And the user "convert@example.org" should exist
+    And the user "convert@example.org" should have passwordChangeRequired
+    And the password of "convert@example.org" should be "securePassword123!"
+    And the alias "convert@example.org" should be deleted
+    # The key is kept as it is, including the uploader
+    And the OpenPGP key of "convert@example.org" should be uploaded by "user@example.org"
+
+  @aliases @alias-convert
+  Scenario: Converting an alias requires matching passwords
+    Given the following Alias exists:
+      | user_id | source                | destination      |
+      | 2       | convert@example.org   | user@example.org |
+    And I am authenticated as "louis@example.org"
+    And I set the placeholder "__alias_id__" with property "id" for alias "convert@example.org"
+    When I am on "/admin/aliases/convert/__alias_id__"
+    And I fill in "alias_convert_plainPassword_first" with "securePassword123!"
+    And I fill in "alias_convert_plainPassword_second" with "differentPassword123!"
+    And I press "Convert"
+
+    Then the response status code should be 422
+    And I should see "Convert Alias to User"
+
+  @aliases @alias-convert
+  Scenario: Random aliases can't be converted into users
+    Given the following Alias exists:
+      | user_id | source                | destination      | random |
+      | 2       | random@example.org    | user@example.org | 1      |
+    And I am authenticated as "louis@example.org"
+    When I am on "/admin/aliases/"
+
+    Then I should see "random@example.org"
+    And I should not see "Convert to user"
+
+    When I set the placeholder "__alias_id__" with property "id" for alias "random@example.org"
+    And I am on "/admin/aliases/convert/__alias_id__"
+
+    Then I should be on "/admin/aliases/"
+    And I should see "Random aliases can't be converted into users"
+
+  @aliases @alias-convert
+  Scenario: Aliases with the address of a deleted user can't be converted
+    Given the following User exists:
+      | email               | password | roles     | deleted |
+      | former@example.org  | asdasd   | ROLE_USER | 1       |
+    And the following Alias exists:
+      | user_id | source              | destination      |
+      | 2       | former@example.org  | user@example.org |
+    And I am authenticated as "louis@example.org"
+    And I set the placeholder "__alias_id__" with property "id" for alias "former@example.org"
+    When I am on "/admin/aliases/convert/__alias_id__"
+
+    Then I should be on "/admin/aliases/"
+    And I should see "A user with this address exists or existed before"
+
+  @aliases @alias-convert
+  Scenario: Domain admin can convert an alias in own domain
+    Given the following Alias exists:
+      | user_id | source                | destination        |
+      | 3       | convert@example.com   | domain@example.com |
+    And I am authenticated as "domain@example.com"
+    And I set the placeholder "__alias_id__" with property "id" for alias "convert@example.com"
+    When I am on "/admin/aliases/convert/__alias_id__"
+
+    Then the response status code should be 200
+
+    When I fill in "alias_convert_plainPassword_first" with "securePassword123!"
+    And I fill in "alias_convert_plainPassword_second" with "securePassword123!"
+    And I press "Convert"
+
+    Then I should see "Alias has been converted into a user successfully"
+    And the user "convert@example.com" should exist
+    And the alias "convert@example.com" should be deleted
+
+  @aliases @alias-convert
+  Scenario: Domain admin cannot convert an alias in different domain
+    Given the following Alias exists:
+      | source                | destination       |
+      | convert@example.org   | louis@example.org |
+    And I am authenticated as "domain@example.com"
+    And I set the placeholder "__alias_id__" with property "id" for alias "convert@example.org"
+    # DomainFilter excludes the alias from the query, so #[MapEntity] returns 404
+    When I am on "/admin/aliases/convert/__alias_id__"
+
+    Then the response status code should be 404
+
+    When I request "POST /admin/aliases/convert/__alias_id__"
+
+    Then the response status code should be 404

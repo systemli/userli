@@ -847,8 +847,27 @@ admin:
     delete:
       confirm: "Möchtest du den Alias \"%source%\" wirklich löschen?"
       success: Alias wurde erfolgreich gelöscht.
+    convert:
+      title: Alias in Benutzer:in umwandeln
+      info:
+        removed_from_user: "Der Alias %source% wird bei %user% gelöscht und ein:e neue:r Benutzer:in erstellt."
+        removed: "Der Alias %source% wird gelöscht und ein:e neue:r Benutzer:in erstellt."
+      success: Alias wurde erfolgreich in eine:n Benutzer:in umgewandelt.
+      form:
+        password:
+          label: Passwort für die:den neue:n Benutzer:in
+          help: Die:der Benutzer:in muss dieses Passwort bei der ersten Anmeldung ändern.
+        password_confirmation:
+          label: Passwort bestätigen
+        submit: Umwandeln
+      error:
+        deleted: Dieser Alias wurde gelöscht.
+        random: Zufällige Aliase können nicht in Benutzer:innen umgewandelt werden.
+        domain: Die Domain dieses Alias wird hier nicht verwaltet.
+        user_exists: Es gibt oder gab bereits eine:n Benutzer:in mit dieser Adresse. Die Adresse kann nicht erneut verwendet werden.
     actions:
       edit: Bearbeiten
+      convert: In Benutzer:in umwandeln
       delete: Löschen
     form:
       title:

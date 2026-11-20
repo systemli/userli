@@ -190,7 +190,28 @@ mail:
 
     Vi håper du fortsetter å ha glede av din e-postkonto.
     Ditt %project_name%-administratorlag.
-admin: ~
+admin:
+  alias:
+    convert:
+      title: "Gjør om alias til bruker"
+      info:
+        removed_from_user: "Aliaset %source% blir slettet fra brukeren %user%, og en ny bruker blir opprettet."
+        removed: "Aliaset %source% blir slettet, og en ny bruker blir opprettet."
+      success: "Aliaset ble gjort om til en bruker."
+      form:
+        password:
+          label: "Passord for den nye brukeren"
+          help: "Brukeren må endre dette passordet ved første innlogging."
+        password_confirmation:
+          label: "Bekreft passord"
+        submit: "Gjør om"
+      error:
+        deleted: "Dette aliaset er slettet."
+        random: "Tilfeldige alias kan ikke gjøres om til brukere."
+        domain: "Domenet til dette aliaset administreres ikke her."
+        user_exists: "Det finnes eller har funnets en bruker med denne adressen. Adressen kan ikke brukes på nytt."
+    actions:
+      convert: "Gjør om til bruker"
 copy-to-clipboard: Kopier til utklippstavle
 init.title: Skaper grunnleggende oppsett
 init_domain:
