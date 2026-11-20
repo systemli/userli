@@ -226,9 +226,28 @@ final readonly class UserManager
             'aliases' => count($this->aliasRepository->findByUser($user)),
             'vouchers' => $this->voucherRepository->countVouchersByUser($user, null),
             'vouchers_redeemed' => $this->voucherRepository->countVouchersByUser($user, true),
-            'openpgp_keys' => count($this->openPgpKeyRepository->findByUploader($user)),
+            'openpgp_keys' => $this->openPgpKeyRepository->countByEmails($this->getOpenPgpAddresses($user)),
             'app_passwords' => $this->em->getRepository(AppPassword::class)->count(['user' => $user, 'expiresAt' => null]),
             'password_compromised' => $this->userNotificationRepository->hasRecentNotification($user, UserNotificationType::PASSWORD_COMPROMISED, 24 * 365),
         ];
+    }
+
+    /**
+     * Addresses the user can manage OpenPGP keys for: their own address and
+     * their custom aliases on all domains. Random aliases can't have keys.
+     *
+     * @return string[]
+     */
+    private function getOpenPgpAddresses(User $user): array
+    {
+        $addresses = [$user->getEmail()];
+
+        foreach ($this->aliasRepository->findByUserAcrossDomains($user, random: false) as $alias) {
+            if (null !== $source = $alias->getSource()) {
+                $addresses[] = $source;
+            }
+        }
+
+        return $addresses;
     }
 }

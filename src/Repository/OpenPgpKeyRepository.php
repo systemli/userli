@@ -6,7 +6,6 @@ namespace App\Repository;
 
 use App\Entity\Domain;
 use App\Entity\OpenPgpKey;
-use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -23,11 +22,20 @@ final class OpenPgpKeyRepository extends ServiceEntityRepository implements Sear
     }
 
     /**
-     * @return OpenPgpKey[]
+     * @param string[] $emails
      */
-    public function findByUploader(User $user): array
+    public function countByEmails(array $emails): int
     {
-        return $this->findBy(['uploader' => $user]);
+        if ([] === $emails) {
+            return 0;
+        }
+
+        return (int) $this->createQueryBuilder('k')
+            ->select('COUNT(k.id)')
+            ->where('k.email IN (:emails)')
+            ->setParameter('emails', $emails)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     public function findByEmail(string $email): ?OpenPgpKey

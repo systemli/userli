@@ -413,6 +413,52 @@ class UserManagerTest extends TestCase
         self::assertEmpty($user->getTotpBackupCodes());
     }
 
+    public function testGetUserStatsCountsOpenPgpKeysOfUserAddresses(): void
+    {
+        $user = new User('user@example.org');
+
+        $customAlias = new Alias();
+        $customAlias->setSource('custom@example.org');
+        $otherDomainAlias = new Alias();
+        $otherDomainAlias->setSource('custom@example.com');
+
+        /** @var AliasRepository&MockObject $aliasRepository */
+        $aliasRepository = $this->createMock(AliasRepository::class);
+        $aliasRepository->method('findByUser')->willReturn([]);
+        $aliasRepository->expects($this->once())
+            ->method('findByUserAcrossDomains')
+            ->with($user, false)
+            ->willReturn([$customAlias, $otherDomainAlias]);
+
+        /** @var OpenPgpKeyRepository&MockObject $openPgpKeyRepository */
+        $openPgpKeyRepository = $this->createMock(OpenPgpKeyRepository::class);
+        $openPgpKeyRepository->expects($this->once())
+            ->method('countByEmails')
+            ->with(['user@example.org', 'custom@example.org', 'custom@example.com'])
+            ->willReturn(2);
+
+        $entityManager = $this->createStub(EntityManagerInterface::class);
+        $entityManager->method('getRepository')->willReturn($this->createStub(AppPasswordRepository::class));
+
+        $manager = new UserManager(
+            $entityManager,
+            $this->repository,
+            $this->passwordUpdater,
+            $this->mailCryptKeyHandler,
+            $this->settingsService,
+            $this->domainGuesser,
+            $this->userResetService,
+            $this->deleteHandler,
+            $aliasRepository,
+            $this->voucherRepository,
+            $openPgpKeyRepository,
+            $this->userNotificationRepository,
+            $this->eventDispatcher,
+        );
+
+        self::assertSame(2, $manager->getUserStats($user)['openpgp_keys']);
+    }
+
     public function testDelete(): void
     {
         $user = new User('user@example.org');
