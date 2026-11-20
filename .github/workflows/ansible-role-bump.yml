@@ -48,10 +48,14 @@ jobs:
 
       - name: Obtain Access Token
         id: access_token
-        run: |
-          TOKEN="$(npx obtain-github-app-installation-access-token ci ${{ secrets.SYSTEMLI_APP_CREDENTIALS_TOKEN }})"
-          echo "::add-mask::$TOKEN"
-          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+        uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+        with:
+          app-id: ${{ vars.SYSTEMLI_APP_ID }}
+          private-key: ${{ secrets.SYSTEMLI_APP_PRIVATE_KEY }}
+          owner: systemli
+          repositories: ansible-role-userli
+          permission-contents: write
+          permission-pull-requests: write
 
       - name: Checkout Ansible role
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
