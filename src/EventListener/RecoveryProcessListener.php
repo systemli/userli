@@ -15,7 +15,7 @@ final readonly class RecoveryProcessListener
     public function __construct(
         private RequestStack $request,
         private RecoveryProcessMailer $mailer,
-        #[Autowire('kernel.default_locale')]
+        #[Autowire(param: 'kernel.default_locale')]
         private string $defaultLocale,
     ) {
     }
