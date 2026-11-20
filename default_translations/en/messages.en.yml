@@ -850,8 +850,27 @@ admin:
     delete:
       confirm: "Are you sure you want to delete the alias \"%source%\"?"
       success: Alias has been deleted successfully.
+    convert:
+      title: Convert Alias to User
+      info:
+        removed_from_user: "The alias %source% will be deleted from the user %user% and a new user will be created."
+        removed: "The alias %source% will be deleted and a new user will be created."
+      success: Alias has been converted into a user successfully.
+      form:
+        password:
+          label: Password for the new user
+          help: The user has to change this password at the first login.
+        password_confirmation:
+          label: Confirm Password
+        submit: Convert
+      error:
+        deleted: This alias has been deleted.
+        random: Random aliases can't be converted into users.
+        domain: The domain of this alias isn't managed here.
+        user_exists: A user with this address exists or existed before. The address can't be used again.
     actions:
       edit: Edit
+      convert: Convert to user
       delete: Delete
     form:
       title:

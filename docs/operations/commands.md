@@ -29,6 +29,7 @@ Commands that change users support `--dry-run` to show what would happen.
 | Command | Description |
 |---------|-------------|
 | `app:alias:delete --alias <email> [--user <email>]` | Delete an alias. |
+| `app:alias:convert-to-user --alias <email>` | [Convert an alias into a new user](../admin/aliases.md#convert-an-alias-to-a-user). Asks for the initial password. |
 | `app:voucher:create --user <email> [--count 3] [--domain <domain>] [--print] [--print-links]` | Create invite codes for a user and optionally print the codes or registration links. |
 | `app:voucher:count --user <email>` | Show used and unused invite codes of a user. |
 

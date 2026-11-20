@@ -6,14 +6,19 @@ namespace App\Controller\Admin;
 
 use App\Entity\Alias;
 use App\Enum\Roles;
+use App\Exception\AliasConversionException;
 use App\Exception\ValidationException;
 use App\Form\AliasAdminType;
+use App\Form\AliasConvertType;
 use App\Form\Model\AliasAdminModel;
+use App\Form\Model\AliasConvert;
 use App\Service\AliasManager;
+use App\Service\UserManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +30,7 @@ final class AliasController extends AbstractController
 
     public function __construct(
         private readonly AliasManager $manager,
+        private readonly UserManager $userManager,
         private readonly EntityManagerInterface $em,
     ) {
     }
@@ -155,6 +161,62 @@ final class AliasController extends AbstractController
         }
     }
 
+    #[Route('/admin/aliases/convert/{id}', name: 'admin_alias_convert', methods: ['GET'])]
+    public function convert(#[MapEntity] Alias $alias): Response
+    {
+        if ($alias->isDeleted()) {
+            throw $this->createNotFoundException();
+        }
+
+        // The new user gets the alias address, so this covers creating the user too
+        $this->denyAccessUnlessGranted('edit', $alias);
+
+        try {
+            $this->userManager->assertConvertible($alias);
+        } catch (AliasConversionException $aliasConversionException) {
+            $this->addFlash('error', $aliasConversionException->getReason());
+
+            return $this->redirectToRoute('admin_alias_index');
+        }
+
+        $form = $this->createForm(AliasConvertType::class, new AliasConvert(), [
+            'action' => $this->generateUrl('admin_alias_convert_post', ['id' => $alias->getId()]),
+            'method' => 'POST',
+        ]);
+
+        return $this->renderConvertForm($form, $alias);
+    }
+
+    #[Route('/admin/aliases/convert/{id}', name: 'admin_alias_convert_post', methods: ['POST'])]
+    public function convertSubmit(#[MapEntity] Alias $alias, Request $request): Response
+    {
+        if ($alias->isDeleted()) {
+            throw $this->createNotFoundException();
+        }
+
+        $this->denyAccessUnlessGranted('edit', $alias);
+
+        $model = new AliasConvert();
+        $form = $this->createForm(AliasConvertType::class, $model);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $user = $this->userManager->createFromAlias($alias, (string) $model->getPlainPassword());
+            } catch (AliasConversionException $e) {
+                $this->addFlash('error', $e->getReason());
+
+                return $this->redirectToRoute('admin_alias_index');
+            }
+
+            $this->addFlash('success', 'admin.alias.convert.success');
+
+            return $this->redirectToRoute('admin_user_show', ['id' => $user->getId()]);
+        }
+
+        return $this->renderConvertForm($form, $alias);
+    }
+
     #[Route('/admin/aliases/delete/{id}', name: 'admin_alias_delete', methods: ['POST'])]
     public function delete(#[MapEntity] Alias $alias, Request $request): RedirectResponse
     {
@@ -172,5 +234,24 @@ final class AliasController extends AbstractController
         $this->addFlash('success', 'admin.alias.delete.success');
 
         return $this->redirectToRoute('admin_alias_index');
+    }
+
+    private function renderConvertForm(FormInterface $form, Alias $alias): Response
+    {
+        return $this->render('Admin/Alias/convert.html.twig', [
+            'form' => $form,
+            'alias' => $alias,
+            'owner_email' => $this->getOwnerEmail($alias),
+        ]);
+    }
+
+    private function getOwnerEmail(Alias $alias): ?string
+    {
+        try {
+            return $alias->getUser()?->getEmail();
+        } catch (EntityNotFoundException) {
+            // The DomainFilter hides owners in other domains from domain admins
+            return null;
+        }
     }
 }

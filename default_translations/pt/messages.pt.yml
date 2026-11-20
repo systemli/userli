@@ -193,3 +193,25 @@ mail:
     Esperamos que continue a tirar proveito da sua conta.
     Time %project_name%.
 copy-to-clipboard: Copiar para a área de transferência
+admin:
+  alias:
+    convert:
+      title: "Converter alias em usuário"
+      info:
+        removed_from_user: "O alias %source% será excluído do usuário %user% e um novo usuário será criado."
+        removed: "O alias %source% será excluído e um novo usuário será criado."
+      success: "O alias foi convertido em usuário com sucesso."
+      form:
+        password:
+          label: "Senha para o novo usuário"
+          help: "O usuário terá que alterar esta senha no primeiro login."
+        password_confirmation:
+          label: "Confirmar senha"
+        submit: "Converter"
+      error:
+        deleted: "Este alias foi excluído."
+        random: "Aliases aleatórios não podem ser convertidos em usuários."
+        domain: "O domínio deste alias não é gerenciado aqui."
+        user_exists: "Já existe ou existiu um usuário com este endereço. O endereço não pode ser usado novamente."
+    actions:
+      convert: "Converter em usuário"

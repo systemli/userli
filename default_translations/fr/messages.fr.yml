@@ -236,7 +236,28 @@ mail:
     Nous espérons que vous êtes satisfait de votre compte de messagerie.
     Votre équipe d'administration de %project_name%.
 
-admin: ~
+admin:
+  alias:
+    convert:
+      title: "Convertir l'alias en utilisateur"
+      info:
+        removed_from_user: "L'alias %source% sera supprimé de l'utilisateur %user% et un nouvel utilisateur sera créé."
+        removed: "L'alias %source% sera supprimé et un nouvel utilisateur sera créé."
+      success: "L'alias a été converti en utilisateur avec succès."
+      form:
+        password:
+          label: "Mot de passe du nouvel utilisateur"
+          help: "L'utilisateur devra changer ce mot de passe lors de sa première connexion."
+        password_confirmation:
+          label: "Confirmer le mot de passe"
+        submit: "Convertir"
+      error:
+        deleted: "Cet alias a été supprimé."
+        random: "Les alias aléatoires ne peuvent pas être convertis en utilisateurs."
+        domain: "Le domaine de cet alias n'est pas géré ici."
+        user_exists: "Un utilisateur avec cette adresse existe ou a existé. L'adresse ne peut pas être réutilisée."
+    actions:
+      convert: "Convertir en utilisateur"
 
 copy-to-clipboard: Copier dans le presse-papiers
 

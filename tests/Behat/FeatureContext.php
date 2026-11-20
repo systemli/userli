@@ -805,6 +805,25 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @Then /^the OpenPGP key of "([^"]*)" should be uploaded by "([^"]*)"$/
+     */
+    public function theOpenPgpKeyShouldBeUploadedBy(string $email, string $uploader): void
+    {
+        $this->manager->clear();
+
+        $openPgpKey = $this->manager->getRepository(OpenPgpKey::class)->findByEmail($email);
+
+        if (null === $openPgpKey) {
+            throw new RuntimeException(sprintf('OpenPGP key for "%s" does not exist', $email));
+        }
+
+        $actual = $openPgpKey->getUploader()?->getEmail();
+        if ($actual !== $uploader) {
+            throw new RuntimeException(sprintf('OpenPGP key for "%s" is uploaded by "%s", expected "%s"', $email, $actual ?? 'nobody', $uploader));
+        }
+    }
+
+    /**
      * @Then /^the password of "([^"]*)" should be "([^"]*)"$/
      */
     public function thePasswordOfShouldBe(string $email, string $password): void

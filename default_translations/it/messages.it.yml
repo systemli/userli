@@ -140,7 +140,28 @@ mail:
 
     Speriamo che tu continui a goderti il tuo account di posta elettronica.
     Il tuo %project_name% admin team.
-admin: ~
+admin:
+  alias:
+    convert:
+      title: "Converti alias in utente"
+      info:
+        removed_from_user: "L'alias %source% verrà eliminato dall'utente %user% e verrà creato un nuovo utente."
+        removed: "L'alias %source% verrà eliminato e verrà creato un nuovo utente."
+      success: "L'alias è stato convertito in un utente con successo."
+      form:
+        password:
+          label: "Password per il nuovo utente"
+          help: "L'utente dovrà cambiare questa password al primo accesso."
+        password_confirmation:
+          label: "Conferma password"
+        submit: "Converti"
+      error:
+        deleted: "Questo alias è stato eliminato."
+        random: "Gli alias casuali non possono essere convertiti in utenti."
+        domain: "Il dominio di questo alias non è gestito qui."
+        user_exists: "Esiste o è esistito un utente con questo indirizzo. L'indirizzo non può essere riutilizzato."
+    actions:
+      convert: "Converti in utente"
 init_domain:
   form:
     name:
