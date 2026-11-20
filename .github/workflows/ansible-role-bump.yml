@@ -67,3 +67,5 @@ jobs:
           body: |
             Bump Userli to [${{ env.VERSION }}](${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ env.VERSION }}).
           draft: false
+          # Commit via the API as the app so the commit is verified; the role checks this before auto-merging
+          sign-commits: true
