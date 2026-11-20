@@ -107,16 +107,25 @@ delete:
     lead: Passordet ditt må bekreftes for å slette kontoen din.
   cancel: Avbryt
 recovery-token:
+  download: Last ned som tekstfil
+  store-hint: Lagre det i en passordbehandler eller skriv det ut. Uten passordet ditt og dette symbolet er de krypterte e-postene dine tapt.
+  file-content: |
+    Gjenopprettingssymbol for %project_name%
+
+    E-postadresse: %email%
+    Gjenopprettingssymbol: %token%
+
+    Hvis du glemmer passordet ditt, kan du sette et nytt med dette
+    gjenopprettingssymbolet. Oppbevar filen på et trygt sted: Alle som har den,
+    kan starte gjenoppretting av passordet for kontoen din.
   headline: Håndter gjenopprettingssymbol
   lead: Gjenopprettingssymbolet kan brukes til å tilbakestille passordet ditt hvis du glemmer det.
   set: Du har allerede satt opp et gjenopprettingssymbol.
   set-extra: Oppretting av nytt symbol ugyldiggjør det nåværende symbolet.
   unset: Du har ikke noe gjenopprettingssymbol satt opp enda. Det anbefales at du oppretter et nå.
   created-headline: "Følgende gjenopprettingssymbol ble opprettet for deg:"
-  created-info: >
-    Hvis du har mistet passordet ditt, vil gjenopprettingssymbolet tillate deg å tilbakestille det.
-    Skriv det ned og lagre det på en sikker plass.
-  displayed-once: Av sikkerhetshensyn, blir sikkerhetssymbolet kun vist én gang. Ingen kan gjenopprette deg for deg.
+  created-info: Hvis du glemmer passordet ditt, kan du sette et nytt med dette symbolet.
+  displayed-once: Dette symbolet vises bare én gang.
 flashes:
   logout-successful: Du har blitt utlogget.
   voucher-creation-successful: Ny invitasjonskode opprettet.

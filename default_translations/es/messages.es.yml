@@ -151,14 +151,25 @@ delete:
   cancel: Cancelar
 
 recovery-token:
+  download: Descargar como archivo de texto
+  store-hint: Guárdalo en un gestor de contraseñas o imprímelo. Sin tu contraseña y este token, tus e-mails cifrados se pierden.
+  file-content: |
+    Token de recuperación de %project_name%
+
+    Dirección de e-mail: %email%
+    Token de recuperación: %token%
+
+    Si olvidas tu contraseña, puedes establecer una nueva con este token de
+    recuperación. Guarda este archivo en un lugar seguro: cualquiera que lo
+    tenga puede iniciar una recuperación de contraseña para tu cuenta.
   headline: Gestionar token de recuperación
   lead: El token de recuperación se puede usar para restablecer tu contraseña si la olvidas.
   set: Ya tienes un token de recuperación establecido.
   set-extra: Crear un nuevo token invalidará el actual.
   unset: Aún no tienes un token de recuperación establecido. Te recomendamos encarecidamente que crees uno ahora.
   created-headline: "Se ha creado el siguiente token de recuperación para ti:"
-  created-info: Si perdiste tu contraseña, el token de recuperación te permite restablecer una nueva. Anótalo y guárdalo en un lugar seguro.
-  displayed-once: Por razones de seguridad, el token de recuperación se muestra solo una vez. No podemos recuperar este token por ti.
+  created-info: Si olvidas tu contraseña, puedes establecer una nueva con este token.
+  displayed-once: Este token solo se muestra una vez.
 
 flashes:
   logout-successful: Has cerrado la sesión.

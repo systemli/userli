@@ -97,6 +97,7 @@ Feature: Recovery
 
     Then I should be on "/recovery/recovery_token/ack"
     And I should see text matching "Please copy and securely store this recovery token"
+    And I should see a "button[data-action='download#save']" element
 
     When I press "recovery_token_confirm[submit]"
 

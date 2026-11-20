@@ -15,60 +15,16 @@
                     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 sm:p-8">
                         {% if recovery_token is defined %}
                             <!-- Token display -->
-                            <div class="mb-6">
-                                <div class="flex items-center mb-2">
-                                    <div class="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/50 rounded-xl flex items-center justify-center mr-3">
-                                        {{ ux_icon('heroicons:exclamation-triangle', {'class': 'w-5 h-5 text-yellow-600 dark:text-yellow-400'}) }}
-                                    </div>
-                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                                        {{ "recovery-token.created-headline"|trans }}
-                                    </h3>
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/50 rounded-xl flex items-center justify-center mr-3">
+                                    {{ ux_icon('heroicons:exclamation-triangle', {'class': 'w-5 h-5 text-yellow-600 dark:text-yellow-400'}) }}
                                 </div>
-                                <p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
-                                    {{ "recovery-token.created-subtitle"|trans }}
-                                </p>
-                                <div class="bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
-                                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3">
-                                        <code class="font-stretch-semi-condensed text-sm font-mono text-gray-900 dark:text-gray-100 break-all select-all min-w-0 flex-1">{{ recovery_token }}</code>                                            <button type="button"
-                                                    class="inline-flex items-center p-2 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-500 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-700 transition-colors duration-200 self-end sm:self-auto flex-shrink-0"
-                                                    data-controller="clipboard tooltip"
-                                                    data-clipboard-content-value="{{ recovery_token }}"
-                                                    data-action="clipboard#copy"
-                                                    title="{{ "copy-to-clipboard"|trans }}"
-                                                    aria-label="{{ "copy-to-clipboard"|trans }}">
-                                                {{ ux_icon('heroicons:clipboard', {'class': 'w-4 h-4'}) }}
-                                            </button>
-                                    </div>
-                                </div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                                    {{ "recovery-token.created-headline"|trans }}
+                                </h3>
                             </div>
 
-                            <!-- Acknowledgment form -->
-                            {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
-                            {{ form_errors(form) }}
-                            {{ form_widget(form.recoveryToken) }}
-
-                            <div class="flex items-start mt-4">
-                                {{ form_widget(form.confirm, {
-                                    'attr': {
-                                        'class': 'h-5 w-5 text-blue-600 dark:text-blue-500 border-gray-300 dark:border-gray-600 rounded mt-0.5 mr-2 focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700'
-                                    }
-                                }) }}
-                                {{ form_label(form.confirm, null, {
-                                    'label_attr': {
-                                        'class': 'text-sm text-gray-700 dark:text-gray-300'
-                                    }
-                                }) }}
-                            </div>
-                            {{ form_errors(form.confirm, {'attr': {'class': 'text-sm text-red-600 dark:text-red-400 mt-1'}}) }}
-
-                            <div class="mt-6">
-                                {{ form_widget(form.submit, {
-                                    'attr': {
-                                        'class': 'w-full px-6 py-3 bg-blue-600 dark:bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200'
-                                    }
-                                }) }}
-                            </div>
-                            {{ form_end(form) }}
+                            {% include 'Recovery/show_recovery_token.html.twig' %}
                         {% else %}
                             <!-- Generate token form -->
                             {% if user.recoverySecretBox %}

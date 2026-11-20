@@ -54,8 +54,8 @@ You have 30 days to finish this step. After that, you have to start again.
 ## Step 3: Store your new recovery token
 
 Your old recovery token has been used up. Userli shows you a **new recovery
-token**. Store it safely, confirm and click **Continue**. You are now signed in
-with your new password.
+token**. Copy or download it, store it safely, confirm and click **Continue**.
+You are now signed in with your new password.
 
 !!! note "Two-factor authentication and app passwords are reset"
 

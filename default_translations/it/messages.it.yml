@@ -191,3 +191,17 @@ recovery:
     Ora attendi %hours% ore. Dopo potrai impostare una nuova password nel secondo passo.
     Conserva il tuo gettone di recupero fino ad allora.
 copy-to-clipboard: Copia negli appunti
+recovery-token:
+  created-info: Se dimentichi la password, puoi impostarne una nuova con questo gettone.
+  displayed-once: Questo gettone viene mostrato una sola volta.
+  download: Scarica come file di testo
+  store-hint: Conservalo in un gestore di password o stampalo. Senza la tua password e questo gettone, le tue e-mail cifrate sono perse.
+  file-content: |
+    Gettone di recupero di %project_name%
+
+    Indirizzo e-mail: %email%
+    Gettone di recupero: %token%
+
+    Se dimentichi la password, puoi impostarne una nuova con questo gettone di
+    recupero. Conserva questo file in un posto sicuro: chiunque lo abbia può
+    avviare il recupero della password per il tuo account.

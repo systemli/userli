@@ -280,6 +280,17 @@ delete:
   confirm: Löschen
   confirm-title: Löschen bestätigen
 recovery-token:
+  download: Als Textdatei herunterladen
+  store-hint: Speichere ihn in einem Passwort-Manager oder drucke ihn aus. Ohne Passwort und Code sind deine verschlüsselten E-Mails verloren.
+  file-content: |
+    %project_name%-Wiederherstellungscode
+
+    E-Mail-Adresse: %email%
+    Wiederherstellungscode: %token%
+
+    Wenn du dein Passwort vergisst, kannst du mit diesem Wiederherstellungscode
+    ein neues setzen. Bewahre diese Datei an einem sicheren Ort auf: Wer sie
+    hat, kann eine Passwort-Wiederherstellung für dein Konto starten.
   headline: Wiederherstellungscode verwalten
   lead: Mit dem Wiederherstellungscode kannst du dein Passwort zurücksetzen, wenn du es vergessen hast.
   set: Du hast bereits einen Wiederherstellungscode gesetzt.
@@ -287,8 +298,8 @@ recovery-token:
   unset: Du hast noch keinen Wiederherstellungscode gesetzt. Wir empfehlen dir dringend, jetzt einen zu erstellen.
   created-headline: Dein neuer Wiederherstellungscode
   created-subtitle: Bitte kopiere und speicher dein Wiederherstellungscode sicher.
-  created-info: Mit dem Wiederherstellungscode kannst du jederzeit dein Passwort zurücksetzen, wenn du dieses vergessen hast. Notiere ihn dir und speichere ihn an einem sicheren Ort ab.
-  displayed-once: Der Wiederherstellungscode wird aus Sicherheitsgründen nur einmal angezeigt. Wir können ihn nicht für dich wiederherstellen.
+  created-info: Wenn du dein Passwort vergisst, kannst du mit diesem Code ein neues setzen.
+  displayed-once: Dieser Code wird nur einmal angezeigt.
 flashes:
   dismiss: Schließen
   logout-successful: Du bist jetzt abgemeldet.

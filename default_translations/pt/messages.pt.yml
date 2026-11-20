@@ -102,18 +102,25 @@ closed:
     Atualmente, não é possível criar novas contas.
     <strong>As contas existentes não são afetadas.</strong>
 recovery-token:
+  download: Baixar como arquivo de texto
+  store-hint: Guarde-o em um gerenciador de senhas ou imprima-o. Sem sua senha e este token, seus e-mails criptografados serão perdidos.
+  file-content: |
+    Token de recuperação de %project_name%
+
+    Endereço de e-mail: %email%
+    Token de recuperação: %token%
+
+    Se você esquecer sua senha, poderá criar uma nova com este token de
+    recuperação. Guarde este arquivo em um lugar seguro: qualquer pessoa que o
+    tenha pode iniciar a recuperação de senha da sua conta.
   headline: Gerenciar token de recuperação
   lead: O token de recuperação pode ser usado para redefinir a sua palavra-passe se esquecê-la.
   set: Você já tem um token configurado.
   set-extra: Se você criar um novo token de recuperação o seu token atual será invalidado.
   unset: Você ainda não tem um token de recuperação configurado. Recomendamos fortemente que crie um agora mesmo.
   created-headline: "O seguinte token foi gerado para você:"
-  created-info: >
-    Se você perder sua senha, o token de recuperação permite que você crie uma nova.
-    Anote e guarde-o em algum lugar seguro.
-  displayed-once: >
-    Por questão de segurança, o token de recuperação só é exibido uma vez. Nós não
-    podemos recuperar esse token por você.
+  created-info: Se você esquecer sua senha, poderá criar uma nova com este token.
+  displayed-once: Este token é exibido apenas uma vez.
 flashes:
   logout-successful: Sua sessão foi encerrada.
   password-change-successful: A sua nova palavra-passe está ativa!

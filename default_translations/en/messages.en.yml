@@ -282,6 +282,17 @@ delete:
   confirm: Delete
   confirm-title: Confirm deletion
 recovery-token:
+  download: Download as text file
+  store-hint: Store it in a password manager or print it. Without your password and this token, your encrypted e-mails are lost.
+  file-content: |
+    %project_name% recovery token
+
+    E-mail address: %email%
+    Recovery token: %token%
+
+    If you forget your password, you can set a new one with this recovery
+    token. Keep this file in a safe place: anyone who has it can start a
+    password recovery for your account.
   headline: Manage recovery token
   lead: The recovery token can be used to reset your password if you forget it.
   set: You already have a recovery token set.
@@ -289,12 +300,8 @@ recovery-token:
   unset: You don't have a recovery token set yet. We strongly recommend to create one now.
   created-headline: Your new recovery token
   created-subtitle: Please copy and securely store this recovery token
-  created-info: >
-    If you lost your password, the recovery token allows you to reset a new one.
-    Write it down and store it at a secure place.
-  displayed-once: >
-    For security reasons, the recovery token gets displayed only once.
-    We can't recover this token for you.
+  created-info: If you forget your password, you can set a new one with this token.
+  displayed-once: This token is shown only once.
 flashes:
   dismiss: Dismiss
   logout-successful: You are now logged out.

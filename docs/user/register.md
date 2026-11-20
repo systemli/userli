@@ -57,8 +57,9 @@ Right after registration you see your **recovery token** – a long code like
 `1a2b3c4d-....`. If you forget your password, this token is the only way to
 get back into your account and keep your emails readable.
 
-* Copy it with **Copy to clipboard** and store it somewhere safe, for example
-  in a password manager or printed on paper.
+* Copy it with **Copy to clipboard** or save it with **Download as text file**,
+  and store it somewhere safe, for example in a password manager or printed on
+  paper.
 * The token is shown **only once**. Nobody, including your provider, can show
   it to you again.
 
