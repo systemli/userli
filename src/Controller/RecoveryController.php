@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Dto\RecoveryResult;
 use App\Enum\RecoveryStatus;
 use App\Form\Model\RecoveryProcess;
 use App\Form\Model\RecoveryResetPassword;
@@ -12,7 +13,12 @@ use App\Form\RecoveryProcessType;
 use App\Form\RecoveryResetPasswordType;
 use App\Form\RecoveryTokenConfirmType;
 use App\Handler\RecoveryHandler;
+use App\Repository\UserRepository;
+use DateTimeImmutable;
+use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -31,6 +37,8 @@ final class RecoveryController extends AbstractController
 
     public function __construct(
         private readonly RecoveryHandler $recoveryHandler,
+        private readonly UserRepository $userRepository,
+        private readonly Security $security,
     ) {
     }
 
@@ -43,7 +51,7 @@ final class RecoveryController extends AbstractController
             'method' => 'post',
         ]);
 
-        return $this->render('Recovery/recovery_new.html.twig', ['form' => $form]);
+        return $this->renderRecoveryForm($form);
     }
 
     #[Route(path: '/recovery', name: 'recovery_submit', methods: ['POST'])]
@@ -61,14 +69,7 @@ final class RecoveryController extends AbstractController
 
             return match ($result->status) {
                 RecoveryStatus::Invalid => $this->renderRecoveryFormWithError($form),
-                RecoveryStatus::Started, RecoveryStatus::Pending => $this->render(
-                    'Recovery/recovery_started.html.twig',
-                    [
-                        'form' => $form,
-                        'active_time' => $result->activeTime,
-                        'delay_hours' => RecoveryHandler::PROCESS_DELAY_HOURS,
-                    ],
-                ),
+                RecoveryStatus::Started, RecoveryStatus::Pending => $this->renderRecoveryStarted($form, $result),
                 RecoveryStatus::Ready => $this->redirectToResetPassword(
                     $request->getSession(),
                     $data->getEmail(),
@@ -77,7 +78,7 @@ final class RecoveryController extends AbstractController
             };
         }
 
-        return $this->render('Recovery/recovery_new.html.twig', ['form' => $form]);
+        return $this->renderRecoveryForm($form);
     }
 
     #[Route(path: '/recovery/reset_password', name: 'recovery_reset_password', methods: ['GET'])]
@@ -119,6 +120,9 @@ final class RecoveryController extends AbstractController
             if ($this->recoveryHandler->verifyRecoveryToken($email, $recoveryToken, true)) {
                 if ($form->isValid()) {
                     $newRecoveryToken = $this->recoveryHandler->resetPassword($email, $recoveryToken, $data->getPassword());
+                    $this->logInUser($email);
+
+                    // Session is migrated on login, so only fetch it afterwards
                     $session = $request->getSession();
                     $session->remove(self::SESSION_KEY);
                     // Kept in the session to keep it out of URLs (browser history, server logs)
@@ -132,10 +136,11 @@ final class RecoveryController extends AbstractController
                 return $this->render('Recovery/reset_password.html.twig', ['form' => $form]);
             }
 
-            // Verification of $email + $recoveryToken failed, start over
+            // Verification of $email + $recoveryToken failed (e.g. process expired), start over
+            $request->getSession()->remove(self::SESSION_KEY);
             $this->addFlash('error', 'flashes.recovery-reauthenticate');
 
-            return $this->render('Recovery/reset_password.html.twig', ['form' => $form], new Response(status: Response::HTTP_UNAUTHORIZED));
+            return $this->redirectToRoute('recovery');
         }
 
         return $this->render('Recovery/reset_password.html.twig', ['form' => $form]);
@@ -147,7 +152,7 @@ final class RecoveryController extends AbstractController
         $recoveryToken = $request->getSession()->get(self::SESSION_NEW_TOKEN_KEY);
         if (!is_string($recoveryToken)) {
             // Page opened directly or token already acknowledged
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('account');
         }
 
         $form = $this->createForm(RecoveryTokenConfirmType::class, new RecoveryTokenConfirm(), [
@@ -167,7 +172,7 @@ final class RecoveryController extends AbstractController
         $session = $request->getSession();
         $recoveryToken = $session->get(self::SESSION_NEW_TOKEN_KEY);
         if (!is_string($recoveryToken)) {
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('account');
         }
 
         $form = $this->createForm(RecoveryTokenConfirmType::class, new RecoveryTokenConfirm());
@@ -176,9 +181,9 @@ final class RecoveryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $session->remove(self::SESSION_NEW_TOKEN_KEY);
             $this->addFlash('success', 'flashes.recovery-token-ack');
-            $this->addFlash('success', 'flashes.recovery-next-login');
+            $this->addFlash('info', 'flashes.recovery-reset-hint');
 
-            return $this->redirectToRoute('login');
+            return $this->redirectToRoute('account');
         }
 
         return $this->render('Recovery/recovery_token.html.twig', [
@@ -187,11 +192,47 @@ final class RecoveryController extends AbstractController
         ]);
     }
 
-    private function renderRecoveryFormWithError(mixed $form): Response
+    private function renderRecoveryStarted(FormInterface $form, RecoveryResult $result): Response
+    {
+        $activeTime = $result->activeTime ?? throw new LogicException('Started or pending recovery must have an active time');
+
+        return $this->render('Recovery/recovery_started.html.twig', [
+            'form' => $form,
+            'active_time' => $activeTime,
+            'delay_hours' => RecoveryHandler::PROCESS_DELAY_HOURS,
+            'pending' => RecoveryStatus::Pending === $result->status,
+            'time_left' => self::timeLeft($activeTime),
+        ]);
+    }
+
+    private function renderRecoveryFormWithError(FormInterface $form): Response
     {
         $this->addFlash('error', 'flashes.recovery-token-invalid');
 
-        return $this->render('Recovery/recovery_new.html.twig', ['form' => $form], new Response(status: Response::HTTP_UNAUTHORIZED));
+        return $this->renderRecoveryForm($form, Response::HTTP_UNAUTHORIZED);
+    }
+
+    private function renderRecoveryForm(FormInterface $form, int $status = Response::HTTP_OK): Response
+    {
+        return $this->render('Recovery/recovery_new.html.twig', [
+            'form' => $form,
+            'delay_hours' => RecoveryHandler::PROCESS_DELAY_HOURS,
+        ], new Response(status: $status));
+    }
+
+    /**
+     * Logs in the user after a successful password reset.
+     *
+     * The user proved ownership with email, recovery token and the waiting period, and just set a new password.
+     */
+    private function logInUser(string $email): void
+    {
+        $user = $this->userRepository->findByEmail($email);
+        if (null === $user) {
+            throw new LogicException('User should exist after resetting the password');
+        }
+
+        $this->security->login($user, 'form_login');
     }
 
     private function redirectToResetPassword(SessionInterface $session, string $email, string $recoveryToken): Response
@@ -228,5 +269,16 @@ final class RecoveryController extends AbstractController
         }
 
         return [$data['email'], $data['recoveryToken']];
+    }
+
+    /**
+     * @return array{hours: int, minutes: int}
+     */
+    private static function timeLeft(DateTimeImmutable $activeTime): array
+    {
+        // Round up, so "0 h 0 min" is never shown while still waiting
+        $minutesLeft = max(0, (int) ceil(($activeTime->getTimestamp() - time()) / 60));
+
+        return ['hours' => intdiv($minutesLeft, 60), 'minutes' => $minutesLeft % 60];
     }
 }

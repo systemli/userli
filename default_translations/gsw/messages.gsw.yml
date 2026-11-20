@@ -97,26 +97,43 @@ welcome:
   headline: Wiukomme bi %project_name%!
   next-button: Zur Übersicht
 recovery:
+  information-extra: Das schautet d Zwöi-Faktor-Authentifizierig us und löscht aui App-Passwörter.
+  intro: "D Wiederhärschteuig bruucht zwe Bsüech: Gib dini E-Mail Adrässe und dis Recovery Token iz i, und nach %hours% Schtung nomou, zum es nöis Passwort z setze."
+  started: Wiederhärschteuig gschtartet. Für dini Sicherheit muesch %hours% Schtung warte.
+  pending: D Wiederhärschteuig louft scho.
+  time-left: "Verbliibendi Zyt: %hours% Std. %minutes% Min."
+  waiting-time: Ab em %time% chasch es nöis Passwort setze.
+  come-back: Chumm när zrügg uf %url% und gib dini E-Mail Adrässe und dis Recovery Token nomou i.
+  steps:
+    label: Fortschritt vor Wiederhärschteuig
+    start: Schtarte
+    wait: Warte
+    password: Nöis Passwort
+    token: Token sichere
+    done: erledigt
   lead: S Passwort mittem Recovery Token zrüggsetze
   token-lead: Nöis Recovery Token
   header: Di Account wiederhärschteue
-  waiting-info: >
-    Die Wartezyt isch für dini eigeti Sicherheit und cha weder verchürzt
-    no überschprunge wärde.
-  waiting-time: Dr zwöit Schritt startet am %time%.
   reset-lead: Du hesch ke Berächtigung zum dis Passwort zrüggzsetze
-  started: >
-    Dr erscht Schritt zum Passwort zrüggsetze isch erledigt.
-    Iz muesch %hours% Schtung warte. Ab denn chasch es nöis Passwort setze im zwöite Schritt.
-    Bitte bewahr dis Recovery Token bis denn uf.
   cancel: Abbbräche
 recovery-token:
+  download: Aus Textdatei abelade
+  store-hint: Speicher s imne Passwort-Manager oder druck s us. Ohni dis Passwort und das Token si dini verschlüsslete E-Mails verlore.
+  file-content: |
+    %project_name% Recovery Token
+
+    E-Mail Adrässe: %email%
+    Recovery Token: %token%
+
+    Wenn du dis Passwort vergissisch, chasch mit däm Recovery Token es nöis
+    setze. Bewahr die Datei amne sichere Ort uf: Wär se het, cha e
+    Passwort-Wiederhärschteuig für di Account schtarte.
   set: Du hesch bereits es Recovery Token gsetzt.
   set-extra: S Erschteue vomne nöie Token wird s aktuelle invalidiere.
   created-headline: "Das Token isch für di erschteut worde:"
   lead: S Recovery Token cha drzue verwändet wärde dis Passwort zrüggzsetze wenns vergässe hesch.
-  created-info: Wenn du dis Passwort verlore hesch, erloubt dir s Recovery Token es nöis z setze. Notier dr das Token und bewahrs amne sichere Ort uuf.
-  displayed-once: Us Sicherheitsgründ wird s Recovery Token nume einisch azeigt. Mir chöi das Token nid wiederhärschteue.
+  created-info: Wenn du dis Passwort vergissisch, chasch mit däm Token es nöis setze.
+  displayed-once: Das Token wird nume einisch azeigt.
   headline: Recovery Token verwaute
   unset: Du hesch no kes Recovery Token gsetzt. Mir emfpähle dringend iz eis z mache.
 error:
@@ -177,16 +194,16 @@ mail:
 flashes:
   recovery-token-ack: Du hesch es Recovery Token generiert.
   logout-successful: Du bisch iz usgloggt.
-  recovery-token-invalid: E-Mail Adrässe und/oder Recovery Token isch fautsch!
+  recovery-token-invalid: D E-Mail Adrässe oder s Recovery Token isch nid korrekt. Bitte prüef beides und versuechs nomou.
   voucher-creation-successful: Nöie Invite Code isch erschtellt.
   recovery-password-changed: Du hesch dis Passwort gänderet.
   alias-deletion-successful: Alias Adrässe isch glöscht.
   alias-creation-successful: Nöie Alias Adrässe isch erschtellt.
   password-change-successful: Dis nöie Passwort isch iz aktiv!
-  recovery-reauthenticate: Irgendöppis isch schief gloffe. Bitte nöi amäude!
+  recovery-reauthenticate: Dini Passwort-Wiederhärschteuig het nid chönne bestätigt wärde. Bitte gib dini E-Mail Adrässe und dis Recovery Token nomou i.
   recovery-session-expired: Bitte gib dini E-Mail Adrässe und dis Recovery Token nomou i, zum es nöis Passwort z setze.
+  recovery-reset-hint: D Zwöi-Faktor-Authentifizierig isch us und dini App-Passwörter si glöscht worde. Schaut 2FA wider i und erschteu nöii App-Passwörter.
   registration-successful: Du bisch iz regischtriert.
-  recovery-next-login: Witerfahre mittem Ilogge.
 navbar_right:
   login: Ilogge
   logout: Uslogge

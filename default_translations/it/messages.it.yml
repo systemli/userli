@@ -85,8 +85,10 @@ flashes:
   openpgp-key-upload-error-multiple-keys: >
     Nei dati caricati è stata trovata più di una chiave per il tuo indirizzo e-mail.
     Si prega di caricare solo una chiave.
-  recovery-token-invalid: L'indirizzo e-mail e/o il gettone di recupero sono sbagliati!
+  recovery-token-invalid: L'indirizzo e-mail o il gettone di recupero non è corretto. Controlla entrambi e riprova.
+  recovery-reauthenticate: Non è stato possibile verificare il recupero della password. Inserisci di nuovo il tuo indirizzo e-mail e il tuo gettone di recupero.
   recovery-session-expired: Inserisci di nuovo il tuo indirizzo e-mail e il tuo gettone di recupero per impostare una nuova password.
+  recovery-reset-hint: L'autenticazione a due fattori è disattivata e le tue password per le app sono state eliminate. Riattiva la 2FA e crea nuove password per le app.
 spam:
   title: Account bloccato
   text: >
@@ -184,9 +186,33 @@ openpgp:
   information: Informazioni
   expiretime-label: "Data di scadenza:"
 recovery:
+  information-extra: Questo disattiva l'autenticazione a due fattori ed elimina tutte le password per le app.
+  intro: "Il recupero richiede due visite: inserisci il tuo indirizzo e-mail e il tuo gettone di recupero ora, e di nuovo dopo %hours% ore per impostare una nuova password."
+  started: Recupero avviato. Per la tua sicurezza, devi attendere %hours% ore.
+  pending: Il recupero è già in corso.
+  time-left: "Tempo rimanente: %hours% h %minutes% min."
+  waiting-time: Potrai impostare una nuova password a partire dal %time%.
+  come-back: Torna quindi su %url% e inserisci di nuovo il tuo indirizzo e-mail e il tuo gettone di recupero.
+  steps:
+    label: Avanzamento del recupero
+    start: Avvia
+    wait: Attendi
+    password: Nuova password
+    token: Salva gettone
+    done: completato
   cancel: Annulla
-  started: >
-    Il primo passo per reimpostare la tua password è fatto.
-    Ora attendi %hours% ore. Dopo potrai impostare una nuova password nel secondo passo.
-    Conserva il tuo gettone di recupero fino ad allora.
 copy-to-clipboard: Copia negli appunti
+recovery-token:
+  created-info: Se dimentichi la password, puoi impostarne una nuova con questo gettone.
+  displayed-once: Questo gettone viene mostrato una sola volta.
+  download: Scarica come file di testo
+  store-hint: Conservalo in un gestore di password o stampalo. Senza la tua password e questo gettone, le tue e-mail cifrate sono perse.
+  file-content: |
+    Gettone di recupero di %project_name%
+
+    Indirizzo e-mail: %email%
+    Gettone di recupero: %token%
+
+    Se dimentichi la password, puoi impostarne una nuova con questo gettone di
+    recupero. Conserva questo file in un posto sicuro: chiunque lo abbia può
+    avviare il recupero della password per il tuo account.

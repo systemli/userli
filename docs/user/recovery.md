@@ -54,14 +54,14 @@ You have 30 days to finish this step. After that, you have to start again.
 ## Step 3: Store your new recovery token
 
 Your old recovery token has been used up. Userli shows you a **new recovery
-token**. Store it safely, confirm and click **Continue**. Then sign in with your
-new password.
+token**. Copy or download it, store it safely, confirm and click **Continue**.
+You are now signed in with your new password.
 
 !!! note "Two-factor authentication and app passwords are reset"
 
     The recovery turns off two-factor authentication, because you may have lost
-    your phone as well. [Turn it on again](security.md#turn-on-2fa) after
-    signing in.
+    your phone as well. [Turn it on again](security.md#turn-on-2fa) right
+    away.
 
     It also deletes all [app passwords](app-passwords.md), in case
     someone else created one. Create new ones for your mail apps.

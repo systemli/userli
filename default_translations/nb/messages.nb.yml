@@ -66,17 +66,25 @@ form:
   new-password_confirmation: Bekreft nytt passord
   domain: Domene
 recovery:
+  information-extra: Dette slår av tofaktorautentisering og sletter alle app-passord.
+  intro: "Gjenoppretting krever to besøk: Skriv inn e-postadressen og gjenopprettingssymbolet ditt nå, og igjen etter %hours% timer for å sette et nytt passord."
+  started: Gjenoppretting startet. Av sikkerhetshensyn må du vente i %hours% timer.
+  pending: Gjenopprettingen pågår allerede.
+  time-left: "Gjenstående tid: %hours% t %minutes% min."
+  waiting-time: Du kan sette et nytt passord fra %time%.
+  come-back: Kom da tilbake til %url% og skriv inn e-postadressen og gjenopprettingssymbolet ditt på nytt.
+  steps:
+    label: Fremdrift for gjenoppretting
+    start: Start
+    wait: Vent
+    password: Nytt passord
+    token: Lagre symbol
+    done: fullført
   header: Gjenopprett kontoen din
   lead: Tilbakestill passordet med ditt gjenopprettingssymbol
   cancel: Avbryt
-  waiting-info: Ventetiden opprettholder din sikkerhet, og kan ikke forkortes eller
-  waiting-time: Andre steg starter %time%.
   reset-lead: Du kan nå tilbakestille passordet ditt
   token-lead: Nytt gjenopprettingssymbol
-  started: >
-    Første steg i gjenoppretting av passordet ditt er ferdig.
-    Vent i %hours% timer. Deretter kan du sette et nytt passord i andre steg.
-    Behold gjenopprettingssymbolet dit til da.
 navbar_right:
   login: Logg inn
   logout: Logg ut
@@ -107,28 +115,37 @@ delete:
     lead: Passordet ditt må bekreftes for å slette kontoen din.
   cancel: Avbryt
 recovery-token:
+  download: Last ned som tekstfil
+  store-hint: Lagre det i en passordbehandler eller skriv det ut. Uten passordet ditt og dette symbolet er de krypterte e-postene dine tapt.
+  file-content: |
+    Gjenopprettingssymbol for %project_name%
+
+    E-postadresse: %email%
+    Gjenopprettingssymbol: %token%
+
+    Hvis du glemmer passordet ditt, kan du sette et nytt med dette
+    gjenopprettingssymbolet. Oppbevar filen på et trygt sted: Alle som har den,
+    kan starte gjenoppretting av passordet for kontoen din.
   headline: Håndter gjenopprettingssymbol
   lead: Gjenopprettingssymbolet kan brukes til å tilbakestille passordet ditt hvis du glemmer det.
   set: Du har allerede satt opp et gjenopprettingssymbol.
   set-extra: Oppretting av nytt symbol ugyldiggjør det nåværende symbolet.
   unset: Du har ikke noe gjenopprettingssymbol satt opp enda. Det anbefales at du oppretter et nå.
   created-headline: "Følgende gjenopprettingssymbol ble opprettet for deg:"
-  created-info: >
-    Hvis du har mistet passordet ditt, vil gjenopprettingssymbolet tillate deg å tilbakestille det.
-    Skriv det ned og lagre det på en sikker plass.
-  displayed-once: Av sikkerhetshensyn, blir sikkerhetssymbolet kun vist én gang. Ingen kan gjenopprette deg for deg.
+  created-info: Hvis du glemmer passordet ditt, kan du sette et nytt med dette symbolet.
+  displayed-once: Dette symbolet vises bare én gang.
 flashes:
   logout-successful: Du har blitt utlogget.
   voucher-creation-successful: Ny invitasjonskode opprettet.
-  recovery-next-login: Fortsett med innloggingen.
   password-change-successful: Ditt nye passord er nå aktivt.
   registration-successful: Du har registrert deg.
   alias-creation-successful: Din nye alias-adresse ble opprettet.
   alias-deletion-successful: Din alias-adresse ble slettet.
-  recovery-token-invalid: E-postadresse og/eller gjenopprettingssymbol er galt.
+  recovery-token-invalid: E-postadressen eller gjenopprettingssymbolet er ikke riktig. Kontroller begge og prøv igjen.
   recovery-token-ack: Du genererte et gjenopprettingssymbol.
-  recovery-reauthenticate: Noe gikk galt. Identitetsbekreft deg igjen.
+  recovery-reauthenticate: Gjenopprettingen av passordet kunne ikke bekreftes. Skriv inn e-postadressen og gjenopprettingssymbolet ditt på nytt.
   recovery-session-expired: Skriv inn e-postadressen og gjenopprettingssymbolet ditt på nytt for å sette et nytt passord.
+  recovery-reset-hint: Tofaktorautentisering er slått av, og app-passordene dine ble slettet. Slå på 2FA igjen og opprett nye app-passord.
   recovery-password-changed: Du endret passordet ditt.
 error:
   page_not_found: Siden du forsøker å nå finnes ikke.

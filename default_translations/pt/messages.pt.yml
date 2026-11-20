@@ -66,15 +66,23 @@ form:
   registration-recovery-token-confirm: Eu guardei o token de recuperação em um lugar seguro
   registration-recovery-token-next-button: Continuar
 recovery:
+  information-extra: Isso desativa a autenticação de dois fatores e exclui todas as senhas de aplicativo.
+  intro: "A recuperação requer duas visitas: insira seu endereço de e-mail e seu token de recuperação agora e novamente após %hours% horas para criar uma nova senha."
+  started: Recuperação iniciada. Para sua segurança, você precisa esperar %hours% horas.
+  pending: A recuperação já está em andamento.
+  time-left: "Tempo restante: %hours% h %minutes% min."
+  waiting-time: Você poderá criar uma nova senha a partir de %time%.
+  come-back: Então volte a %url% e insira novamente seu endereço de e-mail e seu token de recuperação.
+  steps:
+    label: Progresso da recuperação
+    start: Iniciar
+    wait: Aguardar
+    password: Nova senha
+    token: Salvar token
+    done: concluído
   header: Recuperar sua conta
   lead: Redefina a sua palavra-passe usando o seu token de recuperação
   cancel: Cancelar
-  started: >
-    Quase lá. Esse foi o primeiro passo para redefinir sua senha.
-    Agora você precisa esperar por %hours% horas. Depois disso, no segundo passo, você pode criar uma nova senha.
-    Por favor mantenha seu token guardado até lá.
-  waiting-info: Esse tempo de espera é pela sua segurança e não pode ser encurtado ou ignorado.
-  waiting-time: O segundo passo começa %time%.
   reset-lead: Agora você pode redefinir sua senha
   token-lead: Novo token de recuperação
 navbar_right:
@@ -102,18 +110,25 @@ closed:
     Atualmente, não é possível criar novas contas.
     <strong>As contas existentes não são afetadas.</strong>
 recovery-token:
+  download: Baixar como arquivo de texto
+  store-hint: Guarde-o em um gerenciador de senhas ou imprima-o. Sem sua senha e este token, seus e-mails criptografados serão perdidos.
+  file-content: |
+    Token de recuperação de %project_name%
+
+    Endereço de e-mail: %email%
+    Token de recuperação: %token%
+
+    Se você esquecer sua senha, poderá criar uma nova com este token de
+    recuperação. Guarde este arquivo em um lugar seguro: qualquer pessoa que o
+    tenha pode iniciar a recuperação de senha da sua conta.
   headline: Gerenciar token de recuperação
   lead: O token de recuperação pode ser usado para redefinir a sua palavra-passe se esquecê-la.
   set: Você já tem um token configurado.
   set-extra: Se você criar um novo token de recuperação o seu token atual será invalidado.
   unset: Você ainda não tem um token de recuperação configurado. Recomendamos fortemente que crie um agora mesmo.
   created-headline: "O seguinte token foi gerado para você:"
-  created-info: >
-    Se você perder sua senha, o token de recuperação permite que você crie uma nova.
-    Anote e guarde-o em algum lugar seguro.
-  displayed-once: >
-    Por questão de segurança, o token de recuperação só é exibido uma vez. Nós não
-    podemos recuperar esse token por você.
+  created-info: Se você esquecer sua senha, poderá criar uma nova com este token.
+  displayed-once: Este token é exibido apenas uma vez.
 flashes:
   logout-successful: Sua sessão foi encerrada.
   password-change-successful: A sua nova palavra-passe está ativa!
@@ -121,12 +136,12 @@ flashes:
   voucher-creation-successful: Você gerou um novo convite!
   alias-creation-successful: O seu novo endereço alias foi criado!
   alias-deletion-successful: O seu endereço alias foi excluido com sucesso!
-  recovery-token-invalid: O endereço de e-mail ou o token de recuperação está errado!
+  recovery-token-invalid: O endereço de e-mail ou o token de recuperação não está correto. Verifique ambos e tente novamente.
   recovery-token-ack: Você gerou um token de recuperação com sucesso!
-  recovery-reauthenticate: Algo deu errado. Por favor se autentique novamente!
+  recovery-reauthenticate: Não foi possível verificar a recuperação da sua senha. Insira novamente seu endereço de e-mail e seu token de recuperação.
   recovery-session-expired: Por favor, insira novamente seu endereço de e-mail e seu token de recuperação para criar uma nova senha.
+  recovery-reset-hint: A autenticação de dois fatores está desativada e suas senhas de aplicativo foram excluídas. Ative a 2FA novamente e crie novas senhas de aplicativo.
   recovery-password-changed: Você mudou a sua senha com sucesso.
-  recovery-next-login: Inicie sua sessão agora.
   openpgp-key-upload-error-no-keys: ""
   openpgp-deletion-successful: ""
   openpgp-key-upload-error-multiple-keys: ""

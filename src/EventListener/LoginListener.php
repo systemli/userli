@@ -10,7 +10,6 @@ use App\Event\LoginEvent;
 use App\Handler\MailCryptKeyHandler;
 use App\Service\SettingsService;
 use App\Service\UserLastLoginUpdateService;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
@@ -20,7 +19,6 @@ final readonly class LoginListener
     public function __construct(
         private UserLastLoginUpdateService $userLastLoginUpdateService,
         private MailCryptKeyHandler $mailCryptKeyHandler,
-        private LoggerInterface $logger,
         private SettingsService $settingsService,
     ) {
     }
@@ -34,17 +32,10 @@ final readonly class LoginListener
             return;
         }
 
+        // No password for programmatic logins, e.g. after a password recovery
         $password = $event->getRequest()->request->get('_password');
-        if ($password == null) {
-            $this->logger->error(
-                '"_password" should not be null.',
-                ['email' => $user->getEmail()]
-            );
 
-            return;
-        }
-
-        $this->handleLogin($user, $password);
+        $this->handleLogin($user, is_string($password) && '' !== $password ? $password : null);
     }
 
     #[AsEventListener(event: LoginEvent::NAME)]

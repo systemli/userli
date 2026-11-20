@@ -1,3 +1,18 @@
+{#
+    Shows a newly created recovery token with copy and download buttons, a warning
+    and the form to confirm that it was stored.
+
+    Variables:
+      - recovery_token: the plain recovery token
+      - form: RecoveryTokenConfirmType form
+#}
+{% set token_email = app.user ? app.user.userIdentifier : '' %}
+{% set token_file_content = 'recovery-token.file-content'|trans({
+    '%project_name%': setting('project_name'),
+    '%email%': token_email,
+    '%token%': recovery_token,
+}) %}
+
 <div class="mb-6">
     <p class="mb-3 text-sm text-gray-600 dark:text-gray-300">
         {{ "recovery-token.created-subtitle"|trans }}
@@ -5,15 +20,37 @@
     <div class="bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3">
             <code class="font-stretch-semi-condensed text-sm font-mono text-gray-900 dark:text-gray-100 break-all select-all min-w-0 flex-1">{{ recovery_token }}</code>
-            <button type="button"
-                    class="inline-flex items-center p-2 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-500 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-700 transition-colors duration-200 self-end sm:self-auto flex-shrink-0"
-                    data-controller="clipboard tooltip"
-                    data-clipboard-content-value="{{ recovery_token }}"
-                    data-action="clipboard#copy"
-                    title="{{ "copy-to-clipboard"|trans }}"
-                    aria-label="{{ "copy-to-clipboard"|trans }}">
-                {{ ux_icon('heroicons:clipboard', {'class': 'w-4 h-4'}) }}
-            </button>
+            <div class="flex gap-2 self-end sm:self-auto flex-shrink-0">
+                <button type="button"
+                        class="inline-flex items-center p-2 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-500 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-700 transition-colors duration-200"
+                        data-controller="clipboard tooltip"
+                        data-clipboard-content-value="{{ recovery_token }}"
+                        data-action="clipboard#copy"
+                        title="{{ "copy-to-clipboard"|trans }}"
+                        aria-label="{{ "copy-to-clipboard"|trans }}">
+                    {{ ux_icon('heroicons:clipboard', {'class': 'w-4 h-4'}) }}
+                </button>
+                <button type="button"
+                        class="inline-flex items-center p-2 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-md hover:bg-gray-100 dark:hover:bg-gray-500 hover:text-gray-900 dark:hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-700 transition-colors duration-200"
+                        data-controller="download tooltip"
+                        data-download-content-value="{{ token_file_content }}"
+                        data-download-filename-value="recovery-token-{{ token_email ?: 'userli' }}.txt"
+                        data-action="download#save"
+                        title="{{ "recovery-token.download"|trans }}"
+                        aria-label="{{ "recovery-token.download"|trans }}">
+                    {{ ux_icon('heroicons:arrow-down-tray', {'class': 'w-4 h-4'}) }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mb-6 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4" role="note">
+    <div class="flex">
+        {{ ux_icon('heroicons:exclamation-triangle', {'class': 'w-5 h-5 text-yellow-500 dark:text-yellow-400 mt-0.5 mr-3 flex-shrink-0'}) }}
+        <div class="text-sm text-yellow-800 dark:text-yellow-200">
+            <p class="font-medium mb-2">{{ "recovery-token.displayed-once"|trans }}</p>
+            <p>{{ "recovery-token.store-hint"|trans }}</p>
         </div>
     </div>
 </div>
@@ -22,10 +59,10 @@
 {{ form_errors(form) }}
 {{ form_widget(form.recoveryToken) }}
 
-<div class="flex items-start mt-4">
+<div class="flex items-start">
     {{ form_widget(form.confirm, {
         'attr': {
-            'class': 'mt-0.5 mr-2'
+            'class': 'h-4 w-4 text-blue-600 dark:text-blue-500 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 bg-white dark:bg-gray-700 mt-0.5 mr-2'
         }
     }) }}
     {{ form_label(form.confirm, null, {
@@ -36,7 +73,7 @@
 </div>
 {{ form_errors(form.confirm) }}
 
-<div class="mt-6">
+<div>
     {{ form_widget(form.submit, {
         'attr': {
             'class': 'w-full'

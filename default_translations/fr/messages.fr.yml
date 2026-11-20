@@ -97,16 +97,23 @@ openpgp-key-submit: "Publier la clé OpenPGP"
 openpgp-delete: "Supprimer la clé OpenPGP"
 
 recovery:
+  information-extra: Cela désactive l'authentification à deux facteurs et supprime tous les mots de passe d'application.
+  intro: "La récupération se fait en deux visites : saisissez votre adresse électronique et votre jeton de récupération maintenant, puis à nouveau après %hours% heures pour définir un nouveau mot de passe."
+  started: Récupération lancée. Pour votre sécurité, vous devez attendre %hours% heures.
+  pending: La récupération est déjà en cours.
+  time-left: "Temps restant : %hours% h %minutes% min."
+  waiting-time: Vous pourrez définir un nouveau mot de passe à partir du %time%.
+  come-back: Revenez alors sur %url% et saisissez à nouveau votre adresse électronique et votre jeton de récupération.
+  steps:
+    label: Progression de la récupération
+    start: Lancer
+    wait: Attendre
+    password: Nouveau mot de passe
+    token: Sauvegarder le jeton
+    done: terminé
   header: Récupérer votre compte
   lead: Réinitialisez le mot de passe en utilisant le jeton de récupération
   cancel: Annuler
-  started: >
-    La première étape pour réinitialiser votre mot de passe est faite.
-    Veuillez maintenant attendre %hours% heures.
-    Par la suite, vous pouvez définir un nouveau mot de passe dans une deuxième étape.
-    Veuillez conserver votre jeton de récupération jusque là.
-  waiting-info: Cette période d'attente est mise en place pour votre propre sécurité et ne peut pas être réduite ou passée.
-  waiting-time: La deuxième étape commence à %time%.
   reset-lead: Vous n'êtes pas autorisé à réinitialiser votre mot de passe
   token-lead: Nouveau jeton de récupération
 
@@ -151,16 +158,25 @@ delete:
   cancel: Annuler
 
 recovery-token:
+  download: Télécharger en fichier texte
+  store-hint: Conservez-le dans un gestionnaire de mots de passe ou imprimez-le. Sans votre mot de passe et ce jeton, vos e-mails chiffrés sont perdus.
+  file-content: |
+    Jeton de récupération %project_name%
+
+    Adresse électronique : %email%
+    Jeton de récupération : %token%
+
+    Si vous oubliez votre mot de passe, vous pouvez en définir un nouveau avec
+    ce jeton de récupération. Conservez ce fichier en lieu sûr : toute personne
+    qui le possède peut lancer une récupération du mot de passe de votre compte.
   headline: Gérer les jetons de récupération
   lead: Le jeton de récupération peut être utilisé pour réinitialiser votre mot de passe si vous l'oubliez.
   set: Vous avez déjà défini un jeton de récupération.
   set-extra: Créer un nouveau jeton invalidera le jeton actuel.
   unset: Vous n'avez pas encore défini de jeton de récupération. Nous vous recommandons fortement d'en créer un maintenant.
   created-headline: "Le jeton de récupération suivant a été créé pour vous:"
-  created-info: >
-    Si vous perdez votre mot de passe, le jeton de récupération vous permet de le réinitialiser. Notez le et stocker le de façon sécurisée.
-  displayed-once: >
-    Pour des raisons de sécurité, le jeton de récupération ne sera affiché qu'une seule fois. Nous ne pouvons pas récupérer ce jeton pour vous.
+  created-info: Si vous oubliez votre mot de passe, vous pouvez en définir un nouveau avec ce jeton.
+  displayed-once: Ce jeton n'est affiché qu'une seule fois.
 
 flashes:
   logout-successful: Vous vous êtes déconnecté.
@@ -169,12 +185,12 @@ flashes:
   voucher-creation-successful: Nouveau code d'invitation créé.
   alias-creation-successful: Votre nouvel alias d'adresse a été créé.
   alias-deletion-successful: Votre alias d'adresse a été supprimé.
-  recovery-token-invalid: L'adresse électronique et/ou le jeton de récupération sont incorrects!
+  recovery-token-invalid: L'adresse électronique ou le jeton de récupération est incorrect. Vérifiez les deux et réessayez.
   recovery-token-ack: Vous avez généré un jeton de récupération.
-  recovery-reauthenticate: Une erreur s'est produite. Veuillez vous identifier à nouveau!
+  recovery-reauthenticate: La récupération de votre mot de passe n'a pas pu être vérifiée. Veuillez saisir à nouveau votre adresse électronique et votre jeton de récupération.
   recovery-session-expired: Veuillez saisir à nouveau votre adresse électronique et votre jeton de récupération pour définir un nouveau mot de passe.
+  recovery-reset-hint: L'authentification à deux facteurs est désactivée et vos mots de passe d'application ont été supprimés. Réactivez la 2FA et créez de nouveaux mots de passe d'application.
   recovery-password-changed: Vous avez modifié votre mot de passe.
-  recovery-next-login: Aller à l'écran de connexion.
   openpgp-deletion-successful: Votre clé OpenPGP a été supprimée.
   openpgp-key-upload-successful: Votre clé OpenPGP a été téléversée.
   openpgp-key-upload-error-no-openpgp: Le fichier téléversé ne contient pas de données OpenPGP.

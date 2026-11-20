@@ -98,15 +98,23 @@ openpgp:
   no-key-uploaded: Aún no se ha subido ninguna clave OpenPGP
 
 recovery:
+  information-extra: Esto desactiva la autenticación de dos factores y elimina todas las contraseñas de aplicación.
+  intro: "La recuperación requiere dos visitas: introduce tu dirección de e-mail y tu token de recuperación ahora, y de nuevo tras %hours% horas para establecer una nueva contraseña."
+  started: Recuperación iniciada. Por tu seguridad, tienes que esperar %hours% horas.
+  pending: La recuperación ya está en curso.
+  time-left: "Tiempo restante: %hours% h %minutes% min."
+  waiting-time: Podrás establecer una nueva contraseña a partir del %time%.
+  come-back: Entonces vuelve a %url% e introduce de nuevo tu dirección de e-mail y tu token de recuperación.
+  steps:
+    label: Progreso de la recuperación
+    start: Iniciar
+    wait: Esperar
+    password: Nueva contraseña
+    token: Guardar token
+    done: completado
   header: Recuperar tu cuenta
   lead: Restablecer la contraseña usando tu token de recuperación
   cancel: Cancelar
-  started: >
-    El primer paso para restablecer tu contraseña está hecho.
-    Ahora espera %hours% horas. Después, puedes establecer una nueva contraseña en el segundo paso.
-    Por favor, guarda tu token de recuperación hasta entonces.
-  waiting-info: El período de espera es por tu propia seguridad y no puede ser acortado ni omitido.
-  waiting-time: El segundo paso comienza a las %time%.
   reset-lead: Ahora puedes restablecer tu contraseña
   token-lead: Nuevo token de recuperación
 
@@ -151,14 +159,25 @@ delete:
   cancel: Cancelar
 
 recovery-token:
+  download: Descargar como archivo de texto
+  store-hint: Guárdalo en un gestor de contraseñas o imprímelo. Sin tu contraseña y este token, tus e-mails cifrados se pierden.
+  file-content: |
+    Token de recuperación de %project_name%
+
+    Dirección de e-mail: %email%
+    Token de recuperación: %token%
+
+    Si olvidas tu contraseña, puedes establecer una nueva con este token de
+    recuperación. Guarda este archivo en un lugar seguro: cualquiera que lo
+    tenga puede iniciar una recuperación de contraseña para tu cuenta.
   headline: Gestionar token de recuperación
   lead: El token de recuperación se puede usar para restablecer tu contraseña si la olvidas.
   set: Ya tienes un token de recuperación establecido.
   set-extra: Crear un nuevo token invalidará el actual.
   unset: Aún no tienes un token de recuperación establecido. Te recomendamos encarecidamente que crees uno ahora.
   created-headline: "Se ha creado el siguiente token de recuperación para ti:"
-  created-info: Si perdiste tu contraseña, el token de recuperación te permite restablecer una nueva. Anótalo y guárdalo en un lugar seguro.
-  displayed-once: Por razones de seguridad, el token de recuperación se muestra solo una vez. No podemos recuperar este token por ti.
+  created-info: Si olvidas tu contraseña, puedes establecer una nueva con este token.
+  displayed-once: Este token solo se muestra una vez.
 
 flashes:
   logout-successful: Has cerrado la sesión.
@@ -167,12 +186,12 @@ flashes:
   voucher-creation-successful: Nuevo código de invitación creado.
   alias-creation-successful: Se ha creado tu nueva dirección alias.
   alias-deletion-successful: Se ha eliminado tu dirección alias.
-  recovery-token-invalid: ¡La dirección de e-mail y/o el token de recuperación son incorrectos!
+  recovery-token-invalid: La dirección de e-mail o el token de recuperación no son correctos. Comprueba ambos e inténtalo de nuevo.
   recovery-token-ack: Has generado un token de recuperación.
-  recovery-reauthenticate: ¡Algo salió mal. Por favor, vuelve a autenticarte!
+  recovery-reauthenticate: No se pudo verificar la recuperación de tu contraseña. Introduce de nuevo tu dirección de e-mail y tu token de recuperación.
   recovery-session-expired: Por favor, introduce de nuevo tu dirección de e-mail y tu token de recuperación para establecer una nueva contraseña.
+  recovery-reset-hint: La autenticación de dos factores está desactivada y se han eliminado tus contraseñas de aplicación. Vuelve a activar la 2FA y crea nuevas contraseñas de aplicación.
   recovery-password-changed: Has cambiado tu contraseña.
-  recovery-next-login: Continúa con el inicio de sesión.
   openpgp-deletion-successful: Tu clave OpenPGP fue eliminada.
   openpgp-key-upload-successful: Tu clave OpenPGP se ha subido.
   openpgp-key-upload-error-no-openpgp: El archivo subido no contiene datos OpenPGP.
