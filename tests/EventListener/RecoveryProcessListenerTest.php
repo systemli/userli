@@ -7,11 +7,12 @@ namespace App\Tests\EventListener;
 use App\Entity\User;
 use App\Event\UserEvent;
 use App\EventListener\RecoveryProcessListener;
-use App\Mail\RecoveryProcessMailer;
+use App\Message\RecoveryProcessMail;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class RecoveryProcessListenerTest extends TestCase
 {
@@ -24,49 +25,45 @@ class RecoveryProcessListenerTest extends TestCase
         ], self::listenedEvents(RecoveryProcessListener::class));
     }
 
-    public function testOnRecoveryProcessStartedSendsMessageWithSessionLocale(): void
+    public function testOnRecoveryProcessStartedDispatchesMailWithSessionLocale(): void
     {
-        $user = new User('user@example.org');
-
-        $session = $this->createStub(SessionInterface::class);
-        $session->method('get')->willReturn('fr');
-
-        $request = $this->createStub(Request::class);
-        $request->method('getSession')->willReturn($session);
-
-        $requestStack = $this->createStub(RequestStack::class);
-        $requestStack->method('getSession')->willReturn($session);
-        $requestStack->method('getCurrentRequest')->willReturn($request);
-
-        $mailer = $this->createMock(RecoveryProcessMailer::class);
-        $mailer->expects($this->once())
-            ->method('send')
-            ->with($user, 'fr');
-
-        $listener = new RecoveryProcessListener($requestStack, $mailer, 'en');
-        $listener->onRecoveryProcessStarted(new UserEvent($user));
+        $listener = new RecoveryProcessListener($this->createRequestStack('fr'), $this->expectDispatch('fr'), 'en');
+        $listener->onRecoveryProcessStarted(new UserEvent(new User('user@example.org')));
     }
 
-    public function testOnRecoveryProcessStartedUsesDefaultLocaleWhenSessionReturnsNull(): void
+    public function testOnRecoveryProcessStartedFallsBackToDefaultLocale(): void
     {
-        $user = new User('user@example.org');
-
-        $session = $this->createStub(SessionInterface::class);
-        $session->method('get')->willReturn('en');
-
-        $request = $this->createStub(Request::class);
-        $request->method('getSession')->willReturn($session);
+        $session = $this->createMock(SessionInterface::class);
+        $session->expects($this->once())->method('get')->with('_locale', 'en')->willReturnArgument(1);
 
         $requestStack = $this->createStub(RequestStack::class);
         $requestStack->method('getSession')->willReturn($session);
-        $requestStack->method('getCurrentRequest')->willReturn($request);
 
-        $mailer = $this->createMock(RecoveryProcessMailer::class);
-        $mailer->expects($this->once())
-            ->method('send')
-            ->with($user, 'en');
+        $listener = new RecoveryProcessListener($requestStack, $this->expectDispatch('en'), 'en');
+        $listener->onRecoveryProcessStarted(new UserEvent(new User('user@example.org')));
+    }
 
-        $listener = new RecoveryProcessListener($requestStack, $mailer, 'en');
-        $listener->onRecoveryProcessStarted(new UserEvent($user));
+    private function createRequestStack(string $locale): RequestStack
+    {
+        $session = $this->createStub(SessionInterface::class);
+        $session->method('get')->willReturn($locale);
+
+        $requestStack = $this->createStub(RequestStack::class);
+        $requestStack->method('getSession')->willReturn($session);
+
+        return $requestStack;
+    }
+
+    private function expectDispatch(string $locale): MessageBusInterface
+    {
+        $bus = $this->createMock(MessageBusInterface::class);
+        $bus->expects($this->once())
+            ->method('dispatch')
+            ->with($this->callback(static fn ($message): bool => $message instanceof RecoveryProcessMail
+                && 'user@example.org' === $message->email
+                && $locale === $message->locale))
+            ->willReturnCallback(static fn (object $message): Envelope => new Envelope($message));
+
+        return $bus;
     }
 }
