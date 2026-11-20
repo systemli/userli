@@ -66,6 +66,7 @@ final class RecoveryController extends AbstractController
                     [
                         'form' => $form,
                         'active_time' => $result->activeTime,
+                        'delay_hours' => RecoveryHandler::PROCESS_DELAY_HOURS,
                     ],
                 ),
                 RecoveryStatus::Ready => $this->redirectToResetPassword(

@@ -200,7 +200,7 @@ recovery:
   cancel: Cancel
   started: >
     The first step to reset your password is done.
-    Now wait for 48 hours. Afterwards, you can set a new password in the second step.
+    Now wait for %hours% hours. Afterwards, you can set a new password in the second step.
     Please keep your recovery token until then.
   waiting-info: The waiting period is for your own security and cannot be shortened or skipped.
   waiting-time: Second step starts at %time%.
@@ -404,7 +404,7 @@ mail:
     new recovery token. This will invalidate the old recovery token and stop
     the process.
 
-    If you did trigger the process yourself, the 48 hour waiting period started
+    If you did trigger the process yourself, the %hours% hour waiting period started
     now. It will end at %time%. Afterwards, you can set a new password at
     %recovery_url%.
 

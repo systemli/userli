@@ -196,7 +196,7 @@ recovery:
   cancel: Abbrechen
   started: >
     Der erste Schritt um dein Passwort zurückzusetzen, ist gemacht.
-    Jetzt musst du noch 48 Stunden warten. Anschließend kannst du im zweiten Schritt
+    Jetzt musst du noch %hours% Stunden warten. Anschließend kannst du im zweiten Schritt
     ein neues Passwort setzen. Bitte behalte deinen Wiederherstellungscode bis dahin.
   waiting-info: Die Wartezeit dient deiner eigenen Sicherheit und kann nicht verkürzt oder umgangen werden.
   waiting-time: Der zweite Schritt ist möglich ab dem %time%.
@@ -399,7 +399,7 @@ mail:
     und erstelle dir einen neuen Wiederherstellungscode. Dadurch wird der
     alte Code ungültig und der Vorgang abgebrochen.
 
-    Hast du den Vorgang selbst ausgelöst, startet nun die 48-stündige Wartezeit.
+    Hast du den Vorgang selbst ausgelöst, startet nun die %hours%-stündige Wartezeit.
     Diese geht bis zum %time%. Anschließend kannst du mit einem
     Besuch von %recovery_url% dein Passwort neu setzen.
 

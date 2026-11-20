@@ -6,9 +6,10 @@ namespace App\Mail;
 
 use App\Entity\User;
 use App\Handler\MailHandler;
+use App\Handler\RecoveryHandler;
 use App\Service\SettingsService;
-use DateInterval;
 use IntlDateFormatter;
+use LogicException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -24,9 +25,14 @@ final readonly class RecoveryProcessMailer
 
     public function send(User $user, string $locale): void
     {
+        $recoveryStartTime = $user->getRecoveryStartTime();
+        if (null === $recoveryStartTime) {
+            throw new LogicException('Recovery process has not been started');
+        }
+
         $email = $user->getEmail();
         $formatter = IntlDateFormatter::create($locale, IntlDateFormatter::MEDIUM, IntlDateFormatter::SHORT);
-        $time = $formatter->format($user->getRecoveryStartTime()->add(new DateInterval('P2D')));
+        $time = $formatter->format(RecoveryHandler::getActiveTime($recoveryStartTime));
 
         $body = $this->buildBody($locale, $email, $time);
         $subject = $this->buildSubject($locale, $email);
@@ -46,6 +52,7 @@ final readonly class RecoveryProcessMailer
                 '%project_name%' => $this->settingsService->get('project_name'),
                 '%email%' => $email,
                 '%time%' => $time,
+                '%hours%' => RecoveryHandler::PROCESS_DELAY_HOURS,
                 '%recovery_url%' => $appUrl.$this->urlGenerator->generate('recovery', [], UrlGeneratorInterface::ABSOLUTE_PATH),
                 '%recovery_token_url%' => $appUrl.$this->urlGenerator->generate('account_recovery_token', [], UrlGeneratorInterface::ABSOLUTE_PATH),
             ],
