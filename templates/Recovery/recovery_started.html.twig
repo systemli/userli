@@ -17,7 +17,7 @@
             {# Heroicon: clock (solid) #}
             {{ ux_icon('heroicons:clock', {'class': 'w-5 h-5 text-blue-500 dark:text-blue-400 mt-0.5 mr-3 flex-shrink-0'}) }}
             <div class="text-sm font-medium text-blue-800 dark:text-blue-200">
-                {{ "recovery.waiting-time"|trans({'%time%': active_time|date("d.m.Y")}) }}
+                {{ "recovery.waiting-time"|trans({'%time%': active_time|format_datetime('medium', 'short')}) }}
             </div>
         </div>
     </div>

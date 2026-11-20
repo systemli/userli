@@ -47,14 +47,14 @@ final readonly class RecoveryHandler
 
         if (null === $recoveryStartTime || new DateTimeImmutable(self::PROCESS_EXPIRE) >= $recoveryStartTime) {
             // Recovery process gets started
-            $user->updateRecoveryStartTime();
+            $recoveryStartTime = new DateTimeImmutable();
+            $user->setRecoveryStartTime($recoveryStartTime);
             $this->manager->flush();
             $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::RECOVERY_PROCESS_STARTED);
 
-            // We don't have to add two days here, they will get added in `RecoveryProcessMessageSender`
             return new RecoveryResult(
                 RecoveryStatus::Started,
-                activeTime: $user->getRecoveryStartTime(),
+                activeTime: $this->getActiveTime($recoveryStartTime),
             );
         }
 
@@ -62,7 +62,7 @@ final readonly class RecoveryHandler
             // Recovery process is pending, but waiting period didn't elapse yet
             return new RecoveryResult(
                 RecoveryStatus::Pending,
-                activeTime: $recoveryStartTime->add(new DateInterval('P2D')),
+                activeTime: $this->getActiveTime($recoveryStartTime),
             );
         }
 
@@ -146,6 +146,14 @@ final readonly class RecoveryHandler
         }
 
         return $this->recoveryTokenHandler->verify($user, strtolower($recoveryToken));
+    }
+
+    /**
+     * Point in time when the second step (setting a new password) becomes available.
+     */
+    private function getActiveTime(DateTimeImmutable $recoveryStartTime): DateTimeImmutable
+    {
+        return $recoveryStartTime->add(new DateInterval('P2D'));
     }
 
     private function findUserByEmail(string $email): ?User
