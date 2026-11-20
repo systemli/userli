@@ -7,6 +7,7 @@ namespace App\Tests\Handler;
 use App\Entity\AppPassword;
 use App\Entity\User;
 use App\Enum\RecoveryStatus;
+use App\Event\UserEvent;
 use App\Exception\RecoveryException;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryHandler;
@@ -193,7 +194,11 @@ class RecoveryHandlerTest extends TestCase
                 $user->setPlainRecoveryToken('new-recovery-token');
             });
 
-        $handler = $this->createHandler(recoveryTokenHandler: $recoveryTokenHandler);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->once())->method('dispatch')
+            ->with(self::isInstanceOf(UserEvent::class), UserEvent::RECOVERY_TOKEN_CREATED);
+
+        $handler = $this->createHandler(eventDispatcher: $eventDispatcher, recoveryTokenHandler: $recoveryTokenHandler);
         $newToken = $handler->resetPassword('test@example.org', 'valid-token', 'newpassword');
 
         self::assertEquals('new-recovery-token', $newToken);

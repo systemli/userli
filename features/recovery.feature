@@ -159,6 +159,7 @@ Feature: Recovery
     And I press "recovery_reset_password[submit]"
 
     Then I should be on "/recovery/recovery_token/ack"
+    And the last sent mail body should contain "A new recovery token was created for your account."
     And I should see text matching "Please copy and securely store this recovery token"
     And I should see a "button[data-action='download#save']" element
     And the "li[aria-current='step']" element should contain "Save token"

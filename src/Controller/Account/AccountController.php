@@ -220,6 +220,8 @@ final class AccountController extends AbstractController
             // Clear sensitive plaintext data from User object
             $user->eraseCredentials();
 
+            $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::RECOVERY_TOKEN_CREATED);
+
             // Kept in the session to keep it out of URLs (browser history, server logs)
             $request->getSession()->set(self::SESSION_NEW_TOKEN_KEY, $recoveryToken);
 

@@ -429,6 +429,25 @@ mail:
     %recovery_token_url%
 
     Your %project_name% admin team.
+  recovery-token-created-subject: "New recovery token for %email%"
+  recovery-token-created-body: |
+    Hello %email%,
+
+    A new recovery token was created for your account. Your previous
+    recovery token no longer works.
+
+    If this was you:
+    There is nothing else to do. Keep the new recovery token in a safe place.
+
+    If this wasn't you:
+    Someone else has access to your account. Sign in and change your
+    password:
+    %password_url%
+    Then create a new recovery token:
+    %recovery_token_url%
+    If you can no longer sign in, contact your %project_name% admin team.
+
+    Your %project_name% admin team.
   alias-created-subject: New alias address created
   alias-created-body: |
     Hello %email%,

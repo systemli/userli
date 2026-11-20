@@ -148,6 +148,27 @@ mail:
     %recovery_token_url%
 
     Il team di amministrazione di %project_name%.
+  recovery-token-created-subject: "Nuovo gettone di recupero per %email%"
+  recovery-token-created-body: |
+    Ciao %email%,
+
+    È stato creato un nuovo gettone di recupero per il tuo account. Il tuo
+    gettone di recupero precedente non funziona più.
+
+    Se sei stato/a tu:
+    Non devi fare nient'altro. Conserva il nuovo gettone di recupero in un
+    posto sicuro.
+
+    Se non sei stato/a tu:
+    Qualcun altro ha accesso al tuo account. Accedi e cambia la tua
+    password:
+    %password_url%
+    Poi crea un nuovo gettone di recupero:
+    %recovery_token_url%
+    Se non riesci più ad accedere, contatta il team di amministrazione di
+    %project_name%.
+
+    Il team di amministrazione di %project_name%.
 admin:
   alias:
     convert:

@@ -428,6 +428,27 @@ mail:
     %recovery_token_url%
 
     Dein %project_name%-Verwaltungsteam
+  recovery-token-created-subject: "Neuer Wiederherstellungscode für %email%"
+  recovery-token-created-body: |
+    Hallo %email%,
+
+    Für dein Konto wurde ein neuer Wiederherstellungscode erstellt. Dein
+    bisheriger Wiederherstellungscode funktioniert nicht mehr.
+
+    Wenn du das warst:
+    Du musst nichts weiter tun. Bewahre den neuen Wiederherstellungscode
+    sicher auf.
+
+    Wenn du das nicht warst:
+    Jemand anderes hat Zugriff auf dein Konto. Melde dich an und ändere
+    dein Passwort:
+    %password_url%
+    Erstelle dann einen neuen Wiederherstellungscode:
+    %recovery_token_url%
+    Wenn du dich nicht mehr anmelden kannst, wende dich an dein
+    %project_name%-Verwaltungsteam.
+
+    Dein %project_name%-Verwaltungsteam
   alias-created-subject: Neue Alias-Adresse erstellt
   alias-created-body: |
     Hallo %email%,

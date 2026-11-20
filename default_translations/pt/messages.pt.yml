@@ -202,6 +202,26 @@ mail:
     %recovery_token_url%
 
     Time %project_name%.
+  recovery-token-created-subject: "Novo token de recuperação para %email%"
+  recovery-token-created-body: |
+    Olá %email%,
+
+    Um novo token de recuperação foi criado para a sua conta. O seu token de
+    recuperação anterior não funciona mais.
+
+    Se foi você:
+    Não é preciso fazer mais nada. Guarde o novo token de recuperação em um
+    lugar seguro.
+
+    Se não foi você:
+    Outra pessoa tem acesso à sua conta. Entre e altere a sua senha:
+    %password_url%
+    Depois, crie um novo token de recuperação:
+    %recovery_token_url%
+    Se você não consegue mais entrar, entre em contato com o time
+    %project_name%.
+
+    Time %project_name%.
   alias-created-subject: Novo endereço alias criado
   alias-created-body: >
     Olá %email%,

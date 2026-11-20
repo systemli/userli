@@ -203,6 +203,26 @@ mail:
     %recovery_token_url%
 
     Ditt %project_name%-administratorlag.
+  recovery-token-created-subject: "Nytt gjenopprettingssymbol for %email%"
+  recovery-token-created-body: |
+    Hei %email%,
+
+    Et nytt gjenopprettingssymbol ble opprettet for kontoen din. Det
+    forrige gjenopprettingssymbolet ditt virker ikke lenger.
+
+    Hvis det var deg:
+    Du trenger ikke gjøre noe mer. Oppbevar det nye gjenopprettingssymbolet
+    på et trygt sted.
+
+    Hvis det ikke var deg:
+    Noen andre har tilgang til kontoen din. Logg inn og endre passordet
+    ditt:
+    %password_url%
+    Opprett deretter et nytt gjenopprettingssymbol:
+    %recovery_token_url%
+    Hvis du ikke lenger kan logge inn, kontakt %project_name%-administratorlaget.
+
+    Ditt %project_name%-administratorlag.
   alias-created-body: >
     Hei %email%,
 

@@ -254,6 +254,27 @@ mail:
     %recovery_token_url%
 
     Votre équipe d'administration de %project_name%.
+  recovery-token-created-subject: "Nouveau jeton de récupération pour %email%"
+  recovery-token-created-body: |
+    Bonjour %email%,
+
+    Un nouveau jeton de récupération a été créé pour votre compte. Votre
+    ancien jeton de récupération ne fonctionne plus.
+
+    Si c'était vous :
+    Vous n'avez rien d'autre à faire. Conservez le nouveau jeton de
+    récupération en lieu sûr.
+
+    Si ce n'était pas vous :
+    Quelqu'un d'autre a accès à votre compte. Connectez-vous et changez
+    votre mot de passe :
+    %password_url%
+    Créez ensuite un nouveau jeton de récupération :
+    %recovery_token_url%
+    Si vous ne pouvez plus vous connecter, contactez votre équipe
+    d'administration de %project_name%.
+
+    Votre équipe d'administration de %project_name%.
   alias-created-subject: Nouvel alias d'adresse créé
   alias-created-body: |
     Bonjour %email%,

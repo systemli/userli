@@ -176,6 +176,25 @@ mail:
     %recovery_token_url%
 
     Dis %project_name% Admin Team.
+  recovery-token-created-subject: "Nöis Recovery Token für %email%"
+  recovery-token-created-body: |
+    Hallo %email%,
+
+    Für di Account isch es nöis Recovery Token erschteut worde. Dis
+    bisherige Recovery Token funktioniert nümm.
+
+    Faus du das bisch gsi:
+    Du muesch nüt witers mache. Bhaut s nöie Recovery Token sicher uf.
+
+    Faus du das nid bisch gsi:
+    Öpper angers het Zuegriff uf di Account. Meud di a und änder dis
+    Passwort:
+    %password_url%
+    Erschteu när es nöis Recovery Token:
+    %recovery_token_url%
+    Wenn du di nümm chasch amäude, wend di a dis %project_name% Admin Team.
+
+    Dis %project_name% Admin Team.
   alias-created-subject: Nöii Alias Adrässe erscheut
   welcome-subject: Wiukomme bi %project_name%
   welcome-body: |

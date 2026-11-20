@@ -128,6 +128,8 @@ final readonly class RecoveryHandler
 
         $this->manager->flush();
 
+        $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::RECOVERY_TOKEN_CREATED);
+
         return $newRecoveryToken;
     }
 
