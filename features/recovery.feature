@@ -85,15 +85,40 @@ Feature: Recovery
 
   @recovery
   Scenario: Acknowledge new recovery token in recovery process as user (#4)
-    When I have the request params for "recovery_token_ack":
-      | recoveryToken | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
-    And I request "POST /recovery/recovery_token/ack"
-    And I check "recovery_token_confirm[confirm]"
+    When I am on "/recovery"
+    And I fill in the following:
+      | recovery_process[email]         | user2@example.org                    |
+      | recovery_process[recoveryToken] | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
+    And I press "recovery_process[submit]"
+    And I fill in the following:
+      | recovery_reset_password[password][first]  | XV7FxQWj9dApApN |
+      | recovery_reset_password[password][second] | XV7FxQWj9dApApN |
+    And I press "recovery_reset_password[submit]"
+
+    Then I should be on "/recovery/recovery_token/ack"
+    And I should see text matching "Please copy and securely store this recovery token"
+
+    When I press "recovery_token_confirm[submit]"
+
+    Then I should be on "/recovery/recovery_token/ack"
+    And I should see text matching "Please copy and securely store this recovery token"
+
+    When I check "recovery_token_confirm[confirm]"
     And I press "recovery_token_confirm[submit]"
 
     Then I should be on "/login"
     And I should see text matching "Go on with the login."
     And the response status code should be 200
+
+    When I am on "/recovery/recovery_token/ack"
+
+    Then I should be on "/login"
+
+  @recovery
+  Scenario: Open new recovery token page without recovery process
+    When I am on "/recovery/recovery_token/ack"
+
+    Then I should be on "/login"
 
   @recovery
   Scenario: Recovery authentication failures

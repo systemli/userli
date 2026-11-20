@@ -235,11 +235,17 @@ Feature: User
       | password_confirmation_password | asdasd |
     And I press "Create new recovery token"
 
-    Then I should see text matching "Please copy and securely store this recovery token"
+    Then I should be on "/account/recovery-token/confirm"
+    And I should see text matching "Please copy and securely store this recovery token"
     And I check "recovery_token_confirm_confirm"
     And I press "Continue"
 
     Then I should be on "/account"
+
+    When I am on "/account/recovery-token/confirm"
+
+    Then I should be on "/account/recovery-token"
+    And I should not see text matching "Please copy and securely store this recovery token"
 
   @twofactor-auth
   Scenario: Enable two-factor authentication #1 and enter wrong password

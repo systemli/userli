@@ -17,11 +17,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 final class RecoveryController extends AbstractController
 {
     private const string SESSION_KEY = 'recovery_reset_password';
+
+    private const string SESSION_NEW_TOKEN_KEY = 'recovery_new_recovery_token';
 
     /**
      * Seconds the user may stay on the reset password page after authenticating with email and recovery token.
@@ -117,10 +118,13 @@ final class RecoveryController extends AbstractController
             if ($this->recoveryHandler->verifyRecoveryToken($email, $recoveryToken, true)) {
                 if ($form->isValid()) {
                     $newRecoveryToken = $this->recoveryHandler->resetPassword($email, $recoveryToken, $data->getPassword());
-                    $request->getSession()->remove(self::SESSION_KEY);
+                    $session = $request->getSession();
+                    $session->remove(self::SESSION_KEY);
+                    // Kept in the session to keep it out of URLs (browser history, server logs)
+                    $session->set(self::SESSION_NEW_TOKEN_KEY, $newRecoveryToken);
                     $this->addFlash('success', 'flashes.recovery-password-changed');
 
-                    return $this->redirectToRoute('recovery_recovery_token_ack', ['recoveryToken' => $newRecoveryToken]);
+                    return $this->redirectToRoute('recovery_recovery_token_ack');
                 }
 
                 // Validation of new password pair failed, try again
@@ -139,33 +143,37 @@ final class RecoveryController extends AbstractController
     #[Route(path: '/recovery/recovery_token/ack', name: 'recovery_recovery_token_ack', methods: ['GET'])]
     public function recoveryRecoveryTokenAck(Request $request): Response
     {
-        $recoveryToken = $request->query->get('recoveryToken');
-        if (null === $recoveryToken) {
-            throw new InvalidParameterException('Recovery token must be provided');
+        $recoveryToken = $request->getSession()->get(self::SESSION_NEW_TOKEN_KEY);
+        if (!is_string($recoveryToken)) {
+            // Page opened directly or token already acknowledged
+            return $this->redirectToRoute('login');
         }
 
-        $data = new RecoveryTokenConfirm();
-        $data->setRecoveryToken($recoveryToken);
-
-        $form = $this->createForm(RecoveryTokenConfirmType::class, $data, [
+        $form = $this->createForm(RecoveryTokenConfirmType::class, new RecoveryTokenConfirm(), [
             'action' => $this->generateUrl('recovery_recovery_token_ack_submit'),
             'method' => 'post',
         ]);
 
         return $this->render('Recovery/recovery_token.html.twig', [
             'form' => $form,
-            'recovery_token' => $data->getRecoveryToken(),
+            'recovery_token' => $recoveryToken,
         ]);
     }
 
     #[Route(path: '/recovery/recovery_token/ack', name: 'recovery_recovery_token_ack_submit', methods: ['POST'])]
     public function recoveryRecoveryTokenAckSubmit(Request $request): Response
     {
-        $data = new RecoveryTokenConfirm();
-        $form = $this->createForm(RecoveryTokenConfirmType::class, $data);
+        $session = $request->getSession();
+        $recoveryToken = $session->get(self::SESSION_NEW_TOKEN_KEY);
+        if (!is_string($recoveryToken)) {
+            return $this->redirectToRoute('login');
+        }
+
+        $form = $this->createForm(RecoveryTokenConfirmType::class, new RecoveryTokenConfirm());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $session->remove(self::SESSION_NEW_TOKEN_KEY);
             $this->addFlash('success', 'flashes.recovery-token-ack');
             $this->addFlash('success', 'flashes.recovery-next-login');
 
@@ -174,7 +182,7 @@ final class RecoveryController extends AbstractController
 
         return $this->render('Recovery/recovery_token.html.twig', [
             'form' => $form,
-            'recovery_token' => $data->getRecoveryToken(),
+            'recovery_token' => $recoveryToken,
         ]);
     }
 
