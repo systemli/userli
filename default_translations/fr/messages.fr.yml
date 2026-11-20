@@ -252,6 +252,12 @@ init_domain:
 init_user:
   lead: Vous avez créé votre domaine principal.
   text: Les standards de courrier électronique nécessitent la présence du compte postmaster@%domain%. Veuillez définir un mot de passe pour ce premier compte administrateur puis vous y connecter.
+  account: Compte administrateur
+  account-help: Vous utiliserez cette adresse et le mot de passe ci-dessous pour vous connecter.
+
+init_settings:
+  flash:
+    login_hint: Vous pouvez maintenant vous connecter avec <strong>%email%</strong> et le mot de passe choisi.
 
 openpgp:
   delete-button: "Supprimer la clé OpenPGP"

@@ -199,3 +199,8 @@ init_domain:
 init_user:
   lead: Du har opprettet ditt primære domene.
   text: E-poststandarder krever at kontoen postmaster@%domain% finnes. Velg et passord for denne første administratorkontoen og logg inn etterpå.
+  account: Administratorkonto
+  account-help: Du logger inn med denne adressen og passordet nedenfor.
+init_settings:
+  flash:
+    login_hint: Du kan nå logge inn med <strong>%email%</strong> og passordet du valgte.

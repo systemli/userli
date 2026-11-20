@@ -428,7 +428,9 @@ init_user:
   lead: Primäre Domäne wurde erstellt.
   text: >
     E-Mail-Standards erfordern, dass das Konto postmaster@%domain% vorhanden ist.
-    Wähle ein Kennwort für dieses erste Administratorkonto aus und melde dich anschließend an.
+    Wähle ein Kennwort für dieses erste Administrator-Konto aus und melde dich anschließend an.
+  account: Administrator-Konto
+  account-help: Mit dieser Adresse und dem folgenden Passwort meldest du dich an.
 init_settings:
   lead: Konfiguriere deine Userli-Installation
   text: Bevor du Userli verwenden kannst, konfiguriere bitte die grundlegenden Einstellungen. Diese Einstellungen definieren, wie dein E-Mail-Dienst funktioniert und wie Benutzer:innen damit interagieren.
@@ -438,6 +440,7 @@ init_settings:
     description: Konfiguriere die wesentlichen Einstellungen für deinen E-Mail-Dienst
   flash:
     configured_successfully: Die Einstellungen wurden erfolgreich konfiguriert. Deine Userli-Installation ist jetzt einsatzbereit!
+    login_hint: Du kannst dich jetzt mit <strong>%email%</strong> und dem gewählten Passwort anmelden.
 openpgp:
   delete-button: Löschen
   information: Information

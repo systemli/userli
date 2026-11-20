@@ -431,6 +431,8 @@ init_domain:
 init_user:
   lead: You have created your primary domain.
   text: E-mail standards require the account postmaster@%domain% to be present. Please pick a password for this first administrator account and log in afterwards.
+  account: Administrator account
+  account-help: You will use this address and the password below to log in.
 init_settings:
   lead: Configure your Userli installation
   text: Before you can start using Userli, please configure the basic settings. These settings define how your mail service will operate and how users will interact with it.
@@ -440,6 +442,7 @@ init_settings:
     description: Configure the essential settings for your mail service
   flash:
     configured_successfully: Settings have been configured successfully. Your Userli installation is now ready to use!
+    login_hint: You can now log in with <strong>%email%</strong> and the password you chose.
 openpgp:
   delete-button: Delete
   information: Information

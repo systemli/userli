@@ -19,6 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class InitController extends AbstractController
 {
@@ -27,6 +28,7 @@ final class InitController extends AbstractController
         private readonly AdminPasswordUpdater $updater,
         private readonly DomainManager $domainManager,
         private readonly SettingsService $settingsService,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -80,7 +82,10 @@ final class InitController extends AbstractController
             'method' => 'post',
         ]);
 
-        return $this->render('Init/user.html.twig', ['form' => $form]);
+        return $this->render('Init/user.html.twig', [
+            'form' => $form,
+            'admin_email' => $this->updater->getAdminEmail(),
+        ]);
     }
 
     #[Route(path: '/init/user', name: 'init_user_submit', methods: ['POST'])]
@@ -102,7 +107,10 @@ final class InitController extends AbstractController
             return $this->redirectToRoute('init_settings');
         }
 
-        return $this->render('Init/user.html.twig', ['form' => $form]);
+        return $this->render('Init/user.html.twig', [
+            'form' => $form,
+            'admin_email' => $this->updater->getAdminEmail(),
+        ]);
     }
 
     #[Route(path: '/init/settings', name: 'init_settings', methods: ['GET'])]
@@ -152,6 +160,10 @@ final class InitController extends AbstractController
             $this->settingsService->setAll($form->getData());
 
             $this->addFlash('success', 'init_settings.flash.configured_successfully');
+            $this->addFlash('info', $this->translator->trans(
+                'init_settings.flash.login_hint',
+                ['%email%' => $this->updater->getAdminEmail()]
+            ));
 
             return $this->redirectToRoute('index');
         }

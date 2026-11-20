@@ -15,6 +15,7 @@ Feature: Initialization
     And I press "domain_submit"
 
     Then I should be on "/init/user"
+    And the "init_user_account" field should contain "postmaster@example.org"
 
     When I fill in the following:
       | init_user[password][first]  | P4ssW0rt!!!1 |
@@ -34,6 +35,7 @@ Feature: Initialization
     Then the setting "twofactor_app_passwords_required" should be "1"
 
     Then I should be on "/"
+    And I should see "You can now log in with postmaster@example.org"
 
   @init
   Scenario: No more redirect to init site

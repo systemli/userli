@@ -146,6 +146,11 @@ init_user:
   text: >
     Gli standard di posta elettronica richiedono la presenza dell'account postmaster@%dominio%.
     Scegli una password per questo primo account di amministratore e accedi successivamente.
+  account: Account di amministratore
+  account-help: Userai questo indirizzo e la password qui sotto per accedere.
+init_settings:
+  flash:
+    login_hint: Ora puoi accedere con <strong>%email%</strong> e la password che hai scelto.
 openpgp:
   information: Informazioni
   expiretime-label: "Data di scadenza:"

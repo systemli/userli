@@ -16,6 +16,13 @@ final readonly class AdminPasswordUpdater
     {
     }
 
+    public function getAdminEmail(): string
+    {
+        $domain = $this->manager->getRepository(Domain::class)->getDefaultDomain();
+
+        return 'postmaster@'.$domain;
+    }
+
     /**
      * Set admin password
      * Create admin user in default domain if not existent.
@@ -23,7 +30,7 @@ final readonly class AdminPasswordUpdater
     public function updateAdminPassword(string $password): void
     {
         $domain = $this->manager->getRepository(Domain::class)->getDefaultDomain();
-        $adminEmail = 'postmaster@'.$domain;
+        $adminEmail = $this->getAdminEmail();
         $admin = $this->manager->getRepository(User::class)->findByEmail($adminEmail);
         if (null === $admin) {
             // create admin user
