@@ -29,6 +29,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class AccountController extends AbstractController
 {
+    private const string SESSION_NEW_TOKEN_KEY = 'account_new_recovery_token';
+
     public function __construct(
         private readonly PasswordUpdater $passwordUpdater,
         private readonly MailCryptKeyHandler $mailCryptKeyHandler,
@@ -216,7 +218,10 @@ final class AccountController extends AbstractController
             // Clear sensitive plaintext data from User object
             $user->eraseCredentials();
 
-            return $this->redirectToRoute('account_recovery_token_confirm', ['recovery_token' => $recoveryToken]);
+            // Kept in the session to keep it out of URLs (browser history, server logs)
+            $request->getSession()->set(self::SESSION_NEW_TOKEN_KEY, $recoveryToken);
+
+            return $this->redirectToRoute('account_recovery_token_confirm');
         }
 
         return $this->render('Account/recovery_token.html.twig',
@@ -230,6 +235,12 @@ final class AccountController extends AbstractController
     #[Route(path: '/account/recovery-token/confirm', name: 'account_recovery_token_confirm', methods: ['GET'])]
     public function recoveryTokenAck(Request $request): Response
     {
+        $recoveryToken = $request->getSession()->get(self::SESSION_NEW_TOKEN_KEY);
+        if (!is_string($recoveryToken)) {
+            // Page opened directly or token already acknowledged
+            return $this->redirectToRoute('account_recovery_token');
+        }
+
         /** @var User $user */
         $user = $this->getUser();
         $form = $this->createForm(
@@ -245,7 +256,7 @@ final class AccountController extends AbstractController
             [
                 'form' => $form,
                 'user' => $user,
-                'recovery_token' => $request->query->get('recovery_token'),
+                'recovery_token' => $recoveryToken,
             ]
         );
     }
@@ -253,11 +264,17 @@ final class AccountController extends AbstractController
     #[Route(path: '/account/recovery-token/confirm', name: 'account_recovery_token_confirm_submit', methods: ['POST'])]
     public function recoveryTokenAckSubmit(Request $request): Response
     {
-        $data = new RecoveryTokenConfirm();
-        $form = $this->createForm(RecoveryTokenConfirmType::class, $data);
+        $session = $request->getSession();
+        $recoveryToken = $session->get(self::SESSION_NEW_TOKEN_KEY);
+        if (!is_string($recoveryToken)) {
+            return $this->redirectToRoute('account_recovery_token');
+        }
+
+        $form = $this->createForm(RecoveryTokenConfirmType::class, new RecoveryTokenConfirm());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $session->remove(self::SESSION_NEW_TOKEN_KEY);
             $this->addFlash('success', 'flashes.recovery-token-ack');
 
             return $this->redirectToRoute('account');
@@ -266,7 +283,7 @@ final class AccountController extends AbstractController
         return $this->render('Account/recovery_token.html.twig',
             [
                 'form' => $form,
-                'recovery_token' => $data->getRecoveryToken(),
+                'recovery_token' => $recoveryToken,
             ]
         );
     }

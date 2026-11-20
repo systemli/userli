@@ -196,7 +196,7 @@ recovery:
   cancel: Abbrechen
   started: >
     Der erste Schritt um dein Passwort zurückzusetzen, ist gemacht.
-    Jetzt musst du noch 48 Stunden warten. Anschließend kannst du im zweiten Schritt
+    Jetzt musst du noch %hours% Stunden warten. Anschließend kannst du im zweiten Schritt
     ein neues Passwort setzen. Bitte behalte deinen Wiederherstellungscode bis dahin.
   waiting-info: Die Wartezeit dient deiner eigenen Sicherheit und kann nicht verkürzt oder umgangen werden.
   waiting-time: Der zweite Schritt ist möglich ab dem %time%.
@@ -303,6 +303,7 @@ flashes:
   recovery-token-invalid: E-Mail-Adresse oder Wiederherstellungscode sind falsch!
   recovery-token-ack: Du hast einen Wiederherstellungscode erzeugt.
   recovery-reauthenticate: Etwas ist schief gelaufen. Bitte erneut authentifizieren!
+  recovery-session-expired: Bitte gib deine E-Mail-Adresse und deinen Wiederherstellungscode erneut ein, um ein neues Passwort zu setzen.
   recovery-password-changed: Dein Passwort wurde geändert.
   recovery-next-login: Du kannst dich nun einloggen.
   openpgp-deletion-successful: Dein OpenPGP-Schlüssel wurde gelöscht.
@@ -384,26 +385,28 @@ mail:
     dein %project_name%-Admin-Team
   announcement-footer: Dies ist eine offizielle Mitteilung von %project_name%.
   announcement-footer-domain: Dies ist eine Mitteilung der Admins von %domain%.
-  recovery-subject: Das Passwort zu deinem E-Mail-Konto %email% wird zurückgesetzt
+  recovery-subject: Passwort-Wiederherstellung für %email% gestartet
   recovery-body: |
     Hallo %email%,
 
-    Es wurde versucht dein Passwort zurückzusetzen. Dazu wurden deine
-    E-Mail-Addresse und der zugehörige Wiederherstellungscode unter
-    %recovery_url% eingegeben.
+    Unter %recovery_url%
+    wurde mit deiner E-Mail-Adresse und deinem Wiederherstellungscode eine
+    Passwort-Wiederherstellung für dein Konto gestartet.
 
-    Wenn du das nicht selbst warst, versucht jemand anderes mit Zugang zu
-    deinem Wiederherstellungscode, Kontrolle über dein Konto zu bekommen.
-    Gehe schnellstmöglich zu %recovery_token_url%
-    und erstelle dir einen neuen Wiederherstellungscode. Dadurch wird der
-    alte Code ungültig und der Vorgang abgebrochen.
+    Wenn du das warst:
+    Nach der Wartezeit von %hours% Stunden kannst du ab dem %time%
+    hier ein neues Passwort setzen:
+    %recovery_url%
+    Gib dazu erneut deine E-Mail-Adresse und deinen Wiederherstellungscode ein.
 
-    Hast du den Vorgang selbst ausgelöst, startet nun die 48-stündige Wartezeit.
-    Diese geht bis zum %time%. Anschließend kannst du mit einem
-    Besuch von %recovery_url% dein Passwort neu setzen.
+    Wenn du das nicht warst:
+    Jemand anderes kennt deinen Wiederherstellungscode und versucht, dein
+    Konto zu übernehmen. Melde dich vor dem %time% hier an:
+    %recovery_token_url%
+    Erstelle dann einen neuen Wiederherstellungscode. Dadurch wird der alte
+    Code ungültig und die Wiederherstellung abgebrochen.
 
-    Weiterhin viel Spaß mit deinem E-Mail-Konto, wünscht dir
-    dein %project_name%-Verwaltungsteam.
+    Dein %project_name%-Verwaltungsteam
   alias-created-subject: Neue Alias-Adresse erstellt
   alias-created-body: |
     Hallo %email%,

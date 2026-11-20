@@ -200,7 +200,7 @@ recovery:
   cancel: Cancel
   started: >
     The first step to reset your password is done.
-    Now wait for 48 hours. Afterwards, you can set a new password in the second step.
+    Now wait for %hours% hours. Afterwards, you can set a new password in the second step.
     Please keep your recovery token until then.
   waiting-info: The waiting period is for your own security and cannot be shortened or skipped.
   waiting-time: Second step starts at %time%.
@@ -309,6 +309,7 @@ flashes:
   recovery-token-invalid: E-mail address and/or recovery token are wrong!
   recovery-token-ack: You generated a recovery token.
   recovery-reauthenticate: Something went wrong. Please re-authenticate!
+  recovery-session-expired: Please enter your e-mail address and recovery token again to set a new password.
   recovery-password-changed: You changed your password.
   recovery-next-login: Go on with the login.
   openpgp-deletion-successful: Your OpenPGP key was deleted.
@@ -389,25 +390,27 @@ mail:
     your %project_name% admin team.
   announcement-footer: This is an official announcement from %project_name%.
   announcement-footer-domain: This is an announcement from the admins of %domain%.
-  recovery-subject: The password for your e-mail account %email% will be reset
+  recovery-subject: Password recovery started for %email%
   recovery-body: |
     Hello %email%,
 
-    Your account password has been attemptedly reset by authenticating with
-    your  e-mail address and corresponding recovery code at
-    %recovery_url%.
+    Someone started a password recovery for your account at
+    %recovery_url%
+    using your e-mail address and your recovery token.
 
-    If this wasn't you, then somebody else with access to your recovery
-    token tried to get ahold of your account. Go to
-    %recovery_token_url% immediately and create a
-    new recovery token. This will invalidate the old recovery token and stop
-    the process.
+    If this was you:
+    After the waiting period of %hours% hours, starting at %time%,
+    you can set a new password here:
+    %recovery_url%
+    Enter your e-mail address and recovery token again.
 
-    If you did trigger the process yourself, the 48 hour waiting period started
-    now. It will end at %time%. Afterwards, you can set a new password at
-    %recovery_url%.
+    If this wasn't you:
+    Someone else knows your recovery token and is trying to take over your
+    account. Before %time%, sign in here:
+    %recovery_token_url%
+    Then create a new recovery token. This makes the old token invalid and
+    stops the recovery.
 
-    We hope you continue to enjoy your e-mail account.
     Your %project_name% admin team.
   alias-created-subject: New alias address created
   alias-created-body: |

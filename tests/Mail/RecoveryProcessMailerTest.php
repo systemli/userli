@@ -9,6 +9,7 @@ use App\Handler\MailHandler;
 use App\Mail\RecoveryProcessMailer;
 use App\Service\SettingsService;
 use DateTimeImmutable;
+use LogicException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -40,6 +41,22 @@ class RecoveryProcessMailerTest extends TestCase
 
         $mailer = new RecoveryProcessMailer($handler, $translator, $settingsService, $this->createStub(UrlGeneratorInterface::class));
         $mailer->send($user, 'en');
+    }
+
+    public function testSendThrowsWithoutRecoveryStartTime(): void
+    {
+        $handler = $this->createMock(MailHandler::class);
+        $handler->expects(self::never())->method('send');
+
+        $mailer = new RecoveryProcessMailer(
+            $handler,
+            $this->createStub(TranslatorInterface::class),
+            $this->createStub(SettingsService::class),
+            $this->createStub(UrlGeneratorInterface::class),
+        );
+
+        $this->expectException(LogicException::class);
+        $mailer->send(new User('user@example.org'), 'en');
     }
 
     public function testSendPassesLocaleToTranslator(): void
@@ -91,6 +108,7 @@ class RecoveryProcessMailerTest extends TestCase
                     self::assertSame('Example Mail', $parameters['%project_name%']);
                     self::assertSame('user@example.org', $parameters['%email%']);
                     self::assertArrayHasKey('%time%', $parameters);
+                    self::assertSame(48, $parameters['%hours%']);
                     self::assertSame('https://mail.example.com/recovery', $parameters['%recovery_url%']);
                     self::assertSame('https://mail.example.com/account/recovery-token', $parameters['%recovery_token_url%']);
                 }

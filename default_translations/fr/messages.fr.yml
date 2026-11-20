@@ -102,7 +102,7 @@ recovery:
   cancel: Annuler
   started: >
     La première étape pour réinitialiser votre mot de passe est faite.
-    Veuillez maintenant attendre 48 heures.
+    Veuillez maintenant attendre %hours% heures.
     Par la suite, vous pouvez définir un nouveau mot de passe dans une deuxième étape.
     Veuillez conserver votre jeton de récupération jusque là.
   waiting-info: Cette période d'attente est mise en place pour votre propre sécurité et ne peut pas être réduite ou passée.
@@ -172,6 +172,7 @@ flashes:
   recovery-token-invalid: L'adresse électronique et/ou le jeton de récupération sont incorrects!
   recovery-token-ack: Vous avez généré un jeton de récupération.
   recovery-reauthenticate: Une erreur s'est produite. Veuillez vous identifier à nouveau!
+  recovery-session-expired: Veuillez saisir à nouveau votre adresse électronique et votre jeton de récupération pour définir un nouveau mot de passe.
   recovery-password-changed: Vous avez modifié votre mot de passe.
   recovery-next-login: Aller à l'écran de connexion.
   openpgp-deletion-successful: Votre clé OpenPGP a été supprimée.
@@ -212,17 +213,27 @@ mail:
 
     Cordialement,
     votre équipe d'administration de %project_name%.
-  recovery-subject: Le mot de passe pour votre compte de messagerie %email% va être réinitialisé
+  recovery-subject: Récupération du mot de passe lancée pour %email%
   recovery-body: |
     Bonjour %email%,
 
-    Votre mot de passe de compte vient d'être réinitialisé, après identification avec votre adresse électronique et le code de récupération correspondant via %recovery_url%.
+    Quelqu'un a lancé une récupération du mot de passe de votre compte sur
+    %recovery_url%
+    avec votre adresse électronique et votre jeton de récupération.
 
-    Si ce n'était pas vous, alors quelqu'un d'autre à eu accès à votre jeton de récupération et a tenté de récupérer l'accès à votre compte. Allez à %recovery_token_url% immédiatement et créez un nouveau jeton de récupération. Ceci invalidera l'ancien jeton de récupération et arrêtera le processus.
+    Si c'était vous :
+    Après la période d'attente de %hours% heures, à partir du %time%,
+    vous pourrez définir un nouveau mot de passe ici :
+    %recovery_url%
+    Saisissez à nouveau votre adresse électronique et votre jeton de récupération.
 
-    Si vous avez vous-même déclenché ce processus, la période de 48 heures a commencé. Elle sera terminée à %time%. Par la suite, vous pourrez définir un nouveau mot de passe à %recovery_url%.
+    Si ce n'était pas vous :
+    Quelqu'un d'autre connaît votre jeton de récupération et tente de prendre
+    le contrôle de votre compte. Avant le %time%, connectez-vous ici :
+    %recovery_token_url%
+    Créez ensuite un nouveau jeton de récupération. L'ancien jeton devient
+    alors invalide et la récupération est arrêtée.
 
-    Nous espérons que vous êtes satisfait de votre compte de messagerie.
     Votre équipe d'administration de %project_name%.
   alias-created-subject: Nouvel alias d'adresse créé
   alias-created-body: |

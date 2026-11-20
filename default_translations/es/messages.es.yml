@@ -103,7 +103,7 @@ recovery:
   cancel: Cancelar
   started: >
     El primer paso para restablecer tu contraseña está hecho.
-    Ahora espera 48 horas. Después, puedes establecer una nueva contraseña en el segundo paso.
+    Ahora espera %hours% horas. Después, puedes establecer una nueva contraseña en el segundo paso.
     Por favor, guarda tu token de recuperación hasta entonces.
   waiting-info: El período de espera es por tu propia seguridad y no puede ser acortado ni omitido.
   waiting-time: El segundo paso comienza a las %time%.
@@ -170,6 +170,7 @@ flashes:
   recovery-token-invalid: ¡La dirección de e-mail y/o el token de recuperación son incorrectos!
   recovery-token-ack: Has generado un token de recuperación.
   recovery-reauthenticate: ¡Algo salió mal. Por favor, vuelve a autenticarte!
+  recovery-session-expired: Por favor, introduce de nuevo tu dirección de e-mail y tu token de recuperación para establecer una nueva contraseña.
   recovery-password-changed: Has cambiado tu contraseña.
   recovery-next-login: Continúa con el inicio de sesión.
   openpgp-deletion-successful: Tu clave OpenPGP fue eliminada.
@@ -208,17 +209,27 @@ mail:
 
     Atentamente,
     tu equipo de administración de %project_name%.
-  recovery-subject: La contraseña de tu cuenta de e-mail %email% será restablecida
+  recovery-subject: Recuperación de contraseña iniciada para %email%
   recovery-body: |
     Hola %email%,
 
-    Se ha intentado restablecer la contraseña de tu cuenta autenticándose con tu dirección de e-mail y el código de recuperación correspondiente en %recovery_url%.
+    Alguien ha iniciado una recuperación de contraseña para tu cuenta en
+    %recovery_url%
+    usando tu dirección de e-mail y tu token de recuperación.
 
-    Si no fuiste tú, entonces alguien más con acceso to tu token de recuperación intentó apoderarse de tu cuenta. Ve a %recovery_token_url% inmediatamente y crea un nuevo token de recuperación. Esto invalidará el antiguo token de recuperación y detendrá el proceso.
+    Si fuiste tú:
+    Después del período de espera de %hours% horas, a partir del %time%,
+    puedes establecer una nueva contraseña aquí:
+    %recovery_url%
+    Introduce de nuevo tu dirección de e-mail y tu token de recuperación.
 
-    Si tú mismo iniciaste el proceso, el período de espera de 48 horas ha comenzado ahora. Terminará a las %time%. Después, puedes establecer una nueva contraseña en %recovery_url%.
+    Si no fuiste tú:
+    Alguien más conoce tu token de recuperación e intenta apoderarse de tu
+    cuenta. Inicia sesión aquí antes del %time%:
+    %recovery_token_url%
+    Después, crea un nuevo token de recuperación. Así el token antiguo deja
+    de ser válido y la recuperación se detiene.
 
-    Esperamos que sigas disfrutando de tu cuenta de e-mail.
     Tu equipo de administración de %project_name%.
   alias-created-subject: Nueva dirección alias creada
   alias-created-body: |

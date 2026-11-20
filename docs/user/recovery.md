@@ -33,8 +33,8 @@ flowchart LR
 3. The page shows the date and time when you can continue. Keep your recovery
    token until then.
 
-You receive an email that your password will be reset. The waiting period can't
-be shortened.
+You receive an email that a password recovery was started. The waiting period
+can't be shortened.
 
 !!! danger "You didn't start this?"
 

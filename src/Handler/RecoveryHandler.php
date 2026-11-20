@@ -19,9 +19,15 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final readonly class RecoveryHandler
 {
-    private const string PROCESS_DELAY = '-2 days';
+    /**
+     * Waiting period between starting the recovery process and resetting the password.
+     */
+    public const int PROCESS_DELAY_HOURS = 48;
 
-    private const string PROCESS_EXPIRE = '-30 days';
+    /**
+     * Days after which a started recovery process expires and has to be started again.
+     */
+    private const int PROCESS_EXPIRE_DAYS = 30;
 
     public function __construct(
         private PasswordUpdater $passwordUpdater,
@@ -45,24 +51,24 @@ final readonly class RecoveryHandler
 
         $recoveryStartTime = $user->getRecoveryStartTime();
 
-        if (null === $recoveryStartTime || new DateTimeImmutable(self::PROCESS_EXPIRE) >= $recoveryStartTime) {
+        if (null === $recoveryStartTime || self::isExpired($recoveryStartTime)) {
             // Recovery process gets started
-            $user->updateRecoveryStartTime();
+            $recoveryStartTime = new DateTimeImmutable();
+            $user->setRecoveryStartTime($recoveryStartTime);
             $this->manager->flush();
             $this->eventDispatcher->dispatch(new UserEvent($user), UserEvent::RECOVERY_PROCESS_STARTED);
 
-            // We don't have to add two days here, they will get added in `RecoveryProcessMessageSender`
             return new RecoveryResult(
                 RecoveryStatus::Started,
-                activeTime: $user->getRecoveryStartTime(),
+                activeTime: self::getActiveTime($recoveryStartTime),
             );
         }
 
-        if (new DateTimeImmutable(self::PROCESS_DELAY) < $recoveryStartTime) {
+        if (self::isPending($recoveryStartTime)) {
             // Recovery process is pending, but waiting period didn't elapse yet
             return new RecoveryResult(
                 RecoveryStatus::Pending,
-                activeTime: $recoveryStartTime->add(new DateInterval('P2D')),
+                activeTime: self::getActiveTime($recoveryStartTime),
             );
         }
 
@@ -140,12 +146,31 @@ final readonly class RecoveryHandler
 
         if ($verifyTime) {
             $recoveryStartTime = $user->getRecoveryStartTime();
-            if (null === $recoveryStartTime || new DateTimeImmutable(self::PROCESS_DELAY) < $recoveryStartTime) {
+            if (null === $recoveryStartTime || self::isPending($recoveryStartTime) || self::isExpired($recoveryStartTime)) {
+                // Waiting period not elapsed yet or recovery process expired
                 return false;
             }
         }
 
         return $this->recoveryTokenHandler->verify($user, strtolower($recoveryToken));
+    }
+
+    /**
+     * Point in time when the second step (setting a new password) becomes available.
+     */
+    public static function getActiveTime(DateTimeImmutable $recoveryStartTime): DateTimeImmutable
+    {
+        return $recoveryStartTime->add(new DateInterval(sprintf('PT%dH', self::PROCESS_DELAY_HOURS)));
+    }
+
+    private static function isPending(DateTimeImmutable $recoveryStartTime): bool
+    {
+        return self::getActiveTime($recoveryStartTime) > new DateTimeImmutable();
+    }
+
+    private static function isExpired(DateTimeImmutable $recoveryStartTime): bool
+    {
+        return $recoveryStartTime->add(new DateInterval(sprintf('P%dD', self::PROCESS_EXPIRE_DAYS))) <= new DateTimeImmutable();
     }
 
     private function findUserByEmail(string $email): ?User
