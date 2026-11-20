@@ -64,8 +64,8 @@ final class AliasController extends AbstractController
             [
                 'user' => $user,
                 'user_domain' => $user->getDomain(),
-                'alias_creation_random' => $this->aliasManager->checkAliasLimit($aliasesRandom, true),
-                'alias_creation_custom' => $this->aliasManager->checkAliasLimit($aliasesCustom),
+                'alias_creation_random' => $this->aliasManager->canCreateAlias($user, true),
+                'alias_creation_custom' => $this->aliasManager->canCreateAlias($user),
                 'aliases_custom' => $aliasesCustom,
                 'aliases_random' => $aliasesRandom,
                 'random_alias_form' => $randomAliasCreateForm,
