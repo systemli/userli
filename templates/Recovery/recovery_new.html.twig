@@ -1,6 +1,17 @@
 {% extends 'Recovery/recovery.html.twig' %}
 
+{% block step_progress %}
+    {% include 'Recovery/_steps.html.twig' with {current_step: 1} only %}
+{% endblock %}
+
 {% block recovery_content %}
+    <div class="mb-6 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+        <div class="flex">
+            {{ ux_icon('heroicons:information-circle-solid', {'class': 'w-5 h-5 text-blue-500 dark:text-blue-400 mt-0.5 mr-3 flex-shrink-0'}) }}
+            <p class="text-sm text-blue-800 dark:text-blue-200">{{ "recovery.intro"|trans({'%hours%': delay_hours}) }}</p>
+        </div>
+    </div>
+
     {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
     {{ form_errors(form) }}
 
@@ -8,6 +19,7 @@
         {{ form_label(form.email, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'}}) }}
         {{ form_errors(form.email) }}
         {{ form_widget(form.email) }}
+        {{ form_help(form.email) }}
     </div>
 
     <div>

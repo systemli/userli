@@ -24,6 +24,7 @@ Feature: Mail links
       | recovery_process[recoveryToken] | bbde593d-8a9e-4d0e-a3ab-9fdd9f5c3237 |
     And I press "recovery_process[submit]"
 
-    Then I should see text matching "Second step starts at"
+    Then I should see text matching "You can set a new password from"
     And the last sent mail body should contain "https://mail.example.org/recovery"
     And the last sent mail body should contain "https://mail.example.org/account/recovery-token"
+    And the last sent mail body should contain "https://mail.example.org/recovery/cancel?"

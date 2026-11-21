@@ -6,6 +6,9 @@
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
                 {# Main content section #}
                 <div class="p-6 sm:p-8">
+                    {# Optional progress indicator for multi-step flows #}
+                    {% block step_progress %}{% endblock %}
+
                     {# Optional icon section #}
                     <div class="flex justify-center mb-6">
                         {% block step_icon %}{% endblock %}

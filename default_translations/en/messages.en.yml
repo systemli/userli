@@ -195,18 +195,25 @@ account:
     desc: Close and delete your account permanently
 
 recovery:
+  intro: "Recovery takes two visits: enter your e-mail address and recovery token now, and again after %hours% hours to set a new password."
+  started: Recovery started. For your security, you have to wait %hours% hours.
+  pending: Recovery is already in progress.
+  time-left: "Time left: %hours% h %minutes% min."
+  waiting-time: You can set a new password from %time%.
+  come-back: Then come back to %url% and enter your e-mail address and recovery token again.
+  steps:
+    label: Recovery progress
+    start: Start
+    wait: Wait
+    password: New password
+    token: Save token
+    done: done
   header: Recover your account
   lead: Reset the password using your recovery token
   cancel: Cancel
-  started: >
-    The first step to reset your password is done.
-    Now wait for 48 hours. Afterwards, you can set a new password in the second step.
-    Please keep your recovery token until then.
-  waiting-info: The waiting period is for your own security and cannot be shortened or skipped.
-  waiting-time: Second step starts at %time%.
   reset-lead: You're now allowed to reset your password
   token-lead: New recovery token
-  information-extra: Two-factor authentication will be reset and all app passwords will be deleted.
+  information-extra: This turns off two-factor authentication and deletes all app passwords.
 navbar_right:
   login: Log in
   logout: Log out
@@ -282,6 +289,17 @@ delete:
   confirm: Delete
   confirm-title: Confirm deletion
 recovery-token:
+  download: Download as text file
+  store-hint: Store it in a password manager or print it. Without your password and this token, your encrypted e-mails are lost.
+  file-content: |
+    %project_name% recovery token
+
+    E-mail address: %email%
+    Recovery token: %token%
+
+    If you forget your password, you can set a new one with this recovery
+    token. Keep this file in a safe place: anyone who has it can start a
+    password recovery for your account.
   headline: Manage recovery token
   lead: The recovery token can be used to reset your password if you forget it.
   set: You already have a recovery token set.
@@ -289,13 +307,11 @@ recovery-token:
   unset: You don't have a recovery token set yet. We strongly recommend to create one now.
   created-headline: Your new recovery token
   created-subtitle: Please copy and securely store this recovery token
-  created-info: >
-    If you lost your password, the recovery token allows you to reset a new one.
-    Write it down and store it at a secure place.
-  displayed-once: >
-    For security reasons, the recovery token gets displayed only once.
-    We can't recover this token for you.
+  created-info: If you forget your password, you can set a new one with this token.
+  displayed-once: This token is shown only once.
 flashes:
+  recovery-cancelled: "The password recovery was cancelled."
+  recovery-cancel-failed: "The password recovery could not be cancelled. Please try again."
   dismiss: Dismiss
   logout-successful: You are now logged out.
   password-change-successful: Your new password is now active!
@@ -306,11 +322,12 @@ flashes:
   app-password-deletion-successful: The app password was deleted.
   app-password-deletion-failed: The app password could not be deleted.
   alias-deletion-failed: Your alias address could not be deleted. Please try again.
-  recovery-token-invalid: E-mail address and/or recovery token are wrong!
+  recovery-token-invalid: The e-mail address or recovery token is not correct. Please check both and try again.
   recovery-token-ack: You generated a recovery token.
-  recovery-reauthenticate: Something went wrong. Please re-authenticate!
+  recovery-reauthenticate: Your password recovery could not be verified. Please enter your e-mail address and recovery token again.
+  recovery-session-expired: Please enter your e-mail address and recovery token again to set a new password.
   recovery-password-changed: You changed your password.
-  recovery-next-login: Go on with the login.
+  recovery-reset-hint: Two-factor authentication is off and your app passwords were deleted. Turn 2FA back on and create new app passwords.
   openpgp-deletion-successful: Your OpenPGP key was deleted.
   openpgp-key-upload-successful: Your OpenPGP key got uploaded.
   openpgp-key-upload-error-no-openpgp: The uploaded file doesn't contain OpenPGP data.
@@ -389,25 +406,47 @@ mail:
     Your %project_name% admin team.
   announcement-footer: This is an official announcement from %project_name%.
   announcement-footer-domain: This is an announcement from the admins of %domain%.
-  recovery-subject: The password for your e-mail account %email% will be reset
+  recovery-subject: Password recovery started for %email%
   recovery-body: |
     Hello %email%,
 
-    Your account password has been attemptedly reset by authenticating with
-    your email address and corresponding recovery token at
-    %recovery_url%.
+    Someone started a password recovery for your account at
+    %recovery_url%
+    using your e-mail address and your recovery token.
 
-    If this wasn't you, then somebody else with access to your recovery
-    token tried to get ahold of your account. Go to
-    %recovery_token_url% immediately and create a
-    new recovery token. This will invalidate the old recovery token and stop
-    the process.
+    If this was you:
+    After the waiting period of %hours% hours, starting at %time%,
+    you can set a new password here:
+    %recovery_url%
+    Enter your e-mail address and recovery token again.
 
-    If you did trigger the process yourself, the 48 hour waiting period started
-    now. It will end at %time%. Afterwards, you can set a new password at
-    %recovery_url%.
+    If this wasn't you:
+    Someone else knows your recovery token and is trying to take over your
+    account. Cancel the recovery before %time%:
+    %cancel_url%
+    Then sign in and create a new recovery token, so that the old token no
+    longer works:
+    %recovery_token_url%
 
-    We hope you continue to enjoy your e-mail account.
+    Your %project_name% admin team.
+  recovery-token-created-subject: "New recovery token for %email%"
+  recovery-token-created-body: |
+    Hello %email%,
+
+    A new recovery token was created for your account. Your previous
+    recovery token no longer works.
+
+    If this was you:
+    There is nothing else to do. Keep the new recovery token in a safe place.
+
+    If this wasn't you:
+    Someone else has access to your account. Sign in and change your
+    password:
+    %password_url%
+    Then create a new recovery token:
+    %recovery_token_url%
+    If you can no longer sign in, contact your %project_name% admin team.
+
     Your %project_name% admin team.
   alias-created-subject: New alias address created
   alias-created-body: |
@@ -1315,3 +1354,20 @@ notifications:
     title: Security Alert
     message: Your password has been found in a database of known compromised passwords. Please change it to secure your account.
     button: Change Password
+  recovery_in_progress:
+    title: "Password recovery in progress"
+    message: "A password recovery for your account was started on %time%. If this wasn't you, someone knows your recovery token. Create a new recovery token now, this stops the recovery."
+    button: "Create new recovery token"
+    cancel: "Cancel recovery"
+recovery-cancel:
+  headline: "Cancel password recovery"
+  lead: "A password recovery for %email% was started on %time%."
+  warning: "Only cancel the recovery if you didn't start it. Whoever started it knows your recovery token and can start a new recovery."
+  next-step: "After cancelling, sign in and create a new recovery token. This makes the old token invalid."
+  button: "Cancel recovery"
+  done-headline: "Recovery cancelled"
+  done-text: "The password recovery was cancelled."
+  done-next-step: "Now sign in and create a new recovery token, so that the old token no longer works."
+  done-button: "Create new recovery token"
+  invalid-headline: "Link no longer valid"
+  invalid-text: "This link has expired, or the password recovery is no longer running. There is nothing to cancel."

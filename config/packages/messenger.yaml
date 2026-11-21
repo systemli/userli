@@ -13,3 +13,9 @@ when@test:
         messenger:
             transports:
                 async: 'in-memory://'
+                sync: 'sync://'
+            # Handle these right away in tests, so Behat can check the sent mails.
+            # Routing configuration takes precedence over #[AsMessage].
+            routing:
+                App\Message\RecoveryProcessMail: sync
+                App\Message\RecoveryTokenCreatedMail: sync

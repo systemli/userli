@@ -191,18 +191,25 @@ account:
     desc: Schließe und lösche dein Konto permanent
 
 recovery:
+  intro: "Die Wiederherstellung braucht zwei Besuche: Gib deine E-Mail-Adresse und deinen Wiederherstellungscode jetzt ein und nach %hours% Stunden noch einmal, um ein neues Passwort zu setzen."
+  started: Wiederherstellung gestartet. Zu deiner Sicherheit musst du %hours% Stunden warten.
+  pending: Die Wiederherstellung läuft bereits.
+  time-left: "Verbleibende Zeit: %hours% Std. %minutes% Min."
+  waiting-time: Ab dem %time% kannst du ein neues Passwort setzen.
+  come-back: Komm dann zurück zu %url% und gib E-Mail-Adresse und Wiederherstellungscode erneut ein.
+  steps:
+    label: Fortschritt der Wiederherstellung
+    start: Starten
+    wait: Warten
+    password: Neues Passwort
+    token: Code sichern
+    done: erledigt
   header: Konto wiederherstellen
   lead: Passwort zurücksetzen mit Hilfe des Wiederherstellungscodes
   cancel: Abbrechen
-  started: >
-    Der erste Schritt um dein Passwort zurückzusetzen, ist gemacht.
-    Jetzt musst du noch 48 Stunden warten. Anschließend kannst du im zweiten Schritt
-    ein neues Passwort setzen. Bitte behalte deinen Wiederherstellungscode bis dahin.
-  waiting-info: Die Wartezeit dient deiner eigenen Sicherheit und kann nicht verkürzt oder umgangen werden.
-  waiting-time: Der zweite Schritt ist möglich ab dem %time%.
   reset-lead: Du kannst nun dein Passwort zurücksetzen
   token-lead: Neuer Wiederherstellungscode
-  information-extra: Die Zwei-Faktor-Authentifizierung wird dadurch zurückgesetzt und alle App-Passwörter werden gelöscht.
+  information-extra: Dabei werden die Zwei-Faktor-Authentifizierung ausgeschaltet und alle App-Passwörter gelöscht.
 navbar_right:
   login: Anmelden
   logout: Abmelden
@@ -280,6 +287,17 @@ delete:
   confirm: Löschen
   confirm-title: Löschen bestätigen
 recovery-token:
+  download: Als Textdatei herunterladen
+  store-hint: Speichere ihn in einem Passwort-Manager oder drucke ihn aus. Ohne Passwort und Code sind deine verschlüsselten E-Mails verloren.
+  file-content: |
+    %project_name%-Wiederherstellungscode
+
+    E-Mail-Adresse: %email%
+    Wiederherstellungscode: %token%
+
+    Wenn du dein Passwort vergisst, kannst du mit diesem Wiederherstellungscode
+    ein neues setzen. Bewahre diese Datei an einem sicheren Ort auf: Wer sie
+    hat, kann eine Passwort-Wiederherstellung für dein Konto starten.
   headline: Wiederherstellungscode verwalten
   lead: Mit dem Wiederherstellungscode kannst du dein Passwort zurücksetzen, wenn du es vergessen hast.
   set: Du hast bereits einen Wiederherstellungscode gesetzt.
@@ -287,9 +305,11 @@ recovery-token:
   unset: Du hast noch keinen Wiederherstellungscode gesetzt. Wir empfehlen dir dringend, jetzt einen zu erstellen.
   created-headline: Dein neuer Wiederherstellungscode
   created-subtitle: Bitte kopiere und speicher dein Wiederherstellungscode sicher.
-  created-info: Mit dem Wiederherstellungscode kannst du jederzeit dein Passwort zurücksetzen, wenn du dieses vergessen hast. Notiere ihn dir und speichere ihn an einem sicheren Ort ab.
-  displayed-once: Der Wiederherstellungscode wird aus Sicherheitsgründen nur einmal angezeigt. Wir können ihn nicht für dich wiederherstellen.
+  created-info: Wenn du dein Passwort vergisst, kannst du mit diesem Code ein neues setzen.
+  displayed-once: Dieser Code wird nur einmal angezeigt.
 flashes:
+  recovery-cancelled: "Die Passwort-Wiederherstellung wurde abgebrochen."
+  recovery-cancel-failed: "Die Passwort-Wiederherstellung konnte nicht abgebrochen werden. Bitte versuche es erneut."
   dismiss: Schließen
   logout-successful: Du bist jetzt abgemeldet.
   password-change-successful: Dein neues Passwort ist ab sofort aktiv!
@@ -300,11 +320,12 @@ flashes:
   app-password-deletion-successful: Das App-Passwort wurde gelöscht.
   app-password-deletion-failed: Das App-Passwort konnte nicht gelöscht werden.
   alias-deletion-failed: Deine Alias-Adresse konnte nicht gelöscht werden. Bitte versuche es erneut.
-  recovery-token-invalid: E-Mail-Adresse oder Wiederherstellungscode sind falsch!
+  recovery-token-invalid: Die E-Mail-Adresse oder der Wiederherstellungscode ist nicht korrekt. Bitte prüfe beides und versuche es erneut.
   recovery-token-ack: Du hast einen Wiederherstellungscode erzeugt.
-  recovery-reauthenticate: Etwas ist schief gelaufen. Bitte erneut authentifizieren!
+  recovery-reauthenticate: Deine Passwort-Wiederherstellung konnte nicht bestätigt werden. Bitte gib deine E-Mail-Adresse und deinen Wiederherstellungscode erneut ein.
+  recovery-session-expired: Bitte gib deine E-Mail-Adresse und deinen Wiederherstellungscode erneut ein, um ein neues Passwort zu setzen.
   recovery-password-changed: Dein Passwort wurde geändert.
-  recovery-next-login: Du kannst dich nun einloggen.
+  recovery-reset-hint: Die Zwei-Faktor-Authentifizierung ist aus und deine App-Passwörter wurden gelöscht. Schalte 2FA wieder ein und erstelle neue App-Passwörter.
   openpgp-deletion-successful: Dein OpenPGP-Schlüssel wurde gelöscht.
   openpgp-key-upload-successful: Dein OpenPGP-Schlüssel wurde hochgeladen.
   voucher-invalid: Der Einladungscode ist ungültig.
@@ -384,26 +405,50 @@ mail:
     dein %project_name%-Admin-Team
   announcement-footer: Dies ist eine offizielle Mitteilung von %project_name%.
   announcement-footer-domain: Dies ist eine Mitteilung der Admins von %domain%.
-  recovery-subject: Das Passwort zu deinem E-Mail-Konto %email% wird zurückgesetzt
+  recovery-subject: Passwort-Wiederherstellung für %email% gestartet
   recovery-body: |
     Hallo %email%,
 
-    Es wurde versucht dein Passwort zurückzusetzen. Dazu wurden deine
-    E-Mail-Adresse und der zugehörige Wiederherstellungscode unter
-    %recovery_url% eingegeben.
+    Unter %recovery_url%
+    wurde mit deiner E-Mail-Adresse und deinem Wiederherstellungscode eine
+    Passwort-Wiederherstellung für dein Konto gestartet.
 
-    Wenn du das nicht selbst warst, versucht jemand anderes mit Zugang zu
-    deinem Wiederherstellungscode, Kontrolle über dein Konto zu bekommen.
-    Gehe schnellstmöglich zu %recovery_token_url%
-    und erstelle dir einen neuen Wiederherstellungscode. Dadurch wird der
-    alte Code ungültig und der Vorgang abgebrochen.
+    Wenn du das warst:
+    Nach der Wartezeit von %hours% Stunden kannst du ab dem %time%
+    hier ein neues Passwort setzen:
+    %recovery_url%
+    Gib dazu erneut deine E-Mail-Adresse und deinen Wiederherstellungscode ein.
 
-    Hast du den Vorgang selbst ausgelöst, startet nun die 48-stündige Wartezeit.
-    Diese geht bis zum %time%. Anschließend kannst du mit einem
-    Besuch von %recovery_url% dein Passwort neu setzen.
+    Wenn du das nicht warst:
+    Jemand anderes kennt deinen Wiederherstellungscode und versucht, dein
+    Konto zu übernehmen. Brich die Wiederherstellung vor dem %time% ab:
+    %cancel_url%
+    Melde dich dann an und erstelle einen neuen Wiederherstellungscode, damit
+    der alte Code nicht mehr funktioniert:
+    %recovery_token_url%
 
-    Weiterhin viel Spaß mit deinem E-Mail-Konto, wünscht dir
-    dein %project_name%-Verwaltungsteam.
+    Dein %project_name%-Verwaltungsteam
+  recovery-token-created-subject: "Neuer Wiederherstellungscode für %email%"
+  recovery-token-created-body: |
+    Hallo %email%,
+
+    Für dein Konto wurde ein neuer Wiederherstellungscode erstellt. Dein
+    bisheriger Wiederherstellungscode funktioniert nicht mehr.
+
+    Wenn du das warst:
+    Du musst nichts weiter tun. Bewahre den neuen Wiederherstellungscode
+    sicher auf.
+
+    Wenn du das nicht warst:
+    Jemand anderes hat Zugriff auf dein Konto. Melde dich an und ändere
+    dein Passwort:
+    %password_url%
+    Erstelle dann einen neuen Wiederherstellungscode:
+    %recovery_token_url%
+    Wenn du dich nicht mehr anmelden kannst, wende dich an dein
+    %project_name%-Verwaltungsteam.
+
+    Dein %project_name%-Verwaltungsteam
   alias-created-subject: Neue Alias-Adresse erstellt
   alias-created-body: |
     Hallo %email%,
@@ -1313,3 +1358,20 @@ notifications:
     title: Sicherheitswarnung
     message: Dein Passwort wurde in einer Datenbank mit bekannten kompromittierten Passwörtern gefunden. Bitte ändere es, um dein Konto zu schützen.
     button: Passwort ändern
+  recovery_in_progress:
+    title: "Passwort-Wiederherstellung läuft"
+    message: "Für dein Konto wurde am %time% eine Passwort-Wiederherstellung gestartet. Wenn du das nicht warst, kennt jemand deinen Wiederherstellungscode. Erstelle jetzt einen neuen Wiederherstellungscode, das bricht die Wiederherstellung ab."
+    button: "Neuen Wiederherstellungscode erstellen"
+    cancel: "Wiederherstellung abbrechen"
+recovery-cancel:
+  headline: "Passwort-Wiederherstellung abbrechen"
+  lead: "Für %email% wurde am %time% eine Passwort-Wiederherstellung gestartet."
+  warning: "Brich die Wiederherstellung nur ab, wenn du sie nicht selbst gestartet hast. Wer sie gestartet hat, kennt deinen Wiederherstellungscode und kann eine neue Wiederherstellung starten."
+  next-step: "Melde dich nach dem Abbrechen an und erstelle einen neuen Wiederherstellungscode. Dadurch wird der alte Code ungültig."
+  button: "Wiederherstellung abbrechen"
+  done-headline: "Wiederherstellung abgebrochen"
+  done-text: "Die Passwort-Wiederherstellung wurde abgebrochen."
+  done-next-step: "Melde dich jetzt an und erstelle einen neuen Wiederherstellungscode, damit der alte Code nicht mehr funktioniert."
+  done-button: "Neuen Wiederherstellungscode erstellen"
+  invalid-headline: "Link nicht mehr gültig"
+  invalid-text: "Dieser Link ist abgelaufen, oder die Passwort-Wiederherstellung läuft nicht mehr. Es gibt nichts abzubrechen."

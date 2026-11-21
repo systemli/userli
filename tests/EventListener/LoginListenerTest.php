@@ -13,7 +13,6 @@ use App\Service\UserLastLoginUpdateService;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
@@ -24,7 +23,6 @@ class LoginListenerTest extends TestCase
     use EventListenerAttributes;
 
     private Stub&UserLastLoginUpdateService $userLastLoginUpdateService;
-    private Stub&LoggerInterface $logger;
     private LoginListener $listener;
     private LoginListener $listenerMailCrypt;
     private Stub&MailCryptKeyHandler $mailCryptKeyHandler;
@@ -33,14 +31,12 @@ class LoginListenerTest extends TestCase
     {
         $this->userLastLoginUpdateService = $this->createStub(UserLastLoginUpdateService::class);
         $this->mailCryptKeyHandler = $this->createStub(MailCryptKeyHandler::class);
-        $this->logger = $this->createStub(LoggerInterface::class);
 
         $settingsService = $this->createStub(SettingsService::class);
         $settingsService->method('get')->willReturn(2);
         $this->listener = new LoginListener(
             $this->userLastLoginUpdateService,
             $this->mailCryptKeyHandler,
-            $this->logger,
             $settingsService,
         );
 
@@ -50,7 +46,6 @@ class LoginListenerTest extends TestCase
         $this->listenerMailCrypt = new LoginListener(
             $this->userLastLoginUpdateService,
             $this->mailCryptKeyHandler,
-            $this->logger,
             $settingsServiceMailCrypt,
         );
     }
@@ -75,7 +70,6 @@ class LoginListenerTest extends TestCase
         $listenerMailCrypt = new LoginListener(
             $userLastLoginUpdateService,
             $mailCryptKeyHandler,
-            $this->logger,
             $settingsService,
         );
 
@@ -84,9 +78,25 @@ class LoginListenerTest extends TestCase
         $listenerMailCrypt->onSecurityInteractiveLogin($event);
     }
 
-    private function getInteractiveEvent(User $user): InteractiveLoginEvent
+    public function testOnSecurityInteractiveLoginWithoutPassword(): void
     {
-        $request = new Request([], ['_password' => 'password']);
+        $userLastLoginUpdateService = $this->createMock(UserLastLoginUpdateService::class);
+        $userLastLoginUpdateService->expects($this->once())->method('updateLastLogin');
+        $mailCryptKeyHandler = $this->createMock(MailCryptKeyHandler::class);
+        $mailCryptKeyHandler->expects($this->never())->method('create');
+
+        $settingsService = $this->createStub(SettingsService::class);
+        $settingsService->method('get')->willReturn(3);
+
+        $listener = new LoginListener($userLastLoginUpdateService, $mailCryptKeyHandler, $settingsService);
+
+        // Programmatic login, e.g. after a password recovery
+        $listener->onSecurityInteractiveLogin($this->getInteractiveEvent(new User('user@example.org'), null));
+    }
+
+    private function getInteractiveEvent(User $user, ?string $password = 'password'): InteractiveLoginEvent
+    {
+        $request = new Request([], null === $password ? [] : ['_password' => $password]);
 
         $token = $this->createStub(TokenInterface::class);
         $token->method('getUser')->willReturn($user);
@@ -119,7 +129,6 @@ class LoginListenerTest extends TestCase
         $listenerMailCrypt = new LoginListener(
             $userLastLoginUpdateService,
             $mailCryptKeyHandler,
-            $this->logger,
             $settingsService,
         );
 

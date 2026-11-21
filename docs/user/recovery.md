@@ -33,15 +33,23 @@ flowchart LR
 3. The page shows the date and time when you can continue. Keep your recovery
    token until then.
 
-You receive an email that your password will be reset. The waiting period can't
-be shortened.
+You receive an email that a password recovery was started. The waiting period
+can't be shortened.
 
 !!! danger "You didn't start this?"
 
     If you receive this email but did not start the recovery, someone else knows
-    your recovery token. Sign in and
-    [create a new recovery token](security.md#create-a-new-recovery-token)
-    immediately. This stops the recovery.
+    your recovery token.
+
+    1. Open the cancel link in the email and click **Cancel recovery**. This
+       works without signing in.
+    2. Sign in and
+       [create a new recovery token](security.md#create-a-new-recovery-token)
+       immediately. Otherwise the other person can start a new recovery with
+       the old token.
+
+    While a recovery is running, Userli also shows a warning on every page
+    after you sign in, with buttons for both steps.
 
 ## Step 2: Set a new password
 
@@ -54,14 +62,14 @@ You have 30 days to finish this step. After that, you have to start again.
 ## Step 3: Store your new recovery token
 
 Your old recovery token has been used up. Userli shows you a **new recovery
-token**. Store it safely, confirm and click **Continue**. Then sign in with your
-new password.
+token**. Copy or download it, store it safely, confirm and click **Continue**.
+You are now signed in with your new password.
 
 !!! note "Two-factor authentication and app passwords are reset"
 
     The recovery turns off two-factor authentication, because you may have lost
-    your phone as well. [Turn it on again](security.md#turn-on-2fa) after
-    signing in.
+    your phone as well. [Turn it on again](security.md#turn-on-2fa) right
+    away.
 
     It also deletes all [app passwords](app-passwords.md), in case
     someone else created one. Create new ones for your mail apps.

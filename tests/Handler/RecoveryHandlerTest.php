@@ -7,6 +7,7 @@ namespace App\Tests\Handler;
 use App\Entity\AppPassword;
 use App\Entity\User;
 use App\Enum\RecoveryStatus;
+use App\Event\UserEvent;
 use App\Exception\RecoveryException;
 use App\Handler\MailCryptKeyHandler;
 use App\Handler\RecoveryHandler;
@@ -14,6 +15,7 @@ use App\Handler\RecoveryTokenHandler;
 use App\Helper\PasswordUpdater;
 use App\Repository\AppPasswordRepository;
 use App\Repository\UserRepository;
+use DateInterval;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
@@ -91,9 +93,9 @@ class RecoveryHandlerTest extends TestCase
         $result = $handler->startRecovery('test@example.org', 'valid-token');
 
         self::assertSame(RecoveryStatus::Started, $result->status);
-        self::assertNotNull($result->activeTime);
         self::assertNull($result->recoveryToken);
         self::assertNotNull($user->getRecoveryStartTime());
+        self::assertEquals($user->getRecoveryStartTime()->add(new DateInterval('P2D')), $result->activeTime);
     }
 
     public function testStartRecoveryWithExpiredProcess(): void
@@ -111,14 +113,16 @@ class RecoveryHandlerTest extends TestCase
         $result = $handler->startRecovery('test@example.org', 'valid-token');
 
         self::assertSame(RecoveryStatus::Started, $result->status);
-        self::assertNotNull($result->activeTime);
+        self::assertGreaterThan(new DateTimeImmutable('-1 minute'), $user->getRecoveryStartTime());
+        self::assertEquals($user->getRecoveryStartTime()->add(new DateInterval('P2D')), $result->activeTime);
     }
 
     public function testStartRecoveryPending(): void
     {
         $user = new User('test@example.org');
         // Set recoveryStartTime to 1 day ago => pending (within 2-day delay)
-        $user->setRecoveryStartTime(new DateTimeImmutable('-1 day'));
+        $recoveryStartTime = new DateTimeImmutable('-1 day');
+        $user->setRecoveryStartTime($recoveryStartTime);
         $this->userRepository->method('findByEmail')->willReturn($user);
         $this->recoveryTokenHandler->method('verify')->willReturn(true);
 
@@ -126,7 +130,7 @@ class RecoveryHandlerTest extends TestCase
         $result = $handler->startRecovery('test@example.org', 'valid-token');
 
         self::assertSame(RecoveryStatus::Pending, $result->status);
-        self::assertNotNull($result->activeTime);
+        self::assertEquals($recoveryStartTime->add(new DateInterval('P2D')), $result->activeTime);
         self::assertNull($result->recoveryToken);
     }
 
@@ -190,7 +194,11 @@ class RecoveryHandlerTest extends TestCase
                 $user->setPlainRecoveryToken('new-recovery-token');
             });
 
-        $handler = $this->createHandler(recoveryTokenHandler: $recoveryTokenHandler);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->once())->method('dispatch')
+            ->with(self::isInstanceOf(UserEvent::class), UserEvent::RECOVERY_TOKEN_CREATED);
+
+        $handler = $this->createHandler(eventDispatcher: $eventDispatcher, recoveryTokenHandler: $recoveryTokenHandler);
         $newToken = $handler->resetPassword('test@example.org', 'valid-token', 'newpassword');
 
         self::assertEquals('new-recovery-token', $newToken);
@@ -273,6 +281,32 @@ class RecoveryHandlerTest extends TestCase
         self::assertTrue($handler->verifyRecoveryToken('test@example.org', 'valid-token', true));
     }
 
+    public function testVerifyRecoveryTokenWithTimeCheckExpired(): void
+    {
+        $user = new User('test@example.org');
+        // Set recoveryStartTime to 31 days ago => process expired
+        $user->setRecoveryStartTime(new DateTimeImmutable('-31 days'));
+        $this->userRepository->method('findByEmail')->willReturn($user);
+        $this->recoveryTokenHandler->method('verify')->willReturn(true);
+
+        $handler = $this->createHandler();
+
+        self::assertFalse($handler->verifyRecoveryToken('test@example.org', 'valid-token', true));
+    }
+
+    public function testResetPasswordWithExpiredProcess(): void
+    {
+        $user = new User('test@example.org');
+        $user->setRecoveryStartTime(new DateTimeImmutable('-31 days'));
+        $this->userRepository->method('findByEmail')->willReturn($user);
+        $this->recoveryTokenHandler->method('verify')->willReturn(true);
+
+        $handler = $this->createHandler();
+
+        $this->expectException(RecoveryException::class);
+        $handler->resetPassword('test@example.org', 'valid-token', 'new-password');
+    }
+
     public function testVerifyRecoveryTokenWithTimeCheckNoStartTime(): void
     {
         $user = new User('test@example.org');
@@ -293,5 +327,33 @@ class RecoveryHandlerTest extends TestCase
         $handler = $this->createHandler();
 
         self::assertTrue($handler->verifyRecoveryToken($user, 'valid-token'));
+    }
+
+    public function testCancelRecoveryErasesStartTimeAndFlushes(): void
+    {
+        $user = new User('test@example.org');
+        $user->setRecoveryStartTime(new DateTimeImmutable());
+
+        $manager = $this->createMock(EntityManagerInterface::class);
+        $manager->expects(self::once())->method('flush');
+
+        $this->createHandler(manager: $manager)->cancelRecovery($user);
+
+        self::assertNull($user->getRecoveryStartTime());
+    }
+
+    public function testGetExpireTime(): void
+    {
+        $start = new DateTimeImmutable('2026-01-15 10:00:00');
+
+        self::assertEquals(new DateTimeImmutable('2026-02-14 10:00:00'), RecoveryHandler::getExpireTime($start));
+    }
+
+    public function testIsInProgress(): void
+    {
+        self::assertFalse(RecoveryHandler::isInProgress(null));
+        self::assertTrue(RecoveryHandler::isInProgress(new DateTimeImmutable()));
+        self::assertTrue(RecoveryHandler::isInProgress(new DateTimeImmutable('-29 days')));
+        self::assertFalse(RecoveryHandler::isInProgress(new DateTimeImmutable('-31 days')));
     }
 }

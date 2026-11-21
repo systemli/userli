@@ -14,6 +14,10 @@ SHA_ALGORITHMS       := 256 512
 TMP_DIR              := userli-${VERSION}
 CONTAINER            := $(shell command -v podman 2>/dev/null || command -v docker 2>/dev/null)
 RELEASE_IMAGE        := localhost/userli-release
+# Run the release container as the invoking user so the files written to the
+# bind-mounted build/ stay removable. Rootless podman already maps container
+# root to the host user, so this only applies to docker.
+RELEASE_RUN_USER     := $(if $(findstring podman,$(notdir $(CONTAINER))),,--user $(shell id -u):$(shell id -g) --env HOME=/tmp)
 # Normalize metadata so release tarballs are reproducible (requires GNU tar)
 TAR_REPRODUCIBLE     := --format=gnu --sort=name --mtime=@${SOURCE_DATE_EPOCH} \
                         --owner=0 --group=0 --numeric-owner --mode=u+rwX,go=rX
@@ -167,6 +171,7 @@ release-container: source
 	@if [ -z "${CONTAINER}" ]; then echo "Error: podman or docker is required"; exit 1; fi
 	${CONTAINER} build --tag ${RELEASE_IMAGE} docker/release
 	${CONTAINER} run --rm \
+		${RELEASE_RUN_USER} \
 		--volume "$(CURDIR)/build:/src/build" \
 		--volume "$(CURDIR)/Makefile:/src/Makefile:ro" \
 		${RELEASE_IMAGE} \

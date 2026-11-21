@@ -97,26 +97,43 @@ welcome:
   headline: Wiukomme bi %project_name%!
   next-button: Zur Übersicht
 recovery:
+  information-extra: Das schautet d Zwöi-Faktor-Authentifizierig us und löscht aui App-Passwörter.
+  intro: "D Wiederhärschteuig bruucht zwe Bsüech: Gib dini E-Mail Adrässe und dis Recovery Token iz i, und nach %hours% Schtung nomou, zum es nöis Passwort z setze."
+  started: Wiederhärschteuig gschtartet. Für dini Sicherheit muesch %hours% Schtung warte.
+  pending: D Wiederhärschteuig louft scho.
+  time-left: "Verbliibendi Zyt: %hours% Std. %minutes% Min."
+  waiting-time: Ab em %time% chasch es nöis Passwort setze.
+  come-back: Chumm när zrügg uf %url% und gib dini E-Mail Adrässe und dis Recovery Token nomou i.
+  steps:
+    label: Fortschritt vor Wiederhärschteuig
+    start: Schtarte
+    wait: Warte
+    password: Nöis Passwort
+    token: Token sichere
+    done: erledigt
   lead: S Passwort mittem Recovery Token zrüggsetze
   token-lead: Nöis Recovery Token
   header: Di Account wiederhärschteue
-  waiting-info: >
-    Die Wartezyt isch für dini eigeti Sicherheit und cha weder verchürzt
-    no überschprunge wärde.
-  waiting-time: Dr zwöit Schritt startet am %time%.
   reset-lead: Du hesch ke Berächtigung zum dis Passwort zrüggzsetze
-  started: >
-    Dr erscht Schritt zum Passwort zrüggsetze isch erledigt.
-    Iz muesch 48 Schtung warte. Ab denn chasch es nöis Passwort setze im zwöite Schritt.
-    Bitte bewahr dis Recovery Token bis denn uf.
   cancel: Abbbräche
 recovery-token:
+  download: Aus Textdatei abelade
+  store-hint: Speicher s imne Passwort-Manager oder druck s us. Ohni dis Passwort und das Token si dini verschlüsslete E-Mails verlore.
+  file-content: |
+    %project_name% Recovery Token
+
+    E-Mail Adrässe: %email%
+    Recovery Token: %token%
+
+    Wenn du dis Passwort vergissisch, chasch mit däm Recovery Token es nöis
+    setze. Bewahr die Datei amne sichere Ort uf: Wär se het, cha e
+    Passwort-Wiederhärschteuig für di Account schtarte.
   set: Du hesch bereits es Recovery Token gsetzt.
   set-extra: S Erschteue vomne nöie Token wird s aktuelle invalidiere.
   created-headline: "Das Token isch für di erschteut worde:"
   lead: S Recovery Token cha drzue verwändet wärde dis Passwort zrüggzsetze wenns vergässe hesch.
-  created-info: Wenn du dis Passwort verlore hesch, erloubt dir s Recovery Token es nöis z setze. Notier dr das Token und bewahrs amne sichere Ort uuf.
-  displayed-once: Us Sicherheitsgründ wird s Recovery Token nume einisch azeigt. Mir chöi das Token nid wiederhärschteue.
+  created-info: Wenn du dis Passwort vergissisch, chasch mit däm Token es nöis setze.
+  displayed-once: Das Token wird nume einisch azeigt.
   headline: Recovery Token verwaute
   unset: Du hesch no kes Recovery Token gsetzt. Mir emfpähle dringend iz eis z mache.
 error:
@@ -135,24 +152,48 @@ mail:
 
     Mir hoffe dass du witerhin Fröid a dim E-Mail Account hesch.
     Dis %project_name% Admin Team.
-  recovery-subject: S Passwort für di E-Mail Account %email% wird zrügggsetzt
+  recovery-subject: Passwort-Wiederhärschteuig für %email% gschtartet
   recovery-body: |
     Hallo %email%,
 
-    Dis Account Passwort isch versuecht worde zrüggzsetze mit
-    dire E-Mail Adrässe und em passende Recovery Code bi %recovery_url%.
+    Öpper het bi
+    %recovery_url%
+    mit dire E-Mail Adrässe und dim Recovery Token e Passwort-Wiederhärschteuig
+    für di Account gschtartet.
 
-    Faus du das nid säuber bisch gsi, het öpper angers mit Zuegriff uf
-    dis Recovery Token versuecht di Account z übernäh. Gang so schnäu wie
-    müglech uf %recovery_token_url% und erschteu
-    es nöis Recovery Token. Das invalidiert s alte Token und stoppt
-    dr Prozäss.
+    Faus du das bisch gsi:
+    Nach dr Wartezyt vo %hours% Schtung chasch ab em %time%
+    hie es nöis Passwort setze:
+    %recovery_url%
+    Gib drzue dini E-Mail Adrässe und dis Recovery Token nomou i.
 
-    Faus du dä Prozäss säuber hesch igleitet, schtartet iz die 48
-    stündigi Wartezyt. Sie wird am %time% ände. När chasch bi
-    %recovery_url% es nöis Passwort setze.
+    Faus du das nid bisch gsi:
+    Öpper angers kennt dis Recovery Token und versuecht di Account z
+    übernäh. Brich d Wiederhärschteuig vor em %time% hie ab:
+    %cancel_url%
+    Meud di när a und erschteu es nöis Recovery Token, dass s alte Token
+    nümm funktioniert:
+    %recovery_token_url%
 
-    Mir hoffe dass du witerhin Fröid a dim E-Mail Account hesch.
+    Dis %project_name% Admin Team.
+  recovery-token-created-subject: "Nöis Recovery Token für %email%"
+  recovery-token-created-body: |
+    Hallo %email%,
+
+    Für di Account isch es nöis Recovery Token erschteut worde. Dis
+    bisherige Recovery Token funktioniert nümm.
+
+    Faus du das bisch gsi:
+    Du muesch nüt witers mache. Bhaut s nöie Recovery Token sicher uf.
+
+    Faus du das nid bisch gsi:
+    Öpper angers het Zuegriff uf di Account. Meud di a und änder dis
+    Passwort:
+    %password_url%
+    Erschteu när es nöis Recovery Token:
+    %recovery_token_url%
+    Wenn du di nümm chasch amäude, wend di a dis %project_name% Admin Team.
+
     Dis %project_name% Admin Team.
   alias-created-subject: Nöii Alias Adrässe erscheut
   welcome-subject: Wiukomme bi %project_name%
@@ -171,17 +212,20 @@ mail:
 
     Beschti Grüess, dis %project_name% Admin Team.
 flashes:
+  recovery-cancelled: "D Passwort-Wiederhärschteuig isch abbroche worde."
+  recovery-cancel-failed: "D Passwort-Wiederhärschteuig het nid chönne abbroche wärde. Probier s bitte nomou."
   recovery-token-ack: Du hesch es Recovery Token generiert.
   logout-successful: Du bisch iz usgloggt.
-  recovery-token-invalid: E-Mail Adrässe und/oder Recovery Token isch fautsch!
+  recovery-token-invalid: D E-Mail Adrässe oder s Recovery Token isch nid korrekt. Bitte prüef beides und versuechs nomou.
   voucher-creation-successful: Nöie Invite Code isch erschtellt.
   recovery-password-changed: Du hesch dis Passwort gänderet.
   alias-deletion-successful: Alias Adrässe isch glöscht.
   alias-creation-successful: Nöie Alias Adrässe isch erschtellt.
   password-change-successful: Dis nöie Passwort isch iz aktiv!
-  recovery-reauthenticate: Irgendöppis isch schief gloffe. Bitte nöi amäude!
+  recovery-reauthenticate: Dini Passwort-Wiederhärschteuig het nid chönne bestätigt wärde. Bitte gib dini E-Mail Adrässe und dis Recovery Token nomou i.
+  recovery-session-expired: Bitte gib dini E-Mail Adrässe und dis Recovery Token nomou i, zum es nöis Passwort z setze.
+  recovery-reset-hint: D Zwöi-Faktor-Authentifizierig isch us und dini App-Passwörter si glöscht worde. Schaut 2FA wider i und erschteu nöii App-Passwörter.
   registration-successful: Du bisch iz regischtriert.
-  recovery-next-login: Witerfahre mittem Ilogge.
 navbar_right:
   login: Ilogge
   logout: Uslogge
@@ -211,3 +255,21 @@ spam:
   title: Account isch gschperrt
 random: zuefäuig
 custom: benutzerdefiniert
+recovery-cancel:
+  headline: "Passwort-Wiederhärschteuig abbräche"
+  lead: "Für %email% isch am %time% e Passwort-Wiederhärschteuig gschtartet worde."
+  warning: "Brich d Wiederhärschteuig nume ab, wenn du se nid säuber gschtartet hesch. Wär se gschtartet het, kennt dis Recovery Token und cha e nöii Wiederhärschteuig schtarte."
+  next-step: "Meud di nach em Abbräche a und erschteu es nöis Recovery Token. Das invalidiert s alte Token."
+  button: "Wiederhärschteuig abbräche"
+  done-headline: "Wiederhärschteuig abbroche"
+  done-text: "D Passwort-Wiederhärschteuig isch abbroche worde."
+  done-next-step: "Meud di iz a und erschteu es nöis Recovery Token, dass s alte Token nümm funktioniert."
+  done-button: "Nöis Recovery Token erschteue"
+  invalid-headline: "Link nümm gültig"
+  invalid-text: "Dä Link isch abgloffe, oder d Passwort-Wiederhärschteuig louft nümm. Es git nüt abzbräche."
+notifications:
+  recovery_in_progress:
+    title: "Passwort-Wiederhärschteuig louft"
+    message: "Für di Account isch am %time% e Passwort-Wiederhärschteuig gschtartet worde. Faus du das nid bisch gsi, kennt öpper dis Recovery Token. Erschteu iz es nöis Recovery Token, das bricht d Wiederhärschteuig ab."
+    button: "Nöis Recovery Token erschteue"
+    cancel: "Wiederhärschteuig abbräche"

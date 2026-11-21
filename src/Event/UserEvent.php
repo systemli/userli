@@ -21,6 +21,8 @@ final class UserEvent extends Event
 
     public const string RECOVERY_PROCESS_STARTED = 'recovery_process_started';
 
+    public const string RECOVERY_TOKEN_CREATED = 'user.recovery_token_created';
+
     public function __construct(private readonly User $user)
     {
     }

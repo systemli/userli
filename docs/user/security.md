@@ -72,8 +72,13 @@ if your account doesn't have one yet (the card shows *Not configured*).
 
 1. Go to **Account settings → Recovery Token**.
 2. Enter your password and click **Create new recovery token**.
-3. Copy the new token and store it safely. Check *I stored the recovery token
-   at a secure place* and click **Continue**.
+3. Copy or download the new token and store it safely. Check *I stored the
+   recovery token at a secure place* and click **Continue**.
 
 The old token stops working immediately. A password recovery that somebody
 started with the old token is cancelled.
+
+You receive an email whenever a new recovery token is created, also after a
+[password recovery](recovery.md). If you didn't create it, someone else has
+access to your account: change your password and create a new recovery token
+right away.

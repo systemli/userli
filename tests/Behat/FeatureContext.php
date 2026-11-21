@@ -91,6 +91,30 @@ class FeatureContext extends MinkContext
      */
     public function theLastSentMailBodyShouldContain(string $text): void
     {
+        $body = $this->getLastSentMailBody();
+        if (!str_contains($body, $text)) {
+            throw new RuntimeException(sprintf("Expected last mail body to contain \"%s\"\nGot:\n%s", $text, $body));
+        }
+    }
+
+    /**
+     * Opens the first link in the last sent mail whose path starts with the given path.
+     * The host is dropped, mail links use the app_url setting instead of the test host.
+     *
+     * @When /^I follow the "([^"]*)" link in the last sent mail$/
+     */
+    public function iFollowTheLinkInTheLastSentMail(string $path): void
+    {
+        $body = $this->getLastSentMailBody();
+        if (1 !== preg_match('#https?://[^/\s]+('.preg_quote($path, '#').'\S*)#', $body, $matches)) {
+            throw new RuntimeException(sprintf("No link to \"%s\" in the last mail body\nGot:\n%s", $path, $body));
+        }
+
+        $this->visitPath($matches[1]);
+    }
+
+    private function getLastSentMailBody(): string
+    {
         // Fetch through the container each time: SymfonyExtension's Mink driver
         // re-resolves services per request, so a constructor-injected collector
         // would miss messages dispatched during the HTTP round-trip.
@@ -100,10 +124,7 @@ class FeatureContext extends MinkContext
             throw new RuntimeException('No mail has been sent in this scenario');
         }
 
-        $body = (string) $email->getTextBody();
-        if (!str_contains($body, $text)) {
-            throw new RuntimeException(sprintf("Expected last mail body to contain \"%s\"\nGot:\n%s", $text, $body));
-        }
+        return (string) $email->getTextBody();
     }
 
     public function getContainer(): ContainerInterface
