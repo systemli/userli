@@ -70,6 +70,7 @@ final readonly class DeleteHandler
         }
 
         $this->manager->getRepository(AppPassword::class)->removeByUser($user);
+        $user->removeWebauthnCredentials();
 
         // Set password to random new one
         $password = PasswordGenerator::generate();

@@ -5,7 +5,7 @@
   "loginWithEmailAllowed": true,
   "registrationAllowed": false,
   "sslRequired": "none",
-  "webAuthnPolicyRpId": "localhost",
+  "webAuthnPolicyRpId": "userli.localhost",
   "requiredActions": [
     {
       "alias": "VERIFY_PROFILE",

@@ -170,6 +170,14 @@ final class SettingsType extends AbstractType
             $constraints[] = new Assert\Choice(choices: $validation['choices']);
         }
 
+        // Format constraints, empty values are left to NotBlank
+        if (isset($validation['regex'])) {
+            $constraints[] = new Assert\Regex(
+                pattern: $validation['regex'],
+                message: $validation['regex_message'] ?? null,
+            );
+        }
+
         return $constraints;
     }
 

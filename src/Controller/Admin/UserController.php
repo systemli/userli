@@ -112,7 +112,7 @@ final class UserController extends AbstractController
             'method' => 'POST',
             'is_edit' => true,
             'has_mail_crypt' => $user->hasMailCryptSecretBox(),
-            'totp_enabled' => $user->isTotpAuthenticationEnabled(),
+            'totp_enabled' => $user->isTwofactorEnabled(),
         ]);
 
         return $this->render('Admin/User/form.html.twig', [
@@ -134,7 +134,7 @@ final class UserController extends AbstractController
         $form = $this->createForm(UserAdminType::class, $model, [
             'is_edit' => true,
             'has_mail_crypt' => $user->hasMailCryptSecretBox(),
-            'totp_enabled' => $user->isTotpAuthenticationEnabled(),
+            'totp_enabled' => $user->isTwofactorEnabled(),
             'validation_groups' => ['Default', 'edit'],
         ]);
         $form->handleRequest($request);

@@ -9,7 +9,7 @@ services:
         INSTALL_XDEBUG: "true"
     environment:
       REDIS_URL: redis://redis:6379
-      DEV_APP_URL: http://userli.localhost:${HTTP_PORT:-80}
+      DEV_APP_URL: http://app.userli.localhost:${HTTP_PORT:-80}
     volumes:
       - ./docker/userli/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro
       - ./docker/userli/php-override.ini:/usr/local/etc/php/conf.d/override.ini:ro
@@ -121,7 +121,7 @@ services:
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-      KC_HOSTNAME: http://keycloak.localhost:${HTTP_PORT:-80}
+      KC_HOSTNAME: http://keycloak.userli.localhost:${HTTP_PORT:-80}
       KC_HTTP_ENABLED: "true"
       KC_PROXY_HEADERS: xforwarded
     volumes:
@@ -144,6 +144,8 @@ services:
       ROUNDCUBEMAIL_SMTP_PORT: 1025
       ROUNDCUBEMAIL_USERNAME_DOMAIN: example.org
       ROUNDCUBEMAIL_DB_TYPE: sqlite
+      ROUNDCUBEMAIL_PLUGINS: archive,zipdownload,userli
+      ROUNDCUBEMAIL_COMPOSER_PLUGINS: systemli/userli
     volumes:
       - ./docker/roundcube/config:/var/roundcube/config:ro
     restart: always
