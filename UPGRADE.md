@@ -4,8 +4,9 @@
 
 ### Security keys (WebAuthn) as second factor
 
-Users can add security keys as second factor. The migration adds the table
-`webauthn_credentials` and the column `users.webauthn_user_handle`.
+Users can add security keys as second factor. The migration adds the tables
+`webauthn_credentials` and `webauthn_challenges` and the column
+`users.webauthn_user_handle`.
 
 **Action required:**
 
@@ -20,8 +21,9 @@ Users can add security keys as second factor. The migration adds the table
    registered keys unusable.
 3. For security keys and backup codes in Keycloak, update the
    [Keycloak provider](docs/operations/integrations/keycloak.md#two-factor-authentication)
-   and add its new authenticators to the browser flow. The provider now gets
-   the challenge from Userli, so update Userli and the provider together.
+   and add its new authenticators to the browser flow. Keycloak verifies
+   security keys itself and stores the sign count in Userli, so update Userli
+   and the provider together.
 4. For security keys in webmail, update the
    [Roundcube plugin](docs/operations/integrations/roundcube.md#security-keys)
    to version 1.1 or later.
