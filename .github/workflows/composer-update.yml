@@ -35,6 +35,14 @@ jobs:
       - name: Update dependencies
         run: composer update --no-scripts
 
+      - name: Warmup Symfony container cache
+        env:
+          DATABASE_URL: sqlite:///%kernel.project_dir%/var/test.db
+        run: bin/console cache:warmup --env=dev
+
+      - name: Apply Rector changes
+        run: bin/rector process --no-ansi
+
       - name: Generate update summary
         run: |
           composer global config allow-plugins.ion-bazan/composer-diff true
