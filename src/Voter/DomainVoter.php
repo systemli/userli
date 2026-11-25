@@ -13,6 +13,7 @@ use App\Form\Model\AliasAdminModel;
 use App\Form\Model\DomainAdminModel;
 use App\Form\Model\UserAdminModel;
 use App\Form\Model\VoucherModel;
+use App\Repository\AliasRepository;
 use App\Service\DomainGuesser;
 use Override;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -38,6 +39,7 @@ final class DomainVoter extends Voter
     public function __construct(
         private readonly Security $security,
         private readonly DomainGuesser $domainGuesser,
+        private readonly AliasRepository $aliasRepository,
     ) {
     }
 
@@ -86,6 +88,10 @@ final class DomainVoter extends Voter
         }
 
         if ($subject instanceof UserAdminModel && in_array(Roles::ADMIN, $subject->getRoles(), true)) {
+            return false;
+        }
+
+        if ($subject instanceof Alias && $this->aliasRepository->isSourceOwnedByAdmin((string) $subject->getSource())) {
             return false;
         }
 
@@ -160,7 +166,8 @@ final class DomainVoter extends Voter
 
     private function voteOnAliasAdminModel(AliasAdminModel $model, Domain $currentDomain): bool
     {
-        return $currentDomain->getId() === $this->domainGuesser->guess($model->getSource())?->getId();
+        return $currentDomain->getId() === $this->domainGuesser->guess($model->getSource())?->getId()
+            && !$this->aliasRepository->isSourceOwnedByAdmin((string) $model->getSource());
     }
 
     private function voteOnVoucher(string $attribute, Voucher $voucher, Domain $currentDomain): bool

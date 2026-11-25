@@ -199,14 +199,78 @@ Feature: Admin (Aliases)
   @aliases
   Scenario: Domain admin can edit alias in own domain
     Given the following Alias exists:
-      | source                   | destination          |
-      | domainalia@example.com   | domain@example.com   |
+      | source                   | destination          | user_id |
+      | domainalia@example.com   | domain@example.com   | 3       |
     And I am authenticated as "domain@example.com"
     And I set the placeholder "__alias_id__" with property "id" for alias "domainalia@example.com"
     When I am on "/admin/aliases/edit/__alias_id__"
 
     Then the response status code should be 200
     And I should see "Edit Alias"
+
+  @aliases
+  Scenario: Domain admin cannot edit alias owned by an admin
+    Given the following User exists:
+      | email             | password | roles      |
+      | admin@example.com | asdasd   | ROLE_ADMIN |
+    And the following Alias exists:
+      | source                 | destination       | user_id |
+      | adminalias@example.com | admin@example.com | 4       |
+    And I am authenticated as "domain@example.com"
+    And I set the placeholder "__alias_id__" with property "id" for alias "adminalias@example.com"
+    When I am on "/admin/aliases/edit/__alias_id__"
+
+    Then the response status code should be 403
+
+  @aliases
+  Scenario: Domain admin cannot add a destination to an alias owned by an admin of another domain
+    Given the following Alias exists:
+      | source                 | destination       | user_id |
+      | crossadmin@example.com | louis@example.org | 1       |
+    And I am authenticated as "domain@example.com"
+    When I am on "/admin/aliases/create"
+
+    When I fill in "alias_admin_source" with "crossadmin@example.com"
+    And I press "Create"
+
+    Then the response status code should be 403
+
+  @aliases
+  Scenario: Domain admin cannot delete an alias owned by an admin of another domain
+    Given the following Alias exists:
+      | source                 | destination       | user_id |
+      | crossadmin@example.com | louis@example.org | 1       |
+    And I am authenticated as "domain@example.com"
+    When I am on "/admin/aliases/"
+    Then I should see "crossadmin@example.com"
+
+    When I press the 1st "Delete" button
+
+    Then the response status code should be 403
+
+  @aliases
+  Scenario: Domain admin cannot edit an alias without owner
+    Given the following Alias exists:
+      | source               | destination          |
+      | forward@example.com  | external@example.net |
+    And I am authenticated as "domain@example.com"
+    And I set the placeholder "__alias_id__" with property "id" for alias "forward@example.com"
+    When I am on "/admin/aliases/edit/__alias_id__"
+
+    Then the response status code should be 403
+
+  @aliases
+  Scenario: Domain admin cannot add a destination to an alias without owner
+    Given the following Alias exists:
+      | source               | destination          |
+      | forward@example.com  | external@example.net |
+    And I am authenticated as "domain@example.com"
+    When I am on "/admin/aliases/create"
+
+    When I fill in "alias_admin_source" with "forward@example.com"
+    And I press "Create"
+
+    Then the response status code should be 403
 
   @aliases
   Scenario: Domain admin cannot view alias in different domain

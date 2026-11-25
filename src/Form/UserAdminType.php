@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use App\Entity\Alias;
 use App\Entity\User;
 use App\Enum\Roles;
 use App\Form\Model\UserAdminModel;
@@ -52,6 +53,7 @@ final class UserAdminType extends AbstractType
                     new Assert\Email(mode: 'strict'),
                     new Lowercase(),
                     new UniqueField(entityClass: User::class, field: 'email', message: 'registration.email-already-taken'),
+                    new UniqueField(entityClass: Alias::class, field: 'source', message: 'registration.email-already-taken'),
                     new EmailDomainAdmin(),
                 ],
             ]);
