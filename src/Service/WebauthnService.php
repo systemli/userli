@@ -143,13 +143,13 @@ final readonly class WebauthnService
         try {
             $options = $this->serializer->deserialize($optionsJson, PublicKeyCredentialCreationOptions::class, 'json');
 
-            $record = AuthenticatorAttestationResponseValidator::create($this->createCeremonyStepManagerFactory()->creationCeremony())
+            $record = AuthenticatorAttestationResponseValidator::create($this->createCeremonyStepManagerFactory([$this->getAppOrigin()])->creationCeremony())
                 ->check($response, $options, $this->getRpId());
         } catch (WebauthnException $exception) {
             throw $exception;
         } catch (Throwable $exception) {
-            // Usually a misconfigured RP ID or origin, see the settings webauthn_rp_id and webauthn_origins
-            $this->logger->warning('WebAuthn registration failed: {message}', ['message' => $exception->getMessage(), 'rpId' => $this->getRpId(), 'origins' => $this->getAllowedOrigins()]);
+            // Usually a misconfigured RP ID or application URL, see the settings webauthn_rp_id and app_url
+            $this->logger->warning('WebAuthn registration failed: {message}', ['message' => $exception->getMessage(), 'rpId' => $this->getRpId(), 'origin' => $this->getAppOrigin()]);
 
             throw new WebauthnException(self::INVALID_REGISTRATION, 0, $exception);
         }
@@ -226,7 +226,8 @@ final readonly class WebauthnService
             return false;
         }
 
-        return $this->verifyAssertion($user, $publicKeyCredential, $options);
+        // Only the application URL, so script on another allowed origin (e.g. the webmail) cannot sign in to Userli
+        return $this->verifyAssertion($user, $publicKeyCredential, $options, [$this->getAppOrigin()]);
     }
 
     /**
@@ -280,7 +281,7 @@ final readonly class WebauthnService
             return false;
         }
 
-        return $this->verifyAssertion($user, $publicKeyCredential, $this->createRequestOptions($user, $challenge));
+        return $this->verifyAssertion($user, $publicKeyCredential, $this->createRequestOptions($user, $challenge), $this->getAllowedOrigins());
     }
 
     /**
@@ -318,7 +319,7 @@ final readonly class WebauthnService
      */
     public function getAllowedOrigins(): array
     {
-        $origins = [$this->toOrigin((string) $this->settingsService->get('app_url'))];
+        $origins = [$this->getAppOrigin()];
 
         // The webmail (e.g. Roundcube with the Userli plugin) is allowed if it can use the security key domain
         $webmailOrigin = $this->toOrigin((string) $this->settingsService->get('webmail_url', ''));
@@ -339,6 +340,11 @@ final readonly class WebauthnService
         ))));
     }
 
+    private function getAppOrigin(): string
+    {
+        return $this->toOrigin((string) $this->settingsService->get('app_url'));
+    }
+
     /**
      * Browsers report the origin only (scheme, host, port), while a URL may also contain a path.
      */
@@ -351,7 +357,10 @@ final readonly class WebauthnService
         return is_string($scheme) && is_string($host) ? $scheme.'://'.$host.(is_int($port) ? ':'.$port : '') : $url;
     }
 
-    private function verifyAssertion(User $user, PublicKeyCredential $publicKeyCredential, PublicKeyCredentialRequestOptions $options): bool
+    /**
+     * @param string[] $origins
+     */
+    private function verifyAssertion(User $user, PublicKeyCredential $publicKeyCredential, PublicKeyCredentialRequestOptions $options, array $origins): bool
     {
         $response = $publicKeyCredential->response;
         if (!$response instanceof AuthenticatorAssertionResponse) {
@@ -368,7 +377,7 @@ final readonly class WebauthnService
 
         // The user is known from the first factor, so the user handle of the credential is the expected one
         try {
-            $record = AuthenticatorAssertionResponseValidator::create($this->createCeremonyStepManagerFactory()->requestCeremony())
+            $record = AuthenticatorAssertionResponseValidator::create($this->createCeremonyStepManagerFactory($origins)->requestCeremony())
                 ->check($this->toCredentialRecord($credential), $response, $options, $this->getRpId(), Base64UrlSafe::decode($credential->getUserHandle()));
         } catch (Throwable $throwable) {
             $this->logger->notice('WebAuthn assertion failed: {message}', ['message' => $throwable->getMessage(), 'credential' => $credential->getId()]);
@@ -440,10 +449,13 @@ final readonly class WebauthnService
         );
     }
 
-    private function createCeremonyStepManagerFactory(): CeremonyStepManagerFactory
+    /**
+     * @param string[] $origins
+     */
+    private function createCeremonyStepManagerFactory(array $origins): CeremonyStepManagerFactory
     {
         $factory = new CeremonyStepManagerFactory();
-        $factory->setAllowedOrigins($this->getAllowedOrigins());
+        $factory->setAllowedOrigins($origins);
         $factory->setAlgorithmManager(Manager::create()->add(ES256::create(), Ed25519::create(), RS256::create()));
 
         return $factory;

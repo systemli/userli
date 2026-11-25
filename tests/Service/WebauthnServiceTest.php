@@ -370,6 +370,25 @@ class WebauthnServiceTest extends TestCase
         self::assertFalse($this->verifyExternal($challenge, $assertion));
     }
 
+    public function testAuthenticationFailsForExternalOrigin(): void
+    {
+        $authenticator = new SoftwareAuthenticator();
+        $this->register($authenticator);
+
+        $options = $this->service->createAuthenticationOptions($this->user);
+
+        self::assertFalse($this->service->verifyAuthentication($this->user, $authenticator->get($options, self::KEYCLOAK_ORIGIN)));
+    }
+
+    public function testRegistrationFailsForExternalOrigin(): void
+    {
+        $options = $this->service->createRegistrationOptions($this->user);
+
+        $this->expectException(WebauthnException::class);
+
+        $this->service->verifyRegistration($this->user, new SoftwareAuthenticator()->create($options, self::KEYCLOAK_ORIGIN), 'My key');
+    }
+
     public function testGetAllowedOrigins(): void
     {
         self::assertSame([self::ORIGIN, self::KEYCLOAK_ORIGIN], $this->service->getAllowedOrigins());
