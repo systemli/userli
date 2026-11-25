@@ -52,9 +52,9 @@ dev: assets migrations
 	@echo ""
 	@echo "Started container environment."
 	@echo "Services:"
-	@echo "  Userli:      http://userli.localhost$(PORT_SUFFIX)"
-	@echo "  Mailcatcher: http://mailcatcher.localhost$(PORT_SUFFIX)"
-	@echo "  Webhook:     http://webhook.localhost$(PORT_SUFFIX)"
+	@echo "  Userli:      http://app.userli.localhost$(PORT_SUFFIX)"
+	@echo "  Mailcatcher: http://mailcatcher.userli.localhost$(PORT_SUFFIX)"
+	@echo "  Webhook:     http://webhook.userli.localhost$(PORT_SUFFIX)"
 	@echo ""
 	@echo "Run 'make fixtures' to load example user data and start mail containers"
 	@echo ""
@@ -65,15 +65,15 @@ fixtures: migrations
 	@echo ""
 	@echo "Fixtures have been loaded."
 	@echo "Services:"
-	@echo "  Roundcube:   http://roundcube.localhost$(PORT_SUFFIX)"
+	@echo "  Roundcube:   http://roundcube.userli.localhost$(PORT_SUFFIX)"
 	@echo ""
 	@echo "Login with: admin@example.org / password"
 
 keycloak: containers
 	$(COMPOSE) --profile sso up -d --build keycloak
 	@echo ""
-	@echo "Keycloak:      http://keycloak.localhost$(PORT_SUFFIX) (admin / admin)"
-	@echo "Userli realm:  http://keycloak.localhost$(PORT_SUFFIX)/realms/userli/account"
+	@echo "Keycloak:      http://keycloak.userli.localhost$(PORT_SUFFIX) (admin / admin)"
+	@echo "Userli realm:  http://keycloak.userli.localhost$(PORT_SUFFIX)/realms/userli/account"
 	@echo ""
 	@echo "Login with: user / password (run 'make fixtures' first)"
 
