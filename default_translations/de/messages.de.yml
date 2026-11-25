@@ -627,7 +627,7 @@ admin:
       help: Domain, an die Sicherheitsschlüssel gebunden sind (z.B. example.org). Sie muss der Host der Anwendungs-URL oder eine übergeordnete Domain davon sein. Leer lassen, um den Host der Anwendungs-URL zu verwenden. Eine Änderung macht alle registrierten Sicherheitsschlüssel unbrauchbar.
     webauthn_origins:
       label: Weitere Origins für Sicherheitsschlüssel
-      help: "Weitere Origins, die Sicherheitsschlüssel verwenden dürfen, eine pro Zeile (z.B. https://login.example.org für Keycloak). Sie müssen zur Domain für Sicherheitsschlüssel gehören."
+      help: "Weitere Origins, die Sicherheitsschlüssel verwenden dürfen, eine pro Zeile (z.B. https://webmail.example.org). Sie müssen zur Domain für Sicherheitsschlüssel gehören. Die Anwendungs-URL und die Webmail-URL sind automatisch erlaubt."
     weekly_report_enabled:
       label: Wöchentlicher Bericht
       help: Einen wöchentlichen Bericht über neue Registrierungen an die Benachrichtigungs-E-Mail-Adresse senden

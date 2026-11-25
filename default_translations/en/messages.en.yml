@@ -647,7 +647,7 @@ admin:
       help: Domain that security keys are bound to (e.g., example.org). It must be the host of the application URL or a parent domain of it. Leave empty to use the host of the application URL. Changing it makes all registered security keys unusable.
     webauthn_origins:
       label: Additional Security Key Origins
-      help: "Further origins that may use security keys, one per line (e.g., https://login.example.org for Keycloak). They must belong to the security key domain."
+      help: "Further origins that may use security keys, one per line (e.g., https://webmail.example.org). They must belong to the security key domain. The application URL and the webmail URL are allowed automatically."
     weekly_report_enabled:
       label: Weekly Report
       help: Send a weekly report with new registrations to the notification email address

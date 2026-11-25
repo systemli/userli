@@ -44,9 +44,11 @@ $config['userli_ssl_verify'] = true;
 With version 1.1 of the plugin or later, users can sign in with a security key.
 Security keys are bound to a domain, so Userli and Roundcube need a common
 parent domain, for example `users.example.org` and `mail.example.org`. In
-Userli, set **Security Key Domain** to `example.org` and add the Roundcube
-origin, e.g. `https://mail.example.org`, to **Additional Security Key Origins**
-(see [Settings](../../admin/settings.md#two-factor-authentication)).
+Userli, set **Security Key Domain** to `example.org` (see
+[Settings](../../admin/settings.md#two-factor-authentication)). Userli allows
+the origin of the **Webmail URL**, e.g. `https://mail.example.org`, by itself.
+If Roundcube runs on another host, add its origin to **Additional Security Key
+Origins**.
 
 Keys that users added before the domain was set only work on the Userli host.
 Users have to add them again. Without a security key that works there, users

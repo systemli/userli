@@ -318,12 +318,16 @@ final readonly class WebauthnService
      */
     public function getAllowedOrigins(): array
     {
-        // Browsers report the origin only (scheme, host, port), app_url may also contain a path
-        $appUrl = (string) $this->settingsService->get('app_url');
-        $scheme = parse_url($appUrl, PHP_URL_SCHEME);
-        $host = parse_url($appUrl, PHP_URL_HOST);
-        $port = parse_url($appUrl, PHP_URL_PORT);
-        $origins = [is_string($scheme) && is_string($host) ? $scheme.'://'.$host.(is_int($port) ? ':'.$port : '') : $appUrl];
+        $origins = [$this->toOrigin((string) $this->settingsService->get('app_url'))];
+
+        // The webmail (e.g. Roundcube with the Userli plugin) is allowed if it can use the security key domain
+        $webmailOrigin = $this->toOrigin((string) $this->settingsService->get('webmail_url', ''));
+        $webmailHost = parse_url($webmailOrigin, PHP_URL_HOST);
+        $rpId = $this->getRpId();
+        if (is_string($webmailHost) && ($webmailHost === $rpId || str_ends_with($webmailHost, '.'.$rpId))) {
+            $origins[] = $webmailOrigin;
+        }
+
         $additional = (string) $this->settingsService->get('webauthn_origins', '');
         foreach (preg_split('/\R/', $additional) ?: [] as $origin) {
             $origins[] = trim($origin);
@@ -333,6 +337,18 @@ final readonly class WebauthnService
             static fn (string $origin): string => rtrim($origin, '/'),
             $origins,
         ))));
+    }
+
+    /**
+     * Browsers report the origin only (scheme, host, port), while a URL may also contain a path.
+     */
+    private function toOrigin(string $url): string
+    {
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+        $host = parse_url($url, PHP_URL_HOST);
+        $port = parse_url($url, PHP_URL_PORT);
+
+        return is_string($scheme) && is_string($host) ? $scheme.'://'.$host.(is_int($port) ? ':'.$port : '') : $url;
     }
 
     private function verifyAssertion(User $user, PublicKeyCredential $publicKeyCredential, PublicKeyCredentialRequestOptions $options): bool

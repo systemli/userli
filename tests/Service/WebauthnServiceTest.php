@@ -37,6 +37,14 @@ class WebauthnServiceTest extends TestCase
 
     private Session $session;
 
+    /** @var array<string, string> */
+    private array $settings = [
+        'project_name' => 'example.org',
+        'app_url' => self::ORIGIN,
+        'webauthn_rp_id' => 'example.org',
+        'webauthn_origins' => self::KEYCLOAK_ORIGIN."\n",
+    ];
+
     private WebauthnService $service;
 
     private User $user;
@@ -44,12 +52,9 @@ class WebauthnServiceTest extends TestCase
     protected function setUp(): void
     {
         $settings = $this->createStub(SettingsService::class);
-        $settings->method('get')->willReturnMap([
-            ['project_name', null, 'example.org'],
-            ['app_url', null, self::ORIGIN],
-            ['webauthn_rp_id', '', 'example.org'],
-            ['webauthn_origins', '', self::KEYCLOAK_ORIGIN."\n"],
-        ]);
+        $settings->method('get')->willReturnCallback(
+            fn (string $name, mixed $default = null): mixed => $this->settings[$name] ?? $default
+        );
 
         $repository = $this->createStub(WebauthnCredentialRepository::class);
         $repository->method('findByUser')->willReturnCallback(
@@ -367,6 +372,28 @@ class WebauthnServiceTest extends TestCase
 
     public function testGetAllowedOrigins(): void
     {
+        self::assertSame([self::ORIGIN, self::KEYCLOAK_ORIGIN], $this->service->getAllowedOrigins());
+    }
+
+    public function testGetAllowedOriginsIncludesWebmail(): void
+    {
+        $this->settings['webmail_url'] = 'https://mail.example.org/roundcube/';
+
+        self::assertSame([self::ORIGIN, 'https://mail.example.org', self::KEYCLOAK_ORIGIN], $this->service->getAllowedOrigins());
+    }
+
+    public function testGetAllowedOriginsSkipsWebmailOutsideSecurityKeyDomain(): void
+    {
+        $this->settings['webmail_url'] = 'https://webmail.example.com';
+
+        self::assertSame([self::ORIGIN, self::KEYCLOAK_ORIGIN], $this->service->getAllowedOrigins());
+    }
+
+    public function testGetAllowedOriginsSkipsWebmailOutsideDefaultSecurityKeyDomain(): void
+    {
+        $this->settings['webauthn_rp_id'] = '';
+        $this->settings['webmail_url'] = 'https://mail.example.org';
+
         self::assertSame([self::ORIGIN, self::KEYCLOAK_ORIGIN], $this->service->getAllowedOrigins());
     }
 
