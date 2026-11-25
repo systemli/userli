@@ -60,6 +60,32 @@ Feature: User
     And I should see text matching "Your new alias address was created."
     And the response status code should be 200
 
+  @fail-to-create-random-alias-without-csrf-token
+  Scenario: Fail to create random alias without CSRF token
+    When I am authenticated as "user@example.org"
+    And I am on "/account/alias"
+    And I have the request params for "create_alias":
+      | note | no-token |
+    And I request "POST /account/alias/create"
+
+    Then I should be on "/account/alias"
+    And I should not see "Your new alias address was created."
+    And I should see "The CSRF token is invalid. Please try to resubmit the form."
+
+  @fail-to-create-random-alias-with-long-note
+  Scenario: Fail to create random alias with a note longer than 40 characters
+    When I am authenticated as "user@example.org"
+    And I am on "/account/alias"
+    And I set the placeholder "__token__" from field "create_alias__token"
+    And I have the request params for "create_alias":
+      | note   | 12345678901234567890123456789012345678901 |
+      | _token | __token__                                 |
+    And I request "POST /account/alias/create"
+
+    Then I should be on "/account/alias"
+    And I should not see "Your new alias address was created."
+    And I should see "This value is too long. It should have 40 characters or less."
+
   @create-custom-alias
   Scenario: Create custom alias
     When I am authenticated as "user@example.org"
