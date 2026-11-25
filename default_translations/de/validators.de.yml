@@ -34,4 +34,4 @@ voucher:
 
 settings:
   webauthn-rp-id-invalid: "Gib eine Domain ohne Schema, Port oder Pfad ein, z.B. example.org."
-  webauthn-origins-invalid: "Gib eine Origin pro Zeile mit Schema und ohne Pfad ein, z.B. https://webmail.example.org."
+  webauthn-origins-invalid: "Gib eine Origin pro Zeile mit Schema und ohne Pfad ein, z.B. https://login.example.org."

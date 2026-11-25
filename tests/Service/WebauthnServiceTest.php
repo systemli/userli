@@ -27,7 +27,7 @@ class WebauthnServiceTest extends TestCase
 {
     private const string ORIGIN = 'https://users.example.org';
 
-    private const string ADDITIONAL_ORIGIN = 'https://webmail.example.org';
+    private const string KEYCLOAK_ORIGIN = 'https://login.example.org';
 
     /** @var WebauthnCredential[] */
     private array $credentials = [];
@@ -42,7 +42,7 @@ class WebauthnServiceTest extends TestCase
         'project_name' => 'example.org',
         'app_url' => self::ORIGIN,
         'webauthn_rp_id' => 'example.org',
-        'webauthn_origins' => self::ADDITIONAL_ORIGIN."\n",
+        'webauthn_origins' => self::KEYCLOAK_ORIGIN."\n",
     ];
 
     private WebauthnService $service;
@@ -262,7 +262,7 @@ class WebauthnServiceTest extends TestCase
         $credential = $this->register($authenticator);
         $challenge = $this->externalChallenge($this->user);
 
-        $assertion = $authenticator->assert('example.org', $challenge, self::ADDITIONAL_ORIGIN);
+        $assertion = $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN);
 
         self::assertTrue($this->verifyExternal($challenge, $assertion));
         self::assertSame(1, $credential->getSignCount());
@@ -273,7 +273,7 @@ class WebauthnServiceTest extends TestCase
         $authenticator = new SoftwareAuthenticator();
         $this->register($authenticator);
 
-        $assertion = $authenticator->assert('example.org', Base64UrlSafe::encodeUnpadded(random_bytes(32)), self::ADDITIONAL_ORIGIN);
+        $assertion = $authenticator->assert('example.org', Base64UrlSafe::encodeUnpadded(random_bytes(32)), self::KEYCLOAK_ORIGIN);
 
         self::assertFalse($this->verifyExternal($this->externalChallenge($this->user), $assertion));
     }
@@ -287,7 +287,7 @@ class WebauthnServiceTest extends TestCase
 
         self::assertSame('example.org', $options['rpId']);
         self::assertSame(Base64UrlSafe::encodeUnpadded($authenticator->credentialId), $options['allowCredentials'][0]['id']);
-        self::assertTrue($this->verifyExternal($options['challenge'], $authenticator->assert('example.org', $options['challenge'], self::ADDITIONAL_ORIGIN)));
+        self::assertTrue($this->verifyExternal($options['challenge'], $authenticator->assert('example.org', $options['challenge'], self::KEYCLOAK_ORIGIN)));
     }
 
     public function testExternalAssertionFailsForChallengeNotIssued(): void
@@ -296,7 +296,7 @@ class WebauthnServiceTest extends TestCase
         $this->register($authenticator);
         $challenge = Base64UrlSafe::encodeUnpadded(random_bytes(32));
 
-        self::assertFalse($this->verifyExternal($challenge, $authenticator->assert('example.org', $challenge, self::ADDITIONAL_ORIGIN)));
+        self::assertFalse($this->verifyExternal($challenge, $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN)));
     }
 
     public function testExternalAssertionFailsForChallengeOfOtherUser(): void
@@ -305,7 +305,7 @@ class WebauthnServiceTest extends TestCase
         $this->register($authenticator);
         $challenge = $this->externalChallenge(new User('other@example.org'));
 
-        self::assertFalse($this->verifyExternal($challenge, $authenticator->assert('example.org', $challenge, self::ADDITIONAL_ORIGIN)));
+        self::assertFalse($this->verifyExternal($challenge, $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN)));
     }
 
     public function testExternalAssertionCannotBeReplayedWithoutSignCount(): void
@@ -316,7 +316,7 @@ class WebauthnServiceTest extends TestCase
 
         // Like many passkeys, the authenticator always reports a sign count of 0
         $authenticator->signCount = -1;
-        $assertion = $authenticator->assert('example.org', $challenge, self::ADDITIONAL_ORIGIN);
+        $assertion = $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN);
 
         self::assertTrue($this->verifyExternal($challenge, $assertion));
         self::assertFalse($this->verifyExternal($challenge, $assertion));
@@ -339,7 +339,7 @@ class WebauthnServiceTest extends TestCase
         $this->register($authenticator);
         $challenge = $this->externalChallenge($this->user);
 
-        $assertion = $authenticator->assert('evil.example.com', $challenge, self::ADDITIONAL_ORIGIN);
+        $assertion = $authenticator->assert('evil.example.com', $challenge, self::KEYCLOAK_ORIGIN);
 
         self::assertFalse($this->verifyExternal($challenge, $assertion));
     }
@@ -349,13 +349,13 @@ class WebauthnServiceTest extends TestCase
         $authenticator = new SoftwareAuthenticator();
         $this->register($authenticator);
         $challenge = $this->externalChallenge($this->user);
-        self::assertTrue($this->verifyExternal($challenge, $authenticator->assert('example.org', $challenge, self::ADDITIONAL_ORIGIN)));
+        self::assertTrue($this->verifyExternal($challenge, $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN)));
 
         // A cloned authenticator reuses an old counter value
         $authenticator->signCount = 0;
         $challenge = $this->externalChallenge($this->user);
 
-        self::assertFalse($this->verifyExternal($challenge, $authenticator->assert('example.org', $challenge, self::ADDITIONAL_ORIGIN)));
+        self::assertFalse($this->verifyExternal($challenge, $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN)));
     }
 
     public function testExternalAssertionFailsForInvalidSignature(): void
@@ -364,29 +364,29 @@ class WebauthnServiceTest extends TestCase
         $this->register($authenticator);
         $challenge = $this->externalChallenge($this->user);
 
-        $assertion = $authenticator->assert('example.org', $challenge, self::ADDITIONAL_ORIGIN);
-        $assertion['signature'] = new SoftwareAuthenticator()->assert('example.org', $challenge, self::ADDITIONAL_ORIGIN)['signature'];
+        $assertion = $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN);
+        $assertion['signature'] = new SoftwareAuthenticator()->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN)['signature'];
 
         self::assertFalse($this->verifyExternal($challenge, $assertion));
     }
 
     public function testGetAllowedOrigins(): void
     {
-        self::assertSame([self::ORIGIN, self::ADDITIONAL_ORIGIN], $this->service->getAllowedOrigins());
+        self::assertSame([self::ORIGIN, self::KEYCLOAK_ORIGIN], $this->service->getAllowedOrigins());
     }
 
     public function testGetAllowedOriginsIncludesWebmail(): void
     {
         $this->settings['webmail_url'] = 'https://mail.example.org/roundcube/';
 
-        self::assertSame([self::ORIGIN, 'https://mail.example.org', self::ADDITIONAL_ORIGIN], $this->service->getAllowedOrigins());
+        self::assertSame([self::ORIGIN, 'https://mail.example.org', self::KEYCLOAK_ORIGIN], $this->service->getAllowedOrigins());
     }
 
     public function testGetAllowedOriginsSkipsWebmailOutsideSecurityKeyDomain(): void
     {
         $this->settings['webmail_url'] = 'https://webmail.example.com';
 
-        self::assertSame([self::ORIGIN, self::ADDITIONAL_ORIGIN], $this->service->getAllowedOrigins());
+        self::assertSame([self::ORIGIN, self::KEYCLOAK_ORIGIN], $this->service->getAllowedOrigins());
     }
 
     public function testGetAllowedOriginsSkipsWebmailOutsideDefaultSecurityKeyDomain(): void
@@ -394,7 +394,7 @@ class WebauthnServiceTest extends TestCase
         $this->settings['webauthn_rp_id'] = '';
         $this->settings['webmail_url'] = 'https://mail.example.org';
 
-        self::assertSame([self::ORIGIN, self::ADDITIONAL_ORIGIN], $this->service->getAllowedOrigins());
+        self::assertSame([self::ORIGIN, self::KEYCLOAK_ORIGIN], $this->service->getAllowedOrigins());
     }
 
     public function testRecordExternalUsage(): void
