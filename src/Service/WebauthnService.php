@@ -230,17 +230,9 @@ final readonly class WebauthnService
     }
 
     /**
-     * Creates a challenge for a relying party with an allowed origin (e.g. Roundcube), base64url encoded.
-     * It can be used once with verifyExternalAssertion() for the same user, within a few minutes.
-     */
-    public function createExternalChallenge(User $user): string
-    {
-        return Base64UrlSafe::encodeUnpadded($this->issueExternalChallenge($user));
-    }
-
-    /**
-     * Options for navigator.credentials.get() with a challenge from createExternalChallenge(),
-     * for a relying party that has no own WebAuthn support (e.g. Roundcube).
+     * Options for navigator.credentials.get() for a relying party that has no own WebAuthn support
+     * (e.g. Roundcube). The challenge can be used once with verifyExternalAssertion() for the same
+     * user, within a few minutes.
      *
      * @return array<string, mixed>
      */
@@ -253,7 +245,7 @@ final readonly class WebauthnService
 
     /**
      * Verifies an assertion that a relying party with an allowed origin (e.g. Roundcube) collected
-     * for a challenge from createExternalChallenge(). All binary values are base64url encoded.
+     * for a challenge from createExternalAuthenticationOptions(). All binary values are base64url encoded.
      */
     public function verifyExternalAssertion(
         User $user,

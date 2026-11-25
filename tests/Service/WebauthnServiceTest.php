@@ -255,7 +255,7 @@ class WebauthnServiceTest extends TestCase
     {
         $authenticator = new SoftwareAuthenticator();
         $credential = $this->register($authenticator);
-        $challenge = $this->service->createExternalChallenge($this->user);
+        $challenge = $this->externalChallenge($this->user);
 
         $assertion = $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN);
 
@@ -270,7 +270,7 @@ class WebauthnServiceTest extends TestCase
 
         $assertion = $authenticator->assert('example.org', Base64UrlSafe::encodeUnpadded(random_bytes(32)), self::KEYCLOAK_ORIGIN);
 
-        self::assertFalse($this->verifyExternal($this->service->createExternalChallenge($this->user), $assertion));
+        self::assertFalse($this->verifyExternal($this->externalChallenge($this->user), $assertion));
     }
 
     public function testExternalAuthenticationOptions(): void
@@ -298,7 +298,7 @@ class WebauthnServiceTest extends TestCase
     {
         $authenticator = new SoftwareAuthenticator();
         $this->register($authenticator);
-        $challenge = $this->service->createExternalChallenge(new User('other@example.org'));
+        $challenge = $this->externalChallenge(new User('other@example.org'));
 
         self::assertFalse($this->verifyExternal($challenge, $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN)));
     }
@@ -307,7 +307,7 @@ class WebauthnServiceTest extends TestCase
     {
         $authenticator = new SoftwareAuthenticator();
         $this->register($authenticator);
-        $challenge = $this->service->createExternalChallenge($this->user);
+        $challenge = $this->externalChallenge($this->user);
 
         // Like many passkeys, the authenticator always reports a sign count of 0
         $authenticator->signCount = -1;
@@ -321,7 +321,7 @@ class WebauthnServiceTest extends TestCase
     {
         $authenticator = new SoftwareAuthenticator();
         $this->register($authenticator);
-        $challenge = $this->service->createExternalChallenge($this->user);
+        $challenge = $this->externalChallenge($this->user);
 
         $assertion = $authenticator->assert('example.org', $challenge, 'https://evil.example.com');
 
@@ -332,7 +332,7 @@ class WebauthnServiceTest extends TestCase
     {
         $authenticator = new SoftwareAuthenticator();
         $this->register($authenticator);
-        $challenge = $this->service->createExternalChallenge($this->user);
+        $challenge = $this->externalChallenge($this->user);
 
         $assertion = $authenticator->assert('evil.example.com', $challenge, self::KEYCLOAK_ORIGIN);
 
@@ -343,12 +343,12 @@ class WebauthnServiceTest extends TestCase
     {
         $authenticator = new SoftwareAuthenticator();
         $this->register($authenticator);
-        $challenge = $this->service->createExternalChallenge($this->user);
+        $challenge = $this->externalChallenge($this->user);
         self::assertTrue($this->verifyExternal($challenge, $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN)));
 
         // A cloned authenticator reuses an old counter value
         $authenticator->signCount = 0;
-        $challenge = $this->service->createExternalChallenge($this->user);
+        $challenge = $this->externalChallenge($this->user);
 
         self::assertFalse($this->verifyExternal($challenge, $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN)));
     }
@@ -357,7 +357,7 @@ class WebauthnServiceTest extends TestCase
     {
         $authenticator = new SoftwareAuthenticator();
         $this->register($authenticator);
-        $challenge = $this->service->createExternalChallenge($this->user);
+        $challenge = $this->externalChallenge($this->user);
 
         $assertion = $authenticator->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN);
         $assertion['signature'] = new SoftwareAuthenticator()->assert('example.org', $challenge, self::KEYCLOAK_ORIGIN)['signature'];
@@ -414,6 +414,11 @@ class WebauthnServiceTest extends TestCase
         $options = $this->service->createRegistrationOptions($this->user);
 
         return $this->service->verifyRegistration($this->user, $authenticator->create($options, self::ORIGIN), 'My key');
+    }
+
+    private function externalChallenge(User $user): string
+    {
+        return $this->service->createExternalAuthenticationOptions($user)['challenge'];
     }
 
     /**
