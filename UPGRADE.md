@@ -20,7 +20,8 @@ Users can add security keys as second factor. The migration adds the tables
    in **Admin → Settings** before users add keys. Changing the domain later makes
    registered keys unusable. The origins of the application URL and of the
    webmail URL (if it belongs to the security key domain) are allowed
-   automatically.
+   automatically. Keycloak checks its origin itself, so it only needs the
+   Security Key Domain.
 3. For security keys and backup codes in Keycloak, update the
    [Keycloak provider](docs/operations/integrations/keycloak.md#two-factor-authentication)
    and add its new authenticators to the browser flow. Keycloak verifies
