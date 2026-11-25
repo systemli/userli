@@ -124,6 +124,18 @@ Feature: Keycloak API
             | password       | 123456 |
         Then the response status code should equal 403
 
+    @validate @otp @throttling
+    Scenario: Too many wrong codes block the correct backup code
+        Given the User "totp@example.org" has TOTP backup codes "11111111"
+        And I have a valid API token "keycloak-test-123"
+        When I send a POST request to "/api/keycloak/example.org/validate/totp@example.org" with form data 10 times:
+            | credentialType | otp    |
+            | password       | 000000 |
+        And I send a POST request to "/api/keycloak/example.org/validate/totp@example.org" with form data:
+            | credentialType | backup-code |
+            | password       | 11111111    |
+        Then the response status code should equal 429
+
     @configured
     Scenario: Check if OTP is configured for user without TOTP
         Given I have a valid API token "keycloak-test-123"

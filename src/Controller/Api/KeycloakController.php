@@ -13,6 +13,7 @@ use App\Enum\ApiScope;
 use App\Enum\Roles;
 use App\Handler\UserAuthenticationHandler;
 use App\Security\RequireApiScope;
+use App\Security\TwofactorRateLimiter;
 use App\Service\WebauthnService;
 use Doctrine\ORM\EntityManagerInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
@@ -42,11 +43,14 @@ final class KeycloakController extends AbstractController
 
     public const string MESSAGE_SIGN_COUNT_REJECTED = 'sign count rejected';
 
+    public const string MESSAGE_TOO_MANY_ATTEMPTS = 'too many attempts';
+
     public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly UserAuthenticationHandler $handler,
         private readonly TotpAuthenticatorInterface $totpAuthenticator,
         private readonly WebauthnService $webauthnService,
+        private readonly TwofactorRateLimiter $twofactorRateLimiter,
     ) {
     }
 
@@ -108,7 +112,16 @@ final class KeycloakController extends AbstractController
             return $statusResponse;
         }
 
-        return match ($requestData->getCredentialType()) {
+        // Shares the limit of the web login. Consumed before the check, so concurrent attempts count too.
+        $twofactor = in_array($requestData->getCredentialType(), ['otp', 'backup-code'], true);
+        $twofactorLimiter = $this->twofactorRateLimiter->create($user);
+        if ($twofactor && !$twofactorLimiter->consume()->isAccepted()) {
+            return $this->json([
+                'message' => self::MESSAGE_TOO_MANY_ATTEMPTS,
+            ], Response::HTTP_TOO_MANY_REQUESTS);
+        }
+
+        $response = match ($requestData->getCredentialType()) {
             'password' => $this->handlePasswordValidate($user, $requestData),
             'otp' => $this->handleTotpValidate($user, $requestData),
             'backup-code' => $this->handleBackupCodeValidate($user, $requestData),
@@ -116,6 +129,12 @@ final class KeycloakController extends AbstractController
                 'message' => self::MESSAGE_NOT_SUPPORTED,
             ], Response::HTTP_BAD_REQUEST),
         };
+
+        if ($twofactor && $response->isSuccessful()) {
+            $twofactorLimiter->reset();
+        }
+
+        return $response;
     }
 
     /**

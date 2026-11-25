@@ -197,6 +197,29 @@ Feature: Roundcube API
         Then the response status code should equal 429
         And the user "totp@example.org" should have no last login time
 
+    @login @twofactor @throttling
+    Scenario: A correct code resets the limit
+        Given the User "totp@example.org" has TOTP backup codes "11111111,22222222"
+        And I have a valid API token "roundcube-test-123"
+        When I send a POST request to "/api/roundcube/login" with form data 9 times:
+            | email    | totp@example.org |
+            | password | password         |
+            | code     | 000000           |
+        And I send a POST request to "/api/roundcube/login" with form data:
+            | email    | totp@example.org |
+            | password | password         |
+            | code     | 11111111         |
+        Then the response status code should equal 200
+        When I send a POST request to "/api/roundcube/login" with form data 9 times:
+            | email    | totp@example.org |
+            | password | password         |
+            | code     | 000000           |
+        And I send a POST request to "/api/roundcube/login" with form data:
+            | email    | totp@example.org |
+            | password | password         |
+            | code     | 22222222         |
+        Then the response status code should equal 200
+
     @login @twofactor
     Scenario: Login with backup code works only once
         Given the User "totp@example.org" has TOTP backup codes "11111111,22222222"
