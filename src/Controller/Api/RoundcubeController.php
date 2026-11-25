@@ -11,8 +11,8 @@ use App\Entity\User;
 use App\Enum\ApiScope;
 use App\Exception\DecryptionFailedException;
 use App\Handler\UserAuthenticationHandler;
-use App\Security\LoginRateLimiter;
 use App\Security\RequireApiScope;
+use App\Security\TwofactorRateLimiter;
 use App\Service\AppPasswordManager;
 use App\Service\WebauthnService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -46,7 +46,7 @@ final class RoundcubeController extends AbstractController
         private readonly TotpAuthenticatorInterface $totpAuthenticator,
         private readonly BackupCodeManagerInterface $backupCodeManager,
         private readonly WebauthnService $webauthnService,
-        private readonly LoginRateLimiter $loginRateLimiter,
+        private readonly TwofactorRateLimiter $twofactorRateLimiter,
     ) {
     }
 
@@ -59,12 +59,6 @@ final class RoundcubeController extends AbstractController
     #[Route(path: '/api/roundcube/login', name: 'api_roundcube_post_login', methods: ['POST'], stateless: true)]
     public function postLogin(#[MapRequestPayload] RoundcubeLoginDto $data): JsonResponse
     {
-        // Shares the limits of the web login. Consumed before the check, so concurrent attempts count too.
-        $passwordLimiter = $this->loginRateLimiter->createPasswordLimiter($data->getEmail());
-        if (!$passwordLimiter->consume()->isAccepted()) {
-            return $this->json(['message' => self::MESSAGE_TOO_MANY_ATTEMPTS], Response::HTTP_TOO_MANY_REQUESTS);
-        }
-
         $user = $this->manager->getRepository(User::class)->findByEmail($data->getEmail());
         if (!$user || $user->isDeleted()) {
             return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
@@ -75,14 +69,13 @@ final class RoundcubeController extends AbstractController
             return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
         }
 
-        $passwordLimiter->reset();
-
         if ($user->isPasswordChangeRequired()) {
             return $this->json(['message' => self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED], Response::HTTP_FORBIDDEN);
         }
 
         $missing = '' === $data->getCode() && null === $data->getWebauthn();
-        $twofactorLimiter = $this->loginRateLimiter->createTwofactorLimiter($user->getEmail());
+        $twofactorLimiter = $this->twofactorRateLimiter->create($user);
+        // Shares the limit of the web login. Consumed before the check, so concurrent attempts count too.
         if ($user->isTwofactorEnabled() && !$missing && !$twofactorLimiter->consume()->isAccepted()) {
             return $this->json(['message' => self::MESSAGE_TOO_MANY_ATTEMPTS], Response::HTTP_TOO_MANY_REQUESTS);
         }

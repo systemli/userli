@@ -182,15 +182,3 @@ Feature: Login
 
     Then the response status code should be 401
     And I should see text matching "Too many failed login attempts"
-
-  @login-throttling
-  Scenario: Too many wrong passwords block the correct password, also without domain
-    When I sign in as "user@example.org" with password "wrong" 50 times
-    And I am on "/login"
-    And I fill in the following:
-      | _username | user   |
-      | _password | asdasd |
-    And I press "Sign in"
-
-    Then the response status code should be 401
-    And I should see text matching "Too many failed login attempts"

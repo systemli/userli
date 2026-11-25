@@ -1,13 +1,7 @@
-# Per account (see App\Security\LoginRateLimiter), since client IPs may be anonymized or shared
 framework:
     rate_limiter:
-        # Backstop only: must stay above what a single IP gets through the per-IP rules of the webserver
-        login_password:
-            policy: sliding_window
-            limit: 50
-            interval: '1 hour'
-        # Only someone who knows the password can use this up
-        login_twofactor:
+        # Per account, see App\Security\TwofactorRateLimiter
+        twofactor:
             policy: sliding_window
             limit: 10
             interval: '15 minutes'
