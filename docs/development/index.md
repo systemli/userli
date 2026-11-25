@@ -11,13 +11,13 @@ We provide a `docker-compose.yml` that starts Userli with MariaDB, Dovecot, Roun
     production. See the [Operations Guide](../operations/index.md) for
     production installations.
 
-| Service      | URL                                                                  | Purpose                     |
-| ------------ | -------------------------------------------------------------------- | --------------------------- |
-| Userli       | [http://userli.localhost](http://userli.localhost)                   | Main application            |
-| Roundcube    | [http://roundcube.localhost](http://roundcube.localhost)             | Webmail client              |
-| Keycloak     | [http://keycloak.localhost](http://keycloak.localhost)               | Single sign-on (optional)   |
-| Mailcatcher  | [http://mailcatcher.localhost](http://mailcatcher.localhost)         | Catches all outgoing emails |
-| Webhook test | [http://webhook.localhost](http://webhook.localhost)                 | Webhook endpoint testing    |
+| Service      | URL                                                                        | Purpose                     |
+| ------------ | -------------------------------------------------------------------------- | --------------------------- |
+| Userli       | [http://app.userli.localhost](http://app.userli.localhost)                 | Main application            |
+| Roundcube    | [http://roundcube.userli.localhost](http://roundcube.userli.localhost)     | Webmail client              |
+| Keycloak     | [http://keycloak.userli.localhost](http://keycloak.userli.localhost)       | Single sign-on (optional)   |
+| Mailcatcher  | [http://mailcatcher.userli.localhost](http://mailcatcher.userli.localhost) | Catches all outgoing emails |
+| Webhook test | [http://webhook.userli.localhost](http://webhook.userli.localhost)         | Webhook endpoint testing    |
 
 All web services are served by Caddy on port 80 and selected by host name. Browsers resolve `*.localhost`
 to your machine, so no `/etc/hosts` entries are needed. On systems where `*.localhost` does not resolve
@@ -25,7 +25,7 @@ to your machine, so no `/etc/hosts` entries are needed. On systems where `*.loca
 
 !!! tip "Port 80 is in use"
     Set another port before you start the environment, for example `export HTTP_PORT=8000`, and add it
-    to the URLs: `http://userli.localhost:8000`.
+    to the URLs: `http://app.userli.localhost:8000`.
 
 ## Requirements
 
@@ -64,10 +64,10 @@ make fixtures
 
 This
 
-1. loads sample data (users, domains, API tokens, ...) and the dev settings (`app_url`, which is also the WebAuthn RP ID, so security keys work right away in Userli), and
+1. loads sample data (users, domains, API tokens, ...) and the dev settings (`app_url`, `webmail_url` and the security key domain `userli.localhost`, so security keys work right away in Userli, Roundcube and Keycloak), and
 2. starts Dovecot and Roundcube (`mail` profile).
 
-When it finishes, open [http://userli.localhost](http://userli.localhost) and log in with `admin@example.org` / `password`.
+When it finishes, open [http://app.userli.localhost](http://app.userli.localhost) and log in with `admin@example.org` / `password`.
 
 
 !!! info
@@ -92,8 +92,8 @@ make keycloak
 This builds Keycloak with the latest release of the
 [Userli user provider](https://github.com/systemli/userli-keycloak-provider) and imports the realm `userli`
 (`sso` profile). The realm uses the dev environment as user federation, so you can sign in at
-[http://keycloak.localhost/realms/userli/account](http://keycloak.localhost/realms/userli/account) with `user` / `password`.
-The admin console is at [http://keycloak.localhost](http://keycloak.localhost) (`admin` / `admin`).
+[http://keycloak.userli.localhost/realms/userli/account](http://keycloak.userli.localhost/realms/userli/account) with `user` / `password`.
+The admin console is at [http://keycloak.userli.localhost](http://keycloak.userli.localhost) (`admin` / `admin`).
 
 Load the fixtures first, because the realm uses their Keycloak API token.
 
@@ -169,10 +169,6 @@ services:
     volumes:
       - ../roundcube-userli-plugin:/var/www/html/plugins/userli:ro
 ```
-
-To sign in to Roundcube with a security key, set **Additional Security Key
-Origins** to `http://localhost:8001` in the admin settings. Both ports share
-the security key domain `localhost`.
 
 ## Troubleshooting
 
