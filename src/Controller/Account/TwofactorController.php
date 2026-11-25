@@ -215,17 +215,15 @@ final class TwofactorController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Backup codes are shared by all second factors, so they are only created for the first one
-            if ($user->isTwofactorEnabled()) {
-                $user->setTotpConfirmed(true);
-                $this->manager->flush();
-
-                return $this->redirectToRoute('account_twofactor');
+            $isFirstFactor = !$user->isTwofactorEnabled();
+            $user->setTotpConfirmed(true);
+            if ($isFirstFactor) {
+                $this->backupCodeService->regenerate($user);
             }
 
-            $this->backupCodeService->regenerate($user);
             $this->manager->flush();
 
-            return $this->redirectToRoute('account_twofactor_backup_confirm');
+            return $this->redirectToRoute($isFirstFactor ? 'account_twofactor_backup_codes' : 'account_twofactor');
         }
 
         $qrContent = $this->totpAuthenticator->getQRContent($user);
@@ -236,55 +234,6 @@ final class TwofactorController extends AbstractController
                 'form' => $form,
                 'user' => $user,
                 'qr_code_data_uri' => $builder->build()->getDataUri(),
-            ]
-        );
-    }
-
-    #[Route(path: '/account/twofactor/backup-codes', name: 'account_twofactor_backup_confirm', methods: ['GET'])]
-    public function backupAck(): Response
-    {
-        // Without codes from this session, the setup has to be started again
-        if (null === $codes = $this->backupCodeService->getNewCodes()) {
-            return $this->redirectToRoute('account_twofactor');
-        }
-
-        $form = $this->createForm(TwofactorBackupConfirmType::class, new TwofactorBackupConfirm(), [
-            'action' => $this->generateUrl('account_twofactor_backup_confirm_submit'),
-            'method' => 'POST',
-        ]);
-
-        return $this->render(self::BACKUP_CODES_TEMPLATE,
-            [
-                'form' => $form,
-                'backup_codes' => $codes,
-            ]
-        );
-    }
-
-    #[Route(path: '/account/twofactor/backup-codes', name: 'account_twofactor_backup_confirm_submit', methods: ['POST'])]
-    public function backupAckSubmit(Request $request): Response
-    {
-        /** @var User $user */
-        $user = $this->getUser();
-        if (null === $codes = $this->backupCodeService->getNewCodes()) {
-            return $this->redirectToRoute('account_twofactor');
-        }
-
-        $form = $this->createForm(TwofactorBackupConfirmType::class, new TwofactorBackupConfirm());
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user->setTotpConfirmed(true);
-            $this->manager->flush();
-            $this->backupCodeService->clearNewCodes();
-
-            return $this->redirectToRoute('account_twofactor');
-        }
-
-        return $this->render(self::BACKUP_CODES_TEMPLATE,
-            [
-                'form' => $form,
-                'backup_codes' => $codes,
             ]
         );
     }

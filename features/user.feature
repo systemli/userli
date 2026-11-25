@@ -284,7 +284,7 @@ Feature: User
     And I generate a TOTP code from "totpCode" and fill to field "twofactor_confirm_code"
     And I press "Verify"
 
-    Then I should be on "/account/twofactor/backup-codes"
+    Then I should be on "/account/twofactor/backup-codes/new"
     And I should see text matching "Backup codes"
     And I check "twofactor_backup_confirm_confirm"
     And I press "Verify"
@@ -330,9 +330,6 @@ Feature: User
     And the User "user@example.org" has TOTP backup codes "111111,222222"
     When I am authenticated as "user@example.org"
     And I am on "/account/twofactor/backup-codes/new"
-    Then I should be on "/account/twofactor"
-    And I should not see "111111"
-    When I am on "/account/twofactor/backup-codes"
     Then I should be on "/account/twofactor"
     And I should not see "111111"
 
