@@ -24,7 +24,7 @@
                 {{ ux_icon('heroicons:x-circle', {'class': 'w-5 h-5 text-red-400 dark:text-red-500 mt-0.5 mr-3 flex-shrink-0'}) }}
                 <div>
                     <h3 class="text-sm font-medium text-red-800 dark:text-red-200 mb-1">{{ "form.auth-failed"|trans }}</h3>
-                    <p class="text-sm text-red-700 dark:text-red-300">{{ error.message|trans }}</p>
+                    <p class="text-sm text-red-700 dark:text-red-300">{{ error.message ? error.message|trans : error.messageKey|trans(error.messageData, 'security') }}</p>
                 </div>
             </div>
         </div>

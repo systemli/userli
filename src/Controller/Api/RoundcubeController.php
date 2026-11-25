@@ -11,6 +11,7 @@ use App\Entity\User;
 use App\Enum\ApiScope;
 use App\Exception\DecryptionFailedException;
 use App\Handler\UserAuthenticationHandler;
+use App\Security\LoginRateLimiter;
 use App\Security\RequireApiScope;
 use App\Service\AppPasswordManager;
 use App\Service\WebauthnService;
@@ -36,6 +37,8 @@ final class RoundcubeController extends AbstractController
 
     private const string MESSAGE_USER_PASSWORD_CHANGE_REQUIRED = 'user password change required';
 
+    private const string MESSAGE_TOO_MANY_ATTEMPTS = 'too many attempts';
+
     public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly UserAuthenticationHandler $userAuthenticationHandler,
@@ -43,6 +46,7 @@ final class RoundcubeController extends AbstractController
         private readonly TotpAuthenticatorInterface $totpAuthenticator,
         private readonly BackupCodeManagerInterface $backupCodeManager,
         private readonly WebauthnService $webauthnService,
+        private readonly LoginRateLimiter $loginRateLimiter,
     ) {
     }
 
@@ -55,6 +59,12 @@ final class RoundcubeController extends AbstractController
     #[Route(path: '/api/roundcube/login', name: 'api_roundcube_post_login', methods: ['POST'], stateless: true)]
     public function postLogin(#[MapRequestPayload] RoundcubeLoginDto $data): JsonResponse
     {
+        // Shares the limits of the web login. Consumed before the check, so concurrent attempts count too.
+        $passwordLimiter = $this->loginRateLimiter->createPasswordLimiter($data->getEmail());
+        if (!$passwordLimiter->consume()->isAccepted()) {
+            return $this->json(['message' => self::MESSAGE_TOO_MANY_ATTEMPTS], Response::HTTP_TOO_MANY_REQUESTS);
+        }
+
         $user = $this->manager->getRepository(User::class)->findByEmail($data->getEmail());
         if (!$user || $user->isDeleted()) {
             return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
@@ -65,12 +75,19 @@ final class RoundcubeController extends AbstractController
             return $this->json(['message' => self::MESSAGE_AUTHENTICATION_FAILED], Response::HTTP_UNAUTHORIZED);
         }
 
+        $passwordLimiter->reset();
+
         if ($user->isPasswordChangeRequired()) {
             return $this->json(['message' => self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED], Response::HTTP_FORBIDDEN);
         }
 
+        $missing = '' === $data->getCode() && null === $data->getWebauthn();
+        $twofactorLimiter = $this->loginRateLimiter->createTwofactorLimiter($user->getEmail());
+        if ($user->isTwofactorEnabled() && !$missing && !$twofactorLimiter->consume()->isAccepted()) {
+            return $this->json(['message' => self::MESSAGE_TOO_MANY_ATTEMPTS], Response::HTTP_TOO_MANY_REQUESTS);
+        }
+
         if ($user->isTwofactorEnabled() && !$this->checkSecondFactor($user, $data)) {
-            $missing = '' === $data->getCode() && null === $data->getWebauthn();
             $body = ['message' => $missing ? self::MESSAGE_TWOFACTOR_REQUIRED : self::MESSAGE_AUTHENTICATION_FAILED];
             // Only after the password, so the keys of a user aren't revealed without it. A new challenge for each attempt.
             if ($user->isWebauthnAuthenticationEnabled()) {
@@ -78,6 +95,10 @@ final class RoundcubeController extends AbstractController
             }
 
             return $this->json($body, Response::HTTP_UNAUTHORIZED);
+        }
+
+        if ($user->isTwofactorEnabled()) {
+            $twofactorLimiter->reset();
         }
 
         return $this->issueWebmailCredential($user, $data);

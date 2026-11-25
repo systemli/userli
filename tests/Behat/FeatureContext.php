@@ -160,6 +160,7 @@ class FeatureContext extends MinkContext
 
         // Clear the cache to ensure settings are not cached between tests
         $this->cache->clear();
+        $this->getContainer()->get('cache.rate_limiter')->clear();
 
         SoftwareAuthenticator::reset();
     }
