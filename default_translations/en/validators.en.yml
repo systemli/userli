@@ -32,4 +32,4 @@ voucher:
 
 settings:
   webauthn-rp-id-invalid: "Enter a domain without scheme, port or path, e.g. example.org."
-  webauthn-origins-invalid: "Enter one origin per line with scheme and without path, e.g. https://login.example.org."
+  webauthn-origins-invalid: "Enter one origin per line with scheme and without path, e.g. https://webmail.example.org."

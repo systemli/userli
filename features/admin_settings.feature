@@ -64,7 +64,7 @@ Feature: Settings
     And I fill in "settings[webauthn_origins]" with "localhost"
     And I press "Save Settings"
     Then I should see "Enter a domain without scheme, port or path, e.g. example.org."
-    And I should see "Enter one origin per line with scheme and without path, e.g. https://login.example.org."
+    And I should see "Enter one origin per line with scheme and without path, e.g. https://webmail.example.org."
     And I should not see "Settings have been updated successfully"
 
   @settings @admin @webauthn
@@ -72,8 +72,8 @@ Feature: Settings
     Given I am authenticated as "louis@example.org"
     When I am on "/admin/settings"
     And I fill in "settings[webauthn_rp_id]" with "example.org"
-    And I fill in "settings[webauthn_origins]" with "https://login.example.org"
+    And I fill in "settings[webauthn_origins]" with "https://webmail.example.org"
     And I press "Save Settings"
     Then I should see "Settings have been updated successfully"
     And the setting "webauthn_rp_id" should be "example.org"
-    And the setting "webauthn_origins" should be "https://login.example.org"
+    And the setting "webauthn_origins" should be "https://webmail.example.org"

@@ -61,7 +61,7 @@ settings:
       regex: '/^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i'
       regex_message: settings.webauthn-rp-id-invalid
 
-  # Origins besides app_url that may use WebAuthn credentials, e.g. Keycloak. One per line, e.g. https://login.example.org
+  # Origins besides app_url and webmail_url whose WebAuthn assertions Userli verifies, e.g. Roundcube on another host. One per line, e.g. https://webmail.example.org
   webauthn_origins:
     type: textarea
     default: ""
