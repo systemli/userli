@@ -123,6 +123,18 @@ class ApiContext extends RawMinkContext implements Context
     }
 
     /**
+     * @When I send a :method request to :path with form data :count times:
+     *
+     * @throws UnsupportedDriverActionException
+     */
+    public function iSendARequestToWithFormDataTimes(string $method, string $path, string $count, TableNode $table): void
+    {
+        for ($i = 0; $i < (int) $count; ++$i) {
+            $this->iSendARequestToWithFormData($method, $path, $table);
+        }
+    }
+
+    /**
      * @When I send a :method request to :path with JSON:
      *
      * @throws UnsupportedDriverActionException

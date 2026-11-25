@@ -165,3 +165,32 @@ Feature: Login
 
     Then I should be on "/account"
     And the response status code should be 200
+
+  @login-throttling
+  Scenario: Too many wrong two-factor codes block the correct backup code
+    When the following User exists:
+      | email                 | password | roles     | totpConfirmed | totpSecret | totp_backup_codes |
+      | twofactor@example.org | asdasd   | ROLE_USER | 1             | secret     | true              |
+    And I am on "/login"
+    And I fill in the following:
+      | _username | twofactor@example.org |
+      | _password | asdasd                |
+    And I press "Sign in"
+    And I submit the two-factor code "invalid-token" 10 times
+    And I enter TOTP backup code
+    And I press "Verify"
+
+    Then the response status code should be 401
+    And I should see text matching "Too many failed login attempts"
+
+  @login-throttling
+  Scenario: Too many wrong passwords block the correct password, also without domain
+    When I sign in as "user@example.org" with password "wrong" 50 times
+    And I am on "/login"
+    And I fill in the following:
+      | _username | user   |
+      | _password | asdasd |
+    And I press "Sign in"
+
+    Then the response status code should be 401
+    And I should see text matching "Too many failed login attempts"

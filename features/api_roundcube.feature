@@ -182,6 +182,32 @@ Feature: Roundcube API
         And the JSON path "password" should not be empty
         And the user "totp@example.org" should have a last login time of this week
 
+    @login @twofactor @throttling
+    Scenario: Too many wrong codes block the correct code
+        Given I store the TOTP code for secret "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ" as "%code%"
+        And I have a valid API token "roundcube-test-123"
+        When I send a POST request to "/api/roundcube/login" with form data 10 times:
+            | email    | totp@example.org |
+            | password | password         |
+            | code     | 000000           |
+        And I send a POST request to "/api/roundcube/login" with form data:
+            | email    | totp@example.org |
+            | password | password         |
+            | code     | %code%           |
+        Then the response status code should equal 429
+        And the user "totp@example.org" should have no last login time
+
+    @login @throttling
+    Scenario: Too many wrong passwords block the correct password
+        Given I have a valid API token "roundcube-test-123"
+        When I send a POST request to "/api/roundcube/login" with form data 50 times:
+            | email    | user@example.org |
+            | password | wrong            |
+        And I send a POST request to "/api/roundcube/login" with form data:
+            | email    | user@example.org |
+            | password | password         |
+        Then the response status code should equal 429
+
     @login @twofactor
     Scenario: Login with backup code works only once
         Given the User "totp@example.org" has TOTP backup codes "11111111,22222222"

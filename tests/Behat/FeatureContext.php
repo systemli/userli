@@ -859,6 +859,30 @@ class FeatureContext extends MinkContext
     }
 
     /**
+     * @When I submit the two-factor code :code :count times
+     */
+    public function iSubmitTheTwoFactorCodeTimes(string $code, string $count): void
+    {
+        for ($i = 0; $i < (int) $count; ++$i) {
+            $this->fillField('_auth_code', $code);
+            $this->pressButton('Verify');
+        }
+    }
+
+    /**
+     * @When I sign in as :username with password :password :count times
+     */
+    public function iSignInAsWithPasswordTimes(string $username, string $password, string $count): void
+    {
+        for ($i = 0; $i < (int) $count; ++$i) {
+            $this->visitPath('/login');
+            $this->fillField('_username', $username);
+            $this->fillField('_password', $password);
+            $this->pressButton('Sign in');
+        }
+    }
+
+    /**
      * @Then /^File "([^"]*)" should exist$/
      */
     public function fileExists(string $path): void
