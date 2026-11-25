@@ -23,7 +23,7 @@ final class AliasCreate
     #[EmailLength(minLength: 3, maxLength: 32)]
     private string $alias;
 
-    #[Assert\Length(max: 40)]
+    #[Assert\Length(max: 40, groups: ['Default', 'random'])]
     private ?string $note = null;
 
     public function getNote(): ?string

@@ -44,7 +44,7 @@ final class RandomAliasCreateType extends AbstractType
     #[Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => AliasCreate::class]);
+        $resolver->setDefaults(['data_class' => AliasCreate::class, 'validation_groups' => ['random']]);
     }
 
     #[Override]
