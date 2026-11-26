@@ -12,6 +12,7 @@ use App\Enum\ApiScope;
 use App\Exception\DecryptionFailedException;
 use App\Handler\UserAuthenticationHandler;
 use App\Security\RequireApiScope;
+use App\Security\TwofactorRateLimiter;
 use App\Service\AppPasswordManager;
 use App\Service\WebauthnService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,6 +37,8 @@ final class RoundcubeController extends AbstractController
 
     private const string MESSAGE_USER_PASSWORD_CHANGE_REQUIRED = 'user password change required';
 
+    private const string MESSAGE_TOO_MANY_ATTEMPTS = 'too many attempts';
+
     public function __construct(
         private readonly EntityManagerInterface $manager,
         private readonly UserAuthenticationHandler $userAuthenticationHandler,
@@ -43,6 +46,7 @@ final class RoundcubeController extends AbstractController
         private readonly TotpAuthenticatorInterface $totpAuthenticator,
         private readonly BackupCodeManagerInterface $backupCodeManager,
         private readonly WebauthnService $webauthnService,
+        private readonly TwofactorRateLimiter $twofactorRateLimiter,
     ) {
     }
 
@@ -69,8 +73,14 @@ final class RoundcubeController extends AbstractController
             return $this->json(['message' => self::MESSAGE_USER_PASSWORD_CHANGE_REQUIRED], Response::HTTP_FORBIDDEN);
         }
 
+        $missing = '' === $data->getCode() && null === $data->getWebauthn();
+        $twofactorLimiter = $this->twofactorRateLimiter->create($user);
+        // Shares the limit of the web login. Consumed before the check, so concurrent attempts count too.
+        if ($user->isTwofactorEnabled() && !$missing && !$twofactorLimiter->consume()->isAccepted()) {
+            return $this->json(['message' => self::MESSAGE_TOO_MANY_ATTEMPTS], Response::HTTP_TOO_MANY_REQUESTS);
+        }
+
         if ($user->isTwofactorEnabled() && !$this->checkSecondFactor($user, $data)) {
-            $missing = '' === $data->getCode() && null === $data->getWebauthn();
             $body = ['message' => $missing ? self::MESSAGE_TWOFACTOR_REQUIRED : self::MESSAGE_AUTHENTICATION_FAILED];
             // Only after the password, so the keys of a user aren't revealed without it. A new challenge for each attempt.
             if ($user->isWebauthnAuthenticationEnabled()) {
@@ -78,6 +88,10 @@ final class RoundcubeController extends AbstractController
             }
 
             return $this->json($body, Response::HTTP_UNAUTHORIZED);
+        }
+
+        if ($user->isTwofactorEnabled()) {
+            $twofactorLimiter->reset();
         }
 
         return $this->issueWebmailCredential($user, $data);

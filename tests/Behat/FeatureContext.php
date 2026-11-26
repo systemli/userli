@@ -160,6 +160,7 @@ class FeatureContext extends MinkContext
 
         // Clear the cache to ensure settings are not cached between tests
         $this->cache->clear();
+        $this->getContainer()->get('cache.rate_limiter')->clear();
 
         SoftwareAuthenticator::reset();
     }
@@ -856,6 +857,17 @@ class FeatureContext extends MinkContext
             throw new RuntimeException('No TOTP backup codes cached');
         }
         $this->fillField('_auth_code', $totpBackupCodes[0]);
+    }
+
+    /**
+     * @When I submit the two-factor code :code :count times
+     */
+    public function iSubmitTheTwoFactorCodeTimes(string $code, string $count): void
+    {
+        for ($i = 0; $i < (int) $count; ++$i) {
+            $this->fillField('_auth_code', $code);
+            $this->pressButton('Verify');
+        }
     }
 
     /**

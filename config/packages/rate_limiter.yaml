@@ -1,0 +1,7 @@
+framework:
+    rate_limiter:
+        # Per account, see App\Security\TwofactorRateLimiter
+        twofactor:
+            policy: sliding_window
+            limit: 10
+            interval: '15 minutes'

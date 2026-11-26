@@ -33,8 +33,13 @@ can't be reached without passing the proxy. The trusted headers can be set with
 
 ## Brute-force protection
 
-Userli doesn't limit the number of login attempts. Protect the login and API
-endpoints at the webserver or with a tool like
+Userli limits wrong two-factor codes to 10 per 15 minutes per account, on the
+web login and on the [Roundcube](integrations/roundcube.md) login API (`429`).
+Only someone who knows the password can use up this limit. A successful check
+resets it. Passwords aren't limited per account, as a stranger could then lock
+users out.
+
+Limit attempts per IP address at the webserver or with a tool like
 [fail2ban](https://github.com/fail2ban/fail2ban) or
 [CrowdSec](https://www.crowdsec.net/):
 
@@ -45,7 +50,9 @@ endpoints at the webserver or with a tool like
 
 Failed attempts on these endpoints answer with HTTP `401`, successful ones with
 a redirect (`302`). Match on `POST` requests with status `401` in the access
-log, for example with the generic CrowdSec `http-generic-bf` scenario.
+log, for example with the generic CrowdSec `http-generic-bf` scenario. Add a
+slow rule next to it, for example about 10 failed logins per hour per IP
+address, so slow password guessing gets blocked too.
 
 Failed SMTP and IMAP logins are visible in the Postfix and Dovecot logs.
 

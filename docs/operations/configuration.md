@@ -30,6 +30,7 @@ both files.
 | Variable                  | Description | Example |
 |---------------------------|-------------|---------|
 | `DEFAULT_URI`             | Public base URL. Needed to generate correct links in emails sent by the worker. | `https://users.example.org` |
+| `LOCK_DSN`                | Lock store for the two-factor rate limiter. The default `flock` works on a single host only; several hosts need a shared store, see [Symfony Lock](https://symfony.com/doc/current/lock.html#available-stores). | `redis://localhost:6379` |
 | `MESSENGER_TRANSPORT_DSN` | Queue for asynchronous messages. The default in `.env` uses the database; Redis or AMQP are possible, see [Symfony Messenger](https://symfony.com/doc/current/messenger.html#transport-configuration). | `redis://localhost:6379/messages` |
 | `REDIS_URL`               | Enables [Redis as cache](#cache). | `redis://localhost:6379` |
 | `SYMFONY_TRUSTED_PROXIES` | IP addresses or ranges of reverse proxies in front of Userli, see [Security](security.md#reverse-proxies). | `127.0.0.1,REMOTE_ADDR` |
