@@ -114,7 +114,7 @@ form:
 
 # OpenPGP Keys
 openpgp-key-file: "Deinen Schlüssel als Datei hochladen:"
-openpgp-key-file-mimetype: Die hochgeladende Datei enthält keine OpenPGP-Schlüssel.
+openpgp-key-file-mimetype: Die hochgeladene Datei enthält keine OpenPGP-Schlüssel.
 openpgp-key-upload-or: oder
 openpgp-key-text: "Deinen Schlüssel als Text einfügen:"
 openpgp-key-text-placeholder: OpenPGP-Schlüssel im ASCII-Format
@@ -375,9 +375,9 @@ flashes:
   openpgp-deletion-successful: Dein OpenPGP-Schlüssel wurde gelöscht.
   openpgp-key-upload-successful: Dein OpenPGP-Schlüssel wurde hochgeladen.
   voucher-invalid: Der Einladungscode ist ungültig.
-  openpgp-key-upload-error-no-openpgp: Die hochgadene Datei enthält keine OpenPGP-Schlüssel.
+  openpgp-key-upload-error-no-openpgp: Die hochgeladene Datei enthält keine OpenPGP-Schlüssel.
   openpgp-key-upload-error-no-keys: Die hochgeladene Datei enthält keine Schlüssel für deine E-Mail-Adresse.
-  openpgp-key-upload-error-multiple-keys: Die hochgeladene Datei enhält mehr als einen Schlüssel für deine E-Mail-Adresse. Bitte lade nur einen Schlüssel hoch.
+  openpgp-key-upload-error-multiple-keys: Die hochgeladene Datei enthält mehr als einen Schlüssel für deine E-Mail-Adresse. Bitte lade nur einen Schlüssel hoch.
   openpgp-key-unauthorized: Du bist nicht berechtigt, Schlüssel für diese Adresse zu verwalten.
   password-confirmation-failed: Das eingegebene Passwort ist falsch. Bitte versuche es erneut.
 error:
@@ -504,6 +504,19 @@ mail:
 
     Du kannst deine E-Mail-Aliase hier verwalten:
     %alias_url%
+
+    Weiterhin viel Spaß mit deinem E-Mail-Konto, wünscht dir
+    dein %project_name%-Verwaltungsteam.
+  key-expired-subject: Dein OpenPGP-Schlüssel für %email% läuft ab
+  key-expired-body: |
+    Hallo %email%,
+
+    der OpenPGP-Schlüssel für deine E-Mail-Adresse %email% läuft am %expiration_date% ab.
+
+    Falls du diesen Schlüssel für verschlüsselte E-Mails nutzt, funktioniert
+    die Kommunikation mit deinen Kontakten, die ihn verwenden, nicht mehr.
+    Bitte erstelle einen neuen Schlüssel und lade ihn hoch unter:
+    %openpgp_url%
 
     Weiterhin viel Spaß mit deinem E-Mail-Konto, wünscht dir
     dein %project_name%-Verwaltungsteam.

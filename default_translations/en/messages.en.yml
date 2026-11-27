@@ -406,15 +406,15 @@ mail:
   welcome-body: |
     Dear user,
 
-    Welcome aboard. You can find guides for setting up your e-mail account
+    Welcome aboard. You can find guides for setting up your email account
     with several client programs on the Internet.
 
     %quota_text%
 
     %invitation_text%
 
-    Sincerly,
-    your %project_name% admin team.
+    Sincerely,
+    Your %project_name% admin team.
   welcome-quota: |
     You get a mailbox with a %quota% MB quota. If you exceed your limit,
     your e-mail account may not function properly.
@@ -436,7 +436,7 @@ mail:
     to regain access to all features.
 
     Sincerely,
-    your %project_name% admin team.
+    Your %project_name% admin team.
   spam-body-no-support: |
     Dear user,
 
@@ -449,7 +449,7 @@ mail:
     all features.
 
     Sincerely,
-    your %project_name% admin team.
+    Your %project_name% admin team.
   announcement-footer: This is an official announcement from %project_name%.
   announcement-footer-domain: This is an announcement from the admins of %domain%.
   recovery-subject: Password recovery started for %email%
@@ -501,9 +501,21 @@ mail:
     For your e-mail address %email% a new alias has been added:
     %alias%
 
-    Manage your e-mail aliases here: %alias_url%
+    Manage your alias addresses here: %alias_url%
 
     We hope you continue to enjoy your e-mail account.
+    Your %project_name% admin team.
+  key-expired-subject: Your OpenPGP key for %email% expires
+  key-expired-body: |
+    Hello %email%,
+
+    the OpenPGP key for your e-mail address %email% expires on %expiration_date%.
+
+    If you use this key for encrypted e-mail, communication with your contact
+    partners who rely on it no longer works. Please create a new key and
+    upload it under: %openpgp_url%
+
+    Sincerely,
     Your %project_name% admin team.
 copy-to-clipboard: Copy to clipboard
 

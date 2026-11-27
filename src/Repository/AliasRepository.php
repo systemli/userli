@@ -212,4 +212,21 @@ final class AliasRepository extends ServiceEntityRepository
             }
         }
     }
+
+    /**
+     * Finds all users that have an alias with the given source address.
+     * Users of deleted aliases are ignored.
+     */
+    public function findUsersBySource(string $source): array
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->select('DISTINCT u')
+            ->innerJoin('a.user', 'u')
+            ->where('a.source = :source')
+            ->andWhere('a.deleted = false')
+            ->setParameter('source', $source)
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
 }

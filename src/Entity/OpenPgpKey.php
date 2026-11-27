@@ -8,6 +8,7 @@ use App\Repository\OpenPgpKeyRepository;
 use App\Traits\EmailTrait;
 use App\Traits\IdTrait;
 use App\Traits\OpenPgpKeyTrait;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OpenPgpKeyRepository::class)]
